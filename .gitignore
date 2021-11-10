@@ -53,3 +53,7 @@ buck-out/
 .expo/
 web-build/
 dist/
+
+#Testing and exercising
+src/screens/Exercise.js
+src/screens/Test.js

@@ -1,21 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, SafeAreaView, StyleSheet } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { applyMiddleware, createStore } from 'redux';
+import { Provider } from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
+import { reducer } from './src/redux/rootReducer';
+import mySaga from './src/redux/sagas';
+import Navigator from './src/navigation';
+
+const sagaMiddleware = createSagaMiddleware();
+
+const store = createStore(
+  reducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
+);
+sagaMiddleware.run(mySaga);
 
 export default function App() {
+  const statusBarCond = () => {
+    if (Platform.OS === 'android') {
+      return <StatusBar style="light" />;
+    }
+    return <SafeAreaView style={styles.statusBar} />;
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <StatusBar style="light" />
+      <SafeAreaView style={styles.statusBar} />
+      <SafeAreaView style={styles.container}>
+        <Navigator />
+      </SafeAreaView>
+      <SafeAreaView style={styles.statusBar} />
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  statusBar: {
+    flex: 0,
+    backgroundColor: '#161629',
   },
 });
