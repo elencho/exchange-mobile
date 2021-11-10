@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text } from 'react-native';
 
 import Background from '../components/Background';
+import ChooseCurrencyModal from '../components/TransactionFilter/ChooseCurrencyModal';
 import TransactionFilterBottom from '../components/TransactionFilter/TransactionFilterBottom';
 import FilterRow from '../components/TransactionHistory/FilterRow';
 import Headline from '../components/TransactionHistory/Headline';
@@ -9,6 +10,12 @@ import Headline from '../components/TransactionHistory/Headline';
 import { types, methods } from '../constants/filters';
 
 export default function TransactionFilter({ navigation }) {
+  const [visible, setVisible] = useState(true);
+
+  const handleModal = () => {
+    setVisible(!visible);
+  };
+
   return (
     <Background>
       <Pressable
@@ -29,7 +36,7 @@ export default function TransactionFilter({ navigation }) {
       <Text style={styles.text}>Choose Methods:</Text>
       <FilterRow array={methods} multiselect />
 
-      <Pressable style={styles.dropdown}>
+      <Pressable style={styles.dropdown} onPress={handleModal}>
         <Text style={styles.bigText}>Show All Currency</Text>
         <Image source={require('../assets/images/Arrow.png')} />
       </Pressable>
@@ -48,6 +55,7 @@ export default function TransactionFilter({ navigation }) {
       </Pressable>
 
       <TransactionFilterBottom />
+      <ChooseCurrencyModal visible={visible} handleModal={handleModal} />
     </Background>
   );
 }
