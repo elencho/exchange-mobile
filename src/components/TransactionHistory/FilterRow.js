@@ -13,7 +13,15 @@ export default function FilterRow({ array = [''], multiselect = false }) {
     }
   };
 
-  const filterConditional = () => {};
+  const filterConditional = () => {
+    if (!multiselect) {
+      return filter
+    } else {
+      array.forEach(fil => {
+        
+      })
+    }
+  };
 
   return (
     <View style={styles.filterRow}>
