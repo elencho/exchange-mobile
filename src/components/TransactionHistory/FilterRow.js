@@ -3,23 +3,24 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 export default function FilterRow({ array = [''], multiselect = false }) {
   const [filter, setFilter] = useState(array[0]);
-  const [multiFIlter, setMultiFilter] = useState([]);
+  const [multiFIlter, setMultiFilter] = useState([array[0]]);
 
   const handleFilter = (filter) => {
-    if (multiselect) {
+    if (multiselect && !multiFIlter.includes(filter)) {
       setMultiFilter([...multiFIlter, filter]);
+    } else if (multiselect && multiFIlter.includes(filter)) {
+      let newMultiFilter = multiFIlter.filter((f) => filter !== f);
+      setMultiFilter(newMultiFilter);
     } else {
       setFilter(filter);
     }
   };
 
-  const filterConditional = () => {
+  const filterConditional = (fil) => {
     if (!multiselect) {
-      return filter
+      return filter === fil;
     } else {
-      array.forEach(fil => {
-        
-      })
+      return multiFIlter.includes(fil);
     }
   };
 
@@ -30,11 +31,18 @@ export default function FilterRow({ array = [''], multiselect = false }) {
           key={fil}
           style={[
             styles.filterButton,
-            filter === fil && { backgroundColor: 'rgba(74, 109, 255, 0.18)' },
+            filterConditional(fil) && {
+              backgroundColor: 'rgba(74, 109, 255, 0.18)',
+            },
           ]}
           onPress={() => handleFilter(fil)}
         >
-          <Text style={[styles.text, filter === fil && { color: '#6582FD' }]}>
+          <Text
+            style={[
+              styles.text,
+              filterConditional(fil) && { color: '#6582FD' },
+            ]}
+          >
             {fil}
           </Text>
         </Pressable>
