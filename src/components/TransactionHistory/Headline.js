@@ -1,8 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+
+import AppText from '../AppText';
 
 export default function Headline({ title }) {
-  return <Text style={styles.text}>{title}</Text>;
+  return (
+    <AppText medium style={styles.text}>
+      {title}
+    </AppText>
+  );
 }
 
 const styles = StyleSheet.create({

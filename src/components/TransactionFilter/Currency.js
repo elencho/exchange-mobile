@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text } from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
+import AppText from '../AppText';
 
 export default function Currency({ name, abbr }) {
   return (
@@ -8,8 +9,15 @@ export default function Currency({ name, abbr }) {
         source={require('../../assets/images/Currencies/BTC.png')}
         style={styles.image}
       />
-      <Text style={styles.name}>{name}</Text>
-      {abbr ? <Text style={styles.abbr}> {`(${abbr})`}</Text> : null}
+      <AppText medium style={styles.name}>
+        {name}
+      </AppText>
+      {abbr ? (
+        <AppText medium style={styles.abbr}>
+          {' '}
+          {`(${abbr})`}
+        </AppText>
+      ) : null}
     </Pressable>
   );
 }

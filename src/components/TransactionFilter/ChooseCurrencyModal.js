@@ -4,12 +4,12 @@ import {
   Image,
   Modal,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
+import AppText from '../AppText';
 import Currency from './Currency';
 
 const currencies = [
@@ -66,7 +66,9 @@ export default function ChooseCurrencyModal({ visible, handleModal }) {
           </View>
 
           <View style={styles.block}>
-            <Text style={styles.headline}>Choose Currency</Text>
+            <AppText medium style={styles.headline}>
+              Choose Currency
+            </AppText>
 
             <View style={styles.inputContainer}>
               <TextInput

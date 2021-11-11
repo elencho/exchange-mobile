@@ -31,9 +31,6 @@ export default function TransactionHistory({ navigation }) {
         <TransactionDate />
         <TransactionDate />
       </ScrollView>
-
-      {/* DOWNLOAD */}
-      <Download />
     </Background>
   );
 }

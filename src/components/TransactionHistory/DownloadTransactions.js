@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
+import AppText from '../AppText';
 
 export default function DownloadTransactions() {
   return (
@@ -9,7 +10,7 @@ export default function DownloadTransactions() {
           source={require('../../assets/images/Download.png')}
           style={styles.icon}
         />
-        <Text style={{ fontSize: 12, color: '#C0C5E0' }}>Download</Text>
+        <AppText style={{ fontSize: 12, color: '#C0C5E0' }}>Download</AppText>
       </Pressable>
     </View>
   );

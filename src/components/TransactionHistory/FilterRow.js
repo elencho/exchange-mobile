@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+
+import AppText from '../AppText';
 
 export default function FilterRow({ array = [''], multiselect = false }) {
   const [filter, setFilter] = useState(array[0]);
@@ -37,14 +39,14 @@ export default function FilterRow({ array = [''], multiselect = false }) {
           ]}
           onPress={() => handleFilter(fil)}
         >
-          <Text
+          <AppText
             style={[
               styles.text,
               filterConditional(fil) && { color: '#6582FD' },
             ]}
           >
             {fil}
-          </Text>
+          </AppText>
         </Pressable>
       ))}
     </View>

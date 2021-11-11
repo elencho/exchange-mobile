@@ -1,5 +1,7 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+
+import AppText from '../AppText';
 
 export default function Transaction() {
   return (
@@ -10,30 +12,24 @@ export default function Transaction() {
       />
 
       <View style={styles.middle}>
-        <Text style={{ fontSize: 14, color: 'white' }}>Deposit</Text>
-        <Text style={{ fontSize: 12, color: '#696F8E' }}>
-          Cdfkmdf..mfdfsdmd
-        </Text>
+        <AppText medium style={styles.white}>
+          Deposit
+        </AppText>
+        <AppText style={styles.text}>Cdfkmdf..mfdfsdmd</AppText>
       </View>
 
       <View style={styles.right}>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text
-            style={{
-              fontSize: 12,
-              color: '#696F8E',
-              marginRight: 5,
-            }}
-          >
-            Failed
-          </Text>
+          <AppText style={[styles.text, { marginRight: 5 }]}>Failed</AppText>
           <Image
             source={require('../../assets/images/Failed.png')}
-            style={{ width: 5, height: 5 }}
+            style={styles.dot}
           />
         </View>
 
-        <Text style={{ fontSize: 14, color: 'white' }}>0.00008060 LTC</Text>
+        <AppText medium style={styles.white}>
+          0.00008060 LTC
+        </AppText>
       </View>
     </View>
   );
@@ -44,6 +40,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 20,
   },
+  dot: { width: 5, height: 5 },
   deposit: {
     width: 33,
     height: 33,
@@ -58,4 +55,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-end',
   },
+  text: { fontSize: 12, color: '#696F8E' },
+  white: { fontSize: 14, color: 'white' },
 });

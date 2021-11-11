@@ -1,13 +1,23 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
+
+import AppText from '../AppText';
 
 export default function TransactionFilterBottom() {
   return (
     <View style={styles.container}>
       <Pressable style={styles.button}>
-        <Text style={styles.white}>Show Result</Text>
+        <AppText medium style={styles.white}>
+          Show Result
+        </AppText>
       </Pressable>
-      <Text style={styles.blue}>Clear Filter</Text>
+
+      <Pressable style={styles.download}>
+        <Image source={require('../../assets/images/Download.png')} />
+        <AppText medium style={styles.blue}>
+          Download
+        </AppText>
+      </Pressable>
     </View>
   );
 }
@@ -18,6 +28,7 @@ const styles = StyleSheet.create({
     color: '#6582FD',
     marginVertical: 30,
     textAlign: 'center',
+    marginHorizontal: 5,
   },
   button: {
     backgroundColor: '#4A6DFF',
@@ -29,6 +40,11 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 15,
     right: 15,
+  },
+  download: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   white: {
     fontSize: 15,

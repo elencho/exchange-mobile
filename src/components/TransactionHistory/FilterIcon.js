@@ -1,5 +1,7 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text } from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
+
+import AppText from '../AppText';
 
 export default function FilterIcon({ onPress }) {
   return (
@@ -8,7 +10,7 @@ export default function FilterIcon({ onPress }) {
         source={require('../../assets/images/Filter.png')}
         style={styles.icon}
       />
-      <Text style={styles.text}>3</Text>
+      <AppText style={styles.text}>3</AppText>
     </Pressable>
   );
 }

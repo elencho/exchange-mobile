@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import AppText from '../AppText';
 
 export default function TopRow() {
   return (
@@ -10,7 +11,9 @@ export default function TopRow() {
       />
 
       <View style={styles.profile}>
-        <Text style={{ color: 'white', fontSize: 15 }}>NT</Text>
+        <AppText medium style={styles.text}>
+          NT
+        </AppText>
         <View style={styles.dot} />
       </View>
     </View>
@@ -49,4 +52,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  text: { color: 'white', fontSize: 15 },
 });

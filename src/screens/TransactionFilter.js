@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Image, Pressable, StyleSheet, Text } from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
 
+import AppText from '../components/AppText';
 import Background from '../components/Background';
 import ChooseCurrencyModal from '../components/TransactionFilter/ChooseCurrencyModal';
 import TransactionFilterBottom from '../components/TransactionFilter/TransactionFilterBottom';
@@ -30,28 +31,37 @@ export default function TransactionFilter({ navigation }) {
 
       <Headline title="Transaction Filter" />
 
-      <Text style={styles.text}>Choose Type:</Text>
+      <AppText style={styles.text}>Choose Type:</AppText>
       <FilterRow array={types} />
 
-      <Text style={styles.text}>Choose Methods:</Text>
+      <AppText style={styles.text}>Choose Methods:</AppText>
       <FilterRow array={methods} multiselect />
 
       <Pressable style={styles.dropdown} onPress={handleModal}>
-        <Text style={styles.bigText}>Show All Currency</Text>
+        <AppText medium style={styles.bigText}>
+          Show All Currency
+        </AppText>
         <Image source={require('../assets/images/Arrow.png')} />
       </Pressable>
 
       <Pressable
         style={[styles.dropdown, { marginVertical: 0, marginBottom: 15 }]}
       >
-        <Text style={styles.greenText}>From Date</Text>
+        <AppText style={styles.greenText}>From Date</AppText>
         <Image source={require('../assets/images/Calendar.png')} />
       </Pressable>
       <Pressable
         style={[styles.dropdown, { marginVertical: 0, marginBottom: 15 }]}
       >
-        <Text style={styles.greenText}>To Date</Text>
+        <AppText style={styles.greenText}>To Date</AppText>
         <Image source={require('../assets/images/Calendar.png')} />
+      </Pressable>
+
+      <Pressable style={styles.clear}>
+        <Image source={require('../assets/images/Clear.png')} />
+        <AppText medium style={styles.clearText}>
+          Clear Filter
+        </AppText>
       </Pressable>
 
       <TransactionFilterBottom />
@@ -61,6 +71,16 @@ export default function TransactionFilter({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  clear: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+  },
+  clearText: {
+    fontSize: 15,
+    color: '#6582FD',
+    marginHorizontal: 5,
+  },
   close: {
     width: 15,
     height: 15,
@@ -81,16 +101,16 @@ const styles = StyleSheet.create({
     marginVertical: 25,
   },
   text: {
-    fontSize: 14,
+    fontSize: 13,
     color: 'white',
     marginVertical: 15,
   },
   bigText: {
-    fontSize: 17,
+    fontSize: 15,
     color: 'white',
   },
   greenText: {
-    fontSize: 17,
+    fontSize: 15,
     color: '#696F8E',
   },
 });
