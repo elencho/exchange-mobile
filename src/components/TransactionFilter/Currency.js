@@ -1,10 +1,24 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
+
 import AppText from '../AppText';
 
+import {
+  chooseCurrency,
+  toggleCurrencyModal,
+} from '../../redux/transactions/actions';
+
 export default function Currency({ name, abbr }) {
+  const dispatch = useDispatch();
+
+  const choose = () => {
+    dispatch(chooseCurrency(name));
+    dispatch(toggleCurrencyModal(false));
+  };
+
   return (
-    <Pressable style={styles.container}>
+    <Pressable style={styles.container} onPress={choose}>
       <Image
         source={require('../../assets/images/Currencies/BTC.png')}
         style={styles.image}

@@ -1,9 +1,9 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
-import modal from "./modal/reducer";
+import transactions from './transactions/reducer';
 
 const reducers = {
-  approve_reject: modal,
+  transactions,
 };
 
 export const reducer = combineReducers(reducers);

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../components/AppText';
 import Background from '../components/Background';
@@ -10,11 +11,16 @@ import Headline from '../components/TransactionHistory/Headline';
 
 import { types, methods } from '../constants/filters';
 
-export default function TransactionFilter({ navigation }) {
-  const [visible, setVisible] = useState(false);
+import { toggleCurrencyModal } from '../redux/transactions/actions';
 
-  const handleModal = () => {
-    setVisible(!visible);
+export default function TransactionFilter({ navigation }) {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.transactions);
+
+  const { currency } = state;
+
+  const openModal = () => {
+    dispatch(toggleCurrencyModal(true));
   };
 
   return (
@@ -37,9 +43,9 @@ export default function TransactionFilter({ navigation }) {
       <AppText style={styles.text}>Choose Methods:</AppText>
       <FilterRow array={methods} multiselect />
 
-      <Pressable style={styles.dropdown} onPress={handleModal}>
+      <Pressable style={styles.dropdown} onPress={openModal}>
         <AppText medium style={styles.bigText}>
-          Show All Currency
+          {currency}
         </AppText>
         <Image source={require('../assets/images/Arrow.png')} />
       </Pressable>
@@ -65,7 +71,7 @@ export default function TransactionFilter({ navigation }) {
       </Pressable>
 
       <TransactionFilterBottom />
-      <ChooseCurrencyModal visible={visible} handleModal={handleModal} />
+      <ChooseCurrencyModal />
     </Background>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   FlatList,
   Image,
@@ -7,7 +7,9 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import GestureRecognizer from 'react-native-swipe-gestures';
+import { PanGestureHandler } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleCurrencyModal } from '../../redux/transactions/actions';
 
 import AppText from '../AppText';
 import Currency from './Currency';
@@ -34,62 +36,58 @@ const currencies = [
   { name: 'Litecoin2', abbr: 'LTC' },
 ];
 
-export default function ChooseCurrencyModal({ visible, handleModal }) {
-  let toggle = handleModal;
+export default function ChooseCurrencyModal() {
+  const dispatch = useDispatch();
+  const currencyModal = useSelector(
+    (state) => state.transactions.currencyModal
+  );
 
   const renderCurrency = ({ item }) => (
     <Currency name={item.name} abbr={item.abbr} />
   );
 
-  const disableToggle = () => {
-    toggle = null;
+  const closeModal = (evt) => {
+    const { nativeEvent } = evt;
+    if (nativeEvent.y > 150) {
+      dispatch(toggleCurrencyModal(false));
+    }
   };
-  const enableToggle = () => {
-    toggle = handleModal;
-  };
-
-  console.log(toggle);
 
   return (
-    <GestureRecognizer
-      config={{ directionalOffsetThreshold: 10 }}
-      onSwipeDown={() => toggle && toggle()}
+    <Modal
+      animationType="slide"
+      visible={currencyModal}
+      presentationStyle="pageSheet"
     >
-      <Modal
-        animationType="slide"
-        visible={visible}
-        presentationStyle="pageSheet"
-      >
-        <View style={styles.container}>
+      <View style={styles.container}>
+        <PanGestureHandler onGestureEvent={closeModal}>
           <View style={styles.top}>
             <View style={styles.line} />
           </View>
+        </PanGestureHandler>
 
-          <View style={styles.block}>
-            <AppText medium style={styles.headline}>
-              Choose Currency
-            </AppText>
+        <View style={styles.block}>
+          <AppText medium style={styles.headline}>
+            Choose Currency
+          </AppText>
 
-            <View style={styles.inputContainer}>
-              <TextInput
-                placeholder="Search Currency"
-                placeholderTextColor="rgba(105, 111, 142, 0.5)"
-                style={styles.input}
-              />
-              <Image source={require('../../assets/images/Search.png')} />
-            </View>
-
-            <FlatList
-              data={currencies}
-              renderItem={renderCurrency}
-              keyExtractor={(item) => item.name}
-              onTouchStart={disableToggle}
-              onMomentumScrollEnd={enableToggle}
+          <View style={styles.inputContainer}>
+            <TextInput
+              placeholder="Search Currency"
+              placeholderTextColor="rgba(105, 111, 142, 0.5)"
+              style={styles.input}
             />
+            <Image source={require('../../assets/images/Search.png')} />
           </View>
+
+          <FlatList
+            data={currencies}
+            renderItem={renderCurrency}
+            keyExtractor={(item) => item.name}
+          />
         </View>
-      </Modal>
-    </GestureRecognizer>
+      </View>
+    </Modal>
   );
 }
 
