@@ -7,17 +7,15 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
+import Constants from 'expo-constants';
 
 import AppText from '../AppText';
 import Currency from './Currency';
 
-import {
-  filterCurrencies,
-  toggleCurrencyModal,
-} from '../../redux/transactions/actions';
+import { filterCurrencies } from '../../redux/transactions/actions';
 import { currencyList } from '../../constants/filters';
+import ModalTop from '../ModalTop';
 
 export default function ChooseCurrencyModal() {
   const dispatch = useDispatch();
@@ -29,13 +27,6 @@ export default function ChooseCurrencyModal() {
     <Currency name={item.name} abbr={item.abbr} />
   );
 
-  const closeModal = (evt) => {
-    const { nativeEvent } = evt;
-    if (nativeEvent.y > 150) {
-      dispatch(toggleCurrencyModal(false));
-    }
-  };
-
   const filter = (text) => {
     const filteredArray = currencyList.filter((c) =>
       c.name.toLowerCase().includes(text.toLowerCase())
@@ -44,17 +35,9 @@ export default function ChooseCurrencyModal() {
   };
 
   return (
-    <Modal
-      animationType="slide"
-      visible={currencyModal}
-      presentationStyle="pageSheet"
-    >
+    <Modal transparent animationType="slide" visible={currencyModal}>
       <View style={styles.container}>
-        <PanGestureHandler onGestureEvent={closeModal}>
-          <View style={styles.top}>
-            <View style={styles.line} />
-          </View>
-        </PanGestureHandler>
+        <ModalTop />
 
         <View style={styles.block}>
           <AppText medium style={styles.headline}>
@@ -90,6 +73,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: 'rgba(15, 15, 31, 0.6)',
   },
   headline: {
     fontSize: 20,
@@ -110,16 +95,5 @@ const styles = StyleSheet.create({
     color: 'white',
     flex: 1,
     marginRight: 10,
-  },
-  line: {
-    height: 7,
-    width: '25%',
-    backgroundColor: '#1F1F35',
-  },
-  top: {
-    height: 35,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(15, 15, 31, 1)',
   },
 });

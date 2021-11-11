@@ -4,11 +4,12 @@ import { currencyList } from '../../constants/filters';
 const INITIAL_STATE = {
   currency: 'Show All Currency',
   currencyModal: false,
+  transactionModal: false,
   currencies: currencyList,
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { currency, currencyModal, currencies } = action;
+  const { currency, currencyModal, currencies, transactionModal } = action;
   // const { drawerRef } = state;
   switch (action.type) {
     case actionTypes.CHOOSE_CURRENCY:
@@ -25,6 +26,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currencies,
+      };
+    case actionTypes.TOGGLE_TRANSACTION_MODAL:
+      return {
+        ...state,
+        transactionModal,
       };
     default:
       return state;

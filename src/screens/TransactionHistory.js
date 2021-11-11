@@ -7,6 +7,7 @@ import FilterRow from '../components/TransactionHistory/FilterRow';
 import Headline from '../components/TransactionHistory/Headline';
 import TopRow from '../components/TransactionHistory/TopRow';
 import TransactionDate from '../components/TransactionHistory/TransactionDate';
+import TransactionModal from '../components/TransactionHistory/TransactionModal';
 
 import { types } from '../constants/filters';
 
@@ -30,6 +31,9 @@ export default function TransactionHistory({ navigation }) {
         <TransactionDate />
         <TransactionDate />
       </ScrollView>
+
+      {/* Transaction Modal */}
+      <TransactionModal />
     </Background>
   );
 }

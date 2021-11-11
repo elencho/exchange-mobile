@@ -16,7 +16,7 @@ export default function MainScreen({ navigation }) {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={{ headerShown: false }}
-        initialRouteName="Exchange"
+        initialRouteName="Transactions"
         tabBar={({ state, navigation, descriptors }) => (
           <BottomTabs
             routes={state.routes}

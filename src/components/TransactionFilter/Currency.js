@@ -6,8 +6,10 @@ import AppText from '../AppText';
 
 import {
   chooseCurrency,
+  filterCurrencies,
   toggleCurrencyModal,
 } from '../../redux/transactions/actions';
+import { currencyList } from '../../constants/filters';
 
 export default function Currency({ name, abbr }) {
   const dispatch = useDispatch();
@@ -15,6 +17,7 @@ export default function Currency({ name, abbr }) {
   const choose = () => {
     dispatch(chooseCurrency(name));
     dispatch(toggleCurrencyModal(false));
+    dispatch(filterCurrencies(currencyList));
   };
 
   return (

@@ -1,11 +1,20 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+
+import { toggleTransactionModal } from '../../redux/transactions/actions';
 
 import AppText from '../AppText';
 
 export default function Transaction() {
+  const dispatch = useDispatch();
+
+  const showModal = () => {
+    dispatch(toggleTransactionModal(true));
+  };
+
   return (
-    <View style={styles.container}>
+    <Pressable onPress={showModal} style={styles.container}>
       <Image
         style={styles.deposit}
         source={require('../../assets/images/Deposit.png')}
@@ -31,7 +40,7 @@ export default function Transaction() {
           0.00008060 LTC
         </AppText>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
