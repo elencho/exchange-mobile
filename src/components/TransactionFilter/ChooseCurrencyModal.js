@@ -9,38 +9,21 @@ import {
 } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleCurrencyModal } from '../../redux/transactions/actions';
 
 import AppText from '../AppText';
 import Currency from './Currency';
 
-const currencies = [
-  { name: 'Show All Currency', abbr: '' },
-  { name: 'Bitcoin', abbr: 'BTC' },
-  { name: 'Ethereum', abbr: 'ETH' },
-  { name: 'ZCash', abbr: 'ZEC' },
-  { name: 'Bitcoin Cash', abbr: 'BCH' },
-  { name: 'Dash', abbr: 'Dash' },
-  { name: 'Litecoin', abbr: 'LTC' },
-  { name: 'Bitcoin1', abbr: 'BTC' },
-  { name: 'Ethereum1', abbr: 'ETH' },
-  { name: 'ZCash1', abbr: 'ZEC' },
-  { name: 'Bitcoin Cash1', abbr: 'BCH' },
-  { name: 'Dash1', abbr: 'Dash' },
-  { name: 'Litecoin1', abbr: 'LTC' },
-  { name: 'Bitcoin2', abbr: 'BTC' },
-  { name: 'Ethereum2', abbr: 'ETH' },
-  { name: 'ZCash2', abbr: 'ZEC' },
-  { name: 'Bitcoin Cash2', abbr: 'BCH' },
-  { name: 'Dash2', abbr: 'Dash' },
-  { name: 'Litecoin2', abbr: 'LTC' },
-];
+import {
+  filterCurrencies,
+  toggleCurrencyModal,
+} from '../../redux/transactions/actions';
+import { currencyList } from '../../constants/filters';
 
 export default function ChooseCurrencyModal() {
   const dispatch = useDispatch();
-  const currencyModal = useSelector(
-    (state) => state.transactions.currencyModal
-  );
+  const state = useSelector((state) => state.transactions);
+
+  const { currencyModal, currencies } = state;
 
   const renderCurrency = ({ item }) => (
     <Currency name={item.name} abbr={item.abbr} />
@@ -51,6 +34,13 @@ export default function ChooseCurrencyModal() {
     if (nativeEvent.y > 150) {
       dispatch(toggleCurrencyModal(false));
     }
+  };
+
+  const filter = (text) => {
+    const filteredArray = currencyList.filter((c) =>
+      c.name.toLowerCase().includes(text.toLowerCase())
+    );
+    dispatch(filterCurrencies(filteredArray));
   };
 
   return (
@@ -76,6 +66,7 @@ export default function ChooseCurrencyModal() {
               placeholder="Search Currency"
               placeholderTextColor="rgba(105, 111, 142, 0.5)"
               style={styles.input}
+              onChangeText={filter}
             />
             <Image source={require('../../assets/images/Search.png')} />
           </View>
