@@ -5,7 +5,7 @@ export default function FilterIcon({ onPress }) {
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <Image
-        source={require('../assets/images/Filter.png')}
+        source={require('../../assets/images/Filter.png')}
         style={styles.icon}
       />
       <Text style={styles.text}>3</Text>

@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import Background from '../components/Background';
-import FilterIcon from '../components/FilterIcon';
+import FilterIcon from '../components/TransactionHistory/FilterIcon';
 import Download from '../components/TransactionHistory/DownloadTransactions';
 import FilterRow from '../components/TransactionHistory/FilterRow';
 import Headline from '../components/TransactionHistory/Headline';

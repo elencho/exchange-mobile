@@ -10,7 +10,7 @@ import Headline from '../components/TransactionHistory/Headline';
 import { types, methods } from '../constants/filters';
 
 export default function TransactionFilter({ navigation }) {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   const handleModal = () => {
     setVisible(!visible);

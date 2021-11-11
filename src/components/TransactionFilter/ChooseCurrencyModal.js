@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
   Modal,
-  Pressable,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 import Currency from './Currency';
 
@@ -35,42 +35,59 @@ const currencies = [
 ];
 
 export default function ChooseCurrencyModal({ visible, handleModal }) {
+  let toggle = handleModal;
+
   const renderCurrency = ({ item }) => (
     <Currency name={item.name} abbr={item.abbr} />
   );
 
+  const disableToggle = () => {
+    toggle = null;
+  };
+  const enableToggle = () => {
+    toggle = handleModal;
+  };
+
+  console.log(toggle);
+
   return (
-    <Modal
-      animationType="slide"
-      visible={visible}
-      presentationStyle="pageSheet"
-      onResponderEnd={handleModal}
+    <GestureRecognizer
+      config={{ directionalOffsetThreshold: 10 }}
+      onSwipeDown={() => toggle && toggle()}
     >
-      <View style={styles.container}>
-        <Pressable onPress={handleModal} style={styles.top}>
-          <View style={styles.line} />
-        </Pressable>
-
-        <View style={styles.block}>
-          <Text style={styles.headline}>Choose Currency</Text>
-
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Search Currency"
-              placeholderTextColor="rgba(105, 111, 142, 0.5)"
-              style={styles.input}
-            />
-            <Image source={require('../../assets/images/Search.png')} />
+      <Modal
+        animationType="slide"
+        visible={visible}
+        presentationStyle="pageSheet"
+      >
+        <View style={styles.container}>
+          <View style={styles.top}>
+            <View style={styles.line} />
           </View>
 
-          <FlatList
-            data={currencies}
-            renderItem={renderCurrency}
-            keyExtractor={(item) => item.name}
-          />
+          <View style={styles.block}>
+            <Text style={styles.headline}>Choose Currency</Text>
+
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Search Currency"
+                placeholderTextColor="rgba(105, 111, 142, 0.5)"
+                style={styles.input}
+              />
+              <Image source={require('../../assets/images/Search.png')} />
+            </View>
+
+            <FlatList
+              data={currencies}
+              renderItem={renderCurrency}
+              keyExtractor={(item) => item.name}
+              onTouchStart={disableToggle}
+              onMomentumScrollEnd={enableToggle}
+            />
+          </View>
         </View>
-      </View>
-    </Modal>
+      </Modal>
+    </GestureRecognizer>
   );
 }
 
