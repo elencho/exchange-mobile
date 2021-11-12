@@ -15,7 +15,7 @@ export default function TransactionDate({ date, transactions }) {
         status,
         amount,
         currency,
-        transactionId,
+        transactionInfo,
         fee,
         method,
       } = tr;
@@ -37,7 +37,7 @@ export default function TransactionDate({ date, transactions }) {
             status={status}
             amount={amount}
             currency={currency}
-            transactionId={transactionId}
+            transactionInfo={transactionInfo}
             fee={fee}
             method={method}
             date={date}

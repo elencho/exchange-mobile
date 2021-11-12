@@ -15,7 +15,7 @@ export default function Transaction({
   status,
   amount,
   currency,
-  transactionId,
+  transactionInfo,
   method,
   fee,
   date,
@@ -26,7 +26,7 @@ export default function Transaction({
   const showModal = () => {
     const currentTransaction = {
       type,
-      transactionId,
+      transactionInfo,
       method,
       amount,
       fee,
@@ -72,9 +72,9 @@ export default function Transaction({
         <AppText medium style={styles.type}>
           {type}
         </AppText>
-        {transactionId ? (
+        {transactionInfo ? (
           <AppText style={styles.address}>
-            {getReducedAddress(transactionId)}
+            {getReducedAddress(transactionInfo)}
           </AppText>
         ) : null}
       </View>

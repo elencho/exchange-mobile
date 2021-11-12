@@ -13,7 +13,7 @@ export default function TransactionModal() {
 
   const {
     transactionModal,
-    currentTransaction: { type, transactionId },
+    currentTransaction: { type, transactionInfo },
   } = state;
 
   return (
@@ -34,7 +34,7 @@ export default function TransactionModal() {
               <AppText medium style={[styles.white, styles.capitalize]}>
                 {type}
               </AppText>
-              <AppText style={styles.text}>{transactionId}</AppText>
+              <AppText style={styles.text}>{transactionInfo}</AppText>
             </View>
 
             <Image
