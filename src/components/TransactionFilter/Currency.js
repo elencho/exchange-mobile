@@ -10,6 +10,7 @@ import {
   toggleCurrencyModal,
 } from '../../redux/transactions/actions';
 import { currencyList } from '../../constants/filters';
+import colors from '../../constants/colors';
 
 export default function Currency({ name, abbr }) {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ export default function Currency({ name, abbr }) {
       {abbr ? (
         <AppText medium style={styles.abbr}>
           {' '}
-          {`(${abbr})`}
+          ({abbr})
         </AppText>
       ) : null}
     </Pressable>
@@ -42,7 +43,7 @@ export default function Currency({ name, abbr }) {
 const styles = StyleSheet.create({
   abbr: {
     fontSize: 15,
-    color: '#696F8E',
+    color: colors.SECONDARY_TEXT,
   },
   container: {
     flexDirection: 'row',
@@ -54,6 +55,6 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 15,
-    color: 'white',
+    color: colors.PRIMARY_TEXT,
   },
 });

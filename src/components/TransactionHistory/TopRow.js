@@ -1,5 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
+
+import colors from '../../constants/colors';
 import AppText from '../AppText';
 
 export default function TopRow() {
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
     height: 13,
     borderWidth: 4,
     borderRadius: 2,
-    borderColor: '#161629',
+    borderColor: colors.PRIMARY_BACKGROUND,
     backgroundColor: '#21E0A5',
     marginTop: -2,
     marginRight: -2,
@@ -52,5 +54,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  text: { color: 'white', fontSize: 15 },
+  text: { color: colors.PRIMARY_TEXT, fontSize: 15 },
 });

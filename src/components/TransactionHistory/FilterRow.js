@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import AppText from '../AppText';
+import colors from '../../constants/colors';
 
 export default function FilterRow({ array = [''], multiselect = false }) {
   const [filter, setFilter] = useState(array[0]);
@@ -42,7 +43,7 @@ export default function FilterRow({ array = [''], multiselect = false }) {
           <AppText
             style={[
               styles.text,
-              filterConditional(fil) && { color: '#6582FD' },
+              filterConditional(fil) && { color: colors.SECONDARY_PURPLE },
             ]}
           >
             {fil}
@@ -67,6 +68,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
-    color: '#696F8E',
+    color: colors.SECONDARY_TEXT,
   },
 });

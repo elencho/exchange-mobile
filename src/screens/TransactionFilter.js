@@ -10,6 +10,7 @@ import FilterRow from '../components/TransactionHistory/FilterRow';
 import Headline from '../components/TransactionHistory/Headline';
 
 import { types, methods } from '../constants/filters';
+import colors from '../constants/colors';
 
 import { toggleCurrencyModal } from '../redux/transactions/actions';
 
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
   },
   clearText: {
     fontSize: 15,
-    color: '#6582FD',
+    color: colors.SECONDARY_PURPLE,
     marginHorizontal: 5,
   },
   close: {
@@ -108,15 +109,15 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 13,
-    color: 'white',
+    color: colors.PRIMARY_TEXT,
     marginVertical: 15,
   },
   bigText: {
     fontSize: 15,
-    color: 'white',
+    color: colors.PRIMARY_TEXT,
   },
   greenText: {
     fontSize: 15,
-    color: '#696F8E',
+    color: colors.SECONDARY_TEXT,
   },
 });

@@ -12,10 +12,11 @@ import Constants from 'expo-constants';
 
 import AppText from '../AppText';
 import Currency from './Currency';
+import ModalTop from '../ModalTop';
 
 import { filterCurrencies } from '../../redux/transactions/actions';
 import { currencyList } from '../../constants/filters';
-import ModalTop from '../ModalTop';
+import colors from '../../constants/colors';
 
 export default function ChooseCurrencyModal() {
   const dispatch = useDispatch();
@@ -68,7 +69,7 @@ export default function ChooseCurrencyModal() {
 const styles = StyleSheet.create({
   block: {
     flex: 1,
-    backgroundColor: '#1F1F35',
+    backgroundColor: colors.SECONDARY_BACKGROUND,
     padding: 40,
   },
   container: {
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   },
   headline: {
     fontSize: 20,
-    color: 'white',
+    color: colors.PRIMARY_TEXT,
   },
   inputContainer: {
     height: 45,
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   input: {
     height: '100%',
     fontSize: 15,
-    color: 'white',
+    color: colors.PRIMARY_TEXT,
     flex: 1,
     marginRight: 10,
   },

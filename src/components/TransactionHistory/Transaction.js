@@ -8,6 +8,7 @@ import {
 } from '../../redux/transactions/actions';
 
 import AppText from '../AppText';
+import colors from '../../constants/colors';
 
 export default function Transaction({
   type,
@@ -117,8 +118,16 @@ const styles = StyleSheet.create({
   statusRow: { flexDirection: 'row', alignItems: 'center' },
 
   // Texts
-  address: { fontSize: 12, color: '#696F8E' },
-  status: { fontSize: 12, color: '#696F8E', textTransform: 'capitalize' },
-  type: { fontSize: 14, color: 'white', textTransform: 'capitalize' },
-  currency: { fontSize: 14, color: 'white' },
+  address: { fontSize: 12, color: colors.SECONDARY_TEXT },
+  status: {
+    fontSize: 12,
+    color: colors.SECONDARY_TEXT,
+    textTransform: 'capitalize',
+  },
+  type: {
+    fontSize: 14,
+    color: colors.PRIMARY_TEXT,
+    textTransform: 'capitalize',
+  },
+  currency: { fontSize: 14, color: colors.PRIMARY_TEXT },
 });

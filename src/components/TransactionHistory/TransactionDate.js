@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { months } from '../../constants/filters';
 
 import AppText from '../AppText';
 import Transaction from './Transaction';
+import colors from '../../constants/colors';
+import { months } from '../../constants/filters';
 
 export default function TransactionDate({ date, transactions }) {
   const isDate = () => {
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 20,
     marginBottom: 10,
-    backgroundColor: '#1F1F35',
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
-  date: { fontSize: 15, color: '#696F8E', marginBottom: 15 },
+  date: { fontSize: 15, color: colors.SECONDARY_TEXT, marginBottom: 15 },
 });

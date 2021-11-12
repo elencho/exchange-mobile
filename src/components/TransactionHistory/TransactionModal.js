@@ -6,6 +6,7 @@ import AppText from '../AppText';
 import ModalTop from '../ModalTop';
 import Headline from './Headline';
 import TransactionDetails from './TransactionDetails';
+import colors from '../../constants/colors';
 
 export default function TransactionModal() {
   const state = useSelector((state) => state.transactions);
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
   block: {
     padding: 40,
     paddingTop: 20,
-    backgroundColor: '#1F1F35',
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   capitalize: { textTransform: 'capitalize' },
   copy: {
@@ -78,10 +79,10 @@ const styles = StyleSheet.create({
   },
   line: {
     height: 0.5,
-    backgroundColor: '#696F8E',
+    backgroundColor: colors.SECONDARY_TEXT,
     marginVertical: 15,
   },
   top: { flexDirection: 'row' },
-  text: { fontSize: 12, color: '#696F8E' },
-  white: { fontSize: 14, color: 'white' },
+  text: { fontSize: 12, color: colors.SECONDARY_TEXT },
+  white: { fontSize: 14, color: colors.PRIMARY_TEXT },
 });

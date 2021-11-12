@@ -2,6 +2,8 @@ import React from 'react';
 import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import colors from '../constants/colors';
+
 export default function BottomTabs({ navigation, descriptors, routes }) {
   const active = {
     Wallet: require('../assets/images/Wallet_Active.png'),
@@ -28,7 +30,7 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
         return (
           <Pressable key={route.key} style={styles.tab} onPress={navigate}>
             <LinearGradient
-              colors={['#1F1F35', '#161629']}
+              colors={[colors.SECONDARY_BACKGROUND, colors.PRIMARY_BACKGROUND]}
               style={styles.gradient}
               locations={[0.5, 0.6]}
             >

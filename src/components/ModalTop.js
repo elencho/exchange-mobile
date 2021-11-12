@@ -9,6 +9,7 @@ import {
   toggleTransactionModal,
 } from '../redux/transactions/actions';
 import { currencyList } from '../constants/filters';
+import colors from '../constants/colors';
 
 export default function ModalTop() {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
   line: {
     height: 7,
     width: '25%',
-    backgroundColor: '#1F1F35',
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   top: {
     height: 35,

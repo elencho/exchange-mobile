@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import AppText from '../AppText';
+import colors from '../../constants/colors';
 
 export default function TransactionFilterBottom() {
   return (
@@ -25,13 +26,13 @@ export default function TransactionFilterBottom() {
 const styles = StyleSheet.create({
   blue: {
     fontSize: 15,
-    color: '#6582FD',
+    color: colors.SECONDARY_PURPLE,
     marginVertical: 30,
     textAlign: 'center',
     marginHorizontal: 5,
   },
   button: {
-    backgroundColor: '#4A6DFF',
+    backgroundColor: colors.PRIMARY_PURPLE,
     paddingVertical: 15,
     alignItems: 'center',
   },
@@ -48,6 +49,6 @@ const styles = StyleSheet.create({
   },
   white: {
     fontSize: 15,
-    color: 'white',
+    color: colors.PRIMARY_TEXT,
   },
 });

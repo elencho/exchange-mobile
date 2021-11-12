@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
 
 import AppText from '../AppText';
+import colors from '../../constants/colors';
 
 export default function FilterIcon({ onPress }) {
   return (
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     height: 35,
     minWidth: 35,
     borderRadius: 30,
-    backgroundColor: '#4A6DFF',
+    backgroundColor: colors.PRIMARY_PURPLE,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
-    color: 'white',
+    color: colors.PRIMARY_TEXT,
     marginLeft: 5,
   },
 });

@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import AppText from '../AppText';
+import colors from '../../constants/colors';
 
 export default function TransactionDetails() {
   const state = useSelector((state) => state.transactions);
@@ -60,6 +61,6 @@ const styles = StyleSheet.create({
   rightText: {
     fontSize: 12,
     marginVertical: 5,
-    color: 'white',
+    color: colors.PRIMARY_TEXT,
   },
 });
