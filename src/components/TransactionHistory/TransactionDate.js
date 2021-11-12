@@ -20,27 +20,13 @@ export default function TransactionDate({ date, transactions }) {
       } = tr;
 
       let currentDate = new Date(timestamp);
+      const time = currentDate
+        .toTimeString('en-US', { hour12: false })
+        .split(' ')[0];
+
       currentDate = `${currentDate.getDate()} ${
         months[currentDate.getMonth()]
       }, ${currentDate.getFullYear()}`;
-
-      // const test = new Date(1635197338768);
-      // console.log(
-      //   `${test.getHours()} ${test.getMinutes()}, ${test.getSeconds()}`
-      // );
-
-      // const formatAMPM = (date) => {
-      //   var hours = date.getHours();
-      //   var minutes = date.getMinutes();
-      //   var ampm = hours >= 12 ? 'pm' : 'am';
-      //   hours = hours % 12;
-      //   hours = hours ? hours : 12; // the hour '0' should be '12'
-      //   minutes = minutes < 10 ? '0'+minutes : minutes;
-      //   var strTime = hours + ':' + minutes + ' ' + ampm;
-      //   return strTime;
-      // }
-
-      // console.log(formatAMPM(new Date));
 
       if (date === currentDate) {
         return (
@@ -54,6 +40,8 @@ export default function TransactionDate({ date, transactions }) {
             fee={fee}
             method={method}
             date={date}
+            time={time}
+            currency={currency}
           />
         );
       }

@@ -18,6 +18,7 @@ export default function Transaction({
   method,
   fee,
   date,
+  time,
 }) {
   const dispatch = useDispatch();
 
@@ -29,6 +30,9 @@ export default function Transaction({
       amount,
       fee,
       status,
+      date,
+      time,
+      currency,
     };
 
     dispatch(toggleTransactionModal(true));

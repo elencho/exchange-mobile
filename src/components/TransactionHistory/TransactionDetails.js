@@ -8,7 +8,7 @@ export default function TransactionDetails() {
   const state = useSelector((state) => state.transactions);
 
   const {
-    currentTransaction: { method, amount, fee, status },
+    currentTransaction: { method, amount, fee, status, date, time, currency },
   } = state;
 
   return (
@@ -26,13 +26,13 @@ export default function TransactionDetails() {
           {method}
         </AppText>
         <AppText medium style={styles.rightText}>
-          {amount} BTC
+          {amount} {currency}
         </AppText>
         <AppText medium style={styles.rightText}>
-          {fee} BTC
+          {fee} {currency}
         </AppText>
         <AppText medium style={styles.rightText}>
-          20 May, 2021 / 20:00:06
+          {date} / {time}
         </AppText>
         <AppText medium style={[styles.rightText, styles.capitalize]}>
           {status}
