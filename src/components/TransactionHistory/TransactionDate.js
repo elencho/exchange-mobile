@@ -1,19 +1,69 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { months } from '../../constants/filters';
 
 import AppText from '../AppText';
 import Transaction from './Transaction';
 
-export default function TransactionDate() {
+export default function TransactionDate({ date, transactions }) {
+  const isDate = () => {
+    return transactions.map((tr) => {
+      const {
+        timestamp,
+        type,
+        status,
+        amount,
+        currency,
+        transactionId,
+        fee,
+        method,
+      } = tr;
+
+      let currentDate = new Date(timestamp);
+      currentDate = `${currentDate.getDate()} ${
+        months[currentDate.getMonth()]
+      }, ${currentDate.getFullYear()}`;
+
+      // const test = new Date(1635197338768);
+      // console.log(
+      //   `${test.getHours()} ${test.getMinutes()}, ${test.getSeconds()}`
+      // );
+
+      // const formatAMPM = (date) => {
+      //   var hours = date.getHours();
+      //   var minutes = date.getMinutes();
+      //   var ampm = hours >= 12 ? 'pm' : 'am';
+      //   hours = hours % 12;
+      //   hours = hours ? hours : 12; // the hour '0' should be '12'
+      //   minutes = minutes < 10 ? '0'+minutes : minutes;
+      //   var strTime = hours + ':' + minutes + ' ' + ampm;
+      //   return strTime;
+      // }
+
+      // console.log(formatAMPM(new Date));
+
+      if (date === currentDate) {
+        return (
+          <Transaction
+            key={Math.random()}
+            type={type}
+            status={status}
+            amount={amount}
+            currency={currency}
+            transactionId={transactionId}
+            fee={fee}
+            method={method}
+            date={date}
+          />
+        );
+      }
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <AppText style={{ fontSize: 15, color: '#696F8E', marginBottom: 15 }}>
-        20 May, 2021
-      </AppText>
-
-      <Transaction />
-      <Transaction />
-      <Transaction />
+      <AppText style={styles.date}>{date}</AppText>
+      {isDate()}
     </View>
   );
 }
@@ -25,4 +75,5 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: '#1F1F35',
   },
+  date: { fontSize: 15, color: '#696F8E', marginBottom: 15 },
 });

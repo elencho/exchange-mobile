@@ -2,16 +2,30 @@ import { actionTypes } from './actions';
 import { currencyList } from '../../constants/filters';
 
 const INITIAL_STATE = {
+  transactions: [],
   currency: 'Show All Currency',
   currencyModal: false,
   transactionModal: false,
   currencies: currencyList,
+  currentTransaction: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { currency, currencyModal, currencies, transactionModal } = action;
+  const {
+    currency,
+    currencyModal,
+    currencies,
+    transactionModal,
+    transactions,
+    currentTransaction,
+  } = action;
   // const { drawerRef } = state;
   switch (action.type) {
+    case actionTypes.SAVE_TRANSACTIONS:
+      return {
+        ...state,
+        transactions,
+      };
     case actionTypes.CHOOSE_CURRENCY:
       return {
         ...state,
@@ -31,6 +45,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         transactionModal,
+      };
+    case actionTypes.SET_CURRENT_TRANSACTION:
+      return {
+        ...state,
+        currentTransaction,
       };
     default:
       return state;

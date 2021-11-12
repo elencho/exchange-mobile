@@ -10,7 +10,10 @@ import TransactionDetails from './TransactionDetails';
 export default function TransactionModal() {
   const state = useSelector((state) => state.transactions);
 
-  const { transactionModal } = state;
+  const {
+    transactionModal,
+    currentTransaction: { type, transactionId },
+  } = state;
 
   return (
     <Modal animationType="slide" visible={transactionModal} transparent>
@@ -27,10 +30,10 @@ export default function TransactionModal() {
             />
 
             <View style={styles.middle}>
-              <AppText medium style={styles.white}>
-                Deposit
+              <AppText medium style={[styles.white, styles.capitalize]}>
+                {type}
               </AppText>
-              <AppText style={styles.text}>Cdfkmdfksdjsdkcmxksmfdfsdmd</AppText>
+              <AppText style={styles.text}>{transactionId}</AppText>
             </View>
 
             <Image
@@ -54,6 +57,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     backgroundColor: '#1F1F35',
   },
+  capitalize: { textTransform: 'capitalize' },
   copy: {
     alignSelf: 'flex-end',
   },

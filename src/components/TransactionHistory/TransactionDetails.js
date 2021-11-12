@@ -1,8 +1,16 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
+
 import AppText from '../AppText';
 
 export default function TransactionDetails() {
+  const state = useSelector((state) => state.transactions);
+
+  const {
+    currentTransaction: { method, amount, fee, status },
+  } = state;
+
   return (
     <View style={styles.container}>
       <View>
@@ -14,20 +22,20 @@ export default function TransactionDetails() {
       </View>
 
       <View style={styles.right}>
-        <AppText medium style={styles.rightText}>
-          Wallet Internal
+        <AppText medium style={[styles.rightText, styles.capitalize]}>
+          {method}
         </AppText>
         <AppText medium style={styles.rightText}>
-          0.00008060 BTC
+          {amount} BTC
         </AppText>
         <AppText medium style={styles.rightText}>
-          0.00008060 BTC
+          {fee} BTC
         </AppText>
         <AppText medium style={styles.rightText}>
           20 May, 2021 / 20:00:06
         </AppText>
-        <AppText medium style={styles.rightText}>
-          Success
+        <AppText medium style={[styles.rightText, styles.capitalize]}>
+          {status}
         </AppText>
       </View>
     </View>
@@ -35,6 +43,7 @@ export default function TransactionDetails() {
 }
 
 const styles = StyleSheet.create({
+  capitalize: { textTransform: 'capitalize' },
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
