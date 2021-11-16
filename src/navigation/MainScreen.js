@@ -2,11 +2,11 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import TransactionHistory from './TransactionHistory';
-// import Exercise from './Exercise';
-import TestScreen from './Test';
+import TransactionHistory from '../screens/TransactionHistory';
+import Exercise from '../screens/Exercise';
+// import TestScreen from '../screens/Test';
 import BottomTabs from '../components/BottomTabs';
-import TransactionFilter from './TransactionFilter';
+import TransactionFilter from '../screens/TransactionFilter';
 import ChooseCurrencyModal from '../components/TransactionFilter/ChooseCurrencyModal';
 
 const Tab = createBottomTabNavigator();
@@ -26,7 +26,7 @@ export default function MainScreen({ navigation }) {
         )}
       >
         <Tab.Screen name="Exchange" component={TransactionFilter} />
-        <Tab.Screen name="Trade" component={TestScreen} />
+        <Tab.Screen name="Trade" component={Exercise} />
         <Tab.Screen name="Wallet" component={ChooseCurrencyModal} />
         <Tab.Screen
           name="Transactions"

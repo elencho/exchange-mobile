@@ -17,7 +17,6 @@ import { getParams } from './selectors';
 function* fetchTransactionsSaga() {
   const params = yield select(getParams);
   const transactions = yield call(fetch, params);
-  console.log(params);
   yield put(saveTransactions(transactions));
 }
 

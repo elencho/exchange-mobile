@@ -7,6 +7,9 @@ export const actionTypes = {
   SET_CURRENT_TRANSACTION: 'SET_CURRENT_TRANSACTION',
   SET_TYPE_FILTER: 'SET_TYPE_FILTER',
   SET_METHOD_FILTER: 'SET_METHOD_FILTER',
+  SET_FROM_TIME: 'SET_FROM_TIME',
+  SET_TO_TIME: 'SET_TO_TIME',
+  TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
 
   // FOR SAGAS
   FETCH_TRANSACTIONS: 'FETCH_TRANSACTIONS',
@@ -46,6 +49,18 @@ export const setTypeFilter = (typeFilter) => ({
 export const setMethodFilter = (method) => ({
   type: actionTypes.SET_METHOD_FILTER,
   method,
+});
+export const setFromTime = (fromDateTime) => ({
+  type: actionTypes.SET_FROM_TIME,
+  fromDateTime,
+});
+export const setToTime = (toDateTime) => ({
+  type: actionTypes.SET_TO_TIME,
+  toDateTime,
+});
+export const toggleDatePicker = (datePickerVisible) => ({
+  type: actionTypes.TOGGLE_DATEPICKER,
+  datePickerVisible,
 });
 
 // FOR SAGAS

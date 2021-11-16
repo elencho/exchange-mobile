@@ -13,6 +13,8 @@ import { types, methods } from '../constants/filters';
 import colors from '../constants/colors';
 
 import { toggleCurrencyModal } from '../redux/transactions/actions';
+import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
+import DatePicker from '../components/TransactionFilter/DatePicker';
 
 export default function TransactionFilter({ navigation }) {
   const dispatch = useDispatch();
@@ -46,23 +48,13 @@ export default function TransactionFilter({ navigation }) {
 
       <Pressable style={styles.dropdown} onPress={openModal}>
         <AppText medium style={styles.bigText}>
-          {currency}
+          {currency || 'Show All Currencies'}
         </AppText>
         <Image source={require('../assets/images/Arrow.png')} />
       </Pressable>
 
-      <Pressable
-        style={[styles.dropdown, { marginVertical: 0, marginBottom: 15 }]}
-      >
-        <AppText style={styles.greenText}>From Date</AppText>
-        <Image source={require('../assets/images/Calendar.png')} />
-      </Pressable>
-      <Pressable
-        style={[styles.dropdown, { marginVertical: 0, marginBottom: 15 }]}
-      >
-        <AppText style={styles.greenText}>To Date</AppText>
-        <Image source={require('../assets/images/Calendar.png')} />
-      </Pressable>
+      <DatePicker from />
+      <DatePicker to />
 
       <Pressable style={styles.clear}>
         <Image source={require('../assets/images/Clear.png')} />
@@ -73,6 +65,9 @@ export default function TransactionFilter({ navigation }) {
 
       <TransactionFilterBottom />
       <ChooseCurrencyModal />
+
+      <DatePickerModal from />
+      <DatePickerModal to />
     </Background>
   );
 }
@@ -115,9 +110,5 @@ const styles = StyleSheet.create({
   bigText: {
     fontSize: 15,
     color: colors.PRIMARY_TEXT,
-  },
-  greenText: {
-    fontSize: 15,
-    color: colors.SECONDARY_TEXT,
   },
 });

@@ -8,13 +8,14 @@ const INITIAL_STATE = {
   currencies: currencyList,
   currentTransaction: {},
   currency: null,
+  datePickerVisible: { to: false, from: false },
 
   // Query Params
   abbr: null,
-  fromDateTime: null,
   limit: 25,
   method: ['All'],
   offset: 0,
+  fromDateTime: null,
   toDateTime: null,
   typeFilter: null,
 };
@@ -30,6 +31,9 @@ export default (state = INITIAL_STATE, action) => {
     typeFilter,
     method,
     abbr,
+    toDateTime,
+    fromDateTime,
+    datePickerVisible,
   } = action;
   // const { drawerRef } = state;
   switch (action.type) {
@@ -77,6 +81,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         method,
+      };
+    case actionTypes.SET_FROM_TIME:
+      return {
+        ...state,
+        fromDateTime,
+      };
+    case actionTypes.SET_TO_TIME:
+      return {
+        ...state,
+        toDateTime,
+      };
+    case actionTypes.TOGGLE_DATEPICKER:
+      return {
+        ...state,
+        datePickerVisible,
       };
     default:
       return state;
