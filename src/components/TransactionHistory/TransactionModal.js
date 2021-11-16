@@ -1,6 +1,7 @@
 import React from 'react';
-import { Image, Modal, StyleSheet, View } from 'react-native';
+import { Image, Modal, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
+import * as Clipboard from 'expo-clipboard';
 
 import AppText from '../AppText';
 import ModalTop from '../ModalTop';
@@ -16,8 +17,12 @@ export default function TransactionModal() {
     currentTransaction: { type, transactionInfo },
   } = state;
 
+  const copy = () => {
+    Clipboard.setString(transactionInfo);
+  };
+
   return (
-    <Modal animationType="slide" visible={transactionModal}>
+    <Modal animationType="slide" visible={transactionModal} transparent>
       <View style={styles.container}>
         <ModalTop />
 
@@ -37,10 +42,9 @@ export default function TransactionModal() {
               <AppText style={styles.text}>{transactionInfo}</AppText>
             </View>
 
-            <Image
-              source={require('../../assets/images/Copy.png')}
-              style={styles.copy}
-            />
+            <TouchableOpacity style={styles.copy} onPress={copy}>
+              <Image source={require('../../assets/images/Copy.png')} />
+            </TouchableOpacity>
           </View>
 
           <View style={styles.line} />
@@ -68,10 +72,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   deposit: {
-    width: 33,
-    height: 33,
-    resizeMode: 'contain',
     marginRight: 10,
+    alignSelf: 'center',
   },
   middle: {
     justifyContent: 'space-between',
@@ -83,6 +85,6 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   top: { flexDirection: 'row' },
-  text: { fontSize: 12, color: colors.SECONDARY_TEXT },
+  text: { fontSize: 12, color: colors.SECONDARY_TEXT, marginTop: 5 },
   white: { fontSize: 14, color: colors.PRIMARY_TEXT },
 });
