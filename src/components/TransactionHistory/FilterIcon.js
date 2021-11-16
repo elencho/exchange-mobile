@@ -1,17 +1,27 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 
 export default function FilterIcon({ onPress }) {
+  const state = useSelector((state) => state.transactions);
+  const { typeFilter, currency, fromDateTime, toDateTime /* method */ } = state;
+
+  const filters = [typeFilter, currency, fromDateTime, toDateTime].filter(
+    (f) => f
+  );
+
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <Image
         source={require('../../assets/images/Filter.png')}
         style={styles.icon}
       />
-      <AppText style={styles.text}>3</AppText>
+      {filters.length ? (
+        <AppText style={styles.text}>{filters.length}</AppText>
+      ) : null}
     </Pressable>
   );
 }
