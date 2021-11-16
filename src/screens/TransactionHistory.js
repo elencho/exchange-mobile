@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
 
 import Background from '../components/Background';
 import FilterIcon from '../components/TransactionHistory/FilterIcon';
@@ -11,38 +10,18 @@ import TopRow from '../components/TransactionHistory/TopRow';
 import TransactionDate from '../components/TransactionHistory/TransactionDate';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
 
-import { bearer, types, URL, months } from '../constants/filters';
-import {
-  saveTransactions,
-  fetchTransactions,
-} from '../redux/transactions/actions';
+import { types, months } from '../constants/filters';
+import { fetchTransactions } from '../redux/transactions/actions';
 
 export default function TransactionHistory({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
 
-  const { type, transactions } = state;
+  const { transactions } = state;
 
   useEffect(() => {
     dispatch(fetchTransactions());
   }, []);
-
-  // useEffect(() => {
-  //   if (typeFilter === 'Deposit' || typeFilter === 'Withdrawal') {
-  //     axios
-  //       .get(
-  //         `http://10.10.5.4:8080/exchange/api/v1/private/account/transactions?type=${typeFilter.toUpperCase()}&offset=0&limit=10`,
-  //         { headers: { Authorization: bearer } }
-  //       )
-  //       .then((data) => dispatch(saveTransactions(data.data.data)))
-  //       .catch((err) => console.log(err));
-  //   } else {
-  //     axios
-  //       .get(URL, { headers: { Authorization: bearer } })
-  //       .then((data) => dispatch(saveTransactions(data.data.data)))
-  //       .catch((err) => console.log(err));
-  //   }
-  // }, [typeFilter]);
 
   const dates = transactions.map((tr) => {
     const date = new Date(tr.timestamp);

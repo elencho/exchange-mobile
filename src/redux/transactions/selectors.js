@@ -1,7 +1,7 @@
 export const getParams = (state) => {
   const {
     transactions: {
-      type,
+      typeFilter,
       method,
       currency,
       fromDateTime,
@@ -11,5 +11,13 @@ export const getParams = (state) => {
     },
   } = state;
 
-  return { type, method, currency, fromDateTime, toDateTime, offset, limit };
+  return {
+    type: typeFilter,
+    method,
+    currency,
+    fromDateTime,
+    toDateTime,
+    offset,
+    limit,
+  };
 };

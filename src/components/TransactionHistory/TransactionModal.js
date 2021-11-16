@@ -17,7 +17,7 @@ export default function TransactionModal() {
   } = state;
 
   return (
-    <Modal animationType="slide" visible={transactionModal} transparent>
+    <Modal animationType="slide" visible={transactionModal}>
       <View style={styles.container}>
         <ModalTop />
 

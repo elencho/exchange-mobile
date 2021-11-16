@@ -37,9 +37,9 @@ export const setCurrentTransaction = (currentTransaction) => ({
   type: actionTypes.SET_CURRENT_TRANSACTION,
   currentTransaction,
 });
-export const setTypeFilter = (type) => ({
+export const setTypeFilter = (typeFilter) => ({
   type: actionTypes.SET_TYPE_FILTER,
-  type,
+  typeFilter,
 });
 export const setMethodFilter = (method) => ({
   type: actionTypes.SET_METHOD_FILTER,

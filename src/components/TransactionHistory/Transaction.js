@@ -52,7 +52,7 @@ export default function Transaction({ transaction, date, time }) {
 
   return (
     <Pressable onPress={showModal} style={styles.container}>
-      <Image style={styles.deposit} source={typeIcon()} />
+      <Image source={typeIcon()} />
 
       <View style={styles.middle}>
         <AppText medium style={styles.type}>
@@ -88,14 +88,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dot: { width: 5, height: 5 },
-  deposit: {
-    width: 33,
-    height: 33,
-    resizeMode: 'contain',
-    marginRight: 10,
-  },
   middle: {
     justifyContent: 'space-between',
+    marginLeft: 10,
     flex: 1,
   },
   right: {

@@ -11,11 +11,11 @@ const INITIAL_STATE = {
   // Query Params
   currency: null,
   fromDateTime: null,
-  limit: 3,
-  method: [],
+  limit: 25,
+  method: ['All'],
   offset: 0,
   toDateTime: null,
-  type: null,
+  typeFilter: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -26,7 +26,7 @@ export default (state = INITIAL_STATE, action) => {
     transactionModal,
     transactions,
     currentTransaction,
-    type,
+    typeFilter,
     method,
   } = action;
   // const { drawerRef } = state;
@@ -64,7 +64,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.SET_TYPE_FILTER:
       return {
         ...state,
-        type,
+        typeFilter,
       };
     case actionTypes.SET_METHOD_FILTER:
       return {

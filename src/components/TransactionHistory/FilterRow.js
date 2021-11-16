@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import {
+  fetchTransactions,
   setMethodFilter,
   setTypeFilter,
 } from '../../redux/transactions/actions';
@@ -13,22 +14,22 @@ export default function FilterRow({ array = [''], multiselect = false }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
 
-  const { type, method } = state;
+  const { typeFilter, method } = state;
 
-  const handleFilter = async (filter) => {
+  const handleFilter = (filter) => {
     if (multiselect && !method.includes(filter)) {
       dispatch(setMethodFilter([...method, filter]));
     } else if (multiselect && method.includes(filter)) {
-      let newMultiFilter = method.filter((f) => filter !== f);
+      const newMultiFilter = method.filter((f) => filter !== f);
       dispatch(setMethodFilter(newMultiFilter));
     } else {
-      dispatch(setTypeFilter(filter));
+      dispatch({ type: 'TYPE_SAGA', filter });
     }
   };
 
   const filterConditional = (fil) => {
     if (!multiselect) {
-      return type === fil;
+      return typeFilter === fil || (fil === 'ALL' && !typeFilter);
     } else {
       return method.includes(fil);
     }
@@ -76,5 +77,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     color: colors.SECONDARY_TEXT,
+    textTransform: 'capitalize',
   },
 });
