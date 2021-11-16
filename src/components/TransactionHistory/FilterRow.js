@@ -1,29 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
+import {
+  setMethodFilter,
+  setTypeFilter,
+} from '../../redux/transactions/actions';
 
 export default function FilterRow({ array = [''], multiselect = false }) {
-  const [filter, setFilter] = useState(array[0]);
-  const [multiFIlter, setMultiFilter] = useState([array[0]]);
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.transactions);
 
-  const handleFilter = (filter) => {
-    if (multiselect && !multiFIlter.includes(filter)) {
-      setMultiFilter([...multiFIlter, filter]);
-    } else if (multiselect && multiFIlter.includes(filter)) {
-      let newMultiFilter = multiFIlter.filter((f) => filter !== f);
-      setMultiFilter(newMultiFilter);
+  const { type, method } = state;
+
+  const handleFilter = async (filter) => {
+    if (multiselect && !method.includes(filter)) {
+      dispatch(setMethodFilter([...method, filter]));
+    } else if (multiselect && method.includes(filter)) {
+      let newMultiFilter = method.filter((f) => filter !== f);
+      dispatch(setMethodFilter(newMultiFilter));
     } else {
-      setFilter(filter);
+      dispatch(setTypeFilter(filter));
     }
   };
 
   const filterConditional = (fil) => {
     if (!multiselect) {
-      return filter === fil;
+      return type === fil;
     } else {
-      return multiFIlter.includes(fil);
+      return method.includes(fil);
     }
   };
 

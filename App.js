@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';

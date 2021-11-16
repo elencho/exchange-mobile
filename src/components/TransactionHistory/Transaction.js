@@ -10,30 +10,16 @@ import {
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 
-export default function Transaction({
-  type,
-  status,
-  amount,
-  currency,
-  transactionInfo,
-  method,
-  fee,
-  date,
-  time,
-}) {
+export default function Transaction({ transaction, date, time }) {
+  const { type, status, transactionInfo, amount, currency } = transaction;
+
   const dispatch = useDispatch();
 
   const showModal = () => {
     const currentTransaction = {
-      type,
-      transactionInfo,
-      method,
-      amount,
-      fee,
-      status,
+      ...transaction,
       date,
       time,
-      currency,
     };
 
     dispatch(toggleTransactionModal(true));
@@ -99,6 +85,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     marginBottom: 20,
+    alignItems: 'center',
   },
   dot: { width: 5, height: 5 },
   deposit: {
@@ -123,11 +110,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.SECONDARY_TEXT,
     textTransform: 'capitalize',
+    marginBottom: 5,
   },
   type: {
     fontSize: 14,
     color: colors.PRIMARY_TEXT,
     textTransform: 'capitalize',
+    marginBottom: 5,
   },
   currency: { fontSize: 14, color: colors.PRIMARY_TEXT },
 });

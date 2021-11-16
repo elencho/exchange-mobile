@@ -9,18 +9,18 @@ import { months } from '../../constants/filters';
 export default function TransactionDate({ date, transactions }) {
   const isDate = () => {
     return transactions.map((tr) => {
-      const {
-        timestamp,
-        type,
-        status,
-        amount,
-        currency,
-        transactionInfo,
-        fee,
-        method,
-      } = tr;
+      const transaction = {
+        timestamp: tr.timestamp,
+        type: tr.type,
+        status: tr.status,
+        amount: tr.amount,
+        currency: tr.currency,
+        transactionInfo: tr.transactionInfo,
+        fee: tr.fee,
+        method: tr.method,
+      };
 
-      let currentDate = new Date(timestamp);
+      let currentDate = new Date(transaction.timestamp);
       const time = currentDate
         .toTimeString('en-US', { hour12: false })
         .split(' ')[0];
@@ -33,16 +33,9 @@ export default function TransactionDate({ date, transactions }) {
         return (
           <Transaction
             key={Math.random()}
-            type={type}
-            status={status}
-            amount={amount}
-            currency={currency}
-            transactionInfo={transactionInfo}
-            fee={fee}
-            method={method}
-            date={date}
+            transaction={transaction}
             time={time}
-            currency={currency}
+            date={date}
           />
         );
       }
