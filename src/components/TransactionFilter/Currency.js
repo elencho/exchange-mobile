@@ -4,11 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import AppText from '../AppText';
 
-import {
-  chooseCurrency,
-  filterCurrencies,
-  toggleCurrencyModal,
-} from '../../redux/transactions/actions';
+import { currencyAction } from '../../redux/transactions/actions';
 import { currencyList } from '../../constants/filters';
 import colors from '../../constants/colors';
 
@@ -16,9 +12,7 @@ export default function Currency({ name, abbr }) {
   const dispatch = useDispatch();
 
   const choose = () => {
-    dispatch(chooseCurrency(name));
-    dispatch(toggleCurrencyModal(false));
-    dispatch(filterCurrencies(currencyList));
+    dispatch(currencyAction(name, currencyList, abbr));
   };
 
   return (

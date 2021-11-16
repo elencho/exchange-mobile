@@ -7,9 +7,10 @@ const INITIAL_STATE = {
   transactionModal: false,
   currencies: currencyList,
   currentTransaction: {},
+  currency: null,
 
   // Query Params
-  currency: null,
+  abbr: null,
   fromDateTime: null,
   limit: 25,
   method: ['All'],
@@ -28,6 +29,7 @@ export default (state = INITIAL_STATE, action) => {
     currentTransaction,
     typeFilter,
     method,
+    abbr,
   } = action;
   // const { drawerRef } = state;
   switch (action.type) {
@@ -40,6 +42,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currency,
+      };
+    case actionTypes.SET_ABBR:
+      return {
+        ...state,
+        abbr,
       };
     case actionTypes.TOGGLE_CURRENCY_MODAL:
       return {

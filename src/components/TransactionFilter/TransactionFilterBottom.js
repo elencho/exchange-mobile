@@ -1,13 +1,22 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
+import { useDispatch } from 'react-redux';
+import { fetchTransactions } from '../../redux/transactions/actions';
 
-export default function TransactionFilterBottom() {
+function TransactionFilterBottom({ navigation }) {
+  const dispatch = useDispatch();
+
+  const showResults = () => {
+    dispatch({ type: 'AA', navigation });
+  };
+
   return (
     <View style={styles.container}>
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} onPress={showResults}>
         <AppText medium style={styles.white}>
           Show Result
         </AppText>
@@ -22,6 +31,8 @@ export default function TransactionFilterBottom() {
     </View>
   );
 }
+
+export default withNavigation(TransactionFilterBottom);
 
 const styles = StyleSheet.create({
   blue: {
