@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 
@@ -10,13 +10,26 @@ import colors from '../../constants/colors';
 
 export default function Currency({ name, abbr }) {
   const dispatch = useDispatch();
+  const currency = useSelector((state) => state.transactions.currency);
 
   const choose = () => {
-    dispatch(currencyAction(name, currencyList, abbr));
+    dispatch(
+      currencyAction(
+        name,
+        currencyList,
+        name === 'Show All Currency' ? null : abbr
+      )
+    );
+  };
+
+  const backgroundCond = () => {
+    if (name === currency) {
+      return { backgroundColor: 'rgba(101, 130, 253, 0.1 )' };
+    }
   };
 
   return (
-    <Pressable style={styles.container} onPress={choose}>
+    <Pressable style={[styles.container, backgroundCond()]} onPress={choose}>
       <Image
         source={require('../../assets/images/Currencies/BTC.png')}
         style={styles.image}
@@ -42,7 +55,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 5,
+    borderRadius: 5,
+    paddingVertical: 10,
   },
   image: {
     marginHorizontal: 10,
