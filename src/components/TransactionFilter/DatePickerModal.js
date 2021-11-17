@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Modal, View } from 'react-native';
+import { StyleSheet, Modal, View, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import CalendarPicker from 'react-native-calendar-picker';
 
@@ -32,18 +32,22 @@ export default function DatePickerModal({ from, to }) {
     }
   };
 
+  const dismiss = () => {
+    dispatch(toggleDatePicker({ from: false, to: false }));
+  };
+
   return (
     <Modal transparent animationType="fade" visible={visible()}>
       <View style={styles.container}>
+        <Pressable onPress={dismiss} style={styles.dismissZone} />
         <View style={styles.modal}>
           <CalendarPicker
-            // width={Dimensions.get('window').width - 40}
-            // minDate={new Date()}
             textStyle={styles.text}
             onDateChange={handleChange}
             startFromMonday
           />
         </View>
+        <Pressable onPress={dismiss} style={styles.dismissZone} />
       </View>
     </Modal>
   );
@@ -55,9 +59,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgba(15, 15, 31, 0.9)',
   },
+  dismissZone: {
+    flex: 1,
+  },
   modal: {
     backgroundColor: colors.PRIMARY_BACKGROUND,
     paddingVertical: 15,
+    flex: 1,
   },
   text: { color: 'white' },
 });
