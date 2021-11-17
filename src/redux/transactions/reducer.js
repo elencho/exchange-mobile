@@ -8,7 +8,9 @@ const INITIAL_STATE = {
   currencies: currencyList,
   currentTransaction: {},
   currency: null,
+
   datePickerVisible: { to: false, from: false },
+  transparentBackground: false,
 
   // Query Params
   abbr: null,
@@ -34,6 +36,7 @@ export default (state = INITIAL_STATE, action) => {
     toDateTime,
     fromDateTime,
     datePickerVisible,
+    transparentBackground,
   } = action;
   // const { drawerRef } = state;
   switch (action.type) {
@@ -96,6 +99,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         datePickerVisible,
+      };
+    case actionTypes.TRANSPRENT_BACKGROUND:
+      return {
+        ...state,
+        transparentBackground,
       };
     case actionTypes.CLEAR_FILTERS:
       return {

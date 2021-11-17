@@ -3,12 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
-import {
-  filterCurrencies,
-  toggleCurrencyModal,
-  toggleTransactionModal,
-} from '../redux/transactions/actions';
-import { currencyList } from '../constants/filters';
+import { modalTopAction } from '../redux/transactions/actions';
 import colors from '../constants/colors';
 
 export default function ModalTop() {
@@ -17,9 +12,7 @@ export default function ModalTop() {
   const closeModal = (evt) => {
     const { nativeEvent } = evt;
     if (nativeEvent.y > 150) {
-      dispatch(toggleCurrencyModal(false));
-      dispatch(toggleTransactionModal(false));
-      dispatch(filterCurrencies(currencyList));
+      dispatch(modalTopAction());
     }
   };
 
@@ -34,12 +27,12 @@ export default function ModalTop() {
 
 const styles = StyleSheet.create({
   line: {
-    height: 7,
+    height: 10,
     width: '25%',
     backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   top: {
-    height: 35,
+    height: 45,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(15, 15, 31, 1)',

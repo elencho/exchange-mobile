@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import {
   setCurrentTransaction,
+  setTransparentBackground,
   toggleTransactionModal,
 } from '../../redux/transactions/actions';
 
@@ -22,6 +23,7 @@ export default function Transaction({ transaction, date, time }) {
       time,
     };
 
+    dispatch(setTransparentBackground(true));
     dispatch(toggleTransactionModal(true));
     dispatch(setCurrentTransaction(currentTransaction));
   };

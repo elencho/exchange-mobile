@@ -21,3 +21,10 @@ export const getParams = (state) => {
     limit,
   };
 };
+
+export const modalTopParams = (state) => {
+  return {
+    currencyModal: state.transactions.currencyModal,
+    transactionModal: state.transactions.transactionModal,
+  };
+};

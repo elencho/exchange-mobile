@@ -10,6 +10,7 @@ export const actionTypes = {
   SET_FROM_TIME: 'SET_FROM_TIME',
   SET_TO_TIME: 'SET_TO_TIME',
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
+  TRANSPRENT_BACKGROUND: 'TRANSPRENT_BACKGROUND',
   CLEAR_FILTERS: 'CLEAR_FILTERS',
 
   // FOR SAGAS
@@ -17,6 +18,8 @@ export const actionTypes = {
   TYPE_SAGA_ACTION: 'TYPE_SAGA_ACTION',
   CURRENCY_SAGA_ACTION: 'CURRENCY_SAGA_ACTION',
   SET_ABBR: 'SET_ABBR',
+  MODAL_TOP_SAGA: 'MODAL_TOP_SAGA',
+  SHOW_RESULTS: 'SHOW_RESULTS',
 };
 
 export const saveTransactions = (transactions) => ({
@@ -63,8 +66,9 @@ export const toggleDatePicker = (datePickerVisible) => ({
   type: actionTypes.TOGGLE_DATEPICKER,
   datePickerVisible,
 });
-export const clearFilters = () => ({
-  type: actionTypes.CLEAR_FILTERS,
+export const setTransparentBackground = (transparentBackground) => ({
+  type: actionTypes.TRANSPRENT_BACKGROUND,
+  transparentBackground,
 });
 
 // FOR SAGAS
@@ -84,4 +88,11 @@ export const currencyAction = (name, currencyList, abbr) => ({
 export const setAbbr = (abbr) => ({
   type: actionTypes.SET_ABBR,
   abbr,
+});
+export const modalTopAction = () => ({
+  type: actionTypes.MODAL_TOP_SAGA,
+});
+export const showResultsAction = (navigation) => ({
+  type: actionTypes.SHOW_RESULTS,
+  navigation,
 });

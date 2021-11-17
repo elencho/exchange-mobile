@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { FlatList, StyleSheet, View, Animated } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../components/Background';
@@ -16,12 +16,32 @@ import { fetchTransactions } from '../redux/transactions/actions';
 export default function TransactionHistory({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
+  const { transactions, transactionModal, transparentBackground } = state;
 
-  const { transactions } = state;
+  const backgroundAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     dispatch(fetchTransactions());
   }, []);
+
+  useEffect(() => {
+    if (transactionModal) {
+      Animated.timing(backgroundAnim, {
+        toValue: 0.6,
+        duration: 500,
+        delay: 500,
+        useNativeDriver: true,
+      }).start();
+    }
+    if (!transactionModal) {
+      Animated.timing(backgroundAnim, {
+        duration: 500,
+        delay: 500,
+        toValue: 0,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [transactionModal]);
 
   const dates = transactions.map((tr) => {
     const date = new Date(tr.timestamp);
@@ -61,11 +81,26 @@ export default function TransactionHistory({ navigation }) {
 
       {/* Transaction Modal */}
       <TransactionModal />
+
+      {/* Transparent Background Animated */}
+      {transparentBackground && (
+        <Animated.View
+          style={[styles.background, { opacity: backgroundAnim }]}
+        />
+      )}
     </Background>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    backgroundColor: `rgb(15, 15, 31)`,
+  },
   transactions: {
     flex: 1,
     marginTop: 20,

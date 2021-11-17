@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   container: {
-    backgroundColor: 'rgba(15, 15, 31, 0.6)',
     flex: 1,
     justifyContent: 'flex-end',
   },

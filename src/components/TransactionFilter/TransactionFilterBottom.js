@@ -5,13 +5,13 @@ import { withNavigation } from 'react-navigation';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { useDispatch } from 'react-redux';
-import { fetchTransactions } from '../../redux/transactions/actions';
+import { showResultsAction } from '../../redux/transactions/actions';
 
 function TransactionFilterBottom({ navigation }) {
   const dispatch = useDispatch();
 
   const showResults = () => {
-    dispatch({ type: 'AA', navigation });
+    dispatch(showResultsAction(navigation));
   };
 
   return (
