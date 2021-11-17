@@ -97,6 +97,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         datePickerVisible,
       };
+    case actionTypes.CLEAR_FILTERS:
+      return {
+        ...state,
+        typeFilter: null,
+        method: ['All'],
+        currency: null,
+        abbrs: null,
+        fromDateTime: null,
+        toDateTime: null,
+      };
     default:
       return state;
   }

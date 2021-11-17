@@ -10,6 +10,7 @@ export const actionTypes = {
   SET_FROM_TIME: 'SET_FROM_TIME',
   SET_TO_TIME: 'SET_TO_TIME',
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
+  CLEAR_FILTERS: 'CLEAR_FILTERS',
 
   // FOR SAGAS
   FETCH_TRANSACTIONS: 'FETCH_TRANSACTIONS',
@@ -61,6 +62,9 @@ export const setToTime = (toDateTime) => ({
 export const toggleDatePicker = (datePickerVisible) => ({
   type: actionTypes.TOGGLE_DATEPICKER,
   datePickerVisible,
+});
+export const clearFilters = () => ({
+  type: actionTypes.CLEAR_FILTERS,
 });
 
 // FOR SAGAS

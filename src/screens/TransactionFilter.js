@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Image, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../components/AppText';
@@ -12,7 +12,10 @@ import Headline from '../components/TransactionHistory/Headline';
 import { types, methods } from '../constants/filters';
 import colors from '../constants/colors';
 
-import { toggleCurrencyModal } from '../redux/transactions/actions';
+import {
+  clearFilters,
+  toggleCurrencyModal,
+} from '../redux/transactions/actions';
 import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
 import DatePicker from '../components/TransactionFilter/DatePicker';
 
@@ -24,6 +27,10 @@ export default function TransactionFilter({ navigation }) {
 
   const openModal = () => {
     dispatch(toggleCurrencyModal(true));
+  };
+
+  const clear = () => {
+    dispatch(clearFilters());
   };
 
   return (
@@ -56,12 +63,12 @@ export default function TransactionFilter({ navigation }) {
       <DatePicker from />
       <DatePicker to />
 
-      <Pressable style={styles.clear}>
+      <TouchableOpacity style={styles.clear} onPress={clear}>
         <Image source={require('../assets/images/Clear.png')} />
         <AppText medium style={styles.clearText}>
-          Clear Filter
+          Clear Filters
         </AppText>
-      </Pressable>
+      </TouchableOpacity>
 
       <TransactionFilterBottom />
       <ChooseCurrencyModal />
