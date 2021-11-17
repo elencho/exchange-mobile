@@ -11,6 +11,7 @@ import {
   setAbbr,
   setTransparentBackground,
   toggleTransactionModal,
+  toggleLoading,
 } from '../transactions/actions';
 
 import { fetchTransactions as fetch } from '../../utils/fetchTransactions';
@@ -18,9 +19,12 @@ import { getParams, modalTopParams } from './selectors';
 import { currencyList } from '../../constants/filters';
 
 function* fetchTransactionsSaga() {
+  yield put(toggleLoading(true));
   const params = yield select(getParams);
   const transactions = yield call(fetch, params);
   yield put(saveTransactions(transactions));
+  yield delay(500);
+  yield put(toggleLoading(false));
 }
 
 function* typeSaga(action) {

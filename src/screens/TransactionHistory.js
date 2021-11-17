@@ -1,5 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { FlatList, StyleSheet, View, Animated } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  Animated,
+  ActivityIndicator,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../components/Background';
@@ -16,9 +22,10 @@ import { fetchTransactions } from '../redux/transactions/actions';
 export default function TransactionHistory({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
-  const { transactions, transactionModal, transparentBackground } = state;
+  const { transactions, transactionModal, transparentBackground, loading } =
+    state;
 
-  const backgroundAnim = useRef(new Animated.Value(0)).current;
+  const backgroundAnim = useRef(new Animated.Value(0.6)).current;
 
   useEffect(() => {
     dispatch(fetchTransactions());
@@ -66,18 +73,25 @@ export default function TransactionHistory({ navigation }) {
       <Headline title="Transaction History" />
 
       {/* Filter Row */}
-      <View style={styles.filter}>
-        <FilterRow array={types} />
-        <FilterIcon onPress={() => navigation.navigate('TransactionFilter')} />
-      </View>
-
-      {/* Transaction Scrollview */}
-      <FlatList
-        style={styles.transactions}
-        data={uniqueDates}
-        renderItem={renderDate}
-        keyExtractor={(item) => item}
-      />
+      {loading ? (
+        <ActivityIndicator size="large" color="white" style={styles.loader} />
+      ) : (
+        <>
+          <View style={styles.filter}>
+            <FilterRow array={types} />
+            <FilterIcon
+              onPress={() => navigation.navigate('TransactionFilter')}
+            />
+          </View>
+          {/* Transaction Scrollview */}
+          <FlatList
+            style={styles.transactions}
+            data={uniqueDates}
+            renderItem={renderDate}
+            keyExtractor={(item) => item}
+          />
+        </>
+      )}
 
       {/* Transaction Modal */}
       <TransactionModal />
@@ -100,6 +114,10 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     backgroundColor: `rgb(15, 15, 31)`,
+    justifyContent: 'center',
+  },
+  loader: {
+    flex: 1,
   },
   transactions: {
     flex: 1,

@@ -11,6 +11,7 @@ const INITIAL_STATE = {
 
   datePickerVisible: { to: false, from: false },
   transparentBackground: false,
+  loading: true,
 
   // Query Params
   abbr: null,
@@ -37,6 +38,7 @@ export default (state = INITIAL_STATE, action) => {
     fromDateTime,
     datePickerVisible,
     transparentBackground,
+    loading,
   } = action;
   // const { drawerRef } = state;
   switch (action.type) {
@@ -104,6 +106,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         transparentBackground,
+      };
+    case actionTypes.TOGGLE_LOADING:
+      return {
+        ...state,
+        loading,
       };
     case actionTypes.CLEAR_FILTERS:
       return {
