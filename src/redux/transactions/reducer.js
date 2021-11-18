@@ -17,11 +17,11 @@ const INITIAL_STATE = {
 
   // Query Params
   abbr: null,
-  limit: 2,
+  limit: 25,
   method: ['All'],
   offset: 0,
-  fromDateTime: null, // 1635969660000,
-  toDateTime: null, //1636055940000,
+  fromDateTime: null,
+  toDateTime: null,
   typeFilter: null,
 };
 

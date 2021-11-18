@@ -34,3 +34,6 @@ export const modalTopParams = (state) => {
 export const getOffset = (state) => state.transactions.offset;
 
 export const getMethod = (state) => state.transactions.method;
+
+export const totalLoadedTransactions = (state) =>
+  state.transactions.transactions.length;

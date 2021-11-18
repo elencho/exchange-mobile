@@ -17,13 +17,17 @@ import {
   typeAction,
 } from '../transactions/actions';
 
-import { fetchTransactions as fetch } from '../../utils/fetchTransactions';
+import {
+  fetchTransactions as fetch,
+  totalAmount,
+} from '../../utils/fetchTransactions';
 import {
   getParams,
   modalTopParams,
   getTransactions,
   getOffset,
   getMethod,
+  totalLoadedTransactions,
 } from './selectors';
 import { currencyList } from '../../constants/filters';
 
@@ -41,9 +45,16 @@ function* fetchTransactionsSaga() {
 }
 
 function* reachScrollEndSaga() {
+  const params = yield select(getParams);
   const offset = yield select(getOffset);
-  yield put(increaseOffset(offset + 1));
-  yield put(fetchTransactions());
+  const loadedTransactions = yield select(totalLoadedTransactions);
+
+  const total = yield call(totalAmount, params);
+
+  if (loadedTransactions < total) {
+    yield put(increaseOffset(offset + 1));
+    yield put(fetchTransactions());
+  }
 }
 
 function* typeSaga(action) {
