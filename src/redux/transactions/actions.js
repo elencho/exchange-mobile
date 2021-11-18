@@ -26,6 +26,7 @@ export const actionTypes = {
   MODAL_TOP_SAGA: 'MODAL_TOP_SAGA',
   SHOW_RESULTS: 'SHOW_RESULTS',
   REACH_SCROLL_END: 'REACH_SCROLL_END',
+  FILTER_SAGA_ACTION: 'FILTER_SAGA_ACTION',
 };
 
 export const saveTransactions = (transactions) => ({
@@ -114,6 +115,8 @@ export const showResultsAction = (navigation) => ({
   type: actionTypes.SHOW_RESULTS,
   navigation,
 });
-export const reachScrollEnd = () => ({
-  type: actionTypes.REACH_SCROLL_END,
+export const filterAction = (filter, multiselect) => ({
+  type: actionTypes.FILTER_SAGA_ACTION,
+  filter,
+  multiselect,
 });

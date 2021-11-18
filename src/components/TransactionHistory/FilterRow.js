@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import { setMethodFilter, typeAction } from '../../redux/transactions/actions';
+import { filterAction } from '../../redux/transactions/actions';
 
 export default function FilterRow({ array = [''], multiselect = false }) {
   const dispatch = useDispatch();
@@ -13,14 +13,7 @@ export default function FilterRow({ array = [''], multiselect = false }) {
   const { typeFilter, method } = state;
 
   const handleFilter = (filter) => {
-    if (multiselect && !method.includes(filter)) {
-      dispatch(setMethodFilter([...method, filter]));
-    } else if (multiselect && method.includes(filter)) {
-      const newMultiFilter = method.filter((f) => filter !== f);
-      dispatch(setMethodFilter(newMultiFilter));
-    } else {
-      dispatch(typeAction(filter));
-    }
+    dispatch(filterAction(filter, multiselect));
   };
 
   const filterConditional = (fil) => {

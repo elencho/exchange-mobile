@@ -13,6 +13,8 @@ import {
   toggleTransactionModal,
   toggleLoading,
   increaseOffset,
+  setMethodFilter,
+  typeAction,
 } from '../transactions/actions';
 
 import { fetchTransactions as fetch } from '../../utils/fetchTransactions';
@@ -21,6 +23,7 @@ import {
   modalTopParams,
   getTransactions,
   getOffset,
+  getMethod,
 } from './selectors';
 import { currencyList } from '../../constants/filters';
 
@@ -50,6 +53,32 @@ function* typeSaga(action) {
   yield put(increaseOffset(0));
   yield put(setTypeFilter(filter === 'ALL' ? null : filter));
   yield put(fetchTransactions());
+}
+
+function* filterSaga(action) {
+  const { filter, multiselect } = action;
+  const method = yield select(getMethod);
+
+  let newMultiFilter;
+
+  if (filter !== 'All') {
+    if (multiselect && !method.includes(filter)) {
+      newMultiFilter = [...method, filter].splice(
+        method.indexOf('All') + 1,
+        method.length + 1
+      );
+      yield put(setMethodFilter(newMultiFilter));
+    }
+    if (multiselect && method.includes(filter)) {
+      newMultiFilter = method.filter((f) => filter !== f);
+      yield put(setMethodFilter(newMultiFilter));
+    }
+  } else {
+    yield put(setMethodFilter(['All']));
+  }
+  if (!multiselect) {
+    yield put(typeAction(filter));
+  }
 }
 
 function* currencySaga(action) {
@@ -89,4 +118,5 @@ export default function* () {
   yield takeLatest(actionTypes.MODAL_TOP_SAGA, modalTopSaga);
   yield takeLatest(actionTypes.SHOW_RESULTS, showResultsSaga);
   yield takeLatest(actionTypes.REACH_SCROLL_END, reachScrollEndSaga);
+  yield takeLatest(actionTypes.FILTER_SAGA_ACTION, filterSaga);
 }
