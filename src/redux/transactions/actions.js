@@ -9,6 +9,7 @@ export const actionTypes = {
   SET_TO_TIME: 'SET_TO_TIME',
   CLEAR_FILTERS: 'CLEAR_FILTERS',
   INCREASE_OFFSET: 'INCREASE_OFFSET',
+  SET_TAB_ROUTE_NAME: 'SET_TAB_ROUTE_NAME',
 
   // PURE VISUALS
   TOGGLE_TRANSACTION_MODAL: 'TOGGLE_TRANSACTION_MODAL',
@@ -82,6 +83,10 @@ export const increaseOffset = (offset) => ({
 export const setTransparentBackground = (transparentBackground) => ({
   type: actionTypes.TRANSPRENT_BACKGROUND,
   transparentBackground,
+});
+export const setTabRouteName = (tabRouteName) => ({
+  type: actionTypes.SET_TAB_ROUTE_NAME,
+  tabRouteName,
 });
 
 // FOR SAGAS

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useDispatch } from 'react-redux';
 
 import TransactionHistory from '../screens/TransactionHistory';
 import Exercise from '../screens/Exercise';
@@ -8,13 +9,25 @@ import Exercise from '../screens/Exercise';
 import BottomTabs from '../components/BottomTabs';
 import TransactionFilter from '../screens/TransactionFilter';
 import ChooseCurrencyModal from '../components/TransactionFilter/ChooseCurrencyModal';
+import { setTabRouteName } from '../redux/transactions/actions';
 
 const Tab = createBottomTabNavigator();
 
-export default function MainScreen({ navigation }) {
+export default function MainScreen() {
+  const dispatch = useDispatch();
+
+  const tabRoute = (e) => {
+    dispatch(
+      setTabRouteName(
+        e.route.name === 'Transactions' && e.navigation.isFocused()
+      )
+    );
+  };
+
   return (
     <NavigationContainer>
       <Tab.Navigator
+        screenListeners={tabRoute}
         screenOptions={{ headerShown: false }}
         initialRouteName="Transactions"
         tabBar={({ state, navigation, descriptors }) => (
@@ -30,7 +43,7 @@ export default function MainScreen({ navigation }) {
         <Tab.Screen name="Wallet" component={ChooseCurrencyModal} />
         <Tab.Screen
           name="Transactions"
-          children={() => <TransactionHistory navigation={navigation} />}
+          children={() => <TransactionHistory />}
         />
       </Tab.Navigator>
     </NavigationContainer>

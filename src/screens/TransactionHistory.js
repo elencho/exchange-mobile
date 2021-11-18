@@ -21,12 +21,18 @@ import {
   fetchTransactions,
   reachScrollEnd,
 } from '../redux/transactions/actions';
+import { withNavigation } from 'react-navigation';
 
-export default function TransactionHistory({ navigation }) {
+function TransactionHistory({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
-  const { transactions, transactionModal, transparentBackground, loading } =
-    state;
+  const {
+    transactions,
+    transactionModal,
+    transparentBackground,
+    loading,
+    tabRouteName,
+  } = state;
 
   const backgroundAnim = useRef(new Animated.Value(0.6)).current;
 
@@ -69,7 +75,11 @@ export default function TransactionHistory({ navigation }) {
   };
 
   const handleScrollEnd = (e) => {
-    if (isCloseToBottom(e.nativeEvent)) {
+    if (
+      isCloseToBottom(e.nativeEvent) &&
+      navigation.isFocused() &&
+      tabRouteName
+    ) {
       dispatch(reachScrollEnd());
     }
   };
@@ -107,7 +117,7 @@ export default function TransactionHistory({ navigation }) {
             renderItem={renderDate}
             keyExtractor={(item) => item}
             onScroll={handleScrollEnd}
-            scrollEventThrottle={500}
+            scrollEventThrottle={1000}
           />
         </>
       )}
@@ -124,6 +134,8 @@ export default function TransactionHistory({ navigation }) {
     </Background>
   );
 }
+
+export default withNavigation(TransactionHistory);
 
 const styles = StyleSheet.create({
   background: {

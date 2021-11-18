@@ -2,6 +2,8 @@ import { actionTypes } from './actions';
 import { currencyList } from '../../constants/filters';
 
 const INITIAL_STATE = {
+  tabRouteName: null,
+
   transactions: [],
   currencyModal: false,
   transactionModal: false,
@@ -15,11 +17,11 @@ const INITIAL_STATE = {
 
   // Query Params
   abbr: null,
-  limit: 10,
+  limit: 2,
   method: ['All'],
   offset: 0,
-  fromDateTime: null,
-  toDateTime: null,
+  fromDateTime: null, // 1635969660000,
+  toDateTime: null, //1636055940000,
   typeFilter: null,
 };
 
@@ -40,6 +42,7 @@ export default (state = INITIAL_STATE, action) => {
     transparentBackground,
     loading,
     offset,
+    tabRouteName,
   } = action;
   // const { drawerRef } = state;
   switch (action.type) {
@@ -117,6 +120,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading,
+      };
+    case actionTypes.SET_TAB_ROUTE_NAME:
+      return {
+        ...state,
+        tabRouteName,
       };
     case actionTypes.CLEAR_FILTERS:
       return {

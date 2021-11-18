@@ -45,6 +45,9 @@ function* reachScrollEndSaga() {
 
 function* typeSaga(action) {
   const { filter } = action;
+
+  yield put(saveTransactions([]));
+  yield put(increaseOffset(0));
   yield put(setTypeFilter(filter === 'ALL' ? null : filter));
   yield put(fetchTransactions());
 }
@@ -60,6 +63,7 @@ function* currencySaga(action) {
 function* showResultsSaga(action) {
   const { navigation } = action;
 
+  yield put(saveTransactions([]));
   yield put(fetchTransactions());
   yield call(navigation.goBack);
 }
