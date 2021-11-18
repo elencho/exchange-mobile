@@ -8,6 +8,7 @@ export const actionTypes = {
   SET_FROM_TIME: 'SET_FROM_TIME',
   SET_TO_TIME: 'SET_TO_TIME',
   CLEAR_FILTERS: 'CLEAR_FILTERS',
+  INCREASE_OFFSET: 'INCREASE_OFFSET',
 
   // PURE VISUALS
   TOGGLE_TRANSACTION_MODAL: 'TOGGLE_TRANSACTION_MODAL',
@@ -23,6 +24,7 @@ export const actionTypes = {
   SET_ABBR: 'SET_ABBR',
   MODAL_TOP_SAGA: 'MODAL_TOP_SAGA',
   SHOW_RESULTS: 'SHOW_RESULTS',
+  REACH_SCROLL_END: 'REACH_SCROLL_END',
 };
 
 export const saveTransactions = (transactions) => ({
@@ -73,6 +75,10 @@ export const toggleLoading = (loading) => ({
   type: actionTypes.TOGGLE_LOADING,
   loading,
 });
+export const increaseOffset = (offset) => ({
+  type: actionTypes.INCREASE_OFFSET,
+  offset,
+});
 export const setTransparentBackground = (transparentBackground) => ({
   type: actionTypes.TRANSPRENT_BACKGROUND,
   transparentBackground,
@@ -102,4 +108,7 @@ export const modalTopAction = () => ({
 export const showResultsAction = (navigation) => ({
   type: actionTypes.SHOW_RESULTS,
   navigation,
+});
+export const reachScrollEnd = () => ({
+  type: actionTypes.REACH_SCROLL_END,
 });

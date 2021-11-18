@@ -15,7 +15,7 @@ const INITIAL_STATE = {
 
   // Query Params
   abbr: null,
-  limit: 25,
+  limit: 10,
   method: ['All'],
   offset: 0,
   fromDateTime: null,
@@ -39,6 +39,7 @@ export default (state = INITIAL_STATE, action) => {
     datePickerVisible,
     transparentBackground,
     loading,
+    offset,
   } = action;
   // const { drawerRef } = state;
   switch (action.type) {
@@ -96,6 +97,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         toDateTime,
+      };
+    case actionTypes.INCREASE_OFFSET:
+      return {
+        ...state,
+        offset,
       };
     case actionTypes.TOGGLE_DATEPICKER:
       return {

@@ -22,9 +22,13 @@ export const getParams = (state) => {
   };
 };
 
+export const getTransactions = (state) => state.transactions.transactions;
+
 export const modalTopParams = (state) => {
   return {
     currencyModal: state.transactions.currencyModal,
     transactionModal: state.transactions.transactionModal,
   };
 };
+
+export const getOffset = (state) => state.transactions.offset;

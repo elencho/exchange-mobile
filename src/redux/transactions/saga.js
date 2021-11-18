@@ -12,19 +12,35 @@ import {
   setTransparentBackground,
   toggleTransactionModal,
   toggleLoading,
+  increaseOffset,
 } from '../transactions/actions';
 
 import { fetchTransactions as fetch } from '../../utils/fetchTransactions';
-import { getParams, modalTopParams } from './selectors';
+import {
+  getParams,
+  modalTopParams,
+  getTransactions,
+  getOffset,
+} from './selectors';
 import { currencyList } from '../../constants/filters';
 
 function* fetchTransactionsSaga() {
   yield put(toggleLoading(true));
+
   const params = yield select(getParams);
-  const transactions = yield call(fetch, params);
-  yield put(saveTransactions(transactions));
+  const transactions = yield select(getTransactions);
+  const newTransactions = yield call(fetch, params);
+
+  yield put(saveTransactions([...transactions, ...newTransactions]));
+
   yield delay(500);
   yield put(toggleLoading(false));
+}
+
+function* reachScrollEndSaga() {
+  const offset = yield select(getOffset);
+  yield put(increaseOffset(offset + 1));
+  yield put(fetchTransactions());
 }
 
 function* typeSaga(action) {
@@ -68,4 +84,5 @@ export default function* () {
   yield takeLatest(actionTypes.CURRENCY_SAGA_ACTION, currencySaga);
   yield takeLatest(actionTypes.MODAL_TOP_SAGA, modalTopSaga);
   yield takeLatest(actionTypes.SHOW_RESULTS, showResultsSaga);
+  yield takeLatest(actionTypes.REACH_SCROLL_END, reachScrollEndSaga);
 }

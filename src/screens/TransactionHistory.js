@@ -17,7 +17,10 @@ import TransactionDate from '../components/TransactionHistory/TransactionDate';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
 
 import { types, months } from '../constants/filters';
-import { fetchTransactions } from '../redux/transactions/actions';
+import {
+  fetchTransactions,
+  reachScrollEnd,
+} from '../redux/transactions/actions';
 
 export default function TransactionHistory({ navigation }) {
   const dispatch = useDispatch();
@@ -65,6 +68,20 @@ export default function TransactionHistory({ navigation }) {
     );
   };
 
+  const handleScrollEnd = (e) => {
+    if (isCloseToBottom(e.nativeEvent)) {
+      dispatch(reachScrollEnd());
+    }
+  };
+
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }) => {
+    return layoutMeasurement.height + contentOffset.y >= contentSize.height;
+  };
+
   return (
     <Background>
       {/* Top Row */}
@@ -89,6 +106,8 @@ export default function TransactionHistory({ navigation }) {
             data={uniqueDates}
             renderItem={renderDate}
             keyExtractor={(item) => item}
+            onScroll={handleScrollEnd}
+            scrollEventThrottle={500}
           />
         </>
       )}
