@@ -92,8 +92,6 @@ function* filterSaga(action) {
   if (!multiselect) {
     yield put(typeAction(filter));
   }
-
-  yield call(() => console.log(method));
 }
 
 function* currencySaga(action) {

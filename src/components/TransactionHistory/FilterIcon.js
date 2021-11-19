@@ -4,12 +4,13 @@ import { useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
+import { getParams } from '../../redux/transactions/selectors';
 
 export default function FilterIcon({ onPress }) {
-  const state = useSelector((state) => state.transactions);
-  const { typeFilter, currency, fromDateTime, toDateTime /* method */ } = state;
+  const params = useSelector(getParams);
+  const { type, currency, fromDateTime, toDateTime, methods } = params;
 
-  const filters = [typeFilter, currency, fromDateTime, toDateTime].filter(
+  const filters = [type, methods, currency, fromDateTime, toDateTime].filter(
     (f) => f
   );
 
