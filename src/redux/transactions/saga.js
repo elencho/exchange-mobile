@@ -45,6 +45,7 @@ function* fetchTransactionsSaga() {
 
   yield delay(500);
   yield put(toggleLoading(false));
+  yield call(() => console.log(params));
 }
 
 function* fetchCurrenciesSaga() {
@@ -122,6 +123,7 @@ function* showResultsSaga(action) {
   const { navigation } = action;
 
   yield put(saveTransactions([]));
+  yield put(increaseOffset(0));
   yield put(fetchTransactions());
   yield call(navigation.goBack);
 }

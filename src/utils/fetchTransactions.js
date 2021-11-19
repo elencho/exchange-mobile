@@ -24,7 +24,7 @@ export const fetchCurrencies = async () => {
 
 export const totalAmount = async (params) => {
   try {
-    const data = await axios.get(URL, {
+    const data = await axios.get(TRANSACTIONS_URL, {
       headers: { Authorization: bearer },
       params,
     });
