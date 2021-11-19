@@ -16,6 +16,7 @@ import {
   setMethodFilter,
   typeAction,
   saveCurrencies,
+  saveCurrenciesConstant,
 } from '../transactions/actions';
 
 import {
@@ -50,6 +51,12 @@ function* fetchCurrenciesSaga() {
   const currencies = yield call(currenciesApi);
   yield put(
     saveCurrencies([{ name: 'Show All Currency', code: '' }, ...currencies])
+  );
+  yield put(
+    saveCurrenciesConstant([
+      { name: 'Show All Currency', code: '' },
+      ...currencies,
+    ])
   );
 }
 

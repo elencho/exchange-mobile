@@ -7,6 +7,7 @@ const INITIAL_STATE = {
   currencyModal: false,
   transactionModal: false,
   currencies: [],
+  currenciesConstant: [],
   currentTransaction: {},
   currency: 'Show All Currency',
 
@@ -42,6 +43,7 @@ export default (state = INITIAL_STATE, action) => {
     loading,
     offset,
     tabRouteName,
+    currenciesConstant,
   } = action;
   // const { drawerRef } = state;
   switch (action.type) {
@@ -54,6 +56,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currencies,
+      };
+    case actionTypes.SAVE_CURRENCIES_CONSTANT:
+      return {
+        ...state,
+        currenciesConstant,
       };
     case actionTypes.CHOOSE_CURRENCY:
       return {

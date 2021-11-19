@@ -1,6 +1,7 @@
 export const actionTypes = {
   SAVE_TRANSACTIONS: 'SAVE_TRANSACTIONS',
   SAVE_CURRENCIES: 'SAVE_CURRENCIES',
+  SAVE_CURRENCIES_CONSTANT: 'SAVE_CURRENCIES_CONSTANT',
   CHOOSE_CURRENCY: 'CHOOSE_CURRENCY',
   FILTER_CURRENCIES: 'FILTER_CURRENCIES',
   SET_CURRENT_TRANSACTION: 'SET_CURRENT_TRANSACTION',
@@ -38,6 +39,10 @@ export const saveTransactions = (transactions) => ({
 export const saveCurrencies = (currencies) => ({
   type: actionTypes.SAVE_CURRENCIES,
   currencies,
+});
+export const saveCurrenciesConstant = (currenciesConstant) => ({
+  type: actionTypes.SAVE_CURRENCIES_CONSTANT,
+  currenciesConstant,
 });
 export const chooseCurrency = (currency) => ({
   type: actionTypes.CHOOSE_CURRENCY,

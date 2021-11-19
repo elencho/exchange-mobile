@@ -10,13 +10,15 @@ import colors from '../../constants/colors';
 export default function Currency({ name, code }) {
   const dispatch = useDispatch();
   const currency = useSelector((state) => state.transactions.currency);
-  const currencies = useSelector((state) => state.transactions.currencies);
+  const currenciesConstant = useSelector(
+    (state) => state.transactions.currenciesConstant
+  );
 
   const choose = () => {
     dispatch(
       currencyAction(
         name,
-        currencies,
+        currenciesConstant,
         name === 'Show All Currency' ? null : code
       )
     );

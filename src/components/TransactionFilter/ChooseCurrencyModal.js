@@ -28,14 +28,16 @@ export default function ChooseCurrencyModal() {
     dispatch(fetchCurrencies());
   }, []);
 
-  const { currencyModal, currencies } = state;
+  const { currencyModal, currencies, currenciesConstant } = state;
+
+  console.log();
 
   const renderCurrency = ({ item }) => (
     <Currency name={item.name} code={item.code} />
   );
 
   const filter = (text) => {
-    const filteredArray = currencies.filter((c) =>
+    const filteredArray = currenciesConstant.filter((c) =>
       c.name.toLowerCase().includes(text.toLowerCase())
     );
     dispatch(filterCurrencies(filteredArray));
