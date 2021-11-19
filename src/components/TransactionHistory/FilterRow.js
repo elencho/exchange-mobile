@@ -20,7 +20,7 @@ export default function FilterRow({ array = [''], multiselect = false }) {
     if (!multiselect) {
       return typeFilter === fil || (fil === 'ALL' && !typeFilter);
     } else {
-      return method.includes(fil);
+      return method && method.includes(fil);
     }
   };
 

@@ -68,7 +68,9 @@ function* typeSaga(action) {
 
 function* filterSaga(action) {
   const { filter, multiselect } = action;
-  const method = yield select(getMethod);
+  let method = yield select(getMethod);
+
+  method = method || [];
 
   let newMultiFilter;
 
@@ -90,6 +92,8 @@ function* filterSaga(action) {
   if (!multiselect) {
     yield put(typeAction(filter));
   }
+
+  yield call(() => console.log(method));
 }
 
 function* currencySaga(action) {

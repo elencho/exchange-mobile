@@ -11,9 +11,29 @@ export const getParams = (state) => {
     },
   } = state;
 
+  let methods = [];
+  method.forEach((m) => {
+    switch (m) {
+      case 'All':
+        methods = null;
+        break;
+      case 'Credit Card':
+        methods.push('ECOMMERCE');
+        break;
+      case 'Wire':
+        methods.push('WIRE');
+        break;
+      case 'Crypto':
+        methods.push('WALLET');
+        break;
+      default:
+        break;
+    }
+  });
+
   return {
     type: typeFilter,
-    method,
+    methods,
     currency: abbr,
     fromDateTime,
     toDateTime,
