@@ -12,8 +12,6 @@ export default function Currency({ name, code }) {
   const currency = useSelector((state) => state.transactions.currency);
   const currencies = useSelector((state) => state.transactions.currencies);
 
-  console.log(currency);
-
   const choose = () => {
     dispatch(
       currencyAction(

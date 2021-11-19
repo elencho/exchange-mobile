@@ -135,8 +135,8 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         typeFilter: null,
         method: ['All'],
-        currency: null,
-        abbrs: null,
+        currency: 'Show All Currency',
+        code: null,
         fromDateTime: null,
         toDateTime: null,
       };

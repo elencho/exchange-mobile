@@ -75,6 +75,9 @@ export const setToTime = (toDateTime) => ({
   type: actionTypes.SET_TO_TIME,
   toDateTime,
 });
+export const clearFilters = () => ({
+  type: actionTypes.CLEAR_FILTERS,
+});
 export const toggleDatePicker = (datePickerVisible) => ({
   type: actionTypes.TOGGLE_DATEPICKER,
   datePickerVisible,
