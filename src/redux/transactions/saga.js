@@ -15,10 +15,12 @@ import {
   increaseOffset,
   setMethodFilter,
   typeAction,
+  saveCurrencies,
 } from '../transactions/actions';
 
 import {
   fetchTransactions as fetch,
+  fetchCurrencies as currenciesApi,
   totalAmount,
 } from '../../utils/fetchTransactions';
 import {
@@ -42,6 +44,13 @@ function* fetchTransactionsSaga() {
 
   yield delay(500);
   yield put(toggleLoading(false));
+}
+
+function* fetchCurrenciesSaga() {
+  const currencies = yield call(currenciesApi);
+  yield put(
+    saveCurrencies([{ name: 'Show All Currency', code: '' }, ...currencies])
+  );
 }
 
 function* reachScrollEndSaga() {
@@ -95,11 +104,11 @@ function* filterSaga(action) {
 }
 
 function* currencySaga(action) {
-  const { name, currencyList, abbr } = action;
+  const { name, currencyList, code } = action;
   yield put(chooseCurrency(name));
   yield put(toggleCurrencyModal(false));
   yield put(filterCurrencies(currencyList));
-  yield put(setAbbr(abbr));
+  yield put(setAbbr(code));
 }
 
 function* showResultsSaga(action) {
@@ -126,6 +135,7 @@ function* modalTopSaga() {
 
 export default function* () {
   yield takeLatest(actionTypes.FETCH_TRANSACTIONS, fetchTransactionsSaga);
+  yield takeLatest(actionTypes.FETCH_CURRENCIES, fetchCurrenciesSaga);
   yield takeLatest(actionTypes.TYPE_SAGA_ACTION, typeSaga);
   yield takeLatest(actionTypes.CURRENCY_SAGA_ACTION, currencySaga);
   yield takeLatest(actionTypes.MODAL_TOP_SAGA, modalTopSaga);

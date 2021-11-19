@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   FlatList,
   Image,
@@ -14,22 +14,28 @@ import AppText from '../AppText';
 import Currency from './Currency';
 import ModalTop from '../ModalTop';
 
-import { filterCurrencies } from '../../redux/transactions/actions';
-import { currencyList } from '../../constants/filters';
+import {
+  fetchCurrencies,
+  filterCurrencies,
+} from '../../redux/transactions/actions';
 import colors from '../../constants/colors';
 
 export default function ChooseCurrencyModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
 
+  useEffect(() => {
+    dispatch(fetchCurrencies());
+  }, []);
+
   const { currencyModal, currencies } = state;
 
   const renderCurrency = ({ item }) => (
-    <Currency name={item.name} abbr={item.abbr} />
+    <Currency name={item.name} code={item.code} />
   );
 
   const filter = (text) => {
-    const filteredArray = currencyList.filter((c) =>
+    const filteredArray = currencies.filter((c) =>
       c.name.toLowerCase().includes(text.toLowerCase())
     );
     dispatch(filterCurrencies(filteredArray));

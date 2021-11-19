@@ -1,5 +1,6 @@
 export const actionTypes = {
   SAVE_TRANSACTIONS: 'SAVE_TRANSACTIONS',
+  SAVE_CURRENCIES: 'SAVE_CURRENCIES',
   CHOOSE_CURRENCY: 'CHOOSE_CURRENCY',
   FILTER_CURRENCIES: 'FILTER_CURRENCIES',
   SET_CURRENT_TRANSACTION: 'SET_CURRENT_TRANSACTION',
@@ -20,6 +21,7 @@ export const actionTypes = {
 
   // FOR SAGAS
   FETCH_TRANSACTIONS: 'FETCH_TRANSACTIONS',
+  FETCH_CURRENCIES: 'FETCH_CURRENCIES',
   TYPE_SAGA_ACTION: 'TYPE_SAGA_ACTION',
   CURRENCY_SAGA_ACTION: 'CURRENCY_SAGA_ACTION',
   SET_ABBR: 'SET_ABBR',
@@ -32,6 +34,10 @@ export const actionTypes = {
 export const saveTransactions = (transactions) => ({
   type: actionTypes.SAVE_TRANSACTIONS,
   transactions,
+});
+export const saveCurrencies = (currencies) => ({
+  type: actionTypes.SAVE_CURRENCIES,
+  currencies,
 });
 export const chooseCurrency = (currency) => ({
   type: actionTypes.CHOOSE_CURRENCY,
@@ -94,19 +100,22 @@ export const setTabRouteName = (tabRouteName) => ({
 export const fetchTransactions = () => ({
   type: actionTypes.FETCH_TRANSACTIONS,
 });
+export const fetchCurrencies = () => ({
+  type: actionTypes.FETCH_CURRENCIES,
+});
 export const typeAction = (filter) => ({
   type: actionTypes.TYPE_SAGA_ACTION,
   filter,
 });
-export const currencyAction = (name, currencyList, abbr) => ({
+export const currencyAction = (name, currencyList, code) => ({
   type: actionTypes.CURRENCY_SAGA_ACTION,
   name,
   currencyList,
-  abbr,
+  code,
 });
-export const setAbbr = (abbr) => ({
+export const setAbbr = (code) => ({
   type: actionTypes.SET_ABBR,
-  abbr,
+  code,
 });
 export const modalTopAction = () => ({
   type: actionTypes.MODAL_TOP_SAGA,

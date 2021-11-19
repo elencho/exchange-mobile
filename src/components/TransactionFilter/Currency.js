@@ -5,19 +5,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from '../AppText';
 
 import { currencyAction } from '../../redux/transactions/actions';
-import { currencyList } from '../../constants/filters';
 import colors from '../../constants/colors';
 
-export default function Currency({ name, abbr }) {
+export default function Currency({ name, code }) {
   const dispatch = useDispatch();
   const currency = useSelector((state) => state.transactions.currency);
+  const currencies = useSelector((state) => state.transactions.currencies);
+
+  console.log(currency);
 
   const choose = () => {
     dispatch(
       currencyAction(
         name,
-        currencyList,
-        name === 'Show All Currency' ? null : abbr
+        currencies,
+        name === 'Show All Currency' ? null : code
       )
     );
   };
@@ -37,10 +39,10 @@ export default function Currency({ name, abbr }) {
       <AppText medium style={styles.name}>
         {name}
       </AppText>
-      {abbr ? (
-        <AppText medium style={styles.abbr}>
+      {code ? (
+        <AppText medium style={styles.code}>
           {' '}
-          ({abbr})
+          ({code})
         </AppText>
       ) : null}
     </Pressable>
@@ -48,7 +50,7 @@ export default function Currency({ name, abbr }) {
 }
 
 const styles = StyleSheet.create({
-  abbr: {
+  code: {
     fontSize: 15,
     color: colors.SECONDARY_TEXT,
   },

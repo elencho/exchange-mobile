@@ -1,5 +1,4 @@
 import { actionTypes } from './actions';
-import { currencyList } from '../../constants/filters';
 
 const INITIAL_STATE = {
   tabRouteName: null,
@@ -7,16 +6,16 @@ const INITIAL_STATE = {
   transactions: [],
   currencyModal: false,
   transactionModal: false,
-  currencies: currencyList,
+  currencies: [],
   currentTransaction: {},
-  currency: null,
+  currency: 'Show All Currency',
 
   datePickerVisible: { to: false, from: false },
   transparentBackground: false,
   loading: true,
 
   // Query Params
-  abbr: null,
+  code: null,
   limit: 3,
   method: ['All'],
   offset: 0,
@@ -35,7 +34,7 @@ export default (state = INITIAL_STATE, action) => {
     currentTransaction,
     typeFilter,
     method,
-    abbr,
+    code,
     toDateTime,
     fromDateTime,
     datePickerVisible,
@@ -51,6 +50,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         transactions,
       };
+    case actionTypes.SAVE_CURRENCIES:
+      return {
+        ...state,
+        currencies,
+      };
     case actionTypes.CHOOSE_CURRENCY:
       return {
         ...state,
@@ -59,7 +63,7 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.SET_ABBR:
       return {
         ...state,
-        abbr,
+        code,
       };
     case actionTypes.TOGGLE_CURRENCY_MODAL:
       return {
