@@ -30,8 +30,6 @@ export default function ChooseCurrencyModal() {
 
   const { currencyModal, currencies, currenciesConstant } = state;
 
-  console.log();
-
   const renderCurrency = ({ item }) => (
     <Currency name={item.name} code={item.code} />
   );

@@ -17,7 +17,7 @@ const INITIAL_STATE = {
 
   // Query Params
   code: null,
-  limit: 3,
+  limit: 25,
   method: ['All'],
   offset: 0,
   fromDateTime: null,

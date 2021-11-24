@@ -6,10 +6,12 @@ import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { useFonts } from 'expo-font';
+import { useAssets } from 'expo-asset';
 
 import { reducer } from './src/redux/rootReducer';
 import mySaga from './src/redux/sagas';
 import Navigator from './src/navigation';
+import images from './src/constants/images';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -20,12 +22,14 @@ const store = createStore(
 sagaMiddleware.run(mySaga);
 
 export default function App() {
-  const [loaded] = useFonts({
+  const [fonts] = useFonts({
     Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
     Ubuntu_Medium: require('./src/assets/fonts/Ubuntu_Medium.ttf'),
   });
 
-  if (!loaded) {
+  const [assets] = useAssets(Object.values(images));
+
+  if (!fonts || !assets) {
     return null;
   }
 

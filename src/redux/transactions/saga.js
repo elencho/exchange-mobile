@@ -45,7 +45,6 @@ function* fetchTransactionsSaga() {
 
   yield delay(500);
   yield put(toggleLoading(false));
-  yield call(() => console.log(params));
 }
 
 function* fetchCurrenciesSaga() {
