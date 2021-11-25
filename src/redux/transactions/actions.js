@@ -14,11 +14,10 @@ export const actionTypes = {
   SET_TAB_ROUTE_NAME: 'SET_TAB_ROUTE_NAME',
 
   // PURE VISUALS
-  TOGGLE_TRANSACTION_MODAL: 'TOGGLE_TRANSACTION_MODAL',
   TOGGLE_CURRENCY_MODAL: 'TOGGLE_CURRENCY_MODAL',
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
-  TRANSPRENT_BACKGROUND: 'TRANSPRENT_BACKGROUND',
   TOGGLE_LOADING: 'TOGGLE_LOADING',
+  SET_MODAL_REF: 'SET_MODAL_REF',
 
   // FOR SAGAS
   FETCH_TRANSACTIONS: 'FETCH_TRANSACTIONS',
@@ -26,10 +25,10 @@ export const actionTypes = {
   TYPE_SAGA_ACTION: 'TYPE_SAGA_ACTION',
   CURRENCY_SAGA_ACTION: 'CURRENCY_SAGA_ACTION',
   SET_ABBR: 'SET_ABBR',
-  MODAL_TOP_SAGA: 'MODAL_TOP_SAGA',
   SHOW_RESULTS: 'SHOW_RESULTS',
   REACH_SCROLL_END: 'REACH_SCROLL_END',
   FILTER_SAGA_ACTION: 'FILTER_SAGA_ACTION',
+  MODAL_SAGA_ACTION: 'MODAL_SAGA_ACTION',
 };
 
 export const saveTransactions = (transactions) => ({
@@ -55,10 +54,6 @@ export const toggleCurrencyModal = (currencyModal) => ({
 export const filterCurrencies = (currencies) => ({
   type: actionTypes.FILTER_CURRENCIES,
   currencies,
-});
-export const toggleTransactionModal = (transactionModal) => ({
-  type: actionTypes.TOGGLE_TRANSACTION_MODAL,
-  transactionModal,
 });
 export const setCurrentTransaction = (currentTransaction) => ({
   type: actionTypes.SET_CURRENT_TRANSACTION,
@@ -95,13 +90,13 @@ export const increaseOffset = (offset) => ({
   type: actionTypes.INCREASE_OFFSET,
   offset,
 });
-export const setTransparentBackground = (transparentBackground) => ({
-  type: actionTypes.TRANSPRENT_BACKGROUND,
-  transparentBackground,
-});
 export const setTabRouteName = (tabRouteName) => ({
   type: actionTypes.SET_TAB_ROUTE_NAME,
   tabRouteName,
+});
+export const setModalRef = (modalRef) => ({
+  type: actionTypes.SET_MODAL_REF,
+  modalRef,
 });
 
 // FOR SAGAS
@@ -125,8 +120,9 @@ export const setAbbr = (code) => ({
   type: actionTypes.SET_ABBR,
   code,
 });
-export const modalTopAction = () => ({
-  type: actionTypes.MODAL_TOP_SAGA,
+export const modalSagaAction = (currentTransaction) => ({
+  type: actionTypes.MODAL_SAGA_ACTION,
+  currentTransaction,
 });
 export const showResultsAction = (navigation) => ({
   type: actionTypes.SHOW_RESULTS,

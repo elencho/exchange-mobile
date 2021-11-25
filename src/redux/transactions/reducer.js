@@ -5,15 +5,14 @@ const INITIAL_STATE = {
 
   transactions: [],
   currencyModal: false,
-  transactionModal: false,
   currencies: [],
   currenciesConstant: [],
   currentTransaction: {},
   currency: 'Show All Currency',
 
   datePickerVisible: { to: false, from: false },
-  transparentBackground: false,
   loading: true,
+  modalRef: {},
 
   // Query Params
   code: null,
@@ -30,7 +29,6 @@ export default (state = INITIAL_STATE, action) => {
     currency,
     currencyModal,
     currencies,
-    transactionModal,
     transactions,
     currentTransaction,
     typeFilter,
@@ -39,11 +37,11 @@ export default (state = INITIAL_STATE, action) => {
     toDateTime,
     fromDateTime,
     datePickerVisible,
-    transparentBackground,
     loading,
     offset,
     tabRouteName,
     currenciesConstant,
+    modalRef,
   } = action;
   // const { drawerRef } = state;
   switch (action.type) {
@@ -82,11 +80,6 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         currencies,
       };
-    case actionTypes.TOGGLE_TRANSACTION_MODAL:
-      return {
-        ...state,
-        transactionModal,
-      };
     case actionTypes.SET_CURRENT_TRANSACTION:
       return {
         ...state,
@@ -122,10 +115,10 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         datePickerVisible,
       };
-    case actionTypes.TRANSPRENT_BACKGROUND:
+    case actionTypes.SET_MODAL_REF:
       return {
         ...state,
-        transparentBackground,
+        modalRef,
       };
     case actionTypes.TOGGLE_LOADING:
       return {

@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest, delay } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
   actionTypes,
@@ -9,14 +9,13 @@ import {
   toggleCurrencyModal,
   filterCurrencies,
   setAbbr,
-  setTransparentBackground,
-  toggleTransactionModal,
   toggleLoading,
   increaseOffset,
   setMethodFilter,
   typeAction,
   saveCurrencies,
   saveCurrenciesConstant,
+  setCurrentTransaction,
 } from '../transactions/actions';
 
 import {
@@ -26,13 +25,12 @@ import {
 } from '../../utils/fetchTransactions';
 import {
   getParams,
-  modalTopParams,
   getTransactions,
   getOffset,
   getMethod,
   totalLoadedTransactions,
+  getModalRef,
 } from './selectors';
-import { currencyList } from '../../constants/filters';
 
 function* fetchTransactionsSaga() {
   yield put(toggleLoading(true));
@@ -43,7 +41,6 @@ function* fetchTransactionsSaga() {
 
   yield put(saveTransactions([...transactions, ...newTransactions]));
 
-  yield delay(500);
   yield put(toggleLoading(false));
 }
 
@@ -127,18 +124,11 @@ function* showResultsSaga(action) {
   yield call(navigation.goBack);
 }
 
-function* modalTopSaga() {
-  const params = yield select(modalTopParams);
-
-  if (params.currencyModal) {
-    yield put(toggleCurrencyModal(false));
-    yield put(filterCurrencies(currencyList));
-  }
-  if (params.transactionModal) {
-    yield put(toggleTransactionModal(false));
-    yield delay(500);
-    yield put(setTransparentBackground(false));
-  }
+function* modalSaga(action) {
+  const { currentTransaction } = action;
+  const modalRef = yield select(getModalRef);
+  yield put(setCurrentTransaction(currentTransaction));
+  yield call(modalRef.open);
 }
 
 export default function* () {
@@ -146,8 +136,8 @@ export default function* () {
   yield takeLatest(actionTypes.FETCH_CURRENCIES, fetchCurrenciesSaga);
   yield takeLatest(actionTypes.TYPE_SAGA_ACTION, typeSaga);
   yield takeLatest(actionTypes.CURRENCY_SAGA_ACTION, currencySaga);
-  yield takeLatest(actionTypes.MODAL_TOP_SAGA, modalTopSaga);
   yield takeLatest(actionTypes.SHOW_RESULTS, showResultsSaga);
   yield takeLatest(actionTypes.REACH_SCROLL_END, reachScrollEndSaga);
   yield takeLatest(actionTypes.FILTER_SAGA_ACTION, filterSaga);
+  yield takeLatest(actionTypes.MODAL_SAGA_ACTION, modalSaga);
 }

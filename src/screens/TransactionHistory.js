@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -34,30 +34,9 @@ function TransactionHistory({ navigation }) {
     tabRouteName,
   } = state;
 
-  const backgroundAnim = useRef(new Animated.Value(0.6)).current;
-
   useEffect(() => {
     dispatch(fetchTransactions());
   }, []);
-
-  useEffect(() => {
-    if (transactionModal) {
-      Animated.timing(backgroundAnim, {
-        toValue: 0.6,
-        duration: 500,
-        delay: 500,
-        useNativeDriver: true,
-      }).start();
-    }
-    if (!transactionModal) {
-      Animated.timing(backgroundAnim, {
-        duration: 500,
-        delay: 500,
-        toValue: 0,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [transactionModal]);
 
   const dates = transactions.map((tr) => {
     const date = new Date(tr.timestamp);
@@ -124,13 +103,6 @@ function TransactionHistory({ navigation }) {
 
       {/* Transaction Modal */}
       <TransactionModal />
-
-      {/* Transparent Background Animated */}
-      {transparentBackground && (
-        <Animated.View
-          style={[styles.background, { opacity: backgroundAnim }]}
-        />
-      )}
     </Background>
   );
 }
@@ -138,15 +110,6 @@ function TransactionHistory({ navigation }) {
 export default withNavigation(TransactionHistory);
 
 const styles = StyleSheet.create({
-  background: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
-    backgroundColor: `rgb(15, 15, 31)`,
-    justifyContent: 'center',
-  },
   loader: {
     flex: 1,
   },

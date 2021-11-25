@@ -1,19 +1,24 @@
 import React from 'react';
-import { Image, Modal, StyleSheet, View, TouchableOpacity } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Animated,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 import * as Clipboard from 'expo-clipboard';
 
 import AppText from '../AppText';
 import ModalTop from '../ModalTop';
-import Headline from './Headline';
 import TransactionDetails from './TransactionDetails';
 import colors from '../../constants/colors';
+import AppModal from '../AppModal';
 
 export default function TransactionModal() {
   const state = useSelector((state) => state.transactions);
 
   const {
-    transactionModal,
     currentTransaction: { type, transactionInfo },
   } = state;
 
@@ -22,12 +27,14 @@ export default function TransactionModal() {
   };
 
   return (
-    <Modal animationType="slide" visible={transactionModal} transparent>
-      <View style={styles.container}>
+    <AppModal adjust>
+      <Animated.View style={styles.container}>
         <ModalTop />
 
         <View style={styles.block}>
-          <Headline title="Transaction Details" />
+          <AppText header style={styles.header}>
+            Transaction Details
+          </AppText>
 
           <View style={styles.top}>
             <Image
@@ -51,8 +58,8 @@ export default function TransactionModal() {
 
           <TransactionDetails />
         </View>
-      </View>
-    </Modal>
+      </Animated.View>
+    </AppModal>
   );
 }
 
@@ -73,6 +80,10 @@ const styles = StyleSheet.create({
   deposit: {
     marginRight: 10,
     alignSelf: 'center',
+  },
+  header: {
+    color: colors.PRIMARY_TEXT,
+    marginBottom: 20,
   },
   middle: {
     justifyContent: 'space-between',

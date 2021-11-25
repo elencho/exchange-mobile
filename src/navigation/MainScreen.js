@@ -28,7 +28,9 @@ export default function MainScreen() {
     <NavigationContainer>
       <Tab.Navigator
         screenListeners={tabRoute}
-        screenOptions={{ headerShown: false }}
+        screenOptions={{
+          headerShown: false,
+        }}
         initialRouteName="Transactions"
         tabBar={({ state, navigation, descriptors }) => (
           <BottomTabs

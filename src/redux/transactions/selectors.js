@@ -57,3 +57,5 @@ export const getMethod = (state) => state.transactions.method;
 
 export const totalLoadedTransactions = (state) =>
   state.transactions.transactions.length;
+
+export const getModalRef = (state) => state.transactions.modalRef;
