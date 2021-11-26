@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import {
-  FlatList,
+  Dimensions,
   Image,
-  Modal,
+  ScrollView,
   StyleSheet,
   TextInput,
   View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import Constants from 'expo-constants';
+import { useSafeAreaFrame } from 'react-native-safe-area-context';
 
 import AppText from '../AppText';
 import Currency from './Currency';
 import ModalTop from '../ModalTop';
+import AppModal from '../AppModal';
 
 import {
   fetchCurrencies,
@@ -21,6 +22,8 @@ import {
 import colors from '../../constants/colors';
 
 export default function ChooseCurrencyModal() {
+  const height = useSafeAreaFrame().height;
+
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
 
@@ -28,11 +31,7 @@ export default function ChooseCurrencyModal() {
     dispatch(fetchCurrencies());
   }, []);
 
-  const { currencyModal, currencies, currenciesConstant } = state;
-
-  const renderCurrency = ({ item }) => (
-    <Currency name={item.name} code={item.code} />
-  );
+  const { currencies, currenciesConstant } = state;
 
   const filter = (text) => {
     const filteredArray = currenciesConstant.filter((c) =>
@@ -42,8 +41,8 @@ export default function ChooseCurrencyModal() {
   };
 
   return (
-    <Modal transparent animationType="slide" visible={currencyModal}>
-      <View style={styles.container}>
+    <AppModal>
+      <View style={{ height }}>
         <ModalTop />
 
         <View style={styles.block}>
@@ -61,14 +60,14 @@ export default function ChooseCurrencyModal() {
             <Image source={require('../../assets/images/Search.png')} />
           </View>
 
-          <FlatList
-            data={currencies}
-            renderItem={renderCurrency}
-            keyExtractor={(item) => item.name}
-          />
+          <ScrollView /* style={{ height: 400 }} */>
+            {currencies.map((c) => (
+              <Currency name={c.name} code={c.code} key={c.code} />
+            ))}
+          </ScrollView>
         </View>
       </View>
-    </Modal>
+    </AppModal>
   );
 }
 
@@ -77,11 +76,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.SECONDARY_BACKGROUND,
     padding: 40,
-  },
-  container: {
-    flex: 1,
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: 'rgba(15, 15, 31, 0.6)',
+    paddingBottom: 20,
   },
   headline: {
     fontSize: 20,

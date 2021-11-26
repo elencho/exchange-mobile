@@ -11,13 +11,13 @@ export default function Transaction({ transaction, date, time }) {
 
   const { type, status, transactionInfo, amount, currency } = transaction;
 
-  const showModal = () => {
-    const currentTransaction = {
-      ...transaction,
-      date,
-      time,
-    };
+  const currentTransaction = {
+    ...transaction,
+    date,
+    time,
+  };
 
+  const showModal = () => {
     dispatch(modalSagaAction(currentTransaction));
   };
 

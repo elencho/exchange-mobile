@@ -4,7 +4,6 @@ const INITIAL_STATE = {
   tabRouteName: null,
 
   transactions: [],
-  currencyModal: false,
   currencies: [],
   currenciesConstant: [],
   currentTransaction: {},
@@ -27,7 +26,6 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   const {
     currency,
-    currencyModal,
     currencies,
     transactions,
     currentTransaction,
@@ -69,11 +67,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         code,
-      };
-    case actionTypes.TOGGLE_CURRENCY_MODAL:
-      return {
-        ...state,
-        currencyModal,
       };
     case actionTypes.FILTER_CURRENCIES:
       return {

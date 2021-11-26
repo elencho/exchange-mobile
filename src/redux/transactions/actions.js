@@ -14,7 +14,6 @@ export const actionTypes = {
   SET_TAB_ROUTE_NAME: 'SET_TAB_ROUTE_NAME',
 
   // PURE VISUALS
-  TOGGLE_CURRENCY_MODAL: 'TOGGLE_CURRENCY_MODAL',
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
   TOGGLE_LOADING: 'TOGGLE_LOADING',
   SET_MODAL_REF: 'SET_MODAL_REF',
@@ -46,10 +45,6 @@ export const saveCurrenciesConstant = (currenciesConstant) => ({
 export const chooseCurrency = (currency) => ({
   type: actionTypes.CHOOSE_CURRENCY,
   currency,
-});
-export const toggleCurrencyModal = (currencyModal) => ({
-  type: actionTypes.TOGGLE_CURRENCY_MODAL,
-  currencyModal,
 });
 export const filterCurrencies = (currencies) => ({
   type: actionTypes.FILTER_CURRENCIES,

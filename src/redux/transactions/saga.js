@@ -6,7 +6,6 @@ import {
   setTypeFilter,
   fetchTransactions,
   chooseCurrency,
-  toggleCurrencyModal,
   filterCurrencies,
   setAbbr,
   toggleLoading,
@@ -110,9 +109,11 @@ function* filterSaga(action) {
 function* currencySaga(action) {
   const { name, currencyList, code } = action;
   yield put(chooseCurrency(name));
-  yield put(toggleCurrencyModal(false));
   yield put(filterCurrencies(currencyList));
   yield put(setAbbr(code));
+
+  const modalRef = yield select(getModalRef);
+  yield call(modalRef.close);
 }
 
 function* showResultsSaga(action) {
