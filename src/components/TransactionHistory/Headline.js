@@ -6,12 +6,12 @@ import colors from '../../constants/colors';
 
 export default function Headline({ title }) {
   return (
-    <AppText medium style={styles.text}>
+    <AppText header medium style={styles.text}>
       {title}
     </AppText>
   );
 }
 
 const styles = StyleSheet.create({
-  text: { color: colors.PRIMARY_TEXT, fontSize: 20, marginVertical: 20 },
+  text: { color: colors.PRIMARY_TEXT, marginVertical: 20 },
 });
