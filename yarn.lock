@@ -5117,6 +5117,11 @@ react-is@^17.0.1, react-is@^17.0.2:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-native-animated-progress@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-animated-progress/-/react-native-animated-progress-1.0.2.tgz#3c5c90daf9624abfeb5bf5b9950c9ef3913d1063"
+  integrity sha512-8EQSHTjT7QQY+u/Gknc1X4FxlV/8gRevi2wAlMIUQBf3fq13z++8WIGPPwwKvjsVcQJMm4cadTwn3Ptn5fiUJw==
+
 react-native-calendar-picker@^7.1.2:
   version "7.1.2"
   resolved "https://registry.yarnpkg.com/react-native-calendar-picker/-/react-native-calendar-picker-7.1.2.tgz#b3bf1ba1cc7b1177b2fac7937564ccf09643029f"

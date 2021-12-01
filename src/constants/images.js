@@ -22,4 +22,8 @@ export default {
   Wallet_Active: require('../assets/images/Wallet_Active.png'),
   Wallet: require('../assets/images/Wallet.png'),
   Withdrawal: require('../assets/images/Withdrawal.png'),
+
+  // CURRENCIES
+  BTC: require('../assets/images/Currencies/BTC.png'),
+  USD: require('../assets/images/Currencies/USD.png'),
 };

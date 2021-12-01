@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import Background from '../components/Background';
 import BuySellSwitch from '../components/InstantTrade/BuySellSwitch';
 import QuestionMark from '../components/InstantTrade/QuestionMark';
+import TradeBlock from '../components/InstantTrade/TradeBlock';
+import TransactionsBlock from '../components/InstantTrade/TransactionsBlock';
 import Headline from '../components/TransactionHistory/Headline';
 import TopRow from '../components/TransactionHistory/TopRow';
 
@@ -18,6 +20,12 @@ export default function InstantTrade() {
       </View>
 
       <BuySellSwitch />
+
+      <ScrollView>
+        <TradeBlock />
+
+        <TransactionsBlock />
+      </ScrollView>
     </Background>
   );
 }

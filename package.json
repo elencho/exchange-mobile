@@ -33,6 +33,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-animated-progress": "^1.0.2",
     "react-native-calendar-picker": "^7.1.2",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-modalize": "^2.0.12",
