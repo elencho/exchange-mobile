@@ -1,14 +1,21 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import AppText from '../AppText';
 
 export default function ReadyTrades() {
+  const modalRef = useSelector((state) => state.transactions.modalRef);
+
+  const handleTrade = (t) => {
+    modalRef.open();
+  };
+
   return (
     <View style={styles.container}>
       {[50, 200, 500, 'Custom'].map((t) => (
-        <Pressable style={styles.block} key={t}>
+        <Pressable style={styles.block} key={t} onPress={() => handleTrade(t)}>
           <AppText style={styles.primary} header>
             {t} <AppText body>{t !== 'Custom' && 'GEL'}</AppText>
           </AppText>

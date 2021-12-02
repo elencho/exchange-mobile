@@ -8,6 +8,7 @@ import TradeBlock from '../components/InstantTrade/TradeBlock';
 import TransactionsBlock from '../components/InstantTrade/TransactionsBlock';
 import Headline from '../components/TransactionHistory/Headline';
 import TopRow from '../components/TransactionHistory/TopRow';
+import BuySellModal from '../components/InstantTrade/BuySellModal';
 
 export default function InstantTrade() {
   return (
@@ -23,9 +24,10 @@ export default function InstantTrade() {
 
       <ScrollView>
         <TradeBlock />
-
         <TransactionsBlock />
       </ScrollView>
+
+      <BuySellModal />
     </Background>
   );
 }

@@ -5,15 +5,13 @@ import AppText from '../AppText';
 import images from '../../constants/images';
 import colors from '../../constants/colors';
 
-export default function CurrencyDropdowns() {
+export default function CurrencyDropdowns({ style }) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {['BTC', 'USD'].map((c) => (
         <Pressable style={styles.block} key={c}>
           <Image source={images[c]} />
-          <AppText medium style={styles.text}>
-            {c}
-          </AppText>
+          <AppText style={styles.text}>{c}</AppText>
           <Image source={images['Arrow']} />
         </Pressable>
       ))}
@@ -36,7 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   text: {
-    color: colors.SECONDARY_TEXT,
+    color: colors.PRIMARY_TEXT,
     marginLeft: 10,
     flex: 1,
   },

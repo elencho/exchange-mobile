@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native';
 
 import colors from '../constants/colors';
 
-export default function Background({ children }) {
-  return <View style={styles.container}>{children}</View>;
+export default function Background({ children, style }) {
+  return <View style={[styles.container, style]}>{children}</View>;
 }
 
 const styles = StyleSheet.create({
