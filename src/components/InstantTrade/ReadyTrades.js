@@ -6,7 +6,7 @@ import colors from '../../constants/colors';
 import AppText from '../AppText';
 
 export default function ReadyTrades() {
-  const modalRef = useSelector((state) => state.transactions.modalRef);
+  const modalRef = useSelector((state) => state.modals.modalRef);
 
   const handleTrade = (t) => {
     modalRef.open();

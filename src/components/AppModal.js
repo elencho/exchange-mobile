@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Modalize } from 'react-native-modalize';
 import Constants from 'expo-constants';
 
-import { setModalRef } from '../redux/transactions/actions';
+import { setModalRef } from '../redux/modals/actions';
 
 export default function AppModal({ children, adjust = false }) {
   let modalRef;
@@ -25,6 +25,7 @@ export default function AppModal({ children, adjust = false }) {
       withReactModal
       adjustToContentHeight={adjust}
       threshold={25}
+      // onClosed={/* Trigger close modal */}
     >
       {children}
     </Modalize>

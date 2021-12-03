@@ -26,13 +26,7 @@ import { withNavigation } from 'react-navigation';
 function TransactionHistory({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
-  const {
-    transactions,
-    transactionModal,
-    transparentBackground,
-    loading,
-    tabRouteName,
-  } = state;
+  const { transactions, loading, tabRouteName } = state;
 
   useEffect(() => {
     dispatch(fetchTransactions());

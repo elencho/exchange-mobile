@@ -3,7 +3,7 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 export default function CloseModalIcon() {
-  const modalRef = useSelector((state) => state.transactions.modalRef);
+  const modalRef = useSelector((state) => state.modals.modalRef);
 
   const close = () => {
     modalRef.close();

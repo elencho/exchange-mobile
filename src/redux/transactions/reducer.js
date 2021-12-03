@@ -11,7 +11,6 @@ const INITIAL_STATE = {
 
   datePickerVisible: { to: false, from: false },
   loading: true,
-  modalRef: {},
 
   // Query Params
   code: null,
@@ -39,7 +38,6 @@ export default (state = INITIAL_STATE, action) => {
     offset,
     tabRouteName,
     currenciesConstant,
-    modalRef,
   } = action;
   // const { drawerRef } = state;
   switch (action.type) {
@@ -107,11 +105,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         datePickerVisible,
-      };
-    case actionTypes.SET_MODAL_REF:
-      return {
-        ...state,
-        modalRef,
       };
     case actionTypes.TOGGLE_LOADING:
       return {

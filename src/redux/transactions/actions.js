@@ -16,7 +16,6 @@ export const actionTypes = {
   // PURE VISUALS
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
   TOGGLE_LOADING: 'TOGGLE_LOADING',
-  SET_MODAL_REF: 'SET_MODAL_REF',
 
   // FOR SAGAS
   FETCH_TRANSACTIONS: 'FETCH_TRANSACTIONS',
@@ -27,7 +26,7 @@ export const actionTypes = {
   SHOW_RESULTS: 'SHOW_RESULTS',
   REACH_SCROLL_END: 'REACH_SCROLL_END',
   FILTER_SAGA_ACTION: 'FILTER_SAGA_ACTION',
-  MODAL_SAGA_ACTION: 'MODAL_SAGA_ACTION',
+  TRANSACTION_DETAILS_SAGA: 'TRANSACTION_DETAILS_SAGA',
 };
 
 export const saveTransactions = (transactions) => ({
@@ -89,10 +88,6 @@ export const setTabRouteName = (tabRouteName) => ({
   type: actionTypes.SET_TAB_ROUTE_NAME,
   tabRouteName,
 });
-export const setModalRef = (modalRef) => ({
-  type: actionTypes.SET_MODAL_REF,
-  modalRef,
-});
 
 // FOR SAGAS
 export const fetchTransactions = () => ({
@@ -115,8 +110,8 @@ export const setAbbr = (code) => ({
   type: actionTypes.SET_ABBR,
   code,
 });
-export const modalSagaAction = (currentTransaction) => ({
-  type: actionTypes.MODAL_SAGA_ACTION,
+export const transactionDetailsSaga = (currentTransaction) => ({
+  type: actionTypes.TRANSACTION_DETAILS_SAGA,
   currentTransaction,
 });
 export const showResultsAction = (navigation) => ({

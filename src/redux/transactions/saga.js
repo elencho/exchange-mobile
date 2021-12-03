@@ -28,8 +28,9 @@ import {
   getOffset,
   getMethod,
   totalLoadedTransactions,
-  getModalRef,
 } from './selectors';
+
+import { getModalRef } from '../modals/selectors';
 
 function* fetchTransactionsSaga() {
   yield put(toggleLoading(true));
@@ -125,7 +126,7 @@ function* showResultsSaga(action) {
   yield call(navigation.goBack);
 }
 
-function* modalSaga(action) {
+function* transactionDetailsSaga(action) {
   const { currentTransaction } = action;
   const modalRef = yield select(getModalRef);
   yield put(setCurrentTransaction(currentTransaction));
@@ -140,5 +141,8 @@ export default function* () {
   yield takeLatest(actionTypes.SHOW_RESULTS, showResultsSaga);
   yield takeLatest(actionTypes.REACH_SCROLL_END, reachScrollEndSaga);
   yield takeLatest(actionTypes.FILTER_SAGA_ACTION, filterSaga);
-  yield takeLatest(actionTypes.MODAL_SAGA_ACTION, modalSaga);
+  yield takeLatest(
+    actionTypes.TRANSACTION_DETAILS_SAGA,
+    transactionDetailsSaga
+  );
 }

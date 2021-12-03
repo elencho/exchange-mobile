@@ -1,17 +1,17 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
-  tradeType: 'Buy',
+  modalRef: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { tradeType } = action;
+  const { tradeType, modalRef } = action;
   // const { drawerRef } = state;
   switch (action.type) {
-    case actionTypes.SET_TRADE_TYPE:
+    case actionTypes.SET_MODAL_REF:
       return {
         ...state,
-        tradeType,
+        modalRef,
       };
     default:
       return state;

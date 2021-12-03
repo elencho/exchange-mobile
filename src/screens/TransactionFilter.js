@@ -18,9 +18,9 @@ import DatePicker from '../components/TransactionFilter/DatePicker';
 
 export default function TransactionFilter({ navigation }) {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.transactions);
+  const currency = useSelector((state) => state.transactions.currency);
+  const modalRef = useSelector((state) => state.modals.modalRef);
 
-  const { currency, modalRef } = state;
   const openModal = () => modalRef.open();
 
   const clear = () => {
