@@ -32,7 +32,7 @@ export default function MainScreen() {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="Trade"
+        initialRouteName="Transactions"
         tabBar={({ state, navigation, descriptors }) => (
           <BottomTabs
             routes={state.routes}
@@ -41,7 +41,7 @@ export default function MainScreen() {
           />
         )}
       >
-        <Tab.Screen name="Exchange" component={Exercise} />
+        <Tab.Screen name="Exchange" component={TransactionFilter} />
         <Tab.Screen name="Trade" component={InstantTrade} />
         <Tab.Screen name="Wallet" component={ChooseCurrencyModal} />
         <Tab.Screen

@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import { transactionDetailsAction } from '../../redux/transactions/actions';
+import { transactionDetailsSaga } from '../../redux/transactions/actions';
+import { toggleTransactionDetails } from '../../redux/modals/actions';
 
 export default function Transaction({ transaction, date, time }) {
   const dispatch = useDispatch();
@@ -18,7 +19,8 @@ export default function Transaction({ transaction, date, time }) {
   };
 
   const showModal = () => {
-    dispatch(transactionDetailsAction(currentTransaction));
+    dispatch(transactionDetailsSaga(currentTransaction));
+    dispatch(toggleTransactionDetails(true));
   };
 
   const getReducedAddress = (address) =>

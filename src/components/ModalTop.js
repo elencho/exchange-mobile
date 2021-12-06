@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { modalTopAction } from '../redux/transactions/actions'; // remove
 import colors from '../constants/colors';
 
 export default function ModalTop() {

@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  Image,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Animated,
-} from 'react-native';
-import { useSelector } from 'react-redux';
+import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Clipboard from 'expo-clipboard';
 
 import AppText from '../AppText';
@@ -14,9 +8,14 @@ import ModalTop from '../ModalTop';
 import TransactionDetails from './TransactionDetails';
 import colors from '../../constants/colors';
 import AppModal from '../AppModal';
+import { toggleTransactionDetails } from '../../redux/modals/actions';
 
 export default function TransactionModal() {
+  const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
+  const transactionDetailsVisible = useSelector(
+    (state) => state.modals.transactionDetailsVisible
+  );
 
   const {
     currentTransaction: { type, transactionInfo },
@@ -26,9 +25,13 @@ export default function TransactionModal() {
     Clipboard.setString(transactionInfo);
   };
 
+  const hide = () => {
+    dispatch(toggleTransactionDetails(false));
+  };
+
   return (
-    <AppModal adjust>
-      <Animated.View style={styles.container}>
+    <AppModal bottom hide={hide} visible={transactionDetailsVisible}>
+      <View>
         <ModalTop />
 
         <View style={styles.block}>
@@ -58,7 +61,7 @@ export default function TransactionModal() {
 
           <TransactionDetails />
         </View>
-      </Animated.View>
+      </View>
     </AppModal>
   );
 }

@@ -1,17 +1,32 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
-  modalRef: {},
+  datePickerVisible: { to: false, from: false },
+  chooseCurrencyModalVisible: false,
+  transactionDetailsVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { tradeType, modalRef } = action;
-  // const { drawerRef } = state;
+  const {
+    datePickerVisible,
+    chooseCurrencyModalVisible,
+    transactionDetailsVisible,
+  } = action;
   switch (action.type) {
-    case actionTypes.SET_MODAL_REF:
+    case actionTypes.TOGGLE_DATEPICKER:
       return {
         ...state,
-        modalRef,
+        datePickerVisible,
+      };
+    case actionTypes.CHOOSE_CURRENCY_MODAL_VISIBLE:
+      return {
+        ...state,
+        chooseCurrencyModalVisible,
+      };
+    case actionTypes.TRANSACTION_DETAILS_MODAL:
+      return {
+        ...state,
+        transactionDetailsVisible,
       };
     default:
       return state;

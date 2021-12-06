@@ -15,13 +15,15 @@ import colors from '../constants/colors';
 import { clearFilters } from '../redux/transactions/actions';
 import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
 import DatePicker from '../components/TransactionFilter/DatePicker';
+import { toggleCurrencyModal } from '../redux/modals/actions';
 
 export default function TransactionFilter({ navigation }) {
   const dispatch = useDispatch();
   const currency = useSelector((state) => state.transactions.currency);
-  const modalRef = useSelector((state) => state.modals.modalRef);
 
-  const openModal = () => modalRef.open();
+  const openModal = () => {
+    dispatch(toggleCurrencyModal(true));
+  };
 
   const clear = () => {
     dispatch(clearFilters());

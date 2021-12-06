@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import { toggleDatePicker } from '../../redux/transactions/actions';
+import { toggleDatePicker } from '../../redux/modals/actions';
 
 export default function DatePicker({ to = false, from = false }) {
   const dispatch = useDispatch();

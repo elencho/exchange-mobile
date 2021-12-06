@@ -1,16 +1,14 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest, delay } from 'redux-saga/effects';
 
-import { actionTypes } from './actions';
-
-import { getModalRef } from './selectors';
+import { actionTypes, toggleCurrencyModal } from './actions';
 
 function* currencySaga(action) {
-  // const { name, currencyList, code } = action;
-  // yield put(chooseCurrency(name));
-  // yield put(filterCurrencies(currencyList));
-  // yield put(setAbbr(code));
+  yield put(setModalRef(action.ref));
+  // const aa = yield select((state) => state.modals.chooseCurrencyModalVisible);
   // const modalRef = yield select(getModalRef);
-  // yield call(modalRef.close);
+  // yield delay(1000);
+  // yield call(() => console.log(modalRef));
+  // yield call(() => modalRef.open());
 }
 
 export default function* () {

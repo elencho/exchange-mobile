@@ -30,8 +30,6 @@ import {
   totalLoadedTransactions,
 } from './selectors';
 
-import { getModalRef } from '../modals/selectors';
-
 function* fetchTransactionsSaga() {
   yield put(toggleLoading(true));
 
@@ -112,9 +110,6 @@ function* currencySaga(action) {
   yield put(chooseCurrency(name));
   yield put(filterCurrencies(currencyList));
   yield put(setAbbr(code));
-
-  const modalRef = yield select(getModalRef);
-  yield call(modalRef.close);
 }
 
 function* showResultsSaga(action) {
@@ -128,9 +123,7 @@ function* showResultsSaga(action) {
 
 function* transactionDetailsSaga(action) {
   const { currentTransaction } = action;
-  const modalRef = yield select(getModalRef);
   yield put(setCurrentTransaction(currentTransaction));
-  yield call(modalRef.open);
 }
 
 export default function* () {

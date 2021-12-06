@@ -1,16 +1,11 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import AppText from '../AppText';
 
 export default function ReadyTrades() {
-  const modalRef = useSelector((state) => state.modals.modalRef);
-
-  const handleTrade = (t) => {
-    modalRef.open();
-  };
+  const handleTrade = (t) => {};
 
   return (
     <View style={styles.container}>

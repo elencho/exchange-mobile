@@ -4,15 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 
-import { currencyAction } from '../../redux/transactions/actions';
 import colors from '../../constants/colors';
+import { toggleCurrencyModal } from '../../redux/modals/actions';
+import { currencyAction } from '../../redux/transactions/actions';
 
 export default function Currency({ name, code }) {
   const dispatch = useDispatch();
-  const currency = useSelector((state) => state.transactions.currency);
-  const currenciesConstant = useSelector(
-    (state) => state.transactions.currenciesConstant
-  );
+  const state = useSelector((state) => state);
+  const {
+    transactions: { currency, currenciesConstant },
+  } = state;
 
   const choose = () => {
     dispatch(
@@ -22,6 +23,7 @@ export default function Currency({ name, code }) {
         name === 'Show All Currency' ? null : code
       )
     );
+    dispatch(toggleCurrencyModal(false));
   };
 
   const backgroundCond = () => {

@@ -1,41 +1,48 @@
-import React, { useEffect } from 'react';
-import { Platform, StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { Modalize } from 'react-native-modalize';
-import Constants from 'expo-constants';
+import React from 'react';
+import { Modal, BottomModal, SlideAnimation } from 'react-native-modals';
+import { useSafeAreaFrame } from 'react-native-safe-area-context';
 
-import { setModalRef } from '../redux/modals/actions';
-
-export default function AppModal({ children, adjust = false }) {
-  let modalRef;
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setModalRef(modalRef));
-  }, []);
+export default function AppModal({ children, bottom = false, visible, hide }) {
+  const height = useSafeAreaFrame().height;
+  const width = useSafeAreaFrame().width;
 
   return (
-    <Modalize
-      modalStyle={[
-        styles.modalStyle,
-        Platform.OS === 'ios' && { marginTop: Constants.statusBarHeight },
-      ]}
-      ref={(ref) => (modalRef = ref)}
-      withHandle={false}
-      withReactModal
-      adjustToContentHeight={adjust}
-      threshold={25}
-      // onClosed={/* Trigger close modal */}
-    >
-      {children}
-    </Modalize>
+    <>
+      {!bottom && (
+        <Modal
+          visible={visible}
+          onTouchOutside={hide}
+          onSwipeOut={hide}
+          modalAnimation={
+            new SlideAnimation({
+              slideFrom: 'bottom',
+            })
+          }
+          swipeDirection="down"
+          rounded={false}
+          width={width}
+          height={height}
+        >
+          {children}
+        </Modal>
+      )}
+
+      {bottom && (
+        <BottomModal
+          visible={visible}
+          onTouchOutside={hide}
+          onSwipeOut={hide}
+          modalAnimation={
+            new SlideAnimation({
+              slideFrom: 'bottom',
+            })
+          }
+          swipeDirection="down"
+          rounded={false}
+        >
+          {children}
+        </BottomModal>
+      )}
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  modalStyle: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0,0,0,0)',
-  },
-});

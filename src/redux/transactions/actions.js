@@ -14,7 +14,6 @@ export const actionTypes = {
   SET_TAB_ROUTE_NAME: 'SET_TAB_ROUTE_NAME',
 
   // PURE VISUALS
-  TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
   TOGGLE_LOADING: 'TOGGLE_LOADING',
 
   // FOR SAGAS
@@ -71,10 +70,6 @@ export const setToTime = (toDateTime) => ({
 });
 export const clearFilters = () => ({
   type: actionTypes.CLEAR_FILTERS,
-});
-export const toggleDatePicker = (datePickerVisible) => ({
-  type: actionTypes.TOGGLE_DATEPICKER,
-  datePickerVisible,
 });
 export const toggleLoading = (loading) => ({
   type: actionTypes.TOGGLE_LOADING,

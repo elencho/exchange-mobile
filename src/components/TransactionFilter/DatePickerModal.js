@@ -3,17 +3,14 @@ import { StyleSheet, Modal, View, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import CalendarPicker from 'react-native-calendar-picker';
 
-import {
-  setFromTime,
-  setToTime,
-  toggleDatePicker,
-} from '../../redux/transactions/actions';
+import { setFromTime, setToTime } from '../../redux/transactions/actions';
+import { toggleDatePicker } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
 
 export default function DatePickerModal({ from, to }) {
   const dispatch = useDispatch();
   const datePickerVisible = useSelector(
-    (state) => state.transactions.datePickerVisible
+    (state) => state.modals.datePickerVisible
   );
 
   const visible = () => {

@@ -9,7 +9,6 @@ const INITIAL_STATE = {
   currentTransaction: {},
   currency: 'Show All Currency',
 
-  datePickerVisible: { to: false, from: false },
   loading: true,
 
   // Query Params
@@ -33,7 +32,6 @@ export default (state = INITIAL_STATE, action) => {
     code,
     toDateTime,
     fromDateTime,
-    datePickerVisible,
     loading,
     offset,
     tabRouteName,
@@ -100,11 +98,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         offset,
-      };
-    case actionTypes.TOGGLE_DATEPICKER:
-      return {
-        ...state,
-        datePickerVisible,
       };
     case actionTypes.TOGGLE_LOADING:
       return {

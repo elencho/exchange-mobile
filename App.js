@@ -7,6 +7,7 @@ import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
+import { ModalPortal } from 'react-native-modals';
 
 import { reducer } from './src/redux/rootReducer';
 import mySaga from './src/redux/sagas';
@@ -39,6 +40,7 @@ export default function App() {
       <SafeAreaView style={styles.statusBar} />
       <SafeAreaView style={styles.container}>
         <Navigator />
+        <ModalPortal />
       </SafeAreaView>
       <SafeAreaView style={styles.statusBar} />
     </Provider>

@@ -1,14 +1,6 @@
 import React, { useEffect } from 'react';
-import {
-  Dimensions,
-  Image,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
 
 import AppText from '../AppText';
 import Currency from './Currency';
@@ -20,12 +12,14 @@ import {
   filterCurrencies,
 } from '../../redux/transactions/actions';
 import colors from '../../constants/colors';
+import { toggleCurrencyModal } from '../../redux/modals/actions';
 
 export default function ChooseCurrencyModal() {
-  const height = useSafeAreaFrame().height;
-
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
+  const chooseCurrencyModalVisible = useSelector(
+    (state) => state.modals.chooseCurrencyModalVisible
+  );
 
   useEffect(() => {
     dispatch(fetchCurrencies());
@@ -40,9 +34,13 @@ export default function ChooseCurrencyModal() {
     dispatch(filterCurrencies(filteredArray));
   };
 
+  const hide = () => {
+    dispatch(toggleCurrencyModal(false));
+  };
+
   return (
-    <AppModal>
-      <View style={{ height }}>
+    <AppModal visible={chooseCurrencyModalVisible} hide={hide}>
+      <View style={styles.container}>
         <ModalTop />
 
         <View style={styles.block}>
@@ -77,6 +75,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.SECONDARY_BACKGROUND,
     padding: 40,
     paddingBottom: 20,
+  },
+  container: {
+    flex: 1,
   },
   headline: {
     fontSize: 20,

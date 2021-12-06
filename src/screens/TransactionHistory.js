@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  Animated,
-  ActivityIndicator,
-} from 'react-native';
+import { FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../components/Background';

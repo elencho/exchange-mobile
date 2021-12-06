@@ -345,8 +345,6 @@ PODS:
   - RNScreens (3.8.0):
     - React-Core
     - React-RCTImage
-  - RNStaticSafeAreaInsets (2.1.1):
-    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -400,7 +398,6 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - RNStaticSafeAreaInsets (from `../node_modules/react-native-static-safe-area-insets`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -506,8 +503,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  RNStaticSafeAreaInsets:
-    :path: "../node_modules/react-native-static-safe-area-insets"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -531,7 +526,7 @@ SPEC CHECKSUMS:
   EXUpdates: 061b67c33f0e7f8fd335bbb48697c4a4fc8a5157
   EXUpdatesInterface: e1c01b4f5ec76bd1d6cc714938f9edf5ef6379b9
   FBLazyVector: c71c5917ec0ad2de41d5d06a5855f6d5eda06971
-  FBReactNativeSpec: 5fbe1f4aab78dddda0f36296849a752f0c3abeef
+  FBReactNativeSpec: a29f5c85486dd5833ca124a19c365bf5ad4f4f37
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   IdensicMobileSDK: 52b66f85bd4f1364bddfa43f07ff0adef44d6dd3
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
@@ -545,7 +540,7 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
-  react-native-mobilesdk-module: 419e4fb14bd2d58bf64846c8b0950147fc9137f1
+  react-native-mobilesdk-module: b16753a0323406be009125d3f8735e432157014d
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   React-perflogger: cc76a4254d19640f1d8ad1c66fdee800414b805c
   React-RCTActionSheet: 7448f049318d8d7e8a9a1ebb742ada721757eea8
@@ -562,7 +557,6 @@ SPEC CHECKSUMS:
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: 024eff8202342abf4b24e11575a16afc441dabfe
   RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
-  RNStaticSafeAreaInsets: 6103cf09647fa427186d30f67b0f5163c1ae8252
   Yoga: e6ecf3fa25af9d4c87e94ad7d5d292eedef49749
 
 PODFILE CHECKSUM: ca004f37ba97a115bb712dca137b55f8ca22d3c1
