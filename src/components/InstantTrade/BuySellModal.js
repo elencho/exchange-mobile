@@ -11,6 +11,7 @@ import Headline from '../TransactionHistory/Headline';
 import CloseModalIcon from './CloseModalIcon';
 import CurrencyDropdowns from './CurrencyDropdowns';
 import { toggleBuySellModal } from '../../redux/modals/actions';
+import BalanceCardSwitcher from './BalanceCardSwitcher';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ export default function BuySellModal() {
   };
 
   return (
-    <AppModal visible={buySellModalVisible} hide={hide}>
+    <AppModal visible={true} hide={hide}>
       <Background>
         <View style={styles.flex}>
           <CloseModalIcon onPress={hide} />
@@ -35,6 +36,8 @@ export default function BuySellModal() {
           <AppText subtext body style={styles.balance}>
             My Balance: 2 000.00 GEL
           </AppText>
+
+          <BalanceCardSwitcher />
 
           <CurrencyDropdowns style={styles.dropdowns} />
 
