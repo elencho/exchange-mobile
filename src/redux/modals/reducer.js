@@ -4,13 +4,17 @@ const INITIAL_STATE = {
   datePickerVisible: { to: false, from: false },
   chooseCurrencyModalVisible: false,
   transactionDetailsVisible: false,
+  buySellModalVisible: false,
+  infoVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
   const {
     datePickerVisible,
     chooseCurrencyModalVisible,
+    buySellModalVisible,
     transactionDetailsVisible,
+    infoVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -27,6 +31,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         transactionDetailsVisible,
+      };
+    case actionTypes.BUY_SELL_MODAL_VISIBLE:
+      return {
+        ...state,
+        buySellModalVisible,
+      };
+    case actionTypes.INSTANT_TRADE_INFO:
+      return {
+        ...state,
+        infoVisible,
       };
     default:
       return state;

@@ -10,7 +10,7 @@ export default function DownloadTransactions() {
           source={require('../../assets/images/Download.png')}
           style={styles.icon}
         />
-        <AppText style={{ fontSize: 12, color: '#C0C5E0' }}>Download</AppText>
+        <AppText style={styles.download}>Download</AppText>
       </Pressable>
     </View>
   );
@@ -34,5 +34,9 @@ const styles = StyleSheet.create({
     width: 10,
     height: 10,
     marginRight: 5,
+  },
+  download: {
+    fontSize: 12,
+    color: '#C0C5E0',
   },
 });

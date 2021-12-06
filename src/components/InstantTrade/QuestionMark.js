@@ -1,12 +1,20 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import colors from '../../constants/colors';
+import { toggleInfoModal } from '../../redux/modals/actions';
 import AppText from '../AppText';
 
 export default function QuestionMark() {
+  const dispatch = useDispatch();
+
+  const showInfo = () => {
+    dispatch(toggleInfoModal(true));
+  };
+
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={showInfo}>
       <AppText header style={styles.questionMark}>
         ?
       </AppText>

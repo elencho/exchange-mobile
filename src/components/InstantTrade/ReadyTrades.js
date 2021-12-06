@@ -1,11 +1,17 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import colors from '../../constants/colors';
+import { toggleBuySellModal } from '../../redux/modals/actions';
 import AppText from '../AppText';
 
 export default function ReadyTrades() {
-  const handleTrade = (t) => {};
+  const dispatch = useDispatch();
+
+  const handleTrade = (t) => {
+    dispatch(toggleBuySellModal(true));
+  };
 
   return (
     <View style={styles.container}>

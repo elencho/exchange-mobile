@@ -13,6 +13,7 @@ import { reducer } from './src/redux/rootReducer';
 import mySaga from './src/redux/sagas';
 import Navigator from './src/navigation';
 import images from './src/constants/images';
+import colors from './src/constants/colors';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -54,6 +55,6 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     flex: 0,
-    backgroundColor: '#161629',
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
 });

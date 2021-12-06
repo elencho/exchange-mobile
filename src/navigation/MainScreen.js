@@ -8,7 +8,6 @@ import InstantTrade from '../screens/InstantTrade';
 // import TestScreen from '../screens/Test';
 import BottomTabs from '../components/BottomTabs';
 import TransactionFilter from '../screens/TransactionFilter';
-import ChooseCurrencyModal from '../components/TransactionFilter/ChooseCurrencyModal';
 import { setTabRouteName } from '../redux/transactions/actions';
 import Exercise from '../screens/Exercise';
 
@@ -32,7 +31,7 @@ export default function MainScreen() {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName="Transactions"
+        initialRouteName="Trade"
         tabBar={({ state, navigation, descriptors }) => (
           <BottomTabs
             routes={state.routes}
@@ -43,7 +42,7 @@ export default function MainScreen() {
       >
         <Tab.Screen name="Exchange" component={TransactionFilter} />
         <Tab.Screen name="Trade" component={InstantTrade} />
-        <Tab.Screen name="Wallet" component={ChooseCurrencyModal} />
+        <Tab.Screen name="Wallet" component={Exercise} />
         <Tab.Screen
           name="Transactions"
           children={() => <TransactionHistory />}

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
-import { useSelector } from 'react-redux';
+import { Pressable, StyleSheet, View, Keyboard } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import AppModal from '../AppModal';
@@ -11,18 +10,25 @@ import Background from '../Background';
 import Headline from '../TransactionHistory/Headline';
 import CloseModalIcon from './CloseModalIcon';
 import CurrencyDropdowns from './CurrencyDropdowns';
+import { toggleBuySellModal } from '../../redux/modals/actions';
 
 export default function BuySellModal() {
-  const height = useSafeAreaFrame().height;
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const {
+    trade: { tradeType },
+    modals: { buySellModalVisible },
+  } = state;
 
-  const state = useSelector((state) => state.trade);
-  const { tradeType } = state;
+  const hide = () => {
+    dispatch(toggleBuySellModal(false));
+  };
 
   return (
-    <AppModal>
-      <Background style={{ height }}>
+    <AppModal visible={buySellModalVisible} hide={hide}>
+      <Background>
         <View style={styles.flex}>
-          <CloseModalIcon />
+          <CloseModalIcon onPress={hide} />
 
           <Headline title={`${tradeType} BTC`} />
 
