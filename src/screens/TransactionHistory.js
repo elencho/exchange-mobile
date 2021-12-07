@@ -90,7 +90,7 @@ function TransactionHistory({ navigation }) {
       )}
 
       {/* Transaction Modal */}
-      <TransactionModal />
+      <TransactionModal transactions />
     </Background>
   );
 }

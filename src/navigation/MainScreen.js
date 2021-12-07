@@ -30,6 +30,7 @@ export default function MainScreen() {
         screenListeners={tabRoute}
         screenOptions={{
           headerShown: false,
+          unmountOnBlur: true,
         }}
         initialRouteName="Trade"
         tabBar={({ state, navigation, descriptors }) => (

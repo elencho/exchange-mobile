@@ -10,6 +10,7 @@ import Headline from '../components/TransactionHistory/Headline';
 import TopRow from '../components/TransactionHistory/TopRow';
 import BuySellModal from '../components/InstantTrade/BuySellModal';
 import InfoModal from '../components/InstantTrade/InfoModal';
+import TransactionModal from '../components/TransactionHistory/TransactionModal';
 import colors from '../constants/colors';
 
 export default function InstantTrade() {
@@ -32,6 +33,7 @@ export default function InstantTrade() {
 
       <InfoModal />
       <BuySellModal />
+      <TransactionModal trades />
     </Background>
   );
 }

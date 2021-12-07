@@ -46,7 +46,7 @@ export default function BuySellModal() {
 
           <BalanceCardSwitcher />
 
-          <ScrollView>
+          <ScrollView nestedScrollEnabled>
             <TouchableOpacity activeOpacity={0.99}>
               <CurrencyDropdowns style={styles.dropdowns} />
 

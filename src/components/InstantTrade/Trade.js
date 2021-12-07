@@ -1,12 +1,20 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
+import { toggleTransactionDetails } from '../../redux/modals/actions';
 
 export default function Trade() {
+  const dispatch = useDispatch();
+
+  const show = () => {
+    dispatch(toggleTransactionDetails(true));
+  };
+
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={show}>
       <View style={styles.row}>
         <AppText style={styles.primary} medium body>
           LTC - GEL
@@ -39,7 +47,7 @@ export default function Trade() {
           Expired
         </AppText>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

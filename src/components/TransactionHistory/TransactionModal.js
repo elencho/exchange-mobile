@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Clipboard from 'expo-clipboard';
@@ -10,7 +10,7 @@ import colors from '../../constants/colors';
 import AppModal from '../AppModal';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
 
-export default function TransactionModal() {
+export default function TransactionModal({ transactions, trades }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
   const transactionDetailsVisible = useSelector(
@@ -20,6 +20,13 @@ export default function TransactionModal() {
   const {
     currentTransaction: { type, transactionInfo },
   } = state;
+
+  useEffect(() => {
+    console.log('mounted');
+    return () => {
+      console.log('unmounted');
+    };
+  }, []);
 
   const copy = () => {
     Clipboard.setString(transactionInfo);
@@ -39,27 +46,31 @@ export default function TransactionModal() {
             Transaction Details
           </AppText>
 
-          <View style={styles.top}>
-            <Image
-              style={styles.deposit}
-              source={require('../../assets/images/Deposit.png')}
-            />
+          {transactions && (
+            <>
+              <View style={styles.top}>
+                <Image
+                  style={styles.deposit}
+                  source={require('../../assets/images/Deposit.png')}
+                />
 
-            <View style={styles.middle}>
-              <AppText medium style={[styles.white, styles.capitalize]}>
-                {type}
-              </AppText>
-              <AppText style={styles.text}>{transactionInfo}</AppText>
-            </View>
+                <View style={styles.middle}>
+                  <AppText medium style={[styles.white, styles.capitalize]}>
+                    {type}
+                  </AppText>
+                  <AppText style={styles.text}>{transactionInfo}</AppText>
+                </View>
 
-            <TouchableOpacity style={styles.copy} onPress={copy}>
-              <Image source={require('../../assets/images/Copy.png')} />
-            </TouchableOpacity>
-          </View>
+                <TouchableOpacity style={styles.copy} onPress={copy}>
+                  <Image source={require('../../assets/images/Copy.png')} />
+                </TouchableOpacity>
+              </View>
 
-          <View style={styles.line} />
+              <View style={styles.line} />
 
-          <TransactionDetails />
+              <TransactionDetails />
+            </>
+          )}
         </View>
       </View>
     </AppModal>

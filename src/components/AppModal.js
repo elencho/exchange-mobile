@@ -1,47 +1,56 @@
 import React from 'react';
-import { Modal, BottomModal, SlideAnimation } from 'react-native-modals';
-import { useSafeAreaFrame } from 'react-native-safe-area-context';
+import { BottomModal, SlideAnimation } from 'react-native-modals';
+import Modal from 'react-native-modal';
+import { Dimensions } from 'react-native';
+import Constants from 'expo-constants';
 
 export default function AppModal({ children, bottom = false, visible, hide }) {
-  const height = useSafeAreaFrame().height;
-  const width = useSafeAreaFrame().width;
+  const deviceWidth = Dimensions.get('window').width;
+  const deviceHeight =
+    Platform.OS === 'ios'
+      ? Dimensions.get('window').height
+      : require('react-native-extra-dimensions-android').get(
+          'REAL_WINDOW_HEIGHT'
+        );
 
   return (
     <>
       {!bottom && (
         <Modal
-          visible={visible}
-          onTouchOutside={hide}
-          onSwipeOut={hide}
-          modalAnimation={
-            new SlideAnimation({
-              slideFrom: 'bottom',
-            })
-          }
+          isVisible={visible}
+          onBackdropPress={hide}
+          onSwipeComplete={hide}
           swipeDirection="down"
-          rounded={false}
-          width={width}
-          height={height}
+          propagateSwipe={true}
+          deviceWidth={deviceWidth}
+          deviceHeight={deviceHeight}
+          style={{
+            marginHorizontal: 0,
+            marginTop: Constants.statusBarHeight,
+            justifyContent: 'flex-end',
+          }}
         >
           {children}
         </Modal>
       )}
 
       {bottom && (
-        <BottomModal
-          visible={visible}
-          onTouchOutside={hide}
-          onSwipeOut={hide}
-          modalAnimation={
-            new SlideAnimation({
-              slideFrom: 'bottom',
-            })
-          }
+        <Modal
+          isVisible={visible}
+          onBackdropPress={hide}
+          onSwipeComplete={hide}
           swipeDirection="down"
-          rounded={false}
+          propagateSwipe={true}
+          deviceWidth={deviceWidth}
+          deviceHeight={deviceHeight}
+          style={{
+            marginHorizontal: 0,
+            marginTop: Constants.statusBarHeight,
+            justifyContent: 'flex-end',
+          }}
         >
           {children}
-        </BottomModal>
+        </Modal>
       )}
     </>
   );
