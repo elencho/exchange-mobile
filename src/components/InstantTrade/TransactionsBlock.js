@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import colors from '../../constants/colors';
 import AppText from '../AppText';
+import PurpleText from '../PurpleText';
 import Trade from './Trade';
 
 const TopRow = () => (
@@ -11,9 +12,7 @@ const TopRow = () => (
       Transactions
     </AppText>
     <AppText subtext body style={styles.subText}>
-      <AppText medium style={styles.blue}>
-        Hide{' '}
-      </AppText>
+      <PurpleText text="Hide " />
       other pairs
     </AppText>
   </View>
@@ -39,9 +38,6 @@ export default function TransactionsBlock() {
 }
 
 const styles = StyleSheet.create({
-  blue: {
-    color: colors.SECONDARY_PURPLE,
-  },
   container: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
     padding: 25,

@@ -3,13 +3,14 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import Background from '../components/Background';
 import BuySellSwitch from '../components/InstantTrade/BuySellSwitch';
-import QuestionMark from '../components/InstantTrade/QuestionMark';
+import InfoMark from '../components/InstantTrade/InfoMark';
 import TradeBlock from '../components/InstantTrade/TradeBlock';
 import TransactionsBlock from '../components/InstantTrade/TransactionsBlock';
 import Headline from '../components/TransactionHistory/Headline';
 import TopRow from '../components/TransactionHistory/TopRow';
 import BuySellModal from '../components/InstantTrade/BuySellModal';
 import InfoModal from '../components/InstantTrade/InfoModal';
+import colors from '../constants/colors';
 
 export default function InstantTrade() {
   return (
@@ -18,7 +19,8 @@ export default function InstantTrade() {
 
       <View style={styles.headRow}>
         <Headline title="Instant Trade" />
-        <QuestionMark />
+        <View style={{ marginRight: 5 }} />
+        <InfoMark inner="?" color={colors.SECONDARY_PURPLE} />
       </View>
 
       <BuySellSwitch />

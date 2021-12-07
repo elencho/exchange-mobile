@@ -16,6 +16,7 @@ import { clearFilters } from '../redux/transactions/actions';
 import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
 import DatePicker from '../components/TransactionFilter/DatePicker';
 import { toggleCurrencyModal } from '../redux/modals/actions';
+import PurpleText from '../components/PurpleText';
 
 export default function TransactionFilter({ navigation }) {
   const dispatch = useDispatch();
@@ -61,9 +62,7 @@ export default function TransactionFilter({ navigation }) {
 
       <TouchableOpacity style={styles.clear} onPress={clear}>
         <Image source={require('../assets/images/Clear.png')} />
-        <AppText medium style={styles.clearText}>
-          Clear Filters
-        </AppText>
+        <PurpleText style={styles.purple} text="Clear Filters" />
       </TouchableOpacity>
 
       <TransactionFilterBottom />
@@ -81,9 +80,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 5,
   },
-  clearText: {
+  purple: {
     fontSize: 15,
-    color: colors.SECONDARY_PURPLE,
     marginHorizontal: 5,
   },
   close: {

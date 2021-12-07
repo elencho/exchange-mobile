@@ -6,6 +6,7 @@ import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { useDispatch } from 'react-redux';
 import { showResultsAction } from '../../redux/transactions/actions';
+import PurpleText from '../PurpleText';
 
 function TransactionFilterBottom({ navigation }) {
   const dispatch = useDispatch();
@@ -24,9 +25,7 @@ function TransactionFilterBottom({ navigation }) {
 
       <Pressable style={styles.download}>
         <Image source={require('../../assets/images/Download.png')} />
-        <AppText medium style={styles.blue}>
-          Download
-        </AppText>
+        <PurpleText style={styles.purple} text="Download" />
       </Pressable>
     </View>
   );
@@ -35,11 +34,9 @@ function TransactionFilterBottom({ navigation }) {
 export default withNavigation(TransactionFilterBottom);
 
 const styles = StyleSheet.create({
-  blue: {
-    fontSize: 15,
-    color: colors.SECONDARY_PURPLE,
+  purple: {
+    fontSize: 14,
     marginVertical: 30,
-    textAlign: 'center',
     marginHorizontal: 5,
   },
   button: {
@@ -59,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   white: {
-    fontSize: 15,
+    fontSize: 14,
     color: colors.PRIMARY_TEXT,
   },
 });

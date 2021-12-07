@@ -3,6 +3,8 @@ import { actionTypes } from './actions';
 const INITIAL_STATE = {
   tradeType: 'Buy',
   Balance_Card: 'balance',
+  bank: null,
+  card: null,
 };
 
 export default (state = INITIAL_STATE, action) => {

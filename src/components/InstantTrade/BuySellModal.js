@@ -1,5 +1,11 @@
 import React from 'react';
-import { Pressable, StyleSheet, View, Keyboard } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -12,13 +18,14 @@ import CloseModalIcon from './CloseModalIcon';
 import CurrencyDropdowns from './CurrencyDropdowns';
 import { toggleBuySellModal } from '../../redux/modals/actions';
 import BalanceCardSwitcher from './BalanceCardSwitcher';
+import CardSection from './CardSection';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    trade: { tradeType },
     modals: { buySellModalVisible },
+    trade: { Balance_Card },
   } = state;
 
   const hide = () => {
@@ -26,12 +33,12 @@ export default function BuySellModal() {
   };
 
   return (
-    <AppModal visible={true} hide={hide}>
+    <AppModal visible={buySellModalVisible} hide={hide}>
       <Background>
         <View style={styles.flex}>
           <CloseModalIcon onPress={hide} />
 
-          <Headline title={`${tradeType} BTC`} />
+          <Headline title="Buy BTC" />
 
           <AppText subtext body style={styles.balance}>
             My Balance: 2 000.00 GEL
@@ -39,17 +46,23 @@ export default function BuySellModal() {
 
           <BalanceCardSwitcher />
 
-          <CurrencyDropdowns style={styles.dropdowns} />
+          <ScrollView>
+            <TouchableOpacity activeOpacity={0.99}>
+              <CurrencyDropdowns style={styles.dropdowns} />
 
-          <AppInput
-            keyboardType="decimal-pad"
-            right={<AppText style={styles.code}>GEL</AppText>}
-          />
-          <View style={styles.margin} />
-          <AppInput
-            keyboardType="decimal-pad"
-            right={<AppText style={styles.code}>BTC</AppText>}
-          />
+              <AppInput
+                keyboardType="decimal-pad"
+                right={<AppText style={styles.code}>GEL</AppText>}
+              />
+              <View style={styles.margin} />
+              <AppInput
+                keyboardType="decimal-pad"
+                right={<AppText style={styles.code}>BTC</AppText>}
+              />
+
+              {Balance_Card === 'card' && <CardSection />}
+            </TouchableOpacity>
+          </ScrollView>
         </View>
 
         <Pressable style={styles.button}>
