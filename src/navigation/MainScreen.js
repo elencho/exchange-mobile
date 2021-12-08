@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import TransactionHistory from '../screens/TransactionHistory';
 import InstantTrade from '../screens/InstantTrade';
-// import TestScreen from '../screens/Test';
+import TestScreen from '../screens/Test';
 import BottomTabs from '../components/BottomTabs';
 import TransactionFilter from '../screens/TransactionFilter';
 import { setTabRouteName } from '../redux/transactions/actions';
@@ -43,7 +43,7 @@ export default function MainScreen() {
       >
         <Tab.Screen name="Exchange" component={TransactionFilter} />
         <Tab.Screen name="Trade" component={InstantTrade} />
-        <Tab.Screen name="Wallet" component={Exercise} />
+        <Tab.Screen name="Wallet" component={TestScreen} />
         <Tab.Screen
           name="Transactions"
           children={() => <TransactionHistory />}
