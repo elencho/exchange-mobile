@@ -24,6 +24,7 @@ export default {
   Withdrawal: require('../assets/images/Withdrawal.png'),
   MC_Card: require('../assets/images/MC_Card.png'),
   Visa: require('../assets/images/Visa.png'),
+  TBC: require('../assets/images/TBC.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),

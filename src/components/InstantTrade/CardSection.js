@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
-import { toggleChooseCardModal } from '../../redux/modals/actions';
+import {
+  toggleChooseCardModal,
+  toggleChooseBankModal,
+} from '../../redux/modals/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import InfoMark from './InfoMark';
@@ -18,9 +21,13 @@ export default function CardSection() {
     dispatch(toggleChooseCardModal(true));
   };
 
+  const showBanks = () => {
+    dispatch(toggleChooseBankModal(true));
+  };
+
   return (
     <View style={styles.container}>
-      <Pressable style={styles.dropdown}>
+      <Pressable style={styles.dropdown} onPress={showBanks}>
         {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
         <AppText
           style={[

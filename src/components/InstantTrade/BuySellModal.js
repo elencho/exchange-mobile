@@ -20,6 +20,7 @@ import { toggleBuySellModal } from '../../redux/modals/actions';
 import BalanceCardSwitcher from './BalanceCardSwitcher';
 import CardSection from './CardSection';
 import ChooseCardModal from './ChooseCardModal';
+import ChooseBankModal from './ChooseBankModal';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
@@ -62,6 +63,8 @@ export default function BuySellModal() {
               />
 
               {Balance_Card === 'card' && <CardSection />}
+
+              <ChooseBankModal />
               <ChooseCardModal />
             </TouchableOpacity>
           </ScrollView>

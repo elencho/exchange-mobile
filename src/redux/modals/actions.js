@@ -5,6 +5,7 @@ export const actionTypes = {
   BUY_SELL_MODAL_VISIBLE: 'BUY_SELL_MODAL_VISIBLE',
   INSTANT_TRADE_INFO: 'INSTANT_TRADE_INFO',
   CHOOSE_CARD_MODAL: 'CHOOSE_CARD_MODAL',
+  CHOOSE_BANK_MODAL: 'CHOOSE_BANK_MODAL',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -30,4 +31,8 @@ export const toggleInfoModal = (infoVisible) => ({
 export const toggleChooseCardModal = (chooseCardModalVisible) => ({
   type: actionTypes.CHOOSE_CARD_MODAL,
   chooseCardModalVisible,
+});
+export const toggleChooseBankModal = (chooseBankModalVisible) => ({
+  type: actionTypes.CHOOSE_BANK_MODAL,
+  chooseBankModalVisible,
 });

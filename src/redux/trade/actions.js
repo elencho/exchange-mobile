@@ -1,6 +1,7 @@
 export const actionTypes = {
   SET_TRADE_TYPE: 'SET_TRADE_TYPE',
   SWITCH_BALANCE_CARD: 'SWITCH_BALANCE_CARD',
+  SET_BANK: 'SET_BANK',
   SET_CARD: 'SET_CARD',
 
   // PURE VISUALS
@@ -21,6 +22,10 @@ export const switchBalanceCard = (Balance_Card) => ({
 export const setCard = (card) => ({
   type: actionTypes.SET_CARD,
   card,
+});
+export const setBank = (bank) => ({
+  type: actionTypes.SET_BANK,
+  bank,
 });
 
 // FOR SAGAS
