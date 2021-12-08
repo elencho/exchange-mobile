@@ -4,7 +4,7 @@
     "slug": "cryptal-app",
     "version": "1.0.0",
     "assetBundlePatterns": [
-      "assets/images/*"
+      "assets/images/*", "assets/fonts/*"
     ]
   },
   "name": "cryptal-app"
