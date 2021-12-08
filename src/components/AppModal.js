@@ -4,7 +4,7 @@ import Modal from 'react-native-modal';
 import { Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 
-export default function AppModal({ children, bottom = false, visible, hide }) {
+export default function AppModal({ children, visible, hide }) {
   const deviceWidth = Dimensions.get('window').width;
   const deviceHeight =
     Platform.OS === 'ios'
@@ -14,44 +14,21 @@ export default function AppModal({ children, bottom = false, visible, hide }) {
         );
 
   return (
-    <>
-      {!bottom && (
-        <Modal
-          isVisible={visible}
-          onBackdropPress={hide}
-          onSwipeComplete={hide}
-          swipeDirection="down"
-          propagateSwipe={true}
-          deviceWidth={deviceWidth}
-          deviceHeight={deviceHeight}
-          style={{
-            marginHorizontal: 0,
-            marginTop: Constants.statusBarHeight,
-            justifyContent: 'flex-end',
-          }}
-        >
-          {children}
-        </Modal>
-      )}
-
-      {bottom && (
-        <Modal
-          isVisible={visible}
-          onBackdropPress={hide}
-          onSwipeComplete={hide}
-          swipeDirection="down"
-          propagateSwipe={true}
-          deviceWidth={deviceWidth}
-          deviceHeight={deviceHeight}
-          style={{
-            marginHorizontal: 0,
-            marginTop: Constants.statusBarHeight,
-            justifyContent: 'flex-end',
-          }}
-        >
-          {children}
-        </Modal>
-      )}
-    </>
+    <Modal
+      isVisible={visible}
+      onBackdropPress={hide}
+      onSwipeComplete={hide}
+      swipeDirection="down"
+      propagateSwipe={true}
+      deviceWidth={deviceWidth}
+      deviceHeight={deviceHeight}
+      style={{
+        marginHorizontal: 0,
+        marginTop: Constants.statusBarHeight,
+        justifyContent: 'flex-end',
+      }}
+    >
+      {children}
+    </Modal>
   );
 }

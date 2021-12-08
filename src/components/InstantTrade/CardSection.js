@@ -1,16 +1,23 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
+import { toggleChooseCardModal } from '../../redux/modals/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import InfoMark from './InfoMark';
 
 export default function CardSection() {
+  const dispatch = useDispatch();
   const state = useSelector((state) => state.trade);
   const { bank, card } = state;
+
+  const showCards = () => {
+    dispatch(toggleChooseCardModal(true));
+  };
+
   return (
     <View style={styles.container}>
       <Pressable style={styles.dropdown}>
@@ -31,7 +38,7 @@ export default function CardSection() {
         0 ₾-100 ₾ Visa / MC Card 5% Amex 7 % <PurpleText text=" More Fees" />
       </AppText>
 
-      <Pressable style={styles.dropdown}>
+      <Pressable style={styles.dropdown} onPress={showCards}>
         {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
         <AppText
           style={[

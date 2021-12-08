@@ -32,66 +32,64 @@ export default function TransactionModal({ transactions, trades }) {
   };
 
   return (
-    <AppModal bottom hide={hide} visible={transactionDetailsVisible}>
-      <View>
-        <ModalTop />
+    <AppModal hide={hide} visible={transactionDetailsVisible}>
+      <ModalTop />
 
-        <View style={styles.block}>
-          <AppText header style={styles.header}>
-            Transaction Details
-          </AppText>
+      <View style={styles.block}>
+        <AppText header style={styles.header}>
+          Transaction Details
+        </AppText>
 
-          {transactions && (
-            <>
-              <View style={styles.top}>
-                <Image style={styles.deposit} source={images.Deposit} />
+        {transactions && (
+          <>
+            <View style={styles.top}>
+              <Image style={styles.deposit} source={images.Deposit} />
 
-                <View style={styles.middle}>
-                  <AppText medium style={[styles.white, styles.capitalize]}>
-                    {type}
-                  </AppText>
-                  <AppText style={styles.text}>{transactionInfo}</AppText>
-                </View>
-
-                <TouchableOpacity style={styles.copy} onPress={copy}>
-                  <Image source={images.Copy} />
-                </TouchableOpacity>
+              <View style={styles.middle}>
+                <AppText medium style={[styles.white, styles.capitalize]}>
+                  {type}
+                </AppText>
+                <AppText style={styles.text}>{transactionInfo}</AppText>
               </View>
 
-              <View style={styles.line} />
+              <TouchableOpacity style={styles.copy} onPress={copy}>
+                <Image source={images.Copy} />
+              </TouchableOpacity>
+            </View>
 
-              <TransactionDetails />
-            </>
-          )}
+            <View style={styles.line} />
 
-          {trades && (
-            <>
-              <View style={[styles.top, { alignItems: 'flex-end' }]}>
-                <View style={[styles.top, styles.icons]}>
-                  <Image source={images.BTC} style={styles.leftIcon} />
-                  <Image source={images.USD} style={styles.rightIcon} />
-                </View>
+            <TransactionDetails />
+          </>
+        )}
 
-                <View style={styles.middle}>
-                  <AppText medium body style={styles.white}>
-                    USD - BTC
-                  </AppText>
-                  <AppText style={styles.text}>Instant trade</AppText>
-                </View>
-
-                <View style={styles.buy_sell}>
-                  <AppText medium subtext style={styles.red}>
-                    Sell
-                  </AppText>
-                </View>
+        {trades && (
+          <>
+            <View style={[styles.top, { alignItems: 'flex-end' }]}>
+              <View style={[styles.top, styles.icons]}>
+                <Image source={images.BTC} style={styles.leftIcon} />
+                <Image source={images.USD} style={styles.rightIcon} />
               </View>
 
-              <View style={styles.line} />
+              <View style={styles.middle}>
+                <AppText medium body style={styles.white}>
+                  USD - BTC
+                </AppText>
+                <AppText style={styles.text}>Instant trade</AppText>
+              </View>
 
-              <TradeDetails />
-            </>
-          )}
-        </View>
+              <View style={styles.buy_sell}>
+                <AppText medium subtext style={styles.red}>
+                  Sell
+                </AppText>
+              </View>
+            </View>
+
+            <View style={styles.line} />
+
+            <TradeDetails />
+          </>
+        )}
       </View>
     </AppModal>
   );

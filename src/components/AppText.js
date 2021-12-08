@@ -14,10 +14,11 @@ export default function AppText({
     if (medium || header) {
       return 'Ubuntu_Medium';
     }
-    if (subtext) {
+    if (subtext || body) {
       return 'Ubuntu_Regular';
     }
   };
+
   const sizeCond = () => {
     if (header) {
       return 20;

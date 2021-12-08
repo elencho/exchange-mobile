@@ -8,7 +8,7 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { tradeType, Balance_Card } = action;
+  const { tradeType, Balance_Card, card } = action;
   // const { drawerRef } = state;
   switch (action.type) {
     case actionTypes.SET_TRADE_TYPE:
@@ -20,6 +20,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         Balance_Card,
+      };
+    case actionTypes.SET_CARD:
+      return {
+        ...state,
+        card,
       };
     default:
       return state;

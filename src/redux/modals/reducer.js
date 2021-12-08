@@ -6,6 +6,7 @@ const INITIAL_STATE = {
   transactionDetailsVisible: false,
   buySellModalVisible: false,
   infoVisible: false,
+  chooseCardModalVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -15,6 +16,7 @@ export default (state = INITIAL_STATE, action) => {
     buySellModalVisible,
     transactionDetailsVisible,
     infoVisible,
+    chooseCardModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -41,6 +43,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         infoVisible,
+      };
+    case actionTypes.CHOOSE_CARD_MODAL:
+      return {
+        ...state,
+        chooseCardModalVisible,
       };
     default:
       return state;
