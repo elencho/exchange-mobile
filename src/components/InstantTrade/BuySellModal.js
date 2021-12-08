@@ -21,6 +21,7 @@ import BalanceCardSwitcher from './BalanceCardSwitcher';
 import CardSection from './CardSection';
 import ChooseCardModal from './ChooseCardModal';
 import ChooseBankModal from './ChooseBankModal';
+import BankFeesModal from './BankFeesModal';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
@@ -66,6 +67,7 @@ export default function BuySellModal() {
 
               <ChooseBankModal />
               <ChooseCardModal />
+              <BankFeesModal />
             </TouchableOpacity>
           </ScrollView>
         </View>

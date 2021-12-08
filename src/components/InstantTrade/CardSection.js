@@ -7,6 +7,7 @@ import images from '../../constants/images';
 import {
   toggleChooseCardModal,
   toggleChooseBankModal,
+  toggleBankFeesModal,
 } from '../../redux/modals/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
@@ -20,9 +21,11 @@ export default function CardSection() {
   const showCards = () => {
     dispatch(toggleChooseCardModal(true));
   };
-
   const showBanks = () => {
     dispatch(toggleChooseBankModal(true));
+  };
+  const showFees = () => {
+    dispatch(toggleBankFeesModal(true));
   };
 
   return (
@@ -42,7 +45,8 @@ export default function CardSection() {
       </Pressable>
 
       <AppText subtext style={styles.subText}>
-        0 ₾-100 ₾ Visa / MC Card 5% Amex 7 % <PurpleText text=" More Fees" />
+        0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
+        <PurpleText text=" More Fees" onPress={showFees} />
       </AppText>
 
       <Pressable style={styles.dropdown} onPress={showCards}>

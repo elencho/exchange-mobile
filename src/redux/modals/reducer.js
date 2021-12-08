@@ -8,6 +8,7 @@ const INITIAL_STATE = {
   infoVisible: false,
   chooseCardModalVisible: false,
   chooseBankModalVisible: false,
+  bankFeesModalVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -19,6 +20,7 @@ export default (state = INITIAL_STATE, action) => {
     infoVisible,
     chooseCardModalVisible,
     chooseBankModalVisible,
+    bankFeesModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -55,6 +57,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         chooseBankModalVisible,
+      };
+    case actionTypes.BANK_FEES_MODAL:
+      return {
+        ...state,
+        bankFeesModalVisible,
       };
     default:
       return state;
