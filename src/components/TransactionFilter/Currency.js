@@ -7,6 +7,7 @@ import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { toggleCurrencyModal } from '../../redux/modals/actions';
 import { currencyAction } from '../../redux/transactions/actions';
+import images from '../../constants/images';
 
 export default function Currency({ name, code }) {
   const dispatch = useDispatch();
@@ -34,10 +35,7 @@ export default function Currency({ name, code }) {
 
   return (
     <Pressable style={[styles.container, backgroundCond()]} onPress={choose}>
-      <Image
-        source={require('../../assets/images/Currencies/BTC.png')}
-        style={styles.image}
-      />
+      <Image source={images.BTC} style={styles.image} />
       <AppText medium style={styles.name}>
         {name}
       </AppText>
@@ -65,6 +63,8 @@ const styles = StyleSheet.create({
   },
   image: {
     marginHorizontal: 10,
+    width: 30,
+    height: 30,
   },
   name: {
     fontSize: 15,

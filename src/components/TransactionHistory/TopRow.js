@@ -2,15 +2,13 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 
 import colors from '../../constants/colors';
+import images from '../../constants/images';
 import AppText from '../AppText';
 
 export default function TopRow() {
   return (
     <View style={styles.topRow}>
-      <Image
-        source={require('../../assets/images/Logo.png')}
-        style={styles.logo}
-      />
+      <Image source={images.Logo} style={styles.logo} />
 
       <View style={styles.profile}>
         <AppText medium style={styles.text}>

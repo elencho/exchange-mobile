@@ -6,6 +6,7 @@ import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { transactionDetailsSaga } from '../../redux/transactions/actions';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
+import images from '../../constants/images';
 
 export default function Transaction({ transaction, date, time }) {
   const dispatch = useDispatch();
@@ -28,22 +29,22 @@ export default function Transaction({ transaction, date, time }) {
 
   const typeIcon = () => {
     if (type === 'DEPOSIT') {
-      return require('../../assets/images/Deposit.png');
+      return images.Deposit;
     }
     if (type === 'WITHDRAWAL') {
-      return require('../../assets/images/Withdrawal.png');
+      return images.Withdrawal;
     }
   };
 
   const statusIcon = () => {
     if (status === 'PENDING') {
-      return require('../../assets/images/Pending.png');
+      return images.Pending;
     }
     if (status === 'SUCCESS') {
-      return require('../../assets/images/Success.png');
+      return images.Success;
     }
     if (status === 'FAILED') {
-      return require('../../assets/images/Failed.png');
+      return images.Failed;
     }
   };
 

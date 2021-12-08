@@ -17,6 +17,7 @@ import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
 import DatePicker from '../components/TransactionFilter/DatePicker';
 import { toggleCurrencyModal } from '../redux/modals/actions';
 import PurpleText from '../components/PurpleText';
+import images from '../constants/images';
 
 export default function TransactionFilter({ navigation }) {
   const dispatch = useDispatch();
@@ -36,10 +37,7 @@ export default function TransactionFilter({ navigation }) {
         style={styles.closeContainer}
         onPress={() => navigation.goBack()}
       >
-        <Image
-          source={require('../assets/images/Close.png')}
-          style={styles.close}
-        />
+        <Image source={images.Close} style={styles.close} />
       </Pressable>
 
       <Headline title="Transaction Filter" />
@@ -54,14 +52,14 @@ export default function TransactionFilter({ navigation }) {
         <AppText medium style={styles.bigText}>
           {currency || 'Show All Currencies'}
         </AppText>
-        <Image source={require('../assets/images/Arrow.png')} />
+        <Image source={images.Arrow} />
       </Pressable>
 
       <DatePicker from />
       <DatePicker to />
 
       <TouchableOpacity style={styles.clear} onPress={clear}>
-        <Image source={require('../assets/images/Clear.png')} />
+        <Image source={images.Clear} />
         <PurpleText style={styles.purple} text="Clear Filters" />
       </TouchableOpacity>
 

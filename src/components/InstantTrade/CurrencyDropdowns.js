@@ -10,7 +10,7 @@ export default function CurrencyDropdowns({ style }) {
     <View style={[styles.container, style]}>
       {['BTC', 'USD'].map((c) => (
         <Pressable style={styles.block} key={c}>
-          <Image source={images[c]} />
+          <Image style={styles.icon} source={images[c]} />
           <AppText style={styles.text}>{c}</AppText>
           <Image source={images['Arrow']} />
         </Pressable>
@@ -32,6 +32,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  icon: {
+    width: 24,
+    height: 24,
   },
   text: {
     color: colors.PRIMARY_TEXT,

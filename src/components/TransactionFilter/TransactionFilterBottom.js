@@ -7,6 +7,7 @@ import colors from '../../constants/colors';
 import { useDispatch } from 'react-redux';
 import { showResultsAction } from '../../redux/transactions/actions';
 import PurpleText from '../PurpleText';
+import images from '../../constants/images';
 
 function TransactionFilterBottom({ navigation }) {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function TransactionFilterBottom({ navigation }) {
       </Pressable>
 
       <Pressable style={styles.download}>
-        <Image source={require('../../assets/images/Download.png')} />
+        <Image source={images.Download} />
         <PurpleText style={styles.purple} text="Download" />
       </Pressable>
     </View>

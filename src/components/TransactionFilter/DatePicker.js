@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { toggleDatePicker } from '../../redux/modals/actions';
+import images from '../../constants/images';
 
 export default function DatePicker({ to = false, from = false }) {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ export default function DatePicker({ to = false, from = false }) {
   return (
     <Pressable onPress={showDatePickerModal} style={styles.dropdown}>
       <AppText style={styles.text}>{text()}</AppText>
-      <Image source={require('../../assets/images/Calendar.png')} />
+      <Image source={images.Calendar} />
     </Pressable>
   );
 }

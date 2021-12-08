@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { getParams } from '../../redux/transactions/selectors';
+import images from '../../constants/images';
 
 export default function FilterIcon({ onPress }) {
   const params = useSelector(getParams);
@@ -16,10 +17,7 @@ export default function FilterIcon({ onPress }) {
 
   return (
     <Pressable onPress={onPress} style={styles.container}>
-      <Image
-        source={require('../../assets/images/Filter.png')}
-        style={styles.icon}
-      />
+      <Image source={images.Filter} style={styles.icon} />
       {filters.length ? (
         <AppText style={styles.text}>{filters.length}</AppText>
       ) : null}

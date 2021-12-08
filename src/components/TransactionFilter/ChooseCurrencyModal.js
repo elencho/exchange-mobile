@@ -13,6 +13,7 @@ import {
 } from '../../redux/transactions/actions';
 import colors from '../../constants/colors';
 import { toggleCurrencyModal } from '../../redux/modals/actions';
+import images from '../../constants/images';
 
 export default function ChooseCurrencyModal() {
   const dispatch = useDispatch();
@@ -55,7 +56,7 @@ export default function ChooseCurrencyModal() {
               style={styles.input}
               onChangeText={filter}
             />
-            <Image source={require('../../assets/images/Search.png')} />
+            <Image source={images.Search} />
           </View>
 
           <ScrollView /* style={{ height: 400 }} */>

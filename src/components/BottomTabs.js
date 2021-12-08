@@ -3,21 +3,22 @@ import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import colors from '../constants/colors';
+import images from '../constants/images';
 
 export default function BottomTabs({ navigation, descriptors, routes }) {
   const active = {
-    Wallet: require('../assets/images/Wallet_Active.png'),
-    Transactions: require('../assets/images/Transactions_Active.png'),
-    Exchange: require('../assets/images/Exchange_Active.png'),
-    Trade: require('../assets/images/Trade_Active.png'),
-    FocusIcon: require('../assets/images/Focused.png'),
+    Wallet: images.Wallet_Active,
+    Transactions: images.Transactions_Active,
+    Exchange: images.Exchange_Active,
+    Trade: images.Trade_Active,
+    FocusIcon: images.Focused,
   };
 
   const inactive = {
-    Wallet: require('../assets/images/Wallet.png'),
-    Transactions: require('../assets/images/Transactions.png'),
-    Exchange: require('../assets/images/Exchange.png'),
-    Trade: require('../assets/images/Trade.png'),
+    Wallet: images.Wallet,
+    Transactions: images.Transactions,
+    Exchange: images.Exchange,
+    Trade: images.Trade,
   };
 
   return (
