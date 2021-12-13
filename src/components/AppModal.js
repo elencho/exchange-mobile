@@ -1,9 +1,24 @@
 import React from 'react';
 import Modal from 'react-native-modal';
-import { Dimensions } from 'react-native';
+import { Dimensions, View, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
-export default function AppModal({ children, visible, hide }) {
+import ModalTop from './ModalTop';
+import colors from '../constants/colors';
+import AppText from './AppText';
+import Background from './Background';
+import CloseModalIcon from './InstantTrade/CloseModalIcon';
+import Headline from './TransactionHistory/Headline';
+
+export default function AppModal({
+  children,
+  visible,
+  hide,
+  bottom,
+  title,
+  fullScreen,
+  custom,
+}) {
   const deviceWidth = Dimensions.get('window').width;
   const deviceHeight =
     Platform.OS === 'ios'
@@ -27,7 +42,36 @@ export default function AppModal({ children, visible, hide }) {
         justifyContent: 'flex-end',
       }}
     >
-      {children}
+      {bottom && (
+        <>
+          <ModalTop />
+          <View style={styles.bottom}>
+            <AppText header style={styles.header}>
+              {title}
+            </AppText>
+            {children}
+          </View>
+        </>
+      )}
+      {fullScreen && (
+        <Background>
+          <CloseModalIcon onPress={hide} />
+          <Headline title={title} />
+          {children}
+        </Background>
+      )}
+      {custom && children}
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  bottom: {
+    padding: 35,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
+  },
+  header: {
+    color: colors.PRIMARY_TEXT,
+    marginBottom: 25,
+  },
+});

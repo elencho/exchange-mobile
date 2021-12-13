@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     borderColor: '#42475D',
     marginBottom: 15,
   },
-
   text: {
     fontSize: 15,
     color: colors.SECONDARY_TEXT,

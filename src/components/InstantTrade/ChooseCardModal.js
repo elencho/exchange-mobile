@@ -8,7 +8,6 @@ import { toggleChooseCardModal } from '../../redux/modals/actions';
 import { setCard } from '../../redux/trade/actions';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
-import ModalTop from '../ModalTop';
 
 export default function ChooseCardModal() {
   const dispatch = useDispatch();
@@ -27,46 +26,36 @@ export default function ChooseCardModal() {
 
   const mockArray = ['000004****0026', '600004****1672', '268004****0010'];
 
-  return (
-    <AppModal visible={chooseCardModalVisible} hide={hide}>
-      <ModalTop />
-
-      <View style={styles.container}>
-        <AppText header style={styles.header}>
-          Choose Card
-        </AppText>
-
-        {mockArray.map((c, i) => (
-          <Pressable
-            style={[
-              styles.row,
-              c === card && { backgroundColor: 'rgba(101, 130, 253, 0.16)' },
-            ]}
-            key={c}
-            onPress={() => choose(c)}
-          >
-            <View style={styles.iconContainer}>
-              <Image source={i === 1 ? images.Visa : images.MC_Card} />
-            </View>
-            <AppText body style={styles.text}>
-              {c}
-            </AppText>
-          </Pressable>
-        ))}
+  const children = mockArray.map((c, i) => (
+    <Pressable
+      style={[
+        styles.row,
+        c === card && { backgroundColor: 'rgba(101, 130, 253, 0.16)' },
+      ]}
+      key={c}
+      onPress={() => choose(c)}
+    >
+      <View style={styles.iconContainer}>
+        <Image source={i === 1 ? images.Visa : images.MC_Card} />
       </View>
-    </AppModal>
+      <AppText body style={styles.text}>
+        {c}
+      </AppText>
+    </Pressable>
+  ));
+
+  return (
+    <AppModal
+      visible={chooseCardModalVisible}
+      hide={hide}
+      title="Choose Card"
+      bottom
+      children={children}
+    />
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 35,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-  },
-  header: {
-    color: colors.PRIMARY_TEXT,
-    marginBottom: 25,
-  },
   iconContainer: {
     width: 35,
     height: 25,

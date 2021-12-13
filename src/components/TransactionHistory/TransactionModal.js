@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Clipboard from 'expo-clipboard';
 
 import AppText from '../AppText';
-import ModalTop from '../ModalTop';
 import TransactionDetails from './TransactionDetails';
 import TradeDetails from '../InstantTrade/TradeDetails';
 import colors from '../../constants/colors';
@@ -31,67 +30,70 @@ export default function TransactionModal({ transactions, trades }) {
     dispatch(toggleTransactionDetails(false));
   };
 
+  const children = () => {
+    if (transactions) {
+      return (
+        <>
+          <View style={styles.top}>
+            <Image style={styles.deposit} source={images.Deposit} />
+
+            <View style={styles.middle}>
+              <AppText medium style={[styles.white, styles.capitalize]}>
+                {type}
+              </AppText>
+              <AppText style={styles.text}>{transactionInfo}</AppText>
+            </View>
+
+            <TouchableOpacity style={styles.copy} onPress={copy}>
+              <Image source={images.Copy} />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.line} />
+
+          <TransactionDetails />
+        </>
+      );
+    }
+    if (trades) {
+      return (
+        <>
+          <View style={[styles.top, { alignItems: 'flex-end' }]}>
+            <View style={[styles.top, styles.icons]}>
+              <Image source={images.BTC} style={styles.leftIcon} />
+              <Image source={images.USD} style={styles.rightIcon} />
+            </View>
+
+            <View style={styles.middle}>
+              <AppText medium body style={styles.white}>
+                USD - BTC
+              </AppText>
+              <AppText style={styles.text}>Instant trade</AppText>
+            </View>
+
+            <View style={styles.buy_sell}>
+              <AppText medium subtext style={styles.red}>
+                Sell
+              </AppText>
+            </View>
+          </View>
+
+          <View style={styles.line} />
+
+          <TradeDetails />
+        </>
+      );
+    }
+  };
+
   return (
-    <AppModal hide={hide} visible={transactionDetailsVisible}>
-      <ModalTop />
-
-      <View style={styles.block}>
-        <AppText header style={styles.header}>
-          Transaction Details
-        </AppText>
-
-        {transactions && (
-          <>
-            <View style={styles.top}>
-              <Image style={styles.deposit} source={images.Deposit} />
-
-              <View style={styles.middle}>
-                <AppText medium style={[styles.white, styles.capitalize]}>
-                  {type}
-                </AppText>
-                <AppText style={styles.text}>{transactionInfo}</AppText>
-              </View>
-
-              <TouchableOpacity style={styles.copy} onPress={copy}>
-                <Image source={images.Copy} />
-              </TouchableOpacity>
-            </View>
-
-            <View style={styles.line} />
-
-            <TransactionDetails />
-          </>
-        )}
-
-        {trades && (
-          <>
-            <View style={[styles.top, { alignItems: 'flex-end' }]}>
-              <View style={[styles.top, styles.icons]}>
-                <Image source={images.BTC} style={styles.leftIcon} />
-                <Image source={images.USD} style={styles.rightIcon} />
-              </View>
-
-              <View style={styles.middle}>
-                <AppText medium body style={styles.white}>
-                  USD - BTC
-                </AppText>
-                <AppText style={styles.text}>Instant trade</AppText>
-              </View>
-
-              <View style={styles.buy_sell}>
-                <AppText medium subtext style={styles.red}>
-                  Sell
-                </AppText>
-              </View>
-            </View>
-
-            <View style={styles.line} />
-
-            <TradeDetails />
-          </>
-        )}
-      </View>
-    </AppModal>
+    <AppModal
+      title="Transaction Details"
+      hide={hide}
+      visible={transactionDetailsVisible}
+      children={children()}
+      bottom
+    />
   );
 }
 
@@ -113,17 +115,9 @@ const styles = StyleSheet.create({
   copy: {
     alignSelf: 'flex-end',
   },
-  container: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
   deposit: {
     marginRight: 10,
     alignSelf: 'center',
-  },
-  header: {
-    color: colors.PRIMARY_TEXT,
-    marginBottom: 20,
   },
   icons: { alignSelf: 'center', marginRight: 15 },
   leftIcon: {

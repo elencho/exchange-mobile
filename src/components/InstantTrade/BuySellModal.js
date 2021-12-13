@@ -35,50 +35,54 @@ export default function BuySellModal() {
     dispatch(toggleBuySellModal(false));
   };
 
+  const children = (
+    <>
+      <View style={styles.flex}>
+        <AppText subtext body style={styles.balance}>
+          My Balance: 2 000.00 GEL
+        </AppText>
+
+        <BalanceCardSwitcher />
+
+        <ScrollView nestedScrollEnabled>
+          <TouchableOpacity activeOpacity={0.99}>
+            <CurrencyDropdowns style={styles.dropdowns} />
+
+            <AppInput
+              keyboardType="decimal-pad"
+              right={<AppText style={styles.code}>GEL</AppText>}
+            />
+            <View style={styles.margin} />
+            <AppInput
+              keyboardType="decimal-pad"
+              right={<AppText style={styles.code}>BTC</AppText>}
+            />
+
+            {Balance_Card === 'card' && <CardSection />}
+
+            <ChooseBankModal />
+            <ChooseCardModal />
+            <BankFeesModal />
+          </TouchableOpacity>
+        </ScrollView>
+      </View>
+
+      <Pressable style={styles.button}>
+        <AppText medium style={styles.buttonText}>
+          Buy
+        </AppText>
+      </Pressable>
+    </>
+  );
+
   return (
-    <AppModal visible={buySellModalVisible} hide={hide}>
-      <Background>
-        <View style={styles.flex}>
-          <CloseModalIcon onPress={hide} />
-
-          <Headline title="Buy BTC" />
-
-          <AppText subtext body style={styles.balance}>
-            My Balance: 2 000.00 GEL
-          </AppText>
-
-          <BalanceCardSwitcher />
-
-          <ScrollView nestedScrollEnabled>
-            <TouchableOpacity activeOpacity={0.99}>
-              <CurrencyDropdowns style={styles.dropdowns} />
-
-              <AppInput
-                keyboardType="decimal-pad"
-                right={<AppText style={styles.code}>GEL</AppText>}
-              />
-              <View style={styles.margin} />
-              <AppInput
-                keyboardType="decimal-pad"
-                right={<AppText style={styles.code}>BTC</AppText>}
-              />
-
-              {Balance_Card === 'card' && <CardSection />}
-
-              <ChooseBankModal />
-              <ChooseCardModal />
-              <BankFeesModal />
-            </TouchableOpacity>
-          </ScrollView>
-        </View>
-
-        <Pressable style={styles.button}>
-          <AppText medium style={styles.buttonText}>
-            Buy
-          </AppText>
-        </Pressable>
-      </Background>
-    </AppModal>
+    <AppModal
+      visible={buySellModalVisible}
+      hide={hide}
+      fullScreen
+      title="Buy BTC"
+      children={children}
+    />
   );
 }
 

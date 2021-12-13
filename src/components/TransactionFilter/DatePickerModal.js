@@ -29,14 +29,14 @@ export default function DatePickerModal({ from, to }) {
     }
   };
 
-  const dismiss = () => {
+  const hide = () => {
     dispatch(toggleDatePicker({ from: false, to: false }));
   };
 
   return (
     <Modal transparent animationType="fade" visible={visible()}>
       <View style={styles.container}>
-        <Pressable onPress={dismiss} style={styles.dismissZone} />
+        <Pressable onPress={hide} style={styles.dismissZone} />
         <View style={styles.modal}>
           <CalendarPicker
             textStyle={styles.text}
@@ -44,7 +44,7 @@ export default function DatePickerModal({ from, to }) {
             startFromMonday
           />
         </View>
-        <Pressable onPress={dismiss} style={styles.dismissZone} />
+        <Pressable onPress={hide} style={styles.dismissZone} />
       </View>
     </Modal>
   );

@@ -39,34 +39,41 @@ export default function ChooseCurrencyModal() {
     dispatch(toggleCurrencyModal(false));
   };
 
-  return (
-    <AppModal visible={chooseCurrencyModalVisible} hide={hide}>
-      <View style={styles.container}>
-        <ModalTop />
+  const children = (
+    <View style={styles.container}>
+      <ModalTop />
 
-        <View style={styles.block}>
-          <AppText medium style={styles.headline}>
-            Choose Currency
-          </AppText>
+      <View style={styles.block}>
+        <AppText medium style={styles.headline}>
+          Choose Currency
+        </AppText>
 
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Search Currency"
-              placeholderTextColor="rgba(105, 111, 142, 0.5)"
-              style={styles.input}
-              onChangeText={filter}
-            />
-            <Image source={images.Search} />
-          </View>
-
-          <ScrollView /* style={{ height: 400 }} */>
-            {currencies.map((c) => (
-              <Currency name={c.name} code={c.code} key={c.code} />
-            ))}
-          </ScrollView>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Search Currency"
+            placeholderTextColor="rgba(105, 111, 142, 0.5)"
+            style={styles.input}
+            onChangeText={filter}
+          />
+          <Image source={images.Search} />
         </View>
+
+        <ScrollView>
+          {currencies.map((c) => (
+            <Currency name={c.name} code={c.code} key={c.code} />
+          ))}
+        </ScrollView>
       </View>
-    </AppModal>
+    </View>
+  );
+
+  return (
+    <AppModal
+      visible={chooseCurrencyModalVisible}
+      hide={hide}
+      children={children}
+      custom
+    />
   );
 }
 
