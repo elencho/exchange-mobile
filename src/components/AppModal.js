@@ -1,5 +1,4 @@
 import React from 'react';
-import { BottomModal, SlideAnimation } from 'react-native-modals';
 import Modal from 'react-native-modal';
 import { Dimensions } from 'react-native';
 import Constants from 'expo-constants';

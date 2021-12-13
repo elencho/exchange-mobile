@@ -33,7 +33,7 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
             <LinearGradient
               colors={[colors.SECONDARY_BACKGROUND, colors.PRIMARY_BACKGROUND]}
               style={styles.gradient}
-              locations={[0.5, 0.6]}
+              locations={[0.3, 0.8]}
             >
               <Image
                 source={focused ? active[route.name] : inactive[route.name]}
