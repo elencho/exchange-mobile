@@ -69,7 +69,7 @@ export default function TransactionModal({ transactions, trades }) {
               <AppText medium body style={styles.white}>
                 USD - BTC
               </AppText>
-              <AppText style={styles.text}>Instant trade</AppText>
+              <AppText style={styles.instantTrade}>Instant trade</AppText>
             </View>
 
             <View style={styles.buy_sell}>
@@ -144,5 +144,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   address: { color: '#C0C5E0' },
+  instantTrade: { color: colors.SECONDARY_TEXT, marginTop: 3 },
   white: { fontSize: 14, color: colors.PRIMARY_TEXT },
 });
