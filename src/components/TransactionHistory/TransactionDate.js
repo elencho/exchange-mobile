@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import AppText from '../AppText';
 import Transaction from './Transaction';
 import colors from '../../constants/colors';
-import { months } from '../../constants/filters';
+import { monthsShort } from '../../constants/months';
 
 export default function TransactionDate({ date, transactions }) {
   const isDate = () => {
@@ -26,7 +26,7 @@ export default function TransactionDate({ date, transactions }) {
         .split(' ')[0];
 
       currentDate = `${currentDate.getDate()} ${
-        months[currentDate.getMonth()]
+        monthsShort[currentDate.getMonth()]
       }, ${currentDate.getFullYear()}`;
 
       if (date === currentDate) {

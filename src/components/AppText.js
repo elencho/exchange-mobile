@@ -8,6 +8,7 @@ export default function AppText({
   body,
   header,
   subtext,
+  calendarDay,
   ...props
 }) {
   const fontCond = () => {
@@ -22,6 +23,9 @@ export default function AppText({
   const sizeCond = () => {
     if (header) {
       return 20;
+    }
+    if (calendarDay) {
+      return 16;
     }
     if (body) {
       return 14;

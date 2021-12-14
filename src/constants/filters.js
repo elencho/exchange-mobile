@@ -31,18 +31,3 @@ export const TRANSACTIONS_URL =
 
 export const CURRENCIES_URL =
   'http://10.10.5.4:8080/exchange/api/v1/mobile/public/currencies';
-
-export const months = [
-  'Jan',
-  'Feb',
-  'Mar',
-  'Apr',
-  'May',
-  'Jun',
-  'Jul',
-  'Aug',
-  'Sep',
-  'Oct',
-  'Nov',
-  'Dec',
-];

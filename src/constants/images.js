@@ -1,5 +1,7 @@
 export default {
   Arrow: require('../assets/images/Arrow.png'),
+  Left: require('../assets/images/Left.png'),
+  Right: require('../assets/images/Right.png'),
   Calendar: require('../assets/images/Calendar.png'),
   Clear: require('../assets/images/Clear.png'),
   Close: require('../assets/images/Close.png'),
