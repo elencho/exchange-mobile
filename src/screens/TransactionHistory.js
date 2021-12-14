@@ -10,7 +10,8 @@ import TopRow from '../components/TransactionHistory/TopRow';
 import TransactionDate from '../components/TransactionHistory/TransactionDate';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
 
-import { types, months } from '../constants/filters';
+import { types } from '../constants/filters';
+import { monthsShort } from '../constants/months';
 import {
   fetchTransactions,
   reachScrollEnd,
@@ -29,7 +30,7 @@ function TransactionHistory({ navigation }) {
   const dates = transactions.map((tr) => {
     const date = new Date(tr.timestamp);
     return `${date.getDate()} ${
-      months[date.getMonth()]
+      monthsShort[date.getMonth()]
     }, ${date.getFullYear()}`;
   });
 

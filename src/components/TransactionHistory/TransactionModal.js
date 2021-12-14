@@ -19,7 +19,7 @@ export default function TransactionModal({ transactions, trades }) {
   );
 
   const {
-    currentTransaction: { type, transactionInfo },
+    currentTransaction: { transactionInfo },
   } = state;
 
   const copy = () => {
@@ -35,16 +35,17 @@ export default function TransactionModal({ transactions, trades }) {
       return (
         <>
           <View style={styles.top}>
-            <Image style={styles.deposit} source={images.Deposit} />
+            <Image source={images.Deposit} />
 
             <View style={styles.middle}>
-              <AppText medium style={[styles.white, styles.capitalize]}>
-                {type}
+              <AppText style={styles.address} subtext>
+                {transactionInfo}
               </AppText>
-              <AppText style={styles.text}>{transactionInfo}</AppText>
             </View>
 
-            <TouchableOpacity style={styles.copy} onPress={copy}>
+            <View style={styles.vertical} />
+
+            <TouchableOpacity onPress={copy}>
               <Image source={images.Copy} />
             </TouchableOpacity>
           </View>
@@ -111,14 +112,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 28,
   },
-  capitalize: { textTransform: 'capitalize' },
-  copy: {
-    alignSelf: 'flex-end',
-  },
-  deposit: {
-    marginRight: 10,
-    alignSelf: 'center',
-  },
   icons: { alignSelf: 'center', marginRight: 15 },
   leftIcon: {
     marginRight: -7,
@@ -131,16 +124,25 @@ const styles = StyleSheet.create({
     height: 31,
   },
   middle: {
-    justifyContent: 'space-between',
     flex: 1,
+    marginHorizontal: 15,
   },
   line: {
     height: 0.5,
-    backgroundColor: colors.SECONDARY_TEXT,
+    backgroundColor: '#32344C',
     marginVertical: 15,
   },
+  vertical: {
+    width: 0.5,
+    height: '100%',
+    backgroundColor: '#32344C',
+    marginRight: 15,
+  },
   red: { color: '#FA6392' },
-  top: { flexDirection: 'row' },
-  text: { fontSize: 12, color: colors.SECONDARY_TEXT, marginTop: 5 },
+  top: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  address: { color: '#C0C5E0' },
   white: { fontSize: 14, color: colors.PRIMARY_TEXT },
 });
