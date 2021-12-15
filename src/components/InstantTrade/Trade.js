@@ -5,46 +5,65 @@ import { useDispatch } from 'react-redux';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
+import { monthsShort } from '../../constants/months';
 
-export default function Trade() {
+export default function Trade({ trade }) {
+  const {
+    baseCurrency,
+    quoteCurrency,
+    price,
+    size,
+    cumulativeCost,
+    action,
+    status,
+    lastChangeTime,
+  } = trade;
+
   const dispatch = useDispatch();
 
   const show = () => {
     dispatch(toggleTransactionDetails(true));
   };
 
+  const date = () => {
+    const date = new Date(lastChangeTime);
+    return `${date.getDate()} ${
+      monthsShort[date.getMonth()]
+    }, ${date.getFullYear()} / ${date.toLocaleTimeString()}`;
+  };
+
   return (
     <Pressable style={styles.container} onPress={show}>
       <View style={styles.row}>
         <AppText style={styles.primary} medium body>
-          LTC - GEL
+          {baseCurrency} - {quoteCurrency}
         </AppText>
         <AppText style={styles.secondary} subtext>
-          200.00 GEL{' '}
+          {cumulativeCost} {quoteCurrency}{' '}
           <AppText subtext style={styles.primary}>
-            / 0.000008 LTC
+            / {size} {baseCurrency}
           </AppText>
         </AppText>
       </View>
 
       <View style={styles.row}>
         <AppText style={styles.primary} body>
-          Buy{' '}
+          {action === 'BID' ? 'Buy ' : 'Sell '}
           <AppText subtext style={styles.secondary}>
             / Instant Trade
           </AppText>
         </AppText>
         <AppText subtext style={styles.secondary}>
-          Price: 0.00008060 LTC
+          Price: {price} {quoteCurrency}
         </AppText>
       </View>
 
       <View style={[styles.row, styles.marginTop]}>
         <AppText subtext style={styles.secondary}>
-          20 Apr, 2021 / 12:00:00
+          {date()}
         </AppText>
-        <AppText subtext style={styles.secondary}>
-          Expired
+        <AppText subtext style={[styles.secondary, styles.capitalize]}>
+          {status}
         </AppText>
       </View>
     </Pressable>
@@ -52,6 +71,9 @@ export default function Trade() {
 }
 
 const styles = StyleSheet.create({
+  capitalize: {
+    textTransform: 'capitalize',
+  },
   container: {
     marginVertical: 10,
     borderBottomWidth: 1,

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import AppText from '../AppText';
@@ -19,19 +20,17 @@ const TopRow = () => (
 );
 
 export default function TransactionsBlock() {
+  const trades = useSelector((state) => state.trade.trades);
+  console.log(trades);
+
   return (
     <View style={styles.container}>
       <TopRow />
 
-      <ScrollView style={{ height: 230 }}>
-        <Trade />
-        <Trade />
-        <Trade />
-        <Trade />
-        <Trade />
-        <Trade />
-        <Trade />
-        <Trade />
+      <ScrollView style={{ height: 280 }}>
+        {trades.map((trade) => (
+          <Trade trade={trade} key={trade.id} />
+        ))}
       </ScrollView>
     </View>
   );

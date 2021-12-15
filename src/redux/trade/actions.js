@@ -1,4 +1,5 @@
 export const actionTypes = {
+  SAVE_TRADES: 'SAVE_TRADES',
   SET_TRADE_TYPE: 'SET_TRADE_TYPE',
   SWITCH_BALANCE_CARD: 'SWITCH_BALANCE_CARD',
   SET_BANK: 'SET_BANK',
@@ -8,9 +9,13 @@ export const actionTypes = {
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
 
   // FOR SAGAS
-  FETCH_TRANSACTIONS: 'FETCH_TRANSACTIONS',
+  FETCH_TRADES: 'FETCH_TRADES',
 };
 
+export const saveTrades = (trades) => ({
+  type: actionTypes.SAVE_TRADES,
+  trades,
+});
 export const setTradeType = (tradeType) => ({
   type: actionTypes.SET_TRADE_TYPE,
   tradeType,
@@ -29,6 +34,6 @@ export const setBank = (bank) => ({
 });
 
 // FOR SAGAS
-export const fetchTransactions = () => ({
-  type: actionTypes.FETCH_TRANSACTIONS,
+export const fetchTrades = () => ({
+  type: actionTypes.FETCH_TRADES,
 });

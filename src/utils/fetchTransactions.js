@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { bearer, CURRENCIES_URL, TRANSACTIONS_URL } from '../constants/filters';
+import { bearer, CURRENCIES_URL, TRANSACTIONS_URL } from '../constants/api';
 
 export const fetchTransactions = async (params) => {
   try {
