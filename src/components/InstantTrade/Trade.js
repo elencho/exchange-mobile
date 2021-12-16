@@ -6,6 +6,7 @@ import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
 import { monthsShort } from '../../constants/months';
+import { transactionDetailsSaga } from '../../redux/transactions/actions';
 
 export default function Trade({ trade }) {
   const {
@@ -23,6 +24,7 @@ export default function Trade({ trade }) {
 
   const show = () => {
     dispatch(toggleTransactionDetails(true));
+    dispatch(transactionDetailsSaga(trade));
   };
 
   const date = () => {

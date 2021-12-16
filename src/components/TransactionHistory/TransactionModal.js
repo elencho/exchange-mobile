@@ -19,7 +19,12 @@ export default function TransactionModal({ transactions, trades }) {
   );
 
   const {
-    currentTransaction: { transactionInfo },
+    currentTransaction: {
+      transactionInfo,
+      baseCurrency,
+      quoteCurrency,
+      action,
+    },
   } = state;
 
   const copy = () => {
@@ -67,14 +72,14 @@ export default function TransactionModal({ transactions, trades }) {
 
             <View style={styles.middle}>
               <AppText medium body style={styles.white}>
-                USD - BTC
+                {quoteCurrency} - {baseCurrency}
               </AppText>
               <AppText style={styles.instantTrade}>Instant trade</AppText>
             </View>
 
             <View style={styles.buy_sell}>
               <AppText medium subtext style={styles.red}>
-                Sell
+                {action === 'BID' ? 'Buy' : 'Sell'}
               </AppText>
             </View>
           </View>

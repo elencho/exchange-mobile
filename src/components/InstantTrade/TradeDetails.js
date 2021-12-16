@@ -1,10 +1,33 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
+import { monthsShort } from '../../constants/months';
 import AppText from '../AppText';
 
 export default function TradeDetails() {
+  const currentTransaction = useSelector(
+    (state) => state.transactions.currentTransaction
+  );
+  const {
+    baseCurrency,
+    quoteCurrency,
+    price,
+    size,
+    cumulativeCost,
+    status,
+    lastChangeTime,
+    creationTime,
+  } = currentTransaction;
+
+  const date = (timestamp) => {
+    const date = new Date(timestamp);
+    return `${date.getDate()} ${
+      monthsShort[date.getMonth()]
+    }, ${date.getFullYear()} / ${date.toLocaleTimeString()}`;
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -16,20 +39,20 @@ export default function TradeDetails() {
       </View>
 
       <View style={styles.right}>
+        <AppText medium style={styles.rightText}>
+          {cumulativeCost} {quoteCurrency} / {size} {baseCurrency}
+        </AppText>
+        <AppText medium style={styles.rightText}>
+          {price} {baseCurrency}
+        </AppText>
+        <AppText medium style={styles.rightText}>
+          {date(creationTime)}
+        </AppText>
+        <AppText medium style={styles.rightText}>
+          {date(lastChangeTime)}
+        </AppText>
         <AppText medium style={[styles.rightText, styles.capitalize]}>
-          200.00 GEL / 0.000008 BTC
-        </AppText>
-        <AppText medium style={styles.rightText}>
-          0.00008060 BTC
-        </AppText>
-        <AppText medium style={styles.rightText}>
-          20 August, 2021 / 12:00:00
-        </AppText>
-        <AppText medium style={styles.rightText}>
-          05 July / 10:02:00
-        </AppText>
-        <AppText medium style={[styles.rightText, styles.capitalize]}>
-          Success
+          {status}
         </AppText>
       </View>
     </View>
