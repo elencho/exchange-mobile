@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
 
 import Background from '../components/Background';
 import BuySellSwitch from '../components/InstantTrade/BuySellSwitch';
@@ -13,15 +12,8 @@ import BuySellModal from '../components/InstantTrade/BuySellModal';
 import InfoModal from '../components/InstantTrade/InfoModal';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
 import colors from '../constants/colors';
-import { fetchTrades } from '../redux/trade/actions';
 
 export default function InstantTrade() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchTrades());
-  }, []);
-
   return (
     <Background>
       <TopRow />

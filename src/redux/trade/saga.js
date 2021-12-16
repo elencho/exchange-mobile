@@ -1,19 +1,46 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { actionTypes, saveTrades } from './actions';
-import { toggleLoading } from '../transactions/actions';
+import {
+  actionTypes,
+  saveOffers,
+  saveTrades,
+  setOffersLoading,
+  setPairObject,
+  setTradesLoading,
+} from './actions';
 import { getParams, getTrades } from './selectors';
-import { fetchTrades } from '../../utils/fetchTrades';
+import { fetchTrades, fetchOffers } from '../../utils/fetchTrades';
 
 function* fetchTradesSaga() {
-  yield put(toggleLoading(true));
+  yield put(setTradesLoading(true));
   const params = yield select(getParams);
   const trades = yield select(getTrades);
   const newTrades = yield call(fetchTrades, params);
   yield put(saveTrades([...trades, ...newTrades]));
-  yield put(toggleLoading(false));
+  yield put(setTradesLoading(false));
+}
+
+function* fetchOffersSaga() {
+  yield put(setOffersLoading(true));
+  const offers = yield call(fetchOffers);
+  yield put(saveOffers(offers));
+
+  let object;
+  const fiat = yield select((state) => state.trade.fiat);
+  const crypto = yield select((state) => state.trade.crypto);
+  yield call(() =>
+    offers[fiat].forEach((o) => {
+      if (o.pair.baseCurrency === crypto) {
+        object = o;
+      }
+    })
+  );
+
+  yield put(setPairObject(object));
+  yield put(setOffersLoading(false));
 }
 
 export default function* () {
   yield takeLatest(actionTypes.FETCH_TRADES, fetchTradesSaga);
+  yield takeLatest(actionTypes.FETCH_OFFERS, fetchOffersSaga);
 }

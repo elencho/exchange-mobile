@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import colors from '../../constants/colors';
+import { fetchTrades } from '../../redux/trade/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import Trade from './Trade';
@@ -20,8 +21,13 @@ const TopRow = () => (
 );
 
 export default function TransactionsBlock() {
+  const dispatch = useDispatch();
+
   const trades = useSelector((state) => state.trade.trades);
-  console.log(trades);
+
+  useEffect(() => {
+    dispatch(fetchTrades());
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -29,7 +35,7 @@ export default function TransactionsBlock() {
 
       <ScrollView style={{ height: 280 }}>
         {trades.map((trade) => (
-          <Trade trade={trade} key={trade.id} />
+          <Trade trade={trade} key={Math.random()} />
         ))}
       </ScrollView>
     </View>

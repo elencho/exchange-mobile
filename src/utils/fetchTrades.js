@@ -1,11 +1,22 @@
 import axios from 'axios';
-import { bearer, TRADES_URL } from '../constants/api';
+import { bearer, OFFERS_URL, TRADES_URL } from '../constants/api';
 
 export const fetchTrades = async (params) => {
   try {
     const data = await axios.get(TRADES_URL, {
       headers: { Authorization: bearer },
       params,
+    });
+    return data.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const fetchOffers = async () => {
+  try {
+    const data = await axios.get(OFFERS_URL, {
+      headers: { Authorization: bearer },
     });
     return data.data;
   } catch (err) {

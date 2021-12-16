@@ -9,3 +9,6 @@ export const CURRENCIES_URL =
 
 export const TRADES_URL =
   'http://10.10.5.4:8080/exchange/api/v1/mobile/private/simpleTrade/trades';
+
+export const OFFERS_URL =
+  'http://10.10.5.4:8080/exchange/api/v1/mobile/private/simpleTrade/offers';

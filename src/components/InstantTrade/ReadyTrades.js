@@ -1,30 +1,59 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import { toggleBuySellModal } from '../../redux/modals/actions';
+import { setCurrentTrade } from '../../redux/trade/actions';
 import AppText from '../AppText';
 
 export default function ReadyTrades() {
   const dispatch = useDispatch();
 
+  const state = useSelector((state) => state.trade);
+  const { tradeType, pairObject, fiat, crypto } = state;
+
   const handleTrade = (t) => {
+    const { price, size } = t;
     dispatch(toggleBuySellModal(true));
+    if (price && size) {
+      dispatch(setCurrentTrade({ price, size }));
+    }
   };
+
+  let arrayToIterate = [];
+  let slicedArray = [];
+  if (pairObject) {
+    const buyArray = pairObject.offerEntriesMap.BID;
+    const sellArray = pairObject.offerEntriesMap.ASK;
+    arrayToIterate = tradeType === 'Buy' ? buyArray : sellArray;
+    slicedArray = arrayToIterate.slice(0, 3);
+  }
 
   return (
     <View style={styles.container}>
-      {[50, 200, 500, 'Custom'].map((t) => (
-        <Pressable style={styles.block} key={t} onPress={() => handleTrade(t)}>
+      {slicedArray.map((t) => (
+        <Pressable
+          style={styles.block}
+          key={Math.random()}
+          onPress={() => handleTrade(t)}
+        >
           <AppText style={styles.primary} header>
-            {t} <AppText body>{t !== 'Custom' && 'GEL'}</AppText>
+            {Math.trunc(t.price)} <AppText body>{fiat}</AppText>
           </AppText>
           <AppText body subtext style={styles.secondary}>
-            {t !== 'Custom' ? '0.000256 BTC' : 'Your Amount'}
+            {t.size} {crypto}
           </AppText>
         </Pressable>
       ))}
+      <Pressable style={styles.block} onPress={handleTrade}>
+        <AppText medium style={styles.primary}>
+          Custom
+        </AppText>
+        <AppText body subtext style={styles.secondary}>
+          Your Amount
+        </AppText>
+      </Pressable>
     </View>
   );
 }
@@ -33,9 +62,11 @@ const styles = StyleSheet.create({
   block: {
     borderWidth: 0.5,
     borderColor: 'rgba(101, 130, 253, 0.3)',
-    padding: 20,
+    height: 80,
     width: '47%',
     marginBottom: '6%',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
   container: {
     flexDirection: 'row',

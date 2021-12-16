@@ -12,9 +12,6 @@ import colors from '../../constants/colors';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import AppInput from '../AppInput';
-import Background from '../Background';
-import Headline from '../TransactionHistory/Headline';
-import CloseModalIcon from './CloseModalIcon';
 import CurrencyDropdowns from './CurrencyDropdowns';
 import { toggleBuySellModal } from '../../redux/modals/actions';
 import BalanceCardSwitcher from './BalanceCardSwitcher';
@@ -22,40 +19,68 @@ import CardSection from './CardSection';
 import ChooseCardModal from './ChooseCardModal';
 import ChooseBankModal from './ChooseBankModal';
 import BankFeesModal from './BankFeesModal';
+import { setCurrentTrade, switchBalanceCard } from '../../redux/trade/actions';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
   const {
     modals: { buySellModalVisible },
-    trade: { Balance_Card },
+    trade: {
+      Balance_Card,
+      tradeType,
+      crypto,
+      fiat,
+      pairObject,
+      currentTrade: { size, price },
+    },
   } = state;
+
+  let rate;
+  if (pairObject) {
+    rate = tradeType === 'Buy' ? pairObject.buyPrice : pairObject.sellPrice;
+  }
 
   const hide = () => {
     dispatch(toggleBuySellModal(false));
+    dispatch(switchBalanceCard('balance'));
+    dispatch(setCurrentTrade({ price: null, size: null }));
   };
 
   const children = (
     <>
       <View style={styles.flex}>
         <AppText subtext body style={styles.balance}>
-          My Balance: 2 000.00 GEL
+          My Balance: 2 000.00 {fiat}
         </AppText>
 
-        <BalanceCardSwitcher />
+        {tradeType === 'Buy' && <BalanceCardSwitcher />}
 
         <ScrollView nestedScrollEnabled>
           <TouchableOpacity activeOpacity={0.99}>
             <CurrencyDropdowns style={styles.dropdowns} />
 
             <AppInput
+              onChangeText={(t) =>
+                dispatch(
+                  setCurrentTrade({ price: t, size: (t / rate).toFixed(6) })
+                )
+              }
               keyboardType="decimal-pad"
-              right={<AppText style={styles.code}>GEL</AppText>}
+              value={price}
+              right={<AppText style={styles.code}>{fiat}</AppText>}
             />
             <View style={styles.margin} />
             <AppInput
+              onChangeText={(t) =>
+                dispatch(
+                  setCurrentTrade({ price: (t * rate).toFixed(6), size: t })
+                )
+              }
               keyboardType="decimal-pad"
-              right={<AppText style={styles.code}>BTC</AppText>}
+              value={size}
+              right={<AppText style={styles.code}>{crypto}</AppText>}
             />
 
             {Balance_Card === 'card' && <CardSection />}
@@ -67,9 +92,14 @@ export default function BuySellModal() {
         </ScrollView>
       </View>
 
-      <Pressable style={styles.button}>
+      <Pressable
+        style={[
+          styles.button,
+          { backgroundColor: tradeType === 'Buy' ? '#0CCBB5' : '#F83974' },
+        ]}
+      >
         <AppText medium style={styles.buttonText}>
-          Buy
+          {tradeType}
         </AppText>
       </Pressable>
     </>
@@ -80,7 +110,7 @@ export default function BuySellModal() {
       visible={buySellModalVisible}
       hide={hide}
       fullScreen
-      title="Buy BTC"
+      title={tradeType + ' ' + crypto}
       children={children}
     />
   );
@@ -92,7 +122,6 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 45,
-    backgroundColor: '#0CCBB5',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
