@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 import ProgressBar from 'react-native-animated-progress';
 
 import AppText from '../AppText';
+import { fetchOffers } from '../../redux/trade/actions';
 
 export default function Timer() {
+  const dispatch = useDispatch();
   const [seconds, setSeconds] = useState(90);
 
   useEffect(() => {
-    if (!seconds) setSeconds(90);
+    if (!seconds) {
+      dispatch(fetchOffers());
+      setSeconds(90);
+    }
 
     const intervalId = setInterval(() => {
       setSeconds(seconds - 1);
