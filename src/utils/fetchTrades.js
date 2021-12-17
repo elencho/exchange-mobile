@@ -23,3 +23,14 @@ export const fetchOffers = async () => {
     console.log(err);
   }
 };
+
+export const submitTrade = async (params) => {
+  try {
+    const data = await axios.post(TRADES_URL, params, {
+      headers: { Authorization: bearer },
+    });
+    return data.status;
+  } catch (err) {
+    console.log(err);
+  }
+};

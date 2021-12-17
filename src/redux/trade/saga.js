@@ -8,8 +8,8 @@ import {
   setPairObject,
   setTradesLoading,
 } from './actions';
-import { getParams, getTrades } from './selectors';
-import { fetchTrades, fetchOffers } from '../../utils/fetchTrades';
+import { getParams, getTrades, paramsForTrade } from './selectors';
+import { fetchTrades, fetchOffers, submitTrade } from '../../utils/fetchTrades';
 
 function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
@@ -40,7 +40,15 @@ function* fetchOffersSaga() {
   yield put(setOffersLoading(false));
 }
 
+function* submitTradeSaga() {
+  yield put(setTradesLoading(true));
+  const params = yield select(paramsForTrade);
+  yield call(submitTrade, params);
+  yield put(setTradesLoading(false));
+}
+
 export default function* () {
   yield takeLatest(actionTypes.FETCH_TRADES, fetchTradesSaga);
   yield takeLatest(actionTypes.FETCH_OFFERS, fetchOffersSaga);
+  yield takeLatest(actionTypes.SUBMIT_TRADE, submitTradeSaga);
 }

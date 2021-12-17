@@ -16,8 +16,8 @@ const INITIAL_STATE = {
   tradesLoading: false,
   offersLoading: false,
 
-  // Quesry Params
-  pairId: 'BTC-GEL',
+  // Query Params
+  pairId: 'BTC-USD',
   offset: 0,
   limit: 5,
 };

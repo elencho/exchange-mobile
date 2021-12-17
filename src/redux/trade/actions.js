@@ -16,6 +16,7 @@ export const actionTypes = {
   // FOR SAGAS
   FETCH_TRADES: 'FETCH_TRADES',
   FETCH_OFFERS: 'FETCH_OFFERS',
+  SUBMIT_TRADE: 'SUBMIT_TRADE',
 };
 
 export const saveTrades = (trades) => ({
@@ -65,4 +66,7 @@ export const fetchTrades = () => ({
 });
 export const fetchOffers = () => ({
   type: actionTypes.FETCH_OFFERS,
+});
+export const submitTrade = () => ({
+  type: actionTypes.SUBMIT_TRADE,
 });

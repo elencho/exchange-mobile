@@ -19,7 +19,11 @@ import CardSection from './CardSection';
 import ChooseCardModal from './ChooseCardModal';
 import ChooseBankModal from './ChooseBankModal';
 import BankFeesModal from './BankFeesModal';
-import { setCurrentTrade, switchBalanceCard } from '../../redux/trade/actions';
+import {
+  setCurrentTrade,
+  submitTrade,
+  switchBalanceCard,
+} from '../../redux/trade/actions';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
@@ -46,6 +50,11 @@ export default function BuySellModal() {
     dispatch(toggleBuySellModal(false));
     dispatch(switchBalanceCard('balance'));
     dispatch(setCurrentTrade({ price: null, size: null }));
+  };
+
+  const handleSubmit = () => {
+    dispatch(submitTrade());
+    hide();
   };
 
   const children = (
@@ -93,6 +102,7 @@ export default function BuySellModal() {
       </View>
 
       <Pressable
+        onPress={handleSubmit}
         style={[
           styles.button,
           { backgroundColor: tradeType === 'Buy' ? '#0CCBB5' : '#F83974' },
