@@ -17,7 +17,6 @@ const INITIAL_STATE = {
   offersLoading: false,
 
   // Query Params
-  pairId: 'BTC-USD',
   offset: 0,
   limit: 5,
 };
@@ -34,6 +33,8 @@ export default (state = INITIAL_STATE, action) => {
     offersLoading,
     pairObject,
     currentTrade,
+    crypto,
+    fiat,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_TRADES:
@@ -60,6 +61,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         tradeType,
+      };
+    case actionTypes.SET_CRYPTO:
+      return {
+        ...state,
+        crypto,
+      };
+    case actionTypes.SET_FIAT:
+      return {
+        ...state,
+        fiat,
       };
     case actionTypes.SWITCH_BALANCE_CARD:
       return {

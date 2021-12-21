@@ -1,22 +1,23 @@
 export const getParams = (state) => {
   const {
-    trade: { pairId, offset, limit },
+    trade: { crypto, fiat, offset, limit },
   } = state;
 
-  return { pairId, offset, limit };
+  return { pairId: `${crypto}-${fiat}`, offset, limit };
 };
 
 export const paramsForTrade = (state) => {
   const {
     trade: {
       currentTrade: { price, size },
-      pairId,
+      crypto,
+      fiat,
       tradeType,
     },
   } = state;
 
   return {
-    pairCode: pairId,
+    pairCode: `${crypto}-${fiat}`,
     action: tradeType === 'Buy' ? 'BID' : 'ASK',
     amount: tradeType === 'Buy' ? price : size,
   };
