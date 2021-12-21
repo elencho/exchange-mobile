@@ -11,7 +11,9 @@ import TopRow from '../components/TransactionHistory/TopRow';
 import BuySellModal from '../components/InstantTrade/BuySellModal';
 import InfoModal from '../components/InstantTrade/InfoModal';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
+import CryptoModal from '../components/InstantTrade/CryptoModal';
 import colors from '../constants/colors';
+import FiatModal from '../components/InstantTrade/FiatModal';
 
 export default function InstantTrade() {
   return (
@@ -33,6 +35,8 @@ export default function InstantTrade() {
 
       <InfoModal />
       <BuySellModal />
+      <CryptoModal />
+      <FiatModal />
       <TransactionModal trades />
     </Background>
   );

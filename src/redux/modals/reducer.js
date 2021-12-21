@@ -1,10 +1,15 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
+  // Transactions
   datePickerVisible: { to: false, from: false },
   chooseCurrencyModalVisible: false,
-  transactionDetailsVisible: false,
+  transactionDetailsVisible: false, // Both
+
+  // Instant Trade
   buySellModalVisible: false,
+  cryptoModalVisible: false,
+  fiatModalVisible: false,
   infoVisible: false,
   chooseCardModalVisible: false,
   chooseBankModalVisible: false,
@@ -21,6 +26,8 @@ export default (state = INITIAL_STATE, action) => {
     chooseCardModalVisible,
     chooseBankModalVisible,
     bankFeesModalVisible,
+    cryptoModalVisible,
+    fiatModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -42,6 +49,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         buySellModalVisible,
+      };
+    case actionTypes.CRYPTO_MODAL_VISIBLE:
+      return {
+        ...state,
+        cryptoModalVisible,
+      };
+    case actionTypes.FIAT_MODAL_VISIBLE:
+      return {
+        ...state,
+        fiatModalVisible,
       };
     case actionTypes.INSTANT_TRADE_INFO:
       return {

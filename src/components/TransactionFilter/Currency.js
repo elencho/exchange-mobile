@@ -1,31 +1,17 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 
 import colors from '../../constants/colors';
-import { toggleCurrencyModal } from '../../redux/modals/actions';
-import { currencyAction } from '../../redux/transactions/actions';
 import images from '../../constants/images';
 
-export default function Currency({ name, code }) {
-  const dispatch = useDispatch();
+export default function Currency({ name, code, onPress }) {
   const state = useSelector((state) => state);
   const {
-    transactions: { currency, currenciesConstant },
+    transactions: { currency },
   } = state;
-
-  const choose = () => {
-    dispatch(
-      currencyAction(
-        name,
-        currenciesConstant,
-        name === 'Show All Currency' ? null : code
-      )
-    );
-    dispatch(toggleCurrencyModal(false));
-  };
 
   const backgroundCond = () => {
     if (name === currency) {
@@ -34,7 +20,7 @@ export default function Currency({ name, code }) {
   };
 
   return (
-    <Pressable style={[styles.container, backgroundCond()]} onPress={choose}>
+    <Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
       <Image source={images.BTC} style={styles.image} />
       <AppText medium style={styles.name}>
         {name}

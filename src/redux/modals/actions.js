@@ -7,6 +7,8 @@ export const actionTypes = {
   CHOOSE_CARD_MODAL: 'CHOOSE_CARD_MODAL',
   CHOOSE_BANK_MODAL: 'CHOOSE_BANK_MODAL',
   BANK_FEES_MODAL: 'BANK_FEES_MODAL',
+  FIAT_MODAL_VISIBLE: 'FIAT_MODAL_VISIBLE',
+  CRYPTO_MODAL_VISIBLE: 'CRYPTO_MODAL_VISIBLE',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -24,6 +26,14 @@ export const toggleTransactionDetails = (transactionDetailsVisible) => ({
 export const toggleBuySellModal = (buySellModalVisible) => ({
   type: actionTypes.BUY_SELL_MODAL_VISIBLE,
   buySellModalVisible,
+});
+export const toggleCryptoModal = (cryptoModalVisible) => ({
+  type: actionTypes.CRYPTO_MODAL_VISIBLE,
+  cryptoModalVisible,
+});
+export const toggleFiatModal = (fiatModalVisible) => ({
+  type: actionTypes.FIAT_MODAL_VISIBLE,
+  fiatModalVisible,
 });
 export const toggleInfoModal = (infoVisible) => ({
   type: actionTypes.INSTANT_TRADE_INFO,

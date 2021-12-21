@@ -19,6 +19,8 @@ import CardSection from './CardSection';
 import ChooseCardModal from './ChooseCardModal';
 import ChooseBankModal from './ChooseBankModal';
 import BankFeesModal from './BankFeesModal';
+import CryptoModal from './CryptoModal';
+import FiatModal from './FiatModal';
 import {
   setCurrentTrade,
   submitTrade,
@@ -94,6 +96,8 @@ export default function BuySellModal() {
 
             {Balance_Card === 'card' && <CardSection />}
 
+            <CryptoModal />
+            <FiatModal />
             <ChooseBankModal />
             <ChooseCardModal />
             <BankFeesModal />

@@ -3,51 +3,53 @@ import { Image, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
-import Currency from './Currency';
+import Currency from '../TransactionFilter/Currency';
 import ModalTop from '../ModalTop';
 import AppModal from '../AppModal';
 
 import {
-  currencyAction,
   fetchCurrencies,
   filterCurrencies,
 } from '../../redux/transactions/actions';
+import { toggleCryptoModal } from '../../redux/modals/actions';
+import { setCrypto } from '../../redux/trade/actions';
 import colors from '../../constants/colors';
-import { toggleCurrencyModal } from '../../redux/modals/actions';
 import images from '../../constants/images';
 
-export default function ChooseCurrencyModal() {
+export default function CryptoModal() {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.transactions);
-  const chooseCurrencyModalVisible = useSelector(
-    (state) => state.modals.chooseCurrencyModalVisible
-  );
+  const state = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(fetchCurrencies());
   }, []);
 
-  const { currencies, currenciesConstant } = state;
+  const {
+    transactions: { currencies, currenciesConstant },
+    modals: { cryptoModalVisible },
+  } = state;
+
+  const currenciesToIterate = currencies.filter(
+    (c) => c.code !== '' && c.code !== 'GEL' && c.code !== 'USD'
+  );
+  const updatedConstants = currenciesConstant.filter(
+    (c) => c.code !== '' && c.code !== 'GEL' && c.code !== 'USD'
+  );
 
   const filter = (text) => {
-    const filteredArray = currenciesConstant.filter((c) =>
+    const filteredArray = updatedConstants.filter((c) =>
       c.name.toLowerCase().includes(text.toLowerCase())
     );
     dispatch(filterCurrencies(filteredArray));
   };
 
   const hide = () => {
-    dispatch(toggleCurrencyModal(false));
+    dispatch(toggleCryptoModal(false));
   };
 
-  const choose = (name, code) => {
-    dispatch(
-      currencyAction(
-        name,
-        currenciesConstant,
-        name === 'Show All Currency' ? null : code
-      )
-    );
+  const choose = (code) => {
+    dispatch(setCrypto(code));
+    dispatch(filterCurrencies(updatedConstants));
     hide();
   };
 
@@ -57,7 +59,7 @@ export default function ChooseCurrencyModal() {
 
       <View style={styles.block}>
         <AppText medium style={styles.headline}>
-          Choose Currency
+          Choose Crypto
         </AppText>
 
         <View style={styles.inputContainer}>
@@ -71,12 +73,12 @@ export default function ChooseCurrencyModal() {
         </View>
 
         <ScrollView>
-          {currencies.map((c) => (
+          {currenciesToIterate.map((c) => (
             <Currency
               name={c.name}
               code={c.code}
               key={c.code}
-              onPress={() => choose(c.name, c.code)}
+              onPress={() => choose(c.code)}
             />
           ))}
         </ScrollView>
@@ -86,7 +88,7 @@ export default function ChooseCurrencyModal() {
 
   return (
     <AppModal
-      visible={chooseCurrencyModalVisible}
+      visible={cryptoModalVisible}
       hide={hide}
       children={children}
       custom
