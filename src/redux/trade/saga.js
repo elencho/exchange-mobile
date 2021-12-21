@@ -14,9 +14,10 @@ import { fetchTrades, fetchOffers, submitTrade } from '../../utils/fetchTrades';
 function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
   const params = yield select(getParams);
-  const trades = yield select(getTrades);
+  console.log(params);
+  // const trades = yield select(getTrades);
   const newTrades = yield call(fetchTrades, params);
-  yield put(saveTrades([...trades, ...newTrades]));
+  yield put(saveTrades(newTrades));
   yield put(setTradesLoading(false));
 }
 

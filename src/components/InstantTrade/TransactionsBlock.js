@@ -3,18 +3,18 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import colors from '../../constants/colors';
-import { fetchTrades } from '../../redux/trade/actions';
+import { fetchTrades, hideOtherPairsAction } from '../../redux/trade/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import Trade from './Trade';
 
-const TopRow = () => (
+const TopRow = ({ text, onPress }) => (
   <View style={styles.topRow}>
     <AppText header style={styles.header}>
       Transactions
     </AppText>
     <AppText subtext body style={styles.subText}>
-      <PurpleText text="Hide " />
+      <PurpleText text={text} onPress={onPress} />
       other pairs
     </AppText>
   </View>
@@ -23,15 +23,23 @@ const TopRow = () => (
 export default function TransactionsBlock() {
   const dispatch = useDispatch();
 
-  const trades = useSelector((state) => state.trade.trades);
+  const state = useSelector((state) => state.trade);
+  const { trades, hideOtherPairs } = state;
 
   useEffect(() => {
     dispatch(fetchTrades());
-  }, []);
+  }, [hideOtherPairs]);
+
+  const toggleShowHide = () => {
+    dispatch(hideOtherPairsAction(!hideOtherPairs));
+  };
 
   return (
     <View style={styles.container}>
-      <TopRow />
+      <TopRow
+        text={hideOtherPairs ? 'Show ' : 'Hide '}
+        onPress={toggleShowHide}
+      />
 
       <ScrollView style={{ height: 280 }}>
         {trades.map((trade) => (

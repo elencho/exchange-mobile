@@ -1,6 +1,7 @@
 export const actionTypes = {
   SAVE_TRADES: 'SAVE_TRADES',
   SAVE_OFFERS: 'SAVE_OFFERS',
+  HIDE_OTHER_PAIRS: 'HIDE_OTHER_PAIRS',
   SET_PAIR_OBJECT: 'SET_PAIR_OBJECT',
   SET_CURRENT_TRADE: 'SET_CURRENT_TRADE',
   SET_TRADE_TYPE: 'SET_TRADE_TYPE',
@@ -60,6 +61,10 @@ export const setCard = (card) => ({
 export const setBank = (bank) => ({
   type: actionTypes.SET_BANK,
   bank,
+});
+export const hideOtherPairsAction = (hideOtherPairs) => ({
+  type: actionTypes.HIDE_OTHER_PAIRS,
+  hideOtherPairs,
 });
 export const setTradesLoading = (tradesLoading) => ({
   type: actionTypes.SET_TRADES_LOADING,

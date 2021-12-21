@@ -56,7 +56,7 @@ export default function AppModal({
       {fullScreen && (
         <Background>
           <CloseModalIcon onPress={hide} />
-          <Headline title={title} />
+          {title && <Headline title={title} />}
           {children}
         </Background>
       )}

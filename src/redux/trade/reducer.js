@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   offers: { USD: [], GEL: [] },
   pairObject: null,
   currentTrade: { price: null, size: null },
+  hideOtherPairs: false,
 
   fiat: 'USD',
   crypto: 'BTC',
@@ -35,6 +36,7 @@ export default (state = INITIAL_STATE, action) => {
     currentTrade,
     crypto,
     fiat,
+    hideOtherPairs,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_TRADES:
@@ -96,6 +98,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         offersLoading,
+      };
+    case actionTypes.HIDE_OTHER_PAIRS:
+      return {
+        ...state,
+        hideOtherPairs,
       };
     default:
       return state;

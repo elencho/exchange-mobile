@@ -1,9 +1,9 @@
 export const getParams = (state) => {
   const {
-    trade: { crypto, fiat, offset, limit },
+    trade: { crypto, fiat, offset, limit, hideOtherPairs },
   } = state;
 
-  return { pairId: `${crypto}-${fiat}`, offset, limit };
+  return { pairId: hideOtherPairs ? `${crypto}-${fiat}` : null, offset, limit };
 };
 
 export const paramsForTrade = (state) => {
