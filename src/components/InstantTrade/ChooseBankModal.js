@@ -22,6 +22,7 @@ export default function ChooseBankModal() {
 
   const choose = (b) => {
     dispatch(setBank(b));
+    hide();
   };
 
   const mockArray = ['TBC Bank', 'Bank of Georgia'];

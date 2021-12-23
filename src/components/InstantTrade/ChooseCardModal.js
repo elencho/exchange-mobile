@@ -22,6 +22,7 @@ export default function ChooseCardModal() {
 
   const choose = (c) => {
     dispatch(setCard(c));
+    hide();
   };
 
   const mockArray = ['000004****0026', '600004****1672', '268004****0010'];

@@ -22,6 +22,7 @@ export default function FiatModal() {
 
   const choose = (f) => {
     dispatch(setFiat(f));
+    hide();
   };
 
   const mockArray = ['USD', 'GEL'];
