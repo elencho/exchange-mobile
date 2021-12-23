@@ -42,7 +42,8 @@ export default function CalendarDay({ state, handleChange, dateMark }) {
     }
   };
 
-  const selectDate = () => handleChange(timestamp);
+  const selectDate = () =>
+    state.state !== 'disabled' && handleChange(timestamp);
 
   return (
     <TouchableOpacity onPress={selectDate} style={[styles.container, mark()]}>
