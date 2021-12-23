@@ -37,7 +37,7 @@ export default function InstantTrade() {
 
       <BuySellSwitch />
 
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <TradeBlock />
         <TransactionsBlock />
       </ScrollView>

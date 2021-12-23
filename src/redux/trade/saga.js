@@ -7,6 +7,7 @@ import {
   setOffersLoading,
   setPairObject,
   setTradesLoading,
+  fetchTrades as fetchTradesAction,
 } from './actions';
 import { getParams, getTrades, paramsForTrade } from './selectors';
 import { fetchTrades, fetchOffers, submitTrade } from '../../utils/fetchTrades';
@@ -14,7 +15,6 @@ import { fetchTrades, fetchOffers, submitTrade } from '../../utils/fetchTrades';
 function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
   const params = yield select(getParams);
-  console.log(params);
   // const trades = yield select(getTrades);
   const newTrades = yield call(fetchTrades, params);
   yield put(saveTrades(newTrades));
@@ -45,6 +45,7 @@ function* submitTradeSaga() {
   yield put(setTradesLoading(true));
   const params = yield select(paramsForTrade);
   yield call(submitTrade, params);
+  yield put(fetchTradesAction());
   yield put(setTradesLoading(false));
 }
 

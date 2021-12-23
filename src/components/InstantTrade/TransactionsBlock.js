@@ -41,7 +41,7 @@ export default function TransactionsBlock() {
         onPress={toggleShowHide}
       />
 
-      <ScrollView style={{ height: 280 }}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{ height: 280 }}>
         {trades.map((trade) => (
           <Trade trade={trade} key={Math.random()} />
         ))}

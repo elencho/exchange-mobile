@@ -12,7 +12,7 @@ import {
   filterCurrencies,
 } from '../../redux/transactions/actions';
 import { toggleCryptoModal } from '../../redux/modals/actions';
-import { setCrypto } from '../../redux/trade/actions';
+import { fetchOffers, setCrypto } from '../../redux/trade/actions';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 
@@ -50,6 +50,7 @@ export default function CryptoModal() {
   const choose = (code) => {
     dispatch(setCrypto(code));
     dispatch(filterCurrencies(updatedConstants));
+    dispatch(fetchOffers());
     hide();
   };
 
