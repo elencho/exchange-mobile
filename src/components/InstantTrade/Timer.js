@@ -35,7 +35,7 @@ export default function Timer() {
   };
 
   const progress = (seconds) => {
-    return (100 / 90) * seconds;
+    return 100 - (100 / 90) * seconds;
   };
 
   return (
