@@ -43,6 +43,12 @@ export default function BuySellModal() {
     },
   } = state;
 
+  const {
+    pair: { baseScale, quoteScale },
+  } = pairObject;
+
+  const regex = /^[0-9]+$/;
+
   let rate;
   if (pairObject) {
     rate = tradeType === 'Buy' ? pairObject.buyPrice : pairObject.sellPrice;
@@ -59,6 +65,39 @@ export default function BuySellModal() {
     hide();
   };
 
+  const validate = (t, number) => {
+    const isNumber = (t * 1).toString() !== 'NaN';
+
+    if (isNumber) {
+      if (t.split('.').length === 2) {
+        return t.split('.')[1].length <= number;
+      }
+      if (!t.includes('.')) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const handleChangeText = (t, type) => {
+    if (type === 'crypto' && validate(t, quoteScale)) {
+      dispatch(
+        setCurrentTrade({
+          price: t,
+          size: (t / rate).toFixed(baseScale),
+        })
+      );
+    }
+    if (type === 'fiat' && validate(t, baseScale)) {
+      dispatch(
+        setCurrentTrade({
+          price: (t * rate).toFixed(quoteScale),
+          size: t,
+        })
+      );
+    }
+  };
+
   const children = (
     <>
       <View style={styles.flex}>
@@ -73,24 +112,16 @@ export default function BuySellModal() {
             <CurrencyDropdowns style={styles.dropdowns} />
 
             <AppInput
-              onChangeText={(t) =>
-                dispatch(
-                  setCurrentTrade({ price: t, size: (t / rate).toFixed(6) })
-                )
-              }
+              onChangeText={(t) => handleChangeText(t, 'crypto')}
               keyboardType="decimal-pad"
-              value={price}
+              value={price.trim()}
               right={<AppText style={styles.code}>{fiat}</AppText>}
             />
             <View style={styles.margin} />
             <AppInput
-              onChangeText={(t) =>
-                dispatch(
-                  setCurrentTrade({ price: (t * rate).toFixed(6), size: t })
-                )
-              }
+              onChangeText={(t) => handleChangeText(t, 'fiat')}
               keyboardType="decimal-pad"
-              value={size}
+              value={size.trim()}
               right={<AppText style={styles.code}>{crypto}</AppText>}
             />
 
