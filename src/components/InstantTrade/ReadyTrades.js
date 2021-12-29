@@ -18,6 +18,8 @@ export default function ReadyTrades() {
     dispatch(toggleBuySellModal(true));
     if (price && size) {
       dispatch(setCurrentTrade({ price, size }));
+    } else {
+      dispatch(setCurrentTrade({ price: '', size: '' }));
     }
   };
 

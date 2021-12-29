@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   Balance_Card: 'balance',
   bank: null,
   card: null,
+  balance: null,
 
   tradesLoading: false,
   offersLoading: false,
@@ -37,6 +38,7 @@ export default (state = INITIAL_STATE, action) => {
     crypto,
     fiat,
     hideOtherPairs,
+    balance,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_TRADES:
@@ -73,6 +75,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         fiat,
+      };
+    case actionTypes.SET_BALANCE:
+      return {
+        ...state,
+        balance,
       };
     case actionTypes.SWITCH_BALANCE_CARD:
       return {

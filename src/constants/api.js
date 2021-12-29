@@ -12,3 +12,6 @@ export const TRADES_URL =
 
 export const OFFERS_URL =
   'http://10.10.5.4:8080/exchange/api/v1/mobile/private/simpleTrade/offers';
+
+export const BALANCE_URL =
+  'http://10.10.5.4:8080/exchange/api/v1/mobile/private/account/balance';

@@ -10,6 +10,7 @@ export const actionTypes = {
   SET_CARD: 'SET_CARD',
   SET_CRYPTO: 'SET_CRYPTO',
   SET_FIAT: 'SET_FIAT',
+  SET_BALANCE: 'SET_BALANCE',
 
   // PURE VISUALS
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
@@ -41,6 +42,10 @@ export const setCrypto = (crypto) => ({
 export const setFiat = (fiat) => ({
   type: actionTypes.SET_FIAT,
   fiat,
+});
+export const setBalance = (balance) => ({
+  type: actionTypes.SET_BALANCE,
+  balance,
 });
 export const setPairObject = (pairObject) => ({
   type: actionTypes.SET_PAIR_OBJECT,

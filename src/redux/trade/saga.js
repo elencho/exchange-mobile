@@ -8,9 +8,15 @@ import {
   setPairObject,
   setTradesLoading,
   fetchTrades as fetchTradesAction,
+  setBalance,
 } from './actions';
 import { getParams, getTrades, paramsForTrade } from './selectors';
-import { fetchTrades, fetchOffers, submitTrade } from '../../utils/fetchTrades';
+import {
+  fetchTrades,
+  fetchOffers,
+  submitTrade,
+  fetchBalance,
+} from '../../utils/fetchTrades';
 
 function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
@@ -29,6 +35,7 @@ function* fetchOffersSaga() {
   let object;
   const fiat = yield select((state) => state.trade.fiat);
   const crypto = yield select((state) => state.trade.crypto);
+
   yield call(() =>
     offers[fiat].forEach((o) => {
       if (o.pair.baseCurrency === crypto) {
@@ -36,8 +43,10 @@ function* fetchOffersSaga() {
       }
     })
   );
-
   yield put(setPairObject(object));
+
+  const balance = yield call(fetchBalance);
+  yield put(setBalance(balance));
   yield put(setOffersLoading(false));
 }
 
