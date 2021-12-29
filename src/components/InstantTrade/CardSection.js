@@ -16,7 +16,12 @@ import InfoMark from './InfoMark';
 export default function CardSection() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.trade);
-  const { bank, card } = state;
+  const {
+    bank,
+    card,
+    fiat,
+    balance: { balances },
+  } = state;
 
   const showCards = () => {
     dispatch(toggleChooseCardModal(true));
@@ -28,26 +33,40 @@ export default function CardSection() {
     dispatch(toggleBankFeesModal(true));
   };
 
+  const multipleBanks = () => {
+    let isMultiple;
+    balances.forEach((b) => {
+      if (fiat === b.currencyCode) {
+        isMultiple = b.ecommerceDepositProviders.length > 1;
+      }
+    });
+    return isMultiple;
+  };
+
   return (
     <View style={styles.container}>
-      <Pressable style={styles.dropdown} onPress={showBanks}>
-        {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
-        <AppText
-          style={[
-            styles.text,
-            { color: bank ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT },
-          ]}
-          medium={bank}
-        >
-          {bank ? bank : 'Choose Bank'}
-        </AppText>
-        <Image source={images['Arrow']} />
-      </Pressable>
+      {multipleBanks() && (
+        <>
+          <Pressable style={styles.dropdown} onPress={showBanks}>
+            {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
+            <AppText
+              style={[
+                styles.text,
+                { color: bank ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT },
+              ]}
+              medium={bank}
+            >
+              {bank ? bank : 'Choose Bank'}
+            </AppText>
+            <Image source={images['Arrow']} />
+          </Pressable>
 
-      <AppText subtext style={styles.subText}>
-        0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
-        <PurpleText text=" More Fees" onPress={showFees} />
-      </AppText>
+          <AppText subtext style={styles.subText}>
+            0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
+            <PurpleText text=" More Fees" onPress={showFees} />
+          </AppText>
+        </>
+      )}
 
       <Pressable style={styles.dropdown} onPress={showCards}>
         {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}

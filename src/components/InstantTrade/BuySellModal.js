@@ -39,6 +39,7 @@ export default function BuySellModal() {
       crypto,
       fiat,
       pairObject,
+      balance: { balances },
       currentTrade: { size, price },
     },
   } = state;
@@ -46,8 +47,6 @@ export default function BuySellModal() {
   const {
     pair: { baseScale, quoteScale },
   } = pairObject;
-
-  const regex = /^[0-9]+$/;
 
   let rate;
   if (pairObject) {
@@ -98,14 +97,37 @@ export default function BuySellModal() {
     }
   };
 
+  const myBalance = () => {
+    const currency = tradeType === 'Buy' ? fiat : crypto;
+    const fix = currency === fiat ? quoteScale : baseScale;
+    let available;
+
+    balances.forEach((b) => {
+      if (b.currencyCode === currency) {
+        available = b.available;
+      }
+    });
+    return Number(available).toFixed(fix);
+  };
+
+  const hasEcommerce = () => {
+    let hasEcommerce;
+    balances.forEach((b) => {
+      if (b.currencyCode === fiat) {
+        hasEcommerce = b.depositTypes.includes('ECOMMERCE');
+      }
+    });
+    return hasEcommerce;
+  };
+
   const children = (
     <>
       <View style={styles.flex}>
         <AppText subtext body style={styles.balance}>
-          My Balance: 2 000.00 {fiat}
+          My Balance: {myBalance()} {tradeType === 'Buy' ? fiat : crypto}
         </AppText>
 
-        {tradeType === 'Buy' && <BalanceCardSwitcher />}
+        {tradeType === 'Buy' && hasEcommerce() && <BalanceCardSwitcher />}
 
         <ScrollView nestedScrollEnabled>
           <TouchableOpacity activeOpacity={0.99}>
