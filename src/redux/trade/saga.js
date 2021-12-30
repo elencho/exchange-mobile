@@ -61,11 +61,12 @@ function* fetchOffersSaga() {
   let providers; // Banks that have ecommerce
   yield call(() => {
     balance.balances.forEach((b) => {
-      if (b.currencyCode === fiat) {
-        provider = b.ecommerceDepositProviders[0].provider;
-      }
       if (b.depositTypes.includes('ECOMMERCE')) {
         providers = b.ecommerceDepositProviders;
+
+        if (b.currencyCode === fiat) {
+          provider = b.ecommerceDepositProviders[0].provider;
+        }
       }
     });
   });
