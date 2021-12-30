@@ -7,13 +7,15 @@ const INITIAL_STATE = {
   currentTrade: { price: null, size: null },
   hideOtherPairs: false,
 
-  fiat: 'USD',
+  fiat: 'GEL',
   crypto: 'BTC',
   tradeType: 'Buy',
   Balance_Card: 'balance',
-  bank: null,
   card: null,
   balance: null,
+  cards: null,
+  depositProvider: null,
+  depositProviders: null,
 
   tradesLoading: false,
   offersLoading: false,
@@ -28,7 +30,6 @@ export default (state = INITIAL_STATE, action) => {
     tradeType,
     Balance_Card,
     card,
-    bank,
     trades,
     offers,
     tradesLoading,
@@ -39,6 +40,9 @@ export default (state = INITIAL_STATE, action) => {
     fiat,
     hideOtherPairs,
     balance,
+    cards,
+    depositProvider,
+    depositProviders,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_TRADES:
@@ -81,6 +85,21 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         balance,
       };
+    case actionTypes.SAVE_CARDS:
+      return {
+        ...state,
+        cards,
+      };
+    case actionTypes.SET_DEPOSIT_PROVIDER:
+      return {
+        ...state,
+        depositProvider,
+      };
+    case actionTypes.SET_DEPOSIT_PROVIDERS:
+      return {
+        ...state,
+        depositProviders,
+      };
     case actionTypes.SWITCH_BALANCE_CARD:
       return {
         ...state,
@@ -90,11 +109,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         card,
-      };
-    case actionTypes.SET_BANK:
-      return {
-        ...state,
-        bank,
       };
     case actionTypes.SET_TRADES_LOADING:
       return {

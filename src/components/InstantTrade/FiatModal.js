@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleFiatModal } from '../../redux/modals/actions';
-import { fetchOffers, setFiat } from '../../redux/trade/actions';
+import {
+  fetchOffers,
+  setFiat,
+  switchBalanceCard,
+} from '../../redux/trade/actions';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 
@@ -23,6 +27,7 @@ export default function FiatModal() {
   const choose = (f) => {
     dispatch(setFiat(f));
     dispatch(fetchOffers());
+    dispatch(switchBalanceCard('balance'));
     hide();
   };
 

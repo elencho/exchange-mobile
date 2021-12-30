@@ -6,11 +6,13 @@ export const actionTypes = {
   SET_CURRENT_TRADE: 'SET_CURRENT_TRADE',
   SET_TRADE_TYPE: 'SET_TRADE_TYPE',
   SWITCH_BALANCE_CARD: 'SWITCH_BALANCE_CARD',
-  SET_BANK: 'SET_BANK',
   SET_CARD: 'SET_CARD',
   SET_CRYPTO: 'SET_CRYPTO',
   SET_FIAT: 'SET_FIAT',
   SET_BALANCE: 'SET_BALANCE',
+  SAVE_CARDS: 'SAVE_CARDS',
+  SET_DEPOSIT_PROVIDER: 'SET_DEPOSIT_PROVIDER',
+  SET_DEPOSIT_PROVIDERS: 'SET_DEPOSIT_PROVIDERS',
 
   // PURE VISUALS
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
@@ -47,6 +49,18 @@ export const setBalance = (balance) => ({
   type: actionTypes.SET_BALANCE,
   balance,
 });
+export const saveCards = (cards) => ({
+  type: actionTypes.SAVE_CARDS,
+  cards,
+});
+export const setDepositProvider = (depositProvider) => ({
+  type: actionTypes.SET_DEPOSIT_PROVIDER,
+  depositProvider,
+});
+export const setDepositProviders = (depositProviders) => ({
+  type: actionTypes.SET_DEPOSIT_PROVIDERS,
+  depositProviders,
+});
 export const setPairObject = (pairObject) => ({
   type: actionTypes.SET_PAIR_OBJECT,
   pairObject,
@@ -62,10 +76,6 @@ export const switchBalanceCard = (Balance_Card) => ({
 export const setCard = (card) => ({
   type: actionTypes.SET_CARD,
   card,
-});
-export const setBank = (bank) => ({
-  type: actionTypes.SET_BANK,
-  bank,
 });
 export const hideOtherPairsAction = (hideOtherPairs) => ({
   type: actionTypes.HIDE_OTHER_PAIRS,

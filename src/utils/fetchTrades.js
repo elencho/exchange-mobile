@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { bearer, OFFERS_URL, TRADES_URL, BALANCE_URL } from '../constants/api';
+import {
+  bearer,
+  OFFERS_URL,
+  TRADES_URL,
+  BALANCE_URL,
+  CARDS_URL,
+} from '../constants/api';
 
 export const fetchTrades = async (params) => {
   try {
@@ -38,6 +44,18 @@ export const fetchBalance = async () => {
   try {
     const data = await axios.get(BALANCE_URL, {
       headers: { Authorization: bearer },
+    });
+    return data.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const fetchCards = async (params) => {
+  try {
+    const data = await axios.get(CARDS_URL, {
+      headers: { Authorization: bearer },
+      params,
     });
     return data.data;
   } catch (err) {

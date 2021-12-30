@@ -15,3 +15,6 @@ export const OFFERS_URL =
 
 export const BALANCE_URL =
   'http://10.10.5.4:8080/exchange/api/v1/mobile/private/account/balance';
+
+export const CARDS_URL =
+  'http://10.10.5.4:8080/exchange/api/v1/mobile/private/account/cards';

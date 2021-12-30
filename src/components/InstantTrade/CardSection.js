@@ -17,7 +17,8 @@ export default function CardSection() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.trade);
   const {
-    bank,
+    depositProvider,
+    depositProviders,
     card,
     fiat,
     balance: { balances },
@@ -43,6 +44,20 @@ export default function CardSection() {
     return isMultiple;
   };
 
+  const displayName = () => {
+    let displayName;
+    if (depositProvider) {
+      depositProviders.forEach((d) => {
+        if (depositProvider === d.provider) {
+          displayName = d.displayName;
+        }
+      });
+      return displayName;
+    } else {
+      return 'Choose Bank';
+    }
+  };
+
   return (
     <View style={styles.container}>
       {multipleBanks() && (
@@ -52,11 +67,15 @@ export default function CardSection() {
             <AppText
               style={[
                 styles.text,
-                { color: bank ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT },
+                {
+                  color: depositProvider
+                    ? colors.PRIMARY_TEXT
+                    : colors.SECONDARY_TEXT,
+                },
               ]}
-              medium={bank}
+              medium={depositProvider}
             >
-              {bank ? bank : 'Choose Bank'}
+              {displayName()}
             </AppText>
             <Image source={images['Arrow']} />
           </Pressable>
@@ -75,9 +94,9 @@ export default function CardSection() {
             styles.text,
             { color: card ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT },
           ]}
-          medium={card}
+          medium={card ? card.cardNumber : false}
         >
-          {card ? card : 'Choose Card'}
+          {card ? card.cardNumber : 'Choose Card'}
         </AppText>
         <Image source={images['Arrow']} />
       </Pressable>

@@ -9,13 +9,22 @@ import {
   setTradesLoading,
   fetchTrades as fetchTradesAction,
   setBalance,
+  saveCards,
+  setDepositProvider,
+  setDepositProviders,
 } from './actions';
-import { getParams, getTrades, paramsForTrade } from './selectors';
+import {
+  getParams,
+  getTrades,
+  paramsForTrade,
+  getCardParams,
+} from './selectors';
 import {
   fetchTrades,
   fetchOffers,
   submitTrade,
   fetchBalance,
+  fetchCards,
 } from '../../utils/fetchTrades';
 
 function* fetchTradesSaga() {
@@ -47,6 +56,25 @@ function* fetchOffersSaga() {
 
   const balance = yield call(fetchBalance);
   yield put(setBalance(balance));
+
+  let provider; // It will become first item of depositProviders array for a particular fiat
+  let providers; // Banks that have ecommerce
+  yield call(() => {
+    balance.balances.forEach((b) => {
+      if (b.currencyCode === fiat) {
+        provider = b.ecommerceDepositProviders[0].provider;
+      }
+      if (b.depositTypes.includes('ECOMMERCE')) {
+        providers = b.ecommerceDepositProviders;
+      }
+    });
+  });
+  yield put(setDepositProvider(provider));
+  yield put(setDepositProviders(providers));
+
+  const cardParams = yield select(getCardParams);
+  const cards = yield call(fetchCards, cardParams);
+  yield put(saveCards(cards));
   yield put(setOffersLoading(false));
 }
 

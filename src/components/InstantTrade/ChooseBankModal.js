@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleChooseBankModal } from '../../redux/modals/actions';
-import { setBank, setCard } from '../../redux/trade/actions';
+import { setDepositProvider } from '../../redux/trade/actions';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 
@@ -14,34 +14,36 @@ export default function ChooseBankModal() {
   const chooseBankModalVisible = useSelector(
     (state) => state.modals.chooseBankModalVisible
   );
-  const bank = useSelector((state) => state.trade.bank);
+  const state = useSelector((state) => state.trade);
+  const { depositProvider, depositProviders } = state;
 
+  // console.log(state);
   const hide = () => {
     dispatch(toggleChooseBankModal(false));
   };
 
   const choose = (b) => {
-    dispatch(setBank(b));
+    dispatch(setDepositProvider(b));
     hide();
   };
 
-  const mockArray = ['TBC Bank', 'Bank of Georgia'];
-
-  const children = mockArray.map((b, i) => (
-    <View key={b}>
+  const children = depositProviders.map((b, i) => (
+    <View key={b.displayName}>
       <Pressable
         style={[
           styles.row,
-          b === bank && { backgroundColor: 'rgba(101, 130, 253, 0.16)' },
+          b.provider === depositProvider && {
+            backgroundColor: 'rgba(101, 130, 253, 0.16)',
+          },
         ]}
-        onPress={() => choose(b)}
+        onPress={() => choose(b.provider)}
       >
         <Image source={images.TBC} />
         <AppText body style={styles.text}>
-          {b}
+          {b.displayName}
         </AppText>
       </Pressable>
-      {i < mockArray.length - 1 && <View style={styles.margin} />}
+      {i < depositProviders.length - 1 && <View style={styles.margin} />}
     </View>
   ));
 

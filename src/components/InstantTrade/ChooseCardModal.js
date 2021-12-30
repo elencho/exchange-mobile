@@ -14,7 +14,9 @@ export default function ChooseCardModal() {
   const chooseCardModalVisible = useSelector(
     (state) => state.modals.chooseCardModalVisible
   );
-  const card = useSelector((state) => state.trade.card);
+  const state = useSelector((state) => state.trade);
+
+  const { card, cards } = state;
 
   const hide = () => {
     dispatch(toggleChooseCardModal(false));
@@ -25,22 +27,23 @@ export default function ChooseCardModal() {
     hide();
   };
 
-  const mockArray = ['000004****0026', '600004****1672', '268004****0010'];
+  const background = (c) => {
+    if (card && c.id === card.id) {
+      return { backgroundColor: 'rgba(101, 130, 253, 0.16)' };
+    }
+  };
 
-  const children = mockArray.map((c, i) => (
+  const children = cards.map((c) => (
     <Pressable
-      style={[
-        styles.row,
-        c === card && { backgroundColor: 'rgba(101, 130, 253, 0.16)' },
-      ]}
-      key={c}
+      style={[styles.row, background(c)]}
+      key={c.cardNumber}
       onPress={() => choose(c)}
     >
       <View style={styles.iconContainer}>
-        <Image source={i === 1 ? images.Visa : images.MC_Card} />
+        <Image source={images[c.network]} />
       </View>
       <AppText body style={styles.text}>
-        {c}
+        {c.cardNumber}
       </AppText>
     </Pressable>
   ));
