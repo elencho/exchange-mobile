@@ -11,9 +11,10 @@ const INITIAL_STATE = {
   crypto: 'BTC',
   tradeType: 'Buy',
   Balance_Card: 'balance',
-  card: null,
   balance: null,
+  card: null,
   cards: null,
+  fee: null,
   depositProvider: null,
   depositProviders: null,
 
@@ -41,6 +42,7 @@ export default (state = INITIAL_STATE, action) => {
     hideOtherPairs,
     balance,
     cards,
+    fee,
     depositProvider,
     depositProviders,
   } = action;
@@ -109,6 +111,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         card,
+      };
+    case actionTypes.SET_FEE:
+      return {
+        ...state,
+        fee,
       };
     case actionTypes.SET_TRADES_LOADING:
       return {

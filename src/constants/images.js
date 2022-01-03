@@ -24,6 +24,7 @@ export default {
   Wallet_Active: require('../assets/images/Wallet_Active.png'),
   Wallet: require('../assets/images/Wallet.png'),
   Withdrawal: require('../assets/images/Withdrawal.png'),
+  AMEX: require('../assets/images/Amex.png'),
   MASTERCARD: require('../assets/images/MC_Card.png'),
   VISA: require('../assets/images/Visa.png'),
   TBC: require('../assets/images/TBC.png'),

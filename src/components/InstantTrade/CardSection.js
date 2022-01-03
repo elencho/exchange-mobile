@@ -21,6 +21,7 @@ export default function CardSection() {
     depositProviders,
     card,
     fiat,
+    fee,
     balance: { balances },
   } = state;
 
@@ -105,12 +106,14 @@ export default function CardSection() {
         Or you can add <PurpleText text=" New Card" />
       </AppText>
 
-      <View style={styles.info}>
-        <InfoMark inner="i" color={colors.SECONDARY_TEXT} />
-        <AppText subtext style={styles.infoText}>
-          MasterCard 3%; Total amount = 51.55 GEL
-        </AppText>
-      </View>
+      {fee && (
+        <View style={styles.info}>
+          <InfoMark inner="i" color={colors.SECONDARY_TEXT} />
+          <AppText subtext style={styles.infoText}>
+            MasterCard 3%; Total amount = {fee.totalAmount} {fiat}
+          </AppText>
+        </View>
+      )}
     </View>
   );
 }

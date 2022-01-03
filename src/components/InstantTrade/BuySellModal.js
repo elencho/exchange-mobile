@@ -22,6 +22,7 @@ import BankFeesModal from './BankFeesModal';
 import CryptoModal from './CryptoModal';
 import FiatModal from './FiatModal';
 import {
+  fetchFee,
   setCurrentTrade,
   submitTrade,
   switchBalanceCard,
@@ -41,6 +42,7 @@ export default function BuySellModal() {
       pairObject,
       balance: { balances },
       currentTrade: { size, price },
+      card,
     },
   } = state;
 
@@ -86,6 +88,7 @@ export default function BuySellModal() {
           size: (t / rate).toFixed(baseScale),
         })
       );
+      card && t && dispatch(fetchFee());
     }
     if (type === 'fiat' && validate(t, baseScale)) {
       dispatch(
@@ -94,6 +97,7 @@ export default function BuySellModal() {
           size: t,
         })
       );
+      card && t && dispatch(fetchFee());
     }
   };
 

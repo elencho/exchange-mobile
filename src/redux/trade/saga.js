@@ -12,12 +12,14 @@ import {
   saveCards,
   setDepositProvider,
   setDepositProviders,
+  setFee,
 } from './actions';
 import {
   getParams,
   getTrades,
   paramsForTrade,
   getCardParams,
+  paramsForFee,
 } from './selectors';
 import {
   fetchTrades,
@@ -25,6 +27,7 @@ import {
   submitTrade,
   fetchBalance,
   fetchCards,
+  fetchFees,
 } from '../../utils/fetchTrades';
 
 function* fetchTradesSaga() {
@@ -87,8 +90,15 @@ function* submitTradeSaga() {
   yield put(setTradesLoading(false));
 }
 
+function* fetchFeeSaga() {
+  const params = yield select(paramsForFee);
+  const fee = yield call(fetchFees, params);
+  yield put(setFee(fee));
+}
+
 export default function* () {
   yield takeLatest(actionTypes.FETCH_TRADES, fetchTradesSaga);
   yield takeLatest(actionTypes.FETCH_OFFERS, fetchOffersSaga);
   yield takeLatest(actionTypes.SUBMIT_TRADE, submitTradeSaga);
+  yield takeLatest(actionTypes.FETCH_FEE, fetchFeeSaga);
 }

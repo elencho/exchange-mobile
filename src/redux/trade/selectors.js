@@ -6,11 +6,30 @@ export const getParams = (state) => {
   return { pairId: hideOtherPairs ? `${crypto}-${fiat}` : null, offset, limit };
 };
 
+export const paramsForFee = (state) => {
+  const {
+    trade: {
+      fiat,
+      currentTrade: { price },
+      depositProvider,
+      card,
+    },
+  } = state;
+
+  return {
+    currency: fiat,
+    method: 'ECOMMERCE',
+    type: 'DEPOSIT',
+    provider: depositProvider,
+    cardId: card.id,
+    amount: price,
+  };
+};
+
 export const getCardParams = (state) => {
   const {
-    trade: { fiat, depositProvider, bank },
+    trade: { fiat, depositProvider },
   } = state;
-  console.log(bank); //////
 
   return {
     currency: fiat,

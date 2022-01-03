@@ -10,6 +10,7 @@ export const actionTypes = {
   SET_CRYPTO: 'SET_CRYPTO',
   SET_FIAT: 'SET_FIAT',
   SET_BALANCE: 'SET_BALANCE',
+  SET_FEE: 'SET_FEE',
   SAVE_CARDS: 'SAVE_CARDS',
   SET_DEPOSIT_PROVIDER: 'SET_DEPOSIT_PROVIDER',
   SET_DEPOSIT_PROVIDERS: 'SET_DEPOSIT_PROVIDERS',
@@ -22,6 +23,7 @@ export const actionTypes = {
   // FOR SAGAS
   FETCH_TRADES: 'FETCH_TRADES',
   FETCH_OFFERS: 'FETCH_OFFERS',
+  FETCH_FEE: 'FETCH_FEE',
   SUBMIT_TRADE: 'SUBMIT_TRADE',
 };
 
@@ -77,6 +79,10 @@ export const setCard = (card) => ({
   type: actionTypes.SET_CARD,
   card,
 });
+export const setFee = (fee) => ({
+  type: actionTypes.SET_FEE,
+  fee,
+});
 export const hideOtherPairsAction = (hideOtherPairs) => ({
   type: actionTypes.HIDE_OTHER_PAIRS,
   hideOtherPairs,
@@ -96,6 +102,9 @@ export const fetchTrades = () => ({
 });
 export const fetchOffers = () => ({
   type: actionTypes.FETCH_OFFERS,
+});
+export const fetchFee = () => ({
+  type: actionTypes.FETCH_FEE,
 });
 export const submitTrade = () => ({
   type: actionTypes.SUBMIT_TRADE,
