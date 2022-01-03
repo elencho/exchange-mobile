@@ -17,7 +17,6 @@ export default function ChooseBankModal() {
   const state = useSelector((state) => state.trade);
   const { depositProvider, depositProviders } = state;
 
-  // console.log(state);
   const hide = () => {
     dispatch(toggleChooseBankModal(false));
   };

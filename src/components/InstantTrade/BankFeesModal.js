@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,10 +9,49 @@ import colors from '../../constants/colors';
 import images from '../../constants/images';
 
 export default function BankFeesModal() {
+  let feesArray = [];
+  let rangesObject = {};
+
   const dispatch = useDispatch();
   const bankFeesModalVisible = useSelector(
     (state) => state.modals.bankFeesModalVisible
   );
+
+  const state = useSelector((state) => state.trade);
+
+  const {
+    balance: { balances },
+    fiat,
+    depositProvider,
+  } = state;
+
+  const makeFeesArray = (arr) => {
+    arr.forEach((b) => {
+      if (fiat === b.currencyCode) {
+        b.fees.forEach((f) => {
+          if (f.type === 'DEPOSIT' && f.provider === depositProvider) {
+            feesArray = f.fees;
+          }
+        });
+      }
+    });
+  };
+
+  const makeRangesArray = (arr) => {
+    arr.forEach((f) => {
+      if (f.rangeStart === 0 && f.rangeEnd === 100) {
+        rangesObject = { ...rangesObject, f };
+      }
+    });
+  };
+
+  useEffect(() => {
+    makeFeesArray(balances);
+    makeRangesArray(feesArray);
+    // console.log(feesArray);
+    // console.log(rangesObject);
+    // dasamtavrebelia
+  }, []);
 
   const hide = () => {
     dispatch(toggleBankFeesModal(false));
@@ -26,13 +65,13 @@ export default function BankFeesModal() {
         </AppText>
         <View style={[styles.icons, styles.flex]}>
           <View style={styles.iconContainer}>
-            <Image source={images.MC_Card} />
+            <Image source={images.MASTERCARD} />
           </View>
           <View style={styles.iconContainer}>
-            <Image source={images.Visa} />
+            <Image source={images.VISA} />
           </View>
           <View style={styles.iconContainer}>
-            <Image source={images.MC_Card} />
+            <Image source={images.AMEX} />
           </View>
         </View>
       </View>
@@ -60,52 +99,6 @@ export default function BankFeesModal() {
         </View>
       </View>
       <View style={styles.line} />
-
-      <View style={styles.row}>
-        <AppText style={[styles.text, styles.flex]} body>
-          $100 - $500
-        </AppText>
-        <View style={[styles.percentages, styles.flex]}>
-          <View style={styles.percent}>
-            <AppText body style={styles.text}>
-              4.0%
-            </AppText>
-          </View>
-          <View style={styles.percent}>
-            <AppText body style={styles.text}>
-              4.0%
-            </AppText>
-          </View>
-          <View style={styles.percent}>
-            <AppText body style={styles.text}>
-              6.0%
-            </AppText>
-          </View>
-        </View>
-      </View>
-      <View style={styles.line} />
-      <View style={styles.row}>
-        <AppText style={[styles.text, styles.flex]} body>
-          $500 - $700
-        </AppText>
-        <View style={[styles.percentages, styles.flex]}>
-          <View style={styles.percent}>
-            <AppText body style={styles.text}>
-              3.5%
-            </AppText>
-          </View>
-          <View style={styles.percent}>
-            <AppText body style={styles.text}>
-              3.5%
-            </AppText>
-          </View>
-          <View style={styles.percent}>
-            <AppText body style={styles.text}>
-              5.5%
-            </AppText>
-          </View>
-        </View>
-      </View>
     </>
   );
 
