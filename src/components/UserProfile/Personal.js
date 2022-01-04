@@ -11,6 +11,8 @@ import colors from '../../constants/colors';
 import images from '../../constants/images';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
+import CompanyInformation from './CompanyInformation';
+import PersonalInformation from './PersonalInformation';
 
 export default function Personal() {
   const textCond = (r) => {
@@ -104,42 +106,8 @@ export default function Personal() {
         ))}
       </View>
 
-      <View style={styles.block}>
-        <View style={styles.row}>
-          <AppText medium style={styles.white}>
-            Personal Information
-          </AppText>
-          <View style={styles.flex}>
-            <PurpleText text="Edit" style={styles.purple} />
-          </View>
-        </View>
-
-        <View style={[styles.row, { marginTop: 20 }]}>
-          <View style={styles.column}>
-            <AppText subtext style={styles.secondary}>
-              Your Surname:
-            </AppText>
-            <AppText subtext style={styles.secondary}>
-              Country / City:
-            </AppText>
-            <AppText subtext style={styles.secondary}>
-              Postal Code / Address :
-            </AppText>
-          </View>
-
-          <View style={[styles.column, styles.rightColumn]}>
-            <AppText subtext style={styles.white}>
-              Irakli Banetsishvili
-            </AppText>
-            <AppText subtext style={styles.white}>
-              Georgia, Tbilisi
-            </AppText>
-            <AppText subtext style={styles.white} numberOfLines={1}>
-              4200 / Unlnown street, unknown building, unknown flat
-            </AppText>
-          </View>
-        </View>
-      </View>
+      <PersonalInformation />
+      <CompanyInformation />
     </ScrollView>
   );
 }
