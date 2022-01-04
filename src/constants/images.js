@@ -1,4 +1,5 @@
 export default {
+  // Transactions and instant trades
   Arrow: require('../assets/images/Arrow.png'),
   Left: require('../assets/images/Left.png'),
   Right: require('../assets/images/Right.png'),
@@ -28,6 +29,12 @@ export default {
   MASTERCARD: require('../assets/images/MC_Card.png'),
   VISA: require('../assets/images/Visa.png'),
   TBC: require('../assets/images/TBC.png'),
+
+  //User Profile
+  Back: require('../assets/images/User_profile/Back.png'),
+  Identity: require('../assets/images/User_profile/Identity.png'),
+  Phone: require('../assets/images/User_profile/Phone.png'),
+  Notifications: require('../assets/images/User_profile/Notifications.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),
