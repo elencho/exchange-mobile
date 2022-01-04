@@ -7,6 +7,7 @@ import {
   View,
   Switch,
 } from 'react-native';
+
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import AppText from '../AppText';

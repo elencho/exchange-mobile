@@ -1,7 +1,7 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
-  Personal_Security: 'Personal',
+  Personal_Security: 'Security',
 
   // Query Params
   offset: 0,

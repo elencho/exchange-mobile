@@ -1,20 +1,20 @@
 import React from 'react';
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import Background from '../components/Background';
 import PurpleText from '../components/PurpleText';
 import Headline from '../components/TransactionHistory/Headline';
 import Personal from '../components/UserProfile/Personal';
 import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecuritySwitcher';
+import Security from '../components/UserProfile/Security';
 import images from '../constants/images';
 
 export default function UserProfile() {
+  const state = useSelector((state) => state.profile);
+
+  const { Personal_Security } = state;
+
   return (
     <Background>
       <View style={styles.back}>
@@ -26,7 +26,8 @@ export default function UserProfile() {
 
       <PersonalSecuritySwitcher />
 
-      <Personal />
+      {Personal_Security === 'Personal' && <Personal />}
+      {Personal_Security === 'Security' && <Security />}
     </Background>
   );
 }

@@ -35,6 +35,12 @@ export default {
   Identity: require('../assets/images/User_profile/Identity.png'),
   Phone: require('../assets/images/User_profile/Phone.png'),
   Notifications: require('../assets/images/User_profile/Notifications.png'),
+  Biometric: require('../assets/images/User_profile/Biometric.png'),
+  E_mail_Auth: require('../assets/images/User_profile/E_mail_Auth.png'),
+  Google_Auth: require('../assets/images/User_profile/Google_Auth.png'),
+  SMS_Auth: require('../assets/images/User_profile/SMS_Auth.png'),
+  Pin: require('../assets/images/User_profile/Pin.png'),
+  Strong_Password: require('../assets/images/User_profile/Strong_Password.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),
