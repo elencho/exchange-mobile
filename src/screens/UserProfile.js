@@ -10,6 +10,7 @@ import {
 import Background from '../components/Background';
 import PurpleText from '../components/PurpleText';
 import Headline from '../components/TransactionHistory/Headline';
+import Personal from '../components/UserProfile/Personal';
 import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecuritySwitcher';
 import images from '../constants/images';
 
@@ -24,6 +25,8 @@ export default function UserProfile() {
       <Headline title="My Profile" />
 
       <PersonalSecuritySwitcher />
+
+      <Personal />
     </Background>
   );
 }
