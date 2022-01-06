@@ -15,13 +15,13 @@ export default function Security() {
           access security
         </AppText>
         {['Google_Auth', 'E_mail_Auth', 'SMS_Auth'].map((r, i, a) => (
-          <SecurityRow text={r} i={i} a={a} />
+          <SecurityRow key={r} text={r} i={i} a={a} />
         ))}
       </View>
 
       <View style={styles.block}>
         {['Pin', 'Biometric'].map((r, i, a) => (
-          <SecurityRow text={r} i={i} a={a} />
+          <SecurityRow key={r} text={r} i={i} a={a} />
         ))}
       </View>
 

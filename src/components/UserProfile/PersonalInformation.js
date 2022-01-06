@@ -1,11 +1,19 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import colors from '../../constants/colors';
+import { useDispatch } from 'react-redux';
 
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
+import colors from '../../constants/colors';
+import { togglePersonalInfoModal } from '../../redux/modals/actions';
 
 export default function PersonalInformation() {
+  const dispatch = useDispatch();
+
+  const edit = () => {
+    dispatch(togglePersonalInfoModal(true));
+  };
+
   return (
     <View style={styles.block}>
       <View style={styles.row}>
@@ -13,7 +21,7 @@ export default function PersonalInformation() {
           Personal Information
         </AppText>
         <View style={styles.flex}>
-          <PurpleText text="Edit" style={styles.purple} />
+          <PurpleText text="Edit" style={styles.purple} onPress={edit} />
         </View>
       </View>
 

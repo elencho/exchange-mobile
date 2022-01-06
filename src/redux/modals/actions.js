@@ -9,6 +9,8 @@ export const actionTypes = {
   BANK_FEES_MODAL: 'BANK_FEES_MODAL',
   FIAT_MODAL_VISIBLE: 'FIAT_MODAL_VISIBLE',
   CRYPTO_MODAL_VISIBLE: 'CRYPTO_MODAL_VISIBLE',
+
+  PERONAL_INFO_MODAL: 'PERONAL_INFO_MODAL',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -50,4 +52,8 @@ export const toggleChooseBankModal = (chooseBankModalVisible) => ({
 export const toggleBankFeesModal = (bankFeesModalVisible) => ({
   type: actionTypes.BANK_FEES_MODAL,
   bankFeesModalVisible,
+});
+export const togglePersonalInfoModal = (personalInfoModalVisible) => ({
+  type: actionTypes.PERONAL_INFO_MODAL,
+  personalInfoModalVisible,
 });

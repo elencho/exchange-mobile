@@ -46,4 +46,7 @@ export default {
   BTC: require('../assets/images/Currencies/BTC.png'),
   USD: require('../assets/images/Currencies/USD.png'),
   ETH: require('../assets/images/Currencies/ETH.png'),
+
+  // FLAGS
+  GEO: require('../assets/images/Flags/GEO.png'),
 };

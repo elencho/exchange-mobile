@@ -11,7 +11,14 @@ import {
 import AppText from '../components/AppText';
 import colors from '../constants/colors';
 
-const AppInput = ({ label = '', left = null, right = null, ...rest }) => {
+const AppInput = ({
+  label = '',
+  left = null,
+  right = null,
+  style,
+  value,
+  ...rest
+}) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const inputRef = useRef(null);
@@ -19,7 +26,7 @@ const AppInput = ({ label = '', left = null, right = null, ...rest }) => {
 
   useEffect(() => {
     Animated.timing(focusAnim, {
-      toValue: isFocused ? 1 : 0,
+      toValue: isFocused || value ? 1 : 0,
       duration: 150,
       easing: Easing.bezier(0.4, 0, 0.2, 1),
       useNativeDriver: true,
@@ -29,19 +36,16 @@ const AppInput = ({ label = '', left = null, right = null, ...rest }) => {
   let borderColor = isFocused ? '#6582FD' : '#42475D';
 
   return (
-    <>
-      <View style={[styles.inputContainer, { borderColor }]}>
-        {left}
-        <TextInput
-          style={styles.input}
-          ref={inputRef}
-          onBlur={() => setIsFocused(false)}
-          onFocus={() => setIsFocused(true)}
-          {...rest}
-        />
-        {right}
-      </View>
-
+    <View style={[styles.inputContainer, { borderColor }, style]}>
+      {left}
+      <TextInput
+        style={styles.input}
+        ref={inputRef}
+        onBlur={() => setIsFocused(false)}
+        onFocus={() => setIsFocused(true)}
+        value={value}
+        {...rest}
+      />
       {label ? (
         <TouchableWithoutFeedback onPress={() => inputRef.current?.focus()}>
           <Animated.View
@@ -58,26 +62,35 @@ const AppInput = ({ label = '', left = null, right = null, ...rest }) => {
                   {
                     translateY: focusAnim.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [28, -12],
+                      outputRange: [0, -26],
                     }),
                   },
                   {
                     translateX: focusAnim.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [16, 0],
+                      outputRange: [10, 0],
                     }),
                   },
                 ],
               },
             ]}
           >
-            <AppText subtext body style={styles.label}>
+            <AppText
+              body
+              style={{
+                color: isFocused
+                  ? colors.PRIMARY_PURPLE
+                  : colors.SECONDARY_TEXT,
+              }}
+            >
               {label}
             </AppText>
           </Animated.View>
         </TouchableWithoutFeedback>
       ) : null}
-    </>
+
+      {right}
+    </View>
   );
 };
 
@@ -93,7 +106,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     height: 45,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -101,9 +114,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     paddingHorizontal: 8,
     backgroundColor: colors.PRIMARY_BACKGROUND,
-  },
-  label: {
-    color: colors.PRIMARY_PURPLE,
+    height: 18,
   },
 });
 

@@ -36,11 +36,9 @@ export default function AppModal({
       propagateSwipe={true}
       deviceWidth={deviceWidth}
       deviceHeight={deviceHeight}
-      style={{
-        marginHorizontal: 0,
-        marginTop: Constants.statusBarHeight,
-        justifyContent: 'flex-end',
-      }}
+      style={styles.modal}
+      animationOutTiming={600}
+      backdropTransitionInTiming={600}
     >
       {bottom && (
         <>
@@ -73,5 +71,10 @@ const styles = StyleSheet.create({
   header: {
     color: colors.PRIMARY_TEXT,
     marginBottom: 25,
+  },
+  modal: {
+    marginHorizontal: 0,
+    marginTop: Constants.statusBarHeight,
+    justifyContent: 'flex-end',
   },
 });

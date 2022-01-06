@@ -53,7 +53,7 @@ export default function PersonalSecuritySwitcher() {
 
 const styles = StyleSheet.create({
   active: {
-    backgroundColor: '#4A6DFF',
+    backgroundColor: colors.PRIMARY_PURPLE,
   },
   inactive: {
     backgroundColor: colors.SECONDARY_BACKGROUND,

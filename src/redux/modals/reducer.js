@@ -14,6 +14,9 @@ const INITIAL_STATE = {
   chooseCardModalVisible: false,
   chooseBankModalVisible: false,
   bankFeesModalVisible: false,
+
+  // User Profile
+  personalInfoModalVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -28,6 +31,7 @@ export default (state = INITIAL_STATE, action) => {
     bankFeesModalVisible,
     cryptoModalVisible,
     fiatModalVisible,
+    personalInfoModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -79,6 +83,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         bankFeesModalVisible,
+      };
+    case actionTypes.PERONAL_INFO_MODAL:
+      return {
+        ...state,
+        personalInfoModalVisible,
       };
     default:
       return state;
