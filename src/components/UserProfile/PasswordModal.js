@@ -37,7 +37,14 @@ export default function PasswordModal() {
   const [hasSymbol, setHasSymbol] = useState(false);
   const [hasUpperAndLower, setHasUpperAndLower] = useState(false);
 
-  const hide = () => dispatch(togglePasswordModal(false));
+  const hide = () => {
+    dispatch(togglePasswordModal(false));
+    setEightChars(false);
+    setHasNumber(false);
+    setHasSymbol(false);
+    setHasUpperAndLower(false);
+    setHasUpperAndLower(true);
+  };
 
   const handleSave = () => {
     hide();

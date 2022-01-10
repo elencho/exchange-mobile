@@ -12,6 +12,7 @@ export const actionTypes = {
 
   PERONAL_INFO_MODAL: 'PERONAL_INFO_MODAL',
   PASSWORD_MODAL: 'PASSWORD_MODAL',
+  PHONE_NUMBER_MODAL: 'PHONE_NUMBER_MODAL',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -63,4 +64,8 @@ export const togglePersonalInfoModal = (personalInfoModalVisible) => ({
 export const togglePasswordModal = (passwordModalVisible) => ({
   type: actionTypes.PASSWORD_MODAL,
   passwordModalVisible,
+});
+export const togglePhoneNumberModal = (phoneNumberModalVisible) => ({
+  type: actionTypes.PHONE_NUMBER_MODAL,
+  phoneNumberModalVisible,
 });

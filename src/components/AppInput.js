@@ -44,6 +44,7 @@ const AppInput = ({
         onBlur={() => setIsFocused(false)}
         onFocus={() => setIsFocused(true)}
         value={value}
+        placeholderTextColor={colors.SECONDARY_TEXT}
         {...rest}
       />
       {label ? (

@@ -7,16 +7,25 @@ import {
   View,
   Switch,
 } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
+import { togglePhoneNumberModal } from '../../redux/modals/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import CompanyInformation from './CompanyInformation';
 import PersonalInfoModal from './PersonalInfoModal';
 import PersonalInformation from './PersonalInformation';
+import PhoneNumberModal from './PhoneNumberModal';
 
 export default function Personal() {
+  const dispatch = useDispatch();
+
+  const edit = () => {
+    dispatch(togglePhoneNumberModal(true));
+  };
+
   const textCond = (r) => {
     switch (r) {
       case 'Identity':
@@ -40,7 +49,7 @@ export default function Personal() {
               My Phone Number
             </AppText>
             <View style={styles.flex}>
-              <PurpleText text="Edit" style={styles.purple} />
+              <PurpleText text="Edit" style={styles.purple} onPress={edit} />
             </View>
           </View>
         );
@@ -112,6 +121,7 @@ export default function Personal() {
       <CompanyInformation />
 
       <PersonalInfoModal />
+      <PhoneNumberModal />
     </ScrollView>
   );
 }
