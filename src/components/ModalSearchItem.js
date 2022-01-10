@@ -1,21 +1,14 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
 
-import AppText from '../AppText';
+import AppText from './AppText';
+import colors from '../constants/colors';
+import images from '../constants/images';
 
-import colors from '../../constants/colors';
-import images from '../../constants/images';
-
-export default function Currency({ name, code, onPress }) {
-  const state = useSelector((state) => state);
-  const {
-    transactions: { currency },
-  } = state;
-
+export default function ModalSearchItem({ name, code, onPress, currentItem }) {
   const backgroundCond = () => {
-    if (name === currency) {
-      return { backgroundColor: 'rgba(101, 130, 253, 0.1 )' };
+    if (name === currentItem) {
+      return styles.background;
     }
   };
 
@@ -36,6 +29,7 @@ export default function Currency({ name, code, onPress }) {
 }
 
 const styles = StyleSheet.create({
+  background: { backgroundColor: 'rgba(101, 130, 253, 0.1 )' },
   code: {
     fontSize: 15,
     color: colors.SECONDARY_TEXT,
