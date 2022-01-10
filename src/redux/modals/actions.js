@@ -11,6 +11,7 @@ export const actionTypes = {
   CRYPTO_MODAL_VISIBLE: 'CRYPTO_MODAL_VISIBLE',
 
   PERONAL_INFO_MODAL: 'PERONAL_INFO_MODAL',
+  PASSWORD_MODAL: 'PASSWORD_MODAL',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -53,7 +54,13 @@ export const toggleBankFeesModal = (bankFeesModalVisible) => ({
   type: actionTypes.BANK_FEES_MODAL,
   bankFeesModalVisible,
 });
+
+// USER PROFILE
 export const togglePersonalInfoModal = (personalInfoModalVisible) => ({
   type: actionTypes.PERONAL_INFO_MODAL,
   personalInfoModalVisible,
+});
+export const togglePasswordModal = (passwordModalVisible) => ({
+  type: actionTypes.PASSWORD_MODAL,
+  passwordModalVisible,
 });

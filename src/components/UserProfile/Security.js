@@ -1,9 +1,9 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Image, View, Switch } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import AppText from '../AppText';
+import PasswordModal from './PasswordModal';
 import SecurityRow from './SecurityRow';
 
 export default function Security() {
@@ -28,6 +28,8 @@ export default function Security() {
       <View style={styles.block}>
         <SecurityRow text="Strong_Password" />
       </View>
+
+      <PasswordModal />
     </ScrollView>
   );
 }

@@ -41,6 +41,8 @@ export default {
   SMS_Auth: require('../assets/images/User_profile/SMS_Auth.png'),
   Pin: require('../assets/images/User_profile/Pin.png'),
   Strong_Password: require('../assets/images/User_profile/Strong_Password.png'),
+  Hide: require('../assets/images/User_profile/Hide.png'),
+  Show: require('../assets/images/User_profile/Show.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),

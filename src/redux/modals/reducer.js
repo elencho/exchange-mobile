@@ -17,6 +17,7 @@ const INITIAL_STATE = {
 
   // User Profile
   personalInfoModalVisible: false,
+  passwordModalVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -32,6 +33,7 @@ export default (state = INITIAL_STATE, action) => {
     cryptoModalVisible,
     fiatModalVisible,
     personalInfoModalVisible,
+    passwordModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -88,6 +90,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         personalInfoModalVisible,
+      };
+    case actionTypes.PASSWORD_MODAL:
+      return {
+        ...state,
+        passwordModalVisible,
       };
     default:
       return state;

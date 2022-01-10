@@ -131,6 +131,7 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
+    paddingTop: 5,
   },
   inputContainer: {
     marginBottom: 20,

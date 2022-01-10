@@ -7,7 +7,6 @@ import {
   View,
   Switch,
 } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
@@ -18,11 +17,6 @@ import PersonalInfoModal from './PersonalInfoModal';
 import PersonalInformation from './PersonalInformation';
 
 export default function Personal() {
-  const state = useSelector((state) => state);
-  const {
-    modals: { personalInfoModalVisible },
-  } = state;
-
   const textCond = (r) => {
     switch (r) {
       case 'Identity':

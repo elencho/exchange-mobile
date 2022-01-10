@@ -1,13 +1,27 @@
 import React from 'react';
 import { Image, StyleSheet, Switch, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
+import AppText from '../AppText';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
-import AppText from '../AppText';
+import { togglePasswordModal } from '../../redux/modals/actions';
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
-  const textCond = (r) => {
-    switch (r) {
+  const dispatch = useDispatch();
+
+  const handleChange = () => {
+    switch (text) {
+      case 'Strong_Password':
+        dispatch(togglePasswordModal(true));
+        break;
+      default:
+        break;
+    }
+  };
+
+  const textCond = () => {
+    switch (text) {
       case 'Google_Auth':
         return 'Google Authentication';
       case 'E_mail_Auth':
@@ -25,8 +39,8 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
     }
   };
 
-  const secondaryTextCond = (r) => {
-    switch (r) {
+  const secondaryTextCond = () => {
+    switch (text) {
       case 'Google_Auth':
         return 'Some description here';
       case 'E_mail_Auth':
@@ -55,14 +69,14 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
 
       <View style={styles.justify}>
         <AppText medium style={styles.white}>
-          {textCond(text)}
+          {textCond()}
         </AppText>
         <AppText subtext style={styles.secondary}>
-          {secondaryTextCond(text)}
+          {secondaryTextCond()}
         </AppText>
       </View>
 
-      <Switch style={styles.switch} />
+      <Switch style={styles.switch} onChange={handleChange} />
     </View>
   );
 }
