@@ -5,13 +5,19 @@ import { useDispatch } from 'react-redux';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
-import { togglePasswordModal } from '../../redux/modals/actions';
+import {
+  toggleGoogleAuthModal,
+  togglePasswordModal,
+} from '../../redux/modals/actions';
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
   const dispatch = useDispatch();
 
   const handleChange = () => {
     switch (text) {
+      case 'Google_Auth':
+        dispatch(toggleGoogleAuthModal(true));
+        break;
       case 'Strong_Password':
         dispatch(togglePasswordModal(true));
         break;

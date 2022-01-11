@@ -43,6 +43,8 @@ export default {
   Strong_Password: require('../assets/images/User_profile/Strong_Password.png'),
   Hide: require('../assets/images/User_profile/Hide.png'),
   Show: require('../assets/images/User_profile/Show.png'),
+  AppStore: require('../assets/images/User_profile/AppStore.png'),
+  PlayStore: require('../assets/images/User_profile/PlayStore.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),

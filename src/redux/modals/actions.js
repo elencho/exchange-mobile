@@ -13,6 +13,7 @@ export const actionTypes = {
   PERONAL_INFO_MODAL: 'PERONAL_INFO_MODAL',
   PASSWORD_MODAL: 'PASSWORD_MODAL',
   PHONE_NUMBER_MODAL: 'PHONE_NUMBER_MODAL',
+  GOOGLE_AUTH_MODAL: 'GOOGLE_AUTH_MODAL',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -68,4 +69,8 @@ export const togglePasswordModal = (passwordModalVisible) => ({
 export const togglePhoneNumberModal = (phoneNumberModalVisible) => ({
   type: actionTypes.PHONE_NUMBER_MODAL,
   phoneNumberModalVisible,
+});
+export const toggleGoogleAuthModal = (googleAuthModalVisible) => ({
+  type: actionTypes.GOOGLE_AUTH_MODAL,
+  googleAuthModalVisible,
 });

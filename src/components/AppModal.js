@@ -44,9 +44,11 @@ export default function AppModal({
         <>
           <ModalTop />
           <View style={styles.bottom}>
-            <AppText header style={styles.header}>
-              {title}
-            </AppText>
+            {title && (
+              <AppText header style={styles.header}>
+                {title}
+              </AppText>
+            )}
             {children}
           </View>
         </>

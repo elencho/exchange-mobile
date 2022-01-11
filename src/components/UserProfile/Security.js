@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import colors from '../../constants/colors';
 import AppText from '../AppText';
+import GoogleAuthModal from './GoogleAuthModal';
 import PasswordModal from './PasswordModal';
 import SecurityRow from './SecurityRow';
 
@@ -30,6 +31,7 @@ export default function Security() {
       </View>
 
       <PasswordModal />
+      <GoogleAuthModal />
     </ScrollView>
   );
 }
