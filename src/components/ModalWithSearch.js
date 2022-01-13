@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { FlatList, Image, StyleSheet, TextInput, View } from 'react-native';
 
 import AppText from './AppText';
 import ModalTop from './ModalTop';
@@ -17,6 +17,16 @@ export default function ModalWithSearch({
   const handlePress = (name, code) => {
     crypto ? choose(code) : choose(name, code);
   };
+
+  const searchItem = ({ item }) => (
+    <ModalSearchItem
+      name={item.name}
+      code={item.code}
+      key={item.code}
+      currentItem={currentItem}
+      onPress={() => handlePress(item.name, item.code)}
+    />
+  );
 
   return (
     <View style={styles.container}>
@@ -37,17 +47,12 @@ export default function ModalWithSearch({
           <Image source={images.Search} />
         </View>
 
-        <ScrollView>
-          {array.map((c) => (
-            <ModalSearchItem
-              name={c.name}
-              code={c.code}
-              key={c.code}
-              currentItem={currentItem}
-              onPress={() => handlePress(c.name, c.code)}
-            />
-          ))}
-        </ScrollView>
+        <FlatList
+          data={array}
+          renderItem={searchItem}
+          keyExtractor={(item) => item.code}
+          scrollEventThrottle={1000}
+        />
       </View>
     </View>
   );

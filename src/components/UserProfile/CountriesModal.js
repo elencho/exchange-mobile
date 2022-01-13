@@ -36,7 +36,11 @@ export default function CountriesModal({
     dispatch(saveCountries(filteredArray));
   };
 
-  const hide = () => dispatch(toggleCountriesModal(false));
+  const hide = () => {
+    dispatch(toggleCountriesModal(false));
+    dispatch(saveCountries(countriesConstant));
+    reset();
+  };
 
   const currentItem = () => {
     if (countryDrop) {
@@ -54,9 +58,6 @@ export default function CountriesModal({
     if (citizenshipDrop) {
       dispatch(chooseCitizenship(country));
     }
-
-    reset();
-    dispatch(saveCountries(countriesConstant));
     hide();
   };
 
