@@ -2,6 +2,10 @@ import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
   Personal_Security: 'Personal',
+  countries: [],
+  countriesConstant: [],
+  country: 'Georgia',
+  citizenship: 'Georgia',
 
   // Query Params
   offset: 0,
@@ -9,12 +13,38 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { Personal_Security } = action;
+  const {
+    Personal_Security,
+    countries,
+    countriesConstant,
+    country,
+    citizenship,
+  } = action;
   switch (action.type) {
     case actionTypes.SWITCH_PERSONAL_SECURITY:
       return {
         ...state,
         Personal_Security,
+      };
+    case actionTypes.SAVE_COUNTRIES:
+      return {
+        ...state,
+        countries,
+      };
+    case actionTypes.SAVE_COUNTRIES_CONSTANT:
+      return {
+        ...state,
+        countriesConstant,
+      };
+    case actionTypes.CHOOSE_COUNTRY:
+      return {
+        ...state,
+        country,
+      };
+    case actionTypes.CHOOSE_CITIZENSHIP:
+      return {
+        ...state,
+        citizenship,
       };
     default:
       return state;

@@ -20,6 +20,7 @@ const INITIAL_STATE = {
   passwordModalVisible: false,
   phoneNumberModalVisible: false,
   googleAuthModalVisible: false,
+  countriesModalVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -38,6 +39,7 @@ export default (state = INITIAL_STATE, action) => {
     passwordModalVisible,
     phoneNumberModalVisible,
     googleAuthModalVisible,
+    countriesModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -109,6 +111,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         googleAuthModalVisible,
+      };
+    case actionTypes.COUNTRIES_MODAL:
+      return {
+        ...state,
+        countriesModalVisible,
       };
     default:
       return state;

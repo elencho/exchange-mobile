@@ -1,15 +1,15 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import { actionTypes, setFee } from './actions';
+import { actionTypes, saveCountries, saveCountriesConstant } from './actions';
 import { getParams } from './selectors';
-import { fetchFees } from '../../utils/fetchTrades';
+import { fetchCountries } from '../../utils/userProfileUtils';
 
-function* fetchFeeSaga() {
-  // const params = yield select(paramsForFee);
-  // const fee = yield call(fetchFees, params);
-  // yield put(setFee(fee));
+function* fetchCountriesSaga() {
+  const countries = yield call(fetchCountries);
+  yield put(saveCountries(countries));
+  yield put(saveCountriesConstant(countries));
 }
 
 export default function* () {
-  yield takeLatest(actionTypes.FETCH_TRADES, fetchFeeSaga);
+  yield takeLatest(actionTypes.FETCH_COUNTRIES_SAGA, fetchCountriesSaga);
 }

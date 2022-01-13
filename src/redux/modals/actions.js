@@ -14,6 +14,7 @@ export const actionTypes = {
   PASSWORD_MODAL: 'PASSWORD_MODAL',
   PHONE_NUMBER_MODAL: 'PHONE_NUMBER_MODAL',
   GOOGLE_AUTH_MODAL: 'GOOGLE_AUTH_MODAL',
+  COUNTRIES_MODAL: 'COUNTRIES_MODAL',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -73,4 +74,8 @@ export const togglePhoneNumberModal = (phoneNumberModalVisible) => ({
 export const toggleGoogleAuthModal = (googleAuthModalVisible) => ({
   type: actionTypes.GOOGLE_AUTH_MODAL,
   googleAuthModalVisible,
+});
+export const toggleCountriesModal = (countriesModalVisible) => ({
+  type: actionTypes.COUNTRIES_MODAL,
+  countriesModalVisible,
 });

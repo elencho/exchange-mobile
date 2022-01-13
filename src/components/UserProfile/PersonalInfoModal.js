@@ -12,16 +12,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import AppInput from '../AppInput';
-import { togglePersonalInfoModal } from '../../redux/modals/actions';
+import {
+  toggleCountriesModal,
+  togglePersonalInfoModal,
+} from '../../redux/modals/actions';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
+import CountriesModal from './CountriesModal';
 
 export default function PersonalInfoModal() {
-  const [value, setValue] = useState('');
+  const [countryDrop, setCountryDrop] = useState(false);
+  const [citizenshipDrop, setCitizenshipDrop] = useState(false);
+
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     modals: { personalInfoModalVisible },
+    profile: { country, citizenship },
   } = state;
 
   const hide = () => {
@@ -33,6 +40,20 @@ export default function PersonalInfoModal() {
     hide();
   };
 
+  const handleCountries = (countryDrop, citizenshipDrop) => {
+    dispatch(toggleCountriesModal(true));
+    if (countryDrop) {
+      setCountryDrop(true);
+    }
+    if (citizenshipDrop) {
+      setCitizenshipDrop(true);
+    }
+  };
+
+  const handleReset = () => {
+    setCitizenshipDrop(false), setCountryDrop(false);
+  };
+
   const children = (
     <>
       <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
@@ -41,7 +62,10 @@ export default function PersonalInfoModal() {
           <AppInput style={styles.inputContainer} label="Last Name" />
           <AppInput style={styles.inputContainer} label="Address" />
 
-          <View style={styles.dropdown}>
+          <Pressable
+            style={styles.dropdown}
+            onPress={() => handleCountries(true)}
+          >
             <View style={styles.subtext}>
               <AppText body style={styles.secondary}>
                 Country
@@ -50,10 +74,10 @@ export default function PersonalInfoModal() {
 
             <Image source={images.GEO} />
             <AppText medium style={styles.dropdownText}>
-              Georgia
+              {country}
             </AppText>
             <Image source={images.Arrow} />
-          </View>
+          </Pressable>
 
           <View style={styles.row}>
             <AppInput
@@ -63,12 +87,13 @@ export default function PersonalInfoModal() {
             <AppInput
               style={[styles.inputContainer, styles.rowInputs]}
               label="Postal Code"
-              onChangeText={(t) => setValue(t)}
-              value={value}
             />
           </View>
 
-          <View style={styles.dropdown}>
+          <Pressable
+            style={styles.dropdown}
+            onPress={() => handleCountries(null, true)}
+          >
             <View style={styles.subtext}>
               <AppText body style={styles.secondary}>
                 Citizenship
@@ -77,10 +102,10 @@ export default function PersonalInfoModal() {
 
             <Image source={images.GEO} />
             <AppText medium style={styles.dropdownText}>
-              Georgia
+              {citizenship}
             </AppText>
             <Image source={images.Arrow} />
-          </View>
+          </Pressable>
         </TouchableOpacity>
       </ScrollView>
 
@@ -89,6 +114,12 @@ export default function PersonalInfoModal() {
           Save
         </AppText>
       </Pressable>
+
+      <CountriesModal
+        citizenshipDrop={citizenshipDrop}
+        countryDrop={countryDrop}
+        reset={handleReset}
+      />
     </>
   );
 

@@ -12,7 +12,12 @@ export default function ModalWithSearch({
   filter,
   choose,
   currentItem,
+  crypto = false,
 }) {
+  const handlePress = (name, code) => {
+    crypto ? choose(code) : choose(name, code);
+  };
+
   return (
     <View style={styles.container}>
       <ModalTop />
@@ -39,7 +44,7 @@ export default function ModalWithSearch({
               code={c.code}
               key={c.code}
               currentItem={currentItem}
-              onPress={() => choose(c.code, c.name)}
+              onPress={() => handlePress(c.name, c.code)}
             />
           ))}
         </ScrollView>

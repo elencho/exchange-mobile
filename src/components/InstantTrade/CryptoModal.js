@@ -56,6 +56,7 @@ export default function CryptoModal() {
       choose={choose}
       filter={filter}
       currentItem={crypto}
+      crypto
     />
   );
 

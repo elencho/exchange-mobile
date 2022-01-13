@@ -35,7 +35,7 @@ export default function ChooseCurrencyModal() {
     dispatch(toggleCurrencyModal(false));
   };
 
-  const choose = (code, name) => {
+  const choose = (name, code) => {
     dispatch(
       currencyAction(
         name,
