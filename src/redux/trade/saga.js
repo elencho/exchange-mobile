@@ -65,7 +65,7 @@ function* fetchOffersSaga() {
   yield call(() => {
     balance.balances.forEach((b) => {
       if (b.depositTypes.includes('ECOMMERCE')) {
-        providers = b.ecommerceDepositProviders;
+        providers = [b.ecommerceDepositProviders[0]]; // T E M P O R A R Y !!!!!!
 
         if (b.currencyCode === fiat) {
           provider = b.ecommerceDepositProviders[0].provider;

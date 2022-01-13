@@ -7,7 +7,7 @@ import images from '../constants/images';
 
 export default function ModalSearchItem({ name, code, onPress, currentItem }) {
   const backgroundCond = () => {
-    if (name === currentItem) {
+    if (name === currentItem || code === currentItem) {
       return styles.background;
     }
   };

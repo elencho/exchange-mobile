@@ -43,7 +43,7 @@ export default function PasswordModal() {
     setHasNumber(false);
     setHasSymbol(false);
     setHasUpperAndLower(false);
-    setHasUpperAndLower(true);
+    setHasUpperAndLower(false);
   };
 
   const handleSave = () => {
