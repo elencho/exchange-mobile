@@ -21,9 +21,6 @@ export default function UserProfile() {
     dispatch(fetchUserInfo());
     console.log(userInfo);
   }, []);
-  useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
 
   return (
     <Background>

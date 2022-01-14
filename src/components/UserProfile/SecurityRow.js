@@ -66,14 +66,14 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
     }
   };
 
-  const switchCond = () => {
-    switch (text) {
-      case 'E_mail_Auth':
-        return userInfo.emailUpdates;
-      default:
-        return false;
-    }
-  };
+  // const switchCond = () => {
+  //   switch (text) {
+  //     case 'E_mail_Auth':
+  //       return userInfo.emailUpdates;
+  //     default:
+  //       return false;
+  //   }
+  // };
 
   return (
     <View
@@ -95,7 +95,7 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
 
       <Switch
         style={styles.switch}
-        value={switchCond()}
+        // value={switchCond()}
         onChange={handleChange}
       />
     </View>

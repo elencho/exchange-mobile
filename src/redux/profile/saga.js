@@ -5,9 +5,15 @@ import {
   saveCountries,
   saveCountriesConstant,
   saveUserInfo,
+  fetchUserInfo as fetchUserInfoAction,
 } from './actions';
 import { getParams } from './selectors';
-import { fetchCountries, fetchUserInfo } from '../../utils/userProfileUtils';
+import {
+  fetchCountries,
+  fetchUserInfo as fetchUserInfoUtil,
+  subscribeMail,
+  unsubscribeMail,
+} from '../../utils/userProfileUtils';
 
 function* fetchCountriesSaga() {
   const countries = yield call(fetchCountries);
@@ -16,11 +22,26 @@ function* fetchCountriesSaga() {
 }
 
 function* fetchUserInfoSaga() {
-  const userInfo = yield call(fetchUserInfo);
+  const userInfo = yield call(fetchUserInfoUtil);
   yield put(saveUserInfo(userInfo));
+}
+
+function* toggleSubscriptionSaga(action) {
+  const { value } = action;
+  if (value) {
+    yield call(subscribeMail);
+  }
+  if (!value) {
+    yield call(unsubscribeMail);
+  }
+  yield put(fetchUserInfoAction());
 }
 
 export default function* () {
   yield takeLatest(actionTypes.FETCH_COUNTRIES_SAGA, fetchCountriesSaga);
   yield takeLatest(actionTypes.FETCH_USER_INFO_SAGA, fetchUserInfoSaga);
+  yield takeLatest(
+    actionTypes.TOGGLE_MAIL_SUBSCRIPTION_SAGA,
+    toggleSubscriptionSaga
+  );
 }

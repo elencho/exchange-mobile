@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { togglePhoneNumberModal } from '../../redux/modals/actions';
+import { toggleEmailSubscription } from '../../redux/profile/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import CompanyInformation from './CompanyInformation';
@@ -24,8 +25,10 @@ export default function Personal() {
   const state = useSelector((state) => state.profile);
   const { userInfo } = state;
 
-  const edit = () => {
-    dispatch(togglePhoneNumberModal(true));
+  const edit = () => dispatch(togglePhoneNumberModal(true));
+
+  const handleEmailUpdates = (value) => {
+    dispatch(toggleEmailSubscription(value));
   };
 
   const textCond = (r) => {
@@ -62,7 +65,11 @@ export default function Personal() {
               Receive Notifications
             </AppText>
             <View style={styles.flex}>
-              <Switch style={styles.switch} />
+              <Switch
+                style={styles.switch}
+                onValueChange={(value) => handleEmailUpdates(value)}
+                value={userInfo.emailUpdates}
+              />
             </View>
           </View>
         );
