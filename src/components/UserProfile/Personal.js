@@ -7,7 +7,7 @@ import {
   View,
   Switch,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
@@ -21,6 +21,8 @@ import PhoneNumberModal from './PhoneNumberModal';
 
 export default function Personal() {
   const dispatch = useDispatch();
+  const state = useSelector((state) => state.profile);
+  const { userInfo } = state;
 
   const edit = () => {
     dispatch(togglePhoneNumberModal(true));
@@ -83,7 +85,7 @@ export default function Personal() {
       case 'Phone':
         return (
           <AppText subtext style={styles.secondary}>
-            +995 98 204060
+            {userInfo.phoneNumber}
           </AppText>
         );
       case 'Notifications':
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: -2,
-    marginLeft: 7,
+    marginLeft: 10,
   },
   column: {
     height: 60,

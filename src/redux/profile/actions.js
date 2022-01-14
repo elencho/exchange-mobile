@@ -4,12 +4,14 @@ export const actionTypes = {
   SAVE_COUNTRIES_CONSTANT: 'SAVE_COUNTRIES_CONSTANT',
   CHOOSE_COUNTRY: 'CHOOSE_COUNTRY',
   CHOOSE_CITIZENSHIP: 'CHOOSE_CITIZENSHIP',
+  SAVE_USER_INFO: 'SAVE_USER_INFO',
 
   // PURE VISUALS
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
 
   // FOR SAGAS
   FETCH_COUNTRIES_SAGA: 'FETCH_COUNTRIES_SAGA',
+  FETCH_USER_INFO_SAGA: 'FETCH_USER_INFO_SAGA',
 };
 
 export const switchPersonalSecurity = (Personal_Security) => ({
@@ -32,8 +34,15 @@ export const chooseCitizenship = (citizenship) => ({
   type: actionTypes.CHOOSE_CITIZENSHIP,
   citizenship,
 });
+export const saveUserInfo = (userInfo) => ({
+  type: actionTypes.SAVE_USER_INFO,
+  userInfo,
+});
 
 // FOR SAGAS
 export const fetchCountries = () => ({
   type: actionTypes.FETCH_COUNTRIES_SAGA,
+});
+export const fetchUserInfo = () => ({
+  type: actionTypes.FETCH_USER_INFO_SAGA,
 });

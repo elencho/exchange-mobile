@@ -2,6 +2,8 @@ import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
   Personal_Security: 'Personal',
+  userInfo: {},
+
   countries: [],
   countriesConstant: [],
   country: 'Georgia',
@@ -19,6 +21,7 @@ export default (state = INITIAL_STATE, action) => {
     countriesConstant,
     country,
     citizenship,
+    userInfo,
   } = action;
   switch (action.type) {
     case actionTypes.SWITCH_PERSONAL_SECURITY:
@@ -45,6 +48,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         citizenship,
+      };
+    case actionTypes.SAVE_USER_INFO:
+      return {
+        ...state,
+        userInfo,
       };
     default:
       return state;

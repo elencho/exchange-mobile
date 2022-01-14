@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
@@ -9,6 +9,8 @@ import { togglePersonalInfoModal } from '../../redux/modals/actions';
 
 export default function PersonalInformation() {
   const dispatch = useDispatch();
+  const state = useSelector((state) => state.profile);
+  const { userInfo } = state;
 
   const edit = () => {
     dispatch(togglePersonalInfoModal(true));
@@ -40,13 +42,13 @@ export default function PersonalInformation() {
 
         <View style={[styles.column, styles.rightColumn]}>
           <AppText subtext style={styles.white}>
-            Irakli Banetsishvili
+            {userInfo.firstName} {userInfo.lastName}
           </AppText>
           <AppText subtext style={styles.white}>
-            Georgia, Tbilisi
+            {userInfo.country}, {userInfo.city}
           </AppText>
           <AppText subtext style={styles.white} numberOfLines={1}>
-            4200 / Unlnown street, unknown building, unknown flat
+            {userInfo.postalCode} / {userInfo.address}
           </AppText>
         </View>
       </View>

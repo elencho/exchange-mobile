@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, Switch, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
@@ -12,6 +12,8 @@ import {
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
   const dispatch = useDispatch();
+  const state = useSelector((state) => state.profile);
+  const { userInfo } = state;
 
   const handleChange = () => {
     switch (text) {
@@ -50,9 +52,9 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
       case 'Google_Auth':
         return 'Some description here';
       case 'E_mail_Auth':
-        return 'ntsikl@cryptx.com';
+        return userInfo.email;
       case 'SMS_Auth':
-        return '+995 98 204060';
+        return userInfo.phoneNumber;
       case 'Pin':
         return 'Changing password periodically';
       case 'Biometric':
@@ -61,6 +63,15 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
         return 'Change password periodically';
       default:
         break;
+    }
+  };
+
+  const switchCond = () => {
+    switch (text) {
+      case 'E_mail_Auth':
+        return userInfo.emailUpdates;
+      default:
+        return false;
     }
   };
 
@@ -82,7 +93,11 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
         </AppText>
       </View>
 
-      <Switch style={styles.switch} onChange={handleChange} />
+      <Switch
+        style={styles.switch}
+        value={switchCond()}
+        onChange={handleChange}
+      />
     </View>
   );
 }
