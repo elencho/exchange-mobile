@@ -1,23 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
-import { toggleBankFeesModal } from '../../redux/modals/actions';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
+import { toggleBankFeesModal } from '../../redux/modals/actions';
+import FeeModalRow from './FeeModalRow';
 
 export default function BankFeesModal() {
-  let feesArray = [];
-  let rangesObject = {};
-
   const dispatch = useDispatch();
   const bankFeesModalVisible = useSelector(
     (state) => state.modals.bankFeesModalVisible
   );
 
   const state = useSelector((state) => state.trade);
+  const [arrayToIterate, setArrayToIterate] = useState([]);
+  const [hasAmex, setHasAmex] = useState(false);
 
   const {
     balance: { balances },
@@ -25,33 +25,30 @@ export default function BankFeesModal() {
     depositProvider,
   } = state;
 
-  const makeFeesArray = (arr) => {
-    arr.forEach((b) => {
-      if (fiat === b.currencyCode) {
+  useEffect(() => {
+    balances.forEach((b) => {
+      if (b.currencyCode === fiat && b.depositTypes.includes('ECOMMERCE')) {
         b.fees.forEach((f) => {
           if (f.type === 'DEPOSIT' && f.provider === depositProvider) {
-            feesArray = f.fees;
+            setArrayToIterate(f.feeRange);
           }
         });
       }
     });
-  };
+  }, [fiat, depositProvider, balances]);
 
-  const makeRangesArray = (arr) => {
-    arr.forEach((f) => {
-      if (f.rangeStart === 0 && f.rangeEnd === 100) {
-        rangesObject = { ...rangesObject, f };
-      }
-    });
-  };
+  let amexCheck = [];
 
   useEffect(() => {
-    makeFeesArray(balances);
-    makeRangesArray(feesArray);
-    // console.log(feesArray);
-    // console.log(rangesObject);
-    // dasamtavrebelia
-  }, []);
+    arrayToIterate.forEach((f) => {
+      f.feeData.forEach((fd) => {
+        if (Object.values(fd).includes('AMEX')) {
+          amexCheck.push(fd);
+        }
+      });
+    });
+    setHasAmex(amexCheck.length > 0);
+  }, [arrayToIterate]);
 
   const hide = () => {
     dispatch(toggleBankFeesModal(false));
@@ -70,35 +67,38 @@ export default function BankFeesModal() {
           <View style={styles.iconContainer}>
             <Image source={images.VISA} />
           </View>
-          <View style={styles.iconContainer}>
-            <Image source={images.AMEX} />
-          </View>
+          {hasAmex && (
+            <View style={styles.iconContainer}>
+              <Image source={images.AMEX} />
+            </View>
+          )}
         </View>
       </View>
 
-      <View style={styles.row}>
-        <AppText style={[styles.text, styles.flex]} body>
-          $0 - $100
-        </AppText>
-        <View style={[styles.percentages, styles.flex]}>
-          <View style={styles.percent}>
-            <AppText body style={styles.text}>
-              5.0%
-            </AppText>
+      {arrayToIterate.map((f, i, a) => {
+        let mastercard;
+        let visa;
+        let amex;
+        f.feeData.forEach((fd) => {
+          if (fd.subMethod === 'MASTERCARD')
+            mastercard = fd.percentageValue * 100;
+          if (fd.subMethod === 'VISA') visa = fd.percentageValue * 100;
+          if (fd.subMethod === 'AMEX') amex = fd.percentageValue * 100;
+        });
+        return (
+          <View key={i}>
+            <FeeModalRow
+              start={f.rangeStart}
+              end={f.rangeEnd}
+              mastercard={mastercard}
+              visa={visa}
+              amex={amex}
+              hasAmex={hasAmex}
+            />
+            {i < a.length - 1 && <View style={styles.line} />}
           </View>
-          <View style={styles.percent}>
-            <AppText body style={styles.text}>
-              5.0%
-            </AppText>
-          </View>
-          <View style={styles.percent}>
-            <AppText body style={styles.text}>
-              7.0%
-            </AppText>
-          </View>
-        </View>
-      </View>
-      <View style={styles.line} />
+        );
+      })}
     </>
   );
 
@@ -118,27 +118,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  percentages: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  percent: {
-    alignItems: 'center',
-    width: 40, // same as icon container
-  },
-  container: {
-    padding: 35,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-  },
-  column: {
-    alignItems: 'center',
-  },
   flex: {
     flex: 0.5,
-  },
-  header: {
-    color: colors.PRIMARY_TEXT,
-    marginBottom: 25,
   },
   iconContainer: {
     width: 40,
@@ -160,8 +141,5 @@ const styles = StyleSheet.create({
   },
   subtext: {
     color: colors.SECONDARY_TEXT,
-  },
-  text: {
-    color: colors.PRIMARY_TEXT,
   },
 });
