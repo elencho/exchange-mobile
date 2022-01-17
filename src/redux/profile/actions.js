@@ -12,6 +12,7 @@ export const actionTypes = {
   // FOR SAGAS
   FETCH_COUNTRIES_SAGA: 'FETCH_COUNTRIES_SAGA',
   FETCH_USER_INFO_SAGA: 'FETCH_USER_INFO_SAGA',
+  SAVE_USER_INFO_SAGA: 'SAVE_USER_INFO_SAGA',
   TOGGLE_MAIL_SUBSCRIPTION_SAGA: 'TOGGLE_MAIL_SUBSCRIPTION_SAGA',
 };
 
@@ -27,14 +28,6 @@ export const saveCountriesConstant = (countriesConstant) => ({
   type: actionTypes.SAVE_COUNTRIES_CONSTANT,
   countriesConstant,
 });
-export const chooseCountry = (country) => ({
-  type: actionTypes.CHOOSE_COUNTRY,
-  country,
-});
-export const chooseCitizenship = (citizenship) => ({
-  type: actionTypes.CHOOSE_CITIZENSHIP,
-  citizenship,
-});
 export const saveUserInfo = (userInfo) => ({
   type: actionTypes.SAVE_USER_INFO,
   userInfo,
@@ -46,6 +39,9 @@ export const fetchCountries = () => ({
 });
 export const fetchUserInfo = () => ({
   type: actionTypes.FETCH_USER_INFO_SAGA,
+});
+export const saveUserInfoSaga = () => ({
+  type: actionTypes.SAVE_USER_INFO_SAGA,
 });
 export const toggleEmailSubscription = (value) => ({
   type: actionTypes.TOGGLE_MAIL_SUBSCRIPTION_SAGA,

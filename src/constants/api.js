@@ -36,3 +36,6 @@ export const SUBSCRIBE_EMAIL_URL =
 
 export const UNSUBSCRIBE_EMAIL_URL =
   'http://10.10.5.4:8080/exchange/api/v1/private/account/unsubscribeFromEmailUpdates';
+
+export const UPDATE_USER_DATA =
+  'http://10.10.5.4:8080/exchange/api/v1/private/users/updateUserData';

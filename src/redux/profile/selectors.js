@@ -1,59 +1,16 @@
-export const getParams = (state) => {
+export const getUserData = (state) => {
   const {
-    trade: { crypto, fiat, offset, limit, hideOtherPairs },
+    profile: { userInfo },
   } = state;
 
-  return { pairId: hideOtherPairs ? `${crypto}-${fiat}` : null, offset, limit };
+  let formData = new FormData();
+  formData.append('firstName', userInfo.firstName);
+  formData.append('lastName', userInfo.lastName);
+  formData.append('address', userInfo.address);
+  formData.append('country', userInfo.countryCode);
+  formData.append('city', userInfo.city);
+  formData.append('postalCode', userInfo.postalCode);
+  // formData.append('citizenship', userInfo.citizenship);
+
+  return formData;
 };
-
-export const paramsForFee = (state) => {
-  const {
-    trade: {
-      fiat,
-      currentTrade: { price },
-      depositProvider,
-      card,
-    },
-  } = state;
-
-  return {
-    currency: fiat,
-    method: 'ECOMMERCE',
-    type: 'DEPOSIT',
-    provider: depositProvider,
-    cardId: card.id,
-    amount: price,
-  };
-};
-
-export const getCardParams = (state) => {
-  const {
-    trade: { fiat, depositProvider },
-  } = state;
-
-  return {
-    currency: fiat,
-    status: 'VERIFIED',
-    provider: depositProvider,
-    transactionType: 'DEPOSIT',
-  };
-};
-
-export const paramsForTrade = (state) => {
-  const {
-    trade: {
-      currentTrade: { price, size },
-      crypto,
-      fiat,
-      tradeType,
-    },
-  } = state;
-
-  return {
-    pairCode: `${crypto}-${fiat}`,
-    action: tradeType === 'Buy' ? 'BID' : 'ASK',
-    amount: tradeType === 'Buy' ? price : size,
-  };
-};
-
-export const getTrades = (state) => state.trade.trades;

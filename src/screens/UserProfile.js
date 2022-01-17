@@ -10,6 +10,7 @@ import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecurity
 import Security from '../components/UserProfile/Security';
 import images from '../constants/images';
 import { fetchUserInfo } from '../redux/profile/actions';
+import { updateUserData } from '../utils/userProfileUtils';
 
 export default function UserProfile() {
   const dispatch = useDispatch();
@@ -19,14 +20,17 @@ export default function UserProfile() {
 
   useEffect(() => {
     dispatch(fetchUserInfo());
-    console.log(userInfo);
   }, []);
 
   return (
     <Background>
       <View style={styles.back}>
         <Image source={images.Back} style={styles.arrow} />
-        <PurpleText text="Back to Home" style={styles.purpleText} />
+        <PurpleText
+          text="Back to Home"
+          onPress={updateUserData}
+          style={styles.purpleText}
+        />
       </View>
 
       <Headline title="My Profile" />

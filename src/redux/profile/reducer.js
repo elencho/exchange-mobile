@@ -6,8 +6,6 @@ const INITIAL_STATE = {
 
   countries: [],
   countriesConstant: [],
-  country: 'Georgia',
-  citizenship: 'Georgia',
 
   // Query Params
   offset: 0,
@@ -15,14 +13,7 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const {
-    Personal_Security,
-    countries,
-    countriesConstant,
-    country,
-    citizenship,
-    userInfo,
-  } = action;
+  const { Personal_Security, countries, countriesConstant, userInfo } = action;
   switch (action.type) {
     case actionTypes.SWITCH_PERSONAL_SECURITY:
       return {
@@ -38,16 +29,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         countriesConstant,
-      };
-    case actionTypes.CHOOSE_COUNTRY:
-      return {
-        ...state,
-        country,
-      };
-    case actionTypes.CHOOSE_CITIZENSHIP:
-      return {
-        ...state,
-        citizenship,
       };
     case actionTypes.SAVE_USER_INFO:
       return {

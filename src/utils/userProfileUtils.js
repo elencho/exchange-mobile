@@ -4,6 +4,7 @@ import {
   COUNTRIES_URL,
   SUBSCRIBE_EMAIL_URL,
   UNSUBSCRIBE_EMAIL_URL,
+  UPDATE_USER_DATA,
   USER_INFO_URL,
 } from '../constants/api';
 
@@ -44,6 +45,19 @@ export const unsubscribeMail = async () => {
       method: 'POST',
       headers: { Authorization: bearer },
       url: UNSUBSCRIBE_EMAIL_URL,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateUserData = async (data) => {
+  try {
+    await axios({
+      method: 'POST',
+      headers: { Authorization: bearer },
+      url: UPDATE_USER_DATA,
+      data,
     });
   } catch (err) {
     console.log(err);

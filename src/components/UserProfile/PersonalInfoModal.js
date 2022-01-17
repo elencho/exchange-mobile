@@ -19,6 +19,7 @@ import {
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import CountriesModal from './CountriesModal';
+import { saveUserInfo, saveUserInfoSaga } from '../../redux/profile/actions';
 
 export default function PersonalInfoModal() {
   const [countryDrop, setCountryDrop] = useState(false);
@@ -28,15 +29,17 @@ export default function PersonalInfoModal() {
   const state = useSelector((state) => state);
   const {
     modals: { personalInfoModalVisible },
-    profile: { country, citizenship },
+    profile: { userInfo, countriesConstant },
   } = state;
+
+  console.log(userInfo);
 
   const hide = () => {
     dispatch(togglePersonalInfoModal(false));
   };
 
   const handleSave = () => {
-    // dispatch(submitTrade());
+    dispatch(saveUserInfoSaga());
     hide();
   };
 
@@ -54,13 +57,48 @@ export default function PersonalInfoModal() {
     setCitizenshipDrop(false), setCountryDrop(false);
   };
 
+  const handleFirstName = (firstName) =>
+    dispatch(saveUserInfo({ ...userInfo, firstName }));
+  const handleLastName = (lastName) =>
+    dispatch(saveUserInfo({ ...userInfo, lastName }));
+  const handleAddress = (address) =>
+    dispatch(saveUserInfo({ ...userInfo, address }));
+  const handleCity = (city) => dispatch(saveUserInfo({ ...userInfo, city }));
+  const handlePostalCode = (postalCode) =>
+    dispatch(saveUserInfo({ ...userInfo, postalCode }));
+
+  const citizenship = (code) => {
+    let country;
+    countriesConstant.forEach((c) => {
+      if (c.code === code) {
+        country = c.name;
+      }
+    });
+    return country;
+  };
+
   const children = (
     <>
       <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
         <TouchableOpacity activeOpacity={0.99}>
-          <AppInput style={styles.inputContainer} label="First Name" />
-          <AppInput style={styles.inputContainer} label="Last Name" />
-          <AppInput style={styles.inputContainer} label="Address" />
+          <AppInput
+            style={styles.inputContainer}
+            onChangeText={handleFirstName}
+            label="First Name"
+            value={userInfo.firstName}
+          />
+          <AppInput
+            style={styles.inputContainer}
+            onChangeText={handleLastName}
+            label="Last Name"
+            value={userInfo.lastName}
+          />
+          <AppInput
+            style={styles.inputContainer}
+            onChangeText={handleAddress}
+            label="Address"
+            value={userInfo.address}
+          />
 
           <Pressable
             style={styles.dropdown}
@@ -74,7 +112,7 @@ export default function PersonalInfoModal() {
 
             <Image source={images.GEO} />
             <AppText medium style={styles.dropdownText}>
-              {country}
+              {userInfo.country}
             </AppText>
             <Image source={images.Arrow} />
           </Pressable>
@@ -82,11 +120,15 @@ export default function PersonalInfoModal() {
           <View style={styles.row}>
             <AppInput
               style={[styles.inputContainer, styles.rowInputs]}
+              onChangeText={handleCity}
               label="City"
+              value={userInfo.city}
             />
             <AppInput
               style={[styles.inputContainer, styles.rowInputs]}
+              onChangeText={handlePostalCode}
               label="Postal Code"
+              value={userInfo.postalCode}
             />
           </View>
 
@@ -102,7 +144,7 @@ export default function PersonalInfoModal() {
 
             <Image source={images.GEO} />
             <AppText medium style={styles.dropdownText}>
-              {citizenship}
+              {citizenship(userInfo.citizenship)}
             </AppText>
             <Image source={images.Arrow} />
           </Pressable>

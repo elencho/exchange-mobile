@@ -6,10 +6,9 @@ import ModalWithSearch from '../ModalWithSearch';
 
 import { toggleCountriesModal } from '../../redux/modals/actions';
 import {
-  chooseCitizenship,
-  chooseCountry,
   fetchCountries,
   saveCountries,
+  saveUserInfo,
 } from '../../redux/profile/actions';
 
 export default function CountriesModal({
@@ -22,7 +21,7 @@ export default function CountriesModal({
 
   const {
     modals: { countriesModalVisible },
-    profile: { countries, countriesConstant, country, citizenship },
+    profile: { countries, countriesConstant, userInfo },
   } = state;
 
   useEffect(() => {
@@ -44,19 +43,31 @@ export default function CountriesModal({
 
   const currentItem = () => {
     if (countryDrop) {
-      return country;
+      return userInfo.country;
     }
     if (citizenshipDrop) {
-      return citizenship;
+      return userInfo.citizenship;
     }
   };
 
   const choose = (country) => {
+    const code = (country) => {
+      let code;
+      countriesConstant.forEach((c) => {
+        if (c.name === country) {
+          code = c.code;
+        }
+      });
+      return code;
+    };
+
     if (countryDrop) {
-      dispatch(chooseCountry(country));
+      dispatch(
+        saveUserInfo({ ...userInfo, country, countryCode: code(country) })
+      );
     }
     if (citizenshipDrop) {
-      dispatch(chooseCitizenship(country));
+      dispatch(saveUserInfo({ ...userInfo, citizenship: code(country) }));
     }
     hide();
   };
