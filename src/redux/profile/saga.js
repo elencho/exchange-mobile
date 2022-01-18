@@ -14,7 +14,9 @@ import {
   subscribeMail,
   unsubscribeMail,
   updatePassword,
+  updatePhoneNumber,
   updateUserData,
+  verifyPhoneNumber,
 } from '../../utils/userProfileUtils';
 
 function* fetchCountriesSaga() {
@@ -25,7 +27,7 @@ function* fetchCountriesSaga() {
 
 function* fetchUserInfoSaga() {
   const userInfo = yield call(fetchUserInfoUtil);
-  yield put(saveUserInfo(userInfo));
+  // yield put(saveUserInfo(userInfo));
 }
 
 function* saveUserInfoSaga() {
@@ -36,6 +38,16 @@ function* saveUserInfoSaga() {
 function* updatePasswordSaga(action) {
   const { curentPassword, newPassword, repeatPassword } = action;
   yield call(updatePassword, curentPassword, newPassword, repeatPassword);
+}
+
+function* verifyPhoneNumberSaga(action) {
+  const { phoneNumber, phoneCountry } = action;
+  yield call(verifyPhoneNumber, phoneNumber, phoneCountry);
+}
+
+function* updatePhoneNumberSaga(action) {
+  const { phoneNumber, phoneCountry, verificationNumber } = action;
+  yield call(updatePhoneNumber, phoneNumber, phoneCountry, verificationNumber);
 }
 
 function* toggleSubscriptionSaga(action) {
@@ -58,4 +70,6 @@ export default function* () {
     actionTypes.TOGGLE_MAIL_SUBSCRIPTION_SAGA,
     toggleSubscriptionSaga
   );
+  yield takeLatest(actionTypes.SEND_VERIFICATION_CODE, verifyPhoneNumberSaga);
+  yield takeLatest(actionTypes.UPDATE_PHONE_NUMBER, updatePhoneNumberSaga);
 }

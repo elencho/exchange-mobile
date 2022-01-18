@@ -15,6 +15,8 @@ export const actionTypes = {
   SAVE_USER_INFO_SAGA: 'SAVE_USER_INFO_SAGA',
   TOGGLE_MAIL_SUBSCRIPTION_SAGA: 'TOGGLE_MAIL_SUBSCRIPTION_SAGA',
   UPDATE_PASSWORD_SAGA: 'UPDATE_PASSWORD_SAGA',
+  SEND_VERIFICATION_CODE: 'SEND_VERIFICATION_CODE',
+  UPDATE_PHONE_NUMBER: 'UPDATE_PHONE_NUMBER',
 };
 
 export const switchPersonalSecurity = (Personal_Security) => ({
@@ -57,4 +59,19 @@ export const updatePassword = (
   curentPassword,
   newPassword,
   repeatPassword,
+});
+export const sendVerificationCode = (phoneNumber, phoneCountry) => ({
+  type: actionTypes.SEND_VERIFICATION_CODE,
+  phoneNumber,
+  phoneCountry,
+});
+export const updatePhoneNumber = (
+  phoneNumber,
+  phoneCountry,
+  verificationNumber
+) => ({
+  type: actionTypes.UPDATE_PHONE_NUMBER,
+  phoneNumber,
+  phoneCountry,
+  verificationNumber,
 });

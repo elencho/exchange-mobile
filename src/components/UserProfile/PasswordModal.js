@@ -25,7 +25,7 @@ export default function PasswordModal() {
     'Upper & lowercase letters',
   ];
 
-  const dispatchToRedux = useDispatch();
+  const dispatch = useDispatch();
 
   const state = useSelector((state) => state);
   const {
@@ -63,13 +63,13 @@ export default function PasswordModal() {
       case 'repeatPassword':
         return { ...state, repeatPassword: password };
       case 'hide':
-        return { initialState };
+        return initialState;
       default:
         throw new Error();
     }
   };
 
-  const [passwordState, dispatch] = useReducer(reducer, initialState);
+  const [passwordState, dispatchToReducer] = useReducer(reducer, initialState);
 
   const readyToSave = () => {
     const {
@@ -93,34 +93,35 @@ export default function PasswordModal() {
   };
 
   const hide = () => {
-    dispatchToRedux(togglePasswordModal(false));
-    dispatch({ type: 'hide' });
+    dispatch(togglePasswordModal(false));
+    dispatchToReducer({ type: 'hide' });
   };
 
   const handleSave = () => {
     const { curentPassword, newPassword, repeatPassword } = passwordState;
     hide();
-    dispatchToRedux(
-      updatePassword(curentPassword, newPassword, repeatPassword)
-    );
+    dispatch(updatePassword(curentPassword, newPassword, repeatPassword));
   };
 
-  const toggle = () => dispatch({ type: 'toggleSecure' });
+  const toggle = () => dispatchToReducer({ type: 'toggleSecure' });
 
   const handleCurrentPass = (password) =>
-    dispatch({ type: 'currentPassword', password });
+    dispatchToReducer({ type: 'currentPassword', password });
   const handleNewPass = (password) => {
     validate(password);
-    dispatch({ type: 'newPassword', password });
+    dispatchToReducer({ type: 'newPassword', password });
   };
   const handleRepeatPass = (password) =>
-    dispatch({ type: 'repeatPassword', password });
+    dispatchToReducer({ type: 'repeatPassword', password });
 
   const validate = (pass) => {
-    dispatch({ type: 'checkEightChars', check: pass.length >= 8 });
-    dispatch({ type: 'checkNumber', check: /\d/.test(pass) });
-    dispatch({ type: 'checkSymbol', check: /[$-/:-?{-~!"^_`\[\]]/.test(pass) });
-    dispatch({
+    dispatchToReducer({ type: 'checkEightChars', check: pass.length >= 8 });
+    dispatchToReducer({ type: 'checkNumber', check: /\d/.test(pass) });
+    dispatchToReducer({
+      type: 'checkSymbol',
+      check: /[$-/:-?{-~!"^_`\[\]]/.test(pass),
+    });
+    dispatchToReducer({
       type: 'checkUpperAndLower',
       check: /\b(?![a-z]+\b|[A-Z]+\b)[a-zA-Z]+/.test(pass),
     });

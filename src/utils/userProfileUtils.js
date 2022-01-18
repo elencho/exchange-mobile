@@ -5,8 +5,10 @@ import {
   SUBSCRIBE_EMAIL_URL,
   UNSUBSCRIBE_EMAIL_URL,
   UPDATE_PASSWORD,
+  UPDATE_PHONE_NUMBER,
   UPDATE_USER_DATA,
   USER_INFO_URL,
+  VERIFY_PHONE_NUMBER,
 } from '../constants/api';
 
 export const fetchCountries = async () => {
@@ -81,6 +83,34 @@ export const updatePassword = async (
       data: `password=${currentPassword}&passwordNew=${newPassword}&passwordConfirm=${confirmNewPassword}`,
     });
     return data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {
+  try {
+    await axios({
+      method: 'POST',
+      headers: { Authorization: bearer },
+      url: `${VERIFY_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}`,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updatePhoneNumber = async (
+  phoneNumber,
+  phoneCountry,
+  verificationNumber
+) => {
+  try {
+    await axios({
+      method: 'POST',
+      headers: { Authorization: bearer },
+      url: `${VERIFY_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
+    });
   } catch (err) {
     console.log(err);
   }
