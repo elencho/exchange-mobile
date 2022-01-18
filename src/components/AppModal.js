@@ -20,12 +20,13 @@ export default function AppModal({
   custom,
 }) {
   const deviceWidth = Dimensions.get('window').width;
-  const deviceHeight =
-    Platform.OS === 'ios'
-      ? Dimensions.get('window').height
-      : require('react-native-extra-dimensions-android').get(
-          'REAL_WINDOW_HEIGHT'
-        );
+  const deviceHeight = Dimensions.get('window').height;
+  // const deviceHeight =
+  //   Platform.OS === 'ios'
+  //     ? Dimensions.get('window').height
+  //     : require('react-native-extra-dimensions-android').get(
+  //         'REAL_WINDOW_HEIGHT'
+  //       );
 
   return (
     <Modal

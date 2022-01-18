@@ -14,6 +14,7 @@ export const actionTypes = {
   FETCH_USER_INFO_SAGA: 'FETCH_USER_INFO_SAGA',
   SAVE_USER_INFO_SAGA: 'SAVE_USER_INFO_SAGA',
   TOGGLE_MAIL_SUBSCRIPTION_SAGA: 'TOGGLE_MAIL_SUBSCRIPTION_SAGA',
+  UPDATE_PASSWORD_SAGA: 'UPDATE_PASSWORD_SAGA',
 };
 
 export const switchPersonalSecurity = (Personal_Security) => ({
@@ -46,4 +47,14 @@ export const saveUserInfoSaga = () => ({
 export const toggleEmailSubscription = (value) => ({
   type: actionTypes.TOGGLE_MAIL_SUBSCRIPTION_SAGA,
   value,
+});
+export const updatePassword = (
+  curentPassword,
+  newPassword,
+  repeatPassword
+) => ({
+  type: actionTypes.UPDATE_PASSWORD_SAGA,
+  curentPassword,
+  newPassword,
+  repeatPassword,
 });

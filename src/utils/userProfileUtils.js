@@ -4,6 +4,7 @@ import {
   COUNTRIES_URL,
   SUBSCRIBE_EMAIL_URL,
   UNSUBSCRIBE_EMAIL_URL,
+  UPDATE_PASSWORD,
   UPDATE_USER_DATA,
   USER_INFO_URL,
 } from '../constants/api';
@@ -59,6 +60,27 @@ export const updateUserData = async (data) => {
       url: UPDATE_USER_DATA,
       data,
     });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updatePassword = async (
+  currentPassword,
+  newPassword,
+  confirmNewPassword
+) => {
+  try {
+    const data = await axios({
+      method: 'POST',
+      headers: {
+        Authorization: bearer,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      url: UPDATE_PASSWORD,
+      data: `password=${currentPassword}&passwordNew=${newPassword}&passwordConfirm=${confirmNewPassword}`,
+    });
+    return data;
   } catch (err) {
     console.log(err);
   }

@@ -32,8 +32,6 @@ export default function PersonalInfoModal() {
     profile: { userInfo, countriesConstant },
   } = state;
 
-  console.log(userInfo);
-
   const hide = () => {
     dispatch(togglePersonalInfoModal(false));
   };
