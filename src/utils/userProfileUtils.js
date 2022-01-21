@@ -1,7 +1,11 @@
 import axios from 'axios';
 import {
+  ACTIVATE_EMAIL_OTP,
+  ACTIVATE_GOOGLE_OTP,
   bearer,
   COUNTRIES_URL,
+  OTP_CHANGE_TOKEN,
+  SEND_OTP,
   SUBSCRIBE_EMAIL_URL,
   UNSUBSCRIBE_EMAIL_URL,
   UPDATE_PASSWORD,
@@ -109,7 +113,81 @@ export const updatePhoneNumber = async (
     await axios({
       method: 'POST',
       headers: { Authorization: bearer },
-      url: `${VERIFY_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
+      url: `${UPDATE_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const sendOtp = async () => {
+  try {
+    await axios({
+      method: 'POST',
+      headers: { Authorization: bearer },
+      url: SEND_OTP,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getOtpChangeToken = async (OTP, newOTPType) => {
+  try {
+    const data = await axios({
+      method: 'GET',
+      headers: { Authorization: bearer, OTP },
+      url: `${OTP_CHANGE_TOKEN}?newOTPType=${newOTPType}`,
+    });
+
+    // return data.changeOTPToken
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const sendEmailOtp = async () => {
+  try {
+    await axios({
+      method: 'POST',
+      headers: { Authorization: bearer },
+      url: EMAIL_VERIFICATION,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const activateEmailOtp = async (changeOTPToken, verificationCode) => {
+  try {
+    await axios({
+      method: 'POST',
+      headers: {
+        Authorization: bearer,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      url: ACTIVATE_EMAIL_OTP,
+      data: `changeOTPToken=${changeOTPToken}&verificationCode=${verificationCode}`,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const activateGoogleOtp = async (
+  changeOTPToken,
+  totpCode,
+  totpSecret
+) => {
+  try {
+    await axios({
+      method: 'POST',
+      headers: {
+        Authorization: bearer,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      url: ACTIVATE_GOOGLE_OTP,
+      data: `changeOTPToken=${changeOTPToken}&totpCode=${totpCode}&totpSecret=${totpSecret}`,
     });
   } catch (err) {
     console.log(err);

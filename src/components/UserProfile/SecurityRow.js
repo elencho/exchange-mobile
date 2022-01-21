@@ -9,6 +9,7 @@ import {
   toggleGoogleAuthModal,
   togglePasswordModal,
 } from '../../redux/modals/actions';
+import { bearer } from '../../constants/api';
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
   const dispatch = useDispatch();

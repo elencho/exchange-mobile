@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from 'react-native-modal';
-import { Dimensions, View, StyleSheet } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import Constants from 'expo-constants';
 
 import ModalTop from './ModalTop';
@@ -19,8 +19,6 @@ export default function AppModal({
   fullScreen,
   custom,
 }) {
-  const deviceWidth = Dimensions.get('window').width;
-  const deviceHeight = Dimensions.get('window').height;
   // const deviceHeight =
   //   Platform.OS === 'ios'
   //     ? Dimensions.get('window').height
@@ -35,14 +33,16 @@ export default function AppModal({
       onSwipeComplete={hide}
       swipeDirection="down"
       propagateSwipe={true}
-      deviceWidth={deviceWidth}
-      deviceHeight={deviceHeight}
       style={styles.modal}
       animationOutTiming={600}
       backdropTransitionInTiming={600}
     >
       {bottom && (
-        <>
+        <KeyboardAvoidingView
+          contentContainerStyle={{ borderWidth: 2, borderColor: 'yellow' }}
+          behavior={Platform.select({ android: undefined, ios: 'padding' })}
+          keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
+        >
           <ModalTop />
           <View style={styles.bottom}>
             {title && (
@@ -52,7 +52,7 @@ export default function AppModal({
             )}
             {children}
           </View>
-        </>
+        </KeyboardAvoidingView>
       )}
       {fullScreen && (
         <Background>
@@ -77,7 +77,11 @@ const styles = StyleSheet.create({
   },
   modal: {
     marginHorizontal: 0,
-    marginTop: Constants.statusBarHeight,
+    marginTop: Platform.select({ ios: Constants.statusBarHeight, android: 0 }),
+    marginBottom: Platform.select({
+      ios: undefined,
+      android: 0,
+    }),
     justifyContent: 'flex-end',
   },
 });

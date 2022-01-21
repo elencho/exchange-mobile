@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   // Transactions
   datePickerVisible: { to: false, from: false },
   chooseCurrencyModalVisible: false,
-  transactionDetailsVisible: false, // Both
+  transactionDetailsVisible: false, // Both transactions and trades
 
   // Instant Trade
   buySellModalVisible: false,
@@ -21,6 +21,9 @@ const INITIAL_STATE = {
   phoneNumberModalVisible: false,
   googleAuthModalVisible: false,
   countriesModalVisible: false,
+  smsAuthModalVisible: false,
+  emailAuthModalVisible: true,
+  googleOtpModalVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -40,6 +43,9 @@ export default (state = INITIAL_STATE, action) => {
     phoneNumberModalVisible,
     googleAuthModalVisible,
     countriesModalVisible,
+    smsAuthModalVisible,
+    googleOtpModalVisible,
+    emailAuthModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -116,6 +122,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         countriesModalVisible,
+      };
+    case actionTypes.SMS_AUTH_MODAL:
+      return {
+        ...state,
+        smsAuthModalVisible,
+      };
+    case actionTypes.EMAIL_AUTH_MODAL:
+      return {
+        ...state,
+        emailAuthModalVisible,
+      };
+    case actionTypes.GOOGLE_OTP_MODAL:
+      return {
+        ...state,
+        googleOtpModalVisible,
       };
     default:
       return state;

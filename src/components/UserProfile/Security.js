@@ -4,8 +4,10 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import colors from '../../constants/colors';
 import AppText from '../AppText';
 import GoogleAuthModal from './GoogleAuthModal';
+import GoogleOtpModal from './GoogleOtpModal';
 import PasswordModal from './PasswordModal';
 import SecurityRow from './SecurityRow';
+import SmsEmailAuthModal from './SmsEmailAuthModal';
 
 export default function Security() {
   return (
@@ -32,6 +34,9 @@ export default function Security() {
 
       <PasswordModal />
       <GoogleAuthModal />
+      <SmsEmailAuthModal type="E-mail" />
+      <SmsEmailAuthModal type="SMS" />
+      <GoogleOtpModal />
     </ScrollView>
   );
 }

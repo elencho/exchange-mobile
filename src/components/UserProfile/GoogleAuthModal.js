@@ -1,5 +1,11 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  View,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
@@ -12,10 +18,8 @@ import PurpleText from '../PurpleText';
 
 export default function GoogleAuthModal() {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
-  const {
-    modals: { googleAuthModalVisible },
-  } = state;
+  const state = useSelector((state) => state.modals);
+  const { googleAuthModalVisible } = state;
 
   const hide = () => dispatch(toggleGoogleAuthModal(false));
 
@@ -38,10 +42,12 @@ export default function GoogleAuthModal() {
           </AppText>
         </View>
 
-        <View style={styles.row}>
-          <Image source={images.AppStore} style={styles.marginRight} />
-          <Image source={images.PlayStore} />
-        </View>
+        <TouchableOpacity style={styles.store}>
+          <Image
+            source={images[Platform.OS === 'ios' ? 'Appstore' : 'Playstore']}
+            style={styles.storeIcon}
+          />
+        </TouchableOpacity>
       </View>
 
       <View style={styles.block}>
@@ -88,8 +94,15 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(74, 77, 116, 0.4)',
     marginHorizontal: 15,
   },
-  marginRight: { marginRight: 20 },
   row: { flexDirection: 'row' },
+  store: {
+    height: 45,
+    width: 120,
+  },
+  storeIcon: {
+    width: '100%',
+    height: '100%',
+  },
   header: { color: colors.PRIMARY_TEXT },
   secondary: { color: colors.SECONDARY_TEXT },
   subtext: { color: '#C0C5E0', flex: 1 },
