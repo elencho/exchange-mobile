@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
   toggleEmailAuthModal,
+  toggleGoogleAuthModal,
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
@@ -14,13 +15,29 @@ import CodeInput from '../CodeInput';
 
 export default function SmsEmailAuthModal({ type }) {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.modals);
-  const { smsAuthModalVisible, emailAuthModalVisible } = state;
+  const state = useSelector((state) => state);
+  const {
+    modals: { smsAuthModalVisible, emailAuthModalVisible },
+    profile: { googleAuth },
+  } = state;
 
   const visible = type === 'SMS' ? smsAuthModalVisible : emailAuthModalVisible;
   const action =
     type === 'SMS' ? toggleSmsAuthModal(false) : toggleEmailAuthModal(false);
   const cellCount = type === 'SMS' ? 4 : 6;
+
+  const [value, setValue] = useState('');
+  useEffect(() => {
+    if (value.length === cellCount) {
+      dispatch(toggleSmsAuthModal(false));
+      dispatch(toggleEmailAuthModal(false));
+    }
+  }, [value]);
+
+  const handleChange = (text) => setValue(text);
+  const handleHide = () => {
+    if (googleAuth) dispatch(toggleGoogleAuthModal(true));
+  };
 
   const hide = () => dispatch(action);
 
@@ -34,7 +51,11 @@ export default function SmsEmailAuthModal({ type }) {
       </AppText>
 
       <View style={styles.codeInput}>
-        <CodeInput cellCount={cellCount} />
+        <CodeInput
+          cellCount={cellCount}
+          value={value}
+          setValue={handleChange}
+        />
       </View>
 
       <AppText body style={styles.secondary}>
@@ -43,7 +64,15 @@ export default function SmsEmailAuthModal({ type }) {
     </View>
   );
 
-  return <AppModal children={children} bottom hide={hide} visible={visible} />;
+  return (
+    <AppModal
+      children={children}
+      bottom
+      hide={hide}
+      visible={visible}
+      onModalHide={handleHide}
+    />
+  );
 }
 
 const styles = StyleSheet.create({

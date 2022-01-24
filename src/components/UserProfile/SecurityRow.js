@@ -6,24 +6,59 @@ import AppText from '../AppText';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import {
-  toggleGoogleAuthModal,
+  toggleEmailAuthModal,
+  toggleGoogleOtpModal,
   togglePasswordModal,
+  toggleSmsAuthModal,
 } from '../../redux/modals/actions';
-import { bearer } from '../../constants/api';
+import PurpleText from '../PurpleText';
+import {
+  setEmailAuth,
+  setGoogleAuth,
+  setSmsAuth,
+} from '../../redux/profile/actions';
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.profile);
-  const { userInfo } = state;
+  const { userInfo, smsAuth, emailAuth, googleAuth } = state;
+
+  const handlePassword = () => {
+    dispatch(togglePasswordModal(true));
+  };
 
   const handleChange = () => {
     switch (text) {
       case 'Google_Auth':
-        dispatch(toggleGoogleAuthModal(true));
+        if (emailAuth) dispatch(toggleEmailAuthModal(true));
+        if (smsAuth) dispatch(toggleSmsAuthModal(true));
+        dispatch(setGoogleAuth(true));
         break;
-      case 'Strong_Password':
-        dispatch(togglePasswordModal(true));
+      case 'E_mail_Auth':
+        if (googleAuth) dispatch(toggleGoogleOtpModal(true));
+        if (smsAuth) dispatch(toggleSmsAuthModal(true));
+        dispatch(setEmailAuth(true));
+        dispatch(setSmsAuth(false));
         break;
+      case 'SMS_Auth':
+        if (googleAuth) dispatch(toggleGoogleOtpModal(true));
+        if (emailAuth) dispatch(toggleEmailAuthModal(true));
+        dispatch(setSmsAuth(true));
+        dispatch(setEmailAuth(false));
+        break;
+      default:
+        break;
+    }
+  };
+
+  const disabledCond = () => {
+    switch (text) {
+      case 'Google_Auth':
+        return googleAuth;
+      case 'E_mail_Auth':
+        return emailAuth;
+      case 'SMS_Auth':
+        return smsAuth;
       default:
         break;
     }
@@ -67,14 +102,18 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
     }
   };
 
-  // const switchCond = () => {
-  //   switch (text) {
-  //     case 'E_mail_Auth':
-  //       return userInfo.emailUpdates;
-  //     default:
-  //       return false;
-  //   }
-  // };
+  const switchCond = () => {
+    switch (text) {
+      case 'E_mail_Auth':
+        return emailAuth;
+      case 'SMS_Auth':
+        return smsAuth;
+      case 'Google_Auth':
+        return googleAuth;
+      default:
+        break;
+    }
+  };
 
   return (
     <View
@@ -94,11 +133,16 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
         </AppText>
       </View>
 
-      <Switch
-        style={styles.switch}
-        // value={switchCond()}
-        onChange={handleChange}
-      />
+      {text === 'Strong_Password' ? (
+        <PurpleText text="Edit" onPress={handlePassword} />
+      ) : (
+        <Switch
+          style={styles.switch}
+          value={switchCond()}
+          onChange={handleChange}
+          disabled={disabledCond()}
+        />
+      )}
     </View>
   );
 }

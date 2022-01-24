@@ -9,6 +9,11 @@ export const actionTypes = {
   // PURE VISUALS
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
 
+  // Security
+  SET_GOOGLE_AUTH: 'SET_GOOGLE_AUTH',
+  SET_EMAIL_AUTH: 'SET_EMAIL_AUTH',
+  SET_SMS_AUTH: 'SET_SMS_AUTH',
+
   // FOR SAGAS
   FETCH_COUNTRIES_SAGA: 'FETCH_COUNTRIES_SAGA',
   FETCH_USER_INFO_SAGA: 'FETCH_USER_INFO_SAGA',
@@ -34,6 +39,20 @@ export const saveCountriesConstant = (countriesConstant) => ({
 export const saveUserInfo = (userInfo) => ({
   type: actionTypes.SAVE_USER_INFO,
   userInfo,
+});
+
+// SECURITY
+export const setGoogleAuth = (googleAuth) => ({
+  type: actionTypes.SET_GOOGLE_AUTH,
+  googleAuth,
+});
+export const setEmailAuth = (emailAuth) => ({
+  type: actionTypes.SET_EMAIL_AUTH,
+  emailAuth,
+});
+export const setSmsAuth = (smsAuth) => ({
+  type: actionTypes.SET_SMS_AUTH,
+  smsAuth,
 });
 
 // FOR SAGAS

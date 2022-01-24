@@ -4,6 +4,11 @@ const INITIAL_STATE = {
   Personal_Security: 'Security',
   userInfo: {},
 
+  // Security
+  googleAuth: false,
+  emailAuth: false,
+  smsAuth: true,
+
   countries: [],
   countriesConstant: [],
 
@@ -13,7 +18,15 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { Personal_Security, countries, countriesConstant, userInfo } = action;
+  const {
+    Personal_Security,
+    countries,
+    countriesConstant,
+    userInfo,
+    emailAuth,
+    googleAuth,
+    smsAuth,
+  } = action;
   switch (action.type) {
     case actionTypes.SWITCH_PERSONAL_SECURITY:
       return {
@@ -34,6 +47,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         userInfo,
+      };
+    case actionTypes.SET_GOOGLE_AUTH:
+      return {
+        ...state,
+        googleAuth,
+      };
+    case actionTypes.SET_EMAIL_AUTH:
+      return {
+        ...state,
+        emailAuth,
+      };
+    case actionTypes.SET_SMS_AUTH:
+      return {
+        ...state,
+        smsAuth,
       };
     default:
       return state;

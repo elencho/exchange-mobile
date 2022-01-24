@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import colors from '../../constants/colors';
-import AppModal from '../AppModal';
 
+import colors from '../../constants/colors';
+import { toggleGoogleOtpModal } from '../../redux/modals/actions';
+import { setGoogleAuth } from '../../redux/profile/actions';
+import AppModal from '../AppModal';
 import AppText from '../AppText';
 import CodeInput from '../CodeInput';
-import PurpleText from '../PurpleText';
 
 export default function GoogleOtpModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.modals);
   const { googleOtpModalVisible } = state;
 
+  const [value, setValue] = useState('');
+  useEffect(() => {
+    if (value.length === 6) {
+      dispatch(toggleGoogleOtpModal(false));
+      dispatch(setGoogleAuth(false));
+    }
+  }, [value]);
+
+  const handleChange = (text) => setValue(text);
   const hide = () => dispatch(toggleGoogleOtpModal(false));
 
   const children = (
@@ -25,7 +35,7 @@ export default function GoogleOtpModal() {
       </AppText>
 
       <View style={styles.codeInput}>
-        <CodeInput cellCount={6} />
+        <CodeInput cellCount={6} value={value} setValue={handleChange} />
       </View>
     </View>
   );

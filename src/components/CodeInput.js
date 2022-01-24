@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import {
   CodeField,
@@ -10,8 +10,7 @@ import {
 import AppText from './AppText';
 import colors from '../constants/colors';
 
-export default function CodeInput({ cellCount }) {
-  const [value, setValue] = useState('');
+export default function CodeInput({ cellCount, value, setValue }) {
   const ref = useBlurOnFulfill({ value, cellCount });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,

@@ -7,26 +7,34 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import colors from '../../constants/colors';
-import images from '../../constants/images';
 
 import { toggleGoogleAuthModal } from '../../redux/modals/actions';
+import { setEmailAuth, setSmsAuth } from '../../redux/profile/actions';
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
+import colors from '../../constants/colors';
+import images from '../../constants/images';
 
 export default function GoogleAuthModal() {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.modals);
-  const { googleAuthModalVisible } = state;
+  const state = useSelector((state) => state);
+  const {
+    modals: { googleAuthModalVisible },
+  } = state;
 
   const hide = () => dispatch(toggleGoogleAuthModal(false));
+  const enable = () => {
+    dispatch(setSmsAuth(false));
+    dispatch(setEmailAuth(false));
+    hide();
+  };
 
   const right = (
     <View style={styles.row}>
       <View style={styles.smallLine} />
-      <PurpleText text="Enable" />
+      <PurpleText text="Enable" onPress={enable} />
     </View>
   );
 

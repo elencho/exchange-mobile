@@ -19,10 +19,11 @@ const INITIAL_STATE = {
   personalInfoModalVisible: false,
   passwordModalVisible: false,
   phoneNumberModalVisible: false,
-  googleAuthModalVisible: false,
   countriesModalVisible: false,
+  // security
+  googleAuthModalVisible: false,
   smsAuthModalVisible: false,
-  emailAuthModalVisible: true,
+  emailAuthModalVisible: false,
   googleOtpModalVisible: false,
 };
 

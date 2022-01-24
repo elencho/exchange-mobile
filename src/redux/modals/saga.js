@@ -12,5 +12,5 @@ function* currencySaga(action) {
 }
 
 export default function* () {
-  yield takeLatest('AA', currencySaga);
+  yield takeLatest('AAA', currencySaga);
 }

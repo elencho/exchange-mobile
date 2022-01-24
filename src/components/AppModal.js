@@ -18,6 +18,7 @@ export default function AppModal({
   title,
   fullScreen,
   custom,
+  onModalHide,
 }) {
   // const deviceHeight =
   //   Platform.OS === 'ios'
@@ -36,6 +37,7 @@ export default function AppModal({
       style={styles.modal}
       animationOutTiming={600}
       backdropTransitionInTiming={600}
+      onModalHide={onModalHide}
     >
       {bottom && (
         <KeyboardAvoidingView
