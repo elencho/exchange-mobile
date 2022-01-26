@@ -1,5 +1,6 @@
 export const actionTypes = {
   SAVE_TRADES: 'SAVE_TRADES',
+  SAVE_CARD_TRADE_DATA: 'SAVE_CARD_TRADE_DATA',
   SAVE_OFFERS: 'SAVE_OFFERS',
   HIDE_OTHER_PAIRS: 'HIDE_OTHER_PAIRS',
   SET_PAIR_OBJECT: 'SET_PAIR_OBJECT',
@@ -30,6 +31,10 @@ export const actionTypes = {
 export const saveTrades = (trades) => ({
   type: actionTypes.SAVE_TRADES,
   trades,
+});
+export const saveCardTradeData = (cardTradeData) => ({
+  type: actionTypes.SAVE_CARD_TRADE_DATA,
+  cardTradeData,
 });
 export const saveOffers = (offers) => ({
   type: actionTypes.SAVE_OFFERS,

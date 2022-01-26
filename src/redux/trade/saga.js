@@ -13,6 +13,7 @@ import {
   setDepositProvider,
   setDepositProviders,
   setFee,
+  saveCardTradeData,
 } from './actions';
 import {
   getParams,
@@ -85,7 +86,8 @@ function* fetchOffersSaga() {
 function* submitTradeSaga() {
   yield put(setTradesLoading(true));
   const params = yield select(paramsForTrade);
-  yield call(submitTrade, params);
+  const cardTradeData = yield call(submitTrade, params);
+  yield put(saveCardTradeData(cardTradeData));
   yield put(fetchTradesAction());
   yield put(setTradesLoading(false));
 }

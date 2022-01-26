@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { WebView } from 'react-native-webview';
 
 import colors from '../../constants/colors';
 import AppModal from '../AppModal';
@@ -23,6 +24,7 @@ import CryptoModal from './CryptoModal';
 import FiatModal from './FiatModal';
 import {
   fetchFee,
+  saveCardTradeData,
   setCurrentTrade,
   submitTrade,
   switchBalanceCard,
@@ -31,6 +33,7 @@ import {
 export default function BuySellModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const [webViewUrl, setWebViewUrl] = useState('');
 
   const {
     modals: { buySellModalVisible },
@@ -43,8 +46,11 @@ export default function BuySellModal() {
       balance: { balances },
       currentTrade: { size, price },
       card,
+      cardTradeData,
     },
   } = state;
+
+  console.log(card);
 
   const {
     pair: { baseScale, quoteScale },
@@ -61,9 +67,13 @@ export default function BuySellModal() {
     dispatch(setCurrentTrade({ price: null, size: null }));
   };
 
-  const handleSubmit = () => {
-    dispatch(submitTrade());
-    hide();
+  const handleSubmit = () => dispatch(submitTrade());
+
+  const enabled = () => {
+    if (Balance_Card === 'card' && !card) {
+      return false;
+    }
+    return true;
   };
 
   const validate = (t, number) => {
@@ -124,6 +134,15 @@ export default function BuySellModal() {
     return hasEcommerce;
   };
 
+  const handleUrlChange = (state) => {
+    setWebViewUrl(state.url);
+    const urlArray = webViewUrl.split('=');
+    const ending = urlArray[urlArray.length - 1];
+    if (ending === 'false' || ending === 'true') {
+      dispatch(saveCardTradeData({}));
+    }
+  };
+
   const children = (
     <>
       <View style={styles.flex}>
@@ -164,15 +183,28 @@ export default function BuySellModal() {
 
       <Pressable
         onPress={handleSubmit}
+        disabled={!enabled()}
         style={[
           styles.button,
-          { backgroundColor: tradeType === 'Buy' ? '#0CCBB5' : '#F83974' },
+          {
+            backgroundColor: tradeType === 'Buy' ? '#0CCBB5' : '#F83974',
+            opacity: enabled() ? 1 : 0.5,
+          },
         ]}
       >
         <AppText medium style={styles.buttonText}>
           {tradeType}
         </AppText>
       </Pressable>
+
+      {cardTradeData.status === 200 && (
+        <TouchableOpacity activeOpacity={0.99} style={styles.webView}>
+          <WebView
+            source={{ uri: cardTradeData.actionUrl }}
+            onNavigationStateChange={handleUrlChange}
+          />
+        </TouchableOpacity>
+      )}
     </>
   );
 
@@ -214,5 +246,12 @@ const styles = StyleSheet.create({
   },
   margin: {
     marginVertical: 10,
+  },
+  webView: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
 });

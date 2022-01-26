@@ -18,6 +18,7 @@ import FiatModal from '../components/InstantTrade/FiatModal';
 
 export default function InstantTrade() {
   const state = useSelector((state) => state.modals);
+  const cardTradeData = useSelector((state) => state.trade.cardTradeData);
   const {
     fiatModalVisible,
     cryptoModalVisible,

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import colors from '../../constants/colors';
@@ -10,14 +10,6 @@ import SecurityRow from './SecurityRow';
 import SmsEmailAuthModal from './SmsEmailAuthModal';
 
 export default function Security() {
-  // useEffect(() => {
-  //   first;
-
-  //   return () => {
-  //     second;
-  //   };
-  // }, [third]);
-
   return (
     <ScrollView>
       <View style={styles.block}>

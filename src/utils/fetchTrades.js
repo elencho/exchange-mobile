@@ -36,7 +36,7 @@ export const submitTrade = async (params) => {
     const data = await axios.post(TRADES_URL, params, {
       headers: { Authorization: bearer },
     });
-    return data.status;
+    return { ...data.data, status: data.status };
   } catch (err) {
     console.log(err);
   }

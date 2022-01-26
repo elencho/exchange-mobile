@@ -27,7 +27,7 @@ function* fetchCountriesSaga() {
 
 function* fetchUserInfoSaga() {
   const userInfo = yield call(fetchUserInfoUtil);
-  // yield put(saveUserInfo(userInfo));
+  yield put(saveUserInfo(userInfo));
 }
 
 function* saveUserInfoSaga() {

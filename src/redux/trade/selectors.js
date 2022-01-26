@@ -46,14 +46,29 @@ export const paramsForTrade = (state) => {
       crypto,
       fiat,
       tradeType,
+      card,
+      Balance_Card,
     },
   } = state;
 
-  return {
-    pairCode: `${crypto}-${fiat}`,
-    action: tradeType === 'Buy' ? 'BID' : 'ASK',
-    amount: tradeType === 'Buy' ? price : size,
-  };
+  return Balance_Card === 'card'
+    ? {
+        pairCode: `${crypto}-${fiat}`,
+        action: tradeType === 'Buy' ? 'BID' : 'ASK',
+        amount: tradeType === 'Buy' ? price : size,
+        cardTransactionRequest: {
+          type: 'DEPOSIT',
+          currency: fiat,
+          cardId: card.id,
+          amount: price,
+          redirectUri: `https://ge.cryptal.com/ex/instant-trade/${crypto}-${fiat}`,
+        },
+      }
+    : {
+        pairCode: `${crypto}-${fiat}`,
+        action: tradeType === 'Buy' ? 'BID' : 'ASK',
+        amount: tradeType === 'Buy' ? price : size,
+      };
 };
 
 export const getTrades = (state) => state.trade.trades;

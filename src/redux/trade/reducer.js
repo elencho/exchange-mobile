@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   trades: [],
   offers: { USD: [], GEL: [] },
   pairObject: null,
+  cardTradeData: {},
   currentTrade: { price: null, size: null },
   hideOtherPairs: false,
 
@@ -45,12 +46,18 @@ export default (state = INITIAL_STATE, action) => {
     fee,
     depositProvider,
     depositProviders,
+    cardTradeData,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_TRADES:
       return {
         ...state,
         trades,
+      };
+    case actionTypes.SAVE_CARD_TRADE_DATA:
+      return {
+        ...state,
+        cardTradeData,
       };
     case actionTypes.SAVE_OFFERS:
       return {
