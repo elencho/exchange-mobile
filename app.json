@@ -3,11 +3,13 @@
     "name": "cryptal-app",
     "slug": "cryptal-app",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "assets/images/*",
-      "assets/fonts/*"
-    ],
-    "description": ""
+    "assetBundlePatterns": ["assets/images/*", "assets/fonts/*"],
+    "description": "",
+    "ios": {
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "This app will optionally use Face ID or Touch ID to save login"
+      }
+    }
   },
   "name": "cryptal-app"
 }

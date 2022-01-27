@@ -50,8 +50,6 @@ export default function BuySellModal() {
     },
   } = state;
 
-  console.log(card);
-
   const {
     pair: { baseScale, quoteScale },
   } = pairObject;
