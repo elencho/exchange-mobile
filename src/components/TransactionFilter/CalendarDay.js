@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
+import colors from '../../constants/colors';
 
 import AppText from '../AppText';
 
@@ -37,7 +38,7 @@ export default function CalendarDay({ state, handleChange, dateMark }) {
     if (dateMark(new Date(timestamp), new Date(from), new Date(to))) {
       return {
         ...style,
-        backgroundColor: '#6582FD',
+        backgroundColor: colors.SECONDARY_PURPLE,
       };
     }
   };

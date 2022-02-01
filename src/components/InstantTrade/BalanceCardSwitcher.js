@@ -35,7 +35,7 @@ export default function BalanceCardSwitcher() {
     return (
       <AppText
         medium={isActive}
-        style={{ color: isActive ? '#6582FD' : '#C0C5E0' }}
+        style={{ color: isActive ? colors.SECONDARY_PURPLE : '#C0C5E0' }}
       >
         {text}
       </AppText>

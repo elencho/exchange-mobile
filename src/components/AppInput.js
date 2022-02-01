@@ -33,7 +33,7 @@ const AppInput = ({
     }).start();
   }, [focusAnim, isFocused]);
 
-  let borderColor = isFocused ? '#6582FD' : '#42475D';
+  let borderColor = isFocused ? colors.SECONDARY_PURPLE : '#42475D';
 
   return (
     <View style={[styles.inputContainer, { borderColor }, style]}>
