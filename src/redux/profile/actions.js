@@ -13,6 +13,7 @@ export const actionTypes = {
   SET_GOOGLE_AUTH: 'SET_GOOGLE_AUTH',
   SET_EMAIL_AUTH: 'SET_EMAIL_AUTH',
   SET_SMS_AUTH: 'SET_SMS_AUTH',
+  CURRENT_SECURITY_ACTION: 'CURRENT_SECURITY_ACTION',
 
   // FOR SAGAS
   FETCH_COUNTRIES_SAGA: 'FETCH_COUNTRIES_SAGA',
@@ -53,6 +54,10 @@ export const setEmailAuth = (emailAuth) => ({
 export const setSmsAuth = (smsAuth) => ({
   type: actionTypes.SET_SMS_AUTH,
   smsAuth,
+});
+export const setCurrentSecurityAction = (currentSecurityAction) => ({
+  type: actionTypes.CURRENT_SECURITY_ACTION,
+  currentSecurityAction,
 });
 
 // FOR SAGAS

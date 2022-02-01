@@ -13,6 +13,7 @@ import {
 } from '../../redux/modals/actions';
 import PurpleText from '../PurpleText';
 import {
+  setCurrentSecurityAction,
   setEmailAuth,
   setGoogleAuth,
   setSmsAuth,
@@ -32,19 +33,17 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
       case 'Google_Auth':
         if (emailAuth) dispatch(toggleEmailAuthModal(true));
         if (smsAuth) dispatch(toggleSmsAuthModal(true));
-        dispatch(setGoogleAuth(true));
+        dispatch(setCurrentSecurityAction('google'));
         break;
       case 'E_mail_Auth':
         if (googleAuth) dispatch(toggleGoogleOtpModal(true));
         if (smsAuth) dispatch(toggleSmsAuthModal(true));
-        dispatch(setEmailAuth(true));
-        dispatch(setSmsAuth(false));
+        dispatch(setCurrentSecurityAction('email'));
         break;
       case 'SMS_Auth':
         if (googleAuth) dispatch(toggleGoogleOtpModal(true));
         if (emailAuth) dispatch(toggleEmailAuthModal(true));
-        dispatch(setSmsAuth(true));
-        dispatch(setEmailAuth(false));
+        dispatch(setCurrentSecurityAction('sms'));
         break;
       default:
         break;

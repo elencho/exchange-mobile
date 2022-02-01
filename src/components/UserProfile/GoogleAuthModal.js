@@ -9,7 +9,11 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import { toggleGoogleAuthModal } from '../../redux/modals/actions';
-import { setEmailAuth, setSmsAuth } from '../../redux/profile/actions';
+import {
+  setEmailAuth,
+  setGoogleAuth,
+  setSmsAuth,
+} from '../../redux/profile/actions';
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
@@ -26,6 +30,7 @@ export default function GoogleAuthModal() {
 
   const hide = () => dispatch(toggleGoogleAuthModal(false));
   const enable = () => {
+    dispatch(setGoogleAuth(true));
     dispatch(setSmsAuth(false));
     dispatch(setEmailAuth(false));
     hide();

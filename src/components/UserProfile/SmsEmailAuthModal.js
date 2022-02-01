@@ -2,23 +2,24 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import {
-  toggleEmailAuthModal,
-  toggleGoogleAuthModal,
-  toggleSmsAuthModal,
-} from '../../redux/modals/actions';
 import colors from '../../constants/colors';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import CodeInput from '../CodeInput';
+import {
+  toggleEmailAuthModal,
+  toggleGoogleAuthModal,
+  toggleSmsAuthModal,
+} from '../../redux/modals/actions';
+import { setEmailAuth, setSmsAuth } from '../../redux/profile/actions';
 
 export default function SmsEmailAuthModal({ type }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     modals: { smsAuthModalVisible, emailAuthModalVisible },
-    profile: { googleAuth },
+    profile: { googleAuth, smsAuth, emailAuth, currentSecurityAction },
   } = state;
 
   const visible = type === 'SMS' ? smsAuthModalVisible : emailAuthModalVisible;
@@ -35,8 +36,21 @@ export default function SmsEmailAuthModal({ type }) {
   }, [value]);
 
   const handleChange = (text) => setValue(text);
+
   const handleHide = () => {
-    if (googleAuth) dispatch(toggleGoogleAuthModal(true));
+    if (value.length === cellCount) {
+      if (currentSecurityAction === 'google') {
+        dispatch(toggleGoogleAuthModal(true));
+      }
+      if (currentSecurityAction === 'email') {
+        dispatch(setEmailAuth(true));
+        dispatch(setSmsAuth(false));
+      }
+      if (currentSecurityAction === 'sms') {
+        dispatch(setSmsAuth(true));
+        dispatch(setEmailAuth(false));
+      }
+    }
   };
 
   const hide = () => dispatch(action);

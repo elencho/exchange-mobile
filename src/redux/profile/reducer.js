@@ -8,6 +8,7 @@ const INITIAL_STATE = {
   googleAuth: false,
   emailAuth: false,
   smsAuth: true,
+  currentSecurityAction: null,
 
   countries: [],
   countriesConstant: [],
@@ -26,6 +27,7 @@ export default (state = INITIAL_STATE, action) => {
     emailAuth,
     googleAuth,
     smsAuth,
+    currentSecurityAction,
   } = action;
   switch (action.type) {
     case actionTypes.SWITCH_PERSONAL_SECURITY:
@@ -62,6 +64,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         smsAuth,
+      };
+    case actionTypes.CURRENT_SECURITY_ACTION:
+      return {
+        ...state,
+        currentSecurityAction,
       };
     default:
       return state;
