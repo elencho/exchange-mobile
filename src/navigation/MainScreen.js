@@ -11,6 +11,7 @@ import BottomTabs from '../components/BottomTabs';
 import TransactionFilter from '../screens/TransactionFilter';
 import { setTabRouteName } from '../redux/transactions/actions';
 import Exercise from '../screens/Exercise';
+import Wallet from '../screens/Wallet';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,7 +34,7 @@ export default function MainScreen() {
           headerShown: false,
           unmountOnBlur: true,
         }}
-        initialRouteName="Exchange"
+        initialRouteName="Wallet"
         tabBar={({ state, navigation, descriptors }) => (
           <BottomTabs
             routes={state.routes}
@@ -42,9 +43,9 @@ export default function MainScreen() {
           />
         )}
       >
-        <Tab.Screen name="Exchange" component={UserProfile} />
+        <Tab.Screen name="Exchange" component={Exercise} />
         <Tab.Screen name="Trade" component={InstantTrade} />
-        <Tab.Screen name="Wallet" component={Exercise} />
+        <Tab.Screen name="Wallet" component={Wallet} />
         <Tab.Screen
           name="Transactions"
           children={() => <TransactionHistory />}
