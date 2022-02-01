@@ -7,7 +7,7 @@ import images from '../constants/images';
 
 export default function BottomTabs({ navigation, descriptors, routes }) {
   const active = {
-    Wallet: images.Wallet_Active,
+    Wallet: images.Wallet_Tab_Active,
     Transactions: images.Transactions_Active,
     Exchange: images.Exchange_Active,
     Trade: images.Trade_Active,
@@ -15,7 +15,7 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
   };
 
   const inactive = {
-    Wallet: images.Wallet,
+    Wallet: images.Wallet_Tab,
     Transactions: images.Transactions,
     Exchange: images.Exchange,
     Trade: images.Trade,

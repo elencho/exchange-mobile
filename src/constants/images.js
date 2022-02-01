@@ -22,8 +22,8 @@ export default {
   Trade: require('../assets/images/Trade.png'),
   Transactions_Active: require('../assets/images/Transactions_Active.png'),
   Transactions: require('../assets/images/Transactions.png'),
-  Wallet_Active: require('../assets/images/Wallet_Active.png'),
-  Wallet: require('../assets/images/Wallet.png'),
+  Wallet_Tab_Active: require('../assets/images/Wallet_Active.png'),
+  Wallet_Tab: require('../assets/images/Wallet.png'),
   Withdrawal: require('../assets/images/Withdrawal.png'),
   AMEX: require('../assets/images/Amex.png'),
   MASTERCARD: require('../assets/images/MC_Card.png'),
@@ -45,6 +45,9 @@ export default {
   Show: require('../assets/images/User_profile/Show.png'),
   Appstore: require('../assets/images/User_profile/Appstore.png'),
   Playstore: require('../assets/images/User_profile/Playstore.png'),
+
+  // Wallet
+  Wallet: require('../assets/images/Wallet/Wallet.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),
