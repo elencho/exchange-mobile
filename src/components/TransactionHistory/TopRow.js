@@ -1,24 +1,30 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import AppText from '../AppText';
 
-export default function TopRow() {
+function TopRow({ navigation }) {
   return (
     <View style={styles.topRow}>
       <Image source={images.Logo} style={styles.logo} />
 
-      <View style={styles.profile}>
+      <Pressable
+        style={styles.profile}
+        onPress={() => navigation.navigate('UserProfile')}
+      >
         <AppText medium style={styles.text}>
           NT
         </AppText>
         <View style={styles.dot} />
-      </View>
+      </Pressable>
     </View>
   );
 }
+
+export default withNavigation(TopRow);
 
 const styles = StyleSheet.create({
   dot: {
