@@ -24,6 +24,9 @@ export const actionTypes = {
   // FOR SAGAS
   FETCH_TRADES: 'FETCH_TRADES',
   FETCH_OFFERS: 'FETCH_OFFERS',
+  PAIR_OBJECT_SAGA: 'PAIR_OBJECT_SAGA',
+  DEPOSIT_PROVIDERS_SAGA: 'DEPOSIT_PROVIDERS_SAGA',
+  CARDS_SAGA: 'CARDS_SAGA',
   FETCH_FEE: 'FETCH_FEE',
   SUBMIT_TRADE: 'SUBMIT_TRADE',
 };
@@ -107,6 +110,16 @@ export const fetchTrades = () => ({
 });
 export const fetchOffers = () => ({
   type: actionTypes.FETCH_OFFERS,
+});
+export const pairObjectSagaAction = (offers) => ({
+  type: actionTypes.PAIR_OBJECT_SAGA,
+  offers,
+});
+export const depositProvidersSagaAction = () => ({
+  type: actionTypes.DEPOSIT_PROVIDERS_SAGA,
+});
+export const cardsSagaAction = () => ({
+  type: actionTypes.CARDS_SAGA,
 });
 export const fetchFee = () => ({
   type: actionTypes.FETCH_FEE,

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleChooseBankModal } from '../../redux/modals/actions';
-import { setDepositProvider } from '../../redux/trade/actions';
+import { cardsSagaAction, setDepositProvider } from '../../redux/trade/actions';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 
@@ -23,6 +23,7 @@ export default function ChooseBankModal() {
 
   const choose = (b) => {
     dispatch(setDepositProvider(b));
+    dispatch(cardsSagaAction());
     hide();
   };
 

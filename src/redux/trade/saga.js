@@ -14,6 +14,9 @@ import {
   setDepositProviders,
   setFee,
   saveCardTradeData,
+  pairObjectSagaAction,
+  depositProvidersSagaAction,
+  cardsSagaAction,
 } from './actions';
 import {
   getParams,
@@ -40,11 +43,8 @@ function* fetchTradesSaga() {
   yield put(setTradesLoading(false));
 }
 
-function* fetchOffersSaga() {
-  yield put(setOffersLoading(true));
-  const offers = yield call(fetchOffers);
-  yield put(saveOffers(offers));
-
+function* pairObjectSaga(action) {
+  const { offers } = action;
   let object;
   const fiat = yield select((state) => state.trade.fiat);
   const crypto = yield select((state) => state.trade.crypto);
@@ -57,12 +57,13 @@ function* fetchOffersSaga() {
     })
   );
   yield put(setPairObject(object));
+}
 
-  const balance = yield call(fetchBalance);
-  yield put(setBalance(balance));
-
+function* depositProvidersSaga() {
   let provider; // It will become first item of depositProviders array for a particular fiat
   let providers; // Banks that have ecommerce
+  const balance = yield select((state) => state.trade.balance);
+  const fiat = yield select((state) => state.trade.fiat);
   yield call(() => {
     balance.balances.forEach((b) => {
       if (b.depositTypes.includes('ECOMMERCE')) {
@@ -76,10 +77,27 @@ function* fetchOffersSaga() {
   });
   yield put(setDepositProvider(provider));
   yield put(setDepositProviders(providers));
+}
 
+function* cardsSaga() {
   const cardParams = yield select(getCardParams);
   const cards = yield call(fetchCards, cardParams);
   yield put(saveCards(cards));
+}
+
+function* fetchOffersSaga() {
+  yield put(setOffersLoading(true));
+  const offers = yield call(fetchOffers);
+  yield put(saveOffers(offers));
+
+  yield put(pairObjectSagaAction(offers));
+
+  const balance = yield call(fetchBalance);
+  yield put(setBalance(balance));
+
+  yield put(depositProvidersSagaAction());
+  yield put(cardsSagaAction());
+
   yield put(setOffersLoading(false));
 }
 
@@ -101,6 +119,9 @@ function* fetchFeeSaga() {
 export default function* () {
   yield takeLatest(actionTypes.FETCH_TRADES, fetchTradesSaga);
   yield takeLatest(actionTypes.FETCH_OFFERS, fetchOffersSaga);
+  yield takeLatest(actionTypes.PAIR_OBJECT_SAGA, pairObjectSaga);
+  yield takeLatest(actionTypes.DEPOSIT_PROVIDERS_SAGA, depositProvidersSaga);
+  yield takeLatest(actionTypes.CARDS_SAGA, cardsSaga);
   yield takeLatest(actionTypes.SUBMIT_TRADE, submitTradeSaga);
   yield takeLatest(actionTypes.FETCH_FEE, fetchFeeSaga);
 }
