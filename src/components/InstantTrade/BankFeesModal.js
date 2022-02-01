@@ -26,6 +26,7 @@ export default function BankFeesModal() {
   } = state;
 
   useEffect(() => {
+    console.log(balances);
     balances.forEach((b) => {
       if (b.currencyCode === fiat && b.depositTypes.includes('ECOMMERCE')) {
         b.fees.forEach((f) => {
@@ -60,11 +61,11 @@ export default function BankFeesModal() {
         <AppText style={[styles.subtext, styles.flex]} body>
           From - To
         </AppText>
-        <View style={[styles.icons, styles.flex]}>
+        <View style={[styles.icons, hasAmex && styles.flex]}>
           <View style={styles.iconContainer}>
             <Image source={images.MASTERCARD} />
           </View>
-          <View style={styles.iconContainer}>
+          <View style={[styles.iconContainer, !hasAmex && { marginLeft: 35 }]}>
             <Image source={images.VISA} />
           </View>
           {hasAmex && (

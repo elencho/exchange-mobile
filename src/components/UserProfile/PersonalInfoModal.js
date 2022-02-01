@@ -91,12 +91,6 @@ export default function PersonalInfoModal() {
             label="Last Name"
             value={userInfo.lastName}
           />
-          <AppInput
-            style={styles.inputContainer}
-            onChangeText={handleAddress}
-            label="Address"
-            value={userInfo.address}
-          />
 
           <Pressable
             style={styles.dropdown}
@@ -129,6 +123,13 @@ export default function PersonalInfoModal() {
               value={userInfo.postalCode}
             />
           </View>
+
+          <AppInput
+            style={styles.inputContainer}
+            onChangeText={handleAddress}
+            label="Address"
+            value={userInfo.address}
+          />
 
           <Pressable
             style={styles.dropdown}

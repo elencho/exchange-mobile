@@ -17,13 +17,13 @@ export default function FeeModalRow({
       <AppText style={[styles.text, styles.flex]} body>
         {start} - {end}
       </AppText>
-      <View style={[styles.percentages, styles.flex]}>
+      <View style={[styles.percentages, hasAmex && styles.flex]}>
         <View style={styles.percent}>
           <AppText body style={styles.text}>
             {mastercard} {mastercard && '%'}
           </AppText>
         </View>
-        <View style={styles.percent}>
+        <View style={[styles.percent, !hasAmex && { marginLeft: 35 }]}>
           <AppText body style={styles.text}>
             {visa} {visa && '%'}
           </AppText>
