@@ -12,9 +12,7 @@ export default function FilterRow({ array = [''], multiselect = false }) {
 
   const { typeFilter, method } = state;
 
-  const handleFilter = (filter) => {
-    dispatch(filterAction(filter, multiselect));
-  };
+  const handleFilter = (filter) => dispatch(filterAction(filter, multiselect));
 
   const filterConditional = (fil) => {
     if (!multiselect) {
