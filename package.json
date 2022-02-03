@@ -20,6 +20,7 @@
     "@react-navigation/stack": "^6.0.11",
     "@sumsub/react-native-mobilesdk-module": "^1.18.2",
     "axios": "^0.24.0",
+    "easyqrcode-react-native": "^4.0.5",
     "expo": "~43.0.0",
     "expo-asset": "~8.4.3",
     "expo-blur": "~10.0.3",

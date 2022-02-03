@@ -1,13 +1,18 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import colors from '../../constants/colors';
+import { withNavigation } from 'react-navigation';
 
+import colors from '../../constants/colors';
 import images from '../../constants/images';
 import AppText from '../AppText';
 
-export default function Currency() {
+function Currency({ navigation }) {
+  const handlePress = () => {
+    navigation.navigate('Balance');
+  };
+
   return (
-    <Pressable style={styles.container}>
+    <Pressable style={styles.container} onPress={handlePress}>
       <Image source={images.ETH} style={styles.image} />
 
       <View style={styles.balance}>
@@ -21,6 +26,8 @@ export default function Currency() {
     </Pressable>
   );
 }
+
+export default withNavigation(Currency);
 
 const styles = StyleSheet.create({
   balance: {

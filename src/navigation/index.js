@@ -5,6 +5,7 @@ import MainScreen from './MainScreen';
 import TransactionHistoryScreen from '../screens/TransactionHistory';
 import TransactionFilterScreen from '../screens/TransactionFilter';
 import UserProfileScreen from '../screens/UserProfile';
+import BalanceScreen from '../screens/Wallet/Balance';
 // import ExerciseScreen from '../screens/Exercise';
 
 const Navigator = createStackNavigator(
@@ -13,6 +14,7 @@ const Navigator = createStackNavigator(
 
     TransactionFilter: TransactionFilterScreen,
     UserProfile: UserProfileScreen,
+    Balance: BalanceScreen,
   },
   { headerMode: 'none' }
 );

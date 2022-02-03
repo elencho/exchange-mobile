@@ -48,6 +48,8 @@ export default {
 
   // Wallet
   Wallet: require('../assets/images/Wallet/Wallet.png'),
+  Warning: require('../assets/images/Wallet/Warning.png'),
+  QR: require('../assets/images/Wallet/QR.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),
