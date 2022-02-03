@@ -1,12 +1,11 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React, { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import Background from '../components/Background';
 import TopRow from '../components/TransactionHistory/TopRow';
 import Headline from '../components/TransactionHistory/Headline';
-import FilterRow from '../components/TransactionHistory/FilterRow';
-import AppText from '../components/AppText';
-import colors from '../constants/colors';
 import CurrencySwitch from '../components/Wallet/CurrencySwitch';
+import TotalBalance from '../components/Wallet/TotalBalance';
+import BalancesList from '../components/Wallet/BalancesList';
 
 export default function Wallet() {
   const [filter, setFilter] = useState('USD');
@@ -19,6 +18,10 @@ export default function Wallet() {
         <Headline title="My Wallet" />
         <CurrencySwitch filter={filter} setFilter={setFilter} />
       </View>
+
+      <TotalBalance filter={filter} />
+
+      <BalancesList />
     </Background>
   );
 }
