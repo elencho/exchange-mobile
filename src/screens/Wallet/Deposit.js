@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingVertical: 22,
     paddingHorizontal: 16,
-    marginTop: 22,
     marginBottom: 12,
   },
 });

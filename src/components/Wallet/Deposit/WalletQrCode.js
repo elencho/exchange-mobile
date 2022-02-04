@@ -6,12 +6,6 @@ import images from '../../../constants/images';
 import QrCode from '../../QrCode';
 
 function WalletQrCode() {
-  const qrCodeOptions = {
-    width: 100,
-    height: 100,
-    text: 'addr1qxad6k9kx099q8sfn0u8vu65asnsys8v022slx72jyadu742wvsvtpkn',
-  };
-
   const Copy = () => (
     <TouchableOpacity>
       <Image source={images.Copy} />
@@ -21,7 +15,7 @@ function WalletQrCode() {
   return (
     <View style={styles.container}>
       <View style={styles.qr}>
-        <QrCode options={qrCodeOptions} />
+        <QrCode value="addr1qxad6k9kx099q8sfn0u8vu65asnsys8v022slx72jyadu742wvsvtpkn" />
       </View>
 
       <AppText subtext style={styles.secondary}>
@@ -45,8 +39,8 @@ const styles = StyleSheet.create({
     marginTop: 35,
   },
   qr: {
-    width: 105,
-    height: 105,
+    width: 110,
+    height: 110,
     borderRadius: 10,
     backgroundColor: 'white',
     alignItems: 'center',

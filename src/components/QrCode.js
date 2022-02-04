@@ -1,7 +1,6 @@
 import React from 'react';
-import { QRCode, Canvas } from 'easyqrcode-react-native';
+import QRCode from 'react-native-qrcode-svg';
 
-export default function QrCode({ options }) {
-  const generateQRCode = (canvas) => new QRCode(canvas, options);
-  return <Canvas ref={generateQRCode} />;
+export default function QrCode(props) {
+  return <QRCode {...props} />;
 }
