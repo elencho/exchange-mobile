@@ -15,9 +15,8 @@ export default function ModalSearchItem({ name, code, onPress, currentItem }) {
   return (
     <Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
       <Image
-        source={{
-          uri: 'https://cms-assets.tutsplus.com/cdn-cgi/image/width=850/uploads/users/523/posts/32694/final_image/tutorial-preview-large.png',
-        }}
+        // source={{ uri: 'https://example.png'}}
+        source={images.USD}
         style={styles.image}
       />
       <AppText medium style={styles.name}>

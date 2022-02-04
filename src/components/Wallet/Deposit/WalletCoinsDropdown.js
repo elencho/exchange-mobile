@@ -1,13 +1,21 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import images from '../../../constants/images';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
+import { toggleCurrencyModal } from '../../../redux/modals/actions';
 
 export default function WalletCoinsDropdown() {
+  const dispatch = useDispatch();
+
+  const handleDropdown = () => {
+    dispatch(toggleCurrencyModal(true));
+  };
+
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={handleDropdown}>
       <Image source={images.ETH} style={styles.image} />
 
       <View style={styles.balance}>
@@ -24,7 +32,7 @@ export default function WalletCoinsDropdown() {
       <View style={styles.arrow}>
         <Image source={images.Arrow} />
       </View>
-    </View>
+    </Pressable>
   );
 }
 

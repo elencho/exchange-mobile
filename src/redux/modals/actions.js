@@ -18,6 +18,9 @@ export const actionTypes = {
   SMS_AUTH_MODAL: 'SMS_AUTH_MODAL',
   EMAIL_AUTH_MODAL: 'EMAIL_AUTH_MODAL',
   GOOGLE_OTP_MODAL: 'GOOGLE_OTP_MODAL',
+
+  CHOOSE_NETWORK_MODAL: 'CHOOSE_NETWORK_MODAL',
+  GENERATE_REQUEST_MODAL: 'GENERATE_REQUEST_MODAL',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -93,4 +96,14 @@ export const toggleEmailAuthModal = (emailAuthModalVisible) => ({
 export const toggleGoogleOtpModal = (googleOtpModalVisible) => ({
   type: actionTypes.GOOGLE_OTP_MODAL,
   googleOtpModalVisible,
+});
+
+// WALLET
+export const toggleChooseNetworkModal = (chooseNetworkModalVisible) => ({
+  type: actionTypes.CHOOSE_NETWORK_MODAL,
+  chooseNetworkModalVisible,
+});
+export const toggleGenerateRequestModal = (generateRequestModalVisible) => ({
+  type: actionTypes.GENERATE_REQUEST_MODAL,
+  generateRequestModalVisible,
 });

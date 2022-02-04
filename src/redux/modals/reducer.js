@@ -25,6 +25,10 @@ const INITIAL_STATE = {
   smsAuthModalVisible: false,
   emailAuthModalVisible: false,
   googleOtpModalVisible: false,
+
+  // WALLET
+  chooseNetworkModalVisible: false,
+  generateRequestModalVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -47,6 +51,8 @@ export default (state = INITIAL_STATE, action) => {
     smsAuthModalVisible,
     googleOtpModalVisible,
     emailAuthModalVisible,
+    chooseNetworkModalVisible,
+    generateRequestModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -138,6 +144,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         googleOtpModalVisible,
+      };
+    case actionTypes.CHOOSE_NETWORK_MODAL:
+      return {
+        ...state,
+        chooseNetworkModalVisible,
+      };
+    case actionTypes.GENERATE_REQUEST_MODAL:
+      return {
+        ...state,
+        generateRequestModalVisible,
       };
     default:
       return state;

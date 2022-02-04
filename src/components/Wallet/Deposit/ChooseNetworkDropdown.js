@@ -1,13 +1,21 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import images from '../../../constants/images';
 import colors from '../../../constants/colors';
 import AppText from '../../AppText';
+import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 
 export default function ChooseNetworkDropdown() {
+  const dispatch = useDispatch();
+
+  const handleDropdown = () => {
+    dispatch(toggleChooseNetworkModal(true));
+  };
+
   return (
-    <Pressable style={styles.dropdown}>
+    <Pressable style={styles.dropdown} onPress={handleDropdown}>
       <View style={styles.subtext}>
         <AppText body style={styles.secondary}>
           Choose Network

@@ -50,6 +50,7 @@ export default {
   Wallet: require('../assets/images/Wallet/Wallet.png'),
   Warning: require('../assets/images/Wallet/Warning.png'),
   QR: require('../assets/images/Wallet/QR.png'),
+  Binance: require('../assets/images/Wallet/Binance.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),

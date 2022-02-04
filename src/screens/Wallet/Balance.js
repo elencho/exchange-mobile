@@ -26,7 +26,7 @@ export default function Balance({ navigation }) {
 
       <WalletSwitcher filter={filter} setFilter={setFilter} />
 
-      <ScrollView>
+      <ScrollView contentContainerStyle={styles.flex}>
         <Deposit />
       </ScrollView>
     </Background>
@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+  },
+  flex: {
+    flexGrow: 1,
   },
   purpleText: {
     marginHorizontal: 10,
