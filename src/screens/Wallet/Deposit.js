@@ -37,13 +37,13 @@ export default function Deposit() {
         <WalletCoinsDropdown />
         <ChooseNetworkDropdown />
 
+        <ChooseCurrencyModal />
+        <ChooseNetworkModal />
+
         {hasAddress && (
           <>
             <WalletQrCode />
             <XrpMemoWarning />
-
-            <ChooseCurrencyModal />
-            <ChooseNetworkModal />
           </>
         )}
       </View>
