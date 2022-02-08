@@ -11,6 +11,7 @@ import Deposit from './Deposit';
 import Withdrawal from './Withdrawal';
 import ChooseCurrencyModal from '../../components/TransactionFilter/ChooseCurrencyModal';
 import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkModal';
+import Whitelist from './Whitelist';
 
 export default function Balance({ navigation }) {
   const state = useSelector((state) => state.wallet);
