@@ -29,6 +29,7 @@ const INITIAL_STATE = {
   // WALLET
   chooseNetworkModalVisible: false,
   generateRequestModalVisible: false,
+  chooseAddressModalVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -53,6 +54,7 @@ export default (state = INITIAL_STATE, action) => {
     emailAuthModalVisible,
     chooseNetworkModalVisible,
     generateRequestModalVisible,
+    chooseAddressModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -154,6 +156,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         generateRequestModalVisible,
+      };
+    case actionTypes.CHOOSE_ADDRESS_MODAL:
+      return {
+        ...state,
+        chooseAddressModalVisible,
       };
     default:
       return state;

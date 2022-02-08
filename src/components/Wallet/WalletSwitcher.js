@@ -1,22 +1,27 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import colors from '../../constants/colors';
 import AppText from '../AppText';
+import colors from '../../constants/colors';
+import { setWalletTab } from '../../redux/wallet/actions';
 
-export default function WalletSwitcher({ filter, setFilter }) {
+export default function WalletSwitcher() {
+  const dispatch = useDispatch();
+  const tab = useSelector((state) => state.wallet.walletTab);
+
   const handleFilter = (f) => {
-    setFilter(f);
+    dispatch(setWalletTab(f));
   };
 
   const buttonStyle = (f) => {
-    if (f === filter) {
+    if (f === tab) {
       return { backgroundColor: colors.SECONDARY_PURPLE };
     }
   };
 
   const textStyle = (f) => {
-    if (f === filter) {
+    if (f === tab) {
       return { color: colors.PRIMARY_TEXT };
     } else {
       return { color: '#C0C5E0' };

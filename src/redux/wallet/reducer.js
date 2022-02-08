@@ -1,7 +1,7 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
-  walletTab: 'Security',
+  walletTab: 'Withdrawal',
 };
 
 export default (state = INITIAL_STATE, action) => {

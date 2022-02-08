@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import Background from '../../components/Background';
 import Headline from '../../components/TransactionHistory/Headline';
@@ -7,9 +8,13 @@ import PurpleText from '../../components/PurpleText';
 import images from '../../constants/images';
 import WalletSwitcher from '../../components/Wallet/WalletSwitcher';
 import Deposit from './Deposit';
+import Withdrawal from './Withdrawal';
+import ChooseCurrencyModal from '../../components/TransactionFilter/ChooseCurrencyModal';
+import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkModal';
 
 export default function Balance({ navigation }) {
-  const [filter, setFilter] = useState('Deposit');
+  const state = useSelector((state) => state.wallet);
+  const { walletTab } = state;
 
   return (
     <Background>
@@ -24,11 +29,16 @@ export default function Balance({ navigation }) {
 
       <Headline title="My Wallet" />
 
-      <WalletSwitcher filter={filter} setFilter={setFilter} />
+      <WalletSwitcher />
 
       <ScrollView contentContainerStyle={styles.flex}>
-        <Deposit />
+        {walletTab === 'Deposit' && <Deposit />}
+        {walletTab === 'Withdrawal' && <Withdrawal />}
+        {walletTab === 'Whitelist' && <Whitelist />}
       </ScrollView>
+
+      <ChooseCurrencyModal />
+      <ChooseNetworkModal />
     </Background>
   );
 }

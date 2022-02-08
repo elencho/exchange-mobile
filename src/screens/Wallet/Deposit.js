@@ -7,8 +7,6 @@ import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDrop
 import WalletQrCode from '../../components/Wallet/Deposit/WalletQrCode';
 import XrpMemoWarning from '../../components/Wallet/Deposit/XrpMemoWarning';
 import AddressList from '../../components/Wallet/Deposit/AddressList';
-import ChooseCurrencyModal from '../../components/TransactionFilter/ChooseCurrencyModal';
-import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkModal';
 import colors from '../../constants/colors';
 import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock';
 import AppText from '../../components/AppText';
@@ -36,9 +34,6 @@ export default function Deposit() {
       <View style={styles.block}>
         <WalletCoinsDropdown />
         <ChooseNetworkDropdown />
-
-        <ChooseCurrencyModal />
-        <ChooseNetworkModal />
 
         {hasAddress && (
           <>

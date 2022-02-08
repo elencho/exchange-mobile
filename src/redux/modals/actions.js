@@ -21,6 +21,7 @@ export const actionTypes = {
 
   CHOOSE_NETWORK_MODAL: 'CHOOSE_NETWORK_MODAL',
   GENERATE_REQUEST_MODAL: 'GENERATE_REQUEST_MODAL',
+  CHOOSE_ADDRESS_MODAL: 'CHOOSE_ADDRESS_MODAL',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -106,4 +107,8 @@ export const toggleChooseNetworkModal = (chooseNetworkModalVisible) => ({
 export const toggleGenerateRequestModal = (generateRequestModalVisible) => ({
   type: actionTypes.GENERATE_REQUEST_MODAL,
   generateRequestModalVisible,
+});
+export const toggleChooseAddressModal = (chooseAddressModalVisible) => ({
+  type: actionTypes.CHOOSE_ADDRESS_MODAL,
+  chooseAddressModalVisible,
 });
