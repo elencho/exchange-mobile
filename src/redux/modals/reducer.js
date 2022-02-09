@@ -30,6 +30,8 @@ const INITIAL_STATE = {
   chooseNetworkModalVisible: false,
   generateRequestModalVisible: false,
   chooseAddressModalVisible: false,
+  whitelistActionsModalVisible: false,
+  addWhitelistModalVisble: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -55,6 +57,8 @@ export default (state = INITIAL_STATE, action) => {
     chooseNetworkModalVisible,
     generateRequestModalVisible,
     chooseAddressModalVisible,
+    whitelistActionsModalVisible,
+    addWhitelistModalVisble,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -161,6 +165,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         chooseAddressModalVisible,
+      };
+    case actionTypes.WHITELIST_ACTIONS_MODAL:
+      return {
+        ...state,
+        whitelistActionsModalVisible,
+      };
+    case actionTypes.ADD_WHITELIST_MODAL:
+      return {
+        ...state,
+        addWhitelistModalVisble,
       };
     default:
       return state;

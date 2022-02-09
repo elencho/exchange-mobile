@@ -31,7 +31,7 @@ export default function FeeModalRow({
         {hasAmex && (
           <View style={styles.percent}>
             <AppText body style={styles.text}>
-              {amex.toFixed(1)} {amex && '%'}
+              {amex && amex.toFixed(1)} {amex && '%'}
             </AppText>
           </View>
         )}

@@ -22,6 +22,8 @@ export const actionTypes = {
   CHOOSE_NETWORK_MODAL: 'CHOOSE_NETWORK_MODAL',
   GENERATE_REQUEST_MODAL: 'GENERATE_REQUEST_MODAL',
   CHOOSE_ADDRESS_MODAL: 'CHOOSE_ADDRESS_MODAL',
+  WHITELIST_ACTIONS_MODAL: 'WHITELIST_ACTIONS_MODAL',
+  ADD_WHITELIST_MODAL: 'ADD_WHITELIST_MODAL',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -111,4 +113,12 @@ export const toggleGenerateRequestModal = (generateRequestModalVisible) => ({
 export const toggleChooseAddressModal = (chooseAddressModalVisible) => ({
   type: actionTypes.CHOOSE_ADDRESS_MODAL,
   chooseAddressModalVisible,
+});
+export const toggleWhitelistActionsModal = (whitelistActionsModalVisible) => ({
+  type: actionTypes.WHITELIST_ACTIONS_MODAL,
+  whitelistActionsModalVisible,
+});
+export const toggleAddWhitelistModal = (addWhitelistModalVisble) => ({
+  type: actionTypes.ADD_WHITELIST_MODAL,
+  addWhitelistModalVisble,
 });

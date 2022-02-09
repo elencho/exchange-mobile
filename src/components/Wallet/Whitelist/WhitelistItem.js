@@ -1,11 +1,17 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
-import colors from '../../../constants/colors';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import images from '../../../constants/images';
 import AppText from '../../AppText';
+import colors from '../../../constants/colors';
+import { toggleWhitelistActionsModal } from '../../../redux/modals/actions';
 
 export default function WhitelistItem() {
+  const dispatch = useDispatch();
+
+  const openModal = () => dispatch(toggleWhitelistActionsModal(true));
+
   return (
     <View style={styles.container}>
       <View style={styles.flex}>
@@ -17,7 +23,9 @@ export default function WhitelistItem() {
         </AppText>
       </View>
 
-      <Image source={images.Download} />
+      <TouchableOpacity onPress={openModal} style={styles.menu}>
+        <Image source={images.Menu} />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -30,6 +38,12 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
+  },
+  menu: {
+    width: 30,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   primary: {
     color: colors.PRIMARY_TEXT,

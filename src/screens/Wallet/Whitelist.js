@@ -1,13 +1,24 @@
-import React from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useDispatch } from 'react-redux';
+
+import Headline from '../../components/TransactionHistory/Headline';
 import AppText from '../../components/AppText';
 import PurpleText from '../../components/PurpleText';
-
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
+import AddWhitelistModal from '../../components/Wallet/Whitelist/AddWhitelistModal';
+import WhitelistActionsModal from '../../components/Wallet/Whitelist/WhitelistActionsModal';
 import WhitelistItem from '../../components/Wallet/Whitelist/WhitelistItem';
 import colors from '../../constants/colors';
+import images from '../../constants/images';
+import { toggleAddWhitelistModal } from '../../redux/modals/actions';
 
 export default function Whitelist() {
+  const [hasWhitelist, setHasWhitelist] = useState(true);
+  const dispatch = useDispatch();
+
+  const showAddModal = () => dispatch(toggleAddWhitelistModal(true));
+
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.block}>
@@ -17,17 +28,41 @@ export default function Whitelist() {
         </AppText>
       </View>
 
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <WhitelistItem />
-        <WhitelistItem />
-        <WhitelistItem />
-        <WhitelistItem />
-      </ScrollView>
+      <AppText
+        calendarDay
+        style={{ color: 'white', marginBottom: 20 }}
+        onPress={() => setHasWhitelist(!hasWhitelist)}
+      >
+        Press to Toggle "hasWhitelist" (Temporary Solution)
+      </AppText>
 
-      <Pressable style={styles.button}>
-        <PurpleText text="+ " />
-        <PurpleText text="Add Address" />
-      </Pressable>
+      {hasWhitelist ? (
+        <>
+          <ScrollView contentContainerStyle={styles.scrollView}>
+            <WhitelistItem />
+            <WhitelistItem />
+            <WhitelistItem />
+            <WhitelistItem />
+          </ScrollView>
+
+          <Pressable style={styles.button} onPress={showAddModal}>
+            <PurpleText text="+ " />
+            <PurpleText text="Add Address" />
+          </Pressable>
+        </>
+      ) : (
+        <View style={styles.flex}>
+          <Image source={images.List} />
+          <Headline title="My Whitelists" />
+          <AppText body style={styles.description}>
+            Description here about whitelist, here about whitelist
+          </AppText>
+          <PurpleText text="+ Add Address" onPress={showAddModal} />
+        </View>
+      )}
+
+      <WhitelistActionsModal />
+      <AddWhitelistModal />
     </View>
   );
 }
@@ -49,9 +84,23 @@ const styles = StyleSheet.create({
   },
   block: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
+    marginBottom: 12,
     paddingVertical: 22,
     paddingHorizontal: 16,
-    marginBottom: 12,
+  },
+  description: {
+    color: colors.SECONDARY_TEXT,
+    textAlign: 'center',
+    marginHorizontal: '20%',
+    lineHeight: 20,
+    marginBottom: 40,
+  },
+  flex: {
+    flex: 1,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 50,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
