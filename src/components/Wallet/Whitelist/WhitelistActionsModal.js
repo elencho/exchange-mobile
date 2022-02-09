@@ -23,7 +23,7 @@ export default function WhitelistActionsModal() {
       case 'Edit Whitelist':
         return images.Edit;
       case 'Delete Whitelist':
-        return images.Delete;
+        return images.Delete_White;
       case 'Copy Address':
         return images.White_Copy;
       default:

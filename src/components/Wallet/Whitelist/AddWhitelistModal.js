@@ -18,8 +18,16 @@ export default function AddWhitelistModal() {
 
   const children = (
     <>
-      <AppInput style={styles.input} label="Destination Address" />
-      <AppInput style={styles.input} label="Enter Address Name" />
+      <AppInput
+        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        style={styles.input}
+        label="Destination Address"
+      />
+      <AppInput
+        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        style={styles.input}
+        label="Enter Address Name"
+      />
 
       <Pressable style={styles.button}>
         <AppText medium style={styles.buttonText}>

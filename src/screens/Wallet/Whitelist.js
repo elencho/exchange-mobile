@@ -43,6 +43,10 @@ export default function Whitelist() {
             <WhitelistItem />
             <WhitelistItem />
             <WhitelistItem />
+            <WhitelistItem />
+            <WhitelistItem />
+            <WhitelistItem />
+            <WhitelistItem />
           </ScrollView>
 
           <Pressable style={styles.button} onPress={showAddModal}>
@@ -74,10 +78,7 @@ const styles = StyleSheet.create({
     borderStyle: 'dashed',
     height: 45,
     borderColor: colors.SECONDARY_PURPLE,
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+    marginTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',

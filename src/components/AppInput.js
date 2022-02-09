@@ -17,6 +17,7 @@ const AppInput = ({
   right = null,
   style,
   value,
+  labelBackgroundColor = colors.PRIMARY_BACKGROUND,
   ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -53,6 +54,7 @@ const AppInput = ({
             style={[
               styles.labelContainer,
               {
+                backgroundColor: labelBackgroundColor,
                 transform: [
                   {
                     scale: focusAnim.interpolate({
@@ -114,7 +116,6 @@ const styles = StyleSheet.create({
   labelContainer: {
     position: 'absolute',
     paddingHorizontal: 8,
-    backgroundColor: colors.PRIMARY_BACKGROUND,
     height: 18,
   },
 });

@@ -12,6 +12,7 @@ import Withdrawal from './Withdrawal';
 import ChooseCurrencyModal from '../../components/TransactionFilter/ChooseCurrencyModal';
 import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkModal';
 import Whitelist from './Whitelist';
+import ManageCards from './ManageCards';
 
 export default function Balance({ navigation }) {
   const state = useSelector((state) => state.wallet);
@@ -36,6 +37,7 @@ export default function Balance({ navigation }) {
         {walletTab === 'Deposit' && <Deposit />}
         {walletTab === 'Withdrawal' && <Withdrawal />}
         {walletTab === 'Whitelist' && <Whitelist />}
+        {walletTab === 'Manage Cards' && <ManageCards />}
       </ScrollView>
 
       <ChooseCurrencyModal />

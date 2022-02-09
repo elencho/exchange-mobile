@@ -53,9 +53,11 @@ export default {
   Binance: require('../assets/images/Wallet/Binance.png'),
   Menu: require('../assets/images/Wallet/Menu.png'),
   Edit: require('../assets/images/Wallet/Edit.png'),
+  Delete_White: require('../assets/images/Wallet/Delete_White.png'),
   Delete: require('../assets/images/Wallet/Delete.png'),
   White_Copy: require('../assets/images/Wallet/White_Copy.png'),
   List: require('../assets/images/Wallet/List.png'),
+  Card: require('../assets/images/Wallet/Card.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),

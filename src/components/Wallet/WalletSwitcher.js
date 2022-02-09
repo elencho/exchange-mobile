@@ -30,7 +30,7 @@ export default function WalletSwitcher() {
 
   return (
     <View style={styles.row}>
-      {['Deposit', 'Withdrawal', 'Whitelist'].map((f, i) => (
+      {['Deposit', 'Withdrawal', 'Whitelist', 'Manage Cards'].map((f, i) => (
         <Pressable
           key={f}
           style={[styles.button, buttonStyle(f)]}
@@ -47,7 +47,7 @@ export default function WalletSwitcher() {
 
 const styles = StyleSheet.create({
   button: {
-    width: '30%',
+    width: '20%',
     height: 35,
     borderRadius: 40,
     alignItems: 'center',
