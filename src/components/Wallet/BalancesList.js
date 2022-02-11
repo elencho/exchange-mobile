@@ -65,13 +65,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   radio: {
-    width: 28,
-    height: 28,
-    borderRadius: 15,
+    width: 42,
+    height: 42,
+    borderRadius: 21,
     borderWidth: 1,
     borderColor: colors.SECONDARY_TEXT,
     justifyContent: 'center',
     alignItems: 'center',
+    transform: [{ scale: 0.75 }],
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
