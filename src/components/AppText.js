@@ -38,12 +38,19 @@ export default function AppText({
 
   const { t, i18n } = useTranslation();
 
+  const text = () => {
+    if (typeof children === 'string') {
+      return t(children);
+    }
+    return children;
+  };
+
   return (
     <Text
       style={[style, { fontFamily: fontCond(), fontSize: sizeCond() }]}
       {...props}
     >
-      {t(children)}
+      {text()}
     </Text>
   );
 }

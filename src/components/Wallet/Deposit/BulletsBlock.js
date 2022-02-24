@@ -25,11 +25,23 @@ export default function BulletsBlock() {
       {bullets.map((b) => (
         <Bullet key={b} b={b} />
       ))}
-      <View style={styles.row}>
+
+      <View
+        style={[
+          styles.row,
+          {
+            marginBottom: 0,
+            flexWrap: 'wrap',
+          },
+        ]}
+      >
         <View style={styles.bullet} />
-        <AppText subtext style={[styles.subtext, { marginBottom: 0 }]}>
-          Contact <PurpleText text="support@cryptal.com" /> to request a deposit
-          address
+        <AppText subtext style={styles.subtext}>
+          Contact
+        </AppText>
+        <PurpleText style={styles.purpleText} text="support@cryptal.com" />
+        <AppText subtext style={[styles.subtext, { marginLeft: 20 }]}>
+          to request a deposit address
         </AppText>
       </View>
     </View>
@@ -49,13 +61,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#838BB2',
     marginTop: 5,
   },
+  purpleText: {
+    transform: [{ scale: 0.9 }, { translateY: -1 }],
+  },
   row: {
     flexDirection: 'row',
+    marginBottom: 24,
   },
   subtext: {
     color: '#838BB2',
     lineHeight: 15,
     marginLeft: 15,
-    marginBottom: 24,
   },
 });
