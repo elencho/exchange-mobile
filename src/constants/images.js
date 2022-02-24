@@ -58,6 +58,7 @@ export default {
   White_Copy: require('../assets/images/Wallet/White_Copy.png'),
   List: require('../assets/images/Wallet/List.png'),
   Card: require('../assets/images/Wallet/Card.png'),
+  Address_List: require('../assets/images/Wallet/Address_List.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),

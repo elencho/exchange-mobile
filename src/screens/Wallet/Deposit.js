@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
@@ -12,9 +12,13 @@ import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock';
 import AppText from '../../components/AppText';
 import GenerateRequestModal from '../../components/Wallet/Deposit/GenerateRequestModal';
 import { toggleGenerateRequestModal } from '../../redux/modals/actions';
+import images from '../../constants/images';
+import Headline from '../../components/TransactionHistory/Headline';
+import PurpleText from '../../components/PurpleText';
 
 export default function Deposit() {
   const [hasAddress, setHasAddress] = useState(false);
+  const [isEthereum, setIsEthereum] = useState(false);
   const dispatch = useDispatch();
 
   const generate = () => {
@@ -29,6 +33,13 @@ export default function Deposit() {
         onPress={() => setHasAddress(!hasAddress)}
       >
         Press to Toggle "hasAddress" (Temporary Solution)
+      </AppText>
+      <AppText
+        calendarDay
+        style={{ color: 'white', marginBottom: 20 }}
+        onPress={() => setIsEthereum(!isEthereum)}
+      >
+        Press to Toggle "isEthereum" (Temporary Solution)
       </AppText>
 
       <View style={styles.block}>
@@ -46,16 +57,29 @@ export default function Deposit() {
       {hasAddress && <AddressList />}
 
       {!hasAddress && (
-        <View style={styles.flex}>
-          <BulletsBlock />
-          <Pressable style={styles.button} onPress={generate}>
-            <AppText medium style={styles.buttonText}>
-              Generate
-            </AppText>
-          </Pressable>
+        <>
+          {isEthereum ? (
+            <View style={styles.flex}>
+              <BulletsBlock />
+              <Pressable style={styles.button} onPress={generate}>
+                <AppText medium style={styles.buttonText}>
+                  Generate
+                </AppText>
+              </Pressable>
 
-          <GenerateRequestModal />
-        </View>
+              <GenerateRequestModal />
+            </View>
+          ) : (
+            <View style={styles.flexBlock}>
+              <Image source={images.Address_List} />
+              <Headline title="Deposit Address" />
+              <AppText body style={styles.description}>
+                Unused wallet addresses may be deleted after 20 days
+              </AppText>
+              <PurpleText text="+ Add Address" />
+            </View>
+          )}
+        </>
       )}
     </>
   );
@@ -68,9 +92,23 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 12,
   },
+  description: {
+    color: colors.SECONDARY_TEXT,
+    textAlign: 'center',
+    marginHorizontal: '20%',
+    lineHeight: 20,
+    marginBottom: 40,
+  },
   flex: {
     flex: 1,
     justifyContent: 'space-between',
+  },
+  flexBlock: {
+    flex: 1,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 50,
   },
   button: {
     backgroundColor: colors.SECONDARY_PURPLE,
