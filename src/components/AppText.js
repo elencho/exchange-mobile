@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 export default function AppText({
   children,
@@ -35,12 +36,14 @@ export default function AppText({
     }
   };
 
+  const { t, i18n } = useTranslation();
+
   return (
     <Text
       style={[style, { fontFamily: fontCond(), fontSize: sizeCond() }]}
       {...props}
     >
-      {children}
+      {t(children)}
     </Text>
   );
 }

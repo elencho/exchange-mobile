@@ -13,6 +13,7 @@ import mySaga from './src/redux/sagas';
 import Navigator from './src/navigation';
 import images from './src/constants/images';
 import colors from './src/constants/colors';
+import './src/utils/i18n';
 
 const sagaMiddleware = createSagaMiddleware();
 
