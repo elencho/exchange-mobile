@@ -11,10 +11,14 @@ import colors from '../../constants/colors';
 import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock';
 import AppText from '../../components/AppText';
 import GenerateRequestModal from '../../components/Wallet/Deposit/GenerateRequestModal';
-import { toggleGenerateRequestModal } from '../../redux/modals/actions';
+import {
+  toggleAddDepositAddressModal,
+  toggleGenerateRequestModal,
+} from '../../redux/modals/actions';
 import images from '../../constants/images';
 import Headline from '../../components/TransactionHistory/Headline';
 import PurpleText from '../../components/PurpleText';
+import AddDepositAddressModal from '../../components/Wallet/Deposit/AddDepositAddressModal';
 
 export default function Deposit() {
   const [hasAddress, setHasAddress] = useState(false);
@@ -23,6 +27,9 @@ export default function Deposit() {
 
   const generate = () => {
     dispatch(toggleGenerateRequestModal(true));
+  };
+  const addAddress = () => {
+    dispatch(toggleAddDepositAddressModal(true));
   };
 
   return (
@@ -76,7 +83,8 @@ export default function Deposit() {
               <AppText body style={styles.description}>
                 Unused wallet addresses may be deleted after 20 days
               </AppText>
-              <PurpleText text="+ Add Address" />
+              <PurpleText text="+ Add Address" onPress={addAddress} />
+              <AddDepositAddressModal />
             </View>
           )}
         </>
