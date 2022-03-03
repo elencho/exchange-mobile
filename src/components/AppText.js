@@ -41,8 +41,9 @@ export default function AppText({
   const text = () => {
     if (typeof children === 'string') {
       return t(children);
+    } else {
+      return children;
     }
-    return children;
   };
 
   return (

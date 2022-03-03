@@ -23,7 +23,7 @@ export default function ManageCards() {
         style={{ color: 'white', marginBottom: 20 }}
         onPress={() => setHasCards(!hasCards)}
       >
-        Press to Toggle "hasWhitelist" (Temporary Solution)
+        Toggle "hasCards"
       </AppText>
 
       {hasCards ? (

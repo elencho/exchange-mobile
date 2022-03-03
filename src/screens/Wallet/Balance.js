@@ -1,5 +1,12 @@
 import React from 'react';
-import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Background from '../../components/Background';
@@ -33,12 +40,18 @@ export default function Balance({ navigation }) {
 
       <WalletSwitcher />
 
-      <ScrollView contentContainerStyle={styles.flex}>
-        {walletTab === 'Deposit' && <Deposit />}
-        {walletTab === 'Withdrawal' && <Withdrawal />}
-        {walletTab === 'Whitelist' && <Whitelist />}
-        {walletTab === 'Manage Cards' && <ManageCards />}
-      </ScrollView>
+      <KeyboardAvoidingView
+        style={styles.flex}
+        behavior={Platform.select({ android: undefined, ios: 'padding' })}
+        keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
+      >
+        <ScrollView contentContainerStyle={styles.flexGrow}>
+          {walletTab === 'Deposit' && <Deposit />}
+          {walletTab === 'Withdrawal' && <Withdrawal />}
+          {walletTab === 'Whitelist' && <Whitelist />}
+          {walletTab === 'Manage Cards' && <ManageCards />}
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       <ChooseCurrencyModal />
       <ChooseNetworkModal />
@@ -55,8 +68,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  flex: {
+  flexGrow: {
     flexGrow: 1,
+  },
+  flex: {
+    flex: 1,
   },
   purpleText: {
     marginHorizontal: 10,

@@ -59,6 +59,8 @@ export default {
   List: require('../assets/images/Wallet/List.png'),
   Card: require('../assets/images/Wallet/Card.png'),
   Address_List: require('../assets/images/Wallet/Address_List.png'),
+  Swift: require('../assets/images/Wallet/Swift.png'),
+  Time: require('../assets/images/Wallet/Time.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),
