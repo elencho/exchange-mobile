@@ -38,7 +38,7 @@ export default function CountriesModal({
   const hide = () => {
     dispatch(toggleCountriesModal(false));
     dispatch(saveCountries(countriesConstant));
-    reset();
+    reset && reset();
   };
 
   const currentItem = () => {

@@ -4,11 +4,16 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
-import { togglePhoneNumberModal } from '../../redux/modals/actions';
+import images from '../../constants/images';
+import {
+  toggleCountriesModal,
+  togglePhoneNumberModal,
+} from '../../redux/modals/actions';
 import {
   sendVerificationCode,
   updatePhoneNumber,
@@ -17,17 +22,18 @@ import AppInput from '../AppInput';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
+import CountriesModal from './CountriesModal';
 
 export default function PhoneNumberModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     modals: { phoneNumberModalVisible },
+    profile: { userInfo, countries },
   } = state;
 
   const initialState = {
     phoneNumber: '',
-    phoneCountry: 'GEO',
     verificationNumber: '',
   };
 
@@ -70,17 +76,33 @@ export default function PhoneNumberModal() {
   };
 
   const handleSend = () => {
-    const { phoneNumber, phoneCountry } = phoneNumberState;
-    dispatch(sendVerificationCode(phoneNumber, phoneCountry));
+    const { phoneNumber } = phoneNumberState;
+    dispatch(sendVerificationCode(phoneNumber, userInfo.countryCode));
   };
 
   const handleSave = () => {
-    const { phoneNumber, phoneCountry, verificationNumber } = phoneNumberState;
-    dispatch(updatePhoneNumber(phoneNumber, phoneCountry, verificationNumber));
+    const { phoneNumber, verificationNumber } = phoneNumberState;
+    dispatch(
+      updatePhoneNumber(phoneNumber, userInfo.countryCode, verificationNumber)
+    );
     hide();
   };
 
+  const handleCountries = () => {
+    dispatch(toggleCountriesModal(true));
+  };
+
   const send = <PurpleText text="Send" onPress={handleSend} />;
+
+  const phoneCountry = () => {
+    let phoneCountry;
+    countries.forEach((c) => {
+      if (userInfo.country === c.name) {
+        phoneCountry = c.phoneCode;
+      }
+    });
+    return `${userInfo.country} (${phoneCountry})`;
+  };
 
   const children = () => {
     const { phoneNumber, verificationNumber } = phoneNumberState;
@@ -88,6 +110,17 @@ export default function PhoneNumberModal() {
       <>
         <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
           <TouchableOpacity activeOpacity={0.99}>
+            <Pressable
+              style={styles.dropdown}
+              onPress={() => handleCountries()}
+            >
+              <Image source={images.GEO} />
+              <AppText medium style={styles.dropdownText}>
+                {phoneCountry()}
+              </AppText>
+              <Image source={images.Arrow} />
+            </Pressable>
+
             <AppInput
               style={styles.inputContainer}
               placeholder="Phone Number"
@@ -109,6 +142,8 @@ export default function PhoneNumberModal() {
             Save
           </AppText>
         </Pressable>
+
+        <CountriesModal countryDrop={true} />
       </>
     );
   };
@@ -134,6 +169,21 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: colors.PRIMARY_TEXT,
+  },
+  dropdownText: {
+    flex: 1,
+    color: colors.PRIMARY_TEXT,
+    marginLeft: 12,
+  },
+  dropdown: {
+    borderWidth: 1,
+    borderRadius: 4,
+    height: 45,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    borderColor: '#42475D',
+    paddingHorizontal: 15,
   },
   flex: {
     flex: 1,

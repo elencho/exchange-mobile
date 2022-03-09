@@ -93,6 +93,7 @@ export const updatePassword = async (
 };
 
 export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {
+  console.log(phoneNumber, phoneCountry);
   try {
     await axios({
       method: 'POST',
