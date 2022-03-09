@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Background from '../../components/Background';
 import TopRow from '../../components/TransactionHistory/TopRow';
@@ -8,18 +8,16 @@ import TotalBalance from '../../components/Wallet/TotalBalance';
 import BalancesList from '../../components/Wallet/BalancesList';
 
 export default function Wallet() {
-  const [filter, setFilter] = useState('USD');
-
   return (
     <Background>
       <TopRow />
 
       <View style={styles.headRow}>
         <Headline title="My Wallet" />
-        <CurrencySwitch filter={filter} setFilter={setFilter} />
+        <CurrencySwitch />
       </View>
 
-      <TotalBalance filter={filter} />
+      <TotalBalance />
 
       <BalancesList />
     </Background>

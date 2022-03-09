@@ -1,14 +1,23 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import AppText from '../AppText';
 
-export default function TotalBalance({ filter }) {
+export default function TotalBalance() {
+  const filter = useSelector((state) => state.wallet.usdBtcSwitch);
+  const balance = useSelector((state) => state.trade.balance);
+
+  const { totalValueBTC, totalValueUSD } = balance;
+
   const primary = () =>
-    filter === 'USD' ? 'Total: 20000 USD' : 'Total: 0.5 BTC';
-  const secondary = () => (filter === 'USD' ? '0.5 BTC' : '20000 USD');
+    filter === 'USD'
+      ? `Total: ${totalValueUSD} USD`
+      : `Total: ${totalValueBTC} BTC`;
+  const secondary = () =>
+    filter === 'USD' ? `${totalValueBTC} BTC` : `${totalValueUSD} USD`;
 
   return (
     <View style={styles.container}>

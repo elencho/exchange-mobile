@@ -1,14 +1,26 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import AppText from '../AppText';
 
-function Currency({ navigation }) {
+function Currency({ navigation, code, total, available, valueUSD, valueBTC }) {
+  const filter = useSelector((state) => state.wallet.usdBtcSwitch);
+
   const handlePress = () => {
     navigation.navigate('Balance');
+  };
+
+  const usdBitcoin = () => {
+    if (filter === 'USD') {
+      return valueUSD;
+    }
+    if (filter === 'BTC') {
+      return valueBTC;
+    }
   };
 
   return (
@@ -17,10 +29,10 @@ function Currency({ navigation }) {
 
       <View style={styles.balance}>
         <AppText calendarDay medium style={styles.primary}>
-          20000 USD
+          {available} {code}
         </AppText>
         <AppText body style={styles.secondary}>
-          Total: 0.0000008 = 30000.00 USD
+          Total: {total} = {usdBitcoin()} {filter}
         </AppText>
       </View>
     </Pressable>

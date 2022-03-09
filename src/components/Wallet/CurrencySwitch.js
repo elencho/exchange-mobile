@@ -1,10 +1,19 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
+import { setUsdBtcSwitch } from '../../redux/wallet/actions';
 
-export default function CurrencySwitch({ filter, setFilter }) {
+export default function CurrencySwitch() {
+  const dispatch = useDispatch();
+  const filter = useSelector((state) => state.wallet.usdBtcSwitch);
+
+  const setFilter = (f) => {
+    dispatch(setUsdBtcSwitch(f));
+  };
+
   return (
     <View style={styles.row}>
       {['USD', 'BTC'].map((f, i) => (

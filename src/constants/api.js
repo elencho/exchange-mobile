@@ -1,62 +1,62 @@
 export const bearer =
-  'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIyYWFJQ0Y2Ny0tbndKZVRrRFNKUXo3Uk1KNERzUXFiVHR1c0Z0SFNnaFZnIn0.eyJqdGkiOiJjYmU0Nzk4Yy01YmM0LTQ0MGMtYTVjMi1iYjJmZDYyMDc1ZWYiLCJleHAiOjE2NTMwNTE5OTUsIm5iZiI6MCwiaWF0IjoxNjQ0NDExOTk1LCJpc3MiOiJodHRwOi8vMTAuMTAuNS40OjgwODEvYXV0aC9yZWFsbXMvR0VYIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6ImE3Yjk1ZGM2LTlhYTgtNGYzYS1hZjdkLTZlNDYxMDczNGEwNSIsInR5cCI6IkJlYXJlciIsImF6cCI6ImdleC1zZXJ2aWNlLXB1YmxpYyIsImF1dGhfdGltZSI6MTY0NDQxMTkzNywic2Vzc2lvbl9zdGF0ZSI6ImNiY2E1ZGRiLWY1ZjYtNDEyMy1hYjVjLWYxN2Q0ZWYzYWUxYSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ2ZXJpZmllZC1jdXN0b21lciIsImFkbWluIiwidW1hX2F1dGhvcml6YXRpb24iLCJjdXN0b21lciJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc0xpbWl0ZWRUb2tlbiI6dHJ1ZSwiUm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ2ZXJpZmllZC1jdXN0b21lciIsImFkbWluIiwidW1hX2F1dGhvcml6YXRpb24iLCJjdXN0b21lciJdLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJpbWV0cmV2QGNyeXB0eC5jb20iLCJvdHBUeXBlIjoiVE9UUCIsImVtYWlsIjoiaW1ldHJldkBjcnlwdHguY29tIn0.DxjL4gEdtx3hy2lsY7AklXzTTEyG9N7jCcq9Oj6LwTPkRKSq_xKiYnlzKnqyvnP3cuV0ER4jNByD7-uaYOr_ELFqwal4jj35yFcVNRqfBfFEXFprqY2yvjVlAIxM-qGSNYDzbU4Es1P7i31BzCT44GPqCwGwcbJdxLlz_Xsyb0JUCrSEaxLJimy-vrKAXL5opwdRj61XvUARu-PME1jSzX1Ev9T5gyCJ2Kh1Wj2DykBRUUNAScINteHokzwZ2bWxfR5yd_NDi_5xjXMDMHqsNb3eq6Z6z9EmIMOqdNiJhkwObl399Rz1D6xSufOkjYTOnfr8uCeHJC1fDCZq52Rypg';
+  'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIyYWFJQ0Y2Ny0tbndKZVRrRFNKUXo3Uk1KNERzUXFiVHR1c0Z0SFNnaFZnIn0.eyJqdGkiOiJmNWJiZGM5ZS0xN2Y2LTQ1YjQtOGQ0Mi02MTY1ZmJlYWU1YTMiLCJleHAiOjE2NTUyOTA4NTgsIm5iZiI6MCwiaWF0IjoxNjQ2NjUwODU4LCJpc3MiOiJodHRwOi8vdGVzdC1hdXRoLWNyeXB0YWwuY3J5cHR4LmxvYy9hdXRoL3JlYWxtcy9HRVgiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMWFjNTQ2MDEtNmFiNy00OTI2LWE3NmMtM2M5MmY1OTdlNjIyIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiZ2V4LXNlcnZpY2UtcHVibGljIiwiYXV0aF90aW1lIjoxNjQ2NjUwNTYyLCJzZXNzaW9uX3N0YXRlIjoiMzdjNTg1NmEtNzQzNi00NWZmLWI4ZDQtMjE0MjVjNTQ3MTc0IiwiYWNyIjoiMCIsImFsbG93ZWQtb3JpZ2lucyI6WyIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJ1c2VyLXJlZ2lzdHJhdGlvbi12aWV3Iiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImN1c3RvbWVyIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImlzTGltaXRlZFRva2VuIjp0cnVlLCJSb2xlcyI6WyJ1c2VyLXJlZ2lzdHJhdGlvbi12aWV3Iiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImN1c3RvbWVyIl0sInByZWZlcnJlZF91c2VybmFtZSI6Im1ldHJvMjFAbWFpbGluYXRvci5jb20iLCJvdHBUeXBlIjoiU01TIiwiZW1haWwiOiJtZXRybzIxQG1haWxpbmF0b3IuY29tIn0.gL979DFTD8tX-0H4du4cuHercJN5rTx8TGeCSSK4Dlw3RbOL5O8ENQiEIlCSiKjc_hmkJDdwFdobMRtUyEL9AOFGVK-WbYsfgn82ZMS2iXRBsfWGyYqekTWaz10lnTyECPians33-CKL8CwE8gqgCHZ7NwDtG1MCOyZTKds-X50VDjHhFEpiU2v-fTuE-HFKBbU3lSDKQ80g5eQ7ipbMpg_-Vr4wJy34XWUlT4qOEwvu-SUF_tm1FNscUtrPK7kdFLf_vPGqQz-LVlmgMD27ujCgIThi2dbSbRC--xDZCFbgjbxBl01X1JxQ8WxJTBSEMjNp-QdLMLG-0IHVlDcSOg';
 
 export const TRANSACTIONS_URL =
-  'http://10.10.5.4:8080/exchange/api/v1/mobile/private/account/transactions';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/transactions';
 
 export const CURRENCIES_URL =
-  'http://10.10.5.4:8080/exchange/api/v1/mobile/public/currencies';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/public/currencies';
 
 export const COUNTRIES_URL =
-  'http://10.10.5.4:8080/exchange/api/v1/public/countries';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/public/countries';
 
 export const TRADES_URL =
-  'http://10.10.5.4:8080/exchange/api/v1/mobile/private/simpleTrade/trades';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/simpleTrade/trades';
 
 export const OFFERS_URL =
-  'http://10.10.5.4:8080/exchange/api/v1/mobile/private/simpleTrade/offers';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/simpleTrade/offers';
 
 export const BALANCE_URL =
-  'http://10.10.5.4:8080/exchange/api/v1/mobile/private/account/balance';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/balance';
 
 export const CARDS_URL =
-  'http://10.10.5.4:8080/exchange/api/v1/mobile/private/account/cards';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/cards';
 
 export const CALCULATE_FEE_URL =
-  'http://10.10.5.4:8080/exchange/api/v1/private/account/calculateFee';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/private/account/calculateFee';
 
 export const USER_INFO_URL =
-  'http://10.10.5.4:8080/exchange/api/v1/private/account/userInfo';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/private/account/userInfo';
 
 export const SUBSCRIBE_EMAIL_URL =
-  'http://10.10.5.4:8080/exchange/api/v1/private/account/subscribeToEmailUpdates';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/private/account/subscribeToEmailUpdates';
 
 export const UNSUBSCRIBE_EMAIL_URL =
-  'http://10.10.5.4:8080/exchange/api/v1/private/account/unsubscribeFromEmailUpdates';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/private/account/unsubscribeFromEmailUpdates';
 
 export const UPDATE_USER_DATA =
-  'http://10.10.5.4:8080/exchange/api/v1/private/users/updateUserData';
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/private/users/updateUserData';
 
 export const UPDATE_PASSWORD =
-  'http://10.10.5.4:8081/auth/realms/GEX/GEX-resource/updatePassword';
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/updatePassword';
 
 export const VERIFY_PHONE_NUMBER =
-  'http://10.10.5.4:8081/auth/realms/GEX/GEX-resource/verifyPhoneNumber';
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/verifyPhoneNumber';
 
 export const UPDATE_PHONE_NUMBER =
-  'http://10.10.5.4:8081/auth/realms/GEX/GEX-resource/updatePhoneNumber';
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/updatePhoneNumber';
 
 export const SEND_OTP =
-  'http://10.10.5.4:8081/auth/realms/GEX/GEX-resource/sendOTP';
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/sendOTP';
 
 export const OTP_CHANGE_TOKEN =
-  'http://10.10.5.4:8081/auth/realms/GEX/GEX-resource/getOTPChangeParams';
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/getOTPChangeParams';
 
 export const EMAIL_VERIFICATION =
-  'http://10.10.5.4:8081/auth/realms/GEX/GEX-resource/sendEmailVerification';
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/sendEmailVerification';
 
 export const ACTIVATE_EMAIL_OTP =
-  'http://10.10.5.4:8081/auth/realms/GEX/GEX-resource/enableEmailTwoFA';
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/enableEmailTwoFA';
 
 export const ACTIVATE_GOOGLE_OTP =
-  'http://10.10.5.4:8081/auth/realms/GEX/GEX-resource/enableTotpTwoFA';
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/enableTotpTwoFA';

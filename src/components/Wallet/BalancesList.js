@@ -1,12 +1,39 @@
-import React from 'react';
-import { Image, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
+import { fetchOffers } from '../../redux/trade/actions';
 import AppText from '../AppText';
 import Currency from './Currency';
 
 export default function BalancesList() {
+  const dispatch = useDispatch();
+  const balances = useSelector((state) => state.trade.balance.balances);
+
+  useEffect(() => {
+    dispatch(fetchOffers());
+  }, []);
+
+  const renderCurrency = ({ item }) => (
+    <Currency
+      key={item.currencyName}
+      code={item.currencyCode}
+      available={item.available}
+      total={item.total}
+      valueBTC={item.valueBTC}
+      valueUSD={item.valueUSD}
+    />
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -28,21 +55,24 @@ export default function BalancesList() {
         </AppText>
       </View>
 
-      <Currency />
-      <Currency />
-      <Currency />
-      <Currency />
-      <Currency />
+      {balances && (
+        <FlatList
+          data={balances}
+          renderItem={renderCurrency}
+          keyExtractor={(item) => item.currencyCode}
+        />
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 30,
+    paddingTop: 30,
     paddingHorizontal: 20,
     backgroundColor: colors.SECONDARY_BACKGROUND,
     marginVertical: 10,
+    flex: 1,
   },
   hide: {
     flexDirection: 'row',
