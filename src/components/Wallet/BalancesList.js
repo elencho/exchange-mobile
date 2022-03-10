@@ -27,6 +27,7 @@ export default function BalancesList() {
     <Currency
       key={item.currencyName}
       code={item.currencyCode}
+      name={item.currencyName}
       available={item.available}
       total={item.total}
       valueBTC={item.valueBTC}

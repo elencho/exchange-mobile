@@ -1,12 +1,14 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
+import { toggleChooseBankModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
+import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 
 const InfoRow = ({ title, text }) => {
-  console.log(title);
   return (
     <View style={styles.infoRow}>
       <AppText subtext style={styles.secondary}>
@@ -21,13 +23,31 @@ const InfoRow = ({ title, text }) => {
 };
 
 export default function BankInfo() {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.trade);
+  const { depositProvider, depositProviders } = state;
+
+  const handleBanks = () => {
+    dispatch(toggleChooseBankModal(true));
+  };
+
+  const bankName = () => {
+    let bankName;
+    depositProviders.forEach((d) => {
+      if (depositProvider === d.provider) {
+        bankName = d.displayName;
+      }
+    });
+    return bankName;
+  };
+
   return (
     <>
       <AppText medium style={styles.title}>
         Bank Info
       </AppText>
 
-      <Pressable style={styles.dropdown}>
+      <Pressable style={styles.dropdown} onPress={handleBanks}>
         <View style={styles.subtext}>
           <AppText subtext style={styles.secondary}>
             Bank
@@ -36,7 +56,7 @@ export default function BankInfo() {
 
         <Image source={images.TBC} style={styles.image} />
         <AppText medium style={styles.dropdownText}>
-          TBC Bank
+          {bankName()}
         </AppText>
         <View style={styles.line} />
         <Image source={images.Arrow} />
@@ -58,6 +78,8 @@ export default function BankInfo() {
       <InfoRow title="Country" text="USA" />
       <InfoRow title="SWIFT Code" text="CITIUS33" />
       <InfoRow title="Address" text="399 PARK AVENUE, NYC, NY" />
+
+      <ChooseBankModal />
     </>
   );
 }
@@ -88,9 +110,10 @@ const styles = StyleSheet.create({
     marginVertical: 7,
   },
   line: {
-    width: 5,
+    width: 1,
     backgroundColor: '#3B4160',
-    marginHorizontal: 10,
+    marginHorizontal: 15,
+    height: 25,
   },
   marginVertical: {
     marginVertical: 20,

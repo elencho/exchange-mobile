@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import images from '../../../constants/images';
 import AppText from '../../AppText';
@@ -9,9 +9,39 @@ import { toggleCurrencyModal } from '../../../redux/modals/actions';
 
 export default function WalletCoinsDropdown() {
   const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const {
+    transactions: { code },
+    wallet: { usdBtcSwitch },
+    trade: {
+      balance: { balances },
+    },
+  } = state;
 
   const handleDropdown = () => {
     dispatch(toggleCurrencyModal(true));
+  };
+
+  const available = () => {
+    let available;
+    balances.forEach((b) => {
+      if (b.currencyCode === code) {
+        available = b.available;
+      }
+    });
+    return available;
+  };
+
+  const total = () => {
+    let total;
+    let value;
+    balances.forEach((b) => {
+      if (b.currencyCode === code) {
+        total = b.total;
+        value = usdBtcSwitch === 'USD' ? b.valueUSD : b.valueBTC;
+      }
+    });
+    return `Total: ${total} = ${value} ${usdBtcSwitch}`;
   };
 
   return (
@@ -20,10 +50,10 @@ export default function WalletCoinsDropdown() {
 
       <View style={styles.balance}>
         <AppText body medium style={styles.primary}>
-          0.5 BTC
+          {available()} {code}
         </AppText>
         <AppText subtext style={styles.secondary}>
-          Total: 0.5 = 20000 USD
+          {total()}
         </AppText>
       </View>
 

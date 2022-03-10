@@ -1,17 +1,29 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
+import { chooseCurrency, setAbbr } from '../../redux/transactions/actions';
 import AppText from '../AppText';
 
-function Currency({ navigation, code, total, available, valueUSD, valueBTC }) {
+function Currency({
+  navigation,
+  code,
+  name,
+  total,
+  available,
+  valueUSD,
+  valueBTC,
+}) {
+  const dispatch = useDispatch();
   const filter = useSelector((state) => state.wallet.usdBtcSwitch);
 
   const handlePress = () => {
     navigation.navigate('Balance');
+    dispatch(chooseCurrency(name));
+    dispatch(setAbbr(code));
   };
 
   const usdBitcoin = () => {
