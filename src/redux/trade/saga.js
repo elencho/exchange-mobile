@@ -66,11 +66,11 @@ function* depositProvidersSaga() {
   const fiat = yield select((state) => state.trade.fiat);
   yield call(() => {
     balance.balances.forEach((b) => {
-      if (b.depositTypes.includes('ECOMMERCE')) {
-        providers = b.ecommerceDepositProviders;
+      if (b.depositMethods.ECOMMERCE) {
+        providers = b.depositMethods.ECOMMERCE;
 
         if (b.currencyCode === fiat) {
-          provider = b.ecommerceDepositProviders[0].provider;
+          provider = b.depositMethods.ECOMMERCE[0];
         }
       }
     });
