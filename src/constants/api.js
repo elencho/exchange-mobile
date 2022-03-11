@@ -60,3 +60,6 @@ export const ACTIVATE_EMAIL_OTP =
 
 export const ACTIVATE_GOOGLE_OTP =
   'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/enableTotpTwoFA';
+
+export const WIRE_DEPOSIT =
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/wire/deposit';

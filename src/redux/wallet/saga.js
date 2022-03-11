@@ -1,12 +1,15 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { actionTypes } from '../profile/actions';
 
-function* fetchCountriesSaga() {
-  // const countries = yield call(fetchCountries);
-  // yield put(saveCountries(countries));
-  // yield put(saveCountriesConstant(countries));
+import { fetchWireDeposit } from '../../utils/walletUtils';
+import { actionTypes, saveWireDepositInfo } from '../wallet/actions';
+// import { wireDepositParams } from './selectors';
+
+function* wireDepositSaga() {
+  const currency = yield select((state) => state.transactions.code);
+  const wireDepositData = yield call(fetchWireDeposit, currency);
+  yield put(saveWireDepositInfo(wireDepositData));
 }
 
 export default function* () {
-  yield takeLatest(actionTypes.FETCH_COUNTRIES_SAGA, fetchCountriesSaga);
+  yield takeLatest(actionTypes.WIRE_DEPOSIT_ACTION, wireDepositSaga);
 }

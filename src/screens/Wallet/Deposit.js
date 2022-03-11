@@ -6,7 +6,7 @@ import {
   Image,
   KeyboardAvoidingView,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
@@ -31,9 +31,8 @@ import AppInput from '../../components/AppInput';
 
 export default function Deposit() {
   const [hasAddress, setHasAddress] = useState(false);
-  const [isEthereum, setIsEthereum] = useState(false);
-  const [isFiat, setIsFiat] = useState(false);
   const dispatch = useDispatch();
+  const code = useSelector((state) => state.transactions.code);
 
   const generate = () => {
     dispatch(toggleGenerateRequestModal(true));
@@ -42,6 +41,9 @@ export default function Deposit() {
     dispatch(toggleAddDepositAddressModal(true));
   };
 
+  const isFiat = code === 'GEL' || code === 'USD';
+  const isEthereum = code === 'ETH';
+
   return (
     <>
       <AppText
@@ -49,18 +51,6 @@ export default function Deposit() {
         onPress={() => setHasAddress(!hasAddress)}
       >
         Toggle "hasAddress"{' '}
-        <AppText
-          style={{ color: 'white', marginBottom: 20 }}
-          onPress={() => setIsEthereum(!isEthereum)}
-        >
-          Toggle "isEthereum"{' '}
-          <AppText
-            style={{ color: 'white', marginBottom: 20 }}
-            onPress={() => setIsFiat(!isFiat)}
-          >
-            Toggle "isFiat"
-          </AppText>
-        </AppText>
       </AppText>
 
       <View style={styles.block}>
@@ -135,6 +125,13 @@ export default function Deposit() {
               }
             />
           </View>
+
+          <Pressable style={[styles.button, styles.generate]}>
+            <Image source={images.Generate} />
+            <AppText medium style={styles.buttonText}>
+              Generate PDF
+            </AppText>
+          </Pressable>
         </KeyboardAvoidingView>
       )}
     </>
@@ -166,6 +163,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingBottom: 50,
   },
+  generate: { marginTop: 40, flexDirection: 'row' },
   line: {
     width: 1,
     height: 20,
@@ -181,6 +179,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: colors.PRIMARY_TEXT,
+    marginLeft: 10,
   },
   row: {
     flexDirection: 'row',

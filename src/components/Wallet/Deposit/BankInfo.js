@@ -1,6 +1,7 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Clipboard from 'expo-clipboard';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
@@ -9,8 +10,10 @@ import AppText from '../../AppText';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 
 const InfoRow = ({ title, text }) => {
+  const copy = () => Clipboard.setString(text);
+
   return (
-    <View style={styles.infoRow}>
+    <TouchableOpacity style={styles.infoRow} onPress={copy}>
       <AppText subtext style={styles.secondary}>
         {title}
       </AppText>
@@ -18,14 +21,29 @@ const InfoRow = ({ title, text }) => {
         <AppText style={styles.text}>{text}</AppText>
         <Image source={images.White_Copy} />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
 export default function BankInfo() {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.trade);
-  const { depositProvider, depositProviders } = state;
+  const state = useSelector((state) => state);
+  const {
+    trade: { depositProvider, depositProviders },
+    wallet: {
+      wireDepositInfo: { en },
+    },
+  } = state;
+
+  const {
+    receiverBankCountry,
+    receiverBankSwift,
+    receiverBankAddress,
+    receiverIBAN,
+    transferDescription,
+    intermediateBankSwift,
+    receiverName,
+  } = en[0];
 
   const handleBanks = () => {
     dispatch(toggleChooseBankModal(true));
@@ -41,13 +59,29 @@ export default function BankInfo() {
     return bankName;
   };
 
+  const infoArray = [
+    { title: 'Company Name', text: receiverName },
+    { title: 'Country', text: receiverBankCountry },
+    { title: 'SWIFT Code', text: receiverBankSwift },
+    { title: 'Address', text: receiverBankAddress },
+    { title: 'IBAN', text: receiverIBAN },
+    { title: 'Description', text: transferDescription },
+  ];
+
+  const intermediateInfoArray = [
+    { title: 'Bank Name', text: 'Citibank N.A.' },
+    { title: 'Country', text: 'USA' },
+    { title: 'SWIFT Code', text: 'CITIUS33' },
+    { title: 'Address', text: '399 PARK AVENUE, NYC, NY' },
+  ];
+
   return (
     <>
       <AppText medium style={styles.title}>
         Bank Info
       </AppText>
 
-      <Pressable style={styles.dropdown} onPress={handleBanks}>
+      {/* <Pressable style={styles.dropdown} onPress={handleBanks}>
         <View style={styles.subtext}>
           <AppText subtext style={styles.secondary}>
             Bank
@@ -60,24 +94,24 @@ export default function BankInfo() {
         </AppText>
         <View style={styles.line} />
         <Image source={images.Arrow} />
-      </Pressable>
+      </Pressable> */}
 
-      <InfoRow title="Company name" text="Digital Ledger Technologies LLC" />
-      <InfoRow title="Country" text="Georgia" />
-      <InfoRow title="SWIFT Code" text="BAGAGE22" />
-      <InfoRow title="Address" text="29a Gagarin street, Tbilisi 0160" />
-      <InfoRow title="IBAN" text="GE12BG00000000100023456" />
-      <InfoRow title="Description" text="Balance Replenish WT/GEL/Ttg1Ztvtf0" />
+      {infoArray.map((i) => (
+        <InfoRow title={i.title} text={i.text} key={i.title} />
+      ))}
 
       <View style={styles.marginVertical} />
 
-      <AppText medium style={[styles.title, { marginBottom: 15 }]}>
-        Intermediary bank
-      </AppText>
-      <InfoRow title="Bank Name" text="Citibank N.A." />
-      <InfoRow title="Country" text="USA" />
-      <InfoRow title="SWIFT Code" text="CITIUS33" />
-      <InfoRow title="Address" text="399 PARK AVENUE, NYC, NY" />
+      {intermediateBankSwift && (
+        <>
+          <AppText medium style={[styles.title, { marginBottom: 15 }]}>
+            Intermediary bank
+          </AppText>
+          {intermediateInfoArray.map((i) => (
+            <InfoRow title={i.title} text={i.text} key={i.title} />
+          ))}
+        </>
+      )}
 
       <ChooseBankModal />
     </>
@@ -139,5 +173,6 @@ const styles = StyleSheet.create({
   },
   title: {
     color: '#B7BFDB',
+    marginBottom: 10,
   },
 });

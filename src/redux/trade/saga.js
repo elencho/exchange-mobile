@@ -70,7 +70,7 @@ function* depositProvidersSaga() {
         providers = b.depositMethods.ECOMMERCE;
 
         if (b.currencyCode === fiat) {
-          provider = b.depositMethods.ECOMMERCE[0];
+          provider = b.depositMethods.ECOMMERCE[0].provider;
         }
       }
     });

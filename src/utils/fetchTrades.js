@@ -16,7 +16,7 @@ export const fetchTrades = async (params) => {
     });
     return data.data;
   } catch (err) {
-    console.log(err);
+    console.log(err + ' in fetchTrades');
   }
 };
 
@@ -27,7 +27,7 @@ export const fetchOffers = async () => {
     });
     return data.data;
   } catch (err) {
-    console.log(err);
+    console.log(err + ' in fetchOffers');
   }
 };
 
@@ -38,7 +38,7 @@ export const submitTrade = async (params) => {
     });
     return { ...data.data, status: data.status };
   } catch (err) {
-    console.log(err);
+    console.log(err + ' in submitTrade');
   }
 };
 export const fetchBalance = async () => {
@@ -48,7 +48,7 @@ export const fetchBalance = async () => {
     });
     return data.data;
   } catch (err) {
-    console.log(err);
+    console.log(err + ' in fetchBalance');
   }
 };
 
@@ -60,7 +60,7 @@ export const fetchCards = async (params) => {
     });
     return data.data;
   } catch (err) {
-    console.log(err);
+    console.log(err + ' in fetchCards');
   }
 };
 
@@ -72,6 +72,6 @@ export const fetchFees = async (params) => {
     });
     return data.data;
   } catch (err) {
-    console.log(err);
+    console.log(err + ' in fetchFees');
   }
 };

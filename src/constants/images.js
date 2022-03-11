@@ -61,6 +61,7 @@ export default {
   Address_List: require('../assets/images/Wallet/Address_List.png'),
   Swift: require('../assets/images/Wallet/Swift.png'),
   Time: require('../assets/images/Wallet/Time.png'),
+  Generate: require('../assets/images/Wallet/Generate.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),

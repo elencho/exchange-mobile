@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { chooseCurrency, setAbbr } from '../../redux/transactions/actions';
+import { wireDepositAction } from '../../redux/wallet/actions';
 import AppText from '../AppText';
 
 function Currency({
@@ -24,6 +25,7 @@ function Currency({
     navigation.navigate('Balance');
     dispatch(chooseCurrency(name));
     dispatch(setAbbr(code));
+    dispatch(wireDepositAction());
   };
 
   const usdBitcoin = () => {
