@@ -21,6 +21,9 @@ export const saveWireDepositInfo = (wireDepositInfo) => ({
 });
 
 // SAGAS
-export const wireDepositAction = () => ({
+export const wireDepositAction = (name, code, navigation) => ({
   type: actionTypes.WIRE_DEPOSIT_ACTION,
+  name,
+  code,
+  navigation,
 });
