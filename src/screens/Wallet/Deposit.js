@@ -28,11 +28,13 @@ import AddDepositAddressModal from '../../components/Wallet/Deposit/AddDepositAd
 import BankInfo from '../../components/Wallet/Deposit/BankInfo';
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
 import AppInput from '../../components/AppInput';
+import { generateCryptoAddressAction } from '../../redux/wallet/actions';
 
 export default function Deposit() {
   const dispatch = useDispatch();
   const code = useSelector((state) => state.transactions.code);
   const cryptoAddresses = useSelector((state) => state.wallet.cryptoAddresses);
+  const balance = useSelector((state) => state.trade.balance);
   const [address, setAddress] = useState([]);
   const [memoTag, setMemoTag] = useState(null);
 
@@ -46,8 +48,21 @@ export default function Deposit() {
   }, [code]);
 
   const generate = () => {
-    dispatch(toggleGenerateRequestModal(true));
+    if (code === 'ETH') {
+      dispatch(toggleGenerateRequestModal(true));
+    } else {
+      let network;
+      balance.balances.forEach((b) => {
+        if (code === b.currencyCode) {
+          if (b.depositMethods.WALLET) {
+            network = b.depositMethods.WALLET[0].provider;
+            dispatch(generateCryptoAddressAction(code, network));
+          }
+        }
+      });
+    }
   };
+
   const addAddress = () => {
     dispatch(toggleAddDepositAddressModal(true));
   };
@@ -82,11 +97,21 @@ export default function Deposit() {
       </View>
 
       {cryptoAddresses.length > 0 && (
-        <AddressList
-          cryptoAddresses={cryptoAddresses}
-          address={address}
-          setAddress={setAddress}
-        />
+        <>
+          <AddressList
+            cryptoAddresses={cryptoAddresses}
+            address={address}
+            setAddress={setAddress}
+          />
+          <Pressable
+            style={[styles.button, styles.generate]}
+            onPress={generate}
+          >
+            <AppText medium style={styles.buttonText}>
+              Add New Wallet Address
+            </AppText>
+          </Pressable>
+        </>
       )}
 
       {!cryptoAddresses.length > 0 && !isFiat && (

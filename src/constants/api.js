@@ -64,5 +64,11 @@ export const ACTIVATE_GOOGLE_OTP =
 export const WIRE_DEPOSIT =
   'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/wire/deposit';
 
+export const GENERATE_WIRE_PDF =
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/report/wire';
+
 export const GET_CRYPTO_ADDRESSES =
   'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/deposit/crypto/getAddresses';
+
+export const GENERATE_CRYPTO_ADDRESS =
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/deposit/crypto';

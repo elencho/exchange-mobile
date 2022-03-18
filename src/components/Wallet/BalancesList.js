@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { fetchOffers } from '../../redux/trade/actions';
+import { generateWirePdf } from '../../utils/walletUtils';
 import AppText from '../AppText';
 import Currency from './Currency';
 

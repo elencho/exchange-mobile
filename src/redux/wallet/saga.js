@@ -1,8 +1,9 @@
-import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
   fetchCryptoAddresses,
   fetchWireDeposit,
+  generateCryptoAddress,
 } from '../../utils/walletUtils';
 import { chooseCurrency, setAbbr } from '../transactions/actions';
 import {
@@ -32,6 +33,14 @@ function* cryptoAddressesSaga(action) {
   yield put(goToBalanceAction(name, code, navigation));
 }
 
+function* generateCryptoAddressSaga(action) {
+  const { code, network } = action;
+  const newAddress = yield call(generateCryptoAddress, code, network);
+
+  const cryptoAddresses = yield select((state) => state.wallet.cryptoAddresses);
+  yield put(saveCryptoAddresses([...cryptoAddresses, newAddress]));
+}
+
 function* goToBalanceSaga(action) {
   const { name, code, navigation } = action;
   yield put(setAbbr(code));
@@ -43,4 +52,8 @@ export default function* () {
   yield takeLatest(actionTypes.WIRE_DEPOSIT_ACTION, wireDepositSaga);
   yield takeLatest(actionTypes.CRYPTO_ADDRESSES_ACTION, cryptoAddressesSaga);
   yield takeLatest(actionTypes.GO_TO_BALANCE, goToBalanceSaga);
+  yield takeLatest(
+    actionTypes.GENERATE_CRYPTO_ADDRESS,
+    generateCryptoAddressSaga
+  );
 }

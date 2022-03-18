@@ -9,6 +9,7 @@ export const actionTypes = {
   WIRE_DEPOSIT_ACTION: 'WIRE_DEPOSIT_ACTION',
   CRYPTO_ADDRESSES_ACTION: 'CRYPTO_ADDRESSES_ACTION',
   GO_TO_BALANCE: 'GO_TO_BALANCE',
+  GENERATE_CRYPTO_ADDRESS: 'GENERATE_CRYPTO_ADDRESS',
 };
 
 export const setWalletTab = (walletTab) => ({
@@ -50,5 +51,10 @@ export const cryptoAddressesAction = (name, code, navigation, network) => ({
   name,
   code,
   navigation,
+  network,
+});
+export const generateCryptoAddressAction = (code, network) => ({
+  type: actionTypes.GENERATE_CRYPTO_ADDRESS,
+  code,
   network,
 });

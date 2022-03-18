@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: -5,
     top: -7,
-    backgroundColor: colors.PRIMARY_BACKGROUND,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingHorizontal: 8,
   },
 });
