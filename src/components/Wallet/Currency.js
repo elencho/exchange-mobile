@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
-import { wireDepositAction } from '../../redux/wallet/actions';
+import {
+  cryptoAddressesAction,
+  wireDepositAction,
+} from '../../redux/wallet/actions';
 import AppText from '../AppText';
 
 function Currency({
@@ -19,9 +22,22 @@ function Currency({
 }) {
   const dispatch = useDispatch();
   const filter = useSelector((state) => state.wallet.usdBtcSwitch);
+  const balance = useSelector((state) => state.trade.balance);
 
   const handlePress = () => {
-    dispatch(wireDepositAction(name, code, navigation));
+    if (code === 'GEL' || code === 'USD') {
+      dispatch(wireDepositAction(name, code, navigation));
+    } else {
+      let network;
+      balance.balances.forEach((b) => {
+        if (code === b.currencyCode) {
+          if (b.depositMethods.WALLET) {
+            network = b.depositMethods.WALLET[0].provider;
+            dispatch(cryptoAddressesAction(name, code, navigation, network));
+          }
+        }
+      });
+    }
   };
 
   const usdBitcoin = () => {

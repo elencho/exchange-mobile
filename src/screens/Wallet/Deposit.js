@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Pressable,
   StyleSheet,
@@ -30,9 +30,20 @@ import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMeth
 import AppInput from '../../components/AppInput';
 
 export default function Deposit() {
-  const [hasAddress, setHasAddress] = useState(false);
   const dispatch = useDispatch();
   const code = useSelector((state) => state.transactions.code);
+  const cryptoAddresses = useSelector((state) => state.wallet.cryptoAddresses);
+  const [address, setAddress] = useState([]);
+  const [memoTag, setMemoTag] = useState(null);
+
+  useEffect(() => {
+    if (cryptoAddresses[0]) {
+      setAddress(cryptoAddresses[0].address);
+      if (cryptoAddresses[0].tag) {
+        setMemoTag(cryptoAddresses[0].tag);
+      }
+    }
+  }, [code]);
 
   const generate = () => {
     dispatch(toggleGenerateRequestModal(true));
@@ -46,13 +57,6 @@ export default function Deposit() {
 
   return (
     <>
-      <AppText
-        style={{ color: 'white', marginBottom: 20 }}
-        onPress={() => setHasAddress(!hasAddress)}
-      >
-        Toggle "hasAddress"{' '}
-      </AppText>
-
       <View style={styles.block}>
         <WalletCoinsDropdown />
         {!isFiat ? (
@@ -69,17 +73,23 @@ export default function Deposit() {
           </>
         )}
 
-        {hasAddress && (
+        {cryptoAddresses.length > 0 && (
           <>
-            <WalletQrCode />
-            <XrpMemoWarning />
+            <WalletQrCode address={address} memoTag={memoTag} />
+            {memoTag && <XrpMemoWarning />}
           </>
         )}
       </View>
 
-      {hasAddress && <AddressList />}
+      {cryptoAddresses.length > 0 && (
+        <AddressList
+          cryptoAddresses={cryptoAddresses}
+          address={address}
+          setAddress={setAddress}
+        />
+      )}
 
-      {!hasAddress && !isFiat && (
+      {!cryptoAddresses.length > 0 && !isFiat && (
         <>
           {isEthereum ? (
             <View style={styles.flex}>

@@ -126,7 +126,7 @@ export default function BuySellModal() {
     let hasEcommerce;
     balances.forEach((b) => {
       if (b.currencyCode === fiat) {
-        hasEcommerce = b.depositTypes.includes('ECOMMERCE');
+        hasEcommerce = b.depositMethods.ECOMMERCE;
       }
     });
     return hasEcommerce;

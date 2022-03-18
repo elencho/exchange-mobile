@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -18,10 +18,23 @@ import Currency from './Currency';
 export default function BalancesList() {
   const dispatch = useDispatch();
   const balances = useSelector((state) => state.trade.balance.balances);
+  const [showZeroBalances, setShowZeroBalances] = useState(true);
+  const [nonZeroBalances, setNonZeroBalances] = useState(null);
 
   useEffect(() => {
     dispatch(fetchOffers());
   }, []);
+
+  useEffect(() => {
+    if (balances) {
+      const nonZeroBalances = balances.filter((b) => b.total > 0);
+      setNonZeroBalances(nonZeroBalances);
+    }
+  }, [balances]);
+
+  const toggleZeroBalances = () => {
+    setShowZeroBalances(!showZeroBalances);
+  };
 
   const renderCurrency = ({ item }) => (
     <Currency
@@ -47,18 +60,18 @@ export default function BalancesList() {
         />
       </View>
 
-      <View style={styles.hide}>
-        <Pressable style={styles.radio}>
-          <View style={styles.selected} />
-        </Pressable>
+      <Pressable style={styles.hide} onPress={toggleZeroBalances}>
+        <View style={styles.radio}>
+          {!showZeroBalances && <View style={styles.selected} />}
+        </View>
         <AppText body style={styles.secondary}>
           Hide Zero Balances
         </AppText>
-      </View>
+      </Pressable>
 
       {balances && (
         <FlatList
-          data={balances}
+          data={showZeroBalances ? balances : nonZeroBalances}
           renderItem={renderCurrency}
           keyExtractor={(item) => item.currencyCode}
         />

@@ -5,7 +5,7 @@ import AppText from '../../AppText';
 import images from '../../../constants/images';
 import QrCode from '../../QrCode';
 
-function WalletQrCode() {
+function WalletQrCode({ address, memoTag }) {
   const Copy = () => (
     <TouchableOpacity>
       <Image source={images.Copy} />
@@ -15,18 +15,22 @@ function WalletQrCode() {
   return (
     <View style={styles.container}>
       <View style={styles.qr}>
-        <QrCode value="addr1qxad6k9kx099q8sfn0u8vu65asnsys8v022slx72jyadu742wvsvtpkn" />
+        <QrCode value={address} />
       </View>
 
       <AppText subtext style={styles.secondary}>
-        addr1qxad6k9kx099q8sfn0u8vu65asnsys8v022slx72jyadu742wvsvtpkn{'   '}
+        {address}
+        {'   '}
         <Copy />
       </AppText>
 
-      <AppText subtext style={[styles.secondary, styles.memo]}>
-        Memo: 0123456789{'   '}
-        <Copy />
-      </AppText>
+      {memoTag && (
+        <AppText subtext style={[styles.secondary, styles.memo]}>
+          Memo: {memoTag}
+          {'   '}
+          <Copy />
+        </AppText>
+      )}
     </View>
   );
 }

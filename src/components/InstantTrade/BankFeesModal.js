@@ -27,7 +27,7 @@ export default function BankFeesModal() {
 
   useEffect(() => {
     balances.forEach((b) => {
-      if (b.currencyCode === fiat && b.depositTypes.includes('ECOMMERCE')) {
+      if (b.currencyCode === fiat && b.depositMethods.ECOMMERCE) {
         b.fees.forEach((f) => {
           if (f.type === 'DEPOSIT' && f.provider === depositProvider) {
             setArrayToIterate(f.feeRange);

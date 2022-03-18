@@ -1,24 +1,25 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import AppText from '../../AppText';
 
-function AddressList() {
-  const [address, setAddress] = useState(1);
+function AddressList({ cryptoAddresses, address, setAddress }) {
   const chooseAddress = (a) => setAddress(a);
 
   return (
     <>
-      {[1, 2, 3].map((a) => (
+      {cryptoAddresses.map((a) => (
         <Pressable
           style={[
             styles.container,
-            a === address && { backgroundColor: colors.SECONDARY_BACKGROUND },
+            a.address === address && {
+              backgroundColor: colors.SECONDARY_BACKGROUND,
+            },
           ]}
-          onPress={() => chooseAddress(a)}
-          key={a}
+          onPress={() => chooseAddress(a.address)}
+          key={a.address}
         >
           <View style={styles.qr}>
             <Image source={images.QR} />
@@ -26,10 +27,10 @@ function AddressList() {
 
           <View style={styles.address}>
             <AppText subtext style={styles.secondary}>
-              Feb 5, 2020 / 12:00:03
+              {a.timestamp}
             </AppText>
-            <AppText medium body style={styles.primary}>
-              347hNv1vJ7gEGJ…AANyBLQNF
+            <AppText medium body numberOfLines={2} style={styles.primary}>
+              {a.address}
             </AppText>
           </View>
         </Pressable>
@@ -44,11 +45,13 @@ const styles = StyleSheet.create({
   address: {
     justifyContent: 'space-between',
     marginLeft: 20,
+    flex: 1,
   },
   container: {
     paddingHorizontal: 35,
     paddingVertical: 20,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   qr: {
     height: 33,
@@ -56,6 +59,7 @@ const styles = StyleSheet.create({
   },
   primary: {
     color: colors.PRIMARY_TEXT,
+    marginTop: 5,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
