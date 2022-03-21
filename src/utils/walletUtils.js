@@ -1,6 +1,8 @@
+import { Platform } from 'react-native';
 import axios from 'axios';
-// import BlobCourier from 'react-native-blob-courier';
 import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+import * as Sharing from 'expo-sharing';
 
 import {
   bearer,
@@ -23,24 +25,36 @@ export const fetchWireDeposit = async (currency, network) => {
 
 export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
   try {
-    // const request0 = {
-    //   ios: { target: 'data' },
-    //   headers: { Authorization: bearer },
-    //   filename: 'wiredeposit.pdf',
-    //   method: 'GET',
-    //   mimeType: 'application/octet-stream',
-    //   url: `${GENERATE_WIRE_PDF}?currency=GEL&amount=10&wireDepositInfoId=7&timeZone=UTC`,
-    // };
-    // const fetchedResult = await BlobCourier.fetchBlob(request0);
-    // console.log(fetchedResult);
-
     FileSystem.downloadAsync(
-      `${GENERATE_WIRE_PDF}?currency=GEL&amount=10&wireDepositInfoId=7&timeZone=UTC`,
+      `${GENERATE_WIRE_PDF}?currency=${currency}&amount=${amount}&wireDepositInfoId=${wireDepositInfoId}&timeZone=UTC`,
       FileSystem.documentDirectory + 'wiredeposit.pdf',
       { headers: { Authorization: bearer } }
     )
-      .then((data) => {
-        console.log(data);
+      .then(async (data) => {
+        const { uri } = data;
+
+        if (Platform.OS === 'ios') {
+          await Sharing.shareAsync(uri);
+        }
+
+        if (Platform.OS === 'android') {
+          const perm = await MediaLibrary.requestPermissionsAsync();
+          if (perm.status !== 'granted') {
+            return;
+          }
+
+          try {
+            const asset = await MediaLibrary.createAssetAsync(uri);
+            const album = await MediaLibrary.getAlbumAsync('Download');
+            if (!album) {
+              await MediaLibrary.createAlbumAsync('Download', asset, false);
+            } else {
+              await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        }
       })
       .catch((error) => {
         console.error(error);

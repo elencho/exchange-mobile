@@ -29,14 +29,21 @@ import BankInfo from '../../components/Wallet/Deposit/BankInfo';
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
 import AppInput from '../../components/AppInput';
 import { generateCryptoAddressAction } from '../../redux/wallet/actions';
+import { generateWirePdf } from '../../utils/walletUtils';
 
 export default function Deposit() {
   const dispatch = useDispatch();
   const code = useSelector((state) => state.transactions.code);
-  const cryptoAddresses = useSelector((state) => state.wallet.cryptoAddresses);
+  const wallet = useSelector((state) => state.wallet);
   const balance = useSelector((state) => state.trade.balance);
   const [address, setAddress] = useState([]);
   const [memoTag, setMemoTag] = useState(null);
+  const [amount, setAmount] = useState(null);
+
+  const {
+    cryptoAddresses,
+    wireDepositInfo: { en },
+  } = wallet;
 
   useEffect(() => {
     if (cryptoAddresses[0]) {
@@ -60,6 +67,12 @@ export default function Deposit() {
           }
         }
       });
+    }
+  };
+
+  const generatePdf = () => {
+    if (amount) {
+      generateWirePdf(code, amount, en[0].id);
     }
   };
 
@@ -148,6 +161,8 @@ export default function Deposit() {
           </View>
           <View style={styles.block}>
             <AppInput
+              onChangeText={setAmount}
+              value={amount}
               label="Enter Amount"
               labelBackgroundColor={colors.SECONDARY_BACKGROUND}
               right={
@@ -161,7 +176,10 @@ export default function Deposit() {
             />
           </View>
 
-          <Pressable style={[styles.button, styles.generate]}>
+          <Pressable
+            style={[styles.button, styles.generate]}
+            onPress={generatePdf}
+          >
             <Image source={images.Generate} />
             <AppText medium style={styles.buttonText}>
               Generate PDF

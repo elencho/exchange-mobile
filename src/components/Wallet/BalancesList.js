@@ -30,7 +30,6 @@ export default function BalancesList() {
     if (balances) {
       const nonZeroBalances = balances.filter((b) => b.total > 0);
       setNonZeroBalances(nonZeroBalances);
-      generateWirePdf();
     }
   }, [balances]);
 
