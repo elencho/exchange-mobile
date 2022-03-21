@@ -28,32 +28,36 @@ export default function TradeDetails() {
     }, ${date.getFullYear()} / ${date.toLocaleTimeString()}`;
   };
 
+  const LeftText = ({ text }) => (
+    <View style={styles.leftTextContainer}>
+      <AppText style={styles.leftText}>{text} :</AppText>
+    </View>
+  );
+
+  const RightText = ({ text, style }) => (
+    <View style={styles.rightTextContainer}>
+      <AppText medium style={[styles.rightText, style]}>
+        {text}
+      </AppText>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <View>
-        <AppText style={styles.leftText}>Amount:</AppText>
-        <AppText style={styles.leftText}>Price:</AppText>
-        <AppText style={styles.leftText}>Create Date::</AppText>
-        <AppText style={styles.leftText}>End Date:</AppText>
-        <AppText style={styles.leftText}>Status:</AppText>
+        {['Amount', 'Price', 'Create Date', 'End Date', 'Status'].map((e) => (
+          <LeftText key={e} text={e} />
+        ))}
       </View>
 
       <View style={styles.right}>
-        <AppText medium style={styles.rightText}>
-          {cumulativeCost} {quoteCurrency} / {size} {baseCurrency}
-        </AppText>
-        <AppText medium style={styles.rightText}>
-          {price} {baseCurrency}
-        </AppText>
-        <AppText medium style={styles.rightText}>
-          {date(creationTime)}
-        </AppText>
-        <AppText medium style={styles.rightText}>
-          {date(lastChangeTime)}
-        </AppText>
-        <AppText medium style={[styles.rightText, styles.capitalize]}>
-          {status}
-        </AppText>
+        <RightText
+          text={`${cumulativeCost} ${quoteCurrency} / ${size} ${baseCurrency}`}
+        />
+        <RightText text={`${price} ${baseCurrency}`} />
+        <RightText text={date(creationTime)} />
+        <RightText text={date(lastChangeTime)} />
+        <RightText text={status} style={styles.capitalize} />
       </View>
     </View>
   );
@@ -69,14 +73,18 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     flex: 1,
   },
+  leftTextContainer: {
+    height: 30,
+    justifyContent: 'center',
+  },
+  rightTextContainer: {
+    height: 30,
+    justifyContent: 'center',
+  },
   leftText: {
     color: '#C0C5E0',
-    fontSize: 12,
-    marginVertical: 5,
   },
   rightText: {
-    fontSize: 12,
-    marginVertical: 5,
     color: colors.PRIMARY_TEXT,
   },
 });

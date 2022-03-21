@@ -12,32 +12,34 @@ export default function TransactionDetails() {
     currentTransaction: { method, amount, fee, status, date, time, currency },
   } = state;
 
+  const LeftText = ({ text }) => (
+    <View style={styles.leftTextContainer}>
+      <AppText style={styles.leftText}>{text} :</AppText>
+    </View>
+  );
+
+  const RightText = ({ text, style }) => (
+    <View style={styles.rightTextContainer}>
+      <AppText medium style={[styles.rightText, style]}>
+        {text}
+      </AppText>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <View>
-        <AppText style={styles.leftText}>Method:</AppText>
-        <AppText style={styles.leftText}>Amount:</AppText>
-        <AppText style={styles.leftText}>Fee:</AppText>
-        <AppText style={styles.leftText}>Date / Time:</AppText>
-        <AppText style={styles.leftText}>Status:</AppText>
+        {['Method', 'Amount', 'Fee', 'Date / Time', 'Status'].map((e) => (
+          <LeftText key={e} text={e} />
+        ))}
       </View>
 
       <View style={styles.right}>
-        <AppText medium style={[styles.rightText, styles.capitalize]}>
-          {method}
-        </AppText>
-        <AppText medium style={styles.rightText}>
-          {amount} {currency}
-        </AppText>
-        <AppText medium style={styles.rightText}>
-          {fee} {currency}
-        </AppText>
-        <AppText medium style={styles.rightText}>
-          {date} / {time}
-        </AppText>
-        <AppText medium style={[styles.rightText, styles.capitalize]}>
-          {status}
-        </AppText>
+        <RightText text={method} style={styles.capitalize} />
+        <RightText text={`${amount} ${currency}`} />
+        <RightText text={`${fee} ${currency}`} />
+        <RightText text={`${date} / ${time}`} />
+        <RightText text={status} style={styles.capitalize} />
       </View>
     </View>
   );
@@ -55,12 +57,16 @@ const styles = StyleSheet.create({
   },
   leftText: {
     color: '#C0C5E0',
-    fontSize: 12,
-    marginVertical: 5,
+  },
+  leftTextContainer: {
+    height: 30,
+    justifyContent: 'center',
+  },
+  rightTextContainer: {
+    height: 30,
+    justifyContent: 'center',
   },
   rightText: {
-    fontSize: 12,
-    marginVertical: 5,
     color: colors.PRIMARY_TEXT,
   },
 });
