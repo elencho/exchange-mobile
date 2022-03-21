@@ -40,6 +40,7 @@
     "react-i18next": "^11.15.4",
     "react-native": "0.64.3",
     "react-native-animated-progress": "^1.0.2",
+    "react-native-blob-courier": "^3.0.4",
     "react-native-calendars": "^1.1272.0",
     "react-native-confirmation-code-field": "^7.3.0",
     "react-native-extra-dimensions-android": "^1.2.5",

@@ -246,6 +246,8 @@ PODS:
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
   - React-jsinspector (0.64.3)
+  - react-native-blob-courier (3.0.4):
+    - React
   - react-native-mobilesdk-module (1.18.2):
     - IdensicMobileSDK (= 1.18.2)
     - React
@@ -391,6 +393,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-blob-courier (from `../node_modules/react-native-blob-courier`)
   - "react-native-mobilesdk-module (from `../node_modules/@sumsub/react-native-mobilesdk-module`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-webview (from `../node_modules/react-native-webview`)
@@ -485,6 +488,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-blob-courier:
+    :path: "../node_modules/react-native-blob-courier"
   react-native-mobilesdk-module:
     :path: "../node_modules/@sumsub/react-native-mobilesdk-module"
   react-native-safe-area-context:
@@ -562,6 +567,7 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
+  react-native-blob-courier: 050eb1228bb23e450613f9f74f31a695cf4ddfbd
   react-native-mobilesdk-module: b16753a0323406be009125d3f8735e432157014d
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-webview: 133a6a5149f963259646e710b4545c67ef35d7c9

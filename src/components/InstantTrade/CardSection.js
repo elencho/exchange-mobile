@@ -39,7 +39,7 @@ export default function CardSection() {
     let isMultiple;
     balances.forEach((b) => {
       if (fiat === b.currencyCode) {
-        isMultiple = b.ecommerceDepositProviders.length > 1;
+        isMultiple = b.depositMethods.ECOMMERCE.length > 1;
       }
     });
     return isMultiple;

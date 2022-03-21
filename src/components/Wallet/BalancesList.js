@@ -30,6 +30,7 @@ export default function BalancesList() {
     if (balances) {
       const nonZeroBalances = balances.filter((b) => b.total > 0);
       setNonZeroBalances(nonZeroBalances);
+      // generateWirePdf();
     }
   }, [balances]);
 
@@ -57,6 +58,7 @@ export default function BalancesList() {
           placeholder="Search Coin"
           placeholderTextColor="rgba(105, 111, 142, 0.5)"
           style={styles.input}
+          // value="https://test-core-matching.cryptx.loc/swagger-connector-1.0/swagger/mobile#/Account%20Methods/generateDepositAddress"
           //   onChangeText={filter}
         />
       </View>

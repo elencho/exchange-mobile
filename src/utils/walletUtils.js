@@ -1,4 +1,6 @@
 import axios from 'axios';
+// import BlobCourier from 'react-native-blob-courier';
+import * as FileSystem from 'expo-file-system';
 
 import {
   bearer,
@@ -19,18 +21,34 @@ export const fetchWireDeposit = async (currency, network) => {
   }
 };
 
-// export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
-//   try {
-//     const data = await axios.get(
-//       `${GENERATE_WIRE_PDF}?currency=GEL&amount=10&wireDepositInfoId=7&timeZone=UTC`,
-//       {
-//         headers: { Authorization: bearer },
-//       }
-//     );
-//   } catch (err) {
-//     console.log(err + ' in generateWirePdf');
-//   }
-// };
+export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
+  try {
+    // const request0 = {
+    //   ios: { target: 'data' },
+    //   headers: { Authorization: bearer },
+    //   filename: 'wiredeposit.pdf',
+    //   method: 'GET',
+    //   mimeType: 'application/octet-stream',
+    //   url: `${GENERATE_WIRE_PDF}?currency=GEL&amount=10&wireDepositInfoId=7&timeZone=UTC`,
+    // };
+    // const fetchedResult = await BlobCourier.fetchBlob(request0);
+    // console.log(fetchedResult);
+
+    FileSystem.downloadAsync(
+      `${GENERATE_WIRE_PDF}?currency=GEL&amount=10&wireDepositInfoId=7&timeZone=UTC`,
+      FileSystem.documentDirectory + 'wiredeposit.pdf',
+      { headers: { Authorization: bearer } }
+    )
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  } catch (err) {
+    console.log(err + ' in generateWirePdf');
+  }
+};
 
 export const fetchCryptoAddresses = async (currency, network) => {
   try {
