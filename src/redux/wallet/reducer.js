@@ -3,14 +3,29 @@ import { actionTypes } from './actions';
 const INITIAL_STATE = {
   walletTab: 'Deposit',
   usdBtcSwitch: 'USD',
+  network: null,
+
+  // Deposit
   wireDepositInfo: {},
   cryptoAddresses: [],
-  network: null,
+
+  //Withdrawal
+  destinationAddress: '',
+  withdrawalAmount: null,
+  withdrawalNote: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const { walletTab, usdBtcSwitch, wireDepositInfo, cryptoAddresses, network } =
-    action;
+  const {
+    walletTab,
+    usdBtcSwitch,
+    wireDepositInfo,
+    cryptoAddresses,
+    network,
+    destinationAddress,
+    withdrawalAmount,
+    withdrawalNote,
+  } = action;
   switch (action.type) {
     case actionTypes.SET_WALLET_TAB:
       return {
@@ -36,6 +51,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         network,
+      };
+    case actionTypes.SET_DESTINATION_ADDRESS:
+      return {
+        ...state,
+        destinationAddress,
+      };
+    case actionTypes.SET_WITHDRAWAL_AMOUNT:
+      return {
+        ...state,
+        withdrawalAmount,
+      };
+    case actionTypes.SET_WITHDRAWAL_NOTE:
+      return {
+        ...state,
+        withdrawalNote,
       };
     default:
       return state;

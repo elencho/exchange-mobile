@@ -72,3 +72,6 @@ export const GET_CRYPTO_ADDRESSES =
 
 export const GENERATE_CRYPTO_ADDRESS =
   'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/deposit/crypto';
+
+export const CRYPTO_WITHDRAWAL =
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/withdraw/crypto';

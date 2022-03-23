@@ -53,7 +53,7 @@ export default function Balance({ navigation }) {
         </ScrollView>
       </KeyboardAvoidingView>
 
-      <ChooseCurrencyModal />
+      <ChooseCurrencyModal wallet />
       <ChooseNetworkModal />
     </Background>
   );

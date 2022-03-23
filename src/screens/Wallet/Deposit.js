@@ -46,7 +46,7 @@ export default function Deposit() {
   } = wallet;
 
   useEffect(() => {
-    if (cryptoAddresses[0]) {
+    if (cryptoAddresses.length) {
       setAddress(cryptoAddresses[0].address);
       if (cryptoAddresses[0].tag) {
         setMemoTag(cryptoAddresses[0].tag);
@@ -76,6 +76,14 @@ export default function Deposit() {
     }
   };
 
+  const hasAddress = () => {
+    let hasAddress;
+    if (cryptoAddresses) {
+      hasAddress = cryptoAddresses.length > 1;
+    }
+    return hasAddress;
+  };
+
   const addAddress = () => {
     dispatch(toggleAddDepositAddressModal(true));
   };
@@ -101,7 +109,7 @@ export default function Deposit() {
           </>
         )}
 
-        {cryptoAddresses.length > 0 && (
+        {hasAddress() && (
           <>
             <WalletQrCode address={address} memoTag={memoTag} />
             {memoTag && <XrpMemoWarning />}
@@ -109,7 +117,7 @@ export default function Deposit() {
         )}
       </View>
 
-      {cryptoAddresses.length > 0 && (
+      {hasAddress() && (
         <>
           <AddressList
             cryptoAddresses={cryptoAddresses}
@@ -127,7 +135,7 @@ export default function Deposit() {
         </>
       )}
 
-      {!cryptoAddresses.length > 0 && !isFiat && (
+      {!hasAddress() && !isFiat && (
         <>
           {isEthereum ? (
             <View style={styles.flex}>

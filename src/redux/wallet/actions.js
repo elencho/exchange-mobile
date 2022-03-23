@@ -1,15 +1,23 @@
 export const actionTypes = {
   SET_WALLET_TAB: 'SET_WALLET_TAB',
+  SET_NETWORK: 'SET_NETWORK',
   SET_USD_BTC: 'SET_USD_BTC',
+
+  // DEPOSIT
   SAVE_WIRE_DEPOSIT_INFO: 'SAVE_WIRE_DEPOSIT_INFO',
   SAVE_CRYPTO_ADDRESSES: 'SAVE_CRYPTO_ADDRESSES',
-  SET_NETWORK: 'SET_NETWORK',
+
+  // Withdrawal
+  SET_DESTINATION_ADDRESS: 'SET_DESTINATION_ADDRESS',
+  SET_WITHDRAWAL_AMOUNT: 'SET_WITHDRAWAL_AMOUNT',
+  SET_WITHDRAWAL_NOTE: 'SET_WITHDRAWAL_NOTE',
 
   // SAGAS
   WIRE_DEPOSIT_ACTION: 'WIRE_DEPOSIT_ACTION',
   CRYPTO_ADDRESSES_ACTION: 'CRYPTO_ADDRESSES_ACTION',
   GO_TO_BALANCE: 'GO_TO_BALANCE',
   GENERATE_CRYPTO_ADDRESS: 'GENERATE_CRYPTO_ADDRESS',
+  WITHDRAWAL_ACTION: 'WITHDRAWAL_ACTION',
 };
 
 export const setWalletTab = (walletTab) => ({
@@ -20,6 +28,12 @@ export const setUsdBtcSwitch = (usdBtcSwitch) => ({
   type: actionTypes.SET_USD_BTC,
   usdBtcSwitch,
 });
+export const setNetwork = (network) => ({
+  type: actionTypes.SET_NETWORK,
+  network,
+});
+
+// DEPOSIT
 export const saveWireDepositInfo = (wireDepositInfo) => ({
   type: actionTypes.SAVE_WIRE_DEPOSIT_INFO,
   wireDepositInfo,
@@ -28,9 +42,19 @@ export const saveCryptoAddresses = (cryptoAddresses) => ({
   type: actionTypes.SAVE_CRYPTO_ADDRESSES,
   cryptoAddresses,
 });
-export const setNetwork = (network) => ({
-  type: actionTypes.SET_NETWORK,
-  network,
+
+//WITHDRAWAL
+export const setDestinationAddress = (destinationAddress) => ({
+  type: actionTypes.SET_DESTINATION_ADDRESS,
+  destinationAddress,
+});
+export const setWithdrawalAmount = (withdrawalAmount) => ({
+  type: actionTypes.SET_WITHDRAWAL_AMOUNT,
+  withdrawalAmount,
+});
+export const setWithdrawalNote = (withdrawalNote) => ({
+  type: actionTypes.SET_WITHDRAWAL_NOTE,
+  withdrawalNote,
 });
 
 // SAGAS
@@ -57,4 +81,8 @@ export const generateCryptoAddressAction = (code, network) => ({
   type: actionTypes.GENERATE_CRYPTO_ADDRESS,
   code,
   network,
+});
+export const withdrawalAction = (OTP) => ({
+  type: actionTypes.WITHDRAWAL_ACTION,
+  OTP,
 });

@@ -13,23 +13,28 @@ import {
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
 import { setEmailAuth, setSmsAuth } from '../../redux/profile/actions';
+import { withdrawalAction } from '../../redux/wallet/actions';
 
-export default function SmsEmailAuthModal({ type }) {
+export default function SmsEmailAuthModal({ type, withdrawal }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     modals: { smsAuthModalVisible, emailAuthModalVisible },
-    profile: { googleAuth, smsAuth, emailAuth, currentSecurityAction },
+    profile: { currentSecurityAction },
   } = state;
 
-  const visible = type === 'SMS' ? smsAuthModalVisible : emailAuthModalVisible;
   const action =
     type === 'SMS' ? toggleSmsAuthModal(false) : toggleEmailAuthModal(false);
+  const visible = type === 'SMS' ? smsAuthModalVisible : emailAuthModalVisible;
   const cellCount = type === 'SMS' ? 4 : 6;
 
   const [value, setValue] = useState('');
+
   useEffect(() => {
     if (value.length === cellCount) {
+      if (withdrawal) {
+        dispatch(withdrawalAction(value)); // value = OTP
+      }
       dispatch(toggleSmsAuthModal(false));
       dispatch(toggleEmailAuthModal(false));
     }

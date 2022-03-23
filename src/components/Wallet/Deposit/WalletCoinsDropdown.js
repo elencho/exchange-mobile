@@ -24,23 +24,27 @@ export default function WalletCoinsDropdown() {
 
   const available = () => {
     let available;
-    balances.forEach((b) => {
-      if (b.currencyCode === code) {
-        available = b.available;
-      }
-    });
+    if (balances) {
+      balances.forEach((b) => {
+        if (b.currencyCode === code) {
+          available = b.available;
+        }
+      });
+    }
     return available;
   };
 
   const total = () => {
     let total;
     let value;
-    balances.forEach((b) => {
-      if (b.currencyCode === code) {
-        total = b.total;
-        value = usdBtcSwitch === 'USD' ? b.valueUSD : b.valueBTC;
-      }
-    });
+    if (balances) {
+      balances.forEach((b) => {
+        if (b.currencyCode === code) {
+          total = b.total;
+          value = usdBtcSwitch === 'USD' ? b.valueUSD : b.valueBTC;
+        }
+      });
+    }
     return `Total: ${total} = ${value} ${usdBtcSwitch}`;
   };
 

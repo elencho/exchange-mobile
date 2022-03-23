@@ -10,6 +10,7 @@ import {
   WIRE_DEPOSIT,
   GENERATE_WIRE_PDF,
   GENERATE_CRYPTO_ADDRESS,
+  CRYPTO_WITHDRAWAL,
 } from '../constants/api';
 
 export const fetchWireDeposit = async (currency, network) => {
@@ -88,5 +89,16 @@ export const generateCryptoAddress = async (currency, network) => {
     return data.data;
   } catch (err) {
     console.log(err + ' in generateCryptoAddress');
+  }
+};
+
+export const cryptoWithdrawal = async (OTP, params) => {
+  try {
+    const data = await axios.post(CRYPTO_WITHDRAWAL, params, {
+      headers: { Authorization: bearer, OTP },
+    });
+    return data.status;
+  } catch (err) {
+    console.log(err + ' in cryptoWithdrawal');
   }
 };

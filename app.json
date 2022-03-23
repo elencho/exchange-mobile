@@ -11,7 +11,7 @@
         {
           "photosPermission": "Allow cryptal-app to access your photos.",
           "savePhotosPermission": "Allow cryptal-app to save photos.",
-          "isAccessMediaLocationEnabled": true
+          "isAccessMediaLocationEnabled": "true"
         }
       ]
     ],

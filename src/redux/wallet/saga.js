@@ -1,6 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
+  cryptoWithdrawal,
   fetchCryptoAddresses,
   fetchWireDeposit,
   generateCryptoAddress,
@@ -13,7 +14,7 @@ import {
   saveWireDepositInfo,
   setNetwork,
 } from '../wallet/actions';
-// import { wireDepositParams } from './selectors';
+import { withdrawalParams } from './selectors';
 
 function* wireDepositSaga(action) {
   const { name, code, navigation } = action;
@@ -48,6 +49,15 @@ function* goToBalanceSaga(action) {
   yield call(() => navigation.navigate('Balance'));
 }
 
+function* withdrawalSaga(action) {
+  const { OTP } = action;
+  const params = yield select(withdrawalParams);
+  const status = yield call(cryptoWithdrawal, OTP, params);
+  if (status === 200) {
+    // some success code here, for modal or smth
+  }
+}
+
 export default function* () {
   yield takeLatest(actionTypes.WIRE_DEPOSIT_ACTION, wireDepositSaga);
   yield takeLatest(actionTypes.CRYPTO_ADDRESSES_ACTION, cryptoAddressesSaga);
@@ -56,4 +66,5 @@ export default function* () {
     actionTypes.GENERATE_CRYPTO_ADDRESS,
     generateCryptoAddressSaga
   );
+  yield takeLatest(actionTypes.WITHDRAWAL_ACTION, withdrawalSaga);
 }

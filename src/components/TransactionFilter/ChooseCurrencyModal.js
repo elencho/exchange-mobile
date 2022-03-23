@@ -10,19 +10,25 @@ import {
   filterCurrencies,
 } from '../../redux/transactions/actions';
 import { toggleCurrencyModal } from '../../redux/modals/actions';
+import {
+  cryptoAddressesAction,
+  wireDepositAction,
+} from '../../redux/wallet/actions';
+import { withNavigation } from 'react-navigation';
 
-export default function ChooseCurrencyModal() {
+function ChooseCurrencyModal({ wallet = false, navigation }) {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.transactions);
-  const chooseCurrencyModalVisible = useSelector(
-    (state) => state.modals.chooseCurrencyModalVisible
-  );
+  const state = useSelector((state) => state);
 
   useEffect(() => {
     dispatch(fetchCurrencies());
   }, []);
 
-  const { currencies, currenciesConstant, currency } = state;
+  const {
+    transactions: { currencies, currenciesConstant, currency },
+    modals: { chooseCurrencyModalVisible },
+    wallet: { network },
+  } = state;
 
   const filter = (text) => {
     const filteredArray = currenciesConstant.filter((c) =>
@@ -36,13 +42,22 @@ export default function ChooseCurrencyModal() {
   };
 
   const choose = (name, code) => {
-    dispatch(
-      currencyAction(
-        name,
-        currenciesConstant,
-        name === 'Show All Currency' ? null : code
-      )
-    );
+    if (wallet) {
+      if (code === 'GEL' || code === 'USD') {
+        dispatch(wireDepositAction(name, code, navigation));
+      } else {
+        dispatch(cryptoAddressesAction(name, code, navigation, network));
+      }
+    } else {
+      dispatch(
+        currencyAction(
+          name,
+          currenciesConstant,
+          name === 'Show All Currency' ? null : code
+        )
+      );
+    }
+
     hide();
   };
 
@@ -64,3 +79,5 @@ export default function ChooseCurrencyModal() {
     />
   );
 }
+
+export default withNavigation(ChooseCurrencyModal);

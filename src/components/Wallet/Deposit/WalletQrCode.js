@@ -1,13 +1,16 @@
 import React, { memo } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
 
 import AppText from '../../AppText';
 import images from '../../../constants/images';
 import QrCode from '../../QrCode';
 
 function WalletQrCode({ address, memoTag }) {
+  const copyAddress = () => Clipboard.setString(address);
+
   const Copy = () => (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={copyAddress}>
       <Image source={images.Copy} />
     </TouchableOpacity>
   );

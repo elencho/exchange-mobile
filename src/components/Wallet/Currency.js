@@ -7,6 +7,7 @@ import colors from '../../constants/colors';
 import images from '../../constants/images';
 import {
   cryptoAddressesAction,
+  setNetwork,
   wireDepositAction,
 } from '../../redux/wallet/actions';
 import AppText from '../AppText';
@@ -25,18 +26,20 @@ function Currency({
   const balance = useSelector((state) => state.trade.balance);
 
   const handlePress = () => {
+    let network;
+    balance.balances.forEach((b) => {
+      if (code === b.currencyCode) {
+        if (b.depositMethods.WALLET)
+          network = b.depositMethods.WALLET[0].provider;
+        if (b.depositMethods.WIRE) network = b.depositMethods.WIRE[0].provider;
+        dispatch(setNetwork(network));
+      }
+    });
+
     if (code === 'GEL' || code === 'USD') {
       dispatch(wireDepositAction(name, code, navigation));
     } else {
-      let network;
-      balance.balances.forEach((b) => {
-        if (code === b.currencyCode) {
-          if (b.depositMethods.WALLET) {
-            network = b.depositMethods.WALLET[0].provider;
-            dispatch(cryptoAddressesAction(name, code, navigation, network));
-          }
-        }
-      });
+      dispatch(cryptoAddressesAction(name, code, navigation, network));
     }
   };
 
