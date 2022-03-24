@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -17,6 +17,7 @@ import {
 } from '../../redux/modals/actions';
 import ChooseAddressModal from '../../components/Wallet/Withdrawal/ChooseAddressModal';
 import {
+  getWhitelistAction,
   setDestinationAddress,
   setWithdrawalAmount,
   setWithdrawalNote,
@@ -25,10 +26,22 @@ import { sendOtp } from '../../utils/userProfileUtils';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
-  const wallet = useSelector((state) => state.wallet);
-  const profile = useSelector((state) => state.profile);
-  const { withdrawalAmount, destinationAddress, withdrawalNote } = wallet;
-  const { googleAuth, emailAuth, smsAuth } = profile;
+  const state = useSelector((state) => state);
+  const {
+    wallet: {
+      withdrawalAmount,
+      destinationAddress,
+      withdrawalNote,
+      hasWhitelist,
+      currentWhitelistObj,
+    },
+    profile: { googleAuth, emailAuth, smsAuth },
+    transactions: { code },
+  } = state;
+
+  useEffect(() => {
+    dispatch(getWhitelistAction());
+  }, [code]);
 
   const setAddress = (address) => dispatch(setDestinationAddress(address));
   const setAmount = (amount) => dispatch(setWithdrawalAmount(amount));
@@ -51,44 +64,51 @@ export default function Withdrawal() {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={styles.block}>
-        <WalletCoinsDropdown />
+      <View style={styles.blocks}>
+        <View style={styles.block}>
+          <WalletCoinsDropdown />
 
-        {/* <Pressable style={styles.dropdown} onPress={chooseAddress}>
-          <AppText body style={styles.secondary}>
-            Choose Address
+          {hasWhitelist ? (
+            <Pressable style={styles.dropdown} onPress={chooseAddress}>
+              <AppText body style={styles.secondary}>
+                {currentWhitelistObj.name
+                  ? currentWhitelistObj.name
+                  : 'Choose Address'}
+              </AppText>
+
+              <View style={styles.arrow}>
+                <Image source={images.Arrow} />
+              </View>
+            </Pressable>
+          ) : (
+            <AppInput
+              label="Destination Address"
+              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+              style={styles.address}
+              onChangeText={setAddress}
+              value={destinationAddress}
+            />
+          )}
+        </View>
+
+        <View style={styles.block}>
+          <AppInput
+            onChangeText={setAmount}
+            value={withdrawalAmount}
+            placeholder="Amount"
+            style={styles.amount}
+            right={<Max />}
+          />
+          <AppText subtext style={styles.secondary}>
+            Fee = 0; Total amount = 0 GEL
           </AppText>
-
-          <View style={styles.arrow}>
-            <Image source={images.Arrow} />
-          </View>
-        </Pressable> */}
-        <AppInput
-          label="Destination Address"
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-          style={styles.address}
-          onChangeText={setAddress}
-          value={destinationAddress}
-        />
-      </View>
-
-      <View style={styles.block}>
-        <AppInput
-          onChangeText={setAmount}
-          value={withdrawalAmount}
-          placeholder="Amount"
-          style={styles.amount}
-          right={<Max />}
-        />
-        <AppText subtext style={styles.secondary}>
-          Fee = 0; Total amount = 0 GEL
-        </AppText>
-        <AppInput
-          style={styles.note}
-          placeholder="Enter Note"
-          onChangeText={setNote}
-          value={withdrawalNote}
-        />
+          <AppInput
+            style={styles.note}
+            placeholder="Enter Note"
+            onChangeText={setNote}
+            value={withdrawalNote}
+          />
+        </View>
       </View>
 
       <Pressable style={styles.button} onPress={withdraw}>
@@ -97,7 +117,7 @@ export default function Withdrawal() {
         </AppText>
       </Pressable>
 
-      {/* <ChooseAddressModal /> */}
+      <ChooseAddressModal />
       <SmsEmailAuthModal type="SMS" withdrawal />
     </View>
   );
@@ -120,15 +140,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 12,
   },
+  blocks: {
+    flex: 1,
+  },
   button: {
     backgroundColor: colors.SECONDARY_PURPLE,
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
   },
   buttonText: {
     color: colors.PRIMARY_TEXT,

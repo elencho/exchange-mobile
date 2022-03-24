@@ -12,12 +12,18 @@ export const actionTypes = {
   SET_WITHDRAWAL_AMOUNT: 'SET_WITHDRAWAL_AMOUNT',
   SET_WITHDRAWAL_NOTE: 'SET_WITHDRAWAL_NOTE',
 
+  // WHITELIST
+  SAVE_WHITELIST: 'SAVE_WHITELIST',
+  SET_HAS_WHITELIST: 'SET_HAS_WHITELIST',
+  CHOOSE_WHITELIST: 'CHOOSE_WHITELIST',
+
   // SAGAS
   WIRE_DEPOSIT_ACTION: 'WIRE_DEPOSIT_ACTION',
   CRYPTO_ADDRESSES_ACTION: 'CRYPTO_ADDRESSES_ACTION',
   GO_TO_BALANCE: 'GO_TO_BALANCE',
   GENERATE_CRYPTO_ADDRESS: 'GENERATE_CRYPTO_ADDRESS',
   WITHDRAWAL_ACTION: 'WITHDRAWAL_ACTION',
+  GET_WHITELIST_ACTION: 'GET_WHITELIST_ACTION',
 };
 
 export const setWalletTab = (walletTab) => ({
@@ -57,6 +63,20 @@ export const setWithdrawalNote = (withdrawalNote) => ({
   withdrawalNote,
 });
 
+// WHITELIST
+export const saveWhitelist = (whitelist) => ({
+  type: actionTypes.SAVE_WHITELIST,
+  whitelist,
+});
+export const setHasWhitelist = (hasWhitelist) => ({
+  type: actionTypes.SET_HAS_WHITELIST,
+  hasWhitelist,
+});
+export const chooseWhitelist = (currentWhitelistObj) => ({
+  type: actionTypes.CHOOSE_WHITELIST,
+  currentWhitelistObj,
+});
+
 // SAGAS
 export const wireDepositAction = (name, code, navigation) => ({
   type: actionTypes.WIRE_DEPOSIT_ACTION,
@@ -85,4 +105,7 @@ export const generateCryptoAddressAction = (code, network) => ({
 export const withdrawalAction = (OTP) => ({
   type: actionTypes.WITHDRAWAL_ACTION,
   OTP,
+});
+export const getWhitelistAction = () => ({
+  type: actionTypes.GET_WHITELIST_ACTION,
 });

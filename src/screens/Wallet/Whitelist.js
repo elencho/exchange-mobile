@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Headline from '../../components/TransactionHistory/Headline';
 import AppText from '../../components/AppText';
@@ -12,10 +12,19 @@ import WhitelistItem from '../../components/Wallet/Whitelist/WhitelistItem';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleAddWhitelistModal } from '../../redux/modals/actions';
+import { getWhitelistAction } from '../../redux/wallet/actions';
 
 export default function Whitelist() {
-  const [hasWhitelist, setHasWhitelist] = useState(true);
   const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const {
+    transactions: { code },
+    wallet: { whitelist, hasWhitelist },
+  } = state;
+
+  useEffect(() => {
+    dispatch(getWhitelistAction());
+  }, [code]);
 
   const showAddModal = () => dispatch(toggleAddWhitelistModal(true));
 
@@ -28,25 +37,18 @@ export default function Whitelist() {
         </AppText>
       </View>
 
-      <AppText
-        calendarDay
-        style={{ color: 'white', marginBottom: 20 }}
-        onPress={() => setHasWhitelist(!hasWhitelist)}
-      >
-        Press to Toggle "hasWhitelist" (Temporary Solution)
-      </AppText>
-
       {hasWhitelist ? (
         <>
           <ScrollView contentContainerStyle={styles.scrollView}>
-            <WhitelistItem />
-            <WhitelistItem />
-            <WhitelistItem />
-            <WhitelistItem />
-            <WhitelistItem />
-            <WhitelistItem />
-            <WhitelistItem />
-            <WhitelistItem />
+            {whitelist.map((w) => (
+              <WhitelistItem
+                key={w.id}
+                id={w.id}
+                name={w.name}
+                address={w.address}
+                tag={w.tag}
+              />
+            ))}
           </ScrollView>
 
           <Pressable style={styles.button} onPress={showAddModal}>

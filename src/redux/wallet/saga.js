@@ -3,6 +3,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
   cryptoWithdrawal,
   fetchCryptoAddresses,
+  fetchWhitelist,
   fetchWireDeposit,
   generateCryptoAddress,
 } from '../../utils/walletUtils';
@@ -11,7 +12,9 @@ import {
   actionTypes,
   goToBalanceAction,
   saveCryptoAddresses,
+  saveWhitelist,
   saveWireDepositInfo,
+  setHasWhitelist,
   setNetwork,
 } from '../wallet/actions';
 import { withdrawalParams } from './selectors';
@@ -58,6 +61,13 @@ function* withdrawalSaga(action) {
   }
 }
 
+function* whitelistSaga() {
+  const currency = yield select((state) => state.transactions.code);
+  const whitelist = yield call(fetchWhitelist, currency);
+  yield put(saveWhitelist(whitelist));
+  yield put(setHasWhitelist(whitelist.length > 0));
+}
+
 export default function* () {
   yield takeLatest(actionTypes.WIRE_DEPOSIT_ACTION, wireDepositSaga);
   yield takeLatest(actionTypes.CRYPTO_ADDRESSES_ACTION, cryptoAddressesSaga);
@@ -67,4 +77,5 @@ export default function* () {
     generateCryptoAddressSaga
   );
   yield takeLatest(actionTypes.WITHDRAWAL_ACTION, withdrawalSaga);
+  yield takeLatest(actionTypes.GET_WHITELIST_ACTION, whitelistSaga);
 }

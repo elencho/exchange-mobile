@@ -11,6 +11,7 @@ import {
   GENERATE_WIRE_PDF,
   GENERATE_CRYPTO_ADDRESS,
   CRYPTO_WITHDRAWAL,
+  CRYPTO_WHITELIST,
 } from '../constants/api';
 
 export const fetchWireDeposit = async (currency, network) => {
@@ -100,5 +101,55 @@ export const cryptoWithdrawal = async (OTP, params) => {
     return data.status;
   } catch (err) {
     console.log(err + ' in cryptoWithdrawal');
+  }
+};
+
+export const fetchWhitelist = async (currency) => {
+  try {
+    const data = await axios.get(CRYPTO_WHITELIST, {
+      headers: { Authorization: bearer },
+      params: { currency },
+    });
+    return data.data;
+  } catch (err) {
+    console.log(err);
+    console.log('Error in fetchWhitelist');
+  }
+};
+
+export const addWhitelistAddress = async (params) => {
+  try {
+    const data = await axios.post(CRYPTO_WHITELIST, params, {
+      headers: { Authorization: bearer },
+    });
+    return data.status;
+  } catch (err) {
+    console.log(err);
+    console.log('Error in addWhitelistAddress');
+  }
+};
+
+export const editWhitelistAddress = async (id, name) => {
+  try {
+    const data = await axios.put(`${CRYPTO_WHITELIST}/${id}`, {
+      headers: { Authorization: bearer },
+      params: { name },
+    });
+    return data.status;
+  } catch (err) {
+    console.log(err);
+    console.log('Error in editWhitelistAddress');
+  }
+};
+
+export const deleteWhitelistAddress = async (id, OTP) => {
+  try {
+    const data = await axios.delete(`${CRYPTO_WHITELIST}/${id}`, {
+      headers: { Authorization: bearer, OTP },
+    });
+    return data.status;
+  } catch (err) {
+    console.log(err);
+    console.log('Error in deleteWhitelistAddress');
   }
 };

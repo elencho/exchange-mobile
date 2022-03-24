@@ -7,7 +7,7 @@ import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import { toggleWhitelistActionsModal } from '../../../redux/modals/actions';
 
-export default function WhitelistItem() {
+export default function WhitelistItem({ id, name, address, tag }) {
   const dispatch = useDispatch();
 
   const openModal = () => dispatch(toggleWhitelistActionsModal(true));
@@ -16,10 +16,10 @@ export default function WhitelistItem() {
     <View style={styles.container}>
       <View style={styles.flex}>
         <AppText body style={styles.primary}>
-          Address name / Tag: 0987654320
+          {name} {tag && `/ Tag: ${tag}`}
         </AppText>
         <AppText subtext style={styles.secondary}>
-          347hNv1vJ7gsdsscxzpbAANyyERx9BLxQNF
+          {address}
         </AppText>
       </View>
 

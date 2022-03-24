@@ -13,6 +13,11 @@ const INITIAL_STATE = {
   destinationAddress: '',
   withdrawalAmount: null,
   withdrawalNote: '',
+
+  // Whitelist
+  whitelist: [],
+  hasWhitelist: null,
+  currentWhitelistObj: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -25,6 +30,9 @@ export default (state = INITIAL_STATE, action) => {
     destinationAddress,
     withdrawalAmount,
     withdrawalNote,
+    whitelist,
+    hasWhitelist,
+    currentWhitelistObj,
   } = action;
   switch (action.type) {
     case actionTypes.SET_WALLET_TAB:
@@ -66,6 +74,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         withdrawalNote,
+      };
+    case actionTypes.SAVE_WHITELIST:
+      return {
+        ...state,
+        whitelist,
+      };
+    case actionTypes.SET_HAS_WHITELIST:
+      return {
+        ...state,
+        hasWhitelist,
+      };
+    case actionTypes.CHOOSE_WHITELIST:
+      return {
+        ...state,
+        currentWhitelistObj,
       };
     default:
       return state;

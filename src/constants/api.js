@@ -75,3 +75,6 @@ export const GENERATE_CRYPTO_ADDRESS =
 
 export const CRYPTO_WITHDRAWAL =
   'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/withdraw/crypto';
+
+export const CRYPTO_WHITELIST =
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/whitelist';
