@@ -1,38 +1,53 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Clipboard from 'expo-clipboard';
 
 import AppModal from '../../AppModal';
 import {
   toggleEditWhitelistModal,
+  toggleEmailAuthModal,
+  toggleGoogleAuthModal,
+  toggleSmsAuthModal,
   toggleWhitelistActionsModal,
 } from '../../../redux/modals/actions';
 import images from '../../../constants/images';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
+import { sendOtp } from '../../../utils/userProfileUtils';
 
 export default function WhitelistActionsModal() {
   const dispatch = useDispatch();
-  const whitelistActionsModalVisible = useSelector(
-    (state) => state.modals.whitelistActionsModalVisible
-  );
+  const state = useSelector((state) => state);
+  const {
+    modals: { whitelistActionsModalVisible },
+    wallet: { currentWhitelistObj },
+    profile: { googleAuth, emailAuth, smsAuth },
+  } = state;
 
   const hide = () => {
     dispatch(toggleWhitelistActionsModal(false));
   };
 
   const handlePress = (a) => {
+    hide();
     switch (a) {
       case 'Edit Whitelist':
-        hide();
         setTimeout(() => {
           dispatch(toggleEditWhitelistModal(true));
         }, 1000);
         break;
       case 'Delete Whitelist':
-        return images.Delete_White;
+        setTimeout(() => {
+          if (googleAuth) dispatch(toggleGoogleAuthModal(true));
+          if (emailAuth) dispatch(toggleEmailAuthModal(true));
+          if (smsAuth) dispatch(toggleSmsAuthModal(true));
+        }, 1000);
+        sendOtp();
+        break;
       case 'Copy Address':
-        return images.White_Copy;
+        Clipboard.setString(currentWhitelistObj.address);
+        break;
       default:
         break;
     }

@@ -27,6 +27,7 @@ export const actionTypes = {
   GET_WHITELIST_ACTION: 'GET_WHITELIST_ACTION',
   ADD_WHITELIST_ACTION: 'ADD_WHITELIST_ACTION',
   EDIT_WHITELIST_ACTION: 'EDIT_WHITELIST_ACTION',
+  DELETE_WHITELIST_ACTION: 'DELETE_WHITELIST_ACTION',
 };
 
 export const setWalletTab = (walletTab) => ({
@@ -122,4 +123,8 @@ export const addWhitelistAction = (OTP) => ({
 });
 export const editWhitelistAction = () => ({
   type: actionTypes.EDIT_WHITELIST_ACTION,
+});
+export const deleteWhitelistAction = (OTP) => ({
+  type: actionTypes.DELETE_WHITELIST_ACTION,
+  OTP,
 });

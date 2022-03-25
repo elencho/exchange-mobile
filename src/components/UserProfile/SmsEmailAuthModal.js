@@ -15,6 +15,7 @@ import {
 import { setEmailAuth, setSmsAuth } from '../../redux/profile/actions';
 import {
   addWhitelistAction,
+  deleteWhitelistAction,
   withdrawalAction,
 } from '../../redux/wallet/actions';
 
@@ -43,7 +44,8 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
         if (newWhitelist.name && newWhitelist.address) {
           dispatch(addWhitelistAction(value)); // value = OTP
         } else {
-          // edit
+          // delete whitelist
+          dispatch(deleteWhitelistAction(value)); // value = OTP
         }
       }
       dispatch(toggleSmsAuthModal(false));

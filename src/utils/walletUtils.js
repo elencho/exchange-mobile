@@ -145,9 +145,12 @@ export const editWhitelistAddress = async (id, name) => {
 
 export const deleteWhitelistAddress = async (id, OTP) => {
   try {
-    const data = await axios.delete(`${CRYPTO_WHITELIST}/${id}`, {
+    const data = await axios({
+      method: 'DELETE',
       headers: { Authorization: bearer, OTP },
+      url: `${CRYPTO_WHITELIST}/${id}`,
     });
+    console.log(data);
     return data.status;
   } catch (err) {
     console.log(err);
