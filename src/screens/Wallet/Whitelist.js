@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,6 +13,7 @@ import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleAddWhitelistModal } from '../../redux/modals/actions';
 import { getWhitelistAction } from '../../redux/wallet/actions';
+import SmsEmailAuthModal from '../../components/UserProfile/SmsEmailAuthModal';
 
 export default function Whitelist() {
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ export default function Whitelist() {
 
       <WhitelistActionsModal />
       <AddWhitelistModal />
+      <SmsEmailAuthModal type="SMS" whitelist />
     </View>
   );
 }

@@ -13,9 +13,12 @@ import {
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
 import { setEmailAuth, setSmsAuth } from '../../redux/profile/actions';
-import { withdrawalAction } from '../../redux/wallet/actions';
+import {
+  addWhitelistAction,
+  withdrawalAction,
+} from '../../redux/wallet/actions';
 
-export default function SmsEmailAuthModal({ type, withdrawal }) {
+export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -34,6 +37,9 @@ export default function SmsEmailAuthModal({ type, withdrawal }) {
     if (value.length === cellCount) {
       if (withdrawal) {
         dispatch(withdrawalAction(value)); // value = OTP
+      }
+      if (whitelist) {
+        dispatch(addWhitelistAction(value)); // value = OTP
       }
       dispatch(toggleSmsAuthModal(false));
       dispatch(toggleEmailAuthModal(false));

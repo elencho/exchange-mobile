@@ -117,12 +117,12 @@ export const fetchWhitelist = async (currency) => {
   }
 };
 
-export const addWhitelistAddress = async (params) => {
+export const addWhitelistAddress = async (OTP, params) => {
   try {
     const data = await axios.post(CRYPTO_WHITELIST, params, {
-      headers: { Authorization: bearer },
+      headers: { Authorization: bearer, OTP },
     });
-    return data.status;
+    return data;
   } catch (err) {
     console.log(err);
     console.log('Error in addWhitelistAddress');

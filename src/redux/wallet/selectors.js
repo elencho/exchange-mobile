@@ -20,3 +20,20 @@ export const withdrawalParams = (state) => {
     provider: network,
   };
 };
+
+export const addWhitelistParams = (state) => {
+  const {
+    transactions: { code },
+    wallet: {
+      newWhitelist: { name, address },
+      network,
+    },
+  } = state;
+
+  return {
+    currency: code,
+    address,
+    name,
+    provider: network,
+  };
+};

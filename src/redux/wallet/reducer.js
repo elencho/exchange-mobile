@@ -18,6 +18,7 @@ const INITIAL_STATE = {
   whitelist: [],
   hasWhitelist: null,
   currentWhitelistObj: {},
+  newWhitelist: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -33,6 +34,7 @@ export default (state = INITIAL_STATE, action) => {
     whitelist,
     hasWhitelist,
     currentWhitelistObj,
+    newWhitelist,
   } = action;
   switch (action.type) {
     case actionTypes.SET_WALLET_TAB:
@@ -89,6 +91,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentWhitelistObj,
+      };
+    case actionTypes.SET_NEW_WHITELIST:
+      return {
+        ...state,
+        newWhitelist,
       };
     default:
       return state;

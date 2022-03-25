@@ -16,6 +16,7 @@ export const actionTypes = {
   SAVE_WHITELIST: 'SAVE_WHITELIST',
   SET_HAS_WHITELIST: 'SET_HAS_WHITELIST',
   CHOOSE_WHITELIST: 'CHOOSE_WHITELIST',
+  SET_NEW_WHITELIST: 'SET_NEW_WHITELIST',
 
   // SAGAS
   WIRE_DEPOSIT_ACTION: 'WIRE_DEPOSIT_ACTION',
@@ -24,6 +25,7 @@ export const actionTypes = {
   GENERATE_CRYPTO_ADDRESS: 'GENERATE_CRYPTO_ADDRESS',
   WITHDRAWAL_ACTION: 'WITHDRAWAL_ACTION',
   GET_WHITELIST_ACTION: 'GET_WHITELIST_ACTION',
+  ADD_WHITELIST_ACTION: 'ADD_WHITELIST_ACTION',
 };
 
 export const setWalletTab = (walletTab) => ({
@@ -76,6 +78,10 @@ export const chooseWhitelist = (currentWhitelistObj) => ({
   type: actionTypes.CHOOSE_WHITELIST,
   currentWhitelistObj,
 });
+export const setNewWhitelist = (newWhitelist) => ({
+  type: actionTypes.SET_NEW_WHITELIST,
+  newWhitelist,
+});
 
 // SAGAS
 export const wireDepositAction = (name, code, navigation) => ({
@@ -108,4 +114,8 @@ export const withdrawalAction = (OTP) => ({
 });
 export const getWhitelistAction = () => ({
   type: actionTypes.GET_WHITELIST_ACTION,
+});
+export const addWhitelistAction = (OTP) => ({
+  type: actionTypes.ADD_WHITELIST_ACTION,
+  OTP,
 });

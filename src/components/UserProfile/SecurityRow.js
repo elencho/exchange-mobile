@@ -12,12 +12,7 @@ import {
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
 import PurpleText from '../PurpleText';
-import {
-  setCurrentSecurityAction,
-  setEmailAuth,
-  setGoogleAuth,
-  setSmsAuth,
-} from '../../redux/profile/actions';
+import { setCurrentSecurityAction } from '../../redux/profile/actions';
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
   const dispatch = useDispatch();
