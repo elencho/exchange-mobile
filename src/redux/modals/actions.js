@@ -24,6 +24,7 @@ export const actionTypes = {
   CHOOSE_ADDRESS_MODAL: 'CHOOSE_ADDRESS_MODAL',
   WHITELIST_ACTIONS_MODAL: 'WHITELIST_ACTIONS_MODAL',
   ADD_WHITELIST_MODAL: 'ADD_WHITELIST_MODAL',
+  EDIT_WHITELIST_MODAL: 'EDIT_WHITELIST_MODAL',
   ADD_DEPOSIT_ADDRESS_MODAL: 'ADD_DEPOSIT_ADDRESS_MODAL',
 };
 
@@ -122,6 +123,10 @@ export const toggleWhitelistActionsModal = (whitelistActionsModalVisible) => ({
 export const toggleAddWhitelistModal = (addWhitelistModalVisble) => ({
   type: actionTypes.ADD_WHITELIST_MODAL,
   addWhitelistModalVisble,
+});
+export const toggleEditWhitelistModal = (editWhitelistModalVisble) => ({
+  type: actionTypes.EDIT_WHITELIST_MODAL,
+  editWhitelistModalVisble,
 });
 export const toggleAddDepositAddressModal = (addDepositAddressModalVisble) => ({
   type: actionTypes.ADD_DEPOSIT_ADDRESS_MODAL,

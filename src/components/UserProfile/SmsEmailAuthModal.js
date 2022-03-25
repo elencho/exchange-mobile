@@ -24,6 +24,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const {
     modals: { smsAuthModalVisible, emailAuthModalVisible },
     profile: { currentSecurityAction },
+    wallet: { newWhitelist, currentWhitelistObj },
   } = state;
 
   const action =
@@ -39,7 +40,11 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
         dispatch(withdrawalAction(value)); // value = OTP
       }
       if (whitelist) {
-        dispatch(addWhitelistAction(value)); // value = OTP
+        if (newWhitelist.name && newWhitelist.address) {
+          dispatch(addWhitelistAction(value)); // value = OTP
+        } else {
+          // edit
+        }
       }
       dispatch(toggleSmsAuthModal(false));
       dispatch(toggleEmailAuthModal(false));

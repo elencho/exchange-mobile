@@ -3,7 +3,10 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../../AppModal';
-import { toggleWhitelistActionsModal } from '../../../redux/modals/actions';
+import {
+  toggleEditWhitelistModal,
+  toggleWhitelistActionsModal,
+} from '../../../redux/modals/actions';
 import images from '../../../constants/images';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
@@ -16,6 +19,23 @@ export default function WhitelistActionsModal() {
 
   const hide = () => {
     dispatch(toggleWhitelistActionsModal(false));
+  };
+
+  const handlePress = (a) => {
+    switch (a) {
+      case 'Edit Whitelist':
+        hide();
+        setTimeout(() => {
+          dispatch(toggleEditWhitelistModal(true));
+        }, 1000);
+        break;
+      case 'Delete Whitelist':
+        return images.Delete_White;
+      case 'Copy Address':
+        return images.White_Copy;
+      default:
+        break;
+    }
   };
 
   const image = (a) => {
@@ -36,7 +56,11 @@ export default function WhitelistActionsModal() {
   const children = (
     <>
       {array.map((a) => (
-        <Pressable style={styles.pressable} key={a}>
+        <Pressable
+          style={styles.pressable}
+          key={a}
+          onPress={() => handlePress(a)}
+        >
           <Image source={image(a)} />
           <AppText body style={styles.primary}>
             {a}

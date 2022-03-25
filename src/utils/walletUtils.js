@@ -131,9 +131,10 @@ export const addWhitelistAddress = async (OTP, params) => {
 
 export const editWhitelistAddress = async (id, name) => {
   try {
-    const data = await axios.put(`${CRYPTO_WHITELIST}/${id}`, {
+    const data = await axios({
+      method: 'PUT',
       headers: { Authorization: bearer },
-      params: { name },
+      url: `${CRYPTO_WHITELIST}/${id}?name=${name}`,
     });
     return data.status;
   } catch (err) {

@@ -3,6 +3,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
   addWhitelistAddress,
   cryptoWithdrawal,
+  editWhitelistAddress,
   fetchCryptoAddresses,
   fetchWhitelist,
   fetchWireDeposit,
@@ -11,6 +12,8 @@ import {
 import { chooseCurrency, setAbbr } from '../transactions/actions';
 import {
   actionTypes,
+  chooseWhitelist,
+  getWhitelistAction,
   goToBalanceAction,
   saveCryptoAddresses,
   saveWhitelist,
@@ -19,7 +22,11 @@ import {
   setNetwork,
   setNewWhitelist,
 } from '../wallet/actions';
-import { addWhitelistParams, withdrawalParams } from './selectors';
+import {
+  addWhitelistParams,
+  editWhitelistParams,
+  withdrawalParams,
+} from './selectors';
 
 function* wireDepositSaga(action) {
   const { name, code, navigation } = action;
@@ -81,6 +88,16 @@ function* addWhitelistSaga(action) {
   }
 }
 
+function* editWhitelistSaga() {
+  const params = yield select(editWhitelistParams);
+  const { id, name } = params;
+  const status = yield call(editWhitelistAddress, id, name);
+  if (status === 200) {
+    yield put(chooseWhitelist({}));
+    yield put(getWhitelistAction());
+  }
+}
+
 export default function* () {
   yield takeLatest(actionTypes.WIRE_DEPOSIT_ACTION, wireDepositSaga);
   yield takeLatest(actionTypes.CRYPTO_ADDRESSES_ACTION, cryptoAddressesSaga);
@@ -92,4 +109,5 @@ export default function* () {
   yield takeLatest(actionTypes.WITHDRAWAL_ACTION, withdrawalSaga);
   yield takeLatest(actionTypes.GET_WHITELIST_ACTION, getWhitelistSaga);
   yield takeLatest(actionTypes.ADD_WHITELIST_ACTION, addWhitelistSaga);
+  yield takeLatest(actionTypes.EDIT_WHITELIST_ACTION, editWhitelistSaga);
 }

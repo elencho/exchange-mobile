@@ -6,7 +6,7 @@ import Headline from '../../components/TransactionHistory/Headline';
 import AppText from '../../components/AppText';
 import PurpleText from '../../components/PurpleText';
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
-import AddWhitelistModal from '../../components/Wallet/Whitelist/AddWhitelistModal';
+import AddEditWhitelistModal from '../../components/Wallet/Whitelist/AddEditWhitelistModal';
 import WhitelistActionsModal from '../../components/Wallet/Whitelist/WhitelistActionsModal';
 import WhitelistItem from '../../components/Wallet/Whitelist/WhitelistItem';
 import colors from '../../constants/colors';
@@ -42,13 +42,7 @@ export default function Whitelist() {
         <>
           <ScrollView contentContainerStyle={styles.scrollView}>
             {whitelist.map((w) => (
-              <WhitelistItem
-                key={w.id}
-                id={w.id}
-                name={w.name}
-                address={w.address}
-                tag={w.tag}
-              />
+              <WhitelistItem key={w.id} whitelistItem={w} />
             ))}
           </ScrollView>
 
@@ -69,7 +63,8 @@ export default function Whitelist() {
       )}
 
       <WhitelistActionsModal />
-      <AddWhitelistModal />
+      <AddEditWhitelistModal add />
+      <AddEditWhitelistModal edit />
       <SmsEmailAuthModal type="SMS" whitelist />
     </View>
   );

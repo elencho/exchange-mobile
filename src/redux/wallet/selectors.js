@@ -37,3 +37,13 @@ export const addWhitelistParams = (state) => {
     provider: network,
   };
 };
+
+export const editWhitelistParams = (state) => {
+  const {
+    wallet: {
+      currentWhitelistObj: { name, id },
+    },
+  } = state;
+
+  return { name, id };
+};

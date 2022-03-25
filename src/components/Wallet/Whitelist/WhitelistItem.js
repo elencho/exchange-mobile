@@ -6,11 +6,16 @@ import images from '../../../constants/images';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import { toggleWhitelistActionsModal } from '../../../redux/modals/actions';
+import { chooseWhitelist } from '../../../redux/wallet/actions';
 
-export default function WhitelistItem({ id, name, address, tag }) {
+export default function WhitelistItem({ whitelistItem }) {
+  const { name, address, tag } = whitelistItem;
   const dispatch = useDispatch();
 
-  const openModal = () => dispatch(toggleWhitelistActionsModal(true));
+  const openModal = () => {
+    dispatch(chooseWhitelist(whitelistItem));
+    dispatch(toggleWhitelistActionsModal(true));
+  };
 
   return (
     <View style={styles.container}>
