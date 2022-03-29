@@ -41,11 +41,6 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
         dispatch(setCurrentSecurityAction('email'));
 
         break;
-      case 'SMS_Auth':
-        if (googleAuth) dispatch(toggleGoogleOtpModal(true));
-        if (emailAuth) dispatch(toggleEmailAuthModal(true));
-        dispatch(setCurrentSecurityAction('sms'));
-        break;
       default:
         break;
     }
@@ -174,8 +169,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     height: 68,
-    // borderWidth: 1,
-    // borderColor: 'yellow',
     alignItems: 'center',
   },
   switch: {

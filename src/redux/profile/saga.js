@@ -76,7 +76,7 @@ function* credentialsForEmailSaga(action) {
   const { OTP } = action;
   const data = yield call(getOtpChangeToken, OTP, 'EMAIL');
   yield call(sendEmailOtp);
-  yield put(saveOtpChangeToken(data.otpChangeToken));
+  yield put(saveOtpChangeToken(data.changeOTPToken));
   yield put(toggleEmailAuthModal(true));
 }
 

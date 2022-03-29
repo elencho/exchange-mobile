@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../constants/colors';
 import { toggleGoogleOtpModal } from '../../redux/modals/actions';
 import {
+  credentialsForEmail,
   setEmailAuth,
   setGoogleAuth,
-  setSmsAuth,
 } from '../../redux/profile/actions';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
@@ -24,15 +24,9 @@ export default function GoogleOtpModal() {
   const [value, setValue] = useState('');
   useEffect(() => {
     if (value.length === 6) {
-      dispatch(toggleGoogleOtpModal(false));
-      dispatch(setGoogleAuth(false));
-
-      if (currentSecurityAction === 'email') {
-        dispatch(setEmailAuth(true));
-      }
-      if (currentSecurityAction === 'sms') {
-        dispatch(setSmsAuth(true));
-      }
+      dispatch(credentialsForEmail(value));
+      hide();
+      setValue('');
     }
   }, [value]);
 
