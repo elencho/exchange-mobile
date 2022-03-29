@@ -12,7 +12,13 @@ import {
   toggleGoogleAuthModal,
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
-import { setEmailAuth, setSmsAuth } from '../../redux/profile/actions';
+import {
+  activateEmailOtp,
+  credentialsForEmail,
+  setCurrentSecurityAction,
+  setEmailAuth,
+  setSmsAuth,
+} from '../../redux/profile/actions';
 import {
   addWhitelistAction,
   deleteWhitelistAction,
@@ -25,7 +31,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const {
     modals: { smsAuthModalVisible, emailAuthModalVisible },
     profile: { currentSecurityAction },
-    wallet: { newWhitelist, currentWhitelistObj },
+    wallet: { newWhitelist },
   } = state;
 
   const action =
@@ -48,8 +54,18 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
           dispatch(deleteWhitelistAction(value)); // value = OTP
         }
       }
+
+      if (smsAuthModalVisible) {
+        dispatch(credentialsForEmail(value));
+      }
+      if (emailAuthModalVisible) {
+        dispatch(activateEmailOtp(value));
+      }
+
       dispatch(toggleSmsAuthModal(false));
       dispatch(toggleEmailAuthModal(false));
+
+      setValue('');
     }
   }, [value]);
 
@@ -61,7 +77,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
         dispatch(toggleGoogleAuthModal(true));
       }
       if (currentSecurityAction === 'email') {
-        dispatch(setEmailAuth(true));
+        // dispatch(setEmailAuth(true));
         dispatch(setSmsAuth(false));
       }
       if (currentSecurityAction === 'sms') {

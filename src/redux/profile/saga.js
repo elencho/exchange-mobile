@@ -6,11 +6,19 @@ import {
   saveCountriesConstant,
   saveUserInfo,
   fetchUserInfo as fetchUserInfoAction,
+  saveOtpChangeToken,
+  setCurrentSecurityAction,
+  setSmsAuth,
+  setGoogleAuth,
+  setEmailAuth,
 } from './actions';
 import { getUserData } from './selectors';
 import {
+  activateEmailOtp,
   fetchCountries,
   fetchUserInfo as fetchUserInfoUtil,
+  getOtpChangeToken,
+  sendEmailOtp,
   subscribeMail,
   unsubscribeMail,
   updatePassword,
@@ -18,6 +26,7 @@ import {
   updateUserData,
   verifyPhoneNumber,
 } from '../../utils/userProfileUtils';
+import { toggleEmailAuthModal } from '../modals/actions';
 
 function* fetchCountriesSaga() {
   const countries = yield call(fetchCountries);
@@ -61,6 +70,29 @@ function* toggleSubscriptionSaga(action) {
   yield put(fetchUserInfoAction());
 }
 
+function* credentialsForEmailSaga(action) {
+  const { OTP } = action;
+  const otpChangeToken = yield call(getOtpChangeToken, OTP, 'EMAIL');
+  yield call(sendEmailOtp);
+  yield put(saveOtpChangeToken(otpChangeToken));
+  yield put(setCurrentSecurityAction('email'));
+  yield put(toggleEmailAuthModal(true));
+}
+
+function* activateEmailSaga(action) {
+  const { OTP } = action;
+  const otpChangeToken = yield select((state) => state.profile.otpChangeToken);
+  const status = yield call(activateEmailOtp, otpChangeToken, OTP);
+
+  if (status === 200) {
+    yield put(saveOtpChangeToken(null));
+    yield put(setCurrentSecurityAction(null));
+    yield put(setSmsAuth(false));
+    yield put(setGoogleAuth(false));
+    yield put(setEmailAuth(true));
+  }
+}
+
 export default function* () {
   yield takeLatest(actionTypes.FETCH_COUNTRIES_SAGA, fetchCountriesSaga);
   yield takeLatest(actionTypes.FETCH_USER_INFO_SAGA, fetchUserInfoSaga);
@@ -72,4 +104,6 @@ export default function* () {
   );
   yield takeLatest(actionTypes.SEND_VERIFICATION_CODE, verifyPhoneNumberSaga);
   yield takeLatest(actionTypes.UPDATE_PHONE_NUMBER, updatePhoneNumberSaga);
+  yield takeLatest(actionTypes.CREDENTIALS_FOR_EMAIL, credentialsForEmailSaga);
+  yield takeLatest(actionTypes.ACTIVATE_EMAIL_OTP, activateEmailSaga);
 }

@@ -14,6 +14,7 @@ export const actionTypes = {
   SET_EMAIL_AUTH: 'SET_EMAIL_AUTH',
   SET_SMS_AUTH: 'SET_SMS_AUTH',
   CURRENT_SECURITY_ACTION: 'CURRENT_SECURITY_ACTION',
+  SAVE_OTP_CHANGE_TOKEN: 'SAVE_OTP_CHANGE_TOKEN',
 
   // FOR SAGAS
   FETCH_COUNTRIES_SAGA: 'FETCH_COUNTRIES_SAGA',
@@ -23,6 +24,8 @@ export const actionTypes = {
   UPDATE_PASSWORD_SAGA: 'UPDATE_PASSWORD_SAGA',
   SEND_VERIFICATION_CODE: 'SEND_VERIFICATION_CODE',
   UPDATE_PHONE_NUMBER: 'UPDATE_PHONE_NUMBER',
+  ACTIVATE_EMAIL_OTP: 'ACTIVATE_EMAIL_OTP',
+  CREDENTIALS_FOR_EMAIL: 'CREDENTIALS_FOR_EMAIL',
 };
 
 export const switchPersonalSecurity = (Personal_Security) => ({
@@ -58,6 +61,10 @@ export const setSmsAuth = (smsAuth) => ({
 export const setCurrentSecurityAction = (currentSecurityAction) => ({
   type: actionTypes.CURRENT_SECURITY_ACTION,
   currentSecurityAction,
+});
+export const saveOtpChangeToken = (otpChangeToken) => ({
+  type: actionTypes.SAVE_OTP_CHANGE_TOKEN,
+  otpChangeToken,
 });
 
 // FOR SAGAS
@@ -98,4 +105,14 @@ export const updatePhoneNumber = (
   phoneNumber,
   phoneCountry,
   verificationNumber,
+});
+
+// 2FA SAGAS
+export const credentialsForEmail = (OTP) => ({
+  type: actionTypes.CREDENTIALS_FOR_EMAIL,
+  OTP,
+});
+export const activateEmailOtp = (OTP) => ({
+  type: actionTypes.ACTIVATE_EMAIL_OTP,
+  OTP,
 });

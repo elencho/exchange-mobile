@@ -13,6 +13,7 @@ import {
 } from '../../redux/modals/actions';
 import PurpleText from '../PurpleText';
 import { setCurrentSecurityAction } from '../../redux/profile/actions';
+import { sendOtp } from '../../utils/userProfileUtils';
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
   const dispatch = useDispatch();
@@ -32,8 +33,12 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
         break;
       case 'E_mail_Auth':
         if (googleAuth) dispatch(toggleGoogleOtpModal(true));
-        if (smsAuth) dispatch(toggleSmsAuthModal(true));
+        if (smsAuth) {
+          dispatch(toggleSmsAuthModal(true));
+          sendOtp();
+        }
         dispatch(setCurrentSecurityAction('email'));
+
         break;
       case 'SMS_Auth':
         if (googleAuth) dispatch(toggleGoogleOtpModal(true));
@@ -109,35 +114,43 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
     }
   };
 
+  const renderCond = () => {
+    if (text === 'SMS_Auth') {
+      return smsAuth;
+    }
+    return true;
+  };
+
   return (
-    <View
-      style={[styles.row, i < a.length - 1 && styles.marginBottom]}
-      key={text}
-    >
-      <View style={styles.imageContainer}>
-        <Image source={images[text]} />
-      </View>
+    <>
+      {renderCond() && (
+        <View style={styles.row} key={text}>
+          <View style={styles.imageContainer}>
+            <Image source={images[text]} />
+          </View>
 
-      <View style={styles.justify}>
-        <AppText medium style={styles.white}>
-          {textCond()}
-        </AppText>
-        <AppText subtext style={styles.secondary}>
-          {secondaryTextCond()}
-        </AppText>
-      </View>
+          <View style={styles.justify}>
+            <AppText medium style={styles.white}>
+              {textCond()}
+            </AppText>
+            <AppText subtext style={styles.secondary}>
+              {secondaryTextCond()}
+            </AppText>
+          </View>
 
-      {text === 'Strong_Password' ? (
-        <PurpleText text="Edit" onPress={handlePassword} />
-      ) : (
-        <Switch
-          style={styles.switch}
-          value={switchCond()}
-          onChange={handleChange}
-          disabled={disabledCond()}
-        />
+          {text === 'Strong_Password' ? (
+            <PurpleText text="Edit" onPress={handlePassword} />
+          ) : (
+            <Switch
+              style={styles.switch}
+              value={switchCond()}
+              onChange={handleChange}
+              disabled={disabledCond()}
+            />
+          )}
+        </View>
       )}
-    </View>
+    </>
   );
 }
 
@@ -154,18 +167,21 @@ const styles = StyleSheet.create({
     height: 38,
     marginHorizontal: 20,
   },
-  marginBottom: { marginBottom: 30 },
   secondary: {
     color: colors.SECONDARY_TEXT,
   },
   row: {
     flexDirection: 'row',
+    height: 68,
+    // borderWidth: 1,
+    // borderColor: 'yellow',
+    alignItems: 'center',
   },
   switch: {
     transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
     position: 'absolute',
     right: -7,
-    top: -5,
+    top: 10,
   },
   white: {
     color: colors.PRIMARY_TEXT,

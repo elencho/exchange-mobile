@@ -4,6 +4,7 @@ import {
   ACTIVATE_GOOGLE_OTP,
   bearer,
   COUNTRIES_URL,
+  EMAIL_VERIFICATION,
   OTP_CHANGE_TOKEN,
   SEND_OTP,
   SUBSCRIBE_EMAIL_URL,
@@ -139,8 +140,7 @@ export const getOtpChangeToken = async (OTP, newOTPType) => {
       headers: { Authorization: bearer, OTP },
       url: `${OTP_CHANGE_TOKEN}?newOTPType=${newOTPType}`,
     });
-
-    // return data.changeOTPToken
+    return data.data.changeOTPToken;
   } catch (err) {
     console.log(err);
   }
@@ -160,7 +160,7 @@ export const sendEmailOtp = async () => {
 
 export const activateEmailOtp = async (changeOTPToken, verificationCode) => {
   try {
-    await axios({
+    const data = await axios({
       method: 'POST',
       headers: {
         Authorization: bearer,
@@ -169,6 +169,7 @@ export const activateEmailOtp = async (changeOTPToken, verificationCode) => {
       url: ACTIVATE_EMAIL_OTP,
       data: `changeOTPToken=${changeOTPToken}&verificationCode=${verificationCode}`,
     });
+    return data.status;
   } catch (err) {
     console.log(err);
   }
