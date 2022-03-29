@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -7,13 +7,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import * as Clipboard from 'expo-clipboard';
 
 import { toggleGoogleAuthModal } from '../../redux/modals/actions';
-import {
-  setEmailAuth,
-  setGoogleAuth,
-  setSmsAuth,
-} from '../../redux/profile/actions';
+import { activateGoogleOtp } from '../../redux/profile/actions';
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
@@ -26,16 +23,20 @@ export default function GoogleAuthModal() {
   const state = useSelector((state) => state);
   const {
     modals: { googleAuthModalVisible },
+    profile: { totpSecretObj },
   } = state;
+
+  const [key, setKey] = useState('');
 
   const hide = () => dispatch(toggleGoogleAuthModal(false));
   const enable = () => {
-    dispatch(setGoogleAuth(true));
-    dispatch(setSmsAuth(false));
-    dispatch(setEmailAuth(false));
+    dispatch(activateGoogleOtp(key));
     hide();
   };
 
+  const handleKey = (key) => setKey(key);
+
+  const handleCopy = () => Clipboard.setString(totpSecretObj.totpSecretEncoded);
   const right = (
     <View style={styles.row}>
       <View style={styles.smallLine} />
@@ -65,13 +66,20 @@ export default function GoogleAuthModal() {
 
       <View style={styles.block}>
         <AppText subtext style={styles.subtext}>
-          Asdfghjklpasdfghjklqwertyuiopzxcvbmdgfkiu
+          {totpSecretObj.totpSecretEncoded}
         </AppText>
         <View style={styles.line} />
-        <Image source={images.Copy} />
+        <TouchableOpacity onPress={handleCopy}>
+          <Image source={images.Copy} />
+        </TouchableOpacity>
       </View>
 
-      <AppInput placeholder="Enter Key" right={right} />
+      <AppInput
+        placeholder="Enter Key"
+        right={right}
+        onChangeText={handleKey}
+        value={key}
+      />
     </>
   );
 

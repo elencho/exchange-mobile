@@ -14,7 +14,9 @@ import {
 } from '../../redux/modals/actions';
 import {
   activateEmailOtp,
+  activateGoogleOtp,
   credentialsForEmail,
+  credentialsForGoogle,
   setCurrentSecurityAction,
   setEmailAuth,
   setSmsAuth,
@@ -30,7 +32,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const state = useSelector((state) => state);
   const {
     modals: { smsAuthModalVisible, emailAuthModalVisible },
-    profile: { currentSecurityAction },
+    profile: { currentSecurityAction, googleAuth, emailAuth, smsAuth },
     wallet: { newWhitelist },
   } = state;
 
@@ -59,7 +61,12 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
         dispatch(credentialsForEmail(value));
       }
       if (emailAuthModalVisible) {
-        dispatch(activateEmailOtp(value));
+        if (currentSecurityAction === 'email') {
+          dispatch(activateEmailOtp(value));
+        }
+        if (currentSecurityAction === 'google') {
+          dispatch(credentialsForGoogle(value));
+        }
       }
 
       dispatch(toggleSmsAuthModal(false));
@@ -73,9 +80,9 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
 
   const handleHide = () => {
     if (value.length === cellCount) {
-      if (currentSecurityAction === 'google') {
-        dispatch(toggleGoogleAuthModal(true));
-      }
+      // if (currentSecurityAction === 'google') {
+      //   dispatch(toggleGoogleAuthModal(true));
+      // }
       if (currentSecurityAction === 'email') {
         // dispatch(setEmailAuth(true));
         dispatch(setSmsAuth(false));

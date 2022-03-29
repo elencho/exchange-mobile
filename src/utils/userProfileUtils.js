@@ -140,7 +140,7 @@ export const getOtpChangeToken = async (OTP, newOTPType) => {
       headers: { Authorization: bearer, OTP },
       url: `${OTP_CHANGE_TOKEN}?newOTPType=${newOTPType}`,
     });
-    return data.data.changeOTPToken;
+    return data.data;
   } catch (err) {
     console.log(err);
   }
@@ -180,8 +180,9 @@ export const activateGoogleOtp = async (
   totpCode,
   totpSecret
 ) => {
+  console.log(changeOTPToken, totpCode, totpSecret);
   try {
-    await axios({
+    const data = await axios({
       method: 'POST',
       headers: {
         Authorization: bearer,
@@ -190,6 +191,7 @@ export const activateGoogleOtp = async (
       url: ACTIVATE_GOOGLE_OTP,
       data: `changeOTPToken=${changeOTPToken}&totpCode=${totpCode}&totpSecret=${totpSecret}`,
     });
+    return data.status;
   } catch (err) {
     console.log(err);
   }

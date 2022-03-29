@@ -30,6 +30,7 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
         if (emailAuth) dispatch(toggleEmailAuthModal(true));
         if (smsAuth) dispatch(toggleSmsAuthModal(true));
         dispatch(setCurrentSecurityAction('google'));
+        sendOtp();
         break;
       case 'E_mail_Auth':
         if (googleAuth) dispatch(toggleGoogleOtpModal(true));

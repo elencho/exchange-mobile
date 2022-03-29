@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
   actionTypes,
@@ -11,10 +11,12 @@ import {
   setSmsAuth,
   setGoogleAuth,
   setEmailAuth,
+  saveTotpSecretObj,
 } from './actions';
 import { getUserData } from './selectors';
 import {
   activateEmailOtp,
+  activateGoogleOtp,
   fetchCountries,
   fetchUserInfo as fetchUserInfoUtil,
   getOtpChangeToken,
@@ -26,7 +28,7 @@ import {
   updateUserData,
   verifyPhoneNumber,
 } from '../../utils/userProfileUtils';
-import { toggleEmailAuthModal } from '../modals/actions';
+import { toggleEmailAuthModal, toggleGoogleAuthModal } from '../modals/actions';
 
 function* fetchCountriesSaga() {
   const countries = yield call(fetchCountries);
@@ -72,10 +74,9 @@ function* toggleSubscriptionSaga(action) {
 
 function* credentialsForEmailSaga(action) {
   const { OTP } = action;
-  const otpChangeToken = yield call(getOtpChangeToken, OTP, 'EMAIL');
+  const data = yield call(getOtpChangeToken, OTP, 'EMAIL');
   yield call(sendEmailOtp);
-  yield put(saveOtpChangeToken(otpChangeToken));
-  yield put(setCurrentSecurityAction('email'));
+  yield put(saveOtpChangeToken(data.otpChangeToken));
   yield put(toggleEmailAuthModal(true));
 }
 
@@ -93,6 +94,33 @@ function* activateEmailSaga(action) {
   }
 }
 
+function* credentialsForGoogleSaga(action) {
+  const { OTP } = action;
+  const data = yield call(getOtpChangeToken, OTP, 'TOTP');
+
+  yield put(saveOtpChangeToken(data.changeOTPToken));
+  yield put(saveTotpSecretObj(data.totp));
+  yield delay(1000);
+  yield put(toggleGoogleAuthModal(true));
+}
+
+function* activateGoogleSaga(action) {
+  const { OTP } = action;
+  const otpChangeToken = yield select((state) => state.profile.otpChangeToken);
+  const totpSecret = yield select(
+    (state) => state.profile.totpSecretObj.totpSecret
+  );
+  const status = yield call(activateGoogleOtp, otpChangeToken, OTP, totpSecret);
+
+  if (status === 200) {
+    yield put(saveOtpChangeToken(null));
+    yield put(setCurrentSecurityAction(null));
+    yield put(setSmsAuth(false));
+    yield put(setGoogleAuth(true));
+    yield put(setEmailAuth(false));
+  }
+}
+
 export default function* () {
   yield takeLatest(actionTypes.FETCH_COUNTRIES_SAGA, fetchCountriesSaga);
   yield takeLatest(actionTypes.FETCH_USER_INFO_SAGA, fetchUserInfoSaga);
@@ -106,4 +134,9 @@ export default function* () {
   yield takeLatest(actionTypes.UPDATE_PHONE_NUMBER, updatePhoneNumberSaga);
   yield takeLatest(actionTypes.CREDENTIALS_FOR_EMAIL, credentialsForEmailSaga);
   yield takeLatest(actionTypes.ACTIVATE_EMAIL_OTP, activateEmailSaga);
+  yield takeLatest(actionTypes.ACTIVATE_GOOGLE_OTP, activateGoogleSaga);
+  yield takeLatest(
+    actionTypes.CREDENTIALS_FOR_GOOGLE,
+    credentialsForGoogleSaga
+  );
 }

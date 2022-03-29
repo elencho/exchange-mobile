@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   smsAuth: false,
   currentSecurityAction: null,
   otpChangeToken: null,
+  totpSecretObj: {},
 
   countries: [],
   countriesConstant: [],
@@ -30,6 +31,7 @@ export default (state = INITIAL_STATE, action) => {
     smsAuth,
     currentSecurityAction,
     otpChangeToken,
+    totpSecretObj,
   } = action;
   switch (action.type) {
     case actionTypes.SWITCH_PERSONAL_SECURITY:
@@ -76,6 +78,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         otpChangeToken,
+      };
+    case actionTypes.SAVE_TOTP_SECRET_OBJ:
+      return {
+        ...state,
+        totpSecretObj,
       };
     default:
       return state;

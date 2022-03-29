@@ -15,6 +15,7 @@ export const actionTypes = {
   SET_SMS_AUTH: 'SET_SMS_AUTH',
   CURRENT_SECURITY_ACTION: 'CURRENT_SECURITY_ACTION',
   SAVE_OTP_CHANGE_TOKEN: 'SAVE_OTP_CHANGE_TOKEN',
+  SAVE_TOTP_SECRET_OBJ: 'SAVE_TOTP_SECRET_OBJ',
 
   // FOR SAGAS
   FETCH_COUNTRIES_SAGA: 'FETCH_COUNTRIES_SAGA',
@@ -26,6 +27,8 @@ export const actionTypes = {
   UPDATE_PHONE_NUMBER: 'UPDATE_PHONE_NUMBER',
   ACTIVATE_EMAIL_OTP: 'ACTIVATE_EMAIL_OTP',
   CREDENTIALS_FOR_EMAIL: 'CREDENTIALS_FOR_EMAIL',
+  CREDENTIALS_FOR_GOOGLE: 'CREDENTIALS_FOR_GOOGLE',
+  ACTIVATE_GOOGLE_OTP: 'ACTIVATE_GOOGLE_OTP',
 };
 
 export const switchPersonalSecurity = (Personal_Security) => ({
@@ -65,6 +68,10 @@ export const setCurrentSecurityAction = (currentSecurityAction) => ({
 export const saveOtpChangeToken = (otpChangeToken) => ({
   type: actionTypes.SAVE_OTP_CHANGE_TOKEN,
   otpChangeToken,
+});
+export const saveTotpSecretObj = (totpSecretObj) => ({
+  type: actionTypes.SAVE_TOTP_SECRET_OBJ,
+  totpSecretObj,
 });
 
 // FOR SAGAS
@@ -114,5 +121,13 @@ export const credentialsForEmail = (OTP) => ({
 });
 export const activateEmailOtp = (OTP) => ({
   type: actionTypes.ACTIVATE_EMAIL_OTP,
+  OTP,
+});
+export const credentialsForGoogle = (OTP) => ({
+  type: actionTypes.CREDENTIALS_FOR_GOOGLE,
+  OTP,
+});
+export const activateGoogleOtp = (OTP) => ({
+  type: actionTypes.ACTIVATE_GOOGLE_OTP,
   OTP,
 });
