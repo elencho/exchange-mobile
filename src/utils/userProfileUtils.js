@@ -180,7 +180,6 @@ export const activateGoogleOtp = async (
   totpCode,
   totpSecret
 ) => {
-  console.log(changeOTPToken, totpCode, totpSecret);
   try {
     const data = await axios({
       method: 'POST',

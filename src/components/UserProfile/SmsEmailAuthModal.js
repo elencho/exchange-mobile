@@ -58,8 +58,14 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
       }
 
       if (smsAuthModalVisible) {
-        dispatch(credentialsForEmail(value));
+        if (currentSecurityAction === 'email') {
+          dispatch(credentialsForEmail(value));
+        }
+        if (currentSecurityAction === 'google') {
+          dispatch(credentialsForGoogle(value));
+        }
       }
+
       if (emailAuthModalVisible) {
         if (currentSecurityAction === 'email') {
           dispatch(activateEmailOtp(value));
