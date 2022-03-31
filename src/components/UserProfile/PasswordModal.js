@@ -162,9 +162,9 @@ export default function PasswordModal() {
   };
 
   const hideIcon = (
-    <TouchableOpacity onPress={toggle}>
+    <Pressable onPress={toggle}>
       <Image source={passwordState.secure ? images.Hide : images.Show} />
-    </TouchableOpacity>
+    </Pressable>
   );
 
   const children = () => {

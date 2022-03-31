@@ -40,6 +40,7 @@ export default function FilterRow({ array = [''], multiselect = false }) {
               styles.text,
               filterConditional(fil) && { color: colors.SECONDARY_PURPLE },
             ]}
+            medium={filterConditional(fil)}
           >
             {fil}
           </AppText>
@@ -51,18 +52,18 @@ export default function FilterRow({ array = [''], multiselect = false }) {
 
 const styles = StyleSheet.create({
   filterButton: {
-    paddingVertical: 10,
+    height: 34,
     paddingHorizontal: 15,
     borderRadius: 40,
     backgroundColor: 'rgba(31, 31, 53, 0.9)',
-    marginRight: 5,
+    marginRight: 6,
+    justifyContent: 'center',
   },
   filterRow: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   text: {
-    fontSize: 15,
     color: colors.SECONDARY_TEXT,
     textTransform: 'capitalize',
   },

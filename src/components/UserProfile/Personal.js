@@ -54,7 +54,12 @@ export default function Personal() {
               My Phone Number
             </AppText>
             <View style={styles.flex}>
-              <PurpleText text="Edit" style={styles.purple} onPress={edit} />
+              <PurpleText
+                text="Edit"
+                style={styles.purple}
+                onPress={edit}
+                subtext
+              />
             </View>
           </View>
         );
@@ -127,7 +132,7 @@ export default function Personal() {
       </View>
 
       <PersonalInformation />
-      <CompanyInformation />
+      {userInfo.company && <CompanyInformation />}
 
       <PersonalInfoModal />
       <PhoneNumberModal />

@@ -23,7 +23,12 @@ export default function PersonalInformation() {
           Personal Information
         </AppText>
         <View style={styles.flex}>
-          <PurpleText text="Edit" style={styles.purple} onPress={edit} />
+          <PurpleText
+            text="Edit"
+            style={styles.purple}
+            onPress={edit}
+            subtext
+          />
         </View>
       </View>
 

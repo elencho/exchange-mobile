@@ -123,14 +123,14 @@ export default function PhoneNumberModal() {
 
             <AppInput
               style={styles.inputContainer}
-              placeholder="Phone Number"
+              label="Phone Number"
               right={send}
               onChangeText={(text) => handlePhoneNumber(text)}
               value={phoneNumber}
             />
             <AppInput
               style={styles.inputContainer}
-              placeholder="Verification Code"
+              label="Verification Code"
               onChangeText={(text) => handleVerificationNumber(text)}
               value={verificationNumber}
             />
