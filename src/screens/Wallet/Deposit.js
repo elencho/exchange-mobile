@@ -33,17 +33,19 @@ import { generateWirePdf } from '../../utils/walletUtils';
 
 export default function Deposit() {
   const dispatch = useDispatch();
-  const code = useSelector((state) => state.transactions.code);
-  const wallet = useSelector((state) => state.wallet);
-  const balance = useSelector((state) => state.trade.balance);
+  const state = useSelector((state) => state);
   const [address, setAddress] = useState([]);
   const [memoTag, setMemoTag] = useState(null);
   const [amount, setAmount] = useState(null);
 
   const {
-    cryptoAddresses,
-    wireDepositInfo: { en },
-  } = wallet;
+    transactions: { code },
+    trade: { balance },
+    wallet: {
+      cryptoAddresses,
+      wireDepositInfo: { en },
+    },
+  } = state;
 
   useEffect(() => {
     if (cryptoAddresses.length) {
@@ -109,7 +111,7 @@ export default function Deposit() {
           </>
         )}
 
-        {hasAddress() && (
+        {hasAddress() && !isFiat && (
           <>
             <WalletQrCode address={address} memoTag={memoTag} />
             {memoTag && <XrpMemoWarning />}
@@ -117,7 +119,7 @@ export default function Deposit() {
         )}
       </View>
 
-      {hasAddress() && (
+      {hasAddress() && !isFiat && (
         <>
           <AddressList
             cryptoAddresses={cryptoAddresses}
@@ -177,7 +179,7 @@ export default function Deposit() {
                 <View style={styles.row}>
                   <View style={styles.line} />
                   <AppText subtext style={styles.subtext}>
-                    USD
+                    {code}
                   </AppText>
                 </View>
               }
