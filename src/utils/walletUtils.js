@@ -150,7 +150,6 @@ export const deleteWhitelistAddress = async (id, OTP) => {
       headers: { Authorization: bearer, OTP },
       url: `${CRYPTO_WHITELIST}/${id}`,
     });
-    console.log(data);
     return data.status;
   } catch (err) {
     console.log(err);
