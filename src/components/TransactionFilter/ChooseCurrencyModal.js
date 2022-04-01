@@ -12,6 +12,7 @@ import {
 import { toggleCurrencyModal } from '../../redux/modals/actions';
 import {
   cryptoAddressesAction,
+  setNetwork,
   wireDepositAction,
 } from '../../redux/wallet/actions';
 import { withNavigation } from 'react-navigation';
@@ -27,7 +28,7 @@ function ChooseCurrencyModal({ wallet = false, navigation }) {
   const {
     transactions: { currencies, currenciesConstant, currency },
     modals: { chooseCurrencyModalVisible },
-    wallet: { network },
+    trade: { balance },
   } = state;
 
   const filter = (text) => {
@@ -42,6 +43,16 @@ function ChooseCurrencyModal({ wallet = false, navigation }) {
   };
 
   const choose = (name, code) => {
+    let network;
+    balance.balances.forEach((b) => {
+      if (code === b.currencyCode) {
+        if (b.depositMethods.WALLET)
+          network = b.depositMethods.WALLET[0].provider;
+        if (b.depositMethods.WIRE) network = b.depositMethods.WIRE[0].provider;
+        dispatch(setNetwork(network));
+      }
+    });
+
     if (wallet) {
       if (code === 'GEL' || code === 'USD') {
         dispatch(wireDepositAction(name, code, navigation));
