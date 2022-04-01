@@ -132,13 +132,13 @@ export default function PasswordModal() {
       passwordState;
     switch (i) {
       case 0:
-        return { backgroundColor: eightChars ? '#F83974' : '#25D8D1' };
+        return { backgroundColor: eightChars ? '#25D8D1' : '#F83974' };
       case 1:
-        return { backgroundColor: hasNumber ? '#F83974' : '#25D8D1' };
+        return { backgroundColor: hasNumber ? '#25D8D1' : '#F83974' };
       case 2:
-        return { backgroundColor: hasSymbol ? '#F83974' : '#25D8D1' };
+        return { backgroundColor: hasSymbol ? '#25D8D1' : '#F83974' };
       case 3:
-        return { backgroundColor: hasUpperAndLower ? '#F83974' : '#25D8D1' };
+        return { backgroundColor: hasUpperAndLower ? '#25D8D1' : '#F83974' };
       default:
         break;
     }
@@ -149,13 +149,13 @@ export default function PasswordModal() {
       passwordState;
     switch (i) {
       case 0:
-        return { color: eightChars ? '#969CBF' : colors.SECONDARY_TEXT };
+        return { color: eightChars ? colors.SECONDARY_TEXT : '#969CBF' };
       case 1:
-        return { color: hasNumber ? '#969CBF' : colors.SECONDARY_TEXT };
+        return { color: hasNumber ? colors.SECONDARY_TEXT : '#969CBF' };
       case 2:
-        return { color: hasSymbol ? '#969CBF' : colors.SECONDARY_TEXT };
+        return { color: hasSymbol ? colors.SECONDARY_TEXT : '#969CBF' };
       case 3:
-        return { color: hasUpperAndLower ? '#969CBF' : colors.SECONDARY_TEXT };
+        return { color: hasUpperAndLower ? colors.SECONDARY_TEXT : '#969CBF' };
       default:
         break;
     }
