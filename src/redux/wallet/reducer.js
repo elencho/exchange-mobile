@@ -10,7 +10,6 @@ const INITIAL_STATE = {
   cryptoAddresses: [],
 
   //Withdrawal
-  destinationAddress: '',
   withdrawalAmount: null,
   withdrawalNote: '',
 

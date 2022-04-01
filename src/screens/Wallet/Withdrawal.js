@@ -17,8 +17,8 @@ import {
 } from '../../redux/modals/actions';
 import ChooseAddressModal from '../../components/Wallet/Withdrawal/ChooseAddressModal';
 import {
+  chooseWhitelist,
   getWhitelistAction,
-  setDestinationAddress,
   setWithdrawalAmount,
   setWithdrawalNote,
 } from '../../redux/wallet/actions';
@@ -30,7 +30,6 @@ export default function Withdrawal() {
   const {
     wallet: {
       withdrawalAmount,
-      destinationAddress,
       withdrawalNote,
       hasWhitelist,
       currentWhitelistObj,
@@ -43,7 +42,8 @@ export default function Withdrawal() {
     dispatch(getWhitelistAction());
   }, [code]);
 
-  const setAddress = (address) => dispatch(setDestinationAddress(address));
+  const setAddress = (address) =>
+    dispatch(chooseWhitelist({ ...currentWhitelistObj, address }));
   const setAmount = (amount) => dispatch(setWithdrawalAmount(amount));
   const setNote = (note) => dispatch(setWithdrawalNote(note));
   const withdraw = () => {
@@ -86,7 +86,7 @@ export default function Withdrawal() {
               labelBackgroundColor={colors.SECONDARY_BACKGROUND}
               style={styles.address}
               onChangeText={setAddress}
-              value={destinationAddress}
+              value={currentWhitelistObj.address}
             />
           )}
         </View>

@@ -8,7 +8,6 @@ export const actionTypes = {
   SAVE_CRYPTO_ADDRESSES: 'SAVE_CRYPTO_ADDRESSES',
 
   // Withdrawal
-  SET_DESTINATION_ADDRESS: 'SET_DESTINATION_ADDRESS',
   SET_WITHDRAWAL_AMOUNT: 'SET_WITHDRAWAL_AMOUNT',
   SET_WITHDRAWAL_NOTE: 'SET_WITHDRAWAL_NOTE',
 
@@ -54,10 +53,6 @@ export const saveCryptoAddresses = (cryptoAddresses) => ({
 });
 
 //WITHDRAWAL
-export const setDestinationAddress = (destinationAddress) => ({
-  type: actionTypes.SET_DESTINATION_ADDRESS,
-  destinationAddress,
-});
 export const setWithdrawalAmount = (withdrawalAmount) => ({
   type: actionTypes.SET_WITHDRAWAL_AMOUNT,
   withdrawalAmount,

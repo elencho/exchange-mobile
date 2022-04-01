@@ -9,13 +9,18 @@ export const wireDepositParams = (state) => {
 export const withdrawalParams = (state) => {
   const {
     transactions: { code },
-    wallet: { destinationAddress, withdrawalAmount, withdrawalNote, network },
+    wallet: {
+      currentWhitelistObj: { address },
+      withdrawalAmount,
+      withdrawalNote,
+      network,
+    },
   } = state;
 
   return {
     currency: code,
     amount: withdrawalAmount,
-    address: destinationAddress,
+    address,
     note: withdrawalNote,
     provider: network,
   };

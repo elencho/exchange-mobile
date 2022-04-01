@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,6 +21,12 @@ export default function ChooseAddressModal() {
     dispatch(chooseWhitelist(whitelist));
     hide();
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(chooseWhitelist({}));
+    };
+  }, []);
 
   const children = (
     <>
@@ -76,7 +82,8 @@ const styles = StyleSheet.create({
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
-    marginTop: 3,
+    marginTop: 5,
+    lineHeight: 15,
   },
   right: {
     alignItems: 'flex-end',
