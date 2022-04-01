@@ -1,13 +1,18 @@
+import jwt_decode from 'jwt-decode';
+
 import { actionTypes } from './actions';
+import { bearer } from '../../constants/api';
+
+const type = jwt_decode(bearer.split(' ')[1]).otpType;
 
 const INITIAL_STATE = {
   Personal_Security: 'Security',
   userInfo: {},
 
   // Security
-  googleAuth: false,
-  emailAuth: false,
-  smsAuth: false,
+  googleAuth: type === 'TOTP',
+  emailAuth: type === 'EMAIL',
+  smsAuth: type === 'SMS',
   currentSecurityAction: null,
   otpChangeToken: null,
   totpSecretObj: {},
