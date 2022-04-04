@@ -1,12 +1,16 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import AppText from '../AppText';
 
 function TopRow({ navigation }) {
+  const userInfo = useSelector((state) => state.profile.userInfo);
+  const { firstName, lastName } = userInfo;
+
   return (
     <View style={styles.topRow}>
       <Image source={images.Logo} style={styles.logo} />
@@ -16,7 +20,7 @@ function TopRow({ navigation }) {
         onPress={() => navigation.navigate('UserProfile')}
       >
         <AppText medium style={styles.text}>
-          NT
+          {firstName[0]} {lastName[0]}
         </AppText>
         <View style={styles.dot} />
       </Pressable>
@@ -58,5 +62,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  text: { color: colors.PRIMARY_TEXT, fontSize: 15 },
+  text: {
+    color: colors.PRIMARY_TEXT,
+    fontSize: 15,
+    textTransform: 'uppercase',
+  },
 });

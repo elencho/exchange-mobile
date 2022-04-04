@@ -35,7 +35,7 @@ export default function PersonalInformation() {
       <View style={[styles.row, { marginTop: 20 }]}>
         <View style={styles.column}>
           <AppText subtext style={styles.secondary}>
-            Your Surname:
+            Your Name:
           </AppText>
           <AppText subtext style={styles.secondary}>
             Country / City:
