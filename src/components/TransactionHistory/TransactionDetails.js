@@ -9,7 +9,16 @@ export default function TransactionDetails() {
   const state = useSelector((state) => state.transactions);
 
   const {
-    currentTransaction: { method, amount, fee, status, date, time, currency },
+    currentTransaction: {
+      method,
+      amount,
+      fee,
+      status,
+      date,
+      time,
+      currency,
+      type,
+    },
   } = state;
 
   const LeftText = ({ text }) => (
@@ -29,12 +38,15 @@ export default function TransactionDetails() {
   return (
     <View style={styles.container}>
       <View>
-        {['Method', 'Amount', 'Fee', 'Date / Time', 'Status'].map((e) => (
-          <LeftText key={e} text={e} />
-        ))}
+        {['Type', 'Method', 'Amount', 'Fee', 'Date / Time', 'Status'].map(
+          (e) => (
+            <LeftText key={e} text={e} />
+          )
+        )}
       </View>
 
       <View style={styles.right}>
+        <RightText text={type} style={styles.capitalize} />
         <RightText text={method} style={styles.capitalize} />
         <RightText text={`${amount} ${currency}`} />
         <RightText text={`${fee} ${currency}`} />
