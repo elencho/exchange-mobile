@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import {
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  TextInput,
-  View,
-} from 'react-native';
+import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { fetchOffers } from '../../redux/trade/actions';
-import { generateWirePdf } from '../../utils/walletUtils';
+import AppInput from '../AppInput';
 import AppText from '../AppText';
 import Currency from './Currency';
 
@@ -21,6 +14,8 @@ export default function BalancesList() {
   const balances = useSelector((state) => state.trade.balance.balances);
   const [showZeroBalances, setShowZeroBalances] = useState(true);
   const [nonZeroBalances, setNonZeroBalances] = useState(null);
+  const [filteredBalances, setFilteredBalances] = useState([]);
+  const [value, setValue] = useState('');
 
   useEffect(() => {
     dispatch(fetchOffers());
@@ -30,11 +25,25 @@ export default function BalancesList() {
     if (balances) {
       const nonZeroBalances = balances.filter((b) => b.total > 0);
       setNonZeroBalances(nonZeroBalances);
+      setFilteredBalances(balances);
     }
   }, [balances]);
 
-  const toggleZeroBalances = () => {
-    setShowZeroBalances(!showZeroBalances);
+  useEffect(() => {
+    type(value);
+  }, [showZeroBalances]);
+
+  const toggleZeroBalances = () => setShowZeroBalances(!showZeroBalances);
+
+  const type = (text) => {
+    setValue(text);
+    const array = showZeroBalances ? balances : nonZeroBalances;
+    const filteredArray = array.filter(
+      (c) =>
+        c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
+        c.currencyName.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredBalances(filteredArray);
   };
 
   const renderCurrency = ({ item }) => (
@@ -51,16 +60,12 @@ export default function BalancesList() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <Image source={images.Search} />
-        <TextInput
-          placeholder="Search Coin"
-          placeholderTextColor="rgba(105, 111, 142, 0.5)"
-          style={styles.input}
-          // value="https://test-core-matching.cryptx.loc/swagger-connector-1.0/swagger/mobile#/Account%20Methods/generateDepositAddress"
-          //   onChangeText={filter}
-        />
-      </View>
+      <AppInput
+        placeholder="Search Coin"
+        placeholderTextColor="rgba(105, 111, 142, 0.5)"
+        onChangeText={type}
+        left={<Image source={images.Search} style={styles.searchIcon} />}
+      />
 
       <Pressable style={styles.hide} onPress={toggleZeroBalances}>
         <View style={styles.radio}>
@@ -73,7 +78,7 @@ export default function BalancesList() {
 
       {balances && (
         <FlatList
-          data={showZeroBalances ? balances : nonZeroBalances}
+          data={filteredBalances}
           renderItem={renderCurrency}
           keyExtractor={(item) => item.currencyCode}
         />
@@ -95,20 +100,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 20,
   },
-  inputContainer: {
-    height: 45,
-    borderWidth: 1,
-    borderColor: '#3C4167',
-    paddingHorizontal: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  input: {
-    height: '100%',
-    fontSize: 15,
-    color: colors.PRIMARY_TEXT,
-    flex: 1,
-    marginLeft: 10,
+  searchIcon: {
+    marginRight: 10,
   },
   radio: {
     width: 42,

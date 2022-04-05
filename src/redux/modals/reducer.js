@@ -34,6 +34,7 @@ const INITIAL_STATE = {
   addWhitelistModalVisble: false,
   editWhitelistModalVisble: false,
   addDepositAddressModalVisble: false,
+  transferMethodModalVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -63,6 +64,7 @@ export default (state = INITIAL_STATE, action) => {
     addWhitelistModalVisble,
     addDepositAddressModalVisble,
     editWhitelistModalVisble,
+    transferMethodModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -189,6 +191,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         addDepositAddressModalVisble,
+      };
+    case actionTypes.TOGGLE_TRANSFER_METHOD_MODAL:
+      return {
+        ...state,
+        transferMethodModalVisible,
       };
     default:
       return state;

@@ -11,6 +11,14 @@ function TopRow({ navigation }) {
   const userInfo = useSelector((state) => state.profile.userInfo);
   const { firstName, lastName } = userInfo;
 
+  const initials = () => {
+    if (userInfo.firstName && userInfo.lastName) {
+      return `${firstName[0]} ${lastName[0]}`;
+    } else {
+      return `ME`;
+    }
+  };
+
   return (
     <View style={styles.topRow}>
       <Image source={images.Logo} style={styles.logo} />
@@ -20,7 +28,7 @@ function TopRow({ navigation }) {
         onPress={() => navigation.navigate('UserProfile')}
       >
         <AppText medium style={styles.text}>
-          {firstName[0]} {lastName[0]}
+          {initials()}
         </AppText>
         <View style={styles.dot} />
       </Pressable>

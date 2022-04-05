@@ -7,24 +7,45 @@ import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
+import { setNetwork } from '../../../redux/wallet/actions';
 
 export default function ChooseNetworkModal() {
   const dispatch = useDispatch();
-  const chooseNetworkModalVisible = useSelector(
-    (state) => state.modals.chooseNetworkModalVisible
-  );
+  const state = useSelector((state) => state);
 
-  const hide = () => {
-    dispatch(toggleChooseNetworkModal(false));
+  const {
+    modals: { chooseNetworkModalVisible },
+    wallet: { network },
+  } = state;
+
+  const hide = () => dispatch(toggleChooseNetworkModal(false));
+  const handlePress = (n) => {
+    dispatch(setNetwork(n));
+    hide();
+  };
+
+  const name = (n) => {
+    if (n === 'ERC20') return 'Ethereum Network';
+    if (n === 'BEP20') return 'Binance Smart Chain';
+  };
+
+  const background = (m) => {
+    if (m === network) {
+      return { backgroundColor: 'rgba(101, 130, 253, 0.1)' };
+    }
   };
 
   const children = (
     <>
-      {['Ethereum', 'Binace Smart Chain'].map((n, i) => (
+      {['ERC20', 'BEP20'].map((n, i) => (
         <Pressable
-          style={[styles.network, i === 1 && { marginBottom: 0 }]}
+          style={[
+            styles.network,
+            background(n),
+            i === 1 && { marginBottom: -10 },
+          ]}
           key={n}
-          onPress={hide}
+          onPress={() => handlePress(n)}
         >
           <Image
             source={images[n === 'Ethereum' ? 'ETH' : 'Binance']}
@@ -32,10 +53,10 @@ export default function ChooseNetworkModal() {
           />
           <View style={styles.name}>
             <AppText medium body style={styles.primary}>
-              {n}
+              {name(n)}
             </AppText>
             <AppText subtext style={styles.secondary}>
-              {n === 'Ethereum' ? 'ERC20' : 'BEP20'}
+              {n}
             </AppText>
           </View>
         </Pressable>
@@ -55,17 +76,21 @@ export default function ChooseNetworkModal() {
 }
 
 const styles = StyleSheet.create({
-  image: { width: 37, height: 37 },
+  image: { width: 30, height: 30 },
   name: {
     marginLeft: 20,
     justifyContent: 'space-between',
   },
   network: {
     flexDirection: 'row',
-    marginBottom: 15,
+    height: 62,
+    alignItems: 'center',
+    marginHorizontal: -15,
+    paddingHorizontal: 15,
   },
   primary: {
     color: colors.PRIMARY_TEXT,
+    marginBottom: 5,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

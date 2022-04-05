@@ -1,16 +1,22 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
+import { toggleTransferMethodModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 
 export default function TransferMethodDropdown() {
+  const dispatch = useDispatch();
+  const network = useSelector((state) => state.wallet.network);
+  const show = () => dispatch(toggleTransferMethodModal(true));
+
   return (
-    <Pressable style={styles.dropdown}>
+    <Pressable style={styles.dropdown} onPress={show}>
       <Image source={images.Swift} style={styles.image} />
       <AppText medium style={styles.dropdownText}>
-        SWIFT Deposit
+        {network} Deposit
       </AppText>
       <Image source={images.Arrow} />
     </Pressable>

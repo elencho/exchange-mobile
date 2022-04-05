@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import images from '../../../constants/images';
 import colors from '../../../constants/colors';
@@ -9,9 +9,15 @@ import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 
 export default function ChooseNetworkDropdown() {
   const dispatch = useDispatch();
+  const network = useSelector((state) => state.wallet.network);
 
   const handleDropdown = () => {
     dispatch(toggleChooseNetworkModal(true));
+  };
+
+  const networkName = () => {
+    if (network === 'ERC20') return 'Ethereum Network';
+    if (network === 'BEP20') return 'Binance Smart Chain';
   };
 
   return (
@@ -24,7 +30,7 @@ export default function ChooseNetworkDropdown() {
 
       <Image source={images.BTC} style={styles.image} />
       <AppText medium style={styles.dropdownText}>
-        Binance smart chain <AppText style={styles.secondary}>(BEP20)</AppText>
+        {networkName()} <AppText style={styles.secondary}>({network})</AppText>
       </AppText>
       <Image source={images.Arrow} />
     </Pressable>

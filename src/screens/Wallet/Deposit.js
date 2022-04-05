@@ -30,6 +30,7 @@ import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMeth
 import AppInput from '../../components/AppInput';
 import { generateCryptoAddressAction } from '../../redux/wallet/actions';
 import { generateWirePdf } from '../../utils/walletUtils';
+import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -37,6 +38,8 @@ export default function Deposit() {
   const [address, setAddress] = useState([]);
   const [memoTag, setMemoTag] = useState(null);
   const [amount, setAmount] = useState(null);
+  const [hasMultipleMethods, setHasMultipleMethods] = useState(false);
+  const [hasMultipleNetworks, setHasMultipleNetworks] = useState(false);
 
   const {
     transactions: { code },
@@ -53,6 +56,17 @@ export default function Deposit() {
       if (cryptoAddresses[0].tag) {
         setMemoTag(cryptoAddresses[0].tag);
       }
+    }
+
+    if (balance.balances) {
+      balance.balances.forEach((b) => {
+        if (b.currencyCode === code) {
+          setHasMultipleMethods(Object.keys(b.depositMethods).length > 1);
+          if (b.depositMethods.WALLET) {
+            setHasMultipleNetworks(b.depositMethods.WALLET.length > 1);
+          }
+        }
+      });
     }
   }, [code]);
 
@@ -98,10 +112,15 @@ export default function Deposit() {
       <View style={styles.block}>
         <WalletCoinsDropdown />
         {!isFiat ? (
-          <ChooseNetworkDropdown />
+          <>{hasMultipleNetworks && <ChooseNetworkDropdown />}</>
         ) : (
           <>
-            <TransferMethodDropdown />
+            {hasMultipleMethods && (
+              <>
+                <TransferMethodDropdown />
+                <TransferMethodModal />
+              </>
+            )}
             <View style={styles.warning}>
               <Image source={images.Time} />
               <AppText subtext style={styles.subtext}>
