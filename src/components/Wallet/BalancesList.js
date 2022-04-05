@@ -13,7 +13,7 @@ export default function BalancesList() {
   const dispatch = useDispatch();
   const balances = useSelector((state) => state.trade.balance.balances);
   const [showZeroBalances, setShowZeroBalances] = useState(true);
-  const [nonZeroBalances, setNonZeroBalances] = useState(null);
+  const [nonZeroBalances, setNonZeroBalances] = useState([]);
   const [filteredBalances, setFilteredBalances] = useState([]);
   const [value, setValue] = useState('');
 
@@ -30,7 +30,7 @@ export default function BalancesList() {
   }, [balances]);
 
   useEffect(() => {
-    type(value);
+    if (balances) type(value);
   }, [showZeroBalances]);
 
   const toggleZeroBalances = () => setShowZeroBalances(!showZeroBalances);
@@ -38,11 +38,12 @@ export default function BalancesList() {
   const type = (text) => {
     setValue(text);
     const array = showZeroBalances ? balances : nonZeroBalances;
-    const filteredArray = array.filter(
-      (c) =>
+    const filteredArray = array.filter((c) => {
+      return (
         c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
         c.currencyName.toLowerCase().includes(text.toLowerCase())
-    );
+      );
+    });
     setFilteredBalances(filteredArray);
   };
 
