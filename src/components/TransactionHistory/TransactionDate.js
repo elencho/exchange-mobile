@@ -14,10 +14,12 @@ export default function TransactionDate({ date, transactions }) {
         type: tr.type,
         status: tr.status,
         amount: tr.amount,
+        totalAmount: tr.totalAmount,
         currency: tr.currency,
-        transactionInfo: tr.transactionInfo,
+        transactionId: tr.transactionId,
         fee: tr.fee,
         method: tr.method,
+        recipient: tr.recipient,
       };
 
       let currentDate = new Date(transaction.timestamp);

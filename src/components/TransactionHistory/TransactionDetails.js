@@ -18,6 +18,7 @@ export default function TransactionDetails() {
       time,
       currency,
       type,
+      totalAmount,
     },
   } = state;
 
@@ -38,20 +39,27 @@ export default function TransactionDetails() {
   return (
     <View style={styles.container}>
       <View>
-        {['Type', 'Method', 'Amount', 'Fee', 'Date / Time', 'Status'].map(
-          (e) => (
-            <LeftText key={e} text={e} />
-          )
-        )}
+        {[
+          'Type',
+          'Date / Time',
+          'Amount',
+          'Fee',
+          'Total Amount',
+          'Status',
+          'Method',
+        ].map((e) => (
+          <LeftText key={e} text={e} />
+        ))}
       </View>
 
       <View style={styles.right}>
         <RightText text={type} style={styles.capitalize} />
-        <RightText text={method} style={styles.capitalize} />
+        <RightText text={`${date} / ${time}`} />
         <RightText text={`${amount} ${currency}`} />
         <RightText text={`${fee} ${currency}`} />
-        <RightText text={`${date} / ${time}`} />
+        <RightText text={`${totalAmount} ${currency}`} />
         <RightText text={status} style={styles.capitalize} />
+        <RightText text={method} style={styles.capitalize} />
       </View>
     </View>
   );

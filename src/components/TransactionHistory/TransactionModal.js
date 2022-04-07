@@ -20,15 +20,19 @@ export default function TransactionModal({ transactions, trades }) {
 
   const {
     currentTransaction: {
-      transactionInfo,
+      transactionId,
       baseCurrency,
       quoteCurrency,
       action,
+      recipient,
     },
   } = state;
 
-  const copy = () => {
-    Clipboard.setString(transactionInfo);
+  const copyId = () => {
+    Clipboard.setString(recipient);
+  };
+  const copyDestination = () => {
+    Clipboard.setString(recipient);
   };
 
   const hide = () => {
@@ -40,17 +44,20 @@ export default function TransactionModal({ transactions, trades }) {
       return (
         <>
           <View style={styles.top}>
-            <Image source={images.Deposit} />
+            <Image source={images.Deposit} style={styles.image} />
 
             <View style={styles.middle}>
+              <AppText medium style={styles.white}>
+                Identifier (TXID):
+              </AppText>
               <AppText style={styles.address} subtext>
-                {transactionInfo}
+                {transactionId}
               </AppText>
             </View>
 
             <View style={styles.vertical} />
 
-            <TouchableOpacity onPress={copy}>
+            <TouchableOpacity onPress={copyId}>
               <Image source={images.Copy} />
             </TouchableOpacity>
           </View>
@@ -58,6 +65,23 @@ export default function TransactionModal({ transactions, trades }) {
           <View style={styles.line} />
 
           <TransactionDetails />
+
+          <View style={styles.line} />
+          <View style={styles.destination}>
+            <View style={{ flex: 1, marginRight: 15 }}>
+              <AppText medium style={[styles.white]}>
+                Destination :
+              </AppText>
+              <AppText subtext style={[styles.address, { marginTop: 5 }]}>
+                {recipient}
+              </AppText>
+            </View>
+
+            <View style={styles.vertical} />
+            <TouchableOpacity onPress={copyDestination}>
+              <Image source={images.Copy} />
+            </TouchableOpacity>
+          </View>
         </>
       );
     }
@@ -117,7 +141,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 28,
   },
+  destination: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   icons: { alignSelf: 'center', marginRight: 15 },
+  image: { height: 37, width: 37 },
   leftIcon: {
     marginRight: -7,
     zIndex: 10,
@@ -131,6 +160,8 @@ const styles = StyleSheet.create({
   middle: {
     flex: 1,
     marginHorizontal: 15,
+    justifyContent: 'space-between',
+    height: '100%',
   },
   line: {
     height: 0.5,
@@ -147,8 +178,9 @@ const styles = StyleSheet.create({
   top: {
     flexDirection: 'row',
     alignItems: 'center',
+    height: 37,
   },
   address: { color: '#C0C5E0' },
   instantTrade: { color: colors.SECONDARY_TEXT, marginTop: 3 },
-  white: { fontSize: 14, color: colors.PRIMARY_TEXT },
+  white: { color: colors.PRIMARY_TEXT },
 });

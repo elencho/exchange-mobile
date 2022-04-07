@@ -11,7 +11,7 @@ import images from '../../constants/images';
 export default function Transaction({ transaction, date, time }) {
   const dispatch = useDispatch();
 
-  const { type, status, transactionInfo, amount, currency } = transaction;
+  const { type, status, transactionId, amount, currency } = transaction;
 
   const currentTransaction = {
     ...transaction,
@@ -56,9 +56,9 @@ export default function Transaction({ transaction, date, time }) {
         <AppText medium style={styles.type}>
           {type}
         </AppText>
-        {transactionInfo ? (
+        {transactionId ? (
           <AppText style={styles.address}>
-            {getReducedAddress(transactionInfo)}
+            {getReducedAddress(transactionId)}
           </AppText>
         ) : null}
       </View>
