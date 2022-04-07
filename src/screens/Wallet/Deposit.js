@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  View,
-  Image,
-  KeyboardAvoidingView,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
@@ -15,39 +9,31 @@ import XrpMemoWarning from '../../components/Wallet/Deposit/XrpMemoWarning';
 import AddressList from '../../components/Wallet/Deposit/AddressList';
 import colors from '../../constants/colors';
 import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock';
-import AppText from '../../components/AppText';
 import GenerateRequestModal from '../../components/Wallet/Deposit/GenerateRequestModal';
-import {
-  toggleAddDepositAddressModal,
-  toggleGenerateRequestModal,
-} from '../../redux/modals/actions';
-import images from '../../constants/images';
-import Headline from '../../components/TransactionHistory/Headline';
-import PurpleText from '../../components/PurpleText';
+import { toggleGenerateRequestModal } from '../../redux/modals/actions';
 import AddDepositAddressModal from '../../components/Wallet/Deposit/AddDepositAddressModal';
-import BankInfo from '../../components/Wallet/Deposit/BankInfo';
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
-import AppInput from '../../components/AppInput';
 import { generateCryptoAddressAction } from '../../redux/wallet/actions';
-import { generateWirePdf } from '../../utils/walletUtils';
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
+import WireTransferWarning from '../../components/Wallet/Deposit/WireTransferWarning';
+import AppButton from '../../components/AppButton';
+import FiatBlock from '../../components/Wallet/Deposit/FiatBlock';
+import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
 
 export default function Deposit() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [address, setAddress] = useState([]);
   const [memoTag, setMemoTag] = useState(null);
-  const [amount, setAmount] = useState(null);
   const [hasMultipleMethods, setHasMultipleMethods] = useState(false);
   const [hasMultipleNetworks, setHasMultipleNetworks] = useState(false);
+  const [restriction, setRestriction] = useState({});
+  const [hasRestriction, setHasRestriction] = useState(false);
 
   const {
     transactions: { code },
     trade: { balance },
-    wallet: {
-      cryptoAddresses,
-      wireDepositInfo: { en },
-    },
+    wallet: { cryptoAddresses },
   } = state;
 
   useEffect(() => {
@@ -65,10 +51,20 @@ export default function Deposit() {
           if (b.depositMethods.WALLET) {
             setHasMultipleNetworks(b.depositMethods.WALLET.length > 1);
           }
+          if (Object.keys(b.depositMethods).length) {
+            setHasDepositMethods(true);
+          }
+          if (b.restrictions.DEPOSIT) {
+            setRestriction(b.restrictions.DEPOSIT);
+          }
         }
       });
     }
   }, [code]);
+
+  useEffect(() => {
+    setHasRestriction(Object.keys(restriction).length);
+  }, [restriction]);
 
   const generate = () => {
     if (code === 'ETH') {
@@ -86,22 +82,12 @@ export default function Deposit() {
     }
   };
 
-  const generatePdf = () => {
-    if (amount) {
-      generateWirePdf(code, amount, en[0].id);
-    }
-  };
-
   const hasAddress = () => {
     let hasAddress;
     if (cryptoAddresses) {
       hasAddress = cryptoAddresses.length > 1;
     }
     return hasAddress;
-  };
-
-  const addAddress = () => {
-    dispatch(toggleAddDepositAddressModal(true));
   };
 
   const isFiat = code === 'GEL' || code === 'USD';
@@ -121,12 +107,7 @@ export default function Deposit() {
                 <TransferMethodModal />
               </>
             )}
-            <View style={styles.warning}>
-              <Image source={images.Time} />
-              <AppText subtext style={styles.subtext}>
-                Wire transfers take 1 working day
-              </AppText>
-            </View>
+            <WireTransferWarning />
           </>
         )}
 
@@ -138,84 +119,42 @@ export default function Deposit() {
         )}
       </View>
 
-      {hasAddress() && !isFiat && (
+      {hasAddress() && !isFiat && !hasRestriction && (
         <>
           <AddressList
             cryptoAddresses={cryptoAddresses}
             address={address}
             setAddress={setAddress}
           />
-          <Pressable
-            style={[styles.button, styles.generate]}
-            onPress={generate}
-          >
-            <AppText medium style={styles.buttonText}>
-              Add New Wallet Address
-            </AppText>
-          </Pressable>
+          <AppButton text="Add New Wallet Address" onPress={generate} />
         </>
       )}
 
-      {!hasAddress() && !isFiat && (
+      {!hasAddress() && !isFiat && !hasRestriction ? (
         <>
           {isEthereum ? (
             <View style={styles.flex}>
               <BulletsBlock />
-              <Pressable style={styles.button} onPress={generate}>
-                <AppText medium style={styles.buttonText}>
-                  Generate
-                </AppText>
-              </Pressable>
-
+              <AppButton text="Generate" onPress={generate} />
               <GenerateRequestModal />
             </View>
           ) : (
-            <View style={styles.flexBlock}>
-              <Image source={images.Address_List} />
-              <Headline title="Deposit Address" />
-              <AppText body style={styles.description}>
-                Unused wallet addresses may be deleted after 20 days
-              </AppText>
-              <PurpleText text="+ Add Address" onPress={addAddress} />
+            <>
+              <FlexBlock reason="no address" />
               <AddDepositAddressModal />
-            </View>
+            </>
           )}
         </>
-      )}
+      ) : null}
 
-      {isFiat && (
-        <KeyboardAvoidingView>
-          <View style={styles.block}>
-            <BankInfo />
-          </View>
-          <View style={styles.block}>
-            <AppInput
-              onChangeText={setAmount}
-              value={amount}
-              label="Enter Amount"
-              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-              right={
-                <View style={styles.row}>
-                  <View style={styles.line} />
-                  <AppText subtext style={styles.subtext}>
-                    {code}
-                  </AppText>
-                </View>
-              }
-            />
-          </View>
-
-          <Pressable
-            style={[styles.button, styles.generate]}
-            onPress={generatePdf}
-          >
-            <Image source={images.Generate} />
-            <AppText medium style={styles.buttonText}>
-              Generate PDF
-            </AppText>
-          </Pressable>
-        </KeyboardAvoidingView>
-      )}
+      {isFiat && !hasRestriction && <FiatBlock />}
+      {hasRestriction ? (
+        <FlexBlock
+          type="Deposit"
+          reason={restriction.reason}
+          restrictedUntil={restriction.restrictedUntil}
+        />
+      ) : null}
     </>
   );
 }
@@ -227,53 +166,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 12,
   },
-  description: {
-    color: colors.SECONDARY_TEXT,
-    textAlign: 'center',
-    marginHorizontal: '20%',
-    lineHeight: 20,
-    marginBottom: 40,
-  },
   flex: {
     flex: 1,
     justifyContent: 'space-between',
   },
-  flexBlock: {
-    flex: 1,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 50,
-  },
   generate: { marginTop: 40, flexDirection: 'row' },
-  line: {
-    width: 1,
-    height: 20,
-    backgroundColor: '#3B4160',
-    marginLeft: 10,
-    marginRight: 5,
-  },
-  button: {
-    backgroundColor: colors.SECONDARY_PURPLE,
-    height: 45,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: colors.PRIMARY_TEXT,
-    marginLeft: 10,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  subtext: {
-    color: colors.SECONDARY_TEXT,
-    marginLeft: 10,
-  },
-  warning: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 12,
-  },
 });

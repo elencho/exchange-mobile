@@ -27,25 +27,29 @@ export default function ChooseBankModal() {
     hide();
   };
 
-  const children = depositProviders.map((b, i) => (
-    <View key={b.displayName}>
-      <Pressable
-        style={[
-          styles.row,
-          b.provider === depositProvider && {
-            backgroundColor: 'rgba(101, 130, 253, 0.16)',
-          },
-        ]}
-        onPress={() => choose(b.provider)}
-      >
-        <Image source={images.TBC} />
-        <AppText body style={styles.text}>
-          {b.displayName}
-        </AppText>
-      </Pressable>
-      {i < depositProviders.length - 1 && <View style={styles.margin} />}
-    </View>
-  ));
+  const children = () => {
+    if (depositProviders.length) {
+      return depositProviders.map((b, i) => (
+        <View key={b.displayName}>
+          <Pressable
+            style={[
+              styles.row,
+              b.provider === depositProvider && {
+                backgroundColor: 'rgba(101, 130, 253, 0.16)',
+              },
+            ]}
+            onPress={() => choose(b.provider)}
+          >
+            <Image source={images.TBC} />
+            <AppText body style={styles.text}>
+              {b.displayName}
+            </AppText>
+          </Pressable>
+          {i < depositProviders.length - 1 && <View style={styles.margin} />}
+        </View>
+      ));
+    }
+  };
 
   return (
     <AppModal

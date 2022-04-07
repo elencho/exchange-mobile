@@ -42,7 +42,7 @@ function* cryptoAddressesSaga(action) {
   const { name, code, navigation, network } = action;
   const cryptoAddresses = yield call(fetchCryptoAddresses, code, network);
 
-  yield put(saveCryptoAddresses(cryptoAddresses));
+  yield put(saveCryptoAddresses(cryptoAddresses ? cryptoAddresses : []));
   // yield put(setNetwork(network))
   yield put(goToBalanceAction(name, code, navigation));
 }
