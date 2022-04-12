@@ -11,12 +11,16 @@ import {
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
 import ChooseAddressModal from '../../components/Wallet/Withdrawal/ChooseAddressModal';
+import WireTransferWarning from '../../components/Wallet/Withdrawal/WireTransferWarning';
 import { getWhitelistAction } from '../../redux/wallet/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
 import AppButton from '../../components/AppButton';
 import WithdrawalAddress from '../../components/Wallet/Withdrawal/WithdrawalAddress';
 import WithdrawalInputs from '../../components/Wallet/Withdrawal/WithdrawalInputs';
 import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
+import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
+import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
+import WithdrawalInfo from '../../components/Wallet/Withdrawal/WithdrawalInfo';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
@@ -24,23 +28,19 @@ export default function Withdrawal() {
   const {
     profile: { googleAuth, emailAuth, smsAuth },
     transactions: { code },
-    trade: { balance },
+    wallet: { withdrawalRestriction },
   } = state;
 
-  const [restriction, setRestriction] = useState({});
   const [hasRestriction, setHasRestriction] = useState(false);
+  const isFiat = code === 'GEL' || code === 'USD';
 
   useEffect(() => {
     dispatch(getWhitelistAction());
-
-    if (balance.balances[0].restrictions.WITHDRAWAL) {
-      setRestriction(balance.balances[0].restrictions.WITHDRAWAL);
-    }
   }, [code]);
 
   useEffect(() => {
-    setHasRestriction(Object.keys(restriction).length);
-  }, [restriction]);
+    setHasRestriction(Object.keys(withdrawalRestriction).length);
+  }, [withdrawalRestriction]);
 
   const withdraw = () => {
     if (googleAuth) dispatch(toggleGoogleOtpModal(true));
@@ -54,16 +54,19 @@ export default function Withdrawal() {
       <View style={{ flex: hasRestriction ? 0 : 1 }}>
         <View style={styles.block}>
           <WalletCoinsDropdown />
-          {!hasRestriction && <WithdrawalAddress />}
+          {isFiat && (
+            <>
+              <TransferMethodDropdown />
+              <TransferMethodModal />
+            </>
+          )}
+          <WireTransferWarning />
+
+          {!hasRestriction && !isFiat && <WithdrawalAddress />}
         </View>
 
-        {!hasRestriction && (
-          <View style={styles.block}>
-            <WithdrawalInputs />
-            <ChooseAddressModal />
-            <SmsEmailAuthModal type="SMS" withdrawal />
-          </View>
-        )}
+        {!hasRestriction && isFiat && <WithdrawalInfo />}
+        {!hasRestriction && <WithdrawalInputs />}
       </View>
 
       {!hasRestriction && <AppButton text="Withdrawal" onPress={withdraw} />}
@@ -71,10 +74,14 @@ export default function Withdrawal() {
       {hasRestriction ? (
         <FlexBlock
           type="Withdrawal"
-          reason={restriction.reason}
-          restrictedUntil={restriction.restrictedUntil}
+          reason={withdrawalRestriction.reason}
+          restrictedUntil={withdrawalRestriction.restrictedUntil}
         />
       ) : null}
+
+      {/* <ChooseAddressModal />
+            <SmsEmailAuthModal type="SMS" withdrawal />
+            <SmsEmailAuthModal type="Email" withdrawal /> */}
     </View>
   );
 }

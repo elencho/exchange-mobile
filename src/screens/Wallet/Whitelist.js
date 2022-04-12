@@ -66,6 +66,7 @@ export default function Whitelist() {
       <AddEditWhitelistModal add />
       <AddEditWhitelistModal edit />
       <SmsEmailAuthModal type="SMS" whitelist />
+      <SmsEmailAuthModal type="Email" whitelist />
     </View>
   );
 }

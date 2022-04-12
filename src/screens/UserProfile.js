@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,10 +16,6 @@ export default function UserProfile({ navigation }) {
   const state = useSelector((state) => state.profile);
 
   const { Personal_Security } = state;
-
-  useEffect(() => {
-    dispatch(fetchUserInfo());
-  }, []);
 
   return (
     <Background>

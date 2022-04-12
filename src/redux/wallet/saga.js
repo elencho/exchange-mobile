@@ -6,6 +6,7 @@ import {
   deleteWhitelistAddress,
   editWhitelistAddress,
   fetchCryptoAddresses,
+  fetchTemplates,
   fetchWhitelist,
   fetchWireDeposit,
   generateCryptoAddress,
@@ -17,11 +18,15 @@ import {
   getWhitelistAction,
   goToBalanceAction,
   saveCryptoAddresses,
+  saveTemplates,
   saveWhitelist,
   saveWireDepositInfo,
+  setDepositRestriction,
+  setHasMultipleMethods,
+  setHasMultipleNetworks,
   setHasWhitelist,
-  setNetwork,
   setNewWhitelist,
+  setWithdrawalRestriction,
 } from '../wallet/actions';
 import {
   addWhitelistParams,
@@ -29,13 +34,46 @@ import {
   withdrawalParams,
 } from './selectors';
 
+function* methodNetworkRestrictionSaga() {
+  const balance = yield select((state) => state.trade.balance);
+  const code = yield select((state) => state.transactions.code);
+  let hasMultipleMethods = false;
+  let hasMultipleNetworks = false;
+  let depositRestrictions = {};
+  let withdrawalRestrictions = {};
+
+  if (balance.balances) {
+    yield call(() => {
+      balance.balances.forEach((b) => {
+        if (b.currencyCode === code) {
+          hasMultipleMethods = Object.keys(b.depositMethods).length > 1;
+          if (b.depositMethods.WALLET) {
+            hasMultipleNetworks = b.depositMethods.WALLET.length > 1;
+          }
+          if (b.restrictions.DEPOSIT) {
+            depositRestrictions = b.restrictions.DEPOSIT;
+          }
+          if (b.restrictions.WITHDRAWAL) {
+            withdrawalRestrictions = b.restrictions.WITHDRAWAL;
+          }
+        }
+      });
+    });
+
+    yield put(setHasMultipleMethods(hasMultipleMethods));
+    yield put(setHasMultipleNetworks(hasMultipleNetworks));
+    yield put(setDepositRestriction(depositRestrictions));
+    yield put(setWithdrawalRestriction(withdrawalRestrictions));
+  }
+}
+
 function* wireDepositSaga(action) {
   const { name, code, navigation } = action;
   const wireDepositData = yield call(fetchWireDeposit, code);
 
   yield put(saveWireDepositInfo(wireDepositData));
-  // yield put(setNetwork(network));
   yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
+  yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
 }
 
 function* cryptoAddressesSaga(action) {
@@ -43,8 +81,8 @@ function* cryptoAddressesSaga(action) {
   const cryptoAddresses = yield call(fetchCryptoAddresses, code, network);
 
   yield put(saveCryptoAddresses(cryptoAddresses ? cryptoAddresses : []));
-  // yield put(setNetwork(network))
   yield put(goToBalanceAction(name, code, navigation));
+  yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
 }
 
 function* generateCryptoAddressSaga(action) {
@@ -109,6 +147,13 @@ function* deleteWhitelistSaga(action) {
   }
 }
 
+function* withdrawalTemplatesSaga() {
+  const currency = yield select((state) => state.transactions.code);
+  const provider = yield select((state) => state.wallet.network);
+  const templates = yield call(fetchTemplates, currency, provider);
+  yield put(saveTemplates(templates));
+}
+
 export default function* () {
   yield takeLatest(actionTypes.WIRE_DEPOSIT_ACTION, wireDepositSaga);
   yield takeLatest(actionTypes.CRYPTO_ADDRESSES_ACTION, cryptoAddressesSaga);
@@ -122,4 +167,6 @@ export default function* () {
   yield takeLatest(actionTypes.ADD_WHITELIST_ACTION, addWhitelistSaga);
   yield takeLatest(actionTypes.EDIT_WHITELIST_ACTION, editWhitelistSaga);
   yield takeLatest(actionTypes.DELETE_WHITELIST_ACTION, deleteWhitelistSaga);
+  yield takeLatest(actionTypes.FECTH_TEMPLATES_ACTION, withdrawalTemplatesSaga);
+  yield takeLatest('METHOD_NETWORK_RESTRICTION', methodNetworkRestrictionSaga);
 }

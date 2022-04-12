@@ -1,9 +1,14 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
-  walletTab: 'Deposit',
+  walletTab: 'Withdrawal',
   usdBtcSwitch: 'USD',
   network: null,
+
+  hasMultipleNetworks: false,
+  hasMultipleMethods: false,
+  depositRestriction: {},
+  withdrawalRestriction: {},
 
   // Deposit
   wireDepositInfo: {},
@@ -12,6 +17,8 @@ const INITIAL_STATE = {
   //Withdrawal
   withdrawalAmount: null,
   withdrawalNote: '',
+  templates: [],
+  currentTemplate: {},
 
   // Whitelist
   whitelist: [],
@@ -24,6 +31,10 @@ export default (state = INITIAL_STATE, action) => {
   const {
     walletTab,
     usdBtcSwitch,
+    depositRestriction,
+    withdrawalRestriction,
+    hasMultipleNetworks,
+    hasMultipleMethods,
     wireDepositInfo,
     cryptoAddresses,
     network,
@@ -34,6 +45,8 @@ export default (state = INITIAL_STATE, action) => {
     hasWhitelist,
     currentWhitelistObj,
     newWhitelist,
+    templates,
+    currentTemplate,
   } = action;
   switch (action.type) {
     case actionTypes.SET_WALLET_TAB:
@@ -45,6 +58,26 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         usdBtcSwitch,
+      };
+    case actionTypes.SET_HAS_MULTIPLE_NETWORKS:
+      return {
+        ...state,
+        hasMultipleNetworks,
+      };
+    case actionTypes.SET_DEPOSIT_RESTRICTION:
+      return {
+        ...state,
+        depositRestriction,
+      };
+    case actionTypes.SET_WITHDRAWAL_RESTRICTION:
+      return {
+        ...state,
+        withdrawalRestriction,
+      };
+    case actionTypes.SET_HAS_MULTIPLE_METHODS:
+      return {
+        ...state,
+        hasMultipleMethods,
       };
     case actionTypes.SAVE_WIRE_DEPOSIT_INFO:
       return {
@@ -95,6 +128,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         newWhitelist,
+      };
+    case actionTypes.SAVE_TEMPLATES:
+      return {
+        ...state,
+        templates,
+      };
+    case actionTypes.SET_CURRENT_TEMPLATE:
+      return {
+        ...state,
+        currentTemplate,
       };
     default:
       return state;

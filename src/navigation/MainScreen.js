@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useDispatch } from 'react-redux';
@@ -12,11 +12,15 @@ import TransactionFilter from '../screens/TransactionFilter';
 import { setTabRouteName } from '../redux/transactions/actions';
 import Exercise from '../screens/Exercise';
 import Wallet from '../screens/Wallet';
+import { fetchUserInfo } from '../redux/profile/actions';
 
 const Tab = createBottomTabNavigator();
 
 export default function MainScreen() {
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchUserInfo());
+  }, []);
 
   const tabRoute = (e) => {
     dispatch(

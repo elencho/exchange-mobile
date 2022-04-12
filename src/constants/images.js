@@ -63,6 +63,7 @@ export default {
   Swift: require('../assets/images/Wallet/Swift.png'),
   Time: require('../assets/images/Wallet/Time.png'),
   Generate: require('../assets/images/Wallet/Generate.png'),
+  Add: require('../assets/images/Wallet/Add.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),

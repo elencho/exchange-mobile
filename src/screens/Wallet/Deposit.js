@@ -15,7 +15,6 @@ import AddDepositAddressModal from '../../components/Wallet/Deposit/AddDepositAd
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
 import { generateCryptoAddressAction } from '../../redux/wallet/actions';
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
-import WireTransferWarning from '../../components/Wallet/Deposit/WireTransferWarning';
 import AppButton from '../../components/AppButton';
 import FiatBlock from '../../components/Wallet/Deposit/FiatBlock';
 import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
@@ -25,15 +24,17 @@ export default function Deposit() {
   const state = useSelector((state) => state);
   const [address, setAddress] = useState([]);
   const [memoTag, setMemoTag] = useState(null);
-  const [hasMultipleMethods, setHasMultipleMethods] = useState(false);
-  const [hasMultipleNetworks, setHasMultipleNetworks] = useState(false);
-  const [restriction, setRestriction] = useState({});
   const [hasRestriction, setHasRestriction] = useState(false);
 
   const {
     transactions: { code },
     trade: { balance },
-    wallet: { cryptoAddresses },
+    wallet: {
+      cryptoAddresses,
+      hasMultipleMethods,
+      hasMultipleNetworks,
+      depositRestriction,
+    },
   } = state;
 
   useEffect(() => {
@@ -43,28 +44,11 @@ export default function Deposit() {
         setMemoTag(cryptoAddresses[0].tag);
       }
     }
-
-    if (balance.balances) {
-      balance.balances.forEach((b) => {
-        if (b.currencyCode === code) {
-          setHasMultipleMethods(Object.keys(b.depositMethods).length > 1);
-          if (b.depositMethods.WALLET) {
-            setHasMultipleNetworks(b.depositMethods.WALLET.length > 1);
-          }
-          if (Object.keys(b.depositMethods).length) {
-            setHasDepositMethods(true);
-          }
-          if (b.restrictions.DEPOSIT) {
-            setRestriction(b.restrictions.DEPOSIT);
-          }
-        }
-      });
-    }
   }, [code]);
 
   useEffect(() => {
-    setHasRestriction(Object.keys(restriction).length);
-  }, [restriction]);
+    setHasRestriction(Object.keys(depositRestriction).length);
+  }, [depositRestriction]);
 
   const generate = () => {
     if (code === 'ETH') {
@@ -107,7 +91,6 @@ export default function Deposit() {
                 <TransferMethodModal />
               </>
             )}
-            <WireTransferWarning />
           </>
         )}
 
@@ -151,8 +134,8 @@ export default function Deposit() {
       {hasRestriction ? (
         <FlexBlock
           type="Deposit"
-          reason={restriction.reason}
-          restrictedUntil={restriction.restrictedUntil}
+          reason={depositRestriction.reason}
+          restrictedUntil={depositRestriction.restrictedUntil}
         />
       ) : null}
     </>

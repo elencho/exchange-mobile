@@ -27,6 +27,7 @@ export const actionTypes = {
   EDIT_WHITELIST_MODAL: 'EDIT_WHITELIST_MODAL',
   ADD_DEPOSIT_ADDRESS_MODAL: 'ADD_DEPOSIT_ADDRESS_MODAL',
   TOGGLE_TRANSFER_METHOD_MODAL: 'TOGGLE_TRANSFER_METHOD_MODAL',
+  TEMPLATES_MODAL: 'TEMPLATES_MODAL',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -136,4 +137,8 @@ export const toggleAddDepositAddressModal = (addDepositAddressModalVisble) => ({
 export const toggleTransferMethodModal = (transferMethodModalVisible) => ({
   type: actionTypes.TOGGLE_TRANSFER_METHOD_MODAL,
   transferMethodModalVisible,
+});
+export const toggleTemplatesModal = (templatesModalVisible) => ({
+  type: actionTypes.TEMPLATES_MODAL,
+  templatesModalVisible,
 });

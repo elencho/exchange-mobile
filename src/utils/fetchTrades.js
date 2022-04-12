@@ -27,7 +27,7 @@ export const fetchOffers = async () => {
     });
     return data.data;
   } catch (err) {
-    console.log(err);
+    console.log(err, 'error in fetchOffers');
   }
 };
 

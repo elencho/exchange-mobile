@@ -1,6 +1,10 @@
 export const actionTypes = {
   SET_WALLET_TAB: 'SET_WALLET_TAB',
   SET_NETWORK: 'SET_NETWORK',
+  SET_HAS_MULTIPLE_NETWORKS: 'SET_HAS_MULTIPLE_NETWORKS',
+  SET_HAS_MULTIPLE_METHODS: 'SET_HAS_MULTIPLE_METHODS',
+  SET_DEPOSIT_RESTRICTION: 'SET_DEPOSIT_RESTRICTION',
+  SET_WITHDRAWAL_RESTRICTION: 'SET_WITHDRAWAL_RESTRICTION',
   SET_USD_BTC: 'SET_USD_BTC',
 
   // DEPOSIT
@@ -10,6 +14,8 @@ export const actionTypes = {
   // Withdrawal
   SET_WITHDRAWAL_AMOUNT: 'SET_WITHDRAWAL_AMOUNT',
   SET_WITHDRAWAL_NOTE: 'SET_WITHDRAWAL_NOTE',
+  SAVE_TEMPLATES: 'SAVE_TEMPLATES',
+  SET_CURRENT_TEMPLATE: 'SET_CURRENT_TEMPLATE',
 
   // WHITELIST
   SAVE_WHITELIST: 'SAVE_WHITELIST',
@@ -27,6 +33,7 @@ export const actionTypes = {
   ADD_WHITELIST_ACTION: 'ADD_WHITELIST_ACTION',
   EDIT_WHITELIST_ACTION: 'EDIT_WHITELIST_ACTION',
   DELETE_WHITELIST_ACTION: 'DELETE_WHITELIST_ACTION',
+  FECTH_TEMPLATES_ACTION: 'FECTH_TEMPLATES_ACTION',
 };
 
 export const setWalletTab = (walletTab) => ({
@@ -40,6 +47,22 @@ export const setUsdBtcSwitch = (usdBtcSwitch) => ({
 export const setNetwork = (network) => ({
   type: actionTypes.SET_NETWORK,
   network,
+});
+export const setHasMultipleNetworks = (hasMultipleNetworks) => ({
+  type: actionTypes.SET_HAS_MULTIPLE_NETWORKS,
+  hasMultipleNetworks,
+});
+export const setHasMultipleMethods = (hasMultipleMethods) => ({
+  type: actionTypes.SET_HAS_MULTIPLE_METHODS,
+  hasMultipleMethods,
+});
+export const setDepositRestriction = (depositRestriction) => ({
+  type: actionTypes.SET_DEPOSIT_RESTRICTION,
+  depositRestriction,
+});
+export const setWithdrawalRestriction = (withdrawalRestriction) => ({
+  type: actionTypes.SET_WITHDRAWAL_RESTRICTION,
+  withdrawalRestriction,
 });
 
 // DEPOSIT
@@ -60,6 +83,14 @@ export const setWithdrawalAmount = (withdrawalAmount) => ({
 export const setWithdrawalNote = (withdrawalNote) => ({
   type: actionTypes.SET_WITHDRAWAL_NOTE,
   withdrawalNote,
+});
+export const saveTemplates = (templates) => ({
+  type: actionTypes.SAVE_TEMPLATES,
+  templates,
+});
+export const chooseTemplate = (currentTemplate) => ({
+  type: actionTypes.SET_CURRENT_TEMPLATE,
+  currentTemplate,
 });
 
 // WHITELIST
@@ -122,4 +153,7 @@ export const editWhitelistAction = () => ({
 export const deleteWhitelistAction = (OTP) => ({
   type: actionTypes.DELETE_WHITELIST_ACTION,
   OTP,
+});
+export const withdrawalTemplatesAction = () => ({
+  type: actionTypes.FECTH_TEMPLATES_ACTION,
 });

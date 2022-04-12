@@ -12,6 +12,7 @@ import {
   GENERATE_CRYPTO_ADDRESS,
   CRYPTO_WITHDRAWAL,
   CRYPTO_WHITELIST,
+  WITHDRAWAL_TEMPLATES,
 } from '../constants/api';
 
 export const fetchWireDeposit = async (currency, network) => {
@@ -154,5 +155,33 @@ export const deleteWhitelistAddress = async (id, OTP) => {
   } catch (err) {
     console.log(err);
     console.log('Error in deleteWhitelistAddress');
+  }
+};
+
+export const fetchTemplates = async (currency, provider) => {
+  try {
+    const data = await axios({
+      method: 'GET',
+      headers: { Authorization: bearer },
+      url: `${WITHDRAWAL_TEMPLATES}?currency=${currency}&provider=${provider}`,
+    });
+    return data.data;
+  } catch (err) {
+    console.log(err);
+    console.log('Error in fetchTemplates');
+  }
+};
+
+export const deleteTemplates = async (id) => {
+  try {
+    const data = await axios({
+      method: 'DELETE',
+      headers: { Authorization: bearer },
+      url: `${WITHDRAWAL_TEMPLATES}/${id}`,
+    });
+    return data.status;
+  } catch (err) {
+    console.log(err);
+    console.log('Error in deleteTemplates');
   }
 };
