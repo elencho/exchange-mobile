@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import { toggleTemplatesModal } from '../../../redux/modals/actions';
-import { chooseTemplate } from '../../../redux/wallet/actions';
+import {
+  chooseTemplate,
+  setIban,
+  setWithdrawalBank,
+} from '../../../redux/wallet/actions';
 import AppModal from '../../AppModal';
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
@@ -19,13 +23,16 @@ export default function TemplatesModal() {
     wallet: { templates, currentTemplate },
   } = state;
 
-  console.log(templates);
+  useEffect(() => {
+    dispatch(setWithdrawalBank({}));
+  }, [currentTemplate]);
 
   const hide = () => dispatch(toggleTemplatesModal(false));
 
   const deleteTemplate = () => {};
   const choose = (t) => {
     dispatch(chooseTemplate(t));
+    dispatch(setIban(t.iban));
     hide();
   };
 

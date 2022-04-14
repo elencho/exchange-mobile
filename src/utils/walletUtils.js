@@ -13,6 +13,7 @@ import {
   CRYPTO_WITHDRAWAL,
   CRYPTO_WHITELIST,
   WITHDRAWAL_TEMPLATES,
+  BANKS_URL,
 } from '../constants/api';
 
 export const fetchWireDeposit = async (currency, network) => {
@@ -183,5 +184,19 @@ export const deleteTemplates = async (id) => {
   } catch (err) {
     console.log(err);
     console.log('Error in deleteTemplates');
+  }
+};
+
+export const fetchBanks = async (provider) => {
+  try {
+    const data = await axios({
+      method: 'GET',
+      headers: { Authorization: bearer },
+      url: `${BANKS_URL}?provider=${provider}`,
+    });
+    return data.data;
+  } catch (err) {
+    console.log(err);
+    console.log('Error in fetchBanks');
   }
 };

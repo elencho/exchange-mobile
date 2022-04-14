@@ -57,7 +57,7 @@ export default function ChooseBankModal() {
       hide={hide}
       title="Choose Bank"
       bottom
-      children={children}
+      children={children()}
     />
   );
 }

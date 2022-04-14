@@ -19,6 +19,11 @@ const INITIAL_STATE = {
   withdrawalNote: '',
   templates: [],
   currentTemplate: {},
+  banks: [],
+  withdrawalBank: {},
+  iban: '',
+  saveTemplate: false,
+  newTemplateName: '',
 
   // Whitelist
   whitelist: [],
@@ -47,6 +52,11 @@ export default (state = INITIAL_STATE, action) => {
     newWhitelist,
     templates,
     currentTemplate,
+    banks,
+    withdrawalBank,
+    iban,
+    saveTemplate,
+    newTemplateName,
   } = action;
   switch (action.type) {
     case actionTypes.SET_WALLET_TAB:
@@ -138,6 +148,31 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentTemplate,
+      };
+    case actionTypes.SAVE_BANKS:
+      return {
+        ...state,
+        banks,
+      };
+    case actionTypes.SET_WITHDRAWAL_BANK:
+      return {
+        ...state,
+        withdrawalBank,
+      };
+    case actionTypes.SET_IBAN:
+      return {
+        ...state,
+        iban,
+      };
+    case actionTypes.SAVE_TEMPLATE:
+      return {
+        ...state,
+        saveTemplate,
+      };
+    case actionTypes.NEW_TEMPLATE_NAME:
+      return {
+        ...state,
+        newTemplateName,
       };
     default:
       return state;

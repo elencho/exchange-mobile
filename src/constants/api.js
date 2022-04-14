@@ -85,3 +85,6 @@ export const CRYPTO_WHITELIST =
 
 export const WITHDRAWAL_TEMPLATES =
   'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/wire-template';
+
+export const BANKS_URL =
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/banks';

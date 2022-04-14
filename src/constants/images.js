@@ -64,6 +64,8 @@ export default {
   Time: require('../assets/images/Wallet/Time.png'),
   Generate: require('../assets/images/Wallet/Generate.png'),
   Add: require('../assets/images/Wallet/Add.png'),
+  Check_Full: require('../assets/images/Wallet/Check_Full.png'),
+  Check_Empty: require('../assets/images/Wallet/Check_Empty.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),

@@ -21,6 +21,8 @@ import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
 import WithdrawalInfo from '../../components/Wallet/Withdrawal/WithdrawalInfo';
+import SaveAsTemplate from '../../components/Wallet/Withdrawal/SaveAsTemplate';
+import WithdrawalFees from '../../components/Wallet/Withdrawal/WithdrawalFees';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
@@ -28,7 +30,7 @@ export default function Withdrawal() {
   const {
     profile: { googleAuth, emailAuth, smsAuth },
     transactions: { code },
-    wallet: { withdrawalRestriction },
+    wallet: { withdrawalRestriction, currentTemplate, withdrawalBank },
   } = state;
 
   const [hasRestriction, setHasRestriction] = useState(false);
@@ -49,6 +51,13 @@ export default function Withdrawal() {
     sendOtp();
   };
 
+  const saveTemplateCheck = () => {
+    return (
+      currentTemplate.templateName === 'New Template' &&
+      Object.keys(withdrawalBank).length
+    );
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: hasRestriction ? 0 : 1 }}>
@@ -67,9 +76,19 @@ export default function Withdrawal() {
 
         {!hasRestriction && isFiat && <WithdrawalInfo />}
         {!hasRestriction && <WithdrawalInputs />}
+        {saveTemplateCheck() ? (
+          <>
+            <WithdrawalFees />
+            <SaveAsTemplate />
+          </>
+        ) : null}
       </View>
 
-      {!hasRestriction && <AppButton text="Withdrawal" onPress={withdraw} />}
+      {!hasRestriction && (
+        <View style={styles.button}>
+          <AppButton text="Withdrawal" onPress={withdraw} />
+        </View>
+      )}
 
       {hasRestriction ? (
         <FlexBlock
@@ -92,5 +111,9 @@ const styles = StyleSheet.create({
     paddingVertical: 22,
     paddingHorizontal: 16,
     marginBottom: 12,
+  },
+  button: {
+    marginHorizontal: 15,
+    marginTop: 40,
   },
 });

@@ -24,7 +24,7 @@ import {
 import {
   addWhitelistAction,
   deleteWhitelistAction,
-  withdrawalAction,
+  cryptoWithdrawalAction,
 } from '../../redux/wallet/actions';
 
 export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
@@ -46,7 +46,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   useEffect(() => {
     if (value.length === cellCount) {
       if (withdrawal) {
-        dispatch(withdrawalAction(value)); // value = OTP
+        dispatch(cryptoWithdrawalAction(value)); // value = OTP
       }
       if (whitelist) {
         if (newWhitelist.name && newWhitelist.address) {

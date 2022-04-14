@@ -32,7 +32,7 @@ const AppInput = ({
       easing: Easing.bezier(0.4, 0, 0.2, 1),
       useNativeDriver: true,
     }).start();
-  }, [focusAnim, isFocused]);
+  }, [focusAnim, isFocused, value]);
 
   let borderColor = isFocused ? colors.SECONDARY_PURPLE : '#42475D';
 

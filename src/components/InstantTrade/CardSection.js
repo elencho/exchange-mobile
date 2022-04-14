@@ -25,15 +25,9 @@ export default function CardSection() {
     balance: { balances },
   } = state;
 
-  const showCards = () => {
-    dispatch(toggleChooseCardModal(true));
-  };
-  const showBanks = () => {
-    dispatch(toggleChooseBankModal(true));
-  };
-  const showFees = () => {
-    dispatch(toggleBankFeesModal(true));
-  };
+  const showCards = () => dispatch(toggleChooseCardModal(true));
+  const showBanks = () => dispatch(toggleChooseBankModal(true));
+  const showFees = () => dispatch(toggleBankFeesModal(true));
 
   const multipleBanks = () => {
     let isMultiple;
@@ -45,19 +39,17 @@ export default function CardSection() {
     return isMultiple;
   };
 
-  const displayName = () => {
-    let displayName;
-    if (depositProvider) {
-      depositProviders.forEach((d) => {
-        if (depositProvider === d.provider) {
-          displayName = d.displayName;
-        }
-      });
-      return displayName;
-    } else {
-      return 'Choose Bank';
-    }
-  };
+  // const displayName = () => {
+  //   let displayName;
+  //   depositProviders.forEach((d) => {
+  //     if (depositProvider === d.provider) {
+  //       displayName = d.displayName;
+  //     } else {
+  //       displayName = 'Choose Bank';
+  //     }
+  //   });
+  //   return displayName;
+  // };
 
   return (
     <View style={styles.container}>
@@ -76,7 +68,7 @@ export default function CardSection() {
               ]}
               medium={depositProvider}
             >
-              {displayName()}
+              {depositProvider}
             </AppText>
             <Image source={images['Arrow']} />
           </Pressable>

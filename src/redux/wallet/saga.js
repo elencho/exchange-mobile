@@ -5,6 +5,7 @@ import {
   cryptoWithdrawal,
   deleteWhitelistAddress,
   editWhitelistAddress,
+  fetchBanks,
   fetchCryptoAddresses,
   fetchTemplates,
   fetchWhitelist,
@@ -17,6 +18,7 @@ import {
   chooseWhitelist,
   getWhitelistAction,
   goToBalanceAction,
+  saveBanks,
   saveCryptoAddresses,
   saveTemplates,
   saveWhitelist,
@@ -100,7 +102,7 @@ function* goToBalanceSaga(action) {
   yield call(() => navigation.navigate('Balance'));
 }
 
-function* withdrawalSaga(action) {
+function* cryptoWithdrawalSaga(action) {
   const { OTP } = action;
   const params = yield select(withdrawalParams);
   const status = yield call(cryptoWithdrawal, OTP, params);
@@ -151,7 +153,9 @@ function* withdrawalTemplatesSaga() {
   const currency = yield select((state) => state.transactions.code);
   const provider = yield select((state) => state.wallet.network);
   const templates = yield call(fetchTemplates, currency, provider);
+  const banks = yield call(fetchBanks, provider);
   yield put(saveTemplates(templates));
+  yield put(saveBanks(banks));
 }
 
 export default function* () {
@@ -162,7 +166,7 @@ export default function* () {
     actionTypes.GENERATE_CRYPTO_ADDRESS,
     generateCryptoAddressSaga
   );
-  yield takeLatest(actionTypes.WITHDRAWAL_ACTION, withdrawalSaga);
+  yield takeLatest(actionTypes.CRYPTO_WITHDRAWAL_ACTION, cryptoWithdrawalSaga);
   yield takeLatest(actionTypes.GET_WHITELIST_ACTION, getWhitelistSaga);
   yield takeLatest(actionTypes.ADD_WHITELIST_ACTION, addWhitelistSaga);
   yield takeLatest(actionTypes.EDIT_WHITELIST_ACTION, editWhitelistSaga);

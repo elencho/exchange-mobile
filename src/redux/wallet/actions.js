@@ -16,6 +16,11 @@ export const actionTypes = {
   SET_WITHDRAWAL_NOTE: 'SET_WITHDRAWAL_NOTE',
   SAVE_TEMPLATES: 'SAVE_TEMPLATES',
   SET_CURRENT_TEMPLATE: 'SET_CURRENT_TEMPLATE',
+  SAVE_BANKS: 'SAVE_BANKS',
+  SET_WITHDRAWAL_BANK: 'SET_WITHDRAWAL_BANK',
+  SET_IBAN: 'SET_IBAN',
+  SAVE_TEMPLATE: 'SAVE_TEMPLATE',
+  NEW_TEMPLATE_NAME: 'NEW_TEMPLATE_NAME',
 
   // WHITELIST
   SAVE_WHITELIST: 'SAVE_WHITELIST',
@@ -28,7 +33,7 @@ export const actionTypes = {
   CRYPTO_ADDRESSES_ACTION: 'CRYPTO_ADDRESSES_ACTION',
   GO_TO_BALANCE: 'GO_TO_BALANCE',
   GENERATE_CRYPTO_ADDRESS: 'GENERATE_CRYPTO_ADDRESS',
-  WITHDRAWAL_ACTION: 'WITHDRAWAL_ACTION',
+  CRYPTO_WITHDRAWAL_ACTION: 'CRYPTO_WITHDRAWAL_ACTION',
   GET_WHITELIST_ACTION: 'GET_WHITELIST_ACTION',
   ADD_WHITELIST_ACTION: 'ADD_WHITELIST_ACTION',
   EDIT_WHITELIST_ACTION: 'EDIT_WHITELIST_ACTION',
@@ -92,6 +97,26 @@ export const chooseTemplate = (currentTemplate) => ({
   type: actionTypes.SET_CURRENT_TEMPLATE,
   currentTemplate,
 });
+export const saveBanks = (banks) => ({
+  type: actionTypes.SAVE_BANKS,
+  banks,
+});
+export const setWithdrawalBank = (withdrawalBank) => ({
+  type: actionTypes.SET_WITHDRAWAL_BANK,
+  withdrawalBank,
+});
+export const setIban = (iban) => ({
+  type: actionTypes.SET_IBAN,
+  iban,
+});
+export const saveTemplateAction = (saveTemplate) => ({
+  type: actionTypes.SAVE_TEMPLATE,
+  saveTemplate,
+});
+export const setNewTemplateName = (newTemplateName) => ({
+  type: actionTypes.NEW_TEMPLATE_NAME,
+  newTemplateName,
+});
 
 // WHITELIST
 export const saveWhitelist = (whitelist) => ({
@@ -136,8 +161,8 @@ export const generateCryptoAddressAction = (code, network) => ({
   code,
   network,
 });
-export const withdrawalAction = (OTP) => ({
-  type: actionTypes.WITHDRAWAL_ACTION,
+export const cryptoWithdrawalAction = (OTP) => ({
+  type: actionTypes.CRYPTO_WITHDRAWAL_ACTION,
   OTP,
 });
 export const getWhitelistAction = () => ({

@@ -31,6 +31,13 @@ export default function WithdrawalInputs() {
   return (
     <View style={styles.block}>
       <AppInput
+        style={styles.note}
+        label="Enter Note"
+        onChangeText={setNote}
+        value={withdrawalNote}
+        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+      />
+      <AppInput
         onChangeText={setAmount}
         value={withdrawalAmount}
         label="Enter Amount"
@@ -41,19 +48,13 @@ export default function WithdrawalInputs() {
       <AppText subtext style={styles.secondary}>
         Fee = 0; Total amount = 0 GEL
       </AppText>
-      <AppInput
-        style={styles.note}
-        label="Enter Note"
-        onChangeText={setNote}
-        value={withdrawalNote}
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   amount: {
+    marginTop: 22,
     marginBottom: 7,
   },
   block: {
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   note: {
-    marginTop: 22,
+    marginBottom: 7,
   },
   row: {
     flexDirection: 'row',

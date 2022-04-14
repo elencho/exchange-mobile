@@ -4,11 +4,18 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
-import { toggleTemplatesModal } from '../../../redux/modals/actions';
-import { withdrawalTemplatesAction } from '../../../redux/wallet/actions';
+import {
+  toggleChooseBankModal,
+  toggleTemplatesModal,
+} from '../../../redux/modals/actions';
+import {
+  setIban,
+  withdrawalTemplatesAction,
+} from '../../../redux/wallet/actions';
 import AppInput from '../../AppInput';
 import AppText from '../../AppText';
 import TemplatesModal from './TemplatesModal';
+import WithdrawalBanksModal from './WithdrawalBanksModal';
 
 export default function WithdrawalInfo() {
   const dispatch = useDispatch();
@@ -20,12 +27,13 @@ export default function WithdrawalInfo() {
 
   const {
     profile: { userInfo },
-    wallet: { currentTemplate },
+    wallet: { currentTemplate, withdrawalBank, iban },
   } = state;
 
   const showTemplates = () => dispatch(toggleTemplatesModal(true));
+  const showBanks = () => dispatch(toggleChooseBankModal(true));
   const title = () => {
-    if (!Object.keys(currentTemplate).length) {
+    if (!isTemplate()) {
       return 'Choose or Add Template';
     }
     return currentTemplate.templateName;
@@ -33,16 +41,37 @@ export default function WithdrawalInfo() {
 
   const titleColor = (t) => {
     if (t === 'template') {
-      if (!Object.keys(currentTemplate).length) {
+      if (!isTemplate()) {
         return { color: colors.SECONDARY_TEXT };
       }
       return { color: colors.PRIMARY_TEXT };
     }
 
     if (t === 'bank') {
-      return { color: colors.SECONDARY_TEXT };
+      if (!isBank()) {
+        return { color: colors.SECONDARY_TEXT };
+      }
+      return { color: colors.PRIMARY_TEXT };
     }
   };
+
+  const bankTitle = () => {
+    if (isBank()) {
+      return withdrawalBank.bankName;
+    }
+    return 'Choose bank';
+  };
+
+  const isTemplate = () => Object.keys(currentTemplate).length;
+  const isBank = () => Object.keys(withdrawalBank).length;
+  const showIban = () => {
+    return (
+      (currentTemplate.templateName === 'New Template' &&
+        Object.keys(withdrawalBank).length) ||
+      (isTemplate() && currentTemplate.templateName !== 'New Template')
+    );
+  };
+  const handleIban = (t) => dispatch(setIban(t));
 
   return (
     <View style={styles.block}>
@@ -68,18 +97,27 @@ export default function WithdrawalInfo() {
         <Image source={images.Arrow} />
       </Pressable>
 
-      <Pressable style={styles.dropdown} /* onPress={show} */>
-        <AppText style={[styles.dropdownText, titleColor('bank')]}>
-          Choose Bank
-        </AppText>
-        <Image source={images.Arrow} />
-      </Pressable>
+      {currentTemplate.templateName === 'New Template' ? (
+        <>
+          <Pressable style={styles.dropdown} onPress={showBanks}>
+            <AppText style={[styles.dropdownText, titleColor('bank')]}>
+              {bankTitle()}
+            </AppText>
+            <Image source={images.Arrow} />
+          </Pressable>
+          <WithdrawalBanksModal />
+        </>
+      ) : null}
 
-      <AppInput
-        label="Account Number / IBAN"
-        style={styles.IBAN}
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-      />
+      {showIban() ? (
+        <AppInput
+          label="Account Number / IBAN"
+          style={styles.IBAN}
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          value={iban}
+          onChangeText={handleIban}
+        />
+      ) : null}
 
       <TemplatesModal />
     </View>
@@ -95,6 +133,7 @@ const styles = StyleSheet.create({
   },
   dropdownText: {
     flex: 1,
+    textTransform: 'capitalize',
   },
   dropdown: {
     borderWidth: 1,
