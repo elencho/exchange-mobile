@@ -11,7 +11,10 @@ import {
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
 import WireTransferWarning from '../../components/Wallet/Withdrawal/WireTransferWarning';
-import { getWhitelistAction } from '../../redux/wallet/actions';
+import {
+  getWhitelistAction,
+  withdrawalTemplatesAction,
+} from '../../redux/wallet/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
 import AppButton from '../../components/AppButton';
 import WithdrawalAddress from '../../components/Wallet/Withdrawal/WithdrawalAddress';
@@ -38,6 +41,7 @@ export default function Withdrawal() {
 
   useEffect(() => {
     dispatch(getWhitelistAction());
+    dispatch(withdrawalTemplatesAction());
   }, [code]);
 
   useEffect(() => {

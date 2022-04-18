@@ -183,6 +183,7 @@ function* wireWithdrawalSaga(action) {
     yield put(saveTemplateAction(false));
     yield put(setNewTemplateName(''));
     yield put(setReceiverBank({}));
+    yield put(withdrawalTemplatesAction());
   }
 }
 
