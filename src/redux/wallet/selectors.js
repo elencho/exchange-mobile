@@ -26,6 +26,44 @@ export const withdrawalParams = (state) => {
   };
 };
 
+export const wireWithdrawalParams = (state) => {
+  const {
+    transactions: { code },
+    wallet: {
+      withdrawalBank: { id },
+      network,
+      withdrawalAmount,
+      withdrawalNote,
+      saveTemplate,
+      newTemplateName,
+      iban,
+      receiverBank,
+      intermediateBank,
+      currentTemplate: { templateName, bankId },
+    },
+    profile: {
+      userInfo: { country, city, postalCode, address },
+    },
+  } = state;
+
+  return {
+    bankId: templateName === 'New Template' ? id : bankId,
+    wireProvider: network,
+    currency: code,
+    amount: withdrawalAmount,
+    country,
+    city,
+    postalCode,
+    address,
+    note: withdrawalNote,
+    saveTemplate,
+    templateName: newTemplateName,
+    iban,
+    receiverBank,
+    intermediateBank,
+  };
+};
+
 export const addWhitelistParams = (state) => {
   const {
     transactions: { code },

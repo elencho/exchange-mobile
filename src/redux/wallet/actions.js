@@ -21,6 +21,8 @@ export const actionTypes = {
   SET_IBAN: 'SET_IBAN',
   SAVE_TEMPLATE: 'SAVE_TEMPLATE',
   NEW_TEMPLATE_NAME: 'NEW_TEMPLATE_NAME',
+  SET_RECEIVER_BANK: 'SET_RECEIVER_BANK',
+  SET_INTERMEDIATE_BANK: 'SET_INTERMEDIATE_BANK',
 
   // WHITELIST
   SAVE_WHITELIST: 'SAVE_WHITELIST',
@@ -39,6 +41,7 @@ export const actionTypes = {
   EDIT_WHITELIST_ACTION: 'EDIT_WHITELIST_ACTION',
   DELETE_WHITELIST_ACTION: 'DELETE_WHITELIST_ACTION',
   FECTH_TEMPLATES_ACTION: 'FECTH_TEMPLATES_ACTION',
+  WIRE_WITHDRAWAL_SAGA: 'WIRE_WITHDRAWAL_SAGA',
 };
 
 export const setWalletTab = (walletTab) => ({
@@ -117,6 +120,14 @@ export const setNewTemplateName = (newTemplateName) => ({
   type: actionTypes.NEW_TEMPLATE_NAME,
   newTemplateName,
 });
+export const setReceiverBank = (receiverBank) => ({
+  type: actionTypes.SET_RECEIVER_BANK,
+  receiverBank,
+});
+export const setIntermediateBank = (intermediateBank) => ({
+  type: actionTypes.SET_INTERMEDIATE_BANK,
+  intermediateBank,
+});
 
 // WHITELIST
 export const saveWhitelist = (whitelist) => ({
@@ -177,6 +188,10 @@ export const editWhitelistAction = () => ({
 });
 export const deleteWhitelistAction = (OTP) => ({
   type: actionTypes.DELETE_WHITELIST_ACTION,
+  OTP,
+});
+export const wireWithdrawalAction = (OTP) => ({
+  type: actionTypes.WIRE_WITHDRAWAL_SAGA,
   OTP,
 });
 export const withdrawalTemplatesAction = () => ({

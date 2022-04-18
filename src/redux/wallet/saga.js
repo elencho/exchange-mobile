@@ -11,15 +11,18 @@ import {
   fetchWhitelist,
   fetchWireDeposit,
   generateCryptoAddress,
+  wireWithdrawal,
 } from '../../utils/walletUtils';
 import { chooseCurrency, setAbbr } from '../transactions/actions';
 import {
   actionTypes,
+  chooseTemplate,
   chooseWhitelist,
   getWhitelistAction,
   goToBalanceAction,
   saveBanks,
   saveCryptoAddresses,
+  saveTemplateAction,
   saveTemplates,
   saveWhitelist,
   saveWireDepositInfo,
@@ -27,12 +30,19 @@ import {
   setHasMultipleMethods,
   setHasMultipleNetworks,
   setHasWhitelist,
+  setIban,
+  setNewTemplateName,
   setNewWhitelist,
+  setReceiverBank,
+  setWithdrawalAmount,
+  setWithdrawalBank,
+  setWithdrawalNote,
   setWithdrawalRestriction,
 } from '../wallet/actions';
 import {
   addWhitelistParams,
   editWhitelistParams,
+  wireWithdrawalParams,
   withdrawalParams,
 } from './selectors';
 
@@ -158,6 +168,22 @@ function* withdrawalTemplatesSaga() {
   yield put(saveBanks(banks));
 }
 
+function* wireWithdrawalSaga(action) {
+  const { OTP } = action;
+  const params = yield select(wireWithdrawalParams);
+  const status = yield call(wireWithdrawal, OTP, params);
+  if (status === 204) {
+    yield put(chooseTemplate({}));
+    yield put(setIban(''));
+    yield put(setWithdrawalBank({}));
+    yield put(setWithdrawalAmount(null));
+    yield put(setWithdrawalNote(''));
+    yield put(saveTemplateAction(false));
+    yield put(setNewTemplateName(''));
+    yield put(setReceiverBank({}));
+  }
+}
+
 export default function* () {
   yield takeLatest(actionTypes.WIRE_DEPOSIT_ACTION, wireDepositSaga);
   yield takeLatest(actionTypes.CRYPTO_ADDRESSES_ACTION, cryptoAddressesSaga);
@@ -172,5 +198,6 @@ export default function* () {
   yield takeLatest(actionTypes.EDIT_WHITELIST_ACTION, editWhitelistSaga);
   yield takeLatest(actionTypes.DELETE_WHITELIST_ACTION, deleteWhitelistSaga);
   yield takeLatest(actionTypes.FECTH_TEMPLATES_ACTION, withdrawalTemplatesSaga);
+  yield takeLatest(actionTypes.WIRE_WITHDRAWAL_SAGA, wireWithdrawalSaga);
   yield takeLatest('METHOD_NETWORK_RESTRICTION', methodNetworkRestrictionSaga);
 }

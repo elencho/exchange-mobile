@@ -10,7 +10,6 @@ import {
   toggleGoogleOtpModal,
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
-import ChooseAddressModal from '../../components/Wallet/Withdrawal/ChooseAddressModal';
 import WireTransferWarning from '../../components/Wallet/Withdrawal/WireTransferWarning';
 import { getWhitelistAction } from '../../redux/wallet/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
@@ -29,6 +28,7 @@ export default function Withdrawal() {
   const state = useSelector((state) => state);
   const {
     profile: { googleAuth, emailAuth, smsAuth },
+    trade: { balance },
     transactions: { code },
     wallet: { withdrawalRestriction, currentTemplate, withdrawalBank },
   } = state;
@@ -56,6 +56,19 @@ export default function Withdrawal() {
       currentTemplate.templateName === 'New Template' &&
       Object.keys(withdrawalBank).length
     );
+  };
+
+  const withdrawalType = () => {
+    let type;
+    if (balance.balances) {
+      balance.balances.forEach((b) => {
+        if (b.currencyCode === code) {
+          if (b.withdrawalMethods.WALLET) type = 'crypto';
+          if (b.withdrawalMethods.WIRE) type = 'wire';
+        }
+      });
+    }
+    return type;
   };
 
   return (
@@ -98,9 +111,8 @@ export default function Withdrawal() {
         />
       ) : null}
 
-      {/* <ChooseAddressModal />
-            <SmsEmailAuthModal type="SMS" withdrawal />
-            <SmsEmailAuthModal type="Email" withdrawal /> */}
+      <SmsEmailAuthModal type="SMS" withdrawal={withdrawalType()} />
+      <SmsEmailAuthModal type="Email" withdrawal={withdrawalType()} />
     </View>
   );
 }

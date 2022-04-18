@@ -7,6 +7,7 @@ import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import { toggleChooseAddressModal } from '../../../redux/modals/actions';
+import ChooseAddressModal from './ChooseAddressModal';
 
 export default function WithdrawalAddress() {
   const dispatch = useDispatch();
@@ -32,6 +33,8 @@ export default function WithdrawalAddress() {
           <View style={styles.arrow}>
             <Image source={images.Arrow} />
           </View>
+
+          <ChooseAddressModal />
         </Pressable>
       ) : (
         <AppInput

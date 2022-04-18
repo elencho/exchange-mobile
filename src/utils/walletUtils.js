@@ -14,7 +14,9 @@ import {
   CRYPTO_WHITELIST,
   WITHDRAWAL_TEMPLATES,
   BANKS_URL,
+  WIRE_WITHDRAWAL,
 } from '../constants/api';
+import handleError from './errorHandling';
 
 export const fetchWireDeposit = async (currency, network) => {
   try {
@@ -198,5 +200,16 @@ export const fetchBanks = async (provider) => {
   } catch (err) {
     console.log(err);
     console.log('Error in fetchBanks');
+  }
+};
+
+export const wireWithdrawal = async (OTP, params) => {
+  try {
+    const data = await axios.post(WIRE_WITHDRAWAL, params, {
+      headers: { Authorization: bearer, OTP },
+    });
+    return data.status;
+  } catch (err) {
+    handleError(err);
   }
 };

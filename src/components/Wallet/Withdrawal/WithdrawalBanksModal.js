@@ -24,7 +24,7 @@ export default function WithdrawalBanksModal() {
 
   const children = (
     <>
-      {banks.map((b) => (
+      {[{ bankName: 'Other', id: null }, ...banks].map((b) => (
         <View key={b.id}>
           <Pressable
             style={[

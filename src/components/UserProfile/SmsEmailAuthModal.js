@@ -25,6 +25,7 @@ import {
   addWhitelistAction,
   deleteWhitelistAction,
   cryptoWithdrawalAction,
+  wireWithdrawalAction,
 } from '../../redux/wallet/actions';
 
 export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
@@ -45,8 +46,11 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
 
   useEffect(() => {
     if (value.length === cellCount) {
-      if (withdrawal) {
+      if (withdrawal === 'crypto') {
         dispatch(cryptoWithdrawalAction(value)); // value = OTP
+      }
+      if (withdrawal === 'wire') {
+        dispatch(wireWithdrawalAction(value)); // value = OTP
       }
       if (whitelist) {
         if (newWhitelist.name && newWhitelist.address) {
@@ -57,22 +61,13 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
         }
       }
 
-      if (smsAuthModalVisible) {
-        if (currentSecurityAction === 'email') {
-          dispatch(credentialsForEmail(value));
-        }
-        if (currentSecurityAction === 'google') {
-          dispatch(credentialsForGoogle(value));
-        }
+      if (currentSecurityAction === 'email') {
+        if (smsAuthModalVisible) dispatch(credentialsForEmail(value));
+        if (emailAuthModalVisible) dispatch(activateEmailOtp(value));
       }
 
-      if (emailAuthModalVisible) {
-        if (currentSecurityAction === 'email') {
-          dispatch(activateEmailOtp(value));
-        }
-        if (currentSecurityAction === 'google') {
-          dispatch(credentialsForGoogle(value));
-        }
+      if (currentSecurityAction === 'google') {
+        dispatch(credentialsForGoogle(value));
       }
 
       dispatch(toggleSmsAuthModal(false));

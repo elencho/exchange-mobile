@@ -25,6 +25,9 @@ const INITIAL_STATE = {
   saveTemplate: false,
   newTemplateName: '',
 
+  receiverBank: {},
+  intermediateBank: {},
+
   // Whitelist
   whitelist: [],
   hasWhitelist: null,
@@ -57,6 +60,8 @@ export default (state = INITIAL_STATE, action) => {
     iban,
     saveTemplate,
     newTemplateName,
+    receiverBank,
+    intermediateBank,
   } = action;
   switch (action.type) {
     case actionTypes.SET_WALLET_TAB:
@@ -173,6 +178,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         newTemplateName,
+      };
+    case actionTypes.SET_RECEIVER_BANK:
+      return {
+        ...state,
+        receiverBank,
+      };
+    case actionTypes.SET_INTERMEDIATE_BANK:
+      return {
+        ...state,
+        intermediateBank,
       };
     default:
       return state;
