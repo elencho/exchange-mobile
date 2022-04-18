@@ -42,6 +42,7 @@ export const actionTypes = {
   DELETE_WHITELIST_ACTION: 'DELETE_WHITELIST_ACTION',
   FECTH_TEMPLATES_ACTION: 'FECTH_TEMPLATES_ACTION',
   WIRE_WITHDRAWAL_SAGA: 'WIRE_WITHDRAWAL_SAGA',
+  DELETE_TEMPLATES_ACTION: 'DELETE_TEMPLATES_ACTION',
 };
 
 export const setWalletTab = (walletTab) => ({
@@ -196,4 +197,8 @@ export const wireWithdrawalAction = (OTP) => ({
 });
 export const withdrawalTemplatesAction = () => ({
   type: actionTypes.FECTH_TEMPLATES_ACTION,
+});
+export const deleteTemplatesAction = (id) => ({
+  type: actionTypes.DELETE_TEMPLATES_ACTION,
+  id,
 });

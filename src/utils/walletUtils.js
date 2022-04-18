@@ -184,8 +184,7 @@ export const deleteTemplates = async (id) => {
     });
     return data.status;
   } catch (err) {
-    console.log(err);
-    console.log('Error in deleteTemplates');
+    handleError(err);
   }
 };
 

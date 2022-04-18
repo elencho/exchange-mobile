@@ -7,6 +7,7 @@ import images from '../../../constants/images';
 import { toggleTemplatesModal } from '../../../redux/modals/actions';
 import {
   chooseTemplate,
+  deleteTemplatesAction,
   setIban,
   setWithdrawalBank,
 } from '../../../redux/wallet/actions';
@@ -29,7 +30,7 @@ export default function TemplatesModal() {
 
   const hide = () => dispatch(toggleTemplatesModal(false));
 
-  const deleteTemplate = () => {};
+  const deleteTemplate = (id) => dispatch(deleteTemplatesAction(id));
   const choose = (t) => {
     dispatch(chooseTemplate(t));
     dispatch(setIban(t.iban));
@@ -55,7 +56,7 @@ export default function TemplatesModal() {
             </AppText>
           </Pressable>
 
-          <Pressable onPress={deleteTemplate} style={styles.icon}>
+          <Pressable onPress={() => deleteTemplate(t.id)} style={styles.icon}>
             <Image source={images.Delete} />
           </Pressable>
         </View>

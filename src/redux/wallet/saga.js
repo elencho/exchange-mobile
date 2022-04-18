@@ -3,6 +3,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import {
   addWhitelistAddress,
   cryptoWithdrawal,
+  deleteTemplates,
   deleteWhitelistAddress,
   editWhitelistAddress,
   fetchBanks,
@@ -38,6 +39,7 @@ import {
   setWithdrawalBank,
   setWithdrawalNote,
   setWithdrawalRestriction,
+  withdrawalTemplatesAction,
 } from '../wallet/actions';
 import {
   addWhitelistParams,
@@ -184,6 +186,14 @@ function* wireWithdrawalSaga(action) {
   }
 }
 
+function* deleteTemplatesSaga(action) {
+  const { id } = action;
+  const status = yield call(deleteTemplates, id);
+  if (status === 200) {
+    yield put(withdrawalTemplatesAction());
+  }
+}
+
 export default function* () {
   yield takeLatest(actionTypes.WIRE_DEPOSIT_ACTION, wireDepositSaga);
   yield takeLatest(actionTypes.CRYPTO_ADDRESSES_ACTION, cryptoAddressesSaga);
@@ -199,5 +209,6 @@ export default function* () {
   yield takeLatest(actionTypes.DELETE_WHITELIST_ACTION, deleteWhitelistSaga);
   yield takeLatest(actionTypes.FECTH_TEMPLATES_ACTION, withdrawalTemplatesSaga);
   yield takeLatest(actionTypes.WIRE_WITHDRAWAL_SAGA, wireWithdrawalSaga);
+  yield takeLatest(actionTypes.DELETE_TEMPLATES_ACTION, deleteTemplatesSaga);
   yield takeLatest('METHOD_NETWORK_RESTRICTION', methodNetworkRestrictionSaga);
 }
