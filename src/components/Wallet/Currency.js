@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
+import { setCurrentBalanceObj } from '../../redux/trade/actions';
 import {
   cryptoAddressesAction,
   setNetwork,
@@ -33,6 +34,7 @@ function Currency({
           network = b.depositMethods.WALLET[0].provider;
         if (b.depositMethods.WIRE) network = b.depositMethods.WIRE[0].provider;
         dispatch(setNetwork(network));
+        dispatch(setCurrentBalanceObj(b));
       }
     });
 

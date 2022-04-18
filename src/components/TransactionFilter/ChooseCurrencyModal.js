@@ -16,6 +16,7 @@ import {
   wireDepositAction,
 } from '../../redux/wallet/actions';
 import { withNavigation } from 'react-navigation';
+import { setCurrentBalanceObj } from '../../redux/trade/actions';
 
 function ChooseCurrencyModal({ wallet = false, navigation }) {
   const dispatch = useDispatch();
@@ -32,8 +33,10 @@ function ChooseCurrencyModal({ wallet = false, navigation }) {
   } = state;
 
   const filter = (text) => {
-    const filteredArray = currenciesConstant.filter((c) =>
-      c.name.toLowerCase().includes(text.toLowerCase())
+    const filteredArray = currenciesConstant.filter(
+      (c) =>
+        c.name.toLowerCase().includes(text.toLowerCase()) ||
+        c.code.toLowerCase().includes(text.toLowerCase())
     );
     dispatch(filterCurrencies(filteredArray));
   };
@@ -50,6 +53,7 @@ function ChooseCurrencyModal({ wallet = false, navigation }) {
           network = b.depositMethods.WALLET[0].provider;
         if (b.depositMethods.WIRE) network = b.depositMethods.WIRE[0].provider;
         dispatch(setNetwork(network));
+        dispatch(setCurrentBalanceObj(b));
       }
     });
 

@@ -15,6 +15,7 @@ export const actionTypes = {
   SAVE_CARDS: 'SAVE_CARDS',
   SET_DEPOSIT_PROVIDER: 'SET_DEPOSIT_PROVIDER',
   SET_DEPOSIT_PROVIDERS: 'SET_DEPOSIT_PROVIDERS',
+  SET_CURRENT_BALANCE_OBJ: 'SET_CURRENT_BALANCE_OBJ',
 
   // PURE VISUALS
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
@@ -102,6 +103,10 @@ export const setTradesLoading = (tradesLoading) => ({
 export const setOffersLoading = (offersLoading) => ({
   type: actionTypes.SET_OFFERS_LOADING,
   offersLoading,
+});
+export const setCurrentBalanceObj = (currentBalanceObj) => ({
+  type: actionTypes.SET_CURRENT_BALANCE_OBJ,
+  currentBalanceObj,
 });
 
 // FOR SAGAS

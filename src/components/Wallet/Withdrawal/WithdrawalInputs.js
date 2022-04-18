@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,20 +6,32 @@ import AppInput from '../../AppInput';
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
 import {
+  setMemoTag,
   setWithdrawalAmount,
   setWithdrawalNote,
 } from '../../../redux/wallet/actions';
 import colors from '../../../constants/colors';
+import WithdrawalAddress from './WithdrawalAddress';
 
-export default function WithdrawalInputs() {
+export default function WithdrawalInputs({ isFiat, hasRestriction }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { withdrawalAmount, withdrawalNote },
+    wallet: { withdrawalAmount, withdrawalNote, memoTag, cryptoAddresses },
+    transactions: { code },
   } = state;
+
+  const [hasMemoTag, setHasMemoTag] = useState(false);
+
+  useEffect(() => {
+    if (cryptoAddresses.length) {
+      setHasMemoTag(!!cryptoAddresses[0].tag);
+    }
+  }, [code]);
 
   const setAmount = (amount) => dispatch(setWithdrawalAmount(amount));
   const setNote = (note) => dispatch(setWithdrawalNote(note));
+  const handleMemotag = (memo) => dispatch(setMemoTag(memo));
 
   const Max = () => (
     <View style={styles.row}>
@@ -30,8 +42,18 @@ export default function WithdrawalInputs() {
 
   return (
     <View style={styles.block}>
+      {!hasRestriction && !isFiat && <WithdrawalAddress />}
+
+      {hasMemoTag && (
+        <AppInput
+          label="Address tag"
+          onChangeText={handleMemotag}
+          value={memoTag}
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          style={{ marginBottom: 22 }}
+        />
+      )}
       <AppInput
-        style={styles.note}
         label="Enter Note"
         onChangeText={setNote}
         value={withdrawalNote}
@@ -67,9 +89,6 @@ const styles = StyleSheet.create({
     width: 1,
     backgroundColor: '#3B4160',
     marginHorizontal: 16,
-  },
-  note: {
-    marginBottom: 7,
   },
   row: {
     flexDirection: 'row',

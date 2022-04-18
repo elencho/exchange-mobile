@@ -13,6 +13,7 @@ const INITIAL_STATE = {
   tradeType: 'Buy',
   Balance_Card: 'balance',
   balance: {},
+  currentBalanceObj: {},
   card: null,
   cards: [],
   fee: null,
@@ -33,6 +34,7 @@ export default (state = INITIAL_STATE, action) => {
     Balance_Card,
     card,
     trades,
+    currentBalanceObj,
     offers,
     tradesLoading,
     offersLoading,
@@ -138,6 +140,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         hideOtherPairs,
+      };
+    case actionTypes.SET_CURRENT_BALANCE_OBJ:
+      return {
+        ...state,
+        currentBalanceObj,
       };
     default:
       return state;

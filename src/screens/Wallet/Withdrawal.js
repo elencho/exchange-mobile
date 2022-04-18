@@ -17,7 +17,6 @@ import {
 } from '../../redux/wallet/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
 import AppButton from '../../components/AppButton';
-import WithdrawalAddress from '../../components/Wallet/Withdrawal/WithdrawalAddress';
 import WithdrawalInputs from '../../components/Wallet/Withdrawal/WithdrawalInputs';
 import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
@@ -25,6 +24,7 @@ import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodM
 import WithdrawalInfo from '../../components/Wallet/Withdrawal/WithdrawalInfo';
 import SaveAsTemplate from '../../components/Wallet/Withdrawal/SaveAsTemplate';
 import WithdrawalFees from '../../components/Wallet/Withdrawal/WithdrawalFees';
+import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
@@ -33,7 +33,13 @@ export default function Withdrawal() {
     profile: { googleAuth, emailAuth, smsAuth },
     trade: { balance },
     transactions: { code },
-    wallet: { withdrawalRestriction, currentTemplate, withdrawalBank },
+    wallet: {
+      withdrawalRestriction,
+      currentTemplate,
+      withdrawalBank,
+      hasMultipleNetworks,
+      cryptoAddresses,
+    },
   } = state;
 
   const [hasRestriction, setHasRestriction] = useState(false);
@@ -41,7 +47,9 @@ export default function Withdrawal() {
 
   useEffect(() => {
     dispatch(getWhitelistAction());
-    dispatch(withdrawalTemplatesAction());
+    if (isFiat) {
+      dispatch(withdrawalTemplatesAction());
+    }
   }, [code]);
 
   useEffect(() => {
@@ -80,19 +88,20 @@ export default function Withdrawal() {
       <View style={{ flex: hasRestriction ? 0 : 1 }}>
         <View style={styles.block}>
           <WalletCoinsDropdown />
+          {!isFiat && hasMultipleNetworks && <ChooseNetworkDropdown />}
           {isFiat && (
             <>
+              <WireTransferWarning />
               <TransferMethodDropdown />
               <TransferMethodModal />
             </>
           )}
-          <WireTransferWarning />
-
-          {!hasRestriction && !isFiat && <WithdrawalAddress />}
         </View>
 
         {!hasRestriction && isFiat && <WithdrawalInfo />}
-        {!hasRestriction && <WithdrawalInputs />}
+        {!hasRestriction && (
+          <WithdrawalInputs isFiat={isFiat} hasRestriction={hasRestriction} />
+        )}
         {saveTemplateCheck() ? (
           <>
             <WithdrawalFees />

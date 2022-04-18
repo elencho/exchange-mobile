@@ -17,6 +17,7 @@ const INITIAL_STATE = {
   //Withdrawal
   withdrawalAmount: null,
   withdrawalNote: '',
+  memoTag: '',
   templates: [],
   currentTemplate: {},
   banks: [],
@@ -44,9 +45,9 @@ export default (state = INITIAL_STATE, action) => {
     hasMultipleNetworks,
     hasMultipleMethods,
     wireDepositInfo,
+    memoTag,
     cryptoAddresses,
     network,
-    destinationAddress,
     withdrawalAmount,
     withdrawalNote,
     whitelist,
@@ -109,10 +110,10 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         network,
       };
-    case actionTypes.SET_DESTINATION_ADDRESS:
+    case actionTypes.SET_MEMO_TAG:
       return {
         ...state,
-        destinationAddress,
+        memoTag,
       };
     case actionTypes.SET_WITHDRAWAL_AMOUNT:
       return {

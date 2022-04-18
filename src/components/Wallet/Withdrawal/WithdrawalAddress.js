@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   address: {
-    marginTop: 22,
+    marginBottom: 22,
   },
   dropdown: {
     borderWidth: 1,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 22,
+    marginBottom: 22,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

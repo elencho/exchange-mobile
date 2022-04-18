@@ -19,6 +19,7 @@ export const actionTypes = {
   SAVE_BANKS: 'SAVE_BANKS',
   SET_WITHDRAWAL_BANK: 'SET_WITHDRAWAL_BANK',
   SET_IBAN: 'SET_IBAN',
+  SET_MEMO_TAG: 'SET_MEMO_TAG',
   SAVE_TEMPLATE: 'SAVE_TEMPLATE',
   NEW_TEMPLATE_NAME: 'NEW_TEMPLATE_NAME',
   SET_RECEIVER_BANK: 'SET_RECEIVER_BANK',
@@ -92,6 +93,10 @@ export const setWithdrawalAmount = (withdrawalAmount) => ({
 export const setWithdrawalNote = (withdrawalNote) => ({
   type: actionTypes.SET_WITHDRAWAL_NOTE,
   withdrawalNote,
+});
+export const setMemoTag = (memoTag) => ({
+  type: actionTypes.SET_MEMO_TAG,
+  memoTag,
 });
 export const saveTemplates = (templates) => ({
   type: actionTypes.SAVE_TEMPLATES,

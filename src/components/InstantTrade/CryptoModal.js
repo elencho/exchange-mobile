@@ -33,8 +33,10 @@ export default function CryptoModal() {
   );
 
   const filter = (text) => {
-    const filteredArray = updatedConstants.filter((c) =>
-      c.name.toLowerCase().includes(text.toLowerCase())
+    const filteredArray = updatedConstants.filter(
+      (c) =>
+        c.name.toLowerCase().includes(text.toLowerCase()) ||
+        c.code.toLowerCase().includes(text.toLowerCase())
     );
     dispatch(filterCurrencies(filteredArray));
   };
