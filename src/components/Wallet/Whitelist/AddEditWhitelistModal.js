@@ -1,9 +1,12 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../../AppModal';
 import AppInput from '../../AppInput';
+import AppText from '../../AppText';
+import ChooseNetworkDropdown from '../../Wallet/Deposit/ChooseNetworkDropdown';
+import ChooseNetworkModal from '../../Wallet/Deposit/ChooseNetworkModal';
 import {
   toggleAddWhitelistModal,
   toggleEditWhitelistModal,
@@ -11,7 +14,6 @@ import {
   toggleGoogleAuthModal,
   toggleSmsAuthModal,
 } from '../../../redux/modals/actions';
-import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import {
   chooseWhitelist,
@@ -25,8 +27,9 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const state = useSelector((state) => state);
   const {
     modals: { addWhitelistModalVisble, editWhitelistModalVisble },
-    wallet: { newWhitelist, currentWhitelistObj },
+    wallet: { newWhitelist, currentWhitelistObj, whitelist },
     profile: { googleAuth, emailAuth, smsAuth },
+    trade: { currentBalanceObj },
   } = state;
 
   const hide = () => {
@@ -53,16 +56,40 @@ export default function AddEditWhitelistModal({ add, edit }) {
   if (add) enabled = newWhitelist.address && newWhitelist.name;
 
   const handleChange = (name) => {
-    if (add) {
-      dispatch(setNewWhitelist({ ...newWhitelist, name }));
+    if (add) dispatch(setNewWhitelist({ ...newWhitelist, name }));
+    if (edit) dispatch(chooseWhitelist({ ...currentWhitelistObj, name }));
+  };
+
+  const tag = () => {
+    if (whitelist[0]) {
+      return whitelist[0].tag;
     }
-    if (edit) {
-      dispatch(chooseWhitelist({ ...currentWhitelistObj, name }));
+    return;
+  };
+
+  const networks = () => {
+    if (currentBalanceObj.withdrawalMethods.WALLET) {
+      return currentBalanceObj.withdrawalMethods.WALLET.length > 1;
     }
+    return;
   };
 
   const children = (
     <>
+      {networks() && (
+        <View style={styles.input}>
+          <ChooseNetworkDropdown disabled={edit ? true : false} />
+          <ChooseNetworkModal />
+        </View>
+      )}
+
+      <AppInput
+        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        style={styles.input}
+        onChangeText={(name) => handleChange(name)}
+        value={add ? newWhitelist.name : currentWhitelistObj.name}
+        label="Enter Address Name"
+      />
       <AppInput
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={[styles.input, { opacity: add ? 1 : 0.5 }]}
@@ -74,13 +101,19 @@ export default function AddEditWhitelistModal({ add, edit }) {
         editable={add ? true : false}
         focusable={add ? true : false}
       />
-      <AppInput
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-        style={styles.input}
-        onChangeText={(name) => handleChange(name)}
-        value={add ? newWhitelist.name : currentWhitelistObj.name}
-        label="Enter Address Name"
-      />
+      {tag() && (
+        <AppInput
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          style={[styles.input, { opacity: add ? 1 : 0.5 }]}
+          onChangeText={(tag) =>
+            dispatch(setNewWhitelist({ ...newWhitelist, tag }))
+          }
+          value={add ? newWhitelist.tag : currentWhitelistObj.tag}
+          label="Address Tag"
+          editable={add ? true : false}
+          focusable={add ? true : false}
+        />
+      )}
 
       <Pressable style={styles.button} onPress={handleHide} disabled={!enabled}>
         <AppText medium style={styles.buttonText}>

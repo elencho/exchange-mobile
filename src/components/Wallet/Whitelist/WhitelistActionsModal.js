@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Clipboard from 'expo-clipboard';
 
@@ -21,7 +21,7 @@ export default function WhitelistActionsModal() {
   const state = useSelector((state) => state);
   const {
     modals: { whitelistActionsModalVisible },
-    wallet: { currentWhitelistObj },
+    wallet: { currentWhitelistObj, whitelist },
     profile: { googleAuth, emailAuth, smsAuth },
   } = state;
 
@@ -48,6 +48,9 @@ export default function WhitelistActionsModal() {
       case 'Copy Address':
         Clipboard.setString(currentWhitelistObj.address);
         break;
+      case 'Copy Tag':
+        Clipboard.setString(currentWhitelistObj.tag);
+        break;
       default:
         break;
     }
@@ -66,10 +69,17 @@ export default function WhitelistActionsModal() {
     }
   };
 
+  const tag = () => {
+    if (whitelist[0]) {
+      return whitelist[0].tag;
+    }
+    return;
+  };
+
   const array = ['Edit Whitelist', 'Delete Whitelist', 'Copy Address'];
 
   const children = (
-    <>
+    <View style={{ marginBottom: -15 }}>
       {array.map((a) => (
         <Pressable
           style={styles.pressable}
@@ -82,13 +92,18 @@ export default function WhitelistActionsModal() {
           </AppText>
         </Pressable>
       ))}
-      <Pressable style={[styles.pressable, { marginTop: 7, marginBottom: 0 }]}>
-        <Image source={images.White_Copy} />
-        <AppText body style={styles.primary}>
-          Copy Tag
-        </AppText>
-      </Pressable>
-    </>
+      {tag() && (
+        <Pressable
+          style={styles.pressable}
+          onPress={() => handlePress('Copy Tag')}
+        >
+          <Image source={images.White_Copy} />
+          <AppText body style={styles.primary}>
+            Copy Tag
+          </AppText>
+        </Pressable>
+      )}
+    </View>
   );
 
   return (
@@ -106,8 +121,8 @@ const styles = StyleSheet.create({
   pressable: {
     flexDirection: 'row',
     paddingVertical: 7,
-    marginVertical: 7,
     alignItems: 'center',
+    height: 45,
   },
   primary: {
     color: colors.PRIMARY_TEXT,

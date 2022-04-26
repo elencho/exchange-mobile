@@ -168,7 +168,6 @@ export const fetchTemplates = async (currency, provider) => {
       headers: { Authorization: bearer },
       url: `${WITHDRAWAL_TEMPLATES}?currency=${currency}&provider=${provider}`,
     });
-    console.log(data);
     return data.data;
   } catch (err) {
     console.log(err);

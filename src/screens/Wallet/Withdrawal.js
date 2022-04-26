@@ -38,7 +38,6 @@ export default function Withdrawal() {
       currentTemplate,
       withdrawalBank,
       hasMultipleNetworks,
-      cryptoAddresses,
     },
   } = state;
 

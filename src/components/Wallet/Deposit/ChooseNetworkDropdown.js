@@ -7,7 +7,7 @@ import colors from '../../../constants/colors';
 import AppText from '../../AppText';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 
-export default function ChooseNetworkDropdown() {
+export default function ChooseNetworkDropdown({ disabled = false }) {
   const dispatch = useDispatch();
   const network = useSelector((state) => state.wallet.network);
 
@@ -21,7 +21,11 @@ export default function ChooseNetworkDropdown() {
   };
 
   return (
-    <Pressable style={styles.dropdown} onPress={handleDropdown}>
+    <Pressable
+      style={[styles.dropdown, { opacity: disabled ? 0.5 : 1 }]}
+      onPress={handleDropdown}
+      disabled={disabled}
+    >
       <View style={styles.subtext}>
         <AppText body style={styles.secondary}>
           Choose Network
