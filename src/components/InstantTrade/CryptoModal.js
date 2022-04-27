@@ -9,36 +9,32 @@ import {
   filterCurrencies,
 } from '../../redux/transactions/actions';
 import { toggleCryptoModal } from '../../redux/modals/actions';
-import { fetchOffers, setCrypto } from '../../redux/trade/actions';
+import {
+  fetchOffers,
+  setCrypto,
+  setCryptosArray,
+} from '../../redux/trade/actions';
 
 export default function CryptoModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
-  useEffect(() => {
-    dispatch(fetchCurrencies());
-  }, []);
-
   const {
-    transactions: { currencies, currenciesConstant },
     modals: { cryptoModalVisible },
-    trade: { crypto },
+    trade: { crypto, cryptosArray, cryptosArrayConstant },
   } = state;
 
-  const currenciesToIterate = currencies.filter(
-    (c) => c.code !== '' && c.code !== 'GEL' && c.code !== 'USD'
-  );
-  const updatedConstants = currenciesConstant.filter(
-    (c) => c.code !== '' && c.code !== 'GEL' && c.code !== 'USD'
-  );
+  useEffect(() => {
+    dispatch(fetchCurrencies());
+  }, [cryptoModalVisible]);
 
   const filter = (text) => {
-    const filteredArray = updatedConstants.filter(
+    const filteredArray = cryptosArrayConstant.filter(
       (c) =>
         c.name.toLowerCase().includes(text.toLowerCase()) ||
         c.code.toLowerCase().includes(text.toLowerCase())
     );
-    dispatch(filterCurrencies(filteredArray));
+    dispatch(setCryptosArray(filteredArray));
   };
 
   const hide = () => {
@@ -47,14 +43,14 @@ export default function CryptoModal() {
 
   const choose = (code) => {
     dispatch(setCrypto(code));
-    dispatch(filterCurrencies(updatedConstants));
+    dispatch(filterCurrencies(cryptosArray));
     dispatch(fetchOffers());
     hide();
   };
 
   const children = (
     <ModalWithSearch
-      array={currenciesToIterate}
+      array={cryptosArray}
       choose={choose}
       filter={filter}
       currentItem={crypto}

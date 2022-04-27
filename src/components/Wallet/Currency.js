@@ -23,11 +23,15 @@ function Currency({
   valueBTC,
 }) {
   const dispatch = useDispatch();
-  const filter = useSelector((state) => state.wallet.usdBtcSwitch);
-  const balance = useSelector((state) => state.trade.balance);
+  const state = useSelector((state) => state);
+  const {
+    wallet: { usdBtcSwitch },
+    trade: { balance, fiatsArray },
+  } = state;
 
   const handlePress = () => {
     let network;
+    const fiats = fiatsArray.map((f) => f.code);
     balance.balances.forEach((b) => {
       if (code === b.currencyCode) {
         if (b.depositMethods.WALLET)
@@ -38,7 +42,7 @@ function Currency({
       }
     });
 
-    if (code === 'GEL' || code === 'USD') {
+    if (fiats.includes(code)) {
       dispatch(wireDepositAction(name, code, navigation));
     } else {
       dispatch(cryptoAddressesAction(name, code, navigation, network));
@@ -46,10 +50,10 @@ function Currency({
   };
 
   const usdBitcoin = () => {
-    if (filter === 'USD') {
+    if (usdBtcSwitch === 'USD') {
       return valueUSD;
     }
-    if (filter === 'BTC') {
+    if (usdBtcSwitch === 'BTC') {
       return valueBTC;
     }
   };
@@ -63,7 +67,7 @@ function Currency({
           {available} {code}
         </AppText>
         <AppText body style={styles.secondary}>
-          Total: {total} = {usdBitcoin()} {filter}
+          Total: {total} = {usdBitcoin()} {usdBtcSwitch}
         </AppText>
       </View>
     </Pressable>

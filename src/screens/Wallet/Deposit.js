@@ -11,7 +11,6 @@ import colors from '../../constants/colors';
 import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock';
 import GenerateRequestModal from '../../components/Wallet/Deposit/GenerateRequestModal';
 import { toggleGenerateRequestModal } from '../../redux/modals/actions';
-import AddDepositAddressModal from '../../components/Wallet/Deposit/AddDepositAddressModal';
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
 import { generateCryptoAddressAction } from '../../redux/wallet/actions';
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
@@ -28,7 +27,7 @@ export default function Deposit() {
 
   const {
     transactions: { code },
-    trade: { balance },
+    trade: { currentBalanceObj },
     wallet: {
       cryptoAddresses,
       hasMultipleMethods,
@@ -54,27 +53,22 @@ export default function Deposit() {
     if (code === 'ETH') {
       dispatch(toggleGenerateRequestModal(true));
     } else {
-      let network;
-      balance.balances.forEach((b) => {
-        if (code === b.currencyCode) {
-          if (b.depositMethods.WALLET) {
-            network = b.depositMethods.WALLET[0].provider;
-            dispatch(generateCryptoAddressAction(code, network));
-          }
-        }
-      });
+      if (currentBalanceObj.depositMethods.WALLET) {
+        const provider = currentBalanceObj.depositMethods.WALLET[0].provider;
+        dispatch(generateCryptoAddressAction(code, provider));
+      }
     }
   };
 
   const hasAddress = () => {
     let hasAddress;
     if (cryptoAddresses) {
-      hasAddress = cryptoAddresses.length > 1;
+      hasAddress = cryptoAddresses.length > 0;
     }
     return hasAddress;
   };
 
-  const isFiat = code === 'GEL' || code === 'USD';
+  const isFiat = currentBalanceObj.type === 'FIAT';
   const isEthereum = code === 'ETH';
 
   return (
@@ -109,7 +103,11 @@ export default function Deposit() {
             address={address}
             setAddress={setAddress}
           />
-          <AppButton text="Add New Wallet Address" onPress={generate} />
+          <AppButton
+            text="Add New Wallet Address"
+            onPress={generate}
+            style={{ marginTop: 20 }}
+          />
         </>
       )}
 
@@ -122,10 +120,7 @@ export default function Deposit() {
               <GenerateRequestModal />
             </View>
           ) : (
-            <>
-              <FlexBlock reason="no address" />
-              <AddDepositAddressModal />
-            </>
+            <FlexBlock reason="no address" />
           )}
         </>
       ) : null}

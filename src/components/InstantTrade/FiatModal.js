@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -15,10 +15,12 @@ import AppText from '../AppText';
 
 export default function FiatModal() {
   const dispatch = useDispatch();
-  const fiatModalVisible = useSelector(
-    (state) => state.modals.fiatModalVisible
-  );
-  const fiat = useSelector((state) => state.trade.fiat);
+  const state = useSelector((state) => state);
+
+  const {
+    trade: { fiat, fiatsArray },
+    modals: { fiatModalVisible },
+  } = state;
 
   const hide = () => {
     dispatch(toggleFiatModal(false));
@@ -31,24 +33,21 @@ export default function FiatModal() {
     hide();
   };
 
-  const mockArray = ['USD', 'GEL'];
-
-  const children = mockArray.map((f, i) => (
-    <View key={f}>
-      <Pressable
-        style={[
-          styles.row,
-          f === fiat && { backgroundColor: 'rgba(101, 130, 253, 0.16)' },
-        ]}
-        onPress={() => choose(f)}
-      >
-        <Image source={images[fiat]} style={styles.icon} />
-        <AppText body style={styles.text}>
-          {f}
-        </AppText>
-      </Pressable>
-      {i < mockArray.length - 1 && <View style={styles.margin} />}
-    </View>
+  const children = fiatsArray.map((f, i, a) => (
+    <Pressable
+      key={f.code}
+      style={[
+        styles.row,
+        f.code === fiat && { backgroundColor: 'rgba(101, 130, 253, 0.16)' },
+        { marginBottom: i < a.length - 1 ? 5 : -10 },
+      ]}
+      onPress={() => choose(f.code)}
+    >
+      <Image source={images[fiat]} style={styles.icon} />
+      <AppText body style={styles.text}>
+        {f.code}
+      </AppText>
+    </Pressable>
   ));
 
   return (
@@ -66,9 +65,6 @@ const styles = StyleSheet.create({
   icon: {
     width: 30,
     height: 30,
-  },
-  margin: {
-    marginBottom: 5,
   },
   row: {
     flexDirection: 'row',

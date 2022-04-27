@@ -1,6 +1,5 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
 
 import Background from '../components/Background';
 import BuySellSwitch from '../components/InstantTrade/BuySellSwitch';
@@ -17,15 +16,6 @@ import colors from '../constants/colors';
 import FiatModal from '../components/InstantTrade/FiatModal';
 
 export default function InstantTrade() {
-  const state = useSelector((state) => state.modals);
-  const cardTradeData = useSelector((state) => state.trade.cardTradeData);
-  const {
-    fiatModalVisible,
-    cryptoModalVisible,
-    buySellModalVisible,
-    infoVisible,
-  } = state;
-
   return (
     <Background>
       <TopRow />
@@ -43,10 +33,10 @@ export default function InstantTrade() {
         <TransactionsBlock />
       </ScrollView>
 
-      {infoVisible && <InfoModal />}
-      {buySellModalVisible && <BuySellModal />}
-      {cryptoModalVisible && <CryptoModal />}
-      {fiatModalVisible && <FiatModal />}
+      <InfoModal />
+      <BuySellModal />
+      <CryptoModal />
+      <FiatModal />
       <TransactionModal trades />
     </Background>
   );

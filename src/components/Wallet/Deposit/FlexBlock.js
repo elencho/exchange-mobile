@@ -1,17 +1,22 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import { monthsShort } from '../../../constants/months';
-import { toggleAddDepositAddressModal } from '../../../redux/modals/actions';
+import { generateCryptoAddressAction } from '../../../redux/wallet/actions';
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
 import Headline from '../../TransactionHistory/Headline';
 
 export default function FlexBlock({ reason, restrictedUntil, type }) {
   const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const {
+    transactions: { code },
+    trade: { currentBalanceObj },
+  } = state;
 
   const text = () => {
     if (reason === 'no address') {
@@ -42,7 +47,10 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
   };
 
   const addAddress = () => {
-    dispatch(toggleAddDepositAddressModal(true));
+    if (currentBalanceObj.depositMethods.WALLET) {
+      const provider = currentBalanceObj.depositMethods.WALLET[0].provider;
+      dispatch(generateCryptoAddressAction(code, provider));
+    }
   };
 
   const date = (timestamp) => {

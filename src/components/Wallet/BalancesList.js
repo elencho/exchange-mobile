@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { fetchOffers } from '../../redux/trade/actions';
+import { fetchCurrencies } from '../../redux/transactions/actions';
 import AppInput from '../AppInput';
 import AppText from '../AppText';
 import Currency from './Currency';
@@ -19,6 +20,7 @@ export default function BalancesList() {
 
   useEffect(() => {
     dispatch(fetchOffers());
+    dispatch(fetchCurrencies());
   }, []);
 
   useEffect(() => {

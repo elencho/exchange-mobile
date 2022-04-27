@@ -22,15 +22,21 @@ function ChooseCurrencyModal({ wallet = false, navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
-  useEffect(() => {
-    dispatch(fetchCurrencies());
-  }, []);
-
   const {
     transactions: { currencies, currenciesConstant, currency },
     modals: { chooseCurrencyModalVisible },
-    trade: { balance },
+    trade: { balance, fiatsArray },
   } = state;
+
+  let walletCurrencies = currencies;
+
+  useEffect(() => {
+    dispatch(fetchCurrencies());
+  }, [chooseCurrencyModalVisible]);
+
+  useEffect(() => {
+    if (wallet) walletCurrencies.shift();
+  }, [currencies]);
 
   const filter = (text) => {
     const filteredArray = currenciesConstant.filter(
@@ -45,6 +51,8 @@ function ChooseCurrencyModal({ wallet = false, navigation }) {
     dispatch(toggleCurrencyModal(false));
   };
 
+  const fiats = fiatsArray.map((f) => f.code);
+
   const choose = (name, code) => {
     let network;
     balance.balances.forEach((b) => {
@@ -58,7 +66,7 @@ function ChooseCurrencyModal({ wallet = false, navigation }) {
     });
 
     if (wallet) {
-      if (code === 'GEL' || code === 'USD') {
+      if (fiats.includes(code)) {
         dispatch(wireDepositAction(name, code, navigation));
       } else {
         dispatch(cryptoAddressesAction(name, code, navigation, network));
@@ -78,7 +86,7 @@ function ChooseCurrencyModal({ wallet = false, navigation }) {
 
   const children = (
     <ModalWithSearch
-      array={currencies}
+      array={walletCurrencies}
       choose={choose}
       filter={filter}
       currentItem={currency}

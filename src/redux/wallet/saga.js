@@ -164,10 +164,12 @@ function* deleteWhitelistSaga(action) {
 function* withdrawalTemplatesSaga() {
   const currency = yield select((state) => state.transactions.code);
   const provider = yield select((state) => state.wallet.network);
+
   const templates = yield call(fetchTemplates, currency, provider);
+  if (templates) yield put(saveTemplates(templates));
+
   const banks = yield call(fetchBanks, provider);
-  yield put(saveTemplates(templates));
-  yield put(saveBanks(banks));
+  if (banks) yield put(saveBanks(banks));
 }
 
 function* wireWithdrawalSaga(action) {

@@ -62,7 +62,7 @@ export default function BuySellModal() {
   const hide = () => {
     dispatch(toggleBuySellModal(false));
     dispatch(switchBalanceCard('balance'));
-    dispatch(setCurrentTrade({ price: null, size: null }));
+    dispatch(setCurrentTrade({ price: '', size: '' }));
   };
 
   const handleSubmit = () => dispatch(submitTrade());

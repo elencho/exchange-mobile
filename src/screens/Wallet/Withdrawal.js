@@ -31,18 +31,19 @@ export default function Withdrawal() {
   const state = useSelector((state) => state);
   const {
     profile: { googleAuth, emailAuth, smsAuth },
-    trade: { balance },
+    trade: { currentBalanceObj },
     transactions: { code },
     wallet: {
       withdrawalRestriction,
       currentTemplate,
       withdrawalBank,
       hasMultipleNetworks,
+      hasMultipleMethods,
     },
   } = state;
 
   const [hasRestriction, setHasRestriction] = useState(false);
-  const isFiat = code === 'GEL' || code === 'USD';
+  const isFiat = currentBalanceObj.type === 'FIAT';
 
   useEffect(() => {
     dispatch(getWhitelistAction());
@@ -70,16 +71,8 @@ export default function Withdrawal() {
   };
 
   const withdrawalType = () => {
-    let type;
-    if (balance.balances) {
-      balance.balances.forEach((b) => {
-        if (b.currencyCode === code) {
-          if (b.withdrawalMethods.WALLET) type = 'crypto';
-          if (b.withdrawalMethods.WIRE) type = 'wire';
-        }
-      });
-    }
-    return type;
+    if (currentBalanceObj.withdrawalMethods.WALLET) return 'crypto';
+    if (currentBalanceObj.withdrawalMethods.WIRE) return 'wire';
   };
 
   return (
@@ -88,7 +81,7 @@ export default function Withdrawal() {
         <View style={styles.block}>
           <WalletCoinsDropdown />
           {!isFiat && hasMultipleNetworks && <ChooseNetworkDropdown />}
-          {isFiat && (
+          {isFiat && hasMultipleMethods && (
             <>
               <WireTransferWarning />
               <TransferMethodDropdown />

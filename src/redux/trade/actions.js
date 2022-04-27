@@ -16,6 +16,9 @@ export const actionTypes = {
   SET_DEPOSIT_PROVIDER: 'SET_DEPOSIT_PROVIDER',
   SET_DEPOSIT_PROVIDERS: 'SET_DEPOSIT_PROVIDERS',
   SET_CURRENT_BALANCE_OBJ: 'SET_CURRENT_BALANCE_OBJ',
+  SET_FIATS_ARRAY: 'SET_FIATS_ARRAY',
+  SET_CRYPTOS_ARRAY: 'SET_CRYPTOS_ARRAY',
+  SET_CRYPTOS_ARRAY_CONSTANT: 'SET_CRYPTOS_ARRAY_CONSTANT',
 
   // PURE VISUALS
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
@@ -107,6 +110,18 @@ export const setOffersLoading = (offersLoading) => ({
 export const setCurrentBalanceObj = (currentBalanceObj) => ({
   type: actionTypes.SET_CURRENT_BALANCE_OBJ,
   currentBalanceObj,
+});
+export const setFiatsArray = (fiatsArray) => ({
+  type: actionTypes.SET_FIATS_ARRAY,
+  fiatsArray,
+});
+export const setCryptosArray = (cryptosArray) => ({
+  type: actionTypes.SET_CRYPTOS_ARRAY,
+  cryptosArray,
+});
+export const setCryptosArrayConstant = (cryptosArrayConstant) => ({
+  type: actionTypes.SET_CRYPTOS_ARRAY_CONSTANT,
+  cryptosArrayConstant,
 });
 
 // FOR SAGAS

@@ -10,9 +10,13 @@ export default function AppButton({
   backgroundColor = colors.SECONDARY_PURPLE,
   left,
   right,
+  style,
 }) {
   return (
-    <Pressable style={[styles.button, { backgroundColor }]} onPress={onPress}>
+    <Pressable
+      style={[styles.button, { backgroundColor }, style]}
+      onPress={onPress}
+    >
       {left}
       <AppText medium style={styles.buttonText}>
         {text}
@@ -27,6 +31,7 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
   buttonText: {
     color: colors.PRIMARY_TEXT,

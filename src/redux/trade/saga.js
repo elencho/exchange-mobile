@@ -95,6 +95,8 @@ function* fetchOffersSaga() {
   yield put(depositProvidersSagaAction());
   yield put(cardsSagaAction());
 
+  yield put({ type: 'CLASIFY_CURRENCIES' });
+
   yield put(setOffersLoading(false));
 }
 

@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   offers: { USD: [], GEL: [] },
   pairObject: null,
   cardTradeData: {},
-  currentTrade: { price: null, size: null },
+  currentTrade: { price: '', size: '' },
   hideOtherPairs: false,
 
   fiat: 'GEL',
@@ -19,6 +19,9 @@ const INITIAL_STATE = {
   fee: null,
   depositProvider: null,
   depositProviders: null,
+  fiatsArray: [],
+  cryptosArray: [],
+  cryptosArrayConstant: [],
 
   tradesLoading: false,
   offersLoading: false,
@@ -49,6 +52,9 @@ export default (state = INITIAL_STATE, action) => {
     depositProvider,
     depositProviders,
     cardTradeData,
+    fiatsArray,
+    cryptosArray,
+    cryptosArrayConstant,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_TRADES:
@@ -145,6 +151,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentBalanceObj,
+      };
+    case actionTypes.SET_FIATS_ARRAY:
+      return {
+        ...state,
+        fiatsArray,
+      };
+    case actionTypes.SET_CRYPTOS_ARRAY:
+      return {
+        ...state,
+        cryptosArray,
+      };
+    case actionTypes.SET_CRYPTOS_ARRAY_CONSTANT:
+      return {
+        ...state,
+        cryptosArrayConstant,
       };
     default:
       return state;

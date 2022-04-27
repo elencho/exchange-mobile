@@ -29,6 +29,11 @@ import {
   getMethod,
   totalLoadedTransactions,
 } from './selectors';
+import {
+  setCryptosArray,
+  setCryptosArrayConstant,
+  setFiatsArray,
+} from '../trade/actions';
 
 function* fetchTransactionsSaga() {
   yield put(toggleLoading(true));
@@ -53,6 +58,8 @@ function* fetchCurrenciesSaga() {
       ...currencies,
     ])
   );
+
+  yield put({ type: 'CLASIFY_CURRENCIES' });
 }
 
 function* reachScrollEndSaga() {
@@ -126,6 +133,24 @@ function* transactionDetailsSaga(action) {
   yield put(setCurrentTransaction(currentTransaction));
 }
 
+function* clasifyCurrenciesSaga() {
+  const currencies = yield select((state) => state.transactions.currencies);
+
+  let fiatsArray = [];
+  let cryptosArray = [];
+
+  if (currencies) {
+    currencies.forEach((c) => {
+      if (c.type === 'FIAT') fiatsArray.push(c);
+      if (c.type === 'CRYPTO') cryptosArray.push(c);
+    });
+  }
+
+  yield put(setFiatsArray(fiatsArray));
+  yield put(setCryptosArray(cryptosArray));
+  yield put(setCryptosArrayConstant(cryptosArray));
+}
+
 export default function* () {
   yield takeLatest(actionTypes.FETCH_TRANSACTIONS, fetchTransactionsSaga);
   yield takeLatest(actionTypes.FETCH_CURRENCIES, fetchCurrenciesSaga);
@@ -134,6 +159,7 @@ export default function* () {
   yield takeLatest(actionTypes.SHOW_RESULTS, showResultsSaga);
   yield takeLatest(actionTypes.REACH_SCROLL_END, reachScrollEndSaga);
   yield takeLatest(actionTypes.FILTER_SAGA_ACTION, filterSaga);
+  yield takeLatest('CLASIFY_CURRENCIES', clasifyCurrenciesSaga);
   yield takeLatest(
     actionTypes.TRANSACTION_DETAILS_SAGA,
     transactionDetailsSaga

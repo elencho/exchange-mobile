@@ -33,7 +33,6 @@ const INITIAL_STATE = {
   whitelistActionsModalVisible: false,
   addWhitelistModalVisble: false,
   editWhitelistModalVisble: false,
-  addDepositAddressModalVisble: false,
   transferMethodModalVisible: false,
   templatesModalVisible: false,
 };
@@ -63,7 +62,6 @@ export default (state = INITIAL_STATE, action) => {
     chooseAddressModalVisible,
     whitelistActionsModalVisible,
     addWhitelistModalVisble,
-    addDepositAddressModalVisble,
     editWhitelistModalVisble,
     transferMethodModalVisible,
     templatesModalVisible,
@@ -188,11 +186,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         editWhitelistModalVisble,
-      };
-    case actionTypes.ADD_DEPOSIT_ADDRESS_MODAL:
-      return {
-        ...state,
-        addDepositAddressModalVisble,
       };
     case actionTypes.TOGGLE_TRANSFER_METHOD_MODAL:
       return {

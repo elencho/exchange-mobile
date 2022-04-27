@@ -14,14 +14,33 @@ export default function TransferMethodModal() {
   const state = useSelector((state) => state);
   const [methods, setMethods] = useState([]);
 
+  const {
+    modals: { transferMethodModalVisible },
+    transactions: { code },
+    wallet: { network, hasMultipleMethods },
+    trade: {
+      balance: { balances },
+    },
+  } = state;
+
   let methodsToDisplay = [];
 
   useEffect(() => {
     balances.forEach((b) => {
-      if (code === b.currencyCode) {
-        const array = Object.keys(b.depositMethods);
-        for (let i = 0; i < array.length; i++) {
-          methodsToDisplay.push(array[i]);
+      if (hasMultipleMethods && code === b.currencyCode) {
+        if (b.depositMethods.ECOMMERCE)
+          methodsToDisplay.push({
+            displayName: 'Payment Card',
+            provider: 'ECOMMERCE',
+          });
+        if (b.depositMethods.WIRE) {
+          b.depositMethods.WIRE.reduceRight(
+            (_, m) => methodsToDisplay.push(m),
+            0
+          );
+        }
+        if (b.depositMethods.WALLET) {
+          b.depositMethods.WALLET.forEach((m) => methodsToDisplay.push(m));
         }
         setMethods(methodsToDisplay);
       }
@@ -30,30 +49,16 @@ export default function TransferMethodModal() {
     return () => setMethods([]);
   }, [code]);
 
-  const {
-    modals: { transferMethodModalVisible },
-    transactions: { code },
-    wallet: { network },
-    trade: {
-      balance: { balances },
-    },
-  } = state;
-
   const hide = () => dispatch(toggleTransferMethodModal(false));
 
   const handlePress = (m) => {
-    if (m === 'WIRE') dispatch(setNetwork('SWIFT'));
-    if (m === 'ECOMMERCE') dispatch(setNetwork('CARD')); // Needs to be checked
+    dispatch(setNetwork(m));
+    // Card Needs to be checked
     hide();
   };
 
-  const text = (m) => {
-    if (m === 'WIRE') return 'Swift Transfer';
-    if (m === 'ECOMMERCE') return 'Visa or MC Card';
-  };
-
   const background = (m) => {
-    if (m === 'WIRE' && network === 'SWIFT') {
+    if (m === network) {
       return { backgroundColor: 'rgba(101, 130, 253, 0.1)' };
     }
   };
@@ -62,13 +67,13 @@ export default function TransferMethodModal() {
     <>
       {methods.map((m) => (
         <Pressable
-          style={[styles.pressable, background(m)]}
-          key={m}
-          onPress={() => handlePress(m)}
+          style={[styles.pressable, background(m.provider)]}
+          key={m.displayName}
+          onPress={() => handlePress(m.provider)}
         >
           <Image source={images.Swift} />
           <AppText body style={styles.primary}>
-            {text(m)}
+            {m.displayName}
           </AppText>
         </Pressable>
       ))}

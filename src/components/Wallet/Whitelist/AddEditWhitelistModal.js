@@ -84,14 +84,12 @@ export default function AddEditWhitelistModal({ add, edit }) {
       )}
 
       <AppInput
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(name) => handleChange(name)}
         value={add ? newWhitelist.name : currentWhitelistObj.name}
         label="Enter Address Name"
       />
       <AppInput
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={[styles.input, { opacity: add ? 1 : 0.5 }]}
         onChangeText={(address) =>
           dispatch(setNewWhitelist({ ...newWhitelist, address }))
@@ -103,7 +101,6 @@ export default function AddEditWhitelistModal({ add, edit }) {
       />
       {tag() && (
         <AppInput
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           style={[styles.input, { opacity: add ? 1 : 0.5 }]}
           onChangeText={(tag) =>
             dispatch(setNewWhitelist({ ...newWhitelist, tag }))
@@ -115,7 +112,11 @@ export default function AddEditWhitelistModal({ add, edit }) {
         />
       )}
 
-      <Pressable style={styles.button} onPress={handleHide} disabled={!enabled}>
+      <Pressable
+        style={[styles.button, { opacity: enabled ? 1 : 0.5 }]}
+        onPress={handleHide}
+        disabled={!enabled}
+      >
         <AppText medium style={styles.buttonText}>
           {add ? 'Add' : 'Edit'} Address
         </AppText>
@@ -127,7 +128,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
     <AppModal
       children={children}
       hide={hide}
-      bottom
+      fullScreen
       visible={add ? addWhitelistModalVisble : editWhitelistModalVisble}
       title={`${add ? 'Add' : 'Edit'} Whitelist`}
     />
@@ -137,11 +138,14 @@ export default function AddEditWhitelistModal({ add, edit }) {
 const styles = StyleSheet.create({
   button: {
     height: 45,
-    width: '100%',
     backgroundColor: colors.SECONDARY_PURPLE,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 28,
+
+    position: 'absolute',
+    bottom: 30,
+    right: 15,
+    left: 15,
   },
   buttonText: {
     color: colors.PRIMARY_TEXT,

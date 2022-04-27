@@ -80,7 +80,7 @@ export const fetchCryptoAddresses = async (currency, network) => {
     );
     return data.data;
   } catch (err) {
-    console.log(err + ' in fetchCryptoAddresses');
+    handleError(err);
   }
 };
 
@@ -93,7 +93,7 @@ export const generateCryptoAddress = async (currency, network) => {
     });
     return data.data;
   } catch (err) {
-    console.log(err + ' in generateCryptoAddress');
+    handleError(err);
   }
 };
 
