@@ -88,9 +88,7 @@ export default function DatePickerModal({ from, to }) {
     }
   };
 
-  const hide = () => {
-    dispatch(toggleDatePicker({ from: false, to: false }));
-  };
+  const hide = () => dispatch(toggleDatePicker({ from: false, to: false }));
 
   const minMaxDate = () => {
     if (fromDateTime && to) {
@@ -139,7 +137,6 @@ export default function DatePickerModal({ from, to }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: -50,
     marginHorizontal: -15,
     marginBottom: -15,
   },

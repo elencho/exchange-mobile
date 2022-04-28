@@ -22,6 +22,13 @@ export default function DatePicker({ to = false, from = false }) {
     if (to && !toDateTime) return 'To Date';
   };
 
+  const color = () => {
+    if ((from && fromDateTime) || (to && toDateTime))
+      return colors.PRIMARY_TEXT;
+    if ((from && !fromDateTime) || (to && !toDateTime))
+      return colors.SECONDARY_TEXT;
+  };
+
   const showDatePickerModal = () => {
     if (from) dispatch(toggleDatePicker({ from: true, to: false }));
     if (to) dispatch(toggleDatePicker({ from: false, to: true }));
@@ -29,7 +36,7 @@ export default function DatePicker({ to = false, from = false }) {
 
   return (
     <Pressable onPress={showDatePickerModal} style={styles.dropdown}>
-      <AppText style={styles.text}>{text()}</AppText>
+      <AppText style={{ color: color() }}>{text()}</AppText>
       <Image source={images.Calendar} />
     </Pressable>
   );
@@ -45,9 +52,5 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#42475D',
     marginBottom: 15,
-  },
-  text: {
-    fontSize: 15,
-    color: colors.SECONDARY_TEXT,
   },
 });
