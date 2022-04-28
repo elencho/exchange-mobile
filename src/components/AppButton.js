@@ -5,18 +5,15 @@ import colors from '../constants/colors';
 import AppText from './AppText';
 
 export default function AppButton({
-  onPress,
   text,
   backgroundColor = colors.SECONDARY_PURPLE,
   left,
   right,
   style,
+  ...rest
 }) {
   return (
-    <Pressable
-      style={[styles.button, { backgroundColor }, style]}
-      onPress={onPress}
-    >
+    <Pressable style={[styles.button, { backgroundColor }, style]} {...rest}>
       {left}
       <AppText medium style={styles.buttonText}>
         {text}

@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: 'hidden',
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   statusBar: {
     flex: 0,

@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import {
   bearer,
   OFFERS_URL,
@@ -7,6 +8,7 @@ import {
   CARDS_URL,
   CALCULATE_FEE_URL,
 } from '../constants/api';
+import handleError from './errorHandling';
 
 export const fetchTrades = async (params) => {
   try {
@@ -36,9 +38,9 @@ export const submitTrade = async (params) => {
     const data = await axios.post(TRADES_URL, params, {
       headers: { Authorization: bearer },
     });
-    return { ...data.data, status: data.status };
+    return data;
   } catch (err) {
-    console.log(err + ' in submitTrade');
+    handleError(err);
   }
 };
 export const fetchBalance = async () => {

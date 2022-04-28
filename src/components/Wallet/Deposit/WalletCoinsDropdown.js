@@ -14,39 +14,13 @@ export default function WalletCoinsDropdown() {
     transactions: { code },
     wallet: { usdBtcSwitch },
     trade: {
-      balance: { balances },
+      currentBalanceObj: { available, total, valueUSD, valueBTC },
     },
   } = state;
 
-  const handleDropdown = () => {
-    dispatch(toggleCurrencyModal(true));
-  };
+  const handleDropdown = () => dispatch(toggleCurrencyModal(true));
 
-  const available = () => {
-    let available;
-    if (balances) {
-      balances.forEach((b) => {
-        if (b.currencyCode === code) {
-          available = b.available;
-        }
-      });
-    }
-    return available;
-  };
-
-  const total = () => {
-    let total;
-    let value;
-    if (balances) {
-      balances.forEach((b) => {
-        if (b.currencyCode === code) {
-          total = b.total;
-          value = usdBtcSwitch === 'USD' ? b.valueUSD : b.valueBTC;
-        }
-      });
-    }
-    return `Total: ${total} = ${value} ${usdBtcSwitch}`;
-  };
+  const value = usdBtcSwitch === 'USD' ? valueUSD : valueBTC;
 
   return (
     <Pressable style={styles.container} onPress={handleDropdown}>
@@ -54,10 +28,10 @@ export default function WalletCoinsDropdown() {
 
       <View style={styles.balance}>
         <AppText body medium style={styles.primary}>
-          {available()} {code}
+          {available} {code}
         </AppText>
         <AppText subtext style={styles.secondary}>
-          {total()}
+          {`Total: ${total} = ${value} ${usdBtcSwitch}`}
         </AppText>
       </View>
 

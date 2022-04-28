@@ -39,6 +39,8 @@ export default function TransactionModal({ transactions, trades }) {
     dispatch(toggleTransactionDetails(false));
   };
 
+  const buySell = action === 'BID' ? 'Buy' : 'Sell';
+
   const children = () => {
     if (transactions) {
       return (
@@ -102,8 +104,12 @@ export default function TransactionModal({ transactions, trades }) {
             </View>
 
             <View style={styles.buy_sell}>
-              <AppText medium subtext style={styles.red}>
-                {action === 'BID' ? 'Buy' : 'Sell'}
+              <AppText
+                medium
+                subtext
+                style={styles[action === 'BID' ? 'grey' : 'red']}
+              >
+                {buySell}
               </AppText>
             </View>
           </View>
@@ -175,6 +181,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   red: { color: '#FA6392' },
+  grey: { color: '#0CCBB5' },
   top: {
     flexDirection: 'row',
     alignItems: 'center',

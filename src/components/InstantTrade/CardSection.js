@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { withNavigation } from 'react-navigation';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
@@ -13,7 +14,7 @@ import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import InfoMark from './InfoMark';
 
-export default function CardSection() {
+function CardSection({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.trade);
   const {
@@ -51,24 +52,35 @@ export default function CardSection() {
   //   return displayName;
   // };
 
+  const currencyName = (fiat) => {
+    let name;
+    balances.forEach((b) => {
+      if (b.currencyCode === fiat) name = b.currencyName;
+    });
+    return name;
+  };
+
+  const addNewCard = () =>
+    dispatch({
+      type: 'ADD_NEW_CARD_SAGA',
+      name: currencyName(fiat),
+      code: fiat,
+      navigation,
+      balances,
+      fiat,
+    });
+
+  const color = depositProvider ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT;
+  const opacity = depositProvider ? 1 : 0.5;
+
   return (
     <View style={styles.container}>
       {multipleBanks() && (
         <>
           <Pressable style={styles.dropdown} onPress={showBanks}>
             {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
-            <AppText
-              style={[
-                styles.text,
-                {
-                  color: depositProvider
-                    ? colors.PRIMARY_TEXT
-                    : colors.SECONDARY_TEXT,
-                },
-              ]}
-              medium={depositProvider}
-            >
-              {depositProvider}
+            <AppText style={[styles.text, { color }]} medium={depositProvider}>
+              {depositProvider ? depositProvider : 'Payment Service Provider'}
             </AppText>
             <Image source={images['Arrow']} />
           </Pressable>
@@ -80,7 +92,11 @@ export default function CardSection() {
         </>
       )}
 
-      <Pressable style={styles.dropdown} onPress={showCards}>
+      <Pressable
+        style={[styles.dropdown, { opacity }]}
+        onPress={showCards}
+        disabled={!depositProvider}
+      >
         {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
         <AppText
           style={[
@@ -95,7 +111,7 @@ export default function CardSection() {
       </Pressable>
 
       <AppText subtext style={styles.subText}>
-        Or you can add <PurpleText text=" New Card" />
+        Or you can add <PurpleText text=" New Card" onPress={addNewCard} />
       </AppText>
 
       {fee && (
@@ -109,6 +125,8 @@ export default function CardSection() {
     </View>
   );
 }
+
+export default withNavigation(CardSection);
 
 const styles = StyleSheet.create({
   dropdown: {

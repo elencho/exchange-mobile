@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProgressBar from 'react-native-animated-progress';
 
 import AppText from '../AppText';
@@ -8,6 +7,7 @@ import { fetchOffers } from '../../redux/trade/actions';
 
 export default function Timer() {
   const dispatch = useDispatch();
+  const tradeType = useSelector((state) => state.trade.tradeType);
   const [seconds, setSeconds] = useState(90);
 
   useEffect(() => {
@@ -38,24 +38,19 @@ export default function Timer() {
     return 100 - (100 / 90) * seconds;
   };
 
+  const color = tradeType === 'Buy' ? '#0CCBB5' : '#E0355D';
+
   return (
     <>
       <ProgressBar
-        backgroundColor="#0CCBB5"
+        backgroundColor={color}
         trackColor="rgba(131, 157, 180, 0.23)"
         height={3}
         progress={progress(seconds)}
       />
-      <AppText style={styles.text} subtext body>
+      <AppText style={{ marginTop: 10, color }} subtext body>
         Price update in {timeFormat(seconds)}
       </AppText>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  text: {
-    color: '#0CCBB5',
-    marginTop: 10,
-  },
-});

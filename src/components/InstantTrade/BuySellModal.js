@@ -12,6 +12,7 @@ import { WebView } from 'react-native-webview';
 import colors from '../../constants/colors';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
+import AppButton from '../AppButton';
 import AppInput from '../AppInput';
 import CurrencyDropdowns from './CurrencyDropdowns';
 import { toggleBuySellModal } from '../../redux/modals/actions';
@@ -179,21 +180,13 @@ export default function BuySellModal() {
         </ScrollView>
       </View>
 
-      <Pressable
+      <AppButton
         onPress={handleSubmit}
         disabled={!enabled()}
-        style={[
-          styles.button,
-          {
-            backgroundColor: tradeType === 'Buy' ? '#0CCBB5' : '#F83974',
-            opacity: enabled() ? 1 : 0.5,
-          },
-        ]}
-      >
-        <AppText medium style={styles.buttonText}>
-          {tradeType}
-        </AppText>
-      </Pressable>
+        backgroundColor={tradeType === 'Buy' ? '#0CCBB5' : '#F83974'}
+        text={tradeType}
+        style={{ opacity: enabled() ? 1 : 0.5, marginBottom: 20 }}
+      />
 
       {cardTradeData.status === 200 && (
         <TouchableOpacity activeOpacity={0.99} style={styles.webView}>
@@ -220,15 +213,6 @@ export default function BuySellModal() {
 const styles = StyleSheet.create({
   balance: {
     color: colors.SECONDARY_TEXT,
-  },
-  button: {
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  buttonText: {
-    color: colors.PRIMARY_TEXT,
   },
   code: {
     color: '#42475D',

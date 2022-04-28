@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
   actionTypes,
@@ -17,6 +17,7 @@ import {
   pairObjectSagaAction,
   depositProvidersSagaAction,
   cardsSagaAction,
+  setCurrentBalanceObj,
 } from './actions';
 import {
   getParams,
@@ -33,6 +34,8 @@ import {
   fetchCards,
   fetchFees,
 } from '../../utils/fetchTrades';
+import { toggleBuySellModal } from '../modals/actions';
+import { setWalletTab } from '../wallet/actions';
 
 function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
@@ -68,11 +71,11 @@ function* depositProvidersSaga() {
     balance.balances.forEach((b) => {
       if (b.depositMethods.ECOMMERCE && fiat === b.currencyCode) {
         providers = b.depositMethods.ECOMMERCE;
-        provider = b.depositMethods.ECOMMERCE[0].provider;
+        // provider = b.depositMethods.ECOMMERCE[0].provider;
       }
     });
   });
-  yield put(setDepositProvider(provider));
+  // yield put(setDepositProvider(provider));
   yield put(setDepositProviders(providers));
 }
 
@@ -100,19 +103,39 @@ function* fetchOffersSaga() {
   yield put(setOffersLoading(false));
 }
 
-function* submitTradeSaga() {
+function* submitTradeSaga(action) {
+  const { hide } = action;
+
   yield put(setTradesLoading(true));
   const params = yield select(paramsForTrade);
-  const cardTradeData = yield call(submitTrade, params);
-  yield put(saveCardTradeData(cardTradeData));
-  yield put(fetchTradesAction());
-  yield put(setTradesLoading(false));
+  const data = yield call(submitTrade, params);
+  if (data.status === 204) {
+    yield put(saveCardTradeData(data));
+    yield put(fetchTradesAction());
+    yield put(toggleBuySellModal(false));
+    yield put(setTradesLoading(false));
+  }
 }
 
 function* fetchFeeSaga() {
   const params = yield select(paramsForFee);
   const fee = yield call(fetchFees, params);
   yield put(setFee(fee));
+}
+
+function* addNewCardSaga(action) {
+  const { navigation, balances, fiat, name, code } = action;
+  let obj;
+
+  balances.forEach((b) => {
+    if (b.currencyCode === fiat) obj = b;
+  });
+
+  yield put(setCurrentBalanceObj(obj));
+  yield put(setWalletTab('Manage Cards'));
+  yield put(toggleBuySellModal(false));
+  yield delay(500);
+  yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
 }
 
 export default function* () {
@@ -123,4 +146,5 @@ export default function* () {
   yield takeLatest(actionTypes.CARDS_SAGA, cardsSaga);
   yield takeLatest(actionTypes.SUBMIT_TRADE, submitTradeSaga);
   yield takeLatest(actionTypes.FETCH_FEE, fetchFeeSaga);
+  yield takeLatest('ADD_NEW_CARD_SAGA', addNewCardSaga);
 }

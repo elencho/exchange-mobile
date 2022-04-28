@@ -34,6 +34,8 @@ export default function Trade({ trade }) {
     }, ${date.getFullYear()} / ${date.toLocaleTimeString()}`;
   };
 
+  const backgroundColor = status === 'COMPLETED' ? '#25D8D1' : '#F83974';
+
   return (
     <Pressable style={styles.container} onPress={show}>
       <View style={styles.row}>
@@ -49,7 +51,7 @@ export default function Trade({ trade }) {
       </View>
 
       <View style={styles.row}>
-        <AppText style={styles.primary} body>
+        <AppText style={styles.primary} subtext>
           {action === 'BID' ? 'Buy ' : 'Sell '}
           <AppText subtext style={styles.secondary}>
             / Instant Trade
@@ -64,15 +66,20 @@ export default function Trade({ trade }) {
         <AppText subtext style={styles.secondary}>
           {date()}
         </AppText>
-        <AppText subtext style={[styles.secondary, styles.capitalize]}>
-          {status}
-        </AppText>
+
+        <View style={styles.status}>
+          <AppText subtext style={[styles.secondary, styles.capitalize]}>
+            {status}
+          </AppText>
+          <View style={[styles.bullet, { backgroundColor }]} />
+        </View>
       </View>
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
+  bullet: { width: 3, height: 3, marginLeft: 6 },
   capitalize: {
     textTransform: 'capitalize',
   },
@@ -96,5 +103,9 @@ const styles = StyleSheet.create({
   marginTop: {
     marginTop: 8,
     marginBottom: 13,
+  },
+  status: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

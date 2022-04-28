@@ -10,6 +10,7 @@ export default function TradeDetails() {
   const currentTransaction = useSelector(
     (state) => state.transactions.currentTransaction
   );
+
   const {
     baseCurrency,
     quoteCurrency,
@@ -42,6 +43,8 @@ export default function TradeDetails() {
     </View>
   );
 
+  const backgroundColor = status === 'COMPLETED' ? '#25D8D1' : '#F83974';
+
   return (
     <View style={styles.container}>
       <View>
@@ -57,13 +60,18 @@ export default function TradeDetails() {
         <RightText text={`${price} ${baseCurrency}`} />
         <RightText text={date(creationTime)} />
         <RightText text={date(lastChangeTime)} />
-        <RightText text={status} style={styles.capitalize} />
+
+        <View style={styles.status}>
+          <RightText text={status} style={styles.capitalize} />
+          <View style={[styles.bullet, { backgroundColor }]} />
+        </View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  bullet: { width: 3, height: 3, marginLeft: 6 },
   capitalize: { textTransform: 'capitalize' },
   container: {
     flexDirection: 'row',
@@ -86,5 +94,9 @@ const styles = StyleSheet.create({
   },
   rightText: {
     color: colors.PRIMARY_TEXT,
+  },
+  status: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
