@@ -25,6 +25,7 @@ import {
   paramsForTrade,
   getCardParams,
   paramsForFee,
+  withdrawalFeeParams,
 } from './selectors';
 import {
   fetchTrades,
@@ -103,9 +104,7 @@ function* fetchOffersSaga() {
   yield put(setOffersLoading(false));
 }
 
-function* submitTradeSaga(action) {
-  const { hide } = action;
-
+function* submitTradeSaga() {
   yield put(setTradesLoading(true));
   const params = yield select(paramsForTrade);
   const data = yield call(submitTrade, params);
@@ -117,8 +116,9 @@ function* submitTradeSaga(action) {
   }
 }
 
-function* fetchFeeSaga() {
-  const params = yield select(paramsForFee);
+function* fetchFeeSaga(action) {
+  const { withdrawal } = action;
+  const params = yield select(withdrawal ? withdrawalFeeParams : paramsForFee);
   const fee = yield call(fetchFees, params);
   yield put(setFee(fee));
 }

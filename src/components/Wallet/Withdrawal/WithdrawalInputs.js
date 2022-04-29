@@ -12,6 +12,7 @@ import {
 } from '../../../redux/wallet/actions';
 import colors from '../../../constants/colors';
 import WithdrawalAddress from './WithdrawalAddress';
+import { fetchFee, setFee } from '../../../redux/trade/actions';
 
 export default function WithdrawalInputs({ isFiat, hasRestriction }) {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
   const {
     wallet: { withdrawalAmount, withdrawalNote, memoTag, cryptoAddresses },
     transactions: { code },
+    trade: { fee },
   } = state;
 
   const [hasMemoTag, setHasMemoTag] = useState(false);
@@ -29,7 +31,15 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
     }
   }, [code]);
 
-  const setAmount = (amount) => dispatch(setWithdrawalAmount(amount));
+  const setAmount = (amount) => {
+    dispatch(setWithdrawalAmount(amount));
+    if (!amount) {
+      dispatch(setFee(null));
+      return;
+    }
+    dispatch(fetchFee((withdrawal = true)));
+  };
+
   const setNote = (note) => dispatch(setWithdrawalNote(note));
   const handleMemotag = (memo) => dispatch(setMemoTag(memo));
 
@@ -39,6 +49,17 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
       <PurpleText text="Max" />
     </View>
   );
+
+  const WithdrawalFeeInfo = () => {
+    if (fee) {
+      const { totalAmount, totalFee } = fee;
+      return (
+        <AppText subtext style={styles.secondary}>
+          Fee = {totalFee}; Total amount = {totalAmount} {code}
+        </AppText>
+      );
+    } else return null;
+  };
 
   return (
     <View style={styles.block}>
@@ -67,9 +88,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         right={<Max />}
       />
-      <AppText subtext style={styles.secondary}>
-        Fee = 0; Total amount = 0 GEL
-      </AppText>
+      <WithdrawalFeeInfo />
     </View>
   );
 }

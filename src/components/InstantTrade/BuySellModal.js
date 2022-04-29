@@ -27,6 +27,7 @@ import {
   fetchFee,
   saveCardTradeData,
   setCurrentTrade,
+  setFee,
   submitTrade,
   switchBalanceCard,
 } from '../../redux/trade/actions';
@@ -108,6 +109,7 @@ export default function BuySellModal() {
       );
       card && t && dispatch(fetchFee());
     }
+    !t && dispatch(setFee(null));
   };
 
   const myBalance = () => {

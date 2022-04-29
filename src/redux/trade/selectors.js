@@ -26,6 +26,21 @@ export const paramsForFee = (state) => {
   };
 };
 
+export const withdrawalFeeParams = (state) => {
+  const {
+    transactions: { code },
+    wallet: { network, withdrawalAmount },
+  } = state;
+
+  return {
+    currency: code,
+    method: 'WIRE',
+    type: 'WITHDRAWAL',
+    provider: network,
+    amount: withdrawalAmount,
+  };
+};
+
 export const getCardParams = (state) => {
   const {
     trade: { fiat, depositProvider },

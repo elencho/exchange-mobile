@@ -73,6 +73,19 @@ function CardSection({ navigation }) {
   const color = depositProvider ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT;
   const opacity = depositProvider ? 1 : 0.5;
 
+  const FeeInfo = () => {
+    if (fee) {
+      return (
+        <View style={styles.info}>
+          <InfoMark inner="i" color={colors.SECONDARY_TEXT} />
+          <AppText subtext style={styles.infoText}>
+            MasterCard 3%; Total amount = {fee.totalAmount} {fiat}
+          </AppText>
+        </View>
+      );
+    }
+  };
+
   return (
     <View style={styles.container}>
       {multipleBanks() && (
@@ -114,14 +127,7 @@ function CardSection({ navigation }) {
         Or you can add <PurpleText text=" New Card" onPress={addNewCard} />
       </AppText>
 
-      {fee && (
-        <View style={styles.info}>
-          <InfoMark inner="i" color={colors.SECONDARY_TEXT} />
-          <AppText subtext style={styles.infoText}>
-            MasterCard 3%; Total amount = {fee.totalAmount} {fiat}
-          </AppText>
-        </View>
-      )}
+      {FeeInfo()}
     </View>
   );
 }
