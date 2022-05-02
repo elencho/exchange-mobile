@@ -15,7 +15,7 @@ export default function AppButton({
   return (
     <Pressable style={[styles.button, { backgroundColor }, style]} {...rest}>
       {left}
-      <AppText medium style={styles.buttonText}>
+      <AppText medium style={[styles.buttonText, right && { marginLeft: 10 }]}>
         {text}
       </AppText>
       {right}
@@ -32,6 +32,5 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: colors.PRIMARY_TEXT,
-    marginLeft: 10,
   },
 });

@@ -27,6 +27,8 @@ export const actionTypes = {
   EDIT_WHITELIST_MODAL: 'EDIT_WHITELIST_MODAL',
   TOGGLE_TRANSFER_METHOD_MODAL: 'TOGGLE_TRANSFER_METHOD_MODAL',
   TEMPLATES_MODAL: 'TEMPLATES_MODAL',
+
+  LOGIN_TWO_FA_MODAL: 'LOGIN_TWO_FA_MODAL',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -136,4 +138,10 @@ export const toggleTransferMethodModal = (transferMethodModalVisible) => ({
 export const toggleTemplatesModal = (templatesModalVisible) => ({
   type: actionTypes.TEMPLATES_MODAL,
   templatesModalVisible,
+});
+
+// Login
+export const toggleLogin2FaModal = (login2FaModalVisible) => ({
+  type: actionTypes.LOGIN_TWO_FA_MODAL,
+  login2FaModalVisible,
 });

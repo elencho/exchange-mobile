@@ -1,6 +1,9 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
+  // Login
+  login2FaModalVisible: false,
+
   // Transactions
   datePickerVisible: { to: false, from: false },
   chooseCurrencyModalVisible: false,
@@ -65,6 +68,7 @@ export default (state = INITIAL_STATE, action) => {
     editWhitelistModalVisble,
     transferMethodModalVisible,
     templatesModalVisible,
+    login2FaModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -196,6 +200,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         templatesModalVisible,
+      };
+    case actionTypes.LOGIN_TWO_FA_MODAL:
+      return {
+        ...state,
+        login2FaModalVisible,
       };
     default:
       return state;

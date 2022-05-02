@@ -1,4 +1,8 @@
 export default {
+  Background: require('../assets/images/BG.png'),
+  Background2x: require('../assets/images/BG2x.png'),
+  Background3x: require('../assets/images/BG3x.png'),
+
   // Transactions and instant trades
   Arrow: require('../assets/images/Arrow.png'),
   Left: require('../assets/images/Left.png'),
