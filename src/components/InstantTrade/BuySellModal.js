@@ -90,7 +90,9 @@ export default function BuySellModal() {
     return false;
   };
 
-  const handleChangeText = (t, type) => {
+  const handleChangeText = (text, type) => {
+    const t = text.replace(',', '.');
+
     if (type === 'crypto' && validate(t, quoteScale)) {
       dispatch(
         setCurrentTrade({

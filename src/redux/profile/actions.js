@@ -1,4 +1,10 @@
 export const actionTypes = {
+  // LOGIN
+  SAVE_PKCE_INFO: 'SAVE_PKCE_INFO',
+  SAVE_LOGIN_START_INFO: 'SAVE_LOGIN_START_INFO',
+  SET_CREDENTIALS: 'SET_CREDENTIALS',
+  SAVE_USER_AND_PASS_INFO: 'SAVE_USER_AND_PASS_INFO',
+
   SWITCH_PERSONAL_SECURITY: 'SWITCH_PERSONAL_SECURITY',
   SAVE_COUNTRIES: 'SAVE_COUNTRIES',
   SAVE_COUNTRIES_CONSTANT: 'SAVE_COUNTRIES_CONSTANT',
@@ -18,6 +24,10 @@ export const actionTypes = {
   SAVE_TOTP_SECRET_OBJ: 'SAVE_TOTP_SECRET_OBJ',
 
   // FOR SAGAS
+  START_LOGIN_ACTION: 'START_LOGIN_ACTION',
+  USERNAME_AND_PASSWORD_ACTION: 'USERNAME_AND_PASSWORD_ACTION',
+  OTP_FOR_LOGIN_ACTION: 'OTP_FOR_LOGIN_ACTION',
+
   FETCH_COUNTRIES_SAGA: 'FETCH_COUNTRIES_SAGA',
   FETCH_USER_INFO_SAGA: 'FETCH_USER_INFO_SAGA',
   SAVE_USER_INFO_SAGA: 'SAVE_USER_INFO_SAGA',
@@ -30,6 +40,24 @@ export const actionTypes = {
   CREDENTIALS_FOR_GOOGLE: 'CREDENTIALS_FOR_GOOGLE',
   ACTIVATE_GOOGLE_OTP: 'ACTIVATE_GOOGLE_OTP',
 };
+
+// Login
+export const savePkceInfo = (pkceInfo) => ({
+  type: actionTypes.SAVE_PKCE_INFO,
+  pkceInfo,
+});
+export const saveLoginStartInfo = (loginStartInfo) => ({
+  type: actionTypes.SAVE_LOGIN_START_INFO,
+  loginStartInfo,
+});
+export const setCredentials = (credentials) => ({
+  type: actionTypes.SET_CREDENTIALS,
+  credentials,
+});
+export const saveUserAndPassInfo = (userAndPassInfo) => ({
+  type: actionTypes.SAVE_USER_AND_PASS_INFO,
+  userAndPassInfo,
+});
 
 export const switchPersonalSecurity = (Personal_Security) => ({
   type: actionTypes.SWITCH_PERSONAL_SECURITY,
@@ -75,6 +103,18 @@ export const saveTotpSecretObj = (totpSecretObj) => ({
 });
 
 // FOR SAGAS
+export const startLoginAction = (navigation) => ({
+  type: actionTypes.START_LOGIN_ACTION,
+  navigation,
+});
+export const usernameAndPasswordAction = () => ({
+  type: actionTypes.USERNAME_AND_PASSWORD_ACTION,
+});
+export const otpForLoginAction = (otp) => ({
+  type: actionTypes.OTP_FOR_LOGIN_ACTION,
+  otp,
+});
+
 export const fetchCountries = () => ({
   type: actionTypes.FETCH_COUNTRIES_SAGA,
 });

@@ -1,29 +1,46 @@
 import React from 'react';
-import { StyleSheet, ImageBackground, Image } from 'react-native';
+import {
+  StyleSheet,
+  ImageBackground,
+  Image,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 import images from '../constants/images';
+import { startLoginAction } from '../redux/profile/actions';
 
-export default function Welcome() {
+export default function Welcome({ navigation }) {
+  const dispatch = useDispatch();
+  const startLogin = () => dispatch(startLoginAction(navigation));
+
   return (
-    <ImageBackground source={images.Background} style={styles.container}>
-      <Image source={images.Logo} style={styles.logo} />
+    <TouchableWithoutFeedback
+      style={{ flex: 1 }}
+      onPress={Keyboard.dismiss}
+      accessible={false}
+    >
+      <ImageBackground source={images.Background} style={styles.container}>
+        <Image source={images.Logo} style={styles.logo} />
 
-      <AppText header style={styles.primary}>
-        Welcome to Cryptal
-      </AppText>
+        <AppText header style={styles.primary}>
+          Welcome to Cryptal
+        </AppText>
 
-      <AppText style={styles.secondary}>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry
-      </AppText>
+        <AppText style={styles.secondary}>
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry
+        </AppText>
 
-      <AppButton text="Login" style={styles.button} />
-      <PurpleText text="Registration" />
-    </ImageBackground>
+        <AppButton text="Login" style={styles.button} onPress={startLogin} />
+        <PurpleText text="Registration" />
+      </ImageBackground>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -38,6 +55,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: '20%',
+  },
+  flex: {
+    flex: 1,
   },
   logo: {
     width: 48,

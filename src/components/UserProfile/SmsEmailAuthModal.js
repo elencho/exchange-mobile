@@ -1,91 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
+import TwoFaInput from '../TwoFaInput';
 import PurpleText from '../PurpleText';
-import CodeInput from '../CodeInput';
+
 import {
   toggleEmailAuthModal,
-  toggleGoogleAuthModal,
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
-import {
-  activateEmailOtp,
-  activateGoogleOtp,
-  credentialsForEmail,
-  credentialsForGoogle,
-  setCurrentSecurityAction,
-  setEmailAuth,
-  setSmsAuth,
-} from '../../redux/profile/actions';
-import {
-  addWhitelistAction,
-  deleteWhitelistAction,
-  cryptoWithdrawalAction,
-  wireWithdrawalAction,
-} from '../../redux/wallet/actions';
+import { setEmailAuth, setSmsAuth } from '../../redux/profile/actions';
 
 export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     modals: { smsAuthModalVisible, emailAuthModalVisible },
-    profile: { currentSecurityAction, googleAuth, emailAuth, smsAuth },
-    wallet: { newWhitelist },
+    profile: { currentSecurityAction },
   } = state;
+
+  const [value, setValue] = useState('');
 
   const action =
     type === 'SMS' ? toggleSmsAuthModal(false) : toggleEmailAuthModal(false);
   const visible = type === 'SMS' ? smsAuthModalVisible : emailAuthModalVisible;
   const cellCount = type === 'SMS' ? 4 : 6;
 
-  const [value, setValue] = useState('');
-
-  useEffect(() => {
-    if (value.length === cellCount) {
-      if (withdrawal === 'crypto') {
-        dispatch(cryptoWithdrawalAction(value)); // value = OTP
-      }
-      if (withdrawal === 'wire') {
-        dispatch(wireWithdrawalAction(value)); // value = OTP
-      }
-      if (whitelist) {
-        if (newWhitelist.name && newWhitelist.address) {
-          dispatch(addWhitelistAction(value)); // value = OTP
-        } else {
-          // delete whitelist
-          dispatch(deleteWhitelistAction(value)); // value = OTP
-        }
-      }
-
-      if (currentSecurityAction === 'email') {
-        if (smsAuthModalVisible) dispatch(credentialsForEmail(value));
-        if (emailAuthModalVisible) dispatch(activateEmailOtp(value));
-      }
-
-      if (currentSecurityAction === 'google') {
-        dispatch(credentialsForGoogle(value));
-      }
-
-      dispatch(toggleSmsAuthModal(false));
-      dispatch(toggleEmailAuthModal(false));
-
-      setValue('');
-    }
-  }, [value]);
-
-  const handleChange = (text) => setValue(text);
-
   const handleHide = () => {
     if (value.length === cellCount) {
-      // if (currentSecurityAction === 'google') {
-      //   dispatch(toggleGoogleAuthModal(true));
-      // }
       if (currentSecurityAction === 'email') {
-        // dispatch(setEmailAuth(true));
         dispatch(setSmsAuth(false));
       }
       if (currentSecurityAction === 'sms') {
@@ -107,10 +53,12 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
       </AppText>
 
       <View style={styles.codeInput}>
-        <CodeInput
-          cellCount={cellCount}
+        <TwoFaInput
+          withdrawal={withdrawal}
+          whitelist={whitelist}
           value={value}
-          setValue={handleChange}
+          cellCount={cellCount}
+          setValue={setValue}
         />
       </View>
 

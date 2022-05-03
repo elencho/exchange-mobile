@@ -11,9 +11,9 @@ import BalanceScreen from '../screens/Wallet/Balance';
 
 const Navigator = createStackNavigator(
   {
-    // Login: LoginScreen,
-    // Welcome: WelcomeScreen,
     Main: MainScreen,
+    Welcome: WelcomeScreen,
+    Login: LoginScreen,
 
     TransactionFilter: TransactionFilterScreen,
     UserProfile: UserProfileScreen,

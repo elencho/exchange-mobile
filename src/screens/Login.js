@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, ImageBackground, Image } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
@@ -10,12 +10,23 @@ import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 import images from '../constants/images';
 import { toggleLogin2FaModal } from '../redux/modals/actions';
+import {
+  setCredentials,
+  usernameAndPasswordAction,
+} from '../redux/profile/actions';
 
 export default function Login() {
   const dispatch = useDispatch();
+  const credentials = useSelector((state) => state.profile.credentials);
+
+  const typePassword = (t) =>
+    dispatch(setCredentials({ ...credentials, password: t }));
+  const typeLogin = (t) =>
+    dispatch(setCredentials({ ...credentials, login: t }));
 
   const handleLogin = () => {
-    dispatch(toggleLogin2FaModal(true));
+    // dispatch(toggleLogin2FaModal(true));
+    dispatch(usernameAndPasswordAction());
   };
 
   return (
@@ -26,9 +37,16 @@ export default function Login() {
         Welcome to Cryptal
       </AppText>
 
-      <AppInput placeholder="Enter Email" style={styles.email} />
+      <AppInput
+        placeholder="Enter Email"
+        style={styles.email}
+        onChangeText={typeLogin}
+        value={credentials.login}
+      />
       <AppInput
         placeholder="Enter Password"
+        onChangeText={typePassword}
+        value={credentials.password}
         right={<PurpleText text="Forgot?" style={{ marginLeft: 10 }} />}
       />
 

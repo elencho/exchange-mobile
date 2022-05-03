@@ -1,4 +1,5 @@
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
+import { asyncPkceChallenge } from 'react-native-pkce-challenge';
 
 import {
   actionTypes,
@@ -12,6 +13,9 @@ import {
   setGoogleAuth,
   setEmailAuth,
   saveTotpSecretObj,
+  savePkceInfo,
+  saveLoginStartInfo,
+  saveUserAndPassInfo,
 } from './actions';
 import { getUserData } from './selectors';
 import {
@@ -20,15 +24,65 @@ import {
   fetchCountries,
   fetchUserInfo as fetchUserInfoUtil,
   getOtpChangeToken,
+  loginOtp,
+  loginStart,
   sendEmailOtp,
   subscribeMail,
   unsubscribeMail,
   updatePassword,
   updatePhoneNumber,
   updateUserData,
+  usernameAndPasswordForm,
   verifyPhoneNumber,
 } from '../../utils/userProfileUtils';
-import { toggleEmailAuthModal, toggleGoogleAuthModal } from '../modals/actions';
+import {
+  toggleEmailAuthModal,
+  toggleGoogleAuthModal,
+  toggleLogin2FaModal,
+} from '../modals/actions';
+
+function* startLoginSaga(action) {
+  const { navigation } = action;
+
+  const pkceInfo = yield call(async () => await asyncPkceChallenge());
+  yield put(savePkceInfo(pkceInfo));
+
+  const code_challenge = yield select(
+    (state) => state.profile.pkceInfo.codeChallenge
+  );
+  const loginStartInfo = yield call(loginStart, code_challenge);
+  yield put(saveLoginStartInfo(loginStartInfo));
+
+  if (loginStartInfo.execution === 'LOGIN_USERNAME_PASSWORD') {
+    navigation.navigate('Login');
+  }
+}
+
+function* usernameAndPasswordSaga() {
+  const credentials = yield select((state) => state.profile.credentials);
+  const url = yield select((state) => state.profile.loginStartInfo.callbackUrl);
+  const { login, password } = credentials;
+  const userAndPassInfo = yield call(
+    usernameAndPasswordForm,
+    login,
+    password,
+    url
+  );
+  yield put(saveUserAndPassInfo(userAndPassInfo));
+
+  if (userAndPassInfo.execution === 'LOGIN_OTP') {
+    yield put(toggleLogin2FaModal(true));
+  }
+}
+
+function* otpForLoginSaga(action) {
+  const { otp } = action;
+  const callbackUrl = yield select(
+    (state) => state.profile.userAndPassInfo.callbackUrl
+  );
+
+  const data = yield call(loginOtp, otp, callbackUrl);
+}
 
 function* fetchCountriesSaga() {
   const countries = yield call(fetchCountries);
@@ -122,6 +176,12 @@ function* activateGoogleSaga(action) {
 }
 
 export default function* () {
+  yield takeLatest(actionTypes.START_LOGIN_ACTION, startLoginSaga);
+  yield takeLatest(
+    actionTypes.USERNAME_AND_PASSWORD_ACTION,
+    usernameAndPasswordSaga
+  );
+  yield takeLatest(actionTypes.OTP_FOR_LOGIN_ACTION, otpForLoginSaga);
   yield takeLatest(actionTypes.FETCH_COUNTRIES_SAGA, fetchCountriesSaga);
   yield takeLatest(actionTypes.FETCH_USER_INFO_SAGA, fetchUserInfoSaga);
   yield takeLatest(actionTypes.SAVE_USER_INFO_SAGA, saveUserInfoSaga);

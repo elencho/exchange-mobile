@@ -65,7 +65,7 @@ const AppInput = ({
                   {
                     translateY: focusAnim.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [0, -26],
+                      outputRange: [0, -31],
                     }),
                   },
                   {
@@ -84,6 +84,8 @@ const AppInput = ({
                 color: isFocused
                   ? colors.PRIMARY_PURPLE
                   : colors.SECONDARY_TEXT,
+                // needs to be checked
+                marginTop: 6,
               }}
             >
               {label}
@@ -116,7 +118,8 @@ const styles = StyleSheet.create({
   labelContainer: {
     position: 'absolute',
     paddingHorizontal: 8,
-    height: 18,
+    height: 22,
+    justifyContent: 'center',
   },
 });
 
