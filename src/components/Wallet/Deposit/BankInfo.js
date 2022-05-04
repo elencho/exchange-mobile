@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Clipboard from 'expo-clipboard';
@@ -28,6 +28,7 @@ const InfoRow = ({ title, text }) => {
 export default function BankInfo() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const [info, setInfo] = useState({});
   const {
     trade: { depositProvider, depositProviders },
     wallet: {
@@ -35,15 +36,19 @@ export default function BankInfo() {
     },
   } = state;
 
-  const {
-    receiverBankCountry,
-    receiverBankSwift,
-    receiverBankAddress,
-    receiverIBAN,
-    transferDescription,
-    intermediateBankSwift,
-    receiverName,
-  } = en[0];
+  useEffect(() => {
+    if (en) {
+      setInfo({
+        country: en[0].receiverBankCountry,
+        swift: en[0].receiverBankSwift,
+        address: en[0].receiverBankAddress,
+        iban: en[0].receiverIBAN,
+        description: en[0].transferDescription,
+        intermediateSwift: en[0].intermediateBankSwift,
+        name: en[0].receiverName,
+      });
+    }
+  }, [en]);
 
   const handleBanks = () => {
     dispatch(toggleChooseBankModal(true));
@@ -60,12 +65,12 @@ export default function BankInfo() {
   };
 
   const infoArray = [
-    { title: 'Company Name', text: receiverName },
-    { title: 'Country', text: receiverBankCountry },
-    { title: 'SWIFT Code', text: receiverBankSwift },
-    { title: 'Address', text: receiverBankAddress },
-    { title: 'IBAN', text: receiverIBAN },
-    { title: 'Description', text: transferDescription },
+    { title: 'Company Name', text: info.name },
+    { title: 'Country', text: info.country },
+    { title: 'SWIFT Code', text: info.swift },
+    { title: 'Address', text: info.address },
+    { title: 'IBAN', text: info.iban },
+    { title: 'Description', text: info.description },
   ];
 
   const intermediateInfoArray = [
@@ -102,7 +107,7 @@ export default function BankInfo() {
 
       <View style={styles.marginVertical} />
 
-      {intermediateBankSwift && (
+      {info.intermediateSwift && (
         <>
           <AppText medium style={[styles.title, { marginBottom: 15 }]}>
             Intermediary bank

@@ -24,6 +24,7 @@ export default function Deposit() {
   const [address, setAddress] = useState([]);
   const [memoTag, setMemoTag] = useState(null);
   const [hasRestriction, setHasRestriction] = useState(false);
+  const [hasMethod, setHasMethod] = useState(false);
 
   const {
     transactions: { code },
@@ -33,8 +34,12 @@ export default function Deposit() {
       hasMultipleMethods,
       hasMultipleNetworks,
       depositRestriction,
+      network,
     },
   } = state;
+
+  const isFiat = currentBalanceObj.type === 'FIAT';
+  const isEthereum = network === 'ERC20' || network === 'BEP20';
 
   useEffect(() => {
     if (cryptoAddresses.length) {
@@ -43,6 +48,7 @@ export default function Deposit() {
         setMemoTag(cryptoAddresses[0].tag);
       }
     }
+    setHasMethod(!!Object.keys(currentBalanceObj.depositMethods).length);
   }, [code]);
 
   useEffect(() => {
@@ -50,7 +56,7 @@ export default function Deposit() {
   }, [depositRestriction]);
 
   const generate = () => {
-    if (code === 'ETH') {
+    if (isEthereum) {
       dispatch(toggleGenerateRequestModal(true));
     } else {
       if (currentBalanceObj.depositMethods.WALLET) {
@@ -61,15 +67,15 @@ export default function Deposit() {
   };
 
   const hasAddress = () => {
-    let hasAddress;
-    if (cryptoAddresses) {
-      hasAddress = cryptoAddresses.length > 0;
-    }
-    return hasAddress;
+    if (cryptoAddresses) return cryptoAddresses.length > 0;
   };
 
-  const isFiat = currentBalanceObj.type === 'FIAT';
-  const isEthereum = code === 'ETH';
+  const reason = () => {
+    if (depositRestriction.reason) {
+      return depositRestriction.reason;
+    }
+    return 'METHOD';
+  };
 
   return (
     <>
@@ -111,7 +117,7 @@ export default function Deposit() {
         </>
       )}
 
-      {!hasAddress() && !isFiat && !hasRestriction ? (
+      {!hasAddress() && !isFiat && !hasRestriction && hasMethod ? (
         <>
           {isEthereum ? (
             <View style={styles.flex}>
@@ -126,10 +132,10 @@ export default function Deposit() {
       ) : null}
 
       {isFiat && !hasRestriction && <FiatBlock />}
-      {hasRestriction ? (
+      {hasRestriction || !hasMethod ? (
         <FlexBlock
           type="Deposit"
-          reason={depositRestriction.reason}
+          reason={reason()}
           restrictedUntil={depositRestriction.restrictedUntil}
         />
       ) : null}

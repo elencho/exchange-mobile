@@ -12,10 +12,10 @@ import BalanceScreen from '../screens/Wallet/Balance';
 const Navigator = createStackNavigator(
   {
     Main: MainScreen,
+    TransactionFilter: TransactionFilterScreen,
     Welcome: WelcomeScreen,
     Login: LoginScreen,
 
-    TransactionFilter: TransactionFilterScreen,
     UserProfile: UserProfileScreen,
     Balance: BalanceScreen,
   },

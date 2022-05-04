@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import { monthsShort } from '../../../constants/months';
+import { toggleGenerateRequestModal } from '../../../redux/modals/actions';
 import { generateCryptoAddressAction } from '../../../redux/wallet/actions';
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
@@ -16,6 +17,7 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
   const {
     transactions: { code },
     trade: { currentBalanceObj },
+    wallet: { network },
   } = state;
 
   const text = () => {
@@ -25,6 +27,8 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
       return `${type} Reason: OTP_RESET`;
     } else if (reason === 'SUPPORT') {
       return `${type} Reason: Support`;
+    } else if (reason === 'METHOD') {
+      return `Doesn't have ${type} method`;
     } else {
       return null;
     }
@@ -47,7 +51,9 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
   };
 
   const addAddress = () => {
-    if (currentBalanceObj.depositMethods.WALLET) {
+    if (network === 'ERC20' || network === 'BEP20') {
+      dispatch(toggleGenerateRequestModal(true));
+    } else if (currentBalanceObj.depositMethods.WALLET) {
       const provider = currentBalanceObj.depositMethods.WALLET[0].provider;
       dispatch(generateCryptoAddressAction(code, provider));
     }
@@ -91,7 +97,7 @@ const styles = StyleSheet.create({
   flexBlock: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingHorizontal: 30,
-    flex: 1,
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 50,

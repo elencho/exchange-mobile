@@ -1,7 +1,7 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
-  walletTab: 'Withdrawal',
+  walletTab: 'Deposit',
   usdBtcSwitch: 'USD',
   network: null,
 

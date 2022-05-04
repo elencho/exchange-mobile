@@ -92,9 +92,15 @@ function* wireDepositSaga(action) {
 
 function* cryptoAddressesSaga(action) {
   const { name, code, navigation, network } = action;
-  const cryptoAddresses = yield call(fetchCryptoAddresses, code, network);
+  const currentBalanceObj = yield select(
+    (state) => state.trade.currentBalanceObj
+  );
 
-  yield put(saveCryptoAddresses(cryptoAddresses ? cryptoAddresses : []));
+  if (Object.keys(currentBalanceObj.depositMethods).length) {
+    const cryptoAddresses = yield call(fetchCryptoAddresses, code, network);
+    yield put(saveCryptoAddresses(cryptoAddresses ? cryptoAddresses : []));
+  }
+
   yield put(goToBalanceAction(name, code, navigation));
   yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
 }

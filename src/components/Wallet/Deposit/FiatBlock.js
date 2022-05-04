@@ -52,7 +52,7 @@ export default function FiatBlock() {
       <AppButton
         text="Generate"
         onPress={generatePdf}
-        left={<Image source={images.Generate} />}
+        left={<Image source={images.Generate} style={styles.image} />}
       />
     </KeyboardAvoidingView>
   );
@@ -65,6 +65,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginBottom: 12,
   },
+  image: {
+    marginRight: 5,
+  },
   line: {
     width: 1,
     height: 20,
@@ -72,7 +75,6 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginRight: 5,
   },
-
   row: {
     flexDirection: 'row',
     alignItems: 'center',

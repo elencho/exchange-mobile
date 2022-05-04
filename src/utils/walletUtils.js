@@ -80,7 +80,7 @@ export const fetchCryptoAddresses = async (currency, network) => {
     );
     return data.data;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'fetchCryptoAddresses');
   }
 };
 

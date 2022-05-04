@@ -43,6 +43,8 @@ export default function Withdrawal() {
   } = state;
 
   const [hasRestriction, setHasRestriction] = useState(false);
+  const [hasMethod, setHasMethod] = useState(false);
+
   const isFiat = currentBalanceObj.type === 'FIAT';
 
   useEffect(() => {
@@ -50,6 +52,8 @@ export default function Withdrawal() {
     if (isFiat) {
       dispatch(withdrawalTemplatesAction());
     }
+
+    setHasMethod(!!Object.keys(currentBalanceObj.depositMethods).length);
   }, [code]);
 
   useEffect(() => {
@@ -75,6 +79,13 @@ export default function Withdrawal() {
     if (currentBalanceObj.withdrawalMethods.WIRE) return 'wire';
   };
 
+  const reason = () => {
+    if (withdrawalRestriction.reason) {
+      return withdrawalRestriction.reason;
+    }
+    return 'METHOD';
+  };
+
   return (
     <View style={{ flex: 1 }}>
       <View style={{ flex: hasRestriction ? 0 : 1 }}>
@@ -90,8 +101,8 @@ export default function Withdrawal() {
           )}
         </View>
 
-        {!hasRestriction && isFiat && <WithdrawalInfo />}
-        {!hasRestriction && (
+        {!hasRestriction && isFiat && hasMethod && <WithdrawalInfo />}
+        {!hasRestriction && hasMethod && (
           <WithdrawalInputs isFiat={isFiat} hasRestriction={hasRestriction} />
         )}
         {saveTemplateCheck() ? (
@@ -102,16 +113,16 @@ export default function Withdrawal() {
         ) : null}
       </View>
 
-      {!hasRestriction && (
+      {!hasRestriction && hasMethod && (
         <View style={styles.button}>
           <AppButton text="Withdrawal" onPress={withdraw} />
         </View>
       )}
 
-      {hasRestriction ? (
+      {hasRestriction || !hasMethod ? (
         <FlexBlock
           type="Withdrawal"
-          reason={withdrawalRestriction.reason}
+          reason={reason()}
           restrictedUntil={withdrawalRestriction.restrictedUntil}
         />
       ) : null}

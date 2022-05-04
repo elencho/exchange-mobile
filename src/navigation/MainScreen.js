@@ -9,7 +9,11 @@ import UserProfile from '../screens/UserProfile';
 // import TestScreen from '../screens/Test';
 import BottomTabs from '../components/BottomTabs';
 import TransactionFilter from '../screens/TransactionFilter';
-import { setTabRouteName } from '../redux/transactions/actions';
+import {
+  chooseCurrency,
+  setAbbr,
+  setTabRouteName,
+} from '../redux/transactions/actions';
 import Exercise from '../screens/Exercise';
 import Wallet from '../screens/Wallet';
 import { fetchUserInfo } from '../redux/profile/actions';
@@ -23,6 +27,9 @@ export default function MainScreen() {
   }, []);
 
   const tabRoute = (e) => {
+    dispatch(chooseCurrency('Show All Currency'));
+    dispatch(setAbbr(null));
+
     dispatch(
       setTabRouteName(
         e.route.name === 'Transactions' && e.navigation.isFocused()
