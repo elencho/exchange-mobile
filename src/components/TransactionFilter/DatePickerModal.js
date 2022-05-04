@@ -93,16 +93,34 @@ export default function DatePickerModal({ from, to }) {
   const minMaxDate = () => {
     if (fromDateTime && to) {
       const date = new Date(fromDateTime).toLocaleDateString().split('/');
-      const day = date[1] < 10 ? `0${date[1]}` : date[1];
-      const month = date[0] < 10 ? `0${date[0]}` : date[0];
-      const year = date[2];
+      var day, month, year;
+      if (Platform.OS === 'ios') {
+        day = date[1] < 10 ? `0${date[1]}` : date[1];
+        month = date[0] < 10 ? `0${date[0]}` : date[0];
+        year = date[2];
+      }
+
+      if (Platform.OS === 'android') {
+        day = date[1] < 10 ? date[1] : date[1];
+        month = date[0] < 10 ? date[0] : date[0];
+        year = `20${date[2]}`;
+      }
       return `${year}-${month}-${day}`;
     }
     if (toDateTime && from) {
       const date = new Date(toDateTime).toLocaleDateString().split('/');
-      const day = date[1] < 10 ? `0${date[1]}` : date[1];
-      const month = date[0] < 10 ? `0${date[0]}` : date[0];
-      const year = date[2];
+      var day, month, year;
+      if (Platform.OS === 'ios') {
+        day = date[1] < 10 ? `0${date[1]}` : date[1];
+        month = date[0] < 10 ? `0${date[0]}` : date[0];
+        year = date[2];
+      }
+
+      if (Platform.OS === 'android') {
+        day = date[1] < 10 ? date[1] : date[1];
+        month = date[0] < 10 ? date[0] : date[0];
+        year = `20${date[2]}`;
+      }
       return `${year}-${month}-${day}`;
     }
   };

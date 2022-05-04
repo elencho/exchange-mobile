@@ -37,64 +37,64 @@ const AppInput = ({
   let borderColor = isFocused ? colors.SECONDARY_PURPLE : '#42475D';
 
   return (
-    <View style={[styles.inputContainer, { borderColor }, style]}>
-      {left}
-      <TextInput
-        style={styles.input}
-        ref={inputRef}
-        onBlur={() => setIsFocused(false)}
-        onFocus={() => setIsFocused(true)}
-        value={value}
-        placeholderTextColor={colors.SECONDARY_TEXT}
-        {...rest}
-      />
-      {label ? (
-        <TouchableWithoutFeedback onPress={() => inputRef.current?.focus()}>
-          <Animated.View
-            style={[
-              styles.labelContainer,
-              {
-                backgroundColor: labelBackgroundColor,
-                transform: [
-                  {
-                    scale: focusAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [1, 0.75],
-                    }),
-                  },
-                  {
-                    translateY: focusAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, -31],
-                    }),
-                  },
-                  {
-                    translateX: focusAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [10, 0],
-                    }),
-                  },
-                ],
-              },
-            ]}
-          >
-            <AppText
-              body
-              style={{
-                color: isFocused
-                  ? colors.PRIMARY_PURPLE
-                  : colors.SECONDARY_TEXT,
-                // needs to be checked
-                marginTop: 6,
-              }}
+    <View style={style}>
+      <View style={[styles.inputContainer, { borderColor }]}>
+        {left}
+        <TextInput
+          style={styles.input}
+          ref={inputRef}
+          onBlur={() => setIsFocused(false)}
+          onFocus={() => setIsFocused(true)}
+          value={value}
+          placeholderTextColor={colors.SECONDARY_TEXT}
+          {...rest}
+        />
+        {label ? (
+          <TouchableWithoutFeedback onPress={() => inputRef.current?.focus()}>
+            <Animated.View
+              style={[
+                styles.labelContainer,
+                {
+                  backgroundColor: labelBackgroundColor,
+                  transform: [
+                    {
+                      scale: focusAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 0.75],
+                      }),
+                    },
+                    {
+                      translateY: focusAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, -31],
+                      }),
+                    },
+                    {
+                      translateX: focusAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [10, 0],
+                      }),
+                    },
+                  ],
+                },
+              ]}
             >
-              {label}
-            </AppText>
-          </Animated.View>
-        </TouchableWithoutFeedback>
-      ) : null}
+              <AppText
+                body
+                style={{
+                  color: isFocused
+                    ? colors.PRIMARY_PURPLE
+                    : colors.SECONDARY_TEXT,
+                }}
+              >
+                {label}
+              </AppText>
+            </Animated.View>
+          </TouchableWithoutFeedback>
+        ) : null}
 
-      {right}
+        {right}
+      </View>
     </View>
   );
 };
@@ -114,11 +114,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 11,
   },
   labelContainer: {
     position: 'absolute',
     paddingHorizontal: 8,
-    height: 22,
+    height: 25,
     justifyContent: 'center',
   },
 });
