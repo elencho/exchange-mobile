@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,20 +8,42 @@ import { setWalletTab } from '../../redux/wallet/actions';
 
 export default function WalletSwitcher() {
   const dispatch = useDispatch();
-  const tab = useSelector((state) => state.wallet.walletTab);
+  const state = useSelector((state) => state);
+  const {
+    wallet: { walletTab },
+    trade: { currentBalanceObj },
+  } = state;
+
+  const array = ['Deposit', 'Withdrawal'];
+  const [switchers, setSwitchers] = useState(array);
+
+  useEffect(() => {
+    if (currentBalanceObj.type === 'CRYPTO') {
+      setSwitchers([...array, 'Whitelist']);
+    } else if (
+      currentBalanceObj.type === 'FIAT' &&
+      currentBalanceObj.depositMethods.ECOMMERCE
+    ) {
+      setSwitchers([...array, 'Manage Cards']);
+    } else {
+      setSwitchers(array);
+    }
+  }, [currentBalanceObj]);
 
   const handleFilter = (f) => {
     dispatch(setWalletTab(f));
   };
 
   const buttonStyle = (f) => {
-    if (f === tab) {
-      return { backgroundColor: colors.SECONDARY_PURPLE };
-    }
+    return {
+      backgroundColor:
+        colors[f === walletTab ? 'SECONDARY_PURPLE' : 'SECONDARY_BACKGROUND'],
+      width: switchers.length === 3 ? '32%' : '48%',
+    };
   };
 
   const textStyle = (f) => {
-    if (f === tab) {
+    if (f === walletTab) {
       return { color: colors.PRIMARY_TEXT };
     } else {
       return { color: '#C0C5E0' };
@@ -30,7 +52,7 @@ export default function WalletSwitcher() {
 
   return (
     <View style={styles.row}>
-      {['Deposit', 'Withdrawal', 'Whitelist', 'Manage Cards'].map((f, i) => (
+      {switchers.map((f, i) => (
         <Pressable
           key={f}
           style={[styles.button, buttonStyle(f)]}
@@ -47,12 +69,10 @@ export default function WalletSwitcher() {
 
 const styles = StyleSheet.create({
   button: {
-    width: '20%',
     height: 35,
     borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   row: {
     flexDirection: 'row',

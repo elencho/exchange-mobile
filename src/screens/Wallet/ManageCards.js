@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, View, Pressable } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import AppText from '../../components/AppText';
 import PurpleText from '../../components/PurpleText';
 import Headline from '../../components/TransactionHistory/Headline';
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
+import AddCardModal from '../../components/Wallet/ManageCards/AddCardModal';
 import Card from '../../components/Wallet/ManageCards/Card';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
+import { toggleAddCardModal } from '../../redux/modals/actions';
 
 export default function ManageCards() {
+  const dispatch = useDispatch();
   const [hasCards, setHasCards] = useState(false);
+
+  const addCardModal = () => {
+    dispatch(toggleAddCardModal(true));
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -33,7 +41,7 @@ export default function ManageCards() {
             <Card />
           </ScrollView>
 
-          <Pressable style={styles.button}>
+          <Pressable style={styles.button} onPress={addCardModal}>
             <PurpleText text="+ " />
             <PurpleText text="Add Card" />
           </Pressable>
@@ -45,9 +53,11 @@ export default function ManageCards() {
           <AppText body style={styles.description}>
             Add address for easy withdrawal description about whitelist
           </AppText>
-          <PurpleText text="+ Add Card" />
+          <PurpleText text="+ Add Card" onPress={addCardModal} />
         </View>
       )}
+
+      <AddCardModal />
     </View>
   );
 }

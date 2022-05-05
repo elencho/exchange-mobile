@@ -27,6 +27,7 @@ export const actionTypes = {
   EDIT_WHITELIST_MODAL: 'EDIT_WHITELIST_MODAL',
   TOGGLE_TRANSFER_METHOD_MODAL: 'TOGGLE_TRANSFER_METHOD_MODAL',
   TEMPLATES_MODAL: 'TEMPLATES_MODAL',
+  TOGGLE_ADD_CARD_MODAL: 'TOGGLE_ADD_CARD_MODAL',
 
   LOGIN_TWO_FA_MODAL: 'LOGIN_TWO_FA_MODAL',
 };
@@ -138,6 +139,10 @@ export const toggleTransferMethodModal = (transferMethodModalVisible) => ({
 export const toggleTemplatesModal = (templatesModalVisible) => ({
   type: actionTypes.TEMPLATES_MODAL,
   templatesModalVisible,
+});
+export const toggleAddCardModal = (addCardModalVisible) => ({
+  type: actionTypes.TOGGLE_ADD_CARD_MODAL,
+  addCardModalVisible,
 });
 
 // Login

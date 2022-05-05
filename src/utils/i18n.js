@@ -14,7 +14,6 @@ i18n.use(initReactI18next).init({
     es: {
       translation: {
         'Hey Yo Im at home': 'Hey yo estoy en casa',
-        Withdrawal: 'Withdrawal in spanish',
         'Hey Yo Im inside Room': 'Hola, yo estoy dentro de la habitación',
       },
     },

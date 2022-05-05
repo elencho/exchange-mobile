@@ -38,6 +38,7 @@ const INITIAL_STATE = {
   editWhitelistModalVisble: false,
   transferMethodModalVisible: false,
   templatesModalVisible: false,
+  addCardModalVisible: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -69,6 +70,7 @@ export default (state = INITIAL_STATE, action) => {
     transferMethodModalVisible,
     templatesModalVisible,
     login2FaModalVisible,
+    addCardModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -205,6 +207,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         login2FaModalVisible,
+      };
+    case actionTypes.TOGGLE_ADD_CARD_MODAL:
+      return {
+        ...state,
+        addCardModalVisible,
       };
     default:
       return state;
