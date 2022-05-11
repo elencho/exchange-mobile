@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import Background from '../components/Background';
 import FilterIcon from '../components/TransactionHistory/FilterIcon';
@@ -16,9 +17,10 @@ import {
   fetchTransactions,
   reachScrollEnd,
 } from '../redux/transactions/actions';
-import { withNavigation } from 'react-navigation';
 
-function TransactionHistory({ navigation }) {
+function TransactionHistory() {
+  const navigation = useNavigation();
+
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
   const { transactions, loading, tabRouteName } = state;
@@ -96,7 +98,7 @@ function TransactionHistory({ navigation }) {
   );
 }
 
-export default withNavigation(TransactionHistory);
+export default TransactionHistory;
 
 const styles = StyleSheet.create({
   loader: {

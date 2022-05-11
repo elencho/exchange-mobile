@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -13,15 +13,9 @@ import {
 } from '../../redux/wallet/actions';
 import AppText from '../AppText';
 
-function Currency({
-  navigation,
-  code,
-  name,
-  total,
-  available,
-  valueUSD,
-  valueBTC,
-}) {
+function Currency({ code, name, total, available, valueUSD, valueBTC }) {
+  const navigation = useNavigation();
+
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -74,7 +68,7 @@ function Currency({
   );
 }
 
-export default withNavigation(Currency);
+export default Currency;
 
 const styles = StyleSheet.create({
   balance: {

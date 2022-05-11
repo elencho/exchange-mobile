@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useDispatch } from 'react-redux';
 
@@ -38,30 +37,25 @@ export default function MainScreen() {
   };
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenListeners={tabRoute}
-        screenOptions={{
-          headerShown: false,
-          unmountOnBlur: true,
-        }}
-        initialRouteName="Wallet"
-        tabBar={({ state, navigation, descriptors }) => (
-          <BottomTabs
-            routes={state.routes}
-            navigation={navigation}
-            descriptors={descriptors}
-          />
-        )}
-      >
-        <Tab.Screen name="Exchange" component={Exercise} />
-        <Tab.Screen name="Trade" component={InstantTrade} />
-        <Tab.Screen name="Wallet" component={Wallet} />
-        <Tab.Screen
-          name="Transactions"
-          children={() => <TransactionHistory />}
+    <Tab.Navigator
+      screenListeners={tabRoute}
+      screenOptions={{
+        headerShown: false,
+        unmountOnBlur: true,
+      }}
+      initialRouteName="Wallet"
+      tabBar={({ state, navigation, descriptors }) => (
+        <BottomTabs
+          routes={state.routes}
+          navigation={navigation}
+          descriptors={descriptors}
         />
-      </Tab.Navigator>
-    </NavigationContainer>
+      )}
+    >
+      <Tab.Screen name="Exchange" component={Exercise} />
+      <Tab.Screen name="Trade" component={InstantTrade} />
+      <Tab.Screen name="Wallet" component={Wallet} />
+      <Tab.Screen name="Transactions" children={() => <TransactionHistory />} />
+    </Tab.Navigator>
   );
 }

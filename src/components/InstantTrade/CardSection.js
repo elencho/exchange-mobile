@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { withNavigation } from 'react-navigation';
+import { useNavigation } from '@react-navigation/native';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
@@ -14,7 +14,9 @@ import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import InfoMark from './InfoMark';
 
-function CardSection({ navigation }) {
+function CardSection() {
+  const navigation = useNavigation();
+
   const dispatch = useDispatch();
   const state = useSelector((state) => state.trade);
   const {
@@ -132,7 +134,7 @@ function CardSection({ navigation }) {
   );
 }
 
-export default withNavigation(CardSection);
+export default CardSection;
 
 const styles = StyleSheet.create({
   dropdown: {

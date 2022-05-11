@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import { useNavigation } from '@react-navigation/native';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
@@ -9,7 +9,8 @@ import { showResultsAction } from '../../redux/transactions/actions';
 import PurpleText from '../PurpleText';
 import images from '../../constants/images';
 
-function TransactionFilterBottom({ navigation }) {
+function TransactionFilterBottom() {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const showResults = () => {
@@ -32,7 +33,7 @@ function TransactionFilterBottom({ navigation }) {
   );
 }
 
-export default withNavigation(TransactionFilterBottom);
+export default TransactionFilterBottom;
 
 const styles = StyleSheet.create({
   purple: {

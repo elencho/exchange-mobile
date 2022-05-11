@@ -1,13 +1,15 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import AppText from '../AppText';
 
-function TopRow({ navigation }) {
+function TopRow() {
+  const navigation = useNavigation();
+
   const userInfo = useSelector((state) => state.profile.userInfo);
   const { firstName, lastName } = userInfo;
 
@@ -36,7 +38,7 @@ function TopRow({ navigation }) {
   );
 }
 
-export default withNavigation(TopRow);
+export default TopRow;
 
 const styles = StyleSheet.create({
   dot: {

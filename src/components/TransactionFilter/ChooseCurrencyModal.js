@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import AppModal from '../AppModal';
 import ModalWithSearch from '../ModalWithSearch';
@@ -15,10 +16,11 @@ import {
   setNetwork,
   wireDepositAction,
 } from '../../redux/wallet/actions';
-import { withNavigation } from 'react-navigation';
 import { setCurrentBalanceObj } from '../../redux/trade/actions';
 
-function ChooseCurrencyModal({ wallet = false, navigation }) {
+function ChooseCurrencyModal({ wallet = false }) {
+  const navigation = useNavigation();
+
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -103,4 +105,4 @@ function ChooseCurrencyModal({ wallet = false, navigation }) {
   );
 }
 
-export default withNavigation(ChooseCurrencyModal);
+export default ChooseCurrencyModal;
