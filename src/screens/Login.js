@@ -15,7 +15,7 @@ import {
   usernameAndPasswordAction,
 } from '../redux/profile/actions';
 
-export default function Login() {
+export default function Login({ navigation }) {
   const dispatch = useDispatch();
   const credentials = useSelector((state) => state.profile.credentials);
 
@@ -26,7 +26,7 @@ export default function Login() {
 
   const handleLogin = () => {
     // dispatch(toggleLogin2FaModal(true));
-    dispatch(usernameAndPasswordAction());
+    dispatch(usernameAndPasswordAction(navigation));
   };
 
   return (
@@ -47,6 +47,7 @@ export default function Login() {
         placeholder="Enter Password"
         onChangeText={typePassword}
         value={credentials.password}
+        style={styles.password}
         right={<PurpleText text="Forgot?" style={{ marginLeft: 10 }} />}
       />
 
@@ -74,10 +75,14 @@ const styles = StyleSheet.create({
   },
   email: {
     marginBottom: 22,
+    width: '100%',
   },
   logo: {
     width: 48,
     height: 54,
+  },
+  password: {
+    width: '100%',
   },
   primary: {
     color: colors.PRIMARY_TEXT,

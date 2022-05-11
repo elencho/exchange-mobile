@@ -1,8 +1,10 @@
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
+
 import {
   ACTIVATE_EMAIL_OTP,
   ACTIVATE_GOOGLE_OTP,
-  bearer,
+  CODE_TO_TOKEN,
   COUNTRIES_URL,
   EMAIL_VERIFICATION,
   LOGIN_START_URL,
@@ -18,6 +20,12 @@ import {
 } from '../constants/api';
 import handleError from './errorHandling';
 
+let bearer;
+(async function () {
+  const accessToken = await SecureStore.getItemAsync('accessToken');
+  bearer = `Bearer ${accessToken}`;
+})();
+
 export const loginStart = async (code_challenge) => {
   try {
     const data = await axios.get(LOGIN_START_URL, {
@@ -25,7 +33,7 @@ export const loginStart = async (code_challenge) => {
         client_id: 'mobile-service-public',
         redirect_uri:
           'https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io',
-        response_mode: 'fragment',
+        response_mode: 'form_post',
         response_type: 'code',
         scope: 'openid',
         display: 'mobile',
@@ -33,10 +41,9 @@ export const loginStart = async (code_challenge) => {
         code_challenge_method: 'S256',
       },
     });
-    console.log(data);
     return data.data;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'loginStart');
   }
 };
 
@@ -50,7 +57,7 @@ export const usernameAndPasswordForm = async (username, password, url) => {
     });
     return data.data;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'usernameAndPasswordForm');
   }
 };
 
@@ -62,9 +69,22 @@ export const loginOtp = async (otp, url) => {
       url,
       data: `otp=${otp}`,
     });
-    console.log(data);
   } catch (err) {
     handleError(err, 'loginOtp');
+  }
+};
+
+export const codeToToken = async (code, code_verifier) => {
+  try {
+    const data = await axios({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      url: CODE_TO_TOKEN,
+      data: `grant_type=authorization_code&client_id=mobile-service-public&code=${code}&redirect_uri=https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io&code_verifier=${code_verifier}&code_challenge_method=S256`,
+    });
+    return data.data;
+  } catch (err) {
+    handleError(err, 'codeToToken');
   }
 };
 
@@ -73,7 +93,7 @@ export const fetchCountries = async () => {
     const countries = await axios.get(COUNTRIES_URL);
     return countries.data;
   } catch (err) {
-    console.log(err);
+    handleError(err, 'fetchCountries');
   }
 };
 
@@ -84,7 +104,7 @@ export const fetchUserInfo = async () => {
     });
     return data.data;
   } catch (err) {
-    console.log(err);
+    handleError(err, 'fetchUserInfo');
   }
 };
 
@@ -96,7 +116,7 @@ export const subscribeMail = async () => {
       url: SUBSCRIBE_EMAIL_URL,
     });
   } catch (err) {
-    console.log(err);
+    handleError(err, 'subscribeMail');
   }
 };
 export const unsubscribeMail = async () => {
@@ -107,7 +127,7 @@ export const unsubscribeMail = async () => {
       url: UNSUBSCRIBE_EMAIL_URL,
     });
   } catch (err) {
-    console.log(err);
+    handleError(err, 'unsubscribeMail');
   }
 };
 
@@ -120,7 +140,7 @@ export const updateUserData = async (data) => {
       data,
     });
   } catch (err) {
-    console.log(err);
+    handleError(err, 'updateUserData');
   }
 };
 
@@ -141,7 +161,7 @@ export const updatePassword = async (
     });
     return data;
   } catch (err) {
-    console.log(err);
+    handleError(err, 'updatePassword');
   }
 };
 
@@ -153,7 +173,7 @@ export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {
       url: `${VERIFY_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}`,
     });
   } catch (err) {
-    console.log(err);
+    handleError(err, 'verifyPhoneNumber');
   }
 };
 
@@ -169,7 +189,7 @@ export const updatePhoneNumber = async (
       url: `${UPDATE_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
     });
   } catch (err) {
-    console.log(err);
+    handleError(err, 'updatePhoneNumber');
   }
 };
 
@@ -181,7 +201,7 @@ export const sendOtp = async () => {
       url: SEND_OTP,
     });
   } catch (err) {
-    console.log(err);
+    handleError(err, 'sendOtp');
   }
 };
 
@@ -194,7 +214,7 @@ export const getOtpChangeToken = async (OTP, newOTPType) => {
     });
     return data.data;
   } catch (err) {
-    console.log(err);
+    handleError(err, 'getOtpChangeToken');
   }
 };
 
@@ -206,7 +226,7 @@ export const sendEmailOtp = async () => {
       url: EMAIL_VERIFICATION,
     });
   } catch (err) {
-    console.log(err);
+    handleError(err, 'sendEmailOtp');
   }
 };
 
@@ -223,7 +243,7 @@ export const activateEmailOtp = async (changeOTPToken, verificationCode) => {
     });
     return data.status;
   } catch (err) {
-    console.log(err);
+    handleError(err, 'activateEmailOtp');
   }
 };
 
@@ -244,6 +264,6 @@ export const activateGoogleOtp = async (
     });
     return data.status;
   } catch (err) {
-    console.log(err);
+    handleError(err, 'activateGoogleOtp');
   }
 };

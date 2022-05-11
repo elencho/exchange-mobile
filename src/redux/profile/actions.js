@@ -22,6 +22,7 @@ export const actionTypes = {
   CURRENT_SECURITY_ACTION: 'CURRENT_SECURITY_ACTION',
   SAVE_OTP_CHANGE_TOKEN: 'SAVE_OTP_CHANGE_TOKEN',
   SAVE_TOTP_SECRET_OBJ: 'SAVE_TOTP_SECRET_OBJ',
+  SET_OTP_TYPE: 'SET_OTP_TYPE',
 
   // FOR SAGAS
   START_LOGIN_ACTION: 'START_LOGIN_ACTION',
@@ -101,14 +102,19 @@ export const saveTotpSecretObj = (totpSecretObj) => ({
   type: actionTypes.SAVE_TOTP_SECRET_OBJ,
   totpSecretObj,
 });
+export const setOtpType = (otpType) => ({
+  type: actionTypes.SET_OTP_TYPE,
+  otpType,
+});
 
 // FOR SAGAS
 export const startLoginAction = (navigation) => ({
   type: actionTypes.START_LOGIN_ACTION,
   navigation,
 });
-export const usernameAndPasswordAction = () => ({
+export const usernameAndPasswordAction = (navigation) => ({
   type: actionTypes.USERNAME_AND_PASSWORD_ACTION,
+  navigation,
 });
 export const otpForLoginAction = (otp) => ({
   type: actionTypes.OTP_FOR_LOGIN_ACTION,

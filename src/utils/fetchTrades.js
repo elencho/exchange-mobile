@@ -1,7 +1,7 @@
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
 import {
-  bearer,
   OFFERS_URL,
   TRADES_URL,
   BALANCE_URL,
@@ -9,6 +9,12 @@ import {
   CALCULATE_FEE_URL,
 } from '../constants/api';
 import handleError from './errorHandling';
+
+let bearer;
+(async function () {
+  const accessToken = await SecureStore.getItemAsync('accessToken');
+  bearer = `Bearer ${accessToken}`;
+})();
 
 export const fetchTrades = async (params) => {
   try {

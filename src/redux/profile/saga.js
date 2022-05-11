@@ -1,5 +1,7 @@
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 import { asyncPkceChallenge } from 'react-native-pkce-challenge';
+import * as SecureStore from 'expo-secure-store';
+import jwt_decode from 'jwt-decode';
 
 import {
   actionTypes,
@@ -16,11 +18,13 @@ import {
   savePkceInfo,
   saveLoginStartInfo,
   saveUserAndPassInfo,
+  setOtpType,
 } from './actions';
 import { getUserData } from './selectors';
 import {
   activateEmailOtp,
   activateGoogleOtp,
+  codeToToken,
   fetchCountries,
   fetchUserInfo as fetchUserInfoUtil,
   getOtpChangeToken,
@@ -58,7 +62,8 @@ function* startLoginSaga(action) {
   }
 }
 
-function* usernameAndPasswordSaga() {
+function* usernameAndPasswordSaga(action) {
+  const { navigation } = action;
   const credentials = yield select((state) => state.profile.credentials);
   const url = yield select((state) => state.profile.loginStartInfo.callbackUrl);
   const { login, password } = credentials;
@@ -72,6 +77,27 @@ function* usernameAndPasswordSaga() {
 
   if (userAndPassInfo.execution === 'LOGIN_OTP') {
     yield put(toggleLogin2FaModal(true));
+  }
+  if (userAndPassInfo.code) {
+    const code = userAndPassInfo.code;
+    const code_verifier = yield select(
+      (state) => state.profile.pkceInfo.codeVerifier
+    );
+
+    const RCTNetworking = require('react-native/Libraries/Network/RCTNetworking');
+    yield call(() => {
+      RCTNetworking.clearCookies(() => {});
+    });
+
+    const data = yield call(codeToToken, code, code_verifier);
+    if (data.access_token) {
+      yield call(async () => {
+        await SecureStore.setItemAsync('accessToken', data.access_token);
+      });
+      const otpType = jwt_decode(data.access_token).otpType;
+      yield put(setOtpType(otpType));
+      yield call(() => navigation.navigate('Main'));
+    }
   }
 }
 

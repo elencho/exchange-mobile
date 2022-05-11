@@ -3,9 +3,9 @@ import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
+import * as SecureStore from 'expo-secure-store';
 
 import {
-  bearer,
   GET_CRYPTO_ADDRESSES,
   WIRE_DEPOSIT,
   GENERATE_WIRE_PDF,
@@ -17,6 +17,12 @@ import {
   WIRE_WITHDRAWAL,
 } from '../constants/api';
 import handleError from './errorHandling';
+
+let bearer;
+(async function () {
+  const accessToken = await SecureStore.getItemAsync('accessToken');
+  bearer = `Bearer ${accessToken}`;
+})();
 
 export const fetchWireDeposit = async (currency, network) => {
   try {

@@ -1,5 +1,13 @@
 import axios from 'axios';
-import { bearer, CURRENCIES_URL, TRANSACTIONS_URL } from '../constants/api';
+import * as SecureStore from 'expo-secure-store';
+
+import { CURRENCIES_URL, TRANSACTIONS_URL } from '../constants/api';
+
+let bearer;
+(async function () {
+  const accessToken = await SecureStore.getItemAsync('accessToken');
+  bearer = `Bearer ${accessToken}`;
+})();
 
 export const fetchTransactions = async (params) => {
   try {

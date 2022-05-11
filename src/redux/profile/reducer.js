@@ -1,9 +1,4 @@
-import jwt_decode from 'jwt-decode';
-
 import { actionTypes } from './actions';
-import { bearer } from '../../constants/api';
-
-const type = jwt_decode(bearer.split(' ')[1]).otpType;
 
 const INITIAL_STATE = {
   // Login
@@ -16,9 +11,16 @@ const INITIAL_STATE = {
   userInfo: {},
 
   // Security
-  googleAuth: type === 'TOTP',
-  emailAuth: type === 'EMAIL',
-  smsAuth: type === 'SMS',
+  otpType: '',
+  get googleAuth() {
+    return this.otpType === 'TOTP';
+  },
+  get emailAuth() {
+    return this.otpType === 'EMAIL';
+  },
+  get smsAuth() {
+    return this.otpType === 'SMS';
+  },
   currentSecurityAction: null,
   otpChangeToken: null,
   totpSecretObj: {},
@@ -47,6 +49,7 @@ export default (state = INITIAL_STATE, action) => {
     currentSecurityAction,
     otpChangeToken,
     totpSecretObj,
+    otpType,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_PKCE_INFO:
@@ -118,6 +121,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         totpSecretObj,
+      };
+    case actionTypes.SET_OTP_TYPE:
+      return {
+        ...state,
+        otpType,
       };
     default:
       return state;

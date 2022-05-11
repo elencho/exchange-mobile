@@ -1,4 +1,5 @@
 import React from 'react';
+import * as SecureStore from 'expo-secure-store';
 import {
   StyleSheet,
   ImageBackground,
@@ -38,7 +39,10 @@ export default function Welcome({ navigation }) {
         </AppText>
 
         <AppButton text="Login" style={styles.button} onPress={startLogin} />
-        <PurpleText text="Registration" />
+        <PurpleText
+          text="Registration"
+          onPress={async () => await SecureStore.deleteItemAsync('accessToken')}
+        />
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
