@@ -4,6 +4,9 @@ export const LOGIN_START_URL =
 export const CODE_TO_TOKEN =
   'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/protocol/openid-connect/token';
 
+export const LOGOUT =
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/protocol/openid-connect/logout';
+
 export const TRANSACTIONS_URL =
   'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/transactions';
 

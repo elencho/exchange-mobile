@@ -11,13 +11,12 @@ import {
 import handleError from './errorHandling';
 
 let bearer;
-(async function () {
-  const accessToken = await SecureStore.getItemAsync('accessToken');
-  bearer = `Bearer ${accessToken}`;
-})();
 
 export const fetchTrades = async (params) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.get(TRADES_URL, {
       headers: { Authorization: bearer },
       params,
@@ -30,6 +29,9 @@ export const fetchTrades = async (params) => {
 
 export const fetchOffers = async () => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.get(OFFERS_URL, {
       headers: { Authorization: bearer },
     });
@@ -41,6 +43,9 @@ export const fetchOffers = async () => {
 
 export const submitTrade = async (params) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.post(TRADES_URL, params, {
       headers: { Authorization: bearer },
     });
@@ -51,6 +56,9 @@ export const submitTrade = async (params) => {
 };
 export const fetchBalance = async () => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.get(BALANCE_URL, {
       headers: { Authorization: bearer },
     });
@@ -62,6 +70,9 @@ export const fetchBalance = async () => {
 
 export const fetchCards = async (params) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.get(CARDS_URL, {
       headers: { Authorization: bearer },
       params,
@@ -74,6 +85,9 @@ export const fetchCards = async (params) => {
 
 export const fetchFees = async (params) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.get(CALCULATE_FEE_URL, {
       headers: { Authorization: bearer },
       params,

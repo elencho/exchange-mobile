@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import {
   StyleSheet,
@@ -6,6 +7,7 @@ import {
   Image,
   TouchableWithoutFeedback,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -18,6 +20,16 @@ import { startLoginAction } from '../redux/profile/actions';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
+
+  useFocusEffect(() => {
+    SecureStore.getItemAsync('accessToken').then((token) => {
+      if (token) {
+        navigation.navigate('Main');
+      } else setLoading(false);
+    });
+  });
+
   const startLogin = () => dispatch(startLoginAction(navigation));
 
   return (
@@ -27,22 +39,34 @@ export default function Welcome({ navigation }) {
       accessible={false}
     >
       <ImageBackground source={images.Background} style={styles.container}>
-        <Image source={images.Logo} style={styles.logo} />
+        {loading ? (
+          <ActivityIndicator size="large" color="white" style={styles.loader} />
+        ) : (
+          <>
+            <Image source={images.Logo} style={styles.logo} />
 
-        <AppText header style={styles.primary}>
-          Welcome to Cryptal
-        </AppText>
+            <AppText header style={styles.primary}>
+              Welcome to Cryptal
+            </AppText>
 
-        <AppText style={styles.secondary}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry
-        </AppText>
+            <AppText style={styles.secondary}>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry
+            </AppText>
 
-        <AppButton text="Login" style={styles.button} onPress={startLogin} />
-        <PurpleText
-          text="Registration"
-          onPress={async () => await SecureStore.deleteItemAsync('accessToken')}
-        />
+            <AppButton
+              text="Login"
+              style={styles.button}
+              onPress={startLogin}
+            />
+            <PurpleText
+              text="Registration"
+              onPress={async () =>
+                await SecureStore.deleteItemAsync('accessToken')
+              }
+            />
+          </>
+        )}
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
@@ -61,6 +85,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: '20%',
   },
   flex: {
+    flex: 1,
+  },
+  loader: {
     flex: 1,
   },
   logo: {

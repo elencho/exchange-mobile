@@ -8,6 +8,7 @@ import {
   COUNTRIES_URL,
   EMAIL_VERIFICATION,
   LOGIN_START_URL,
+  LOGOUT,
   OTP_CHANGE_TOKEN,
   SEND_OTP,
   SUBSCRIBE_EMAIL_URL,
@@ -21,10 +22,6 @@ import {
 import handleError from './errorHandling';
 
 let bearer;
-(async function () {
-  const accessToken = await SecureStore.getItemAsync('accessToken');
-  bearer = `Bearer ${accessToken}`;
-})();
 
 export const loginStart = async (code_challenge) => {
   try {
@@ -88,6 +85,20 @@ export const codeToToken = async (code, code_verifier) => {
   }
 };
 
+export const logoutUtil = async (refresh_token) => {
+  try {
+    const data = await axios({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      url: LOGOUT,
+      data: `refresh_token=${refresh_token}&client_id=mobile-service-public`,
+    });
+    return data.status;
+  } catch (err) {
+    handleError(err, 'logoutUtil');
+  }
+};
+
 export const fetchCountries = async () => {
   try {
     const countries = await axios.get(COUNTRIES_URL);
@@ -99,6 +110,9 @@ export const fetchCountries = async () => {
 
 export const fetchUserInfo = async () => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.get(USER_INFO_URL, {
       headers: { Authorization: bearer },
     });
@@ -110,6 +124,9 @@ export const fetchUserInfo = async () => {
 
 export const subscribeMail = async () => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     await axios({
       method: 'POST',
       headers: { Authorization: bearer },
@@ -121,6 +138,9 @@ export const subscribeMail = async () => {
 };
 export const unsubscribeMail = async () => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     await axios({
       method: 'POST',
       headers: { Authorization: bearer },
@@ -133,6 +153,9 @@ export const unsubscribeMail = async () => {
 
 export const updateUserData = async (data) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     await axios({
       method: 'POST',
       headers: { Authorization: bearer },
@@ -150,6 +173,9 @@ export const updatePassword = async (
   confirmNewPassword
 ) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios({
       method: 'POST',
       headers: {
@@ -167,6 +193,9 @@ export const updatePassword = async (
 
 export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     await axios({
       method: 'POST',
       headers: { Authorization: bearer },
@@ -183,6 +212,9 @@ export const updatePhoneNumber = async (
   verificationNumber
 ) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     await axios({
       method: 'POST',
       headers: { Authorization: bearer },
@@ -195,6 +227,9 @@ export const updatePhoneNumber = async (
 
 export const sendOtp = async () => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     await axios({
       method: 'POST',
       headers: { Authorization: bearer },
@@ -207,6 +242,9 @@ export const sendOtp = async () => {
 
 export const getOtpChangeToken = async (OTP, newOTPType) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios({
       method: 'GET',
       headers: { Authorization: bearer, OTP },
@@ -220,6 +258,9 @@ export const getOtpChangeToken = async (OTP, newOTPType) => {
 
 export const sendEmailOtp = async () => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     await axios({
       method: 'POST',
       headers: { Authorization: bearer },
@@ -232,6 +273,9 @@ export const sendEmailOtp = async () => {
 
 export const activateEmailOtp = async (changeOTPToken, verificationCode) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios({
       method: 'POST',
       headers: {
@@ -253,6 +297,9 @@ export const activateGoogleOtp = async (
   totpSecret
 ) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios({
       method: 'POST',
       headers: {

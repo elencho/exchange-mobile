@@ -90,6 +90,12 @@ function* usernameAndPasswordSaga(action) {
     });
 
     const data = yield call(codeToToken, code, code_verifier);
+    if (data.refresh_token) {
+      yield call(async () => {
+        await SecureStore.setItemAsync('refreshToken', data.refresh_token);
+      });
+    }
+
     if (data.access_token) {
       yield call(async () => {
         await SecureStore.setItemAsync('accessToken', data.access_token);

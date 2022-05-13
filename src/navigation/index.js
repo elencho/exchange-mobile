@@ -11,11 +11,16 @@ import BalanceScreen from '../screens/Wallet/Balance';
 // import ExerciseScreen from '../screens/Exercise';
 
 const Stack = createNativeStackNavigator();
-
 export default function Navigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: false,
+          headerLeft: () => null,
+        }}
+      >
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Main" component={MainScreen} />

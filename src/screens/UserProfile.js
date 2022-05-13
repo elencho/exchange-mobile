@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
 
 import Background from '../components/Background';
 import PurpleText from '../components/PurpleText';
@@ -9,13 +10,23 @@ import Personal from '../components/UserProfile/Personal';
 import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecuritySwitcher';
 import Security from '../components/UserProfile/Security';
 import images from '../constants/images';
-import { fetchUserInfo } from '../redux/profile/actions';
+import AppButton from '../components/AppButton';
+import { logoutUtil } from '../utils/userProfileUtils';
 
 export default function UserProfile({ navigation }) {
-  const dispatch = useDispatch();
-  const state = useSelector((state) => state.profile);
+  const Personal_Security = useSelector(
+    (state) => state.profile.Personal_Security
+  );
 
-  const { Personal_Security } = state;
+  const logout = async () => {
+    const refresh_token = await SecureStore.getItemAsync('refreshToken');
+    const status = await logoutUtil(refresh_token);
+    if (status === 204) {
+      await SecureStore.deleteItemAsync('accessToken');
+      await SecureStore.deleteItemAsync('refreshToken');
+      navigation.navigate('Welcome');
+    }
+  };
 
   return (
     <Background>
@@ -28,7 +39,20 @@ export default function UserProfile({ navigation }) {
         />
       </View>
 
-      <Headline title="My Profile" />
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Headline title="My Profile" />
+        <AppButton
+          text="Log Out"
+          style={{ width: 100, borderRadius: 20 }}
+          onPress={logout}
+        />
+      </View>
 
       <PersonalSecuritySwitcher />
 

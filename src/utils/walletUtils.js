@@ -19,13 +19,12 @@ import {
 import handleError from './errorHandling';
 
 let bearer;
-(async function () {
-  const accessToken = await SecureStore.getItemAsync('accessToken');
-  bearer = `Bearer ${accessToken}`;
-})();
 
 export const fetchWireDeposit = async (currency, network) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.get(`${WIRE_DEPOSIT}/${currency}?provider=SWIFT`, {
       headers: { Authorization: bearer },
     });
@@ -37,6 +36,9 @@ export const fetchWireDeposit = async (currency, network) => {
 
 export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     FileSystem.downloadAsync(
       `${GENERATE_WIRE_PDF}?currency=${currency}&amount=${amount}&wireDepositInfoId=${wireDepositInfoId}&timeZone=UTC`,
       FileSystem.documentDirectory + 'wiredeposit.pdf',
@@ -78,6 +80,9 @@ export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
 
 export const fetchCryptoAddresses = async (currency, network) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.get(
       `${GET_CRYPTO_ADDRESSES}/${currency}?provider=${network}`,
       {
@@ -92,6 +97,9 @@ export const fetchCryptoAddresses = async (currency, network) => {
 
 export const generateCryptoAddress = async (currency, network) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios({
       method: 'POST',
       headers: { Authorization: bearer },
@@ -105,6 +113,9 @@ export const generateCryptoAddress = async (currency, network) => {
 
 export const cryptoWithdrawal = async (OTP, params) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.post(CRYPTO_WITHDRAWAL, params, {
       headers: { Authorization: bearer, OTP },
     });
@@ -116,6 +127,9 @@ export const cryptoWithdrawal = async (OTP, params) => {
 
 export const fetchWhitelist = async (currency) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.get(CRYPTO_WHITELIST, {
       headers: { Authorization: bearer },
       params: { currency },
@@ -129,6 +143,9 @@ export const fetchWhitelist = async (currency) => {
 
 export const addWhitelistAddress = async (OTP, params) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.post(CRYPTO_WHITELIST, params, {
       headers: { Authorization: bearer, OTP },
     });
@@ -141,6 +158,9 @@ export const addWhitelistAddress = async (OTP, params) => {
 
 export const editWhitelistAddress = async (id, name) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios({
       method: 'PUT',
       headers: { Authorization: bearer },
@@ -155,6 +175,9 @@ export const editWhitelistAddress = async (id, name) => {
 
 export const deleteWhitelistAddress = async (id, OTP) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios({
       method: 'DELETE',
       headers: { Authorization: bearer, OTP },
@@ -169,6 +192,9 @@ export const deleteWhitelistAddress = async (id, OTP) => {
 
 export const fetchTemplates = async (currency, provider) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios({
       method: 'GET',
       headers: { Authorization: bearer },
@@ -183,6 +209,9 @@ export const fetchTemplates = async (currency, provider) => {
 
 export const deleteTemplates = async (id) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios({
       method: 'DELETE',
       headers: { Authorization: bearer },
@@ -196,6 +225,9 @@ export const deleteTemplates = async (id) => {
 
 export const fetchBanks = async (provider) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios({
       method: 'GET',
       headers: { Authorization: bearer },
@@ -210,6 +242,9 @@ export const fetchBanks = async (provider) => {
 
 export const wireWithdrawal = async (OTP, params) => {
   try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    bearer = `Bearer ${token}`;
+
     const data = await axios.post(WIRE_WITHDRAWAL, params, {
       headers: { Authorization: bearer, OTP },
     });
