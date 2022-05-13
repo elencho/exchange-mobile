@@ -11,10 +11,14 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
-import { togglePhoneNumberModal } from '../../redux/modals/actions';
+import {
+  toggleLanguageModal,
+  togglePhoneNumberModal,
+} from '../../redux/modals/actions';
 import { toggleEmailSubscription } from '../../redux/profile/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
+import ChooseLanguageModal from './ChooseLanguageModal';
 import CompanyInformation from './CompanyInformation';
 import PersonalInfoModal from './PersonalInfoModal';
 import PersonalInformation from './PersonalInformation';
@@ -23,9 +27,10 @@ import PhoneNumberModal from './PhoneNumberModal';
 export default function Personal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.profile);
-  const { userInfo } = state;
+  const { userInfo, language } = state;
 
   const edit = () => dispatch(togglePhoneNumberModal(true));
+  const editLanguage = () => dispatch(toggleLanguageModal(true));
 
   const handleEmailUpdates = (value) => {
     dispatch(toggleEmailSubscription(value));
@@ -78,6 +83,22 @@ export default function Personal() {
             </View>
           </View>
         );
+      case 'Language':
+        return (
+          <View style={styles.row}>
+            <AppText medium style={styles.white}>
+              Choose Language
+            </AppText>
+            <View style={styles.flex}>
+              <PurpleText
+                text="Edit"
+                style={styles.purple}
+                onPress={editLanguage}
+                subtext
+              />
+            </View>
+          </View>
+        );
       default:
         break;
     }
@@ -106,6 +127,12 @@ export default function Personal() {
             Receive updates & news from us
           </AppText>
         );
+      case 'Language':
+        return (
+          <AppText subtext style={styles.secondary}>
+            {language}
+          </AppText>
+        );
       default:
         break;
     }
@@ -114,7 +141,7 @@ export default function Personal() {
   return (
     <ScrollView>
       <View style={styles.block}>
-        {['Identity', 'Phone', 'Notifications'].map((r, i, a) => (
+        {['Identity', 'Phone', 'Notifications', 'Language'].map((r, i, a) => (
           <View
             style={[styles.row, i < a.length - 1 && { marginBottom: 30 }]}
             key={r}
@@ -136,6 +163,7 @@ export default function Personal() {
 
       <PersonalInfoModal />
       <PhoneNumberModal />
+      <ChooseLanguageModal />
     </ScrollView>
   );
 }

@@ -39,6 +39,7 @@ export default {
   Identity: require('../assets/images/User_profile/Identity.png'),
   Phone: require('../assets/images/User_profile/Phone.png'),
   Notifications: require('../assets/images/User_profile/Notifications.png'),
+  Language: require('../assets/images/User_profile/Language.png'),
   Biometric: require('../assets/images/User_profile/Biometric.png'),
   E_mail_Auth: require('../assets/images/User_profile/E_mail_Auth.png'),
   Google_Auth: require('../assets/images/User_profile/Google_Auth.png'),

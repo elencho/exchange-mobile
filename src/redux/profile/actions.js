@@ -11,6 +11,7 @@ export const actionTypes = {
   CHOOSE_COUNTRY: 'CHOOSE_COUNTRY',
   CHOOSE_CITIZENSHIP: 'CHOOSE_CITIZENSHIP',
   SAVE_USER_INFO: 'SAVE_USER_INFO',
+  SET_LANGUAGE: 'SET_LANGUAGE',
 
   // PURE VISUALS
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
@@ -60,6 +61,7 @@ export const saveUserAndPassInfo = (userAndPassInfo) => ({
   userAndPassInfo,
 });
 
+// PERSONAL
 export const switchPersonalSecurity = (Personal_Security) => ({
   type: actionTypes.SWITCH_PERSONAL_SECURITY,
   Personal_Security,
@@ -75,6 +77,10 @@ export const saveCountriesConstant = (countriesConstant) => ({
 export const saveUserInfo = (userInfo) => ({
   type: actionTypes.SAVE_USER_INFO,
   userInfo,
+});
+export const setLanguage = (language) => ({
+  type: actionTypes.SET_LANGUAGE,
+  language,
 });
 
 // SECURITY

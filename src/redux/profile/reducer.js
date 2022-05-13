@@ -9,6 +9,7 @@ const INITIAL_STATE = {
 
   Personal_Security: 'Security',
   userInfo: {},
+  language: 'English',
 
   // Security
   otpType: '',
@@ -43,6 +44,7 @@ export default (state = INITIAL_STATE, action) => {
     countries,
     countriesConstant,
     userInfo,
+    language,
     emailAuth,
     googleAuth,
     smsAuth,
@@ -91,6 +93,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         userInfo,
+      };
+    case actionTypes.SET_LANGUAGE:
+      return {
+        ...state,
+        language,
       };
     case actionTypes.SET_GOOGLE_AUTH:
       return {
