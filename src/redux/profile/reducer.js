@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: { login: 'Metro21@mailinator.com', password: 'Qwerty123$' },
+  credentials: { login: 'gexo@mailinator.com', password: 'Baneta125' },
   userAndPassInfo: {},
 
   Personal_Security: 'Security',
