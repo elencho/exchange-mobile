@@ -7,6 +7,7 @@ import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { toggleLanguageModal } from '../../redux/modals/actions';
 import { setLanguage } from '../../redux/profile/actions';
+import { switchLanguage } from '../../utils/i18n';
 
 export default function ChooseLanguageModal() {
   const dispatch = useDispatch();
@@ -17,22 +18,34 @@ export default function ChooseLanguageModal() {
   } = state;
 
   const hide = () => dispatch(toggleLanguageModal(false));
-  const chooseLanguage = (l) => dispatch(setLanguage(l));
+
+  const chooseLanguage = (l) => {
+    dispatch(setLanguage(l));
+    hide();
+  };
+
+  const handleHide = () => switchLanguage(language);
+
   const background = (l) => {
     if (l === language) {
       return { backgroundColor: 'rgba(101, 130, 253, 0.1)' };
     }
   };
 
+  const text = (l) => {
+    if (l === 'en-US') return 'English';
+    if (l === 'ka') return 'ქართული';
+  };
+
   const children = (
     <>
-      {['English', 'ქართული'].map((l, i, a) => (
+      {['en-US', 'ka'].map((l, i, a) => (
         <View key={l}>
           <Pressable
             style={[styles.button, background(l)]}
             onPress={() => chooseLanguage(l)}
           >
-            <AppText style={styles.text}>{l}</AppText>
+            <AppText style={styles.text}>{text(l)}</AppText>
           </Pressable>
           {i < a.length - 1 && <View style={styles.margin} />}
         </View>
@@ -47,6 +60,7 @@ export default function ChooseLanguageModal() {
       bottom
       title="Choose Language"
       children={children}
+      onModalHide={handleHide}
     />
   );
 }

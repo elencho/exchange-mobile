@@ -253,7 +253,6 @@ const styles = StyleSheet.create({
   },
   dropdownText: {
     flex: 1,
-    textTransform: 'capitalize',
   },
   dropdown: {
     borderWidth: 1,

@@ -102,13 +102,11 @@ const styles = StyleSheet.create({
   status: {
     fontSize: 12,
     color: colors.SECONDARY_TEXT,
-    textTransform: 'capitalize',
     marginBottom: 5,
   },
   type: {
     fontSize: 14,
     color: colors.PRIMARY_TEXT,
-    textTransform: 'capitalize',
     marginBottom: 5,
   },
   currency: { fontSize: 14, color: colors.PRIMARY_TEXT },

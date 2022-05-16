@@ -68,7 +68,7 @@ export default function Trade({ trade }) {
         </AppText>
 
         <View style={styles.status}>
-          <AppText subtext style={[styles.secondary, styles.capitalize]}>
+          <AppText subtext style={styles.secondary}>
             {status}
           </AppText>
           <View style={[styles.bullet, { backgroundColor }]} />
@@ -80,9 +80,6 @@ export default function Trade({ trade }) {
 
 const styles = StyleSheet.create({
   bullet: { width: 3, height: 3, marginLeft: 6 },
-  capitalize: {
-    textTransform: 'capitalize',
-  },
   container: {
     marginVertical: 10,
     borderBottomWidth: 1,

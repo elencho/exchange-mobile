@@ -28,9 +28,9 @@ export default function TransactionDetails() {
     </View>
   );
 
-  const RightText = ({ text, style }) => (
+  const RightText = ({ text }) => (
     <View style={styles.rightTextContainer}>
-      <AppText medium style={[styles.rightText, style]}>
+      <AppText medium style={styles.rightText}>
         {text}
       </AppText>
     </View>
@@ -53,20 +53,19 @@ export default function TransactionDetails() {
       </View>
 
       <View style={styles.right}>
-        <RightText text={type} style={styles.capitalize} />
+        <RightText text={type} />
         <RightText text={`${date} / ${time}`} />
         <RightText text={`${amount} ${currency}`} />
         <RightText text={`${fee} ${currency}`} />
         <RightText text={`${totalAmount} ${currency}`} />
-        <RightText text={status} style={styles.capitalize} />
-        <RightText text={method} style={styles.capitalize} />
+        <RightText text={status} />
+        <RightText text={method} />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  capitalize: { textTransform: 'capitalize' },
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',

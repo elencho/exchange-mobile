@@ -35,9 +35,9 @@ export default function TradeDetails() {
     </View>
   );
 
-  const RightText = ({ text, style }) => (
+  const RightText = ({ text }) => (
     <View style={styles.rightTextContainer}>
-      <AppText medium style={[styles.rightText, style]}>
+      <AppText medium style={styles.rightText}>
         {text}
       </AppText>
     </View>
@@ -62,7 +62,7 @@ export default function TradeDetails() {
         <RightText text={date(lastChangeTime)} />
 
         <View style={styles.status}>
-          <RightText text={status} style={styles.capitalize} />
+          <RightText text={status} />
           <View style={[styles.bullet, { backgroundColor }]} />
         </View>
       </View>
@@ -72,7 +72,6 @@ export default function TradeDetails() {
 
 const styles = StyleSheet.create({
   bullet: { width: 3, height: 3, marginLeft: 6 },
-  capitalize: { textTransform: 'capitalize' },
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',

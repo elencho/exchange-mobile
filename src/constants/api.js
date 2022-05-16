@@ -93,3 +93,6 @@ export const BANKS_URL =
 
 export const WIRE_WITHDRAWAL =
   'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/wire';
+
+export const DICTIONARY =
+  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/public/dictionary';

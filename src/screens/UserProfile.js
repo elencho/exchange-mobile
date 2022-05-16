@@ -33,7 +33,7 @@ export default function UserProfile({ navigation }) {
       <View style={styles.back}>
         <Image source={images.Back} style={styles.arrow} />
         <PurpleText
-          text="Back to Home"
+          text="test"
           onPress={() => navigation.goBack()}
           style={styles.purpleText}
         />

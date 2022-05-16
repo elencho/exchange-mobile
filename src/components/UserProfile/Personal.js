@@ -130,7 +130,11 @@ export default function Personal() {
       case 'Language':
         return (
           <AppText subtext style={styles.secondary}>
-            {language}
+            {language === 'ka'
+              ? 'ქართული'
+              : language === 'en-US'
+              ? 'English'
+              : ''}
           </AppText>
         );
       default:
@@ -227,7 +231,7 @@ const styles = StyleSheet.create({
   switch: {
     transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
     position: 'absolute',
-    right: -7,
+    right: -10,
     top: 0,
   },
   white: {

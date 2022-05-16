@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useDispatch } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
 
 import TransactionHistory from '../screens/TransactionHistory';
 import InstantTrade from '../screens/InstantTrade';
-import UserProfile from '../screens/UserProfile';
 // import TestScreen from '../screens/Test';
 import BottomTabs from '../components/BottomTabs';
-import TransactionFilter from '../screens/TransactionFilter';
 import {
   chooseCurrency,
   setAbbr,
@@ -15,7 +14,8 @@ import {
 } from '../redux/transactions/actions';
 import Exercise from '../screens/Exercise';
 import Wallet from '../screens/Wallet';
-import { fetchUserInfo } from '../redux/profile/actions';
+import { fetchUserInfo, setLanguage } from '../redux/profile/actions';
+import { switchLanguage } from '../utils/i18n';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,6 +23,13 @@ export default function MainScreen() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchUserInfo());
+
+    SecureStore.getItemAsync('Language')
+      .then((l) => {
+        switchLanguage(l);
+        dispatch(setLanguage(l));
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   const tabRoute = (e) => {

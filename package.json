@@ -37,6 +37,8 @@
     "expo-status-bar": "~1.1.0",
     "expo-updates": "~0.10.15",
     "i18next": "^21.6.11",
+    "i18next-http-backend": "^1.4.0",
+    "i18next-multiload-backend-adapter": "^1.0.0",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
     "react": "17.0.1",

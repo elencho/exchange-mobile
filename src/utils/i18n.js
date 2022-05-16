@@ -1,28 +1,32 @@
-import i18n from 'i18next';
+import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import Backend from 'i18next-http-backend';
+import BackendAdapter from 'i18next-multiload-backend-adapter';
+import * as SecureStore from 'expo-secure-store';
 
-i18n.use(initReactI18next).init({
-  lng: 'es',
-  fallbackLng: 'en',
-  resources: {
-    en: {
-      translation: {
-        'Hey Yo Im at home': 'Hey Yo Im at home',
-        'Hey Yo Im inside Room': 'Hey Yo Im inside Room',
+import { DICTIONARY } from '../constants/api';
+
+i18next
+  .use(BackendAdapter)
+  .use(initReactI18next)
+  .init({
+    react: { useSuspense: false },
+    lng: 'en-US',
+    fallbackLng: 'en-US',
+    backend: {
+      backend: Backend,
+      backendOption: {
+        loadPath: DICTIONARY,
       },
     },
-    es: {
-      translation: {
-        'Hey Yo Im at home': 'Hey yo estoy en casa',
-        'Hey Yo Im inside Room': 'Hola, yo estoy dentro de la habitación',
-      },
-    },
-    de: {
-      translation: {
-        'Hey Yo Im at home': 'Hey Yo Ich bin zu Hause',
-        'Hey Yo Im inside Room': 'Hey Yo Ich bin im Zimmer',
-      },
-    },
-  },
-});
-export default i18n;
+  });
+
+export default i18next;
+
+export const switchLanguage = async (lang) => {
+  await SecureStore.setItemAsync('Language', lang);
+  i18next.changeLanguage(lang, (err, t) => {
+    if (err) return console.log('something went wrong loading', err);
+    t('key');
+  });
+};
