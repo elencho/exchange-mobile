@@ -19,6 +19,7 @@ export const actionTypes = {
   SMS_AUTH_MODAL: 'SMS_AUTH_MODAL',
   EMAIL_AUTH_MODAL: 'EMAIL_AUTH_MODAL',
   GOOGLE_OTP_MODAL: 'GOOGLE_OTP_MODAL',
+  EMAIL_VERIFICATION_MODAL: 'EMAIL_VERIFICATION_MODAL',
 
   CHOOSE_NETWORK_MODAL: 'CHOOSE_NETWORK_MODAL',
   GENERATE_REQUEST_MODAL: 'GENERATE_REQUEST_MODAL',
@@ -110,6 +111,12 @@ export const toggleEmailAuthModal = (emailAuthModalVisible) => ({
 export const toggleGoogleOtpModal = (googleOtpModalVisible) => ({
   type: actionTypes.GOOGLE_OTP_MODAL,
   googleOtpModalVisible,
+});
+export const toggleEmailVerificationModal = (
+  emailVerificationModalVisible
+) => ({
+  type: actionTypes.EMAIL_VERIFICATION_MODAL,
+  emailVerificationModalVisible,
 });
 
 // WALLET

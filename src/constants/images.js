@@ -41,6 +41,8 @@ export default {
   Notifications: require('../assets/images/User_profile/Notifications.png'),
   Language: require('../assets/images/User_profile/Language.png'),
   Biometric: require('../assets/images/User_profile/Biometric.png'),
+  E_Mail_Verified: require('../assets/images/User_profile/E_Mail_Verified.png'),
+  E_Mail_Not_Verified: require('../assets/images/User_profile/E_Mail_Not_Verified.png'),
   E_mail_Auth: require('../assets/images/User_profile/E_mail_Auth.png'),
   Google_Auth: require('../assets/images/User_profile/Google_Auth.png'),
   SMS_Auth: require('../assets/images/User_profile/SMS_Auth.png'),

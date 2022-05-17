@@ -4,6 +4,9 @@ const INITIAL_STATE = {
   // Login
   login2FaModalVisible: false,
 
+  // Register
+  emailVerificationModalVisible: false,
+
   // Transactions
   datePickerVisible: { to: false, from: false },
   chooseCurrencyModalVisible: false,
@@ -73,6 +76,7 @@ export default (state = INITIAL_STATE, action) => {
     login2FaModalVisible,
     addCardModalVisible,
     languageModalVisible,
+    emailVerificationModalVisible,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_DATEPICKER:
@@ -129,6 +133,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         personalInfoModalVisible,
+      };
+    case actionTypes.EMAIL_VERIFICATION_MODAL:
+      return {
+        ...state,
+        emailVerificationModalVisible,
       };
     case actionTypes.TOGGLE_LANGUAGE_MODAL:
       return {

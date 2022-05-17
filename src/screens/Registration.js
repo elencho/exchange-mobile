@@ -15,10 +15,15 @@ import PurpleText from '../components/PurpleText';
 import CheckMarks from '../components/Registration/CheckMarks';
 import PersonalCompanySwitcher from '../components/Registration/PersonalCompanySwitcher';
 import RegistrationInputs from '../components/Registration/RegistrationInputs';
+import EmailVerificationModal from '../components/Registration/EmailVerificationModal';
 import colors from '../constants/colors';
 import images from '../constants/images';
+import { toggleEmailVerificationModal } from '../redux/modals/actions';
+import { useDispatch } from 'react-redux';
 
 export default function Registration() {
+  const dispatch = useDispatch();
+
   return (
     // <TouchableWithoutFeedback
     //   style={styles.flex}
@@ -43,11 +48,16 @@ export default function Registration() {
         <RegistrationInputs />
         <CheckMarks />
 
-        <AppButton text="Register" />
+        <AppButton
+          text="Register"
+          onPress={() => dispatch(toggleEmailVerificationModal(true))}
+        />
 
         <AppText style={styles.subtext}>
           Have an account? <PurpleText text="Sign In" />
         </AppText>
+
+        <EmailVerificationModal />
       </ScrollView>
     </KeyboardAvoidingView>
     // </TouchableWithoutFeedback>
