@@ -31,6 +31,7 @@ export default function Welcome({ navigation }) {
   });
 
   const startLogin = () => dispatch(startLoginAction(navigation));
+  const navigateToRegistration = () => navigation.navigate('Registration');
 
   return (
     <TouchableWithoutFeedback
@@ -59,12 +60,7 @@ export default function Welcome({ navigation }) {
               style={styles.button}
               onPress={startLogin}
             />
-            <PurpleText
-              text="Registration"
-              onPress={async () =>
-                await SecureStore.deleteItemAsync('accessToken')
-              }
-            />
+            <PurpleText text="Registration" onPress={navigateToRegistration} />
           </>
         )}
       </ImageBackground>

@@ -7,7 +7,8 @@ const INITIAL_STATE = {
   credentials: { login: 'gexo@mailinator.com', password: 'Baneta125' },
   userAndPassInfo: {},
 
-  Personal_Security: 'Security',
+  Personal_Security: 'Personal',
+  Personal_Company: 'Personal',
   userInfo: {},
   language: 'English',
 
@@ -41,6 +42,7 @@ export default (state = INITIAL_STATE, action) => {
     userAndPassInfo,
     loginStartInfo,
     Personal_Security,
+    Personal_Company,
     countries,
     countriesConstant,
     userInfo,
@@ -78,6 +80,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         Personal_Security,
+      };
+    case actionTypes.SWITCH_PERSONAL_COMPANY:
+      return {
+        ...state,
+        Personal_Company,
       };
     case actionTypes.SAVE_COUNTRIES:
       return {

@@ -5,6 +5,9 @@ export const actionTypes = {
   SET_CREDENTIALS: 'SET_CREDENTIALS',
   SAVE_USER_AND_PASS_INFO: 'SAVE_USER_AND_PASS_INFO',
 
+  // REGISTER
+  SWITCH_PERSONAL_COMPANY: 'SWITCH_PERSONAL_COMPANY',
+
   SWITCH_PERSONAL_SECURITY: 'SWITCH_PERSONAL_SECURITY',
   SAVE_COUNTRIES: 'SAVE_COUNTRIES',
   SAVE_COUNTRIES_CONSTANT: 'SAVE_COUNTRIES_CONSTANT',
@@ -59,6 +62,12 @@ export const setCredentials = (credentials) => ({
 export const saveUserAndPassInfo = (userAndPassInfo) => ({
   type: actionTypes.SAVE_USER_AND_PASS_INFO,
   userAndPassInfo,
+});
+
+// Register
+export const switchPersonalCompany = (Personal_Company) => ({
+  type: actionTypes.SWITCH_PERSONAL_COMPANY,
+  Personal_Company,
 });
 
 // PERSONAL

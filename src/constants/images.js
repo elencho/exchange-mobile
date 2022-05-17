@@ -50,6 +50,8 @@ export default {
   Show: require('../assets/images/User_profile/Show.png'),
   Appstore: require('../assets/images/User_profile/Appstore.png'),
   Playstore: require('../assets/images/User_profile/Playstore.png'),
+  User: require('../assets/images/User_profile/User.png'),
+  Portfolio: require('../assets/images/User_profile/Portfolio.png'),
 
   // Wallet
   Wallet: require('../assets/images/Wallet/Wallet.png'),

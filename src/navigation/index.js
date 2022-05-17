@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import WelcomeScreen from '../screens/Welcome';
 import LoginScreen from '../screens/Login';
+import RegistrationScreen from '../screens/Registration';
 import MainScreen from './MainScreen';
 import TransactionFilter from '../screens/TransactionFilter';
 import UserProfileScreen from '../screens/UserProfile';
@@ -23,6 +24,7 @@ export default function Navigator() {
       >
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Registration" component={RegistrationScreen} />
         <Stack.Screen name="Main" component={MainScreen} />
 
         <Stack.Screen name="TransactionFilter" component={TransactionFilter} />
