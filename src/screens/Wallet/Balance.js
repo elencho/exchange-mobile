@@ -30,7 +30,7 @@ export default function Balance({ navigation }) {
       <View style={styles.back}>
         <Image source={images.Back} style={styles.arrow} />
         <PurpleText
-          text="Hey Yo Im at home"
+          text="Back"
           onPress={() => navigation.goBack()}
           style={styles.purpleText}
         />

@@ -1,6 +1,15 @@
 export const LOGIN_START_URL =
   'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/protocol/openid-connect/auth';
 
+export const REGISTRATION_START_URL =
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/protocol/openid-connect/registrations';
+
+export const REGISTRATION_FORM =
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/login-actions/registration';
+
+export const EMAIL_VERIFY_REGISTER =
+  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/login-actions/action-token';
+
 export const CODE_TO_TOKEN =
   'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/protocol/openid-connect/token';
 

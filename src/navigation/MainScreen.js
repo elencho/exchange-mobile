@@ -11,6 +11,7 @@ import {
   chooseCurrency,
   setAbbr,
   setTabRouteName,
+  showResultsAction,
 } from '../redux/transactions/actions';
 import Exercise from '../screens/Exercise';
 import Wallet from '../screens/Wallet';
@@ -33,14 +34,9 @@ export default function MainScreen() {
   }, []);
 
   const tabRoute = (e) => {
-    dispatch(chooseCurrency('Show All Currency'));
-    dispatch(setAbbr(null));
-
-    dispatch(
-      setTabRouteName(
-        e.route.name === 'Transactions' && e.navigation.isFocused()
-      )
-    );
+    if (e.route.name === 'Transactions') {
+      dispatch(setTabRouteName(e.navigation.isFocused()));
+    }
   };
 
   return (
@@ -62,7 +58,7 @@ export default function MainScreen() {
       <Tab.Screen name="Exchange" component={Exercise} />
       <Tab.Screen name="Trade" component={InstantTrade} />
       <Tab.Screen name="Wallet" component={Wallet} />
-      <Tab.Screen name="Transactions" children={() => <TransactionHistory />} />
+      <Tab.Screen name="Transactions" component={TransactionHistory} />
     </Tab.Navigator>
   );
 }

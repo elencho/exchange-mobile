@@ -14,3 +14,17 @@ export const getUserData = (state) => {
 
   return formData;
 };
+
+export const registrationParams = (state) => {
+  const {
+    profile: { registrationInputs, Personal_Company },
+  } = state;
+
+  const clientType = Personal_Company === 'Company' ? 'COMPANY' : 'PHYSICAL';
+
+  return {
+    ...registrationInputs,
+    clientType,
+    phoneCountry: 'GEO',
+  };
+};

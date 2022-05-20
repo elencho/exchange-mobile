@@ -9,6 +9,7 @@ import PurpleText from '../PurpleText';
 import images from '../../constants/images';
 import { toggleEmailVerificationModal } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
+import { resendEmail } from '../../utils/userProfileUtils';
 
 export default function EmailVerificationModal() {
   const dispatch = useDispatch();
@@ -16,9 +17,11 @@ export default function EmailVerificationModal() {
 
   const {
     modals: { emailVerificationModalVisible },
+    profile: { resendLink },
   } = state;
 
   const hide = () => dispatch(toggleEmailVerificationModal(false));
+  const resend = () => resendEmail(resendLink);
 
   const children = (
     <ImageBackground source={images.Background} style={styles.container}>
@@ -38,7 +41,7 @@ export default function EmailVerificationModal() {
       </View>
 
       <AppText style={styles.secondary}>
-        Didn't receive link? <PurpleText text="Resend" />
+        Didn't receive link? <PurpleText text="Resend" onPress={resend} />
       </AppText>
     </ImageBackground>
   );

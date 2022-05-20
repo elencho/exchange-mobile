@@ -23,7 +23,7 @@ export const fetchTrades = async (params) => {
     });
     return data.data;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'fetchTrades');
   }
 };
 
@@ -37,7 +37,7 @@ export const fetchOffers = async () => {
     });
     return data.data;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'fetchOffers');
   }
 };
 
@@ -64,7 +64,7 @@ export const fetchBalance = async () => {
     });
     return data.data;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'fetchBalance');
   }
 };
 
@@ -79,7 +79,7 @@ export const fetchCards = async (params) => {
     });
     return data.data;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'fetchCards');
   }
 };
 
@@ -94,6 +94,6 @@ export const fetchFees = async (params) => {
     });
     return data.data;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'fetchFees');
   }
 };

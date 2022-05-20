@@ -4,11 +4,16 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: { login: 'gexo@mailinator.com', password: 'Baneta125' },
+  credentials: { login: 'metro21@mailinator.com', password: 'Qwerty123$' },
   userAndPassInfo: {},
 
-  Personal_Security: 'Personal',
+  // Register
   Personal_Company: 'Personal',
+  registrationStartInfo: {},
+  registrationInputs: {},
+  resendLink: null,
+
+  Personal_Security: 'Personal',
   userInfo: {},
   language: 'English',
 
@@ -41,6 +46,9 @@ export default (state = INITIAL_STATE, action) => {
     credentials,
     userAndPassInfo,
     loginStartInfo,
+    registrationStartInfo,
+    resendLink,
+    registrationInputs,
     Personal_Security,
     Personal_Company,
     countries,
@@ -66,10 +74,25 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         loginStartInfo,
       };
+    case actionTypes.SAVE_REGISTRATION_START_INFO:
+      return {
+        ...state,
+        registrationStartInfo,
+      };
+    case actionTypes.SAVE_RESEND_LINK:
+      return {
+        ...state,
+        resendLink,
+      };
     case actionTypes.SET_CREDENTIALS:
       return {
         ...state,
         credentials,
+      };
+    case actionTypes.SET_REGISTRATION_INPUTS:
+      return {
+        ...state,
+        registrationInputs,
       };
     case actionTypes.SAVE_USER_AND_PASS_INFO:
       return {

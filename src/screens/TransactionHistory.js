@@ -14,8 +14,10 @@ import TransactionModal from '../components/TransactionHistory/TransactionModal'
 import { types } from '../constants/filters';
 import { monthsShort } from '../constants/months';
 import {
+  chooseCurrency,
   fetchTransactions,
   reachScrollEnd,
+  setAbbr,
 } from '../redux/transactions/actions';
 
 function TransactionHistory() {
@@ -26,6 +28,8 @@ function TransactionHistory() {
   const { transactions, loading, tabRouteName } = state;
 
   useEffect(() => {
+    dispatch(chooseCurrency('Show All Currency'));
+    dispatch(setAbbr(null));
     dispatch(fetchTransactions());
   }, []);
 

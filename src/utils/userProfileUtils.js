@@ -10,6 +10,7 @@ import {
   LOGIN_START_URL,
   LOGOUT,
   OTP_CHANGE_TOKEN,
+  REGISTRATION_START_URL,
   SEND_OTP,
   SUBSCRIBE_EMAIL_URL,
   UNSUBSCRIBE_EMAIL_URL,
@@ -44,6 +45,24 @@ export const loginStart = async (code_challenge) => {
   }
 };
 
+export const registrationStart = async () => {
+  try {
+    const data = await axios.get(REGISTRATION_START_URL, {
+      params: {
+        client_id: 'mobile-service-public',
+        redirect_uri:
+          'https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io',
+        response_type: 'code',
+        scope: 'openid',
+        display: 'mobile',
+      },
+    });
+    return data.data;
+  } catch (err) {
+    handleError(err, 'registrationStart');
+  }
+};
+
 export const usernameAndPasswordForm = async (username, password, url) => {
   try {
     const data = await axios({
@@ -55,6 +74,30 @@ export const usernameAndPasswordForm = async (username, password, url) => {
     return data.data;
   } catch (err) {
     handleError(err, 'usernameAndPasswordForm');
+  }
+};
+
+export const registrationForm = async (obj, url) => {
+  const params = new URLSearchParams(obj);
+  try {
+    const data = await axios({
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      url,
+      data: params,
+    });
+    console.log(data);
+    return data.data;
+  } catch (err) {
+    handleError(err, 'usernameAndPasswordForm');
+  }
+};
+
+export const resendEmail = async (url) => {
+  try {
+    await axios.post(url);
+  } catch (err) {
+    handleError(err, 'resendEmail');
   }
 };
 

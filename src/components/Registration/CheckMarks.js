@@ -1,27 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, Pressable, Image } from 'react-native';
-import colors from '../../constants/colors';
-import images from '../../constants/images';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
+import colors from '../../constants/colors';
+import images from '../../constants/images';
+import { setRegistrationInputs } from '../../redux/profile/actions';
 
 export default function CheckMarks() {
-  const [terms, setTerms] = useState(false);
-  const [age, setAge] = useState(false);
-  const [updates, setUpdates] = useState(false);
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const {
+    profile: { registrationInputs },
+  } = state;
+
+  const i = registrationInputs;
+  const set = (obj) => dispatch(setRegistrationInputs({ ...i, ...obj }));
 
   const image = (type) => {
-    if (type === 'terms' && terms) return images.Check_Full;
-    if (type === 'age' && age) return images.Check_Full;
-    if (type === 'updates' && updates) return images.Check_Full;
+    if (type === 'terms' && i.acceptTerms === 'on') return images.Check_Full;
+    if (type === 'age' && i.acceptAgeRequirement === 'on')
+      return images.Check_Full;
+    if (type === 'updates' && i.getEmailUpdates === 'on')
+      return images.Check_Full;
     return images.Check_Empty;
   };
 
   const toggle = (type) => {
-    if (type === 'terms') setTerms(!terms);
-    if (type === 'age') setAge(!age);
-    if (type === 'updates') setUpdates(!updates);
+    if (type === 'terms')
+      set({ acceptTerms: i.acceptTerms !== 'on' ? 'on' : 'off' });
+    if (type === 'age')
+      set({
+        acceptAgeRequirement: i.acceptAgeRequirement !== 'on' ? 'on' : 'off',
+      });
+    if (type === 'updates')
+      set({ getEmailUpdates: i.getEmailUpdates !== 'on' ? 'on' : 'off' });
   };
 
   const text = (type) => {

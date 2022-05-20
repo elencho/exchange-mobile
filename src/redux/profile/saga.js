@@ -19,8 +19,10 @@ import {
   saveLoginStartInfo,
   saveUserAndPassInfo,
   setOtpType,
+  saveRegistrationStartInfo,
+  saveResendLink,
 } from './actions';
-import { getUserData } from './selectors';
+import { getUserData, registrationParams } from './selectors';
 import {
   activateEmailOtp,
   activateGoogleOtp,
@@ -30,6 +32,8 @@ import {
   getOtpChangeToken,
   loginOtp,
   loginStart,
+  registrationForm,
+  registrationStart,
   sendEmailOtp,
   subscribeMail,
   unsubscribeMail,
@@ -41,10 +45,12 @@ import {
 } from '../../utils/userProfileUtils';
 import {
   toggleEmailAuthModal,
+  toggleEmailVerificationModal,
   toggleGoogleAuthModal,
   toggleLogin2FaModal,
 } from '../modals/actions';
 
+//  START LOGIN
 function* startLoginSaga(action) {
   const { navigation } = action;
 
@@ -62,6 +68,34 @@ function* startLoginSaga(action) {
   }
 }
 
+//  START REGISTRATION
+function* startRegistrationSaga(action) {
+  const { navigation } = action;
+
+  const registrationStartInfo = yield call(registrationStart);
+  yield put(saveRegistrationStartInfo(registrationStartInfo));
+
+  if (registrationStartInfo.execution === 'REGISTRATION_START') {
+    navigation.navigate('Registration');
+  }
+}
+
+//  REGISTRATION FORM
+function* registrationFormSaga(action) {
+  const { navigation } = action;
+  const params = yield select(registrationParams);
+  const url = yield select(
+    (state) => state.profile.registrationStartInfo.callbackUrl
+  );
+
+  const data = yield call(registrationForm, params, url);
+  if (data.execution === 'EMAIL_VERIFICATION') {
+    yield put(toggleEmailVerificationModal(true));
+    yield put(saveResendLink(data.callbackUrl));
+  }
+}
+
+//  USERNAME AND PASSWORD
 function* usernameAndPasswordSaga(action) {
   const { navigation } = action;
   const credentials = yield select((state) => state.profile.credentials);
@@ -107,6 +141,7 @@ function* usernameAndPasswordSaga(action) {
   }
 }
 
+//  O T P    F O R    L O G I N
 function* otpForLoginSaga(action) {
   const { otp } = action;
   const callbackUrl = yield select(
@@ -116,37 +151,44 @@ function* otpForLoginSaga(action) {
   const data = yield call(loginOtp, otp, callbackUrl);
 }
 
+//  FETCH COUNTRIES
 function* fetchCountriesSaga() {
   const countries = yield call(fetchCountries);
   yield put(saveCountries(countries));
   yield put(saveCountriesConstant(countries));
 }
 
+//  FETCH USER INFO
 function* fetchUserInfoSaga() {
   const userInfo = yield call(fetchUserInfoUtil);
   yield put(saveUserInfo(userInfo));
 }
 
+//  UPDATE USER INFO
 function* saveUserInfoSaga() {
   const userData = yield select(getUserData);
   yield call(updateUserData, userData);
 }
 
+//  UPDATE PASSWORD
 function* updatePasswordSaga(action) {
   const { curentPassword, newPassword, repeatPassword } = action;
   yield call(updatePassword, curentPassword, newPassword, repeatPassword);
 }
 
+//  VERIFY PHONE NUMBER
 function* verifyPhoneNumberSaga(action) {
   const { phoneNumber, phoneCountry } = action;
   yield call(verifyPhoneNumber, phoneNumber, phoneCountry);
 }
 
+//  UPDATE PHONE NUMBER
 function* updatePhoneNumberSaga(action) {
   const { phoneNumber, phoneCountry, verificationNumber } = action;
   yield call(updatePhoneNumber, phoneNumber, phoneCountry, verificationNumber);
 }
 
+//  TOGLE SUBSCRIPTION
 function* toggleSubscriptionSaga(action) {
   const { value } = action;
   if (value) {
@@ -158,6 +200,7 @@ function* toggleSubscriptionSaga(action) {
   yield put(fetchUserInfoAction());
 }
 
+//  CREDENTIALS FOR EMAIL
 function* credentialsForEmailSaga(action) {
   const { OTP } = action;
   const data = yield call(getOtpChangeToken, OTP, 'EMAIL');
@@ -166,6 +209,7 @@ function* credentialsForEmailSaga(action) {
   yield put(toggleEmailAuthModal(true));
 }
 
+//  ACTIVATE EMAIL
 function* activateEmailSaga(action) {
   const { OTP } = action;
   const otpChangeToken = yield select((state) => state.profile.otpChangeToken);
@@ -180,6 +224,7 @@ function* activateEmailSaga(action) {
   }
 }
 
+//  CREDENTIALS FOR GOOGLE
 function* credentialsForGoogleSaga(action) {
   const { OTP } = action;
   const data = yield call(getOtpChangeToken, OTP, 'TOTP');
@@ -190,6 +235,7 @@ function* credentialsForGoogleSaga(action) {
   yield put(toggleGoogleAuthModal(true));
 }
 
+//  ACTIVATE GOOGLE
 function* activateGoogleSaga(action) {
   const { OTP } = action;
   const otpChangeToken = yield select((state) => state.profile.otpChangeToken);
@@ -209,6 +255,11 @@ function* activateGoogleSaga(action) {
 
 export default function* () {
   yield takeLatest(actionTypes.START_LOGIN_ACTION, startLoginSaga);
+  yield takeLatest(
+    actionTypes.START_REGISTRATION_ACTION,
+    startRegistrationSaga
+  );
+  yield takeLatest(actionTypes.REGISTRATION_FORM_ACTION, registrationFormSaga);
   yield takeLatest(
     actionTypes.USERNAME_AND_PASSWORD_ACTION,
     usernameAndPasswordSaga

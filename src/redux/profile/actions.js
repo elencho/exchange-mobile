@@ -3,10 +3,13 @@ export const actionTypes = {
   SAVE_PKCE_INFO: 'SAVE_PKCE_INFO',
   SAVE_LOGIN_START_INFO: 'SAVE_LOGIN_START_INFO',
   SET_CREDENTIALS: 'SET_CREDENTIALS',
+  SET_REGISTRATION_INPUTS: 'SET_REGISTRATION_INPUTS',
   SAVE_USER_AND_PASS_INFO: 'SAVE_USER_AND_PASS_INFO',
 
   // REGISTER
   SWITCH_PERSONAL_COMPANY: 'SWITCH_PERSONAL_COMPANY',
+  SAVE_REGISTRATION_START_INFO: 'SAVE_REGISTRATION_START_INFO',
+  SAVE_RESEND_LINK: 'SAVE_RESEND_LINK',
 
   SWITCH_PERSONAL_SECURITY: 'SWITCH_PERSONAL_SECURITY',
   SAVE_COUNTRIES: 'SAVE_COUNTRIES',
@@ -30,6 +33,8 @@ export const actionTypes = {
 
   // FOR SAGAS
   START_LOGIN_ACTION: 'START_LOGIN_ACTION',
+  START_REGISTRATION_ACTION: 'START_REGISTRATION_ACTION',
+  REGISTRATION_FORM_ACTION: 'REGISTRATION_FORM_ACTION',
   USERNAME_AND_PASSWORD_ACTION: 'USERNAME_AND_PASSWORD_ACTION',
   OTP_FOR_LOGIN_ACTION: 'OTP_FOR_LOGIN_ACTION',
 
@@ -68,6 +73,18 @@ export const saveUserAndPassInfo = (userAndPassInfo) => ({
 export const switchPersonalCompany = (Personal_Company) => ({
   type: actionTypes.SWITCH_PERSONAL_COMPANY,
   Personal_Company,
+});
+export const saveRegistrationStartInfo = (registrationStartInfo) => ({
+  type: actionTypes.SAVE_REGISTRATION_START_INFO,
+  registrationStartInfo,
+});
+export const setRegistrationInputs = (registrationInputs) => ({
+  type: actionTypes.SET_REGISTRATION_INPUTS,
+  registrationInputs,
+});
+export const saveResendLink = (resendLink) => ({
+  type: actionTypes.SAVE_RESEND_LINK,
+  resendLink,
 });
 
 // PERSONAL
@@ -125,6 +142,14 @@ export const setOtpType = (otpType) => ({
 // FOR SAGAS
 export const startLoginAction = (navigation) => ({
   type: actionTypes.START_LOGIN_ACTION,
+  navigation,
+});
+export const startRegistrationAction = (navigation) => ({
+  type: actionTypes.START_REGISTRATION_ACTION,
+  navigation,
+});
+export const registrationFormAction = (navigation) => ({
+  type: actionTypes.REGISTRATION_FORM_ACTION,
   navigation,
 });
 export const usernameAndPasswordAction = (navigation) => ({

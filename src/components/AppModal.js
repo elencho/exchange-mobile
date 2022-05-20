@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Modal from 'react-native-modal';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import Constants from 'expo-constants';
@@ -10,7 +10,7 @@ import Background from './Background';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
 import Headline from './TransactionHistory/Headline';
 
-export default function AppModal({
+function AppModal({
   children,
   visible,
   hide,
@@ -38,6 +38,9 @@ export default function AppModal({
       animationOutTiming={600}
       backdropTransitionInTiming={600}
       onModalHide={onModalHide}
+      hideModalContentWhileAnimating
+      useNativeDriver
+      useNativeDriverForBackdrop
     >
       {bottom && (
         <KeyboardAvoidingView
@@ -67,6 +70,7 @@ export default function AppModal({
     </Modal>
   );
 }
+export default memo(AppModal);
 
 const styles = StyleSheet.create({
   bottom: {

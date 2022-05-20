@@ -16,7 +16,10 @@ import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 import images from '../constants/images';
-import { startLoginAction } from '../redux/profile/actions';
+import {
+  startLoginAction,
+  startRegistrationAction,
+} from '../redux/profile/actions';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
@@ -31,7 +34,7 @@ export default function Welcome({ navigation }) {
   });
 
   const startLogin = () => dispatch(startLoginAction(navigation));
-  const navigateToRegistration = () => navigation.navigate('Registration');
+  const startRegistration = () => dispatch(startRegistrationAction(navigation));
 
   return (
     <TouchableWithoutFeedback
@@ -60,7 +63,7 @@ export default function Welcome({ navigation }) {
               style={styles.button}
               onPress={startLogin}
             />
-            <PurpleText text="Registration" onPress={navigateToRegistration} />
+            <PurpleText text="Registration" onPress={startRegistration} />
           </>
         )}
       </ImageBackground>

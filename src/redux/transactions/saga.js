@@ -125,7 +125,7 @@ function* showResultsSaga(action) {
   yield put(saveTransactions([]));
   yield put(increaseOffset(0));
   yield put(fetchTransactions());
-  yield call(navigation.goBack);
+  yield call(() => navigation && navigation.goBack());
 }
 
 function* transactionDetailsSaga(action) {

@@ -8,8 +8,9 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import AppButton from '../components/AppButton';
+import { useDispatch } from 'react-redux';
 
+import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 import CheckMarks from '../components/Registration/CheckMarks';
@@ -19,10 +20,14 @@ import EmailVerificationModal from '../components/Registration/EmailVerification
 import colors from '../constants/colors';
 import images from '../constants/images';
 import { toggleEmailVerificationModal } from '../redux/modals/actions';
-import { useDispatch } from 'react-redux';
+import { registrationFormAction } from '../redux/profile/actions';
 
-export default function Registration() {
+export default function Registration({ navigation }) {
   const dispatch = useDispatch();
+
+  const handleRegistration = () => {
+    dispatch(registrationFormAction(navigation));
+  };
 
   return (
     // <TouchableWithoutFeedback
@@ -48,10 +53,7 @@ export default function Registration() {
         <RegistrationInputs />
         <CheckMarks />
 
-        <AppButton
-          text="Register"
-          onPress={() => dispatch(toggleEmailVerificationModal(true))}
-        />
+        <AppButton text="Register" onPress={handleRegistration} />
 
         <AppText style={styles.subtext}>
           Have an account? <PurpleText text="Sign In" />
