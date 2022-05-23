@@ -51,7 +51,7 @@ export const submitTrade = async (params) => {
     });
     return data;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'submitTrade');
   }
 };
 export const fetchBalance = async () => {

@@ -22,11 +22,7 @@ export default function AddCardModal() {
   const state = useSelector((state) => state);
   const {
     modals: { addCardModalVisible },
-    trade: {
-      depositProvider,
-      balance: { balances },
-      fiat,
-    },
+    trade: { depositProvider, depositProviders },
   } = state;
 
   const [saveCardAgreeTerms, setSaveCardAgreeTerms] = useState(false);
@@ -38,21 +34,13 @@ export default function AddCardModal() {
   const toggle = () => setSaveCardAgreeTerms(!saveCardAgreeTerms);
   const showBanks = () => dispatch(toggleChooseBankModal(true));
   const showFees = () => dispatch(toggleBankFeesModal(true));
-  const multipleBanks = () => {
-    let isMultiple;
-    balances.forEach((b) => {
-      if (fiat === b.currencyCode) {
-        isMultiple = b.depositMethods.ECOMMERCE.length > 1;
-      }
-    });
-    return isMultiple;
-  };
+  const multipleBanks = () => depositProviders.length > 1;
 
   const color = depositProvider ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT;
 
   const children = (
     <>
-      {multipleBanks() && (
+      {multipleBanks() ? (
         <>
           <Pressable style={styles.dropdown} onPress={showBanks}>
             {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
@@ -67,6 +55,10 @@ export default function AddCardModal() {
             <PurpleText text=" See More" onPress={showFees} />
           </AppText>
         </>
+      ) : (
+        <AppText style={styles.grey}>
+          See card processor <PurpleText text="Show Fees" onPress={showFees} />
+        </AppText>
       )}
 
       <View style={styles.block}>
@@ -112,6 +104,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(101, 130, 253, 0.08)',
     paddingVertical: 20,
     paddingHorizontal: 30,
+    marginTop: 25,
   },
   button: {
     position: 'absolute',
@@ -142,7 +135,6 @@ const styles = StyleSheet.create({
   subText: {
     color: colors.SECONDARY_TEXT,
     marginTop: 10,
-    marginBottom: 25,
   },
   row: {
     flexDirection: 'row',
