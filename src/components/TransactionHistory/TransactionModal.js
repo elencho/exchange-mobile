@@ -24,15 +24,16 @@ export default function TransactionModal({ transactions, trades }) {
       baseCurrency,
       quoteCurrency,
       action,
-      recipient,
+      transactionInfo,
+      type,
     },
   } = state;
 
   const copyId = () => {
-    Clipboard.setString(recipient);
+    Clipboard.setString(transactionId);
   };
   const copyDestination = () => {
-    Clipboard.setString(recipient);
+    Clipboard.setString(transactionInfo);
   };
 
   const hide = () => {
@@ -41,12 +42,17 @@ export default function TransactionModal({ transactions, trades }) {
 
   const buySell = action === 'BID' ? 'Buy' : 'Sell';
 
+  const transactionTypeImage = () => {
+    if (type === 'DEPOSIT') return images.Deposit;
+    if (type === 'WITHDRAWAL') return images.Withdrawal;
+  };
+
   const children = () => {
     if (transactions) {
       return (
         <>
           <View style={styles.top}>
-            <Image source={images.Deposit} style={styles.image} />
+            <Image source={transactionTypeImage()} style={styles.image} />
 
             <View style={styles.middle}>
               <AppText medium style={styles.white}>
@@ -59,9 +65,14 @@ export default function TransactionModal({ transactions, trades }) {
 
             <View style={styles.vertical} />
 
-            <TouchableOpacity onPress={copyId}>
-              <Image source={images.Copy} />
-            </TouchableOpacity>
+            <View style={styles.row}>
+              <TouchableOpacity onPress={copyId} style={{ marginRight: 25 }}>
+                <Image source={images.Copy} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={copyId}>
+                <Image source={images.Link} />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={styles.line} />
@@ -69,20 +80,28 @@ export default function TransactionModal({ transactions, trades }) {
           <TransactionDetails />
 
           <View style={styles.line} />
-          <View style={styles.destination}>
+          <View style={styles.row}>
             <View style={{ flex: 1, marginRight: 15 }}>
               <AppText medium style={[styles.white]}>
                 Destination :
               </AppText>
               <AppText subtext style={[styles.address, { marginTop: 5 }]}>
-                {recipient}
+                {transactionInfo}
               </AppText>
             </View>
 
             <View style={styles.vertical} />
-            <TouchableOpacity onPress={copyDestination}>
-              <Image source={images.Copy} />
-            </TouchableOpacity>
+            <View style={styles.row}>
+              <TouchableOpacity
+                onPress={copyDestination}
+                style={{ marginRight: 25 }}
+              >
+                <Image source={images.Copy} />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={copyDestination}>
+                <Image source={images.Link} />
+              </TouchableOpacity>
+            </View>
           </View>
         </>
       );
@@ -147,7 +166,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 28,
   },
-  destination: {
+  row: {
     flexDirection: 'row',
     alignItems: 'center',
   },

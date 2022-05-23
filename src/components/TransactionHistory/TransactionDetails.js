@@ -19,6 +19,8 @@ export default function TransactionDetails() {
       currency,
       type,
       totalAmount,
+      provider,
+      providerDisplayName,
     },
   } = state;
 
@@ -41,6 +43,7 @@ export default function TransactionDetails() {
       <View>
         {[
           'Type',
+          'Network',
           'Date / Time',
           'Amount',
           'Fee',
@@ -54,6 +57,7 @@ export default function TransactionDetails() {
 
       <View style={styles.right}>
         <RightText text={type} />
+        <RightText text={providerDisplayName} />
         <RightText text={`${date} / ${time}`} />
         <RightText text={`${amount} ${currency}`} />
         <RightText text={`${fee} ${currency}`} />

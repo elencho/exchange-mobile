@@ -19,7 +19,9 @@ export default function TransactionDate({ date, transactions }) {
         transactionId: tr.transactionId,
         fee: tr.fee,
         method: tr.method,
-        recipient: tr.recipient,
+        transactionInfo: tr.transactionInfo,
+        provider: tr.provider,
+        providerDisplayName: tr.providerDisplayName,
       };
 
       let currentDate = new Date(transaction.timestamp);

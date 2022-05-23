@@ -12,6 +12,7 @@ export default {
   Close: require('../assets/images/Close.png'),
   Copy: require('../assets/images/Copy.png'),
   Deposit: require('../assets/images/Deposit.png'),
+  Link: require('../assets/images/Link.png'),
   Download: require('../assets/images/Download.png'),
   Exchange_Active: require('../assets/images/Exchange_Active.png'),
   Exchange: require('../assets/images/Exchange.png'),

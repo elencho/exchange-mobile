@@ -18,7 +18,6 @@ import {
   savePkceInfo,
   saveLoginStartInfo,
   saveUserAndPassInfo,
-  setOtpType,
   saveRegistrationStartInfo,
   saveResendLink,
 } from './actions';
@@ -134,8 +133,8 @@ function* usernameAndPasswordSaga(action) {
       yield call(async () => {
         await SecureStore.setItemAsync('accessToken', data.access_token);
       });
-      const otpType = jwt_decode(data.access_token).otpType;
-      yield put(setOtpType(otpType));
+
+      yield put({ type: 'OTP_SAGA', token: data.access_token });
       yield call(() => navigation.navigate('Main'));
     }
   }
@@ -253,6 +252,21 @@ function* activateGoogleSaga(action) {
   }
 }
 
+// OTP SAGA
+function* otpSaga(action) {
+  const { token } = action;
+  const otpType = jwt_decode(token).otpType;
+  if (otpType === 'EMAIL') {
+    yield put(setEmailAuth(true));
+  }
+  if (otpType === 'TOTP') {
+    yield put(setGoogleAuth(true));
+  }
+  if (otpType === 'SMS') {
+    yield put(setSmsAuth(true));
+  }
+}
+
 export default function* () {
   yield takeLatest(actionTypes.START_LOGIN_ACTION, startLoginSaga);
   yield takeLatest(
@@ -282,4 +296,5 @@ export default function* () {
     actionTypes.CREDENTIALS_FOR_GOOGLE,
     credentialsForGoogleSaga
   );
+  yield takeLatest('OTP_SAGA', otpSaga);
 }

@@ -18,16 +18,9 @@ const INITIAL_STATE = {
   language: 'English',
 
   // Security
-  otpType: '',
-  get googleAuth() {
-    return this.otpType === 'TOTP';
-  },
-  get emailAuth() {
-    return this.otpType === 'EMAIL';
-  },
-  get smsAuth() {
-    return this.otpType === 'SMS';
-  },
+  googleAuth: false,
+  emailAuth: false,
+  smsAuth: false,
   currentSecurityAction: null,
   otpChangeToken: null,
   totpSecretObj: {},
@@ -61,7 +54,6 @@ export default (state = INITIAL_STATE, action) => {
     currentSecurityAction,
     otpChangeToken,
     totpSecretObj,
-    otpType,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_PKCE_INFO:
@@ -158,11 +150,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         totpSecretObj,
-      };
-    case actionTypes.SET_OTP_TYPE:
-      return {
-        ...state,
-        otpType,
       };
     default:
       return state;
