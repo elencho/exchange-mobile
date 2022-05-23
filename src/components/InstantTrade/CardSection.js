@@ -18,14 +18,17 @@ function CardSection() {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.trade);
+  const state = useSelector((state) => state);
   const {
-    depositProvider,
-    depositProviders,
-    card,
-    fiat,
-    fee,
-    balance: { balances },
+    trade: {
+      depositProvider,
+      depositProviders,
+      card,
+      fiat,
+      fee,
+      balance: { balances },
+    },
+    transactions: { tabRouteName },
   } = state;
 
   const showCards = () => dispatch(toggleChooseCardModal(true));
@@ -92,7 +95,10 @@ function CardSection() {
     <View style={styles.container}>
       {multipleBanks() && (
         <>
-          <Pressable style={styles.dropdown} onPress={showBanks}>
+          <Pressable
+            style={[styles.dropdown, { marginBottom: 25 }]}
+            onPress={showBanks}
+          >
             {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
             <AppText style={[styles.text, { color }]} medium={depositProvider}>
               {depositProvider ? depositProvider : 'Payment Service Provider'}
@@ -100,15 +106,17 @@ function CardSection() {
             <Image source={images['Arrow']} />
           </Pressable>
 
-          <AppText subtext style={styles.subText}>
-            0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
-            <PurpleText text=" More Fees" onPress={showFees} />
-          </AppText>
+          {tabRouteName === 'Trade' && (
+            <AppText subtext style={styles.subText}>
+              0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
+              <PurpleText text=" More Fees" onPress={showFees} />
+            </AppText>
+          )}
         </>
       )}
 
       <Pressable
-        style={[styles.dropdown, { opacity }]}
+        style={[styles.dropdown, { opacity, marginBottom: 10 }]}
         onPress={showCards}
         disabled={!depositProvider}
       >
@@ -125,7 +133,7 @@ function CardSection() {
         <Image source={images['Arrow']} />
       </Pressable>
 
-      <AppText subtext style={styles.subText}>
+      <AppText subtext style={styles.newCard}>
         Or you can add <PurpleText text=" New Card" onPress={addNewCard} />
       </AppText>
 
@@ -157,9 +165,12 @@ const styles = StyleSheet.create({
     color: colors.SECONDARY_TEXT,
     marginHorizontal: 10,
   },
+  newCard: {
+    color: colors.SECONDARY_TEXT,
+  },
   subText: {
     color: colors.SECONDARY_TEXT,
-    marginTop: 10,
+    marginTop: -13,
     marginBottom: 25,
   },
   text: {

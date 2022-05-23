@@ -13,17 +13,28 @@ import {
 import colors from '../../../constants/colors';
 import WithdrawalAddress from './WithdrawalAddress';
 import { fetchFee, setFee } from '../../../redux/trade/actions';
+import CardSection from '../../InstantTrade/CardSection';
+import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
+import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 
 export default function WithdrawalInputs({ isFiat, hasRestriction }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { withdrawalAmount, withdrawalNote, memoTag, cryptoAddresses },
+    wallet: {
+      withdrawalAmount,
+      withdrawalNote,
+      memoTag,
+      cryptoAddresses,
+      network,
+    },
     transactions: { code },
     trade: { fee },
   } = state;
 
   const [hasMemoTag, setHasMemoTag] = useState(false);
+
+  const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
     if (cryptoAddresses.length) {
@@ -74,12 +85,22 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
           style={{ marginBottom: 22 }}
         />
       )}
-      <AppInput
-        label="Enter Note"
-        onChangeText={setNote}
-        value={withdrawalNote}
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-      />
+      {isEcommerce ? (
+        <>
+          <View style={{ marginTop: -20, marginBottom: -22 }}>
+            <CardSection />
+            <ChooseBankModal />
+            <ChooseCardModal />
+          </View>
+        </>
+      ) : (
+        <AppInput
+          label="Enter Note"
+          onChangeText={setNote}
+          value={withdrawalNote}
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        />
+      )}
       <AppInput
         onChangeText={setAmount}
         value={withdrawalAmount}

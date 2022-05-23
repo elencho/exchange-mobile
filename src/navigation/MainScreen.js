@@ -33,15 +33,11 @@ export default function MainScreen() {
       .catch((err) => console.log(err));
   }, []);
 
-  const tabRoute = (e) => {
-    if (e.route.name === 'Transactions') {
-      dispatch(setTabRouteName(e.navigation.isFocused()));
-    }
-  };
+  const setTabRoute = (e) => dispatch(setTabRouteName(e.route.name));
 
   return (
     <Tab.Navigator
-      screenListeners={tabRoute}
+      screenListeners={setTabRoute}
       screenOptions={{
         headerShown: false,
         unmountOnBlur: true,

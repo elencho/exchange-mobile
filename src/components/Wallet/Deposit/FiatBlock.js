@@ -8,6 +8,9 @@ import { generateWirePdf } from '../../../utils/walletUtils';
 import AppButton from '../../AppButton';
 import AppInput from '../../AppInput';
 import AppText from '../../AppText';
+import CardSection from '../../InstantTrade/CardSection';
+import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
+import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import BankInfo from './BankInfo';
 
 export default function FiatBlock() {
@@ -18,6 +21,7 @@ export default function FiatBlock() {
     transactions: { code },
     wallet: {
       wireDepositInfo: { en },
+      network,
     },
   } = state;
 
@@ -27,33 +31,56 @@ export default function FiatBlock() {
     }
   };
 
+  const cardDeposit = () => {};
+
+  const right = (
+    <View style={styles.row}>
+      <View style={styles.line} />
+      <AppText subtext style={styles.subtext}>
+        {code}
+      </AppText>
+    </View>
+  );
+
   return (
     <KeyboardAvoidingView>
+      {network !== 'ECOMMERCE' && (
+        <View style={styles.block}>
+          <BankInfo />
+        </View>
+      )}
+
       <View style={styles.block}>
-        <BankInfo />
-      </View>
-      <View style={styles.block}>
-        <AppInput
-          onChangeText={setAmount}
-          value={amount}
-          label="Enter Amount"
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-          right={
-            <View style={styles.row}>
-              <View style={styles.line} />
-              <AppText subtext style={styles.subtext}>
-                {code}
-              </AppText>
-            </View>
-          }
-        />
+        <>
+          {network === 'ECOMMERCE' && (
+            <>
+              <View style={{ marginTop: -20 }}>
+                <CardSection />
+              </View>
+              <ChooseBankModal />
+              <ChooseCardModal />
+            </>
+          )}
+
+          <AppInput
+            onChangeText={setAmount}
+            value={amount}
+            label="Enter Amount"
+            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+            right={right}
+          />
+        </>
       </View>
 
-      <AppButton
-        text="Generate"
-        onPress={generatePdf}
-        left={<Image source={images.Generate} />}
-      />
+      {network === 'SWIFT' ? (
+        <AppButton
+          text="Generate"
+          onPress={generatePdf}
+          left={<Image source={images.Generate} />}
+        />
+      ) : (
+        <AppButton text="Deposit" onPress={cardDeposit} />
+      )}
     </KeyboardAvoidingView>
   );
 }
@@ -64,6 +91,14 @@ const styles = StyleSheet.create({
     paddingVertical: 22,
     paddingHorizontal: 16,
     marginBottom: 12,
+  },
+  dropdown: {
+    borderColor: '#525A86',
+    borderWidth: 1,
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: 45,
+    paddingHorizontal: 15,
   },
   line: {
     width: 1,

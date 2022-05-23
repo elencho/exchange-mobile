@@ -52,7 +52,7 @@ function TransactionHistory() {
     if (
       isCloseToBottom(e.nativeEvent) &&
       navigation.isFocused() &&
-      tabRouteName
+      tabRouteName === 'Transactions'
     ) {
       dispatch(reachScrollEnd());
     }

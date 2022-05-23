@@ -39,6 +39,7 @@ export default function Withdrawal() {
       withdrawalBank,
       hasMultipleNetworks,
       hasMultipleMethods,
+      network,
     },
   } = state;
 
@@ -46,6 +47,7 @@ export default function Withdrawal() {
   const [hasMethod, setHasMethod] = useState(false);
 
   const isFiat = currentBalanceObj.type === 'FIAT';
+  const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
     dispatch(getWhitelistAction());
@@ -101,7 +103,9 @@ export default function Withdrawal() {
           )}
         </View>
 
-        {!hasRestriction && isFiat && hasMethod && <WithdrawalInfo />}
+        {!hasRestriction && isFiat && hasMethod && !isEcommerce && (
+          <WithdrawalInfo />
+        )}
         {!hasRestriction && hasMethod && (
           <WithdrawalInputs isFiat={isFiat} hasRestriction={hasRestriction} />
         )}

@@ -17,6 +17,8 @@ import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodM
 import AppButton from '../../components/AppButton';
 import FiatBlock from '../../components/Wallet/Deposit/FiatBlock';
 import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
+import AppText from '../../components/AppText';
+import WireTransferWarning from '../../components/Wallet/Withdrawal/WireTransferWarning';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -40,6 +42,7 @@ export default function Deposit() {
 
   const isFiat = currentBalanceObj.type === 'FIAT';
   const isEthereum = network === 'ERC20' || network === 'BEP20';
+  const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
     if (cryptoAddresses.length) {
@@ -88,6 +91,15 @@ export default function Deposit() {
             {hasMultipleMethods && (
               <>
                 <TransferMethodDropdown />
+                {isEcommerce ? (
+                  <AppText subtext style={styles.subtext}>
+                    Cryptal processes credit and debit cards issued by TBC Bank
+                    directly with TBC. All other cards are processed with Bank
+                    of Georgia
+                  </AppText>
+                ) : (
+                  <WireTransferWarning />
+                )}
                 <TransferMethodModal />
               </>
             )}
@@ -155,4 +167,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   generate: { marginTop: 40, flexDirection: 'row' },
+  subtext: {
+    color: colors.SECONDARY_TEXT,
+    textAlign: 'justify',
+    letterSpacing: -0.1,
+    lineHeight: 18,
+    marginTop: 10,
+  },
 });
