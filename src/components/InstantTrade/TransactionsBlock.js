@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import colors from '../../constants/colors';
 import { fetchTrades, hideOtherPairsAction } from '../../redux/trade/actions';
@@ -22,16 +23,36 @@ const TopRow = ({ text, onPress }) => (
 
 export default function TransactionsBlock() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
-  const state = useSelector((state) => state.trade);
-  const { trades, hideOtherPairs } = state;
+  const state = useSelector((state) => state);
+  const {
+    trade: { trades, hideOtherPairs },
+    transactions: { tabRouteName },
+  } = state;
 
   useEffect(() => {
     dispatch(fetchTrades());
   }, [hideOtherPairs]);
 
-  const toggleShowHide = () => {
-    dispatch(hideOtherPairsAction(!hideOtherPairs));
+  const toggleShowHide = () => dispatch(hideOtherPairsAction(!hideOtherPairs));
+
+  const handleScrollEnd = (e) => {
+    if (
+      isCloseToBottom(e.nativeEvent) &&
+      navigation.isFocused() &&
+      tabRouteName === 'Trade'
+    ) {
+      // dispatch(reachScrollEnd());
+    }
+  };
+
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }) => {
+    return layoutMeasurement.height + contentOffset.y >= contentSize.height;
   };
 
   return (
@@ -41,7 +62,13 @@ export default function TransactionsBlock() {
         onPress={toggleShowHide}
       />
 
-      <ScrollView showsVerticalScrollIndicator={false} style={{ height: 280 }}>
+      <ScrollView
+        nestedScrollEnabled
+        showsVerticalScrollIndicator={false}
+        onScroll={handleScrollEnd}
+        scrollEventThrottle={4}
+        style={{ height: 280 }}
+      >
         {trades.map((trade) => (
           <Trade trade={trade} key={Math.random()} />
         ))}

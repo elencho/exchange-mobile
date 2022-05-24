@@ -69,6 +69,8 @@ export default function TransactionModal({ transactions, trades }) {
   };
 
   const buySell = action === 'BID' ? 'Buy' : 'Sell';
+  const backgroundColor =
+    action === 'BID' ? 'rgba(12, 203, 181, 0.08)' : 'rgba(234, 121, 156, 0.08)';
 
   const transactionTypeImage = () => {
     if (type === 'DEPOSIT') return images.Deposit;
@@ -157,7 +159,7 @@ export default function TransactionModal({ transactions, trades }) {
               <AppText style={styles.instantTrade}>Instant trade</AppText>
             </View>
 
-            <View style={styles.buy_sell}>
+            <View style={[styles.buy_sell, { backgroundColor }]}>
               <AppText
                 medium
                 subtext
@@ -194,7 +196,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   buy_sell: {
-    backgroundColor: 'rgba(234, 121, 156, 0.08)',
     height: 20,
     width: 45,
     justifyContent: 'center',

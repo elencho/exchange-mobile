@@ -43,7 +43,18 @@ export default function TradeDetails() {
     </View>
   );
 
-  const backgroundColor = status === 'COMPLETED' ? '#25D8D1' : '#F83974';
+  const backgroundColor =
+    status === 'COMPLETED'
+      ? '#25D8D1'
+      : 'WAITING_DEPOSIT'
+      ? '#FADD90'
+      : 'FAILED'
+      ? '#BE1E3E'
+      : 'EXPIRED'
+      ? '#BE1E3E'
+      : 'PENDING'
+      ? '#FADD90'
+      : '#F83974';
 
   return (
     <View style={styles.container}>

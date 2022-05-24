@@ -41,7 +41,6 @@ import { setWalletTab } from '../wallet/actions';
 function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
   const params = yield select(getParams);
-  // const trades = yield select(getTrades);
   const newTrades = yield call(fetchTrades, params);
   yield put(saveTrades(newTrades));
   yield put(setTradesLoading(false));

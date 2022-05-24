@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { Platform, SafeAreaView, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
@@ -35,14 +35,16 @@ export default function App() {
     return null;
   }
 
+  const iphone = Platform.OS === 'ios';
+
   return (
     <Provider store={store}>
-      <StatusBar style="light" />
-      <SafeAreaView style={styles.statusBar} />
+      {iphone && <StatusBar style="light" />}
+      {iphone && <SafeAreaView style={styles.statusBar} />}
       <SafeAreaView style={styles.container}>
         <Navigator />
       </SafeAreaView>
-      <SafeAreaView style={styles.statusBar} />
+      {iphone && <SafeAreaView style={styles.statusBar} />}
     </Provider>
   );
 }

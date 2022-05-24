@@ -85,5 +85,3 @@ export const paramsForTrade = (state) => {
         amount: tradeType === 'Buy' ? price : size,
       };
 };
-
-export const getTrades = (state) => state.trade.trades;

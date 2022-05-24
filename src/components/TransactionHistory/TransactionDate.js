@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import AppText from '../AppText';
@@ -6,7 +6,7 @@ import Transaction from './Transaction';
 import colors from '../../constants/colors';
 import { monthsShort } from '../../constants/months';
 
-export default function TransactionDate({ date, transactions }) {
+function TransactionDate({ date, transactions }) {
   const isDate = () => {
     return transactions.map((tr) => {
       const transaction = {
@@ -54,6 +54,8 @@ export default function TransactionDate({ date, transactions }) {
     </View>
   );
 }
+
+export default memo(TransactionDate);
 
 const styles = StyleSheet.create({
   container: {
