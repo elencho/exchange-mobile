@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Clipboard from 'expo-clipboard';
+import * as Linking from 'expo-linking';
 
 import AppText from '../AppText';
 import TransactionDetails from './TransactionDetails';
@@ -13,27 +14,54 @@ import images from '../../constants/images';
 
 export default function TransactionModal({ transactions, trades }) {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.transactions);
-  const transactionDetailsVisible = useSelector(
-    (state) => state.modals.transactionDetailsVisible
-  );
+  const state = useSelector((state) => state);
 
   const {
-    currentTransaction: {
-      transactionId,
-      baseCurrency,
-      quoteCurrency,
-      action,
-      transactionInfo,
-      type,
+    transactions: {
+      currentTransaction: {
+        currency,
+        provider,
+        method,
+        transactionId,
+        transactionInfo,
+        baseCurrency,
+        quoteCurrency,
+        action,
+        recipient,
+        type,
+      },
+      currencies,
     },
+    modals: { transactionDetailsVisible },
   } = state;
+
+  const handleTransactionUrl = () => {
+    let pattern;
+    currencies.forEach((c) => {
+      if (c.code === currency) {
+        pattern =
+          c.providerToUrlPattern[provider].transactionUrlPattern.split('{')[0];
+      }
+    });
+    Linking.openURL(pattern + transactionInfo);
+  };
+
+  const handleAddressUrl = () => {
+    let pattern;
+    currencies.forEach((c) => {
+      if (c.code === currency) {
+        pattern =
+          c.providerToUrlPattern[provider].addressUrlPattern.split('{')[0];
+      }
+    });
+    Linking.openURL(pattern + recipient);
+  };
 
   const copyId = () => {
     Clipboard.setString(transactionId);
   };
   const copyDestination = () => {
-    Clipboard.setString(transactionInfo);
+    Clipboard.setString(recipient);
   };
 
   const hide = () => {
@@ -66,12 +94,17 @@ export default function TransactionModal({ transactions, trades }) {
             <View style={styles.vertical} />
 
             <View style={styles.row}>
-              <TouchableOpacity onPress={copyId} style={{ marginRight: 25 }}>
+              <TouchableOpacity onPress={copyId}>
                 <Image source={images.Copy} />
               </TouchableOpacity>
-              <TouchableOpacity onPress={copyId}>
-                <Image source={images.Link} />
-              </TouchableOpacity>
+              {method === 'WALLET' && (
+                <TouchableOpacity
+                  onPress={handleTransactionUrl}
+                  style={{ marginLeft: 25 }}
+                >
+                  <Image source={images.Link} />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
 
@@ -86,21 +119,23 @@ export default function TransactionModal({ transactions, trades }) {
                 Destination :
               </AppText>
               <AppText subtext style={[styles.address, { marginTop: 5 }]}>
-                {transactionInfo}
+                {recipient}
               </AppText>
             </View>
 
             <View style={styles.vertical} />
             <View style={styles.row}>
-              <TouchableOpacity
-                onPress={copyDestination}
-                style={{ marginRight: 25 }}
-              >
+              <TouchableOpacity onPress={copyDestination}>
                 <Image source={images.Copy} />
               </TouchableOpacity>
-              <TouchableOpacity onPress={copyDestination}>
-                <Image source={images.Link} />
-              </TouchableOpacity>
+              {(method === 'WALLET' || method === 'WALLET_INTERNAL') && (
+                <TouchableOpacity
+                  onPress={handleAddressUrl}
+                  style={{ marginLeft: 25 }}
+                >
+                  <Image source={images.Link} />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </>

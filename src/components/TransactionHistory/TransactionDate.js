@@ -17,9 +17,10 @@ export default function TransactionDate({ date, transactions }) {
         totalAmount: tr.totalAmount,
         currency: tr.currency,
         transactionId: tr.transactionId,
+        transactionInfo: tr.transactionInfo,
         fee: tr.fee,
         method: tr.method,
-        transactionInfo: tr.transactionInfo,
+        recipient: tr.recipient,
         provider: tr.provider,
         providerDisplayName: tr.providerDisplayName,
       };
