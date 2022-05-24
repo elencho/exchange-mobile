@@ -11,6 +11,7 @@ i18next
   .use(initReactI18next)
   .init({
     react: { useSuspense: false },
+    compatibilityJSON: 'v3',
     lng: 'en-US',
     fallbackLng: 'en-US',
     backend: {
