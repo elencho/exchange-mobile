@@ -16,7 +16,6 @@ function TransactionDate({ date, transactions }) {
         amount: tr.amount,
         totalAmount: tr.totalAmount,
         currency: tr.currency,
-        transactionId: tr.transactionId,
         transactionInfo: tr.transactionInfo,
         fee: tr.fee,
         method: tr.method,

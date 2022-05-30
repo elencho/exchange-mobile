@@ -22,7 +22,6 @@ export default function TransactionModal({ transactions, trades }) {
         currency,
         provider,
         method,
-        transactionId,
         transactionInfo,
         baseCurrency,
         quoteCurrency,
@@ -58,7 +57,7 @@ export default function TransactionModal({ transactions, trades }) {
   };
 
   const copyId = () => {
-    Clipboard.setString(transactionId);
+    Clipboard.setString(transactionInfo);
   };
   const copyDestination = () => {
     Clipboard.setString(recipient);
@@ -89,7 +88,7 @@ export default function TransactionModal({ transactions, trades }) {
                 Identifier (TXID):
               </AppText>
               <AppText style={styles.address} subtext>
-                {transactionId}
+                {transactionInfo}
               </AppText>
             </View>
 
@@ -114,32 +113,37 @@ export default function TransactionModal({ transactions, trades }) {
 
           <TransactionDetails />
 
-          <View style={styles.line} />
-          <View style={styles.row}>
-            <View style={{ flex: 1, marginRight: 15 }}>
-              <AppText medium style={[styles.white]}>
-                Destination :
-              </AppText>
-              <AppText subtext style={[styles.address, { marginTop: 5 }]}>
-                {recipient}
-              </AppText>
-            </View>
+          {/* DESTINATION  */}
+          {(method === 'WALLET' || method === 'WALLET_INTERNAL') && (
+            <>
+              <View style={styles.line} />
+              <View style={styles.row}>
+                <View style={{ flex: 1, marginRight: 15 }}>
+                  <AppText medium style={[styles.white]}>
+                    Destination :
+                  </AppText>
+                  <AppText subtext style={[styles.address, { marginTop: 5 }]}>
+                    {recipient}
+                  </AppText>
+                </View>
 
-            <View style={styles.vertical} />
-            <View style={styles.row}>
-              <TouchableOpacity onPress={copyDestination}>
-                <Image source={images.Copy} />
-              </TouchableOpacity>
-              {(method === 'WALLET' || method === 'WALLET_INTERNAL') && (
-                <TouchableOpacity
-                  onPress={handleAddressUrl}
-                  style={{ marginLeft: 25 }}
-                >
-                  <Image source={images.Link} />
-                </TouchableOpacity>
-              )}
-            </View>
-          </View>
+                <View style={styles.vertical} />
+                <View style={styles.row}>
+                  <TouchableOpacity onPress={copyDestination}>
+                    <Image source={images.Copy} />
+                  </TouchableOpacity>
+                  {(method === 'WALLET' || method === 'WALLET_INTERNAL') && (
+                    <TouchableOpacity
+                      onPress={handleAddressUrl}
+                      style={{ marginLeft: 25 }}
+                    >
+                      <Image source={images.Link} />
+                    </TouchableOpacity>
+                  )}
+                </View>
+              </View>
+            </>
+          )}
         </>
       );
     }
