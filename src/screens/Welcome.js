@@ -17,9 +17,11 @@ import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 import images from '../constants/images';
 import {
+  setLanguage,
   startLoginAction,
   startRegistrationAction,
 } from '../redux/profile/actions';
+import { switchLanguage } from '../utils/i18n';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
@@ -31,6 +33,17 @@ export default function Welcome({ navigation }) {
         navigation.navigate('Main');
       } else setLoading(false);
     });
+
+    SecureStore.getItemAsync('language')
+      .then((l) => {
+        if (!l) {
+          switchLanguage('en-US');
+          dispatch(setLanguage('en-US'));
+        } else {
+          dispatch(setLanguage(l));
+        }
+      })
+      .catch((err) => console.log(err));
   });
 
   const startLogin = () => dispatch(startLoginAction(navigation));

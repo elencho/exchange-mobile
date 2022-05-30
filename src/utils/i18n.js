@@ -25,7 +25,7 @@ i18next
 export default i18next;
 
 export const switchLanguage = async (lang) => {
-  await SecureStore.setItemAsync('Language', lang);
+  await SecureStore.setItemAsync('language', lang);
   i18next.changeLanguage(lang, (err, t) => {
     if (err) return console.log('something went wrong loading', err);
     t('key');
