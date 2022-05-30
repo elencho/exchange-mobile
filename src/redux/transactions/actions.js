@@ -113,8 +113,9 @@ export const showResultsAction = (navigation) => ({
   type: actionTypes.SHOW_RESULTS,
   navigation,
 });
-export const reachScrollEnd = () => ({
+export const reachScrollEnd = (transactionType) => ({
   type: actionTypes.REACH_SCROLL_END,
+  transactionType,
 });
 export const filterAction = (filter, multiselect) => ({
   type: actionTypes.FILTER_SAGA_ACTION,

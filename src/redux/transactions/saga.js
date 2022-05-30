@@ -33,7 +33,9 @@ import {
   setCryptosArray,
   setCryptosArrayConstant,
   setFiatsArray,
+  setTradeOffset,
 } from '../trade/actions';
+import { fetchTrades } from '../trade/actions';
 
 function* fetchTransactionsSaga() {
   yield put(toggleLoading(true));
@@ -62,16 +64,27 @@ function* fetchCurrenciesSaga() {
   yield put({ type: 'CLASIFY_CURRENCIES' });
 }
 
-function* reachScrollEndSaga() {
-  const params = yield select(getParams);
-  const offset = yield select(getOffset);
-  const loadedTransactions = yield select(totalLoadedTransactions);
+function* reachScrollEndSaga(action) {
+  const { transactionType } = action;
 
-  const total = yield call(totalAmount, params);
+  if (transactionType === 'transactions') {
+    const params = yield select(getParams);
+    const offset = yield select(getOffset);
+    const loadedTransactions = yield select(totalLoadedTransactions);
 
-  if (loadedTransactions < total) {
-    yield put(increaseOffset(offset + 1));
-    yield put(fetchTransactions());
+    const total = yield call(totalAmount, params);
+
+    if (loadedTransactions < total) {
+      yield put(increaseOffset(offset + 1));
+      yield put(fetchTransactions());
+    }
+  }
+
+  if (transactionType === 'trades') {
+    const offset = yield select((state) => state.trade.offset);
+    const limit = yield select((state) => state.trade.limit);
+    yield put(setTradeOffset(offset + 1));
+    yield put(fetchTrades());
   }
 }
 

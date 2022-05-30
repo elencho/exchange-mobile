@@ -54,7 +54,7 @@ function TransactionHistory() {
       navigation.isFocused() &&
       tabRouteName === 'Transactions'
     ) {
-      dispatch(reachScrollEnd());
+      dispatch(reachScrollEnd('transactions'));
     }
   };
 

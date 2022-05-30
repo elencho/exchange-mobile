@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import colors from '../../constants/colors';
 import { fetchTrades, hideOtherPairsAction } from '../../redux/trade/actions';
+import { reachScrollEnd } from '../../redux/transactions/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import Trade from './Trade';
@@ -43,7 +44,7 @@ export default function TransactionsBlock() {
       navigation.isFocused() &&
       tabRouteName === 'Trade'
     ) {
-      // dispatch(reachScrollEnd());
+      dispatch(reachScrollEnd('trades'));
     }
   };
 
@@ -65,7 +66,9 @@ export default function TransactionsBlock() {
       <ScrollView
         nestedScrollEnabled
         showsVerticalScrollIndicator={false}
-        onScroll={handleScrollEnd}
+        // onScroll={handleScrollEnd}
+        // onMomentumScrollEnd={handleScrollEnd}
+        onScrollEndDrag={handleScrollEnd}
         scrollEventThrottle={4}
         style={{ height: 280 }}
       >

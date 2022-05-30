@@ -41,6 +41,7 @@ export default (state = INITIAL_STATE, action) => {
     offers,
     tradesLoading,
     offersLoading,
+    offset,
     pairObject,
     currentTrade,
     crypto,
@@ -76,6 +77,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         pairObject,
+      };
+    case actionTypes.SET_TRADE_OFFSET:
+      return {
+        ...state,
+        offset,
       };
     case actionTypes.SET_CURRENT_TRADE:
       return {

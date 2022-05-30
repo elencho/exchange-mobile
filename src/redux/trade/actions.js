@@ -4,6 +4,7 @@ export const actionTypes = {
   SAVE_OFFERS: 'SAVE_OFFERS',
   HIDE_OTHER_PAIRS: 'HIDE_OTHER_PAIRS',
   SET_PAIR_OBJECT: 'SET_PAIR_OBJECT',
+  SET_TRADE_OFFSET: 'SET_TRADE_OFFSET',
   SET_CURRENT_TRADE: 'SET_CURRENT_TRADE',
   SET_TRADE_TYPE: 'SET_TRADE_TYPE',
   SWITCH_BALANCE_CARD: 'SWITCH_BALANCE_CARD',
@@ -78,6 +79,10 @@ export const setDepositProviders = (depositProviders) => ({
 export const setPairObject = (pairObject) => ({
   type: actionTypes.SET_PAIR_OBJECT,
   pairObject,
+});
+export const setTradeOffset = (offset) => ({
+  type: actionTypes.SET_TRADE_OFFSET,
+  offset,
 });
 export const setCurrentTrade = (currentTrade) => ({
   type: actionTypes.SET_CURRENT_TRADE,
