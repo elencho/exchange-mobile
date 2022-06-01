@@ -148,7 +148,7 @@ export const addWhitelistAddress = async (OTP, params) => {
     const data = await axios.post(CRYPTO_WHITELIST, params, {
       headers: { Authorization: bearer, OTP },
     });
-    return data;
+    return data.data;
   } catch (err) {
     return handleError(err, 'addWhitelistAddress');
   }

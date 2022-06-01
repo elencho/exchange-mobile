@@ -37,6 +37,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   const {
+    generalError,
     pkceInfo,
     credentials,
     userAndPassInfo,
@@ -58,6 +59,11 @@ export default (state = INITIAL_STATE, action) => {
     totpSecretObj,
   } = action;
   switch (action.type) {
+    case actionTypes.SAVE_GENERAL_ERROR:
+      return {
+        ...state,
+        generalError,
+      };
     case actionTypes.SAVE_PKCE_INFO:
       return {
         ...state,

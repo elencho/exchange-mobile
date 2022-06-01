@@ -5,16 +5,20 @@ import { useSelector } from 'react-redux';
 import images from '../constants/images';
 import AppText from './AppText';
 
-export default function GeneralError() {
+export default function GeneralError({ style }) {
   const generalError = useSelector((state) => state.profile.generalError);
 
   return (
-    <View style={styles.container}>
-      <Image source={images.General_Error} />
-      <AppText subtext style={styles.red}>
-        {generalError}
-      </AppText>
-    </View>
+    <>
+      {generalError ? (
+        <View style={[styles.container, style]}>
+          <Image source={images.General_Error} />
+          <AppText subtext style={styles.red}>
+            {generalError}
+          </AppText>
+        </View>
+      ) : null}
+    </>
   );
 }
 

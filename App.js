@@ -17,7 +17,7 @@ import './src/utils/i18n';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(
+export const store = createStore(
   reducer,
   composeWithDevTools(applyMiddleware(sagaMiddleware))
 );

@@ -136,14 +136,14 @@ function* getWhitelistSaga() {
   yield put(setHasWhitelist(whitelist.length > 0));
 }
 
-function* addWhitelistSaga(action) {
+export function* addWhitelistSaga(action) {
   const { OTP } = action;
   const params = yield select(addWhitelistParams);
   const whitelist = yield select((state) => state.wallet.whitelist);
   const data = yield call(addWhitelistAddress, OTP, params);
-  if (data.status === 200) {
+  if (data) {
     yield put(setNewWhitelist({}));
-    yield put(saveWhitelist([...whitelist, data.data]));
+    yield put(saveWhitelist([...whitelist, data]));
   }
 }
 
