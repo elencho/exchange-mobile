@@ -105,7 +105,7 @@ export default function BankInfo() {
         <InfoRow title={i.title} text={i.text} key={i.title} />
       ))}
 
-      <View style={styles.marginVertical} />
+      {/* <View style={styles.marginVertical} /> */}
 
       {info.intermediateSwift && (
         <>

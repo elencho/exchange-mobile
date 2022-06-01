@@ -146,9 +146,9 @@ export const depositProvidersSagaAction = () => ({
 export const cardsSagaAction = () => ({
   type: actionTypes.CARDS_SAGA,
 });
-export const fetchFee = (withdrawal) => ({
+export const fetchFee = (feeType) => ({
   type: actionTypes.FETCH_FEE,
-  withdrawal,
+  feeType,
 });
 export const submitTrade = () => ({
   type: actionTypes.SUBMIT_TRADE,

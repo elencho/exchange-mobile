@@ -48,7 +48,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
       dispatch(setFee(null));
       return;
     }
-    dispatch(fetchFee((withdrawal = true)));
+    dispatch(fetchFee('withdrawal'));
   };
 
   const setNote = (note) => dispatch(setWithdrawalNote(note));

@@ -116,8 +116,10 @@ function* submitTradeSaga() {
 }
 
 function* fetchFeeSaga(action) {
-  const { withdrawal } = action;
-  const params = yield select(withdrawal ? withdrawalFeeParams : paramsForFee);
+  const { feeType } = action;
+  const params = yield select(
+    feeType === 'withdrawal' ? withdrawalFeeParams : paramsForFee
+  );
   const fee = yield call(fetchFees, params);
   yield put(setFee(fee));
 }
