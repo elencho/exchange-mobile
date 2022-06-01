@@ -28,7 +28,7 @@ const INITIAL_STATE = {
   languageModalVisible: false,
   countriesModalVisible: false,
   // security
-  googleAuthModalVisible: false,
+  googleAuthModalVisible: true,
   smsAuthModalVisible: false,
   emailAuthModalVisible: false,
   googleOtpModalVisible: false,

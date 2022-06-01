@@ -17,13 +17,14 @@ import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
+import GeneralError from '../GeneralError';
 
 export default function GoogleAuthModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     modals: { googleAuthModalVisible },
-    profile: { totpSecretObj },
+    profile: { totpSecretObj, generalError },
   } = state;
 
   const [key, setKey] = useState('');
@@ -63,6 +64,12 @@ export default function GoogleAuthModal() {
           />
         </TouchableOpacity>
       </View>
+
+      {generalError ? (
+        <View style={{ marginTop: 25 }}>
+          <GeneralError />
+        </View>
+      ) : null}
 
       <View style={styles.block}>
         <AppText subtext style={styles.subtext}>

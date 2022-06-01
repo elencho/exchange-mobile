@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, View, Pressable } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../../components/AppText';
+import GeneralError from '../../components/GeneralError';
 import PurpleText from '../../components/PurpleText';
 import Headline from '../../components/TransactionHistory/Headline';
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
@@ -14,6 +15,11 @@ import { toggleAddCardModal } from '../../redux/modals/actions';
 
 export default function ManageCards() {
   const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const {
+    profile: { generalError },
+  } = state;
+
   const [hasCards, setHasCards] = useState(false);
 
   const addCardModal = () => {
@@ -23,6 +29,12 @@ export default function ManageCards() {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.block}>
+        {generalError ? (
+          <View style={{ marginBottom: 16 }}>
+            <GeneralError />
+          </View>
+        ) : null}
+
         <WalletCoinsDropdown />
       </View>
 

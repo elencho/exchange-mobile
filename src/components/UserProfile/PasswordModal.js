@@ -16,6 +16,7 @@ import { togglePasswordModal } from '../../redux/modals/actions';
 import { updatePassword } from '../../redux/profile/actions';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
+import GeneralError from '../GeneralError';
 
 export default function PasswordModal() {
   const array = [
@@ -30,6 +31,7 @@ export default function PasswordModal() {
   const state = useSelector((state) => state);
   const {
     modals: { passwordModalVisible },
+    profile: { generalError },
   } = state;
 
   const initialState = {
@@ -174,6 +176,12 @@ export default function PasswordModal() {
       <>
         <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
           <TouchableOpacity activeOpacity={0.99}>
+            {generalError ? (
+              <View style={{ marginBottom: 15 }}>
+                <GeneralError />
+              </View>
+            ) : null}
+
             <AppInput
               style={styles.inputContainer}
               label="Current Password"

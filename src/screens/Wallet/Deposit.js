@@ -19,6 +19,7 @@ import FiatBlock from '../../components/Wallet/Deposit/FiatBlock';
 import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
 import AppText from '../../components/AppText';
 import WireTransferWarning from '../../components/Wallet/Withdrawal/WireTransferWarning';
+import GeneralError from '../../components/GeneralError';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ export default function Deposit() {
       depositRestriction,
       network,
     },
+    profile: { generalError },
   } = state;
 
   const isFiat = currentBalanceObj.type === 'FIAT';
@@ -83,6 +85,12 @@ export default function Deposit() {
   return (
     <>
       <View style={styles.block}>
+        {generalError ? (
+          <View style={{ marginBottom: 16 }}>
+            <GeneralError />
+          </View>
+        ) : null}
+
         <WalletCoinsDropdown />
         {!isFiat ? (
           <>{hasMultipleNetworks && <ChooseNetworkDropdown />}</>

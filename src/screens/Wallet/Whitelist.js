@@ -14,6 +14,7 @@ import images from '../../constants/images';
 import { toggleAddWhitelistModal } from '../../redux/modals/actions';
 import { getWhitelistAction } from '../../redux/wallet/actions';
 import SmsEmailAuthModal from '../../components/UserProfile/SmsEmailAuthModal';
+import GeneralError from '../../components/GeneralError';
 
 export default function Whitelist() {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ export default function Whitelist() {
   const {
     transactions: { code },
     wallet: { whitelist, hasWhitelist },
+    profile: { generalError },
   } = state;
 
   useEffect(() => {
@@ -32,6 +34,12 @@ export default function Whitelist() {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.block}>
+        {generalError ? (
+          <View style={{ marginBottom: 16 }}>
+            <GeneralError />
+          </View>
+        ) : null}
+
         <WalletCoinsDropdown />
         <AppText subtext style={styles.secondary}>
           Add address for easy withdrawal, Some description here about whitelist

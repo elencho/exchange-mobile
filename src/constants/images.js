@@ -36,6 +36,7 @@ export default {
   TBC: require('../assets/images/TBC.png'),
 
   //User Profile
+  General_Error: require('../assets/images/User_profile/General_Error.png'),
   Back: require('../assets/images/User_profile/Back.png'),
   Identity: require('../assets/images/User_profile/Identity.png'),
   Phone: require('../assets/images/User_profile/Phone.png'),

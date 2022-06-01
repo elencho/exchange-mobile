@@ -25,12 +25,13 @@ import WithdrawalInfo from '../../components/Wallet/Withdrawal/WithdrawalInfo';
 import SaveAsTemplate from '../../components/Wallet/Withdrawal/SaveAsTemplate';
 import WithdrawalFees from '../../components/Wallet/Withdrawal/WithdrawalFees';
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
+import GeneralError from '../../components/GeneralError';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { googleAuth, emailAuth, smsAuth },
+    profile: { googleAuth, emailAuth, smsAuth, generalError },
     trade: { currentBalanceObj },
     transactions: { code },
     wallet: {
@@ -92,6 +93,12 @@ export default function Withdrawal() {
     <View style={{ flex: 1 }}>
       <View style={{ flex: hasRestriction ? 0 : 1 }}>
         <View style={styles.block}>
+          {generalError ? (
+            <View style={{ marginBottom: 16 }}>
+              <GeneralError />
+            </View>
+          ) : null}
+
           <WalletCoinsDropdown />
           {!isFiat && hasMultipleNetworks && <ChooseNetworkDropdown />}
           {isFiat && hasMultipleMethods && (

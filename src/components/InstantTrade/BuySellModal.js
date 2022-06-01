@@ -31,6 +31,7 @@ import {
   submitTrade,
   switchBalanceCard,
 } from '../../redux/trade/actions';
+import GeneralError from '../GeneralError';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ export default function BuySellModal() {
 
   const {
     modals: { buySellModalVisible },
+    profile: { generalError },
     trade: {
       Balance_Card,
       tradeType,
@@ -154,6 +156,12 @@ export default function BuySellModal() {
         </AppText>
 
         {tradeType === 'Buy' && hasEcommerce() && <BalanceCardSwitcher />}
+
+        {generalError ? (
+          <View style={{ marginTop: 16 }}>
+            <GeneralError />
+          </View>
+        ) : null}
 
         <ScrollView nestedScrollEnabled>
           <TouchableOpacity activeOpacity={0.99}>

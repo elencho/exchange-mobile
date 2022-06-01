@@ -1,6 +1,8 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
+  generalError: null,
+
   // Login
   pkceInfo: {},
   loginStartInfo: {},

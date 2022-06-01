@@ -21,6 +21,7 @@ import {
   setNewWhitelist,
 } from '../../../redux/wallet/actions';
 import { sendOtp } from '../../../utils/userProfileUtils';
+import GeneralError from '../../GeneralError';
 
 export default function AddEditWhitelistModal({ add, edit }) {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const {
     modals: { addWhitelistModalVisble, editWhitelistModalVisble },
     wallet: { newWhitelist, currentWhitelistObj, whitelist },
-    profile: { googleAuth, emailAuth, smsAuth },
+    profile: { googleAuth, emailAuth, smsAuth, generalError },
     trade: { currentBalanceObj },
   } = state;
 
@@ -76,6 +77,12 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
   const children = (
     <>
+      {generalError ? (
+        <View style={{ marginBottom: 10 }}>
+          <GeneralError />
+        </View>
+      ) : null}
+
       {networks() && (
         <View style={styles.input}>
           <ChooseNetworkDropdown disabled={edit ? true : false} />

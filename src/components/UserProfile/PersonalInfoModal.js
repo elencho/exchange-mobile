@@ -20,6 +20,7 @@ import colors from '../../constants/colors';
 import images from '../../constants/images';
 import CountriesModal from './CountriesModal';
 import { saveUserInfo, saveUserInfoSaga } from '../../redux/profile/actions';
+import GeneralError from '../GeneralError';
 
 export default function PersonalInfoModal() {
   const [countryDrop, setCountryDrop] = useState(false);
@@ -29,7 +30,7 @@ export default function PersonalInfoModal() {
   const state = useSelector((state) => state);
   const {
     modals: { personalInfoModalVisible },
-    profile: { userInfo, countriesConstant },
+    profile: { userInfo, countriesConstant, generalError },
   } = state;
 
   const hide = () => {
@@ -79,6 +80,12 @@ export default function PersonalInfoModal() {
     <>
       <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
         <TouchableOpacity activeOpacity={0.99}>
+          {generalError ? (
+            <View style={{ marginBottom: 15 }}>
+              <GeneralError />
+            </View>
+          ) : null}
+
           <AppInput
             style={styles.inputContainer}
             onChangeText={handleFirstName}

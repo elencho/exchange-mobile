@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,6 +22,7 @@ import {
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
+import GeneralError from '../GeneralError';
 import PurpleText from '../PurpleText';
 import CountriesModal from './CountriesModal';
 
@@ -29,7 +31,7 @@ export default function PhoneNumberModal() {
   const state = useSelector((state) => state);
   const {
     modals: { phoneNumberModalVisible },
-    profile: { userInfo, countries },
+    profile: { userInfo, countries, generalError },
   } = state;
 
   const initialState = {
@@ -110,6 +112,12 @@ export default function PhoneNumberModal() {
       <>
         <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
           <TouchableOpacity activeOpacity={0.99}>
+            {generalError ? (
+              <View style={{ marginBottom: 25 }}>
+                <GeneralError />
+              </View>
+            ) : null}
+
             <Pressable
               style={styles.dropdown}
               onPress={() => handleCountries()}
