@@ -30,7 +30,7 @@ export const fetchWireDeposit = async (currency, network) => {
     });
     return data.data;
   } catch (err) {
-    console.log(err + ' in fetchWireDeposit');
+    handleError(err, 'fetchWireDeposit');
   }
 };
 
@@ -74,7 +74,7 @@ export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
         console.error(error);
       });
   } catch (err) {
-    console.log(err + ' in generateWirePdf');
+    handleError(err, 'generateWirePdf');
   }
 };
 
@@ -107,7 +107,7 @@ export const generateCryptoAddress = async (currency, network) => {
     });
     return data.data;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'generateCryptoAddress');
   }
 };
 
@@ -121,7 +121,7 @@ export const cryptoWithdrawal = async (OTP, params) => {
     });
     return data.status;
   } catch (err) {
-    console.log(err + ' in cryptoWithdrawal');
+    handleError(err, 'cryptoWithdrawal');
   }
 };
 
@@ -136,8 +136,7 @@ export const fetchWhitelist = async (currency) => {
     });
     return data.data;
   } catch (err) {
-    console.log(err);
-    console.log('Error in fetchWhitelist');
+    handleError(err, 'fetchWhitelist');
   }
 };
 
@@ -151,8 +150,7 @@ export const addWhitelistAddress = async (OTP, params) => {
     });
     return data;
   } catch (err) {
-    console.log(err);
-    console.log('Error in addWhitelistAddress');
+    return handleError(err, 'addWhitelistAddress');
   }
 };
 
@@ -168,8 +166,7 @@ export const editWhitelistAddress = async (id, name) => {
     });
     return data.status;
   } catch (err) {
-    console.log(err);
-    console.log('Error in editWhitelistAddress');
+    handleError(err, 'editWhitelistAddress');
   }
 };
 
@@ -185,8 +182,7 @@ export const deleteWhitelistAddress = async (id, OTP) => {
     });
     return data.status;
   } catch (err) {
-    console.log(err);
-    console.log('Error in deleteWhitelistAddress');
+    handleError(err, 'deleteWhitelistAddress');
   }
 };
 
@@ -202,8 +198,7 @@ export const fetchTemplates = async (currency, provider) => {
     });
     return data.data;
   } catch (err) {
-    console.log(err);
-    console.log('Error in fetchTemplates');
+    handleError(err, 'fetchTemplates');
   }
 };
 
@@ -219,7 +214,7 @@ export const deleteTemplates = async (id) => {
     });
     return data.status;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'deleteTemplates');
   }
 };
 
@@ -235,8 +230,7 @@ export const fetchBanks = async (provider) => {
     });
     return data.data;
   } catch (err) {
-    console.log(err);
-    console.log('Error in fetchBanks');
+    handleError(err, 'fetchBanks');
   }
 };
 
@@ -250,6 +244,6 @@ export const wireWithdrawal = async (OTP, params) => {
     });
     return data.status;
   } catch (err) {
-    handleError(err);
+    handleError(err, 'wireWithdrawal');
   }
 };

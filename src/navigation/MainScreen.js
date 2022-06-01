@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useDispatch } from 'react-redux';
+import * as SecureStore from 'expo-secure-store';
 
 import TransactionHistory from '../screens/TransactionHistory';
 import InstantTrade from '../screens/InstantTrade';
@@ -17,6 +18,10 @@ export default function MainScreen() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchUserInfo());
+
+    SecureStore.getItemAsync('accessToken')
+      .then((t) => dispatch({ type: 'OTP_SAGA', token: t }))
+      .catch((err) => console.log(err));
   }, []);
 
   const setTabRoute = (e) => dispatch(setTabRouteName(e.route.name));

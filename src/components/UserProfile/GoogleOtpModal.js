@@ -4,11 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import { toggleGoogleOtpModal } from '../../redux/modals/actions';
-import {
-  credentialsForEmail,
-  setEmailAuth,
-  setGoogleAuth,
-} from '../../redux/profile/actions';
+import { credentialsForEmail } from '../../redux/profile/actions';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import CodeInput from '../CodeInput';
@@ -18,7 +14,6 @@ export default function GoogleOtpModal() {
   const state = useSelector((state) => state);
   const {
     modals: { googleOtpModalVisible },
-    profile: { currentSecurityAction },
   } = state;
 
   const [value, setValue] = useState('');

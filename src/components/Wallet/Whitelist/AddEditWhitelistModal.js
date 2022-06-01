@@ -3,8 +3,8 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../../AppModal';
+import AppButton from '../../AppButton';
 import AppInput from '../../AppInput';
-import AppText from '../../AppText';
 import ChooseNetworkDropdown from '../../Wallet/Deposit/ChooseNetworkDropdown';
 import ChooseNetworkModal from '../../Wallet/Deposit/ChooseNetworkModal';
 import {
@@ -14,7 +14,6 @@ import {
   toggleGoogleAuthModal,
   toggleSmsAuthModal,
 } from '../../../redux/modals/actions';
-import colors from '../../../constants/colors';
 import {
   chooseWhitelist,
   editWhitelistAction,
@@ -119,15 +118,12 @@ export default function AddEditWhitelistModal({ add, edit }) {
         />
       )}
 
-      <Pressable
+      <AppButton
+        text={add ? 'Add Address' : 'Edit Address'}
         style={[styles.button, { opacity: enabled ? 1 : 0.5 }]}
         onPress={handleHide}
         disabled={!enabled}
-      >
-        <AppText medium style={styles.buttonText}>
-          {add ? 'Add' : 'Edit'} Address
-        </AppText>
-      </Pressable>
+      />
     </>
   );
 
@@ -144,18 +140,10 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
 const styles = StyleSheet.create({
   button: {
-    height: 45,
-    backgroundColor: colors.SECONDARY_PURPLE,
-    justifyContent: 'center',
-    alignItems: 'center',
-
     position: 'absolute',
     bottom: 30,
     right: 15,
     left: 15,
-  },
-  buttonText: {
-    color: colors.PRIMARY_TEXT,
   },
   input: {
     marginBottom: 16,

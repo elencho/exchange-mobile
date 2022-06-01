@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import * as SecureStore from 'expo-secure-store';
+import { useSelector } from 'react-redux';
 
 import Background from '../components/Background';
 import PurpleText from '../components/PurpleText';
@@ -14,16 +13,9 @@ import AppButton from '../components/AppButton';
 import { logoutUtil } from '../utils/userProfileUtils';
 
 export default function UserProfile({ navigation }) {
-  const dispatch = useDispatch();
   const Personal_Security = useSelector(
     (state) => state.profile.Personal_Security
   );
-
-  useEffect(() => {
-    SecureStore.getItemAsync('accessToken')
-      .then((t) => dispatch({ type: 'OTP_SAGA', token: t }))
-      .catch((err) => console.log(err));
-  }, []);
 
   const logout = async () => {
     const refresh_token = await SecureStore.getItemAsync('refreshToken');
