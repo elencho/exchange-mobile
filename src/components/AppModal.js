@@ -19,6 +19,7 @@ function AppModal({
   fullScreen,
   custom,
   onModalHide,
+  onDismiss,
 }) {
   // const deviceHeight =
   //   Platform.OS === 'ios'
@@ -41,6 +42,7 @@ function AppModal({
       hideModalContentWhileAnimating
       useNativeDriver
       useNativeDriverForBackdrop
+      onDismiss={onDismiss}
     >
       {bottom && (
         <KeyboardAvoidingView

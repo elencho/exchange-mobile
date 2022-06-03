@@ -76,7 +76,6 @@ export const paramsForTrade = (state) => {
         action: tradeType === 'Buy' ? 'BID' : 'ASK',
         amount: tradeType === 'Buy' ? price : size,
         cardTransactionRequest: {
-          type: 'DEPOSIT',
           currency: fiat,
           cardId: card.id,
           amount: price,

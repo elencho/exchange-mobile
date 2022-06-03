@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { WebView } from 'react-native-webview';
 
@@ -26,7 +20,9 @@ import FiatModal from './FiatModal';
 import {
   fetchFee,
   saveCardTradeData,
+  setCard,
   setCurrentTrade,
+  setDepositProvider,
   setFee,
   submitTrade,
   switchBalanceCard,
@@ -67,6 +63,11 @@ export default function BuySellModal() {
     dispatch(toggleBuySellModal(false));
     dispatch(switchBalanceCard('balance'));
     dispatch(setCurrentTrade({ price: '', size: '' }));
+  };
+
+  const onDismiss = () => {
+    dispatch(setDepositProvider(null));
+    dispatch(setCard(null));
   };
 
   const handleSubmit = () => dispatch(submitTrade());
@@ -200,7 +201,7 @@ export default function BuySellModal() {
         style={{ opacity: enabled() ? 1 : 0.5, marginBottom: 20 }}
       />
 
-      {cardTradeData.status === 200 && (
+      {cardTradeData.actionUrl && (
         <TouchableOpacity activeOpacity={0.99} style={styles.webView}>
           <WebView
             source={{ uri: cardTradeData.actionUrl }}
@@ -218,6 +219,7 @@ export default function BuySellModal() {
       fullScreen
       title={tradeType + ' ' + crypto}
       children={children}
+      onDismiss={onDismiss}
     />
   );
 }

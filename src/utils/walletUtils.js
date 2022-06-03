@@ -150,7 +150,7 @@ export const addWhitelistAddress = async (OTP, params) => {
     });
     return data.data;
   } catch (err) {
-    return handleError(err, 'addWhitelistAddress');
+    handleError(err, 'addWhitelistAddress');
   }
 };
 

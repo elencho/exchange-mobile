@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import images from '../constants/images';
+import { saveGeneralError } from '../redux/profile/actions';
 import AppText from './AppText';
 
 export default function GeneralError({ style }) {
+  const dispatch = useDispatch();
   const generalError = useSelector((state) => state.profile.generalError);
+
+  useEffect(() => {
+    return () => {
+      dispatch(saveGeneralError(null));
+    };
+  }, []);
 
   return (
     <>

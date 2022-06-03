@@ -1,107 +1,77 @@
-export const LOGIN_START_URL =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/protocol/openid-connect/auth';
+const auth = 'http://test-auth-cryptal.cryptx.loc';
+const core = 'http://test-core-matching.cryptx.loc';
 
-export const REGISTRATION_START_URL =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/protocol/openid-connect/registrations';
+// const auth = 'https://auth.cryptal.com'
+// const core = 'https://exchange.cryptal.com'
 
-export const REGISTRATION_FORM =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/login-actions/registration';
+export const LOGIN_START_URL = `${auth}/auth/realms/GEX/protocol/openid-connect/auth`;
 
-export const EMAIL_VERIFY_REGISTER =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/login-actions/action-token';
+export const REGISTRATION_START_URL = `${auth}/auth/realms/GEX/protocol/openid-connect/registrations`;
 
-export const CODE_TO_TOKEN =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/protocol/openid-connect/token';
+export const REGISTRATION_FORM = `${auth}/auth/realms/GEX/login-actions/registration`;
 
-export const LOGOUT =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/protocol/openid-connect/logout';
+export const EMAIL_VERIFY_REGISTER = `${auth}/auth/realms/GEX/login-actions/action-token`;
 
-export const TRANSACTIONS_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/transactions';
+export const CODE_TO_TOKEN = `${auth}/auth/realms/GEX/protocol/openid-connect/token`;
 
-export const CURRENCIES_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/public/currencies';
+export const LOGOUT = `${auth}/auth/realms/GEX/protocol/openid-connect/logout`;
 
-export const COUNTRIES_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/public/countries';
+export const TRANSACTIONS_URL = `${core}/exchange/api/v1/mobile/private/account/transactions`;
 
-export const TRADES_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/simpleTrade/trades';
+export const CURRENCIES_URL = `${core}/exchange/api/v1/mobile/public/currencies`;
 
-export const OFFERS_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/simpleTrade/offers';
+export const COUNTRIES_URL = `${core}/exchange/api/v1/public/countries`;
 
-export const BALANCE_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/balance';
+export const TRADES_URL = `${core}/exchange/api/v1/mobile/private/simpleTrade/trades`;
 
-export const CARDS_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/cards';
+export const OFFERS_URL = `${core}/exchange/api/v1/mobile/private/simpleTrade/offers`;
 
-export const CALCULATE_FEE_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/private/account/calculateFee';
+export const BALANCE_URL = `${core}/exchange/api/v1/mobile/private/account/balance`;
 
-export const USER_INFO_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/private/account/userInfo';
+export const CARDS_URL = `${core}/exchange/api/v1/mobile/private/account/cards`;
 
-export const SUBSCRIBE_EMAIL_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/private/account/subscribeToEmailUpdates';
+export const CALCULATE_FEE_URL = `${core}/exchange/api/v1/private/account/calculateFee`;
 
-export const UNSUBSCRIBE_EMAIL_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/private/account/unsubscribeFromEmailUpdates';
+export const USER_INFO_URL = `${core}/exchange/api/v1/private/account/userInfo`;
 
-export const UPDATE_USER_DATA =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/private/users/updateUserData';
+export const SUBSCRIBE_EMAIL_URL = `${core}/exchange/api/v1/private/account/subscribeToEmailUpdates`;
 
-export const UPDATE_PASSWORD =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/updatePassword';
+export const UNSUBSCRIBE_EMAIL_URL = `${core}/exchange/api/v1/private/account/unsubscribeFromEmailUpdates`;
 
-export const VERIFY_PHONE_NUMBER =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/verifyPhoneNumber';
+export const UPDATE_USER_DATA = `${core}/exchange/api/v1/private/users/updateUserData`;
 
-export const UPDATE_PHONE_NUMBER =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/updatePhoneNumber';
+export const UPDATE_PASSWORD = `${auth}/auth/realms/GEX/GEX-resource/updatePassword`;
 
-export const SEND_OTP =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/sendOTP';
+export const VERIFY_PHONE_NUMBER = `${auth}/auth/realms/GEX/GEX-resource/verifyPhoneNumber`;
 
-export const OTP_CHANGE_TOKEN =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/getOTPChangeParams';
+export const UPDATE_PHONE_NUMBER = `${auth}/auth/realms/GEX/GEX-resource/updatePhoneNumber`;
 
-export const EMAIL_VERIFICATION =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/sendEmailVerification';
+export const SEND_OTP = `${auth}/auth/realms/GEX/GEX-resource/sendOTP`;
 
-export const ACTIVATE_EMAIL_OTP =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/enableEmailTwoFA';
+export const OTP_CHANGE_TOKEN = `${auth}/auth/realms/GEX/GEX-resource/getOTPChangeParams`;
 
-export const ACTIVATE_GOOGLE_OTP =
-  'http://test-auth-cryptal.cryptx.loc/auth/realms/GEX/GEX-resource/enableTotpTwoFA';
+export const EMAIL_VERIFICATION = `${auth}/auth/realms/GEX/GEX-resource/sendEmailVerification`;
 
-export const WIRE_DEPOSIT =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/wire/deposit';
+export const ACTIVATE_EMAIL_OTP = `${auth}/auth/realms/GEX/GEX-resource/enableEmailTwoFA`;
 
-export const GENERATE_WIRE_PDF =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/report/wire';
+export const ACTIVATE_GOOGLE_OTP = `${auth}/auth/realms/GEX/GEX-resource/enableTotpTwoFA`;
 
-export const GET_CRYPTO_ADDRESSES =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/deposit/crypto/getAddresses';
+export const WIRE_DEPOSIT = `${core}/exchange/api/v1/mobile/private/account/wire/deposit`;
 
-export const GENERATE_CRYPTO_ADDRESS =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/deposit/crypto';
+export const GENERATE_WIRE_PDF = `${core}/exchange/api/v1/mobile/private/report/wire`;
 
-export const CRYPTO_WITHDRAWAL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/withdraw/crypto';
+export const GET_CRYPTO_ADDRESSES = `${core}/exchange/api/v1/mobile/private/account/deposit/crypto/getAddresses`;
 
-export const CRYPTO_WHITELIST =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/whitelist';
+export const GENERATE_CRYPTO_ADDRESS = `${core}/exchange/api/v1/mobile/private/account/deposit/crypto`;
 
-export const WITHDRAWAL_TEMPLATES =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/wire-template';
+export const CRYPTO_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/withdraw/crypto`;
 
-export const BANKS_URL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/banks';
+export const CRYPTO_WHITELIST = `${core}/exchange/api/v1/mobile/private/whitelist`;
 
-export const WIRE_WITHDRAWAL =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/private/account/wire';
+export const WITHDRAWAL_TEMPLATES = `${core}/exchange/api/v1/mobile/private/wire-template`;
 
-export const DICTIONARY =
-  'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile/public/dictionary';
+export const BANKS_URL = `${core}/exchange/api/v1/mobile/private/account/banks`;
+
+export const WIRE_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/wire`;
+
+export const DICTIONARY = `${core}/exchange/api/v1/mobile/public/dictionary`;

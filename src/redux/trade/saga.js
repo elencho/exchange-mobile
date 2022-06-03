@@ -107,11 +107,13 @@ function* submitTradeSaga() {
   yield put(setTradesLoading(true));
   const params = yield select(paramsForTrade);
   const data = yield call(submitTrade, params);
-  if (data.status === 204) {
-    yield put(saveCardTradeData(data));
-    yield put(fetchTradesAction());
-    yield put(toggleBuySellModal(false));
-    yield put(setTradesLoading(false));
+  if (data) {
+    if (data.status >= 200 && data.status < 300) {
+      yield put(saveCardTradeData(data.data));
+      // yield put(fetchTradesAction());
+      // yield put(toggleBuySellModal(false));
+      yield put(setTradesLoading(false));
+    }
   }
 }
 

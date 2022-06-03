@@ -1,27 +1,15 @@
 import React from 'react';
 import { Platform, SafeAreaView, StyleSheet } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
-import createSagaMiddleware from 'redux-saga';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
 
-import { reducer } from './src/redux/rootReducer';
-import mySaga from './src/redux/sagas';
 import Navigator from './src/navigation';
+import store from './src/redux/store';
 import images from './src/constants/images';
 import colors from './src/constants/colors';
 import './src/utils/i18n';
-
-const sagaMiddleware = createSagaMiddleware();
-
-export const store = createStore(
-  reducer,
-  composeWithDevTools(applyMiddleware(sagaMiddleware))
-);
-sagaMiddleware.run(mySaga);
 
 export default function App() {
   const [fonts] = useFonts({
