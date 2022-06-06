@@ -9,7 +9,7 @@ export const actionTypes = {
 
   // DEPOSIT
   SAVE_WIRE_DEPOSIT_INFO: 'SAVE_WIRE_DEPOSIT_INFO',
-  SAVE_CRYPTO_ADDRESSES: 'SAVE_CRYPTO_ADDRESSES',
+  SAVE_CRYPTO_ADDRESS: 'SAVE_CRYPTO_ADDRESS',
 
   // Withdrawal
   SET_WITHDRAWAL_AMOUNT: 'SET_WITHDRAWAL_AMOUNT',
@@ -80,9 +80,9 @@ export const saveWireDepositInfo = (wireDepositInfo) => ({
   type: actionTypes.SAVE_WIRE_DEPOSIT_INFO,
   wireDepositInfo,
 });
-export const saveCryptoAddresses = (cryptoAddresses) => ({
-  type: actionTypes.SAVE_CRYPTO_ADDRESSES,
-  cryptoAddresses,
+export const saveCryptoAddress = (cryptoAddress) => ({
+  type: actionTypes.SAVE_CRYPTO_ADDRESS,
+  cryptoAddress,
 });
 
 //WITHDRAWAL

@@ -22,7 +22,7 @@ import {
   getWhitelistAction,
   goToBalanceAction,
   saveBanks,
-  saveCryptoAddresses,
+  saveCryptoAddress,
   saveTemplateAction,
   saveTemplates,
   saveWhitelist,
@@ -97,8 +97,8 @@ function* cryptoAddressesSaga(action) {
   );
 
   if (Object.keys(currentBalanceObj.depositMethods).length) {
-    const cryptoAddresses = yield call(fetchCryptoAddresses, code, network);
-    yield put(saveCryptoAddresses(cryptoAddresses ? cryptoAddresses : []));
+    const cryptoAddress = yield call(fetchCryptoAddresses, code, network);
+    yield put(saveCryptoAddress(cryptoAddress ? cryptoAddress : {}));
   }
 
   yield put(goToBalanceAction(name, code, navigation));
@@ -107,10 +107,8 @@ function* cryptoAddressesSaga(action) {
 
 function* generateCryptoAddressSaga(action) {
   const { code, network } = action;
-  const newAddress = yield call(generateCryptoAddress, code, network);
-
-  const cryptoAddresses = yield select((state) => state.wallet.cryptoAddresses);
-  yield put(saveCryptoAddresses([...cryptoAddresses, newAddress]));
+  const cryptoAddress = yield call(generateCryptoAddress, code, network);
+  yield put(saveCryptoAddress(cryptoAddress));
 }
 
 function* goToBalanceSaga(action) {

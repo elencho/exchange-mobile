@@ -4,9 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
-import WalletQrCode from '../../components/Wallet/Deposit/WalletQrCode';
-import XrpMemoWarning from '../../components/Wallet/Deposit/XrpMemoWarning';
-import AddressList from '../../components/Wallet/Deposit/AddressList';
 import colors from '../../constants/colors';
 import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock';
 import GenerateRequestModal from '../../components/Wallet/Deposit/GenerateRequestModal';
@@ -20,12 +17,11 @@ import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
 import AppText from '../../components/AppText';
 import WireTransferWarning from '../../components/Wallet/Withdrawal/WireTransferWarning';
 import GeneralError from '../../components/GeneralError';
+import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
 
 export default function Deposit() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [address, setAddress] = useState([]);
-  const [memoTag, setMemoTag] = useState(null);
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
 
@@ -33,7 +29,7 @@ export default function Deposit() {
     transactions: { code },
     trade: { currentBalanceObj },
     wallet: {
-      cryptoAddresses,
+      cryptoAddress,
       hasMultipleMethods,
       hasMultipleNetworks,
       depositRestriction,
@@ -47,12 +43,6 @@ export default function Deposit() {
   const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
-    if (cryptoAddresses.length) {
-      setAddress(cryptoAddresses[0].address);
-      if (cryptoAddresses[0].tag) {
-        setMemoTag(cryptoAddresses[0].tag);
-      }
-    }
     setHasMethod(!!Object.keys(currentBalanceObj.depositMethods).length);
   }, [code]);
 
@@ -69,10 +59,6 @@ export default function Deposit() {
         dispatch(generateCryptoAddressAction(code, provider));
       }
     }
-  };
-
-  const hasAddress = () => {
-    if (cryptoAddresses) return cryptoAddresses.length > 0;
   };
 
   const reason = () => {
@@ -92,8 +78,12 @@ export default function Deposit() {
         ) : null}
 
         <WalletCoinsDropdown />
+
         {!isFiat ? (
-          <>{hasMultipleNetworks && <ChooseNetworkDropdown />}</>
+          <>
+            <ChooseNetworkDropdown />
+            {cryptoAddress.address && <AddressBlock />}
+          </>
         ) : (
           <>
             {hasMultipleMethods && (
@@ -113,31 +103,9 @@ export default function Deposit() {
             )}
           </>
         )}
-
-        {hasAddress() && !isFiat && (
-          <>
-            <WalletQrCode address={address} memoTag={memoTag} />
-            {memoTag && <XrpMemoWarning />}
-          </>
-        )}
       </View>
 
-      {hasAddress() && !isFiat && !hasRestriction && (
-        <>
-          <AddressList
-            cryptoAddresses={cryptoAddresses}
-            address={address}
-            setAddress={setAddress}
-          />
-          <AppButton
-            text="Add New Wallet Address"
-            onPress={generate}
-            style={{ marginTop: 20 }}
-          />
-        </>
-      )}
-
-      {!hasAddress() && !isFiat && !hasRestriction && hasMethod ? (
+      {!cryptoAddress.address && !isFiat && !hasRestriction && hasMethod ? (
         <>
           {isEthereum ? (
             <View style={styles.flex}>

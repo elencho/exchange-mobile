@@ -12,7 +12,7 @@ const INITIAL_STATE = {
 
   // Deposit
   wireDepositInfo: {},
-  cryptoAddresses: [],
+  cryptoAddress: {},
 
   //Withdrawal
   withdrawalAmount: null,
@@ -46,7 +46,7 @@ export default (state = INITIAL_STATE, action) => {
     hasMultipleMethods,
     wireDepositInfo,
     memoTag,
-    cryptoAddresses,
+    cryptoAddress,
     network,
     withdrawalAmount,
     withdrawalNote,
@@ -100,10 +100,10 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         wireDepositInfo,
       };
-    case actionTypes.SAVE_CRYPTO_ADDRESSES:
+    case actionTypes.SAVE_CRYPTO_ADDRESS:
       return {
         ...state,
-        cryptoAddresses,
+        cryptoAddress,
       };
     case actionTypes.SET_NETWORK:
       return {

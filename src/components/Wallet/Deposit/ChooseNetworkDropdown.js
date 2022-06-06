@@ -9,7 +9,10 @@ import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 
 export default function ChooseNetworkDropdown({ disabled = false }) {
   const dispatch = useDispatch();
-  const network = useSelector((state) => state.wallet.network);
+  const state = useSelector((state) => state);
+  const {
+    wallet: { hasMultipleNetworks, network },
+  } = state;
 
   const handleDropdown = () => {
     dispatch(toggleChooseNetworkModal(true));
@@ -18,26 +21,40 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
   const networkName = () => {
     if (network === 'ERC20') return 'Ethereum Network';
     if (network === 'BEP20') return 'Binance Smart Chain';
+    if (network === 'MAINNET') return 'Bitcoin Network';
   };
 
   return (
-    <Pressable
-      style={[styles.dropdown, { opacity: disabled ? 0.5 : 1 }]}
-      onPress={handleDropdown}
-      disabled={disabled}
-    >
-      <View style={styles.subtext}>
-        <AppText body style={styles.secondary}>
-          Choose Network
-        </AppText>
-      </View>
+    <>
+      {hasMultipleNetworks ? (
+        <Pressable
+          style={[styles.dropdown, { opacity: disabled ? 0.5 : 1 }]}
+          onPress={handleDropdown}
+          disabled={disabled}
+        >
+          <View style={styles.subtext}>
+            <AppText body style={styles.secondary}>
+              Choose Network
+            </AppText>
+          </View>
 
-      <Image source={images.BTC} style={styles.image} />
-      <AppText medium style={styles.dropdownText}>
-        {networkName()} <AppText style={styles.secondary}>({network})</AppText>
-      </AppText>
-      <Image source={images.Arrow} />
-    </Pressable>
+          <Image source={images.BTC} style={styles.image} />
+          <AppText medium style={styles.dropdownText}>
+            {networkName()}{' '}
+            <AppText style={styles.secondary}>({network})</AppText>
+          </AppText>
+          <Image source={images.Arrow} />
+        </Pressable>
+      ) : (
+        <View style={styles.view}>
+          <Image source={images.BTC} style={styles.image} />
+          <AppText medium style={styles.dropdownText}>
+            {networkName()}{' '}
+            <AppText style={styles.secondary}>({network})</AppText>
+          </AppText>
+        </View>
+      )}
+    </>
   );
 }
 
@@ -47,13 +64,21 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     color: colors.PRIMARY_TEXT,
   },
+  view: {
+    height: 45,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+    backgroundColor: 'rgba(149, 164, 247, 0.04)',
+    paddingHorizontal: 15,
+  },
   dropdown: {
     borderWidth: 1,
     borderRadius: 4,
     height: 45,
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 20,
     borderColor: '#42475D',
     paddingHorizontal: 15,
   },

@@ -36,6 +36,7 @@ const INITIAL_STATE = {
   // WALLET
   chooseNetworkModalVisible: false,
   generateRequestModalVisible: false,
+  qrAddressModalVisible: false,
   chooseAddressModalVisible: false,
   whitelistActionsModalVisible: false,
   addWhitelistModalVisble: false,
@@ -53,6 +54,7 @@ export default (state = INITIAL_STATE, action) => {
     transactionDetailsVisible,
     infoVisible,
     chooseCardModalVisible,
+    qrAddressModalVisible,
     chooseBankModalVisible,
     bankFeesModalVisible,
     cryptoModalVisible,
@@ -163,6 +165,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         countriesModalVisible,
+      };
+    case actionTypes.QR_ADDRESS_MODAL:
+      return {
+        ...state,
+        qrAddressModalVisible,
       };
     case actionTypes.SMS_AUTH_MODAL:
       return {

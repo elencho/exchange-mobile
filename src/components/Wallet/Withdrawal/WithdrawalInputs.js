@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -25,22 +25,14 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
       withdrawalAmount,
       withdrawalNote,
       memoTag,
-      cryptoAddresses,
+      cryptoAddress,
       network,
     },
     transactions: { code },
     trade: { fee },
   } = state;
 
-  const [hasMemoTag, setHasMemoTag] = useState(false);
-
   const isEcommerce = network === 'ECOMMERCE';
-
-  useEffect(() => {
-    if (cryptoAddresses.length) {
-      setHasMemoTag(!!cryptoAddresses[0].tag);
-    }
-  }, [code]);
 
   const setAmount = (amount) => {
     dispatch(setWithdrawalAmount(amount));
@@ -76,7 +68,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
     <View style={styles.block}>
       {!hasRestriction && !isFiat && <WithdrawalAddress />}
 
-      {hasMemoTag && (
+      {cryptoAddress.tag && (
         <AppInput
           label="Address tag"
           onChangeText={handleMemotag}

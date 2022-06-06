@@ -89,7 +89,7 @@ export const fetchCryptoAddresses = async (currency, network) => {
         headers: { Authorization: bearer },
       }
     );
-    return data.data;
+    return data.data[0];
   } catch (err) {
     handleError(err, 'fetchCryptoAddresses');
   }

@@ -23,24 +23,27 @@ export default function WalletCoinsDropdown() {
   const value = usdBtcSwitch === 'USD' ? valueUSD : valueBTC;
 
   return (
-    <Pressable style={styles.container} onPress={handleDropdown}>
-      <Image source={images.ETH} style={styles.image} />
+    <>
+      <Pressable style={styles.container} onPress={handleDropdown}>
+        <Image source={images.ETH} style={styles.image} />
 
-      <View style={styles.balance}>
-        <AppText body medium style={styles.primary}>
-          {available} {code}
-        </AppText>
-        <AppText subtext style={styles.secondary}>
-          {`Total: ${total} = ${value} ${usdBtcSwitch}`}
-        </AppText>
-      </View>
+        <View style={styles.balance}>
+          <AppText body medium style={styles.primary}>
+            {available} {code}
+          </AppText>
+        </View>
 
-      <View style={styles.line} />
+        <View style={styles.line} />
 
-      <View style={styles.arrow}>
-        <Image source={images.Arrow} />
-      </View>
-    </Pressable>
+        <View style={styles.arrow}>
+          <Image source={images.Arrow} />
+        </View>
+      </Pressable>
+
+      <AppText subtext style={styles.secondary}>
+        {`Total: ${total} = ${value} ${usdBtcSwitch}`}
+      </AppText>
+    </>
   );
 }
 
@@ -59,15 +62,17 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#3C4167',
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingVertical: 10,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   image: {
-    width: 34,
-    height: 34,
+    width: 24,
+    height: 24,
   },
   line: {
     width: 1,
+    height: '100%',
     backgroundColor: '#3B4160',
   },
   primary: {
@@ -75,5 +80,6 @@ const styles = StyleSheet.create({
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
+    marginTop: 8,
   },
 });
