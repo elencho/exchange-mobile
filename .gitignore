@@ -58,3 +58,4 @@ dist/
 src/screens/Exercise.js
 src/screens/Test.js
 src/constants/token
+.env

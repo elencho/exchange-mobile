@@ -6,6 +6,7 @@
     "ios-device": "react-native run-ios --device",
     "web": "expo start --web",
     "start": "expo start",
+    "dev": "DEV=true expo start",
     "test": "jest",
     "clean": "rm yarn.lock && rm -rf ./node_modules",
     "remove-node-modules": "npx rimraf ./**/node_modules",

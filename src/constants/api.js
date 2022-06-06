@@ -1,8 +1,7 @@
-const auth = 'http://test-auth-cryptal.cryptx.loc';
-const core = 'http://test-core-matching.cryptx.loc';
+import Constants from 'expo-constants';
 
-// const auth = 'https://auth.cryptal.com'
-// const core = 'https://exchange.cryptal.com'
+const auth = Constants.manifest.extra.auth;
+const core = Constants.manifest.extra.core;
 
 export const LOGIN_START_URL = `${auth}/auth/realms/GEX/protocol/openid-connect/auth`;
 
