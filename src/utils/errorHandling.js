@@ -6,7 +6,7 @@ export default (err, name) => {
     console.log(err.response.data);
     console.log(err.response.status);
     console.log(err.response.headers);
-    if (err.response.status === 500) {
+    if (err.response.status === 403) {
       store.dispatch(saveGeneralError(err.response.data.errorMessage));
     }
   } else if (err.request) {

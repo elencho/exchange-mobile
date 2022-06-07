@@ -67,7 +67,7 @@ export default function TwoFaInput({
       }
 
       dispatch(toggleSmsAuthModal(false));
-      dispatch(toggleEmailAuthModal(false));
+      // dispatch(toggleEmailAuthModal(false));
       //   dispatch(toggleLogin2FaModal(false));
 
       setValue('');

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
 
 import {
   ACTIVATE_EMAIL_OTP,
@@ -20,194 +19,119 @@ import {
   USER_INFO_URL,
   VERIFY_PHONE_NUMBER,
 } from '../constants/api';
-import handleError from './errorHandling';
-
-let bearer;
 
 export const loginStart = async (code_challenge) => {
-  try {
-    const data = await axios.get(LOGIN_START_URL, {
-      params: {
-        client_id: 'mobile-service-public',
-        redirect_uri:
-          'https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io',
-        response_mode: 'form_post',
-        response_type: 'code',
-        scope: 'openid',
-        display: 'mobile',
-        code_challenge,
-        code_challenge_method: 'S256',
-      },
-    });
-    return data.data;
-  } catch (err) {
-    handleError(err, 'loginStart');
-  }
+  const data = await axios.get(LOGIN_START_URL, {
+    params: {
+      client_id: 'mobile-service-public',
+      redirect_uri:
+        'https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io',
+      response_mode: 'form_post',
+      response_type: 'code',
+      scope: 'openid',
+      display: 'mobile',
+      code_challenge,
+      code_challenge_method: 'S256',
+    },
+  });
+  if (data) return data.data;
 };
 
 export const registrationStart = async () => {
-  try {
-    const data = await axios.get(REGISTRATION_START_URL, {
-      params: {
-        client_id: 'mobile-service-public',
-        redirect_uri:
-          'https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io',
-        response_type: 'code',
-        scope: 'openid',
-        display: 'mobile',
-      },
-    });
-    return data.data;
-  } catch (err) {
-    handleError(err, 'registrationStart');
-  }
+  const data = await axios.get(REGISTRATION_START_URL, {
+    params: {
+      client_id: 'mobile-service-public',
+      redirect_uri:
+        'https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io',
+      response_type: 'code',
+      scope: 'openid',
+      display: 'mobile',
+    },
+  });
+  if (data) return data.data;
 };
 
 export const usernameAndPasswordForm = async (username, password, url) => {
-  try {
-    const data = await axios({
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      url,
-      data: `username=${username}&password=${password}`,
-    });
-    return data.data;
-  } catch (err) {
-    handleError(err, 'usernameAndPasswordForm');
-  }
+  const data = await axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url,
+    data: `username=${username}&password=${password}`,
+  });
+  if (data) return data.data;
 };
 
 export const registrationForm = async (obj, url) => {
   const params = new URLSearchParams(obj);
-  try {
-    const data = await axios({
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      url,
-      data: params,
-    });
-    console.log(data);
-    return data.data;
-  } catch (err) {
-    handleError(err, 'usernameAndPasswordForm');
-  }
+  const data = await axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url,
+    data: params,
+  });
+  if (data) return data.data;
 };
 
-export const resendEmail = async (url) => {
-  try {
-    await axios.post(url);
-  } catch (err) {
-    handleError(err, 'resendEmail');
-  }
-};
+export const resendEmail = async (url) => await axios.post(url);
 
 export const loginOtp = async (otp, url) => {
-  try {
-    const data = await axios({
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      url,
-      data: `otp=${otp}`,
-    });
-  } catch (err) {
-    handleError(err, 'loginOtp');
-  }
+  await axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url,
+    data: `otp=${otp}`,
+  });
 };
 
 export const codeToToken = async (code, code_verifier) => {
-  try {
-    const data = await axios({
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      url: CODE_TO_TOKEN,
-      data: `grant_type=authorization_code&client_id=mobile-service-public&code=${code}&redirect_uri=https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io&code_verifier=${code_verifier}&code_challenge_method=S256`,
-    });
-    return data.data;
-  } catch (err) {
-    handleError(err, 'codeToToken');
-  }
+  const data = await axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: CODE_TO_TOKEN,
+    data: `grant_type=authorization_code&client_id=mobile-service-public&code=${code}&redirect_uri=https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io&code_verifier=${code_verifier}&code_challenge_method=S256`,
+  });
+  if (data) return data.data;
 };
 
 export const logoutUtil = async (refresh_token) => {
-  try {
-    const data = await axios({
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      url: LOGOUT,
-      data: `refresh_token=${refresh_token}&client_id=mobile-service-public`,
-    });
-    return data.status;
-  } catch (err) {
-    handleError(err, 'logoutUtil');
-  }
+  const data = await axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: LOGOUT,
+    data: `refresh_token=${refresh_token}&client_id=mobile-service-public`,
+  });
+  if (data) return data.status;
 };
 
 export const fetchCountries = async () => {
-  try {
-    const countries = await axios.get(COUNTRIES_URL);
-    return countries.data;
-  } catch (err) {
-    handleError(err, 'fetchCountries');
-  }
+  const data = await axios.get(COUNTRIES_URL);
+  if (data) return data.data;
 };
 
 export const fetchUserInfo = async () => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    const data = await axios.get(USER_INFO_URL, {
-      headers: { Authorization: bearer },
-    });
-    return data.data;
-  } catch (err) {
-    handleError(err, 'fetchUserInfo');
-  }
+  const data = await axios.get(USER_INFO_URL);
+  if (data) return data.data;
 };
 
 export const subscribeMail = async () => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    await axios({
-      method: 'POST',
-      headers: { Authorization: bearer },
-      url: SUBSCRIBE_EMAIL_URL,
-    });
-  } catch (err) {
-    handleError(err, 'subscribeMail');
-  }
+  await axios({
+    method: 'POST',
+    url: SUBSCRIBE_EMAIL_URL,
+  });
 };
 export const unsubscribeMail = async () => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    await axios({
-      method: 'POST',
-      headers: { Authorization: bearer },
-      url: UNSUBSCRIBE_EMAIL_URL,
-    });
-  } catch (err) {
-    handleError(err, 'unsubscribeMail');
-  }
+  await axios({
+    method: 'POST',
+    url: UNSUBSCRIBE_EMAIL_URL,
+  });
 };
 
 export const updateUserData = async (data) => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    await axios({
-      method: 'POST',
-      headers: { Authorization: bearer },
-      url: UPDATE_USER_DATA,
-      data,
-    });
-  } catch (err) {
-    handleError(err, 'updateUserData');
-  }
+  await axios({
+    method: 'POST',
+    url: UPDATE_USER_DATA,
+    data,
+  });
 };
 
 export const updatePassword = async (
@@ -215,38 +139,22 @@ export const updatePassword = async (
   newPassword,
   confirmNewPassword
 ) => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    const data = await axios({
-      method: 'POST',
-      headers: {
-        Authorization: bearer,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      url: UPDATE_PASSWORD,
-      data: `password=${currentPassword}&passwordNew=${newPassword}&passwordConfirm=${confirmNewPassword}`,
-    });
-    return data;
-  } catch (err) {
-    handleError(err, 'updatePassword');
-  }
+  const data = await axios({
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    url: UPDATE_PASSWORD,
+    data: `password=${currentPassword}&passwordNew=${newPassword}&passwordConfirm=${confirmNewPassword}`,
+  });
+  if (data) return data;
 };
 
 export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    await axios({
-      method: 'POST',
-      headers: { Authorization: bearer },
-      url: `${VERIFY_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}`,
-    });
-  } catch (err) {
-    handleError(err, 'verifyPhoneNumber');
-  }
+  await axios({
+    method: 'POST',
+    url: `${VERIFY_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}`,
+  });
 };
 
 export const updatePhoneNumber = async (
@@ -254,84 +162,40 @@ export const updatePhoneNumber = async (
   phoneCountry,
   verificationNumber
 ) => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    await axios({
-      method: 'POST',
-      headers: { Authorization: bearer },
-      url: `${UPDATE_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
-    });
-  } catch (err) {
-    handleError(err, 'updatePhoneNumber');
-  }
+  await axios({
+    method: 'POST',
+    url: `${UPDATE_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
+  });
 };
 
-export const sendOtp = async () => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    await axios({
-      method: 'POST',
-      headers: { Authorization: bearer },
-      url: SEND_OTP,
-    });
-  } catch (err) {
-    handleError(err, 'sendOtp');
-  }
-};
+export const sendOtp = async () => await axios.post(SEND_OTP);
 
 export const getOtpChangeToken = async (OTP, newOTPType) => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    const data = await axios({
-      method: 'GET',
-      headers: { Authorization: bearer, OTP },
-      url: `${OTP_CHANGE_TOKEN}?newOTPType=${newOTPType}`,
-    });
-    return data.data;
-  } catch (err) {
-    handleError(err, 'getOtpChangeToken');
-  }
+  const data = await axios({
+    method: 'GET',
+    headers: { OTP },
+    url: `${OTP_CHANGE_TOKEN}?newOTPType=${newOTPType}`,
+  });
+  if (data) return data.data;
 };
 
 export const sendEmailOtp = async () => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    await axios({
-      method: 'POST',
-      headers: { Authorization: bearer },
-      url: EMAIL_VERIFICATION,
-    });
-  } catch (err) {
-    handleError(err, 'sendEmailOtp');
-  }
+  await axios({
+    method: 'POST',
+    url: EMAIL_VERIFICATION,
+  });
 };
 
 export const activateEmailOtp = async (changeOTPToken, verificationCode) => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    const data = await axios({
-      method: 'POST',
-      headers: {
-        Authorization: bearer,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      url: ACTIVATE_EMAIL_OTP,
-      data: `changeOTPToken=${changeOTPToken}&verificationCode=${verificationCode}`,
-    });
-    return data.status;
-  } catch (err) {
-    handleError(err, 'activateEmailOtp');
-  }
+  const data = await axios({
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    url: ACTIVATE_EMAIL_OTP,
+    data: `changeOTPToken=${changeOTPToken}&verificationCode=${verificationCode}`,
+  });
+  if (data) return data.status;
 };
 
 export const activateGoogleOtp = async (
@@ -339,21 +203,13 @@ export const activateGoogleOtp = async (
   totpCode,
   totpSecret
 ) => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    const data = await axios({
-      method: 'POST',
-      headers: {
-        Authorization: bearer,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      url: ACTIVATE_GOOGLE_OTP,
-      data: `changeOTPToken=${changeOTPToken}&totpCode=${totpCode}&totpSecret=${totpSecret}`,
-    });
-    return data.status;
-  } catch (err) {
-    handleError(err, 'activateGoogleOtp');
-  }
+  const data = await axios({
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    url: ACTIVATE_GOOGLE_OTP,
+    data: `changeOTPToken=${changeOTPToken}&totpCode=${totpCode}&totpSecret=${totpSecret}`,
+  });
+  if (data) return data.status;
 };

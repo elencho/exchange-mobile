@@ -228,10 +228,12 @@ function* credentialsForGoogleSaga(action) {
   const { OTP } = action;
   const data = yield call(getOtpChangeToken, OTP, 'TOTP');
 
-  yield put(saveOtpChangeToken(data.changeOTPToken));
-  yield put(saveTotpSecretObj(data.totp));
-  yield delay(1000);
-  yield put(toggleGoogleAuthModal(true));
+  if (data) {
+    yield put(saveOtpChangeToken(data.changeOTPToken));
+    yield put(saveTotpSecretObj(data.totp));
+    yield delay(1000);
+    yield put(toggleGoogleAuthModal(true));
+  }
 }
 
 //  ACTIVATE GOOGLE

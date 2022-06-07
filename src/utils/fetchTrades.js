@@ -1,5 +1,4 @@
 import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
 
 import {
   OFFERS_URL,
@@ -8,93 +7,38 @@ import {
   CARDS_URL,
   CALCULATE_FEE_URL,
 } from '../constants/api';
-import handleError from './errorHandling';
-
-let bearer;
 
 export const fetchTrades = async (params) => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    const data = await axios.get(TRADES_URL, {
-      headers: { Authorization: bearer },
-      params,
-    });
-    return data.data;
-  } catch (err) {
-    handleError(err, 'fetchTrades');
-  }
+  const data = await axios.get(TRADES_URL, {
+    params,
+  });
+  if (data) return data.data;
 };
 
 export const fetchOffers = async () => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    const data = await axios.get(OFFERS_URL, {
-      headers: { Authorization: bearer },
-    });
-    return data.data;
-  } catch (err) {
-    handleError(err, 'fetchOffers');
-  }
+  const data = await axios.get(OFFERS_URL);
+  if (data) return data.data;
 };
 
 export const submitTrade = async (params) => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    const data = await axios.post(TRADES_URL, params, {
-      headers: { Authorization: bearer },
-    });
-    console.log(data);
-    return data;
-  } catch (err) {
-    handleError(err, 'submitTrade');
-  }
+  const data = await axios.post(TRADES_URL, params, {});
+  if (data) return data;
 };
 export const fetchBalance = async () => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    const data = await axios.get(BALANCE_URL, {
-      headers: { Authorization: bearer },
-    });
-    return data.data;
-  } catch (err) {
-    handleError(err, 'fetchBalance');
-  }
+  const data = await axios.get(BALANCE_URL);
+  if (data) return data.data;
 };
 
 export const fetchCards = async (params) => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    const data = await axios.get(CARDS_URL, {
-      headers: { Authorization: bearer },
-      params,
-    });
-    return data.data;
-  } catch (err) {
-    handleError(err, 'fetchCards');
-  }
+  const data = await axios.get(CARDS_URL, {
+    params,
+  });
+  if (data) return data.data;
 };
 
 export const fetchFees = async (params) => {
-  try {
-    const token = await SecureStore.getItemAsync('accessToken');
-    bearer = `Bearer ${token}`;
-
-    const data = await axios.get(CALCULATE_FEE_URL, {
-      headers: { Authorization: bearer },
-      params,
-    });
-    return data.data;
-  } catch (err) {
-    handleError(err, 'fetchFees');
-  }
+  const data = await axios.get(CALCULATE_FEE_URL, {
+    params,
+  });
+  if (data) return data.data;
 };

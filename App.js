@@ -10,6 +10,7 @@ import store from './src/redux/store';
 import images from './src/constants/images';
 import colors from './src/constants/colors';
 import './src/utils/i18n';
+import './src/utils/interceptor';
 
 export default function App() {
   const [fonts] = useFonts({
