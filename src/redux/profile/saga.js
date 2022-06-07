@@ -111,16 +111,13 @@ function* usernameAndPasswordSaga(action) {
   if (userAndPassInfo.execution === 'LOGIN_OTP') {
     yield put(toggleLogin2FaModal(true));
   }
+
+  // Sometimes OTP is disabled, therefore code block below should be executed
   if (userAndPassInfo.code) {
     const code = userAndPassInfo.code;
     const code_verifier = yield select(
       (state) => state.profile.pkceInfo.codeVerifier
     );
-
-    const RCTNetworking = require('react-native/Libraries/Network/RCTNetworking');
-    yield call(() => {
-      RCTNetworking.clearCookies(() => {});
-    });
 
     const data = yield call(codeToToken, code, code_verifier);
     if (data.refresh_token) {
@@ -138,16 +135,35 @@ function* usernameAndPasswordSaga(action) {
       yield call(() => navigation.navigate('Main'));
     }
   }
+  // Till here
 }
 
 //  O T P    F O R    L O G I N
 function* otpForLoginSaga(action) {
-  const { otp } = action;
+  const { otp, navigation } = action;
   const callbackUrl = yield select(
     (state) => state.profile.userAndPassInfo.callbackUrl
   );
+  const code_verifier = yield select(
+    (state) => state.profile.pkceInfo.codeVerifier
+  );
 
-  const data = yield call(loginOtp, otp, callbackUrl);
+  const code = yield call(loginOtp, otp, callbackUrl);
+  const data = yield call(codeToToken, code, code_verifier);
+  if (data.refresh_token) {
+    yield call(async () => {
+      await SecureStore.setItemAsync('refreshToken', data.refresh_token);
+    });
+  }
+
+  if (data.access_token) {
+    yield call(async () => {
+      await SecureStore.setItemAsync('accessToken', data.access_token);
+    });
+
+    yield put({ type: 'OTP_SAGA', token: data.access_token });
+    yield call(() => navigation.navigate('Main'));
+  }
 }
 
 //  FETCH COUNTRIES

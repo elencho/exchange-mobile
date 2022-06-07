@@ -11,7 +11,7 @@ export const fetchTransactions = async (params) => {
 
 export const fetchCurrencies = async () => {
   const data = await axios.get(CURRENCIES_URL);
-  if (data) data.data;
+  if (data) return data.data;
 };
 
 export const totalAmount = async (params) => {

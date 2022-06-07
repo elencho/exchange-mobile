@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+
 import CodeInput from '../components/CodeInput';
 import {
   toggleEmailAuthModal,
@@ -29,7 +31,9 @@ export default function TwoFaInput({
   login,
 }) {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const state = useSelector((state) => state);
+
   const {
     modals: { smsAuthModalVisible, emailAuthModalVisible },
     profile: { currentSecurityAction },
@@ -63,12 +67,12 @@ export default function TwoFaInput({
       }
 
       if (login) {
-        dispatch(otpForLoginAction(value));
+        dispatch(otpForLoginAction(value, navigation));
       }
 
       dispatch(toggleSmsAuthModal(false));
-      // dispatch(toggleEmailAuthModal(false));
-      //   dispatch(toggleLogin2FaModal(false));
+      dispatch(toggleEmailAuthModal(false));
+      dispatch(toggleLogin2FaModal(false));
 
       setValue('');
     }

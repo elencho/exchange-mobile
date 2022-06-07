@@ -10,5 +10,9 @@ export default {
       process.env.DEV === 'true'
         ? 'http://test-core-matching.cryptx.loc'
         : 'https://exchange.cryptal.com',
+    authRedirectUrl:
+      process.env.DEV === 'true'
+        ? 'http://test-core-matching.cryptx.loc'
+        : 'https://cryptal.com',
   },
 };

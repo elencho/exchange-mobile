@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 
 import {
   ACTIVATE_EMAIL_OTP,
@@ -20,12 +21,13 @@ import {
   VERIFY_PHONE_NUMBER,
 } from '../constants/api';
 
+const authRedirectUrl = Constants.manifest.extra.authRedirectUrl;
+
 export const loginStart = async (code_challenge) => {
   const data = await axios.get(LOGIN_START_URL, {
     params: {
       client_id: 'mobile-service-public',
-      redirect_uri:
-        'https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io',
+      redirect_uri: authRedirectUrl,
       response_mode: 'form_post',
       response_type: 'code',
       scope: 'openid',
@@ -41,8 +43,7 @@ export const registrationStart = async () => {
   const data = await axios.get(REGISTRATION_START_URL, {
     params: {
       client_id: 'mobile-service-public',
-      redirect_uri:
-        'https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io',
+      redirect_uri: authRedirectUrl,
       response_type: 'code',
       scope: 'openid',
       display: 'mobile',
@@ -75,12 +76,13 @@ export const registrationForm = async (obj, url) => {
 export const resendEmail = async (url) => await axios.post(url);
 
 export const loginOtp = async (otp, url) => {
-  await axios({
+  const data = await axios({
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url,
     data: `otp=${otp}`,
   });
+  if (data) return data.data.code;
 };
 
 export const codeToToken = async (code, code_verifier) => {
@@ -88,7 +90,7 @@ export const codeToToken = async (code, code_verifier) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url: CODE_TO_TOKEN,
-    data: `grant_type=authorization_code&client_id=mobile-service-public&code=${code}&redirect_uri=https://187257d8-01c3-48c0-a0e9-dae2c9aed1f2.mock.pstmn.io&code_verifier=${code_verifier}&code_challenge_method=S256`,
+    data: `grant_type=authorization_code&client_id=mobile-service-public&code=${code}&redirect_uri=${authRedirectUrl}&code_verifier=${code_verifier}&code_challenge_method=S256`,
   });
   if (data) return data.data;
 };

@@ -158,9 +158,10 @@ export const usernameAndPasswordAction = (navigation) => ({
   type: actionTypes.USERNAME_AND_PASSWORD_ACTION,
   navigation,
 });
-export const otpForLoginAction = (otp) => ({
+export const otpForLoginAction = (otp, navigation) => ({
   type: actionTypes.OTP_FOR_LOGIN_ACTION,
   otp,
+  navigation,
 });
 
 export const fetchCountries = () => ({

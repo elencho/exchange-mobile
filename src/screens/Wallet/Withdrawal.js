@@ -26,6 +26,7 @@ import SaveAsTemplate from '../../components/Wallet/Withdrawal/SaveAsTemplate';
 import WithdrawalFees from '../../components/Wallet/Withdrawal/WithdrawalFees';
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import GeneralError from '../../components/GeneralError';
+import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
@@ -140,6 +141,7 @@ export default function Withdrawal() {
 
       <SmsEmailAuthModal type="SMS" withdrawal={withdrawalType()} />
       <SmsEmailAuthModal type="Email" withdrawal={withdrawalType()} />
+      <GoogleOtpModal />
     </View>
   );
 }
