@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import { toggleGoogleOtpModal } from '../../redux/modals/actions';
-import { credentialsForEmail } from '../../redux/profile/actions';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
-import CodeInput from '../CodeInput';
+import TwoFaInput from '../TwoFaInput';
 
-export default function GoogleOtpModal() {
+export default function GoogleOtpModal({ withdrawal, whitelist }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -17,15 +16,7 @@ export default function GoogleOtpModal() {
   } = state;
 
   const [value, setValue] = useState('');
-  useEffect(() => {
-    if (value.length === 6) {
-      dispatch(credentialsForEmail(value));
-      hide();
-      setValue('');
-    }
-  }, [value]);
 
-  const handleChange = (text) => setValue(text);
   const hide = () => dispatch(toggleGoogleOtpModal(false));
 
   const children = (
@@ -38,7 +29,13 @@ export default function GoogleOtpModal() {
       </AppText>
 
       <View style={styles.codeInput}>
-        <CodeInput cellCount={6} value={value} setValue={handleChange} />
+        <TwoFaInput
+          withdrawal={withdrawal}
+          whitelist={whitelist}
+          value={value}
+          cellCount={6}
+          setValue={setValue}
+        />
       </View>
     </View>
   );

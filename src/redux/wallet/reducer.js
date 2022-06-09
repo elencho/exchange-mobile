@@ -190,6 +190,10 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         intermediateBank,
       };
+    case actionTypes.RESET_WALLET_STATE:
+      return {
+        ...INITIAL_STATE,
+      };
     default:
       return state;
   }

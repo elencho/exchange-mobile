@@ -24,20 +24,27 @@ export default function GoogleAuthModal() {
   const state = useSelector((state) => state);
   const {
     modals: { googleAuthModalVisible },
-    profile: { totpSecretObj, generalError },
+    profile: { totpSecretObj, generalError, googleAuth },
   } = state;
 
   const [key, setKey] = useState('');
 
-  const hide = () => dispatch(toggleGoogleAuthModal(false));
   const enable = () => {
     dispatch(activateGoogleOtp(key));
     hide();
   };
 
+  const hide = () => dispatch(toggleGoogleAuthModal(false));
   const handleKey = (key) => setKey(key);
-
   const handleCopy = () => Clipboard.setString(totpSecretObj.totpSecretEncoded);
+
+  const handleHide = () => {
+    if (googleAuth) {
+      dispatch(setSmsAuth(false));
+      dispatch(setGoogleAuth(false));
+    }
+  };
+
   const right = (
     <View style={styles.row}>
       <View style={styles.smallLine} />
@@ -96,6 +103,7 @@ export default function GoogleAuthModal() {
       bottom
       hide={hide}
       visible={googleAuthModalVisible}
+      onModalHide={handleHide}
     />
   );
 }

@@ -119,6 +119,10 @@ export default (state = INITIAL_STATE, action) => {
         fromDateTime: null,
         toDateTime: null,
       };
+    case actionTypes.RESET_TRANSACTIONS_STATE:
+      return {
+        ...INITIAL_STATE,
+      };
     default:
       return state;
   }

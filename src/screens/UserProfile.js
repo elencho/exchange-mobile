@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 
 import Background from '../components/Background';
@@ -14,6 +14,7 @@ import AppButton from '../components/AppButton';
 import { logoutUtil } from '../utils/userProfileUtils';
 
 export default function UserProfile({ navigation }) {
+  const dispatch = useDispatch();
   const Personal_Security = useSelector(
     (state) => state.profile.Personal_Security
   );
@@ -26,6 +27,8 @@ export default function UserProfile({ navigation }) {
       await SecureStore.deleteItemAsync('refreshToken');
       await SecureStore.deleteItemAsync('language');
       navigation.navigate('Welcome');
+
+      dispatch({ type: 'LOGOUT' });
     }
   };
 

@@ -15,6 +15,7 @@ import {
   WITHDRAWAL_TEMPLATES,
   BANKS_URL,
   WIRE_WITHDRAWAL,
+  CARD_WITHDRAWAL,
 } from '../constants/api';
 
 export const fetchWireDeposit = async (currency, network) => {
@@ -135,6 +136,13 @@ export const fetchBanks = async (provider) => {
 
 export const wireWithdrawal = async (OTP, params) => {
   const data = await axios.post(WIRE_WITHDRAWAL, params, {
+    headers: { OTP },
+  });
+  if (data) return data.status;
+};
+
+export const cardWithdrawal = async (OTP, params) => {
+  const data = await axios.post(CARD_WITHDRAWAL, params, {
     headers: { OTP },
   });
   if (data) return data.status;

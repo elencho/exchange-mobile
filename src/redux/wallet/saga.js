@@ -2,6 +2,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
   addWhitelistAddress,
+  cardWithdrawal,
   cryptoWithdrawal,
   deleteTemplates,
   deleteWhitelistAddress,
@@ -14,6 +15,7 @@ import {
   generateCryptoAddress,
   wireWithdrawal,
 } from '../../utils/walletUtils';
+import { saveGeneralError } from '../profile/actions';
 import { chooseCurrency, setAbbr } from '../transactions/actions';
 import {
   actionTypes,
@@ -43,6 +45,7 @@ import {
 } from '../wallet/actions';
 import {
   addWhitelistParams,
+  cardWithdrawalParams,
   editWhitelistParams,
   wireWithdrawalParams,
   withdrawalParams,
@@ -193,6 +196,15 @@ function* wireWithdrawalSaga(action) {
   }
 }
 
+function* cardWithdrawalSaga(action) {
+  const { OTP } = action;
+  const params = yield select(cardWithdrawalParams);
+  const status = yield call(cardWithdrawal, OTP, params);
+  if (status === 204) {
+    yield put(saveGeneralError('Card Withdrawal Successfull'));
+  }
+}
+
 function* deleteTemplatesSaga(action) {
   const { id } = action;
   const status = yield call(deleteTemplates, id);
@@ -216,6 +228,7 @@ export default function* () {
   yield takeLatest(actionTypes.DELETE_WHITELIST_ACTION, deleteWhitelistSaga);
   yield takeLatest(actionTypes.FECTH_TEMPLATES_ACTION, withdrawalTemplatesSaga);
   yield takeLatest(actionTypes.WIRE_WITHDRAWAL_SAGA, wireWithdrawalSaga);
+  yield takeLatest(actionTypes.CARD_WITHDRAWAL_SAGA, cardWithdrawalSaga);
   yield takeLatest(actionTypes.DELETE_TEMPLATES_ACTION, deleteTemplatesSaga);
   yield takeLatest('METHOD_NETWORK_RESTRICTION', methodNetworkRestrictionSaga);
 }

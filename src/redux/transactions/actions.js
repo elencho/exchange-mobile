@@ -26,6 +26,8 @@ export const actionTypes = {
   REACH_SCROLL_END: 'REACH_SCROLL_END',
   FILTER_SAGA_ACTION: 'FILTER_SAGA_ACTION',
   TRANSACTION_DETAILS_SAGA: 'TRANSACTION_DETAILS_SAGA',
+
+  RESET_TRANSACTIONS_STATE: 'RESET_TRANSACTIONS_STATE',
 };
 
 export const saveTransactions = (transactions) => ({
@@ -121,4 +123,8 @@ export const filterAction = (filter, multiselect) => ({
   type: actionTypes.FILTER_SAGA_ACTION,
   filter,
   multiselect,
+});
+
+export const resetTransactionsState = () => ({
+  type: actionTypes.RESET_TRANSACTIONS_STATE,
 });

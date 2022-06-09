@@ -1,20 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { memo } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import images from '../constants/images';
-import { saveGeneralError } from '../redux/profile/actions';
 import AppText from './AppText';
 
-export default function GeneralError({ style }) {
-  const dispatch = useDispatch();
+function GeneralError({ style }) {
   const generalError = useSelector((state) => state.profile.generalError);
-
-  useEffect(() => {
-    return () => {
-      dispatch(saveGeneralError(null));
-    };
-  }, []);
 
   return (
     <>
@@ -29,6 +21,8 @@ export default function GeneralError({ style }) {
     </>
   );
 }
+
+export default memo(GeneralError);
 
 const styles = StyleSheet.create({
   container: {

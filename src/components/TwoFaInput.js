@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import CodeInput from '../components/CodeInput';
 import {
   toggleEmailAuthModal,
+  toggleGoogleOtpModal,
   toggleLogin2FaModal,
   toggleSmsAuthModal,
 } from '../redux/modals/actions';
@@ -17,6 +18,7 @@ import {
 
 import {
   addWhitelistAction,
+  cardWithdrawalAction,
   cryptoWithdrawalAction,
   deleteWhitelistAction,
   wireWithdrawalAction,
@@ -42,12 +44,10 @@ export default function TwoFaInput({
 
   useEffect(() => {
     if (value.length === cellCount) {
-      if (withdrawal === 'crypto') {
-        dispatch(cryptoWithdrawalAction(value)); // value = OTP
-      }
-      if (withdrawal === 'wire') {
-        dispatch(wireWithdrawalAction(value)); // value = OTP
-      }
+      if (withdrawal === 'crypto') dispatch(cryptoWithdrawalAction(value)); // value = OTP
+      if (withdrawal === 'wire') dispatch(wireWithdrawalAction(value)); // value = OTP
+      if (withdrawal === 'card') dispatch(cardWithdrawalAction(value)); // value = OTP
+
       if (whitelist) {
         if (newWhitelist.name && newWhitelist.address) {
           dispatch(addWhitelistAction(value)); // value = OTP
@@ -70,6 +70,7 @@ export default function TwoFaInput({
         dispatch(otpForLoginAction(value, navigation));
       }
 
+      dispatch(toggleGoogleOtpModal(false));
       dispatch(toggleSmsAuthModal(false));
       dispatch(toggleEmailAuthModal(false));
       dispatch(toggleLogin2FaModal(false));

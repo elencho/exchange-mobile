@@ -13,6 +13,7 @@ import {
 import WireTransferWarning from '../../components/Wallet/Withdrawal/WireTransferWarning';
 import {
   getWhitelistAction,
+  setNetwork,
   withdrawalTemplatesAction,
 } from '../../redux/wallet/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
@@ -53,6 +54,7 @@ export default function Withdrawal() {
 
   useEffect(() => {
     dispatch(getWhitelistAction());
+    dispatch(setNetwork('SWIFT'));
     if (isFiat) {
       dispatch(withdrawalTemplatesAction());
     }
@@ -68,7 +70,7 @@ export default function Withdrawal() {
     if (googleAuth) dispatch(toggleGoogleOtpModal(true));
     if (emailAuth) dispatch(toggleEmailAuthModal(true));
     if (smsAuth) dispatch(toggleSmsAuthModal(true));
-    sendOtp();
+    if (!googleAuth) sendOtp();
   };
 
   const saveTemplateCheck = () => {
@@ -80,7 +82,8 @@ export default function Withdrawal() {
 
   const withdrawalType = () => {
     if (currentBalanceObj.withdrawalMethods.WALLET) return 'crypto';
-    if (currentBalanceObj.withdrawalMethods.WIRE) return 'wire';
+    if (network === 'SWIFT') return 'wire';
+    if (isEcommerce) return 'card';
   };
 
   const reason = () => {
@@ -141,7 +144,7 @@ export default function Withdrawal() {
 
       <SmsEmailAuthModal type="SMS" withdrawal={withdrawalType()} />
       <SmsEmailAuthModal type="Email" withdrawal={withdrawalType()} />
-      <GoogleOtpModal />
+      <GoogleOtpModal withdrawal={withdrawalType()} />
     </View>
   );
 }

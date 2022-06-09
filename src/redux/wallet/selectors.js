@@ -64,6 +64,21 @@ export const wireWithdrawalParams = (state) => {
   };
 };
 
+export const cardWithdrawalParams = (state) => {
+  const {
+    transactions: { code },
+    trade: { card },
+    wallet: { withdrawalAmount },
+  } = state;
+
+  return {
+    currency: code,
+    cardId: card.id,
+    amount: withdrawalAmount,
+    redirectUri: 'https://cryptal.com',
+  };
+};
+
 export const addWhitelistParams = (state) => {
   const {
     transactions: { code },

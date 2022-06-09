@@ -34,6 +34,8 @@ export const actionTypes = {
   CARDS_SAGA: 'CARDS_SAGA',
   FETCH_FEE: 'FETCH_FEE',
   SUBMIT_TRADE: 'SUBMIT_TRADE',
+
+  RESET_TRADES_STATE: 'RESET_TRADES_STATE',
 };
 
 export const saveTrades = (trades) => ({
@@ -152,4 +154,8 @@ export const fetchFee = (feeType) => ({
 });
 export const submitTrade = () => ({
   type: actionTypes.SUBMIT_TRADE,
+});
+
+export const resetTradesState = () => ({
+  type: actionTypes.RESET_TRADES_STATE,
 });

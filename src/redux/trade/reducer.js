@@ -173,6 +173,10 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         cryptosArrayConstant,
       };
+    case actionTypes.RESET_TRADES_STATE:
+      return {
+        ...INITIAL_STATE,
+      };
     default:
       return state;
   }

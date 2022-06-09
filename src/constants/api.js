@@ -73,4 +73,6 @@ export const BANKS_URL = `${core}/exchange/api/v1/mobile/private/account/banks`;
 
 export const WIRE_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/wire`;
 
+export const CARD_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/card/transaction/withdraw`;
+
 export const DICTIONARY = `${core}/exchange/api/v1/mobile/public/dictionary`;

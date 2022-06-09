@@ -17,9 +17,9 @@ export default function AddressBlock() {
     transactions: { code },
   } = state;
 
-  const copyAddress = () => Clipboard.setString(address.address);
+  const copyAddress = () => Clipboard.setString(cryptoAddress.address);
   const showQr = () => dispatch(toggleQrAddressModal(true));
-  const copyTag = () => Clipboard.setString(address.tag);
+  const copyTag = () => Clipboard.setString(cryptoAddress.tag);
 
   return (
     <View style={styles.container}>

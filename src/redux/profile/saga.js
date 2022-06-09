@@ -20,6 +20,7 @@ import {
   saveUserAndPassInfo,
   saveRegistrationStartInfo,
   saveResendLink,
+  resetProfileState,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -48,6 +49,9 @@ import {
   toggleGoogleAuthModal,
   toggleLogin2FaModal,
 } from '../modals/actions';
+import { resetTradesState } from '../trade/actions';
+import { resetTransactionsState } from '../transactions/actions';
+import { resetWalletState } from '../wallet/actions';
 
 //  START LOGIN
 function* startLoginSaga(action) {
@@ -280,6 +284,12 @@ function* otpSaga(action) {
   }
 }
 
+function* logoutSaga() {
+  yield put(resetTradesState());
+  yield put(resetTransactionsState());
+  yield put(resetWalletState());
+}
+
 export default function* () {
   yield takeLatest(actionTypes.START_LOGIN_ACTION, startLoginSaga);
   yield takeLatest(
@@ -310,4 +320,5 @@ export default function* () {
     credentialsForGoogleSaga
   );
   yield takeLatest('OTP_SAGA', otpSaga);
+  yield takeLatest('LOGOUT', logoutSaga);
 }
