@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: { login: 'gkerva@cryptal.com', password: 'TestGexCryptal7' },
+  credentials: { login: 'metro21@mailinator.com', password: 'Qwerty123$' },
   userAndPassInfo: {},
 
   // Register

@@ -206,12 +206,7 @@ function* updatePhoneNumberSaga(action) {
 //  TOGLE SUBSCRIPTION
 function* toggleSubscriptionSaga(action) {
   const { value } = action;
-  if (value) {
-    yield call(subscribeMail);
-  }
-  if (!value) {
-    yield call(unsubscribeMail);
-  }
+  yield call(value ? subscribeMail : unsubscribeMail);
   yield put(fetchUserInfoAction());
 }
 

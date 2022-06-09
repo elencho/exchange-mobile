@@ -51,17 +51,20 @@ function* fetchTransactionsSaga() {
 
 function* fetchCurrenciesSaga() {
   const currencies = yield call(currenciesApi);
-  yield put(
-    saveCurrencies([{ name: 'Show All Currency', code: '' }, ...currencies])
-  );
-  yield put(
-    saveCurrenciesConstant([
-      { name: 'Show All Currency', code: '' },
-      ...currencies,
-    ])
-  );
 
-  yield put({ type: 'CLASIFY_CURRENCIES' });
+  if (currencies) {
+    yield put(
+      saveCurrencies([{ name: 'Show All Currency', code: '' }, ...currencies])
+    );
+    yield put(
+      saveCurrenciesConstant([
+        { name: 'Show All Currency', code: '' },
+        ...currencies,
+      ])
+    );
+
+    yield put({ type: 'CLASIFY_CURRENCIES' });
+  }
 }
 
 function* reachScrollEndSaga(action) {

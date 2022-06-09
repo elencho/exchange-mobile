@@ -52,14 +52,16 @@ function* pairObjectSaga(action) {
   const fiat = yield select((state) => state.trade.fiat);
   const crypto = yield select((state) => state.trade.crypto);
 
-  yield call(() =>
-    offers[fiat].forEach((o) => {
-      if (o.pair.baseCurrency === crypto) {
-        object = o;
-      }
-    })
-  );
-  yield put(setPairObject(object));
+  if (offers) {
+    yield call(() =>
+      offers[fiat].forEach((o) => {
+        if (o.pair.baseCurrency === crypto) {
+          object = o;
+        }
+      })
+    );
+    yield put(setPairObject(object));
+  }
 }
 
 function* depositProvidersSaga() {

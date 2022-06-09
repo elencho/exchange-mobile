@@ -1,5 +1,8 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  createNavigationContainerRef,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -14,6 +17,8 @@ import { saveGeneralError } from '../redux/profile/actions';
 // import ExerciseScreen from '../screens/Exercise';
 
 const Stack = createNativeStackNavigator();
+export const navigationRef = createNavigationContainerRef();
+
 export default function Navigator() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -26,7 +31,7 @@ export default function Navigator() {
   };
 
   return (
-    <NavigationContainer onStateChange={onStateChange}>
+    <NavigationContainer onStateChange={onStateChange} ref={navigationRef}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,

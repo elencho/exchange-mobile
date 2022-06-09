@@ -95,6 +95,16 @@ export const codeToToken = async (code, code_verifier) => {
   if (data) return data.data;
 };
 
+export const refreshToken = async (refresh_token) => {
+  const data = await axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: CODE_TO_TOKEN,
+    data: `grant_type=refresh_token&client_id=mobile-service-public&refresh_token=${refresh_token}`,
+  });
+  if (data) return data.data;
+};
+
 export const logoutUtil = async (refresh_token) => {
   const data = await axios({
     method: 'POST',
