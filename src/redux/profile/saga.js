@@ -266,7 +266,6 @@ function* activateGoogleSaga(action) {
   const status = yield call(activateGoogleOtp, otpChangeToken, OTP, totpSecret);
 
   if (status === 200) {
-    console.log('status 200');
     yield put(saveOtpChangeToken(null));
     yield put(setCurrentSecurityAction(null));
     yield put(setSmsAuth(false));

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Image, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { WebView } from 'react-native-webview';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
-import { generateWirePdf } from '../../../utils/walletUtils';
+import { generateWirePdf, cardDeposit } from '../../../utils/walletUtils';
 import AppButton from '../../AppButton';
 import AppInput from '../../AppInput';
 import AppText from '../../AppText';
@@ -12,18 +13,35 @@ import CardSection from '../../InstantTrade/CardSection';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import BankInfo from './BankInfo';
+import AppWebView from '../../AppWebView';
+import { saveGeneralError } from '../../../redux/profile/actions';
 
 export default function FiatBlock() {
-  const [amount, setAmount] = useState(null);
+  const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
+  const [amount, setAmount] = useState(null);
+  const [actionUrl, setActionUrl] = useState(null);
 
   const {
     transactions: { code },
+    trade: { card },
     wallet: {
       wireDepositInfo: { en },
       network,
     },
   } = state;
+
+  const handleUrlChange = (state) => {
+    console.log(state);
+    setActionUrl(state.url);
+    const urlArray = actionUrl.split('=');
+    const ending = urlArray[urlArray.length - 1];
+    if (ending === 'false' || ending === 'true') {
+      setActionUrl(null);
+      dispatch(saveGeneralError(ending));
+    }
+  };
 
   const generatePdf = () => {
     if (amount) {
@@ -31,7 +49,18 @@ export default function FiatBlock() {
     }
   };
 
-  const cardDeposit = () => {};
+  const deposit = async () => {
+    if (card) {
+      const params = {
+        currency: code,
+        cardId: card.id,
+        amount,
+        redirectUri: 'cryptal.com',
+      };
+      const data = await cardDeposit(params);
+      if (data) setActionUrl(data.actionUrl);
+    }
+  };
 
   const right = (
     <View style={styles.row}>
@@ -79,7 +108,11 @@ export default function FiatBlock() {
           left={<Image source={images.Generate} />}
         />
       ) : (
-        <AppButton text="Deposit" onPress={cardDeposit} />
+        <AppButton text="Deposit" onPress={deposit} />
+      )}
+
+      {actionUrl && (
+        <AppWebView handleUrlChange={handleUrlChange} uri={actionUrl} />
       )}
     </KeyboardAvoidingView>
   );

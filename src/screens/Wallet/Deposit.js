@@ -28,13 +28,7 @@ export default function Deposit() {
   const {
     transactions: { code },
     trade: { currentBalanceObj },
-    wallet: {
-      cryptoAddress,
-      hasMultipleMethods,
-      hasMultipleNetworks,
-      depositRestriction,
-      network,
-    },
+    wallet: { cryptoAddress, hasMultipleMethods, depositRestriction, network },
     profile: { generalError },
   } = state;
 

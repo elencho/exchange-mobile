@@ -1,6 +1,7 @@
 import store from '../redux/store';
 import { saveGeneralError } from '../redux/profile/actions';
 import { navigationRef } from '../navigation';
+import { refreshToken } from './userProfileUtils';
 
 export default async (err) => {
   const {

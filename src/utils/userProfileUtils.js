@@ -109,7 +109,6 @@ const refreshTokenService = async (refresh_token) => {
 export const refreshToken = async (config) => {
   const refresh_token = await SecureStore.getItemAsync('refreshToken');
   const data = await refreshTokenService(refresh_token);
-  console.log('data', data);
 
   if (data.access_token && data.refresh_token) {
     await SecureStore.setItemAsync('accessToken', data.access_token);
@@ -118,7 +117,6 @@ export const refreshToken = async (config) => {
     if (config) return axios.request(config);
     return data.access_token;
   } else {
-    console.log('else');
     await SecureStore.deleteItemAsync('accessToken');
     await SecureStore.deleteItemAsync('refreshToken');
     return 'Welcome';

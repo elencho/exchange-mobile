@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { WebView } from 'react-native-webview';
 
 import colors from '../../constants/colors';
 import AppModal from '../AppModal';
@@ -28,6 +27,7 @@ import {
   switchBalanceCard,
 } from '../../redux/trade/actions';
 import GeneralError from '../GeneralError';
+import AppWebView from '../AppWebView';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
@@ -202,12 +202,10 @@ export default function BuySellModal() {
       />
 
       {cardTradeData.actionUrl && (
-        <TouchableOpacity activeOpacity={0.99} style={styles.webView}>
-          <WebView
-            source={{ uri: cardTradeData.actionUrl }}
-            onNavigationStateChange={handleUrlChange}
-          />
-        </TouchableOpacity>
+        <AppWebView
+          onNavigationStateChange={handleUrlChange}
+          uri={cardTradeData.actionUrl}
+        />
       )}
     </>
   );
@@ -242,12 +240,5 @@ const styles = StyleSheet.create({
   },
   margin: {
     marginVertical: 10,
-  },
-  webView: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
   },
 });

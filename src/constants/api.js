@@ -75,4 +75,6 @@ export const WIRE_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/w
 
 export const CARD_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/card/transaction/withdraw`;
 
+export const CARD_DEPOSIT = `${core}/exchange/api/v1/mobile/private/account/card/transaction/deposit`;
+
 export const DICTIONARY = `${core}/exchange/api/v1/mobile/public/dictionary`;
