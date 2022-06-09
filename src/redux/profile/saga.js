@@ -32,6 +32,7 @@ import {
   getOtpChangeToken,
   loginOtp,
   loginStart,
+  refreshToken,
   registrationForm,
   registrationStart,
   sendEmailOtp,
@@ -218,23 +219,10 @@ function* toggleSubscriptionSaga(action) {
 function* credentialsForEmailSaga(action) {
   const { OTP } = action;
   const data = yield call(getOtpChangeToken, OTP, 'EMAIL');
-  yield call(sendEmailOtp);
-  yield put(saveOtpChangeToken(data.changeOTPToken));
-  yield put(toggleEmailAuthModal(true));
-}
-
-//  ACTIVATE EMAIL
-function* activateEmailSaga(action) {
-  const { OTP } = action;
-  const otpChangeToken = yield select((state) => state.profile.otpChangeToken);
-  const status = yield call(activateEmailOtp, otpChangeToken, OTP);
-
-  if (status === 200) {
-    yield put(saveOtpChangeToken(null));
-    yield put(setCurrentSecurityAction(null));
-    yield put(setSmsAuth(false));
-    yield put(setGoogleAuth(false));
-    yield put(setEmailAuth(true));
+  if (data) {
+    yield call(sendEmailOtp);
+    yield put(saveOtpChangeToken(data.changeOTPToken));
+    yield put(toggleEmailAuthModal(true));
   }
 }
 
@@ -251,6 +239,23 @@ function* credentialsForGoogleSaga(action) {
   }
 }
 
+//  ACTIVATE EMAIL
+function* activateEmailSaga(action) {
+  const { OTP } = action;
+  const otpChangeToken = yield select((state) => state.profile.otpChangeToken);
+  const status = yield call(activateEmailOtp, otpChangeToken, OTP);
+
+  if (status === 200) {
+    yield put(saveOtpChangeToken(null));
+    yield put(setCurrentSecurityAction(null));
+    yield put(setSmsAuth(false));
+    yield put(setGoogleAuth(false));
+    yield put(setEmailAuth(true));
+    const token = yield call(refreshToken);
+    yield put({ type: 'OTP_SAGA', token });
+  }
+}
+
 //  ACTIVATE GOOGLE
 function* activateGoogleSaga(action) {
   const { OTP } = action;
@@ -261,11 +266,14 @@ function* activateGoogleSaga(action) {
   const status = yield call(activateGoogleOtp, otpChangeToken, OTP, totpSecret);
 
   if (status === 200) {
+    console.log('status 200');
     yield put(saveOtpChangeToken(null));
     yield put(setCurrentSecurityAction(null));
     yield put(setSmsAuth(false));
     yield put(setGoogleAuth(true));
     yield put(setEmailAuth(false));
+    const token = yield call(refreshToken);
+    yield put({ type: 'OTP_SAGA', token });
   }
 }
 

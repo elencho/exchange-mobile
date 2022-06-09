@@ -37,7 +37,11 @@ export default function TwoFaInput({
   const state = useSelector((state) => state);
 
   const {
-    modals: { smsAuthModalVisible, emailAuthModalVisible },
+    modals: {
+      smsAuthModalVisible,
+      emailAuthModalVisible,
+      googleOtpModalVisible,
+    },
     profile: { currentSecurityAction },
     wallet: { newWhitelist },
   } = state;
@@ -58,7 +62,8 @@ export default function TwoFaInput({
       }
 
       if (currentSecurityAction === 'email') {
-        if (smsAuthModalVisible) dispatch(credentialsForEmail(value));
+        if (smsAuthModalVisible || googleOtpModalVisible)
+          dispatch(credentialsForEmail(value));
         if (emailAuthModalVisible) dispatch(activateEmailOtp(value));
       }
 

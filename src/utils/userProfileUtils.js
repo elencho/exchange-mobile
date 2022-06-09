@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
+import * as SecureStore from 'expo-secure-store';
 
 import {
   ACTIVATE_EMAIL_OTP,
@@ -95,7 +96,7 @@ export const codeToToken = async (code, code_verifier) => {
   if (data) return data.data;
 };
 
-export const refreshToken = async (refresh_token) => {
+const refreshTokenService = async (refresh_token) => {
   const data = await axios({
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -103,6 +104,25 @@ export const refreshToken = async (refresh_token) => {
     data: `grant_type=refresh_token&client_id=mobile-service-public&refresh_token=${refresh_token}`,
   });
   if (data) return data.data;
+};
+
+export const refreshToken = async (config) => {
+  const refresh_token = await SecureStore.getItemAsync('refreshToken');
+  const data = await refreshTokenService(refresh_token);
+  console.log('data', data);
+
+  if (data.access_token && data.refresh_token) {
+    await SecureStore.setItemAsync('accessToken', data.access_token);
+    await SecureStore.setItemAsync('refreshToken', data.refresh_token);
+
+    if (config) return axios.request(config);
+    return data.access_token;
+  } else {
+    console.log('else');
+    await SecureStore.deleteItemAsync('accessToken');
+    await SecureStore.deleteItemAsync('refreshToken');
+    return 'Welcome';
+  }
 };
 
 export const logoutUtil = async (refresh_token) => {

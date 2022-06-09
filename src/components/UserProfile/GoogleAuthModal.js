@@ -38,13 +38,6 @@ export default function GoogleAuthModal() {
   const handleKey = (key) => setKey(key);
   const handleCopy = () => Clipboard.setString(totpSecretObj.totpSecretEncoded);
 
-  const handleHide = () => {
-    if (googleAuth) {
-      dispatch(setSmsAuth(false));
-      dispatch(setGoogleAuth(false));
-    }
-  };
-
   const right = (
     <View style={styles.row}>
       <View style={styles.smallLine} />
@@ -103,7 +96,6 @@ export default function GoogleAuthModal() {
       bottom
       hide={hide}
       visible={googleAuthModalVisible}
-      onModalHide={handleHide}
     />
   );
 }
