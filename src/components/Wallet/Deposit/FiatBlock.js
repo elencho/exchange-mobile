@@ -111,7 +111,10 @@ export default function FiatBlock() {
       )}
 
       {actionUrl && (
-        <AppWebView handleUrlChange={handleUrlChange} uri={actionUrl} />
+        <AppWebView
+          handleUrlChange={handleUrlChange}
+          source={{ uri: actionUrl }}
+        />
       )}
     </KeyboardAvoidingView>
   );

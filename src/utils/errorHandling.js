@@ -20,7 +20,7 @@ export default async (err) => {
       store.dispatch(saveGeneralError(err.response.data.errorMessage));
     if (status === 401) {
       const route = await refreshToken(config);
-      navigationRef.navigate(route);
+      if (route === 'Welcome') navigationRef.navigate(route);
     }
   } else if (request) {
     console.log(request);

@@ -51,11 +51,17 @@ export default function AddCardModal() {
   };
 
   const handleUrlChange = (state) => {
+    console.log(state);
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       setWebViewData({});
     }
+  };
+
+  const urlEncodedData = () => {
+    const data = new URLSearchParams(webViewData.data);
+    return data.toString();
   };
 
   const color = depositProvider ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT;
@@ -113,10 +119,22 @@ export default function AddCardModal() {
       <ChooseBankModal />
       <BankFeesModal />
 
-      {webViewData.actionUrl && (
+      {webViewData.actionMethod === 'POST' && (
         <AppWebView
           handleUrlChange={handleUrlChange}
-          uri={webViewData.actionUrl}
+          source={{
+            uri: webViewData.actionUrl,
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: urlEncodedData(),
+          }}
+        />
+      )}
+
+      {webViewData.actionMethod === 'GET' && (
+        <AppWebView
+          handleUrlChange={handleUrlChange}
+          source={{ uri: webViewData.actionUrl }}
         />
       )}
     </>

@@ -158,7 +158,6 @@ export const cardDeposit = async (params) => {
 
 export const addCard = async (params) => {
   const data = await axios.post(ADD_CARD_URL, params);
-  console.log(data);
   if (data) return data.data;
 };
 

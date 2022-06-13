@@ -204,7 +204,7 @@ export default function BuySellModal() {
       {cardTradeData.actionUrl && (
         <AppWebView
           handleUrlChange={handleUrlChange}
-          uri={cardTradeData.actionUrl}
+          source={{ uri: cardTradeData.actionUrl }}
         />
       )}
     </>

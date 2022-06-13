@@ -2,10 +2,10 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import WebView from 'react-native-webview';
 
-export default function AppWebView({ uri, handleUrlChange }) {
+export default function AppWebView({ handleUrlChange, ...rest }) {
   return (
     <TouchableOpacity activeOpacity={0.99} style={styles.webView}>
-      <WebView source={{ uri }} onNavigationStateChange={handleUrlChange} />
+      <WebView onNavigationStateChange={handleUrlChange} {...rest} />
     </TouchableOpacity>
   );
 }
