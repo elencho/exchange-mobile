@@ -3,7 +3,7 @@ import { actionTypes } from './actions';
 const INITIAL_STATE = {
   trades: [],
   offers: { USD: [], GEL: [] },
-  pairObject: null,
+  pairObject: {},
   cardTradeData: {},
   currentTrade: { price: '', size: '' },
   hideOtherPairs: false,

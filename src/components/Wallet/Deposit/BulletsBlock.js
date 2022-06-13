@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     padding: 35,
     marginTop: 12,
     backgroundColor: colors.SECONDARY_BACKGROUND,
+    marginBottom: 20,
   },
   bullet: {
     width: 5,

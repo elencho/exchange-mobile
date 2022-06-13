@@ -10,10 +10,19 @@ export default function AppButton({
   left,
   right,
   style,
+  disabled,
   ...rest
 }) {
   return (
-    <Pressable style={[styles.button, { backgroundColor }, style]} {...rest}>
+    <Pressable
+      disabled={disabled}
+      style={[
+        styles.button,
+        { backgroundColor, opacity: disabled ? 0.5 : 1 },
+        style,
+      ]}
+      {...rest}
+    >
       {left}
       <AppText medium style={[styles.buttonText, left && { marginLeft: 9 }]}>
         {text}

@@ -17,6 +17,8 @@ import {
   WIRE_WITHDRAWAL,
   CARD_WITHDRAWAL,
   CARD_DEPOSIT,
+  ADD_CARD_URL,
+  DELETE_CARD_URL,
 } from '../constants/api';
 
 export const fetchWireDeposit = async (currency, network) => {
@@ -152,4 +154,15 @@ export const cardWithdrawal = async (OTP, params) => {
 export const cardDeposit = async (params) => {
   const data = await axios.post(CARD_DEPOSIT, params);
   if (data) return data.data;
+};
+
+export const addCard = async (params) => {
+  const data = await axios.post(ADD_CARD_URL, params);
+  console.log(data);
+  if (data) return data.data;
+};
+
+export const deleteCard = async (cardId) => {
+  const data = await axios.delete(`${DELETE_CARD_URL}?cardId=${cardId}`);
+  if (data) return data.status;
 };

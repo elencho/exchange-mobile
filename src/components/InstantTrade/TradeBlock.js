@@ -21,15 +21,13 @@ export default function TradeBlock() {
 
   const price = () => {
     let price;
-    const {
-      buyPrice,
-      sellPrice,
-      pair: { baseCurrency },
-    } = pairObject;
-    if (baseCurrency === crypto) {
-      price = tradeType === 'Buy' ? buyPrice : sellPrice;
+    const { buyPrice, sellPrice, pair } = pairObject;
+    if (pair) {
+      if (pair.baseCurrency === crypto) {
+        price = tradeType === 'Buy' ? buyPrice : sellPrice;
+      }
+      return price;
     }
-    return price;
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
@@ -95,7 +95,7 @@ export default function Withdrawal() {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={{ flex: hasRestriction ? 0 : 1 }}>
+      <ScrollView style={{ flex: hasRestriction ? 0 : 1 }}>
         <View style={styles.block}>
           {generalError ? (
             <View style={{ marginBottom: 16 }}>
@@ -126,7 +126,7 @@ export default function Withdrawal() {
             <SaveAsTemplate />
           </>
         ) : null}
-      </View>
+      </ScrollView>
 
       {!hasRestriction && hasMethod && (
         <View style={styles.button}>

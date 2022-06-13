@@ -33,7 +33,6 @@ export default function FiatBlock() {
   } = state;
 
   const handleUrlChange = (state) => {
-    console.log(state);
     setActionUrl(state.url);
     const urlArray = actionUrl.split('=');
     const ending = urlArray[urlArray.length - 1];

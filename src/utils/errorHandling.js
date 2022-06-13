@@ -16,7 +16,8 @@ export default async (err) => {
     console.log(status);
     console.log(headers);
 
-    if (status === 500) store.dispatch(saveGeneralError(data.errorMessage));
+    if (status === 500)
+      store.dispatch(saveGeneralError(err.response.data.errorMessage));
     if (status === 401) {
       const route = await refreshToken(config);
       navigationRef.navigate(route);

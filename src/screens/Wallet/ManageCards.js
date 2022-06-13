@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, View, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,15 +12,23 @@ import Card from '../../components/Wallet/ManageCards/Card';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleAddCardModal } from '../../redux/modals/actions';
+import { fetchCards } from '../../utils/fetchTrades';
 
 export default function ManageCards() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     profile: { generalError },
+    transactions: { code },
   } = state;
 
-  const [hasCards, setHasCards] = useState(false);
+  const [cards, setCards] = useState(false);
+
+  useEffect(() => {
+    fetchCards({ currency: code })
+      .then((cards) => setCards(cards))
+      .catch((err) => console.log(err));
+  }, []);
 
   const addCardModal = () => {
     dispatch(toggleAddCardModal(true));
@@ -38,19 +46,21 @@ export default function ManageCards() {
         <WalletCoinsDropdown />
       </View>
 
-      <AppText
-        calendarDay
-        style={{ color: 'white', marginBottom: 20 }}
-        onPress={() => setHasCards(!hasCards)}
-      >
-        Toggle "hasCards"
-      </AppText>
-
-      {hasCards ? (
+      {cards.length ? (
         <>
-          <ScrollView contentContainerStyle={styles.scrollView}>
-            <Card />
-            <Card />
+          <ScrollView style={styles.scrollView}>
+            {cards.map((c) => (
+              <Card
+                key={c.id}
+                name={c.provider}
+                cardNumber={c.cardNumber}
+                network={c.network}
+                status={c.status}
+                id={c.id}
+                setCards={setCards}
+                cards={cards}
+              />
+            ))}
           </ScrollView>
 
           <Pressable style={styles.button} onPress={addCardModal}>

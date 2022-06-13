@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
@@ -63,7 +63,7 @@ export default function Deposit() {
   };
 
   return (
-    <>
+    <ScrollView>
       <View style={styles.block}>
         {generalError ? (
           <View style={{ marginBottom: 16 }}>
@@ -121,7 +121,7 @@ export default function Deposit() {
           restrictedUntil={depositRestriction.restrictedUntil}
         />
       ) : null}
-    </>
+    </ScrollView>
   );
 }
 

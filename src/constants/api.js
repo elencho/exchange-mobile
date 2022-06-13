@@ -77,4 +77,8 @@ export const CARD_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/c
 
 export const CARD_DEPOSIT = `${core}/exchange/api/v1/mobile/private/account/card/transaction/deposit`;
 
+export const ADD_CARD_URL = `${core}/exchange/api/v1/mobile/private/account/card/addNewCard`;
+
+export const DELETE_CARD_URL = `${core}/exchange/api/v1/mobile/private/account/card/deleteCard`;
+
 export const DICTIONARY = `${core}/exchange/api/v1/mobile/public/dictionary`;

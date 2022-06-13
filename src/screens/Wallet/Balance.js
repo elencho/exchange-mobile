@@ -45,12 +45,10 @@ export default function Balance({ navigation }) {
         behavior={Platform.select({ android: undefined, ios: 'padding' })}
         keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
       >
-        <ScrollView contentContainerStyle={styles.flexGrow}>
-          {walletTab === 'Deposit' && <Deposit />}
-          {walletTab === 'Withdrawal' && <Withdrawal />}
-          {walletTab === 'Whitelist' && <Whitelist />}
-          {walletTab === 'Manage Cards' && <ManageCards />}
-        </ScrollView>
+        {walletTab === 'Deposit' && <Deposit />}
+        {walletTab === 'Withdrawal' && <Withdrawal />}
+        {walletTab === 'Whitelist' && <Whitelist />}
+        {walletTab === 'Manage Cards' && <ManageCards />}
       </KeyboardAvoidingView>
 
       <ChooseCurrencyModal wallet />

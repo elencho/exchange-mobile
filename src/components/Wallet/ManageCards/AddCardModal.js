@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppModal from '../../AppModal';
 import AppText from '../../AppText';
 import AppButton from '../../AppButton';
+import AppWebView from '../../AppWebView';
 import PurpleText from '../../PurpleText';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import BankFeesModal from '../../InstantTrade/BankFeesModal';
@@ -16,6 +17,7 @@ import {
   toggleBankFeesModal,
   toggleChooseBankModal,
 } from '../../../redux/modals/actions';
+import { addCard } from '../../../utils/walletUtils';
 
 export default function AddCardModal() {
   const dispatch = useDispatch();
@@ -23,9 +25,11 @@ export default function AddCardModal() {
   const {
     modals: { addCardModalVisible },
     trade: { depositProvider, depositProviders },
+    transactions: { code },
   } = state;
 
   const [saveCardAgreeTerms, setSaveCardAgreeTerms] = useState(false);
+  const [webViewData, setWebViewData] = useState({});
 
   const hide = () => dispatch(toggleAddCardModal(false));
 
@@ -35,6 +39,24 @@ export default function AddCardModal() {
   const showBanks = () => dispatch(toggleChooseBankModal(true));
   const showFees = () => dispatch(toggleBankFeesModal(true));
   const multipleBanks = () => depositProviders.length > 1;
+
+  const handleAddCard = async () => {
+    const params = {
+      currency: code,
+      redirectUri: 'cryptal.com',
+      provider: depositProvider,
+    };
+    const data = await addCard(params);
+    setWebViewData(data);
+  };
+
+  const handleUrlChange = (state) => {
+    const urlArray = state.url.split('=');
+    const ending = urlArray[urlArray.length - 1];
+    if (ending === 'false' || ending === 'true') {
+      setWebViewData({});
+    }
+  };
 
   const color = depositProvider ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT;
 
@@ -81,10 +103,22 @@ export default function AddCardModal() {
         </AppText>
       </View>
 
-      <AppButton text="Next" style={styles.button} />
+      <AppButton
+        text="Next"
+        style={styles.button}
+        disabled={!saveCardAgreeTerms}
+        onPress={handleAddCard}
+      />
 
       <ChooseBankModal />
       <BankFeesModal />
+
+      {webViewData.actionUrl && (
+        <AppWebView
+          handleUrlChange={handleUrlChange}
+          uri={webViewData.actionUrl}
+        />
+      )}
     </>
   );
 
