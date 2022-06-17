@@ -140,6 +140,7 @@ export const fetchCountries = async () => {
 
 export const fetchUserInfo = async () => {
   const data = await axios.get(USER_INFO_URL);
+  console.log(data.data);
   if (data) return data.data;
 };
 

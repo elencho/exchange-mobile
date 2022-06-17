@@ -16,6 +16,7 @@ import {
   togglePhoneNumberModal,
 } from '../../redux/modals/actions';
 import { toggleEmailSubscription } from '../../redux/profile/actions';
+import Test from '../../screens/Test';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import ChooseLanguageModal from './ChooseLanguageModal';
@@ -144,6 +145,7 @@ export default function Personal() {
 
   return (
     <ScrollView>
+      <Test />
       <View style={styles.block}>
         {['Identity', 'Phone', 'Notifications', 'Language'].map((r, i, a) => (
           <View

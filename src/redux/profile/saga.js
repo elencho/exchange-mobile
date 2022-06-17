@@ -79,8 +79,10 @@ function* startRegistrationSaga(action) {
   const registrationStartInfo = yield call(registrationStart);
   yield put(saveRegistrationStartInfo(registrationStartInfo));
 
-  if (registrationStartInfo.execution === 'REGISTRATION_START') {
-    navigation.navigate('Registration');
+  if (registrationStartInfo) {
+    if (registrationStartInfo.execution === 'REGISTRATION_START') {
+      navigation.navigate('Registration');
+    }
   }
 }
 

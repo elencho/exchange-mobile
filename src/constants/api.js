@@ -82,3 +82,5 @@ export const ADD_CARD_URL = `${core}/exchange/api/v1/mobile/private/account/card
 export const DELETE_CARD_URL = `${core}/exchange/api/v1/mobile/private/account/card/deleteCard`;
 
 export const DICTIONARY = `${core}/exchange/api/v1/mobile/public/dictionary`;
+
+export const VERIFICATION_TOKEN = `${core}/exchange/api/v1/private/users/verificationToken`;

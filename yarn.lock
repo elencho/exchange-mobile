@@ -1648,9 +1648,9 @@
   resolved "https://registry.npmjs.org/@sindresorhus/is/-/is-4.2.0.tgz"
   integrity sha512-VkE3KLBmJwcCaVARtQpfuKcKv8gcBmUubrfHGF84dXuuW6jgsRYxPtzcIhPyK9WAPpRt2/xY6zkD9MnRaJzSyw==
 
-"@sumsub/react-native-mobilesdk-module@^1.18.2":
+"@sumsub/react-native-mobilesdk-module@1.18.2":
   version "1.18.2"
-  resolved "https://registry.npmjs.org/@sumsub/react-native-mobilesdk-module/-/react-native-mobilesdk-module-1.18.2.tgz"
+  resolved "https://registry.yarnpkg.com/@sumsub/react-native-mobilesdk-module/-/react-native-mobilesdk-module-1.18.2.tgz#a334411f746f5faf92ae32bb22ed42846d87f133"
   integrity sha512-j3Dsz9yy8b4LYfpDzpT+xYaBk59W8HTbpunZEr+n+vFmY3EZDeuTgRtJzmtrr8/QtHfmFekZUB0JjCIHbARsfw==
 
 "@szmarczak/http-timer@^4.0.5":
@@ -5376,11 +5376,6 @@ react-native-animated-progress@^1.0.2:
   resolved "https://registry.npmjs.org/react-native-animated-progress/-/react-native-animated-progress-1.0.2.tgz"
   integrity sha512-8EQSHTjT7QQY+u/Gknc1X4FxlV/8gRevi2wAlMIUQBf3fq13z++8WIGPPwwKvjsVcQJMm4cadTwn3Ptn5fiUJw==
 
-react-native-blob-courier@^3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-blob-courier/-/react-native-blob-courier-3.0.4.tgz#f01b352f9c7a100be409b4f089d57a3a7f03b1a0"
-  integrity sha512-uSjkiNW9wNnf6u5aBYyZdWcgt9+Z/HyY/Xm9jHq7vT5jf8eLgumnQjPYN+YlEn8A2lQ5B4KL5aByYVNAhwBE4w==
-
 react-native-calendars@^1.1272.0:
   version "1.1272.0"
   resolved "https://registry.npmjs.org/react-native-calendars/-/react-native-calendars-1.1272.0.tgz"
@@ -5499,7 +5494,7 @@ react-native-web@0.17.1:
 
 react-native-webview@11.13.0:
   version "11.13.0"
-  resolved "https://registry.npmjs.org/react-native-webview/-/react-native-webview-11.13.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-webview/-/react-native-webview-11.13.0.tgz#a2eca0f87b2ae9bba0dd8144594aeff9947cc5d6"
   integrity sha512-jjQAKWv8JzRmcn76fMe4lXD84AAeR7kn43kAmUe1GX312BMLaP+RbKlgpYAlNuOBXL0YirItGKDrpaD0bNROOA==
   dependencies:
     escape-string-regexp "2.0.0"

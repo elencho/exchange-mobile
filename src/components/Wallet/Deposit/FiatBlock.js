@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Image, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { WebView } from 'react-native-webview';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
@@ -13,15 +12,13 @@ import CardSection from '../../InstantTrade/CardSection';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import BankInfo from './BankInfo';
-import AppWebView from '../../AppWebView';
-import { saveGeneralError } from '../../../redux/profile/actions';
+import { saveCardDepositUrl } from '../../../redux/wallet/actions';
 
 export default function FiatBlock() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
   const [amount, setAmount] = useState(null);
-  const [actionUrl, setActionUrl] = useState(null);
 
   const {
     transactions: { code },
@@ -31,16 +28,6 @@ export default function FiatBlock() {
       network,
     },
   } = state;
-
-  const handleUrlChange = (state) => {
-    setActionUrl(state.url);
-    const urlArray = actionUrl.split('=');
-    const ending = urlArray[urlArray.length - 1];
-    if (ending === 'false' || ending === 'true') {
-      setActionUrl(null);
-      dispatch(saveGeneralError(ending));
-    }
-  };
 
   const generatePdf = () => {
     if (amount) {
@@ -57,7 +44,7 @@ export default function FiatBlock() {
         redirectUri: 'cryptal.com',
       };
       const data = await cardDeposit(params);
-      if (data) setActionUrl(data.actionUrl);
+      if (data) dispatch(saveCardDepositUrl(data.actionUrl));
     }
   };
 
@@ -108,13 +95,6 @@ export default function FiatBlock() {
         />
       ) : (
         <AppButton text="Deposit" onPress={deposit} />
-      )}
-
-      {actionUrl && (
-        <AppWebView
-          handleUrlChange={handleUrlChange}
-          source={{ uri: actionUrl }}
-        />
       )}
     </KeyboardAvoidingView>
   );

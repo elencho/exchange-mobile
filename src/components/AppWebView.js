@@ -5,7 +5,11 @@ import WebView from 'react-native-webview';
 export default function AppWebView({ handleUrlChange, ...rest }) {
   return (
     <TouchableOpacity activeOpacity={0.99} style={styles.webView}>
-      <WebView onNavigationStateChange={handleUrlChange} {...rest} />
+      <WebView
+        nestedScrollEnabled
+        onNavigationStateChange={handleUrlChange}
+        {...rest}
+      />
     </TouchableOpacity>
   );
 }

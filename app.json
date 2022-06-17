@@ -4,10 +4,7 @@
     "slug": "cryptal-app",
     "scheme": "cryptal-app",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "assets/images/*",
-      "assets/fonts/*"
-    ],
+    "assetBundlePatterns": ["assets/images/*", "assets/fonts/*"],
     "description": "",
     "plugins": [
       [
@@ -22,7 +19,13 @@
     "ios": {
       "infoPlist": {
         "NSFaceIDUsageDescription": "This app will optionally use Face ID or Touch ID to save login"
-      }
+      },
+      "bundleIdentifier": "com.cryptal.cryptalapp",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.cryptal.cryptalapp",
+      "versionCode": 1
     }
   },
   "name": "cryptal-app"

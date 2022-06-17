@@ -51,7 +51,6 @@ export default function AddCardModal() {
   };
 
   const handleUrlChange = (state) => {
-    console.log(state);
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {

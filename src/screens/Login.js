@@ -10,9 +10,9 @@ import Login2FaModal from '../components/Login/Login2FaModal';
 import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 import images from '../constants/images';
-import { toggleLogin2FaModal } from '../redux/modals/actions';
 import {
   setCredentials,
+  startRegistrationAction,
   usernameAndPasswordAction,
 } from '../redux/profile/actions';
 
@@ -29,11 +29,10 @@ export default function Login({ navigation }) {
     dispatch(setCredentials({ ...credentials, login: t }));
 
   const handleLogin = () => {
-    // dispatch(toggleLogin2FaModal(true));
     dispatch(usernameAndPasswordAction(navigation));
   };
 
-  const register = () => navigation.navigate('Registration');
+  const register = () => dispatch(startRegistrationAction(navigation));
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>

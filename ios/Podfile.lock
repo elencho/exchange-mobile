@@ -46,6 +46,8 @@ PODS:
     - EXUpdatesInterface
     - React-Core
   - EXUpdatesInterface (0.4.0)
+  - EXWebBrowser (10.0.3):
+    - ExpoModulesCore
   - FBLazyVector (0.64.3)
   - FBReactNativeSpec (0.64.3):
     - RCT-Folly (= 2020.01.13.00)
@@ -55,10 +57,10 @@ PODS:
     - React-jsi (= 0.64.3)
     - ReactCommon/turbomodule/core (= 0.64.3)
   - glog (0.3.5)
-  - IdensicMobileSDK (1.18.2):
-    - IdensicMobileSDK/Default (= 1.18.2)
-  - IdensicMobileSDK/Core (1.18.2)
-  - IdensicMobileSDK/Default (1.18.2):
+  - IdensicMobileSDK (1.19.5):
+    - IdensicMobileSDK/Default (= 1.19.5)
+  - IdensicMobileSDK/Core (1.19.5)
+  - IdensicMobileSDK/Default (1.19.5):
     - IdensicMobileSDK/Core
   - RCT-Folly (2020.01.13.00):
     - boost-for-react-native
@@ -253,10 +255,8 @@ PODS:
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
   - React-jsinspector (0.64.3)
-  - react-native-blob-courier (3.0.4):
-    - React
-  - react-native-mobilesdk-module (1.18.2):
-    - IdensicMobileSDK (= 1.18.2)
+  - react-native-mobilesdk-module (1.19.5):
+    - IdensicMobileSDK (= 1.19.5)
     - React
   - react-native-pkce-challenge (3.2.0):
     - React-Core
@@ -389,6 +389,7 @@ DEPENDENCIES:
   - EXStructuredHeaders (from `../node_modules/expo-structured-headers/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
   - EXUpdatesInterface (from `../node_modules/expo-updates-interface/ios`)
+  - EXWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
@@ -405,7 +406,6 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-blob-courier (from `../node_modules/react-native-blob-courier`)
   - "react-native-mobilesdk-module (from `../node_modules/@sumsub/react-native-mobilesdk-module`)"
   - react-native-pkce-challenge (from `../node_modules/react-native-pkce-challenge`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -479,6 +479,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-updates/ios"
   EXUpdatesInterface:
     :path: "../node_modules/expo-updates-interface/ios"
+  EXWebBrowser:
+    :path: "../node_modules/expo-web-browser/ios"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
@@ -507,8 +509,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
-  react-native-blob-courier:
-    :path: "../node_modules/react-native-blob-courier"
   react-native-mobilesdk-module:
     :path: "../node_modules/@sumsub/react-native-mobilesdk-module"
   react-native-pkce-challenge:
@@ -576,10 +576,11 @@ SPEC CHECKSUMS:
   EXStructuredHeaders: 873e7f329c2f6279c1b1e0229df59c9861560b53
   EXUpdates: 061b67c33f0e7f8fd335bbb48697c4a4fc8a5157
   EXUpdatesInterface: e1c01b4f5ec76bd1d6cc714938f9edf5ef6379b9
+  EXWebBrowser: ecb70d9e6edb279d9b10b2bbc9ad4320fcdc4060
   FBLazyVector: c71c5917ec0ad2de41d5d06a5855f6d5eda06971
   FBReactNativeSpec: a29f5c85486dd5833ca124a19c365bf5ad4f4f37
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
-  IdensicMobileSDK: 52b66f85bd4f1364bddfa43f07ff0adef44d6dd3
+  IdensicMobileSDK: 9381f58cef72f9677b21ef6e79ee4cbf70b16ff9
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: d34bf57e17cb6e3b2681f4809b13843c021feb6c
   RCTTypeSafety: 8dab4933124ed39bb0c1d88d74d61b1eb950f28f
@@ -591,8 +592,7 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
-  react-native-blob-courier: 050eb1228bb23e450613f9f74f31a695cf4ddfbd
-  react-native-mobilesdk-module: b16753a0323406be009125d3f8735e432157014d
+  react-native-mobilesdk-module: 790c38838e348174297359660dc7a9826cf06269
   react-native-pkce-challenge: 920193e277f9d3ccdf30edd9228b3095aed28af7
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-webview: 133a6a5149f963259646e710b4545c67ef35d7c9

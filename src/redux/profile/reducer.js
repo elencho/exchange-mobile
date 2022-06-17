@@ -6,7 +6,7 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: { login: 'metro21@mailinator.com', password: 'Qwerty123$' },
+  credentials: { login: '', password: '' },
   userAndPassInfo: {},
 
   // Register

@@ -9,15 +9,20 @@ import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock';
 import GenerateRequestModal from '../../components/Wallet/Deposit/GenerateRequestModal';
 import { toggleGenerateRequestModal } from '../../redux/modals/actions';
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
-import { generateCryptoAddressAction } from '../../redux/wallet/actions';
+import {
+  generateCryptoAddressAction,
+  saveCardDepositUrl,
+} from '../../redux/wallet/actions';
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
 import AppButton from '../../components/AppButton';
 import FiatBlock from '../../components/Wallet/Deposit/FiatBlock';
 import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
 import AppText from '../../components/AppText';
+import AppWebView from '../../components/AppWebView';
 import WireTransferWarning from '../../components/Wallet/Withdrawal/WireTransferWarning';
 import GeneralError from '../../components/GeneralError';
 import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
+import { saveGeneralError } from '../../redux/profile/actions';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -28,7 +33,13 @@ export default function Deposit() {
   const {
     transactions: { code },
     trade: { currentBalanceObj },
-    wallet: { cryptoAddress, hasMultipleMethods, depositRestriction, network },
+    wallet: {
+      cryptoAddress,
+      hasMultipleMethods,
+      depositRestriction,
+      network,
+      cardDepositUrl,
+    },
     profile: { generalError },
   } = state;
 
@@ -60,6 +71,15 @@ export default function Deposit() {
       return depositRestriction.reason;
     }
     return 'METHOD';
+  };
+
+  const handleUrlChange = (state) => {
+    const urlArray = state.url.split('=');
+    const ending = urlArray[urlArray.length - 1];
+    if (ending === 'false' || ending === 'true') {
+      dispatch(saveCardDepositUrl(null));
+      dispatch(saveGeneralError(ending));
+    }
   };
 
   return (
@@ -113,7 +133,11 @@ export default function Deposit() {
         </>
       ) : null}
 
-      {isFiat && !hasRestriction && <FiatBlock />}
+      {isFiat && !hasRestriction && (
+        <>
+          <FiatBlock />
+        </>
+      )}
       {hasRestriction || !hasMethod ? (
         <FlexBlock
           type="Deposit"
@@ -121,6 +145,13 @@ export default function Deposit() {
           restrictedUntil={depositRestriction.restrictedUntil}
         />
       ) : null}
+
+      {cardDepositUrl && (
+        <AppWebView
+          handleUrlChange={handleUrlChange}
+          source={{ uri: cardDepositUrl }}
+        />
+      )}
     </ScrollView>
   );
 }

@@ -20,14 +20,16 @@ import EmailVerificationModal from '../components/Registration/EmailVerification
 import colors from '../constants/colors';
 import images from '../constants/images';
 import { toggleEmailVerificationModal } from '../redux/modals/actions';
-import { registrationFormAction } from '../redux/profile/actions';
+import {
+  registrationFormAction,
+  startLoginAction,
+} from '../redux/profile/actions';
 
 export default function Registration({ navigation }) {
   const dispatch = useDispatch();
 
-  const handleRegistration = () => {
-    dispatch(registrationFormAction(navigation));
-  };
+  const handleRegistration = () => dispatch(registrationFormAction(navigation));
+  const signIn = () => dispatch(startLoginAction(navigation));
 
   return (
     // <TouchableWithoutFeedback
@@ -56,7 +58,7 @@ export default function Registration({ navigation }) {
         <AppButton text="Register" onPress={handleRegistration} />
 
         <AppText style={styles.subtext}>
-          Have an account? <PurpleText text="Sign In" />
+          Have an account? <PurpleText text="Sign In" onPress={signIn} />
         </AppText>
 
         <EmailVerificationModal />

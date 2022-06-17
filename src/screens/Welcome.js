@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+import Constants from 'expo-constants';
 
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
@@ -49,6 +50,8 @@ export default function Welcome({ navigation }) {
   const startLogin = () => dispatch(startLoginAction(navigation));
   const startRegistration = () => dispatch(startRegistrationAction(navigation));
 
+  const auth = Constants.manifest.extra.auth;
+
   return (
     <TouchableWithoutFeedback
       style={{ flex: 1 }}
@@ -66,10 +69,7 @@ export default function Welcome({ navigation }) {
               Welcome to Cryptal
             </AppText>
 
-            <AppText style={styles.secondary}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry
-            </AppText>
+            <AppText style={styles.secondary}>{auth}</AppText>
 
             <AppButton
               text="Login"
