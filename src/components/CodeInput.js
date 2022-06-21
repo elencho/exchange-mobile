@@ -12,7 +12,7 @@ import AppText from './AppText';
 import colors from '../constants/colors';
 import GeneralError from './GeneralError';
 
-export default function CodeInput({ cellCount, value, setValue }) {
+export default function CodeInput({ cellCount = 6, value, setValue }) {
   const generalError = useSelector((state) => state.profile.generalError);
   const ref = useBlurOnFulfill({ value, cellCount });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({

@@ -31,6 +31,7 @@ export default function TwoFaInput({
   setValue,
   cellCount,
   login,
+  registration,
 }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -48,6 +49,9 @@ export default function TwoFaInput({
 
   useEffect(() => {
     if (value.length === cellCount) {
+      if (registration) {
+      }
+
       if (withdrawal === 'crypto') dispatch(cryptoWithdrawalAction(value)); // value = OTP
       if (withdrawal === 'wire') dispatch(wireWithdrawalAction(value)); // value = OTP
       if (withdrawal === 'card') dispatch(cardWithdrawalAction(value)); // value = OTP

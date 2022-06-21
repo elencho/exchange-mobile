@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, ImageBackground, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,10 +10,13 @@ import images from '../../constants/images';
 import { toggleEmailVerificationModal } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
 import { resendEmail } from '../../utils/userProfileUtils';
+import TwoFaInput from '../TwoFaInput';
 
 export default function EmailVerificationModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
+  const [value, setValue] = useState('');
 
   const {
     modals: { emailVerificationModalVisible },
@@ -34,10 +37,11 @@ export default function EmailVerificationModal() {
         <AppText header style={styles.primary}>
           E-mail Has Been Sent
         </AppText>
-        <AppText style={styles.secondary}>
-          Check your E-mail ##მეილის ცვლადი## and click the link to confirm your
-          account
+        <AppText style={[styles.secondary, { marginBottom: 36 }]}>
+          Check your E-mail ##მეილის ცვლადი## and enter the code account
         </AppText>
+
+        <TwoFaInput value={value} setValue={setValue} registration />
       </View>
 
       <AppText style={styles.secondary}>

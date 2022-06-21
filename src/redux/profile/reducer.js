@@ -12,7 +12,16 @@ const INITIAL_STATE = {
   // Register
   Personal_Company: 'Personal',
   registrationStartInfo: {},
-  registrationInputs: {},
+  registrationInputs: {
+    firstName: 'aa',
+    lastName: 'aa',
+    email: 'metro29@mailinator.com',
+    passwordNew: 'Vaxo@0nba',
+    passwordConfirm: 'Vaxo@0nba',
+    phoneNumber: '555554555',
+    acceptAgeRequirement: 'on',
+    acceptTerms: 'on',
+  },
   resendLink: null,
 
   Personal_Security: 'Personal',
