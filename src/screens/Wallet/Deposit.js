@@ -90,7 +90,7 @@ export default function Deposit() {
   };
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ flex: 1 }}>
       <View style={styles.block}>
         {generalError ? (
           <View style={{ marginBottom: 16 }}>

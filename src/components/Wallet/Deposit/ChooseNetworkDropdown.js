@@ -12,6 +12,7 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
   const state = useSelector((state) => state);
   const {
     wallet: { hasMultipleNetworks, network },
+    trade: { currentBalanceObj },
   } = state;
 
   const handleDropdown = () => {
@@ -21,7 +22,8 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
   const networkName = () => {
     if (network === 'ERC20') return 'Ethereum Network';
     if (network === 'BEP20') return 'Binance Smart Chain';
-    if (network === 'MAINNET') return 'Bitcoin Network';
+    if (network === 'MAINNET')
+      return currentBalanceObj.depositMethods.WALLET[0].displayName;
   };
 
   return (
