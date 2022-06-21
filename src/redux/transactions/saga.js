@@ -9,7 +9,7 @@ import {
   filterCurrencies,
   setAbbr,
   toggleLoading,
-  increaseOffset,
+  setTransactionsOffset,
   setMethodFilter,
   typeAction,
   saveCurrencies,
@@ -49,6 +49,18 @@ function* fetchTransactionsSaga() {
   yield put(toggleLoading(false));
 }
 
+function* refreshTransactionsSaga() {
+  yield put(toggleLoading(true));
+
+  yield put(setTransactionsOffset(0));
+  const params = yield select(getParams);
+  const transactions = yield call(fetch, params);
+
+  yield put(saveTransactions(transactions));
+
+  yield put(toggleLoading(false));
+}
+
 function* fetchCurrenciesSaga() {
   const currencies = yield call(currenciesApi);
 
@@ -78,7 +90,7 @@ function* reachScrollEndSaga(action) {
     const total = yield call(totalAmount, params);
 
     if (loadedTransactions < total) {
-      yield put(increaseOffset(offset + 1));
+      yield put(setTransactionsOffset(offset + 1));
       yield put(fetchTransactions());
     }
   }
@@ -95,7 +107,7 @@ function* typeSaga(action) {
   const { filter } = action;
 
   yield put(saveTransactions([]));
-  yield put(increaseOffset(0));
+  yield put(setTransactionsOffset(0));
   yield put(setTypeFilter(filter === 'ALL' ? null : filter));
   yield put(fetchTransactions());
 }
@@ -139,7 +151,7 @@ function* showResultsSaga(action) {
   const { navigation } = action;
 
   yield put(saveTransactions([]));
-  yield put(increaseOffset(0));
+  yield put(setTransactionsOffset(0));
   yield put(fetchTransactions());
   yield call(() => navigation && navigation.goBack());
 }
@@ -176,6 +188,7 @@ export default function* () {
   yield takeLatest(actionTypes.REACH_SCROLL_END, reachScrollEndSaga);
   yield takeLatest(actionTypes.FILTER_SAGA_ACTION, filterSaga);
   yield takeLatest('CLASIFY_CURRENCIES', clasifyCurrenciesSaga);
+  yield takeLatest('REFRESH_TRANSACTIONS_ACTION', refreshTransactionsSaga);
   yield takeLatest(
     actionTypes.TRANSACTION_DETAILS_SAGA,
     transactionDetailsSaga

@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { FlatList, StyleSheet, View, ActivityIndicator } from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -32,6 +38,8 @@ function TransactionHistory() {
     dispatch(setAbbr(null));
     dispatch(fetchTransactions());
   }, []);
+
+  const onRefresh = () => dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
 
   const dates = transactions.map((tr) => {
     const date = new Date(tr.timestamp);
@@ -92,6 +100,9 @@ function TransactionHistory() {
             keyExtractor={(item) => item}
             onScroll={handleScrollEnd}
             scrollEventThrottle={1000}
+            refreshControl={
+              <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+            }
           />
         </>
       )}

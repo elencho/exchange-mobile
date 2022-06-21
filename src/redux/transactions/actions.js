@@ -77,7 +77,7 @@ export const toggleLoading = (loading) => ({
   type: actionTypes.TOGGLE_LOADING,
   loading,
 });
-export const increaseOffset = (offset) => ({
+export const setTransactionsOffset = (offset) => ({
   type: actionTypes.INCREASE_OFFSET,
   offset,
 });
