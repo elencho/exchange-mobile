@@ -56,6 +56,7 @@ export default {
   Playstore: require('../assets/images/User_profile/Playstore.png'),
   User: require('../assets/images/User_profile/User.png'),
   Portfolio: require('../assets/images/User_profile/Portfolio.png'),
+  Logout: require('../assets/images/User_profile/Logout.png'),
 
   // Wallet
   Wallet: require('../assets/images/Wallet/Wallet.png'),

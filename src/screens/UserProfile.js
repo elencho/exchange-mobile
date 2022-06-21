@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 
@@ -10,7 +10,6 @@ import Personal from '../components/UserProfile/Personal';
 import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecuritySwitcher';
 import Security from '../components/UserProfile/Security';
 import images from '../constants/images';
-import AppButton from '../components/AppButton';
 import { logoutUtil } from '../utils/userProfileUtils';
 
 export default function UserProfile({ navigation }) {
@@ -34,29 +33,22 @@ export default function UserProfile({ navigation }) {
 
   return (
     <Background>
-      <View style={styles.back}>
-        <Image source={images.Back} style={styles.arrow} />
-        <PurpleText
-          text="test"
-          onPress={() => navigation.goBack()}
-          style={styles.purpleText}
-        />
+      <View style={styles.topRow}>
+        <View style={styles.back}>
+          <Image source={images.Back} style={styles.arrow} />
+          <PurpleText
+            text="Back"
+            onPress={() => navigation.goBack()}
+            style={styles.purpleText}
+          />
+        </View>
+
+        <TouchableOpacity onPress={logout}>
+          <Image source={images.Logout} />
+        </TouchableOpacity>
       </View>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Headline title="My Profile" />
-        <AppButton
-          text="Log Out"
-          style={{ width: 100, borderRadius: 20 }}
-          onPress={logout}
-        />
-      </View>
+      <Headline title="My Profile" />
 
       <PersonalSecuritySwitcher />
 
@@ -73,9 +65,13 @@ const styles = StyleSheet.create({
   back: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
   },
   purpleText: {
     marginHorizontal: 10,
+  },
+  topRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
