@@ -16,6 +16,7 @@ import { fetchFee, setFee } from '../../../redux/trade/actions';
 import CardSection from '../../InstantTrade/CardSection';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
+import { validateScale } from '../../../utils/formUtils';
 
 export default function WithdrawalInputs({ isFiat, hasRestriction }) {
   const dispatch = useDispatch();
@@ -29,18 +30,26 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
       network,
     },
     transactions: { code },
-    trade: { fee },
+    trade: {
+      fee,
+      currentBalanceObj: { withdrawalScale },
+    },
   } = state;
 
   const isEcommerce = network === 'ECOMMERCE';
 
-  const setAmount = (amount) => {
-    dispatch(setWithdrawalAmount(amount));
-    if (!amount) {
-      dispatch(setFee(null));
-      return;
+  const setAmount = (text) => {
+    const amount = text.replace(',', '.');
+
+    if (validateScale(amount, withdrawalScale)) {
+      dispatch(setWithdrawalAmount(amount));
+
+      if (!amount) {
+        dispatch(setFee(null));
+        return;
+      }
+      dispatch(fetchFee('withdrawal'));
     }
-    dispatch(fetchFee('withdrawal'));
   };
 
   const setNote = (note) => dispatch(setWithdrawalNote(note));

@@ -13,6 +13,7 @@ import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import BankInfo from './BankInfo';
 import { saveCardDepositUrl } from '../../../redux/wallet/actions';
+import { validateScale } from '../../../utils/formUtils';
 
 export default function FiatBlock() {
   const dispatch = useDispatch();
@@ -22,7 +23,10 @@ export default function FiatBlock() {
 
   const {
     transactions: { code },
-    trade: { card },
+    trade: {
+      card,
+      currentBalanceObj: { depositScale },
+    },
     wallet: {
       wireDepositInfo: { en },
       network,
@@ -33,6 +37,11 @@ export default function FiatBlock() {
     if (amount) {
       generateWirePdf(code, amount, en[0].id);
     }
+  };
+
+  const handleAmount = (text) => {
+    const amount = text.replace(',', '.');
+    if (validateScale(amount, depositScale)) setAmount(amount);
   };
 
   const deposit = async () => {
@@ -78,7 +87,7 @@ export default function FiatBlock() {
           )}
 
           <AppInput
-            onChangeText={setAmount}
+            onChangeText={handleAmount}
             value={amount}
             label="Enter Amount"
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}

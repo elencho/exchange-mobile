@@ -28,6 +28,7 @@ import {
 } from '../../redux/trade/actions';
 import GeneralError from '../GeneralError';
 import AppWebView from '../AppWebView';
+import { validateScale } from '../../utils/formUtils';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
@@ -79,24 +80,10 @@ export default function BuySellModal() {
     return true;
   };
 
-  const validate = (t, number) => {
-    const isNumber = (t * 1).toString() !== 'NaN';
-
-    if (isNumber) {
-      if (t.split('.').length === 2) {
-        return t.split('.')[1].length <= number;
-      }
-      if (!t.includes('.')) {
-        return true;
-      }
-    }
-    return false;
-  };
-
   const handleChangeText = (text, type) => {
     const t = text.replace(',', '.');
 
-    if (type === 'crypto' && validate(t, quoteScale)) {
+    if (type === 'crypto' && validateScale(t, quoteScale)) {
       dispatch(
         setCurrentTrade({
           price: t,
@@ -105,7 +92,7 @@ export default function BuySellModal() {
       );
       card && t && dispatch(fetchFee());
     }
-    if (type === 'fiat' && validate(t, baseScale)) {
+    if (type === 'fiat' && validateScale(t, baseScale)) {
       dispatch(
         setCurrentTrade({
           price: (t * rate).toFixed(quoteScale),
