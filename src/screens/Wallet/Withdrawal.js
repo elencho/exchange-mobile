@@ -53,11 +53,15 @@ export default function Withdrawal() {
   const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
+    const { withdrawalMethods } = currentBalanceObj;
     dispatch(getWhitelistAction());
-    dispatch(setNetwork('SWIFT'));
-    if (isFiat) {
-      dispatch(withdrawalTemplatesAction());
-    }
+
+    if (withdrawalMethods.WALLET)
+      dispatch(setNetwork(withdrawalMethods.WALLET[0].provider));
+    if (withdrawalMethods.WIRE)
+      dispatch(setNetwork(withdrawalMethods.WIRE[0].provider));
+
+    if (isFiat) dispatch(withdrawalTemplatesAction());
 
     setHasMethod(!!Object.keys(currentBalanceObj.depositMethods).length);
   }, [code]);

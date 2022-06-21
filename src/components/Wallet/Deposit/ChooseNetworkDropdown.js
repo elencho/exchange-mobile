@@ -32,17 +32,22 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
           onPress={handleDropdown}
           disabled={disabled}
         >
-          <View style={styles.subtext}>
-            <AppText body style={styles.secondary}>
-              Choose Network
-            </AppText>
-          </View>
-
-          <Image source={images.BTC} style={styles.image} />
-          <AppText medium style={styles.dropdownText}>
-            {networkName()}{' '}
-            <AppText style={styles.secondary}>({network})</AppText>
-          </AppText>
+          {network !== 'Choose Network' ? (
+            <>
+              <View style={styles.subtext}>
+                <AppText body style={styles.secondary}>
+                  Choose Network
+                </AppText>
+              </View>
+              <Image source={images.BTC} style={styles.image} />
+              <AppText medium style={styles.dropdownText}>
+                {networkName()}{' '}
+                <AppText style={styles.secondary}>({network})</AppText>
+              </AppText>
+            </>
+          ) : (
+            <AppText style={[styles.secondary, { flex: 1 }]}>{network}</AppText>
+          )}
           <Image source={images.Arrow} />
         </Pressable>
       ) : (

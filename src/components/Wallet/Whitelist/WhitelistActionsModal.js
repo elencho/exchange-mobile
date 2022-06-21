@@ -7,7 +7,7 @@ import AppModal from '../../AppModal';
 import {
   toggleEditWhitelistModal,
   toggleEmailAuthModal,
-  toggleGoogleAuthModal,
+  toggleGoogleOtpModal,
   toggleSmsAuthModal,
   toggleWhitelistActionsModal,
 } from '../../../redux/modals/actions';
@@ -39,11 +39,11 @@ export default function WhitelistActionsModal() {
         break;
       case 'Delete Whitelist':
         setTimeout(() => {
-          if (googleAuth) dispatch(toggleGoogleAuthModal(true));
+          if (googleAuth) dispatch(toggleGoogleOtpModal(true));
           if (emailAuth) dispatch(toggleEmailAuthModal(true));
           if (smsAuth) dispatch(toggleSmsAuthModal(true));
         }, 1000);
-        sendOtp();
+        if (!googleAuth) sendOtp();
         break;
       case 'Copy Address':
         Clipboard.setString(currentWhitelistObj.address);

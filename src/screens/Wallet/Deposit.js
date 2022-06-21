@@ -12,6 +12,7 @@ import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMeth
 import {
   generateCryptoAddressAction,
   saveCardDepositUrl,
+  setNetwork,
 } from '../../redux/wallet/actions';
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
 import AppButton from '../../components/AppButton';
@@ -48,6 +49,12 @@ export default function Deposit() {
   const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
+    const { depositMethods } = currentBalanceObj;
+    if (depositMethods.WALLET)
+      dispatch(setNetwork(depositMethods.WALLET[0].provider));
+    if (depositMethods.WIRE)
+      dispatch(setNetwork(depositMethods.WIRE[0].provider));
+
     setHasMethod(!!Object.keys(currentBalanceObj.depositMethods).length);
   }, [code]);
 

@@ -11,7 +11,7 @@ import {
   toggleAddWhitelistModal,
   toggleEditWhitelistModal,
   toggleEmailAuthModal,
-  toggleGoogleAuthModal,
+  toggleGoogleOtpModal,
   toggleSmsAuthModal,
 } from '../../../redux/modals/actions';
 import {
@@ -35,17 +35,18 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const hide = () => {
     if (add) dispatch(toggleAddWhitelistModal(false));
     if (edit) dispatch(toggleEditWhitelistModal(false));
+    dispatch(setNewWhitelist({}));
   };
 
   const handleHide = () => {
     hide();
     if (add) {
       setTimeout(() => {
-        if (googleAuth) dispatch(toggleGoogleAuthModal(true));
+        if (googleAuth) dispatch(toggleGoogleOtpModal(true));
         if (emailAuth) dispatch(toggleEmailAuthModal(true));
         if (smsAuth) dispatch(toggleSmsAuthModal(true));
       }, 1000);
-      sendOtp();
+      if (!googleAuth) sendOtp();
     }
     if (edit) {
       dispatch(editWhitelistAction());
