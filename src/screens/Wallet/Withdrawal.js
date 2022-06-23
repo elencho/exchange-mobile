@@ -28,6 +28,8 @@ import WithdrawalFees from '../../components/Wallet/Withdrawal/WithdrawalFees';
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import GeneralError from '../../components/GeneralError';
 import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
+import AppInfoBlock from '../../components/AppInfoBlock';
+import SepaWarning from '../../components/Wallet/Deposit/SepaWarning';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
@@ -111,9 +113,13 @@ export default function Withdrawal() {
           {!isFiat && hasMultipleNetworks && <ChooseNetworkDropdown />}
           {isFiat && hasMultipleMethods && (
             <>
-              <WireTransferWarning />
               <TransferMethodDropdown />
               <TransferMethodModal />
+              {network === 'SWIFT' && <WireTransferWarning />}
+              {network === 'SEPA' && <SepaWarning />}
+              {network === 'ECOMMERCE' && (
+                <AppInfoBlock text="Withdrawal Ecommerce Info" />
+              )}
             </>
           )}
         </View>

@@ -13,8 +13,9 @@ export default function AddressBlock() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { cryptoAddress },
+    wallet: { cryptoAddress, network },
     transactions: { code },
+    trade: { currentBalanceObj },
   } = state;
 
   const copyAddress = () => Clipboard.setString(cryptoAddress.address);
@@ -51,8 +52,10 @@ export default function AddressBlock() {
         <View style={styles.row}>
           <View style={styles.bullet} />
           <AppText style={styles.light} subtext>
-            Enter both Tag & Address data, which are{' '}
-            <AppText style={styles.light2}>required to deposit {code}</AppText>
+            {/* {currentBalanceObj.infos[network].transactionRecipientType} */}
+            {' DEPOSIT '}
+            <AppText style={styles.light2}>required to deposit </AppText>
+            <AppText style={styles.light2}>{code}</AppText>
           </AppText>
         </View>
 

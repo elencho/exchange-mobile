@@ -88,9 +88,11 @@ function* wireDepositSaga(action) {
   const { name, code, navigation } = action;
   const wireDepositData = yield call(fetchWireDeposit, code);
 
-  yield put(saveWireDepositInfo(wireDepositData));
-  yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
-  yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
+  if (wireDepositData) {
+    yield put(saveWireDepositInfo(wireDepositData));
+    yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
+    yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
+  }
 }
 
 function* cryptoAddressesSaga(action) {

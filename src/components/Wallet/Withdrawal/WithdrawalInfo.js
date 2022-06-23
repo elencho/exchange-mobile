@@ -9,11 +9,7 @@ import {
   toggleTemplatesModal,
 } from '../../../redux/modals/actions';
 import { saveUserInfo } from '../../../redux/profile/actions';
-import {
-  setIban,
-  setReceiverBank,
-  withdrawalTemplatesAction,
-} from '../../../redux/wallet/actions';
+import { setIban, setReceiverBank } from '../../../redux/wallet/actions';
 import AppInput from '../../AppInput';
 import AppText from '../../AppText';
 import TemplatesModal from './TemplatesModal';
@@ -22,10 +18,6 @@ import WithdrawalBanksModal from './WithdrawalBanksModal';
 export default function WithdrawalInfo() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
-  useEffect(() => {
-    dispatch(withdrawalTemplatesAction());
-  }, []);
 
   const {
     profile: { userInfo },

@@ -24,6 +24,8 @@ import WireTransferWarning from '../../components/Wallet/Withdrawal/WireTransfer
 import GeneralError from '../../components/GeneralError';
 import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
 import { saveGeneralError } from '../../redux/profile/actions';
+import AppInfoBlock from '../../components/AppInfoBlock';
+import SepaWarning from '../../components/Wallet/Deposit/SepaWarning';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -110,15 +112,9 @@ export default function Deposit() {
             {hasMultipleMethods && (
               <>
                 <TransferMethodDropdown />
-                {isEcommerce ? (
-                  <AppText subtext style={styles.subtext}>
-                    Cryptal processes credit and debit cards issued by TBC Bank
-                    directly with TBC. All other cards are processed with Bank
-                    of Georgia
-                  </AppText>
-                ) : (
-                  <WireTransferWarning />
-                )}
+                {isEcommerce && <AppInfoBlock text="Deposit Ecommerce Info" />}
+                {network === 'SWIFT' && <WireTransferWarning />}
+                {network === 'SEPA' && <SepaWarning />}
                 <TransferMethodModal />
               </>
             )}

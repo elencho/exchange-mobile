@@ -18,6 +18,7 @@ import {
   toggleChooseBankModal,
 } from '../../../redux/modals/actions';
 import { addCard } from '../../../utils/walletUtils';
+import AppInfoBlock from '../../AppInfoBlock';
 
 export default function AddCardModal() {
   const dispatch = useDispatch();
@@ -88,16 +89,7 @@ export default function AddCardModal() {
         </AppText>
       )}
 
-      <View style={styles.block}>
-        <AppText subtext style={styles.grey}>
-          The card is kept in the Bank of Georgia during repeated deposit and
-          withdraw In case of TBS Bank only during
-        </AppText>
-        <AppText>{''}</AppText>
-        <AppText subtext style={styles.grey}>
-          The card is kept in the Bank of Georgia during repeated deposit
-        </AppText>
-      </View>
+      <AppInfoBlock text="Add Card Info" />
 
       <View style={styles.row}>
         <Pressable style={styles.image} onPress={toggle}>
@@ -151,12 +143,6 @@ export default function AddCardModal() {
 }
 
 const styles = StyleSheet.create({
-  block: {
-    backgroundColor: 'rgba(101, 130, 253, 0.08)',
-    paddingVertical: 20,
-    paddingHorizontal: 30,
-    marginTop: 25,
-  },
   button: {
     position: 'absolute',
     bottom: 55,

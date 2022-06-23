@@ -111,12 +111,14 @@ export const refreshToken = async (config) => {
   const refresh_token = await SecureStore.getItemAsync('refreshToken');
   const data = await refreshTokenService(refresh_token);
 
-  if (data.access_token && data.refresh_token) {
-    await SecureStore.setItemAsync('accessToken', data.access_token);
-    await SecureStore.setItemAsync('refreshToken', data.refresh_token);
+  if (data) {
+    if (data.access_token && data.refresh_token) {
+      await SecureStore.setItemAsync('accessToken', data.access_token);
+      await SecureStore.setItemAsync('refreshToken', data.refresh_token);
 
-    if (config) return axios.request(config);
-    return data.access_token;
+      if (config) return axios.request(config);
+      return data.access_token;
+    }
   } else {
     await SecureStore.deleteItemAsync('accessToken');
     await SecureStore.deleteItemAsync('refreshToken');
