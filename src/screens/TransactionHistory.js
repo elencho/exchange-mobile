@@ -37,6 +37,7 @@ function TransactionHistory() {
     dispatch(chooseCurrency('Show All Currency'));
     dispatch(setAbbr(null));
     dispatch(fetchTransactions());
+    console.log('dasdasfasfasfasfasdfa');
   }, []);
 
   const onRefresh = () => dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });

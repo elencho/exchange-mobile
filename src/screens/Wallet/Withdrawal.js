@@ -100,8 +100,8 @@ export default function Withdrawal() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <ScrollView style={{ flex: hasRestriction ? 0 : 1 }}>
+    <>
+      <ScrollView contentContainerStyle={{ flexGrow: hasRestriction ? 0 : 1 }}>
         <View style={styles.block}>
           {generalError ? (
             <View style={{ marginBottom: 16 }}>
@@ -136,6 +136,14 @@ export default function Withdrawal() {
             <SaveAsTemplate />
           </>
         ) : null}
+
+        {hasRestriction || !hasMethod ? (
+          <FlexBlock
+            type="Withdrawal"
+            reason={reason()}
+            restrictedUntil={withdrawalRestriction.restrictedUntil}
+          />
+        ) : null}
       </ScrollView>
 
       {!hasRestriction && hasMethod && (
@@ -144,18 +152,10 @@ export default function Withdrawal() {
         </View>
       )}
 
-      {hasRestriction || !hasMethod ? (
-        <FlexBlock
-          type="Withdrawal"
-          reason={reason()}
-          restrictedUntil={withdrawalRestriction.restrictedUntil}
-        />
-      ) : null}
-
       <SmsEmailAuthModal type="SMS" withdrawal={withdrawalType()} />
       <SmsEmailAuthModal type="Email" withdrawal={withdrawalType()} />
       <GoogleOtpModal withdrawal={withdrawalType()} />
-    </View>
+    </>
   );
 }
 

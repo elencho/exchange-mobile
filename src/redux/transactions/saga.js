@@ -44,7 +44,9 @@ function* fetchTransactionsSaga() {
   const transactions = yield select(getTransactions);
   const newTransactions = yield call(fetch, params);
 
-  yield put(saveTransactions([...transactions, ...newTransactions]));
+  if (newTransactions) {
+    yield put(saveTransactions([...transactions, ...newTransactions]));
+  }
 
   yield put(toggleLoading(false));
 }
@@ -56,7 +58,9 @@ function* refreshTransactionsSaga() {
   const params = yield select(getParams);
   const transactions = yield call(fetch, params);
 
-  yield put(saveTransactions(transactions));
+  if (transactions) {
+    yield put(saveTransactions(transactions));
+  }
 
   yield put(toggleLoading(false));
 }

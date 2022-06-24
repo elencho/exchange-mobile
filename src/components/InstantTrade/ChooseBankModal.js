@@ -14,8 +14,40 @@ export default function ChooseBankModal() {
   const chooseBankModalVisible = useSelector(
     (state) => state.modals.chooseBankModalVisible
   );
-  const state = useSelector((state) => state.trade);
-  const { depositProvider, depositProviders } = state;
+  const state = useSelector((state) => state);
+  const {
+    trade: { depositProvider, depositProviders, currentBalanceObj },
+    transactions: { tabRouteName },
+    wallet: { walletTab },
+  } = state;
+
+  const array = () => {
+    let array = [];
+    if (tabRouteName === 'Wallet') {
+      if (
+        walletTab === 'Deposit' &&
+        currentBalanceObj.depositMethods.ECOMMERCE
+      ) {
+        depositProviders.forEach((p) => {
+          currentBalanceObj.depositMethods.ECOMMERCE.forEach((d) => {
+            if (p.displayName === d.displayName) array.push(d);
+          });
+        });
+      }
+
+      if (
+        walletTab === 'Withdrawal' &&
+        currentBalanceObj.withdrawalMethods.ECOMMERCE
+      ) {
+        depositProviders.forEach((p) => {
+          currentBalanceObj.withdrawalMethods.ECOMMERCE.forEach((d) => {
+            if (p.displayName === d.displayName) array.push(d);
+          });
+        });
+      }
+    }
+    return array;
+  };
 
   const hide = () => {
     dispatch(toggleChooseBankModal(false));
@@ -29,7 +61,8 @@ export default function ChooseBankModal() {
 
   const children = () => {
     if (depositProviders.length) {
-      return depositProviders.map((b, i) => (
+      // const array = depositProviders.filter(p => currentBalanceObj)
+      return array().map((b, i) => (
         <View key={b.displayName}>
           <Pressable
             style={[

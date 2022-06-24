@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Image, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
@@ -67,7 +73,7 @@ export default function FiatBlock() {
   );
 
   return (
-    <KeyboardAvoidingView>
+    <View>
       {network !== 'ECOMMERCE' && (
         <View style={styles.block}>
           <BankInfo />
@@ -105,7 +111,7 @@ export default function FiatBlock() {
       ) : (
         <AppButton text="Deposit" onPress={deposit} />
       )}
-    </KeyboardAvoidingView>
+    </View>
   );
 }
 

@@ -119,10 +119,6 @@ export const refreshToken = async (config) => {
       if (config) return axios.request(config);
       return data.access_token;
     }
-  } else {
-    await SecureStore.deleteItemAsync('accessToken');
-    await SecureStore.deleteItemAsync('refreshToken');
-    return 'Welcome';
   }
 };
 

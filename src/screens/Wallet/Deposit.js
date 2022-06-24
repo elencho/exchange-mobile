@@ -47,7 +47,6 @@ export default function Deposit() {
   } = state;
 
   const isFiat = currentBalanceObj.type === 'FIAT';
-  const isEthereum = network === 'ERC20' || network === 'BEP20';
   const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
@@ -65,13 +64,9 @@ export default function Deposit() {
   }, [depositRestriction]);
 
   const generate = () => {
-    if (isEthereum) {
-      dispatch(toggleGenerateRequestModal(true));
-    } else {
-      if (currentBalanceObj.depositMethods.WALLET) {
-        const provider = currentBalanceObj.depositMethods.WALLET[0].provider;
-        dispatch(generateCryptoAddressAction(code, provider));
-      }
+    if (currentBalanceObj.depositMethods.WALLET) {
+      const provider = currentBalanceObj.depositMethods.WALLET[0].provider;
+      dispatch(generateCryptoAddressAction(code, provider));
     }
   };
 
@@ -92,7 +87,10 @@ export default function Deposit() {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1 }}>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.block}>
         {generalError ? (
           <View style={{ marginBottom: 16 }}>
@@ -105,7 +103,9 @@ export default function Deposit() {
         {!isFiat ? (
           <>
             <ChooseNetworkDropdown />
-            {cryptoAddress.address && <AddressBlock />}
+            {cryptoAddress.address && !hasRestriction && hasMethod && (
+              <AddressBlock />
+            )}
           </>
         ) : (
           <>
@@ -123,24 +123,13 @@ export default function Deposit() {
       </View>
 
       {!cryptoAddress.address && !isFiat && !hasRestriction && hasMethod ? (
-        <>
-          {isEthereum ? (
-            <View style={styles.flex}>
-              <BulletsBlock />
-              <AppButton text="Generate" onPress={generate} />
-              <GenerateRequestModal />
-            </View>
-          ) : (
-            <FlexBlock reason="no address" />
-          )}
-        </>
+        <View style={styles.flex}>
+          <BulletsBlock />
+          <AppButton text="Generate" onPress={generate} />
+        </View>
       ) : null}
 
-      {isFiat && !hasRestriction && (
-        <>
-          <FiatBlock />
-        </>
-      )}
+      {isFiat && !hasRestriction && <FiatBlock />}
       {hasRestriction || !hasMethod ? (
         <FlexBlock
           type="Deposit"

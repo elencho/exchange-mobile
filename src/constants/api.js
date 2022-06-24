@@ -83,4 +83,4 @@ export const DELETE_CARD_URL = `${core}/exchange/api/v1/mobile/private/account/c
 
 export const DICTIONARY = `${core}/exchange/api/v1/mobile/public/dictionary`;
 
-export const VERIFICATION_TOKEN = `${core}/exchange/api/v1/private/users/verificationToken`;
+export const VERIFICATION_TOKEN = `${core}/exchange/api/v1/mobile/private/users/verificationToken`;

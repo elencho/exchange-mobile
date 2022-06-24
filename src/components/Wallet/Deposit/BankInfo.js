@@ -109,7 +109,10 @@ export default function BankInfo() {
 
       {info.intermediateSwift && (
         <>
-          <AppText medium style={[styles.title, { marginBottom: 15 }]}>
+          <AppText
+            medium
+            style={[styles.title, { marginBottom: 15, marginTop: 25 }]}
+          >
             Intermediary bank
           </AppText>
           {intermediateInfoArray.map((i) => (
