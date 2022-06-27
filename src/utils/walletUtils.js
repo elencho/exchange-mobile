@@ -72,7 +72,6 @@ export const generateCryptoAddress = async (currency, network) => {
     method: 'POST',
     url: `${GENERATE_CRYPTO_ADDRESS}/${currency}?provider=${network}`,
   });
-  console.log(data.data);
   if (data) return data.data;
 };
 

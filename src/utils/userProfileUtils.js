@@ -71,7 +71,6 @@ export const registrationForm = async (obj, url) => {
     url,
     data: params,
   });
-  console.log(data);
   if (data) return data.data;
 };
 

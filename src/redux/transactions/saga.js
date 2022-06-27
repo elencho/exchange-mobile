@@ -47,7 +47,6 @@ function* fetchTransactionsSaga() {
   if (newTransactions) {
     yield put(saveTransactions([...transactions, ...newTransactions]));
   }
-
   yield put(toggleLoading(false));
 }
 

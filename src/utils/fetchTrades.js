@@ -9,36 +9,34 @@ import {
 } from '../constants/api';
 
 export const fetchTrades = async (params) => {
-  const data = await axios.get(TRADES_URL, {
-    params,
-  });
-  if (data) return data.data;
+  const data = await axios.get(TRADES_URL, { params });
+  return data.data;
 };
 
 export const fetchOffers = async () => {
   const data = await axios.get(OFFERS_URL);
-  if (data) return data.data;
+  return data.data;
 };
 
 export const submitTrade = async (params) => {
   const data = await axios.post(TRADES_URL, params, {});
-  if (data) return data;
+  return data;
 };
 export const fetchBalance = async () => {
   const data = await axios.get(BALANCE_URL);
-  if (data) return data.data;
+  return data.data;
 };
 
 export const fetchCards = async (params) => {
   const data = await axios.get(CARDS_URL, {
     params,
   });
-  if (data) return data.data;
+  return data.data;
 };
 
 export const fetchFees = async (params) => {
   const data = await axios.get(CALCULATE_FEE_URL, {
     params,
   });
-  if (data) return data.data;
+  return data.data;
 };

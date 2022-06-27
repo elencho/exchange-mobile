@@ -10,14 +10,21 @@ export default function TotalBalance() {
   const filter = useSelector((state) => state.wallet.usdBtcSwitch);
   const balance = useSelector((state) => state.trade.balance);
 
-  const { totalValueBTC, totalValueUSD } = balance;
+  const primary = () => {
+    if (balance) {
+      const { totalValueBTC, totalValueUSD } = balance;
+      return filter === 'USD'
+        ? `Total: ${totalValueUSD} USD`
+        : `Total: ${totalValueBTC} BTC`;
+    }
+  };
 
-  const primary = () =>
-    filter === 'USD'
-      ? `Total: ${totalValueUSD} USD`
-      : `Total: ${totalValueBTC} BTC`;
-  const secondary = () =>
-    filter === 'USD' ? `${totalValueBTC} BTC` : `${totalValueUSD} USD`;
+  const secondary = () => {
+    if (balance) {
+      const { totalValueBTC, totalValueUSD } = balance;
+      return filter === 'USD' ? `${totalValueBTC} BTC` : `${totalValueUSD} USD`;
+    }
+  };
 
   return (
     <View style={styles.container}>

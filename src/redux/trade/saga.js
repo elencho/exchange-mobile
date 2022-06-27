@@ -55,9 +55,7 @@ function* pairObjectSaga(action) {
   if (offers) {
     yield call(() =>
       offers[fiat].forEach((o) => {
-        if (o.pair.baseCurrency === crypto) {
-          object = o;
-        }
+        if (o.pair.baseCurrency === crypto) object = o;
       })
     );
     yield put(setPairObject(object));
@@ -69,14 +67,18 @@ function* depositProvidersSaga() {
   let providers; // Banks that have ecommerce
   const balance = yield select((state) => state.trade.balance);
   const fiat = yield select((state) => state.trade.fiat);
-  yield call(() => {
+
+  const setProviders = () =>
     balance.balances.forEach((b) => {
       if (b.depositMethods.ECOMMERCE && fiat === b.currencyCode) {
         providers = b.depositMethods.ECOMMERCE;
         // provider = b.depositMethods.ECOMMERCE[0].provider;
       }
     });
-  });
+
+  if (balance) {
+    if (balance.balances) yield call(setProviders);
+  }
   // yield put(setDepositProvider(provider));
   yield put(setDepositProviders(providers));
 }

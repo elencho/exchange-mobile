@@ -183,7 +183,7 @@ function* fetchCountriesSaga() {
 //  FETCH USER INFO
 function* fetchUserInfoSaga() {
   const userInfo = yield call(fetchUserInfoUtil);
-  yield put(saveUserInfo(userInfo ? userInfo : {}));
+  if (userInfo) yield put(saveUserInfo(userInfo));
 }
 
 //  UPDATE USER INFO

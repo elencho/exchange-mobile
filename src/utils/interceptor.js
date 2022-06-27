@@ -11,6 +11,14 @@ axios.interceptors.request.use(async (config) => {
 });
 
 axios.interceptors.response.use(
-  (response) => response,
-  (err) => handleError(err)
+  (response) => {
+    // console.log('▼▼▼▼▼▼ response');
+    // console.log(response);
+    // console.log('▲▲▲▲▲▲');
+    return response;
+  },
+  async (err) => {
+    const response = await handleError(err);
+    return response;
+  }
 );
