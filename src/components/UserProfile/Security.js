@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import colors from '../../constants/colors';
 import AppText from '../AppText';
@@ -11,7 +11,7 @@ import SmsEmailAuthModal from './SmsEmailAuthModal';
 
 export default function Security() {
   return (
-    <ScrollView>
+    <>
       <View style={styles.block}>
         <AppText subtext style={[styles.secondary, styles.margin]}>
           2FA is specific type of multi-factor authentication that strengthens
@@ -37,7 +37,7 @@ export default function Security() {
       <SmsEmailAuthModal type="E-mail" />
       <SmsEmailAuthModal type="SMS" />
       <GoogleOtpModal />
-    </ScrollView>
+    </>
   );
 }
 

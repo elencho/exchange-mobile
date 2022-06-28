@@ -50,8 +50,6 @@ export const actionTypes = {
   CREDENTIALS_FOR_EMAIL: 'CREDENTIALS_FOR_EMAIL',
   CREDENTIALS_FOR_GOOGLE: 'CREDENTIALS_FOR_GOOGLE',
   ACTIVATE_GOOGLE_OTP: 'ACTIVATE_GOOGLE_OTP',
-
-  RESET_WALLET_STATE: 'RESET_WALLET_STATE',
 };
 
 export const saveGeneralError = (generalError) => ({
@@ -221,8 +219,4 @@ export const credentialsForGoogle = (OTP) => ({
 export const activateGoogleOtp = (OTP) => ({
   type: actionTypes.ACTIVATE_GOOGLE_OTP,
   OTP,
-});
-
-export const resetProfileState = () => ({
-  type: actionTypes.ACTIVATE_GOOGLE_OTP,
 });

@@ -119,6 +119,7 @@ export const refreshToken = async (config) => {
       return data.access_token;
     }
   }
+  // else Promise.reject().then((err) => err);
 };
 
 export const logoutUtil = async (refresh_token) => {

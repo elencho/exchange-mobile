@@ -1,5 +1,12 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 
@@ -11,12 +18,17 @@ import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecurity
 import Security from '../components/UserProfile/Security';
 import images from '../constants/images';
 import { logoutUtil } from '../utils/userProfileUtils';
+import { fetchUserInfo } from '../redux/profile/actions';
+import colors from '../constants/colors';
 
 export default function UserProfile({ navigation }) {
   const dispatch = useDispatch();
-  const Personal_Security = useSelector(
-    (state) => state.profile.Personal_Security
-  );
+  const state = useSelector((state) => state);
+
+  const {
+    profile: { Personal_Security },
+    transactions: { loading },
+  } = state;
 
   const logout = async () => {
     const refresh_token = await SecureStore.getItemAsync('refreshToken');
@@ -30,6 +42,8 @@ export default function UserProfile({ navigation }) {
     dispatch({ type: 'LOGOUT' });
     // }
   };
+
+  const onRefresh = () => dispatch(fetchUserInfo());
 
   return (
     <Background>
@@ -52,8 +66,18 @@ export default function UserProfile({ navigation }) {
 
       <PersonalSecuritySwitcher />
 
-      {Personal_Security === 'Personal' && <Personal />}
-      {Personal_Security === 'Security' && <Security />}
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            tintColor={colors.PRIMARY_PURPLE}
+            refreshing={loading}
+            onRefresh={onRefresh}
+          />
+        }
+      >
+        {Personal_Security === 'Personal' && <Personal />}
+        {Personal_Security === 'Security' && <Security />}
+      </ScrollView>
     </Background>
   );
 }

@@ -20,7 +20,6 @@ import {
   saveUserAndPassInfo,
   saveRegistrationStartInfo,
   saveResendLink,
-  resetProfileState,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -51,7 +50,7 @@ import {
   toggleLogin2FaModal,
 } from '../modals/actions';
 import { resetTradesState } from '../trade/actions';
-import { resetTransactionsState } from '../transactions/actions';
+import { resetTransactionsState, toggleLoading } from '../transactions/actions';
 import { resetWalletState } from '../wallet/actions';
 
 //  START LOGIN
@@ -182,8 +181,13 @@ function* fetchCountriesSaga() {
 
 //  FETCH USER INFO
 function* fetchUserInfoSaga() {
+  yield put(toggleLoading(true));
+  yield delay(1000);
+
   const userInfo = yield call(fetchUserInfoUtil);
   if (userInfo) yield put(saveUserInfo(userInfo));
+
+  yield put(toggleLoading(false));
 }
 
 //  UPDATE USER INFO

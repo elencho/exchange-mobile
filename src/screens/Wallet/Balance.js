@@ -3,10 +3,12 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  RefreshControl,
+  ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../../components/Background';
 import Headline from '../../components/TransactionHistory/Headline';
@@ -19,10 +21,25 @@ import ChooseCurrencyModal from '../../components/TransactionFilter/ChooseCurren
 import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkModal';
 import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
+import colors from '../../constants/colors';
+import { setCard, setDepositProvider } from '../../redux/trade/actions';
 
 export default function Balance({ navigation }) {
-  const state = useSelector((state) => state.wallet);
-  const { walletTab } = state;
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const {
+    wallet: { walletTab },
+    trade: { tradesLoading, offersLoading },
+  } = state;
+
+  const loading = tradesLoading || offersLoading;
+
+  const onRefresh = () => {
+    dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+    dispatch({ type: 'CLEAN_WALLET_INPUTS' });
+    dispatch(setDepositProvider(null));
+    dispatch(setCard(null));
+  };
 
   return (
     <Background>
@@ -44,10 +61,21 @@ export default function Balance({ navigation }) {
         behavior={Platform.select({ android: undefined, ios: 'padding' })}
         keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
       >
-        {walletTab === 'Deposit' && <Deposit />}
-        {walletTab === 'Withdrawal' && <Withdrawal />}
-        {walletTab === 'Whitelist' && <Whitelist />}
-        {walletTab === 'Manage Cards' && <ManageCards />}
+        <ScrollView
+          contentContainerStyle={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl
+              tintColor={colors.PRIMARY_PURPLE}
+              refreshing={loading}
+              onRefresh={onRefresh}
+            />
+          }
+        >
+          {walletTab === 'Deposit' && <Deposit />}
+          {walletTab === 'Withdrawal' && <Withdrawal />}
+          {walletTab === 'Whitelist' && <Whitelist />}
+          {walletTab === 'Manage Cards' && <ManageCards />}
+        </ScrollView>
       </KeyboardAvoidingView>
 
       <ChooseCurrencyModal wallet />

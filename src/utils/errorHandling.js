@@ -6,6 +6,9 @@ import { navigationRef } from '../navigation';
 import { refreshToken } from './userProfileUtils';
 
 export default async (err) => {
+  const controller = new AbortController();
+  // Promise.reject(err).then((err) => err);
+
   if (err.response) {
     // console.log(err.response.data);
     // console.log(err.response.status);
@@ -22,8 +25,7 @@ export default async (err) => {
       err.response.status === 400 &&
       err.response.data.error === 'invalid_grant'
     ) {
-      axios.Cancel('Log out');
-      Promise.reject(err);
+      controller.abort();
       await SecureStore.deleteItemAsync('accessToken');
       await SecureStore.deleteItemAsync('refreshToken');
       navigationRef.navigate('Welcome');

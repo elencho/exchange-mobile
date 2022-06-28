@@ -1,5 +1,6 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../components/Background';
 import BuySellSwitch from '../components/InstantTrade/BuySellSwitch';
@@ -16,6 +17,16 @@ import colors from '../constants/colors';
 import FiatModal from '../components/InstantTrade/FiatModal';
 
 export default function InstantTrade() {
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state);
+  const {
+    trade: { tradesLoading, offersLoading },
+  } = state;
+
+  const loading = tradesLoading || offersLoading;
+
+  const onRefresh = () => dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+
   return (
     <Background>
       <TopRow />
@@ -28,7 +39,16 @@ export default function InstantTrade() {
 
       <BuySellSwitch />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            tintColor={colors.PRIMARY_PURPLE}
+            refreshing={loading}
+            onRefresh={onRefresh}
+          />
+        }
+      >
         <TradeBlock />
         <TransactionsBlock />
       </ScrollView>

@@ -16,14 +16,14 @@ const INITIAL_STATE = {
   cardDepositUrl: null,
 
   //Withdrawal
+  templates: [],
+  banks: [],
   withdrawalAmount: null,
   withdrawalNote: '',
-  memoTag: '',
-  templates: [],
   currentTemplate: {},
-  banks: [],
   withdrawalBank: {},
   iban: '',
+  memoTag: '',
   saveTemplate: false,
   newTemplateName: '',
 
@@ -196,6 +196,18 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         intermediateBank,
+      };
+    case 'CLEAN_WALLET_INPUTS':
+      return {
+        ...state,
+        withdrawalAmount: null,
+        withdrawalNote: '',
+        currentTemplate: {},
+        withdrawalBank: {},
+        iban: '',
+        memoTag: '',
+        saveTemplate: false,
+        newTemplateName: '',
       };
     case actionTypes.RESET_WALLET_STATE:
       return {

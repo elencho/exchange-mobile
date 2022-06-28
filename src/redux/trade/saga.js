@@ -4,6 +4,7 @@ import {
   actionTypes,
   saveOffers,
   saveTrades,
+  fetchOffers as fetchOffersAction,
   setOffersLoading,
   setPairObject,
   setTradesLoading,
@@ -37,6 +38,7 @@ import {
 } from '../../utils/fetchTrades';
 import { toggleBuySellModal } from '../modals/actions';
 import { setWalletTab } from '../wallet/actions';
+import { fetchCurrencies } from '../transactions/actions';
 
 function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
@@ -145,6 +147,13 @@ function* addNewCardSaga(action) {
   yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
 }
 
+function* refreshWalletAndTradesSaga() {
+  // For now, trades and wallet screen refreshes are the same
+  yield put(fetchOffersAction());
+  yield put(fetchTradesAction());
+  yield put(fetchCurrencies());
+}
+
 export default function* () {
   yield takeLatest(actionTypes.FETCH_TRADES, fetchTradesSaga);
   yield takeLatest(actionTypes.FETCH_OFFERS, fetchOffersSaga);
@@ -154,4 +163,5 @@ export default function* () {
   yield takeLatest(actionTypes.SUBMIT_TRADE, submitTradeSaga);
   yield takeLatest(actionTypes.FETCH_FEE, fetchFeeSaga);
   yield takeLatest('ADD_NEW_CARD_SAGA', addNewCardSaga);
+  yield takeLatest('REFRESH_WALLET_AND_TRADES', refreshWalletAndTradesSaga);
 }

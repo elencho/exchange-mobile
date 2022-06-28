@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-  Switch,
-  SafeAreaViewComponent,
-} from 'react-native';
+import { Image, Pressable, StyleSheet, View, Switch } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -144,7 +136,7 @@ export default function Personal() {
   };
 
   return (
-    <ScrollView>
+    <>
       <View style={styles.block}>
         {['Identity', 'Phone', 'Notifications', 'Language'].map((r, i, a) => (
           <View
@@ -169,7 +161,7 @@ export default function Personal() {
       <PersonalInfoModal />
       <PhoneNumberModal />
       <ChooseLanguageModal />
-    </ScrollView>
+    </>
   );
 }
 
