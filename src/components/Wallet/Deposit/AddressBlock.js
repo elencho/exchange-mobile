@@ -35,7 +35,7 @@ export default function AddressBlock() {
         </TouchableOpacity>
       </View>
 
-      {cryptoAddress.tag && (
+      {cryptoAddress.tag ? (
         <View style={[styles.row, { marginTop: 12 }]}>
           <AppText style={styles.address}>
             <AppText style={{ textTransform: 'capitalize' }}>Memo :</AppText>
@@ -46,7 +46,7 @@ export default function AddressBlock() {
             <Image source={images.Copy} />
           </TouchableOpacity>
         </View>
-      )}
+      ) : null}
 
       <View style={styles.bullets}>
         <View style={styles.row}>
