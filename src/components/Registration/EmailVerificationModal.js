@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ImageBackground, Image } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ImageBackground,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
@@ -20,11 +26,23 @@ export default function EmailVerificationModal() {
 
   const {
     modals: { emailVerificationModalVisible },
-    profile: { resendLink },
+    profile: { verificationInfo },
+    transactions: { loading },
   } = state;
 
   const hide = () => dispatch(toggleEmailVerificationModal(false));
-  const resend = () => resendEmail(resendLink);
+  const resend = () => resendEmail(verificationInfo.callbackUrl);
+  const checkMailText = () => {
+    if (verificationInfo.attributes) {
+      return (
+        <AppText style={[styles.secondary, { marginBottom: 36 }]}>
+          Check your E-mail {verificationInfo.attributes.userEmail} and enter
+          the code account
+        </AppText>
+      );
+    }
+    return null;
+  };
 
   const children = (
     <ImageBackground source={images.Background} style={styles.container}>
@@ -32,17 +50,19 @@ export default function EmailVerificationModal() {
         <CloseModalIcon onPress={hide} />
       </View>
 
-      <View style={styles.middle}>
-        <Image source={images.E_mail_Auth} />
-        <AppText header style={styles.primary}>
-          E-mail Has Been Sent
-        </AppText>
-        <AppText style={[styles.secondary, { marginBottom: 36 }]}>
-          Check your E-mail ##მეილის ცვლადი## and enter the code account
-        </AppText>
+      {loading ? (
+        <ActivityIndicator size="large" style={styles.middle} />
+      ) : (
+        <View style={styles.middle}>
+          <Image source={images.E_mail_Auth} />
+          <AppText header style={styles.primary}>
+            E-mail Has Been Sent
+          </AppText>
+          {checkMailText()}
 
-        <TwoFaInput value={value} setValue={setValue} registration />
-      </View>
+          <TwoFaInput value={value} setValue={setValue} registration />
+        </View>
+      )}
 
       <AppText style={styles.secondary}>
         Didn't receive link? <PurpleText text="Resend" onPress={resend} />

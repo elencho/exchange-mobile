@@ -11,7 +11,7 @@ export const actionTypes = {
   // REGISTER
   SWITCH_PERSONAL_COMPANY: 'SWITCH_PERSONAL_COMPANY',
   SAVE_REGISTRATION_START_INFO: 'SAVE_REGISTRATION_START_INFO',
-  SAVE_RESEND_LINK: 'SAVE_RESEND_LINK',
+  SAVE_VERIFICATION_INFO: 'SAVE_VERIFICATION_INFO',
 
   SWITCH_PERSONAL_SECURITY: 'SWITCH_PERSONAL_SECURITY',
   SAVE_COUNTRIES: 'SAVE_COUNTRIES',
@@ -88,9 +88,9 @@ export const setRegistrationInputs = (registrationInputs) => ({
   type: actionTypes.SET_REGISTRATION_INPUTS,
   registrationInputs,
 });
-export const saveResendLink = (resendLink) => ({
-  type: actionTypes.SAVE_RESEND_LINK,
-  resendLink,
+export const saveVerificationInfo = (verificationInfo) => ({
+  type: actionTypes.SAVE_VERIFICATION_INFO,
+  verificationInfo,
 });
 
 // PERSONAL

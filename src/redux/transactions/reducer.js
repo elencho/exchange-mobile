@@ -9,7 +9,7 @@ const INITIAL_STATE = {
   currentTransaction: {},
   currency: 'Show All Currency',
 
-  loading: true,
+  loading: false,
 
   // Query Params
   code: null,

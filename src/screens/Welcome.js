@@ -47,7 +47,10 @@ export default function Welcome({ navigation }) {
       .catch((err) => console.log(err));
   });
 
-  const startLogin = () => dispatch(startLoginAction(navigation));
+  const startLogin = () => {
+    // console.log('login');
+    dispatch(startLoginAction(navigation));
+  };
   const startRegistration = () => dispatch(startRegistrationAction(navigation));
 
   const auth = Constants.manifest.extra.auth;

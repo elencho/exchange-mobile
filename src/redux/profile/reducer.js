@@ -16,13 +16,13 @@ const INITIAL_STATE = {
     firstName: 'aa',
     lastName: 'aa',
     email: 'metro29@mailinator.com',
-    passwordNew: 'Vaxo@0nba',
-    passwordConfirm: 'Vaxo@0nba',
+    passwordNew: '11111!Aa',
+    passwordConfirm: '11111!Aa',
     phoneNumber: '555554555',
     acceptAgeRequirement: 'on',
     acceptTerms: 'on',
   },
-  resendLink: null,
+  verificationInfo: {},
 
   Personal_Security: 'Personal',
   userInfo: {},
@@ -52,7 +52,7 @@ export default (state = INITIAL_STATE, action) => {
     userAndPassInfo,
     loginStartInfo,
     registrationStartInfo,
-    resendLink,
+    verificationInfo,
     registrationInputs,
     Personal_Security,
     Personal_Company,
@@ -88,10 +88,10 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         registrationStartInfo,
       };
-    case actionTypes.SAVE_RESEND_LINK:
+    case actionTypes.SAVE_VERIFICATION_INFO:
       return {
         ...state,
-        resendLink,
+        verificationInfo,
       };
     case actionTypes.SET_CREDENTIALS:
       return {

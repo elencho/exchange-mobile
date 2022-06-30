@@ -19,7 +19,7 @@ import {
   saveLoginStartInfo,
   saveUserAndPassInfo,
   saveRegistrationStartInfo,
-  saveResendLink,
+  saveVerificationInfo,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -41,6 +41,7 @@ import {
   updatePhoneNumber,
   updateUserData,
   usernameAndPasswordForm,
+  verifyAccount,
   verifyPhoneNumber,
 } from '../../utils/userProfileUtils';
 import {
@@ -60,10 +61,7 @@ function* startLoginSaga(action) {
   const pkceInfo = yield call(async () => await asyncPkceChallenge());
   yield put(savePkceInfo(pkceInfo));
 
-  const code_challenge = yield select(
-    (state) => state.profile.pkceInfo.codeChallenge
-  );
-  const loginStartInfo = yield call(loginStart, code_challenge);
+  const loginStartInfo = yield call(loginStart, pkceInfo.codeChallenge);
   yield put(saveLoginStartInfo(loginStartInfo));
 
   if (loginStartInfo.execution === 'LOGIN_USERNAME_PASSWORD') {
@@ -74,6 +72,9 @@ function* startLoginSaga(action) {
 //  START REGISTRATION
 function* startRegistrationSaga(action) {
   const { navigation } = action;
+
+  const pkceInfo = yield call(async () => await asyncPkceChallenge());
+  yield put(savePkceInfo(pkceInfo));
 
   const registrationStartInfo = yield call(registrationStart);
   yield put(saveRegistrationStartInfo(registrationStartInfo));
@@ -94,10 +95,39 @@ function* registrationFormSaga(action) {
   );
 
   const data = yield call(registrationForm, params, url);
-  if (data.execution === 'EMAIL_VERIFICATION') {
+  if (data.execution === 'EMAIL_VERIFICATION_OTP') {
     yield put(toggleEmailVerificationModal(true));
-    yield put(saveResendLink(data.callbackUrl));
+    yield put(saveVerificationInfo(data));
   }
+}
+
+// VERIFY REGISTRATION
+function* verifyAccountSaga(action) {
+  const { otp, navigation } = action;
+  yield put(toggleLoading(true));
+
+  const url = yield select(
+    (state) => state.profile.verificationInfo.callbackUrl
+  );
+  const codeVerifier = yield select(
+    (state) => state.profile.pkceInfo.codeVerifier
+  );
+
+  const verified = yield call(verifyAccount, url, otp);
+  if (verified) {
+    const data = yield call(codeToToken, verified.code, codeVerifier);
+    if (data) {
+      yield call(async () => {
+        await SecureStore.setItemAsync('accessToken', data.access_token);
+        await SecureStore.setItemAsync('refreshToken', data.refresh_token);
+      });
+
+      yield put({ type: 'OTP_SAGA', token: data.access_token });
+      yield call(() => navigation.navigate('Main'));
+    }
+  }
+  yield put(toggleEmailVerificationModal(false));
+  yield put(toggleLoading(false));
 }
 
 //  USERNAME AND PASSWORD
@@ -334,4 +364,5 @@ export default function* () {
   );
   yield takeLatest('OTP_SAGA', otpSaga);
   yield takeLatest('LOGOUT', logoutSaga);
+  yield takeLatest('VERIFY_ACCOUNT', verifyAccountSaga);
 }

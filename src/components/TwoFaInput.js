@@ -29,7 +29,7 @@ export default function TwoFaInput({
   whitelist,
   value,
   setValue,
-  cellCount,
+  cellCount = 6,
   login,
   registration,
 }) {
@@ -49,8 +49,8 @@ export default function TwoFaInput({
 
   useEffect(() => {
     if (value.length === cellCount) {
-      if (registration) {
-      }
+      if (registration)
+        dispatch({ type: 'VERIFY_ACCOUNT', otp: value, navigation });
 
       if (withdrawal === 'crypto') dispatch(cryptoWithdrawalAction(value)); // value = OTP
       if (withdrawal === 'wire') dispatch(wireWithdrawalAction(value)); // value = OTP

@@ -45,6 +45,7 @@ export const registrationStart = async () => {
     params: {
       client_id: 'mobile-service-public',
       redirect_uri: authRedirectUrl,
+      response_mode: 'form_post',
       response_type: 'code',
       scope: 'openid',
       display: 'mobile',
@@ -74,7 +75,17 @@ export const registrationForm = async (obj, url) => {
   if (data) return data.data;
 };
 
-export const resendEmail = async (url) => await axios.post(url);
+export const verifyAccount = async (url, otp) => {
+  const data = await axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url,
+    data: `otp=${otp}`,
+  });
+  return data.data;
+};
+
+export const resendEmail = async (url) => await axios.get(`${url}&resend=true`);
 
 export const loginOtp = async (otp, url) => {
   const data = await axios({
