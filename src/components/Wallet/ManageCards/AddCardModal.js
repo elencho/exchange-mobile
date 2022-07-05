@@ -89,7 +89,7 @@ export default function AddCardModal() {
         </AppText>
       )}
 
-      <AppInfoBlock text="Add Card Info" />
+      <AppInfoBlock content={['Add Card Info']} info />
 
       <View style={styles.row}>
         <Pressable style={styles.image} onPress={toggle}>

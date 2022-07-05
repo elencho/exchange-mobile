@@ -6,8 +6,6 @@ import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetwork
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
 import colors from '../../constants/colors';
 import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock';
-import GenerateRequestModal from '../../components/Wallet/Deposit/GenerateRequestModal';
-import { toggleGenerateRequestModal } from '../../redux/modals/actions';
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
 import {
   generateCryptoAddressAction,
@@ -18,14 +16,12 @@ import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodM
 import AppButton from '../../components/AppButton';
 import FiatBlock from '../../components/Wallet/Deposit/FiatBlock';
 import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
-import AppText from '../../components/AppText';
 import AppWebView from '../../components/AppWebView';
-import WireTransferWarning from '../../components/Wallet/Withdrawal/WireTransferWarning';
 import GeneralError from '../../components/GeneralError';
 import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
 import { saveGeneralError } from '../../redux/profile/actions';
 import AppInfoBlock from '../../components/AppInfoBlock';
-import SepaWarning from '../../components/Wallet/Deposit/SepaWarning';
+import { infos, warnings } from '../../constants/warningsAndInfos';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -71,9 +67,7 @@ export default function Deposit() {
   };
 
   const reason = () => {
-    if (depositRestriction.reason) {
-      return depositRestriction.reason;
-    }
+    if (depositRestriction.reason) return depositRestriction.reason;
     return 'METHOD';
   };
 
@@ -83,6 +77,19 @@ export default function Deposit() {
     if (ending === 'false' || ending === 'true') {
       dispatch(saveCardDepositUrl(null));
       dispatch(saveGeneralError(ending));
+    }
+  };
+
+  const content = () => {
+    let infoObj;
+    if (hasMethod && currentBalanceObj.infos) {
+      infoObj = currentBalanceObj.infos[network];
+      console.log(currentBalanceObj.infos);
+      let array = [
+        `Expected Arrival: ${infoObj.minConfirmsForDeposit} network confirmations`,
+      ];
+      if (infoObj.walletInfo) array.push(infoObj.walletInfo);
+      return array;
     }
   };
 
@@ -106,15 +113,22 @@ export default function Deposit() {
             {cryptoAddress.address && !hasRestriction && hasMethod && (
               <AddressBlock />
             )}
+            {hasMethod && <AppInfoBlock content={content()} warning />}
           </>
         ) : (
           <>
             {hasMultipleMethods && (
               <>
                 <TransferMethodDropdown />
-                {isEcommerce && <AppInfoBlock text="Deposit Ecommerce Info" />}
-                {network === 'SWIFT' && <WireTransferWarning />}
-                {network === 'SEPA' && <SepaWarning />}
+                {isEcommerce && (
+                  <AppInfoBlock content={infos.ecommerce.deposit} info />
+                )}
+                {network === 'SWIFT' && (
+                  <AppInfoBlock content={warnings.swift.deposit} warning />
+                )}
+                {network === 'SEPA' && (
+                  <AppInfoBlock content={warnings.sepa} warning />
+                )}
                 <TransferMethodModal />
               </>
             )}

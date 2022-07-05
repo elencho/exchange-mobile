@@ -13,9 +13,7 @@ export default function AddressBlock() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { cryptoAddress, network },
-    transactions: { code },
-    trade: { currentBalanceObj },
+    wallet: { cryptoAddress },
   } = state;
 
   const copyAddress = () => Clipboard.setString(cryptoAddress.address);
@@ -47,28 +45,6 @@ export default function AddressBlock() {
           </TouchableOpacity>
         </View>
       ) : null}
-
-      <View style={styles.bullets}>
-        <View style={styles.row}>
-          <View style={styles.bullet} />
-          <AppText style={styles.light} subtext>
-            {/* {currentBalanceObj.infos[network].transactionRecipientType} */}
-            {' DEPOSIT '}
-            <AppText style={styles.light2}>required to deposit </AppText>
-            <AppText style={styles.light2}>{code}</AppText>
-          </AppText>
-        </View>
-
-        <View style={{ marginVertical: 5 }} />
-
-        <View style={styles.row}>
-          <View style={styles.bullet} />
-          <AppText style={styles.light} subtext>
-            Expected arrival :
-            <AppText style={styles.light2}>15 network confirmation</AppText>
-          </AppText>
-        </View>
-      </View>
 
       <AddressQrModal />
     </View>

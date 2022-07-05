@@ -10,7 +10,6 @@ import {
   toggleGoogleOtpModal,
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
-import WireTransferWarning from '../../components/Wallet/Withdrawal/WireTransferWarning';
 import {
   getWhitelistAction,
   setNetwork,
@@ -29,7 +28,7 @@ import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetwork
 import GeneralError from '../../components/GeneralError';
 import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import AppInfoBlock from '../../components/AppInfoBlock';
-import SepaWarning from '../../components/Wallet/Deposit/SepaWarning';
+import { infos, warnings } from '../../constants/warningsAndInfos';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
@@ -53,6 +52,10 @@ export default function Withdrawal() {
 
   const isFiat = currentBalanceObj.type === 'FIAT';
   const isEcommerce = network === 'ECOMMERCE';
+  const walletInfo = () => {
+    if (currentBalanceObj.infos)
+      return currentBalanceObj.infos[network].walletInfo;
+  };
 
   useEffect(() => {
     const { withdrawalMethods } = currentBalanceObj;
@@ -115,13 +118,19 @@ export default function Withdrawal() {
             <>
               <TransferMethodDropdown />
               <TransferMethodModal />
-              {network === 'SWIFT' && <WireTransferWarning />}
-              {network === 'SEPA' && <SepaWarning />}
+              {network === 'SWIFT' && (
+                <AppInfoBlock content={warnings.swift.deposit} warning />
+              )}
+              {network === 'SEPA' && (
+                <AppInfoBlock content={warnings.sepa} warning />
+              )}
               {network === 'ECOMMERCE' && (
-                <AppInfoBlock text="Withdrawal Ecommerce Info" />
+                <AppInfoBlock content={infos.ecommerce.withdrawal} info />
               )}
             </>
           )}
+
+          {walletInfo() && <AppInfoBlock content={[walletInfo()]} warning />}
         </View>
 
         {!hasRestriction && isFiat && hasMethod && !isEcommerce && (
