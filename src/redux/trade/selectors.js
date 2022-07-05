@@ -52,9 +52,9 @@ export const getCardParams = (state) => {
 
   return {
     currency: fiat,
-    status: 'VERIFIED',
-    provider: depositProvider,
-    transactionType: 'DEPOSIT',
+    // provider: depositProvider,
+    // status: 'VERIFIED',
+    // transactionType: 'DEPOSIT',
   };
 };
 

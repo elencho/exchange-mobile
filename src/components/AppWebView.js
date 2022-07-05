@@ -8,6 +8,14 @@ export default function AppWebView({ handleUrlChange, ...rest }) {
       <WebView
         nestedScrollEnabled
         onNavigationStateChange={handleUrlChange}
+        originWhitelist={['*']}
+        allowsFullscreenVideo
+        allowsInlineMediaPlayback
+        allowFileAccess
+        allowFileAccessFromFileURLs
+        allowUniversalAccessFromFileURLs
+        javaScriptEnabled
+        domStorageEnabled
         {...rest}
       />
     </TouchableOpacity>

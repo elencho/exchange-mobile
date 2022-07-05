@@ -48,7 +48,11 @@ export default function ManageCards() {
 
       {cards.length ? (
         <>
-          <ScrollView style={styles.scrollView} nestedScrollEnabled>
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={{ paddingVertical: 20 }}
+            nestedScrollEnabled
+          >
             {cards.map((c) => (
               <Card
                 key={c.id}
@@ -119,6 +123,6 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingHorizontal: 28,
-    paddingVertical: 20,
+    // paddingVertical: 20,
   },
 });

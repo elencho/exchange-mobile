@@ -45,6 +45,8 @@ export default function ChooseBankModal() {
           });
         });
       }
+
+      if (walletTab === 'Manage Cards') return depositProviders;
     }
     return array;
   };

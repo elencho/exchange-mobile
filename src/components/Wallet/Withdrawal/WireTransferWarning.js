@@ -1,14 +1,17 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 
 export default function WireTransferWarning() {
+  const walletTab = useSelector((state) => state.wallet.walletTab);
+
   return (
     <View style={styles.warning}>
       <AppText subtext style={styles.subtext}>
-        Wire transfers
+        Wire Transfers {walletTab}
       </AppText>
     </View>
   );

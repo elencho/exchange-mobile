@@ -5,6 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 import {
   ACTIVATE_EMAIL_OTP,
   ACTIVATE_GOOGLE_OTP,
+  CARD_VERIFICATION_TOKEN,
   CODE_TO_TOKEN,
   COUNTRIES_URL,
   EMAIL_VERIFICATION,
@@ -19,10 +20,23 @@ import {
   UPDATE_PHONE_NUMBER,
   UPDATE_USER_DATA,
   USER_INFO_URL,
+  VERIFICATION_TOKEN,
   VERIFY_PHONE_NUMBER,
 } from '../constants/api';
 
 const authRedirectUrl = Constants.manifest.extra.authRedirectUrl;
+
+export const sumsubVerificationToken = async () => {
+  const token = await axios.get(VERIFICATION_TOKEN);
+  return token.data;
+};
+
+export const cardVerificationToken = async () => {
+  const token = await axios.get(CARD_VERIFICATION_TOKEN, {
+    params: { cardId: 14568 },
+  });
+  return token.data.token;
+};
 
 export const loginStart = async (code_challenge) => {
   const data = await axios.get(LOGIN_START_URL, {
