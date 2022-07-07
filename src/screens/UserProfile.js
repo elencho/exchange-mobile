@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  Button,
   Image,
   RefreshControl,
   ScrollView,
@@ -11,25 +10,20 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 
-import Test from '../screens/Test';
 import Background from '../components/Background';
-import AppWebView from '../components/AppWebView';
 import PurpleText from '../components/PurpleText';
 import Headline from '../components/TransactionHistory/Headline';
 import Personal from '../components/UserProfile/Personal';
 import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecuritySwitcher';
 import Security from '../components/UserProfile/Security';
 import images from '../constants/images';
-import { cardVerificationToken, logoutUtil } from '../utils/userProfileUtils';
+import { logoutUtil } from '../utils/userProfileUtils';
 import { fetchUserInfo } from '../redux/profile/actions';
 import colors from '../constants/colors';
-import sumsubHtmlPattern from '../constants/sumsubHtml.js';
 
 export default function UserProfile({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
-  const [sumsubWebViewHtml, setSumsubWebViewHtml] = useState(false);
 
   const {
     profile: { Personal_Security },
@@ -50,15 +44,6 @@ export default function UserProfile({ navigation }) {
   };
 
   const onRefresh = () => dispatch(fetchUserInfo());
-
-  const handlesumsubWebView = async () => {
-    const token = await cardVerificationToken();
-    if (token) setSumsubWebViewHtml(sumsubHtmlPattern(token));
-  };
-
-  const handleUrlChange = (state) => {
-    // console.log(state);
-  };
 
   return (
     <Background>
@@ -81,8 +66,6 @@ export default function UserProfile({ navigation }) {
 
       <PersonalSecuritySwitcher />
 
-      <Button title="Open sumsub Webview" onPress={handlesumsubWebView} />
-
       <ScrollView
         refreshControl={
           <RefreshControl
@@ -95,13 +78,6 @@ export default function UserProfile({ navigation }) {
         {Personal_Security === 'Personal' && <Personal />}
         {Personal_Security === 'Security' && <Security />}
       </ScrollView>
-
-      {sumsubWebViewHtml && (
-        <AppWebView
-          handleUrlChange={handleUrlChange}
-          source={{ html: sumsubWebViewHtml }}
-        />
-      )}
     </Background>
   );
 }

@@ -3,6 +3,7 @@ import { Image, ScrollView, StyleSheet, View, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../../components/AppText';
+import AppWebView from '../../components/AppWebView';
 import GeneralError from '../../components/GeneralError';
 import PurpleText from '../../components/PurpleText';
 import Headline from '../../components/TransactionHistory/Headline';
@@ -13,6 +14,8 @@ import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleAddCardModal } from '../../redux/modals/actions';
 import { fetchCards } from '../../utils/fetchTrades';
+import { cardVerificationToken } from '../../utils/userProfileUtils';
+import sumsubHtmlPattern from '../../constants/sumsubHtml.js';
 
 export default function ManageCards() {
   const dispatch = useDispatch();
@@ -23,6 +26,7 @@ export default function ManageCards() {
   } = state;
 
   const [cards, setCards] = useState(false);
+  const [sumsubWebViewHtml, setSumsubWebViewHtml] = useState(false);
 
   useEffect(() => {
     fetchCards({ currency: code })
@@ -30,8 +34,11 @@ export default function ManageCards() {
       .catch((err) => console.log(err));
   }, []);
 
-  const addCardModal = () => {
-    dispatch(toggleAddCardModal(true));
+  const addCardModal = () => dispatch(toggleAddCardModal(true));
+
+  const handlesumsubWebView = async (cardId) => {
+    const token = await cardVerificationToken(cardId);
+    if (token) setSumsubWebViewHtml(sumsubHtmlPattern(token));
   };
 
   return (
@@ -56,6 +63,7 @@ export default function ManageCards() {
             {cards.map((c) => (
               <Card
                 key={c.id}
+                handlesumsubWebView={handlesumsubWebView}
                 name={c.provider}
                 cardNumber={c.cardNumber}
                 network={c.network}
@@ -84,6 +92,8 @@ export default function ManageCards() {
       )}
 
       <AddCardModal />
+
+      {sumsubWebViewHtml && <AppWebView source={{ html: sumsubWebViewHtml }} />}
     </View>
   );
 }

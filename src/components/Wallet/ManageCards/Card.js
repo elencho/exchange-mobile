@@ -15,6 +15,7 @@ export default function Card({
   id,
   setCards,
   cards,
+  handlesumsubWebView,
 }) {
   const isVerified = status === 'VERIFIED';
 
@@ -53,7 +54,10 @@ export default function Card({
           ) : (
             <>
               <AppText style={styles.verified}>Click to </AppText>
-              <PurpleText text="Verify" />
+              <PurpleText
+                text="Verify"
+                onPress={() => handlesumsubWebView(id)}
+              />
             </>
           )}
         </View>

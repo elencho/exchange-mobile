@@ -31,9 +31,9 @@ export const sumsubVerificationToken = async () => {
   return token.data;
 };
 
-export const cardVerificationToken = async () => {
+export const cardVerificationToken = async (cardId) => {
   const token = await axios.get(CARD_VERIFICATION_TOKEN, {
-    params: { cardId: 14568 },
+    params: { cardId },
   });
   return token.data.token;
 };
