@@ -12,6 +12,7 @@ import images from './src/constants/images';
 import colors from './src/constants/colors';
 import './src/utils/i18n';
 import './src/utils/interceptor';
+import AppToast from './src/components/AppToast';
 
 export default function App() {
   const [fonts] = useFonts({
@@ -32,6 +33,7 @@ export default function App() {
       {iphone && <StatusBar style="light" />}
       {iphone && <SafeAreaView style={styles.statusBar} />}
       <SafeAreaView style={styles.container}>
+        <AppToast />
         <Navigator />
       </SafeAreaView>
       {iphone && <SafeAreaView style={styles.statusBar} />}
