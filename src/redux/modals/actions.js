@@ -33,6 +33,8 @@ export const actionTypes = {
   TOGGLE_ADD_CARD_MODAL: 'TOGGLE_ADD_CARD_MODAL',
 
   LOGIN_TWO_FA_MODAL: 'LOGIN_TWO_FA_MODAL',
+  TOGGLE_APP_TOAST: 'TOGGLE_APP_TOAST',
+  SET_TOAST_OBJ: 'SET_TOAST_OBJ',
 };
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -166,4 +168,13 @@ export const toggleAddCardModal = (addCardModalVisible) => ({
 export const toggleLogin2FaModal = (login2FaModalVisible) => ({
   type: actionTypes.LOGIN_TWO_FA_MODAL,
   login2FaModalVisible,
+});
+
+export const toggleAppToast = (appToastVisible) => ({
+  type: actionTypes.TOGGLE_APP_TOAST,
+  appToastVisible,
+});
+export const setToastObj = (toastObj) => ({
+  type: actionTypes.SET_TOAST_OBJ,
+  toastObj,
 });

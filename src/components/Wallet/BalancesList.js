@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
+import { toggleAppToast } from '../../redux/modals/actions';
 import { fetchOffers } from '../../redux/trade/actions';
 import { fetchCurrencies } from '../../redux/transactions/actions';
 import AppInput from '../AppInput';
@@ -13,6 +14,7 @@ import Currency from './Currency';
 export default function BalancesList() {
   const dispatch = useDispatch();
   const balances = useSelector((state) => state.trade.balance.balances);
+  const appToastVisible = useSelector((state) => state.modals.appToastVisible);
   const [showZeroBalances, setShowZeroBalances] = useState(true);
   const [nonZeroBalances, setNonZeroBalances] = useState([]);
   const [filteredBalances, setFilteredBalances] = useState([]);
@@ -35,7 +37,8 @@ export default function BalancesList() {
     if (balances) type(value);
   }, [showZeroBalances]);
 
-  const toggleZeroBalances = () => setShowZeroBalances(!showZeroBalances);
+  // const toggleZeroBalances = () => setShowZeroBalances(!showZeroBalances);
+  const toggleZeroBalances = () => dispatch(toggleAppToast(!appToastVisible));
 
   const type = (text) => {
     setValue(text);

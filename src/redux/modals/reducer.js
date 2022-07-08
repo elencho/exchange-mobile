@@ -1,6 +1,9 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
+  toastObj: {},
+  appToastVisible: false,
+
   // Login
   login2FaModalVisible: false,
 
@@ -49,6 +52,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   const {
     datePickerVisible,
+    appToastVisible,
     chooseCurrencyModalVisible,
     buySellModalVisible,
     transactionDetailsVisible,
@@ -79,8 +83,19 @@ export default (state = INITIAL_STATE, action) => {
     addCardModalVisible,
     languageModalVisible,
     emailVerificationModalVisible,
+    toastObj,
   } = action;
   switch (action.type) {
+    case actionTypes.SET_TOAST_OBJ:
+      return {
+        ...state,
+        toastObj,
+      };
+    case actionTypes.TOGGLE_APP_TOAST:
+      return {
+        ...state,
+        appToastVisible,
+      };
     case actionTypes.TOGGLE_DATEPICKER:
       return {
         ...state,
