@@ -16,6 +16,7 @@ import { toggleAddCardModal } from '../../redux/modals/actions';
 import { fetchCards } from '../../utils/fetchTrades';
 import { cardVerificationToken } from '../../utils/userProfileUtils';
 import sumsubHtmlPattern from '../../constants/sumsubHtml.js';
+import CardAddStatusModal from '../../components/Wallet/ManageCards/CardAddStatusModal';
 
 export default function ManageCards() {
   const dispatch = useDispatch();
@@ -92,6 +93,7 @@ export default function ManageCards() {
       )}
 
       <AddCardModal />
+      <CardAddStatusModal />
 
       {sumsubWebViewHtml && <AppWebView source={{ html: sumsubWebViewHtml }} />}
     </View>

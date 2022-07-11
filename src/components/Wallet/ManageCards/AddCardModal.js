@@ -6,25 +6,25 @@ import AppModal from '../../AppModal';
 import AppText from '../../AppText';
 import AppButton from '../../AppButton';
 import AppWebView from '../../AppWebView';
+import AppInfoBlock from '../../AppInfoBlock';
 import PurpleText from '../../PurpleText';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import BankFeesModal from '../../InstantTrade/BankFeesModal';
-
 import images from '../../../constants/images';
 import colors from '../../../constants/colors';
 import {
+  setCardAddStatusModalInfo,
   toggleAddCardModal,
   toggleBankFeesModal,
   toggleChooseBankModal,
 } from '../../../redux/modals/actions';
 import { addCard } from '../../../utils/walletUtils';
-import AppInfoBlock from '../../AppInfoBlock';
 
 export default function AddCardModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    modals: { addCardModalVisible },
+    modals: { addCardModalVisible, cardAddStatusModalInfo },
     trade: { depositProvider, depositProviders },
     transactions: { code },
   } = state;
@@ -55,7 +55,17 @@ export default function AddCardModal() {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
+      dispatch(setCardAddStatusModalInfo({ success: ending }));
       setWebViewData({});
+      hide();
+    }
+  };
+
+  const handleHide = () => {
+    if (cardAddStatusModalInfo.success) {
+      dispatch(
+        setCardAddStatusModalInfo({ ...cardAddStatusModalInfo, visible: true })
+      );
     }
   };
 
@@ -138,6 +148,7 @@ export default function AddCardModal() {
       fullScreen
       visible={addCardModalVisible}
       hide={hide}
+      onModalHide={handleHide}
     />
   );
 }

@@ -31,6 +31,7 @@ export const actionTypes = {
   TOGGLE_TRANSFER_METHOD_MODAL: 'TOGGLE_TRANSFER_METHOD_MODAL',
   TEMPLATES_MODAL: 'TEMPLATES_MODAL',
   TOGGLE_ADD_CARD_MODAL: 'TOGGLE_ADD_CARD_MODAL',
+  CARD_ADD_STATUS_MODAL_INFO: 'CARD_ADD_STATUS_MODAL_INFO',
 
   LOGIN_TWO_FA_MODAL: 'LOGIN_TWO_FA_MODAL',
   TOGGLE_APP_TOAST: 'TOGGLE_APP_TOAST',
@@ -162,6 +163,10 @@ export const toggleTemplatesModal = (templatesModalVisible) => ({
 export const toggleAddCardModal = (addCardModalVisible) => ({
   type: actionTypes.TOGGLE_ADD_CARD_MODAL,
   addCardModalVisible,
+});
+export const setCardAddStatusModalInfo = (cardAddStatusModalInfo) => ({
+  type: actionTypes.CARD_ADD_STATUS_MODAL_INFO,
+  cardAddStatusModalInfo,
 });
 
 // Login
