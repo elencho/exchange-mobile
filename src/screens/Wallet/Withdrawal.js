@@ -29,21 +29,30 @@ import GeneralError from '../../components/GeneralError';
 import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
+import { setDepositProvider } from '../../redux/trade/actions';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     profile: { googleAuth, emailAuth, smsAuth, generalError },
-    trade: { currentBalanceObj },
+    trade: { currentBalanceObj, card },
     transactions: { code },
     wallet: {
       withdrawalRestriction,
       currentTemplate,
       withdrawalBank,
-      hasMultipleNetworks,
+      currentWhitelistObj,
       hasMultipleMethods,
       network,
+
+      // Withdrawal Params
+      withdrawalAmount,
+      withdrawalNote,
+      saveTemplate,
+      newTemplateName,
+      iban,
+      receiverBank,
     },
   } = state;
 
@@ -57,23 +66,40 @@ export default function Withdrawal() {
       return currentBalanceObj.infos[network].walletInfo;
   };
 
+  const hasParams = withdrawalAmount && withdrawalNote && iban && receiverBank;
+
+  const enabled = () => {
+    if (network === 'SWIFT' || network === 'SEPA') {
+      if (saveTemplate) return hasParams && newTemplateName;
+      return hasParams;
+    }
+
+    if (isEcommerce) return card?.id && withdrawalAmount;
+
+    return withdrawalAmount && withdrawalNote && currentWhitelistObj?.address;
+  };
+
   useEffect(() => {
-    const { withdrawalMethods } = currentBalanceObj;
+    const m = currentBalanceObj.withdrawalMethods;
     dispatch(getWhitelistAction());
 
-    if (withdrawalMethods.WALLET)
-      dispatch(setNetwork(withdrawalMethods.WALLET[0].provider));
-    if (withdrawalMethods.WIRE)
-      dispatch(setNetwork(withdrawalMethods.WIRE[0].provider));
+    if (m.WALLET) dispatch(setNetwork(m.WALLET[0].provider));
+    if (m.WIRE) dispatch(setNetwork(m.WIRE[0].provider));
 
     if (isFiat) dispatch(withdrawalTemplatesAction());
 
-    setHasMethod(!!Object.keys(currentBalanceObj.depositMethods).length);
+    setHasMethod(!!Object.keys(m).length);
+
+    return () => dispatch(setDepositProvider(null));
   }, [code]);
 
   useEffect(() => {
     setHasRestriction(Object.keys(withdrawalRestriction).length);
   }, [withdrawalRestriction]);
+
+  useEffect(() => {
+    dispatch({ type: 'CLEAN_WALLET_INPUTS' });
+  }, [network]);
 
   const withdraw = () => {
     if (googleAuth) dispatch(toggleGoogleOtpModal(true));
@@ -113,7 +139,7 @@ export default function Withdrawal() {
           ) : null}
 
           <WalletCoinsDropdown />
-          {!isFiat && hasMultipleNetworks && <ChooseNetworkDropdown />}
+          {(!isFiat || code === 'EUR') && <ChooseNetworkDropdown />}
           {isFiat && hasMultipleMethods && (
             <>
               <TransferMethodDropdown />
@@ -157,7 +183,11 @@ export default function Withdrawal() {
 
       {!hasRestriction && hasMethod && (
         <View style={styles.button}>
-          <AppButton text="Withdrawal" onPress={withdraw} />
+          <AppButton
+            text="Withdrawal"
+            onPress={withdraw}
+            disabled={!enabled()}
+          />
         </View>
       )}
 

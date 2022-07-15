@@ -49,6 +49,7 @@ import {
   toggleEmailVerificationModal,
   toggleGoogleAuthModal,
   toggleLogin2FaModal,
+  togglePasswordModal,
 } from '../modals/actions';
 import { resetTradesState } from '../trade/actions';
 import { resetTransactionsState, toggleLoading } from '../transactions/actions';
@@ -229,7 +230,15 @@ function* saveUserInfoSaga() {
 //  UPDATE PASSWORD
 function* updatePasswordSaga(action) {
   const { curentPassword, newPassword, repeatPassword } = action;
-  yield call(updatePassword, curentPassword, newPassword, repeatPassword);
+  const data = yield call(
+    updatePassword,
+    curentPassword,
+    newPassword,
+    repeatPassword
+  );
+  if (data?.status >= 200 && data?.status < 300) {
+    yield put(togglePasswordModal(false));
+  }
 }
 
 //  VERIFY PHONE NUMBER

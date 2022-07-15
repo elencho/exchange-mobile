@@ -16,6 +16,7 @@ import CompanyInformation from './CompanyInformation';
 import PersonalInfoModal from './PersonalInfoModal';
 import PersonalInformation from './PersonalInformation';
 import PhoneNumberModal from './PhoneNumberModal';
+import launchSumsubSdk from '../../utils/sumsubMobileSdk';
 
 export default function Personal() {
   const dispatch = useDispatch();
@@ -33,12 +34,12 @@ export default function Personal() {
     switch (r) {
       case 'Identity':
         return (
-          <View style={styles.row}>
+          <View style={styles.row} onPress={launchSumsubSdk}>
             <AppText medium style={styles.white}>
               Identity Verification
             </AppText>
 
-            <Pressable style={styles.circle}>
+            <Pressable style={styles.circle} onPress={launchSumsubSdk}>
               <AppText medium body style={{ color: '#9EA6D0' }}>
                 i
               </AppText>

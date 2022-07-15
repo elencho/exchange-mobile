@@ -13,6 +13,7 @@ import {
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import InfoMark from './InfoMark';
+import { setDepositProvider } from '../../redux/trade/actions';
 
 function CardSection() {
   const navigation = useNavigation();
@@ -45,17 +46,13 @@ function CardSection() {
     return isMultiple;
   };
 
-  // const displayName = () => {
-  //   let displayName;
-  //   depositProviders.forEach((d) => {
-  //     if (depositProvider === d.provider) {
-  //       displayName = d.displayName;
-  //     } else {
-  //       displayName = 'Choose Bank';
-  //     }
-  //   });
-  //   return displayName;
-  // };
+  const displayName = () => {
+    let displayName = 'Payment Service Provider';
+    depositProviders.forEach((d) => {
+      if (depositProvider === d.provider) displayName = d.displayName;
+    });
+    return displayName;
+  };
 
   const currencyName = (fiat) => {
     let name;
@@ -101,7 +98,7 @@ function CardSection() {
           >
             {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
             <AppText style={[styles.text, { color }]} medium={depositProvider}>
-              {depositProvider ? depositProvider : 'Payment Service Provider'}
+              {displayName()}
             </AppText>
             <Image source={images['Arrow']} />
           </Pressable>

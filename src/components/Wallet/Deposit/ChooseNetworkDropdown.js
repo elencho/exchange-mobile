@@ -11,7 +11,7 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { hasMultipleNetworks, network },
+    wallet: { hasMultipleNetworks, network, walletTab },
     trade: { currentBalanceObj },
   } = state;
 
@@ -19,47 +19,58 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
     dispatch(toggleChooseNetworkModal(true));
   };
 
+  const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
+  const isAvailable = !!Object.keys(currentBalanceObj[m]).length;
+
   const networkName = () => {
     if (network === 'ERC20') return 'Ethereum Network';
     if (network === 'BEP20') return 'Binance Smart Chain';
-    if (network === 'MAINNET')
-      return currentBalanceObj.depositMethods.WALLET[0].displayName;
+    if (network === 'MAINNET') {
+      return currentBalanceObj[m].WALLET[0].displayName;
+    }
+    return network;
   };
 
   return (
     <>
-      {hasMultipleNetworks ? (
-        <Pressable
-          style={[styles.dropdown, { opacity: disabled ? 0.5 : 1 }]}
-          onPress={handleDropdown}
-          disabled={disabled}
-        >
-          {network !== 'Choose Network' ? (
-            <>
-              <View style={styles.subtext}>
-                <AppText body style={styles.secondary}>
-                  Choose Network
+      {isAvailable && (
+        <>
+          {hasMultipleNetworks ? (
+            <Pressable
+              style={[styles.dropdown, { opacity: disabled ? 0.5 : 1 }]}
+              onPress={handleDropdown}
+              disabled={disabled}
+            >
+              {network !== 'Choose Network' ? (
+                <>
+                  <View style={styles.subtext}>
+                    <AppText body style={styles.secondary}>
+                      Choose Network
+                    </AppText>
+                  </View>
+                  <Image source={images.BTC} style={styles.image} />
+                  <AppText medium style={styles.dropdownText}>
+                    {networkName()}{' '}
+                    <AppText style={styles.secondary}>({network})</AppText>
+                  </AppText>
+                </>
+              ) : (
+                <AppText style={[styles.secondary, { flex: 1 }]}>
+                  {network}
                 </AppText>
-              </View>
+              )}
+              <Image source={images.Arrow} />
+            </Pressable>
+          ) : (
+            <View style={styles.view}>
               <Image source={images.BTC} style={styles.image} />
               <AppText medium style={styles.dropdownText}>
                 {networkName()}{' '}
                 <AppText style={styles.secondary}>({network})</AppText>
               </AppText>
-            </>
-          ) : (
-            <AppText style={[styles.secondary, { flex: 1 }]}>{network}</AppText>
+            </View>
           )}
-          <Image source={images.Arrow} />
-        </Pressable>
-      ) : (
-        <View style={styles.view}>
-          <Image source={images.BTC} style={styles.image} />
-          <AppText medium style={styles.dropdownText}>
-            {networkName()}{' '}
-            <AppText style={styles.secondary}>({network})</AppText>
-          </AppText>
-        </View>
+        </>
       )}
     </>
   );

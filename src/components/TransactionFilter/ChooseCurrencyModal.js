@@ -74,13 +74,8 @@ function ChooseCurrencyModal({ wallet = false }) {
         dispatch(cryptoAddressesAction(name, code, navigation, network));
       }
     } else {
-      dispatch(
-        currencyAction(
-          name,
-          currenciesConstant,
-          name === 'Show All Currency' ? null : code
-        )
-      );
+      const currency = name === 'Show All Currency' ? null : code;
+      dispatch(currencyAction(name, currenciesConstant, currency));
     }
 
     hide();

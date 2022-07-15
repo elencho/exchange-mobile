@@ -8,6 +8,7 @@ import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import { toggleChooseAddressModal } from '../../../redux/modals/actions';
 import ChooseAddressModal from './ChooseAddressModal';
+import { chooseWhitelist } from '../../../redux/wallet/actions';
 
 export default function WithdrawalAddress() {
   const dispatch = useDispatch();

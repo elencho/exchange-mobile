@@ -9,14 +9,16 @@ import AppText from '../../AppText';
 
 export default function TransferMethodDropdown() {
   const dispatch = useDispatch();
-  const network = useSelector((state) => state.wallet.network);
+  const wallet = useSelector((state) => state.wallet);
+  const { network, walletTab } = wallet;
+
   const show = () => dispatch(toggleTransferMethodModal(true));
 
   return (
     <Pressable style={styles.dropdown} onPress={show}>
       <Image source={images.Swift} style={styles.image} />
       <AppText medium style={styles.dropdownText}>
-        {network} Deposit
+        {network} {walletTab}
       </AppText>
       <Image source={images.Arrow} />
     </Pressable>

@@ -201,7 +201,7 @@ export const updatePassword = async (
     url: UPDATE_PASSWORD,
     data: `password=${currentPassword}&passwordNew=${newPassword}&passwordConfirm=${confirmNewPassword}`,
   });
-  if (data) return data;
+  return data;
 };
 
 export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {

@@ -16,35 +16,26 @@ export default function ChooseBankModal() {
   );
   const state = useSelector((state) => state);
   const {
-    trade: { depositProvider, depositProviders, currentBalanceObj },
+    trade: { depositProvider, depositProviders, currentBalanceObj, cards },
     transactions: { tabRouteName },
     wallet: { walletTab },
   } = state;
 
   const array = () => {
     let array = [];
-    if (tabRouteName === 'Wallet') {
-      if (
-        walletTab === 'Deposit' &&
-        currentBalanceObj.depositMethods.ECOMMERCE
-      ) {
-        depositProviders.forEach((p) => {
-          currentBalanceObj.depositMethods.ECOMMERCE.forEach((d) => {
-            if (p.displayName === d.displayName) array.push(d);
-          });
-        });
-      }
+    const m =
+      walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
 
-      if (
-        walletTab === 'Withdrawal' &&
-        currentBalanceObj.withdrawalMethods.ECOMMERCE
-      ) {
-        depositProviders.forEach((p) => {
-          currentBalanceObj.withdrawalMethods.ECOMMERCE.forEach((d) => {
-            if (p.displayName === d.displayName) array.push(d);
-          });
+    if (tabRouteName === 'Wallet') {
+      depositProviders.forEach((p) => {
+        currentBalanceObj[m].ECOMMERCE.forEach((d) => {
+          if (p.displayName === d.displayName) {
+            cards.forEach((c) => {
+              if (c.provider === d.provider) array.push(d);
+            });
+          }
         });
-      }
+      });
 
       if (walletTab === 'Manage Cards') return depositProviders;
     }
@@ -62,8 +53,7 @@ export default function ChooseBankModal() {
   };
 
   const children = () => {
-    if (depositProviders.length) {
-      // const array = depositProviders.filter(p => currentBalanceObj)
+    if (depositProviders?.length) {
       return array().map((b, i) => (
         <View key={b.displayName}>
           <Pressable
@@ -80,7 +70,7 @@ export default function ChooseBankModal() {
               {b.displayName}
             </AppText>
           </Pressable>
-          {i < depositProviders.length - 1 && <View style={styles.margin} />}
+          {i < depositProviders?.length - 1 && <View style={styles.margin} />}
         </View>
       ));
     }

@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
   },
   white: {
     color: colors.PRIMARY_TEXT,
+    textTransform: 'capitalize',
   },
   upload: {
     flexDirection: 'row',

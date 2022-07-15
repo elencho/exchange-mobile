@@ -28,7 +28,9 @@ export default function WalletSwitcher() {
     } else {
       setSwitchers(array);
     }
-  }, [currentBalanceObj]);
+
+    dispatch({ type: 'METHOD_NETWORK_RESTRICTION' });
+  }, [currentBalanceObj, walletTab]);
 
   const handleFilter = (f) => {
     dispatch(setWalletTab(f));

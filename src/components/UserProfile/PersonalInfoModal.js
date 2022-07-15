@@ -19,7 +19,11 @@ import {
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import CountriesModal from './CountriesModal';
-import { saveUserInfo, saveUserInfoSaga } from '../../redux/profile/actions';
+import {
+  fetchUserInfo,
+  saveUserInfo,
+  saveUserInfoSaga,
+} from '../../redux/profile/actions';
 import GeneralError from '../GeneralError';
 
 export default function PersonalInfoModal() {
@@ -41,6 +45,8 @@ export default function PersonalInfoModal() {
     dispatch(saveUserInfoSaga());
     hide();
   };
+
+  const handleHide = () => dispatch(fetchUserInfo());
 
   const handleCountries = (countryDrop, citizenshipDrop) => {
     dispatch(toggleCountriesModal(true));
@@ -90,13 +96,15 @@ export default function PersonalInfoModal() {
             style={styles.inputContainer}
             onChangeText={handleFirstName}
             label="First Name"
-            value={userInfo.firstName}
+            value={userInfo?.firstName}
+            editable={userInfo?.userStatus !== 'VERIFIED'}
           />
           <AppInput
             style={styles.inputContainer}
             onChangeText={handleLastName}
             label="Last Name"
-            value={userInfo.lastName}
+            value={userInfo?.lastName}
+            editable={userInfo?.userStatus !== 'VERIFIED'}
           />
 
           <Pressable
@@ -111,7 +119,7 @@ export default function PersonalInfoModal() {
 
             <Image source={images.GEO} />
             <AppText medium style={styles.dropdownText}>
-              {userInfo.country}
+              {userInfo?.country}
             </AppText>
             <Image source={images.Arrow} />
           </Pressable>
@@ -121,13 +129,13 @@ export default function PersonalInfoModal() {
               style={[styles.inputContainer, styles.rowInputs]}
               onChangeText={handleCity}
               label="City"
-              value={userInfo.city}
+              value={userInfo?.city}
             />
             <AppInput
               style={[styles.inputContainer, styles.rowInputs]}
               onChangeText={handlePostalCode}
               label="Postal Code"
-              value={userInfo.postalCode}
+              value={userInfo?.postalCode}
             />
           </View>
 
@@ -135,7 +143,7 @@ export default function PersonalInfoModal() {
             style={styles.inputContainer}
             onChangeText={handleAddress}
             label="Address"
-            value={userInfo.address}
+            value={userInfo?.address}
           />
 
           <Pressable
@@ -150,7 +158,7 @@ export default function PersonalInfoModal() {
 
             <Image source={images.GEO} />
             <AppText medium style={styles.dropdownText}>
-              {citizenship(userInfo.citizenship)}
+              {citizenship(userInfo?.citizenship)}
             </AppText>
             <Image source={images.Arrow} />
           </Pressable>
@@ -178,6 +186,7 @@ export default function PersonalInfoModal() {
       fullScreen
       title="Personal Information"
       children={children}
+      onModalHide={handleHide}
     />
   );
 }

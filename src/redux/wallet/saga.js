@@ -53,35 +53,33 @@ import {
 
 function* methodNetworkRestrictionSaga() {
   const balance = yield select((state) => state.trade.balance);
+  const currentBalanceObj = yield select(
+    (state) => state.trade.currentBalanceObj
+  );
   const code = yield select((state) => state.transactions.code);
+  const walletTab = yield select((state) => state.wallet.walletTab);
+  const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
   let hasMultipleMethods = false;
   let hasMultipleNetworks = false;
   let depositRestrictions = {};
   let withdrawalRestrictions = {};
 
-  if (balance.balances) {
-    yield call(() => {
-      balance.balances.forEach((b) => {
-        if (b.currencyCode === code) {
-          hasMultipleMethods = Object.keys(b.depositMethods).length > 1;
-          if (b.depositMethods.WALLET) {
-            hasMultipleNetworks = b.depositMethods.WALLET.length > 1;
-          }
-          if (b.restrictions.DEPOSIT) {
-            depositRestrictions = b.restrictions.DEPOSIT;
-          }
-          if (b.restrictions.WITHDRAWAL) {
-            withdrawalRestrictions = b.restrictions.WITHDRAWAL;
-          }
-        }
-      });
-    });
+  yield call(() => {
+    const b = currentBalanceObj[m];
+    const r = currentBalanceObj.restrictions;
 
-    yield put(setHasMultipleMethods(hasMultipleMethods));
-    yield put(setHasMultipleNetworks(hasMultipleNetworks));
-    yield put(setDepositRestriction(depositRestrictions));
-    yield put(setWithdrawalRestriction(withdrawalRestrictions));
-  }
+    hasMultipleMethods = Object.keys(b).length > 1;
+    if (b.WALLET) hasMultipleNetworks = b.WALLET.length > 1;
+    if (b.WIRE) hasMultipleNetworks = b.WIRE.length > 1;
+
+    if (r.DEPOSIT) depositRestrictions = r.DEPOSIT;
+    if (r.WITHDRAWAL) withdrawalRestrictions = r.WITHDRAWAL;
+  });
+
+  yield put(setHasMultipleMethods(hasMultipleMethods));
+  yield put(setHasMultipleNetworks(hasMultipleNetworks));
+  yield put(setDepositRestriction(depositRestrictions));
+  yield put(setWithdrawalRestriction(withdrawalRestrictions));
 }
 
 function* wireDepositSaga(action) {

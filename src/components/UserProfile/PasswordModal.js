@@ -101,7 +101,6 @@ export default function PasswordModal() {
 
   const handleSave = () => {
     const { curentPassword, newPassword, repeatPassword } = passwordState;
-    hide();
     dispatch(updatePassword(curentPassword, newPassword, repeatPassword));
   };
 

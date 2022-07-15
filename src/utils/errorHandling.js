@@ -13,6 +13,9 @@ export default async (err) => {
     // console.log(err.response.data);
     // console.log(err.response.status);
     // console.log(err.response.headers);
+    if (err.response.data.errorMessage) {
+      store.dispatch(saveGeneralError(err.response.data.errorMessage));
+    }
 
     if (err.response.status === 500)
       store.dispatch(saveGeneralError(err.response.data.errorMessage));

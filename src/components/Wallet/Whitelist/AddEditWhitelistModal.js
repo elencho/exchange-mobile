@@ -27,7 +27,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const state = useSelector((state) => state);
   const {
     modals: { addWhitelistModalVisble, editWhitelistModalVisble },
-    wallet: { newWhitelist, currentWhitelistObj, whitelist },
+    wallet: { newWhitelist, currentWhitelistObj, whitelist, network },
     profile: { googleAuth, emailAuth, smsAuth, generalError },
     trade: { currentBalanceObj },
   } = state;
@@ -62,10 +62,11 @@ export default function AddEditWhitelistModal({ add, edit }) {
   };
 
   const tag = () => {
-    if (whitelist[0]) {
+    const type = currentBalanceObj?.infos[network].transactionRecipientType;
+    if (whitelist[0]?.tag) {
       return whitelist[0].tag;
     }
-    return;
+    return type === 'ADDRESS_AND_TAG';
   };
 
   const networks = () => {

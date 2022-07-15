@@ -46,13 +46,11 @@ export default function Deposit() {
   const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
-    const { depositMethods } = currentBalanceObj;
-    if (depositMethods.WALLET)
-      dispatch(setNetwork(depositMethods.WALLET[0].provider));
-    if (depositMethods.WIRE)
-      dispatch(setNetwork(depositMethods.WIRE[0].provider));
+    const m = currentBalanceObj.depositMethods;
+    if (m.WALLET) dispatch(setNetwork(m.WALLET[0].provider));
+    if (m.WIRE) dispatch(setNetwork(m.WIRE[0].provider));
 
-    setHasMethod(!!Object.keys(currentBalanceObj.depositMethods).length);
+    setHasMethod(!!Object.keys(m).length);
   }, [code]);
 
   useEffect(() => {

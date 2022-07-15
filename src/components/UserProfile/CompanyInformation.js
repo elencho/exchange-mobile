@@ -1,20 +1,19 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import colors from '../../constants/colors';
 
 import AppText from '../AppText';
-import PurpleText from '../PurpleText';
 
 export default function CompanyInformation() {
+  const userInfo = useSelector((state) => state.profile.userInfo);
+
   return (
     <View style={styles.block}>
       <View style={styles.row}>
         <AppText medium style={styles.white}>
           Company Information
         </AppText>
-        <View style={styles.flex}>
-          <PurpleText text="Edit" style={styles.purple} />
-        </View>
       </View>
 
       <View style={[styles.row, { marginTop: 20 }]}>
@@ -26,32 +25,32 @@ export default function CompanyInformation() {
             Company Number:
           </AppText>
 
-          <View style={styles.line} />
+          {/* <View style={styles.line} />
 
           <AppText subtext style={styles.secondary}>
             Director 01:
           </AppText>
           <AppText subtext style={styles.secondary}>
             Director 02:
-          </AppText>
+          </AppText> */}
         </View>
 
         <View style={[styles.column, styles.rightColumn]}>
           <AppText subtext style={styles.white}>
-            Crypto.IQ
+            {userInfo?.company}
           </AppText>
           <AppText subtext style={styles.white}>
-            #098800000
+            {userInfo?.companyCode}
           </AppText>
 
-          <View style={styles.line} />
+          {/* <View style={styles.line} />
 
           <AppText subtext style={styles.white}>
             Nana Tsiklauri
           </AppText>
           <AppText subtext style={styles.white}>
             Alina Gelenava
-          </AppText>
+          </AppText> */}
         </View>
       </View>
     </View>

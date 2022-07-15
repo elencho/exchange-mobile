@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,8 +15,19 @@ export default function ChooseCardModal() {
     (state) => state.modals.chooseCardModalVisible
   );
   const state = useSelector((state) => state.trade);
+  const [cardsToDisplay, setCardsToDisplay] = useState([]);
 
-  const { card, cards } = state;
+  const { card, cards, depositProvider } = state;
+
+  useEffect(() => {
+    let cardsArr = [];
+    cards.forEach((c) => {
+      if (c.provider === depositProvider) cardsArr.push(c);
+    });
+    setCardsToDisplay(cardsArr);
+
+    return () => setCardsToDisplay([]);
+  }, [depositProvider]);
 
   const hide = () => {
     dispatch(toggleChooseCardModal(false));
@@ -33,7 +44,7 @@ export default function ChooseCardModal() {
     }
   };
 
-  const children = cards.map((c) => (
+  const children = cardsToDisplay.map((c) => (
     <Pressable
       style={[styles.row, background(c)]}
       key={c.cardNumber}

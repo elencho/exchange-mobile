@@ -4,12 +4,15 @@ export const getUserData = (state) => {
   } = state;
 
   let formData = new FormData();
-  formData.append('firstName', userInfo.firstName);
-  formData.append('lastName', userInfo.lastName);
   formData.append('address', userInfo.address);
   formData.append('country', userInfo.countryCode);
   formData.append('city', userInfo.city);
   formData.append('postalCode', userInfo.postalCode);
+
+  if (userInfo?.userStatus !== 'VERIFIED') {
+    formData.append('firstName', userInfo.firstName);
+    formData.append('lastName', userInfo.lastName);
+  }
   // formData.append('citizenship', userInfo.citizenship);
 
   return formData;

@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, View, Pressable } from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  View,
+  Pressable,
+  ActivityIndicator,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../../components/AppText';
@@ -26,13 +33,19 @@ export default function ManageCards() {
     transactions: { code },
   } = state;
 
+  const [loading, setLoading] = useState(true);
   const [cards, setCards] = useState(false);
   const [sumsubWebViewHtml, setSumsubWebViewHtml] = useState(false);
 
   useEffect(() => {
     fetchCards({ currency: code })
-      .then((cards) => setCards(cards))
+      .then((cards) => {
+        setCards(cards);
+        setLoading(false);
+      })
       .catch((err) => console.log(err));
+
+    return () => setLoading(true);
   }, []);
 
   const addCardModal = () => dispatch(toggleAddCardModal(true));
@@ -54,7 +67,11 @@ export default function ManageCards() {
         <WalletCoinsDropdown />
       </View>
 
-      {cards.length ? (
+      {loading && (
+        <ActivityIndicator size="large" color="white" style={{ flex: 1 }} />
+      )}
+
+      {cards && !loading && (
         <>
           <ScrollView
             style={styles.scrollView}
@@ -81,7 +98,9 @@ export default function ManageCards() {
             <PurpleText text="Add Card" />
           </Pressable>
         </>
-      ) : (
+      )}
+
+      {!cards && !loading && (
         <View style={styles.flex}>
           <Image source={images.Card} />
           <Headline title="Manage Cards" />
