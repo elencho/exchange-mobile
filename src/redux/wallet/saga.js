@@ -145,6 +145,7 @@ export function* addWhitelistSaga(action) {
   if (data) {
     yield put(setNewWhitelist({}));
     yield put(saveWhitelist([...whitelist, data]));
+    yield put({ type: 'REFRESH_WALLET_AND_TRADES' });
   }
 }
 

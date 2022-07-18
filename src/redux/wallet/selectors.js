@@ -83,7 +83,7 @@ export const addWhitelistParams = (state) => {
   const {
     transactions: { code },
     wallet: {
-      newWhitelist: { name, address },
+      newWhitelist: { name, address, tag },
       network,
     },
   } = state;
@@ -93,6 +93,7 @@ export const addWhitelistParams = (state) => {
     address,
     name,
     provider: network,
+    tag,
   };
 };
 

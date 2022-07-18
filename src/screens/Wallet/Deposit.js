@@ -84,9 +84,9 @@ export default function Deposit() {
       infoObj = currentBalanceObj.infos[network];
       console.log(currentBalanceObj.infos);
       let array = [
-        `Expected Arrival: ${infoObj.minConfirmsForDeposit} network confirmations`,
+        `Expected Arrival: ${infoObj?.minConfirmsForDeposit} network confirmations`,
       ];
-      if (infoObj.walletInfo) array.push(infoObj.walletInfo);
+      if (infoObj?.walletInfo) array.push(infoObj?.walletInfo);
       return array;
     }
   };

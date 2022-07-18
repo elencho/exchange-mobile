@@ -37,7 +37,7 @@ import {
   fetchFees,
 } from '../../utils/fetchTrades';
 import { toggleBuySellModal } from '../modals/actions';
-import { setWalletTab } from '../wallet/actions';
+import { getWhitelistAction, setWalletTab } from '../wallet/actions';
 import { fetchCurrencies } from '../transactions/actions';
 
 function* fetchTradesSaga() {
@@ -152,6 +152,7 @@ function* refreshWalletAndTradesSaga() {
   yield put(fetchOffersAction());
   yield put(fetchTradesAction());
   yield put(fetchCurrencies());
+  yield put(getWhitelistAction());
 }
 
 export default function* () {

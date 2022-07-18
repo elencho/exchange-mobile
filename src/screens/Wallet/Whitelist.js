@@ -28,7 +28,6 @@ export default function Whitelist() {
 
   useEffect(() => {
     dispatch(getWhitelistAction());
-    dispatch(setNetwork('Choose Network'));
   }, [code]);
 
   const showAddModal = () => dispatch(toggleAddWhitelistModal(true));

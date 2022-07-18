@@ -35,7 +35,6 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const hide = () => {
     if (add) dispatch(toggleAddWhitelistModal(false));
     if (edit) dispatch(toggleEditWhitelistModal(false));
-    dispatch(setNewWhitelist({}));
   };
 
   const handleHide = () => {
@@ -52,6 +51,8 @@ export default function AddEditWhitelistModal({ add, edit }) {
       dispatch(editWhitelistAction());
     }
   };
+
+  const clearInputs = () => dispatch(setNewWhitelist({}));
 
   let enabled = true;
   if (add) enabled = newWhitelist.address && newWhitelist.name;
@@ -136,6 +137,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
       fullScreen
       visible={add ? addWhitelistModalVisble : editWhitelistModalVisble}
       title={`${add ? 'Add' : 'Edit'} Whitelist`}
+      onModalHide={clearInputs}
     />
   );
 }

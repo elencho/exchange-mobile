@@ -62,8 +62,9 @@ export default function Withdrawal() {
   const isFiat = currentBalanceObj.type === 'FIAT';
   const isEcommerce = network === 'ECOMMERCE';
   const walletInfo = () => {
-    if (currentBalanceObj.infos)
-      return currentBalanceObj.infos[network].walletInfo;
+    if (currentBalanceObj?.infos && hasMethod && !hasRestriction) {
+      return currentBalanceObj?.infos[network].walletInfo;
+    }
   };
 
   const hasParams = withdrawalAmount && withdrawalNote && iban && receiverBank;

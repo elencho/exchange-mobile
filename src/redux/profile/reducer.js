@@ -6,11 +6,11 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  // credentials: { login: 'metro21@mailinator.com', password: 'Qwerty123$' },
-  credentials: {
-    login: 'Vakhtang.elisabedashvili@gmail.com',
-    password: '11111!Aa',
-  },
+  credentials: { login: 'metro21@mailinator.com', password: 'Qwerty123$' },
+  // credentials: {
+  //   login: 'Vakhtang.elisabedashvili@gmail.com',
+  //   password: '11111!Aa',
+  // },
   userAndPassInfo: {},
 
   // Register
@@ -19,7 +19,7 @@ const INITIAL_STATE = {
   registrationInputs: {
     firstName: 'aa',
     lastName: 'aa',
-    email: 'metro29@mailinator.com',
+    email: 'vaxo2@mailinator.com',
     passwordNew: '11111!Aa',
     passwordConfirm: '11111!Aa',
     phoneNumber: '555554555',
