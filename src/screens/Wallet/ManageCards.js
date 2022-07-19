@@ -24,6 +24,7 @@ import { fetchCards } from '../../utils/fetchTrades';
 import { cardVerificationToken } from '../../utils/userProfileUtils';
 import sumsubHtmlPattern from '../../constants/sumsubHtml.js';
 import CardAddStatusModal from '../../components/Wallet/ManageCards/CardAddStatusModal';
+import DeleteCardModal from '../../components/Wallet/ManageCards/DeleteCardModal';
 
 export default function ManageCards() {
   const dispatch = useDispatch();
@@ -91,6 +92,7 @@ export default function ManageCards() {
                 cards={cards}
               />
             ))}
+            <DeleteCardModal cards={cards} setCards={setCards} />
           </ScrollView>
 
           <Pressable style={styles.button} onPress={addCardModal}>

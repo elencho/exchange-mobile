@@ -1,9 +1,10 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
-import { deleteCard } from '../../../utils/walletUtils';
+import { setCardDeleteModalInfo } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
 
@@ -13,19 +14,14 @@ export default function Card({
   network,
   status,
   id,
-  setCards,
-  cards,
   handlesumsubWebView,
 }) {
+  const dispatch = useDispatch();
+
   const isVerified = status === 'VERIFIED';
 
-  const handleDelete = async () => {
-    const status = await deleteCard(id);
-    if (status >= 200 || status < 300) {
-      const updatedCards = cards.filter((c) => c.id !== id);
-      setCards(updatedCards);
-    }
-  };
+  const openModal = () =>
+    dispatch(setCardDeleteModalInfo({ id, visible: true }));
 
   return (
     <View style={styles.container}>
@@ -63,7 +59,7 @@ export default function Card({
         </View>
       </View>
 
-      <TouchableOpacity onPress={handleDelete}>
+      <TouchableOpacity onPress={openModal}>
         <Image source={images.Delete} />
       </TouchableOpacity>
     </View>
