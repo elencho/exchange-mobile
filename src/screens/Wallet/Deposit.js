@@ -82,7 +82,6 @@ export default function Deposit() {
     let infoObj;
     if (hasMethod && currentBalanceObj.infos) {
       infoObj = currentBalanceObj.infos[network];
-      console.log(currentBalanceObj.infos);
       let array = [
         `Expected Arrival: ${infoObj?.minConfirmsForDeposit} network confirmations`,
       ];
@@ -105,13 +104,15 @@ export default function Deposit() {
 
         <WalletCoinsDropdown />
 
-        {!isFiat ? (
+        {!isFiat || code === 'EUR' ? (
           <>
             <ChooseNetworkDropdown />
             {cryptoAddress.address && !hasRestriction && hasMethod && (
               <AddressBlock />
             )}
-            {hasMethod && <AppInfoBlock content={content()} warning />}
+            {hasMethod && content() && (
+              <AppInfoBlock content={content()} warning />
+            )}
           </>
         ) : (
           <>

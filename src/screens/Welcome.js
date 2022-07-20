@@ -38,8 +38,8 @@ export default function Welcome({ navigation }) {
     SecureStore.getItemAsync('language')
       .then((l) => {
         if (!l) {
-          switchLanguage('en-US');
-          dispatch(setLanguage('en-US'));
+          switchLanguage('en');
+          dispatch(setLanguage('en'));
         } else {
           dispatch(setLanguage(l));
         }

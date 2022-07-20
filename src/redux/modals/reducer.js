@@ -22,6 +22,7 @@ const INITIAL_STATE = {
   infoVisible: false,
   chooseCardModalVisible: false,
   chooseBankModalVisible: false,
+  wireBanksModalVisible: false,
   bankFeesModalVisible: false,
 
   // User Profile
@@ -74,6 +75,7 @@ export default (state = INITIAL_STATE, action) => {
     countriesModalVisible,
     smsAuthModalVisible,
     googleOtpModalVisible,
+    wireBanksModalVisible,
     emailAuthModalVisible,
     chooseNetworkModalVisible,
     generateRequestModalVisible,
@@ -144,6 +146,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         chooseBankModalVisible,
+      };
+    case actionTypes.WIRE_BANK_MODAL:
+      return {
+        ...state,
+        wireBanksModalVisible,
       };
     case actionTypes.BANK_FEES_MODAL:
       return {

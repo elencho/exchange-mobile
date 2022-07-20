@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Clipboard from 'expo-clipboard';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
-import { toggleChooseBankModal } from '../../../redux/modals/actions';
+import { toggleWireBanksModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
-import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
+import WireBanksModal from './WireBanksModal';
 
 const InfoRow = ({ title, text }) => {
   const copy = () => Clipboard.setString(text);
@@ -30,39 +36,27 @@ export default function BankInfo() {
   const state = useSelector((state) => state);
   const [info, setInfo] = useState({});
   const {
-    trade: { depositProvider, depositProviders },
-    wallet: {
-      wireDepositInfo: { en },
-    },
+    trade: { depositProvider },
+    wallet: { wireDepositInfo },
+    profile: { language },
   } = state;
 
   useEffect(() => {
-    if (en) {
-      setInfo({
-        country: en[0].receiverBankCountry,
-        swift: en[0].receiverBankSwift,
-        address: en[0].receiverBankAddress,
-        iban: en[0].receiverIBAN,
-        description: en[0].transferDescription,
-        intermediateSwift: en[0].intermediateBankSwift,
-        name: en[0].receiverName,
-      });
-    }
-  }, [en]);
-
-  const handleBanks = () => {
-    dispatch(toggleChooseBankModal(true));
-  };
-
-  const bankName = () => {
-    let bankName;
-    depositProviders.forEach((d) => {
-      if (depositProvider === d.provider) {
-        bankName = d.displayName;
-      }
+    const obj = wireDepositInfo[language].find(
+      (o) => o.iconName.split('.')[0] === depositProvider
+    );
+    setInfo({
+      country: obj?.receiverBankCountry,
+      swift: obj?.receiverBankSwift,
+      address: obj?.receiverBankAddress,
+      iban: obj?.receiverIBAN,
+      description: obj?.transferDescription,
+      intermediateSwift: obj?.intermediateBankSwift,
+      name: obj?.receiverName,
     });
-    return bankName;
-  };
+  }, [depositProvider]);
+
+  const handleBanks = () => dispatch(toggleWireBanksModal(true));
 
   const infoArray = [
     { title: 'Company Name', text: info.name },
@@ -86,20 +80,20 @@ export default function BankInfo() {
         Bank Info
       </AppText>
 
-      {/* <Pressable style={styles.dropdown} onPress={handleBanks}>
+      <Pressable style={styles.dropdown} onPress={handleBanks}>
         <View style={styles.subtext}>
           <AppText subtext style={styles.secondary}>
-            Bank
+            Payment Service Provider
           </AppText>
         </View>
 
         <Image source={images.TBC} style={styles.image} />
         <AppText medium style={styles.dropdownText}>
-          {bankName()}
+          {depositProvider ?? 'Choose Bank'}
         </AppText>
         <View style={styles.line} />
         <Image source={images.Arrow} />
-      </Pressable> */}
+      </Pressable>
 
       {infoArray.map((i) => (
         <InfoRow title={i.title} text={i.text} key={i.title} />
@@ -121,7 +115,7 @@ export default function BankInfo() {
         </>
       )}
 
-      <ChooseBankModal />
+      <WireBanksModal />
     </>
   );
 }
@@ -154,7 +148,7 @@ const styles = StyleSheet.create({
   line: {
     width: 1,
     backgroundColor: '#3B4160',
-    marginHorizontal: 15,
+    marginHorizontal: 20,
     height: 25,
   },
   marginVertical: {

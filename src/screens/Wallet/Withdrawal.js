@@ -91,7 +91,7 @@ export default function Withdrawal() {
 
     setHasMethod(!!Object.keys(m).length);
 
-    return () => dispatch(setDepositProvider(null));
+    // return () => dispatch(setDepositProvider(null));
   }, [code]);
 
   useEffect(() => {

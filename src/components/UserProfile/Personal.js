@@ -124,11 +124,7 @@ export default function Personal() {
       case 'Language':
         return (
           <AppText subtext style={styles.secondary}>
-            {language === 'ka'
-              ? 'ქართული'
-              : language === 'en-US'
-              ? 'English'
-              : ''}
+            {language === 'ka' ? 'ქართული' : language === 'en' ? 'English' : ''}
           </AppText>
         );
       default:

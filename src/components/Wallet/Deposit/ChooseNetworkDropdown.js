@@ -15,9 +15,7 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
     trade: { currentBalanceObj },
   } = state;
 
-  const handleDropdown = () => {
-    dispatch(toggleChooseNetworkModal(true));
-  };
+  const handleDropdown = () => dispatch(toggleChooseNetworkModal(true));
 
   const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
   const isAvailable = !!Object.keys(currentBalanceObj[m]).length;

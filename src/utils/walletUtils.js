@@ -22,7 +22,9 @@ import {
 } from '../constants/api';
 
 export const fetchWireDeposit = async (currency, network) => {
-  const data = await axios.get(`${WIRE_DEPOSIT}/${currency}?provider=SWIFT`);
+  const data = await axios.get(
+    `${WIRE_DEPOSIT}/${currency}?provider=${network}`
+  );
   if (data) return data.data;
 };
 

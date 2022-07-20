@@ -27,8 +27,8 @@ export default function ChooseBankModal() {
       walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
 
     if (tabRouteName === 'Wallet') {
-      depositProviders.forEach((p) => {
-        currentBalanceObj[m].ECOMMERCE.forEach((d) => {
+      depositProviders?.forEach((p) => {
+        currentBalanceObj[m].ECOMMERCE?.forEach((d) => {
           if (p.displayName === d.displayName) {
             cards.forEach((c) => {
               if (

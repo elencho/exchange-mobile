@@ -74,14 +74,14 @@ function* depositProvidersSaga() {
     balance.balances.forEach((b) => {
       if (b.depositMethods.ECOMMERCE && fiat === b.currencyCode) {
         providers = b.depositMethods.ECOMMERCE;
-        // provider = b.depositMethods.ECOMMERCE[0].provider;
+        provider = b.depositMethods.ECOMMERCE[0].provider;
       }
     });
 
   if (balance) {
     if (balance.balances) yield call(setProviders);
   }
-  // yield put(setDepositProvider(provider));
+  yield put(setDepositProvider(provider));
   yield put(setDepositProviders(providers));
 }
 

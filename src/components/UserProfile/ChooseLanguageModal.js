@@ -33,13 +33,13 @@ export default function ChooseLanguageModal() {
   };
 
   const text = (l) => {
-    if (l === 'en-US') return 'English';
+    if (l === 'en') return 'English';
     if (l === 'ka') return 'ქართული';
   };
 
   const children = (
     <>
-      {['en-US', 'ka'].map((l, i, a) => (
+      {['en', 'ka'].map((l, i, a) => (
         <View key={l}>
           <Pressable
             style={[styles.button, background(l)]}

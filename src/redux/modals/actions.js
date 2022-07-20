@@ -6,6 +6,7 @@ export const actionTypes = {
   INSTANT_TRADE_INFO: 'INSTANT_TRADE_INFO',
   CHOOSE_CARD_MODAL: 'CHOOSE_CARD_MODAL',
   CHOOSE_BANK_MODAL: 'CHOOSE_BANK_MODAL',
+  WIRE_BANK_MODAL: 'WIRE_BANK_MODAL',
   BANK_FEES_MODAL: 'BANK_FEES_MODAL',
   FIAT_MODAL_VISIBLE: 'FIAT_MODAL_VISIBLE',
   CRYPTO_MODAL_VISIBLE: 'CRYPTO_MODAL_VISIBLE',
@@ -74,6 +75,10 @@ export const toggleChooseCardModal = (chooseCardModalVisible) => ({
 export const toggleChooseBankModal = (chooseBankModalVisible) => ({
   type: actionTypes.CHOOSE_BANK_MODAL,
   chooseBankModalVisible,
+});
+export const toggleWireBanksModal = (wireBanksModalVisible) => ({
+  type: actionTypes.WIRE_BANK_MODAL,
+  wireBanksModalVisible,
 });
 export const toggleBankFeesModal = (bankFeesModalVisible) => ({
   type: actionTypes.BANK_FEES_MODAL,

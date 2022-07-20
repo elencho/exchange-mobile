@@ -7,7 +7,7 @@ import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
-import { setNetwork } from '../../../redux/wallet/actions';
+import { setNetwork, wireDepositAction } from '../../../redux/wallet/actions';
 
 export default function ChooseNetworkModal() {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ export default function ChooseNetworkModal() {
   const {
     modals: { chooseNetworkModalVisible },
     wallet: { network, walletTab },
-    trade: { currentBalanceObj },
+    trade: { currentBalanceObj, fiatsArray },
     transactions: { code },
   } = state;
 
@@ -43,6 +43,11 @@ export default function ChooseNetworkModal() {
 
     return () => setNetworks([]);
   }, [code]);
+
+  useEffect(() => {
+    const fiats = fiatsArray.map((f) => f.code);
+    if (fiats.includes(code)) dispatch(wireDepositAction('', code));
+  }, [network]);
 
   const name = (n) => {
     if (n === 'ERC20') return 'Ethereum Network';
