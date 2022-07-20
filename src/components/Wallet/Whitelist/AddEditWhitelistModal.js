@@ -21,6 +21,8 @@ import {
 } from '../../../redux/wallet/actions';
 import { sendOtp } from '../../../utils/userProfileUtils';
 import GeneralError from '../../GeneralError';
+import SmsEmailAuthModal from '../../UserProfile/SmsEmailAuthModal';
+import GoogleOtpModal from '../../UserProfile/GoogleOtpModal';
 
 export default function AddEditWhitelistModal({ add, edit }) {
   const dispatch = useDispatch();
@@ -37,14 +39,11 @@ export default function AddEditWhitelistModal({ add, edit }) {
     if (edit) dispatch(toggleEditWhitelistModal(false));
   };
 
-  const handleHide = () => {
-    hide();
+  const handleAdd = () => {
     if (add) {
-      setTimeout(() => {
-        if (googleAuth) dispatch(toggleGoogleOtpModal(true));
-        if (emailAuth) dispatch(toggleEmailAuthModal(true));
-        if (smsAuth) dispatch(toggleSmsAuthModal(true));
-      }, 1000);
+      if (googleAuth) dispatch(toggleGoogleOtpModal(true));
+      if (emailAuth) dispatch(toggleEmailAuthModal(true));
+      if (smsAuth) dispatch(toggleSmsAuthModal(true));
       if (!googleAuth) sendOtp();
     }
     if (edit) {
@@ -124,9 +123,13 @@ export default function AddEditWhitelistModal({ add, edit }) {
       <AppButton
         text={add ? 'Add Address' : 'Edit Address'}
         style={[styles.button, { opacity: enabled ? 1 : 0.5 }]}
-        onPress={handleHide}
+        onPress={handleAdd}
         disabled={!enabled}
       />
+
+      <SmsEmailAuthModal type="SMS" whitelist />
+      <SmsEmailAuthModal type="Email" whitelist />
+      <GoogleOtpModal whitelist />
     </>
   );
 

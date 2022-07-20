@@ -13,8 +13,6 @@ import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleAddWhitelistModal } from '../../redux/modals/actions';
 import { getWhitelistAction, setNetwork } from '../../redux/wallet/actions';
-import SmsEmailAuthModal from '../../components/UserProfile/SmsEmailAuthModal';
-import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import GeneralError from '../../components/GeneralError';
 
 export default function Whitelist() {
@@ -74,9 +72,6 @@ export default function Whitelist() {
       <WhitelistActionsModal />
       <AddEditWhitelistModal add />
       <AddEditWhitelistModal edit />
-      <SmsEmailAuthModal type="SMS" whitelist />
-      <SmsEmailAuthModal type="Email" whitelist />
-      <GoogleOtpModal whitelist />
     </View>
   );
 }

@@ -15,6 +15,7 @@ import {
   generateCryptoAddress,
   wireWithdrawal,
 } from '../../utils/walletUtils';
+import { toggleAddWhitelistModal } from '../modals/actions';
 import { saveGeneralError } from '../profile/actions';
 import { chooseCurrency, setAbbr } from '../transactions/actions';
 import {
@@ -151,6 +152,7 @@ export function* addWhitelistSaga(action) {
     yield put(setNewWhitelist({}));
     yield put(saveWhitelist([...whitelist, data]));
     yield put({ type: 'REFRESH_WALLET_AND_TRADES' });
+    yield put(toggleAddWhitelistModal(false));
   }
 }
 
