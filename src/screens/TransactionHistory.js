@@ -21,7 +21,6 @@ import { types } from '../constants/filters';
 import { monthsShort } from '../constants/months';
 import {
   chooseCurrency,
-  fetchTransactions,
   reachScrollEnd,
   setAbbr,
 } from '../redux/transactions/actions';
@@ -36,7 +35,7 @@ function TransactionHistory() {
   useEffect(() => {
     dispatch(chooseCurrency('Show All Currency'));
     dispatch(setAbbr(null));
-    dispatch(fetchTransactions());
+    dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
   }, []);
 
   const onRefresh = () => dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });

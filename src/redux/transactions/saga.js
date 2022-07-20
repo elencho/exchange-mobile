@@ -112,7 +112,7 @@ function* typeSaga(action) {
   yield put(saveTransactions([]));
   yield put(setTransactionsOffset(0));
   yield put(setTypeFilter(filter === 'ALL' ? null : filter));
-  yield put(fetchTransactions());
+  yield put({ type: 'REFRESH_TRANSACTIONS_ACTION' });
 }
 
 function* filterSaga(action) {
@@ -155,7 +155,7 @@ function* showResultsSaga(action) {
 
   yield put(saveTransactions([]));
   yield put(setTransactionsOffset(0));
-  yield put(fetchTransactions());
+  yield put({ type: 'REFRESH_TRANSACTIONS_ACTION' });
   yield call(() => navigation && navigation.goBack());
 }
 
