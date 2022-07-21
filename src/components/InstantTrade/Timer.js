@@ -38,17 +38,17 @@ export default function Timer() {
     return 100 - (100 / 90) * seconds;
   };
 
-  const color = tradeType === 'Buy' ? '#0CCBB5' : '#E0355D';
+  const trackColor = tradeType === 'Buy' ? '#0CCBB5' : '#E0355D';
 
   return (
     <>
       <ProgressBar
-        backgroundColor={color}
+        backgroundColor={trackColor}
         trackColor="rgba(131, 157, 180, 0.23)"
         height={3}
         progress={progress(seconds)}
       />
-      <AppText style={{ marginTop: 10, color }} subtext body>
+      <AppText style={{ marginTop: 10, color: '#C0C5E0' }} subtext body>
         Price update in {timeFormat(seconds)}
       </AppText>
     </>
