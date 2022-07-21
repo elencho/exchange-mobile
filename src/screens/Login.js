@@ -28,9 +28,7 @@ export default function Login({ navigation }) {
   const typeLogin = (t) =>
     dispatch(setCredentials({ ...credentials, login: t }));
 
-  const handleLogin = () => {
-    dispatch(usernameAndPasswordAction(navigation));
-  };
+  const handleLogin = () => dispatch(usernameAndPasswordAction(navigation));
 
   const register = () => dispatch(startRegistrationAction(navigation));
 

@@ -91,15 +91,24 @@ function* startRegistrationSaga(action) {
 function* registrationFormSaga(action) {
   const { navigation } = action;
   const params = yield select(registrationParams);
-  const url = yield select(
-    (state) => state.profile.registrationStartInfo.callbackUrl
-  );
+  const state = yield select((state) => state.profile);
+  const { registrationStartInfo, verificationInfo } = state;
 
-  const data = yield call(registrationForm, params, url);
+  const data = yield call(
+    registrationForm,
+    params,
+    registrationStartInfo.callbackUrl
+  );
   if (data.execution === 'EMAIL_VERIFICATION_OTP') {
     yield put(toggleEmailVerificationModal(true));
     yield put(saveVerificationInfo(data));
   }
+  yield put(
+    saveRegistrationStartInfo({
+      ...registrationStartInfo,
+      callbackUrl: data.callbackUrl,
+    })
+  );
 }
 
 // VERIFY REGISTRATION
@@ -107,47 +116,53 @@ function* verifyAccountSaga(action) {
   const { otp, navigation } = action;
   yield put(toggleLoading(true));
 
-  const url = yield select(
-    (state) => state.profile.verificationInfo.callbackUrl
-  );
-  const codeVerifier = yield select(
-    (state) => state.profile.pkceInfo.codeVerifier
-  );
+  const state = yield select((state) => state.profile);
+  const {
+    verificationInfo,
+    pkceInfo: { codeVerifier },
+  } = state;
 
-  const verified = yield call(verifyAccount, url, otp);
-  if (verified) {
+  const verified = yield call(verifyAccount, verificationInfo.callbackUrl, otp);
+  if (verified?.code) {
     const data = yield call(codeToToken, verified.code, codeVerifier);
-    if (data) {
-      yield call(async () => {
-        await SecureStore.setItemAsync('accessToken', data.access_token);
-        await SecureStore.setItemAsync('refreshToken', data.refresh_token);
-      });
+    yield call(async () => {
+      await SecureStore.setItemAsync('accessToken', data?.access_token);
+      await SecureStore.setItemAsync('refreshToken', data?.refresh_token);
+    });
 
-      yield put({ type: 'OTP_SAGA', token: data.access_token });
-      yield call(() => navigation.navigate('Main'));
-    }
+    yield put({ type: 'OTP_SAGA', token: data?.access_token });
+    yield call(() => navigation.navigate('Main'));
+    yield put(toggleEmailVerificationModal(false));
+    yield put(toggleLoading(false));
+  } else {
+    yield put(toggleLoading(false));
+    yield put(saveVerificationInfo(verified));
   }
-  yield put(toggleEmailVerificationModal(false));
-  yield put(toggleLoading(false));
 }
 
 //  USERNAME AND PASSWORD
 function* usernameAndPasswordSaga(action) {
   const { navigation } = action;
   const credentials = yield select((state) => state.profile.credentials);
-  const url = yield select((state) => state.profile.loginStartInfo.callbackUrl);
+  const loginStartInfo = yield select((state) => state.profile.loginStartInfo);
   const { login, password } = credentials;
   const userAndPassInfo = yield call(
     usernameAndPasswordForm,
     login,
     password,
-    url
+    loginStartInfo?.callbackUrl
   );
   yield put(saveUserAndPassInfo(userAndPassInfo));
 
   if (userAndPassInfo.execution === 'LOGIN_OTP') {
     yield put(toggleLogin2FaModal(true));
   }
+  yield put(
+    saveLoginStartInfo({
+      ...loginStartInfo,
+      callbackUrl: userAndPassInfo.callbackUrl,
+    })
+  );
 
   // Sometimes OTP is disabled, therefore code block below should be executed
   if (userAndPassInfo.code) {
