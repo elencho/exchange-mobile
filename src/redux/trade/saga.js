@@ -19,6 +19,7 @@ import {
   depositProvidersSagaAction,
   cardsSagaAction,
   setCurrentBalanceObj,
+  setCrypto,
 } from './actions';
 import {
   getParams,
@@ -60,6 +61,10 @@ function* pairObjectSaga(action) {
         if (o.pair.baseCurrency === crypto) object = o;
       })
     );
+    if (!object) {
+      object = offers[fiat][0];
+      yield put(setCrypto(object.pair.baseCurrency));
+    }
     yield put(setPairObject(object));
   }
 }

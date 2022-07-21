@@ -68,15 +68,9 @@ function* fetchCurrenciesSaga() {
   const currencies = yield call(currenciesApi);
 
   if (currencies) {
-    yield put(
-      saveCurrencies([{ name: 'Show All Currency', code: '' }, ...currencies])
-    );
-    yield put(
-      saveCurrenciesConstant([
-        { name: 'Show All Currency', code: '' },
-        ...currencies,
-      ])
-    );
+    const curArr = [{ name: 'Show All Currency', code: '' }, ...currencies];
+    yield put(saveCurrencies(curArr));
+    yield put(saveCurrenciesConstant(curArr));
 
     yield put({ type: 'CLASIFY_CURRENCIES' });
   }
@@ -165,17 +159,23 @@ function* transactionDetailsSaga(action) {
 }
 
 function* clasifyCurrenciesSaga() {
-  const currencies = yield select((state) => state.transactions.currencies);
+  const transactions = yield select((state) => state.transactions);
+  const trade = yield select((state) => state.trade);
+  const { offers, fiat } = trade;
+  const { currencies, tabRouteName } = transactions;
 
   let fiatsArray = [];
   let cryptosArray = [];
 
-  if (currencies) {
-    currencies.forEach((c) => {
-      if (c.type === 'FIAT') fiatsArray.push(c);
-      if (c.type === 'CRYPTO') cryptosArray.push(c);
-    });
-  }
+  currencies.forEach((c) => {
+    if (c.type === 'FIAT') fiatsArray.push(c);
+    if (c.type === 'CRYPTO' && tabRouteName !== 'Trade') cryptosArray.push(c);
+    if (c.type === 'CRYPTO' && tabRouteName === 'Trade') {
+      offers[fiat].forEach((o) => {
+        if (o.pair.baseCurrency === c.code) cryptosArray.push(c);
+      });
+    }
+  });
 
   yield put(setFiatsArray(fiatsArray));
   yield put(setCryptosArray(cryptosArray));
