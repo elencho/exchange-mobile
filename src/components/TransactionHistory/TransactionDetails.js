@@ -19,7 +19,6 @@ export default function TransactionDetails() {
       currency,
       type,
       totalAmount,
-      provider,
       providerDisplayName,
     },
   } = state;
@@ -38,32 +37,39 @@ export default function TransactionDetails() {
     </View>
   );
 
+  const leftArray = [
+    'Type',
+    'Network',
+    'Date / Time',
+    'Amount',
+    'Fee',
+    'Total Amount',
+    'Status',
+    'Method',
+  ];
+  const rightArray = [
+    type,
+    providerDisplayName,
+    `${date} / ${time}`,
+    `${amount} ${currency}`,
+    `${fee} ${currency}`,
+    `${totalAmount} ${currency}`,
+    status,
+    method,
+  ];
+
   return (
     <View style={styles.container}>
       <View>
-        {[
-          'Type',
-          'Network',
-          'Date / Time',
-          'Amount',
-          'Fee',
-          'Total Amount',
-          'Status',
-          'Method',
-        ].map((e) => (
+        {leftArray.map((e) => (
           <LeftText key={e} text={e} />
         ))}
       </View>
 
       <View style={styles.right}>
-        <RightText text={type} />
-        <RightText text={providerDisplayName} />
-        <RightText text={`${date} / ${time}`} />
-        <RightText text={`${amount} ${currency}`} />
-        <RightText text={`${fee} ${currency}`} />
-        <RightText text={`${totalAmount} ${currency}`} />
-        <RightText text={status} />
-        <RightText text={method} />
+        {rightArray.map((e) => (
+          <RightText text={e} key={Math.random()} />
+        ))}
       </View>
     </View>
   );

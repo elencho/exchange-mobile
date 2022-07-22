@@ -87,7 +87,13 @@ export default function TransactionModal({ transactions, trades }) {
               <AppText medium style={styles.white}>
                 Identifier (TXID):
               </AppText>
-              <AppText style={styles.address} subtext>
+              <AppText
+                style={[
+                  styles.address,
+                  // { borderWidth: 1, borderColor: 'yellow' },
+                ]}
+                subtext
+              >
                 {transactionInfo}
               </AppText>
             </View>
@@ -226,7 +232,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 15,
     justifyContent: 'space-between',
-    height: '100%',
   },
   line: {
     height: 0.5,
@@ -244,7 +249,7 @@ const styles = StyleSheet.create({
   top: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 37,
+    // height: 37,
   },
   address: { color: '#C0C5E0' },
   instantTrade: { color: colors.SECONDARY_TEXT, marginTop: 3 },

@@ -38,8 +38,6 @@ import {
 import { fetchTrades } from '../trade/actions';
 
 function* fetchTransactionsSaga() {
-  yield put(toggleLoading(true));
-
   const params = yield select(getParams);
   const transactions = yield select(getTransactions);
   const newTransactions = yield call(fetch, params);
@@ -47,7 +45,6 @@ function* fetchTransactionsSaga() {
   if (newTransactions) {
     yield put(saveTransactions([...transactions, ...newTransactions]));
   }
-  yield put(toggleLoading(false));
 }
 
 function* refreshTransactionsSaga() {
