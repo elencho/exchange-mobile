@@ -31,6 +31,7 @@ export default function FiatBlock() {
     transactions: { code },
     trade: {
       card,
+      depositProvider,
       currentBalanceObj: { depositScale },
     },
     wallet: {
@@ -107,9 +108,16 @@ export default function FiatBlock() {
           text="Generate"
           onPress={generatePdf}
           left={<Image source={images.Generate} />}
+          style={[styles.button, { opacity: amount ? 1 : 0.5 }]}
+          disabled={!amount}
         />
       ) : (
-        <AppButton text="Deposit" onPress={deposit} />
+        <AppButton
+          text="Deposit"
+          onPress={deposit}
+          style={[styles.button, { opacity: amount ? 1 : 0.5 }]}
+          disabled={!amount && !depositProvider && !card}
+        />
       )}
     </View>
   );
@@ -121,6 +129,10 @@ const styles = StyleSheet.create({
     paddingVertical: 22,
     paddingHorizontal: 16,
     marginBottom: 12,
+  },
+  button: {
+    width: '90%',
+    alignSelf: 'center',
   },
   dropdown: {
     borderColor: '#525A86',

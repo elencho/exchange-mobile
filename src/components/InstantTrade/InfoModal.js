@@ -5,8 +5,6 @@ import { useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
 import AppText from '../AppText';
-import Background from '../Background';
-import CloseModalIcon from './CloseModalIcon';
 import { toggleInfoModal } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
 
@@ -19,7 +17,7 @@ export default function InfoModal() {
   };
 
   const children = (
-    <ScrollView>
+    <ScrollView style={{ marginTop: 30, paddingHorizontal: 13 }}>
       <TouchableOpacity activeOpacity={0.99}>
         <AppText header style={styles.header}>
           What is Instant Trade

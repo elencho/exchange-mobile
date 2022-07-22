@@ -50,15 +50,17 @@ export default function Trade({ trade }) {
   return (
     <Pressable style={styles.container} onPress={show}>
       <View style={styles.row}>
-        <AppText style={styles.primary} medium body>
+        <AppText style={[styles.primary, { marginRight: 10 }]} medium body>
           {baseCurrency} - {quoteCurrency}
         </AppText>
-        <AppText style={styles.secondary} subtext>
-          {cumulativeCost} {quoteCurrency}{' '}
-          <AppText subtext style={styles.primary}>
-            / {size} {baseCurrency}
+        <View style={{ alignItems: 'flex-end' }}>
+          <AppText style={styles.secondary} subtext>
+            {cumulativeCost} {quoteCurrency}
           </AppText>
-        </AppText>
+          <AppText subtext style={styles.primary}>
+            {size} {baseCurrency}
+          </AppText>
+        </View>
       </View>
 
       <View style={styles.row}>

@@ -72,14 +72,14 @@ function* pairObjectSaga(action) {
 function* depositProvidersSaga() {
   let provider; // It will become first item of depositProviders array for a particular fiat
   let providers; // Banks that have ecommerce
-  const balance = yield select((state) => state.trade.balance);
-  const fiat = yield select((state) => state.trade.fiat);
+  const trade = yield select((state) => state.trade);
+  const { balance, fiat, depositProvider } = trade;
 
   const setProviders = () =>
     balance.balances.forEach((b) => {
       if (b.depositMethods.ECOMMERCE && fiat === b.currencyCode) {
         providers = b.depositMethods.ECOMMERCE;
-        provider = b.depositMethods.ECOMMERCE[0].provider;
+        if (!depositProvider) provider = b.depositMethods.ECOMMERCE[0].provider;
       }
     });
 

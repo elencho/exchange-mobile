@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,8 +21,21 @@ export default function ChooseBankModal() {
     wallet: { walletTab },
   } = state;
 
+  useEffect(() => {
+    dispatch(setDepositProvider(null));
+  }, []);
+
   const array = () => {
     let array = [];
+
+    const arrayFullCheck = (a, p) => {
+      let isFull = false;
+      a.forEach((b) => {
+        if (Object.values(b).includes(p)) isFull = true;
+      });
+      return isFull;
+    };
+
     const m =
       walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
 
@@ -31,17 +44,26 @@ export default function ChooseBankModal() {
         currentBalanceObj[m].ECOMMERCE?.forEach((d) => {
           if (p.displayName === d.displayName) {
             cards.forEach((c) => {
-              if (
-                c.provider === d.provider &&
-                array.length < currentBalanceObj[m].ECOMMERCE.length
-              )
-                array.push(d);
+              if (c.provider === d.provider)
+                if (!array.length) array.push(d);
+                else !arrayFullCheck(array, d.provider) && array.push(d);
             });
           }
         });
       });
 
       if (walletTab === 'Manage Cards') return depositProviders;
+    }
+
+    if (tabRouteName === 'Trade') {
+      depositProviders?.forEach((d) => {
+        cards.forEach((c) => {
+          if (c.provider === d.provider) {
+            if (!array.length) array.push(d);
+            else !arrayFullCheck(array, d.provider) && array.push(d);
+          }
+        });
+      });
     }
     return array;
   };
@@ -56,29 +78,26 @@ export default function ChooseBankModal() {
     hide();
   };
 
-  const children = () => {
-    if (depositProviders?.length) {
-      return array().map((b, i) => (
-        <View key={b.displayName}>
-          <Pressable
-            style={[
-              styles.row,
-              b.provider === depositProvider && {
-                backgroundColor: 'rgba(101, 130, 253, 0.16)',
-              },
-            ]}
-            onPress={() => choose(b.provider)}
-          >
-            <Image source={images.TBC} />
-            <AppText body style={styles.text}>
-              {b.displayName}
-            </AppText>
-          </Pressable>
-          {i < depositProviders?.length - 1 && <View style={styles.margin} />}
-        </View>
-      ));
-    }
-  };
+  const children = () =>
+    array().map((b, i, a) => (
+      <View key={b.displayName}>
+        <Pressable
+          style={[
+            styles.row,
+            b.provider === depositProvider && {
+              backgroundColor: 'rgba(101, 130, 253, 0.16)',
+            },
+          ]}
+          onPress={() => choose(b.provider)}
+        >
+          <Image source={images.TBC} />
+          <AppText body style={styles.text}>
+            {b.displayName}
+          </AppText>
+        </Pressable>
+        {i < a.length - 1 && <View style={styles.margin} />}
+      </View>
+    ));
 
   return (
     <AppModal

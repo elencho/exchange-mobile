@@ -22,7 +22,9 @@ export default function ChooseCardModal() {
   useEffect(() => {
     let cardsArr = [];
     cards.forEach((c) => {
-      if (c.provider === depositProvider) cardsArr.push(c);
+      if (c.provider === depositProvider && c.status === 'VERIFIED') {
+        cardsArr.push(c);
+      }
     });
     setCardsToDisplay(cardsArr);
 

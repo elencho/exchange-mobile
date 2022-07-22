@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -37,9 +37,13 @@ export default function TradeDetails() {
 
   const RightText = ({ text }) => (
     <View style={styles.rightTextContainer}>
-      <AppText medium style={styles.rightText}>
-        {text}
-      </AppText>
+      {typeof text === 'string' ? (
+        <AppText medium style={styles.rightText}>
+          {text}
+        </AppText>
+      ) : (
+        <View style={{ alignItems: 'flex-end' }}>{text}</View>
+      )}
     </View>
   );
 
@@ -66,9 +70,18 @@ export default function TradeDetails() {
 
       <View style={styles.right}>
         <RightText
-          text={`${cumulativeCost} ${quoteCurrency} / ${size} ${baseCurrency}`}
+          text={
+            <>
+              <AppText medium style={{ color: '#C0C5E0' }}>
+                {cumulativeCost} {quoteCurrency}
+              </AppText>
+              <AppText medium style={{ color: colors.PRIMARY_TEXT }}>
+                {size} {baseCurrency}
+              </AppText>
+            </>
+          }
         />
-        <RightText text={`${price} ${baseCurrency}`} />
+        <RightText text={`${price} ${quoteCurrency}`} />
         <RightText text={date(creationTime)} />
         <RightText text={date(lastChangeTime)} />
 

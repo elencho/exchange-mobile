@@ -13,7 +13,6 @@ import {
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import InfoMark from './InfoMark';
-import { setDepositProvider } from '../../redux/trade/actions';
 
 function CardSection() {
   const navigation = useNavigation();
@@ -103,7 +102,7 @@ function CardSection() {
             <Image source={images['Arrow']} />
           </Pressable>
 
-          {tabRouteName === 'Trade' && (
+          {tabRouteName === 'Trade' && depositProvider && (
             <AppText subtext style={styles.subText}>
               0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
               <PurpleText text=" More Fees" onPress={showFees} />
@@ -112,27 +111,31 @@ function CardSection() {
         </>
       )}
 
-      <Pressable
-        style={[styles.dropdown, { opacity, marginBottom: 10 }]}
-        onPress={showCards}
-        disabled={!depositProvider}
-      >
-        {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
-        <AppText
-          style={[
-            styles.text,
-            { color: card ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT },
-          ]}
-          medium={card ? card.cardNumber : false}
-        >
-          {card ? card.cardNumber : 'Choose Card'}
-        </AppText>
-        <Image source={images['Arrow']} />
-      </Pressable>
+      {depositProvider && (
+        <>
+          <Pressable
+            style={[styles.dropdown, { opacity, marginBottom: 10 }]}
+            onPress={showCards}
+            disabled={!depositProvider}
+          >
+            {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
+            <AppText
+              style={[
+                styles.text,
+                { color: card ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT },
+              ]}
+              medium={card ? card.cardNumber : false}
+            >
+              {card ? card.cardNumber : 'Choose Card'}
+            </AppText>
+            <Image source={images['Arrow']} />
+          </Pressable>
 
-      <AppText subtext style={styles.newCard}>
-        Or you can add <PurpleText text=" New Card" onPress={addNewCard} />
-      </AppText>
+          <AppText subtext style={styles.newCard}>
+            Or you can add <PurpleText text=" New Card" onPress={addNewCard} />
+          </AppText>
+        </>
+      )}
 
       {FeeInfo()}
     </View>

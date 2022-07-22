@@ -14,6 +14,7 @@ import images from '../../../constants/images';
 import { toggleWireBanksModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import WireBanksModal from './WireBanksModal';
+import { setDepositProvider } from '../../../redux/trade/actions';
 
 const InfoRow = ({ title, text }) => {
   const copy = () => Clipboard.setString(text);
@@ -36,12 +37,13 @@ export default function BankInfo() {
   const state = useSelector((state) => state);
   const [info, setInfo] = useState({});
   const {
-    trade: { depositProvider },
+    trade: { depositProvider, depositProviders },
     wallet: { wireDepositInfo },
     profile: { language },
   } = state;
 
   useEffect(() => {
+    dispatch(setDepositProvider(depositProviders[0]?.provider));
     const obj = wireDepositInfo[language].find(
       (o) => o.iconName.split('.')[0] === depositProvider
     );

@@ -14,6 +14,8 @@ import images from '../../constants/images';
 import { toggleAddWhitelistModal } from '../../redux/modals/actions';
 import { getWhitelistAction, setNetwork } from '../../redux/wallet/actions';
 import GeneralError from '../../components/GeneralError';
+import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
+import SmsEmailAuthModal from '../../components/UserProfile/SmsEmailAuthModal';
 
 export default function Whitelist() {
   const dispatch = useDispatch();
@@ -72,6 +74,9 @@ export default function Whitelist() {
       <WhitelistActionsModal />
       <AddEditWhitelistModal add />
       <AddEditWhitelistModal edit />
+
+      <GoogleOtpModal whitelist />
+      <SmsEmailAuthModal whitelist />
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
@@ -58,6 +58,7 @@ export default function Withdrawal() {
 
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
+  const [loading, setloading] = useState(true);
 
   const isFiat = currentBalanceObj.type === 'FIAT';
   const isEcommerce = network === 'ECOMMERCE';
@@ -90,6 +91,7 @@ export default function Withdrawal() {
     if (isFiat) dispatch(withdrawalTemplatesAction());
 
     setHasMethod(!!Object.keys(m).length);
+    setloading(false);
 
     // return () => dispatch(setDepositProvider(null));
   }, [code]);
@@ -131,56 +133,62 @@ export default function Withdrawal() {
 
   return (
     <>
-      <ScrollView contentContainerStyle={{ flexGrow: hasRestriction ? 0 : 1 }}>
-        <View style={styles.block}>
-          {generalError ? (
-            <View style={{ marginBottom: 16 }}>
-              <GeneralError />
-            </View>
+      {!loading ? (
+        <ScrollView
+          contentContainerStyle={{ flexGrow: hasRestriction ? 0 : 1 }}
+        >
+          <View style={styles.block}>
+            {generalError ? (
+              <View style={{ marginBottom: 16 }}>
+                <GeneralError />
+              </View>
+            ) : null}
+
+            <WalletCoinsDropdown />
+            {(!isFiat || code === 'EUR') && <ChooseNetworkDropdown />}
+            {isFiat && hasMultipleMethods && (
+              <>
+                <TransferMethodDropdown />
+                <TransferMethodModal />
+                {network === 'SWIFT' && (
+                  <AppInfoBlock content={warnings.swift.deposit} warning />
+                )}
+                {network === 'SEPA' && (
+                  <AppInfoBlock content={warnings.sepa} warning />
+                )}
+                {network === 'ECOMMERCE' && (
+                  <AppInfoBlock content={infos.ecommerce.withdrawal} info />
+                )}
+              </>
+            )}
+
+            {walletInfo() && <AppInfoBlock content={[walletInfo()]} warning />}
+          </View>
+
+          {!hasRestriction && isFiat && hasMethod && !isEcommerce && (
+            <WithdrawalInfo />
+          )}
+          {!hasRestriction && hasMethod && (
+            <WithdrawalInputs isFiat={isFiat} hasRestriction={hasRestriction} />
+          )}
+          {saveTemplateCheck() ? (
+            <>
+              <WithdrawalFees />
+              <SaveAsTemplate />
+            </>
           ) : null}
 
-          <WalletCoinsDropdown />
-          {(!isFiat || code === 'EUR') && <ChooseNetworkDropdown />}
-          {isFiat && hasMultipleMethods && (
-            <>
-              <TransferMethodDropdown />
-              <TransferMethodModal />
-              {network === 'SWIFT' && (
-                <AppInfoBlock content={warnings.swift.deposit} warning />
-              )}
-              {network === 'SEPA' && (
-                <AppInfoBlock content={warnings.sepa} warning />
-              )}
-              {network === 'ECOMMERCE' && (
-                <AppInfoBlock content={infos.ecommerce.withdrawal} info />
-              )}
-            </>
-          )}
-
-          {walletInfo() && <AppInfoBlock content={[walletInfo()]} warning />}
-        </View>
-
-        {!hasRestriction && isFiat && hasMethod && !isEcommerce && (
-          <WithdrawalInfo />
-        )}
-        {!hasRestriction && hasMethod && (
-          <WithdrawalInputs isFiat={isFiat} hasRestriction={hasRestriction} />
-        )}
-        {saveTemplateCheck() ? (
-          <>
-            <WithdrawalFees />
-            <SaveAsTemplate />
-          </>
-        ) : null}
-
-        {hasRestriction || !hasMethod ? (
-          <FlexBlock
-            type="Withdrawal"
-            reason={reason()}
-            restrictedUntil={withdrawalRestriction.restrictedUntil}
-          />
-        ) : null}
-      </ScrollView>
+          {hasRestriction || !hasMethod ? (
+            <FlexBlock
+              type="Withdrawal"
+              reason={reason()}
+              restrictedUntil={withdrawalRestriction.restrictedUntil}
+            />
+          ) : null}
+        </ScrollView>
+      ) : (
+        <ActivityIndicator />
+      )}
 
       {!hasRestriction && hasMethod && (
         <View style={styles.button}>

@@ -13,7 +13,6 @@ import AppText from '../../components/AppText';
 import AppWebView from '../../components/AppWebView';
 import GeneralError from '../../components/GeneralError';
 import PurpleText from '../../components/PurpleText';
-import Headline from '../../components/TransactionHistory/Headline';
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
 import AddCardModal from '../../components/Wallet/ManageCards/AddCardModal';
 import Card from '../../components/Wallet/ManageCards/Card';
@@ -35,7 +34,7 @@ export default function ManageCards() {
   } = state;
 
   const [loading, setLoading] = useState(true);
-  const [cards, setCards] = useState(false);
+  const [cards, setCards] = useState(null);
   const [sumsubWebViewHtml, setSumsubWebViewHtml] = useState(false);
 
   useEffect(() => {
@@ -47,7 +46,7 @@ export default function ManageCards() {
       .catch((err) => console.log(err));
 
     return () => setLoading(true);
-  }, []);
+  }, [code]);
 
   const addCardModal = () => dispatch(toggleAddCardModal(true));
 
@@ -72,11 +71,13 @@ export default function ManageCards() {
         <ActivityIndicator size="large" color="white" style={{ flex: 1 }} />
       )}
 
-      {cards && !loading && (
+      {cards?.length && !loading ? (
         <>
           <ScrollView
             style={styles.scrollView}
-            contentContainerStyle={{ paddingVertical: 20 }}
+            contentContainerStyle={{
+              paddingVertical: 20,
+            }}
             nestedScrollEnabled
           >
             {cards.map((c) => (
@@ -95,17 +96,18 @@ export default function ManageCards() {
             <DeleteCardModal cards={cards} setCards={setCards} />
           </ScrollView>
 
-          <Pressable style={styles.button} onPress={addCardModal}>
-            <PurpleText text="+ " />
-            <PurpleText text="Add Card" />
-          </Pressable>
+          {cards?.length ? (
+            <Pressable style={styles.button} onPress={addCardModal}>
+              <PurpleText text="+ " />
+              <PurpleText text="Add Card" />
+            </Pressable>
+          ) : null}
         </>
-      )}
+      ) : null}
 
-      {!cards && !loading && (
+      {!cards?.length && !loading && (
         <View style={styles.flex}>
           <Image source={images.Card} />
-          <Headline title="Manage Cards" />
           <AppText body style={styles.description}>
             Add address for easy withdrawal description about whitelist
           </AppText>
@@ -144,14 +146,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginHorizontal: '20%',
     lineHeight: 20,
-    marginBottom: 40,
+    marginTop: 18,
+    marginBottom: 45,
   },
   flex: {
-    flex: 1,
     backgroundColor: colors.SECONDARY_BACKGROUND,
-    alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
-    paddingBottom: 50,
+    alignItems: 'center',
   },
   scrollView: {
     backgroundColor: colors.SECONDARY_BACKGROUND,

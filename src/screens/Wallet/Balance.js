@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Image,
   KeyboardAvoidingView,
@@ -40,6 +40,10 @@ export default function Balance({ navigation }) {
     dispatch(setDepositProvider(null));
     dispatch(setCard(null));
   };
+
+  useEffect(() => {
+    onRefresh();
+  }, [walletTab]);
 
   return (
     <Background>
