@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Image, ImageBackground, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import AppModal from '../AppModal';
 import AppText from '../AppText';
@@ -9,11 +10,13 @@ import PurpleText from '../PurpleText';
 import TwoFaInput from '../TwoFaInput';
 
 import { toggleLogin2FaModal } from '../../redux/modals/actions';
+import { startLoginAction } from '../../redux/profile/actions';
 import images from '../../constants/images';
 import colors from '../../constants/colors';
 
 export default function Login2FaModal() {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const state = useSelector((state) => state);
 
   const [value, setValue] = useState('');
@@ -25,7 +28,10 @@ export default function Login2FaModal() {
 
   const cellCount = smsAuth ? 4 : 6;
 
-  const hide = () => dispatch(toggleLogin2FaModal(false));
+  const hide = () => {
+    dispatch(toggleLogin2FaModal(false));
+    dispatch(startLoginAction(navigation));
+  };
 
   const image = () => {
     if (userAndPassInfo.attributes) {

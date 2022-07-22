@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import AppText from './AppText';
 import colors from '../constants/colors';
@@ -13,7 +13,10 @@ export default function ModalSearchItem({ name, code, onPress, currentItem }) {
   };
 
   return (
-    <Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.container, backgroundCond()]}
+      onPress={onPress}
+    >
       <Image
         // source={{ uri: 'https://example.png'}}
         source={images.USD}
@@ -28,7 +31,7 @@ export default function ModalSearchItem({ name, code, onPress, currentItem }) {
           ({code})
         </AppText>
       ) : null}
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 
