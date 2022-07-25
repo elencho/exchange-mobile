@@ -79,6 +79,34 @@ export const cardWithdrawalParams = (state) => {
   };
 };
 
+export const maxWithdrawalParams = (state) => {
+  const {
+    transactions: { code },
+    trade: { card, currentBalanceObj, depositProvider },
+    wallet: { network },
+  } = state;
+
+  const provider = network === 'ECOMMERCE' ? depositProvider : network;
+
+  let method;
+  if (currentBalanceObj?.type === 'CRYPTO') {
+    method = 'WALLET';
+  } else {
+    if (network === 'ECOMMERCE') {
+      method = 'ECOMMERCE';
+    } else {
+      method = 'WIRE';
+    }
+  }
+
+  return {
+    currency: code,
+    cardId: card?.id,
+    provider,
+    method,
+  };
+};
+
 export const addWhitelistParams = (state) => {
   const {
     transactions: { code },

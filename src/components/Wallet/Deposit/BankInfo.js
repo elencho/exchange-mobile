@@ -43,10 +43,15 @@ export default function BankInfo() {
   } = state;
 
   useEffect(() => {
-    dispatch(setDepositProvider(depositProviders[0]?.provider));
-    const obj = wireDepositInfo[language].find(
-      (o) => o.iconName.split('.')[0] === depositProvider
-    );
+    const obj = wireDepositInfo[language].find((o) => {
+      let provider;
+      depositProviders.forEach((p) => {
+        if (p.provider === o.iconName.split('.')[0]) provider = p.provider;
+      });
+
+      dispatch(setDepositProvider(provider));
+      return o;
+    });
     setInfo({
       country: obj?.receiverBankCountry,
       swift: obj?.receiverBankSwift,
@@ -56,7 +61,7 @@ export default function BankInfo() {
       intermediateSwift: obj?.intermediateBankSwift,
       name: obj?.receiverName,
     });
-  }, [depositProvider]);
+  }, []);
 
   const handleBanks = () => dispatch(toggleWireBanksModal(true));
 

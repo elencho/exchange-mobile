@@ -137,7 +137,7 @@ function CardSection() {
         </>
       )}
 
-      {FeeInfo()}
+      {/* {FeeInfo()} */}
     </View>
   );
 }

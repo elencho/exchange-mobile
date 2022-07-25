@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -38,6 +38,10 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
 
   const isEcommerce = network === 'ECOMMERCE';
 
+  useEffect(() => {
+    dispatch(setFee({}));
+  }, [code, network]);
+
   const setAmount = (text) => {
     const amount = text.replace(',', '.');
 
@@ -54,11 +58,12 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
 
   const setNote = (note) => dispatch(setWithdrawalNote(note));
   const handleMemotag = (memo) => dispatch(setMemoTag(memo));
+  const handleMax = () => dispatch({ type: 'MAX_WITHDRAWAL_SAGA' });
 
   const Max = () => (
     <View style={styles.row}>
       <View style={styles.line} />
-      <PurpleText text="Max" />
+      <PurpleText text="Max" onPress={handleMax} />
     </View>
   );
 
@@ -110,7 +115,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         right={<Max />}
       />
-      <WithdrawalFeeInfo />
+      {fee.totalFee && <WithdrawalFeeInfo />}
     </View>
   );
 }

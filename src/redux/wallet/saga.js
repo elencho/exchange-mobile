@@ -13,10 +13,12 @@ import {
   fetchWhitelist,
   fetchWireDeposit,
   generateCryptoAddress,
+  maxWithdrawal,
   wireWithdrawal,
 } from '../../utils/walletUtils';
 import { toggleAddWhitelistModal } from '../modals/actions';
 import { saveGeneralError } from '../profile/actions';
+import { setFee } from '../trade/actions';
 import { chooseCurrency, setAbbr } from '../transactions/actions';
 import {
   actionTypes,
@@ -47,6 +49,7 @@ import {
 import {
   addWhitelistParams,
   cardWithdrawalParams,
+  maxWithdrawalParams,
   editWhitelistParams,
   wireWithdrawalParams,
   withdrawalParams,
@@ -213,6 +216,14 @@ function* cardWithdrawalSaga(action) {
   }
 }
 
+function* maxWithdrawalSaga() {
+  const params = yield select(maxWithdrawalParams);
+  const max = yield call(maxWithdrawal, params);
+
+  yield put(setWithdrawalAmount(max?.amount));
+  yield put(setFee(max));
+}
+
 function* deleteTemplatesSaga(action) {
   const { id } = action;
   const status = yield call(deleteTemplates, id);
@@ -239,4 +250,5 @@ export default function* () {
   yield takeLatest(actionTypes.CARD_WITHDRAWAL_SAGA, cardWithdrawalSaga);
   yield takeLatest(actionTypes.DELETE_TEMPLATES_ACTION, deleteTemplatesSaga);
   yield takeLatest('METHOD_NETWORK_RESTRICTION', methodNetworkRestrictionSaga);
+  yield takeLatest('MAX_WITHDRAWAL_SAGA', maxWithdrawalSaga);
 }

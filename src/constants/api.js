@@ -69,6 +69,8 @@ export const CRYPTO_WHITELIST = `${core}/exchange/api/v1/mobile/private/whitelis
 
 export const WITHDRAWAL_TEMPLATES = `${core}/exchange/api/v1/mobile/private/wire-template`;
 
+export const MAX_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/calculateMaxWithdrawal`;
+
 export const BANKS_URL = `${core}/exchange/api/v1/mobile/private/account/banks`;
 
 export const WIRE_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/wire`;

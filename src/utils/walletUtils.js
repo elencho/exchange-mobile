@@ -19,6 +19,7 @@ import {
   CARD_DEPOSIT,
   ADD_CARD_URL,
   DELETE_CARD_URL,
+  MAX_WITHDRAWAL,
 } from '../constants/api';
 
 export const fetchWireDeposit = async (currency, network) => {
@@ -153,8 +154,13 @@ export const cardWithdrawal = async (OTP, params) => {
   if (data) return data.status;
 };
 
+export const maxWithdrawal = async (params) => {
+  const data = await axios.get(MAX_WITHDRAWAL, { params });
+  if (data) return data.data;
+};
+
 export const cardDeposit = async (params) => {
-  const data = await axios.post(CARD_DEPOSIT, params);
+  const data = await axios.post(CARD_DEPOSIT, { params });
   if (data) return data.data;
 };
 
