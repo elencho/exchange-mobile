@@ -11,12 +11,14 @@ import images from '../../../constants/images';
 import { setCardDeleteModalInfo } from '../../../redux/modals/actions';
 import { deleteCard } from '../../../utils/walletUtils';
 import PurpleText from '../../PurpleText';
+import { saveCards } from '../../../redux/trade/actions';
 
-export default function DeleteCardModal({ cards, setCards }) {
+export default function DeleteCardModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     modals: { cardDeleteModalInfo },
+    trade: { cards },
   } = state;
 
   const hide = () => dispatch(setCardDeleteModalInfo({}));
@@ -28,7 +30,7 @@ export default function DeleteCardModal({ cards, setCards }) {
     const status = await deleteCard(id);
     if (status >= 200 || status < 300) {
       const updatedCards = cards.filter((c) => c.id !== id);
-      setCards(updatedCards);
+      dispatch(saveCards(updatedCards));
       hide();
     }
   };

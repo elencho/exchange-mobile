@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   currentBalanceObj: {},
   card: null,
   cards: [],
+  cardsLoading: false,
   fee: null,
   depositProvider: null,
   depositProviders: null,
@@ -49,6 +50,7 @@ export default (state = INITIAL_STATE, action) => {
     hideOtherPairs,
     balance,
     cards,
+    cardsLoading,
     fee,
     depositProvider,
     depositProviders,
@@ -112,6 +114,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cards,
+      };
+    case 'TOGGLE_CARDS_LOADING':
+      return {
+        ...state,
+        cardsLoading,
       };
     case actionTypes.SET_DEPOSIT_PROVIDER:
       return {

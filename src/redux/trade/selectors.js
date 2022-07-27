@@ -47,7 +47,7 @@ export const withdrawalFeeParams = (state) => {
 
 export const getCardParams = (state) => {
   const {
-    trade: { fiat, depositProvider },
+    trade: { fiat },
   } = state;
 
   return {

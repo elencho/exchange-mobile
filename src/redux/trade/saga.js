@@ -91,9 +91,13 @@ function* depositProvidersSaga() {
 }
 
 function* cardsSaga() {
+  yield put({ type: 'TOGGLE_CARDS_LOADING', cardsLoading: true });
+
   const cardParams = yield select(getCardParams);
   const cards = yield call(fetchCards, cardParams);
   yield put(saveCards(cards));
+
+  yield put({ type: 'TOGGLE_CARDS_LOADING', cardsLoading: false });
 }
 
 function* fetchOffersSaga() {

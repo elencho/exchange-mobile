@@ -22,11 +22,11 @@ export default function Security() {
         ))}
       </View>
 
-      <View style={styles.block}>
+      {/* <View style={styles.block}>
         {['Pin', 'Biometric'].map((r, i, a) => (
           <SecurityRow key={r} text={r} i={i} a={a} />
         ))}
-      </View>
+      </View> */}
 
       <View style={styles.block}>
         <SecurityRow text="Strong_Password" />

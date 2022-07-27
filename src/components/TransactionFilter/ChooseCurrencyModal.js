@@ -14,6 +14,7 @@ import { toggleCurrencyModal } from '../../redux/modals/actions';
 import {
   cryptoAddressesAction,
   setNetwork,
+  setWalletTab,
   wireDepositAction,
 } from '../../redux/wallet/actions';
 import { setCurrentBalanceObj } from '../../redux/trade/actions';
@@ -28,6 +29,7 @@ function ChooseCurrencyModal({ wallet = false }) {
     transactions: { currencies, currenciesConstant, currency },
     modals: { chooseCurrencyModalVisible },
     trade: { balance, fiatsArray },
+    wallet: { walletTab },
   } = state;
 
   let walletCurrencies = currencies;
@@ -69,8 +71,10 @@ function ChooseCurrencyModal({ wallet = false }) {
 
     if (wallet) {
       if (fiats.includes(code)) {
+        walletTab === 'Whitelist' && dispatch(setWalletTab('Manage Cards'));
         dispatch(wireDepositAction(name, code, navigation));
       } else {
+        walletTab === 'Manage Cards' && dispatch(setWalletTab('Whitelist'));
         dispatch(cryptoAddressesAction(name, code, navigation, network));
       }
     } else {

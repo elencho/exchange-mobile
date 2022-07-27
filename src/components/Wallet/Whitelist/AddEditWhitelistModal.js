@@ -62,11 +62,14 @@ export default function AddEditWhitelistModal({ add, edit }) {
   };
 
   const tag = () => {
-    const type = currentBalanceObj?.infos[network].transactionRecipientType;
-    if (whitelist[0]?.tag) {
-      return whitelist[0].tag;
+    if (currentBalanceObj.infos) {
+      const type = currentBalanceObj?.infos[network].transactionRecipientType;
+
+      if (whitelist[0]?.tag) {
+        return whitelist[0].tag;
+      }
+      return type === 'ADDRESS_AND_TAG';
     }
-    return type === 'ADDRESS_AND_TAG';
   };
 
   const networks = () => {

@@ -19,11 +19,11 @@ import Card from '../../components/Wallet/ManageCards/Card';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleAddCardModal } from '../../redux/modals/actions';
-import { fetchCards } from '../../utils/fetchTrades';
 import { cardVerificationToken } from '../../utils/userProfileUtils';
 import sumsubHtmlPattern from '../../constants/sumsubHtml.js';
 import CardAddStatusModal from '../../components/Wallet/ManageCards/CardAddStatusModal';
 import DeleteCardModal from '../../components/Wallet/ManageCards/DeleteCardModal';
+import { cardsSagaAction } from '../../redux/trade/actions';
 
 export default function ManageCards() {
   const dispatch = useDispatch();
@@ -31,21 +31,13 @@ export default function ManageCards() {
   const {
     profile: { generalError },
     transactions: { code },
+    trade: { cards, cardsLoading },
   } = state;
 
-  const [loading, setLoading] = useState(true);
-  const [cards, setCards] = useState(null);
   const [sumsubWebViewHtml, setSumsubWebViewHtml] = useState(false);
 
   useEffect(() => {
-    fetchCards({ currency: code })
-      .then((cards) => {
-        setCards(cards);
-        setLoading(false);
-      })
-      .catch((err) => console.log(err));
-
-    return () => setLoading(true);
+    dispatch(cardsSagaAction());
   }, [code]);
 
   const addCardModal = () => dispatch(toggleAddCardModal(true));
@@ -67,11 +59,11 @@ export default function ManageCards() {
         <WalletCoinsDropdown />
       </View>
 
-      {loading && (
+      {cardsLoading && (
         <ActivityIndicator size="large" color="white" style={{ flex: 1 }} />
       )}
 
-      {cards?.length && !loading ? (
+      {cards?.length && !cardsLoading ? (
         <>
           <ScrollView
             style={styles.scrollView}
@@ -89,11 +81,9 @@ export default function ManageCards() {
                 network={c.network}
                 status={c.status}
                 id={c.id}
-                setCards={setCards}
-                cards={cards}
               />
             ))}
-            <DeleteCardModal cards={cards} setCards={setCards} />
+            <DeleteCardModal />
           </ScrollView>
 
           {cards?.length ? (
@@ -105,7 +95,7 @@ export default function ManageCards() {
         </>
       ) : null}
 
-      {!cards?.length && !loading && (
+      {!cards?.length && !cardsLoading && (
         <View style={styles.flex}>
           <Image source={images.Card} />
           <AppText body style={styles.description}>

@@ -115,7 +115,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         right={<Max />}
       />
-      {fee.totalFee && <WithdrawalFeeInfo />}
+      {fee?.totalFee && <WithdrawalFeeInfo />}
     </View>
   );
 }
