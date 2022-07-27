@@ -12,7 +12,6 @@ import {
 } from '../../redux/modals/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
-import InfoMark from './InfoMark';
 
 function CardSection() {
   const navigation = useNavigation();
@@ -78,7 +77,6 @@ function CardSection() {
     if (fee) {
       return (
         <View style={styles.info}>
-          <InfoMark inner="i" color={colors.SECONDARY_TEXT} />
           <AppText subtext style={styles.infoText}>
             MasterCard 3%; Total amount = {fee.totalAmount} {fiat}
           </AppText>
@@ -137,7 +135,7 @@ function CardSection() {
         </>
       )}
 
-      {/* {FeeInfo()} */}
+      {FeeInfo()}
     </View>
   );
 }
@@ -159,11 +157,10 @@ const styles = StyleSheet.create({
   info: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 20,
   },
   infoText: {
     color: colors.SECONDARY_TEXT,
-    marginHorizontal: 10,
   },
   newCard: {
     color: colors.SECONDARY_TEXT,

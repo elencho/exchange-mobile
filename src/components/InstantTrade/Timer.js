@@ -39,6 +39,8 @@ export default function Timer() {
   };
 
   const trackColor = tradeType === 'Buy' ? '#0CCBB5' : '#E0355D';
+  const min = timeFormat(seconds).split(':')[0];
+  const sec = timeFormat(seconds).split(':')[1];
 
   return (
     <>
@@ -49,7 +51,8 @@ export default function Timer() {
         progress={progress(seconds)}
       />
       <AppText style={{ marginTop: 10, color: '#C0C5E0' }} subtext body>
-        Price update in {timeFormat(seconds)}
+        Price update in {min}:
+        <AppText style={seconds <= 30 && { color: '#FA6392' }}>{sec}</AppText>
       </AppText>
     </>
   );

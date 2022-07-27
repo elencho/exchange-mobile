@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -55,11 +55,6 @@ export default function BuySellModal() {
     pair: { baseScale, quoteScale },
   } = pairObject;
 
-  let rate;
-  if (pairObject) {
-    rate = tradeType === 'Buy' ? pairObject.buyPrice : pairObject.sellPrice;
-  }
-
   const hide = () => {
     dispatch(toggleBuySellModal(false));
     dispatch(switchBalanceCard('balance'));
@@ -80,8 +75,14 @@ export default function BuySellModal() {
     return true;
   };
 
+  useEffect(() => {
+    handleChangeText(price, 'crypto');
+  }, [pairObject]);
+
   const handleChangeText = (text, type) => {
     const t = text.replace(',', '.');
+    const rate =
+      tradeType === 'Buy' ? pairObject.buyPrice : pairObject.sellPrice;
 
     if (type === 'crypto' && validateScale(t, quoteScale)) {
       dispatch(
