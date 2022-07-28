@@ -74,7 +74,7 @@ function CardSection() {
   const opacity = depositProvider ? 1 : 0.5;
 
   const FeeInfo = () => {
-    if (fee) {
+    if (fee && tabRouteName === 'Trade') {
       return (
         <View style={styles.info}>
           <AppText subtext style={styles.infoText}>

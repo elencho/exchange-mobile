@@ -160,7 +160,7 @@ export const maxWithdrawal = async (params) => {
 };
 
 export const cardDeposit = async (params) => {
-  const data = await axios.post(CARD_DEPOSIT, { params });
+  const data = await axios.post(CARD_DEPOSIT, params);
   if (data) return data.data;
 };
 

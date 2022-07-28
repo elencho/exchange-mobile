@@ -3,6 +3,7 @@ import { actionTypes } from './actions';
 const INITIAL_STATE = {
   toastObj: {},
   appToastVisible: false,
+  webViewObj: null,
 
   // Login
   login2FaModalVisible: false,
@@ -90,6 +91,7 @@ export default (state = INITIAL_STATE, action) => {
     languageModalVisible,
     emailVerificationModalVisible,
     toastObj,
+    webViewObj,
   } = action;
   switch (action.type) {
     case actionTypes.SET_TOAST_OBJ:
@@ -271,6 +273,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         addCardModalVisible,
+      };
+    case 'SET_APP_WEBVIEW_OBJ':
+      return {
+        ...state,
+        webViewObj,
+      };
+    case 'RESET_APP_WEBVIEW_OBJ':
+      return {
+        ...state,
+        webViewObj: INITIAL_STATE.webViewObj,
       };
     default:
       return state;

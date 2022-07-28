@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Image,
   ScrollView,
@@ -31,10 +31,9 @@ export default function ManageCards() {
   const {
     profile: { generalError },
     transactions: { code },
+    modals: { webViewObj },
     trade: { cards, cardsLoading },
   } = state;
-
-  const [sumsubWebViewHtml, setSumsubWebViewHtml] = useState(false);
 
   useEffect(() => {
     dispatch(cardsSagaAction());
@@ -44,7 +43,11 @@ export default function ManageCards() {
 
   const handlesumsubWebView = async (cardId) => {
     const token = await cardVerificationToken(cardId);
-    if (token) setSumsubWebViewHtml(sumsubHtmlPattern(token));
+    if (token)
+      dispatch({
+        type: 'SET_APP_WEBVIEW_OBJ',
+        webViewObj: sumsubHtmlPattern(token),
+      });
   };
 
   return (
@@ -108,7 +111,7 @@ export default function ManageCards() {
       <AddCardModal />
       <CardAddStatusModal />
 
-      {sumsubWebViewHtml && <AppWebView source={{ html: sumsubWebViewHtml }} />}
+      <AppWebView source={{ html: webViewObj }} />
     </View>
   );
 }

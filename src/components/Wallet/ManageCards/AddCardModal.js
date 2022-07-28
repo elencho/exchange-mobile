@@ -24,13 +24,12 @@ export default function AddCardModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    modals: { addCardModalVisible, cardAddStatusModalInfo },
+    modals: { addCardModalVisible, cardAddStatusModalInfo, webViewObj },
     trade: { depositProvider, depositProviders },
     transactions: { code },
   } = state;
 
   const [saveCardAgreeTerms, setSaveCardAgreeTerms] = useState(false);
-  const [webViewData, setWebViewData] = useState({});
 
   const hide = () => dispatch(toggleAddCardModal(false));
 
@@ -47,16 +46,16 @@ export default function AddCardModal() {
       redirectUri: 'cryptal.com',
       provider: depositProvider,
     };
-    const data = await addCard(params);
-    setWebViewData(data);
+    const webViewObj = await addCard(params);
+    dispatch({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj });
   };
 
-  const handleUrlChange = (state) => {
+  const onNavigationStateChange = (state) => {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch(setCardAddStatusModalInfo({ success: ending }));
-      setWebViewData({});
+      dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
       hide();
     }
   };
@@ -70,7 +69,7 @@ export default function AddCardModal() {
   };
 
   const urlEncodedData = () => {
-    const data = new URLSearchParams(webViewData.data);
+    const data = new URLSearchParams(webViewObj?.data);
     return data.toString();
   };
 
@@ -120,11 +119,11 @@ export default function AddCardModal() {
       <ChooseBankModal />
       <BankFeesModal />
 
-      {webViewData.actionMethod === 'POST' && (
+      {webViewObj?.actionMethod === 'POST' && (
         <AppWebView
-          handleUrlChange={handleUrlChange}
+          onNavigationStateChange={onNavigationStateChange}
           source={{
-            uri: webViewData.actionUrl,
+            uri: webViewObj?.actionUrl,
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: urlEncodedData(),
@@ -132,10 +131,10 @@ export default function AddCardModal() {
         />
       )}
 
-      {webViewData.actionMethod === 'GET' && (
+      {webViewObj?.actionMethod === 'GET' && (
         <AppWebView
-          handleUrlChange={handleUrlChange}
-          source={{ uri: webViewData.actionUrl }}
+          onNavigationStateChange={onNavigationStateChange}
+          source={{ uri: webViewObj?.actionUrl }}
         />
       )}
     </>

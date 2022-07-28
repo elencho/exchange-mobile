@@ -39,7 +39,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
   const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
-    dispatch(setFee({}));
+    dispatch(setFee(null));
   }, [code, network]);
 
   const setAmount = (text) => {

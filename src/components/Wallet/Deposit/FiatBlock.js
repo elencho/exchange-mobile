@@ -1,11 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Image,
-  KeyboardAvoidingView,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
@@ -18,7 +12,6 @@ import CardSection from '../../InstantTrade/CardSection';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import BankInfo from './BankInfo';
-import { saveCardDepositUrl } from '../../../redux/wallet/actions';
 import { validateScale } from '../../../utils/formUtils';
 
 export default function FiatBlock() {
@@ -60,7 +53,7 @@ export default function FiatBlock() {
         redirectUri: 'cryptal.com',
       };
       const data = await cardDeposit(params);
-      if (data) dispatch(saveCardDepositUrl(data.actionUrl));
+      dispatch({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: data });
     }
   };
 

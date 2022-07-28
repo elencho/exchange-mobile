@@ -13,7 +13,6 @@ const INITIAL_STATE = {
   // Deposit
   wireDepositInfo: {},
   cryptoAddress: {},
-  cardDepositUrl: null,
   wireBanks: [],
 
   //Withdrawal
@@ -49,7 +48,6 @@ export default (state = INITIAL_STATE, action) => {
     wireDepositInfo,
     memoTag,
     cryptoAddress,
-    cardDepositUrl,
     network,
     withdrawalAmount,
     withdrawalNote,
@@ -108,11 +106,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cryptoAddress,
-      };
-    case actionTypes.SAVE_CARD_DEPOSIT_URL:
-      return {
-        ...state,
-        cardDepositUrl,
       };
     case actionTypes.SET_NETWORK:
       return {

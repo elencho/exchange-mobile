@@ -1,33 +1,51 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Modal, Image, StyleSheet } from 'react-native';
 import WebView from 'react-native-webview';
+import { useDispatch, useSelector } from 'react-redux';
+import images from '../constants/images';
 
-export default function AppWebView({ handleUrlChange, ...rest }) {
+export default function AppWebView(props) {
+  const dispatch = useDispatch();
+  const webViewObj = useSelector((state) => state.modals.webViewObj);
+
+  const closeWebView = () => dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+
   return (
-    <TouchableOpacity activeOpacity={0.99} style={styles.webView}>
-      <WebView
-        nestedScrollEnabled
-        onNavigationStateChange={handleUrlChange}
-        originWhitelist={['*']}
-        allowsFullscreenVideo
-        allowsInlineMediaPlayback
-        allowFileAccess
-        allowFileAccessFromFileURLs
-        allowUniversalAccessFromFileURLs
-        javaScriptEnabled
-        domStorageEnabled
-        {...rest}
-      />
-    </TouchableOpacity>
+    <Modal
+      presentationStyle="pageSheet"
+      visible={!!webViewObj}
+      animationType="slide"
+    >
+      <TouchableOpacity activeOpacity={0.99} style={styles.flex}>
+        <TouchableOpacity style={styles.close} onPress={closeWebView}>
+          <Image source={images.Close} />
+        </TouchableOpacity>
+        <WebView
+          nestedScrollEnabled
+          originWhitelist={['*']}
+          allowsFullscreenVideo
+          allowsInlineMediaPlayback
+          allowFileAccess
+          allowFileAccessFromFileURLs
+          allowUniversalAccessFromFileURLs
+          javaScriptEnabled
+          domStorageEnabled
+          {...props}
+        />
+      </TouchableOpacity>
+    </Modal>
   );
 }
 
 const styles = StyleSheet.create({
-  webView: {
+  close: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
+    top: 30,
+    right: 30,
+    zIndex: 100,
+    backgroundColor: 'rgba(230,230,230,0.5)',
+    padding: 10,
+    borderRadius: 30,
   },
+  flex: { flex: 1 },
 });

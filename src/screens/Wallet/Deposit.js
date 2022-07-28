@@ -9,7 +9,6 @@ import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock';
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
 import {
   generateCryptoAddressAction,
-  saveCardDepositUrl,
   setNetwork,
 } from '../../redux/wallet/actions';
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
@@ -19,7 +18,6 @@ import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
 import AppWebView from '../../components/AppWebView';
 import GeneralError from '../../components/GeneralError';
 import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
-import { saveGeneralError } from '../../redux/profile/actions';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
 
@@ -34,14 +32,9 @@ export default function Deposit() {
   const {
     transactions: { code },
     trade: { currentBalanceObj },
-    wallet: {
-      cryptoAddress,
-      hasMultipleMethods,
-      depositRestriction,
-      network,
-      cardDepositUrl,
-    },
+    wallet: { cryptoAddress, hasMultipleMethods, depositRestriction, network },
     profile: { generalError },
+    modals: { webViewObj },
   } = state;
 
   const isFiat = currentBalanceObj.type === 'FIAT';
@@ -72,12 +65,11 @@ export default function Deposit() {
     return 'METHOD';
   };
 
-  const handleUrlChange = (state) => {
+  const onNavigationStateChange = (state) => {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
-      dispatch(saveCardDepositUrl(null));
-      dispatch(saveGeneralError(ending));
+      dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
     }
   };
 
@@ -156,12 +148,10 @@ export default function Deposit() {
             />
           ) : null}
 
-          {cardDepositUrl && (
-            <AppWebView
-              handleUrlChange={handleUrlChange}
-              source={{ uri: cardDepositUrl }}
-            />
-          )}
+          <AppWebView
+            onNavigationStateChange={onNavigationStateChange}
+            source={{ uri: webViewObj?.actionUrl }}
+          />
         </ScrollView>
       ) : (
         <ActivityIndicator />

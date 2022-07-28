@@ -18,7 +18,6 @@ import CryptoModal from './CryptoModal';
 import FiatModal from './FiatModal';
 import {
   fetchFee,
-  saveCardTradeData,
   setCard,
   setCurrentTrade,
   setDepositProvider,
@@ -36,7 +35,7 @@ export default function BuySellModal() {
   const [webViewUrl, setWebViewUrl] = useState('');
 
   const {
-    modals: { buySellModalVisible },
+    modals: { buySellModalVisible, webViewObj },
     profile: { generalError },
     trade: {
       Balance_Card,
@@ -47,13 +46,11 @@ export default function BuySellModal() {
       balance: { balances },
       currentTrade: { size, price },
       card,
-      cardTradeData,
     },
   } = state;
 
-  const {
-    pair: { baseScale, quoteScale },
-  } = pairObject;
+  const baseScale = pairObject?.pair?.baseScale;
+  const quoteScale = pairObject?.pair?.quoteScale;
 
   const hide = () => {
     dispatch(toggleBuySellModal(false));
@@ -110,7 +107,7 @@ export default function BuySellModal() {
     const fix = currency === fiat ? quoteScale : baseScale;
     let available;
 
-    balances.forEach((b) => {
+    balances?.forEach((b) => {
       if (b.currencyCode === currency) {
         available = b.available;
       }
@@ -120,7 +117,7 @@ export default function BuySellModal() {
 
   const hasEcommerce = () => {
     let hasEcommerce;
-    balances.forEach((b) => {
+    balances?.forEach((b) => {
       if (b.currencyCode === fiat) {
         hasEcommerce = b.depositMethods.ECOMMERCE;
       }
@@ -128,12 +125,12 @@ export default function BuySellModal() {
     return hasEcommerce;
   };
 
-  const handleUrlChange = (state) => {
+  const onNavigationStateChange = (state) => {
     setWebViewUrl(state.url);
     const urlArray = webViewUrl.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
-      dispatch(saveCardTradeData({}));
+      dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
     }
   };
 
@@ -189,12 +186,10 @@ export default function BuySellModal() {
         style={{ opacity: enabled() ? 1 : 0.5, marginBottom: 20 }}
       />
 
-      {cardTradeData.actionUrl && (
-        <AppWebView
-          handleUrlChange={handleUrlChange}
-          source={{ uri: cardTradeData.actionUrl }}
-        />
-      )}
+      <AppWebView
+        onNavigationStateChange={onNavigationStateChange}
+        source={{ uri: webViewObj?.actionUrl }}
+      />
     </>
   );
 

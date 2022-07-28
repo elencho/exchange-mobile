@@ -26,15 +26,15 @@ export default function ReadyTrades() {
   let arrayToIterate = [];
   let slicedArray = [];
   if (pairObject) {
-    const buyArray = pairObject.offerEntriesMap.BID;
-    const sellArray = pairObject.offerEntriesMap.ASK;
+    const buyArray = pairObject.offerEntriesMap?.BID;
+    const sellArray = pairObject.offerEntriesMap?.ASK;
     arrayToIterate = tradeType === 'Buy' ? buyArray : sellArray;
-    slicedArray = arrayToIterate.slice(0, 3);
+    slicedArray = arrayToIterate?.slice(0, 3);
   }
 
   return (
     <View style={styles.container}>
-      {slicedArray.map((t) => (
+      {slicedArray?.map((t) => (
         <Pressable
           style={styles.block}
           key={Math.random()}
