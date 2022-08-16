@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
-import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { setRegistrationInputs } from '../../redux/profile/actions';
 
@@ -19,8 +18,7 @@ export default function CheckMarks() {
   const set = (obj) => dispatch(setRegistrationInputs({ ...i, ...obj }));
 
   const image = (type) => {
-    if (type === 'terms' && i.acceptTerms === 'on') return images.Check_Full;
-    if (type === 'age' && i.acceptAgeRequirement === 'on')
+    if (type === 'acceptTerms' && i.acceptTerms === 'on')
       return images.Check_Full;
     if (type === 'updates' && i.getEmailUpdates === 'on')
       return images.Check_Full;
@@ -28,35 +26,33 @@ export default function CheckMarks() {
   };
 
   const toggle = (type) => {
-    if (type === 'terms')
+    if (type === 'acceptTerms')
       set({ acceptTerms: i.acceptTerms !== 'on' ? 'on' : 'off' });
-    if (type === 'age')
-      set({
-        acceptAgeRequirement: i.acceptAgeRequirement !== 'on' ? 'on' : 'off',
-      });
     if (type === 'updates')
       set({ getEmailUpdates: i.getEmailUpdates !== 'on' ? 'on' : 'off' });
   };
 
   const text = (type) => {
-    if (type === 'terms')
+    if (type === 'acceptTerms')
       return (
-        <AppText style={styles.white}>
-          Agree to <PurpleText text="Terms & Conditions" />
+        <AppText style={styles.text}>
+          I'm over 18 years old and agree to{' '}
+          <PurpleText text="Terms & Conditions" />
         </AppText>
       );
-    if (type === 'age')
-      return <AppText style={styles.grey}>I'm over 18 years old</AppText>;
     if (type === 'updates')
       return (
-        <AppText style={styles.grey}>Receive e-mail updates & news</AppText>
+        <AppText style={styles.text}>Receive e-mail updates & news</AppText>
       );
   };
 
   return (
     <View style={styles.container}>
-      {['terms', 'age', 'updates'].map((c) => (
-        <View style={styles.row} key={c}>
+      {['acceptTerms', 'updates'].map((c, i, a) => (
+        <View
+          style={[styles.row, { marginTop: i === a.length - 1 ? 20 : 0 }]}
+          key={c}
+        >
           <Pressable style={styles.image} onPress={() => toggle(c)}>
             <Image source={image(c)} />
           </Pressable>
@@ -71,7 +67,6 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 25,
     marginBottom: 50,
-    height: 130,
     justifyContent: 'space-between',
   },
   image: {
@@ -82,12 +77,9 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 29,
   },
-  grey: {
+  text: {
     color: '#B7BFDB',
-  },
-  white: {
-    color: colors.PRIMARY_TEXT,
+    lineHeight: 20,
   },
 });

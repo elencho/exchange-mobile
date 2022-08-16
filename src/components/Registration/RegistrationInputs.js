@@ -26,6 +26,7 @@ export default function RegistrationInputs() {
     if (type === 'confirm') set({ passwordConfirm: text });
     if (type === 'phone') set({ phoneNumber: text });
     if (type === 'referal') set({ referralCode: text });
+    if (type === 'promoCode') set({ promoCode: text });
   };
 
   return (
@@ -99,6 +100,13 @@ export default function RegistrationInputs() {
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'referal')}
+      />
+      <AppInput
+        value={i.promoCode}
+        label="Promo Code"
+        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        style={[styles.input, { marginTop: 12 }]}
+        onChangeText={(text) => handleInputs(text, 'promoCode')}
       />
     </>
   );
