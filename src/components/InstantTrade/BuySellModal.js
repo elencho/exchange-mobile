@@ -165,6 +165,7 @@ export default function BuySellModal() {
               keyboardType="decimal-pad"
               value={size.trim()}
               right={<AppText style={styles.code}>{crypto}</AppText>}
+              style={{ marginBottom: 10 }}
             />
 
             {Balance_Card === 'card' && <CardSection />}

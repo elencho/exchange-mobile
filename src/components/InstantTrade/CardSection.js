@@ -23,6 +23,7 @@ function CardSection() {
       depositProvider,
       depositProviders,
       card,
+      cards,
       fiat,
       fee,
       balance: { balances },
@@ -71,7 +72,7 @@ function CardSection() {
     });
 
   const color = depositProvider ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT;
-  const opacity = depositProvider ? 1 : 0.5;
+  const opacity = cards?.length ? 1 : 0.5;
 
   const FeeInfo = () => {
     if (fee && tabRouteName === 'Trade') {
@@ -114,7 +115,7 @@ function CardSection() {
           <Pressable
             style={[styles.dropdown, { opacity, marginBottom: 10 }]}
             onPress={showCards}
-            disabled={!depositProvider}
+            disabled={!cards?.length}
           >
             {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
             <AppText
@@ -130,7 +131,8 @@ function CardSection() {
           </Pressable>
 
           <AppText subtext style={styles.newCard}>
-            Or you can add <PurpleText text=" New Card" onPress={addNewCard} />
+            {cards?.length ? 'Or you can add' : "You don't have cards yet"}{' '}
+            <PurpleText text=" Add Card" onPress={addNewCard} />
           </AppText>
         </>
       )}
