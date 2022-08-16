@@ -96,7 +96,7 @@ export const verifyAccount = async (url, otp) => {
     url,
     data: `otp=${otp}`,
   });
-  return data.data;
+  return data?.data;
 };
 
 export const resendEmail = async (url) => await axios.get(`${url}&resend=true`);

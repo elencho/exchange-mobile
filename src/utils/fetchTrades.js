@@ -10,12 +10,12 @@ import {
 
 export const fetchTrades = async (params) => {
   const data = await axios.get(TRADES_URL, { params });
-  return data.data;
+  return data?.data;
 };
 
 export const fetchOffers = async () => {
   const data = await axios.get(OFFERS_URL);
-  return data.data;
+  return data?.data;
 };
 
 export const submitTrade = async (params) => {
@@ -24,19 +24,19 @@ export const submitTrade = async (params) => {
 };
 export const fetchBalance = async () => {
   const data = await axios.get(BALANCE_URL);
-  return data.data;
+  return data?.data;
 };
 
 export const fetchCards = async (params) => {
   const data = await axios.get(CARDS_URL, {
     params,
   });
-  return data.data;
+  return data?.data;
 };
 
 export const fetchFees = async (params) => {
   const data = await axios.get(CALCULATE_FEE_URL, {
     params,
   });
-  return data.data;
+  return data?.data;
 };

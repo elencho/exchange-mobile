@@ -1,12 +1,11 @@
 import * as SecureStore from 'expo-secure-store';
+
 import store from '../redux/store';
 import { saveGeneralError } from '../redux/profile/actions';
 import { navigationRef } from '../navigation';
 import { refreshToken } from './userProfileUtils';
 
 export default async (err) => {
-  let previousResponse;
-  console.log(previousResponse);
   if (err.response) {
     // console.log(err.response.data);
     // console.log(err.response.status);
@@ -19,7 +18,6 @@ export default async (err) => {
       store.dispatch(saveGeneralError(err.response.data.errorMessage));
     if (err.response.status === 401) {
       const response = await refreshToken(err.config);
-      previousResponse = response;
       return response;
     }
 
@@ -30,7 +28,7 @@ export default async (err) => {
       await SecureStore.deleteItemAsync('accessToken');
       await SecureStore.deleteItemAsync('refreshToken');
       navigationRef.navigate('Welcome');
-      return previousResponse;
+      store.dispatch({ type: 'LOGOUT' });
     }
   }
   // } else if (err.request) {

@@ -63,7 +63,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
   const tag = () => {
     if (currentBalanceObj.infos) {
-      const type = currentBalanceObj?.infos[network].transactionRecipientType;
+      const type = currentBalanceObj?.infos[network]?.transactionRecipientType;
 
       if (whitelist[0]?.tag) {
         return whitelist[0].tag;
