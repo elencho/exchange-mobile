@@ -1,5 +1,10 @@
 import React from 'react';
-import { Platform, StyleSheet, SafeAreaView } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar as AndroidStatusBar,
+} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
@@ -45,6 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
     backgroundColor: colors.PRIMARY_BACKGROUND,
+    paddingTop: Platform.OS == 'android' ? AndroidStatusBar.currentHeight : 0,
   },
   statusBar: {
     flex: 0,

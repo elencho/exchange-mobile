@@ -95,33 +95,36 @@ export default function DatePickerModal({ from, to }) {
       const date = new Date(fromDateTime).toLocaleDateString().split('/');
       var day, month, year;
       if (Platform.OS === 'ios') {
-        day = date[1] < 10 ? `0${date[1]}` : date[1];
-        month = date[0] < 10 ? `0${date[0]}` : date[0];
+        day = date[1] < 10 ? date[1] : date[1];
+        month = date[0] < 10 ? date[0] : date[0];
         year = date[2];
+        return `${year}-${day}-${month}`;
       }
 
       if (Platform.OS === 'android') {
         day = date[1] < 10 ? date[1] : date[1];
         month = date[0] < 10 ? date[0] : date[0];
         year = `20${date[2]}`;
+        return `${year}-${month}-${day}`;
       }
-      return `${year}-${month}-${day}`;
     }
+
     if (toDateTime && from) {
       const date = new Date(toDateTime).toLocaleDateString().split('/');
       var day, month, year;
       if (Platform.OS === 'ios') {
-        day = date[1] < 10 ? `0${date[1]}` : date[1];
-        month = date[0] < 10 ? `0${date[0]}` : date[0];
+        day = date[1] < 10 ? date[1] : date[1];
+        month = date[0] < 10 ? date[0] : date[0];
         year = date[2];
+        return `${year}-${day}-${month}`;
       }
 
       if (Platform.OS === 'android') {
         day = date[1] < 10 ? date[1] : date[1];
         month = date[0] < 10 ? date[0] : date[0];
         year = `20${date[2]}`;
+        return `${year}-${month}-${day}`;
       }
-      return `${year}-${month}-${day}`;
     }
   };
 
