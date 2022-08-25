@@ -111,6 +111,16 @@ export const loginOtp = async (otp, url) => {
   if (data) return data.data.code;
 };
 
+export const resetOtp = async (url) => {
+  const data = await axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url,
+    data: `resetOTP=true`,
+  });
+  if (data) return data.data;
+};
+
 export const codeToToken = async (code, code_verifier) => {
   const data = await axios({
     method: 'POST',

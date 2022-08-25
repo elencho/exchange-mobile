@@ -13,6 +13,10 @@ import MainScreen from './MainScreen';
 import TransactionFilter from '../screens/TransactionFilter';
 import UserProfileScreen from '../screens/UserProfile';
 import BalanceScreen from '../screens/Wallet/Balance';
+import Login2FaScreen from '../screens/Login2Fa';
+import ResetOtpInstructionsScreen from '../screens/ResetOtpInstructions';
+import ForgotPasswordScreen from '../screens/ForgotPassword';
+
 import { saveGeneralError } from '../redux/profile/actions';
 // import ExerciseScreen from '../screens/Exercise';
 
@@ -47,6 +51,13 @@ export default function Navigator() {
         <Stack.Screen name="TransactionFilter" component={TransactionFilter} />
         <Stack.Screen name="UserProfile" component={UserProfileScreen} />
         <Stack.Screen name="Balance" component={BalanceScreen} />
+
+        <Stack.Screen name="Login2Fa" component={Login2FaScreen} />
+        <Stack.Screen
+          name="ResetOtpInstructions"
+          component={ResetOtpInstructionsScreen}
+        />
+        <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

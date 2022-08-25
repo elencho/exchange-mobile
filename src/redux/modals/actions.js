@@ -35,7 +35,6 @@ export const actionTypes = {
   CARD_ADD_STATUS_MODAL_INFO: 'CARD_ADD_STATUS_MODAL_INFO',
   CARD_DELETE_MODAL_INFO: 'CARD_DELETE_MODAL_INFO',
 
-  LOGIN_TWO_FA_MODAL: 'LOGIN_TWO_FA_MODAL',
   TOGGLE_APP_TOAST: 'TOGGLE_APP_TOAST',
   SET_TOAST_OBJ: 'SET_TOAST_OBJ',
 };
@@ -177,12 +176,6 @@ export const setCardAddStatusModalInfo = (cardAddStatusModalInfo) => ({
 export const setCardDeleteModalInfo = (cardDeleteModalInfo) => ({
   type: actionTypes.CARD_DELETE_MODAL_INFO,
   cardDeleteModalInfo,
-});
-
-// Login
-export const toggleLogin2FaModal = (login2FaModalVisible) => ({
-  type: actionTypes.LOGIN_TWO_FA_MODAL,
-  login2FaModalVisible,
 });
 
 export const toggleAppToast = (appToastVisible) => ({

@@ -6,7 +6,6 @@ import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
 import AppText from '../components/AppText';
 import GeneralError from '../components/GeneralError';
-import Login2FaModal from '../components/Login/Login2FaModal';
 import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 import images from '../constants/images';
@@ -29,6 +28,7 @@ export default function Login({ navigation }) {
     dispatch(setCredentials({ ...credentials, login: t }));
 
   const handleLogin = () => dispatch(usernameAndPasswordAction(navigation));
+  const forgotPassword = () => navigation.navigate('ForgotPassword');
 
   const register = () => dispatch(startRegistrationAction(navigation));
 
@@ -55,15 +55,19 @@ export default function Login({ navigation }) {
         onChangeText={typePassword}
         value={credentials.password}
         style={styles.password}
-        right={<PurpleText text="Forgot?" style={{ marginLeft: 10 }} />}
+        right={
+          <PurpleText
+            text="Forgot?"
+            style={{ marginLeft: 10 }}
+            onPress={forgotPassword}
+          />
+        }
       />
 
       <AppButton text="Login" style={styles.button} onPress={handleLogin} />
       <AppText style={styles.secondary}>
         New User? <PurpleText text="Register" onPress={register} />
       </AppText>
-
-      <Login2FaModal />
     </ImageBackground>
   );
 }

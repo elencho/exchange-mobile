@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     borderWidth: 1,
-    borderRadius: 4,
     height: 45,
     paddingHorizontal: 15,
     flexDirection: 'row',

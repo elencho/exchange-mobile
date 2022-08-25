@@ -6,7 +6,6 @@ import CodeInput from '../components/CodeInput';
 import {
   toggleEmailAuthModal,
   toggleGoogleOtpModal,
-  toggleLogin2FaModal,
   toggleSmsAuthModal,
 } from '../redux/modals/actions';
 import {
@@ -82,7 +81,6 @@ export default function TwoFaInput({
       dispatch(toggleGoogleOtpModal(false));
       dispatch(toggleSmsAuthModal(false));
       dispatch(toggleEmailAuthModal(false));
-      dispatch(toggleLogin2FaModal(false));
 
       setValue('');
     }

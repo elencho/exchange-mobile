@@ -6,7 +6,6 @@ const INITIAL_STATE = {
   webViewObj: null,
 
   // Login
-  login2FaModalVisible: false,
 
   // Register
   emailVerificationModalVisible: false,
@@ -86,7 +85,6 @@ export default (state = INITIAL_STATE, action) => {
     editWhitelistModalVisble,
     transferMethodModalVisible,
     templatesModalVisible,
-    login2FaModalVisible,
     addCardModalVisible,
     languageModalVisible,
     emailVerificationModalVisible,
@@ -263,11 +261,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         templatesModalVisible,
-      };
-    case actionTypes.LOGIN_TWO_FA_MODAL:
-      return {
-        ...state,
-        login2FaModalVisible,
       };
     case actionTypes.TOGGLE_ADD_CARD_MODAL:
       return {

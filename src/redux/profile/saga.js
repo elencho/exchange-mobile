@@ -34,6 +34,7 @@ import {
   refreshToken,
   registrationForm,
   registrationStart,
+  resetOtp,
   sendEmailOtp,
   subscribeMail,
   unsubscribeMail,
@@ -48,7 +49,6 @@ import {
   toggleEmailAuthModal,
   toggleEmailVerificationModal,
   toggleGoogleAuthModal,
-  toggleLogin2FaModal,
   togglePasswordModal,
 } from '../modals/actions';
 import { resetTradesState } from '../trade/actions';
@@ -155,7 +155,7 @@ function* usernameAndPasswordSaga(action) {
   yield put(saveUserAndPassInfo(userAndPassInfo));
 
   if (userAndPassInfo.execution === 'LOGIN_OTP') {
-    yield put(toggleLogin2FaModal(true));
+    navigation.navigate('Login2Fa');
   }
   yield put(
     saveLoginStartInfo({
@@ -215,6 +215,21 @@ function* otpForLoginSaga(action) {
 
     yield put({ type: 'OTP_SAGA', token: data.access_token });
     yield call(() => navigation.navigate('Main'));
+  }
+}
+
+// RESET OTP
+function* resetOtpSaga(action) {
+  const { navigation } = action;
+  const userAndPassInfo = yield select(
+    (state) => state.profile.userAndPassInfo
+  );
+  const data = yield call(resetOtp, userAndPassInfo.callbackUrl);
+  if (data) {
+    yield put(
+      saveUserAndPassInfo({ ...userAndPassInfo, callbackUrl: data.callbackUrl })
+    );
+    navigation.navigate('ResetOtpInstructions', { execution: data?.execution });
   }
 }
 
@@ -387,6 +402,7 @@ export default function* () {
     credentialsForGoogleSaga
   );
   yield takeLatest('OTP_SAGA', otpSaga);
+  yield takeLatest('RESET_OTP', resetOtpSaga);
   yield takeLatest('LOGOUT', logoutSaga);
   yield takeLatest('VERIFY_ACCOUNT', verifyAccountSaga);
 }
