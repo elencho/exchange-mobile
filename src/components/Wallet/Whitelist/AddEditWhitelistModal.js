@@ -53,14 +53,6 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
   const clearInputs = () => dispatch(setNewWhitelist({}));
 
-  let enabled = true;
-  if (add) enabled = newWhitelist.address && newWhitelist.name;
-
-  const handleChange = (name) => {
-    if (add) dispatch(setNewWhitelist({ ...newWhitelist, name }));
-    if (edit) dispatch(chooseWhitelist({ ...currentWhitelistObj, name }));
-  };
-
   const tag = () => {
     if (currentBalanceObj.infos) {
       const type = currentBalanceObj?.infos[network]?.transactionRecipientType;
@@ -70,6 +62,19 @@ export default function AddEditWhitelistModal({ add, edit }) {
       }
       return type === 'ADDRESS_AND_TAG';
     }
+  };
+
+  let enabled = true;
+  if (add && tag()) {
+    enabled =
+      newWhitelist.address && newWhitelist.name && newWhitelist.tag.trim();
+  } else if (add) {
+    enabled = newWhitelist.address && newWhitelist.name;
+  }
+
+  const handleChange = (name) => {
+    if (add) dispatch(setNewWhitelist({ ...newWhitelist, name }));
+    if (edit) dispatch(chooseWhitelist({ ...currentWhitelistObj, name }));
   };
 
   const networks = () => {

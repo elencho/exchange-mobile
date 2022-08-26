@@ -6,12 +6,12 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: { login: 'metro21@mailinator.com', password: 'Qwerty123$' },
+  // credentials: { login: 'metro21@mailinator.com', password: 'Qwerty123$' },
   // credentials: { login: 'ibanet@cryptx.com', password: 'Malina125$' },
-  // credentials: {
-  //   login: 'Vakhtang.elisabedashvili@gmail.com',
-  //   password: '11111!Aa',
-  // },
+  credentials: {
+    login: 'Vakhtang.elisabedashvili@gmail.com',
+    password: '11111!Aa',
+  },
   userAndPassInfo: {},
 
   // Register

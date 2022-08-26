@@ -77,6 +77,13 @@ function ChooseCurrencyModal({ wallet = false }) {
         walletTab === 'Manage Cards' && dispatch(setWalletTab('Whitelist'));
         dispatch(cryptoAddressesAction(name, code, navigation, network));
       }
+
+      if (
+        (walletTab === 'Manage Cards' && !fiats.includes(code)) ||
+        (walletTab === 'Whitelist' && fiats.includes(code))
+      ) {
+        dispatch(setWalletTab('Deposit'));
+      }
     } else {
       const currency = name === 'Show All Currency' ? null : code;
       dispatch(currencyAction(name, currenciesConstant, currency));

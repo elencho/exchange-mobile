@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   StyleSheet,
   TouchableWithoutFeedback,
@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
@@ -19,14 +19,55 @@ import RegistrationInputs from '../components/Registration/RegistrationInputs';
 import EmailVerificationModal from '../components/Registration/EmailVerificationModal';
 import colors from '../constants/colors';
 import images from '../constants/images';
-import { toggleEmailVerificationModal } from '../redux/modals/actions';
 import {
   registrationFormAction,
+  setRegistrationInputs,
   startLoginAction,
 } from '../redux/profile/actions';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Registration({ navigation }) {
   const dispatch = useDispatch();
+  const registrationInputs = useSelector(
+    (state) => state.profile.registrationInputs
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        dispatch(setRegistrationInputs({}));
+      };
+    }, [])
+  );
+
+  const {
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+    acceptTerms,
+    passwordNew,
+    passwordConfirm,
+  } = registrationInputs;
+
+  const passwordCheck =
+    passwordNew?.length >= 8 && // 8 symbols
+    /\d/.test(passwordNew) && // number
+    /[$-/:-?{-~!"^_`\[\]]/.test(passwordNew) && // symbol
+    /\b(?![a-z]+\b|[A-Z]+\b)[a-zA-Z]+/.test(passwordNew); // upper and lower case
+
+  const isEmail = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email);
+  const similarPasswords = passwordNew === passwordConfirm;
+  const terms = acceptTerms === 'on';
+
+  const enabled =
+    isEmail &&
+    similarPasswords &&
+    passwordCheck &&
+    firstName &&
+    lastName &&
+    phoneNumber &&
+    terms;
 
   const handleRegistration = () => dispatch(registrationFormAction(navigation));
   const signIn = () => dispatch(startLoginAction(navigation));
@@ -55,7 +96,11 @@ export default function Registration({ navigation }) {
         <RegistrationInputs />
         <CheckMarks />
 
-        <AppButton text="Register" onPress={handleRegistration} />
+        <AppButton
+          text="Register"
+          onPress={handleRegistration}
+          disabled={!enabled}
+        />
 
         <AppText style={styles.subtext}>
           Have an account? <PurpleText text="Sign In" onPress={signIn} />

@@ -3,6 +3,7 @@ import {
   Image,
   Pressable,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -17,7 +18,7 @@ import WireBanksModal from './WireBanksModal';
 import { setDepositProvider } from '../../../redux/trade/actions';
 
 const InfoRow = ({ title, text }) => {
-  const copy = () => Clipboard.setString(text);
+  const copy = () => Clipboard.setStringAsync(text).then(() => null);
 
   return (
     <TouchableOpacity style={styles.infoRow} onPress={copy}>
@@ -43,15 +44,19 @@ export default function BankInfo() {
   } = state;
 
   useEffect(() => {
-    const obj = wireDepositInfo[language].find((o) => {
-      let provider;
-      depositProviders.forEach((p) => {
-        if (p.provider === o.iconName.split('.')[0]) provider = p.provider;
-      });
-
-      dispatch(setDepositProvider(provider));
-      return o;
+    const obj = wireDepositInfo[language]?.find((o) => {
+      if (!depositProvider) {
+        depositProviders.forEach((p) => {
+          if (p.provider === o.iconName.split('.')[0]) {
+            dispatch(setDepositProvider(p.provider));
+            return o;
+          }
+        });
+      } else {
+        if (depositProvider === o.iconName.split('.')[0]) return o;
+      }
     });
+
     setInfo({
       country: obj?.receiverBankCountry,
       swift: obj?.receiverBankSwift,
@@ -61,7 +66,7 @@ export default function BankInfo() {
       intermediateSwift: obj?.intermediateBankSwift,
       name: obj?.receiverName,
     });
-  }, []);
+  }, [depositProvider]);
 
   const handleBanks = () => dispatch(toggleWireBanksModal(true));
 
@@ -102,9 +107,14 @@ export default function BankInfo() {
         <Image source={images.Arrow} />
       </Pressable>
 
-      {infoArray.map((i) => (
-        <InfoRow title={i.title} text={i.text} key={i.title} />
-      ))}
+      <>
+        {infoArray.map((i) => (
+          <InfoRow title={i.title} text={i.text} key={i.title} />
+        ))}
+        <Text style={styles.light}>
+          This identifier is mandatory when transferring funds
+        </Text>
+      </>
 
       {/* <View style={styles.marginVertical} /> */}
 
@@ -157,6 +167,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#3B4160',
     marginHorizontal: 20,
     height: 25,
+  },
+  light: {
+    color: '#F2DFB4',
+    fontFamily: 'Ubuntu_Regular',
+    fontSize: 11,
   },
   marginVertical: {
     marginVertical: 20,

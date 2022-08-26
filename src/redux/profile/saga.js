@@ -80,10 +80,8 @@ function* startRegistrationSaga(action) {
   const registrationStartInfo = yield call(registrationStart);
   yield put(saveRegistrationStartInfo(registrationStartInfo));
 
-  if (registrationStartInfo) {
-    if (registrationStartInfo.execution === 'REGISTRATION_START') {
-      navigation.navigate('Registration');
-    }
+  if (registrationStartInfo?.execution === 'REGISTRATION_START') {
+    navigation.navigate('Registration');
   }
 }
 
@@ -99,14 +97,14 @@ function* registrationFormSaga(action) {
     params,
     registrationStartInfo.callbackUrl
   );
-  if (data.execution === 'EMAIL_VERIFICATION_OTP') {
+  if (data?.execution === 'EMAIL_VERIFICATION_OTP') {
     yield put(toggleEmailVerificationModal(true));
     yield put(saveVerificationInfo(data));
   }
   yield put(
     saveRegistrationStartInfo({
       ...registrationStartInfo,
-      callbackUrl: data.callbackUrl,
+      callbackUrl: data?.callbackUrl,
     })
   );
 }
