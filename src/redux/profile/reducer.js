@@ -9,8 +9,8 @@ const INITIAL_STATE = {
   // credentials: { login: 'metro21@mailinator.com', password: 'Qwerty123$' },
   // credentials: { login: 'ibanet@cryptx.com', password: 'Malina125$' },
   credentials: {
-    login: 'Vakhtang.elisabedashvili@gmail.com',
-    password: '11111!Aa',
+    // login: 'Vakhtang.elisabedashvili@gmail.com',
+    // password: '11111!Aa',
   },
   userAndPassInfo: {},
 
