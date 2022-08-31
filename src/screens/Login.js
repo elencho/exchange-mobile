@@ -28,7 +28,8 @@ export default function Login({ navigation }) {
     dispatch(setCredentials({ ...credentials, login: t }));
 
   const handleLogin = () => dispatch(usernameAndPasswordAction(navigation));
-  const forgotPassword = () => navigation.navigate('ForgotPassword');
+  const forgotPassword = () =>
+    dispatch({ type: 'FORGOT_PASSWORD_SAGA', navigation });
 
   const register = () => dispatch(startRegistrationAction(navigation));
 

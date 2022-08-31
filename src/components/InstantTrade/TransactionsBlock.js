@@ -72,7 +72,7 @@ export default function TransactionsBlock() {
         scrollEventThrottle={4}
         style={{ height: 280 }}
       >
-        {trades.map((trade) => (
+        {trades?.map((trade) => (
           <Trade trade={trade} key={Math.random()} />
         ))}
       </ScrollView>

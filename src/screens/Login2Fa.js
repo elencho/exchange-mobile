@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -20,6 +20,11 @@ export default function Login2Fa({ navigation }) {
   const state = useSelector((state) => state);
 
   const [value, setValue] = useState('');
+
+  useEffect(() => {
+    return () =>
+      dispatch({ type: 'TOGGLE_FORGOT_PASS_MODE', forgotPassMode: false });
+  }, []);
 
   const {
     profile: { userAndPassInfo },

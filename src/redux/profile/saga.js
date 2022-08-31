@@ -28,6 +28,9 @@ import {
   codeToToken,
   fetchCountries,
   fetchUserInfo as fetchUserInfoUtil,
+  forgotPassword,
+  forgotPasswordCode,
+  forgotPasswordEnterCode,
   getOtpChangeToken,
   loginOtp,
   loginStart,
@@ -36,6 +39,7 @@ import {
   registrationStart,
   resetOtp,
   sendEmailOtp,
+  setNewPassword,
   subscribeMail,
   unsubscribeMail,
   updatePassword,
@@ -122,20 +126,32 @@ function* verifyAccountSaga(action) {
 
   const verified = yield call(verifyAccount, verificationInfo.callbackUrl, otp);
   if (verified?.code) {
-    const data = yield call(codeToToken, verified.code, codeVerifier);
-    yield call(async () => {
-      await SecureStore.setItemAsync('accessToken', data?.access_token);
-      await SecureStore.setItemAsync('refreshToken', data?.refresh_token);
+    yield put({
+      type: 'CODE_TO_TOKEN_SAGA',
+      code: verified.code,
+      codeVerifier,
+      navigation,
     });
 
-    yield put({ type: 'OTP_SAGA', token: data?.access_token });
-    yield call(() => navigation.navigate('Main'));
     yield put(toggleEmailVerificationModal(false));
     yield put(toggleLoading(false));
   } else {
     yield put(toggleLoading(false));
     yield put(saveVerificationInfo(verified));
   }
+}
+
+function* codeToTokenSaga(action) {
+  const { code, codeVerifier, navigation } = action;
+
+  const data = yield call(codeToToken, code, codeVerifier);
+  yield call(async () => {
+    await SecureStore.setItemAsync('accessToken', data?.access_token);
+    await SecureStore.setItemAsync('refreshToken', data?.refresh_token);
+  });
+
+  yield put({ type: 'OTP_SAGA', token: data?.access_token });
+  yield call(() => navigation.navigate('Main'));
 }
 
 //  USERNAME AND PASSWORD
@@ -165,25 +181,11 @@ function* usernameAndPasswordSaga(action) {
   // Sometimes OTP is disabled, therefore code block below should be executed
   if (userAndPassInfo.code) {
     const code = userAndPassInfo.code;
-    const code_verifier = yield select(
+    const codeVerifier = yield select(
       (state) => state.profile.pkceInfo.codeVerifier
     );
 
-    const data = yield call(codeToToken, code, code_verifier);
-    if (data.refresh_token) {
-      yield call(async () => {
-        await SecureStore.setItemAsync('refreshToken', data.refresh_token);
-      });
-    }
-
-    if (data.access_token) {
-      yield call(async () => {
-        await SecureStore.setItemAsync('accessToken', data.access_token);
-      });
-
-      yield put({ type: 'OTP_SAGA', token: data.access_token });
-      yield call(() => navigation.navigate('Main'));
-    }
+    yield put({ type: 'CODE_TO_TOKEN_SAGA', code, codeVerifier, navigation });
   }
   // Till here
 }
@@ -191,28 +193,30 @@ function* usernameAndPasswordSaga(action) {
 //  O T P    F O R    L O G I N
 function* otpForLoginSaga(action) {
   const { otp, navigation } = action;
-  const callbackUrl = yield select(
-    (state) => state.profile.userAndPassInfo.callbackUrl
-  );
-  const code_verifier = yield select(
-    (state) => state.profile.pkceInfo.codeVerifier
-  );
+  const profile = yield select((state) => state.profile);
+  const {
+    userAndPassInfo: { callbackUrl },
+    pkceInfo: { codeVerifier },
+    forgotPassMode,
+  } = profile;
 
-  const code = yield call(loginOtp, otp, callbackUrl);
-  const data = yield call(codeToToken, code, code_verifier);
-  if (data.refresh_token) {
-    yield call(async () => {
-      await SecureStore.setItemAsync('refreshToken', data.refresh_token);
+  const loginData = yield call(loginOtp, otp, callbackUrl);
+
+  if (!forgotPassMode) {
+    yield put({
+      type: 'CODE_TO_TOKEN_SAGA',
+      code: loginData.code,
+      codeVerifier,
+      navigation,
     });
-  }
-
-  if (data.access_token) {
-    yield call(async () => {
-      await SecureStore.setItemAsync('accessToken', data.access_token);
+  } else {
+    yield put({
+      type: 'SAVE_FORGOT_PASS_INFO',
+      forgotPassInfo: loginData,
     });
-
-    yield put({ type: 'OTP_SAGA', token: data.access_token });
-    yield call(() => navigation.navigate('Main'));
+    if (loginData.execution === 'UPDATE_PASSWORD') {
+      navigation.navigate('SetNewPassword');
+    }
   }
 }
 
@@ -228,6 +232,77 @@ function* resetOtpSaga(action) {
       saveUserAndPassInfo({ ...userAndPassInfo, callbackUrl: data.callbackUrl })
     );
     navigation.navigate('ResetOtpInstructions', { execution: data?.execution });
+  }
+}
+
+// FORGOT PASSWORD
+function* forgotPasswordSaga(action) {
+  const { navigation } = action;
+  const url = yield select(
+    (state) => state.profile.loginStartInfo.passwordResetUrl
+  );
+  const forgotPassInfo = yield select((state) => state.profile.forgotPassInfo);
+  const data = yield call(forgotPassword, url);
+  if (data?.execution === 'RESET_PASSWORD_WITH_CODE') {
+    yield put({
+      type: 'SAVE_FORGOT_PASS_INFO',
+      forgotPassInfo: { ...forgotPassInfo, ...data },
+    });
+    navigation.navigate('ForgotPassword');
+  }
+}
+
+// SEND FORGOT PASSWORD CODE
+function* forgotPasswordCodeSaga() {
+  yield put(toggleLoading(true));
+
+  const url = yield select((state) => state.profile.forgotPassInfo.callbackUrl);
+  const forgotPassInfo = yield select((state) => state.profile.forgotPassInfo);
+  const data = yield call(forgotPasswordCode, url, forgotPassInfo.username);
+  if (data?.execution === 'RESET_PASSWORD_WITH_CODE') {
+    yield put({
+      type: 'SAVE_FORGOT_PASS_INFO',
+      forgotPassInfo: { ...forgotPassInfo, ...data },
+    });
+    yield put(toggleLoading(false));
+    yield put({ type: 'TOGGLE_TIMER', timerVisible: true });
+  }
+}
+
+// FORGOT PASSWORD ENTER CODE
+function* forgotPassEnterCodeSaga(action) {
+  const { code, navigation } = action;
+  const forgotPassInfo = yield select((state) => state.profile.forgotPassInfo);
+  const { callbackUrl, username } = forgotPassInfo;
+
+  const data = yield call(forgotPasswordEnterCode, callbackUrl, username, code);
+  if (data?.execution === 'LOGIN_OTP') {
+    yield put({
+      type: 'SAVE_FORGOT_PASS_INFO',
+      forgotPassInfo: { ...forgotPassInfo, ...data },
+    });
+    yield put(saveUserAndPassInfo(data));
+    yield put({ type: 'TOGGLE_FORGOT_PASS_MODE', forgotPassMode: true });
+    navigation.navigate('Login2Fa', { type: 'forgotPassword' });
+  }
+}
+
+// SET NEW PASSWORD SAGA
+function* setNewPassSaga(action) {
+  const { pass, confirmPass, navigation } = action;
+  const url = yield select((state) => state.profile.forgotPassInfo.callbackUrl);
+  const codeVerifier = yield select(
+    (state) => state.profile.pkceInfo.codeVerifier
+  );
+
+  const data = yield call(setNewPassword, url, pass, confirmPass);
+  if (data?.code) {
+    yield put({
+      type: 'CODE_TO_TOKEN_SAGA',
+      code: data?.code,
+      codeVerifier,
+      navigation,
+    });
   }
 }
 
@@ -400,6 +475,12 @@ export default function* () {
     credentialsForGoogleSaga
   );
   yield takeLatest('OTP_SAGA', otpSaga);
+  yield takeLatest('CODE_TO_TOKEN_SAGA', codeToTokenSaga);
+  yield takeLatest('FORGOT_PASSWORD_SAGA', forgotPasswordSaga);
+  yield takeLatest('SEND_FORGOT_PASS_CODE', forgotPasswordCodeSaga);
+  yield takeLatest('FORGOT_PASS_ENTER_CODE', forgotPassEnterCodeSaga);
+  yield takeLatest('SET_NEW_PASS_SAGA', setNewPassSaga);
+
   yield takeLatest('RESET_OTP', resetOtpSaga);
   yield takeLatest('LOGOUT', logoutSaga);
   yield takeLatest('VERIFY_ACCOUNT', verifyAccountSaga);

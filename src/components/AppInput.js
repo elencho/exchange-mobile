@@ -17,6 +17,7 @@ const AppInput = ({
   right = null,
   style,
   value,
+  error = false,
   labelBackgroundColor = colors.PRIMARY_BACKGROUND,
   ...rest
 }) => {
@@ -34,7 +35,11 @@ const AppInput = ({
     }).start();
   }, [focusAnim, isFocused, value]);
 
-  let borderColor = isFocused ? colors.SECONDARY_PURPLE : '#42475D';
+  let borderColor = isFocused
+    ? colors.SECONDARY_PURPLE
+    : error
+    ? '#F45E8C'
+    : '#42475D';
 
   return (
     <View style={style}>
@@ -84,6 +89,8 @@ const AppInput = ({
                 style={{
                   color: isFocused
                     ? colors.PRIMARY_PURPLE
+                    : error
+                    ? '#F45E8C'
                     : colors.SECONDARY_TEXT,
                 }}
               >

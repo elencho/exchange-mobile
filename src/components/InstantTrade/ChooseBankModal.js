@@ -43,7 +43,7 @@ export default function ChooseBankModal() {
       depositProviders?.forEach((p) => {
         currentBalanceObj[m].ECOMMERCE?.forEach((d) => {
           if (p.displayName === d.displayName) {
-            cards.forEach((c) => {
+            cards?.forEach((c) => {
               if (c.provider === d.provider)
                 if (!array.length) array.push(d);
                 else !arrayFullCheck(array, d.provider) && array.push(d);
@@ -57,7 +57,7 @@ export default function ChooseBankModal() {
 
     if (tabRouteName === 'Trade') {
       depositProviders?.forEach((d) => {
-        cards.forEach((c) => {
+        cards?.forEach((c) => {
           if (c.provider === d.provider) {
             if (!array.length) array.push(d);
             else !arrayFullCheck(array, d.provider) && array.push(d);

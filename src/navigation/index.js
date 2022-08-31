@@ -3,6 +3,7 @@ import {
   NavigationContainer,
   createNavigationContainerRef,
 } from '@react-navigation/native';
+import { BackHandler } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,6 +17,7 @@ import BalanceScreen from '../screens/Wallet/Balance';
 import Login2FaScreen from '../screens/Login2Fa';
 import ResetOtpInstructionsScreen from '../screens/ResetOtpInstructions';
 import ForgotPasswordScreen from '../screens/ForgotPassword';
+import SetNewPasswordScreen from '../screens/SetNewPassword';
 
 import { saveGeneralError } from '../redux/profile/actions';
 // import ExerciseScreen from '../screens/Exercise';
@@ -29,6 +31,8 @@ export default function Navigator() {
   const {
     profile: { generalError },
   } = state;
+
+  BackHandler.addEventListener('hardwareBackPress', () => true);
 
   const onStateChange = () => {
     if (generalError) dispatch(saveGeneralError(null));
@@ -58,6 +62,7 @@ export default function Navigator() {
           component={ResetOtpInstructionsScreen}
         />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+        <Stack.Screen name="SetNewPassword" component={SetNewPasswordScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

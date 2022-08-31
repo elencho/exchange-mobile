@@ -108,7 +108,7 @@ export const loginOtp = async (otp, url) => {
     url,
     data: `otp=${otp}`,
   });
-  if (data) return data.data.code;
+  if (data) return data.data;
 };
 
 export const resetOtp = async (url) => {
@@ -117,6 +117,41 @@ export const resetOtp = async (url) => {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url,
     data: `resetOTP=true`,
+  });
+  if (data) return data.data;
+};
+
+export const forgotPassword = async (url) => {
+  const data = await axios.get(url);
+  if (data) return data.data;
+};
+
+export const forgotPasswordCode = async (url, username) => {
+  const data = await axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url,
+    data: `username=${username}&send=true`,
+  });
+  if (data) return data.data;
+};
+
+export const forgotPasswordEnterCode = async (url, username, otp) => {
+  const data = await axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url,
+    data: `username=${username}&otp=${otp}`,
+  });
+  if (data) return data.data;
+};
+
+export const setNewPassword = async (url, newPass, confirmPass) => {
+  const data = await axios({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url,
+    data: `password-new=${newPass}&password-confirm=${confirmPass}`,
   });
   if (data) return data.data;
 };

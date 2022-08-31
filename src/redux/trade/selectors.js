@@ -48,12 +48,11 @@ export const withdrawalFeeParams = (state) => {
 export const getCardParams = (state) => {
   const {
     trade: { fiat },
-    wallet: { walletTab },
-    transactions: { code },
+    transactions: { code, tabRouteName },
   } = state;
 
   return {
-    currency: walletTab === 'Trade' ? fiat : code,
+    currency: tabRouteName === 'Trade' ? fiat : code,
     // provider: depositProvider,
     // status: 'VERIFIED',
     // transactionType: 'DEPOSIT',

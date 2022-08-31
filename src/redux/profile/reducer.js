@@ -2,6 +2,7 @@ import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
   generalError: null,
+  timerVisible: false,
 
   // Login
   pkceInfo: {},
@@ -9,10 +10,12 @@ const INITIAL_STATE = {
   // credentials: { login: 'metro21@mailinator.com', password: 'Qwerty123$' },
   // credentials: { login: 'ibanet@cryptx.com', password: 'Malina125$' },
   credentials: {
-    // login: 'Vakhtang.elisabedashvili@gmail.com',
-    // password: '11111!Aa',
+    login: 'Vakhtang.elisabedashvili@gmail.com',
+    password: '11111!Aa',
   },
   userAndPassInfo: {},
+  forgotPassInfo: { username: 'metro21@mailinator.com' },
+  forgotPassMode: false,
 
   // Register
   Personal_Company: 'Personal',
@@ -44,10 +47,6 @@ const INITIAL_STATE = {
 
   countries: [],
   countriesConstant: [],
-
-  // Query Params
-  offset: 0,
-  limit: 5,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -56,6 +55,9 @@ export default (state = INITIAL_STATE, action) => {
     pkceInfo,
     credentials,
     userAndPassInfo,
+    forgotPassInfo,
+    timerVisible,
+    forgotPassMode,
     loginStartInfo,
     registrationStartInfo,
     verificationInfo,
@@ -113,6 +115,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         userAndPassInfo,
+      };
+    case 'SAVE_FORGOT_PASS_INFO':
+      return {
+        ...state,
+        forgotPassInfo,
+      };
+    case 'TOGGLE_TIMER':
+      return {
+        ...state,
+        timerVisible,
+      };
+    case 'TOGGLE_FORGOT_PASS_MODE':
+      return {
+        ...state,
+        forgotPassMode,
       };
     case actionTypes.SWITCH_PERSONAL_SECURITY:
       return {
