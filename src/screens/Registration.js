@@ -7,6 +7,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -25,12 +26,12 @@ import {
   startLoginAction,
 } from '../redux/profile/actions';
 import { useFocusEffect } from '@react-navigation/native';
+import GeneralError from '../components/GeneralError';
 
 export default function Registration({ navigation }) {
   const dispatch = useDispatch();
-  const registrationInputs = useSelector(
-    (state) => state.profile.registrationInputs
-  );
+  const state = useSelector((state) => state.profile);
+  const { registrationInputs, generalError } = state;
 
   useFocusEffect(
     useCallback(() => {
@@ -69,7 +70,7 @@ export default function Registration({ navigation }) {
     phoneNumber &&
     terms;
 
-  const handleRegistration = () => dispatch(registrationFormAction(navigation));
+  const handleRegistration = () => dispatch(registrationFormAction());
   const signIn = () => dispatch(startLoginAction(navigation));
 
   return (
@@ -93,6 +94,13 @@ export default function Registration({ navigation }) {
         </AppText>
 
         <PersonalCompanySwitcher />
+
+        {generalError ? (
+          <View style={{ marginTop: 20, marginBottom: -15 }}>
+            <GeneralError />
+          </View>
+        ) : null}
+
         <RegistrationInputs />
         <CheckMarks />
 

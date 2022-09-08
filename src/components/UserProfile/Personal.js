@@ -21,7 +21,7 @@ import launchSumsubSdk from '../../utils/sumsubMobileSdk';
 export default function Personal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.profile);
-  const { userInfo, language } = state;
+  const { userInfo, language, generalError } = state;
 
   const edit = () => dispatch(togglePhoneNumberModal(true));
   const editLanguage = () => dispatch(toggleLanguageModal(true));
@@ -117,8 +117,13 @@ export default function Personal() {
         );
       case 'Notifications':
         return (
-          <AppText subtext style={styles.secondary}>
-            Receive updates & news from us
+          <AppText
+            subtext
+            style={[styles.secondary, generalError && { color: '#F45E8C' }]}
+          >
+            {generalError
+              ? 'Sorry.. Something went wrong'
+              : 'Receive updates & news from us'}
           </AppText>
         );
       case 'Language':

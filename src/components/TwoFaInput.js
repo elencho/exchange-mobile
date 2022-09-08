@@ -78,10 +78,6 @@ export default function TwoFaInput({
         dispatch(otpForLoginAction(value, navigation));
       }
 
-      dispatch(toggleGoogleOtpModal(false));
-      dispatch(toggleSmsAuthModal(false));
-      dispatch(toggleEmailAuthModal(false));
-
       setValue('');
     }
   }, [value]);

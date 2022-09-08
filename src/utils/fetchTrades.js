@@ -18,8 +18,10 @@ export const fetchOffers = async () => {
   return data?.data;
 };
 
-export const submitTrade = async (params) => {
-  const data = await axios.post(TRADES_URL, params, {});
+export const submitTrade = async (payload) => {
+  const data = await axios.post(TRADES_URL, payload, {
+    params: { toast: false },
+  });
   return data;
 };
 export const fetchBalance = async () => {

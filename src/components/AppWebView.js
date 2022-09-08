@@ -30,6 +30,7 @@ export default function AppWebView(props) {
           allowUniversalAccessFromFileURLs
           javaScriptEnabled
           domStorageEnabled
+          startInLoadingState
           {...props}
         />
       </TouchableOpacity>

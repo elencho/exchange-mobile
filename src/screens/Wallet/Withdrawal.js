@@ -64,7 +64,7 @@ export default function Withdrawal() {
   const isEcommerce = network === 'ECOMMERCE';
   const walletInfo = () => {
     if (currentBalanceObj?.infos && hasMethod && !hasRestriction) {
-      return currentBalanceObj?.infos[network].walletInfo;
+      return currentBalanceObj?.infos[network]?.walletInfo;
     }
   };
 

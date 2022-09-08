@@ -8,7 +8,7 @@ import { monthsShort } from '../../constants/months';
 
 function TransactionDate({ date, transactions }) {
   const isDate = () => {
-    return transactions.map((tr) => {
+    return transactions?.map((tr) => {
       const transaction = {
         timestamp: tr.timestamp,
         type: tr.type,

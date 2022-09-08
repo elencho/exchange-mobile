@@ -9,16 +9,12 @@ function GeneralError({ style }) {
   const generalError = useSelector((state) => state.profile.generalError);
 
   return (
-    <>
-      {generalError ? (
-        <View style={[styles.container, style]}>
-          <Image source={images.General_Error} />
-          <AppText subtext style={styles.red}>
-            {generalError}
-          </AppText>
-        </View>
-      ) : null}
-    </>
+    <View style={[styles.container, style]}>
+      <Image source={images.General_Error} />
+      <AppText subtext style={styles.red}>
+        {generalError?.errorMessage}
+      </AppText>
+    </View>
   );
 }
 

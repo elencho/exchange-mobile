@@ -53,7 +53,11 @@ import {
   toggleEmailAuthModal,
   toggleEmailVerificationModal,
   toggleGoogleAuthModal,
+  toggleGoogleOtpModal,
   togglePasswordModal,
+  togglePersonalInfoModal,
+  togglePhoneNumberModal,
+  toggleSmsAuthModal,
 } from '../modals/actions';
 import { resetTradesState } from '../trade/actions';
 import { resetTransactionsState, toggleLoading } from '../transactions/actions';
@@ -66,10 +70,10 @@ function* startLoginSaga(action) {
   const pkceInfo = yield call(async () => await asyncPkceChallenge());
   yield put(savePkceInfo(pkceInfo));
 
-  const loginStartInfo = yield call(loginStart, pkceInfo.codeChallenge);
+  const loginStartInfo = yield call(loginStart, pkceInfo?.codeChallenge);
   yield put(saveLoginStartInfo(loginStartInfo));
 
-  if (loginStartInfo.execution === 'LOGIN_USERNAME_PASSWORD') {
+  if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
     navigation.navigate('Login');
   }
 }
@@ -91,15 +95,14 @@ function* startRegistrationSaga(action) {
 
 //  REGISTRATION FORM
 function* registrationFormSaga(action) {
-  const { navigation } = action;
   const params = yield select(registrationParams);
   const state = yield select((state) => state.profile);
-  const { registrationStartInfo, verificationInfo } = state;
+  const { registrationStartInfo } = state;
 
   const data = yield call(
     registrationForm,
     params,
-    registrationStartInfo.callbackUrl
+    registrationStartInfo?.callbackUrl
   );
   if (data?.execution === 'EMAIL_VERIFICATION_OTP') {
     yield put(toggleEmailVerificationModal(true));
@@ -124,7 +127,11 @@ function* verifyAccountSaga(action) {
     pkceInfo: { codeVerifier },
   } = state;
 
-  const verified = yield call(verifyAccount, verificationInfo.callbackUrl, otp);
+  const verified = yield call(
+    verifyAccount,
+    verificationInfo?.callbackUrl,
+    otp
+  );
   if (verified?.code) {
     yield put({
       type: 'CODE_TO_TOKEN_SAGA',
@@ -168,19 +175,19 @@ function* usernameAndPasswordSaga(action) {
   );
   yield put(saveUserAndPassInfo(userAndPassInfo));
 
-  if (userAndPassInfo.execution === 'LOGIN_OTP') {
+  if (userAndPassInfo?.execution === 'LOGIN_OTP') {
     navigation.navigate('Login2Fa');
   }
   yield put(
     saveLoginStartInfo({
       ...loginStartInfo,
-      callbackUrl: userAndPassInfo.callbackUrl,
+      callbackUrl: userAndPassInfo?.callbackUrl,
     })
   );
 
   // Sometimes OTP is disabled, therefore code block below should be executed
-  if (userAndPassInfo.code) {
-    const code = userAndPassInfo.code;
+  if (userAndPassInfo?.code) {
+    const code = userAndPassInfo?.code;
     const codeVerifier = yield select(
       (state) => state.profile.pkceInfo.codeVerifier
     );
@@ -205,7 +212,7 @@ function* otpForLoginSaga(action) {
   if (!forgotPassMode) {
     yield put({
       type: 'CODE_TO_TOKEN_SAGA',
-      code: loginData.code,
+      code: loginData?.code,
       codeVerifier,
       navigation,
     });
@@ -214,7 +221,7 @@ function* otpForLoginSaga(action) {
       type: 'SAVE_FORGOT_PASS_INFO',
       forgotPassInfo: loginData,
     });
-    if (loginData.execution === 'UPDATE_PASSWORD') {
+    if (loginData?.execution === 'UPDATE_PASSWORD') {
       navigation.navigate('SetNewPassword');
     }
   }
@@ -226,10 +233,13 @@ function* resetOtpSaga(action) {
   const userAndPassInfo = yield select(
     (state) => state.profile.userAndPassInfo
   );
-  const data = yield call(resetOtp, userAndPassInfo.callbackUrl);
+  const data = yield call(resetOtp, userAndPassInfo?.callbackUrl);
   if (data) {
     yield put(
-      saveUserAndPassInfo({ ...userAndPassInfo, callbackUrl: data.callbackUrl })
+      saveUserAndPassInfo({
+        ...userAndPassInfo,
+        callbackUrl: data?.callbackUrl,
+      })
     );
     navigation.navigate('ResetOtpInstructions', { execution: data?.execution });
   }
@@ -258,7 +268,7 @@ function* forgotPasswordCodeSaga() {
 
   const url = yield select((state) => state.profile.forgotPassInfo.callbackUrl);
   const forgotPassInfo = yield select((state) => state.profile.forgotPassInfo);
-  const data = yield call(forgotPasswordCode, url, forgotPassInfo.username);
+  const data = yield call(forgotPasswordCode, url, forgotPassInfo?.username);
   if (data?.execution === 'RESET_PASSWORD_WITH_CODE') {
     yield put({
       type: 'SAVE_FORGOT_PASS_INFO',
@@ -327,7 +337,10 @@ function* fetchUserInfoSaga() {
 //  UPDATE USER INFO
 function* saveUserInfoSaga() {
   const userData = yield select(getUserData);
-  yield call(updateUserData, userData);
+  const data = yield call(updateUserData, userData);
+  if (data?.status >= 200 && data?.status < 300) {
+    yield put(togglePersonalInfoModal(false));
+  }
 }
 
 //  UPDATE PASSWORD
@@ -353,23 +366,40 @@ function* verifyPhoneNumberSaga(action) {
 //  UPDATE PHONE NUMBER
 function* updatePhoneNumberSaga(action) {
   const { phoneNumber, phoneCountry, verificationNumber } = action;
-  yield call(updatePhoneNumber, phoneNumber, phoneCountry, verificationNumber);
+  const data = yield call(
+    updatePhoneNumber,
+    phoneNumber,
+    phoneCountry,
+    verificationNumber
+  );
+  if (data?.status >= 200 && data?.status < 300) {
+    yield put(togglePhoneNumberModal(false));
+  }
 }
 
 //  TOGLE SUBSCRIPTION
 function* toggleSubscriptionSaga(action) {
   const { value } = action;
-  yield call(value ? subscribeMail : unsubscribeMail);
-  yield put(fetchUserInfoAction());
+  const data = yield call(value ? subscribeMail : unsubscribeMail);
+  if (data?.status >= 200 && data?.status < 300) {
+    yield put(fetchUserInfoAction());
+  }
 }
 
 //  CREDENTIALS FOR EMAIL
 function* credentialsForEmailSaga(action) {
   const { OTP } = action;
+  const sms = yield select((state) => state.profile.smsAuthModalVisible);
+  const google = yield select((state) => state.profile.googleOtpModalVisible);
+
   const data = yield call(getOtpChangeToken, OTP, 'EMAIL');
   if (data) {
     yield call(sendEmailOtp);
-    yield put(saveOtpChangeToken(data.changeOTPToken));
+    yield put(saveOtpChangeToken(data?.changeOTPToken));
+
+    if (sms) yield put(toggleSmsAuthModal(false));
+    if (google) yield put(toggleGoogleOtpModal(false));
+    yield delay(1000);
     yield put(toggleEmailAuthModal(true));
   }
 }
@@ -380,8 +410,8 @@ function* credentialsForGoogleSaga(action) {
   const data = yield call(getOtpChangeToken, OTP, 'TOTP');
 
   if (data) {
-    yield put(saveOtpChangeToken(data.changeOTPToken));
-    yield put(saveTotpSecretObj(data.totp));
+    yield put(saveOtpChangeToken(data?.changeOTPToken));
+    yield put(saveTotpSecretObj(data?.totp));
     yield delay(1000);
     yield put(toggleGoogleAuthModal(true));
   }
@@ -427,7 +457,7 @@ function* activateGoogleSaga(action) {
 // OTP SAGA
 function* otpSaga(action) {
   const { token } = action;
-  const otpType = jwt_decode(token).otpType;
+  const otpType = jwt_decode(token)?.otpType;
   if (otpType === 'EMAIL') {
     yield put(setEmailAuth(true));
   }

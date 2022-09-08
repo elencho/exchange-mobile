@@ -15,29 +15,29 @@ export const CODE_TO_TOKEN = `${auth}/auth/realms/GEX/protocol/openid-connect/to
 
 export const LOGOUT = `${auth}/auth/realms/GEX/protocol/openid-connect/logout`;
 
-export const TRANSACTIONS_URL = `${core}/exchange/api/v1/mobile/private/account/transactions`;
+export const TRANSACTIONS_URL = `${core}/private/account/transactions`;
 
-export const CURRENCIES_URL = `${core}/exchange/api/v1/mobile/public/currencies`;
+export const CURRENCIES_URL = `${core}/public/currencies`;
 
-export const COUNTRIES_URL = `${core}/exchange/api/v1/public/countries`;
+export const COUNTRIES_URL = `${core}/public/countries`;
 
-export const TRADES_URL = `${core}/exchange/api/v1/mobile/private/simpleTrade/trades`;
+export const TRADES_URL = `${core}/private/simpleTrade/trades`;
 
-export const OFFERS_URL = `${core}/exchange/api/v1/mobile/private/simpleTrade/offers`;
+export const OFFERS_URL = `${core}/private/simpleTrade/offers`;
 
-export const BALANCE_URL = `${core}/exchange/api/v1/mobile/private/account/balance`;
+export const BALANCE_URL = `${core}/private/account/balance`;
 
-export const CARDS_URL = `${core}/exchange/api/v1/mobile/private/account/cards`;
+export const CARDS_URL = `${core}/private/account/cards`;
 
-export const CALCULATE_FEE_URL = `${core}/exchange/api/v1/private/account/calculateFee`;
+export const CALCULATE_FEE_URL = `${core}/private/account/calculateFee`;
 
-export const USER_INFO_URL = `${core}/exchange/api/v1/private/account/userInfo`;
+export const USER_INFO_URL = `${core}/private/account/userInfo`;
 
-export const SUBSCRIBE_EMAIL_URL = `${core}/exchange/api/v1/private/account/subscribeToEmailUpdates`;
+export const SUBSCRIBE_EMAIL_URL = `${core}/private/account/subscribeToEmailUpdates`;
 
-export const UNSUBSCRIBE_EMAIL_URL = `${core}/exchange/api/v1/private/account/unsubscribeFromEmailUpdates`;
+export const UNSUBSCRIBE_EMAIL_URL = `${core}/private/account/unsubscribeFromEmailUpdates`;
 
-export const UPDATE_USER_DATA = `${core}/exchange/api/v1/private/users/updateUserData`;
+export const UPDATE_USER_DATA = `${core}/private/users/updateUserData`;
 
 export const UPDATE_PASSWORD = `${auth}/auth/realms/GEX/GEX-resource/updatePassword`;
 
@@ -55,36 +55,36 @@ export const ACTIVATE_EMAIL_OTP = `${auth}/auth/realms/GEX/GEX-resource/enableEm
 
 export const ACTIVATE_GOOGLE_OTP = `${auth}/auth/realms/GEX/GEX-resource/enableTotpTwoFA`;
 
-export const WIRE_DEPOSIT = `${core}/exchange/api/v1/mobile/private/account/wire/deposit`;
+export const WIRE_DEPOSIT = `${core}/private/account/wire/deposit`;
 
-export const GENERATE_WIRE_PDF = `${core}/exchange/api/v1/mobile/private/report/wire`;
+export const GENERATE_WIRE_PDF = `${core}/private/report/wire`;
 
-export const GET_CRYPTO_ADDRESSES = `${core}/exchange/api/v1/mobile/private/account/deposit/crypto/getAddresses`;
+export const GET_CRYPTO_ADDRESSES = `${core}/private/account/deposit/crypto/getAddresses`;
 
-export const GENERATE_CRYPTO_ADDRESS = `${core}/exchange/api/v1/mobile/private/account/deposit/crypto`;
+export const GENERATE_CRYPTO_ADDRESS = `${core}/private/account/deposit/crypto`;
 
-export const CRYPTO_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/withdraw/crypto`;
+export const CRYPTO_WITHDRAWAL = `${core}/private/account/withdraw/crypto`;
 
-export const CRYPTO_WHITELIST = `${core}/exchange/api/v1/mobile/private/whitelist`;
+export const CRYPTO_WHITELIST = `${core}/private/whitelist`;
 
-export const WITHDRAWAL_TEMPLATES = `${core}/exchange/api/v1/mobile/private/wire-template`;
+export const WITHDRAWAL_TEMPLATES = `${core}/private/wire-template`;
 
-export const MAX_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/calculateMaxWithdrawal`;
+export const MAX_WITHDRAWAL = `${core}/private/account/calculateMaxWithdrawal`;
 
-export const BANKS_URL = `${core}/exchange/api/v1/mobile/private/account/banks`;
+export const BANKS_URL = `${core}/private/account/banks`;
 
-export const WIRE_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/wire`;
+export const WIRE_WITHDRAWAL = `${core}/private/account/wire`;
 
-export const CARD_WITHDRAWAL = `${core}/exchange/api/v1/mobile/private/account/card/transaction/withdraw`;
+export const CARD_WITHDRAWAL = `${core}/private/account/card/transaction/withdraw`;
 
-export const CARD_DEPOSIT = `${core}/exchange/api/v1/mobile/private/account/card/transaction/deposit`;
+export const CARD_DEPOSIT = `${core}/private/account/card/transaction/deposit`;
 
-export const ADD_CARD_URL = `${core}/exchange/api/v1/mobile/private/account/card/addNewCard`;
+export const ADD_CARD_URL = `${core}/private/account/card/addNewCard`;
 
-export const DELETE_CARD_URL = `${core}/exchange/api/v1/mobile/private/account/card/deleteCard`;
+export const DELETE_CARD_URL = `${core}/private/account/card/deleteCard`;
 
-export const DICTIONARY = `${core}/exchange/api/v1/mobile/public/dictionary`;
+export const DICTIONARY = `${core}/public/dictionary`;
 
-export const VERIFICATION_TOKEN = `${core}/exchange/api/v1/mobile/private/users/verificationToken`;
+export const VERIFICATION_TOKEN = `${core}/private/users/verificationToken`;
 
-export const CARD_VERIFICATION_TOKEN = `${core}/exchange/api/v1/mobile/private/users/cardVerificationToken`;
+export const CARD_VERIFICATION_TOKEN = `${core}/private/users/cardVerificationToken`;

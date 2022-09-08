@@ -87,7 +87,6 @@ export default function PhoneNumberModal() {
     dispatch(
       updatePhoneNumber(phoneNumber, userInfo.countryCode, verificationNumber)
     );
-    hide();
   };
 
   const handleCountries = () => {

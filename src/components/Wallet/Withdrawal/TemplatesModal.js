@@ -45,7 +45,7 @@ export default function TemplatesModal() {
 
   const children = (
     <>
-      {templates.map((t) => (
+      {templates?.map((t) => (
         <View style={[styles.template, background(t)]} key={t.id}>
           <Pressable style={styles.flex} onPress={() => choose(t)}>
             <AppText medium style={styles.white}>

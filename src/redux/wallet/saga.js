@@ -16,8 +16,10 @@ import {
   maxWithdrawal,
   wireWithdrawal,
 } from '../../utils/walletUtils';
-import { toggleAddWhitelistModal } from '../modals/actions';
-import { saveGeneralError } from '../profile/actions';
+import {
+  toggleAddWhitelistModal,
+  toggleEditWhitelistModal,
+} from '../modals/actions';
 import { setFee } from '../trade/actions';
 import { chooseCurrency, setAbbr } from '../transactions/actions';
 import {
@@ -56,11 +58,9 @@ import {
 } from './selectors';
 
 function* methodNetworkRestrictionSaga() {
-  const balance = yield select((state) => state.trade.balance);
   const currentBalanceObj = yield select(
     (state) => state.trade.currentBalanceObj
   );
-  const code = yield select((state) => state.transactions.code);
   const walletTab = yield select((state) => state.wallet.walletTab);
   const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
   let hasMultipleMethods = false;
@@ -70,7 +70,7 @@ function* methodNetworkRestrictionSaga() {
 
   yield call(() => {
     const b = currentBalanceObj[m];
-    const r = currentBalanceObj.restrictions;
+    const r = currentBalanceObj?.restrictions;
 
     hasMultipleMethods = Object.keys(b).length > 1;
     if (b.WALLET) hasMultipleNetworks = b.WALLET.length > 1;
@@ -108,7 +108,7 @@ function* cryptoAddressesSaga(action) {
     (state) => state.trade.currentBalanceObj
   );
 
-  if (Object.keys(currentBalanceObj.depositMethods).length) {
+  if (Object.keys(currentBalanceObj?.depositMethods)?.length) {
     const cryptoAddress = yield call(fetchCryptoAddresses, code, network);
     yield put(saveCryptoAddress(cryptoAddress ? cryptoAddress : {}));
   }
@@ -143,7 +143,7 @@ function* getWhitelistSaga() {
   const currency = yield select((state) => state.transactions.code);
   const whitelist = yield call(fetchWhitelist, currency);
   yield put(saveWhitelist(whitelist));
-  yield put(setHasWhitelist(whitelist.length > 0));
+  yield put(setHasWhitelist(whitelist?.length > 0));
 }
 
 export function* addWhitelistSaga(action) {
@@ -166,6 +166,7 @@ function* editWhitelistSaga() {
   if (status === 200) {
     yield put(chooseWhitelist({}));
     yield put(getWhitelistAction());
+    yield put(toggleEditWhitelistModal(false));
   }
 }
 
@@ -211,9 +212,6 @@ function* cardWithdrawalSaga(action) {
   const { OTP } = action;
   const params = yield select(cardWithdrawalParams);
   const status = yield call(cardWithdrawal, OTP, params);
-  if (status === 204) {
-    yield put(saveGeneralError('Card Withdrawal Successfull'));
-  }
 }
 
 function* maxWithdrawalSaga() {

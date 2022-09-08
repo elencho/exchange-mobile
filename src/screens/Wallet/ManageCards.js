@@ -75,7 +75,7 @@ export default function ManageCards() {
             }}
             nestedScrollEnabled
           >
-            {cards.map((c) => (
+            {cards?.map((c) => (
               <Card
                 key={c.id}
                 handlesumsubWebView={handlesumsubWebView}

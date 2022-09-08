@@ -40,7 +40,7 @@ function TransactionHistory() {
 
   const onRefresh = () => dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
 
-  const dates = transactions.map((tr) => {
+  const dates = transactions?.map((tr) => {
     const date = new Date(tr.timestamp);
     return `${date.getDate()} ${
       monthsShort[date.getMonth()]

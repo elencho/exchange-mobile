@@ -2,7 +2,7 @@ import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
   toastObj: {},
-  appToastVisible: false,
+  appToastObj: null,
   webViewObj: null,
 
   // Login
@@ -55,7 +55,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   const {
     datePickerVisible,
-    appToastVisible,
+    appToastObj,
     chooseCurrencyModalVisible,
     buySellModalVisible,
     transactionDetailsVisible,
@@ -97,10 +97,10 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         toastObj,
       };
-    case actionTypes.TOGGLE_APP_TOAST:
+    case actionTypes.SET_APP_TOAST:
       return {
         ...state,
-        appToastVisible,
+        appToastObj,
       };
     case actionTypes.TOGGLE_DATEPICKER:
       return {

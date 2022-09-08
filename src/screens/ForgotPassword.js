@@ -19,12 +19,13 @@ import PurpleText from '../components/PurpleText';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
+import GeneralError from '../components/GeneralError';
 
 export default function ForgotPassword({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { forgotPassInfo, timerVisible },
+    profile: { forgotPassInfo, timerVisible, generalError },
     transactions: { loading },
   } = state;
 
@@ -91,6 +92,8 @@ export default function ForgotPassword({ navigation }) {
             Enter the code you will receive on your e-mail to recover the
             password
           </AppText>
+
+          {generalError ? <GeneralError /> : null}
 
           <AppInput
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}

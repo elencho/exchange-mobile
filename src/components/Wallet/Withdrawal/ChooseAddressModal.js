@@ -30,7 +30,7 @@ export default function ChooseAddressModal() {
 
   const children = (
     <>
-      {whitelist.map((w) => (
+      {whitelist?.map((w) => (
         <TouchableOpacity
           style={styles.pressable}
           key={w.id}

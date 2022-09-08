@@ -49,6 +49,7 @@ export const loginStart = async (code_challenge) => {
       display: 'mobile',
       code_challenge,
       code_challenge_method: 'S256',
+      toast: false,
     },
   });
   if (data) return data.data;
@@ -63,6 +64,7 @@ export const registrationStart = async () => {
       response_type: 'code',
       scope: 'openid',
       display: 'mobile',
+      toast: false,
     },
   });
   if (data) return data.data;
@@ -74,6 +76,7 @@ export const usernameAndPasswordForm = async (username, password, url) => {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url,
     data: `username=${username}&password=${password}`,
+    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -85,6 +88,7 @@ export const registrationForm = async (obj, url) => {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url,
     data: params,
+    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -107,6 +111,7 @@ export const loginOtp = async (otp, url) => {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url,
     data: `otp=${otp}`,
+    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -117,6 +122,7 @@ export const resetOtp = async (url) => {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url,
     data: `resetOTP=true`,
+    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -132,6 +138,7 @@ export const forgotPasswordCode = async (url, username) => {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url,
     data: `username=${username}&send=true`,
+    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -142,6 +149,7 @@ export const forgotPasswordEnterCode = async (url, username, otp) => {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url,
     data: `username=${username}&otp=${otp}`,
+    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -152,6 +160,7 @@ export const setNewPassword = async (url, newPass, confirmPass) => {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     url,
     data: `password-new=${newPass}&password-confirm=${confirmPass}`,
+    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -213,24 +222,30 @@ export const fetchUserInfo = async () => {
 };
 
 export const subscribeMail = async () => {
-  await axios({
+  const data = await axios({
     method: 'POST',
     url: SUBSCRIBE_EMAIL_URL,
+    params: { toast: false },
   });
+  return data;
 };
 export const unsubscribeMail = async () => {
-  await axios({
+  const data = await axios({
     method: 'POST',
     url: UNSUBSCRIBE_EMAIL_URL,
+    params: { toast: false },
   });
+  return data;
 };
 
 export const updateUserData = async (data) => {
-  await axios({
+  const userInfo = await axios({
     method: 'POST',
     url: UPDATE_USER_DATA,
     data,
+    params: { toast: false },
   });
+  return userInfo;
 };
 
 export const updatePassword = async (
@@ -245,6 +260,7 @@ export const updatePassword = async (
     },
     url: UPDATE_PASSWORD,
     data: `password=${currentPassword}&passwordNew=${newPassword}&passwordConfirm=${confirmNewPassword}`,
+    params: { toast: false },
   });
   return data;
 };
@@ -252,7 +268,12 @@ export const updatePassword = async (
 export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {
   await axios({
     method: 'POST',
-    url: `${VERIFY_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    url: VERIFY_PHONE_NUMBER,
+    data: `phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}`,
+    params: { toast: false },
   });
 };
 
@@ -261,10 +282,16 @@ export const updatePhoneNumber = async (
   phoneCountry,
   verificationNumber
 ) => {
-  await axios({
+  const data = await axios({
     method: 'POST',
-    url: `${UPDATE_PHONE_NUMBER}?phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    url: UPDATE_PHONE_NUMBER,
+    data: `phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
+    params: { toast: false },
   });
+  return data;
 };
 
 export const sendOtp = async () => await axios.post(SEND_OTP);
@@ -274,6 +301,7 @@ export const getOtpChangeToken = async (OTP, newOTPType) => {
     method: 'GET',
     headers: { OTP },
     url: `${OTP_CHANGE_TOKEN}?newOTPType=${newOTPType}`,
+    params: { newOTPType, toast: false },
   });
   if (data) return data.data;
 };
@@ -293,6 +321,7 @@ export const activateEmailOtp = async (changeOTPToken, verificationCode) => {
     },
     url: ACTIVATE_EMAIL_OTP,
     data: `changeOTPToken=${changeOTPToken}&verificationCode=${verificationCode}`,
+    params: { toast: false },
   });
   if (data) return data.status;
 };
@@ -309,6 +338,7 @@ export const activateGoogleOtp = async (
     },
     url: ACTIVATE_GOOGLE_OTP,
     data: `changeOTPToken=${changeOTPToken}&totpCode=${totpCode}&totpSecret=${totpSecret}`,
+    params: { toast: false },
   });
   if (data) return data.status;
 };

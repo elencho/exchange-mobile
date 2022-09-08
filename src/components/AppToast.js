@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleAppToast } from '../redux/modals/actions';
+import { setAppToast } from '../redux/modals/actions';
 
 import AppAnimatedCircle from './AppAnimatedCircle';
 import AppText from './AppText';
@@ -10,12 +10,12 @@ const Texts = ({ toastObj }) => (
   <View style={styles.texts}>
     {toastObj?.header ? (
       <AppText medium style={styles.white}>
-        {toastObj.header}
+        {toastObj?.header}
       </AppText>
     ) : null}
     {toastObj?.body ? (
       <AppText subtext style={styles.white}>
-        {toastObj.body}
+        {toastObj?.body}
       </AppText>
     ) : null}
   </View>
@@ -40,21 +40,21 @@ export default function AppToast() {
     Animated.timing(animated, animatedObj(1, 200)).start();
   const animationFinish = () =>
     Animated.timing(animated, animatedObj(0, 200)).start(() =>
-      dispatch(toggleAppToast(false))
+      dispatch(setAppToast(null))
     );
 
   const state = useSelector((state) => state);
   const {
-    modals: { appToastVisible },
+    modals: { appToastObj },
   } = state;
 
-  const toastObj = {
-    header: 'Header',
-    body: 'Body Body Body Body Body Body Body Body  ',
-  };
+  // const toastObj = {
+  //   header: 'Header',
+  //   body: 'Body Body Body Body Body Body Body Body  ',
+  // };
 
   useEffect(() => {
-    if (appToastVisible) {
+    if (appToastObj) {
       animationStart();
 
       const timeout = setTimeout(() => {
@@ -67,7 +67,7 @@ export default function AppToast() {
     return () => {
       setPressed(false);
     };
-  }, [appToastVisible, pressed]);
+  }, [appToastObj, pressed]);
 
   const translateY = animated.interpolate({
     inputRange: [0, 1],
@@ -76,7 +76,7 @@ export default function AppToast() {
 
   return (
     <>
-      {appToastVisible && (
+      {appToastObj && (
         <Animated.View
           style={[styles.container, { transform: [{ translateY }] }]}
         >
@@ -92,7 +92,7 @@ export default function AppToast() {
               delay={500}
               pressed={pressed}
             />
-            <Texts toastObj={toastObj} />
+            <Texts toastObj={appToastObj} />
           </Pressable>
         </Animated.View>
       )}

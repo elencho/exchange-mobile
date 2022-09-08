@@ -23,6 +23,7 @@ import { sendOtp } from '../../../utils/userProfileUtils';
 import GeneralError from '../../GeneralError';
 import SmsEmailAuthModal from '../../UserProfile/SmsEmailAuthModal';
 import GoogleOtpModal from '../../UserProfile/GoogleOtpModal';
+import { saveGeneralError } from '../../../redux/profile/actions';
 
 export default function AddEditWhitelistModal({ add, edit }) {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const hide = () => {
     if (add) dispatch(toggleAddWhitelistModal(false));
     if (edit) dispatch(toggleEditWhitelistModal(false));
+    dispatch(saveGeneralError(null));
   };
 
   const handleAdd = () => {

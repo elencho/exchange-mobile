@@ -8,8 +8,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
+  View,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Constants from 'expo-constants';
 
 import AppButton from '../components/AppButton';
@@ -23,10 +24,13 @@ import {
   startRegistrationAction,
 } from '../redux/profile/actions';
 import { switchLanguage } from '../utils/i18n';
+import GeneralError from '../components/GeneralError';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
+  const state = useSelector((state) => state.profile);
   const [loading, setLoading] = useState(true);
+  const { generarError } = state;
 
   useFocusEffect(() => {
     SecureStore.getItemAsync('accessToken').then((token) => {
@@ -70,6 +74,12 @@ export default function Welcome({ navigation }) {
             </AppText>
 
             <AppText style={styles.secondary}>{auth}</AppText>
+
+            {generarError ? (
+              <View style={{ marginTop: 20 }}>
+                <GeneralError />
+              </View>
+            ) : null}
 
             <AppButton
               text="Login"

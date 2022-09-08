@@ -4,18 +4,26 @@ import store from '../redux/store';
 import { saveGeneralError } from '../redux/profile/actions';
 import { navigationRef } from '../navigation';
 import { refreshToken } from './userProfileUtils';
+import { setAppToast } from '../redux/modals/actions';
 
 export default async (err) => {
   if (err.response) {
     // console.log(err.response.data);
     // console.log(err.response.status);
     // console.log(err.response.headers);
-    if (err.response.data.errorMessage) {
-      store.dispatch(saveGeneralError(err.response.data.errorMessage));
-    }
 
-    if (err.response.status === 500)
-      store.dispatch(saveGeneralError(err.response.data.errorMessage));
+    if (err.response.status > 401) {
+      if (err.response.config.params?.toast === false) {
+        store.dispatch(saveGeneralError(err.response.data));
+      } else {
+        store.dispatch(
+          setAppToast({
+            header: err.response.data.errorKey,
+            body: err.response.data.errorMessage,
+          })
+        );
+      }
+    }
     if (err.response.status === 401) {
       const response = await refreshToken(err.config);
       return response;

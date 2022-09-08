@@ -51,8 +51,10 @@ export const getCardParams = (state) => {
     transactions: { code, tabRouteName },
   } = state;
 
+  const currency = code ?? 'GEL';
+
   return {
-    currency: tabRouteName === 'Trade' ? fiat : code,
+    currency: tabRouteName === 'Trade' ? fiat : currency,
     // provider: depositProvider,
     // status: 'VERIFIED',
     // transactionType: 'DEPOSIT',

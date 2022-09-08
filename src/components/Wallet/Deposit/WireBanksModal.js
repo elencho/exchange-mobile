@@ -29,7 +29,7 @@ export default function WireBanksModal() {
 
   const children = () => {
     const abbr = (b) => b.iconName.split('.')[0];
-    return wireBanks.map((b, i) => (
+    return wireBanks?.map((b, i) => (
       <View key={b.receiverBankName}>
         <Pressable
           style={[

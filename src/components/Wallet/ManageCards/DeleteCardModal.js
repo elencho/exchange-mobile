@@ -5,13 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppModal from '../../AppModal';
 import AppText from '../../AppText';
 import AppButton from '../../AppButton';
+import PurpleText from '../../PurpleText';
+import GeneralError from '../../GeneralError';
 
-import colors from '../../../constants/colors';
-import images from '../../../constants/images';
 import { setCardDeleteModalInfo } from '../../../redux/modals/actions';
 import { deleteCard } from '../../../utils/walletUtils';
-import PurpleText from '../../PurpleText';
 import { saveCards } from '../../../redux/trade/actions';
+import colors from '../../../constants/colors';
+import images from '../../../constants/images';
+import { saveGeneralError } from '../../../redux/profile/actions';
 
 export default function DeleteCardModal() {
   const dispatch = useDispatch();
@@ -19,9 +21,13 @@ export default function DeleteCardModal() {
   const {
     modals: { cardDeleteModalInfo },
     trade: { cards },
+    profile: { generalError },
   } = state;
 
-  const hide = () => dispatch(setCardDeleteModalInfo({}));
+  const hide = () => {
+    dispatch(setCardDeleteModalInfo({}));
+    dispatch(saveGeneralError(null));
+  };
 
   const id = cardDeleteModalInfo?.id;
   const visible = cardDeleteModalInfo?.visible;
@@ -42,6 +48,13 @@ export default function DeleteCardModal() {
       <AppText header style={styles.white}>
         Delete Card
       </AppText>
+
+      {generalError ? (
+        <View style={{ marginTop: 15 }}>
+          <GeneralError />
+        </View>
+      ) : null}
+
       <AppText style={styles.secondary}>
         Are you sure you want to delete this card?
       </AppText>

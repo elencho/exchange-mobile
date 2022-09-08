@@ -50,7 +50,7 @@ export default function Whitelist() {
       {hasWhitelist ? (
         <>
           <ScrollView style={styles.scrollView}>
-            {whitelist.map((w) => (
+            {whitelist?.map((w) => (
               <WhitelistItem key={w.id} whitelistItem={w} />
             ))}
           </ScrollView>

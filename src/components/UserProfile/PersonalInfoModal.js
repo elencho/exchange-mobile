@@ -37,25 +37,14 @@ export default function PersonalInfoModal() {
     profile: { userInfo, countriesConstant, generalError },
   } = state;
 
-  const hide = () => {
-    dispatch(togglePersonalInfoModal(false));
-  };
-
-  const handleSave = () => {
-    dispatch(saveUserInfoSaga());
-    hide();
-  };
-
+  const hide = () => dispatch(togglePersonalInfoModal(false));
+  const handleSave = () => dispatch(saveUserInfoSaga());
   const handleHide = () => dispatch(fetchUserInfo());
 
   const handleCountries = (countryDrop, citizenshipDrop) => {
     dispatch(toggleCountriesModal(true));
-    if (countryDrop) {
-      setCountryDrop(true);
-    }
-    if (citizenshipDrop) {
-      setCitizenshipDrop(true);
-    }
+    if (countryDrop) setCountryDrop(true);
+    if (citizenshipDrop) setCitizenshipDrop(true);
   };
 
   const handleReset = () => {
