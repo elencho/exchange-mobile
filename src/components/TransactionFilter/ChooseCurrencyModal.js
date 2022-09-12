@@ -28,7 +28,7 @@ function ChooseCurrencyModal({ wallet = false }) {
   const {
     transactions: { currencies, currenciesConstant, currency },
     modals: { chooseCurrencyModalVisible },
-    trade: { balance, fiatsArray },
+    trade: { balance, fiatsArray, currentBalanceObj },
     wallet: { walletTab },
   } = state;
 
@@ -80,7 +80,8 @@ function ChooseCurrencyModal({ wallet = false }) {
 
       if (
         (walletTab === 'Manage Cards' && !fiats.includes(code)) ||
-        (walletTab === 'Whitelist' && fiats.includes(code))
+        (walletTab === 'Whitelist' && fiats.includes(code)) ||
+        currentBalanceObj?.depositMethods?.ECOMMERCE
       ) {
         dispatch(setWalletTab('Deposit'));
       }

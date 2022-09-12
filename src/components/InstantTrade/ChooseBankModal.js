@@ -44,9 +44,13 @@ export default function ChooseBankModal() {
         currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
           if (p.displayName === d.displayName) {
             cards?.forEach((c) => {
-              if (c.provider === d.provider)
-                if (!array.length) array.push(d);
-                else !arrayFullCheck(array, d.provider) && array.push(d);
+              if (c.provider === d.provider) {
+                if (!array.length) {
+                  array.push(d);
+                } else {
+                  !arrayFullCheck(array, d.provider) && array.push(d);
+                }
+              }
             });
           }
         });

@@ -49,15 +49,18 @@ export const getCardParams = (state) => {
   const {
     trade: { fiat },
     transactions: { code, tabRouteName },
+    wallet: { walletTab },
   } = state;
 
   const currency = code ?? 'GEL';
+  const status = walletTab !== 'Manage Cards' ? 'VERIFIED' : null;
+  const transactionType = walletTab === 'Withdrawal' ? 'WITHDRAWAL' : 'DEPOSIT';
 
   return {
     currency: tabRouteName === 'Trade' ? fiat : currency,
     // provider: depositProvider,
-    // status: 'VERIFIED',
-    // transactionType: 'DEPOSIT',
+    status,
+    transactionType,
   };
 };
 
