@@ -6,13 +6,14 @@ import AppModal from '../../AppModal';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
-import images from '../../../constants/images';
 import { setNetwork, wireDepositAction } from '../../../redux/wallet/actions';
+import { ICONS_URL_PNG } from '../../../constants/api';
 
 export default function ChooseNetworkModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [networks, setNetworks] = useState([]);
+  const [iconDimensions, setIconDimensions] = useState({});
 
   const {
     modals: { chooseNetworkModalVisible },
@@ -41,12 +42,19 @@ export default function ChooseNetworkModal() {
     }
     setNetworks(networksToDisplay);
 
+    const uri = (network) => `${ICONS_URL_PNG}/${network}.png`;
+    Image.getSize(uri(network), (w, h) => {
+      setIconDimensions({ width: 25 * (w / h), height: 25 });
+    });
+
     return () => setNetworks([]);
   }, [code]);
 
   useEffect(() => {
     const fiats = fiatsArray.map((f) => f.code);
-    if (fiats.includes(code)) dispatch(wireDepositAction('', code));
+    if (fiats.includes(code) && network !== 'ECOMMERCE') {
+      dispatch(wireDepositAction('', code));
+    }
   }, [network]);
 
   const name = (n) => {
@@ -74,8 +82,8 @@ export default function ChooseNetworkModal() {
           onPress={() => handlePress(n.provider)}
         >
           <Image
-            source={images[n.provider === 'Ethereum' ? 'ETH' : 'Binance']}
-            style={styles.image}
+            source={{ uri: `${ICONS_URL_PNG}/${n.provider}.png` }}
+            style={[styles.image, iconDimensions]}
           />
           <View style={styles.name}>
             <AppText medium body style={styles.primary}>
@@ -105,7 +113,7 @@ export default function ChooseNetworkModal() {
 }
 
 const styles = StyleSheet.create({
-  image: { width: 30, height: 30 },
+  image: { resizeMode: 'contain' },
   name: {
     marginLeft: 20,
     justifyContent: 'space-between',

@@ -6,6 +6,7 @@ import AppText from '../AppText';
 import images from '../../constants/images';
 import colors from '../../constants/colors';
 import { toggleCryptoModal, toggleFiatModal } from '../../redux/modals/actions';
+import { COINS_URL_PNG } from '../../constants/api';
 
 export default function CurrencyDropdowns({ style }) {
   const dispatch = useDispatch();
@@ -13,21 +14,20 @@ export default function CurrencyDropdowns({ style }) {
   const { crypto, fiat } = state;
 
   const open = (currency) => {
-    if (currency === crypto) {
-      dispatch(toggleCryptoModal(true));
-    }
-    if (currency === fiat) {
-      dispatch(toggleFiatModal(true));
-    }
+    if (currency === crypto) dispatch(toggleCryptoModal(true));
+    if (currency === fiat) dispatch(toggleFiatModal(true));
   };
 
   return (
     <View style={[styles.container, style]}>
       {[crypto, fiat].map((c) => (
         <Pressable style={styles.block} key={c} onPress={() => open(c)}>
-          <Image style={styles.icon} source={images[c]} />
+          <Image
+            style={styles.icon}
+            source={{ uri: `${COINS_URL_PNG}/${c.toLowerCase()}.png` }}
+          />
           <AppText style={styles.text}>{c}</AppText>
-          <Image source={images['Arrow']} />
+          <Image source={images.Arrow} />
         </Pressable>
       ))}
     </View>

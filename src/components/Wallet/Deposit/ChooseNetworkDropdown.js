@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -6,6 +6,7 @@ import images from '../../../constants/images';
 import colors from '../../../constants/colors';
 import AppText from '../../AppText';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
+import { COINS_URL_PNG, ICONS_URL_PNG } from '../../../constants/api';
 
 export default function ChooseNetworkDropdown({ disabled = false }) {
   const dispatch = useDispatch();
@@ -13,7 +14,16 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
   const {
     wallet: { hasMultipleNetworks, network, walletTab },
     trade: { currentBalanceObj },
+    transactions: { code },
   } = state;
+
+  const [iconDimensions, setIconDimensions] = useState({});
+
+  useEffect(() => {
+    Image.getSize(uri(network), (w, h) => {
+      setIconDimensions({ width: 18 * (w / h), height: 18 });
+    });
+  }, [network]);
 
   const handleDropdown = () => dispatch(toggleChooseNetworkModal(true));
 
@@ -28,6 +38,8 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
     }
     return network;
   };
+
+  const uri = (network) => `${ICONS_URL_PNG}/${network}.png`;
 
   return (
     <>
@@ -46,7 +58,10 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
                       Choose Network
                     </AppText>
                   </View>
-                  <Image source={images.BTC} style={styles.image} />
+                  <Image
+                    source={{ uri: uri(network) }}
+                    style={[styles.image, iconDimensions]}
+                  />
                   <AppText medium style={styles.dropdownText}>
                     {networkName()}{' '}
                     <AppText style={styles.secondary}>({network})</AppText>
@@ -61,7 +76,10 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
             </Pressable>
           ) : (
             <View style={styles.view}>
-              <Image source={images.BTC} style={styles.image} />
+              <Image
+                source={{ uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png` }}
+                style={[styles.image, styles.iconDimensions]}
+              />
               <AppText medium style={styles.dropdownText}>
                 {networkName()}{' '}
                 <AppText style={styles.secondary}>({network})</AppText>
@@ -98,10 +116,13 @@ const styles = StyleSheet.create({
     borderColor: '#42475D',
     paddingHorizontal: 15,
   },
-  image: {
+  iconDimensions: {
     width: 18,
     height: 18,
+  },
+  image: {
     marginLeft: 5,
+    resizeMode: 'contain',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

@@ -80,7 +80,6 @@ export default function AddCardModal() {
       {multipleBanks() ? (
         <>
           <Pressable style={styles.dropdown} onPress={showBanks}>
-            {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
             <AppText style={[styles.text, { color }]} medium={depositProvider}>
               {depositProvider ? depositProvider : 'Payment Service Provider'}
             </AppText>

@@ -33,7 +33,7 @@ export default {
   AMEX: require('../assets/images/Amex.png'),
   MASTERCARD: require('../assets/images/MC_Card.png'),
   VISA: require('../assets/images/Visa.png'),
-  TBC: require('../assets/images/TBC.png'),
+  // TBC: require('../assets/images/TBC.png'),
 
   //User Profile
   General_Error: require('../assets/images/User_profile/General_Error.png'),
@@ -73,7 +73,7 @@ export default {
   List: require('../assets/images/Wallet/List.png'),
   Card: require('../assets/images/Wallet/Card.png'),
   Address_List: require('../assets/images/Wallet/Address_List.png'),
-  Swift: require('../assets/images/Wallet/Swift.png'),
+  // Swift: require('../assets/images/Wallet/Swift.png'),
   Time: require('../assets/images/Wallet/Time.png'),
   Generate: require('../assets/images/Wallet/Generate.png'),
   Add: require('../assets/images/Wallet/Add.png'),

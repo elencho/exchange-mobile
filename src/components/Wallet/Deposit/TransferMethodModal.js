@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
-import images from '../../../constants/images';
+import { ICONS_URL_PNG } from '../../../constants/api';
 import { toggleTransferMethodModal } from '../../../redux/modals/actions';
 import { setNetwork } from '../../../redux/wallet/actions';
 import AppModal from '../../AppModal';
@@ -63,6 +63,11 @@ export default function TransferMethodModal() {
     }
   };
 
+  const source = (network) =>
+    network === 'ECOMMERCE'
+      ? { uri: `${ICONS_URL_PNG}/visa-or-mc.png` }
+      : { uri: `${ICONS_URL_PNG}/${network}.png` };
+
   const children = (
     <>
       {methods.map((m) => (
@@ -71,7 +76,7 @@ export default function TransferMethodModal() {
           key={m.displayName}
           onPress={() => handlePress(m.provider)}
         >
-          <Image source={images.Swift} />
+          <Image source={source(m.provider)} style={styles.image} />
           <AppText body style={styles.primary}>
             {m.displayName}
           </AppText>
@@ -104,5 +109,9 @@ const styles = StyleSheet.create({
   primary: {
     color: colors.PRIMARY_TEXT,
     marginLeft: 20,
+  },
+  image: {
+    width: 60,
+    height: 12,
   },
 });

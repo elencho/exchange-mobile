@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { ICONS_URL_PNG } from '../../constants/api';
 
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import { toggleChooseCardModal } from '../../redux/modals/actions';
 import { setCard } from '../../redux/trade/actions';
 import AppModal from '../AppModal';
@@ -53,7 +53,10 @@ export default function ChooseCardModal() {
       onPress={() => choose(c)}
     >
       <View style={styles.iconContainer}>
-        <Image source={images[c.network]} />
+        <Image
+          source={{ uri: `${ICONS_URL_PNG}/${c.network}.png` }}
+          style={{ width: '100%', height: '100%' }}
+        />
       </View>
       <AppText body style={styles.text}>
         {c.cardNumber}

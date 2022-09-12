@@ -8,6 +8,7 @@ import {
   View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { COUNTRIES_URL_PNG } from '../../constants/api';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
@@ -121,7 +122,12 @@ export default function PhoneNumberModal() {
               style={styles.dropdown}
               onPress={() => handleCountries()}
             >
-              <Image source={images.GEO} />
+              <Image
+                source={{
+                  uri: `${COUNTRIES_URL_PNG}/${userInfo.countryCode}.png`,
+                }}
+                style={styles.image}
+              />
               <AppText medium style={styles.dropdownText}>
                 {phoneCountry()}
               </AppText>
@@ -195,6 +201,11 @@ const styles = StyleSheet.create({
   flex: {
     flex: 1,
     paddingTop: 5,
+  },
+  image: {
+    width: 18,
+    height: 18,
+    borderRadius: 10,
   },
   inputContainer: {
     marginBottom: 20,

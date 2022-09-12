@@ -6,6 +6,7 @@ import images from '../../../constants/images';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import { toggleCurrencyModal } from '../../../redux/modals/actions';
+import { COINS_URL_PNG } from '../../../constants/api';
 
 export default function WalletCoinsDropdown() {
   const dispatch = useDispatch();
@@ -25,7 +26,10 @@ export default function WalletCoinsDropdown() {
   return (
     <>
       <Pressable style={styles.container} onPress={handleDropdown}>
-        <Image source={images.ETH} style={styles.image} />
+        <Image
+          source={{ uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png` }}
+          style={styles.image}
+        />
 
         <View style={styles.balance}>
           <AppText body medium style={styles.primary}>

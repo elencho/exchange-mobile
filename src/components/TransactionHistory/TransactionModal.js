@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Clipboard from 'expo-clipboard';
@@ -11,8 +11,9 @@ import colors from '../../constants/colors';
 import AppModal from '../AppModal';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
 import images from '../../constants/images';
+import { COINS_URL_PNG } from '../../constants/api';
 
-export default function TransactionModal({ transactions, trades }) {
+function TransactionModal({ transactions, trades }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -57,10 +58,10 @@ export default function TransactionModal({ transactions, trades }) {
   };
 
   const copyId = () => {
-    Clipboard.setString(transactionInfo);
+    Clipboard.setStringAsync(transactionInfo);
   };
   const copyDestination = () => {
-    Clipboard.setString(recipient);
+    Clipboard.setStringAsync(recipient);
   };
 
   const hide = () => {
@@ -87,13 +88,7 @@ export default function TransactionModal({ transactions, trades }) {
               <AppText medium style={styles.white}>
                 Identifier (TXID):
               </AppText>
-              <AppText
-                style={[
-                  styles.address,
-                  // { borderWidth: 1, borderColor: 'yellow' },
-                ]}
-                subtext
-              >
+              <AppText style={[styles.address]} subtext>
                 {transactionInfo}
               </AppText>
             </View>
@@ -158,8 +153,18 @@ export default function TransactionModal({ transactions, trades }) {
         <>
           <View style={[styles.top, { alignItems: 'flex-end' }]}>
             <View style={[styles.top, styles.icons]}>
-              <Image source={images.BTC} style={styles.leftIcon} />
-              <Image source={images.USD} style={styles.rightIcon} />
+              <Image
+                source={{
+                  uri: `${COINS_URL_PNG}/${quoteCurrency?.toLowerCase()}.png`,
+                }}
+                style={styles.leftIcon}
+              />
+              <Image
+                source={{
+                  uri: `${COINS_URL_PNG}/${baseCurrency?.toLowerCase()}.png`,
+                }}
+                style={styles.rightIcon}
+              />
             </View>
 
             <View style={styles.middle}>
@@ -198,6 +203,8 @@ export default function TransactionModal({ transactions, trades }) {
     />
   );
 }
+
+export default memo(TransactionModal);
 
 const styles = StyleSheet.create({
   block: {

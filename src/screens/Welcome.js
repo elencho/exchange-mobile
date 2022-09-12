@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import {
@@ -38,7 +38,9 @@ export default function Welcome({ navigation }) {
         navigation.navigate('Main');
       } else setLoading(false);
     });
+  });
 
+  useEffect(() => {
     SecureStore.getItemAsync('language')
       .then((l) => {
         if (!l) {
@@ -49,7 +51,7 @@ export default function Welcome({ navigation }) {
         }
       })
       .catch((err) => console.log(err));
-  });
+  }, []);
 
   const startLogin = () => dispatch(startLoginAction(navigation));
   const startRegistration = () => dispatch(startRegistrationAction(navigation));

@@ -8,6 +8,7 @@ import { setDepositProvider } from '../../../redux/trade/actions';
 import { toggleWireBanksModal } from '../../../redux/modals/actions';
 import AppModal from '../../AppModal';
 import AppText from '../../AppText';
+import { ICONS_URL_PNG } from '../../../constants/api';
 
 export default function WireBanksModal() {
   const dispatch = useDispatch();
@@ -40,7 +41,10 @@ export default function WireBanksModal() {
           ]}
           onPress={() => choose(abbr(b))}
         >
-          <Image source={images.TBC} />
+          <Image
+            source={{ uri: `${ICONS_URL_PNG}/${abbr(b)}.png` }}
+            style={styles.icon}
+          />
           <AppText body style={styles.text}>
             {b.receiverBankName}
           </AppText>
@@ -62,6 +66,11 @@ export default function WireBanksModal() {
 }
 
 const styles = StyleSheet.create({
+  icon: {
+    width: 25,
+    height: 20,
+    resizeMode: 'contain',
+  },
   margin: {
     marginBottom: 5,
   },

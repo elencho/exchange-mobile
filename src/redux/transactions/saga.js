@@ -168,9 +168,10 @@ function* clasifyCurrenciesSaga() {
     if (c.type === 'FIAT') fiatsArray.push(c);
     if (c.type === 'CRYPTO' && tabRouteName !== 'Trade') cryptosArray.push(c);
     if (c.type === 'CRYPTO' && tabRouteName === 'Trade') {
-      offers[fiat].forEach((o) => {
-        if (o.pair.baseCurrency === c.code) cryptosArray.push(c);
-      });
+      offers &&
+        offers[fiat].forEach((o) => {
+          if (o.pair.baseCurrency === c.code) cryptosArray.push(c);
+        });
     }
   });
 

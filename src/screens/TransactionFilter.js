@@ -8,28 +8,24 @@ import ChooseCurrencyModal from '../components/TransactionFilter/ChooseCurrencyM
 import TransactionFilterBottom from '../components/TransactionFilter/TransactionFilterBottom';
 import FilterRow from '../components/TransactionHistory/FilterRow';
 import Headline from '../components/TransactionHistory/Headline';
-
-import { types, methods } from '../constants/filters';
-import colors from '../constants/colors';
-
-import { clearFilters } from '../redux/transactions/actions';
 import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
 import DatePicker from '../components/TransactionFilter/DatePicker';
+
+import { clearFilters } from '../redux/transactions/actions';
 import { toggleCurrencyModal } from '../redux/modals/actions';
 import PurpleText from '../components/PurpleText';
 import images from '../constants/images';
+import { types, methods } from '../constants/filters';
+import colors from '../constants/colors';
+import { COINS_URL_PNG } from '../constants/api';
 
 export default function TransactionFilter({ navigation }) {
   const dispatch = useDispatch();
-  const currency = useSelector((state) => state.transactions.currency);
+  const state = useSelector((state) => state.transactions);
+  const { currency, code } = state;
 
-  const openModal = () => {
-    dispatch(toggleCurrencyModal(true));
-  };
-
-  const clear = () => {
-    dispatch(clearFilters());
-  };
+  const openModal = () => dispatch(toggleCurrencyModal(true));
+  const clear = () => dispatch(clearFilters());
 
   return (
     <Background>
@@ -49,6 +45,10 @@ export default function TransactionFilter({ navigation }) {
       <FilterRow array={methods} multiselect />
 
       <Pressable style={styles.dropdown} onPress={openModal}>
+        <Image
+          source={{ uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png` }}
+          style={styles.coin}
+        />
         <AppText medium style={styles.bigText}>
           {currency || 'Show All Currencies'}
         </AppText>
@@ -78,6 +78,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 5,
   },
+  coin: {
+    width: 24,
+    height: 24,
+  },
   purple: {
     fontSize: 15,
     marginHorizontal: 5,
@@ -94,7 +98,6 @@ const styles = StyleSheet.create({
   dropdown: {
     paddingHorizontal: 20,
     paddingVertical: 15,
-    justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
@@ -107,7 +110,8 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   bigText: {
-    fontSize: 15,
     color: colors.PRIMARY_TEXT,
+    flex: 1,
+    marginLeft: 12,
   },
 });

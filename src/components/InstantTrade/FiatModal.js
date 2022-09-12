@@ -3,7 +3,7 @@ import { Image, Pressable, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
-import images from '../../constants/images';
+import { COINS_URL_PNG } from '../../constants/api';
 import { toggleFiatModal } from '../../redux/modals/actions';
 import {
   fetchOffers,
@@ -43,7 +43,12 @@ export default function FiatModal() {
       ]}
       onPress={() => choose(f.code)}
     >
-      <Image source={images[fiat]} style={styles.icon} />
+      <Image
+        source={{
+          uri: `${COINS_URL_PNG}/${f.code.toLowerCase()}.png`,
+        }}
+        style={styles.icon}
+      />
       <AppText body style={styles.text}>
         {f.code}
       </AppText>

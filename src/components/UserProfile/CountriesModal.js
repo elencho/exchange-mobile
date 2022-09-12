@@ -78,6 +78,7 @@ export default function CountriesModal({
       choose={choose}
       filter={filter}
       currentItem={currentItem()}
+      title="Choose Country"
     />
   );
 

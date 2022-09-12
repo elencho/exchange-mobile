@@ -3,9 +3,14 @@ import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import AppText from './AppText';
 import colors from '../constants/colors';
-import images from '../constants/images';
 
-export default function ModalSearchItem({ name, code, onPress, currentItem }) {
+export default function ModalSearchItem({
+  name,
+  code,
+  onPress,
+  currentItem,
+  uri,
+}) {
   const backgroundCond = () => {
     if (name === currentItem || code === currentItem) {
       return styles.background;
@@ -17,11 +22,7 @@ export default function ModalSearchItem({ name, code, onPress, currentItem }) {
       style={[styles.container, backgroundCond()]}
       onPress={onPress}
     >
-      <Image
-        // source={{ uri: 'https://example.png'}}
-        source={images.USD}
-        style={styles.image}
-      />
+      <Image source={{ uri }} style={styles.image} />
       <AppText medium style={styles.name}>
         {name}
       </AppText>

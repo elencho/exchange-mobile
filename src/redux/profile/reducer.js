@@ -8,11 +8,11 @@ const INITIAL_STATE = {
   pkceInfo: {},
   loginStartInfo: {},
   // credentials: { login: 'metro21@mailinator.com', password: '11111!Aa' },
-  // credentials: { login: 'ibanet@cryptx.com', password: 'Malina125$' },
-  credentials: {
-    // login: 'Vakhtang.elisabedashvili@gmail.com',
-    // password: '11111!Aa',
-  },
+  credentials: { login: 'ibanet@cryptx.com', password: 'Malina125$' },
+  // credentials: {
+  //   login: 'Vakhtang.elisabedashvili@gmail.com',
+  //   password: '11111!Aa',
+  // },
   userAndPassInfo: {},
   forgotPassInfo: {
     /* username: 'metro21@mailinator.com'  */
@@ -23,15 +23,15 @@ const INITIAL_STATE = {
   Personal_Company: 'Personal',
   registrationStartInfo: {},
   registrationInputs: {
-    // firstName: 'aa',
-    // lastName: 'aa',
-    // email: 'vaxo2@mailinator.com',
-    // passwordNew: '11111!Aa',
-    // passwordConfirm: '11111!Aa',
-    // phoneNumber: '555554555',
-    // promoCode: '',
-    // referralCode: '',
-    // acceptTerms: 'on',
+    firstName: 'aa',
+    lastName: 'aa',
+    email: 'vaxo2@mailinator.com',
+    passwordNew: '11111!Aa',
+    passwordConfirm: '11111!Aa',
+    phoneNumber: '555554555',
+    promoCode: '',
+    referralCode: '',
+    acceptTerms: 'on',
   },
   verificationInfo: {},
 

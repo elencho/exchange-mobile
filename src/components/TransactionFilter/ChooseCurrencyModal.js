@@ -98,6 +98,7 @@ function ChooseCurrencyModal({ wallet = false }) {
       choose={choose}
       filter={filter}
       currentItem={currency}
+      title="Choose Currency"
     />
   );
 

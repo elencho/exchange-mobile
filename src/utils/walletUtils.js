@@ -22,11 +22,10 @@ import {
   MAX_WITHDRAWAL,
 } from '../constants/api';
 
-export const fetchWireDeposit = async (currency, network) => {
-  const data = await axios.get(
-    `${WIRE_DEPOSIT}/${currency}?provider=${network}`,
-    { params: { toast: false } }
-  );
+export const fetchWireDeposit = async (currency, provider) => {
+  const data = await axios.get(`${WIRE_DEPOSIT}/${currency}`, {
+    params: { toast: false, provider },
+  });
   if (data) return data.data;
 };
 

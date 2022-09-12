@@ -88,3 +88,9 @@ export const DICTIONARY = `${core}/public/dictionary`;
 export const VERIFICATION_TOKEN = `${core}/private/users/verificationToken`;
 
 export const CARD_VERIFICATION_TOKEN = `${core}/private/users/cardVerificationToken`;
+
+export const COINS_URL_PNG = `https://static.cryptal.com/icons/png/coins/36x36`;
+
+export const COUNTRIES_URL_PNG = `https://static.cryptal.com/icons/png/countries`;
+
+export const ICONS_URL_PNG = `https://static.cryptal.com/icons/png`;

@@ -16,6 +16,7 @@ import { toggleWireBanksModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import WireBanksModal from './WireBanksModal';
 import { setDepositProvider } from '../../../redux/trade/actions';
+import { ICONS_URL_PNG } from '../../../constants/api';
 
 const InfoRow = ({ title, text }) => {
   const copy = () => Clipboard.setStringAsync(text).then(() => null);
@@ -99,7 +100,10 @@ export default function BankInfo() {
           </AppText>
         </View>
 
-        <Image source={images.TBC} style={styles.image} />
+        <Image
+          source={{ uri: `${ICONS_URL_PNG}/${depositProvider}.png` }}
+          style={styles.image}
+        />
         <AppText medium style={styles.dropdownText}>
           {depositProvider ?? 'Choose Bank'}
         </AppText>

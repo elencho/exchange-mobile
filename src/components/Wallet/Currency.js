@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
-import images from '../../constants/images';
+import { COINS_URL_PNG } from '../../constants/api';
 import { setCurrentBalanceObj } from '../../redux/trade/actions';
 import {
   cryptoAddressesAction,
@@ -54,7 +54,10 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
 
   return (
     <Pressable style={styles.container} onPress={handlePress}>
-      <Image source={images.ETH} style={styles.image} />
+      <Image
+        source={{ uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png` }}
+        style={styles.image}
+      />
 
       <View style={styles.balance}>
         <AppText calendarDay medium style={styles.primary}>

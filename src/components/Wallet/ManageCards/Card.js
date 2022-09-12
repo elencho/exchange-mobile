@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { ICONS_URL_PNG } from '../../../constants/api';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
@@ -25,7 +26,10 @@ export default function Card({
 
   return (
     <View style={styles.container}>
-      <Image source={images.TBC} />
+      <Image
+        source={{ uri: `${ICONS_URL_PNG}/${name}.png` }}
+        style={styles.image}
+      />
 
       <View style={{ flex: 1, marginLeft: 20, marginTop: -3 }}>
         <AppText medium style={styles.primary}>
@@ -34,12 +38,7 @@ export default function Card({
         <AppText subtext style={styles.secondary}>
           {cardNumber} / {network}
         </AppText>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
+        <View style={styles.verifiedRow}>
           <Image
             source={images[isVerified ? 'Verified' : 'Info']}
             style={styles.icon}
@@ -72,6 +71,11 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
   icon: { marginRight: 10 },
+  image: {
+    width: 30,
+    height: 25,
+    resizeMode: 'contain',
+  },
   primary: {
     color: colors.PRIMARY_TEXT,
   },
@@ -81,4 +85,8 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   verified: { color: '#C0C5E0' },
+  verifiedRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });

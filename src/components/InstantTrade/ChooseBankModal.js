@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { ICONS_URL_PNG } from '../../constants/api';
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import { toggleChooseBankModal } from '../../redux/modals/actions';
 import { cardsSagaAction, setDepositProvider } from '../../redux/trade/actions';
 import AppModal from '../AppModal';
@@ -41,7 +41,7 @@ export default function ChooseBankModal() {
 
     if (tabRouteName === 'Wallet') {
       depositProviders?.forEach((p) => {
-        currentBalanceObj[m].ECOMMERCE?.forEach((d) => {
+        currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
           if (p.displayName === d.displayName) {
             cards?.forEach((c) => {
               if (c.provider === d.provider)
@@ -90,7 +90,10 @@ export default function ChooseBankModal() {
           ]}
           onPress={() => choose(b.provider)}
         >
-          <Image source={images.TBC} />
+          <Image
+            source={{ uri: `${ICONS_URL_PNG}/${b.provider}.png` }}
+            style={styles.image}
+          />
           <AppText body style={styles.text}>
             {b.displayName}
           </AppText>
@@ -111,6 +114,11 @@ export default function ChooseBankModal() {
 }
 
 const styles = StyleSheet.create({
+  image: {
+    width: 24,
+    height: 20,
+    resizeMode: 'contain',
+  },
   margin: {
     marginBottom: 5,
   },

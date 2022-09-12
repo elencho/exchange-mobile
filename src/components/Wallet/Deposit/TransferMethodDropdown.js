@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { ICONS_URL_PNG } from '../../../constants/api';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
@@ -13,10 +14,14 @@ export default function TransferMethodDropdown() {
   const { network, walletTab } = wallet;
 
   const show = () => dispatch(toggleTransferMethodModal(true));
+  const source =
+    network === 'ECOMMERCE'
+      ? { uri: `${ICONS_URL_PNG}/visa-or-mc.png` }
+      : { uri: `${ICONS_URL_PNG}/${network}.png` };
 
   return (
     <Pressable style={styles.dropdown} onPress={show}>
-      <Image source={images.Swift} style={styles.image} />
+      <Image source={source} style={styles.image} />
       <AppText medium style={styles.dropdownText}>
         {network} {walletTab}
       </AppText>
@@ -43,5 +48,8 @@ const styles = StyleSheet.create({
   },
   image: {
     marginLeft: 5,
+    height: 22,
+    width: 60,
+    resizeMode: 'contain',
   },
 });

@@ -94,7 +94,6 @@ function CardSection() {
             style={[styles.dropdown, { marginBottom: 25 }]}
             onPress={showBanks}
           >
-            {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
             <AppText style={[styles.text, { color }]} medium={depositProvider}>
               {displayName()}
             </AppText>
@@ -117,7 +116,6 @@ function CardSection() {
             onPress={showCards}
             disabled={!cards?.length}
           >
-            {/* <Image source={images[c]} />  BANKIS AN BARATIS LOGO */}
             <AppText
               style={[
                 styles.text,

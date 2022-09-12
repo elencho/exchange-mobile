@@ -25,6 +25,7 @@ import {
   saveUserInfoSaga,
 } from '../../redux/profile/actions';
 import GeneralError from '../GeneralError';
+import { COUNTRIES_URL_PNG } from '../../constants/api';
 
 export default function PersonalInfoModal() {
   const [countryDrop, setCountryDrop] = useState(false);
@@ -64,9 +65,7 @@ export default function PersonalInfoModal() {
   const citizenship = (code) => {
     let country;
     countriesConstant.forEach((c) => {
-      if (c.code === code) {
-        country = c.name;
-      }
+      if (c.code === code) country = c.name;
     });
     return country;
   };
@@ -106,7 +105,12 @@ export default function PersonalInfoModal() {
               </AppText>
             </View>
 
-            <Image source={images.GEO} />
+            <Image
+              source={{
+                uri: `${COUNTRIES_URL_PNG}/${userInfo?.countryCode}.png`,
+              }}
+              style={styles.image}
+            />
             <AppText medium style={styles.dropdownText}>
               {userInfo?.country}
             </AppText>
@@ -145,7 +149,12 @@ export default function PersonalInfoModal() {
               </AppText>
             </View>
 
-            <Image source={images.GEO} />
+            <Image
+              source={{
+                uri: `${COUNTRIES_URL_PNG}/${userInfo?.citizenship}.png`,
+              }}
+              style={styles.image}
+            />
             <AppText medium style={styles.dropdownText}>
               {citizenship(userInfo?.citizenship)}
             </AppText>
@@ -209,6 +218,12 @@ const styles = StyleSheet.create({
   flex: {
     flex: 1,
     paddingTop: 5,
+  },
+  image: {
+    width: 18,
+    height: 18,
+    // resizeMode: 'contain',
+    borderRadius: 20,
   },
   inputContainer: {
     marginBottom: 20,

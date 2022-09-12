@@ -55,6 +55,7 @@ export default function CryptoModal() {
       filter={filter}
       currentItem={crypto}
       crypto
+      title="Choose Currency"
     />
   );
 

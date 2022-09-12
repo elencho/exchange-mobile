@@ -6,6 +6,7 @@ import ModalTop from './ModalTop';
 import ModalSearchItem from './ModalSearchItem';
 import images from '../constants/images';
 import colors from '../constants/colors';
+import { COINS_URL_PNG, COUNTRIES_URL_PNG } from '../constants/api';
 
 export default function ModalWithSearch({
   array,
@@ -13,9 +14,16 @@ export default function ModalWithSearch({
   choose,
   currentItem,
   crypto = false,
+  title,
 }) {
   const handlePress = (name, code) => {
     crypto ? choose(code) : choose(name, code);
+  };
+
+  const uri = (code) => {
+    return title === 'Choose Currency'
+      ? `${COINS_URL_PNG}/${code.toLowerCase()}.png`
+      : `${COUNTRIES_URL_PNG}/${code}.png`;
   };
 
   const searchItem = ({ item }) => (
@@ -25,6 +33,7 @@ export default function ModalWithSearch({
       key={item.code}
       currentItem={currentItem}
       onPress={() => handlePress(item.name, item.code)}
+      uri={uri(item.code)}
     />
   );
 
@@ -34,7 +43,7 @@ export default function ModalWithSearch({
 
       <View style={styles.block}>
         <AppText medium style={styles.headline}>
-          Choose Currency
+          {title}
         </AppText>
 
         <View style={styles.inputContainer}>
@@ -52,6 +61,7 @@ export default function ModalWithSearch({
           renderItem={searchItem}
           keyExtractor={(item) => item.code}
           scrollEventThrottle={1000}
+          initialNumToRender={25}
         />
       </View>
     </View>
