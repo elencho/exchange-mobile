@@ -1,4 +1,4 @@
-package com.cryptalapp;
+package com.vaxo_nba.cryptalapp;
 
 import android.os.Bundle;
 
