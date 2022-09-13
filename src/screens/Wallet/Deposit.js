@@ -139,7 +139,7 @@ export default function Deposit() {
             </View>
           ) : null}
 
-          {isFiat && !hasRestriction && <FiatBlock />}
+          {isFiat && !hasRestriction && hasMethod && <FiatBlock />}
           {hasRestriction || !hasMethod ? (
             <FlexBlock
               type="Deposit"

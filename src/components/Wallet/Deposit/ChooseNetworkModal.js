@@ -25,7 +25,23 @@ export default function ChooseNetworkModal() {
   const hide = () => dispatch(toggleChooseNetworkModal(false));
   const handlePress = (n) => {
     dispatch(setNetwork(n));
+
+    const fiats = fiatsArray.map((f) => f.code);
+    if (fiats.includes(code) && network !== 'ECOMMERCE') {
+      dispatch(wireDepositAction('', code));
+    }
     hide();
+  };
+
+  const handleDimensions = () => {
+    if (network && network !== 'MAINNET') {
+      const uri = () => `${ICONS_URL_PNG}/${network}.png`;
+      Image.getSize(uri(), (w, h) => {
+        setIconDimensions({ width: 25 * (w / h), height: 25 });
+      });
+    } else {
+      setIconDimensions({ width: 25, height: 25 });
+    }
   };
 
   useEffect(() => {
@@ -34,28 +50,13 @@ export default function ChooseNetworkModal() {
       walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
     const n = currentBalanceObj[m];
 
-    if (n.WALLET) {
-      n.WALLET.forEach((n) => networksToDisplay.push(n));
-    }
-    if (n.WIRE) {
-      n.WIRE.forEach((n) => networksToDisplay.push(n));
-    }
+    if (n.WALLET) n.WALLET.forEach((n) => networksToDisplay.push(n));
+    if (n.WIRE) n.WIRE.forEach((n) => networksToDisplay.push(n));
     setNetworks(networksToDisplay);
 
-    const uri = (network) => `${ICONS_URL_PNG}/${network}.png`;
-    Image.getSize(uri(network), (w, h) => {
-      setIconDimensions({ width: 25 * (w / h), height: 25 });
-    });
-
+    handleDimensions();
     return () => setNetworks([]);
   }, [code]);
-
-  useEffect(() => {
-    const fiats = fiatsArray.map((f) => f.code);
-    if (fiats.includes(code) && network !== 'ECOMMERCE') {
-      dispatch(wireDepositAction('', code));
-    }
-  }, [network]);
 
   const name = (n) => {
     if (n === 'ERC20') return 'Ethereum Network';

@@ -90,16 +90,19 @@ function* wireDepositSaga(action) {
   const { name, code, navigation } = action;
   const network = yield select((s) => s.wallet.network);
   const language = yield select((s) => s.profile.language);
-  const wireDepositData = yield call(fetchWireDeposit, code, network);
+  const currentBalanceObj = yield select((s) => s.trade.currentBalanceObj);
 
-  if (wireDepositData) {
-    const wireBanks = wireDepositData[language];
-    yield put(saveWireDepositInfo(wireDepositData));
-    yield put({ type: 'SAVE_WIRE_BANKS', wireBanks });
-    yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
-    if (navigation)
-      yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
+  if (Object.keys(currentBalanceObj?.depositMethods)?.length) {
+    const wireDepositData = yield call(fetchWireDeposit, code, network);
+    if (wireDepositData) {
+      const wireBanks = wireDepositData[language];
+      yield put(saveWireDepositInfo(wireDepositData));
+      yield put({ type: 'SAVE_WIRE_BANKS', wireBanks });
+    }
   }
+
+  yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
+  if (navigation) yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
 }
 
 function* cryptoAddressesSaga(action) {
@@ -184,11 +187,13 @@ function* withdrawalTemplatesSaga() {
   const currency = yield select((state) => state.transactions.code);
   const provider = yield select((state) => state.wallet.network);
 
-  const templates = yield call(fetchTemplates, currency, provider);
-  if (templates) yield put(saveTemplates(templates));
+  if (provider) {
+    const templates = yield call(fetchTemplates, currency, provider);
+    if (templates) yield put(saveTemplates(templates));
 
-  const banks = yield call(fetchBanks, provider);
-  if (banks) yield put(saveBanks(banks));
+    const banks = yield call(fetchBanks, provider);
+    if (banks) yield put(saveBanks(banks));
+  }
 }
 
 function* wireWithdrawalSaga(action) {

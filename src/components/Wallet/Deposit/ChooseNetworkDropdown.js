@@ -20,9 +20,13 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
   const [iconDimensions, setIconDimensions] = useState({});
 
   useEffect(() => {
-    Image.getSize(uri(network), (w, h) => {
-      setIconDimensions({ width: 18 * (w / h), height: 18 });
-    });
+    if (network && network !== 'MAINNET') {
+      Image.getSize(uri(), (w, h) => {
+        setIconDimensions({ width: 18 * (w / h), height: 18 });
+      });
+    } else {
+      setIconDimensions({ width: 18, height: 18 });
+    }
   }, [network]);
 
   const handleDropdown = () => dispatch(toggleChooseNetworkModal(true));
@@ -39,7 +43,7 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
     return network;
   };
 
-  const uri = (network) => `${ICONS_URL_PNG}/${network}.png`;
+  const uri = () => `${ICONS_URL_PNG}/${network}.png`;
 
   return (
     <>
