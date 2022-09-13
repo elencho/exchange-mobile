@@ -20,13 +20,14 @@ import images from '../constants/images';
 import { logoutUtil } from '../utils/userProfileUtils';
 import { fetchUserInfo } from '../redux/profile/actions';
 import colors from '../constants/colors';
+import AppText from '../components/AppText';
 
 export default function UserProfile({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
   const {
-    profile: { Personal_Security },
+    profile: { Personal_Security, userInfo },
     transactions: { loading },
   } = state;
 
@@ -63,6 +64,7 @@ export default function UserProfile({ navigation }) {
       </View>
 
       <Headline title="My Profile" />
+      <AppText style={styles.secondary}>{userInfo?.email}</AppText>
 
       <PersonalSecuritySwitcher />
 
@@ -92,6 +94,11 @@ const styles = StyleSheet.create({
   },
   purpleText: {
     marginHorizontal: 10,
+  },
+  secondary: {
+    color: colors.SECONDARY_TEXT,
+    marginBottom: 22,
+    marginTop: -14,
   },
   topRow: {
     alignItems: 'center',

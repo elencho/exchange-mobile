@@ -31,6 +31,8 @@ const INITIAL_STATE = {
   phoneNumberModalVisible: false,
   languageModalVisible: false,
   countriesModalVisible: false,
+  companyInfoModalVisible: false,
+  identityModalVisible: false,
   // security
   googleAuthModalVisible: false,
   smsAuthModalVisible: false,
@@ -181,6 +183,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         languageModalVisible,
+      };
+    case 'TOGGLE_COMPANY_INFO_MODAL':
+      return {
+        ...state,
+        companyInfoModalVisible: !state.companyInfoModalVisible,
+      };
+    case 'TOGGLE_IDENTITY_MODAL':
+      return {
+        ...state,
+        identityModalVisible: !state.identityModalVisible,
       };
     case actionTypes.PASSWORD_MODAL:
       return {

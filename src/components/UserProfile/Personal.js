@@ -17,33 +17,42 @@ import PersonalInfoModal from './PersonalInfoModal';
 import PersonalInformation from './PersonalInformation';
 import PhoneNumberModal from './PhoneNumberModal';
 import launchSumsubSdk from '../../utils/sumsubMobileSdk';
+import EditCompanyModal from './EditCompanyModal';
+import IdentityModal from './IdentityModal';
 
 export default function Personal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.profile);
   const { userInfo, language, generalError } = state;
+  const isVerified = userInfo?.userStatus === 'VERIFIED';
 
   const edit = () => dispatch(togglePhoneNumberModal(true));
   const editLanguage = () => dispatch(toggleLanguageModal(true));
+  const openModal = () => dispatch({ type: 'TOGGLE_IDENTITY_MODAL' });
 
-  const handleEmailUpdates = (value) => {
+  const handleEmailUpdates = (value) =>
     dispatch(toggleEmailSubscription(value));
-  };
 
   const textCond = (r) => {
     switch (r) {
       case 'Identity':
         return (
-          <View style={styles.row} onPress={launchSumsubSdk}>
-            <AppText medium style={styles.white}>
-              Identity Verification
-            </AppText>
-
-            <Pressable style={styles.circle} onPress={launchSumsubSdk}>
-              <AppText medium body style={{ color: '#9EA6D0' }}>
-                i
+          <View style={styles.row}>
+            <View style={[styles.row, styles.flex]}>
+              <AppText medium style={styles.white}>
+                Identification
               </AppText>
-            </Pressable>
+
+              <Pressable style={styles.circle} onPress={openModal}>
+                <AppText medium body style={{ color: '#9EA6D0' }}>
+                  i
+                </AppText>
+              </Pressable>
+            </View>
+
+            {!isVerified && (
+              <PurpleText text="Verify" subtext onPress={launchSumsubSdk} />
+            )}
           </View>
         );
       case 'Phone':
@@ -103,9 +112,14 @@ export default function Personal() {
       case 'Identity':
         return (
           <View style={styles.upload}>
-            <View style={styles.check} />
+            <View
+              style={[
+                styles.check,
+                { backgroundColor: isVerified ? '#25D8D1' : '#FFC65C' },
+              ]}
+            />
             <AppText subtext style={styles.secondary}>
-              Upload documents
+              {isVerified ? 'Upload documents' : 'Not verified'}
             </AppText>
           </View>
         );
@@ -163,6 +177,8 @@ export default function Personal() {
       <PersonalInfoModal />
       <PhoneNumberModal />
       <ChooseLanguageModal />
+      <EditCompanyModal />
+      <IdentityModal />
     </>
   );
 }
@@ -171,7 +187,6 @@ const styles = StyleSheet.create({
   check: {
     width: 4,
     height: 4,
-    backgroundColor: '#25D8D1',
     marginRight: 8,
   },
   circle: {
