@@ -49,8 +49,8 @@ export const loginStart = async (code_challenge) => {
       display: 'mobile',
       code_challenge,
       code_challenge_method: 'S256',
-      toast: false,
     },
+    headers: { toast: false },
   });
   if (data) return data.data;
 };
@@ -66,6 +66,7 @@ export const registrationStart = async () => {
       display: 'mobile',
       toast: false,
     },
+    headers: { toast: false },
   });
   if (data) return data.data;
 };
@@ -73,10 +74,12 @@ export const registrationStart = async () => {
 export const usernameAndPasswordForm = async (username, password, url) => {
   const data = await axios({
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
+    },
     url,
     data: `username=${username}&password=${password}`,
-    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -85,10 +88,12 @@ export const registrationForm = async (obj, url) => {
   const params = new URLSearchParams(obj);
   const data = await axios({
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
+    },
     url,
     data: params,
-    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -108,10 +113,12 @@ export const resendEmail = async (url) => await axios.get(`${url}&resend=true`);
 export const loginOtp = async (otp, url) => {
   const data = await axios({
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
+    },
     url,
     data: `otp=${otp}`,
-    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -119,10 +126,12 @@ export const loginOtp = async (otp, url) => {
 export const resetOtp = async (url) => {
   const data = await axios({
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
+    },
     url,
     data: `resetOTP=true`,
-    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -135,10 +144,12 @@ export const forgotPassword = async (url) => {
 export const forgotPasswordCode = async (url, username) => {
   const data = await axios({
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
+    },
     url,
     data: `username=${username}&send=true`,
-    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -146,10 +157,12 @@ export const forgotPasswordCode = async (url, username) => {
 export const forgotPasswordEnterCode = async (url, username, otp) => {
   const data = await axios({
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
+    },
     url,
     data: `username=${username}&otp=${otp}`,
-    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -157,10 +170,12 @@ export const forgotPasswordEnterCode = async (url, username, otp) => {
 export const setNewPassword = async (url, newPass, confirmPass) => {
   const data = await axios({
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
+    },
     url,
     data: `password-new=${newPass}&password-confirm=${confirmPass}`,
-    params: { toast: false },
   });
   if (data) return data.data;
 };
@@ -225,7 +240,7 @@ export const subscribeMail = async () => {
   const data = await axios({
     method: 'POST',
     url: SUBSCRIBE_EMAIL_URL,
-    params: { toast: false },
+    headers: { toast: false },
   });
   return data;
 };
@@ -233,7 +248,7 @@ export const unsubscribeMail = async () => {
   const data = await axios({
     method: 'POST',
     url: UNSUBSCRIBE_EMAIL_URL,
-    params: { toast: false },
+    headers: { toast: false },
   });
   return data;
 };
@@ -243,7 +258,7 @@ export const updateUserData = async (data) => {
     method: 'POST',
     url: UPDATE_USER_DATA,
     data,
-    params: { toast: false },
+    headers: { toast: false },
   });
   return userInfo;
 };
@@ -257,10 +272,10 @@ export const updatePassword = async (
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
     },
     url: UPDATE_PASSWORD,
     data: `password=${currentPassword}&passwordNew=${newPassword}&passwordConfirm=${confirmNewPassword}`,
-    params: { toast: false },
   });
   return data;
 };
@@ -270,10 +285,10 @@ export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
     },
     url: VERIFY_PHONE_NUMBER,
     data: `phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}`,
-    params: { toast: false },
   });
 };
 
@@ -286,10 +301,10 @@ export const updatePhoneNumber = async (
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
     },
     url: UPDATE_PHONE_NUMBER,
     data: `phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
-    params: { toast: false },
   });
   return data;
 };
@@ -299,9 +314,9 @@ export const sendOtp = async () => await axios.post(SEND_OTP);
 export const getOtpChangeToken = async (OTP, newOTPType) => {
   const data = await axios({
     method: 'GET',
-    headers: { OTP },
+    headers: { OTP, toast: false },
     url: `${OTP_CHANGE_TOKEN}?newOTPType=${newOTPType}`,
-    params: { newOTPType, toast: false },
+    params: { newOTPType },
   });
   if (data) return data.data;
 };
@@ -318,10 +333,10 @@ export const activateEmailOtp = async (changeOTPToken, verificationCode) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
     },
     url: ACTIVATE_EMAIL_OTP,
     data: `changeOTPToken=${changeOTPToken}&verificationCode=${verificationCode}`,
-    params: { toast: false },
   });
   if (data) return data.status;
 };
@@ -335,10 +350,10 @@ export const activateGoogleOtp = async (
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
+      toast: false,
     },
     url: ACTIVATE_GOOGLE_OTP,
     data: `changeOTPToken=${changeOTPToken}&totpCode=${totpCode}&totpSecret=${totpSecret}`,
-    params: { toast: false },
   });
   if (data) return data.status;
 };

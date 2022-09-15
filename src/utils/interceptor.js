@@ -9,7 +9,12 @@ axios.interceptors.request.use(async (config) => {
   const token = await SecureStore.getItemAsync('accessToken');
   if (token) config.headers.Authorization = `Bearer ${token}`;
 
-  config.params = { toast: true, ...config.params };
+  store.dispatch({
+    type: 'SET_IS_TOAST',
+    isToast: config.headers.toast === false ? false : true,
+  });
+
+  delete config.headers.toast;
 
   return config;
 });

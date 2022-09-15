@@ -9,7 +9,6 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../components/AppText';
-import GeneralError from '../components/GeneralError';
 import PurpleText from '../components/PurpleText';
 import TwoFaInput from '../components/TwoFaInput';
 
@@ -28,7 +27,7 @@ export default function Login2Fa({ navigation }) {
   }, []);
 
   const {
-    profile: { userAndPassInfo, generalError },
+    profile: { userAndPassInfo },
   } = state;
 
   const t = userAndPassInfo?.attributes?.otpType;
@@ -61,12 +60,6 @@ export default function Login2Fa({ navigation }) {
           {type()}
         </AppText>
         <AppText style={styles.secondary}>Enter One Time Password</AppText>
-
-        {generalError ? (
-          <View style={{ width: '70%', marginTop: 20 }}>
-            <GeneralError />
-          </View>
-        ) : null}
 
         <View style={styles.twoFaInput}>
           <TwoFaInput

@@ -7,13 +7,15 @@ import { refreshToken } from './userProfileUtils';
 import { setAppToast } from '../redux/modals/actions';
 
 export default async (err) => {
+  const state = store.getState();
+
   if (err.response) {
     // console.log(err.response.data);
     // console.log(err.response.status);
     // console.log(err.response.headers);
 
     if (err.response.status > 401) {
-      if (err.response.config.params?.toast === false) {
+      if (!state.modals.isToast) {
         store.dispatch(saveGeneralError(err.response.data));
       } else {
         store.dispatch(

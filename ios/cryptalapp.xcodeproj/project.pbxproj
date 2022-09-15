@@ -13,8 +13,8 @@
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		96905EF65AED1B983A6B3ABC /* libPods-cryptalapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-cryptalapp.a */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
-		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		B888D12DB7114D31A4E45AD9 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCA195330760425EBDAB4EAD /* noop-file.swift */; };
+		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,11 +30,11 @@
 		7A4D352CD337FB3A3BF06240 /* Pods-cryptalapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cryptalapp.release.xcconfig"; path = "Target Support Files/Pods-cryptalapp/Pods-cryptalapp.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = cryptalapp/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
+		BCA195330760425EBDAB4EAD /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "cryptalapp/noop-file.swift"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		F18B1090EE6948D2B7C2A267 /* cryptalapp-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "cryptalapp-Bridging-Header.h"; path = "cryptalapp/cryptalapp-Bridging-Header.h"; sourceTree = "<group>"; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-cryptalapp/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
 		FACED15528379A8400AF7A8F /* cryptalapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = cryptalapp.entitlements; path = cryptalapp/cryptalapp.entitlements; sourceTree = "<group>"; };
-		BCA195330760425EBDAB4EAD /* noop-file.swift */ = {isa = PBXFileReference; name = "noop-file.swift"; path = "cryptalapp/noop-file.swift"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.swift; explicitFileType = undefined; includeInIndex = 0; };
-		F18B1090EE6948D2B7C2A267 /* cryptalapp-Bridging-Header.h */ = {isa = PBXFileReference; name = "cryptalapp-Bridging-Header.h"; path = "cryptalapp/cryptalapp-Bridging-Header.h"; sourceTree = "<group>"; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,7 +204,6 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				42727707F50B40189C3DC5CA /* cryptalapp-Bridging-Header.h in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,13 +343,14 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "cryptalapp.ios";
-				PRODUCT_NAME = "cryptalapp";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = cryptalapp.ios;
+				PRODUCT_NAME = cryptalapp;
+				SWIFT_OBJC_BRIDGING_HEADER = "cryptalapp/cryptalapp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
-				TARGETED_DEVICE_FAMILY = "1";
-				SWIFT_OBJC_BRIDGING_HEADER = cryptalapp/cryptalapp-Bridging-Header.h;
 			};
 			name = Debug;
 		};
@@ -370,12 +370,13 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "cryptalapp.ios";
-				PRODUCT_NAME = "cryptalapp";
+				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
+				PRODUCT_BUNDLE_IDENTIFIER = cryptalapp.ios;
+				PRODUCT_NAME = cryptalapp;
+				SWIFT_OBJC_BRIDGING_HEADER = "cryptalapp/cryptalapp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
-				TARGETED_DEVICE_FAMILY = "1";
-				SWIFT_OBJC_BRIDGING_HEADER = cryptalapp/cryptalapp-Bridging-Header.h;
 			};
 			name = Release;
 		};
@@ -432,6 +433,7 @@
 				LIBRARY_SEARCH_PATHS = "\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -481,6 +483,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = "\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

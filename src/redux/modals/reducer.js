@@ -3,6 +3,7 @@ import { actionTypes } from './actions';
 const INITIAL_STATE = {
   toastObj: {},
   appToastObj: null,
+  isToast: true,
   webViewObj: null,
 
   // Login
@@ -92,6 +93,7 @@ export default (state = INITIAL_STATE, action) => {
     emailVerificationModalVisible,
     toastObj,
     webViewObj,
+    isToast,
   } = action;
   switch (action.type) {
     case actionTypes.SET_TOAST_OBJ:
@@ -158,6 +160,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         bankFeesModalVisible,
+      };
+    case 'SET_IS_TOAST':
+      return {
+        ...state,
+        isToast,
       };
     case actionTypes.CARD_ADD_STATUS_MODAL_INFO:
       return {

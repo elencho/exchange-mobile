@@ -152,13 +152,17 @@ function* codeToTokenSaga(action) {
   const { code, codeVerifier, navigation } = action;
 
   const data = yield call(codeToToken, code, codeVerifier);
-  yield call(async () => {
-    await SecureStore.setItemAsync('accessToken', data?.access_token);
-    await SecureStore.setItemAsync('refreshToken', data?.refresh_token);
-  });
 
-  yield put({ type: 'OTP_SAGA', token: data?.access_token });
-  yield call(() => navigation.navigate('Main'));
+  if (data) {
+    yield call(async () => {
+      await SecureStore.setItemAsync('accessToken', data?.access_token);
+      await SecureStore.setItemAsync('refreshToken', data?.refresh_token);
+    });
+    yield put({ type: 'OTP_SAGA', token: data?.access_token });
+    yield call(() => navigation.navigate('Main'));
+  } else {
+    yield put(saveUserAndPassInfo(data));
+  }
 }
 
 //  USERNAME AND PASSWORD

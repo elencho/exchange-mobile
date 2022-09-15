@@ -24,7 +24,8 @@ import {
 
 export const fetchWireDeposit = async (currency, provider) => {
   const data = await axios.get(`${WIRE_DEPOSIT}/${currency}`, {
-    params: { toast: false, provider },
+    params: { provider },
+    headers: { toast: false },
   });
   if (data) return data.data;
 };
@@ -74,7 +75,7 @@ export const generateCryptoAddress = async (currency, network) => {
   const data = await axios({
     method: 'POST',
     url: `${GENERATE_CRYPTO_ADDRESS}/${currency}?provider=${network}`,
-    params: { toast: false },
+    headers: { toast: false },
   });
   if (data) return data.data;
 };
@@ -82,9 +83,9 @@ export const generateCryptoAddress = async (currency, network) => {
 export const cryptoWithdrawal = async (OTP, params) => {
   const data = await axios.post(
     CRYPTO_WITHDRAWAL,
-    { ...params, toast: false },
+    { ...params },
     {
-      headers: { OTP },
+      headers: { OTP, toast: false },
     }
   );
   if (data) return data.status;
@@ -92,7 +93,8 @@ export const cryptoWithdrawal = async (OTP, params) => {
 
 export const fetchWhitelist = async (currency) => {
   const data = await axios.get(CRYPTO_WHITELIST, {
-    params: { currency, toast: false },
+    params: { currency },
+    headers: { toast: false },
   });
   if (data) return data.data;
 };
@@ -100,9 +102,9 @@ export const fetchWhitelist = async (currency) => {
 export const addWhitelistAddress = async (OTP, params) => {
   const data = await axios.post(
     CRYPTO_WHITELIST,
-    { ...params, toast: false },
+    { ...params },
     {
-      headers: { OTP },
+      headers: { OTP, toast: false },
     }
   );
   if (data) return data.data;
@@ -112,7 +114,7 @@ export const editWhitelistAddress = async (id, name) => {
   const data = await axios({
     method: 'PUT',
     url: `${CRYPTO_WHITELIST}/${id}?name=${name}`,
-    params: { toast: false },
+    headers: { toast: false },
   });
   if (data) return data.status;
 };
@@ -120,9 +122,8 @@ export const editWhitelistAddress = async (id, name) => {
 export const deleteWhitelistAddress = async (id, OTP) => {
   const data = await axios({
     method: 'DELETE',
-    headers: { OTP },
+    headers: { OTP, toast: false },
     url: `${CRYPTO_WHITELIST}/${id}`,
-    params: { toast: false },
   });
   if (data) return data.status;
 };
@@ -139,7 +140,7 @@ export const deleteTemplates = async (id) => {
   const data = await axios({
     method: 'DELETE',
     url: `${WITHDRAWAL_TEMPLATES}/${id}`,
-    params: { toast: false },
+    headers: { toast: false },
   });
   if (data) return data.status;
 };
@@ -155,9 +156,9 @@ export const fetchBanks = async (provider) => {
 export const wireWithdrawal = async (OTP, params) => {
   const data = await axios.post(
     WIRE_WITHDRAWAL,
-    { ...params, toast: false },
+    { ...params },
     {
-      headers: { OTP },
+      headers: { OTP, toast: false },
     }
   );
   if (data) return data.status;
@@ -166,9 +167,9 @@ export const wireWithdrawal = async (OTP, params) => {
 export const cardWithdrawal = async (OTP, params) => {
   const data = await axios.post(
     CARD_WITHDRAWAL,
-    { ...params, toast: false },
+    { ...params },
     {
-      headers: { OTP },
+      headers: { OTP, toast: false },
     }
   );
   if (data) return data.status;
@@ -180,20 +181,23 @@ export const maxWithdrawal = async (params) => {
 };
 
 export const cardDeposit = async (payload) => {
-  const data = await axios.post(CARD_DEPOSIT, payload);
+  const data = await axios.post(CARD_DEPOSIT, payload, {
+    headers: { toast: false },
+  });
   if (data) return data.data;
 };
 
 export const addCard = async (payload) => {
   const data = await axios.post(ADD_CARD_URL, payload, {
-    params: { toast: false },
+    headers: { toast: false },
   });
   if (data) return data.data;
 };
 
 export const deleteCard = async (cardId) => {
   const data = await axios.delete(DELETE_CARD_URL, {
-    params: { cardId, toast: false },
+    params: { cardId },
+    headers: { toast: false },
   });
   if (data) return data.status;
 };

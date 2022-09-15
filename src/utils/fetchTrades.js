@@ -20,7 +20,7 @@ export const fetchOffers = async () => {
 
 export const submitTrade = async (payload) => {
   const data = await axios.post(TRADES_URL, payload, {
-    params: { toast: false },
+    headers: { toast: false },
   });
   return data;
 };
