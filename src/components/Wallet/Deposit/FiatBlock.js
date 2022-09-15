@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -14,11 +14,9 @@ import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import BankInfo from './BankInfo';
 import { validateScale } from '../../../utils/formUtils';
 
-export default function FiatBlock() {
+export default function FiatBlock({ amount, setAmount }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
-  const [amount, setAmount] = useState(null);
 
   const {
     transactions: { code },

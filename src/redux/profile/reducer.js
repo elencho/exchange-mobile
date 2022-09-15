@@ -7,16 +7,16 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  // credentials: { login: 'metro21@mailinator.com', password: '11111!Aa' },
+  credentials: { login: 'metro21@mailinator.com', password: '11111!Aa' },
   // credentials: { login: 'ibanet@cryptx.com', password: 'Malina125$' },
   // credentials: {
   //   login: 'salibukhiashvili@mailinator.com',
   //   password: 'Salome1996$',
   // },
-  credentials: {
-    // login: 'Vakhtang.elisabedashvili@gmail.com',
-    // password: '11111!Aa',
-  },
+  // credentials: {
+  // login: 'Vakhtang.elisabedashvili@gmail.com',
+  // password: '11111!Aa',
+  // },
   userAndPassInfo: {},
   forgotPassInfo: {
     /* username: 'metro21@mailinator.com'  */

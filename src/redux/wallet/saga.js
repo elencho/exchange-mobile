@@ -19,6 +19,9 @@ import {
 import {
   toggleAddWhitelistModal,
   toggleEditWhitelistModal,
+  toggleEmailAuthModal,
+  toggleGoogleOtpModal,
+  toggleSmsAuthModal,
 } from '../modals/actions';
 import { setFee } from '../trade/actions';
 import { chooseCurrency, setAbbr } from '../transactions/actions';
@@ -135,10 +138,19 @@ function* goToBalanceSaga(action) {
 
 function* cryptoWithdrawalSaga(action) {
   const { OTP } = action;
+  const google = yield select((state) => state.modals.googleOtpModalVisible);
+  const sms = yield select((state) => state.modals.smsAuthModalVisible);
+  const email = yield select((state) => state.modals.emailAuthModalVisible);
+
   const params = yield select(withdrawalParams);
   const status = yield call(cryptoWithdrawal, OTP, params);
   if (status === 200) {
-    // some success code here, for modal or smth
+    if (google) yield put(toggleGoogleOtpModal(false));
+    if (sms) yield put(toggleSmsAuthModal(false));
+    if (email) yield put(toggleEmailAuthModal(false));
+    yield put(chooseWhitelist({}));
+    yield put(setWithdrawalAmount(null));
+    yield put(setWithdrawalNote(null));
   }
 }
 
@@ -198,9 +210,16 @@ function* withdrawalTemplatesSaga() {
 
 function* wireWithdrawalSaga(action) {
   const { OTP } = action;
+  const google = yield select((state) => state.modals.googleOtpModalVisible);
+  const sms = yield select((state) => state.modals.smsAuthModalVisible);
+  const email = yield select((state) => state.modals.emailAuthModalVisible);
+
   const params = yield select(wireWithdrawalParams);
   const status = yield call(wireWithdrawal, OTP, params);
   if (status === 204) {
+    if (google) yield put(toggleGoogleOtpModal(false));
+    if (sms) yield put(toggleSmsAuthModal(false));
+    if (email) yield put(toggleEmailAuthModal(false));
     yield put(chooseTemplate({}));
     yield put(setIban(''));
     yield put(setWithdrawalBank({}));

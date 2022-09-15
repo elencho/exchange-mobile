@@ -393,8 +393,8 @@ function* toggleSubscriptionSaga(action) {
 //  CREDENTIALS FOR EMAIL
 function* credentialsForEmailSaga(action) {
   const { OTP } = action;
-  const sms = yield select((state) => state.profile.smsAuthModalVisible);
-  const google = yield select((state) => state.profile.googleOtpModalVisible);
+  const sms = yield select((state) => state.modals.smsAuthModalVisible);
+  const google = yield select((state) => state.modals.googleOtpModalVisible);
 
   const data = yield call(getOtpChangeToken, OTP, 'EMAIL');
   if (data) {
@@ -414,6 +414,7 @@ function* credentialsForGoogleSaga(action) {
   const data = yield call(getOtpChangeToken, OTP, 'TOTP');
 
   if (data) {
+    yield put(toggleEmailAuthModal(false));
     yield put(saveOtpChangeToken(data?.changeOTPToken));
     yield put(saveTotpSecretObj(data?.totp));
     yield delay(1000);
@@ -432,7 +433,7 @@ function* activateEmailSaga(action) {
     yield put(setCurrentSecurityAction(null));
     yield put(setSmsAuth(false));
     yield put(setGoogleAuth(false));
-    yield put(setEmailAuth(true));
+    yield put(setEmailAuth(false));
     const token = yield call(refreshToken);
     yield put({ type: 'OTP_SAGA', token });
   }

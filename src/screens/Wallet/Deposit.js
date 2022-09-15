@@ -20,6 +20,7 @@ import GeneralError from '../../components/GeneralError';
 import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
+import { setCard, setDepositProvider } from '../../redux/trade/actions';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ export default function Deposit() {
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [amount, setAmount] = useState(null);
 
   const {
     transactions: { code },
@@ -70,6 +72,11 @@ export default function Deposit() {
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+    }
+    if (ending === 'true') {
+      dispatch(setDepositProvider(null));
+      dispatch(setCard(null));
+      setAmount(null);
     }
   };
 
@@ -139,7 +146,9 @@ export default function Deposit() {
             </View>
           ) : null}
 
-          {isFiat && !hasRestriction && hasMethod && <FiatBlock />}
+          {isFiat && !hasRestriction && hasMethod && (
+            <FiatBlock amount={amount} setAmount={setAmount} />
+          )}
           {hasRestriction || !hasMethod ? (
             <FlexBlock
               type="Deposit"
