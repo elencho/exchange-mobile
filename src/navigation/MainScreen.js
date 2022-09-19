@@ -33,7 +33,7 @@ export default function MainScreen() {
         headerShown: false,
         unmountOnBlur: true,
       }}
-      initialRouteName="Trade"
+      initialRouteName="Wallet"
       tabBar={({ state, navigation, descriptors }) => (
         <BottomTabs
           routes={state.routes}

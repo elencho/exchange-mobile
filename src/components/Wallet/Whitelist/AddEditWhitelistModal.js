@@ -69,7 +69,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
   let enabled = true;
   if (add && tag()) {
     enabled =
-      newWhitelist.address && newWhitelist.name && newWhitelist.tag.trim();
+      newWhitelist.address && newWhitelist.name && newWhitelist.tag?.trim();
   } else if (add) {
     enabled = newWhitelist.address && newWhitelist.name;
   }
