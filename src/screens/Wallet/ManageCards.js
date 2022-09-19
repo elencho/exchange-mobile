@@ -41,15 +41,6 @@ export default function ManageCards() {
 
   const addCardModal = () => dispatch(toggleAddCardModal(true));
 
-  const handlesumsubWebView = async (cardId) => {
-    const token = await cardVerificationToken(cardId);
-    if (token)
-      dispatch({
-        type: 'SET_APP_WEBVIEW_OBJ',
-        webViewObj: sumsubHtmlPattern(token),
-      });
-  };
-
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.block}>
@@ -78,7 +69,6 @@ export default function ManageCards() {
             {cards?.map((c) => (
               <Card
                 key={c.id}
-                handlesumsubWebView={handlesumsubWebView}
                 name={c.provider}
                 cardNumber={c.cardNumber}
                 network={c.network}

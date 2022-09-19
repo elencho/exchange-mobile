@@ -57,6 +57,8 @@ export default {
   Portfolio: require('../assets/images/User_profile/Portfolio.png'),
   Browser: require('../assets/images/User_profile/Browser.png'),
   Logout: require('../assets/images/User_profile/Logout.png'),
+  Card_Name: require('../assets/images/User_profile/Card_Name.png'),
+  Card_Digits: require('../assets/images/User_profile/Card_Digits.png'),
 
   // Wallet
   Wallet: require('../assets/images/Wallet/Wallet.png'),

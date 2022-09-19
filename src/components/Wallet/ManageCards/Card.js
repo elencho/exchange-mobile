@@ -1,23 +1,18 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { ICONS_URL_PNG } from '../../../constants/api';
+import { useNavigation } from '@react-navigation/native';
 
+import { ICONS_URL_PNG } from '../../../constants/api';
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import { setCardDeleteModalInfo } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
 
-export default function Card({
-  name,
-  cardNumber,
-  network,
-  status,
-  id,
-  handlesumsubWebView,
-}) {
+export default function Card({ name, cardNumber, network, status, id }) {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const isVerified = status === 'VERIFIED';
 
@@ -51,7 +46,9 @@ export default function Card({
               <AppText style={styles.verified}>Click to </AppText>
               <PurpleText
                 text="Verify"
-                onPress={() => handlesumsubWebView(id)}
+                onPress={() =>
+                  navigation.navigate('CardVerificationOne', { id })
+                }
               />
             </>
           )}
