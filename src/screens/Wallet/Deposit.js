@@ -29,7 +29,6 @@ export default function Deposit() {
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [amount, setAmount] = useState(null);
 
   const {
     transactions: { code },
@@ -76,7 +75,7 @@ export default function Deposit() {
     if (ending === 'true') {
       dispatch(setDepositProvider(null));
       dispatch(setCard(null));
-      setAmount(null);
+      dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
     }
   };
 
@@ -146,9 +145,7 @@ export default function Deposit() {
             </View>
           ) : null}
 
-          {isFiat && !hasRestriction && hasMethod && (
-            <FiatBlock amount={amount} setAmount={setAmount} />
-          )}
+          {isFiat && !hasRestriction && hasMethod && <FiatBlock />}
           {hasRestriction || !hasMethod ? (
             <FlexBlock
               type="Deposit"

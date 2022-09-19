@@ -14,6 +14,7 @@ const INITIAL_STATE = {
   wireDepositInfo: {},
   cryptoAddress: {},
   wireBanks: [],
+  depositAmount: null,
 
   //Withdrawal
   templates: [],
@@ -64,6 +65,7 @@ export default (state = INITIAL_STATE, action) => {
     newTemplateName,
     receiverBank,
     intermediateBank,
+    depositAmount,
     wireBanks,
   } = action;
   switch (action.type) {
@@ -196,6 +198,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         wireBanks,
+      };
+    case 'SET_DEPOSIT_AMOUNT':
+      return {
+        ...state,
+        depositAmount,
       };
     case 'CLEAN_WALLET_INPUTS':
       return {
