@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   currentBalanceObj: {},
   card: null,
   cards: [],
+  cardsToDisplayInModal: [],
   cardsLoading: false,
   fee: null,
   depositProvider: null,
@@ -49,6 +50,7 @@ export default (state = INITIAL_STATE, action) => {
     hideOtherPairs,
     balance,
     cards,
+    cardsToDisplayInModal,
     cardsLoading,
     fee,
     depositProvider,
@@ -107,6 +109,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cards,
+      };
+    case 'SET_CARDS_TO_DISPLAY_IN_MODAL':
+      return {
+        ...state,
+        cardsToDisplayInModal,
       };
     case 'TOGGLE_CARDS_LOADING':
       return {

@@ -15,13 +15,17 @@ export default function CardAddStatusModal() {
     modals: { cardAddStatusModalInfo },
   } = state;
 
-  const hide = () => dispatch(setCardAddStatusModalInfo({}));
+  const hide = () =>
+    dispatch(
+      setCardAddStatusModalInfo({ ...cardAddStatusModalInfo, visible: false })
+    );
+  const onModalHide = () => dispatch(setCardAddStatusModalInfo(null));
 
   const image =
     cardAddStatusModalInfo?.success === 'true' ? 'Card_Success' : 'Card_Error';
   const text = `card add header ${cardAddStatusModalInfo?.success}`;
   const subtext = `card add subtext ${cardAddStatusModalInfo?.success}`;
-  const visible = cardAddStatusModalInfo?.visible;
+  const visible = !!cardAddStatusModalInfo?.visible;
 
   const children = (
     <View style={styles.container}>
@@ -36,7 +40,15 @@ export default function CardAddStatusModal() {
     </View>
   );
 
-  return <AppModal children={children} hide={hide} bottom visible={visible} />;
+  return (
+    <AppModal
+      children={children}
+      hide={hide}
+      bottom
+      visible={visible}
+      onModalHide={onModalHide}
+    />
+  );
 }
 
 const styles = StyleSheet.create({

@@ -53,15 +53,17 @@ export default function AddCardModal() {
   const onNavigationStateChange = (state) => {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
+    console.log(state);
     if (ending === 'false' || ending === 'true') {
       dispatch(setCardAddStatusModalInfo({ success: ending }));
+      dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
       hide();
     }
   };
 
   const handleHide = () => {
-    if (cardAddStatusModalInfo.success) {
+    if (cardAddStatusModalInfo) {
       dispatch(
         setCardAddStatusModalInfo({ ...cardAddStatusModalInfo, visible: true })
       );

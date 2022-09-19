@@ -23,9 +23,9 @@ function CardSection() {
       depositProvider,
       depositProviders,
       card,
-      cards,
       fiat,
       fee,
+      cardsToDisplayInModal,
       balance: { balances },
     },
     transactions: { tabRouteName },
@@ -72,7 +72,7 @@ function CardSection() {
     });
 
   const color = depositProvider ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT;
-  const opacity = cards?.length ? 1 : 0.5;
+  const opacity = cardsToDisplayInModal?.length ? 1 : 0.5;
 
   const FeeInfo = () => {
     if (fee && tabRouteName === 'Trade') {
@@ -114,7 +114,7 @@ function CardSection() {
           <Pressable
             style={[styles.dropdown, { opacity, marginBottom: 10 }]}
             onPress={showCards}
-            disabled={!cards?.length}
+            disabled={!cardsToDisplayInModal?.length}
           >
             <AppText
               style={[
@@ -129,7 +129,9 @@ function CardSection() {
           </Pressable>
 
           <AppText subtext style={styles.newCard}>
-            {cards?.length ? 'Or you can add' : "You don't have cards yet"}{' '}
+            {cardsToDisplayInModal?.length
+              ? 'Or you can add'
+              : "You don't have cards yet"}{' '}
             <PurpleText text=" Add Card" onPress={addNewCard} />
           </AppText>
         </>

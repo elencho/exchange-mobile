@@ -15,20 +15,23 @@ export default function ChooseCardModal() {
     (state) => state.modals.chooseCardModalVisible
   );
   const state = useSelector((state) => state.trade);
-  const [cardsToDisplay, setCardsToDisplay] = useState([]);
 
-  const { card, cards, depositProvider } = state;
+  const { card, cards, depositProvider, cardsToDisplayInModal } = state;
 
   useEffect(() => {
-    let cardsArr = [];
+    let cardsToDisplayInModal = [];
     cards?.forEach((c) => {
       if (c.provider === depositProvider && c.status === 'VERIFIED') {
-        cardsArr.push(c);
+        cardsToDisplayInModal.push(c);
       }
     });
-    setCardsToDisplay(cardsArr);
+    dispatch({ type: 'SET_CARDS_TO_DISPLAY_IN_MODAL', cardsToDisplayInModal });
 
-    return () => setCardsToDisplay([]);
+    return () =>
+      dispatch({
+        type: 'SET_CARDS_TO_DISPLAY_IN_MODAL',
+        cardsToDisplayInModal: [],
+      });
   }, [depositProvider]);
 
   const hide = () => {
@@ -46,7 +49,7 @@ export default function ChooseCardModal() {
     }
   };
 
-  const children = cardsToDisplay.map((c) => (
+  const children = cardsToDisplayInModal.map((c) => (
     <Pressable
       style={[styles.row, background(c)]}
       key={c.cardNumber}

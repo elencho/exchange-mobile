@@ -51,7 +51,7 @@ const INITIAL_STATE = {
   transferMethodModalVisible: false,
   templatesModalVisible: false,
   addCardModalVisible: false,
-  cardAddStatusModalInfo: {},
+  cardAddStatusModalInfo: null,
   cardDeleteModalInfo: {},
 };
 

@@ -25,52 +25,52 @@ export default function ChooseBankModal() {
     dispatch(setDepositProvider(null));
   }, []);
 
-  const array = () => {
-    let array = [];
+  // const array = () => {
+  //   let array = [];
 
-    const arrayFullCheck = (a, p) => {
-      let isFull = false;
-      a.forEach((b) => {
-        if (Object.values(b).includes(p)) isFull = true;
-      });
-      return isFull;
-    };
+  //   const arrayFullCheck = (a, p) => {
+  //     let isFull = false;
+  //     a.forEach((b) => {
+  //       if (Object.values(b).includes(p)) isFull = true;
+  //     });
+  //     return isFull;
+  //   };
 
-    const m =
-      walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
+  //   const m =
+  //     walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
 
-    if (tabRouteName === 'Wallet') {
-      depositProviders?.forEach((p) => {
-        currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
-          if (p.displayName === d.displayName) {
-            cards?.forEach((c) => {
-              if (c.provider === d.provider) {
-                if (!array.length) {
-                  array.push(d);
-                } else {
-                  !arrayFullCheck(array, d.provider) && array.push(d);
-                }
-              }
-            });
-          }
-        });
-      });
+  //   if (tabRouteName === 'Wallet') {
+  //     depositProviders?.forEach((p) => {
+  //       currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
+  //         if (p.displayName === d.displayName) {
+  //           cards?.forEach((c) => {
+  //             if (c.provider === d.provider) {
+  //               if (!array.length) {
+  //                 array.push(d);
+  //               } else {
+  //                 !arrayFullCheck(array, d.provider) && array.push(d);
+  //               }
+  //             }
+  //           });
+  //         }
+  //       });
+  //     });
 
-      if (walletTab === 'Manage Cards') return depositProviders;
-    }
+  //     if (walletTab === 'Manage Cards') return depositProviders;
+  //   }
 
-    if (tabRouteName === 'Trade') {
-      depositProviders?.forEach((d) => {
-        cards?.forEach((c) => {
-          if (c.provider === d.provider) {
-            if (!array.length) array.push(d);
-            else !arrayFullCheck(array, d.provider) && array.push(d);
-          }
-        });
-      });
-    }
-    return array;
-  };
+  //   if (tabRouteName === 'Trade') {
+  //     depositProviders?.forEach((d) => {
+  //       cards?.forEach((c) => {
+  //         if (c.provider === d.provider) {
+  //           if (!array.length) array.push(d);
+  //           else !arrayFullCheck(array, d.provider) && array.push(d);
+  //         }
+  //       });
+  //     });
+  //   }
+  //   return array;
+  // };
 
   const hide = () => {
     dispatch(toggleChooseBankModal(false));
@@ -83,7 +83,7 @@ export default function ChooseBankModal() {
   };
 
   const children = () =>
-    array().map((b, i, a) => (
+    depositProviders?.map((b, i, a) => (
       <View key={b.displayName}>
         <Pressable
           style={[
