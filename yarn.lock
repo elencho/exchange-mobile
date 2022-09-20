@@ -1903,10 +1903,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.6.0.tgz#3c7c9c46e678feefe7a2e5bb609d3dbd665ffb3f"
   integrity sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==
 
-"@sumsub/react-native-mobilesdk-module@1.18.2":
-  version "1.18.2"
-  resolved "https://registry.yarnpkg.com/@sumsub/react-native-mobilesdk-module/-/react-native-mobilesdk-module-1.18.2.tgz#a334411f746f5faf92ae32bb22ed42846d87f133"
-  integrity sha512-j3Dsz9yy8b4LYfpDzpT+xYaBk59W8HTbpunZEr+n+vFmY3EZDeuTgRtJzmtrr8/QtHfmFekZUB0JjCIHbARsfw==
+"@sumsub/react-native-mobilesdk-module@^1.19.7":
+  version "1.19.7"
+  resolved "https://registry.yarnpkg.com/@sumsub/react-native-mobilesdk-module/-/react-native-mobilesdk-module-1.19.7.tgz#c504fa8ba8058edc213b2531a3b393c9a1887417"
+  integrity sha512-DLgPYJaDWR1G6obl00MUGzzICaQGEMMNVXjsJpj+Lv4zJcDY7nc3S1YnjFsH/7mPxvJF6ozbAxkieoLHTv1lNg==
 
 "@szmarczak/http-timer@^4.0.5":
   version "4.0.6"

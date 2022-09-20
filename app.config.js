@@ -1,6 +1,12 @@
 export default {
   name: 'cryptal-app',
   version: '1.0.0',
+  android: {
+    package: 'com.vaxo_nba.cryptalapp',
+  },
+  ios: {
+    bundleIdentifier: 'cryptalapp',
+  },
   extra: {
     auth:
       process.env.DEV === 'true'
