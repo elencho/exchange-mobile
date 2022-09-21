@@ -45,10 +45,12 @@ export default function TransactionFilter({ navigation }) {
       <FilterRow array={methods} multiselect />
 
       <Pressable style={styles.dropdown} onPress={openModal}>
-        <Image
-          source={{ uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png` }}
-          style={styles.coin}
-        />
+        {code && (
+          <Image
+            source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
+            style={styles.coin}
+          />
+        )}
         <AppText medium style={styles.bigText}>
           {currency || 'Show All Currencies'}
         </AppText>
@@ -81,6 +83,7 @@ const styles = StyleSheet.create({
   coin: {
     width: 24,
     height: 24,
+    marginRight: 12,
   },
   purple: {
     fontSize: 15,
@@ -112,6 +115,5 @@ const styles = StyleSheet.create({
   bigText: {
     color: colors.PRIMARY_TEXT,
     flex: 1,
-    marginLeft: 12,
   },
 });

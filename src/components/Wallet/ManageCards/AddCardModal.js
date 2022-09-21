@@ -53,7 +53,6 @@ export default function AddCardModal() {
   const onNavigationStateChange = (state) => {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
-    console.log(state);
     if (ending === 'false' || ending === 'true') {
       dispatch(setCardAddStatusModalInfo({ success: ending }));
       dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
