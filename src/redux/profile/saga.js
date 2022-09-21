@@ -62,6 +62,7 @@ import {
 import { resetTradesState } from '../trade/actions';
 import { resetTransactionsState, toggleLoading } from '../transactions/actions';
 import { resetWalletState } from '../wallet/actions';
+import launchSumsubSdk from '../../utils/sumsubMobileSdk';
 
 //  START LOGIN
 function* startLoginSaga(action) {
@@ -142,6 +143,7 @@ function* verifyAccountSaga(action) {
 
     yield put(toggleEmailVerificationModal(false));
     yield put(toggleLoading(false));
+    yield call(launchSumsubSdk);
   } else {
     yield put(toggleLoading(false));
     yield put(saveVerificationInfo(verified));
