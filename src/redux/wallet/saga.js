@@ -165,8 +165,17 @@ export function* addWhitelistSaga(action) {
   const { OTP } = action;
   const params = yield select(addWhitelistParams);
   const whitelist = yield select((state) => state.wallet.whitelist);
+
+  const google = yield select((state) => state.modals.googleOtpModalVisible);
+  const sms = yield select((state) => state.modals.smsAuthModalVisible);
+  const email = yield select((state) => state.modals.emailAuthModalVisible);
+
   const data = yield call(addWhitelistAddress, OTP, params);
   if (data) {
+    if (google) yield put(toggleGoogleOtpModal(false));
+    if (sms) yield put(toggleSmsAuthModal(false));
+    if (email) yield put(toggleEmailAuthModal(false));
+
     yield put(setNewWhitelist({}));
     yield put(saveWhitelist([...whitelist, data]));
     yield put({ type: 'REFRESH_WALLET_AND_TRADES' });
