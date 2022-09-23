@@ -15,6 +15,7 @@ export default function ModalWithSearch({
   currentItem,
   crypto = false,
   title,
+  phoneCountry,
 }) {
   const handlePress = (name, code) => {
     crypto ? choose(code) : choose(name, code);
@@ -31,9 +32,11 @@ export default function ModalWithSearch({
       name={item.name}
       code={item.code}
       key={item.code}
+      phoneCode={item.phoneCode}
       currentItem={currentItem}
       onPress={() => handlePress(item.name, item.code)}
       uri={uri(item.code)}
+      phoneCountry={phoneCountry}
     />
   );
 

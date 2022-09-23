@@ -34,6 +34,7 @@ const INITIAL_STATE = {
     email: 'vaxo2@mailinator.com',
     passwordNew: '11111!Aa',
     passwordConfirm: '11111!Aa',
+    phoneCountry: '`GEO`',
     phoneNumber: '555554555',
     promoCode: '',
     referralCode: '',

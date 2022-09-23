@@ -11,15 +11,18 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppInput from '../AppInput';
 import AppText from '../AppText';
+import CountriesModal from '../UserProfile/CountriesModal';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { setRegistrationInputs } from '../../redux/profile/actions';
+import { toggleCountriesModal } from '../../redux/modals/actions';
+import { COUNTRIES_URL_PNG } from '../../constants/api';
 
 export default function RegistrationInputs() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { registrationInputs },
+    profile: { registrationInputs, countriesConstant },
   } = state;
 
   const i = registrationInputs;
@@ -43,6 +46,10 @@ export default function RegistrationInputs() {
     if (type === 'referal') set({ referralCode: text });
     if (type === 'promoCode') set({ promoCode: text });
   };
+
+  const openCountriesModal = () => dispatch(toggleCountriesModal(true));
+  const phoneCode = () =>
+    countriesConstant.find((c) => i.phoneCountry === c.code);
 
   return (
     <>
@@ -99,11 +106,23 @@ export default function RegistrationInputs() {
         error={i.passwordConfirm && i.passwordNew !== i.passwordConfirm}
       />
       <View style={styles.phoneNumber}>
-        <Pressable style={styles.number}>
-          <Image source={images.GEO} />
-          <AppText medium style={styles.white}>
-            + 995
-          </AppText>
+        <Pressable style={styles.number} onPress={openCountriesModal}>
+          {i.phoneCountry ? (
+            <>
+              <Image
+                source={{ uri: `${COUNTRIES_URL_PNG}/${i.phoneCountry}.png` }}
+                style={styles.flag}
+              />
+              <AppText medium style={styles.white}>
+                {phoneCode()?.phoneCode}
+              </AppText>
+            </>
+          ) : (
+            <AppText style={{ color: colors.SECONDARY_TEXT, marginRight: 10 }}>
+              Code
+            </AppText>
+          )}
+
           <Image source={images.Arrow} />
           <View style={styles.line} />
         </Pressable>
@@ -117,6 +136,7 @@ export default function RegistrationInputs() {
           onChangeText={(text) => handleInputs(text, 'phone')}
         />
       </View>
+      <CountriesModal phoneCountry registration />
 
       <AppInput
         value={i.referralCode}
@@ -137,6 +157,11 @@ export default function RegistrationInputs() {
 }
 
 const styles = StyleSheet.create({
+  flag: {
+    width: 15,
+    height: 15,
+    borderRadius: 10,
+  },
   input: {
     marginTop: 22,
   },

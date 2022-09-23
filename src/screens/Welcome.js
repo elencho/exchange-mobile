@@ -19,6 +19,7 @@ import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 import images from '../constants/images';
 import {
+  fetchCountries,
   setLanguage,
   startLoginAction,
   startRegistrationAction,
@@ -51,6 +52,8 @@ export default function Welcome({ navigation }) {
         }
       })
       .catch((err) => console.log(err));
+
+    dispatch(fetchCountries());
   }, []);
 
   const startLogin = () => dispatch(startLoginAction(navigation));

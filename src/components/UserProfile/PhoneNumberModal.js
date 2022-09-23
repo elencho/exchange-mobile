@@ -80,13 +80,13 @@ export default function PhoneNumberModal() {
 
   const handleSend = () => {
     const { phoneNumber } = phoneNumberState;
-    dispatch(sendVerificationCode(phoneNumber, userInfo.countryCode));
+    dispatch(sendVerificationCode(phoneNumber, userInfo.phoneCountry));
   };
 
   const handleSave = () => {
     const { phoneNumber, verificationNumber } = phoneNumberState;
     dispatch(
-      updatePhoneNumber(phoneNumber, userInfo.countryCode, verificationNumber)
+      updatePhoneNumber(phoneNumber, userInfo.phoneCountry, verificationNumber)
     );
   };
 
@@ -99,11 +99,11 @@ export default function PhoneNumberModal() {
   const phoneCountry = () => {
     let phoneCountry;
     countries.forEach((c) => {
-      if (userInfo.country === c.name) {
+      if (userInfo.phoneCountry === c.code) {
         phoneCountry = c.phoneCode;
       }
     });
-    return `${userInfo.country} (${phoneCountry})`;
+    return phoneCountry;
   };
 
   const children = () => {
@@ -124,7 +124,7 @@ export default function PhoneNumberModal() {
             >
               <Image
                 source={{
-                  uri: `${COUNTRIES_URL_PNG}/${userInfo.countryCode}.png`,
+                  uri: `${COUNTRIES_URL_PNG}/${userInfo.phoneCountry}.png`,
                 }}
                 style={styles.image}
               />
@@ -156,7 +156,7 @@ export default function PhoneNumberModal() {
           </AppText>
         </Pressable>
 
-        <CountriesModal countryDrop={true} />
+        <CountriesModal phoneCountry />
       </>
     );
   };

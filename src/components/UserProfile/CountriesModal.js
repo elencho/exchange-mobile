@@ -9,11 +9,14 @@ import {
   fetchCountries,
   saveCountries,
   saveUserInfo,
+  setRegistrationInputs,
 } from '../../redux/profile/actions';
 
 export default function CountriesModal({
   countryDrop = false,
   citizenshipDrop = false,
+  phoneCountry = false,
+  registration = false,
   reset,
 }) {
   const dispatch = useDispatch();
@@ -21,7 +24,7 @@ export default function CountriesModal({
 
   const {
     modals: { countriesModalVisible },
-    profile: { countries, countriesConstant, userInfo },
+    profile: { countries, countriesConstant, userInfo, registrationInputs },
   } = state;
 
   useEffect(() => {
@@ -42,21 +45,17 @@ export default function CountriesModal({
   };
 
   const currentItem = () => {
-    if (countryDrop) {
-      return userInfo.country;
-    }
-    if (citizenshipDrop) {
-      return userInfo.citizenship;
-    }
+    if (countryDrop) return userInfo?.country;
+    if (citizenshipDrop) return userInfo?.citizenship;
+    if (registration) return registrationInputs?.phoneCountry;
+    if (phoneCountry) return userInfo?.phoneCountry;
   };
 
   const choose = (country) => {
     const code = (country) => {
       let code;
       countriesConstant.forEach((c) => {
-        if (c.name === country) {
-          code = c.code;
-        }
+        if (c.name === country) code = c.code;
       });
       return code;
     };
@@ -69,6 +68,17 @@ export default function CountriesModal({
     if (citizenshipDrop) {
       dispatch(saveUserInfo({ ...userInfo, citizenship: code(country) }));
     }
+    if (phoneCountry && !registration) {
+      dispatch(saveUserInfo({ ...userInfo, phoneCountry: code(country) }));
+    }
+    if (phoneCountry && registration) {
+      dispatch(
+        setRegistrationInputs({
+          ...registrationInputs,
+          phoneCountry: code(country),
+        })
+      );
+    }
     hide();
   };
 
@@ -79,6 +89,7 @@ export default function CountriesModal({
       filter={filter}
       currentItem={currentItem()}
       title="Choose Country"
+      phoneCountry={phoneCountry}
     />
   );
 
