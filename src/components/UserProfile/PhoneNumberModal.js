@@ -36,7 +36,7 @@ export default function PhoneNumberModal() {
   } = state;
 
   const initialState = {
-    phoneNumber: '',
+    phoneNumber: userInfo.phoneNumber,
     verificationNumber: '',
   };
 
