@@ -1,5 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Image, Pressable, TextInput } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Pressable,
+  TextInput,
+  Text,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppInput from '../AppInput';
@@ -17,6 +24,14 @@ export default function RegistrationInputs() {
 
   const i = registrationInputs;
   const set = (obj) => dispatch(setRegistrationInputs({ ...i, ...obj }));
+
+  const passLength = i.passwordNew?.length >= 8;
+  const hasNumber = /\d/.test(i.passwordNew);
+  const hasUpperAndLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(i.passwordNew);
+
+  const passwordCheck = passLength && hasNumber && hasUpperAndLower;
+
+  const red = { color: '#F45E8C' };
 
   const handleInputs = (text, type) => {
     if (type === 'name') set({ firstName: text });
@@ -59,12 +74,20 @@ export default function RegistrationInputs() {
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'pass')}
         secureTextEntry
+        error={i.passwordNew && !passwordCheck}
       />
 
-      <AppText style={styles.subtext} subtext>
-        8 or more characters, Upper & lowercase letters, at least one number,
-        one symbol
-      </AppText>
+      <Text style={styles.validations}>
+        <Text style={i.passwordNew && !passLength && red}>
+          8 or more characters,{' '}
+        </Text>
+        <Text style={i.passwordNew && !hasUpperAndLower && red}>
+          Upper & lowercase letters,{' '}
+        </Text>
+        <Text style={i.passwordNew && !hasNumber && red}>
+          At least one number,{' '}
+        </Text>
+      </Text>
 
       <AppInput
         value={i.passwordConfirm}
@@ -73,6 +96,7 @@ export default function RegistrationInputs() {
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'confirm')}
         secureTextEntry
+        error={i.passwordConfirm && i.passwordNew !== i.passwordConfirm}
       />
       <View style={styles.phoneNumber}>
         <Pressable style={styles.number}>
@@ -142,6 +166,12 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     marginTop: 5,
     textAlign: 'justify',
+  },
+  validations: {
+    color: colors.SECONDARY_TEXT,
+    fontSize: 11,
+    textAlign: 'justify',
+    marginTop: 8,
   },
   white: {
     color: colors.PRIMARY_TEXT,

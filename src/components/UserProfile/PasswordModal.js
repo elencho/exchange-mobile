@@ -22,7 +22,6 @@ export default function PasswordModal() {
   const array = [
     '8 or more characters',
     'At least one number',
-    'One symbol',
     'Upper & lowercase letters',
   ];
 
@@ -38,7 +37,6 @@ export default function PasswordModal() {
     secure: true,
     eightChars: false,
     hasNumber: false,
-    hasSymbol: false,
     hasUpperAndLower: false,
     curentPassword: null,
     newPassword: null,
@@ -52,8 +50,6 @@ export default function PasswordModal() {
         return { ...state, eightChars: check };
       case 'checkNumber':
         return { ...state, hasNumber: check };
-      case 'checkSymbol':
-        return { ...state, hasSymbol: check };
       case 'checkUpperAndLower':
         return { ...state, hasUpperAndLower: check };
       case 'toggleSecure':
@@ -77,7 +73,6 @@ export default function PasswordModal() {
     const {
       eightChars,
       hasNumber,
-      hasSymbol,
       hasUpperAndLower,
       newPassword,
       repeatPassword,
@@ -86,7 +81,6 @@ export default function PasswordModal() {
     return (
       eightChars &&
       hasNumber &&
-      hasSymbol &&
       hasUpperAndLower &&
       newPassword === repeatPassword &&
       curentPassword !== newPassword &&
@@ -119,26 +113,19 @@ export default function PasswordModal() {
     dispatchToReducer({ type: 'checkEightChars', check: pass.length >= 8 });
     dispatchToReducer({ type: 'checkNumber', check: /\d/.test(pass) });
     dispatchToReducer({
-      type: 'checkSymbol',
-      check: /[$-/:-?{-~!"^_`\[\]]/.test(pass),
-    });
-    dispatchToReducer({
       type: 'checkUpperAndLower',
       check: /\b(?![a-z]+\b|[A-Z]+\b)[a-zA-Z]+/.test(pass),
     });
   };
 
   const background = (i) => {
-    const { eightChars, hasNumber, hasSymbol, hasUpperAndLower } =
-      passwordState;
+    const { eightChars, hasNumber, hasUpperAndLower } = passwordState;
     switch (i) {
       case 0:
         return { backgroundColor: eightChars ? '#25D8D1' : '#F83974' };
       case 1:
         return { backgroundColor: hasNumber ? '#25D8D1' : '#F83974' };
       case 2:
-        return { backgroundColor: hasSymbol ? '#25D8D1' : '#F83974' };
-      case 3:
         return { backgroundColor: hasUpperAndLower ? '#25D8D1' : '#F83974' };
       default:
         break;
@@ -146,16 +133,13 @@ export default function PasswordModal() {
   };
 
   const color = (i) => {
-    const { eightChars, hasNumber, hasSymbol, hasUpperAndLower } =
-      passwordState;
+    const { eightChars, hasNumber, hasUpperAndLower } = passwordState;
     switch (i) {
       case 0:
         return { color: eightChars ? colors.SECONDARY_TEXT : '#969CBF' };
       case 1:
         return { color: hasNumber ? colors.SECONDARY_TEXT : '#969CBF' };
       case 2:
-        return { color: hasSymbol ? colors.SECONDARY_TEXT : '#969CBF' };
-      case 3:
         return { color: hasUpperAndLower ? colors.SECONDARY_TEXT : '#969CBF' };
       default:
         break;

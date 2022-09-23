@@ -54,8 +54,7 @@ export default function Registration({ navigation }) {
   const passwordCheck =
     passwordNew?.length >= 8 && // 8 symbols
     /\d/.test(passwordNew) && // number
-    /[$-/:-?{-~!"^_`\[\]]/.test(passwordNew) && // symbol
-    /\b(?![a-z]+\b|[A-Z]+\b)[a-zA-Z]+/.test(passwordNew); // upper and lower case
+    /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(passwordNew); // upper and lower case
 
   const isEmail = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email);
   const similarPasswords = passwordNew === passwordConfirm;

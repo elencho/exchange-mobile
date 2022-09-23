@@ -30,11 +30,9 @@ export default function SetNewPassword({ navigation }) {
 
   const passLength = pass?.length >= 8;
   const hasNumber = /\d/.test(pass);
-  const hasSymbol = /[$-/:-?{-~!"^_`\[\]]/.test(pass);
-  const hasUpperAndLower = /\b(?![a-z]+\b|[A-Z]+\b)[a-zA-Z]+/.test(pass);
+  const hasUpperAndLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(pass);
 
-  const passwordCheck =
-    passLength && hasNumber && hasSymbol && hasUpperAndLower;
+  const passwordCheck = passLength && hasNumber && hasUpperAndLower;
 
   const enabled = pass === confirmPass && passwordCheck;
   const red = { color: '#F45E8C' };
@@ -83,7 +81,6 @@ export default function SetNewPassword({ navigation }) {
               Upper & lowercase letters,{' '}
             </Text>
             <Text style={!hasNumber && red}>At least one number, </Text>
-            <Text style={!hasSymbol && red}>one symbol</Text>
           </Text>
 
           <AppInput

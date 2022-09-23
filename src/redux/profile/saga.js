@@ -143,7 +143,7 @@ function* verifyAccountSaga(action) {
 
     yield put(toggleEmailVerificationModal(false));
     yield put(toggleLoading(false));
-    yield call(launchSumsubSdk);
+    // yield call(launchSumsubSdk);
   } else {
     yield put(toggleLoading(false));
     yield put(saveVerificationInfo(verified));
