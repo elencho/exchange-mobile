@@ -62,7 +62,7 @@ export default function PersonalInfoModal() {
 
   const citizenship = (code) => {
     let country;
-    countriesConstant.forEach((c) => {
+    countriesConstant?.forEach((c) => {
       if (c.code === code) country = c.name;
     });
     return country;

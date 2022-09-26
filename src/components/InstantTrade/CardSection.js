@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -12,6 +12,7 @@ import {
 } from '../../redux/modals/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
+import { setCard } from '../../redux/trade/actions';
 
 function CardSection() {
   const navigation = useNavigation();
@@ -30,6 +31,10 @@ function CardSection() {
     },
     transactions: { tabRouteName },
   } = state;
+
+  useEffect(() => {
+    if (card) dispatch(setCard(null));
+  }, [depositProvider]);
 
   const showCards = () => dispatch(toggleChooseCardModal(true));
   const showBanks = () => dispatch(toggleChooseBankModal(true));
