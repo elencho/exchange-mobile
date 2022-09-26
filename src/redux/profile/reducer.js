@@ -22,7 +22,7 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: baneta_realuri,
+  credentials: vaxo_realuri,
   userAndPassInfo: {},
   forgotPassInfo: {
     /* username: 'metro21@mailinator.com'  */

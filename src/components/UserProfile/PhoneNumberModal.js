@@ -97,7 +97,12 @@ export default function PhoneNumberModal() {
   const handleSave = () => {
     const { phoneNumber, verificationNumber } = phoneNumberState;
     dispatch(
-      updatePhoneNumber(phoneNumber, userInfo.phoneCountry, verificationNumber)
+      updatePhoneNumber(
+        phoneNumber,
+        userInfo.phoneCountry,
+        verificationNumber,
+        hide
+      )
     );
   };
 

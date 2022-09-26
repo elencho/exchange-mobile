@@ -195,12 +195,14 @@ export const sendVerificationCode = (phoneNumber, phoneCountry) => ({
 export const updatePhoneNumber = (
   phoneNumber,
   phoneCountry,
-  verificationNumber
+  verificationNumber,
+  hide
 ) => ({
   type: actionTypes.UPDATE_PHONE_NUMBER,
   phoneNumber,
   phoneCountry,
   verificationNumber,
+  hide,
 });
 
 // 2FA SAGAS

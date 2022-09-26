@@ -36,6 +36,7 @@ export default function EmailVerificationModal() {
   const hide = () => {
     dispatch(toggleEmailVerificationModal(false));
     dispatch(startRegistrationAction(navigation));
+    setValue('');
   };
 
   const resend = () => resendEmail(verificationInfo.callbackUrl);
