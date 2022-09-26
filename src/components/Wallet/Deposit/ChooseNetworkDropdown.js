@@ -17,33 +17,39 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
     transactions: { code },
   } = state;
 
+  const cur = currentBalanceObj;
   const [iconDimensions, setIconDimensions] = useState({});
+  const [icon, setIcon] = useState(null);
+
+  const uri = `${ICONS_URL_PNG}/${network}.png`;
 
   useEffect(() => {
     if (network && network !== 'MAINNET') {
-      Image.getSize(uri(), (w, h) => {
+      Image.getSize(uri, (w, h) => {
         setIconDimensions({ width: 18 * (w / h), height: 18 });
       });
     } else {
       setIconDimensions({ width: 18, height: 18 });
     }
-  }, [network]);
+
+    cur?.depositMethods?.WALLET?.forEach((m) => {
+      if (m.provider === network) setIcon(m.iconName);
+    });
+  }, [network, code]);
 
   const handleDropdown = () => dispatch(toggleChooseNetworkModal(true));
 
   const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
-  const isAvailable = !!Object.keys(currentBalanceObj[m]).length;
+  const isAvailable = !!Object.keys(cur[m]).length;
 
   const networkName = () => {
     if (network === 'ERC20') return 'Ethereum Network';
     if (network === 'BEP20') return 'Binance Smart Chain';
     if (network === 'MAINNET') {
-      return currentBalanceObj[m].WALLET[0].displayName;
+      return cur[m].WALLET[0].displayName;
     }
     return network;
   };
-
-  const uri = () => `${ICONS_URL_PNG}/${network}.png`;
 
   return (
     <>
@@ -63,7 +69,7 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
                     </AppText>
                   </View>
                   <Image
-                    source={{ uri: uri(network) }}
+                    source={{ uri }}
                     style={[styles.image, iconDimensions]}
                   />
                   <AppText medium style={styles.dropdownText}>
@@ -80,10 +86,12 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
             </Pressable>
           ) : (
             <View style={styles.view}>
-              <Image
-                source={{ uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png` }}
-                style={[styles.image, styles.iconDimensions]}
-              />
+              {icon && (
+                <Image
+                  source={{ uri }}
+                  style={[styles.image, styles.iconDimensions]}
+                />
+              )}
               <AppText medium style={styles.dropdownText}>
                 {networkName()}{' '}
                 <AppText style={styles.secondary}>({network})</AppText>
@@ -99,7 +107,7 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
 const styles = StyleSheet.create({
   dropdownText: {
     flex: 1,
-    marginHorizontal: 12,
+    marginRight: 12,
     color: colors.PRIMARY_TEXT,
   },
   view: {
@@ -126,6 +134,7 @@ const styles = StyleSheet.create({
   },
   image: {
     marginLeft: 5,
+    marginRight: 12,
     resizeMode: 'contain',
   },
   secondary: {
