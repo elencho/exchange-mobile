@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
@@ -8,6 +8,7 @@ import colors from '../../constants/colors';
 import { toggleLanguageModal } from '../../redux/modals/actions';
 import { setLanguage } from '../../redux/profile/actions';
 import { switchLanguage } from '../../utils/i18n';
+import { COUNTRIES_URL_PNG } from '../../constants/api';
 
 export default function ChooseLanguageModal() {
   const dispatch = useDispatch();
@@ -36,6 +37,10 @@ export default function ChooseLanguageModal() {
     if (l === 'en') return 'English';
     if (l === 'ka') return 'ქართული';
   };
+  const uri = (l) => {
+    if (l === 'en') return `${COUNTRIES_URL_PNG}/GBR.png`;
+    if (l === 'ka') return `${COUNTRIES_URL_PNG}/GEO.png`;
+  };
 
   const children = (
     <>
@@ -45,6 +50,7 @@ export default function ChooseLanguageModal() {
             style={[styles.button, background(l)]}
             onPress={() => chooseLanguage(l)}
           >
+            <Image source={{ uri: uri(l) }} style={styles.flag} />
             <AppText style={styles.text}>{text(l)}</AppText>
           </Pressable>
           {i < a.length - 1 && <View style={styles.margin} />}
@@ -68,9 +74,16 @@ export default function ChooseLanguageModal() {
 const styles = StyleSheet.create({
   button: {
     height: 45,
-    justifyContent: 'center',
+    alignItems: 'center',
     marginHorizontal: -13,
     paddingHorizontal: 18,
+    flexDirection: 'row',
+  },
+  flag: {
+    height: 24,
+    width: 24,
+    marginRight: 20,
+    borderRadius: 12,
   },
   margin: {
     marginVertical: 5,
