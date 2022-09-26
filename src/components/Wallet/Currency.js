@@ -9,6 +9,7 @@ import { setCurrentBalanceObj } from '../../redux/trade/actions';
 import {
   cryptoAddressesAction,
   setNetwork,
+  setWalletTab,
   wireDepositAction,
 } from '../../redux/wallet/actions';
 import AppText from '../AppText';
@@ -41,6 +42,7 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
     } else {
       dispatch(cryptoAddressesAction(name, code, navigation, network));
     }
+    dispatch(setWalletTab('Deposit'));
   };
 
   const usdBitcoin = () => {

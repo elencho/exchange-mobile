@@ -32,10 +32,6 @@ export default function WalletSwitcher() {
     dispatch({ type: 'METHOD_NETWORK_RESTRICTION' });
   }, [currentBalanceObj, walletTab]);
 
-  const handleFilter = (f) => {
-    dispatch(setWalletTab(f));
-  };
-
   const buttonStyle = (f) => {
     return {
       backgroundColor:
@@ -58,7 +54,7 @@ export default function WalletSwitcher() {
         <Pressable
           key={f}
           style={[styles.button, buttonStyle(f)]}
-          onPress={() => handleFilter(f)}
+          onPress={() => dispatch(setWalletTab(f))}
         >
           <AppText body style={textStyle(f)}>
             {f}
