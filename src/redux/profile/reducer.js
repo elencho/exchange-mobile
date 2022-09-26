@@ -9,6 +9,10 @@ const sali_satesto = {
   login: 'salibukhiashvili@mailinator.com',
   password: 'Salome1996$',
 };
+const sali_realuri = {
+  login: 'bukhiashvilisalome@gmail.com',
+  password: 'Salome1996$',
+};
 const baneta_realuri = { login: 'ibanet@cryptx.com', password: 'Malina125$' };
 
 const INITIAL_STATE = {

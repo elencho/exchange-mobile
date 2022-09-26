@@ -20,6 +20,7 @@ import {
   saveUserAndPassInfo,
   saveRegistrationStartInfo,
   saveVerificationInfo,
+  fetchUserInfo,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -331,13 +332,13 @@ function* fetchCountriesSaga() {
 
 //  FETCH USER INFO
 function* fetchUserInfoSaga() {
-  yield put(toggleLoading(true));
-  yield delay(1000);
+  // yield put(toggleLoading(true));
+  // yield delay(1000);
 
   const userInfo = yield call(fetchUserInfoUtil);
   if (userInfo) yield put(saveUserInfo(userInfo));
 
-  yield put(toggleLoading(false));
+  // yield put(toggleLoading(false));
 }
 
 //  UPDATE USER INFO
@@ -345,6 +346,7 @@ function* saveUserInfoSaga() {
   const userData = yield select(getUserData);
   const data = yield call(updateUserData, userData);
   if (data?.status >= 200 && data?.status < 300) {
+    yield put(fetchUserInfo());
     yield put(togglePersonalInfoModal(false));
   }
 }

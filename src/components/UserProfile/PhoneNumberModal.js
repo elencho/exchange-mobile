@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -17,6 +17,7 @@ import {
   togglePhoneNumberModal,
 } from '../../redux/modals/actions';
 import {
+  saveUserInfo,
   sendVerificationCode,
   updatePhoneNumber,
 } from '../../redux/profile/actions';
@@ -34,6 +35,11 @@ export default function PhoneNumberModal() {
     modals: { phoneNumberModalVisible },
     profile: { userInfo, countries, generalError },
   } = state;
+
+  const [userInfoVariable, setUserInfoVariable] = useState(null);
+  useEffect(() => {
+    setUserInfoVariable(userInfo);
+  }, []);
 
   const initialState = {
     phoneNumber: userInfo.phoneNumber,
@@ -61,6 +67,7 @@ export default function PhoneNumberModal() {
 
   const hide = () => {
     dispatchToReducer({ type: 'hide' });
+    dispatch(saveUserInfo(userInfoVariable));
     dispatch(togglePhoneNumberModal(false));
   };
 
@@ -90,9 +97,7 @@ export default function PhoneNumberModal() {
     );
   };
 
-  const handleCountries = () => {
-    dispatch(toggleCountriesModal(true));
-  };
+  const handleCountries = () => dispatch(toggleCountriesModal(true));
 
   const send = <PurpleText text="Send" onPress={handleSend} />;
 
@@ -140,12 +145,14 @@ export default function PhoneNumberModal() {
               right={send}
               onChangeText={(text) => handlePhoneNumber(text)}
               value={phoneNumber}
+              keyboardType="number-pad"
             />
             <AppInput
               style={styles.inputContainer}
               label="Verification Code"
               onChangeText={(text) => handleVerificationNumber(text)}
               value={verificationNumber}
+              keyboardType="number-pad"
             />
           </TouchableOpacity>
         </ScrollView>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   Pressable,
@@ -19,17 +19,14 @@ import {
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import CountriesModal from './CountriesModal';
-import {
-  fetchUserInfo,
-  saveUserInfo,
-  saveUserInfoSaga,
-} from '../../redux/profile/actions';
+import { saveUserInfo, saveUserInfoSaga } from '../../redux/profile/actions';
 import GeneralError from '../GeneralError';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
 
 export default function PersonalInfoModal() {
   const [countryDrop, setCountryDrop] = useState(false);
   const [citizenshipDrop, setCitizenshipDrop] = useState(false);
+  const [userInfoVariable, setUserInfoVariable] = useState(null);
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -38,9 +35,20 @@ export default function PersonalInfoModal() {
     profile: { userInfo, countriesConstant, generalError },
   } = state;
 
-  const hide = () => dispatch(togglePersonalInfoModal(false));
+  useEffect(() => {
+    if (personalInfoModalVisible && !userInfoVariable) {
+      setUserInfoVariable(userInfo);
+    }
+    if (!personalInfoModalVisible && userInfoVariable) {
+      setUserInfoVariable(null);
+    }
+  });
+
+  const hide = () => {
+    dispatch(saveUserInfo(userInfoVariable));
+    dispatch(togglePersonalInfoModal(false));
+  };
   const handleSave = () => dispatch(saveUserInfoSaga());
-  const handleHide = () => dispatch(fetchUserInfo());
 
   const handleCountries = (countryDrop, citizenshipDrop) => {
     dispatch(toggleCountriesModal(true));
@@ -51,16 +59,6 @@ export default function PersonalInfoModal() {
   const handleReset = () => {
     setCitizenshipDrop(false), setCountryDrop(false);
   };
-
-  const handleFirstName = (firstName) =>
-    dispatch(saveUserInfo({ ...userInfo, firstName }));
-  const handleLastName = (lastName) =>
-    dispatch(saveUserInfo({ ...userInfo, lastName }));
-  const handleAddress = (address) =>
-    dispatch(saveUserInfo({ ...userInfo, address }));
-  const handleCity = (city) => dispatch(saveUserInfo({ ...userInfo, city }));
-  const handlePostalCode = (postalCode) =>
-    dispatch(saveUserInfo({ ...userInfo, postalCode }));
 
   const citizenship = (code) => {
     let country;
@@ -82,14 +80,18 @@ export default function PersonalInfoModal() {
 
           <AppInput
             style={styles.inputContainer}
-            onChangeText={handleFirstName}
+            onChangeText={(firstName) =>
+              dispatch(saveUserInfo({ ...userInfo, firstName }))
+            }
             label="First Name"
             value={userInfo?.firstName}
             editable={userInfo?.userStatus !== 'VERIFIED'}
           />
           <AppInput
             style={styles.inputContainer}
-            onChangeText={handleLastName}
+            onChangeText={(lastName) =>
+              dispatch(saveUserInfo({ ...userInfo, lastName }))
+            }
             label="Last Name"
             value={userInfo?.lastName}
             editable={userInfo?.userStatus !== 'VERIFIED'}
@@ -120,13 +122,17 @@ export default function PersonalInfoModal() {
           <View style={styles.row}>
             <AppInput
               style={[styles.inputContainer, styles.rowInputs]}
-              onChangeText={handleCity}
+              onChangeText={(city) =>
+                dispatch(saveUserInfo({ ...userInfo, city }))
+              }
               label="City"
               value={userInfo?.city}
             />
             <AppInput
               style={[styles.inputContainer, styles.rowInputs]}
-              onChangeText={handlePostalCode}
+              onChangeText={(postalCode) =>
+                dispatch(saveUserInfo({ ...userInfo, postalCode }))
+              }
               label="Postal Code"
               value={userInfo?.postalCode}
             />
@@ -134,7 +140,9 @@ export default function PersonalInfoModal() {
 
           <AppInput
             style={styles.inputContainer}
-            onChangeText={handleAddress}
+            onChangeText={(address) =>
+              dispatch(saveUserInfo({ ...userInfo, address }))
+            }
             label="Address"
             value={userInfo?.address}
           />
@@ -184,7 +192,6 @@ export default function PersonalInfoModal() {
       fullScreen
       title="Personal Information"
       children={children}
-      onModalHide={handleHide}
     />
   );
 }
