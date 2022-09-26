@@ -67,6 +67,7 @@ export default function AddCardModal() {
         setCardAddStatusModalInfo({ ...cardAddStatusModalInfo, visible: true })
       );
     }
+    setSaveCardAgreeTerms(false);
   };
 
   const urlEncodedData = () => {

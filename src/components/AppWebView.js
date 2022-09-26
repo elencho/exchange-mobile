@@ -2,13 +2,18 @@ import React from 'react';
 import { TouchableOpacity, Modal, Image, StyleSheet } from 'react-native';
 import WebView from 'react-native-webview';
 import { useDispatch, useSelector } from 'react-redux';
+
 import images from '../constants/images';
+import { cardsSagaAction } from '../redux/trade/actions';
 
 export default function AppWebView(props) {
   const dispatch = useDispatch();
   const webViewObj = useSelector((state) => state.modals.webViewObj);
 
-  const closeWebView = () => dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+  const closeWebView = () => {
+    dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+    if (props.refresh) dispatch(cardsSagaAction());
+  };
 
   return (
     <Modal
