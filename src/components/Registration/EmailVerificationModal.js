@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 import AppModal from '../AppModal';
 import AppText from '../AppText';
@@ -17,8 +18,10 @@ import { toggleEmailVerificationModal } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
 import { resendEmail } from '../../utils/userProfileUtils';
 import TwoFaInput from '../TwoFaInput';
+import { startRegistrationAction } from '../../redux/profile/actions';
 
 export default function EmailVerificationModal() {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -26,18 +29,22 @@ export default function EmailVerificationModal() {
 
   const {
     modals: { emailVerificationModalVisible },
-    profile: { verificationInfo },
+    profile: { verificationInfo, registrationInputs },
     transactions: { loading },
   } = state;
 
-  const hide = () => dispatch(toggleEmailVerificationModal(false));
+  const hide = () => {
+    dispatch(toggleEmailVerificationModal(false));
+    dispatch(startRegistrationAction(navigation));
+  };
+
   const resend = () => resendEmail(verificationInfo.callbackUrl);
   const checkMailText = () => {
     if (verificationInfo.attributes) {
       return (
         <AppText style={[styles.secondary, { marginBottom: 36 }]}>
-          Check your E-mail {verificationInfo.attributes.userEmail} and enter
-          the code account
+          Check your E-mail {registrationInputs.email} and enter the code
+          account
         </AppText>
       );
     }
