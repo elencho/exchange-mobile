@@ -46,10 +46,10 @@ export default function WhitelistActionsModal() {
         if (!googleAuth) sendOtp();
         break;
       case 'Copy Address':
-        Clipboard.setString(currentWhitelistObj.address);
+        Clipboard.setStringAsync(currentWhitelistObj.address);
         break;
       case 'Copy Tag':
-        Clipboard.setString(currentWhitelistObj.tag);
+        Clipboard.setStringAsync(currentWhitelistObj.tag);
         break;
       default:
         break;

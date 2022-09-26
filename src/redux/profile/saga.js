@@ -209,14 +209,20 @@ function* otpForLoginSaga(action) {
   const { otp, navigation } = action;
   const profile = yield select((state) => state.profile);
   const {
-    userAndPassInfo: { callbackUrl },
+    userAndPassInfo,
     pkceInfo: { codeVerifier },
     forgotPassMode,
   } = profile;
 
-  const loginData = yield call(loginOtp, otp, callbackUrl);
+  const loginData = yield call(loginOtp, otp, userAndPassInfo.callbackUrl);
+  yield put(
+    saveUserAndPassInfo({
+      ...userAndPassInfo,
+      callbackUrl: loginData.callbackUrl,
+    })
+  );
 
-  if (!forgotPassMode) {
+  if (!forgotPassMode && !loginData?.errors?.length) {
     yield put({
       type: 'CODE_TO_TOKEN_SAGA',
       code: loginData?.code,
@@ -385,7 +391,7 @@ function* updatePhoneNumberSaga(action) {
   }
 }
 
-//  TOGLE SUBSCRIPTION
+//  TOGGLE SUBSCRIPTION
 function* toggleSubscriptionSaga(action) {
   const { value, setSwitcherValue } = action;
   yield call(() => setSwitcherValue(value));
@@ -436,9 +442,7 @@ function* activateEmailSaga(action) {
   if (status === 200) {
     yield put(saveOtpChangeToken(null));
     yield put(setCurrentSecurityAction(null));
-    yield put(setSmsAuth(false));
-    yield put(setGoogleAuth(false));
-    yield put(setEmailAuth(false));
+    yield put(toggleEmailAuthModal(false));
     const token = yield call(refreshToken);
     yield put({ type: 'OTP_SAGA', token });
   }
@@ -456,9 +460,6 @@ function* activateGoogleSaga(action) {
   if (status === 200) {
     yield put(saveOtpChangeToken(null));
     yield put(setCurrentSecurityAction(null));
-    yield put(setSmsAuth(false));
-    yield put(setGoogleAuth(true));
-    yield put(setEmailAuth(false));
     const token = yield call(refreshToken);
     yield put({ type: 'OTP_SAGA', token });
   }
@@ -468,15 +469,9 @@ function* activateGoogleSaga(action) {
 function* otpSaga(action) {
   const { token } = action;
   const otpType = jwt_decode(token)?.otpType;
-  if (otpType === 'EMAIL') {
-    yield put(setEmailAuth(true));
-  }
-  if (otpType === 'TOTP') {
-    yield put(setGoogleAuth(true));
-  }
-  if (otpType === 'SMS') {
-    yield put(setSmsAuth(true));
-  }
+  yield put(setEmailAuth(otpType === 'EMAIL'));
+  yield put(setGoogleAuth(otpType === 'TOTP'));
+  yield put(setSmsAuth(otpType === 'SMS'));
 }
 
 function* logoutSaga() {

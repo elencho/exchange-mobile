@@ -198,9 +198,18 @@ function* deleteWhitelistSaga(action) {
   const { OTP } = action;
   const id = yield select((state) => state.wallet.currentWhitelistObj.id);
   const status = yield call(deleteWhitelistAddress, id, OTP);
+
+  const google = yield select((state) => state.modals.googleOtpModalVisible);
+  const sms = yield select((state) => state.modals.smsAuthModalVisible);
+  const email = yield select((state) => state.modals.emailAuthModalVisible);
+
   if (status === 200) {
     yield put(chooseWhitelist({}));
     yield put(getWhitelistAction());
+
+    if (google) yield put(toggleGoogleOtpModal(false));
+    if (sms) yield put(toggleSmsAuthModal(false));
+    if (email) yield put(toggleEmailAuthModal(false));
   }
 }
 
