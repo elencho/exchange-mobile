@@ -92,7 +92,7 @@ export default function ManageCards() {
         <View style={styles.flex}>
           <Image source={images.Card} />
           <AppText body style={styles.description}>
-            Add address for easy withdrawal description about whitelist
+            Manage cards info text
           </AppText>
           <PurpleText text="+ Add Card" onPress={addCardModal} />
         </View>

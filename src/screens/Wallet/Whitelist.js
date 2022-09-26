@@ -65,7 +65,7 @@ export default function Whitelist() {
           <Image source={images.List} />
           <Headline title="My Whitelists" />
           <AppText body style={styles.description}>
-            Description here about whitelist, here about whitelist
+            Description here about whitelist
           </AppText>
           <PurpleText text="+ Add Address" onPress={showAddModal} />
         </View>
