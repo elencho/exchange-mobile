@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import Modal from 'react-native-modal';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import { useDispatch } from 'react-redux';
 import Constants from 'expo-constants';
 
 import ModalTop from './ModalTop';
@@ -9,6 +10,7 @@ import AppText from './AppText';
 import Background from './Background';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
 import Headline from './TransactionHistory/Headline';
+import { saveGeneralError } from '../redux/profile/actions';
 
 function AppModal({
   children,
@@ -27,12 +29,17 @@ function AppModal({
   //     : require('react-native-extra-dimensions-android').get(
   //         'REAL_WINDOW_HEIGHT'
   //       );
+  const dispatch = useDispatch();
+  const modalHide = () => {
+    dispatch(saveGeneralError(null));
+    hide();
+  };
 
   return (
     <Modal
       isVisible={visible}
-      onBackdropPress={hide}
-      onSwipeComplete={hide}
+      onBackdropPress={modalHide}
+      onSwipeComplete={modalHide}
       swipeDirection="down"
       propagateSwipe={true}
       style={styles.modal}
@@ -63,7 +70,7 @@ function AppModal({
       )}
       {fullScreen && (
         <Background>
-          <CloseModalIcon onPress={hide} />
+          <CloseModalIcon onPress={modalHide} />
           {title && <Headline title={title} />}
           {children}
         </Background>

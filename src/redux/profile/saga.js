@@ -387,10 +387,11 @@ function* updatePhoneNumberSaga(action) {
 
 //  TOGLE SUBSCRIPTION
 function* toggleSubscriptionSaga(action) {
-  const { value } = action;
+  const { value, setSwitcherValue } = action;
+  yield call(() => setSwitcherValue(value));
   const data = yield call(value ? subscribeMail : unsubscribeMail);
-  if (data?.status >= 200 && data?.status < 300) {
-    yield put(fetchUserInfoAction());
+  if (!(data?.status >= 200 && data?.status < 300)) {
+    yield call(() => setSwitcherValue(!value));
   }
 }
 

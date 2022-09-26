@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, View, Switch } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -26,12 +26,14 @@ export default function Personal() {
   const { userInfo, language, generalError } = state;
   const isVerified = userInfo?.userStatus === 'VERIFIED';
 
+  const [switcherValue, setSwitcherValue] = useState(userInfo.emailUpdates);
+
   const edit = () => dispatch(togglePhoneNumberModal(true));
   const editLanguage = () => dispatch(toggleLanguageModal(true));
   const openModal = () => dispatch({ type: 'TOGGLE_IDENTITY_MODAL' });
 
   const handleEmailUpdates = (value) =>
-    dispatch(toggleEmailSubscription(value));
+    dispatch(toggleEmailSubscription(value, setSwitcherValue));
 
   const textCond = (r) => {
     switch (r) {
@@ -81,7 +83,7 @@ export default function Personal() {
               <Switch
                 style={styles.switch}
                 onValueChange={(value) => handleEmailUpdates(value)}
-                value={userInfo.emailUpdates}
+                value={switcherValue}
               />
             </View>
           </View>

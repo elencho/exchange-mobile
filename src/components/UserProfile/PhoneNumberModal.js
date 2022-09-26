@@ -23,6 +23,7 @@ import {
 } from '../../redux/profile/actions';
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
+import AppButton from '../AppButton';
 import AppText from '../AppText';
 import GeneralError from '../GeneralError';
 import PurpleText from '../PurpleText';
@@ -64,6 +65,9 @@ export default function PhoneNumberModal() {
     reducer,
     initialState
   );
+  const disabled = !(
+    phoneNumberState.phoneNumber && phoneNumberState.verificationNumber
+  );
 
   const hide = () => {
     dispatchToReducer({ type: 'hide' });
@@ -103,7 +107,7 @@ export default function PhoneNumberModal() {
 
   const phoneCountry = () => {
     let phoneCountry;
-    countries.forEach((c) => {
+    countries?.forEach((c) => {
       if (userInfo.phoneCountry === c.code) {
         phoneCountry = c.phoneCode;
       }
@@ -157,11 +161,12 @@ export default function PhoneNumberModal() {
           </TouchableOpacity>
         </ScrollView>
 
-        <Pressable onPress={handleSave} style={styles.button}>
-          <AppText medium style={styles.buttonText}>
-            Save
-          </AppText>
-        </Pressable>
+        <AppButton
+          text="Save"
+          onPress={handleSave}
+          style={styles.button}
+          disabled={disabled}
+        />
 
         <CountriesModal phoneCountry />
       </>
@@ -181,14 +186,7 @@ export default function PhoneNumberModal() {
 
 const styles = StyleSheet.create({
   button: {
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
     marginBottom: 20,
-    backgroundColor: colors.PRIMARY_PURPLE,
-  },
-  buttonText: {
-    color: colors.PRIMARY_TEXT,
   },
   dropdownText: {
     flex: 1,
