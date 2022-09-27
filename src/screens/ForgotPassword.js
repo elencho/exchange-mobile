@@ -20,6 +20,7 @@ import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 import images from '../constants/images';
 import GeneralError from '../components/GeneralError';
+import { startLoginAction } from '../redux/profile/actions';
 
 export default function ForgotPassword({ navigation }) {
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ export default function ForgotPassword({ navigation }) {
 
   const secondsFormat = seconds < 10 ? `00 : 0${seconds}` : `00 : ${seconds}`;
 
-  const goToLogin = () => navigation.navigate('Login');
+  const goToLogin = () => dispatch(startLoginAction(navigation));
   const sendCode = () => dispatch({ type: 'SEND_FORGOT_PASS_CODE' });
   const Right = () => {
     if (loading) {

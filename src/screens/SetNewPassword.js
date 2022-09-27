@@ -19,6 +19,7 @@ import PurpleText from '../components/PurpleText';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
+import { startLoginAction } from '../redux/profile/actions';
 
 export default function SetNewPassword({ navigation }) {
   const dispatch = useDispatch();
@@ -26,7 +27,7 @@ export default function SetNewPassword({ navigation }) {
   const [pass, setPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
 
-  const goToLogin = () => navigation.navigate('Login');
+  const goToLogin = () => dispatch(startLoginAction(navigation));
 
   const passLength = pass?.length >= 8;
   const hasNumber = /\d/.test(pass);

@@ -14,6 +14,7 @@ import TwoFaInput from '../components/TwoFaInput';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
+import { startLoginAction } from '../redux/profile/actions';
 
 export default function Login2Fa({ navigation }) {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ export default function Login2Fa({ navigation }) {
   const t = userAndPassInfo?.attributes?.otpType;
   const cellCount = t === 'SMS' ? 4 : 6;
 
-  const goBack = () => navigation.goBack();
+  const goBack = () => dispatch(startLoginAction(navigation));
   const goToReset = () => dispatch({ type: 'RESET_OTP', navigation });
 
   const image = () => {
