@@ -5,6 +5,7 @@ import {
   View,
   Platform,
   TouchableOpacity,
+  Linking,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Clipboard from 'expo-clipboard';
@@ -28,15 +29,27 @@ export default function GoogleAuthModal() {
   } = state;
 
   const [key, setKey] = useState('');
+  const isIos = Platform.OS === 'ios';
 
   const enable = () => {
     dispatch(activateGoogleOtp(key));
     hide();
   };
 
+  const handleStore = () => {
+    const androidLink =
+      'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&gl=US';
+    const iosLink =
+      'https://apps.apple.com/us/app/google-authenticator/id388497605';
+    Linking.openURL(isIos ? iosLink : androidLink)
+      .then(() => {})
+      .catch((err) => console.log(err));
+  };
+
   const hide = () => dispatch(toggleGoogleAuthModal(false));
   const handleKey = (key) => setKey(key);
-  const handleCopy = () => Clipboard.setString(totpSecretObj.totpSecretEncoded);
+  const handleCopy = () =>
+    Clipboard.setStringAsync(totpSecretObj.totpSecretEncoded);
 
   const right = (
     <View style={styles.row}>
@@ -57,9 +70,9 @@ export default function GoogleAuthModal() {
           </AppText>
         </View>
 
-        <TouchableOpacity style={styles.store}>
+        <TouchableOpacity style={styles.store} onPress={handleStore}>
           <Image
-            source={images[Platform.OS === 'ios' ? 'Appstore' : 'Playstore']}
+            source={images[isIos ? 'Appstore' : 'Playstore']}
             style={styles.storeIcon}
           />
         </TouchableOpacity>
