@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Platform, StyleSheet, SafeAreaView } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
 import Constants from 'expo-constants';
+import * as SplashScreen from 'expo-splash-screen';
 
 import Navigator from './src/navigation';
 import store from './src/redux/store';
@@ -14,15 +15,21 @@ import './src/utils/i18n';
 import './src/utils/interceptor';
 import AppToast from './src/components/AppToast';
 
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
-  const [fonts] = useFonts({
+  const [fontsLoaded] = useFonts({
     Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
     Ubuntu_Medium: require('./src/assets/fonts/Ubuntu_Medium.ttf'),
   });
 
   const [assets] = useAssets(Object.values(images));
 
-  if (!fonts || !assets) {
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) await SplashScreen.hideAsync();
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded || !assets) {
     return null;
   }
 
@@ -32,7 +39,7 @@ export default function App() {
     <Provider store={store}>
       {iphone && <StatusBar style="light" />}
       {iphone && <SafeAreaView style={styles.statusBar} />}
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
         <AppToast />
         <Navigator />
       </SafeAreaView>

@@ -16,7 +16,6 @@ import PurpleText from '../PurpleText';
 import images from '../../constants/images';
 import { toggleEmailVerificationModal } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
-import { resendEmail } from '../../utils/userProfileUtils';
 import TwoFaInput from '../TwoFaInput';
 import { startRegistrationAction } from '../../redux/profile/actions';
 
@@ -39,7 +38,15 @@ export default function EmailVerificationModal() {
     setValue('');
   };
 
-  const resend = () => resendEmail(verificationInfo.callbackUrl);
+  const resend = () => {
+    const { callbackUrl } = verificationInfo;
+    dispatch({
+      type: 'RESEND_SAGA',
+      url: callbackUrl,
+      emailVerification: true,
+    });
+  };
+
   const checkMailText = () => {
     if (verificationInfo.attributes) {
       return (

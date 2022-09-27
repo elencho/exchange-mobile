@@ -29,7 +29,6 @@ export default function ForgotPassword({ navigation }) {
     transactions: { loading },
   } = state;
 
-  const [code, setCode] = useState('');
   const [seconds, setSeconds] = useState(30);
 
   useEffect(() => {
@@ -64,8 +63,18 @@ export default function ForgotPassword({ navigation }) {
       forgotPassInfo: { ...forgotPassInfo, username },
     });
 
+  const saveCode = (code) => {
+    dispatch({
+      type: 'SAVE_FORGOT_PASS_INFO',
+      forgotPassInfo: { ...forgotPassInfo, code },
+    });
+  };
+
   const next = () =>
-    dispatch({ type: 'FORGOT_PASS_ENTER_CODE', code, navigation });
+    dispatch({
+      type: 'FORGOT_PASS_ENTER_CODE',
+      navigation,
+    });
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
@@ -107,8 +116,8 @@ export default function ForgotPassword({ navigation }) {
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             style={styles.input}
             label="Enter Code"
-            onChangeText={setCode}
-            value={code}
+            onChangeText={saveCode}
+            value={forgotPassInfo.code}
           />
 
           <AppButton text="Next" style={styles.button} onPress={next} />

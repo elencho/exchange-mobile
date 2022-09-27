@@ -21,6 +21,7 @@ import {
   saveRegistrationStartInfo,
   saveVerificationInfo,
   fetchUserInfo,
+  usernameAndPasswordAction,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -38,8 +39,10 @@ import {
   refreshToken,
   registrationForm,
   registrationStart,
+  resendEmail,
   resetOtp,
   sendEmailOtp,
+  sendOtp,
   setNewPassword,
   subscribeMail,
   unsubscribeMail,
@@ -294,9 +297,9 @@ function* forgotPasswordCodeSaga() {
 
 // FORGOT PASSWORD ENTER CODE
 function* forgotPassEnterCodeSaga(action) {
-  const { code, navigation } = action;
+  const { navigation } = action;
   const forgotPassInfo = yield select((state) => state.profile.forgotPassInfo);
-  const { callbackUrl, username } = forgotPassInfo;
+  const { callbackUrl, username, code } = forgotPassInfo;
 
   const data = yield call(forgotPasswordEnterCode, callbackUrl, username, code);
   if (data?.execution === 'LOGIN_OTP') {
@@ -444,7 +447,9 @@ function* activateEmailSaga(action) {
     yield put(setCurrentSecurityAction(null));
     yield put(toggleEmailAuthModal(false));
     const token = yield call(refreshToken);
-    yield put({ type: 'OTP_SAGA', token });
+    if (typeof token === 'string') {
+      yield put({ type: 'OTP_SAGA', token });
+    }
   }
 }
 
@@ -461,7 +466,9 @@ function* activateGoogleSaga(action) {
     yield put(saveOtpChangeToken(null));
     yield put(setCurrentSecurityAction(null));
     const token = yield call(refreshToken);
-    yield put({ type: 'OTP_SAGA', token });
+    if (typeof token === 'string') {
+      yield put({ type: 'OTP_SAGA', token });
+    }
   }
 }
 
@@ -472,6 +479,28 @@ function* otpSaga(action) {
   yield put(setEmailAuth(otpType === 'EMAIL'));
   yield put(setGoogleAuth(otpType === 'TOTP'));
   yield put(setSmsAuth(otpType === 'SMS'));
+}
+
+// RESEND SAGA
+function* resendSaga(action) {
+  const state = yield select((state) => state.profile);
+  const { url, emailVerification, smsEmailAuth, login2Fa } = action;
+  const { googleAuth } = state;
+
+  // Email Verification After Registration
+  if (emailVerification) {
+    const data = yield call(resendEmail, url);
+    if (data) yield put(saveVerificationInfo(data));
+  }
+
+  // Little bottomsheet for sms/email otp
+  if (smsEmailAuth) yield call(googleAuth ? sendEmailOtp : sendOtp);
+
+  // Login 2FA
+  if (login2Fa) {
+    const data = yield call(resendEmail, url);
+    if (data) yield put(saveUserAndPassInfo(data));
+  }
 }
 
 function* logoutSaga() {
@@ -519,4 +548,5 @@ export default function* () {
   yield takeLatest('RESET_OTP', resetOtpSaga);
   yield takeLatest('LOGOUT', logoutSaga);
   yield takeLatest('VERIFY_ACCOUNT', verifyAccountSaga);
+  yield takeLatest('RESEND_SAGA', resendSaga);
 }

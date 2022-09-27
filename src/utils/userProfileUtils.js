@@ -108,7 +108,10 @@ export const verifyAccount = async (url, otp) => {
   return data?.data;
 };
 
-export const resendEmail = async (url) => await axios.get(`${url}&resend=true`);
+export const resendEmail = async (url) => {
+  const data = await axios.get(`${url}&resend=true`);
+  return data?.data;
+};
 
 export const loginOtp = async (otp, url) => {
   const data = await axios({
@@ -312,7 +315,7 @@ export const getOtpChangeToken = async (OTP, newOTPType) => {
   const data = await axios({
     method: 'GET',
     headers: { OTP, toast: false },
-    url: `${OTP_CHANGE_TOKEN}?newOTPType=${newOTPType}`,
+    url: OTP_CHANGE_TOKEN,
     params: { newOTPType },
   });
   if (data) return data.data;

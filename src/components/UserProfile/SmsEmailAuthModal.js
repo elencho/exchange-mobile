@@ -38,6 +38,8 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
 
   const hide = () => dispatch(action);
 
+  const resend = () => dispatch({ type: 'RESEND_SAGA', smsEmailAuth: true });
+
   const children = (
     <View style={styles.container}>
       <AppText style={styles.header} header>
@@ -58,7 +60,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
       </View>
 
       <AppText body style={styles.secondary}>
-        Didn't receive code? <PurpleText text="Resend" />
+        Didn't receive code? <PurpleText text="Resend" onPress={resend} />
       </AppText>
     </View>
   );

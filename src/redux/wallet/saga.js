@@ -234,7 +234,7 @@ function* wireWithdrawalSaga(action) {
 
   const params = yield select(wireWithdrawalParams);
   const status = yield call(wireWithdrawal, OTP, params);
-  if (status === 204) {
+  if (status >= 200 && status < 300) {
     if (google) yield put(toggleGoogleOtpModal(false));
     if (sms) yield put(toggleSmsAuthModal(false));
     if (email) yield put(toggleEmailAuthModal(false));

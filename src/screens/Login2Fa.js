@@ -48,6 +48,13 @@ export default function Login2Fa({ navigation }) {
     if (t === 'SMS') return 'SMS Authentication';
   };
 
+  const resend = () =>
+    dispatch({
+      type: 'RESEND_SAGA',
+      login2Fa: true,
+      url: userAndPassInfo.callbackUrl,
+    });
+
   return (
     <ImageBackground source={images.Background} style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={goBack}>
@@ -74,7 +81,7 @@ export default function Login2Fa({ navigation }) {
       <View style={styles.bottom}>
         {t !== 'TOTP' ? (
           <AppText style={[styles.secondary, { marginBottom: 20 }]}>
-            Didn't receive code? <PurpleText text="Resend" />
+            Didn't receive code? <PurpleText text="Resend" onPress={resend} />
           </AppText>
         ) : null}
         {t !== 'EMAIL' ? (

@@ -22,10 +22,11 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: vaxo_realuri,
+  credentials: vaxo_satesto,
   userAndPassInfo: {},
   forgotPassInfo: {
-    /* username: 'metro21@mailinator.com'  */
+    username: 'metro21@mailinator.com',
+    code: '',
   },
   forgotPassMode: false,
 
