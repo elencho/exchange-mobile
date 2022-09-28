@@ -25,16 +25,13 @@ export default function GoogleAuthModal() {
   const state = useSelector((state) => state);
   const {
     modals: { googleAuthModalVisible },
-    profile: { totpSecretObj, generalError, googleAuth },
+    profile: { totpSecretObj, generalError },
   } = state;
 
   const [key, setKey] = useState('');
   const isIos = Platform.OS === 'ios';
 
-  const enable = () => {
-    dispatch(activateGoogleOtp(key));
-    hide();
-  };
+  const enable = () => dispatch(activateGoogleOtp(key));
 
   const handleStore = () => {
     const androidLink =

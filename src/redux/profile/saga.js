@@ -462,9 +462,10 @@ function* activateGoogleSaga(action) {
   );
   const status = yield call(activateGoogleOtp, otpChangeToken, OTP, totpSecret);
 
-  if (status === 200) {
+  if (status >= 200 && status < 300) {
     yield put(saveOtpChangeToken(null));
     yield put(setCurrentSecurityAction(null));
+    yield put(toggleGoogleAuthModal(false));
     const token = yield call(refreshToken);
     if (typeof token === 'string') {
       yield put({ type: 'OTP_SAGA', token });
