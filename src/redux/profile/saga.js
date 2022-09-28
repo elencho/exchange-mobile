@@ -286,13 +286,13 @@ function* forgotPasswordCodeSaga() {
   const forgotPassInfo = yield select((state) => state.profile.forgotPassInfo);
   const data = yield call(forgotPasswordCode, url, forgotPassInfo?.username);
   if (data?.execution === 'RESET_PASSWORD_WITH_CODE') {
-    yield put({
-      type: 'SAVE_FORGOT_PASS_INFO',
-      forgotPassInfo: { ...forgotPassInfo, ...data },
-    });
     yield put(toggleLoading(false));
     yield put({ type: 'TOGGLE_TIMER', timerVisible: true });
   }
+  yield put({
+    type: 'SAVE_FORGOT_PASS_INFO',
+    forgotPassInfo: { ...forgotPassInfo, ...data },
+  });
 }
 
 // FORGOT PASSWORD ENTER CODE
@@ -303,14 +303,14 @@ function* forgotPassEnterCodeSaga(action) {
 
   const data = yield call(forgotPasswordEnterCode, callbackUrl, username, code);
   if (data?.execution === 'LOGIN_OTP') {
-    yield put({
-      type: 'SAVE_FORGOT_PASS_INFO',
-      forgotPassInfo: { ...forgotPassInfo, ...data },
-    });
     yield put(saveUserAndPassInfo(data));
     yield put({ type: 'TOGGLE_FORGOT_PASS_MODE', forgotPassMode: true });
     navigation.navigate('Login2Fa', { type: 'forgotPassword' });
   }
+  yield put({
+    type: 'SAVE_FORGOT_PASS_INFO',
+    forgotPassInfo: { ...forgotPassInfo, ...data },
+  });
 }
 
 // SET NEW PASSWORD SAGA
