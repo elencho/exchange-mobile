@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Clipboard from 'expo-clipboard';
 
 import { toggleGoogleAuthModal } from '../../redux/modals/actions';
-import { activateGoogleOtp } from '../../redux/profile/actions';
+import { activateGoogleOtp, setGoogleAuth } from '../../redux/profile/actions';
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
@@ -43,7 +43,11 @@ export default function GoogleAuthModal() {
       .catch((err) => console.log(err));
   };
 
-  const hide = () => dispatch(toggleGoogleAuthModal(false));
+  const hide = () => {
+    dispatch(toggleGoogleAuthModal(false));
+    dispatch(setGoogleAuth(false));
+  };
+
   const handleKey = (key) => setKey(key);
   const handleCopy = () =>
     Clipboard.setStringAsync(totpSecretObj.totpSecretEncoded);

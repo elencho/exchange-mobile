@@ -12,7 +12,11 @@ import {
   toggleEmailAuthModal,
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
-import { setGoogleAuth, setSmsAuth } from '../../redux/profile/actions';
+import {
+  setEmailAuth,
+  setGoogleAuth,
+  setSmsAuth,
+} from '../../redux/profile/actions';
 
 export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const dispatch = useDispatch();
@@ -28,15 +32,21 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
     type === 'SMS' ? toggleSmsAuthModal(false) : toggleEmailAuthModal(false);
   const visible = type === 'SMS' ? smsAuthModalVisible : emailAuthModalVisible;
   const cellCount = type === 'SMS' ? 4 : 6;
+  const email = currentSecurityAction === 'email';
+  const google = currentSecurityAction === 'google';
 
   const handleHide = () => {
-    if (value.length === cellCount && currentSecurityAction === 'email') {
+    if (value.length === cellCount && email) {
       dispatch(setSmsAuth(false));
       dispatch(setGoogleAuth(false));
     }
   };
 
-  const hide = () => dispatch(action);
+  const hide = () => {
+    dispatch(action);
+    if (email) dispatch(setEmailAuth(false));
+    if (google) dispatch(setGoogleAuth(false));
+  };
 
   const resend = () => dispatch({ type: 'RESEND_SAGA', smsEmailAuth: true });
 

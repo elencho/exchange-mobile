@@ -12,7 +12,11 @@ import {
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
 import PurpleText from '../PurpleText';
-import { setCurrentSecurityAction } from '../../redux/profile/actions';
+import {
+  setCurrentSecurityAction,
+  setEmailAuth,
+  setGoogleAuth,
+} from '../../redux/profile/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
@@ -30,6 +34,7 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
         if (emailAuth) dispatch(toggleEmailAuthModal(true));
         if (smsAuth) dispatch(toggleSmsAuthModal(true));
         dispatch(setCurrentSecurityAction('google'));
+        dispatch(setGoogleAuth(true));
         sendOtp();
         break;
       case 'E_mail_Auth':
@@ -39,6 +44,7 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
           sendOtp();
         }
         dispatch(setCurrentSecurityAction('email'));
+        dispatch(setEmailAuth(true));
 
         break;
       default:
