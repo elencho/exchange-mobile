@@ -20,7 +20,7 @@ import GeneralError from '../../components/GeneralError';
 import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
-import { setCard, setDepositProvider } from '../../redux/trade/actions';
+import { setCard, setDepositProvider, setFee } from '../../redux/trade/actions';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -71,11 +71,10 @@ export default function Deposit() {
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
-    }
-    if (ending === 'true') {
       dispatch(setDepositProvider(null));
       dispatch(setCard(null));
       dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
+      dispatch(setFee(null));
     }
   };
 
