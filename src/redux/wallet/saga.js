@@ -151,6 +151,7 @@ function* cryptoWithdrawalSaga(action) {
     yield put(chooseWhitelist({}));
     yield put(setWithdrawalAmount(null));
     yield put(setWithdrawalNote(null));
+    yield put(setFee(null));
   }
 }
 
@@ -240,6 +241,7 @@ function* wireWithdrawalSaga(action) {
     if (email) yield put(toggleEmailAuthModal(false));
     yield put(chooseTemplate({}));
     yield put(setIban(''));
+    yield put(setFee(null));
     yield put(setWithdrawalBank({}));
     yield put(setWithdrawalAmount(null));
     yield put(setWithdrawalNote(''));

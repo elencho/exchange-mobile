@@ -4,11 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import CodeInput from '../components/CodeInput';
 import {
-  toggleEmailAuthModal,
-  toggleGoogleOtpModal,
-  toggleSmsAuthModal,
-} from '../redux/modals/actions';
-import {
   activateEmailOtp,
   credentialsForEmail,
   credentialsForGoogle,
@@ -46,6 +41,9 @@ export default function TwoFaInput({
     wallet: { newWhitelist },
   } = state;
 
+  const email = currentSecurityAction === 'email';
+  const google = currentSecurityAction === 'google';
+
   useEffect(() => {
     if (value.length === cellCount) {
       if (registration)
@@ -64,19 +62,14 @@ export default function TwoFaInput({
         }
       }
 
-      if (currentSecurityAction === 'email') {
+      if (google) dispatch(credentialsForGoogle(value));
+      if (email) {
         if (smsAuthModalVisible || googleOtpModalVisible)
           dispatch(credentialsForEmail(value));
         if (emailAuthModalVisible) dispatch(activateEmailOtp(value));
       }
 
-      if (currentSecurityAction === 'google') {
-        dispatch(credentialsForGoogle(value));
-      }
-
-      if (login) {
-        dispatch(otpForLoginAction(value, navigation));
-      }
+      if (login) dispatch(otpForLoginAction(value, navigation));
 
       setValue('');
     }
