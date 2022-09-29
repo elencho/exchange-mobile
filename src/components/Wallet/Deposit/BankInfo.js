@@ -47,7 +47,7 @@ export default function BankInfo() {
   useEffect(() => {
     const obj = wireDepositInfo[language]?.find((o) => {
       if (!depositProvider) {
-        depositProviders.forEach((p) => {
+        depositProviders?.forEach((p) => {
           if (p.provider === o.iconName.split('.')[0]) {
             dispatch(setDepositProvider(p.provider));
             return o;

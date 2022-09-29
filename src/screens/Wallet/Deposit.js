@@ -75,6 +75,7 @@ export default function Deposit() {
       dispatch(setCard(null));
       dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
       dispatch(setFee(null));
+      dispatch({ type: 'BALANCE_SAGA' });
     }
   };
 

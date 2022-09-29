@@ -76,11 +76,11 @@ function* methodNetworkRestrictionSaga() {
     const r = currentBalanceObj?.restrictions;
 
     hasMultipleMethods = Object.keys(b).length > 1;
-    if (b.WALLET) hasMultipleNetworks = b.WALLET.length > 1;
-    if (b.WIRE) hasMultipleNetworks = b.WIRE.length > 1;
+    if (b?.WALLET) hasMultipleNetworks = b.WALLET?.length > 1;
+    if (b?.WIRE) hasMultipleNetworks = b.WIRE?.length > 1;
 
-    if (r.DEPOSIT) depositRestrictions = r.DEPOSIT;
-    if (r.WITHDRAWAL) withdrawalRestrictions = r.WITHDRAWAL;
+    if (r?.DEPOSIT) depositRestrictions = r.DEPOSIT;
+    if (r?.WITHDRAWAL) withdrawalRestrictions = r.WITHDRAWAL;
   });
 
   yield put(setHasMultipleMethods(hasMultipleMethods));
@@ -152,6 +152,7 @@ function* cryptoWithdrawalSaga(action) {
     yield put(setWithdrawalAmount(null));
     yield put(setWithdrawalNote(null));
     yield put(setFee(null));
+    yield put({ type: 'BALANCE_SAGA' });
   }
 }
 
@@ -249,6 +250,7 @@ function* wireWithdrawalSaga(action) {
     yield put(setNewTemplateName(''));
     yield put(setReceiverBank({}));
     yield put(withdrawalTemplatesAction());
+    yield put({ type: 'BALANCE_SAGA' });
   }
 }
 
@@ -256,6 +258,9 @@ function* cardWithdrawalSaga(action) {
   const { OTP } = action;
   const params = yield select(cardWithdrawalParams);
   const status = yield call(cardWithdrawal, OTP, params);
+  if (status >= 200 && status < 300) {
+    yield put({ type: 'BALANCE_SAGA' });
+  }
 }
 
 function* maxWithdrawalSaga() {

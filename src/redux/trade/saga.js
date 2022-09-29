@@ -104,8 +104,7 @@ function* fetchOffersSaga() {
 
   yield put(pairObjectSagaAction(offers));
 
-  const balance = yield call(fetchBalance);
-  yield put(setBalance(balance));
+  yield put({ type: 'BALANCE_SAGA' });
 
   yield put(depositProvidersSagaAction());
   yield put(cardsSagaAction());
@@ -113,6 +112,20 @@ function* fetchOffersSaga() {
   yield put({ type: 'CLASIFY_CURRENCIES' });
 
   yield put(setOffersLoading(false));
+}
+
+function* balanceSaga() {
+  const code = yield select((state) => state.transactions.code);
+
+  const balance = yield call(fetchBalance);
+  let obj;
+  if (balance) {
+    yield put(setBalance(balance));
+    balance?.balances?.forEach((b) => {
+      if (code === b.currencyCode) obj = b;
+    });
+    yield put(setCurrentBalanceObj(obj));
+  }
 }
 
 function* submitTradeSaga() {
@@ -162,6 +175,7 @@ export default function* () {
   yield takeLatest(actionTypes.FETCH_OFFERS, fetchOffersSaga);
   yield takeLatest(actionTypes.PAIR_OBJECT_SAGA, pairObjectSaga);
   yield takeLatest(actionTypes.DEPOSIT_PROVIDERS_SAGA, depositProvidersSaga);
+  yield takeLatest('BALANCE_SAGA', balanceSaga);
   yield takeLatest(actionTypes.CARDS_SAGA, cardsSaga);
   yield takeLatest(actionTypes.SUBMIT_TRADE, submitTradeSaga);
   yield takeLatest(actionTypes.FETCH_FEE, fetchFeeSaga);
