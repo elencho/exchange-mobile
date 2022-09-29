@@ -176,7 +176,10 @@ export const cardWithdrawal = async (OTP, params) => {
 };
 
 export const maxWithdrawal = async (params) => {
-  const data = await axios.get(MAX_WITHDRAWAL, { params });
+  const data = await axios.get(MAX_WITHDRAWAL, {
+    params,
+    headers: { toast: false },
+  });
   if (data) return data.data;
 };
 

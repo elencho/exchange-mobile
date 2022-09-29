@@ -35,7 +35,7 @@ export default function Withdrawal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { googleAuth, emailAuth, smsAuth, generalError },
+    profile: { googleAuth, emailAuth, smsAuth },
     trade: { currentBalanceObj, card },
     transactions: { code },
     wallet: {
@@ -138,12 +138,7 @@ export default function Withdrawal() {
           contentContainerStyle={{ flexGrow: hasRestriction ? 0 : 1 }}
         >
           <View style={styles.block}>
-            {generalError ? (
-              <View style={{ marginBottom: 16 }}>
-                <GeneralError />
-              </View>
-            ) : null}
-
+            <GeneralError style={{ marginBottom: 16 }} />
             <WalletCoinsDropdown />
             {(!isFiat || code === 'EUR') && <ChooseNetworkDropdown />}
             {isFiat && hasMultipleMethods && (

@@ -34,7 +34,7 @@ export default function PhoneNumberModal() {
   const state = useSelector((state) => state);
   const {
     modals: { phoneNumberModalVisible },
-    profile: { userInfo, countries, generalError },
+    profile: { userInfo, countries },
   } = state;
 
   const [userInfoVariable, setUserInfoVariable] = useState(null);
@@ -126,11 +126,7 @@ export default function PhoneNumberModal() {
       <>
         <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
           <TouchableOpacity activeOpacity={0.99}>
-            {generalError ? (
-              <View style={{ marginBottom: 25 }}>
-                <GeneralError />
-              </View>
-            ) : null}
+            <GeneralError style={{ marginBottom: 25 }} />
 
             <Pressable
               style={styles.dropdown}

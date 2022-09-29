@@ -25,6 +25,7 @@ export default function Login2Fa({ navigation }) {
   useEffect(() => {
     return () =>
       dispatch({ type: 'TOGGLE_FORGOT_PASS_MODE', forgotPassMode: false });
+    setValue('');
   }, []);
 
   const {

@@ -1,7 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 
 import store from '../redux/store';
-import { saveGeneralError } from '../redux/profile/actions';
 import { navigationRef } from '../navigation';
 import { refreshToken } from './userProfileUtils';
 import { setAppToast } from '../redux/modals/actions';
@@ -16,7 +15,10 @@ export default async (err) => {
 
     if (err.response.status > 401) {
       if (!state.modals.isToast) {
-        store.dispatch(saveGeneralError(err.response.data));
+        store.dispatch({
+          type: 'SAVE_GENERAL_ERROR',
+          generalError: err.response.data,
+        });
       } else {
         store.dispatch(
           setAppToast({

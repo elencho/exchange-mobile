@@ -32,7 +32,7 @@ export default function PersonalInfoModal() {
   const state = useSelector((state) => state);
   const {
     modals: { personalInfoModalVisible },
-    profile: { userInfo, countriesConstant, generalError },
+    profile: { userInfo, countriesConstant },
   } = state;
 
   useEffect(() => {
@@ -72,11 +72,7 @@ export default function PersonalInfoModal() {
     <>
       <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
         <TouchableOpacity activeOpacity={0.99}>
-          {generalError ? (
-            <View style={{ marginBottom: 15 }}>
-              <GeneralError />
-            </View>
-          ) : null}
+          <GeneralError style={{ marginBottom: 15 }} />
 
           <AppInput
             style={styles.inputContainer}

@@ -2,7 +2,6 @@ import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
 
 import store from '../redux/store';
-import { saveGeneralError } from '../redux/profile/actions';
 import handleError from './errorHandling';
 
 axios.interceptors.request.use(async (config) => {
@@ -22,10 +21,14 @@ axios.interceptors.request.use(async (config) => {
 axios.interceptors.response.use(
   (response) => {
     const state = store.getState();
-    state.profile.generalError && store.dispatch(saveGeneralError(null));
+    state.errors.generalError &&
+      store.dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
 
     response?.data?.errors?.length &&
-      store.dispatch(saveGeneralError(response?.data?.errors[0]));
+      store.dispatch({
+        type: 'SAVE_GENERAL_ERROR',
+        generalError: response?.data?.errors[0],
+      });
 
     return response;
   },

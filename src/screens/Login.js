@@ -19,7 +19,7 @@ export default function Login({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { credentials, generalError },
+    profile: { credentials },
   } = state;
 
   const typePassword = (t) =>
@@ -41,9 +41,7 @@ export default function Login({ navigation }) {
         Welcome to Cryptal
       </AppText>
 
-      <View style={styles.height42}>
-        {generalError ? <GeneralError /> : null}
-      </View>
+      <GeneralError style={styles.height42} />
 
       <AppInput
         placeholder="Enter Email"

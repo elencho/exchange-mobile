@@ -28,6 +28,8 @@ export default function ResetOtpInstructions({ navigation, route }) {
     SecureStore.getItemAsync('language')
       .then((l) => setUrl(`https://support.cryptal.com/hc/${l}`))
       .catch((err) => console.log(err));
+
+    return () => setValue('');
   }, []);
 
   return (

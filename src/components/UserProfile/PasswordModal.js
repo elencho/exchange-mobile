@@ -30,7 +30,6 @@ export default function PasswordModal() {
   const state = useSelector((state) => state);
   const {
     modals: { passwordModalVisible },
-    profile: { generalError },
   } = state;
 
   const initialState = {
@@ -159,11 +158,7 @@ export default function PasswordModal() {
       <>
         <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
           <TouchableOpacity activeOpacity={0.99}>
-            {generalError ? (
-              <View style={{ marginBottom: 15 }}>
-                <GeneralError />
-              </View>
-            ) : null}
+            <GeneralError style={{ marginBottom: 15 }} />
 
             <AppInput
               style={styles.inputContainer}

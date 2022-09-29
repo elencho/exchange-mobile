@@ -26,7 +26,7 @@ export default function ForgotPassword({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { forgotPassInfo, timerVisible, generalError },
+    profile: { forgotPassInfo, timerVisible },
     transactions: { loading },
   } = state;
 
@@ -107,7 +107,7 @@ export default function ForgotPassword({ navigation }) {
             password
           </AppText>
 
-          {generalError ? <GeneralError /> : null}
+          <GeneralError />
 
           <AppInput
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}

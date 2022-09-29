@@ -24,6 +24,7 @@ export default function GoogleOtpModal({ withdrawal, whitelist }) {
   const hide = () => {
     dispatch(toggleGoogleOtpModal(false));
     if (email) dispatch(setEmailAuth(false));
+    setValue('');
   };
 
   const children = (

@@ -34,7 +34,6 @@ export default function Deposit() {
     transactions: { code },
     trade: { currentBalanceObj },
     wallet: { cryptoAddress, hasMultipleMethods, depositRestriction, network },
-    profile: { generalError },
     modals: { webViewObj },
   } = state;
 
@@ -99,12 +98,7 @@ export default function Deposit() {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.block}>
-            {generalError ? (
-              <View style={{ marginBottom: 16 }}>
-                <GeneralError />
-              </View>
-            ) : null}
-
+            <GeneralError style={{ marginBottom: 16 }} />
             <WalletCoinsDropdown />
 
             {!isFiat || code === 'EUR' ? (

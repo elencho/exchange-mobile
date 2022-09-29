@@ -46,6 +46,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
     dispatch(action);
     if (email) dispatch(setEmailAuth(false));
     if (google) dispatch(setGoogleAuth(false));
+    setValue('');
   };
 
   const resend = () => dispatch({ type: 'RESEND_SAGA', smsEmailAuth: true });

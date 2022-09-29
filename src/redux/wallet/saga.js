@@ -267,8 +267,10 @@ function* maxWithdrawalSaga() {
   const params = yield select(maxWithdrawalParams);
   const max = yield call(maxWithdrawal, params);
 
-  yield put(setWithdrawalAmount(max?.amount));
-  yield put(setFee(max));
+  if (max) {
+    yield put(setWithdrawalAmount(max?.amount));
+    yield put(setFee(max));
+  }
 }
 
 function* deleteTemplatesSaga(action) {

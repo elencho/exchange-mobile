@@ -22,8 +22,11 @@ import IdentityModal from './IdentityModal';
 
 export default function Personal() {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.profile);
-  const { userInfo, language, generalError } = state;
+  const state = useSelector((state) => state);
+  const {
+    profile: { userInfo, language },
+    errors: { generalError },
+  } = state;
   const isVerified = userInfo?.userStatus === 'VERIFIED';
 
   const [switcherValue, setSwitcherValue] = useState(userInfo.emailUpdates);

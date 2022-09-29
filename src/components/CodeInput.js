@@ -6,33 +6,36 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import AppText from './AppText';
 import colors from '../constants/colors';
 import GeneralError from './GeneralError';
 
 export default function CodeInput({ cellCount = 6, value, setValue }) {
-  const generalError = useSelector((state) => state.profile.generalError);
+  const dispatch = useDispatch();
   const ref = useBlurOnFulfill({ value, cellCount });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
 
+  const handleValue = (value) => {
+    setValue(value);
+    dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
+  };
+
   return (
     <>
-      {generalError ? (
-        <View style={{ marginBottom: 25, marginTop: -10 }}>
-          <GeneralError />
-        </View>
-      ) : null}
+      <View>
+        <GeneralError style={{ marginBottom: 25, marginTop: -10 }} />
+      </View>
 
       <CodeField
         ref={ref}
         {...props}
         value={value}
-        onChangeText={setValue}
+        onChangeText={handleValue}
         cellCount={cellCount}
         keyboardType="number-pad"
         textContentType="oneTimeCode"

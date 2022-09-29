@@ -36,7 +36,7 @@ export default function BuySellModal() {
 
   const {
     modals: { buySellModalVisible, webViewObj },
-    profile: { generalError },
+    errors: { generalError },
     trade: {
       Balance_Card,
       tradeType,
@@ -143,11 +143,7 @@ export default function BuySellModal() {
 
         {tradeType === 'Buy' && hasEcommerce() && <BalanceCardSwitcher />}
 
-        {generalError ? (
-          <View style={{ marginTop: 16 }}>
-            <GeneralError />
-          </View>
-        ) : null}
+        <GeneralError style={{ marginTop: 16 }} />
 
         <ScrollView nestedScrollEnabled>
           <TouchableOpacity activeOpacity={0.99}>

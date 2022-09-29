@@ -21,7 +21,6 @@ import SetNewPasswordScreen from '../screens/SetNewPassword';
 import CardVerificationOneScreen from '../screens/CardVerificationOne';
 import CardVerificationTwoScreen from '../screens/CardVerificationTwo';
 
-import { saveGeneralError } from '../redux/profile/actions';
 // import ExerciseScreen from '../screens/Exercise';
 
 const Stack = createNativeStackNavigator();
@@ -31,13 +30,14 @@ export default function Navigator() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { generalError },
+    errors: { generalError },
   } = state;
 
   BackHandler.addEventListener('hardwareBackPress', () => true);
 
   const onStateChange = () => {
-    if (generalError) dispatch(saveGeneralError(null));
+    if (generalError)
+      dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };
 
   return (

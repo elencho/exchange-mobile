@@ -23,7 +23,6 @@ import { sendOtp } from '../../../utils/userProfileUtils';
 import GeneralError from '../../GeneralError';
 import SmsEmailAuthModal from '../../UserProfile/SmsEmailAuthModal';
 import GoogleOtpModal from '../../UserProfile/GoogleOtpModal';
-import { saveGeneralError } from '../../../redux/profile/actions';
 
 export default function AddEditWhitelistModal({ add, edit }) {
   const dispatch = useDispatch();
@@ -31,14 +30,14 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const {
     modals: { addWhitelistModalVisble, editWhitelistModalVisble },
     wallet: { newWhitelist, currentWhitelistObj, whitelist, network },
-    profile: { googleAuth, emailAuth, smsAuth, generalError },
+    profile: { googleAuth, emailAuth, smsAuth },
     trade: { currentBalanceObj },
   } = state;
 
   const hide = () => {
     if (add) dispatch(toggleAddWhitelistModal(false));
     if (edit) dispatch(toggleEditWhitelistModal(false));
-    dispatch(saveGeneralError(null));
+    dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };
 
   const handleAdd = () => {
@@ -88,11 +87,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
   const children = (
     <>
-      {generalError ? (
-        <View style={{ marginBottom: 10 }}>
-          <GeneralError />
-        </View>
-      ) : null}
+      <GeneralError style={{ marginBottom: 10 }} />
 
       {networks() && (
         <View style={styles.input}>

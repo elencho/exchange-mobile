@@ -13,7 +13,6 @@ import { deleteCard } from '../../../utils/walletUtils';
 import { saveCards } from '../../../redux/trade/actions';
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
-import { saveGeneralError } from '../../../redux/profile/actions';
 
 export default function DeleteCardModal() {
   const dispatch = useDispatch();
@@ -21,12 +20,11 @@ export default function DeleteCardModal() {
   const {
     modals: { cardDeleteModalInfo },
     trade: { cards },
-    profile: { generalError },
   } = state;
 
   const hide = () => {
     dispatch(setCardDeleteModalInfo({}));
-    dispatch(saveGeneralError(null));
+    dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };
 
   const id = cardDeleteModalInfo?.id;
@@ -49,11 +47,7 @@ export default function DeleteCardModal() {
         Delete Card
       </AppText>
 
-      {generalError ? (
-        <View style={{ marginTop: 15 }}>
-          <GeneralError />
-        </View>
-      ) : null}
+      <GeneralError style={{ marginTop: 15 }} />
 
       <AppText style={styles.secondary}>
         Are you sure you want to delete this card?

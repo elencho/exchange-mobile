@@ -31,7 +31,7 @@ import GeneralError from '../components/GeneralError';
 export default function Registration({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.profile);
-  const { registrationInputs, generalError } = state;
+  const { registrationInputs } = state;
 
   useFocusEffect(
     useCallback(() => {
@@ -94,11 +94,7 @@ export default function Registration({ navigation }) {
 
         <PersonalCompanySwitcher />
 
-        {generalError ? (
-          <View style={{ marginTop: 20, marginBottom: -15 }}>
-            <GeneralError />
-          </View>
-        ) : null}
+        <GeneralError style={{ marginTop: 20, marginBottom: -15 }} />
 
         <RegistrationInputs />
         <CheckMarks />

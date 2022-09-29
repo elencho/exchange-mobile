@@ -23,7 +23,6 @@ export default function Whitelist() {
   const {
     transactions: { code },
     wallet: { whitelist, hasWhitelist },
-    profile: { generalError },
   } = state;
 
   useEffect(() => {
@@ -35,11 +34,7 @@ export default function Whitelist() {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.block}>
-        {generalError ? (
-          <View style={{ marginBottom: 16 }}>
-            <GeneralError />
-          </View>
-        ) : null}
+        <GeneralError style={{ marginBottom: 16 }} />
 
         <WalletCoinsDropdown />
         <AppText subtext style={styles.secondary}>

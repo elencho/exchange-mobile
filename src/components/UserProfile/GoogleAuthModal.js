@@ -25,7 +25,7 @@ export default function GoogleAuthModal() {
   const state = useSelector((state) => state);
   const {
     modals: { googleAuthModalVisible },
-    profile: { totpSecretObj, generalError },
+    profile: { totpSecretObj },
   } = state;
 
   const [key, setKey] = useState('');
@@ -48,7 +48,10 @@ export default function GoogleAuthModal() {
     dispatch(setGoogleAuth(false));
   };
 
-  const handleKey = (key) => setKey(key);
+  const handleKey = (key) => {
+    setKey(key);
+    dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
+  };
   const handleCopy = () =>
     Clipboard.setStringAsync(totpSecretObj.totpSecretEncoded);
 
@@ -79,11 +82,7 @@ export default function GoogleAuthModal() {
         </TouchableOpacity>
       </View>
 
-      {generalError ? (
-        <View style={{ marginTop: 25 }}>
-          <GeneralError />
-        </View>
-      ) : null}
+      <GeneralError style={{ marginTop: 25 }} />
 
       <View style={styles.block}>
         <AppText subtext style={styles.subtext}>

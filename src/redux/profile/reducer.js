@@ -16,7 +16,6 @@ const sali_realuri = {
 const baneta_realuri = { login: 'ibanet@cryptx.com', password: 'Malina125$' };
 
 const INITIAL_STATE = {
-  generalError: null,
   timerVisible: false,
 
   // Login
@@ -65,7 +64,6 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   const {
-    generalError,
     pkceInfo,
     credentials,
     userAndPassInfo,
@@ -90,11 +88,6 @@ export default (state = INITIAL_STATE, action) => {
     totpSecretObj,
   } = action;
   switch (action.type) {
-    case actionTypes.SAVE_GENERAL_ERROR:
-      return {
-        ...state,
-        generalError,
-      };
     case actionTypes.SAVE_PKCE_INFO:
       return {
         ...state,

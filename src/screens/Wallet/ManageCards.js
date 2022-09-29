@@ -19,8 +19,6 @@ import Card from '../../components/Wallet/ManageCards/Card';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleAddCardModal } from '../../redux/modals/actions';
-import { cardVerificationToken } from '../../utils/userProfileUtils';
-import sumsubHtmlPattern from '../../constants/sumsubHtml.js';
 import CardAddStatusModal from '../../components/Wallet/ManageCards/CardAddStatusModal';
 import DeleteCardModal from '../../components/Wallet/ManageCards/DeleteCardModal';
 import { cardsSagaAction } from '../../redux/trade/actions';
@@ -29,7 +27,6 @@ export default function ManageCards() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { generalError },
     transactions: { code },
     modals: { webViewObj },
     trade: { cards, cardsLoading },
@@ -44,12 +41,7 @@ export default function ManageCards() {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.block}>
-        {generalError ? (
-          <View style={{ marginBottom: 16 }}>
-            <GeneralError />
-          </View>
-        ) : null}
-
+        <GeneralError style={{ marginBottom: 16 }} />
         <WalletCoinsDropdown />
       </View>
 

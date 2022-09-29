@@ -1,6 +1,4 @@
 export const actionTypes = {
-  SAVE_GENERAL_ERROR: 'SAVE_GENERAL_ERROR',
-
   // LOGIN
   SAVE_PKCE_INFO: 'SAVE_PKCE_INFO',
   SAVE_LOGIN_START_INFO: 'SAVE_LOGIN_START_INFO',
@@ -51,11 +49,6 @@ export const actionTypes = {
   CREDENTIALS_FOR_GOOGLE: 'CREDENTIALS_FOR_GOOGLE',
   ACTIVATE_GOOGLE_OTP: 'ACTIVATE_GOOGLE_OTP',
 };
-
-export const saveGeneralError = (generalError) => ({
-  type: actionTypes.SAVE_GENERAL_ERROR,
-  generalError,
-});
 
 // Login
 export const savePkceInfo = (pkceInfo) => ({
