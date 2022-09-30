@@ -134,9 +134,7 @@ export default function Withdrawal() {
   return (
     <>
       {!loading ? (
-        <ScrollView
-          contentContainerStyle={{ flexGrow: hasRestriction ? 0 : 1 }}
-        >
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.block}>
             <GeneralError style={{ marginBottom: 16 }} />
             <WalletCoinsDropdown />

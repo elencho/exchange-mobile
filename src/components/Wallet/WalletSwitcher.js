@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import { setWalletTab } from '../../redux/wallet/actions';
+import { setNetwork, setWalletTab } from '../../redux/wallet/actions';
 
 export default function WalletSwitcher() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { walletTab },
+    wallet: { walletTab, network },
     trade: { currentBalanceObj },
   } = state;
 
@@ -28,9 +28,13 @@ export default function WalletSwitcher() {
     } else {
       setSwitchers(array);
     }
-
     dispatch({ type: 'METHOD_NETWORK_RESTRICTION' });
   }, [currentBalanceObj, walletTab]);
+
+  const handleWalletTab = (f) => {
+    dispatch(setWalletTab(f));
+    network === 'ECOMMERCE' && dispatch(setNetwork('SWIFT'));
+  };
 
   const buttonStyle = (f) => {
     return {
@@ -54,7 +58,7 @@ export default function WalletSwitcher() {
         <Pressable
           key={f}
           style={[styles.button, buttonStyle(f)]}
-          onPress={() => dispatch(setWalletTab(f))}
+          onPress={() => handleWalletTab(f)}
         >
           <AppText body style={textStyle(f)}>
             {f}
