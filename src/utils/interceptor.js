@@ -24,11 +24,13 @@ axios.interceptors.response.use(
     state.errors.generalError &&
       store.dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
 
-    response?.data?.errors?.length &&
-      store.dispatch({
-        type: 'SAVE_GENERAL_ERROR',
-        generalError: response?.data?.errors[0],
-      });
+    setTimeout(() => {
+      response?.data?.errors?.length &&
+        store.dispatch({
+          type: 'SAVE_GENERAL_ERROR',
+          generalError: response?.data?.errors[0],
+        });
+    }, 500);
 
     return response;
   },

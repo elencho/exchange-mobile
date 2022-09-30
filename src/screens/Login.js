@@ -41,7 +41,9 @@ export default function Login({ navigation }) {
         Welcome to Cryptal
       </AppText>
 
-      <GeneralError style={styles.height42} />
+      <View style={styles.height42}>
+        <GeneralError />
+      </View>
 
       <AppInput
         placeholder="Enter Email"

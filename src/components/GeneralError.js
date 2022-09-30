@@ -15,7 +15,6 @@ function GeneralError({ style }) {
   const profile = useSelector((state) => state.profile);
 
   useEffect(() => {
-    console.log('aaaa');
     if (generalError) {
       dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
     }
