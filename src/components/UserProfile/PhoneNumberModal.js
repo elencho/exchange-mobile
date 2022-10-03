@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -38,39 +38,16 @@ export default function PhoneNumberModal() {
   } = state;
 
   const [userInfoVariable, setUserInfoVariable] = useState(null);
+  const [code, setCode] = useState(null);
+
   useEffect(() => {
-    setUserInfoVariable(userInfo);
-  }, []);
+    if (phoneNumberModalVisible) setUserInfoVariable(userInfo);
+  }, [phoneNumberModalVisible]);
 
-  const initialState = {
-    phoneNumber: userInfo.phoneNumber,
-    verificationNumber: '',
-  };
-
-  const reducer = (state, action) => {
-    const { type, verificationNumber, phoneNumber } = action;
-    switch (type) {
-      case 'phoneNumber':
-        return { ...state, phoneNumber };
-      case 'verificationNumber':
-        return { ...state, verificationNumber };
-      case 'hide':
-        return initialState;
-      default:
-        throw new Error();
-    }
-  };
-
-  const [phoneNumberState, dispatchToReducer] = useReducer(
-    reducer,
-    initialState
-  );
-  const disabled = !(
-    phoneNumberState.phoneNumber && phoneNumberState.verificationNumber
-  );
+  const disabled = !(userInfo.phoneNumber && code);
 
   const hide = () => {
-    dispatchToReducer({ type: 'hide' });
+    setCode(null);
     dispatch(saveUserInfo(userInfoVariable));
     dispatch(togglePhoneNumberModal(false));
   };
@@ -78,30 +55,28 @@ export default function PhoneNumberModal() {
   const validate = (number) => /^\d+$/.test(number) || !number;
 
   const handlePhoneNumber = (phoneNumber) => {
-    if (validate(phoneNumber)) {
-      dispatchToReducer({ type: 'phoneNumber', phoneNumber });
-    }
+    if (validate(phoneNumber))
+      dispatch(saveUserInfo({ ...userInfo, phoneNumber }));
   };
 
-  const handleVerificationNumber = (verificationNumber) => {
-    if (validate(verificationNumber)) {
-      dispatchToReducer({ type: 'verificationNumber', verificationNumber });
-    }
+  const handleVerificationCode = (code) => {
+    if (validate(code)) setCode(code);
   };
 
   const handleSend = () => {
-    const { phoneNumber } = phoneNumberState;
-    dispatch(sendVerificationCode(phoneNumber, userInfo.phoneCountry));
+    dispatch(
+      sendVerificationCode(userInfo?.phoneNumber, userInfo?.phoneCountry)
+    );
   };
 
   const handleSave = () => {
-    const { phoneNumber, verificationNumber } = phoneNumberState;
     dispatch(
       updatePhoneNumber(
-        phoneNumber,
-        userInfo.phoneCountry,
-        verificationNumber,
-        hide
+        userInfo?.phoneNumber,
+        userInfo?.phoneCountry,
+        code,
+        setCode,
+        setUserInfoVariable
       )
     );
   };
@@ -121,7 +96,6 @@ export default function PhoneNumberModal() {
   };
 
   const children = () => {
-    const { phoneNumber, verificationNumber } = phoneNumberState;
     return (
       <>
         <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
@@ -149,14 +123,14 @@ export default function PhoneNumberModal() {
               label="Phone Number"
               right={send}
               onChangeText={(text) => handlePhoneNumber(text)}
-              value={phoneNumber}
+              value={userInfo?.phoneNumber}
               keyboardType="number-pad"
             />
             <AppInput
               style={styles.inputContainer}
               label="Verification Code"
-              onChangeText={(text) => handleVerificationNumber(text)}
-              value={verificationNumber}
+              onChangeText={handleVerificationCode}
+              value={code}
               keyboardType="number-pad"
             />
           </TouchableOpacity>

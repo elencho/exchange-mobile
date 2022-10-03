@@ -382,7 +382,13 @@ function* verifyPhoneNumberSaga(action) {
 
 //  UPDATE PHONE NUMBER
 function* updatePhoneNumberSaga(action) {
-  const { phoneNumber, phoneCountry, verificationNumber, hide } = action;
+  const {
+    phoneNumber,
+    phoneCountry,
+    verificationNumber,
+    setCode,
+    setUserInfoVariable,
+  } = action;
   const data = yield call(
     updatePhoneNumber,
     phoneNumber,
@@ -390,7 +396,10 @@ function* updatePhoneNumberSaga(action) {
     verificationNumber
   );
   if (data?.status >= 200 && data?.status < 300) {
-    yield call(hide);
+    yield call(() => setCode(null));
+    yield call(() => setUserInfoVariable(null));
+    yield put(fetchUserInfoAction());
+    yield put(togglePhoneNumberModal(false));
   }
 }
 

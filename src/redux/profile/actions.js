@@ -189,13 +189,15 @@ export const updatePhoneNumber = (
   phoneNumber,
   phoneCountry,
   verificationNumber,
-  hide
+  setCode,
+  setUserInfoVariable
 ) => ({
   type: actionTypes.UPDATE_PHONE_NUMBER,
   phoneNumber,
   phoneCountry,
   verificationNumber,
-  hide,
+  setCode,
+  setUserInfoVariable,
 });
 
 // 2FA SAGAS
