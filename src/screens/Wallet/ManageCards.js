@@ -20,7 +20,7 @@ import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleAddCardModal } from '../../redux/modals/actions';
 import CardAddStatusModal from '../../components/Wallet/ManageCards/CardAddStatusModal';
-import DeleteCardModal from '../../components/Wallet/ManageCards/DeleteCardModal';
+import DeleteModal from '../../components/Wallet/ManageCards/DeleteModal';
 import { cardsSagaAction } from '../../redux/trade/actions';
 
 export default function ManageCards() {
@@ -68,7 +68,7 @@ export default function ManageCards() {
                 id={c.id}
               />
             ))}
-            <DeleteCardModal />
+            <DeleteModal type="card" />
           </ScrollView>
 
           {cards?.length ? (

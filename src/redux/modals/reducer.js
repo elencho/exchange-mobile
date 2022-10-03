@@ -52,7 +52,7 @@ const INITIAL_STATE = {
   templatesModalVisible: false,
   addCardModalVisible: false,
   cardAddStatusModalInfo: null,
-  cardDeleteModalInfo: {},
+  deleteModalInfo: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -70,7 +70,7 @@ export default (state = INITIAL_STATE, action) => {
     cryptoModalVisible,
     fiatModalVisible,
     cardAddStatusModalInfo,
-    cardDeleteModalInfo,
+    deleteModalInfo,
     personalInfoModalVisible,
     passwordModalVisible,
     phoneNumberModalVisible,
@@ -171,10 +171,10 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         cardAddStatusModalInfo,
       };
-    case actionTypes.CARD_DELETE_MODAL_INFO:
+    case actionTypes.DELETE_MODAL_INFO:
       return {
         ...state,
-        cardDeleteModalInfo,
+        deleteModalInfo,
       };
     case actionTypes.PERONAL_INFO_MODAL:
       return {

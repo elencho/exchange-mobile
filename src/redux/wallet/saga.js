@@ -17,6 +17,7 @@ import {
   wireWithdrawal,
 } from '../../utils/walletUtils';
 import {
+  setDeleteModalInfo,
   toggleAddWhitelistModal,
   toggleEditWhitelistModal,
   toggleEmailAuthModal,
@@ -296,8 +297,9 @@ function* maxWithdrawalSaga() {
 function* deleteTemplatesSaga(action) {
   const { id } = action;
   const status = yield call(deleteTemplates, id);
-  if (status === 200) {
+  if (status >= 200 && status < 300) {
     yield put(withdrawalTemplatesAction());
+    yield put(setDeleteModalInfo({}));
   }
 }
 

@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
-import { setCardDeleteModalInfo } from '../../../redux/modals/actions';
+import { setDeleteModalInfo } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
 
@@ -16,8 +16,7 @@ export default function Card({ name, cardNumber, network, status, id }) {
 
   const isVerified = status === 'VERIFIED';
 
-  const openModal = () =>
-    dispatch(setCardDeleteModalInfo({ id, visible: true }));
+  const openModal = () => dispatch(setDeleteModalInfo({ id, visible: true }));
 
   return (
     <View style={styles.container}>

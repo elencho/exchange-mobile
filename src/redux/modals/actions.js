@@ -33,7 +33,7 @@ export const actionTypes = {
   TEMPLATES_MODAL: 'TEMPLATES_MODAL',
   TOGGLE_ADD_CARD_MODAL: 'TOGGLE_ADD_CARD_MODAL',
   CARD_ADD_STATUS_MODAL_INFO: 'CARD_ADD_STATUS_MODAL_INFO',
-  CARD_DELETE_MODAL_INFO: 'CARD_DELETE_MODAL_INFO',
+  DELETE_MODAL_INFO: 'DELETE_MODAL_INFO',
 
   SET_APP_TOAST: 'SET_APP_TOAST',
   SET_TOAST_OBJ: 'SET_TOAST_OBJ',
@@ -173,9 +173,9 @@ export const setCardAddStatusModalInfo = (cardAddStatusModalInfo) => ({
   type: actionTypes.CARD_ADD_STATUS_MODAL_INFO,
   cardAddStatusModalInfo,
 });
-export const setCardDeleteModalInfo = (cardDeleteModalInfo) => ({
-  type: actionTypes.CARD_DELETE_MODAL_INFO,
-  cardDeleteModalInfo,
+export const setDeleteModalInfo = (deleteModalInfo) => ({
+  type: actionTypes.DELETE_MODAL_INFO,
+  deleteModalInfo,
 });
 
 export const setAppToast = (appToastObj) => ({

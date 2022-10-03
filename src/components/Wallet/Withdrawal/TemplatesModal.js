@@ -4,16 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
-import { toggleTemplatesModal } from '../../../redux/modals/actions';
+import {
+  setDeleteModalInfo,
+  toggleTemplatesModal,
+} from '../../../redux/modals/actions';
 import {
   chooseTemplate,
-  deleteTemplatesAction,
   setIban,
   setWithdrawalBank,
 } from '../../../redux/wallet/actions';
 import AppModal from '../../AppModal';
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
+import DeleteModal from '../ManageCards/DeleteModal';
 
 export default function TemplatesModal() {
   const dispatch = useDispatch();
@@ -30,7 +33,10 @@ export default function TemplatesModal() {
 
   const hide = () => dispatch(toggleTemplatesModal(false));
 
-  const deleteTemplate = (id) => dispatch(deleteTemplatesAction(id));
+  const deleteTemplate = (id) => {
+    dispatch(setDeleteModalInfo({ id, visible: true }));
+  };
+
   const choose = (t) => {
     dispatch(chooseTemplate(t));
     dispatch(setIban(t.iban));
@@ -79,6 +85,8 @@ export default function TemplatesModal() {
           <Image source={images.Add} />
         </Pressable>
       </View>
+
+      <DeleteModal type="template" />
     </>
   );
 

@@ -8,34 +8,38 @@ import AppButton from '../../AppButton';
 import PurpleText from '../../PurpleText';
 import GeneralError from '../../GeneralError';
 
-import { setCardDeleteModalInfo } from '../../../redux/modals/actions';
+import { setDeleteModalInfo } from '../../../redux/modals/actions';
 import { deleteCard } from '../../../utils/walletUtils';
 import { saveCards } from '../../../redux/trade/actions';
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
+import { deleteTemplatesAction } from '../../../redux/wallet/actions';
 
-export default function DeleteCardModal() {
+export default function DeleteModal({ type }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    modals: { cardDeleteModalInfo },
+    modals: { deleteModalInfo },
     trade: { cards },
   } = state;
 
-  const hide = () => {
-    dispatch(setCardDeleteModalInfo({}));
-    dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
-  };
+  const hide = () => dispatch(setDeleteModalInfo({}));
 
-  const id = cardDeleteModalInfo?.id;
-  const visible = cardDeleteModalInfo?.visible;
+  const id = deleteModalInfo?.id;
+  const visible = deleteModalInfo?.visible;
 
   const handleDelete = async () => {
-    const status = await deleteCard(id);
-    if (status >= 200 || status < 300) {
-      const updatedCards = cards.filter((c) => c.id !== id);
-      dispatch(saveCards(updatedCards));
-      hide();
+    if (type === 'card') {
+      const status = await deleteCard(id);
+      if (status >= 200 || status < 300) {
+        const updatedCards = cards.filter((c) => c.id !== id);
+        dispatch(saveCards(updatedCards));
+        hide();
+      }
+    }
+
+    if (type === 'template') {
+      dispatch(deleteTemplatesAction(id));
     }
   };
 
@@ -44,13 +48,13 @@ export default function DeleteCardModal() {
       <Image source={images.Delete_Card} style={{ marginVertical: 20 }} />
 
       <AppText header style={styles.white}>
-        Delete Card
+        Delete {type}
       </AppText>
 
       <GeneralError style={{ marginTop: 15 }} />
 
       <AppText style={styles.secondary}>
-        Are you sure you want to delete this card?
+        Are you sure you want to delete this {type}?
       </AppText>
 
       <AppButton text="Delete" onPress={handleDelete} style={styles.button} />
