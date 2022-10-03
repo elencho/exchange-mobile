@@ -8,7 +8,6 @@ import {
   Linking,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Clipboard from 'expo-clipboard';
 
 import { toggleGoogleAuthModal } from '../../redux/modals/actions';
 import { activateGoogleOtp, setGoogleAuth } from '../../redux/profile/actions';
@@ -19,6 +18,7 @@ import PurpleText from '../PurpleText';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import GeneralError from '../GeneralError';
+import { copyToClipboard } from '../../utils/copyToClipboard';
 
 export default function GoogleAuthModal() {
   const dispatch = useDispatch();
@@ -52,8 +52,7 @@ export default function GoogleAuthModal() {
     setKey(key);
     dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };
-  const handleCopy = () =>
-    Clipboard.setStringAsync(totpSecretObj.totpSecretEncoded);
+  const handleCopy = () => copyToClipboard(totpSecretObj.totpSecretEncoded);
 
   const right = (
     <View style={styles.row}>

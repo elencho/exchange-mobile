@@ -1,13 +1,13 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Clipboard from 'expo-clipboard';
 
 import AppModal from '../../AppModal';
 import QrCode from '../../QrCode';
 import { toggleQrAddressModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import images from '../../../constants/images';
+import { copyToClipboard } from '../../../utils/copyToClipboard';
 
 export default function AddressQrModal() {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ export default function AddressQrModal() {
   } = state;
 
   const hide = () => dispatch(toggleQrAddressModal(false));
-  const copy = () => Clipboard.setString(cryptoAddress.address);
+  const copy = () => copyToClipboard(cryptoAddress.address);
 
   const children = (
     <View style={styles.container}>

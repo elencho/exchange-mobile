@@ -8,7 +8,6 @@ import {
   View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Clipboard from 'expo-clipboard';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
@@ -17,9 +16,10 @@ import AppText from '../../AppText';
 import WireBanksModal from './WireBanksModal';
 import { setDepositProvider } from '../../../redux/trade/actions';
 import { ICONS_URL_PNG } from '../../../constants/api';
+import { copyToClipboard } from '../../../utils/copyToClipboard';
 
 const InfoRow = ({ title, text }) => {
-  const copy = () => Clipboard.setStringAsync(text).then(() => null);
+  const copy = () => copyToClipboard(text);
 
   return (
     <TouchableOpacity style={styles.infoRow} onPress={copy}>

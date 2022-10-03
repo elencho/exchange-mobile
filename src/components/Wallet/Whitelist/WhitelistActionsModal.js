@@ -1,7 +1,6 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Clipboard from 'expo-clipboard';
 
 import AppModal from '../../AppModal';
 import {
@@ -15,6 +14,7 @@ import images from '../../../constants/images';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import { sendOtp } from '../../../utils/userProfileUtils';
+import { copyToClipboard } from '../../../utils/copyToClipboard';
 
 export default function WhitelistActionsModal() {
   const dispatch = useDispatch();
@@ -46,10 +46,10 @@ export default function WhitelistActionsModal() {
         if (!googleAuth) sendOtp();
         break;
       case 'Copy Address':
-        Clipboard.setStringAsync(currentWhitelistObj.address);
+        copyToClipboard(currentWhitelistObj.address);
         break;
       case 'Copy Tag':
-        Clipboard.setStringAsync(currentWhitelistObj.tag);
+        copyToClipboard(currentWhitelistObj.tag);
         break;
       default:
         break;

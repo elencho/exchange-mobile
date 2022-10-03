@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Clipboard from 'expo-clipboard';
 import * as Linking from 'expo-linking';
 
 import AppText from '../AppText';
@@ -12,6 +11,7 @@ import AppModal from '../AppModal';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
 import images from '../../constants/images';
 import { COINS_URL_PNG } from '../../constants/api';
+import { copyToClipboard } from '../../utils/copyToClipboard';
 
 function TransactionModal({ transactions, trades }) {
   const dispatch = useDispatch();
@@ -57,12 +57,8 @@ function TransactionModal({ transactions, trades }) {
     Linking.openURL(pattern + recipient);
   };
 
-  const copyId = () => {
-    Clipboard.setStringAsync(transactionInfo);
-  };
-  const copyDestination = () => {
-    Clipboard.setStringAsync(recipient);
-  };
+  const copyId = () => copyToClipboard(transactionInfo);
+  const copyDestination = () => copyToClipboard(recipient);
 
   const hide = () => {
     dispatch(toggleTransactionDetails(false));

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Clipboard from 'expo-clipboard';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import AppText from '../../AppText';
 import { toggleQrAddressModal } from '../../../redux/modals/actions';
 import AddressQrModal from './AddressQrModal';
+import { copyToClipboard } from '../../../utils/copyToClipboard';
 
 export default function AddressBlock() {
   const dispatch = useDispatch();
@@ -16,9 +16,9 @@ export default function AddressBlock() {
     wallet: { cryptoAddress },
   } = state;
 
-  const copyAddress = () => Clipboard.setString(cryptoAddress.address);
+  const copyAddress = () => copyToClipboard(cryptoAddress.address);
   const showQr = () => dispatch(toggleQrAddressModal(true));
-  const copyTag = () => Clipboard.setString(cryptoAddress.tag);
+  const copyTag = () => copyToClipboard(cryptoAddress.tag);
 
   return (
     <View style={styles.container}>

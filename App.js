@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { Platform, StyleSheet, SafeAreaView } from 'react-native';
+import { RootSiblingParent } from 'react-native-root-siblings';
 import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
@@ -41,7 +42,9 @@ export default function App() {
       {iphone && <SafeAreaView style={styles.statusBar} />}
       <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
         <AppToast />
-        <Navigator />
+        <RootSiblingParent>
+          <Navigator />
+        </RootSiblingParent>
       </SafeAreaView>
       {iphone && <SafeAreaView style={styles.statusBar} />}
     </Provider>
