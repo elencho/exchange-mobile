@@ -28,7 +28,7 @@ export default function Balance({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { walletTab },
+    wallet: { walletTab, network },
     trade: { tradesLoading, offersLoading },
   } = state;
 
@@ -37,8 +37,10 @@ export default function Balance({ navigation }) {
   const onRefresh = () => {
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
-    dispatch(setDepositProvider(null));
     dispatch(setCard(null));
+    if (walletTab !== 'Deposit' && network !== 'SWIFT') {
+      dispatch(setDepositProvider(null));
+    }
   };
 
   useEffect(() => {

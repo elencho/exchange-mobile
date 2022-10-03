@@ -23,7 +23,7 @@ import {
   toggleGoogleOtpModal,
   toggleSmsAuthModal,
 } from '../modals/actions';
-import { setFee } from '../trade/actions';
+import { setCard, setDepositProvider, setFee } from '../trade/actions';
 import { chooseCurrency, setAbbr } from '../transactions/actions';
 import {
   actionTypes,
@@ -136,26 +136,6 @@ function* goToBalanceSaga(action) {
   yield call(() => navigation.navigate('Balance'));
 }
 
-function* cryptoWithdrawalSaga(action) {
-  const { OTP } = action;
-  const google = yield select((state) => state.modals.googleOtpModalVisible);
-  const sms = yield select((state) => state.modals.smsAuthModalVisible);
-  const email = yield select((state) => state.modals.emailAuthModalVisible);
-
-  const params = yield select(withdrawalParams);
-  const status = yield call(cryptoWithdrawal, OTP, params);
-  if (status === 200) {
-    if (google) yield put(toggleGoogleOtpModal(false));
-    if (sms) yield put(toggleSmsAuthModal(false));
-    if (email) yield put(toggleEmailAuthModal(false));
-    yield put(chooseWhitelist({}));
-    yield put(setWithdrawalAmount(null));
-    yield put(setWithdrawalNote(null));
-    yield put(setFee(null));
-    yield put({ type: 'BALANCE_SAGA' });
-  }
-}
-
 function* getWhitelistSaga() {
   const currency = yield select((state) => state.transactions.code);
   const whitelist = yield call(fetchWhitelist, currency);
@@ -219,12 +199,30 @@ function* withdrawalTemplatesSaga() {
   const currency = yield select((state) => state.transactions.code);
   const provider = yield select((state) => state.wallet.network);
 
-  if (provider) {
+  if (provider !== 'ECOMMERCE' && provider) {
     const templates = yield call(fetchTemplates, currency, provider);
     if (templates) yield put(saveTemplates(templates));
 
     const banks = yield call(fetchBanks, provider);
     if (banks) yield put(saveBanks(banks));
+  }
+}
+
+function* cryptoWithdrawalSaga(action) {
+  const { OTP } = action;
+  const google = yield select((state) => state.modals.googleOtpModalVisible);
+  const sms = yield select((state) => state.modals.smsAuthModalVisible);
+  const email = yield select((state) => state.modals.emailAuthModalVisible);
+
+  const params = yield select(withdrawalParams);
+  const status = yield call(cryptoWithdrawal, OTP, params);
+  if (status === 200) {
+    if (google) yield put(toggleGoogleOtpModal(false));
+    if (sms) yield put(toggleSmsAuthModal(false));
+    if (email) yield put(toggleEmailAuthModal(false));
+
+    yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
+    yield put({ type: 'BALANCE_SAGA' });
   }
 }
 
@@ -240,27 +238,49 @@ function* wireWithdrawalSaga(action) {
     if (google) yield put(toggleGoogleOtpModal(false));
     if (sms) yield put(toggleSmsAuthModal(false));
     if (email) yield put(toggleEmailAuthModal(false));
-    yield put(chooseTemplate({}));
-    yield put(setIban(''));
-    yield put(setFee(null));
-    yield put(setWithdrawalBank({}));
-    yield put(setWithdrawalAmount(null));
-    yield put(setWithdrawalNote(''));
-    yield put(saveTemplateAction(false));
-    yield put(setNewTemplateName(''));
-    yield put(setReceiverBank({}));
-    yield put(withdrawalTemplatesAction());
+
+    yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
     yield put({ type: 'BALANCE_SAGA' });
   }
 }
 
 function* cardWithdrawalSaga(action) {
   const { OTP } = action;
+  const google = yield select((state) => state.modals.googleOtpModalVisible);
+  const sms = yield select((state) => state.modals.smsAuthModalVisible);
+  const email = yield select((state) => state.modals.emailAuthModalVisible);
+
   const params = yield select(cardWithdrawalParams);
   const status = yield call(cardWithdrawal, OTP, params);
   if (status >= 200 && status < 300) {
+    if (google) yield put(toggleGoogleOtpModal(false));
+    if (sms) yield put(toggleSmsAuthModal(false));
+    if (email) yield put(toggleEmailAuthModal(false));
+
+    yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
     yield put({ type: 'BALANCE_SAGA' });
   }
+}
+
+function* clearWithdrawalInputsSaga() {
+  // crypto
+  yield put(chooseWhitelist({}));
+  yield put(setWithdrawalAmount(null));
+  yield put(setWithdrawalNote(null));
+  yield put(setFee(null));
+
+  // + wire
+  yield put(chooseTemplate({}));
+  yield put(setIban(''));
+  yield put(setWithdrawalBank({}));
+  yield put(saveTemplateAction(false));
+  yield put(setNewTemplateName(''));
+  yield put(setReceiverBank({}));
+  yield put(withdrawalTemplatesAction());
+
+  // + card
+  yield put(setDepositProvider(null));
+  yield put(setCard(null));
 }
 
 function* maxWithdrawalSaga() {
@@ -300,4 +320,5 @@ export default function* () {
   yield takeLatest(actionTypes.DELETE_TEMPLATES_ACTION, deleteTemplatesSaga);
   yield takeLatest('METHOD_NETWORK_RESTRICTION', methodNetworkRestrictionSaga);
   yield takeLatest('MAX_WITHDRAWAL_SAGA', maxWithdrawalSaga);
+  yield takeLatest('CLEAR_WITHDRAWAL_INPUTS', clearWithdrawalInputsSaga);
 }

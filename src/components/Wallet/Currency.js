@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import { COINS_URL_PNG } from '../../constants/api';
-import { setCurrentBalanceObj } from '../../redux/trade/actions';
+import {
+  setCurrentBalanceObj,
+  setDepositProvider,
+} from '../../redux/trade/actions';
 import {
   cryptoAddressesAction,
   setNetwork,
@@ -29,9 +32,13 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
     const fiats = fiatsArray?.map((f) => f.code);
     balance?.balances?.forEach((b) => {
       if (code === b.currencyCode) {
-        if (b.depositMethods.WALLET)
+        if (b.depositMethods.WALLET) {
           network = b.depositMethods.WALLET[0].provider;
-        if (b.depositMethods.WIRE) network = b.depositMethods.WIRE[0].provider;
+        }
+        if (b.depositMethods.WIRE) {
+          network = b.depositMethods.WIRE[0].provider;
+          dispatch(setDepositProvider('BOG'));
+        }
         dispatch(setNetwork(network));
         dispatch(setCurrentBalanceObj(b));
       }
