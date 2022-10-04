@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
+import {
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  View,
+  RefreshControl,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -13,6 +20,7 @@ import Currency from './Currency';
 export default function BalancesList() {
   const dispatch = useDispatch();
   const balances = useSelector((state) => state.trade.balance.balances);
+  const loading = useSelector((state) => state.transactions.loading);
   const [showZeroBalances, setShowZeroBalances] = useState(true);
   const [nonZeroBalances, setNonZeroBalances] = useState([]);
   const [filteredBalances, setFilteredBalances] = useState([]);
@@ -61,6 +69,8 @@ export default function BalancesList() {
     />
   );
 
+  const onRefresh = () => dispatch({ type: 'BALANCE_SAGA' });
+
   return (
     <View style={styles.container}>
       <AppInput
@@ -84,6 +94,13 @@ export default function BalancesList() {
           data={filteredBalances}
           renderItem={renderCurrency}
           keyExtractor={(item) => item.currencyCode}
+          refreshControl={
+            <RefreshControl
+              tintColor={colors.PRIMARY_PURPLE}
+              refreshing={loading}
+              onRefresh={onRefresh}
+            />
+          }
         />
       )}
     </View>

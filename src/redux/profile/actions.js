@@ -165,10 +165,9 @@ export const fetchUserInfo = () => ({
 export const saveUserInfoSaga = () => ({
   type: actionTypes.SAVE_USER_INFO_SAGA,
 });
-export const toggleEmailSubscription = (value, setSwitcherValue) => ({
+export const toggleEmailSubscription = (value) => ({
   type: actionTypes.TOGGLE_MAIL_SUBSCRIPTION_SAGA,
   value,
-  setSwitcherValue,
 });
 export const updatePassword = (
   curentPassword,

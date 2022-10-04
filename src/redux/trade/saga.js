@@ -38,7 +38,7 @@ import {
 } from '../../utils/fetchTrades';
 import { toggleBuySellModal } from '../modals/actions';
 import { getWhitelistAction, setWalletTab } from '../wallet/actions';
-import { fetchCurrencies } from '../transactions/actions';
+import { fetchCurrencies, toggleLoading } from '../transactions/actions';
 
 function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
@@ -115,17 +115,21 @@ function* fetchOffersSaga() {
 }
 
 function* balanceSaga() {
-  const code = yield select((state) => state.transactions.code);
-
+  yield put(toggleLoading(true));
   const balance = yield call(fetchBalance);
-  let obj;
   if (balance) {
     yield put(setBalance(balance));
-    balance?.balances?.forEach((b) => {
-      if (code === b.currencyCode) obj = b;
-    });
-    yield put(setCurrentBalanceObj(obj));
+
+    const code = yield select((state) => state.transactions.code);
+    if (code) {
+      let obj;
+      balance?.balances?.forEach((b) => {
+        if (code === b.currencyCode) obj = b;
+      });
+      yield put(setCurrentBalanceObj(obj));
+    }
   }
+  yield put(toggleLoading(false));
 }
 
 function* submitTradeSaga() {

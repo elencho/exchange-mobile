@@ -347,6 +347,11 @@ function* fetchUserInfoSaga() {
   const userInfo = yield call(fetchUserInfoUtil);
   if (userInfo) yield put(saveUserInfo(userInfo));
 
+  const token = yield call(refreshToken);
+  if (typeof token === 'string') {
+    yield put({ type: 'OTP_SAGA', token });
+  }
+
   // yield put(toggleLoading(false));
 }
 
@@ -405,11 +410,13 @@ function* updatePhoneNumberSaga(action) {
 
 //  TOGGLE SUBSCRIPTION
 function* toggleSubscriptionSaga(action) {
-  const { value, setSwitcherValue } = action;
-  yield call(() => setSwitcherValue(value));
+  const { value } = action;
+  const userInfo = yield select((state) => state.profile.userInfo);
+
+  yield put(saveUserInfo({ ...userInfo, emailUpdates: value }));
   const data = yield call(value ? subscribeMail : unsubscribeMail);
   if (!(data?.status >= 200 && data?.status < 300)) {
-    yield call(() => setSwitcherValue(!value));
+    yield put(saveUserInfo({ ...userInfo, emailUpdates: !value }));
   }
 }
 

@@ -53,12 +53,8 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
   };
 
   const usdBitcoin = () => {
-    if (usdBtcSwitch === 'USD') {
-      return valueUSD;
-    }
-    if (usdBtcSwitch === 'BTC') {
-      return valueBTC;
-    }
+    if (usdBtcSwitch === 'USD') return valueUSD;
+    if (usdBtcSwitch === 'BTC') return valueBTC;
   };
 
   return (

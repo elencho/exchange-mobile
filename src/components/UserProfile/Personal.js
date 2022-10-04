@@ -29,14 +29,12 @@ export default function Personal() {
   } = state;
   const isVerified = userInfo?.userStatus === 'VERIFIED';
 
-  const [switcherValue, setSwitcherValue] = useState(userInfo.emailUpdates);
-
   const edit = () => dispatch(togglePhoneNumberModal(true));
   const editLanguage = () => dispatch(toggleLanguageModal(true));
   const openModal = () => dispatch({ type: 'TOGGLE_IDENTITY_MODAL' });
 
   const handleEmailUpdates = (value) =>
-    dispatch(toggleEmailSubscription(value, setSwitcherValue));
+    dispatch(toggleEmailSubscription(value));
 
   const textCond = (r) => {
     switch (r) {
@@ -86,7 +84,7 @@ export default function Personal() {
               <Switch
                 style={styles.switch}
                 onValueChange={(value) => handleEmailUpdates(value)}
-                value={switcherValue}
+                value={userInfo.emailUpdates}
               />
             </View>
           </View>

@@ -21,6 +21,7 @@ import { types } from '../constants/filters';
 import { monthsShort } from '../constants/months';
 import {
   chooseCurrency,
+  clearFilters,
   reachScrollEnd,
   setAbbr,
 } from '../redux/transactions/actions';
@@ -38,7 +39,10 @@ function TransactionHistory() {
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
   }, []);
 
-  const onRefresh = () => dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+  const onRefresh = () => {
+    dispatch(clearFilters());
+    dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+  };
 
   const dates = transactions?.map((tr) => {
     const date = new Date(tr.timestamp);

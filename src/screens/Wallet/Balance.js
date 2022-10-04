@@ -23,16 +23,18 @@ import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
 import colors from '../../constants/colors';
 import { setCard, setDepositProvider } from '../../redux/trade/actions';
+import { setNetwork } from '../../redux/wallet/actions';
 
 export default function Balance({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     wallet: { walletTab, network },
-    trade: { tradesLoading, offersLoading },
+    trade: { tradesLoading, offersLoading, currentBalanceObj },
   } = state;
 
   const loading = tradesLoading || offersLoading;
+  const m = walletTab === 'Deposit' ? 'depositMethods' : 'withdrawalMethods';
 
   const onRefresh = () => {
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
@@ -41,6 +43,15 @@ export default function Balance({ navigation }) {
     if (walletTab !== 'Deposit' && network !== 'SWIFT') {
       dispatch(setDepositProvider(null));
     }
+
+    let net;
+    if (currentBalanceObj[m]?.WALLET) {
+      net = currentBalanceObj[m].WALLET[0].provider;
+    }
+    if (currentBalanceObj[m]?.WIRE) {
+      net = currentBalanceObj[m].WIRE[0].provider;
+    }
+    dispatch(setNetwork(net));
   };
 
   useEffect(() => {
