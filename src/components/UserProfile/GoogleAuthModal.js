@@ -46,6 +46,7 @@ export default function GoogleAuthModal() {
   const hide = () => {
     dispatch(toggleGoogleAuthModal(false));
     dispatch(setGoogleAuth(false));
+    setKey('');
   };
 
   const handleKey = (key) => {

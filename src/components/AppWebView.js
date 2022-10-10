@@ -4,7 +4,12 @@ import WebView from 'react-native-webview';
 import { useDispatch, useSelector } from 'react-redux';
 
 import images from '../constants/images';
-import { cardsSagaAction } from '../redux/trade/actions';
+import {
+  cardsSagaAction,
+  setCard,
+  setDepositProvider,
+  setFee,
+} from '../redux/trade/actions';
 
 export default function AppWebView(props) {
   const dispatch = useDispatch();
@@ -13,6 +18,13 @@ export default function AppWebView(props) {
   const closeWebView = () => {
     dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
     if (props.refresh) dispatch(cardsSagaAction());
+
+    if (props.deposit) {
+      dispatch(setDepositProvider(null));
+      dispatch(setCard(null));
+      dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
+      dispatch(setFee(null));
+    }
   };
 
   return (

@@ -51,6 +51,8 @@ export default function Deposit() {
 
     setHasMethod(!!Object.keys(m).length);
     setLoading(false);
+
+    return () => dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
   }, [code]);
 
   useEffect(() => {
@@ -155,6 +157,7 @@ export default function Deposit() {
           <AppWebView
             onNavigationStateChange={onNavigationStateChange}
             source={{ uri: webViewObj?.actionUrl }}
+            deposit
           />
         </ScrollView>
       ) : (

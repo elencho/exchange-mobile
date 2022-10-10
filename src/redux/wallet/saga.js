@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
   addWhitelistAddress,
@@ -94,13 +94,21 @@ function* wireDepositSaga(action) {
   const { name, code, navigation } = action;
   const language = yield select((s) => s.profile.language);
   const currentBalanceObj = yield select((s) => s.trade.currentBalanceObj);
-  let network;
-  if (currentBalanceObj?.depositMethods?.WIRE) {
-    network = currentBalanceObj?.depositMethods?.WIRE[0]?.displayName;
-  }
+  const network = yield select((s) => s.wallet.network);
 
-  if (Object.keys(currentBalanceObj?.depositMethods)?.length) {
-    const wireDepositData = yield call(fetchWireDeposit, code, network);
+  const hasMethods = Object.keys(currentBalanceObj?.depositMethods)?.length;
+
+  let n;
+  if (!network && currentBalanceObj?.depositMethods?.WIRE) {
+    n = currentBalanceObj?.depositMethods?.WIRE[0]?.displayName;
+  } else {
+    n = network;
+  }
+  console.log(n);
+  console.log(network);
+
+  if (hasMethods) {
+    const wireDepositData = yield call(fetchWireDeposit, code, n);
     if (wireDepositData) {
       const wireDepositProviders = wireDepositData[language];
       yield put(saveWireDepositInfo(wireDepositData));

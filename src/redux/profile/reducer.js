@@ -24,7 +24,7 @@ const INITIAL_STATE = {
   credentials: vaxo_realuri,
   userAndPassInfo: {},
   forgotPassInfo: {
-    username: 'metro21@mailinator.com',
+    username: 'Vakhtang.elisabedashvili@gmail.com',
     code: '',
   },
   forgotPassMode: false,
@@ -68,7 +68,6 @@ export default (state = INITIAL_STATE, action) => {
     credentials,
     userAndPassInfo,
     forgotPassInfo,
-    timerVisible,
     forgotPassMode,
     loginStartInfo,
     registrationStartInfo,
@@ -131,7 +130,7 @@ export default (state = INITIAL_STATE, action) => {
     case 'TOGGLE_TIMER':
       return {
         ...state,
-        timerVisible,
+        timerVisible: !state.timerVisible,
       };
     case 'TOGGLE_FORGOT_PASS_MODE':
       return {

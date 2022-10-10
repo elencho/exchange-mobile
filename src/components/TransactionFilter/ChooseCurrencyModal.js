@@ -13,6 +13,7 @@ import {
 import { toggleCurrencyModal } from '../../redux/modals/actions';
 import {
   cryptoAddressesAction,
+  setNetwork,
   setWalletTab,
   wireDepositAction,
 } from '../../redux/wallet/actions';
@@ -57,14 +58,10 @@ function ChooseCurrencyModal({ wallet = false }) {
   const fiats = fiatsArray.map((f) => f.code);
 
   const choose = (name, code) => {
-    let network;
+    dispatch(setNetwork(null));
+
     balance.balances.forEach((b) => {
-      if (code === b.currencyCode) {
-        if (b.depositMethods.WALLET)
-          network = b.depositMethods.WALLET[0].provider;
-        if (b.depositMethods.WIRE) network = b.depositMethods.WIRE[0].provider;
-        dispatch(setCurrentBalanceObj(b));
-      }
+      if (code === b.currencyCode) dispatch(setCurrentBalanceObj(b));
     });
 
     if (wallet) {
@@ -73,7 +70,7 @@ function ChooseCurrencyModal({ wallet = false }) {
         dispatch(wireDepositAction(name, code, navigation));
       } else {
         walletTab === 'Manage Cards' && dispatch(setWalletTab('Whitelist'));
-        dispatch(cryptoAddressesAction(name, code, navigation, network));
+        dispatch(cryptoAddressesAction(name, code, navigation));
       }
 
       if (

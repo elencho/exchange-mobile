@@ -38,7 +38,7 @@ export default function BankInfo() {
   const state = useSelector((state) => state);
   const [info, setInfo] = useState({});
   const {
-    wallet: { wireDepositInfo, wireDepositProvider },
+    wallet: { wireDepositInfo, wireDepositProvider, network },
     profile: { language },
   } = state;
 

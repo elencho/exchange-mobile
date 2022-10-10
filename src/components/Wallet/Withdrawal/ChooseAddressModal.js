@@ -13,7 +13,7 @@ export default function ChooseAddressModal() {
   const state = useSelector((state) => state);
   const {
     modals: { chooseAddressModalVisible },
-    wallet: { whitelist },
+    wallet: { whitelist, network },
   } = state;
 
   const hide = () => dispatch(toggleChooseAddressModal(false));
@@ -23,34 +23,35 @@ export default function ChooseAddressModal() {
   };
 
   useEffect(() => {
-    return () => {
-      dispatch(chooseWhitelist({}));
-    };
-  }, []);
+    dispatch(chooseWhitelist({}));
+  }, [network]);
 
   const children = (
     <>
       {whitelist?.map((w) => (
-        <TouchableOpacity
-          style={styles.pressable}
-          key={w.id}
-          onPress={() => choose(w)}
-        >
-          <View style={styles.flex}>
-            <AppText medium style={styles.primary}>
-              {w.name}
-            </AppText>
-            <AppText subtext style={styles.secondary}>
-              {w.address}
-            </AppText>
-          </View>
+        <View key={w.id}>
+          {network === w.provider && (
+            <TouchableOpacity
+              style={styles.pressable}
+              onPress={() => choose(w)}
+            >
+              <View style={styles.flex}>
+                <AppText medium style={styles.primary}>
+                  {w.name}
+                </AppText>
+                <AppText subtext style={styles.secondary}>
+                  {w.address}
+                </AppText>
+              </View>
 
-          <View style={styles.right}>
-            <AppText subtext style={{ color: '#C0C5E0' }}>
-              {w.provider}
-            </AppText>
-          </View>
-        </TouchableOpacity>
+              <View style={styles.right}>
+                <AppText subtext style={{ color: '#C0C5E0' }}>
+                  {w.provider}
+                </AppText>
+              </View>
+            </TouchableOpacity>
+          )}
+        </View>
       ))}
     </>
   );

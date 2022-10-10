@@ -8,6 +8,7 @@ import { COINS_URL_PNG } from '../../constants/api';
 import { setCurrentBalanceObj } from '../../redux/trade/actions';
 import {
   cryptoAddressesAction,
+  setNetwork,
   setWalletTab,
   wireDepositAction,
 } from '../../redux/wallet/actions';
@@ -19,20 +20,19 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { usdBtcSwitch, wireDepositInfo },
+    wallet: { usdBtcSwitch },
     trade: { balance, fiatsArray },
   } = state;
 
   const handlePress = () => {
+    dispatch(setNetwork(null));
+
     let network;
     const fiats = fiatsArray?.map((f) => f.code);
     balance?.balances?.forEach((b) => {
       if (code === b.currencyCode) {
         if (b.depositMethods.WALLET) {
           network = b.depositMethods.WALLET[0].provider;
-        }
-        if (b.depositMethods.WIRE) {
-          network = b.depositMethods.WIRE[0].provider;
         }
         dispatch(setCurrentBalanceObj(b));
       }

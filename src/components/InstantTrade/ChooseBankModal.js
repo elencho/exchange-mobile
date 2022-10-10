@@ -16,13 +16,14 @@ export default function ChooseBankModal() {
   );
   const state = useSelector((state) => state);
   const {
-    trade: { depositProvider, depositProviders, currentBalanceObj, cards },
+    trade: { depositProvider, depositProviders },
     transactions: { tabRouteName },
-    wallet: { walletTab },
+    wallet: { wireDepositProviders },
   } = state;
 
   useEffect(() => {
     dispatch(setDepositProvider(null));
+    dispatch({ type: 'SET_WIRE_DEPOSIT_PROVIDER', wireDepositProvider: null });
   }, []);
 
   // const array = () => {
@@ -72,9 +73,7 @@ export default function ChooseBankModal() {
   //   return array;
   // };
 
-  const hide = () => {
-    dispatch(toggleChooseBankModal(false));
-  };
+  const hide = () => dispatch(toggleChooseBankModal(false));
 
   const choose = (b) => {
     dispatch(setDepositProvider(b));
@@ -82,9 +81,11 @@ export default function ChooseBankModal() {
     hide();
   };
 
-  const children = () =>
-    depositProviders?.map((b, i, a) => (
-      <View key={b.displayName}>
+  const children = () => {
+    const array =
+      tabRouteName === 'Wallet' ? wireDepositProviders : depositProviders;
+    return array?.map((b, i, a) => (
+      <View key={i}>
         <Pressable
           style={[
             styles.row,
@@ -105,6 +106,7 @@ export default function ChooseBankModal() {
         {i < a.length - 1 && <View style={styles.margin} />}
       </View>
     ));
+  };
 
   return (
     <AppModal
