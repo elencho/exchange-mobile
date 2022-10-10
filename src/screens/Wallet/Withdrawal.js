@@ -92,13 +92,13 @@ export default function Withdrawal() {
       if (m.WIRE) dispatch(setNetwork(m.WIRE[0].provider));
     }
 
-    if (isFiat) dispatch(withdrawalTemplatesAction());
-
     setHasMethod(!!Object.keys(m).length);
     setloading(false);
-
-    // return () => dispatch(setDepositProvider(null));
   }, [code]);
+
+  useEffect(() => {
+    if (isFiat) dispatch(withdrawalTemplatesAction());
+  }, [network]);
 
   useEffect(() => {
     setHasRestriction(Object.keys(withdrawalRestriction).length);

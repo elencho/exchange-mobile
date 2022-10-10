@@ -18,7 +18,7 @@ export default function ChooseBankModal() {
   const {
     trade: { depositProvider, depositProviders },
     transactions: { tabRouteName },
-    wallet: { wireDepositProviders },
+    wallet: { wireDepositProviders, walletTab, network },
   } = state;
 
   useEffect(() => {
@@ -26,52 +26,22 @@ export default function ChooseBankModal() {
     dispatch({ type: 'SET_WIRE_DEPOSIT_PROVIDER', wireDepositProvider: null });
   }, []);
 
-  // const array = () => {
-  //   let array = [];
+  const array = () => {
+    // const wallet = tabRouteName === 'Wallet';
+    // const trade = tabRouteName === 'Trade';
+    // const manageCards = walletTab === 'Manage Cards';
+    // const deposit = walletTab === 'Deposit';
+    // const withdrawal = walletTab === 'Withdrawal';
+    const ecommerce = network === 'ECOMMERCE';
 
-  //   const arrayFullCheck = (a, p) => {
-  //     let isFull = false;
-  //     a.forEach((b) => {
-  //       if (Object.values(b).includes(p)) isFull = true;
-  //     });
-  //     return isFull;
-  //   };
-
-  //   const m =
-  //     walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
-
-  //   if (tabRouteName === 'Wallet') {
-  //     depositProviders?.forEach((p) => {
-  //       currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
-  //         if (p.displayName === d.displayName) {
-  //           cards?.forEach((c) => {
-  //             if (c.provider === d.provider) {
-  //               if (!array.length) {
-  //                 array.push(d);
-  //               } else {
-  //                 !arrayFullCheck(array, d.provider) && array.push(d);
-  //               }
-  //             }
-  //           });
-  //         }
-  //       });
-  //     });
-
-  //     if (walletTab === 'Manage Cards') return depositProviders;
-  //   }
-
-  //   if (tabRouteName === 'Trade') {
-  //     depositProviders?.forEach((d) => {
-  //       cards?.forEach((c) => {
-  //         if (c.provider === d.provider) {
-  //           if (!array.length) array.push(d);
-  //           else !arrayFullCheck(array, d.provider) && array.push(d);
-  //         }
-  //       });
-  //     });
-  //   }
-  //   return array;
-  // };
+    // if ((wallet && manageCards) || trade) return depositProviders;
+    // if (wallet && deposit) {
+    //   if (ecommerce) return depositProviders;
+    //   if (!ecommerce) return wireDepositProviders;
+    // }
+    if (!ecommerce) wireDepositProviders;
+    return depositProviders;
+  };
 
   const hide = () => dispatch(toggleChooseBankModal(false));
 
@@ -82,9 +52,7 @@ export default function ChooseBankModal() {
   };
 
   const children = () => {
-    const array =
-      tabRouteName === 'Wallet' ? wireDepositProviders : depositProviders;
-    return array?.map((b, i, a) => (
+    return array()?.map((b, i, a) => (
       <View key={i}>
         <Pressable
           style={[

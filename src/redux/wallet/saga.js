@@ -100,12 +100,10 @@ function* wireDepositSaga(action) {
 
   let n;
   if (!network && currentBalanceObj?.depositMethods?.WIRE) {
-    n = currentBalanceObj?.depositMethods?.WIRE[0]?.displayName;
+    n = currentBalanceObj?.depositMethods?.WIRE[0]?.provider;
   } else {
     n = network;
   }
-  console.log(n);
-  console.log(network);
 
   if (hasMethods) {
     const wireDepositData = yield call(fetchWireDeposit, code, n);
@@ -307,10 +305,18 @@ function* maxWithdrawalSaga() {
 
 function* deleteTemplatesSaga(action) {
   const { id } = action;
+  const currentTemplate = yield select((s) => s.wallet.currentTemplate);
+
   const status = yield call(deleteTemplates, id);
   if (status >= 200 && status < 300) {
     yield put(withdrawalTemplatesAction());
     yield put(setDeleteModalInfo({}));
+
+    if (id === currentTemplate.id) {
+      yield put(setIban(''));
+      yield put(setWithdrawalBank({}));
+      yield put(chooseTemplate({}));
+    }
   }
 }
 
