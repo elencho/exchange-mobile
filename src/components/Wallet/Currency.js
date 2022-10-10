@@ -23,7 +23,7 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { usdBtcSwitch },
+    wallet: { usdBtcSwitch, wireDepositInfo },
     trade: { balance, fiatsArray },
   } = state;
 
@@ -37,7 +37,6 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
         }
         if (b.depositMethods.WIRE) {
           network = b.depositMethods.WIRE[0].provider;
-          dispatch(setDepositProvider('BOG'));
         }
         dispatch(setNetwork(network));
         dispatch(setCurrentBalanceObj(b));

@@ -13,7 +13,8 @@ const INITIAL_STATE = {
   // Deposit
   wireDepositInfo: {},
   cryptoAddress: {},
-  wireBanks: [],
+  wireDepositProviders: [],
+  wireDepositProvider: null,
   depositAmount: null,
 
   //Withdrawal
@@ -66,7 +67,8 @@ export default (state = INITIAL_STATE, action) => {
     receiverBank,
     intermediateBank,
     depositAmount,
-    wireBanks,
+    wireDepositProviders,
+    wireDepositProvider,
   } = action;
   switch (action.type) {
     case actionTypes.SET_WALLET_TAB:
@@ -194,10 +196,15 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         intermediateBank,
       };
-    case 'SAVE_WIRE_BANKS':
+    case 'SAVE_WIRE_DEPOSIT_PROVIDERS':
       return {
         ...state,
-        wireBanks,
+        wireDepositProviders,
+      };
+    case 'SET_WIRE_DEPOSIT_PROVIDER':
+      return {
+        ...state,
+        wireDepositProvider,
       };
     case 'SET_DEPOSIT_AMOUNT':
       return {

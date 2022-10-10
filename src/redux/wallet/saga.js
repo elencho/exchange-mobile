@@ -99,9 +99,9 @@ function* wireDepositSaga(action) {
   if (Object.keys(currentBalanceObj?.depositMethods)?.length) {
     const wireDepositData = yield call(fetchWireDeposit, code, network);
     if (wireDepositData) {
-      const wireBanks = wireDepositData[language];
+      const wireDepositProviders = wireDepositData[language];
       yield put(saveWireDepositInfo(wireDepositData));
-      yield put({ type: 'SAVE_WIRE_BANKS', wireBanks });
+      yield put({ type: 'SAVE_WIRE_DEPOSIT_PROVIDERS', wireDepositProviders });
     }
   }
 

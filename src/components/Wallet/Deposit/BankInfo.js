@@ -14,7 +14,6 @@ import images from '../../../constants/images';
 import { toggleWireBanksModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import WireBanksModal from './WireBanksModal';
-import { setDepositProvider } from '../../../redux/trade/actions';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { copyToClipboard } from '../../../utils/copyToClipboard';
 
@@ -39,23 +38,17 @@ export default function BankInfo() {
   const state = useSelector((state) => state);
   const [info, setInfo] = useState({});
   const {
-    trade: { depositProvider, depositProviders },
-    wallet: { wireDepositInfo },
+    wallet: { wireDepositInfo, wireDepositProvider },
     profile: { language },
   } = state;
 
   useEffect(() => {
     const obj = wireDepositInfo[language]?.find((o) => {
-      if (!depositProvider) {
-        depositProviders?.forEach((p) => {
-          if (p.provider === o.iconName.split('.')[0]) {
-            dispatch(setDepositProvider(p.provider));
-            return o;
-          }
-        });
-      } else {
-        if (depositProvider === o.iconName.split('.')[0]) return o;
-      }
+      dispatch({
+        type: 'SET_WIRE_DEPOSIT_PROVIDER',
+        wireDepositProvider: o.iconName.split('.')[0],
+      });
+      return o;
     });
 
     setInfo({
@@ -67,7 +60,7 @@ export default function BankInfo() {
       intermediateSwift: obj?.intermediateBankSwift,
       name: obj?.receiverName,
     });
-  }, [depositProvider]);
+  }, [wireDepositInfo]);
 
   const handleBanks = () => dispatch(toggleWireBanksModal(true));
 
@@ -101,11 +94,11 @@ export default function BankInfo() {
         </View>
 
         <Image
-          source={{ uri: `${ICONS_URL_PNG}/${depositProvider}.png` }}
+          source={{ uri: `${ICONS_URL_PNG}/${wireDepositProvider}.png` }}
           style={styles.image}
         />
         <AppText medium style={styles.dropdownText}>
-          {depositProvider ?? 'Choose Bank'}
+          {wireDepositProvider ?? 'Choose Bank'}
         </AppText>
         <View style={styles.line} />
         <Image source={images.Arrow} />
@@ -136,7 +129,7 @@ export default function BankInfo() {
         </>
       )}
 
-      <WireBanksModal />
+      <WireBanksModal setInfo={setInfo} />
     </>
   );
 }
@@ -162,6 +155,7 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     marginLeft: 5,
+    resizeMode: 'contain',
   },
   infoRow: {
     marginVertical: 7,
