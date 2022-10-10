@@ -33,7 +33,13 @@ export default function WalletSwitcher() {
 
   const handleWalletTab = (f) => {
     dispatch(setWalletTab(f));
-    network === 'ECOMMERCE' && dispatch(setNetwork('SWIFT'));
+
+    const m = f === 'Deposit' ? 'depositMethods' : 'withdrawalMethods';
+    if (currentBalanceObj[m]?.ECOMMERCE) {
+      dispatch(setNetwork('ECOMMERCE'));
+    } else {
+      dispatch(setNetwork('SWIFT'));
+    }
   };
 
   const buttonStyle = (f) => {

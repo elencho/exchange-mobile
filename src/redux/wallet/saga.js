@@ -92,9 +92,12 @@ function* methodNetworkRestrictionSaga() {
 
 function* wireDepositSaga(action) {
   const { name, code, navigation } = action;
-  const network = yield select((s) => s.wallet.network);
   const language = yield select((s) => s.profile.language);
   const currentBalanceObj = yield select((s) => s.trade.currentBalanceObj);
+  let network;
+  if (currentBalanceObj?.depositMethods?.WIRE) {
+    network = currentBalanceObj?.depositMethods?.WIRE[0]?.displayName;
+  }
 
   if (Object.keys(currentBalanceObj?.depositMethods)?.length) {
     const wireDepositData = yield call(fetchWireDeposit, code, network);

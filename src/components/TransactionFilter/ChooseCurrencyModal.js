@@ -13,7 +13,6 @@ import {
 import { toggleCurrencyModal } from '../../redux/modals/actions';
 import {
   cryptoAddressesAction,
-  setNetwork,
   setWalletTab,
   wireDepositAction,
 } from '../../redux/wallet/actions';
@@ -64,7 +63,6 @@ function ChooseCurrencyModal({ wallet = false }) {
         if (b.depositMethods.WALLET)
           network = b.depositMethods.WALLET[0].provider;
         if (b.depositMethods.WIRE) network = b.depositMethods.WIRE[0].provider;
-        dispatch(setNetwork(network));
         dispatch(setCurrentBalanceObj(b));
       }
     });

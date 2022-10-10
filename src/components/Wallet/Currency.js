@@ -5,13 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import { COINS_URL_PNG } from '../../constants/api';
-import {
-  setCurrentBalanceObj,
-  setDepositProvider,
-} from '../../redux/trade/actions';
+import { setCurrentBalanceObj } from '../../redux/trade/actions';
 import {
   cryptoAddressesAction,
-  setNetwork,
   setWalletTab,
   wireDepositAction,
 } from '../../redux/wallet/actions';
@@ -38,7 +34,6 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
         if (b.depositMethods.WIRE) {
           network = b.depositMethods.WIRE[0].provider;
         }
-        dispatch(setNetwork(network));
         dispatch(setCurrentBalanceObj(b));
       }
     });

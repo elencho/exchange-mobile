@@ -52,7 +52,7 @@ function CardSection() {
 
   const displayName = () => {
     let displayName = 'Payment Service Provider';
-    depositProviders.forEach((d) => {
+    depositProviders?.forEach((d) => {
       if (depositProvider === d.provider) displayName = d.displayName;
     });
     return displayName;
@@ -60,7 +60,7 @@ function CardSection() {
 
   const currencyName = (fiat) => {
     let name;
-    balances.forEach((b) => {
+    balances?.forEach((b) => {
       if (b.currencyCode === fiat) name = b.currencyName;
     });
     return name;

@@ -12,7 +12,7 @@ import WhitelistItem from '../../components/Wallet/Whitelist/WhitelistItem';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleAddWhitelistModal } from '../../redux/modals/actions';
-import { getWhitelistAction, setNetwork } from '../../redux/wallet/actions';
+import { getWhitelistAction } from '../../redux/wallet/actions';
 import GeneralError from '../../components/GeneralError';
 import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import SmsEmailAuthModal from '../../components/UserProfile/SmsEmailAuthModal';

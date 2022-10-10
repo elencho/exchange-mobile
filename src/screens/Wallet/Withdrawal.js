@@ -85,8 +85,12 @@ export default function Withdrawal() {
     const m = currentBalanceObj.withdrawalMethods;
     dispatch(getWhitelistAction());
 
-    if (m.WALLET) dispatch(setNetwork(m.WALLET[0].provider));
-    if (m.WIRE) dispatch(setNetwork(m.WIRE[0].provider));
+    if (m.ECOMMERCE) {
+      dispatch(setNetwork('ECOMMERCE'));
+    } else {
+      if (m.WALLET) dispatch(setNetwork(m.WALLET[0].provider));
+      if (m.WIRE) dispatch(setNetwork(m.WIRE[0].provider));
+    }
 
     if (isFiat) dispatch(withdrawalTemplatesAction());
 

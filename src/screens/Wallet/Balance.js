@@ -23,7 +23,6 @@ import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
 import colors from '../../constants/colors';
 import { setCard, setDepositProvider } from '../../redux/trade/actions';
-import { setNetwork } from '../../redux/wallet/actions';
 
 export default function Balance({ navigation }) {
   const dispatch = useDispatch();
@@ -51,7 +50,6 @@ export default function Balance({ navigation }) {
     if (currentBalanceObj[m]?.WIRE) {
       net = currentBalanceObj[m].WIRE[0].provider;
     }
-    dispatch(setNetwork(net));
   };
 
   useEffect(() => {

@@ -105,12 +105,10 @@ export default function BuySellModal() {
   const myBalance = () => {
     const currency = tradeType === 'Buy' ? fiat : crypto;
     const fix = currency === fiat ? quoteScale : baseScale;
-    let available;
 
+    let available;
     balances?.forEach((b) => {
-      if (b.currencyCode === currency) {
-        available = b.available;
-      }
+      if (b.currencyCode === currency) available = b.available;
     });
     return Number(available).toFixed(fix);
   };
@@ -118,9 +116,7 @@ export default function BuySellModal() {
   const hasEcommerce = () => {
     let hasEcommerce;
     balances?.forEach((b) => {
-      if (b.currencyCode === fiat) {
-        hasEcommerce = b.depositMethods.ECOMMERCE;
-      }
+      if (b.currencyCode === fiat) hasEcommerce = b.depositMethods.ECOMMERCE;
     });
     return hasEcommerce;
   };
