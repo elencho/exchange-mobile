@@ -68,30 +68,34 @@ export default function PersonalInfoModal() {
     return country;
   };
 
+  const isVerified = userInfo?.userStatus === 'VERIFIED';
+
   const children = (
     <>
       <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
         <TouchableOpacity activeOpacity={0.99}>
           <GeneralError style={{ marginBottom: 15 }} />
 
-          <AppInput
-            style={styles.inputContainer}
-            onChangeText={(firstName) =>
-              dispatch(saveUserInfo({ ...userInfo, firstName }))
-            }
-            label="First Name"
-            value={userInfo?.firstName}
-            editable={userInfo?.userStatus !== 'VERIFIED'}
-          />
-          <AppInput
-            style={styles.inputContainer}
-            onChangeText={(lastName) =>
-              dispatch(saveUserInfo({ ...userInfo, lastName }))
-            }
-            label="Last Name"
-            value={userInfo?.lastName}
-            editable={userInfo?.userStatus !== 'VERIFIED'}
-          />
+          {!isVerified && (
+            <>
+              <AppInput
+                style={styles.inputContainer}
+                onChangeText={(firstName) =>
+                  dispatch(saveUserInfo({ ...userInfo, firstName }))
+                }
+                label="First Name"
+                value={userInfo?.firstName}
+              />
+              <AppInput
+                style={styles.inputContainer}
+                onChangeText={(lastName) =>
+                  dispatch(saveUserInfo({ ...userInfo, lastName }))
+                }
+                label="Last Name"
+                value={userInfo?.lastName}
+              />
+            </>
+          )}
 
           <Pressable
             style={styles.dropdown}
@@ -143,27 +147,29 @@ export default function PersonalInfoModal() {
             value={userInfo?.address}
           />
 
-          <Pressable
-            style={styles.dropdown}
-            onPress={() => handleCountries(null, true)}
-          >
-            <View style={styles.subtext}>
-              <AppText body style={styles.secondary}>
-                Citizenship
-              </AppText>
-            </View>
+          {!isVerified && (
+            <Pressable
+              style={styles.dropdown}
+              onPress={() => handleCountries(null, true)}
+            >
+              <View style={styles.subtext}>
+                <AppText body style={styles.secondary}>
+                  Citizenship
+                </AppText>
+              </View>
 
-            <Image
-              source={{
-                uri: `${COUNTRIES_URL_PNG}/${userInfo?.citizenship}.png`,
-              }}
-              style={styles.image}
-            />
-            <AppText medium style={styles.dropdownText}>
-              {citizenship(userInfo?.citizenship)}
-            </AppText>
-            <Image source={images.Arrow} />
-          </Pressable>
+              <Image
+                source={{
+                  uri: `${COUNTRIES_URL_PNG}/${userInfo?.citizenship}.png`,
+                }}
+                style={styles.image}
+              />
+              <AppText medium style={styles.dropdownText}>
+                {citizenship(userInfo?.citizenship)}
+              </AppText>
+              <Image source={images.Arrow} />
+            </Pressable>
+          )}
         </TouchableOpacity>
       </ScrollView>
 
