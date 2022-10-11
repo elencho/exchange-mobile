@@ -2,6 +2,7 @@ import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
   tabRouteName: null,
+  tabNavigationRef: {},
 
   transactions: [],
   currencies: [],
@@ -36,9 +37,14 @@ export default (state = INITIAL_STATE, action) => {
     offset,
     tabRouteName,
     currenciesConstant,
+    tabNavigationRef,
   } = action;
-  // const { drawerRef } = state;
   switch (action.type) {
+    case 'SET_TAB_NAVIGATION_REF':
+      return {
+        ...state,
+        tabNavigationRef,
+      };
     case actionTypes.SAVE_TRANSACTIONS:
       return {
         ...state,

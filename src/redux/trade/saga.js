@@ -60,7 +60,7 @@ function* pairObjectSaga(action) {
         if (o.pair?.baseCurrency === crypto) object = o;
       })
     );
-    if (!object) {
+    if (!object && offers[fiat]) {
       object = offers[fiat][0];
       yield put(setCrypto(object.pair.baseCurrency));
     }

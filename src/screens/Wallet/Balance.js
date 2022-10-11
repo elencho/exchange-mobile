@@ -29,6 +29,7 @@ export default function Balance({ navigation }) {
   const state = useSelector((state) => state);
   const {
     wallet: { walletTab, network },
+    transactions: { tabNavigationRef },
     trade: { tradesLoading, offersLoading, currentBalanceObj },
   } = state;
 
@@ -52,6 +53,11 @@ export default function Balance({ navigation }) {
     }
   };
 
+  const back = () => {
+    tabNavigationRef.navigate('Wallet');
+    navigation.navigate('Main');
+  };
+
   useEffect(() => {
     onRefresh();
   }, [walletTab]);
@@ -60,11 +66,7 @@ export default function Balance({ navigation }) {
     <Background>
       <View style={styles.back}>
         <Image source={images.Back} style={styles.arrow} />
-        <PurpleText
-          text="Back"
-          onPress={() => navigation.goBack()}
-          style={styles.purpleText}
-        />
+        <PurpleText text="Back" onPress={back} style={styles.purpleText} />
       </View>
 
       <Headline title="My Wallet" />

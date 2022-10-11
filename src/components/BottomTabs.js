@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -6,6 +7,15 @@ import colors from '../constants/colors';
 import images from '../constants/images';
 
 export default function BottomTabs({ navigation, descriptors, routes }) {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({
+      type: 'SET_TAB_NAVIGATION_REF',
+      tabNavigationRef: navigation,
+    });
+  }, []);
+
   const active = {
     Wallet: images.Wallet_Tab_Active,
     Transactions: images.Transactions_Active,
@@ -25,9 +35,8 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
     <View style={styles.container}>
       {routes.map((route) => {
         const focused = descriptors[route.key].navigation.isFocused();
-        const navigate = () => {
-          navigation.navigate(route.name);
-        };
+        const navigate = () => navigation.navigate(route.name);
+
         return (
           <Pressable key={route.key} style={styles.tab} onPress={navigate}>
             <LinearGradient
