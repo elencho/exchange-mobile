@@ -18,7 +18,10 @@ import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecurity
 import Security from '../components/UserProfile/Security';
 import images from '../constants/images';
 import { logoutUtil } from '../utils/userProfileUtils';
-import { fetchUserInfo } from '../redux/profile/actions';
+import {
+  fetchUserInfo,
+  switchPersonalSecurity,
+} from '../redux/profile/actions';
 import colors from '../constants/colors';
 import AppText from '../components/AppText';
 
@@ -45,17 +48,17 @@ export default function UserProfile({ navigation }) {
   };
 
   const onRefresh = () => dispatch(fetchUserInfo());
+  const back = () => {
+    navigation.goBack();
+    dispatch(switchPersonalSecurity('Personal'));
+  };
 
   return (
     <Background>
       <View style={styles.topRow}>
         <View style={styles.back}>
           <Image source={images.Back} style={styles.arrow} />
-          <PurpleText
-            text="Back"
-            onPress={() => navigation.goBack()}
-            style={styles.purpleText}
-          />
+          <PurpleText text="Back" onPress={back} style={styles.purpleText} />
         </View>
 
         <TouchableOpacity onPress={logout}>
