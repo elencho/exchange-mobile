@@ -37,6 +37,8 @@ function TransactionHistory() {
     dispatch(chooseCurrency('Show All Currency'));
     dispatch(setAbbr(null));
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+
+    return () => dispatch(clearFilters());
   }, []);
 
   const onRefresh = () => {
