@@ -73,8 +73,14 @@ export default function Deposit() {
 
   const onNavigationStateChange = (state) => {
     const urlArray = state.url.split('=');
+    const alternateUrlArray = state.url.split('/');
     const ending = urlArray[urlArray.length - 1];
-    if (ending === 'false' || ending === 'true') {
+    const alternateEnding = alternateUrlArray[alternateUrlArray.length - 1];
+    if (
+      ending === 'false' ||
+      ending === 'true' ||
+      alternateEnding === 'Cancel'
+    ) {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
       dispatch(setDepositProvider(null));
       dispatch(setCard(null));
