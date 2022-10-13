@@ -21,6 +21,7 @@ import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
 import { setCard, setDepositProvider, setFee } from '../../redux/trade/actions';
+import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -110,7 +111,10 @@ export default function Deposit() {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.block}>
-            <GeneralError style={{ marginBottom: 16 }} />
+            <GeneralError
+              style={styles.error}
+              show={errorHappenedHere('Deposit')}
+            />
             <WalletCoinsDropdown />
 
             {!isFiat || code === 'EUR' ? (
@@ -179,6 +183,9 @@ const styles = StyleSheet.create({
     paddingVertical: 22,
     paddingHorizontal: 16,
     marginBottom: 12,
+  },
+  error: {
+    marginBottom: 16,
   },
   flex: {
     flex: 1,

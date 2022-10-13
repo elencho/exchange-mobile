@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import AppText from './AppText';
 import colors from '../constants/colors';
 import GeneralError from './GeneralError';
+import { errorHappenedHere } from '../utils/appUtils';
 
 export default function CodeInput({ cellCount = 6, value, setValue }) {
   const dispatch = useDispatch();
@@ -28,7 +29,10 @@ export default function CodeInput({ cellCount = 6, value, setValue }) {
   return (
     <>
       <View>
-        <GeneralError style={{ marginBottom: 25, marginTop: -10 }} />
+        <GeneralError
+          style={styles.error}
+          show={errorHappenedHere('CodeInput')}
+        />
       </View>
 
       <CodeField
@@ -65,6 +69,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.PRIMARY_TEXT,
     marginHorizontal: 5,
+  },
+  error: {
+    marginBottom: 25,
+    marginTop: -10,
   },
   focusCell: {
     borderColor: colors.SECONDARY_PURPLE,

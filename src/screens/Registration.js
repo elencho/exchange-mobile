@@ -27,6 +27,7 @@ import {
 } from '../redux/profile/actions';
 import { useFocusEffect } from '@react-navigation/native';
 import GeneralError from '../components/GeneralError';
+import { errorHappenedHere } from '../utils/appUtils';
 
 export default function Registration({ navigation }) {
   const dispatch = useDispatch();
@@ -94,7 +95,10 @@ export default function Registration({ navigation }) {
 
         <PersonalCompanySwitcher />
 
-        <GeneralError style={{ marginTop: 20, marginBottom: -15 }} />
+        <GeneralError
+          style={styles.error}
+          show={errorHappenedHere('Registration')}
+        />
 
         <RegistrationInputs />
         <CheckMarks />
@@ -122,6 +126,10 @@ const styles = StyleSheet.create({
   },
   scrollview: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
+  },
+  error: {
+    marginTop: 20,
+    marginBottom: -15,
   },
   flex: {
     flex: 1,

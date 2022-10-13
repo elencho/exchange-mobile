@@ -34,7 +34,7 @@ export default function Whitelist() {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.block}>
-        <GeneralError style={{ marginBottom: 16 }} />
+        {/* <GeneralError style={{ marginBottom: 16 }} /> */}
 
         <WalletCoinsDropdown />
         <AppText subtext style={styles.secondary}>

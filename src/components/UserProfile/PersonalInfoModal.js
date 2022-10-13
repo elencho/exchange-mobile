@@ -22,6 +22,7 @@ import CountriesModal from './CountriesModal';
 import { saveUserInfo, saveUserInfoSaga } from '../../redux/profile/actions';
 import GeneralError from '../GeneralError';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
+import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function PersonalInfoModal() {
   const [countryDrop, setCountryDrop] = useState(false);
@@ -74,7 +75,10 @@ export default function PersonalInfoModal() {
     <>
       <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
         <TouchableOpacity activeOpacity={0.99}>
-          <GeneralError style={{ marginBottom: 15 }} />
+          <GeneralError
+            style={styles.error}
+            show={errorHappenedHere('PersonalInfoModal')}
+          />
 
           {!isVerified && (
             <>
@@ -223,6 +227,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderColor: '#42475D',
     paddingHorizontal: 15,
+  },
+  error: {
+    marginBottom: 15,
   },
   flex: {
     flex: 1,

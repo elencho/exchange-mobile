@@ -23,6 +23,7 @@ import { sendOtp } from '../../../utils/userProfileUtils';
 import GeneralError from '../../GeneralError';
 import SmsEmailAuthModal from '../../UserProfile/SmsEmailAuthModal';
 import GoogleOtpModal from '../../UserProfile/GoogleOtpModal';
+import { errorHappenedHere } from '../../../utils/appUtils';
 
 export default function AddEditWhitelistModal({ add, edit }) {
   const dispatch = useDispatch();
@@ -87,7 +88,10 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
   const children = (
     <>
-      <GeneralError style={{ marginBottom: 10 }} />
+      <GeneralError
+        style={styles.error}
+        show={errorHappenedHere('AddEditWhitelistModal')}
+      />
 
       {networks() && (
         <View style={styles.input}>
@@ -156,6 +160,9 @@ const styles = StyleSheet.create({
     bottom: 30,
     right: 15,
     left: 15,
+  },
+  error: {
+    marginBottom: 10,
   },
   input: {
     marginBottom: 16,

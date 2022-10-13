@@ -14,6 +14,7 @@ import {
   startRegistrationAction,
   usernameAndPasswordAction,
 } from '../redux/profile/actions';
+import { errorHappenedHere } from '../utils/appUtils';
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export default function Login({ navigation }) {
       </AppText>
 
       <View style={styles.height42}>
-        <GeneralError />
+        <GeneralError show={errorHappenedHere('Login')} />
       </View>
 
       <AppInput

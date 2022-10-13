@@ -17,6 +17,7 @@ import { updatePassword } from '../../redux/profile/actions';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import GeneralError from '../GeneralError';
+import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function PasswordModal() {
   const array = [
@@ -158,7 +159,10 @@ export default function PasswordModal() {
       <>
         <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
           <TouchableOpacity activeOpacity={0.99}>
-            <GeneralError style={{ marginBottom: 15 }} />
+            <GeneralError
+              style={styles.error}
+              show={errorHappenedHere('PasswordModal')}
+            />
 
             <AppInput
               style={styles.inputContainer}
@@ -235,6 +239,9 @@ const styles = StyleSheet.create({
     height: 3,
     borderRadius: 3,
     marginRight: 15,
+  },
+  error: {
+    marginBottom: 15,
   },
   flex: {
     flex: 1,

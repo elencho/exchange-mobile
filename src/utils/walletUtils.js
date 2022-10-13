@@ -25,7 +25,7 @@ import {
 export const fetchWireDeposit = async (currency, provider) => {
   const data = await axios.get(`${WIRE_DEPOSIT}/${currency}`, {
     params: { provider },
-    headers: { toast: false },
+    headers: { requestName: 'fetchWireDeposit', toast: false },
   });
   if (data) return data.data;
 };
@@ -75,7 +75,7 @@ export const generateCryptoAddress = async (currency, network) => {
   const data = await axios({
     method: 'POST',
     url: `${GENERATE_CRYPTO_ADDRESS}/${currency}?provider=${network}`,
-    headers: { toast: false },
+    headers: { requestName: 'generateCryptoAddress', toast: false },
   });
   if (data) return data.data;
 };
@@ -85,7 +85,7 @@ export const cryptoWithdrawal = async (OTP, params) => {
     CRYPTO_WITHDRAWAL,
     { ...params },
     {
-      headers: { OTP, toast: false },
+      headers: { OTP, requestName: 'cryptoWithdrawal', toast: false },
     }
   );
   if (data) return data.status;
@@ -94,7 +94,6 @@ export const cryptoWithdrawal = async (OTP, params) => {
 export const fetchWhitelist = async (currency) => {
   const data = await axios.get(CRYPTO_WHITELIST, {
     params: { currency },
-    headers: { toast: false },
   });
   if (data) return data.data;
 };
@@ -104,7 +103,7 @@ export const addWhitelistAddress = async (OTP, params) => {
     CRYPTO_WHITELIST,
     { ...params },
     {
-      headers: { OTP, toast: false },
+      headers: { OTP, requestName: 'addWhitelistAddress', toast: false },
     }
   );
   if (data) return data.data;
@@ -114,7 +113,7 @@ export const editWhitelistAddress = async (id, name) => {
   const data = await axios({
     method: 'PUT',
     url: `${CRYPTO_WHITELIST}/${id}?name=${name}`,
-    headers: { toast: false },
+    headers: { requestName: 'editWhitelistAddress', toast: false },
   });
   if (data) return data.status;
 };
@@ -122,7 +121,7 @@ export const editWhitelistAddress = async (id, name) => {
 export const deleteWhitelistAddress = async (id, OTP) => {
   const data = await axios({
     method: 'DELETE',
-    headers: { OTP, toast: false },
+    headers: { OTP, requestName: 'deleteWhitelistAddress', toast: false },
     url: `${CRYPTO_WHITELIST}/${id}`,
   });
   if (data) return data.status;
@@ -140,7 +139,7 @@ export const deleteTemplates = async (id) => {
   const data = await axios({
     method: 'DELETE',
     url: `${WITHDRAWAL_TEMPLATES}/${id}`,
-    headers: { toast: false },
+    headers: { requestName: 'deleteTemplates', toast: false },
   });
   if (data) return data.status;
 };
@@ -158,7 +157,7 @@ export const wireWithdrawal = async (OTP, params) => {
     WIRE_WITHDRAWAL,
     { ...params },
     {
-      headers: { OTP, toast: false },
+      headers: { OTP, requestName: 'wireWithdrawal', toast: false },
     }
   );
   if (data) return data.status;
@@ -169,7 +168,7 @@ export const cardWithdrawal = async (OTP, params) => {
     CARD_WITHDRAWAL,
     { ...params },
     {
-      headers: { OTP, toast: false },
+      headers: { OTP, requestName: 'cardWithdrawal', toast: false },
     }
   );
   if (data) return data.status;
@@ -178,29 +177,26 @@ export const cardWithdrawal = async (OTP, params) => {
 export const maxWithdrawal = async (params) => {
   const data = await axios.get(MAX_WITHDRAWAL, {
     params,
-    headers: { toast: false },
   });
   if (data) return data.data;
 };
 
 export const cardDeposit = async (payload) => {
   const data = await axios.post(CARD_DEPOSIT, payload, {
-    headers: { toast: false },
+    headers: { requestName: 'cardDeposit', toast: false },
   });
   if (data) return data.data;
 };
 
 export const addCard = async (payload) => {
-  const data = await axios.post(ADD_CARD_URL, payload, {
-    headers: { toast: false },
-  });
+  const data = await axios.post(ADD_CARD_URL, payload, {});
   if (data) return data.data;
 };
 
 export const deleteCard = async (cardId) => {
   const data = await axios.delete(DELETE_CARD_URL, {
     params: { cardId },
-    headers: { toast: false },
+    headers: { requestName: 'deleteCard', toast: false },
   });
   if (data) return data.status;
 };

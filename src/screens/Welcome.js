@@ -26,6 +26,7 @@ import {
 } from '../redux/profile/actions';
 import { switchLanguage } from '../utils/i18n';
 import GeneralError from '../components/GeneralError';
+import { errorHappenedHere } from '../utils/appUtils';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
@@ -78,7 +79,10 @@ export default function Welcome({ navigation }) {
 
             <AppText style={styles.secondary}>{auth}</AppText>
 
-            <GeneralError style={{ marginTop: 20 }} />
+            <GeneralError
+              style={styles.error}
+              show={errorHappenedHere('Welcome')}
+            />
 
             <AppButton
               text="Login"
@@ -104,6 +108,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: '20%',
+  },
+  error: {
+    marginTop: 20,
   },
   flex: {
     flex: 1,

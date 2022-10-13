@@ -60,7 +60,7 @@ export default function FiatBlock() {
         redirectUri: 'cryptal.com',
       };
       const data = await cardDeposit(params);
-      dispatch({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: data });
+      data && dispatch({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: data });
     }
   };
 

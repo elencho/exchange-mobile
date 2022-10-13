@@ -19,6 +19,7 @@ import PhoneNumberModal from './PhoneNumberModal';
 import launchSumsubSdk from '../../utils/sumsubMobileSdk';
 import EditCompanyModal from './EditCompanyModal';
 import IdentityModal from './IdentityModal';
+import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function Personal() {
   const dispatch = useDispatch();
@@ -111,6 +112,7 @@ export default function Personal() {
   };
 
   const secondaryTextCond = (r) => {
+    const error = generalError && errorHappenedHere('NotificationSwitcher');
     switch (r) {
       case 'Identity':
         return (
@@ -136,9 +138,9 @@ export default function Personal() {
         return (
           <AppText
             subtext
-            style={[styles.secondary, generalError && { color: '#F45E8C' }]}
+            style={[styles.secondary, error && { color: '#F45E8C' }]}
           >
-            {generalError
+            {error
               ? 'Sorry.. Something went wrong'
               : 'Receive updates & news from us'}
           </AppText>

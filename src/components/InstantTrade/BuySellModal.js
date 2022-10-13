@@ -28,6 +28,7 @@ import {
 import GeneralError from '../GeneralError';
 import AppWebView from '../AppWebView';
 import { validateScale } from '../../utils/formUtils';
+import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
@@ -139,7 +140,10 @@ export default function BuySellModal() {
 
         {tradeType === 'Buy' && hasEcommerce() && <BalanceCardSwitcher />}
 
-        <GeneralError style={{ marginTop: 16 }} />
+        <GeneralError
+          style={styles.error}
+          show={errorHappenedHere('BuySellModal')}
+        />
 
         <ScrollView nestedScrollEnabled>
           <TouchableOpacity activeOpacity={0.99}>
@@ -210,6 +214,9 @@ const styles = StyleSheet.create({
   },
   dropdowns: {
     marginVertical: 20,
+  },
+  error: {
+    marginTop: 16,
   },
   flex: {
     flex: 1,

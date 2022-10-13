@@ -19,6 +19,7 @@ import colors from '../../constants/colors';
 import images from '../../constants/images';
 import GeneralError from '../GeneralError';
 import { copyToClipboard } from '../../utils/copyToClipboard';
+import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function GoogleAuthModal() {
   const dispatch = useDispatch();
@@ -82,7 +83,10 @@ export default function GoogleAuthModal() {
         </TouchableOpacity>
       </View>
 
-      <GeneralError style={{ marginTop: 25 }} />
+      <GeneralError
+        style={styles.error}
+        show={errorHappenedHere('GoogleAuthModal')}
+      />
 
       <View style={styles.block}>
         <AppText subtext style={styles.subtext}>
@@ -122,6 +126,7 @@ const styles = StyleSheet.create({
     marginVertical: 27,
     alignItems: 'center',
   },
+  error: { marginTop: 25 },
   flex: { flex: 1 },
   justify: { justifyContent: 'space-between' },
   line: {

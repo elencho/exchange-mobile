@@ -14,6 +14,7 @@ import { saveCards } from '../../../redux/trade/actions';
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import { deleteTemplatesAction } from '../../../redux/wallet/actions';
+import { errorHappenedHere } from '../../../utils/appUtils';
 
 export default function DeleteModal({ type }) {
   const dispatch = useDispatch();
@@ -51,7 +52,10 @@ export default function DeleteModal({ type }) {
         Delete {type}
       </AppText>
 
-      <GeneralError style={{ marginTop: 15 }} />
+      <GeneralError
+        style={styles.error}
+        show={errorHappenedHere('DeleteModal')}
+      />
 
       <AppText style={styles.secondary}>
         Are you sure you want to delete this {type}?
@@ -74,6 +78,9 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     paddingHorizontal: '20%',
+  },
+  error: {
+    marginTop: 15,
   },
   secondary: {
     textAlign: 'center',

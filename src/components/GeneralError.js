@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import images from '../constants/images';
 import AppText from './AppText';
 
-function GeneralError({ style }) {
+function GeneralError({ style, show = true }) {
   const dispatch = useDispatch();
   const generalError = useSelector((state) => state.errors.generalError);
   const modals = useSelector((state) => state.modals);
@@ -22,7 +22,7 @@ function GeneralError({ style }) {
 
   return (
     <>
-      {generalError ? (
+      {generalError && show ? (
         <View style={[styles.container, style]}>
           <Image source={images.General_Error} />
           <AppText subtext style={styles.red}>

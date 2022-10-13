@@ -5,15 +5,20 @@ import store from '../redux/store';
 import handleError from './errorHandling';
 
 axios.interceptors.request.use(async (config) => {
+  const {
+    headers: { toast, requestName },
+  } = config;
+
   const token = await SecureStore.getItemAsync('accessToken');
   if (token) config.headers.Authorization = `Bearer ${token}`;
 
-  store.dispatch({
-    type: 'SET_IS_TOAST',
-    isToast: config.headers.toast === false ? false : true,
-  });
+  const isToast = toast === false ? false : true;
+
+  store.dispatch({ type: 'SET_IS_TOAST', isToast });
+  requestName && store.dispatch({ type: 'SET_REQUEST_NAME', requestName });
 
   delete config.headers.toast;
+  delete config.headers.requestName;
 
   return config;
 });

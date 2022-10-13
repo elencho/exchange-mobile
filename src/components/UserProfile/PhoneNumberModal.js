@@ -28,6 +28,7 @@ import AppText from '../AppText';
 import GeneralError from '../GeneralError';
 import PurpleText from '../PurpleText';
 import CountriesModal from './CountriesModal';
+import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function PhoneNumberModal() {
   const dispatch = useDispatch();
@@ -100,7 +101,10 @@ export default function PhoneNumberModal() {
       <>
         <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
           <TouchableOpacity activeOpacity={0.99}>
-            <GeneralError style={{ marginBottom: 25 }} />
+            <GeneralError
+              style={styles.error}
+              show={errorHappenedHere('PhoneNumberModal')}
+            />
 
             <Pressable
               style={styles.dropdown}
@@ -177,6 +181,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderColor: '#42475D',
     paddingHorizontal: 15,
+  },
+  error: {
+    marginBottom: 25,
   },
   flex: {
     flex: 1,

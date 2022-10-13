@@ -285,10 +285,11 @@ function* forgotPasswordCodeSaga() {
   const url = yield select((state) => state.profile.forgotPassInfo.callbackUrl);
   const forgotPassInfo = yield select((state) => state.profile.forgotPassInfo);
   const data = yield call(forgotPasswordCode, url, forgotPassInfo?.username);
-  if (data?.execution === 'RESET_PASSWORD_WITH_CODE') {
-    yield put(toggleLoading(false));
+  if (data?.execution === 'RESET_PASSWORD_WITH_CODE' && !data?.errors?.length) {
     yield put({ type: 'TOGGLE_TIMER' });
   }
+  yield put(toggleLoading(false));
+
   yield put({
     type: 'SAVE_FORGOT_PASS_INFO',
     forgotPassInfo: { ...forgotPassInfo, ...data },

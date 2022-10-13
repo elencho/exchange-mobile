@@ -21,6 +21,7 @@ import colors from '../constants/colors';
 import images from '../constants/images';
 import GeneralError from '../components/GeneralError';
 import { startLoginAction } from '../redux/profile/actions';
+import { errorHappenedHere } from '../utils/appUtils';
 
 export default function ForgotPassword({ navigation }) {
   const dispatch = useDispatch();
@@ -115,7 +116,7 @@ export default function ForgotPassword({ navigation }) {
             password
           </AppText>
 
-          <GeneralError />
+          <GeneralError show={errorHappenedHere('ForgotPassword')} />
 
           <AppInput
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
