@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -7,7 +7,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 import Background from '../components/Background';
 import FilterIcon from '../components/TransactionHistory/FilterIcon';
@@ -33,12 +33,16 @@ function TransactionHistory() {
   const state = useSelector((state) => state.transactions);
   const { transactions, loading, tabRouteName } = state;
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => dispatch(clearFilters());
+    }, [])
+  );
+
   useEffect(() => {
     dispatch(chooseCurrency('Show All Currency'));
     dispatch(setAbbr(null));
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-
-    return () => dispatch(clearFilters());
   }, []);
 
   const onRefresh = () => {
