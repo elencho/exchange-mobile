@@ -10,6 +10,9 @@ import { toggleChooseAddressModal } from '../../../redux/modals/actions';
 import ChooseAddressModal from './ChooseAddressModal';
 import { chooseWhitelist } from '../../../redux/wallet/actions';
 
+let addr =
+  'addr1qxyskt5fmj4dczqhfmkw2ljamtlnynpruv2l2susl4ylxyd2wvsvtpknan706f90cxvzuqs6cw9xs7487jnhn6hr6szqlq5c0k';
+
 export default function WithdrawalAddress() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -20,6 +23,33 @@ export default function WithdrawalAddress() {
   const chooseAddress = () => dispatch(toggleChooseAddressModal(true));
   const setAddress = (address) =>
     dispatch(chooseWhitelist({ ...currentWhitelistObj, address }));
+
+  const AddressAndTag = () => {
+    const { address, tag } = currentWhitelistObj;
+    return (
+      <View style={{ marginBottom: 10 }}>
+        <View style={styles.flex}>
+          <AppText subtext style={styles.subtext}>
+            Address :
+          </AppText>
+          <AppText subtext medium style={styles.address}>
+            {address}
+          </AppText>
+        </View>
+
+        {tag && (
+          <View style={[styles.flex, { marginTop: 10 }]}>
+            <AppText subtext style={styles.subtext}>
+              Address Tag :
+            </AppText>
+            <AppText subtext medium style={styles.address}>
+              {tag}
+            </AppText>
+          </View>
+        )}
+      </View>
+    );
+  };
 
   return (
     <>
@@ -41,11 +71,13 @@ export default function WithdrawalAddress() {
         <AppInput
           label="Destination Address"
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-          style={styles.address}
+          style={{ marginBottom: 22 }}
           onChangeText={setAddress}
           value={currentWhitelistObj.address}
         />
       )}
+
+      {currentWhitelistObj?.address && <AddressAndTag />}
     </>
   );
 }
@@ -56,7 +88,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   address: {
-    marginBottom: 22,
+    color: '#B7BFDB',
+    flex: 1,
+    marginTop: -1,
+    lineHeight: 16,
   },
   dropdown: {
     borderWidth: 1,
@@ -67,7 +102,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: 22,
   },
+  flex: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   secondary: {
     color: colors.SECONDARY_TEXT,
+  },
+  subtext: {
+    color: colors.SECONDARY_TEXT,
+    width: '25%',
   },
 });
