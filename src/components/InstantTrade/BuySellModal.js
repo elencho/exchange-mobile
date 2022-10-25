@@ -37,7 +37,6 @@ export default function BuySellModal() {
 
   const {
     modals: { buySellModalVisible, webViewObj },
-    errors: { generalError },
     trade: {
       Balance_Card,
       tradeType,

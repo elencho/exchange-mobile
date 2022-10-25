@@ -495,9 +495,9 @@ function* activateGoogleSaga(action) {
 function* otpSaga(action) {
   const { token } = action;
   const otpType = jwt_decode(token)?.otpType;
-  if (otpType === 'EMAIL') yield put(setEmailAuth(true));
-  if (otpType === 'TOTP') yield put(setGoogleAuth(true));
-  if (otpType === 'SMS') yield put(setSmsAuth(true));
+  yield put(setEmailAuth(otpType === 'EMAIL'));
+  yield put(setGoogleAuth(otpType === 'TOTP'));
+  yield put(setSmsAuth(otpType === 'SMS'));
 }
 
 // RESEND SAGA

@@ -59,9 +59,13 @@ function ChooseCurrencyModal({ wallet = false }) {
 
   const choose = (name, code) => {
     dispatch(setNetwork(null));
-
-    balance.balances.forEach((b) => {
-      if (code === b.currencyCode) dispatch(setCurrentBalanceObj(b));
+    let network;
+    const m = walletTab === 'Deposit' ? 'depositMethods' : 'withdrawalMethods';
+    balance?.balances?.forEach((b) => {
+      if (code === b.currencyCode) {
+        if (b[m].WALLET) network = b[m].WALLET[0].provider;
+        dispatch(setCurrentBalanceObj(b));
+      }
     });
 
     if (wallet) {
@@ -70,7 +74,7 @@ function ChooseCurrencyModal({ wallet = false }) {
         dispatch(wireDepositAction(name, code, navigation));
       } else {
         walletTab === 'Manage Cards' && dispatch(setWalletTab('Whitelist'));
-        dispatch(cryptoAddressesAction(name, code, navigation));
+        dispatch(cryptoAddressesAction(name, code, navigation, network));
       }
 
       if (

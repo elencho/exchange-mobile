@@ -66,7 +66,11 @@ export default function Balance({ navigation }) {
     <Background>
       <View style={styles.back}>
         <Image source={images.Back} style={styles.arrow} />
-        <PurpleText text="Back" onPress={back} style={styles.purpleText} />
+        <PurpleText
+          text="Back to Wallet"
+          onPress={back}
+          style={styles.purpleText}
+        />
       </View>
 
       <Headline title="My Wallet" />

@@ -27,8 +27,8 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
   const handlePress = () => {
     dispatch(setNetwork(null));
 
-    let network;
     const fiats = fiatsArray?.map((f) => f.code);
+    let network;
     balance?.balances?.forEach((b) => {
       if (code === b.currencyCode) {
         if (b.depositMethods.WALLET) {
