@@ -47,7 +47,9 @@ export default function FiatBlock() {
       dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount });
 
       if (!depositAmount) dispatch(setFee(null));
-      if (depositAmount && depositProvider) dispatch(fetchFee('deposit'));
+      if (text.trim() && depositAmount && depositProvider) {
+        dispatch(fetchFee('deposit'));
+      }
     }
   };
 

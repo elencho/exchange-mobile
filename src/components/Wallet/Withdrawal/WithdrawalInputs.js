@@ -40,6 +40,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
 
   useEffect(() => {
     dispatch(setFee(null));
+    return () => dispatch(setFee(null));
   }, [code, network]);
 
   const setAmount = (text) => {

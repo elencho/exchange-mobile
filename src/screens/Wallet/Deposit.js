@@ -52,6 +52,7 @@ export default function Deposit() {
 
     setHasMethod(!!Object.keys(m).length);
     setLoading(false);
+    dispatch(setFee(null));
 
     return () => dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
   }, [code]);
