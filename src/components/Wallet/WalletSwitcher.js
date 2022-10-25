@@ -35,10 +35,14 @@ export default function WalletSwitcher() {
     dispatch(setWalletTab(f));
 
     const m = f === 'Deposit' ? 'depositMethods' : 'withdrawalMethods';
-    if (currentBalanceObj[m]?.ECOMMERCE) {
-      dispatch(setNetwork('ECOMMERCE'));
-    } else {
-      dispatch(setNetwork('SWIFT'));
+
+    const isFiat = currentBalanceObj.type === 'FIAT';
+    if (isFiat) {
+      if (currentBalanceObj[m]?.ECOMMERCE) {
+        dispatch(setNetwork('ECOMMERCE'));
+      } else {
+        dispatch(setNetwork('SWIFT'));
+      }
     }
   };
 

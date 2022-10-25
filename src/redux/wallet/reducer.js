@@ -222,6 +222,7 @@ export default (state = INITIAL_STATE, action) => {
         memoTag: '',
         saveTemplate: false,
         newTemplateName: '',
+        depositAmount: null,
       };
     case actionTypes.RESET_WALLET_STATE:
       return {

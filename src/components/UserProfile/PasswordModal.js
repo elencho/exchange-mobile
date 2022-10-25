@@ -83,7 +83,6 @@ export default function PasswordModal() {
       hasNumber &&
       hasUpperAndLower &&
       newPassword === repeatPassword &&
-      curentPassword !== newPassword &&
       curentPassword
     );
   };
@@ -95,7 +94,7 @@ export default function PasswordModal() {
 
   const handleSave = () => {
     const { curentPassword, newPassword, repeatPassword } = passwordState;
-    dispatch(updatePassword(curentPassword, newPassword, repeatPassword));
+    dispatch(updatePassword(curentPassword, newPassword, repeatPassword, hide));
   };
 
   const toggle = () => dispatchToReducer({ type: 'toggleSecure' });

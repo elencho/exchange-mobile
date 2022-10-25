@@ -53,6 +53,7 @@ export default function Login({ navigation }) {
         value={credentials.login}
       />
       <AppInput
+        secureTextEntry
         placeholder="Enter Password"
         onChangeText={typePassword}
         value={credentials.password}

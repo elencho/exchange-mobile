@@ -172,12 +172,14 @@ export const toggleEmailSubscription = (value) => ({
 export const updatePassword = (
   curentPassword,
   newPassword,
-  repeatPassword
+  repeatPassword,
+  hide
 ) => ({
   type: actionTypes.UPDATE_PASSWORD_SAGA,
   curentPassword,
   newPassword,
   repeatPassword,
+  hide,
 });
 export const sendVerificationCode = (phoneNumber, phoneCountry) => ({
   type: actionTypes.SEND_VERIFICATION_CODE,

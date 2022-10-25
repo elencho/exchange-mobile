@@ -21,7 +21,6 @@ import {
   saveRegistrationStartInfo,
   saveVerificationInfo,
   fetchUserInfo,
-  usernameAndPasswordAction,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -58,7 +57,6 @@ import {
   toggleEmailVerificationModal,
   toggleGoogleAuthModal,
   toggleGoogleOtpModal,
-  togglePasswordModal,
   togglePersonalInfoModal,
   togglePhoneNumberModal,
   toggleSmsAuthModal,
@@ -369,7 +367,7 @@ function* saveUserInfoSaga() {
 
 //  UPDATE PASSWORD
 function* updatePasswordSaga(action) {
-  const { curentPassword, newPassword, repeatPassword } = action;
+  const { curentPassword, newPassword, repeatPassword, hide } = action;
   const data = yield call(
     updatePassword,
     curentPassword,
@@ -377,7 +375,7 @@ function* updatePasswordSaga(action) {
     repeatPassword
   );
   if (data?.status >= 200 && data?.status < 300) {
-    yield put(togglePasswordModal(false));
+    yield call(hide);
   }
 }
 

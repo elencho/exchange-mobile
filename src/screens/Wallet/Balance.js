@@ -40,7 +40,7 @@ export default function Balance({ navigation }) {
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setCard(null));
-    if (walletTab !== 'Deposit' && network !== 'SWIFT') {
+    if (network !== 'SWIFT') {
       dispatch(setDepositProvider(null));
     }
 

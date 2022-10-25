@@ -48,7 +48,7 @@ export default function ForgotPassword({ navigation }) {
   useEffect(() => {
     return () => {
       dispatch({ type: 'SAVE_FORGOT_PASS_INFO', forgotPassInfo: {} });
-      dispatch({ type: 'TOGGLE_TIMER' });
+      timerVisible && dispatch({ type: 'TOGGLE_TIMER' });
       setSeconds(30);
     };
   }, []);
