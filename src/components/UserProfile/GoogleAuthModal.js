@@ -54,7 +54,7 @@ export default function GoogleAuthModal() {
     setKey(key);
     dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };
-  const handleCopy = () => copyToClipboard(totpSecretObj.totpSecretEncoded);
+  const handleCopy = () => copyToClipboard(totpSecretObj?.totpSecretEncoded);
 
   const right = (
     <View style={styles.row}>

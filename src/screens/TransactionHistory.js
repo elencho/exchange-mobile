@@ -35,7 +35,7 @@ function TransactionHistory() {
 
   useFocusEffect(
     useCallback(() => {
-      return () => dispatch(clearFilters());
+      return () => onRefresh();
     }, [])
   );
 
