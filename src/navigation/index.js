@@ -40,15 +40,15 @@ export default function Navigator() {
       dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };
 
+  const screenOptions = {
+    headerShown: false,
+    gestureEnabled: false,
+    headerLeft: () => null,
+  };
+
   return (
     <NavigationContainer onStateChange={onStateChange} ref={navigationRef}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          gestureEnabled: false,
-          headerLeft: () => null,
-        }}
-      >
+      <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Registration" component={RegistrationScreen} />

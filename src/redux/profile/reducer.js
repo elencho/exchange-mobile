@@ -21,10 +21,10 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: sali_realuri,
+  credentials: {},
   userAndPassInfo: {},
   forgotPassInfo: {
-    username: 'Vakhtang.elisabedashvili@gmail.com',
+    username: 'vakhtang.elisabedashvili@gmail.com',
     code: '',
   },
   forgotPassMode: false,
