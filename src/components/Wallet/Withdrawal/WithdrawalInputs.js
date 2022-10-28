@@ -28,6 +28,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
       memoTag,
       cryptoAddress,
       network,
+      whitelist,
     },
     transactions: { code },
     trade: {
@@ -83,7 +84,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
     <View style={styles.block}>
       {!hasRestriction && !isFiat && <WithdrawalAddress />}
 
-      {cryptoAddress.tag && (
+      {cryptoAddress?.tag && !whitelist?.length && (
         <AppInput
           label="Address tag"
           onChangeText={handleMemotag}

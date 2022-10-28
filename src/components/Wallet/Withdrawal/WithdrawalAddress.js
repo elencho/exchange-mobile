@@ -20,12 +20,14 @@ export default function WithdrawalAddress() {
     wallet: { hasWhitelist, currentWhitelistObj },
   } = state;
 
+  const w = currentWhitelistObj;
+  const color = colors[w?.address ? 'PRIMARY_TEXT' : 'SECONDARY_TEXT'];
+
   const chooseAddress = () => dispatch(toggleChooseAddressModal(true));
-  const setAddress = (address) =>
-    dispatch(chooseWhitelist({ ...currentWhitelistObj, address }));
+  const setAddress = (address) => dispatch(chooseWhitelist({ ...w, address }));
 
   const AddressAndTag = () => {
-    const { address, tag } = currentWhitelistObj;
+    const { address, tag } = w;
     return (
       <View style={{ marginBottom: 10 }}>
         <View style={styles.flex}>
@@ -55,10 +57,8 @@ export default function WithdrawalAddress() {
     <>
       {hasWhitelist ? (
         <Pressable style={styles.dropdown} onPress={chooseAddress}>
-          <AppText body style={styles.secondary}>
-            {currentWhitelistObj.name
-              ? currentWhitelistObj.name
-              : 'Choose Address'}
+          <AppText body style={{ color }}>
+            {w.name ? w.name : 'Choose Address'}
           </AppText>
 
           <View style={styles.arrow}>
@@ -73,11 +73,11 @@ export default function WithdrawalAddress() {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           style={{ marginBottom: 22 }}
           onChangeText={setAddress}
-          value={currentWhitelistObj.address}
+          value={w.address}
         />
       )}
 
-      {currentWhitelistObj?.address && <AddressAndTag />}
+      {w?.id && <AddressAndTag />}
     </>
   );
 }
@@ -105,9 +105,6 @@ const styles = StyleSheet.create({
   flex: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  secondary: {
-    color: colors.SECONDARY_TEXT,
   },
   subtext: {
     color: colors.SECONDARY_TEXT,

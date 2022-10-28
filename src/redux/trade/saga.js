@@ -19,6 +19,7 @@ import {
   cardsSagaAction,
   setCurrentBalanceObj,
   setCrypto,
+  switchBalanceCard,
 } from './actions';
 import {
   getParams,
@@ -165,6 +166,7 @@ function* addNewCardSaga(action) {
   yield put(toggleBuySellModal(false));
   yield delay(500);
   yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
+  yield put(switchBalanceCard('balance'));
 }
 
 function* refreshWalletAndTradesSaga() {
