@@ -55,10 +55,7 @@ export default function ForgotPassword({ navigation }) {
 
   const secondsFormat = seconds < 10 ? `00 : 0${seconds}` : `00 : ${seconds}`;
 
-  const goToLogin = () => {
-    dispatch({ type: 'SAVE_FORGOT_PASS_INFO', forgotPassInfo: {} });
-    dispatch(startLoginAction(navigation));
-  };
+  const goToLogin = () => dispatch(startLoginAction(navigation));
 
   const sendCode = () => dispatch({ type: 'SEND_FORGOT_PASS_CODE' });
   const Right = () => {

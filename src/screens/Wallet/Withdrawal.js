@@ -78,7 +78,7 @@ export default function Withdrawal() {
 
     if (isEcommerce) return card?.id && withdrawalAmount;
 
-    return withdrawalAmount && withdrawalNote && currentWhitelistObj?.address;
+    return withdrawalAmount && currentWhitelistObj?.address;
   };
 
   useEffect(() => {

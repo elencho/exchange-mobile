@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, ImageBackground, Image, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 
 import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
@@ -22,6 +23,15 @@ export default function Login({ navigation }) {
   const {
     profile: { credentials },
   } = state;
+
+  useFocusEffect(
+    useCallback(() => {
+      return () =>
+        setTimeout(() => {
+          dispatch(setCredentials({}));
+        }, 400);
+    }, [])
+  );
 
   const typePassword = (t) =>
     dispatch(setCredentials({ ...credentials, password: t }));

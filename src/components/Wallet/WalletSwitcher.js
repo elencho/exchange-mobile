@@ -10,7 +10,7 @@ export default function WalletSwitcher() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { walletTab, network },
+    wallet: { walletTab },
     trade: { currentBalanceObj },
   } = state;
 

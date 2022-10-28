@@ -46,13 +46,13 @@ function AppModal({
       backdropTransitionInTiming={600}
       onModalHide={onModalHide}
       hideModalContentWhileAnimating
-      useNativeDriver
-      useNativeDriverForBackdrop
+      // useNativeDriver
+      // useNativeDriverForBackdrop
       onDismiss={onDismiss}
+      // coverScreen={false}
     >
       {bottom && (
         <KeyboardAvoidingView
-          contentContainerStyle={{ borderWidth: 2, borderColor: 'yellow' }}
           behavior={Platform.select({ android: undefined, ios: 'padding' })}
           keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
         >

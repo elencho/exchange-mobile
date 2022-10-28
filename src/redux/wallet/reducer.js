@@ -223,6 +223,7 @@ export default (state = INITIAL_STATE, action) => {
         saveTemplate: false,
         newTemplateName: '',
         depositAmount: null,
+        currentWhitelistObj: {},
       };
     case actionTypes.RESET_WALLET_STATE:
       return {
