@@ -4,10 +4,7 @@
     "slug": "cryptal-app",
     "scheme": "cryptal-app",
     "version": "1.0.0",
-    "assetBundlePatterns": [
-      "assets/images/*",
-      "assets/fonts/*"
-    ],
+    "assetBundlePatterns": ["assets/images/*", "assets/fonts/*"],
     "description": "",
     "plugins": [
       [

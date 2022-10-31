@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Image,
   RefreshControl,
@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
+import { useFocusEffect } from '@react-navigation/native';
 
 import Background from '../components/Background';
 import PurpleText from '../components/PurpleText';
@@ -34,6 +35,12 @@ export default function UserProfile({ navigation }) {
     transactions: { loading },
   } = state;
 
+  useFocusEffect(
+    useCallback(() => {
+      return () => dispatch(switchPersonalSecurity('Personal'));
+    }, [])
+  );
+
   const logout = async () => {
     const refresh_token = await SecureStore.getItemAsync('refreshToken');
     const status = await logoutUtil(refresh_token);
@@ -48,10 +55,7 @@ export default function UserProfile({ navigation }) {
   };
 
   const onRefresh = () => dispatch(fetchUserInfo());
-  const back = () => {
-    navigation.goBack();
-    dispatch(switchPersonalSecurity('Personal'));
-  };
+  const back = () => navigation.goBack();
 
   return (
     <Background>

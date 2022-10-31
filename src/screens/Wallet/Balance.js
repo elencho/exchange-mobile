@@ -22,7 +22,7 @@ import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkMod
 import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
 import colors from '../../constants/colors';
-import { setCard, setDepositProvider } from '../../redux/trade/actions';
+import { setCard, setDepositProvider, setFee } from '../../redux/trade/actions';
 
 export default function Balance({ navigation }) {
   const dispatch = useDispatch();
@@ -40,6 +40,7 @@ export default function Balance({ navigation }) {
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setCard(null));
+    dispatch(setFee(null));
     if (network !== 'SWIFT') {
       dispatch(setDepositProvider(null));
     }

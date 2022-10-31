@@ -6,15 +6,17 @@ import images from '../../../constants/images';
 import colors from '../../../constants/colors';
 import AppText from '../../AppText';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
-import { COINS_URL_PNG, ICONS_URL_PNG } from '../../../constants/api';
+import { ICONS_URL_PNG } from '../../../constants/api';
+import { setNetwork } from '../../../redux/wallet/actions';
 
-export default function ChooseNetworkDropdown({ disabled = false }) {
+export default function ChooseNetworkDropdown({ disabled = false, whitelist }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     wallet: { hasMultipleNetworks, network, walletTab },
     trade: { currentBalanceObj },
     transactions: { code },
+    modals: { addWhitelistModalVisble },
   } = state;
 
   const cur = currentBalanceObj;
@@ -37,6 +39,10 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
     });
   }, [network, code]);
 
+  useEffect(() => {
+    if (addWhitelistModalVisble) dispatch(setNetwork(null));
+  }, [addWhitelistModalVisble]);
+
   const handleDropdown = () => dispatch(toggleChooseNetworkModal(true));
 
   const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
@@ -51,6 +57,9 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
     return network;
   };
 
+  const backgroundColor =
+    colors[whitelist ? 'PRIMARY_BACKGROUND' : 'SECONDARY_BACKGROUND'];
+
   return (
     <>
       {isAvailable && (
@@ -63,7 +72,7 @@ export default function ChooseNetworkDropdown({ disabled = false }) {
             >
               {network !== 'Choose Network' ? (
                 <>
-                  <View style={styles.subtext}>
+                  <View style={[styles.subtext, { backgroundColor }]}>
                     <AppText body style={styles.secondary}>
                       Choose Network
                     </AppText>
@@ -144,8 +153,7 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
     position: 'absolute',
     left: -5,
-    top: -7,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    top: -8,
     paddingHorizontal: 8,
   },
 });

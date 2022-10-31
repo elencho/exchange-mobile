@@ -42,8 +42,8 @@ function AppModal({
       swipeDirection="down"
       propagateSwipe={true}
       style={styles.modal}
-      animationOutTiming={600}
-      backdropTransitionInTiming={600}
+      animationOutTiming={300}
+      backdropTransitionInTiming={300}
       onModalHide={onModalHide}
       hideModalContentWhileAnimating
       // useNativeDriver

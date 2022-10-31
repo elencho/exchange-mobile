@@ -49,7 +49,7 @@ export default function RegistrationInputs() {
 
   const openCountriesModal = () => dispatch(toggleCountriesModal(true));
   const phoneCode = () =>
-    countriesConstant.find((c) => i.phoneCountry === c.code);
+    countriesConstant?.find((c) => i.phoneCountry === c.code);
 
   return (
     <>

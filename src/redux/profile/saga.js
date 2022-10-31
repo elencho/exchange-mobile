@@ -78,6 +78,8 @@ function* startLoginSaga(action) {
 
   if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
     navigation.navigate('Login');
+  } else {
+    navigation.goBack();
   }
 }
 

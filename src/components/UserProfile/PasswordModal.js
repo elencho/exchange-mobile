@@ -113,7 +113,7 @@ export default function PasswordModal() {
     dispatchToReducer({ type: 'checkNumber', check: /\d/.test(pass) });
     dispatchToReducer({
       type: 'checkUpperAndLower',
-      check: /\b(?![a-z]+\b|[A-Z]+\b)[a-zA-Z]+/.test(pass),
+      check: /^(?=.*[a-z])(?=.*[A-Z])\S+$/.test(pass),
     });
   };
 

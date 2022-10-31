@@ -95,8 +95,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
       {networks() && (
         <View style={styles.input}>
-          <ChooseNetworkDropdown disabled={edit ? true : false} />
-          <ChooseNetworkModal />
+          <ChooseNetworkDropdown disabled={!!edit} whitelist />
         </View>
       )}
 

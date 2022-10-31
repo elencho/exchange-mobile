@@ -139,8 +139,8 @@ function* submitTradeSaga() {
   if (data?.status >= 200 && data?.status < 300) {
     yield put({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: data?.data });
     yield put({ type: 'BALANCE_SAGA' });
-    // yield put(fetchTradesAction());
-    // yield put(toggleBuySellModal(false));
+    yield put(fetchTradesAction());
+    yield put(toggleBuySellModal(false));
   }
 }
 
