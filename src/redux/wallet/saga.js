@@ -43,6 +43,7 @@ import {
   setHasMultipleNetworks,
   setHasWhitelist,
   setIban,
+  setNetwork,
   setNewTemplateName,
   setNewWhitelist,
   setReceiverBank,
@@ -126,6 +127,7 @@ function* cryptoAddressesSaga(action) {
 
   if (Object.keys(currentBalanceObj?.depositMethods)?.length) {
     const cryptoAddress = yield call(fetchCryptoAddresses, code, network);
+    yield put(setNetwork(network));
     yield put(saveCryptoAddress(cryptoAddress ? cryptoAddress : {}));
   }
 

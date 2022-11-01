@@ -30,7 +30,13 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const state = useSelector((state) => state);
   const {
     modals: { addWhitelistModalVisble, editWhitelistModalVisble },
-    wallet: { newWhitelist, currentWhitelistObj, whitelist, network },
+    wallet: {
+      newWhitelist,
+      currentWhitelistObj,
+      whitelist,
+      network,
+      hasMultipleNetworks,
+    },
     profile: { googleAuth, emailAuth, smsAuth },
     trade: { currentBalanceObj },
   } = state;
@@ -79,13 +85,6 @@ export default function AddEditWhitelistModal({ add, edit }) {
     if (edit) dispatch(chooseWhitelist({ ...currentWhitelistObj, name }));
   };
 
-  const networks = () => {
-    if (currentBalanceObj.withdrawalMethods.WALLET) {
-      return currentBalanceObj.withdrawalMethods.WALLET.length > 1;
-    }
-    return;
-  };
-
   const children = (
     <>
       <GeneralError
@@ -93,9 +92,10 @@ export default function AddEditWhitelistModal({ add, edit }) {
         show={errorHappenedHere('AddEditWhitelistModal')}
       />
 
-      {networks() && (
+      {hasMultipleNetworks && (
         <View style={styles.input}>
           <ChooseNetworkDropdown disabled={!!edit} whitelist />
+          <ChooseNetworkModal />
         </View>
       )}
 

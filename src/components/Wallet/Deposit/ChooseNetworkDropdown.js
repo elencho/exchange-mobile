@@ -40,7 +40,9 @@ export default function ChooseNetworkDropdown({ disabled = false, whitelist }) {
   }, [network, code]);
 
   useEffect(() => {
-    if (addWhitelistModalVisble) dispatch(setNetwork(null));
+    if (addWhitelistModalVisble && hasMultipleNetworks) {
+      dispatch(setNetwork(null));
+    }
   }, [addWhitelistModalVisble]);
 
   const handleDropdown = () => dispatch(toggleChooseNetworkModal(true));
@@ -70,7 +72,7 @@ export default function ChooseNetworkDropdown({ disabled = false, whitelist }) {
               onPress={handleDropdown}
               disabled={disabled}
             >
-              {network !== 'Choose Network' ? (
+              {network ? (
                 <>
                   <View style={[styles.subtext, { backgroundColor }]}>
                     <AppText body style={styles.secondary}>
@@ -88,7 +90,7 @@ export default function ChooseNetworkDropdown({ disabled = false, whitelist }) {
                 </>
               ) : (
                 <AppText style={[styles.secondary, { flex: 1 }]}>
-                  {network}
+                  Choose Network
                 </AppText>
               )}
               <Image source={images.Arrow} />
