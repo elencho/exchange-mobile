@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import Modal from 'react-native-modal';
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
 import Constants from 'expo-constants';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 import ModalTop from './ModalTop';
 import colors from '../constants/colors';
@@ -51,30 +52,32 @@ function AppModal({
       onDismiss={onDismiss}
       // coverScreen={false}
     >
-      {bottom && (
-        <KeyboardAvoidingView
-          behavior={Platform.select({ android: undefined, ios: 'padding' })}
-          keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
-        >
-          <ModalTop />
-          <View style={styles.bottom}>
-            {title && (
-              <AppText header style={styles.header}>
-                {title}
-              </AppText>
-            )}
+      <RootSiblingParent>
+        {bottom && (
+          <KeyboardAvoidingView
+            behavior={Platform.select({ android: undefined, ios: 'padding' })}
+            keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
+          >
+            <ModalTop />
+            <View style={styles.bottom}>
+              {title && (
+                <AppText header style={styles.header}>
+                  {title}
+                </AppText>
+              )}
+              {children}
+            </View>
+          </KeyboardAvoidingView>
+        )}
+        {fullScreen && (
+          <Background>
+            <CloseModalIcon onPress={hide} />
+            {title && <Headline title={title} />}
             {children}
-          </View>
-        </KeyboardAvoidingView>
-      )}
-      {fullScreen && (
-        <Background>
-          <CloseModalIcon onPress={hide} />
-          {title && <Headline title={title} />}
-          {children}
-        </Background>
-      )}
-      {custom && children}
+          </Background>
+        )}
+        {custom && children}
+      </RootSiblingParent>
     </Modal>
   );
 }
