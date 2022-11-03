@@ -21,7 +21,7 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: {},
+  credentials: vaxo_realuri,
   userAndPassInfo: {},
   forgotPassInfo: {
     username: 'vakhtang.elisabedashvili@gmail.com',

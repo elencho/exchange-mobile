@@ -44,7 +44,11 @@ export default function Whitelist() {
 
       {hasWhitelist ? (
         <>
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollContent}
+            nestedScrollEnabled
+          >
             {whitelist?.map((w) => (
               <WhitelistItem key={w.id} whitelistItem={w} />
             ))}
@@ -118,6 +122,8 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
+  },
+  scrollContent: {
     paddingHorizontal: 28,
     paddingVertical: 20,
   },

@@ -26,7 +26,7 @@ function ChooseCurrencyModal({ wallet = false }) {
   const state = useSelector((state) => state);
 
   const {
-    transactions: { currencies, currenciesConstant, currency },
+    transactions: { currencies, currenciesConstant, currency, tabRouteName },
     modals: { chooseCurrencyModalVisible },
     trade: { balance, fiatsArray, currentBalanceObj },
     wallet: { walletTab },
@@ -35,7 +35,9 @@ function ChooseCurrencyModal({ wallet = false }) {
   let walletCurrencies = currencies;
 
   useEffect(() => {
-    dispatch(fetchCurrencies());
+    chooseCurrencyModalVisible &&
+      tabRouteName === 'Transactions' &&
+      dispatch(fetchCurrencies());
   }, [chooseCurrencyModalVisible]);
 
   useEffect(() => {
