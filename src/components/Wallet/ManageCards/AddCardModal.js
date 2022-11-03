@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -30,6 +30,10 @@ export default function AddCardModal() {
   } = state;
 
   const [saveCardAgreeTerms, setSaveCardAgreeTerms] = useState(false);
+
+  useEffect(() => {
+    setSaveCardAgreeTerms(depositProvider !== 'BOG');
+  }, [depositProvider]);
 
   const hide = () => dispatch(toggleAddCardModal(false));
 
@@ -101,14 +105,16 @@ export default function AddCardModal() {
 
       <AppInfoBlock content={['Add Card Info']} info />
 
-      <View style={styles.row}>
-        <Pressable style={styles.image} onPress={toggle}>
-          <Image source={image()} style={{ marginRight: 10 }} />
-        </Pressable>
-        <AppText style={styles.grey}>
-          Save Card & Agree <PurpleText text="Terms" />
-        </AppText>
-      </View>
+      {depositProvider === 'BOG' && (
+        <View style={styles.row}>
+          <Pressable style={styles.image} onPress={toggle}>
+            <Image source={image()} style={{ marginRight: 10 }} />
+          </Pressable>
+          <AppText style={styles.grey}>
+            Save Card & Agree <PurpleText text="Terms" />
+          </AppText>
+        </View>
+      )}
 
       <AppButton
         text="Next"
