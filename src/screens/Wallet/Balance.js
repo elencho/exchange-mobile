@@ -30,10 +30,9 @@ export default function Balance({ navigation }) {
   const {
     wallet: { walletTab, network },
     transactions: { tabNavigationRef },
-    trade: { tradesLoading, offersLoading, currentBalanceObj },
+    trade: { currentBalanceObj },
   } = state;
 
-  const loading = tradesLoading || offersLoading;
   const m = walletTab === 'Deposit' ? 'depositMethods' : 'withdrawalMethods';
 
   const onRefresh = () => {
@@ -88,7 +87,6 @@ export default function Balance({ navigation }) {
           refreshControl={
             <RefreshControl
               tintColor={colors.PRIMARY_PURPLE}
-              refreshing={loading}
               onRefresh={onRefresh}
             />
           }
