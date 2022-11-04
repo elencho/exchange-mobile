@@ -35,7 +35,7 @@ export default function ForgotPassword({ navigation }) {
 
   useEffect(() => {
     if (!seconds) {
-      dispatch({ type: 'TOGGLE_TIMER' });
+      dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
       setSeconds(30);
     }
     if (seconds && timerVisible) {
@@ -48,7 +48,7 @@ export default function ForgotPassword({ navigation }) {
   useEffect(() => {
     return () => {
       dispatch({ type: 'SAVE_FORGOT_PASS_INFO', forgotPassInfo: {} });
-      timerVisible && dispatch({ type: 'TOGGLE_TIMER' });
+      dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
       setSeconds(30);
     };
   }, []);

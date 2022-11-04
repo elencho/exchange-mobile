@@ -21,10 +21,10 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: vaxo_realuri,
+  credentials: {},
   userAndPassInfo: {},
   forgotPassInfo: {
-    username: 'vakhtang.elisabedashvili@gmail.com',
+    username: '',
     code: '',
   },
   forgotPassMode: false,
@@ -85,6 +85,7 @@ export default (state = INITIAL_STATE, action) => {
     currentSecurityAction,
     otpChangeToken,
     totpSecretObj,
+    timerVisible,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_PKCE_INFO:
@@ -130,7 +131,7 @@ export default (state = INITIAL_STATE, action) => {
     case 'TOGGLE_TIMER':
       return {
         ...state,
-        timerVisible: !state.timerVisible,
+        timerVisible,
       };
     case 'TOGGLE_FORGOT_PASS_MODE':
       return {
