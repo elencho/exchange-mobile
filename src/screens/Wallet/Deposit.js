@@ -22,6 +22,7 @@ import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
 import { setCard, setDepositProvider, setFee } from '../../redux/trade/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
+import { setStatusModalInfo } from '../../redux/modals/actions';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -73,6 +74,15 @@ export default function Deposit() {
     return 'METHOD';
   };
 
+  const clear = () => {
+    dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+    dispatch(setDepositProvider(null));
+    dispatch(setCard(null));
+    dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
+    dispatch(setFee(null));
+    dispatch({ type: 'BALANCE_SAGA' });
+  };
+
   const onNavigationStateChange = (state) => {
     const urlArray = state.url.split('=');
     const alternateUrlArray = state.url.split('/');
@@ -83,12 +93,8 @@ export default function Deposit() {
       ending === 'true' ||
       alternateEnding === 'Cancel'
     ) {
-      dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
-      dispatch(setDepositProvider(null));
-      dispatch(setCard(null));
-      dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
-      dispatch(setFee(null));
-      dispatch({ type: 'BALANCE_SAGA' });
+      clear();
+      dispatch(setStatusModalInfo({ success: ending, visible: true }));
     }
   };
 

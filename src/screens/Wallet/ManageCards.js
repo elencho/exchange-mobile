@@ -19,7 +19,7 @@ import Card from '../../components/Wallet/ManageCards/Card';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleAddCardModal } from '../../redux/modals/actions';
-import CardAddStatusModal from '../../components/Wallet/ManageCards/CardAddStatusModal';
+import StatusModal from '../../components/Wallet/StatusModal';
 import DeleteModal from '../../components/Wallet/ManageCards/DeleteModal';
 import { cardsSagaAction } from '../../redux/trade/actions';
 
@@ -91,7 +91,7 @@ export default function ManageCards() {
       )}
 
       <AddCardModal />
-      <CardAddStatusModal />
+      <StatusModal cards />
 
       <AppWebView refresh source={{ html: webViewObj }} />
     </View>

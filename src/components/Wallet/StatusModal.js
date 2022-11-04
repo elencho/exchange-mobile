@@ -2,40 +2,46 @@ import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import AppModal from '../../AppModal';
-import AppText from '../../AppText';
-import colors from '../../../constants/colors';
-import images from '../../../constants/images';
-import { setCardAddStatusModalInfo } from '../../../redux/modals/actions';
+import AppModal from '../AppModal';
+import AppText from '../AppText';
+import colors from '../../constants/colors';
+import images from '../../constants/images';
+import { setStatusModalInfo } from '../../redux/modals/actions';
 
-export default function CardAddStatusModal() {
+export default function StatusModal({ deposit, cards }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    modals: { cardAddStatusModalInfo },
+    modals: { statusModalInfo },
   } = state;
 
   const hide = () =>
-    dispatch(
-      setCardAddStatusModalInfo({ ...cardAddStatusModalInfo, visible: false })
-    );
-  const onModalHide = () => dispatch(setCardAddStatusModalInfo(null));
+    dispatch(setStatusModalInfo({ ...statusModalInfo, visible: false }));
+  const onModalHide = () => dispatch(setStatusModalInfo(null));
 
   const image =
-    cardAddStatusModalInfo?.success === 'true' ? 'Card_Success' : 'Card_Error';
-  const text = `card add header ${cardAddStatusModalInfo?.success}`;
-  const subtext = `card add subtext ${cardAddStatusModalInfo?.success}`;
-  const visible = !!cardAddStatusModalInfo?.visible;
+    statusModalInfo?.success === 'true' ? 'Status_Success' : 'Status_Error';
+
+  const text = () => {
+    if (cards) return `card add header ${statusModalInfo?.success}`;
+    if (deposit) return `deposit header ${statusModalInfo?.success}`;
+  };
+  const subtext = () => {
+    if (cards) return `card add subtext ${statusModalInfo?.success}`;
+    if (deposit) return `deposit subtext ${statusModalInfo?.success}`;
+  };
+
+  const visible = !!statusModalInfo?.visible;
 
   const children = (
     <View style={styles.container}>
       <Image source={images[image]} style={{ marginVertical: 30 }} />
 
       <AppText header style={styles.white}>
-        {text}
+        {text()}
       </AppText>
       <AppText subtext style={styles.secondary}>
-        {subtext}
+        {subtext()}
       </AppText>
     </View>
   );

@@ -13,7 +13,7 @@ import BankFeesModal from '../../InstantTrade/BankFeesModal';
 import images from '../../../constants/images';
 import colors from '../../../constants/colors';
 import {
-  setCardAddStatusModalInfo,
+  setStatusModalInfo,
   toggleAddCardModal,
   toggleBankFeesModal,
   toggleChooseBankModal,
@@ -24,7 +24,7 @@ export default function AddCardModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    modals: { addCardModalVisible, cardAddStatusModalInfo, webViewObj },
+    modals: { addCardModalVisible, statusModalInfo, webViewObj },
     trade: { depositProvider, depositProviders },
     transactions: { code },
   } = state;
@@ -58,7 +58,7 @@ export default function AddCardModal() {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
-      dispatch(setCardAddStatusModalInfo({ success: ending }));
+      dispatch(setStatusModalInfo({ success: ending, visible: true }));
       dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
       hide();
@@ -66,10 +66,8 @@ export default function AddCardModal() {
   };
 
   const handleHide = () => {
-    if (cardAddStatusModalInfo) {
-      dispatch(
-        setCardAddStatusModalInfo({ ...cardAddStatusModalInfo, visible: true })
-      );
+    if (statusModalInfo) {
+      dispatch(setStatusModalInfo({ ...statusModalInfo, visible: true }));
     }
     setSaveCardAgreeTerms(false);
   };

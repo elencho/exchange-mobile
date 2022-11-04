@@ -14,6 +14,7 @@ import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import BankInfo from './BankInfo';
 import { validateScale } from '../../../utils/formUtils';
 import { fetchFee, setFee } from '../../../redux/trade/actions';
+import StatusModal from '../StatusModal';
 
 export default function FiatBlock() {
   const dispatch = useDispatch();
@@ -103,6 +104,7 @@ export default function FiatBlock() {
               </View>
               <ChooseBankModal />
               <ChooseCardModal />
+              <StatusModal deposit />
             </>
           )}
 
