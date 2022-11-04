@@ -35,7 +35,7 @@ export default function Deposit() {
     transactions: { code },
     trade: { currentBalanceObj },
     wallet: { cryptoAddress, hasMultipleMethods, depositRestriction, network },
-    modals: { webViewObj },
+    modals: { webViewObj, chooseCurrencyModalVisible },
   } = state;
 
   const isFiat = currentBalanceObj.type === 'FIAT';
@@ -55,7 +55,7 @@ export default function Deposit() {
     dispatch(setFee(null));
 
     return () => dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
-  }, [code]);
+  }, [code, chooseCurrencyModalVisible]);
 
   useEffect(() => {
     setHasRestriction(Object.keys(depositRestriction).length);
