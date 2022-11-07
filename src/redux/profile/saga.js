@@ -221,7 +221,7 @@ function* otpForLoginSaga(action) {
   yield put(
     saveUserAndPassInfo({
       ...userAndPassInfo,
-      callbackUrl: loginData.callbackUrl,
+      callbackUrl: loginData?.callbackUrl,
     })
   );
 
