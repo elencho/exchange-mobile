@@ -22,44 +22,9 @@ paddingTop={!title ? 5 : 0}
 
 For the UI, prefer local React state via `useState` over Redux state.
 
-### 1.3. Do not use React.FC if you do not need get children prop
-
-Use regular ts interfaces instead of React.FC if you do not need to render children prop
-
-Do
-
-```tsx
-const UserProfile = (props: UserProfileProps) => {
-  const { name } = props;
-
-  return <>{name}</>;
-};
-
-const UserProfile: FC<UserProfileProps> = (props) => {
-  const { name, children } = props;
-
-  return (
-    <>
-      {name}
-      {children}
-    </>
-  );
-};
-```
-
-Don't
-
-```tsx
-const UserProfile: FC<UserProfileProps> = (props) => {
-  const { name } = props;
-
-  return <>{name}</>;
-};
-```
-
 ### 1.4. No destructuring in function signatures
 
-Destructure parameters at the beginning of the function body, not in the function signatures.
+Destructure parameters like this.
 
 Do
 
