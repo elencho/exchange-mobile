@@ -101,7 +101,7 @@ const isYellowColorScheme = true;
 const canShareWebcam = true;
 
 // arrays
-const hasFruits = ["apple", "banana"].length > 0;
+const hasFruits = ['apple', 'banana'].length > 0;
 
 // functions
 const onClick = (event) => event.target.value;
@@ -127,7 +127,7 @@ const colorSchemeIsYellow = true;
 const isWebcamSharingPossible = true;
 
 // arrays
-const containsFruits = ["apple", "banana"].length > 0;
+const containsFruits = ['apple', 'banana'].length > 0;
 
 // functions
 const click = (ev) => ev.target.value;
@@ -148,17 +148,17 @@ The team needs to follow next unified way:
 Do
 
 ```js
-const DOMAIN = "…";
-const DRAWER_HEIGHT = "…";
-const LIST_LIMIT = "…";
+const DOMAIN = '…';
+const DRAWER_HEIGHT = '…';
+const LIST_LIMIT = '…';
 ```
 
 Don't
 
 ```js
-const Domain = "…";
-const Drawer_Height = "…";
-const list_limit = "…";
+const Domain = '…';
+const Drawer_Height = '…';
+const list_limit = '…';
 ```
 
 **`Those constants define main parameters and options for the whole application.`**
@@ -197,7 +197,7 @@ Do
 export function UserProfile() {}
 
 // import
-import { UserProfile } from "./UserProfile";
+import { UserProfile } from './UserProfile';
 ```
 
 Don't
@@ -208,7 +208,7 @@ const UserProfile = () => {};
 export default UserProfile;
 
 // import
-import UserProfile from "./UserProfile";
+import UserProfile from './UserProfile';
 ```
 
 ### 3.2. Group exports
@@ -224,13 +224,13 @@ Wildcard exports (`export *`) should be used with caution, you might export stuf
 Do
 
 ```tsx
-export { UserProfile } from "./UserProfile";
+export { UserProfile } from './UserProfile';
 ```
 
 Don't
 
 ```tsx
-export * from "./UserProfile";
+export * from './UserProfile';
 ```
 
 ## 4. UI
