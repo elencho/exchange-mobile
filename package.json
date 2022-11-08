@@ -76,7 +76,7 @@
   },
   "lint-staged": {
     "*.{js,md}": [
-      "npm run prettier"
+      "npx prettier --write ."
     ]
   },
   "devDependencies": {
