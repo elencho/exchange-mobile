@@ -8,7 +8,7 @@ import InstantTrade from '../screens/InstantTrade';
 // import TestScreen from '../screens/Test';
 import BottomTabs from '../components/BottomTabs';
 import { setTabRouteName } from '../redux/transactions/actions';
-import Exercise from '../screens/Exercise';
+// import Exercise from '../screens/Exercise';
 import Wallet from '../screens/Wallet';
 import { fetchUserInfo } from '../redux/profile/actions';
 
@@ -42,7 +42,7 @@ export default function MainScreen() {
         />
       )}
     >
-      <Tab.Screen name="Exchange" component={Exercise} />
+      {/* <Tab.Screen name="Exchange" component={Exercise} /> */}
       <Tab.Screen name="Trade" component={InstantTrade} />
       <Tab.Screen name="Wallet" component={Wallet} />
       <Tab.Screen name="Transactions" component={TransactionHistory} />
