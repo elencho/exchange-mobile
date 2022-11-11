@@ -21,28 +21,26 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
   const state = useSelector((state) => state);
   const {
     wallet: { usdBtcSwitch },
-    trade: { balance, fiatsArray },
+    trade: { balance },
   } = state;
 
   const handlePress = () => {
     dispatch(setNetwork(null));
 
-    const fiats = fiatsArray?.map((f) => f.code);
     let network;
     balance?.balances?.forEach((b) => {
       if (code === b.currencyCode) {
-        if (b.depositMethods.WALLET) {
-          network = b.depositMethods.WALLET[0].provider;
-        }
         dispatch(setCurrentBalanceObj(b));
+        ////
+        if (b.type === 'CRYPTO') {
+          network = b.depositMethods.WALLET[0].provider;
+          dispatch(cryptoAddressesAction(name, code, navigation, network));
+        }
+        if (b.type === 'FIAT') {
+          dispatch(wireDepositAction(name, code, navigation));
+        }
       }
     });
-
-    if (fiats.includes(code)) {
-      dispatch(wireDepositAction(name, code, navigation));
-    } else {
-      dispatch(cryptoAddressesAction(name, code, navigation, network));
-    }
     dispatch(setWalletTab('Deposit'));
   };
 

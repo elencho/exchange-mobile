@@ -1,7 +1,8 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
-  tabRouteName: null,
+  tabRoute: null,
+  stackRoute: null,
   tabNavigationRef: {},
 
   transactions: [],
@@ -35,7 +36,8 @@ export default (state = INITIAL_STATE, action) => {
     fromDateTime,
     loading,
     offset,
-    tabRouteName,
+    tabRoute,
+    stackRoute,
     currenciesConstant,
     tabNavigationRef,
   } = action;
@@ -113,7 +115,12 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.SET_TAB_ROUTE_NAME:
       return {
         ...state,
-        tabRouteName,
+        tabRoute,
+      };
+    case 'SET_STACK_NAVIGATION_ROUTE':
+      return {
+        ...state,
+        stackRoute,
       };
     case actionTypes.CLEAR_FILTERS:
       return {

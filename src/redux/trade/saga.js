@@ -4,7 +4,7 @@ import {
   actionTypes,
   saveOffers,
   saveTrades,
-  fetchOffers as fetchOffersAction,
+  instantTradeTabAction,
   setOffersLoading,
   setPairObject,
   setTradesLoading,
@@ -38,8 +38,14 @@ import {
   fetchFees,
 } from '../../utils/fetchTrades';
 import { toggleBuySellModal } from '../modals/actions';
-import { getWhitelistAction, setWalletTab } from '../wallet/actions';
+import {
+  cryptoAddressesAction,
+  getWhitelistAction,
+  setWalletTab,
+  withdrawalTemplatesAction,
+} from '../wallet/actions';
 import { fetchCurrencies, toggleLoading } from '../transactions/actions';
+import { fetchUserInfo } from '../profile/actions';
 
 function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
@@ -98,14 +104,14 @@ function* cardsSaga() {
   yield put({ type: 'TOGGLE_CARDS_LOADING', cardsLoading: false });
 }
 
-function* fetchOffersSaga() {
+function* instantTradeTabSaga() {
   yield put(setOffersLoading(true));
   const offers = yield call(fetchOffers);
   yield put(saveOffers(offers));
 
   yield put(pairObjectSagaAction(offers));
 
-  yield put({ type: 'BALANCE_SAGA' });
+  // yield put({ type: 'BALANCE_SAGA' });
 
   yield put(depositProvidersSagaAction());
   yield put(cardsSagaAction());
@@ -170,16 +176,56 @@ function* addNewCardSaga(action) {
 }
 
 function* refreshWalletAndTradesSaga() {
-  // For now, trades and wallet screen refreshes are the same
-  yield put(fetchOffersAction());
-  yield put(fetchTradesAction());
-  yield put(fetchCurrencies());
-  yield put(getWhitelistAction());
+  const state = yield select((state) => state);
+  const {
+    wallet: { walletTab, network, depositRestriction, withdrawalRestriction },
+    trade: { currentBalanceObj },
+    profile: { userInfo },
+    transactions: { stackRoute, tabRoute, currency, code },
+  } = state;
+
+  const wallet = tabRoute === 'Wallet';
+  const trade = tabRoute === 'Trade';
+  const main = stackRoute === 'Main';
+  const balance = stackRoute === 'Balance';
+  const deposit = walletTab === 'Deposit';
+  const withdrawal = walletTab === 'Withdrawal';
+  const manageCards = walletTab === 'Manage Cards';
+  const whitelist = walletTab === 'Whitelist';
+  const ecommerce = network === 'ECOMMERCE';
+  const crypto = currentBalanceObj?.type === 'CRYPTO';
+  const fiat = currentBalanceObj?.type === 'FIAT';
+
+  const m = withdrawal ? 'withdrawalMethods' : 'depositMethods';
+  const restriction = withdrawal ? withdrawalRestriction : depositRestriction;
+  const isAvailable = (obj) =>
+    Object.keys(obj[m])?.length && !Object.keys(restriction)?.length;
+
+  if (main && trade) {
+    yield put(instantTradeTabAction());
+    yield put(fetchTradesAction());
+  }
+
+  if (balance) {
+    if (wallet && !whitelist && isAvailable(currentBalanceObj)) {
+      // wire deposit saga is exclusion
+      if (ecommerce) yield put(cardsSagaAction());
+      if (withdrawal && fiat) yield put(withdrawalTemplatesAction());
+    }
+
+    if (crypto && isAvailable(currentBalanceObj)) {
+      if (withdrawal || whitelist) yield put(getWhitelistAction());
+      else yield put(cryptoAddressesAction(currency, code, null, network));
+    }
+  }
+
+  if (main && wallet) yield put({ type: 'BALANCE_SAGA' });
+  if (!Object.keys(userInfo)?.length) yield put(fetchUserInfo());
 }
 
 export default function* () {
   yield takeLatest(actionTypes.FETCH_TRADES, fetchTradesSaga);
-  yield takeLatest(actionTypes.FETCH_OFFERS, fetchOffersSaga);
+  yield takeLatest(actionTypes.INSTANT_TRADE_TAB_SAGA, instantTradeTabSaga);
   yield takeLatest(actionTypes.PAIR_OBJECT_SAGA, pairObjectSaga);
   yield takeLatest(actionTypes.DEPOSIT_PROVIDERS_SAGA, depositProvidersSaga);
   yield takeLatest('BALANCE_SAGA', balanceSaga);

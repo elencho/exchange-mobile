@@ -77,7 +77,7 @@ function* methodNetworkRestrictionSaga() {
     const b = currentBalanceObj[m];
     const r = currentBalanceObj?.restrictions;
 
-    hasMultipleMethods = Object.keys(b).length > 1;
+    if (b) hasMultipleMethods = Object.keys(b).length > 1;
     if (b?.WALLET) hasMultipleNetworks = b.WALLET?.length > 1;
     if (b?.WIRE) hasMultipleNetworks = b.WIRE?.length > 1;
 
@@ -138,14 +138,14 @@ function* cryptoAddressesSaga(action) {
 function* generateCryptoAddressSaga(action) {
   const { code, network } = action;
   const cryptoAddress = yield call(generateCryptoAddress, code, network);
-  yield put(saveCryptoAddress(cryptoAddress));
+  if (cryptoAddress) yield put(saveCryptoAddress(cryptoAddress));
 }
 
 function* goToBalanceSaga(action) {
   const { name, code, navigation } = action;
   yield put(setAbbr(code));
   yield put(chooseCurrency(name));
-  yield call(() => navigation.navigate('Balance'));
+  yield call(() => navigation?.navigate('Balance'));
 }
 
 function* getWhitelistSaga() {
@@ -172,7 +172,7 @@ export function* addWhitelistSaga(action) {
 
     yield put(setNewWhitelist({}));
     yield put(saveWhitelist([...whitelist, data]));
-    yield put({ type: 'REFRESH_WALLET_AND_TRADES' });
+    // yield put(getWhitelistAction());
     yield put(toggleAddWhitelistModal(false));
   }
 }

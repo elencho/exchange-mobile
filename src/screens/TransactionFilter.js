@@ -11,7 +11,7 @@ import Headline from '../components/TransactionHistory/Headline';
 import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
 import DatePicker from '../components/TransactionFilter/DatePicker';
 
-import { clearFilters } from '../redux/transactions/actions';
+import { clearFilters, fetchCurrencies } from '../redux/transactions/actions';
 import { toggleCurrencyModal } from '../redux/modals/actions';
 import PurpleText from '../components/PurpleText';
 import images from '../constants/images';
@@ -24,7 +24,13 @@ export default function TransactionFilter({ navigation }) {
   const state = useSelector((state) => state.transactions);
   const { currency, code } = state;
 
-  const openModal = () => dispatch(toggleCurrencyModal(true));
+  const openModal = () => {
+    dispatch(fetchCurrencies());
+    setTimeout(() => {
+      dispatch(toggleCurrencyModal(true));
+    }, 400);
+  };
+
   const clear = () => dispatch(clearFilters());
 
   return (

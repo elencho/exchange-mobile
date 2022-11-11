@@ -11,7 +11,6 @@ import {
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
 import {
-  getWhitelistAction,
   setNetwork,
   withdrawalTemplatesAction,
 } from '../../redux/wallet/actions';
@@ -29,7 +28,6 @@ import GeneralError from '../../components/GeneralError';
 import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
-import { setDepositProvider } from '../../redux/trade/actions';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
@@ -83,7 +81,6 @@ export default function Withdrawal() {
 
   useEffect(() => {
     const m = currentBalanceObj.withdrawalMethods;
-    dispatch(getWhitelistAction());
 
     if (m.ECOMMERCE) {
       dispatch(setNetwork('ECOMMERCE'));
@@ -97,16 +94,12 @@ export default function Withdrawal() {
   }, [code]);
 
   useEffect(() => {
-    if (isFiat) dispatch(withdrawalTemplatesAction());
+    dispatch({ type: 'CLEAN_WALLET_INPUTS' });
   }, [network]);
 
   useEffect(() => {
     setHasRestriction(Object.keys(withdrawalRestriction).length);
   }, [withdrawalRestriction]);
-
-  useEffect(() => {
-    dispatch({ type: 'CLEAN_WALLET_INPUTS' });
-  }, [network]);
 
   const withdraw = () => {
     if (googleAuth) dispatch(toggleGoogleOtpModal(true));

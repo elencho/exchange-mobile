@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -29,20 +29,19 @@ export default function TransactionsBlock() {
   const state = useSelector((state) => state);
   const {
     trade: { trades, hideOtherPairs },
-    transactions: { tabRouteName },
+    transactions: { tabRoute },
   } = state;
 
-  useEffect(() => {
+  const toggleShowHide = () => {
+    dispatch(hideOtherPairsAction(!hideOtherPairs));
     dispatch(fetchTrades());
-  }, [hideOtherPairs]);
-
-  const toggleShowHide = () => dispatch(hideOtherPairsAction(!hideOtherPairs));
+  };
 
   const handleScrollEnd = (e) => {
     if (
       isCloseToBottom(e.nativeEvent) &&
       navigation.isFocused() &&
-      tabRouteName === 'Trade'
+      tabRoute === 'Trade'
     ) {
       dispatch(reachScrollEnd('trades'));
     }

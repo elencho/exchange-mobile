@@ -29,11 +29,8 @@ export default function Balance({ navigation }) {
   const state = useSelector((state) => state);
   const {
     wallet: { walletTab, network },
-    transactions: { tabNavigationRef },
-    trade: { currentBalanceObj },
+    transactions: { tabNavigationRef, code },
   } = state;
-
-  const m = walletTab === 'Deposit' ? 'depositMethods' : 'withdrawalMethods';
 
   const onRefresh = () => {
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
@@ -42,14 +39,6 @@ export default function Balance({ navigation }) {
     dispatch(setFee(null));
     if (network !== 'SWIFT') {
       dispatch(setDepositProvider(null));
-    }
-
-    let net;
-    if (currentBalanceObj[m]?.WALLET) {
-      net = currentBalanceObj[m].WALLET[0].provider;
-    }
-    if (currentBalanceObj[m]?.WIRE) {
-      net = currentBalanceObj[m].WIRE[0].provider;
     }
   };
 
@@ -60,7 +49,7 @@ export default function Balance({ navigation }) {
 
   useEffect(() => {
     onRefresh();
-  }, [walletTab]);
+  }, [walletTab, code]);
 
   return (
     <Background>

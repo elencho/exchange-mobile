@@ -13,6 +13,7 @@ export default function PersonalInformation() {
   const { userInfo } = state;
 
   const edit = () => {
+    dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
     dispatch(togglePersonalInfoModal(true));
   };
 

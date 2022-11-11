@@ -34,7 +34,7 @@ export default function WalletSwitcher() {
   const handleWalletTab = (f) => {
     dispatch(setWalletTab(f));
 
-    const m = f === 'Deposit' ? 'depositMethods' : 'withdrawalMethods';
+    const m = f === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
 
     const isFiat = currentBalanceObj.type === 'FIAT';
     if (isFiat) {

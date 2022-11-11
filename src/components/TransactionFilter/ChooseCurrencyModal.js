@@ -26,7 +26,7 @@ function ChooseCurrencyModal({ wallet = false }) {
   const state = useSelector((state) => state);
 
   const {
-    transactions: { currencies, currenciesConstant, currency, tabRouteName },
+    transactions: { currencies, currenciesConstant, currency },
     modals: { chooseCurrencyModalVisible },
     trade: { balance, fiatsArray, currentBalanceObj },
     wallet: { walletTab },
@@ -35,13 +35,9 @@ function ChooseCurrencyModal({ wallet = false }) {
   let walletCurrencies = currencies;
 
   useEffect(() => {
-    chooseCurrencyModalVisible &&
-      tabRouteName === 'Transactions' &&
-      dispatch(fetchCurrencies());
-  }, [chooseCurrencyModalVisible]);
-
-  useEffect(() => {
-    if (wallet) walletCurrencies.shift();
+    if (wallet && walletCurrencies[0]?.name === 'Show All Currency') {
+      walletCurrencies.shift();
+    }
   }, [currencies]);
 
   const filter = (text) => {

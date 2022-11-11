@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,11 +21,15 @@ export default function InstantTrade() {
   const state = useSelector((state) => state);
   const {
     trade: { tradesLoading, offersLoading },
+    transactions: { tabRoute },
   } = state;
 
   const loading = tradesLoading || offersLoading;
-
   const onRefresh = () => dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+
+  useEffect(() => {
+    tabRoute === 'Trade' && onRefresh();
+  }, [tabRoute]);
 
   return (
     <Background>

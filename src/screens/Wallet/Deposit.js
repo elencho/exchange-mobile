@@ -127,7 +127,7 @@ export default function Deposit() {
             {!isFiat || code === 'EUR' ? (
               <>
                 <ChooseNetworkDropdown />
-                {cryptoAddress.address && !hasRestriction && hasMethod && (
+                {cryptoAddress?.address && !hasRestriction && hasMethod && (
                   <AddressBlock />
                 )}
                 {hasMethod && content() && (
@@ -155,7 +155,10 @@ export default function Deposit() {
             )}
           </View>
 
-          {!cryptoAddress.address && !isFiat && !hasRestriction && hasMethod ? (
+          {!cryptoAddress?.address &&
+          !isFiat &&
+          !hasRestriction &&
+          hasMethod ? (
             <View style={styles.flex}>
               <BulletsBlock />
               <AppButton text="Generate" onPress={generate} />

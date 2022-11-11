@@ -5,21 +5,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import images from '../../../constants/images';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
-import { toggleCurrencyModal } from '../../../redux/modals/actions';
 import { COINS_URL_PNG } from '../../../constants/api';
+import { fetchCurrencies } from '../../../redux/transactions/actions';
+import { toggleCurrencyModal } from '../../../redux/modals/actions';
 
 export default function WalletCoinsDropdown() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    transactions: { code },
+    transactions: { code, currencies },
     wallet: { usdBtcSwitch },
     trade: {
       currentBalanceObj: { available, total, valueUSD, valueBTC },
     },
   } = state;
 
-  const handleDropdown = () => dispatch(toggleCurrencyModal(true));
+  const handleDropdown = () => {
+    dispatch(fetchCurrencies());
+    setTimeout(() => {
+      dispatch(toggleCurrencyModal(true));
+    }, 400);
+  };
 
   const value = usdBtcSwitch === 'USD' ? valueUSD : valueBTC;
 

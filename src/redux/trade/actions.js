@@ -27,7 +27,7 @@ export const actionTypes = {
 
   // FOR SAGAS
   FETCH_TRADES: 'FETCH_TRADES',
-  FETCH_OFFERS: 'FETCH_OFFERS',
+  INSTANT_TRADE_TAB_SAGA: 'INSTANT_TRADE_TAB_SAGA',
   PAIR_OBJECT_SAGA: 'PAIR_OBJECT_SAGA',
   DEPOSIT_PROVIDERS_SAGA: 'DEPOSIT_PROVIDERS_SAGA',
   CARDS_SAGA: 'CARDS_SAGA',
@@ -130,8 +130,8 @@ export const setCryptosArrayConstant = (cryptosArrayConstant) => ({
 export const fetchTrades = () => ({
   type: actionTypes.FETCH_TRADES,
 });
-export const fetchOffers = () => ({
-  type: actionTypes.FETCH_OFFERS,
+export const instantTradeTabAction = () => ({
+  type: actionTypes.INSTANT_TRADE_TAB_SAGA,
 });
 export const pairObjectSagaAction = (offers) => ({
   type: actionTypes.PAIR_OBJECT_SAGA,

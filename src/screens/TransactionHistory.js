@@ -31,7 +31,7 @@ function TransactionHistory() {
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
-  const { transactions, loading, tabRouteName } = state;
+  const { transactions, loading, tabRoute } = state;
 
   useFocusEffect(
     useCallback(() => {
@@ -69,7 +69,7 @@ function TransactionHistory() {
     if (
       isCloseToBottom(e.nativeEvent) &&
       navigation.isFocused() &&
-      tabRouteName === 'Transactions'
+      tabRoute === 'Transactions'
     ) {
       dispatch(reachScrollEnd('transactions'));
     }

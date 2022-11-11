@@ -17,7 +17,7 @@ export default function ChooseBankModal() {
   const state = useSelector((state) => state);
   const {
     trade: { depositProvider, depositProviders, currentBalanceObj },
-    transactions: { tabRouteName },
+    transactions: { tabRoute },
     wallet: { wireDepositProviders, walletTab, network },
   } = state;
 
@@ -27,8 +27,8 @@ export default function ChooseBankModal() {
   }, []);
 
   const array = () => {
-    // const wallet = tabRouteName === 'Wallet';
-    // const trade = tabRouteName === 'Trade';
+    const wallet = tabRoute === 'Wallet';
+    const trade = tabRoute === 'Trade';
     // const manageCards = walletTab === 'Manage Cards';
     // const deposit = walletTab === 'Deposit';
     // const withdrawal = walletTab === 'Withdrawal';
@@ -42,15 +42,16 @@ export default function ChooseBankModal() {
     const m =
       walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
 
+    if (trade) return depositProviders;
+    if (wallet) return currentBalanceObj[m]?.ECOMMERCE;
     if (!ecommerce) return wireDepositProviders;
-    return currentBalanceObj[m]?.ECOMMERCE;
   };
 
   const hide = () => dispatch(toggleChooseBankModal(false));
 
   const choose = (b) => {
     dispatch(setDepositProvider(b));
-    dispatch(cardsSagaAction());
+    // dispatch(cardsSagaAction());
     hide();
   };
 

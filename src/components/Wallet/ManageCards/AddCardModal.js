@@ -19,6 +19,7 @@ import {
   toggleChooseBankModal,
 } from '../../../redux/modals/actions';
 import { addCard } from '../../../utils/walletUtils';
+import { cardsSagaAction } from '../../../redux/trade/actions';
 
 export default function AddCardModal() {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export default function AddCardModal() {
   const toggle = () => setSaveCardAgreeTerms(!saveCardAgreeTerms);
   const showBanks = () => dispatch(toggleChooseBankModal(true));
   const showFees = () => dispatch(toggleBankFeesModal(true));
-  const multipleBanks = () => depositProviders.length > 1;
+  const multipleBanks = () => depositProviders?.length > 1;
 
   const handleAddCard = async () => {
     const params = {
@@ -59,7 +60,7 @@ export default function AddCardModal() {
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch(setStatusModalInfo({ success: ending, visible: true }));
-      dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+      dispatch(cardsSagaAction());
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
       hide();
     }
@@ -81,25 +82,25 @@ export default function AddCardModal() {
 
   const children = (
     <>
-      {multipleBanks() ? (
-        <>
-          <Pressable style={styles.dropdown} onPress={showBanks}>
-            <AppText style={[styles.text, { color }]} medium={depositProvider}>
-              {depositProvider ? depositProvider : 'Payment Service Provider'}
-            </AppText>
-            <Image source={images['Arrow']} />
-          </Pressable>
-
-          <AppText subtext style={styles.subText}>
-            100 ₾-500 ₾ Visa / MC Card 4% Amex 6 %{' '}
-            <PurpleText text=" See More" onPress={showFees} />
+      {/* {!multipleBanks() ? ( */}
+      <>
+        <Pressable style={styles.dropdown} onPress={showBanks}>
+          <AppText style={[styles.text, { color }]} medium={depositProvider}>
+            {depositProvider ? depositProvider : 'Payment Service Provider'}
           </AppText>
-        </>
-      ) : (
+          <Image source={images['Arrow']} />
+        </Pressable>
+
+        <AppText subtext style={styles.subText}>
+          100 ₾-500 ₾ Visa / MC Card 4% Amex 6 %{' '}
+          <PurpleText text=" See More" onPress={showFees} />
+        </AppText>
+      </>
+      {/* ) : (
         <AppText style={styles.grey}>
           See card processor <PurpleText text="Show Fees" onPress={showFees} />
         </AppText>
-      )}
+      )} */}
 
       <AppInfoBlock content={['Add Card Info']} info />
 

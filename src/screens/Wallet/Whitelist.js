@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,7 +12,6 @@ import WhitelistItem from '../../components/Wallet/Whitelist/WhitelistItem';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import { toggleAddWhitelistModal } from '../../redux/modals/actions';
-import { getWhitelistAction } from '../../redux/wallet/actions';
 import GeneralError from '../../components/GeneralError';
 import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import SmsEmailAuthModal from '../../components/UserProfile/SmsEmailAuthModal';
@@ -24,10 +23,6 @@ export default function Whitelist() {
     transactions: { code },
     wallet: { whitelist, hasWhitelist },
   } = state;
-
-  useEffect(() => {
-    dispatch(getWhitelistAction());
-  }, [code]);
 
   const showAddModal = () => dispatch(toggleAddWhitelistModal(true));
 

@@ -6,7 +6,7 @@ import colors from '../../constants/colors';
 import { COINS_URL_PNG } from '../../constants/api';
 import { toggleFiatModal } from '../../redux/modals/actions';
 import {
-  fetchOffers,
+  instantTradeTabAction,
   setFiat,
   switchBalanceCard,
 } from '../../redux/trade/actions';
@@ -28,7 +28,7 @@ export default function FiatModal() {
 
   const choose = (f) => {
     dispatch(setFiat(f));
-    dispatch(fetchOffers());
+    dispatch(instantTradeTabAction());
     dispatch(switchBalanceCard('balance'));
     hide();
   };

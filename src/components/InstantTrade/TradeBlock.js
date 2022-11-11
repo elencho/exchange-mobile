@@ -1,21 +1,14 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
-import { fetchOffers } from '../../redux/trade/actions';
 import AppText from '../AppText';
 import CurrencyDropdowns from './CurrencyDropdowns';
 import ReadyTrades from './ReadyTrades';
 import Timer from './Timer';
 
 export default function TradeBlock() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchOffers());
-  }, []);
-
   const state = useSelector((state) => state.trade);
   const { fiat, crypto, tradeType, pairObject } = state;
 

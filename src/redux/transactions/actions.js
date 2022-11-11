@@ -81,9 +81,9 @@ export const setTransactionsOffset = (offset) => ({
   type: actionTypes.INCREASE_OFFSET,
   offset,
 });
-export const setTabRouteName = (tabRouteName) => ({
+export const setTabRouteName = (tabRoute) => ({
   type: actionTypes.SET_TAB_ROUTE_NAME,
-  tabRouteName,
+  tabRoute,
 });
 
 // FOR SAGAS

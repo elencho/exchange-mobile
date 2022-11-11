@@ -53,6 +53,7 @@ export default function TransferMethodModal() {
 
   const handlePress = (m) => {
     dispatch(setNetwork(m));
+    dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
     // Card Needs to be checked
     hide();
   };

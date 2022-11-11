@@ -11,8 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
-import { fetchOffers } from '../../redux/trade/actions';
-import { fetchCurrencies } from '../../redux/transactions/actions';
 import AppInput from '../AppInput';
 import AppText from '../AppText';
 import Currency from './Currency';
@@ -21,15 +19,17 @@ export default function BalancesList() {
   const dispatch = useDispatch();
   const balances = useSelector((state) => state.trade.balance.balances);
   const loading = useSelector((state) => state.transactions.loading);
+  const tabRoute = useSelector((state) => state.transactions.tabRoute);
   const [showZeroBalances, setShowZeroBalances] = useState(true);
   const [nonZeroBalances, setNonZeroBalances] = useState([]);
   const [filteredBalances, setFilteredBalances] = useState([]);
   const [value, setValue] = useState('');
 
+  const onRefresh = () => dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+
   useEffect(() => {
-    dispatch(fetchOffers());
-    dispatch(fetchCurrencies());
-  }, []);
+    tabRoute === 'Wallet' && onRefresh();
+  }, [tabRoute]);
 
   useEffect(() => {
     if (balances) {
@@ -68,8 +68,6 @@ export default function BalancesList() {
       valueUSD={item.valueUSD}
     />
   );
-
-  const onRefresh = () => dispatch({ type: 'BALANCE_SAGA' });
 
   return (
     <View style={styles.container}>

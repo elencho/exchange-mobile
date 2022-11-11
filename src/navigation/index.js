@@ -35,7 +35,11 @@ export default function Navigator() {
 
   BackHandler.addEventListener('hardwareBackPress', () => true);
 
-  const onStateChange = () => {
+  const onStateChange = (state) => {
+    dispatch({
+      type: 'SET_STACK_NAVIGATION_ROUTE',
+      stackRoute: state.routes[state.routes.length - 1].name,
+    });
     if (generalError)
       dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };

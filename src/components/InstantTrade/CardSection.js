@@ -22,14 +22,15 @@ function CardSection() {
   const {
     trade: {
       depositProvider,
-      depositProviders,
+      currentBalanceObj,
       card,
       fiat,
       fee,
       cardsToDisplayInModal,
       balance: { balances },
     },
-    transactions: { tabRouteName },
+    transactions: { tabRoute },
+    wallet: { walletTab },
   } = state;
 
   useEffect(() => {
@@ -48,14 +49,6 @@ function CardSection() {
       }
     });
     return isMultiple;
-  };
-
-  const displayName = () => {
-    let displayName = 'Payment Service Provider';
-    depositProviders?.forEach((d) => {
-      if (depositProvider === d.provider) displayName = d.displayName;
-    });
-    return displayName;
   };
 
   const currencyName = (fiat) => {
@@ -79,8 +72,18 @@ function CardSection() {
   const color = depositProvider ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT;
   const opacity = cardsToDisplayInModal?.length ? 1 : 0.5;
 
+  const displayName = () => {
+    let displayName = 'Payment Service Provider';
+    const m =
+      walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
+    currentBalanceObj[m]?.ECOMMERCE.forEach((d) => {
+      if (depositProvider === d.provider) displayName = d.displayName;
+    });
+    return displayName;
+  };
+
   const FeeInfo = () => {
-    if (fee && tabRouteName === 'Trade') {
+    if (fee && tabRoute === 'Trade') {
       return (
         <View style={styles.info}>
           <AppText subtext style={styles.infoText}>
@@ -105,7 +108,7 @@ function CardSection() {
             <Image source={images['Arrow']} />
           </Pressable>
 
-          {tabRouteName === 'Trade' && depositProvider && (
+          {tabRoute === 'Trade' && depositProvider && (
             <AppText subtext style={styles.subText}>
               0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
               <PurpleText text=" More Fees" onPress={showFees} />

@@ -10,21 +10,20 @@ import BottomTabs from '../components/BottomTabs';
 import { setTabRouteName } from '../redux/transactions/actions';
 import Exercise from '../screens/Exercise';
 import Wallet from '../screens/Wallet';
-import { fetchUserInfo } from '../redux/profile/actions';
 
 const Tab = createBottomTabNavigator();
 
 export default function MainScreen() {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchUserInfo());
-
     SecureStore.getItemAsync('accessToken')
       .then((t) => dispatch({ type: 'OTP_SAGA', token: t }))
       .catch((err) => console.log(err));
   }, []);
 
-  const setTabRoute = (e) => dispatch(setTabRouteName(e.route.name));
+  const setTabRoute = (e) => {
+    dispatch(setTabRouteName(e.route.name));
+  };
 
   return (
     <Tab.Navigator

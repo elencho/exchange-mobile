@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Image,
   ScrollView,
@@ -21,7 +21,6 @@ import images from '../../constants/images';
 import { toggleAddCardModal } from '../../redux/modals/actions';
 import StatusModal from '../../components/Wallet/StatusModal';
 import DeleteModal from '../../components/Wallet/ManageCards/DeleteModal';
-import { cardsSagaAction } from '../../redux/trade/actions';
 
 export default function ManageCards() {
   const dispatch = useDispatch();
@@ -31,10 +30,6 @@ export default function ManageCards() {
     modals: { webViewObj },
     trade: { cards, cardsLoading },
   } = state;
-
-  useEffect(() => {
-    dispatch(cardsSagaAction());
-  }, [code]);
 
   const addCardModal = () => dispatch(toggleAddCardModal(true));
 

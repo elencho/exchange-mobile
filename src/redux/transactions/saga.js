@@ -36,6 +36,7 @@ import {
   setTradeOffset,
 } from '../trade/actions';
 import { fetchTrades } from '../trade/actions';
+import { toggleCurrencyModal } from '../modals/actions';
 
 function* fetchTransactionsSaga() {
   const params = yield select(getParams);
@@ -159,15 +160,15 @@ function* clasifyCurrenciesSaga() {
   const transactions = yield select((state) => state.transactions);
   const trade = yield select((state) => state.trade);
   const { offers, fiat } = trade;
-  const { currencies, tabRouteName } = transactions;
+  const { currencies, tabRoute } = transactions;
 
   let fiatsArray = [];
   let cryptosArray = [];
 
   currencies.forEach((c) => {
     if (c.type === 'FIAT') fiatsArray.push(c);
-    if (c.type === 'CRYPTO' && tabRouteName !== 'Trade') cryptosArray.push(c);
-    if (c.type === 'CRYPTO' && tabRouteName === 'Trade') {
+    if (c.type === 'CRYPTO' && tabRoute !== 'Trade') cryptosArray.push(c);
+    if (c.type === 'CRYPTO' && tabRoute === 'Trade') {
       offers &&
         offers[fiat].forEach((o) => {
           if (o.pair.baseCurrency === c.code) cryptosArray.push(c);

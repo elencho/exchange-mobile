@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProgressBar from 'react-native-animated-progress';
 
 import AppText from '../AppText';
-import { fetchOffers } from '../../redux/trade/actions';
+import { instantTradeTabAction } from '../../redux/trade/actions';
 
 export default function Timer() {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ export default function Timer() {
 
   useEffect(() => {
     if (!seconds) {
-      dispatch(fetchOffers());
+      dispatch(instantTradeTabAction());
       setSeconds(90);
     }
 

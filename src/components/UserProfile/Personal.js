@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View, Switch } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -30,9 +30,27 @@ export default function Personal() {
   } = state;
   const isVerified = userInfo?.userStatus === 'VERIFIED';
 
-  const edit = () => dispatch(togglePhoneNumberModal(true));
-  const editLanguage = () => dispatch(toggleLanguageModal(true));
-  const openModal = () => dispatch({ type: 'TOGGLE_IDENTITY_MODAL' });
+  const hideError = () =>
+    dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
+
+  useEffect(() => {
+    return () => hideError();
+  }, []);
+
+  const edit = () => {
+    hideError();
+    dispatch(togglePhoneNumberModal(true));
+  };
+
+  const editLanguage = () => {
+    hideError();
+    dispatch(toggleLanguageModal(true));
+  };
+
+  const openModal = () => {
+    hideError();
+    dispatch({ type: 'TOGGLE_IDENTITY_MODAL' });
+  };
 
   const handleEmailUpdates = (value) =>
     dispatch(toggleEmailSubscription(value));

@@ -1,16 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
 import ModalWithSearch from '../ModalWithSearch';
 
-import {
-  fetchCurrencies,
-  filterCurrencies,
-} from '../../redux/transactions/actions';
+import { filterCurrencies } from '../../redux/transactions/actions';
 import { toggleCryptoModal } from '../../redux/modals/actions';
 import {
-  fetchOffers,
+  instantTradeTabAction,
   setCrypto,
   setCryptosArray,
 } from '../../redux/trade/actions';
@@ -23,10 +20,6 @@ export default function CryptoModal() {
     modals: { cryptoModalVisible },
     trade: { crypto, cryptosArray, cryptosArrayConstant },
   } = state;
-
-  useEffect(() => {
-    dispatch(fetchCurrencies());
-  }, [cryptoModalVisible]);
 
   const filter = (text) => {
     const filteredArray = cryptosArrayConstant.filter(
@@ -44,7 +37,7 @@ export default function CryptoModal() {
   const choose = (code) => {
     dispatch(setCrypto(code));
     dispatch(filterCurrencies(cryptosArray));
-    dispatch(fetchOffers());
+    dispatch(instantTradeTabAction());
     hide();
   };
 
