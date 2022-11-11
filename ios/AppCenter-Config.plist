@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+   AppCenter-Config.plist
+   cryptalapp
+
+   Created by Elene Bochoradze on 11/11/2022.
+   Copyright (c) 2022 ___ORGANIZATIONNAME___. All rights reserved.
+-->
+<plist version="1.0">
+  <dict>
+      <key>AppSecret</key>
+      <string>504e8db2-f12b-4822-8c19-f027858cf254</string>
+  </dict>
+</plist>
