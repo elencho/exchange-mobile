@@ -5,8 +5,8 @@ export const getParams = (state) => {
 
   return {
     pairId: hideOtherPairs ? `${crypto}-${fiat}` : null,
-    offset: 0,
-    limit: offset ? limit * (offset + 1) : limit,
+    offset,
+    limit
   };
 };
 

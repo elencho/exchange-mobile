@@ -93,7 +93,7 @@ function* reachScrollEndSaga(action) {
   if (transactionType === 'trades') {
     const offset = yield select((state) => state.trade.offset);
     const limit = yield select((state) => state.trade.limit);
-    yield put(setTradeOffset(offset + 1));
+    yield put(setTradeOffset(offset + limit));
     yield put(fetchTrades());
   }
 }
