@@ -34,7 +34,7 @@ export default function Deposit() {
 
   const {
     transactions: { code },
-    trade: { currentBalanceObj },
+    trade: { currentBalanceObj, depositProvider, card },
     wallet: { cryptoAddress, hasMultipleMethods, depositRestriction, network },
     modals: { webViewObj, chooseCurrencyModalVisible },
   } = state;
@@ -57,6 +57,10 @@ export default function Deposit() {
 
     return () => dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
   }, [code, chooseCurrencyModalVisible]);
+
+  useEffect(() => {
+    dispatch({ type: 'CLEAN_WALLET_INPUTS' });
+  }, [network, depositProvider, card]);
 
   useEffect(() => {
     setHasRestriction(Object.keys(depositRestriction).length);

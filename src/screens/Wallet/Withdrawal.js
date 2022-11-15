@@ -34,7 +34,7 @@ export default function Withdrawal() {
   const state = useSelector((state) => state);
   const {
     profile: { googleAuth, emailAuth, smsAuth },
-    trade: { currentBalanceObj, card },
+    trade: { currentBalanceObj, card, depositProvider },
     transactions: { code },
     wallet: {
       withdrawalRestriction,
@@ -95,7 +95,7 @@ export default function Withdrawal() {
 
   useEffect(() => {
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
-  }, [network]);
+  }, [network, depositProvider, card]);
 
   useEffect(() => {
     setHasRestriction(Object.keys(withdrawalRestriction).length);

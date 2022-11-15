@@ -34,6 +34,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
     trade: {
       fee,
       currentBalanceObj: { withdrawalScale },
+      depositProvider,
     },
   } = state;
 
@@ -49,12 +50,10 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
 
     if (validateScale(amount, withdrawalScale)) {
       dispatch(setWithdrawalAmount(amount));
-
-      if (!amount) {
-        dispatch(setFee(null));
-        return;
+      if (!amount) dispatch(setFee(null));
+      if (text.trim() && amount && depositProvider) {
+        dispatch(fetchFee('withdrawal'));
       }
-      dispatch(fetchFee('withdrawal'));
     }
   };
 

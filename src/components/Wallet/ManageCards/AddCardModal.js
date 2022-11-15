@@ -31,6 +31,7 @@ export default function AddCardModal() {
   } = state;
 
   const [saveCardAgreeTerms, setSaveCardAgreeTerms] = useState(false);
+  const [statusObj, setStatusObj] = useState(null);
 
   useEffect(() => {
     setSaveCardAgreeTerms(depositProvider !== 'BOG');
@@ -59,18 +60,17 @@ export default function AddCardModal() {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
-      dispatch(setStatusModalInfo({ success: ending, visible: true }));
-      dispatch(cardsSagaAction());
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+      setStatusObj({ success: ending, visible: true });
+      dispatch(cardsSagaAction());
       hide();
     }
   };
 
   const handleHide = () => {
-    if (statusModalInfo) {
-      dispatch(setStatusModalInfo({ ...statusModalInfo, visible: true }));
-    }
+    if (statusObj) dispatch(setStatusModalInfo(statusObj));
     setSaveCardAgreeTerms(false);
+    setStatusObj(null);
   };
 
   const urlEncodedData = () => {
@@ -153,7 +153,7 @@ export default function AddCardModal() {
       fullScreen
       visible={addCardModalVisible}
       hide={hide}
-      onModalHide={handleHide}
+      onDismiss={handleHide}
     />
   );
 }

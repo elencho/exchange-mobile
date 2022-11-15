@@ -29,11 +29,14 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
 
     let network;
     balance?.balances?.forEach((b) => {
+      let hasMethod;
+      if (b.depositMethods) hasMethod = Object.keys(b.depositMethods).length;
+
       if (code === b.currencyCode) {
         dispatch(setCurrentBalanceObj(b));
         ////
         if (b.type === 'CRYPTO') {
-          network = b.depositMethods.WALLET[0].provider;
+          network = hasMethod && b.depositMethods.WALLET[0].provider;
           dispatch(cryptoAddressesAction(name, code, navigation, network));
         }
         if (b.type === 'FIAT') {
