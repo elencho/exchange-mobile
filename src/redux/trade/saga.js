@@ -50,18 +50,12 @@ import { fetchUserInfo } from '../profile/actions';
 function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
   const params = yield select(getParams);
-  const trades = yield select(state => state.trade.trades);
+  const trades = yield select((state) => state.trade.trades);
   const newTrades = yield call(fetchTrades, params);
 
   if (newTrades) {
     yield put(saveTrades([...trades, ...newTrades]));
   }
-  console.log('=============')
-trades.forEach(t => {
-  console.log(t.creationTime)
-  
-})
-console.log('=============')
   yield put(setTradesLoading(false));
 }
 

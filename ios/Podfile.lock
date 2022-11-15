@@ -624,9 +624,9 @@ SPEC CHECKSUMS:
   FBLazyVector: 739d2f9719faecb463c7aa191591af31c8c94182
   FBReactNativeSpec: 957de82f66e31f2f14bbec34e37242282fdd26de
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 3d02b25ca00c2d456734d0bcff864cbc62f6ae1a
+  glog: cfec46900e485b4b7613ff79308c30791825f32c
   IdensicMobileSDK: 5b56aae41519bdb8fe287f135033b4399cc3f50e
-  RCT-Folly: b9d9fe1fc70114b751c076104e52f3b1b5e5a95a
+  RCT-Folly: 6c7dfdb649d9eac5f93fa0891b11725aa9b2f1ed
   RCTRequired: c8c080849a3670601d5c7056023a2176067a69d8
   RCTTypeSafety: 710aef40f5ae246bc5fff7e873855b17ed11c180
   React: b6bb382534be4de9d367ef3d04f92108c1768160
@@ -640,7 +640,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: c61b60de03b3474e5749b8a8fd8e6507630d62c4
   React-jsinspector: eaacb698c5af7a99131bc1933806372c20222dfd
   React-logger: ebb4d31bbbe4f1a8a1a9b658d7429210b8f68160
-  react-native-mobilesdk-module: 0710ad5c0ca9dfed044422c887769f2896cae102
+  react-native-mobilesdk-module: de5c27557047b97d8ec94d7f456f41d2b51f47d4
   react-native-pkce-challenge: 920193e277f9d3ccdf30edd9228b3095aed28af7
   react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
   react-native-webview: e771bc375f789ebfa02a26939a57dbc6fa897336
@@ -664,4 +664,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 48d73b373b762079c53b5200315bd9fc956369fe
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
