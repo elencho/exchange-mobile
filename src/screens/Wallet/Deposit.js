@@ -60,6 +60,7 @@ export default function Deposit() {
 
   useEffect(() => {
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
+    dispatch(setFee(null));
   }, [network, depositProvider, card]);
 
   useEffect(() => {
