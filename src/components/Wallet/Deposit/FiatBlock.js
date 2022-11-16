@@ -35,6 +35,12 @@ export default function FiatBlock() {
     },
   } = state;
 
+  const isDecimal = depositAmount % 1 != 0;
+  const factoredDigit = Math.trunc(depositAmount);
+  const maxLength = isDecimal
+    ? factoredDigit.toString().length + depositScale + 1
+    : 1000;
+
   const generatePdf = () => {
     if (depositAmount) {
       generateWirePdf(code, depositAmount, en[0].id);
@@ -111,6 +117,8 @@ export default function FiatBlock() {
           <AppInput
             onChangeText={handleAmount}
             value={depositAmount}
+            keyboardType="numeric"
+            maxLength={maxLength}
             label="Enter Amount"
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             right={right}
