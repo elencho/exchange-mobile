@@ -56,7 +56,7 @@ export default function Deposit() {
     dispatch(setFee(null));
 
     return () => dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
-  }, [code, chooseCurrencyModalVisible]);
+  }, [code]);
 
   useEffect(() => {
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });

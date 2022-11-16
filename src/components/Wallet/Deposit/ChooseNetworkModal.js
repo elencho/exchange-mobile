@@ -29,6 +29,7 @@ export default function ChooseNetworkModal() {
     dispatch(setNetwork(n));
 
     if (fiat && network !== 'ECOMMERCE') {
+      dispatch(wireDepositAction('', code));
       dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
       dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     }

@@ -7,7 +7,6 @@ import ModalWithSearch from '../ModalWithSearch';
 
 import {
   currencyAction,
-  fetchCurrencies,
   filterCurrencies,
 } from '../../redux/transactions/actions';
 import { toggleCurrencyModal } from '../../redux/modals/actions';
@@ -26,7 +25,7 @@ function ChooseCurrencyModal({ wallet = false }) {
   const state = useSelector((state) => state);
 
   const {
-    transactions: { currencies, currenciesConstant, currency },
+    transactions: { currencies, currenciesConstant, currency, code },
     modals: { chooseCurrencyModalVisible },
     trade: { balance, fiatsArray, currentBalanceObj },
     wallet: { walletTab },
@@ -55,35 +54,42 @@ function ChooseCurrencyModal({ wallet = false }) {
 
   const fiats = fiatsArray.map((f) => f.code);
 
-  const choose = (name, code) => {
+  const choose = (name, currencyCode) => {
+    if (code === currencyCode) {
+      hide();
+      return;
+    }
+
     dispatch(setNetwork(null));
     let network;
     const m = walletTab === 'Deposit' ? 'depositMethods' : 'withdrawalMethods';
     balance?.balances?.forEach((b) => {
-      if (code === b.currencyCode) {
+      if (currencyCode === b.currencyCode) {
         if (b[m].WALLET) network = b[m].WALLET[0].provider;
         dispatch(setCurrentBalanceObj(b));
       }
     });
 
     if (wallet) {
-      if (fiats.includes(code)) {
+      if (fiats.includes(currencyCode)) {
         walletTab === 'Whitelist' && dispatch(setWalletTab('Manage Cards'));
-        dispatch(wireDepositAction(name, code, navigation));
+        dispatch(wireDepositAction(name, currencyCode, navigation));
       } else {
         walletTab === 'Manage Cards' && dispatch(setWalletTab('Whitelist'));
-        dispatch(cryptoAddressesAction(name, code, navigation, network));
+        dispatch(
+          cryptoAddressesAction(name, currencyCode, navigation, network)
+        );
       }
 
       if (
-        (walletTab === 'Manage Cards' && !fiats.includes(code)) ||
-        (walletTab === 'Whitelist' && fiats.includes(code)) ||
+        (walletTab === 'Manage Cards' && !fiats.includes(currencyCode)) ||
+        (walletTab === 'Whitelist' && fiats.includes(currencyCode)) ||
         currentBalanceObj?.depositMethods?.ECOMMERCE
       ) {
         dispatch(setWalletTab('Deposit'));
       }
     } else {
-      const currency = name === 'Show All Currency' ? null : code;
+      const currency = name === 'Show All Currency' ? null : currencyCode;
       dispatch(currencyAction(name, currenciesConstant, currency));
     }
 
