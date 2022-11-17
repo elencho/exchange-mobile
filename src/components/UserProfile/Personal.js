@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, View, Switch } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,6 +20,7 @@ import launchSumsubSdk from '../../utils/sumsubMobileSdk';
 import EditCompanyModal from './EditCompanyModal';
 import IdentityModal from './IdentityModal';
 import { errorHappenedHere } from '../../utils/appUtils';
+import AppSwitcher from '../AppSwitcher';
 
 export default function Personal() {
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ export default function Personal() {
     dispatch(toggleEmailSubscription(value));
 
   const textCond = (r) => {
+    const isOn = !!userInfo?.emailUpdates;
     switch (r) {
       case 'Identity':
         return (
@@ -99,11 +101,10 @@ export default function Personal() {
             <AppText medium style={styles.white}>
               Receive Notifications
             </AppText>
-            <View style={styles.flex}>
-              <Switch
-                style={styles.switch}
-                onValueChange={(value) => handleEmailUpdates(value)}
-                value={userInfo.emailUpdates}
+            <View style={[styles.flex, { alignItems: 'flex-end' }]}>
+              <AppSwitcher
+                onToggle={(value) => handleEmailUpdates(value)}
+                isOn={isOn}
               />
             </View>
           </View>
@@ -261,12 +262,12 @@ const styles = StyleSheet.create({
   secondary: {
     color: colors.SECONDARY_TEXT,
   },
-  switch: {
-    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
-    position: 'absolute',
-    right: -10,
-    top: 0,
-  },
+  // switch: {
+  //   transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
+  //   position: 'absolute',
+  //   right: -10,
+  //   top: 0,
+  // },
   white: {
     color: colors.PRIMARY_TEXT,
   },
