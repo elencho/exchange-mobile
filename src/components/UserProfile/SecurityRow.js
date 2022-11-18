@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Switch, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
@@ -18,6 +18,7 @@ import {
   setGoogleAuth,
 } from '../../redux/profile/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
+import AppSwitcher from '../AppSwitcher';
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
   const dispatch = useDispatch();
@@ -143,10 +144,9 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
           {text === 'Strong_Password' ? (
             <PurpleText text="Edit" onPress={handlePassword} />
           ) : (
-            <Switch
-              style={styles.switch}
-              value={switchCond()}
-              onChange={handleChange}
+            <AppSwitcher
+              isOn={switchCond()}
+              onToggle={handleChange}
               disabled={disabledCond()}
             />
           )}
@@ -176,12 +176,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 68,
     alignItems: 'center',
-  },
-  switch: {
-    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
-    position: 'absolute',
-    right: -7,
-    top: 10,
   },
   white: {
     color: colors.PRIMARY_TEXT,

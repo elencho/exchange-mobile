@@ -10,7 +10,10 @@ export default function CompanyInformation() {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.profile.userInfo);
 
-  const openModal = () => dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
+  const openModal = () => {
+    dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
+    dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
+  };
 
   return (
     <View style={styles.block}>
