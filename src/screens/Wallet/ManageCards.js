@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   Image,
   ScrollView,
@@ -26,12 +26,16 @@ export default function ManageCards() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    transactions: { code },
     modals: { webViewObj },
     trade: { cards, cardsLoading },
   } = state;
 
+  const scrollRef = useRef();
+
   const addCardModal = () => dispatch(toggleAddCardModal(true));
+  const onContentSizeChange = () => {
+    scrollRef.current.scrollToEnd();
+  };
 
   return (
     <View style={{ flex: 1 }}>
@@ -52,6 +56,8 @@ export default function ManageCards() {
               paddingVertical: 20,
             }}
             nestedScrollEnabled
+            onContentSizeChange={onContentSizeChange}
+            ref={scrollRef}
           >
             {cards?.map((c) => (
               <Card
@@ -63,6 +69,10 @@ export default function ManageCards() {
                 id={c.id}
               />
             ))}
+            {/* Code below for testing purposes only */}
+            {/* {[1, 2, 3, 4, 5, 6, 7].map((c) => (
+              <Card key={c} />
+            ))} */}
             <DeleteModal type="card" />
           </ScrollView>
 

@@ -34,10 +34,16 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
     trade: {
       fee,
       currentBalanceObj: { withdrawalScale },
+      depositProvider,
     },
   } = state;
 
   const isEcommerce = network === 'ECOMMERCE';
+  const isDecimal = withdrawalAmount % 1 != 0;
+  const factoredDigit = Math.trunc(withdrawalAmount);
+  const maxLength = isDecimal
+    ? factoredDigit.toString().length + depositScale + 1
+    : 1000;
 
   useEffect(() => {
     dispatch(setFee(null));
@@ -49,12 +55,10 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
 
     if (validateScale(amount, withdrawalScale)) {
       dispatch(setWithdrawalAmount(amount));
-
-      if (!amount) {
-        dispatch(setFee(null));
-        return;
+      if (!amount) dispatch(setFee(null));
+      if (text.trim() && amount && depositProvider) {
+        dispatch(fetchFee('withdrawal'));
       }
-      dispatch(fetchFee('withdrawal'));
     }
   };
 
@@ -114,6 +118,8 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
         value={withdrawalAmount}
         label="Enter Amount"
         style={styles.amount}
+        keyboardType="numeric"
+        maxLength={maxLength}
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         right={<Max />}
       />

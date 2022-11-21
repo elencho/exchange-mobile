@@ -18,17 +18,20 @@ export default function ChooseNetworkModal() {
   const {
     modals: { chooseNetworkModalVisible },
     wallet: { network, walletTab },
-    trade: { currentBalanceObj, fiatsArray },
+    trade: { currentBalanceObj },
     transactions: { code },
   } = state;
+
+  const fiat = currentBalanceObj?.type === 'FIAT';
 
   const hide = () => dispatch(toggleChooseNetworkModal(false));
   const handlePress = (n) => {
     dispatch(setNetwork(n));
 
-    const fiats = fiatsArray.map((f) => f.code);
-    if (fiats.includes(code) && network !== 'ECOMMERCE') {
+    if (fiat && network !== 'ECOMMERCE') {
       dispatch(wireDepositAction('', code));
+      dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+      dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     }
     hide();
   };

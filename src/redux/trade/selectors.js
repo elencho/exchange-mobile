@@ -5,8 +5,8 @@ export const getParams = (state) => {
 
   return {
     pairId: hideOtherPairs ? `${crypto}-${fiat}` : null,
-    offset: 0,
-    limit: offset ? limit * (offset + 1) : limit,
+    offset,
+    limit,
   };
 };
 
@@ -53,24 +53,40 @@ export const depositFeeParams = (state) => {
 export const withdrawalFeeParams = (state) => {
   const {
     transactions: { code },
-    trade: { currentBalanceObj },
-    wallet: { network, withdrawalAmount },
+    trade: {
+      currentBalanceObj,
+      depositProvider,
+      card,
+      fiat,
+      currentTrade: { price },
+    },
+    wallet: { network, withdrawalAmount, walletTab },
   } = state;
 
+  const instantTrade = walletTab === 'Trade';
+  const eCommerce = network === 'ECOMMERCE';
+
   const method = () => {
-    if (currentBalanceObj?.type === 'CRYPTO') {
-      return 'WALLET';
+    if (!instantTrade) {
+      if (currentBalanceObj?.type === 'CRYPTO') {
+        return 'WALLET';
+      } else if (eCommerce) {
+        return 'ECOMMERCE';
+      } else {
+        return 'WIRE';
+      }
     } else {
-      return 'WIRE';
+      return 'ECOMMERCE';
     }
   };
 
   return {
-    currency: code,
+    currency: instantTrade ? fiat : code,
     method: method(),
     type: 'WITHDRAWAL',
-    provider: network,
-    amount: withdrawalAmount,
+    provider: instantTrade || eCommerce ? depositProvider : network,
+    cardId: instantTrade || eCommerce ? card?.id : null,
+    amount: instantTrade ? price : withdrawalAmount,
   };
 };
 

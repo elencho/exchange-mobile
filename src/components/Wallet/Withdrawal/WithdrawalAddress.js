@@ -57,7 +57,7 @@ export default function WithdrawalAddress() {
     <>
       {hasWhitelist ? (
         <Pressable style={styles.dropdown} onPress={chooseAddress}>
-          <AppText body style={{ color }}>
+          <AppText medium body style={{ color }}>
             {w.name ? w.name : 'Choose Address'}
           </AppText>
 

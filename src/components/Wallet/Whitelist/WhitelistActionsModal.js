@@ -30,14 +30,15 @@ export default function WhitelistActionsModal() {
   };
 
   const handlePress = (a) => {
-    hide();
     switch (a) {
       case 'Edit Whitelist':
+        hide();
         setTimeout(() => {
           dispatch(toggleEditWhitelistModal(true));
         }, 1000);
         break;
       case 'Delete Whitelist':
+        hide();
         setTimeout(() => {
           if (googleAuth) dispatch(toggleGoogleOtpModal(true));
           if (emailAuth) dispatch(toggleEmailAuthModal(true));

@@ -73,6 +73,7 @@ export default function Balance({ navigation }) {
       >
         <ScrollView
           contentContainerStyle={{ flex: 1 }}
+          nestedScrollEnabled
           refreshControl={
             <RefreshControl
               tintColor={colors.PRIMARY_PURPLE}

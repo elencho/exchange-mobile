@@ -80,7 +80,10 @@ function TransactionHistory() {
     contentOffset,
     contentSize,
   }) => {
-    return layoutMeasurement.height + contentOffset.y >= contentSize.height;
+    return (
+      Math.floor(layoutMeasurement.height + contentOffset.y) >=
+      Math.floor(contentSize.height)
+    );
   };
 
   return (

@@ -28,13 +28,14 @@ import GeneralError from '../../components/GeneralError';
 import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
+import { setFee } from '../../redux/trade/actions';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     profile: { googleAuth, emailAuth, smsAuth },
-    trade: { currentBalanceObj, card },
+    trade: { currentBalanceObj, card, depositProvider },
     transactions: { code },
     wallet: {
       withdrawalRestriction,
@@ -95,7 +96,8 @@ export default function Withdrawal() {
 
   useEffect(() => {
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
-  }, [network]);
+    dispatch(setFee(null));
+  }, [network, depositProvider, card]);
 
   useEffect(() => {
     setHasRestriction(Object.keys(withdrawalRestriction).length);

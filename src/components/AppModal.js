@@ -47,8 +47,8 @@ function AppModal({
       backdropTransitionInTiming={300}
       onModalHide={onModalHide}
       hideModalContentWhileAnimating
-      // useNativeDriver
-      // useNativeDriverForBackdrop
+      useNativeDriver
+      useNativeDriverForBackdrop
       onDismiss={onDismiss}
       // coverScreen={false}
     >
