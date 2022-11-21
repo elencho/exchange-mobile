@@ -1,0 +1,15 @@
+image: node:alpine
+definitions:
+  caches:
+    npm: ~/.npm
+pipelines:
+  default:
+    - step:
+        name: Validate code
+        caches:
+          - npm
+        script:
+          - npm install
+          - cd ios && pod install
+          - cd android && ./gradlew clean
+          
