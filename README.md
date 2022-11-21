@@ -1,5 +1,9 @@
 # Cryptx Exchange
 
+IOS:[![Build status](https://build.appcenter.ms/v0.1/apps/34d6fe58-cdd6-4b04-89a7-be21598be308/branches/develop/badge)](https://appcenter.ms)
+
+ANDROID:[![Build status](https://build.appcenter.ms/v0.1/apps/c4ec01db-8674-41cc-bbdb-47bf4fe06cea/branches/develop/badge)](https://appcenter.ms)
+
 ### Main packages
 
 ```
