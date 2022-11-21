@@ -7,9 +7,9 @@ pipelines:
     - step:
         name: Validate code
         caches:
-          - npm
+          - yarn
         script:
-          - npm install
+          - yarn install
           - cd ios && pod install
           - cd android && ./gradlew clean
           
