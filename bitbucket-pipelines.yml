@@ -1,7 +1,7 @@
 image: node:alpine
 definitions:
   caches:
-    npm: ~/.npm
+   yarn: ~/.yarn
 pipelines:
   default:
     - step:
