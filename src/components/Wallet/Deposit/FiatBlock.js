@@ -37,8 +37,9 @@ export default function FiatBlock() {
 
   const isDecimal = depositAmount % 1 != 0;
   const factoredDigit = Math.trunc(depositAmount);
+  const factoredDigitLength = parseFloat(factoredDigit.toString().length);
   const maxLength = isDecimal
-    ? factoredDigit.toString().length + depositScale + 1
+    ? factoredDigitLength + parseFloat(depositScale) + 1
     : 1000;
 
   const generatePdf = () => {

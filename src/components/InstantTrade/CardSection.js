@@ -43,9 +43,9 @@ function CardSection() {
 
   const multipleBanks = () => {
     let isMultiple;
-    balances.forEach((b) => {
+    balances?.forEach((b) => {
       if (fiat === b.currencyCode) {
-        isMultiple = b.depositMethods.ECOMMERCE.length > 1;
+        isMultiple = b?.depositMethods?.ECOMMERCE?.length > 1;
       }
     });
     return isMultiple;
@@ -76,7 +76,7 @@ function CardSection() {
     let displayName = 'Payment Service Provider';
     const m =
       walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
-    currentBalanceObj[m]?.ECOMMERCE.forEach((d) => {
+    currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
       if (depositProvider === d.provider) displayName = d.displayName;
     });
     return displayName;
