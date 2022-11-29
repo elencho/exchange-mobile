@@ -13,8 +13,9 @@ import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import BankInfo from './BankInfo';
 import { validateScale } from '../../../utils/formUtils';
-import { fetchFee, setFee } from '../../../redux/trade/actions';
+import { fetchFee } from '../../../redux/trade/actions';
 import StatusModal from '../StatusModal';
+import Fee from '../Fee';
 
 export default function FiatBlock() {
   const dispatch = useDispatch();
@@ -24,7 +25,6 @@ export default function FiatBlock() {
     transactions: { code },
     trade: {
       card,
-      fee,
       depositProvider,
       currentBalanceObj: { depositScale },
     },
@@ -35,6 +35,7 @@ export default function FiatBlock() {
     },
   } = state;
 
+  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
   const isDecimal = depositAmount % 1 != 0;
   const factoredDigit = Math.trunc(depositAmount);
   const maxLength = isDecimal
@@ -48,13 +49,19 @@ export default function FiatBlock() {
   };
 
   const handleAmount = (text) => {
-    const depositAmount = text.replace(',', '.');
+    const d = text.replace(',', '.');
 
-    if (validateScale(depositAmount, depositScale)) {
-      dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount });
+    if (validateScale(d, depositScale)) {
+      dispatch({
+        type: 'SET_DEPOSIT_AMOUNT',
+        depositAmount: d ? d : 0,
+      });
 
-      if (!depositAmount) dispatch(setFee(null));
-      if (text.trim() && depositAmount && depositProvider) {
+      if (
+        (depositProvider && card) ||
+        network === 'SWIFT' ||
+        network === 'SEPA'
+      ) {
         dispatch(fetchFee('deposit'));
       }
     }
@@ -81,17 +88,6 @@ export default function FiatBlock() {
       </AppText>
     </View>
   );
-
-  const DepositFeeInfo = () => {
-    if (fee) {
-      const { totalAmount, totalFee } = fee;
-      return (
-        <AppText subtext style={styles.fee}>
-          Fee = {totalFee}; Total amount = {totalAmount} {code}
-        </AppText>
-      );
-    } else return null;
-  };
 
   return (
     <View>
@@ -122,11 +118,12 @@ export default function FiatBlock() {
             label="Enter Amount"
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             right={right}
+            editable={!!editable}
           />
-
-          {parseFloat(fee?.totalFee) ? <DepositFeeInfo /> : null}
         </>
       </View>
+
+      <Fee />
 
       {network === 'SWIFT' || network === 'SEPA' ? (
         <AppButton
@@ -153,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingVertical: 22,
     paddingHorizontal: 16,
-    marginBottom: 12,
+    marginBottom: 22,
   },
   button: {
     width: '90%',
@@ -181,9 +178,5 @@ const styles = StyleSheet.create({
   subtext: {
     color: colors.SECONDARY_TEXT,
     marginLeft: 10,
-  },
-  fee: {
-    color: colors.SECONDARY_TEXT,
-    marginTop: 8,
   },
 });

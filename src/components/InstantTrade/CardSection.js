@@ -13,6 +13,7 @@ import {
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import { setCard } from '../../redux/trade/actions';
+import Fee from '../Wallet/Fee';
 
 function CardSection() {
   const navigation = useNavigation();
@@ -25,7 +26,6 @@ function CardSection() {
       currentBalanceObj,
       card,
       fiat,
-      fee,
       cardsToDisplayInModal,
       balance: { balances },
     },
@@ -43,7 +43,7 @@ function CardSection() {
 
   const multipleBanks = () => {
     let isMultiple;
-    balances.forEach((b) => {
+    balances?.forEach((b) => {
       if (fiat === b.currencyCode) {
         isMultiple = b.depositMethods.ECOMMERCE.length > 1;
       }
@@ -76,22 +76,10 @@ function CardSection() {
     let displayName = 'Payment Service Provider';
     const m =
       walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
-    currentBalanceObj[m]?.ECOMMERCE.forEach((d) => {
+    currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
       if (depositProvider === d.provider) displayName = d.displayName;
     });
     return displayName;
-  };
-
-  const FeeInfo = () => {
-    if (fee && tabRoute === 'Trade') {
-      return (
-        <View style={styles.info}>
-          <AppText subtext style={styles.infoText}>
-            MasterCard 3%; Total amount = {fee.totalAmount} {fiat}
-          </AppText>
-        </View>
-      );
-    }
   };
 
   return (
@@ -142,10 +130,10 @@ function CardSection() {
               : "You don't have cards yet"}{' '}
             <PurpleText text=" Add Card" onPress={addNewCard} />
           </AppText>
+
+          <View style={{ marginVertical: 22 }}>{card && <Fee />}</View>
         </>
       )}
-
-      {FeeInfo()}
     </View>
   );
 }

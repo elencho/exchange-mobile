@@ -21,7 +21,7 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: {},
+  credentials: baneta_realuri,
   userAndPassInfo: {},
   forgotPassInfo: {
     username: '',

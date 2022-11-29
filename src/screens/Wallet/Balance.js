@@ -49,6 +49,7 @@ export default function Balance({ navigation }) {
 
   useEffect(() => {
     onRefresh();
+    return () => dispatch(setCard(null));
   }, [walletTab, code]);
 
   return (

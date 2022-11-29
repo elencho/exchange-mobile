@@ -20,9 +20,14 @@ import GeneralError from '../../components/GeneralError';
 import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
-import { setCard, setDepositProvider, setFee } from '../../redux/trade/actions';
+import {
+  fetchFee,
+  setCard,
+  setDepositProvider,
+} from '../../redux/trade/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
 import { setStatusModalInfo } from '../../redux/modals/actions';
+import Fee from '../../components/Wallet/Fee';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -36,7 +41,7 @@ export default function Deposit() {
     transactions: { code },
     trade: { currentBalanceObj, depositProvider, card },
     wallet: { cryptoAddress, hasMultipleMethods, depositRestriction, network },
-    modals: { webViewObj, chooseCurrencyModalVisible },
+    modals: { webViewObj },
   } = state;
 
   const isFiat = currentBalanceObj.type === 'FIAT';
@@ -53,14 +58,14 @@ export default function Deposit() {
 
     setHasMethod(!!Object.keys(m).length);
     setLoading(false);
-    dispatch(setFee(null));
 
-    return () => dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
+    return () => dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
   }, [code]);
 
   useEffect(() => {
+    dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
+    card && dispatch(fetchFee('deposit'));
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
-    dispatch(setFee(null));
   }, [network, depositProvider, card]);
 
   useEffect(() => {
@@ -83,8 +88,8 @@ export default function Deposit() {
     dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
     dispatch(setDepositProvider(null));
     dispatch(setCard(null));
-    dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
-    dispatch(setFee(null));
+    dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
+    dispatch(fetchFee('deposit'));
     dispatch({ type: 'BALANCE_SAGA' });
   };
 

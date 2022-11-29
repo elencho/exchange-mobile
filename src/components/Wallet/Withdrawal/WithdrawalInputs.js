@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppInput from '../../AppInput';
-import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
 import {
   setMemoTag,
@@ -17,6 +16,7 @@ import CardSection from '../../InstantTrade/CardSection';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import { validateScale } from '../../../utils/formUtils';
+import Fee from '../Fee';
 
 export default function WithdrawalInputs({ isFiat, hasRestriction }) {
   const dispatch = useDispatch();
@@ -30,33 +30,25 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
       network,
       whitelist,
     },
-    transactions: { code },
-    trade: {
-      fee,
-      currentBalanceObj: { withdrawalScale },
-      depositProvider,
-    },
+    trade: { card, currentBalanceObj, depositProvider },
   } = state;
 
+  const cur = currentBalanceObj;
+
+  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
   const isEcommerce = network === 'ECOMMERCE';
   const isDecimal = withdrawalAmount % 1 != 0;
   const factoredDigit = Math.trunc(withdrawalAmount);
   const maxLength = isDecimal
-    ? factoredDigit.toString().length + depositScale + 1
+    ? factoredDigit.toString().length + cur?.withdrawalScale + 1
     : 1000;
-
-  useEffect(() => {
-    dispatch(setFee(null));
-    return () => dispatch(setFee(null));
-  }, [code, network]);
 
   const setAmount = (text) => {
     const amount = text.replace(',', '.');
 
-    if (validateScale(amount, withdrawalScale)) {
-      dispatch(setWithdrawalAmount(amount));
-      if (!amount) dispatch(setFee(null));
-      if (text.trim() && amount && depositProvider) {
+    if (validateScale(amount, cur?.withdrawalScale)) {
+      dispatch(setWithdrawalAmount(amount ? amount : 0));
+      if (depositProvider || cur?.type === 'CRYPTO') {
         dispatch(fetchFee('withdrawal'));
       }
     }
@@ -73,58 +65,51 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
     </View>
   );
 
-  const WithdrawalFeeInfo = () => {
-    if (fee) {
-      const { totalAmount, totalFee } = fee;
-      return (
-        <AppText subtext style={styles.secondary}>
-          Fee = {totalFee}; Total amount = {totalAmount} {code}
-        </AppText>
-      );
-    } else return null;
-  };
-
   return (
-    <View style={styles.block}>
-      {!hasRestriction && !isFiat && <WithdrawalAddress />}
+    <>
+      <View style={styles.block}>
+        {!hasRestriction && !isFiat && <WithdrawalAddress />}
 
-      {cryptoAddress?.tag && !whitelist?.length && (
+        {cryptoAddress?.tag && !whitelist?.length && (
+          <AppInput
+            label="Address tag"
+            onChangeText={handleMemotag}
+            value={memoTag}
+            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+            style={{ marginBottom: 22 }}
+          />
+        )}
+        {isEcommerce ? (
+          <>
+            <View style={{ marginTop: -20, marginBottom: -22 }}>
+              <CardSection />
+              <ChooseBankModal />
+              <ChooseCardModal />
+            </View>
+          </>
+        ) : (
+          <AppInput
+            label="Enter Note"
+            onChangeText={setNote}
+            value={withdrawalNote}
+            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          />
+        )}
         <AppInput
-          label="Address tag"
-          onChangeText={handleMemotag}
-          value={memoTag}
+          onChangeText={setAmount}
+          value={withdrawalAmount}
+          label="Enter Amount"
+          style={styles.amount}
+          keyboardType="numeric"
+          maxLength={maxLength}
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-          style={{ marginBottom: 22 }}
+          right={<Max />}
+          editable={!!editable}
         />
-      )}
-      {isEcommerce ? (
-        <>
-          <View style={{ marginTop: -20, marginBottom: -22 }}>
-            <CardSection />
-            <ChooseBankModal />
-            <ChooseCardModal />
-          </View>
-        </>
-      ) : (
-        <AppInput
-          label="Enter Note"
-          onChangeText={setNote}
-          value={withdrawalNote}
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-        />
-      )}
-      <AppInput
-        onChangeText={setAmount}
-        value={withdrawalAmount}
-        label="Enter Amount"
-        style={styles.amount}
-        keyboardType="numeric"
-        maxLength={maxLength}
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-        right={<Max />}
-      />
-      {fee?.totalFee && <WithdrawalFeeInfo />}
-    </View>
+      </View>
+
+      <Fee />
+    </>
   );
 }
 
@@ -137,7 +122,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingVertical: 22,
     paddingHorizontal: 16,
-    marginBottom: 12,
+    marginBottom: 22,
   },
   line: {
     width: 1,
