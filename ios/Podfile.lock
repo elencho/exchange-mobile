@@ -18,7 +18,13 @@ PODS:
   - AppCenterReactNativeShared (4.4.5):
     - AppCenter/Core (= 4.4.3)
   - ASN1Decoder (1.8.0)
+  - Base64 (1.1.2)
   - boost (1.76.0)
+  - CodePush (7.0.5):
+    - Base64 (~> 1.1)
+    - JWT (~> 3.0.0-beta.12)
+    - React-Core
+    - SSZipArchive (~> 2.2.2)
   - DoubleConversion (1.1.6)
   - EASClient (0.3.0):
     - ExpoModulesCore
@@ -89,6 +95,8 @@ PODS:
   - IdensicMobileSDK/Core (1.19.7)
   - IdensicMobileSDK/Default (1.19.7):
     - IdensicMobileSDK/Core
+  - JWT (3.0.0-beta.14):
+    - Base64 (~> 1.1.2)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -411,6 +419,7 @@ PODS:
     - React-RCTImage
   - RNSVG (12.3.0):
     - React-Core
+  - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -418,6 +427,7 @@ DEPENDENCIES:
   - appcenter-core (from `../node_modules/appcenter`)
   - appcenter-crashes (from `../node_modules/appcenter-crashes`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
+  - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EASClient (from `../node_modules/expo-eas-client/ios`)
   - EXApplication (from `../node_modules/expo-application/ios`)
@@ -490,7 +500,10 @@ SPEC REPOS:
     - AppCenter
     - AppCenterReactNativeShared
     - ASN1Decoder
+    - Base64
     - fmt
+    - JWT
+    - SSZipArchive
 
 EXTERNAL SOURCES:
   appcenter-analytics:
@@ -501,6 +514,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/appcenter-crashes"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
+  CodePush:
+    :path: "../node_modules/react-native-code-push"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EASClient:
@@ -635,7 +650,9 @@ SPEC CHECKSUMS:
   appcenter-crashes: d9ae1c9296974c1c433600fa2f320e0ba1f12bdf
   AppCenterReactNativeShared: f395caeabde0dc3a11609dbcb737d0f14cd40e79
   ASN1Decoder: 6110fdeacfdb41559b1481457a1645be716610aa
+  Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: a7c83b31436843459a1961bfd74b96033dc77234
+  CodePush: ef496b6fd053012e985e3d4a0ab9f9dbf2739eac
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EASClient: a2581835cf9b97d0defd5d630fc6eb1bf77045e7
   EXApplication: e418d737a036e788510f2c4ad6c10a7d54d18586
@@ -666,6 +683,7 @@ SPEC CHECKSUMS:
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: cfec46900e485b4b7613ff79308c30791825f32c
   IdensicMobileSDK: 5b56aae41519bdb8fe287f135033b4399cc3f50e
+  JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   RCT-Folly: 6c7dfdb649d9eac5f93fa0891b11725aa9b2f1ed
   RCTRequired: c8c080849a3670601d5c7056023a2176067a69d8
   RCTTypeSafety: 710aef40f5ae246bc5fff7e873855b17ed11c180
@@ -700,8 +718,9 @@ SPEC CHECKSUMS:
   RNReanimated: 2cf7451318bb9cc430abeec8d67693f9cf4e039c
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
+  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 75bf4b0131cfb46a659cd0c13309b79a6fcff66d
 
-PODFILE CHECKSUM: 48d73b373b762079c53b5200315bd9fc956369fe
+PODFILE CHECKSUM: c9a0d4ef46cb74a8e5af0a55793290ea28cb1392
 
 COCOAPODS: 1.11.3

@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Platform, StyleSheet, SafeAreaView } from 'react-native';
+import codePush from 'react-native-code-push';
 import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
@@ -17,7 +18,19 @@ import AppToast from './src/components/AppToast';
 
 SplashScreen.preventAutoHideAsync();
 
-export default function App() {
+const codePushOptions = {
+  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+};
+
+function App() {
+  useEffect(() => {
+    codePush.notifyAppReady();
+    codePush.sync({
+      updateDialog: true,
+      installMode: codePush.InstallMode.ON_NEXT_RESTART,
+    });
+  });
+
   const [fontsLoaded] = useFonts({
     Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
     Ubuntu_Medium: require('./src/assets/fonts/Ubuntu_Medium.ttf'),
@@ -47,6 +60,7 @@ export default function App() {
     </Provider>
   );
 }
+export default codePush(codePushOptions)(App);
 
 const styles = StyleSheet.create({
   container: {
