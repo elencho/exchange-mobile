@@ -10,15 +10,14 @@ export default function AppText({
   header,
   subtext,
   calendarDay,
+  small,
   ...props
 }) {
   const fontCond = () => {
     if (medium || header) {
       return 'Ubuntu_Medium';
     }
-    if (subtext || body) {
-      return 'Ubuntu_Regular';
-    }
+    return 'Ubuntu_Regular';
   };
 
   const sizeCond = () => {
@@ -33,6 +32,9 @@ export default function AppText({
     }
     if (subtext) {
       return 12;
+    }
+    if (small) {
+      return 11;
     }
   };
 

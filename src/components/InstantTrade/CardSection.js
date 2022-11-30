@@ -13,6 +13,7 @@ import {
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import { setCard } from '../../redux/trade/actions';
+import Fee from '../Wallet/Fee';
 
 function CardSection() {
   const navigation = useNavigation();
@@ -25,7 +26,6 @@ function CardSection() {
       currentBalanceObj,
       card,
       fiat,
-      fee,
       cardsToDisplayInModal,
       balance: { balances },
     },
@@ -82,18 +82,6 @@ function CardSection() {
     return displayName;
   };
 
-  const FeeInfo = () => {
-    if (fee && tabRoute === 'Trade') {
-      return (
-        <View style={styles.info}>
-          <AppText subtext style={styles.infoText}>
-            MasterCard 3%; Total amount = {fee.totalAmount} {fiat}
-          </AppText>
-        </View>
-      );
-    }
-  };
-
   return (
     <View style={styles.container}>
       {multipleBanks() && (
@@ -142,10 +130,10 @@ function CardSection() {
               : "You don't have cards yet"}{' '}
             <PurpleText text=" Add Card" onPress={addNewCard} />
           </AppText>
+
+          <View style={{ marginVertical: 22 }}>{card && <Fee />}</View>
         </>
       )}
-
-      {FeeInfo()}
     </View>
   );
 }

@@ -8,10 +8,12 @@ import ModalWithSearch from '../ModalWithSearch';
 import {
   currencyAction,
   filterCurrencies,
+  setAbbr,
 } from '../../redux/transactions/actions';
 import { toggleCurrencyModal } from '../../redux/modals/actions';
 import {
   cryptoAddressesAction,
+  saveCryptoAddress,
   setNetwork,
   setWalletTab,
   wireDepositAction,
@@ -74,11 +76,10 @@ function ChooseCurrencyModal({ wallet = false }) {
       if (fiats.includes(currencyCode)) {
         walletTab === 'Whitelist' && dispatch(setWalletTab('Manage Cards'));
         dispatch(wireDepositAction(name, currencyCode, navigation));
+        dispatch(saveCryptoAddress({}));
       } else {
         walletTab === 'Manage Cards' && dispatch(setWalletTab('Whitelist'));
-        dispatch(
-          cryptoAddressesAction(name, currencyCode, navigation, network)
-        );
+        dispatch(setAbbr(currencyCode));
       }
 
       if (
