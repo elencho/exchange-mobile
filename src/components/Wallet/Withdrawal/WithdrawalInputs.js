@@ -39,8 +39,9 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
   const isEcommerce = network === 'ECOMMERCE';
   const isDecimal = withdrawalAmount % 1 != 0;
   const factoredDigit = Math.trunc(withdrawalAmount);
+  const factoredDigitLength = parseFloat(factoredDigit.toString().length);
   const maxLength = isDecimal
-    ? factoredDigit.toString().length + cur?.withdrawalScale + 1
+    ? factoredDigitLength + 1 + parseFloat(withdrawalScale)
     : 1000;
 
   const setAmount = (text) => {

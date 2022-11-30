@@ -115,6 +115,9 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
+# Xcode env node
+/ios/.xcode.env.local
+
 # Expo
 .expo/
 web-build/

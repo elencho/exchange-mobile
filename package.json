@@ -15,7 +15,9 @@
     "remove-node-modules": "npx rimraf ./**/node_modules",
     "lint": "eslint --ext .js --ext .jsx .",
     "lint-fix": "eslint --ext .js --ext .jsx . --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "release": "react-native run-android --variant release",
+    "app-center-ios": "appcenter codepush release-react -a Cryptx/Exchange-iOS -d Production"
   },
   "dependencies": {
     "@expo/ngrok": "^4.1.0",
@@ -24,6 +26,9 @@
     "@react-navigation/native-stack": "^6.6.2",
     "@reduxjs/toolkit": "^1.8.6",
     "@sumsub/react-native-mobilesdk-module": "^1.19.7",
+    "appcenter": "4.4.5",
+    "appcenter-analytics": "4.4.5",
+    "appcenter-crashes": "4.4.5",
     "axios": "^0.24.0",
     "buffer": "^6.0.3",
     "expo": "^46.0.0",
@@ -55,6 +60,7 @@
     "react-native": "0.69.6",
     "react-native-animated-progress": "^1.0.2",
     "react-native-calendars": "^1.1272.0",
+    "react-native-code-push": "^7.0.5",
     "react-native-confirmation-code-field": "^7.3.0",
     "react-native-extra-dimensions-android": "^1.2.5",
     "react-native-gesture-handler": "~2.5.0",
@@ -87,6 +93,6 @@
     "prettier": "2.7.1"
   },
   "private": true,
-  "name": "exchange-mobile",
+  "name": "cryptalApp",
   "version": "1.0.0"
 }

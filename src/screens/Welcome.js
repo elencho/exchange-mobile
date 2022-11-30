@@ -77,7 +77,7 @@ export default function Welcome({ navigation }) {
               Welcome to Cryptal
             </AppText>
 
-            <AppText style={styles.secondary}>{auth}</AppText>
+            {/* <AppText style={styles.secondary}>{auth}</AppText> */}
 
             <GeneralError
               style={styles.error}
