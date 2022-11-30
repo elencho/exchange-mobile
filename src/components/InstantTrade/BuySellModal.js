@@ -82,7 +82,6 @@ export default function BuySellModal() {
       tradeType === 'Buy' ? pairObject.buyPrice : pairObject.sellPrice;
 
     if (type === 'crypto' && validateScale(t, quoteScale)) {
-      console.log('dasasdsad');
       dispatch(
         setCurrentTrade({
           price: t,
