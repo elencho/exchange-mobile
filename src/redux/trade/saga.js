@@ -218,8 +218,11 @@ function* refreshWalletAndTradesSaga() {
     }
 
     if (crypto && isAvailable(currentBalanceObj)) {
-      if (withdrawal || whitelist) yield put(getWhitelistAction());
-      else yield put(cryptoAddressesAction(currency, code, null, network));
+      if (withdrawal || whitelist) {
+        yield put(getWhitelistAction());
+      } else {
+        yield put(cryptoAddressesAction(currency, code, null, network));
+      }
     }
   }
 

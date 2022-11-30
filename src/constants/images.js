@@ -74,6 +74,7 @@ export default {
   White_Copy: require('../assets/images/Wallet/White_Copy.png'),
   List: require('../assets/images/Wallet/List.png'),
   Card: require('../assets/images/Wallet/Card.png'),
+  Fee: require('../assets/images/Wallet/Fee.png'),
   Address_List: require('../assets/images/Wallet/Address_List.png'),
   Time: require('../assets/images/Wallet/Time.png'),
   Generate: require('../assets/images/Wallet/Generate.png'),

@@ -8,6 +8,7 @@ import { COINS_URL_PNG } from '../../constants/api';
 import { setCurrentBalanceObj } from '../../redux/trade/actions';
 import {
   cryptoAddressesAction,
+  saveCryptoAddress,
   setNetwork,
   setWalletTab,
   wireDepositAction,
@@ -40,6 +41,7 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
           dispatch(cryptoAddressesAction(name, code, navigation, network));
         }
         if (b.type === 'FIAT') {
+          dispatch(saveCryptoAddress({}));
           dispatch(wireDepositAction(name, code, navigation));
         }
       }
