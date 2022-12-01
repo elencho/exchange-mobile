@@ -23,7 +23,7 @@ export const registrationParams = (state) => {
     profile: { registrationInputs, Personal_Company },
   } = state;
 
-  const clientType = Personal_Company === 'Company' ? 'COMPANY' : 'PHYSICAL';
+  const clientType = Personal_Company === 'Company' ? 'CORPORATE' : 'PHYSICAL';
 
   return {
     ...registrationInputs,
