@@ -14,15 +14,16 @@ export default function WalletSwitcher() {
     trade: { currentBalanceObj },
   } = state;
 
+  const cur = currentBalanceObj;
   const array = ['Deposit', 'Withdrawal'];
   const [switchers, setSwitchers] = useState(array);
 
   useEffect(() => {
-    if (currentBalanceObj.type === 'CRYPTO') {
+    if (cur.type === 'CRYPTO') {
       setSwitchers([...array, 'Whitelist']);
     } else if (
-      currentBalanceObj.type === 'FIAT' &&
-      currentBalanceObj.depositMethods.ECOMMERCE
+      cur.type === 'FIAT' &&
+      (cur.depositMethods.ECOMMERCE || cur.withdrawalMethods.ECOMMERCE)
     ) {
       setSwitchers([...array, 'Manage Cards']);
     } else {
@@ -36,9 +37,9 @@ export default function WalletSwitcher() {
 
     const m = f === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
 
-    const isFiat = currentBalanceObj.type === 'FIAT';
+    const isFiat = cur.type === 'FIAT';
     if (isFiat) {
-      if (currentBalanceObj[m]?.ECOMMERCE) {
+      if (cur[m]?.ECOMMERCE) {
         dispatch(setNetwork('ECOMMERCE'));
       } else {
         dispatch(setNetwork('SWIFT'));

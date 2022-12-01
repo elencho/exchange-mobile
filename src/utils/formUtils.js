@@ -1,4 +1,6 @@
 export const validateScale = (input, scale) => {
+  if (!input) return true;
+
   const isNumber = (input * 1).toString() !== 'NaN';
 
   if (isNumber) {

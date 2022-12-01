@@ -4,7 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import colors from '../../constants/colors';
-import { fetchTrades, hideOtherPairsAction } from '../../redux/trade/actions';
+import {
+  fetchTrades,
+  hideOtherPairsAction,
+  saveTrades,
+} from '../../redux/trade/actions';
 import { reachScrollEnd } from '../../redux/transactions/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
@@ -34,6 +38,7 @@ export default function TransactionsBlock() {
 
   const toggleShowHide = () => {
     dispatch(hideOtherPairsAction(!hideOtherPairs));
+    dispatch(saveTrades([]));
     dispatch(fetchTrades());
   };
 

@@ -77,7 +77,7 @@ export default function BuySellModal() {
   }, [pairObject]);
 
   const handleChangeText = (text, type) => {
-    const t = text.replace(',', '.');
+    const t = text ? text.replace(',', '.') : 0;
     const rate =
       tradeType === 'Buy' ? pairObject.buyPrice : pairObject.sellPrice;
 
@@ -88,7 +88,7 @@ export default function BuySellModal() {
           size: (t / rate).toFixed(baseScale),
         })
       );
-      card && t && dispatch(fetchFee());
+      card && dispatch(fetchFee());
     }
     if (type === 'fiat' && validateScale(t, baseScale)) {
       dispatch(
@@ -97,9 +97,8 @@ export default function BuySellModal() {
           size: t,
         })
       );
-      card && t && dispatch(fetchFee());
+      card && dispatch(fetchFee());
     }
-    !t && dispatch(setFee(null));
   };
 
   const myBalance = () => {
@@ -151,14 +150,14 @@ export default function BuySellModal() {
             <AppInput
               onChangeText={(t) => handleChangeText(t, 'crypto')}
               keyboardType="decimal-pad"
-              value={price.trim()}
+              value={price ? price.trim() : ''}
               right={<AppText style={styles.code}>{fiat}</AppText>}
             />
             <View style={styles.margin} />
             <AppInput
               onChangeText={(t) => handleChangeText(t, 'fiat')}
               keyboardType="decimal-pad"
-              value={size.trim()}
+              value={size ? size.trim() : ''}
               right={<AppText style={styles.code}>{crypto}</AppText>}
               style={{ marginBottom: 10 }}
             />

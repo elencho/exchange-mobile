@@ -19,25 +19,20 @@ export const depositFeeParams = (state) => {
       card,
       currentBalanceObj,
     },
-    transactions: { code },
-    wallet: { walletTab, depositAmount, network },
+    transactions: { code, tabRoute },
+    wallet: { depositAmount, network },
   } = state;
 
-  const instantTrade = walletTab === 'Trade';
+  const instantTrade = tabRoute === 'Trade';
   const eCommerce = network === 'ECOMMERCE';
+  const crypto = currentBalanceObj?.type === 'CRYPTO';
 
   const method = () => {
     if (!instantTrade) {
-      if (currentBalanceObj?.type === 'CRYPTO') {
-        return 'WALLET';
-      } else if (eCommerce) {
-        return 'ECOMMERCE';
-      } else {
-        return 'WIRE';
-      }
-    } else {
-      return 'ECOMMERCE';
+      if (crypto) return 'WALLET';
+      if (!crypto && !eCommerce) return 'WIRE';
     }
+    return 'ECOMMERCE';
   };
 
   return {
@@ -52,7 +47,7 @@ export const depositFeeParams = (state) => {
 
 export const withdrawalFeeParams = (state) => {
   const {
-    transactions: { code },
+    transactions: { code, tabRoute },
     trade: {
       currentBalanceObj,
       depositProvider,
@@ -60,24 +55,19 @@ export const withdrawalFeeParams = (state) => {
       fiat,
       currentTrade: { price },
     },
-    wallet: { network, withdrawalAmount, walletTab },
+    wallet: { network, withdrawalAmount },
   } = state;
 
-  const instantTrade = walletTab === 'Trade';
+  const instantTrade = tabRoute === 'Trade';
   const eCommerce = network === 'ECOMMERCE';
+  const crypto = currentBalanceObj?.type === 'CRYPTO';
 
   const method = () => {
     if (!instantTrade) {
-      if (currentBalanceObj?.type === 'CRYPTO') {
-        return 'WALLET';
-      } else if (eCommerce) {
-        return 'ECOMMERCE';
-      } else {
-        return 'WIRE';
-      }
-    } else {
-      return 'ECOMMERCE';
+      if (crypto) return 'WALLET';
+      if (!crypto && !eCommerce) return 'WIRE';
     }
+    return 'ECOMMERCE';
   };
 
   return {
@@ -99,7 +89,8 @@ export const getCardParams = (state) => {
 
   const currency = code ?? 'GEL';
   const status = walletTab !== 'Manage Cards' ? 'VERIFIED' : null;
-  const transactionType = walletTab === 'Withdrawal' ? 'WITHDRAWAL' : 'DEPOSIT';
+  const transactionType =
+    walletTab === 'Manage Cards' ? null : walletTab.toUpperCase();
 
   return {
     currency: tabRoute === 'Trade' ? fiat : currency,

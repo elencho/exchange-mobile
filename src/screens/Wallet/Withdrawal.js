@@ -10,10 +10,7 @@ import {
   toggleGoogleOtpModal,
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
-import {
-  setNetwork,
-  withdrawalTemplatesAction,
-} from '../../redux/wallet/actions';
+import { setNetwork } from '../../redux/wallet/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
 import AppButton from '../../components/AppButton';
 import WithdrawalInputs from '../../components/Wallet/Withdrawal/WithdrawalInputs';
@@ -182,15 +179,16 @@ export default function Withdrawal() {
         <ActivityIndicator />
       )}
 
-      {!hasRestriction && hasMethod && (
-        <View style={styles.button}>
-          <AppButton
-            text="Withdrawal"
-            onPress={withdraw}
-            disabled={!enabled()}
-          />
-        </View>
-      )}
+      {!hasRestriction &&
+        hasMethod && ( // Button
+          <View style={styles.button}>
+            <AppButton
+              text="Withdrawal"
+              onPress={withdraw}
+              disabled={!enabled()}
+            />
+          </View>
+        )}
 
       <SmsEmailAuthModal type="SMS" withdrawal={withdrawalType()} />
       <SmsEmailAuthModal type="Email" withdrawal={withdrawalType()} />
