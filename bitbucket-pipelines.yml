@@ -10,6 +10,4 @@ pipelines:
           - yarn
         script:
           - yarn install
-          - cd ios && pod install
-          - cd android && ./gradlew clean
           
