@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppModal from '../AppModal';
 import ModalWithSearch from '../ModalWithSearch';
 
-import { filterCurrencies } from '../../redux/transactions/actions';
+import {
+  fetchCurrencies,
+  filterCurrencies,
+} from '../../redux/transactions/actions';
 import { toggleCryptoModal } from '../../redux/modals/actions';
 import {
   instantTradeTabAction,
@@ -30,9 +33,8 @@ export default function CryptoModal() {
     dispatch(setCryptosArray(filteredArray));
   };
 
-  const hide = () => {
-    dispatch(toggleCryptoModal(false));
-  };
+  const hide = () => dispatch(toggleCryptoModal(false));
+  const onModalHide = () => dispatch(fetchCurrencies());
 
   const choose = (code) => {
     dispatch(setCrypto(code));
@@ -57,6 +59,7 @@ export default function CryptoModal() {
       visible={cryptoModalVisible}
       hide={hide}
       children={children}
+      onModalHide={onModalHide}
       custom
     />
   );

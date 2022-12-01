@@ -7,7 +7,10 @@ import TransactionHistory from '../screens/TransactionHistory';
 import InstantTrade from '../screens/InstantTrade';
 // import TestScreen from '../screens/Test';
 import BottomTabs from '../components/BottomTabs';
-import { setTabRouteName } from '../redux/transactions/actions';
+import {
+  fetchCurrencies,
+  setTabRouteName,
+} from '../redux/transactions/actions';
 // import Exercise from '../screens/Exercise';
 import Wallet from '../screens/Wallet';
 
@@ -19,6 +22,8 @@ export default function MainScreen() {
     SecureStore.getItemAsync('accessToken')
       .then((t) => dispatch({ type: 'OTP_SAGA', token: t }))
       .catch((err) => console.log(err));
+
+    dispatch(fetchCurrencies());
   }, []);
 
   const setTabRoute = (e) => {

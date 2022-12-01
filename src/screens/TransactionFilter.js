@@ -24,12 +24,7 @@ export default function TransactionFilter({ navigation }) {
   const state = useSelector((state) => state.transactions);
   const { currency, code } = state;
 
-  const openModal = () => {
-    dispatch(fetchCurrencies());
-    setTimeout(() => {
-      dispatch(toggleCurrencyModal(true));
-    }, 400);
-  };
+  const openModal = () => dispatch(toggleCurrencyModal(true));
 
   const clear = () => dispatch(clearFilters());
 

@@ -20,12 +20,7 @@ export default function WalletCoinsDropdown() {
     },
   } = state;
 
-  const handleDropdown = () => {
-    dispatch(fetchCurrencies());
-    setTimeout(() => {
-      dispatch(toggleCurrencyModal(true));
-    }, 400);
-  };
+  const handleDropdown = () => dispatch(toggleCurrencyModal(true));
 
   const value = usdBtcSwitch === 'USD' ? valueUSD : valueBTC;
 
