@@ -76,9 +76,20 @@ function CardSection() {
     let displayName = 'Payment Service Provider';
     const m =
       walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
-    currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
-      if (depositProvider === d.provider) displayName = d.displayName;
-    });
+
+    tabRoute === 'Trade' &&
+      balances.forEach((b) => {
+        if (b.currencyCode === fiat) {
+          b[m]?.ECOMMERCE?.forEach((d) => {
+            if (depositProvider === d.provider) displayName = d.displayName;
+          });
+        }
+      });
+
+    tabRoute === 'Wallet' &&
+      currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
+        if (depositProvider === d.provider) displayName = d.displayName;
+      });
     return displayName;
   };
 
@@ -96,12 +107,12 @@ function CardSection() {
             <Image source={images['Arrow']} />
           </Pressable>
 
-          {tabRoute === 'Trade' && depositProvider && (
+          {/* {tabRoute === 'Trade' && depositProvider && (
             <AppText subtext style={styles.subText}>
               0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
               <PurpleText text=" More Fees" onPress={showFees} />
             </AppText>
-          )}
+          )} */}
         </>
       )}
 
@@ -131,7 +142,9 @@ function CardSection() {
             <PurpleText text=" Add Card" onPress={addNewCard} />
           </AppText>
 
-          <View style={{ marginVertical: 22 }}>{card && <Fee />}</View>
+          {tabRoute === 'Trade' && (
+            <View style={{ marginVertical: 22 }}>{card && <Fee />}</View>
+          )}
         </>
       )}
     </View>
