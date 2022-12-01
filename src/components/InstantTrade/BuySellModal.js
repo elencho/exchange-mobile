@@ -18,6 +18,7 @@ import CryptoModal from './CryptoModal';
 import FiatModal from './FiatModal';
 import {
   fetchFee,
+  fetchTrades,
   setCard,
   setCurrentTrade,
   setDepositProvider,
@@ -126,6 +127,9 @@ export default function BuySellModal() {
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+      dispatch({ type: 'BALANCE_SAGA' });
+      dispatch(fetchTrades());
+      dispatch(toggleBuySellModal(false));
     }
   };
 
@@ -184,6 +188,7 @@ export default function BuySellModal() {
       <AppWebView
         onNavigationStateChange={onNavigationStateChange}
         source={{ uri: webViewObj?.actionUrl }}
+        trade
       />
     </>
   );

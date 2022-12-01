@@ -127,6 +127,7 @@ export default function AddCardModal() {
 
       {webViewObj?.actionMethod === 'POST' && (
         <AppWebView
+          cards
           onNavigationStateChange={onNavigationStateChange}
           source={{
             uri: webViewObj?.actionUrl,
@@ -139,6 +140,7 @@ export default function AddCardModal() {
 
       {webViewObj?.actionMethod === 'GET' && (
         <AppWebView
+          cards
           onNavigationStateChange={onNavigationStateChange}
           source={{ uri: webViewObj?.actionUrl }}
         />

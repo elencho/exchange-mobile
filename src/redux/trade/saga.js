@@ -145,12 +145,17 @@ function* balanceSaga() {
 
 function* submitTradeSaga() {
   const params = yield select(paramsForTrade);
+  const card = yield select((state) => state.trade.card);
+
   const data = yield call(submitTrade, params);
   if (data?.status >= 200 && data?.status < 300) {
-    yield put({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: data?.data });
-    yield put({ type: 'BALANCE_SAGA' });
-    yield put(fetchTradesAction());
-    yield put(toggleBuySellModal(false));
+    if (card) {
+      yield put({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: data?.data });
+    } else {
+      yield put({ type: 'BALANCE_SAGA' });
+      yield put(fetchTradesAction());
+      yield put(toggleBuySellModal(false));
+    }
   }
 }
 

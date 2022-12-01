@@ -98,7 +98,7 @@ export default function ManageCards() {
       <AddCardModal />
       <StatusModal cards />
 
-      <AppWebView refresh source={{ html: webViewObj }} />
+      <AppWebView cards source={{ html: webViewObj }} />
     </View>
   );
 }
