@@ -1,6 +1,7 @@
 import { actionTypes } from './actions';
 
 const INITIAL_STATE = {
+  cardBeingVerified: false,
   walletTab: 'Deposit',
   usdBtcSwitch: 'USD',
   network: null,
@@ -41,6 +42,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   const {
+    cardBeingVerified,
     walletTab,
     usdBtcSwitch,
     depositRestriction,
@@ -71,6 +73,11 @@ export default (state = INITIAL_STATE, action) => {
     wireDepositProvider,
   } = action;
   switch (action.type) {
+    case 'SET_CARD_VERIFICATION_STATUS':
+      return {
+        ...state,
+        cardBeingVerified,
+      };
     case actionTypes.SET_WALLET_TAB:
       return {
         ...state,
