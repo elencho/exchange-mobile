@@ -27,7 +27,7 @@ function App() {
     codePush.notifyAppReady();
     codePush.sync({
       updateDialog: true,
-      installMode: codePush.InstallMode.ON_NEXT_RESTART,
+      installMode: codePush.InstallMode.IMMEDIATE,
     });
   });
 
