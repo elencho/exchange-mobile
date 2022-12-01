@@ -26,6 +26,10 @@ export default function AppWebView(props) {
     if (cards) {
       dispatch(toggleAddCardModal(false));
       dispatch(cardsSagaAction());
+      dispatch({
+        type: 'SET_CARD_VERIFICATION_STATUS',
+        cardBeingVerified: false,
+      });
     }
 
     if (trade) {

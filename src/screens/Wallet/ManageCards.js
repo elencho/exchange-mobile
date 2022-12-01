@@ -27,6 +27,7 @@ export default function ManageCards() {
   const state = useSelector((state) => state);
   const {
     modals: { webViewObj },
+    wallet: { cardBeingVerified },
     trade: { cards, cardsLoading },
   } = state;
 
@@ -98,7 +99,7 @@ export default function ManageCards() {
       <AddCardModal />
       <StatusModal cards />
 
-      <AppWebView cards source={{ html: webViewObj }} />
+      {cardBeingVerified && <AppWebView cards source={{ html: webViewObj }} />}
     </View>
   );
 }

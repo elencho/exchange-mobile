@@ -23,13 +23,23 @@ export default function CardVerificationContent({ step = 0, cardId }) {
     navigation.navigate('CardVerificationTwo', { id: cardId });
 
   const handlesumsubWebView = async () => {
-    const token = await cardVerificationToken(cardId);
-    close();
-    if (token)
+    dispatch({ type: 'SET_CARD_VERIFICATION_STATUS', cardBeingVerified: true });
+
+    try {
+      const token = await cardVerificationToken(cardId);
+      close();
+      if (token)
+        dispatch({
+          type: 'SET_APP_WEBVIEW_OBJ',
+          webViewObj: sumsubHtmlPattern(token),
+        });
+    } catch (err) {
       dispatch({
-        type: 'SET_APP_WEBVIEW_OBJ',
-        webViewObj: sumsubHtmlPattern(token),
+        type: 'SET_CARD_VERIFICATION_STATUS',
+        cardBeingVerified: false,
       });
+      console.log(err);
+    }
   };
 
   const bullets =
