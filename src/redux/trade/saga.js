@@ -44,7 +44,7 @@ import {
   setWalletTab,
   withdrawalTemplatesAction,
 } from '../wallet/actions';
-import { toggleLoading } from '../transactions/actions';
+import { fetchCurrencies, toggleLoading } from '../transactions/actions';
 import { fetchUserInfo } from '../profile/actions';
 
 function* fetchTradesSaga() {

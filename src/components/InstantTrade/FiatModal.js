@@ -22,9 +22,7 @@ export default function FiatModal() {
     modals: { fiatModalVisible },
   } = state;
 
-  const hide = () => {
-    dispatch(toggleFiatModal(false));
-  };
+  const hide = () => dispatch(toggleFiatModal(false));
 
   const choose = (f) => {
     dispatch(setFiat(f));

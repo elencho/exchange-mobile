@@ -36,7 +36,6 @@ import {
   setTradeOffset,
 } from '../trade/actions';
 import { fetchTrades } from '../trade/actions';
-import { toggleCurrencyModal } from '../modals/actions';
 
 function* fetchTransactionsSaga() {
   const params = yield select(getParams);

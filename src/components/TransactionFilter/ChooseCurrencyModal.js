@@ -7,12 +7,12 @@ import ModalWithSearch from '../ModalWithSearch';
 
 import {
   currencyAction,
+  fetchCurrencies,
   filterCurrencies,
   setAbbr,
 } from '../../redux/transactions/actions';
 import { toggleCurrencyModal } from '../../redux/modals/actions';
 import {
-  cryptoAddressesAction,
   saveCryptoAddress,
   setNetwork,
   setWalletTab,
@@ -50,9 +50,8 @@ function ChooseCurrencyModal({ wallet = false }) {
     dispatch(filterCurrencies(filteredArray));
   };
 
-  const hide = () => {
-    dispatch(toggleCurrencyModal(false));
-  };
+  const hide = () => dispatch(toggleCurrencyModal(false));
+  const onModalHide = () => dispatch(fetchCurrencies());
 
   const fiats = fiatsArray.map((f) => f.code);
 
@@ -112,6 +111,7 @@ function ChooseCurrencyModal({ wallet = false }) {
       visible={chooseCurrencyModalVisible}
       hide={hide}
       children={children}
+      onModalHide={onModalHide}
       custom
     />
   );
