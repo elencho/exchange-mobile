@@ -16,6 +16,7 @@ import {
   usernameAndPasswordAction,
 } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
+import Logo from '../assets/images/Logo.svg';
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
@@ -46,8 +47,7 @@ export default function Login({ navigation }) {
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
-      <Image source={images.Logo} style={styles.logo} />
-
+      <Logo style={styles.logo} />
       <AppText header style={styles.primary}>
         Welcome to Cryptal
       </AppText>

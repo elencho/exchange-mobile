@@ -19,7 +19,6 @@ export default {
   Failed: require('../assets/images/Failed.png'),
   Filter: require('../assets/images/Filter.png'),
   Focused: require('../assets/images/Focused.png'),
-  Logo: require('../assets/images/Logo.png'),
   Pending: require('../assets/images/Pending.png'),
   Search: require('../assets/images/Search.png'),
   Success: require('../assets/images/Success.png'),

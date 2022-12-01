@@ -19,7 +19,7 @@ import PersonalCompanySwitcher from '../components/Registration/PersonalCompanyS
 import RegistrationInputs from '../components/Registration/RegistrationInputs';
 import EmailVerificationModal from '../components/Registration/EmailVerificationModal';
 import colors from '../constants/colors';
-import images from '../constants/images';
+import Logo from '../assets/images/Logo.svg';
 import {
   registrationFormAction,
   setRegistrationInputs,
@@ -88,7 +88,7 @@ export default function Registration({ navigation }) {
         contentContainerStyle={styles.container}
         style={styles.scrollview}
       >
-        <Image source={images.Logo} style={styles.logo} />
+        <Logo style={styles.logo} />
         <AppText header style={styles.header}>
           Welcome to Cryptal
         </AppText>
