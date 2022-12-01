@@ -41,7 +41,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
   const factoredDigit = Math.trunc(withdrawalAmount);
   const factoredDigitLength = parseFloat(factoredDigit.toString().length);
   const maxLength = isDecimal
-    ? factoredDigitLength + 1 + parseFloat(withdrawalScale)
+    ? factoredDigitLength + 1 + parseFloat(cur?.withdrawalScale)
     : 1000;
 
   const setAmount = (text) => {
