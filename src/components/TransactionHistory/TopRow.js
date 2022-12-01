@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
-import images from '../../constants/images';
+import Logo from '../../assets/images/Logo.svg';
 import AppText from '../AppText';
 
 function TopRow() {
@@ -23,8 +23,7 @@ function TopRow() {
 
   return (
     <View style={styles.topRow}>
-      <Image source={images.Logo} style={styles.logo} />
-
+      <Logo style={styles.logo} />
       <Pressable
         style={styles.profile}
         onPress={() => navigation.navigate('UserProfile')}

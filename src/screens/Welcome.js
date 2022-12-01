@@ -4,11 +4,9 @@ import * as SecureStore from 'expo-secure-store';
 import {
   StyleSheet,
   ImageBackground,
-  Image,
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
-  View,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Constants from 'expo-constants';
@@ -18,6 +16,7 @@ import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 import images from '../constants/images';
+import Logo from '../assets/images/Logo.svg';
 import {
   fetchCountries,
   setLanguage,
@@ -71,8 +70,7 @@ export default function Welcome({ navigation }) {
           <ActivityIndicator size="large" color="white" style={styles.loader} />
         ) : (
           <>
-            <Image source={images.Logo} style={styles.logo} />
-
+            <Logo style={styles.logo} />
             <AppText header style={styles.primary}>
               Welcome to Cryptal
             </AppText>
