@@ -226,7 +226,9 @@ function* refreshWalletAndTradesSaga() {
       if (withdrawal || whitelist) {
         yield put(getWhitelistAction());
       } else {
-        yield put(cryptoAddressesAction(currency, code, null, network));
+        // Because of this line crypto addresses action is
+        // called twice while navigating th the balance screen
+        /* yield put(cryptoAddressesAction(currency, code, null, network)); */
       }
     }
   }

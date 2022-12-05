@@ -38,7 +38,7 @@ export default function BankInfo() {
   const state = useSelector((state) => state);
   const [info, setInfo] = useState({});
   const {
-    wallet: { wireDepositInfo, wireDepositProvider, network },
+    wallet: { wireDepositInfo, wireDepositProvider },
     profile: { language },
   } = state;
 
@@ -57,8 +57,12 @@ export default function BankInfo() {
       address: obj?.receiverBankAddress,
       iban: obj?.receiverIBAN,
       description: obj?.transferDescription,
-      intermediateSwift: obj?.intermediateBankSwift,
       name: obj?.receiverName,
+
+      intName: obj?.intermediateBankName,
+      intCountry: obj?.intermediateCountry,
+      intSwift: obj?.intermediateBankSwift,
+      intAddress: obj?.intermediateAddress,
     });
   }, [wireDepositInfo]);
 
@@ -74,10 +78,10 @@ export default function BankInfo() {
   ];
 
   const intermediateInfoArray = [
-    { title: 'Bank Name', text: 'Citibank N.A.' },
-    { title: 'Country', text: 'USA' },
-    { title: 'SWIFT Code', text: 'CITIUS33' },
-    { title: 'Address', text: '399 PARK AVENUE, NYC, NY' },
+    { title: 'Bank Name', text: info.intName },
+    { title: 'Country', text: info.intCountry },
+    { title: 'SWIFT Code', text: info.intSwift },
+    { title: 'Address', text: info.intAddress },
   ];
 
   return (
@@ -115,7 +119,7 @@ export default function BankInfo() {
 
       {/* <View style={styles.marginVertical} /> */}
 
-      {info.intermediateSwift && (
+      {info.intSwift && (
         <>
           <AppText
             medium
@@ -124,7 +128,9 @@ export default function BankInfo() {
             Intermediary bank
           </AppText>
           {intermediateInfoArray.map((i) => (
-            <InfoRow title={i.title} text={i.text} key={i.title} />
+            <View key={i.title}>
+              {i?.text && <InfoRow title={i.title} text={i.text} />}
+            </View>
           ))}
         </>
       )}

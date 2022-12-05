@@ -9,10 +9,10 @@ import {
   currencyAction,
   fetchCurrencies,
   filterCurrencies,
-  setAbbr,
 } from '../../redux/transactions/actions';
 import { toggleCurrencyModal } from '../../redux/modals/actions';
 import {
+  cryptoAddressesAction,
   saveCryptoAddress,
   setNetwork,
   setWalletTab,
@@ -78,7 +78,9 @@ function ChooseCurrencyModal({ wallet = false }) {
         dispatch(saveCryptoAddress({}));
       } else {
         walletTab === 'Manage Cards' && dispatch(setWalletTab('Whitelist'));
-        dispatch(setAbbr(currencyCode));
+        dispatch(
+          cryptoAddressesAction(name, currencyCode, navigation, network)
+        );
       }
 
       if (
