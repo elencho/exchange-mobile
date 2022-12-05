@@ -126,7 +126,6 @@ function* wireDepositSaga(action) {
 
 function* cryptoAddressesSaga(action) {
   const { name, code, navigation, network } = action;
-  console.log(name, code, network);
 
   const currentBalanceObj = yield select(
     (state) => state.trade.currentBalanceObj

@@ -35,13 +35,18 @@ export const depositFeeParams = (state) => {
     return 'ECOMMERCE';
   };
 
+  const amount = () => {
+    if (instantTrade) return price;
+    else return depositAmount ?? 0;
+  };
+
   return {
     currency: instantTrade ? fiat : code,
     method: method(),
     type: 'DEPOSIT',
     provider: instantTrade || eCommerce ? depositProvider : network,
     cardId: instantTrade || eCommerce ? card?.id : null,
-    amount: instantTrade ? price : depositAmount,
+    amount: amount(),
   };
 };
 
@@ -70,13 +75,18 @@ export const withdrawalFeeParams = (state) => {
     return 'ECOMMERCE';
   };
 
+  const amount = () => {
+    if (instantTrade) return price;
+    else return withdrawalAmount ?? 0;
+  };
+
   return {
     currency: instantTrade ? fiat : code,
     method: method(),
     type: 'WITHDRAWAL',
     provider: instantTrade || eCommerce ? depositProvider : network,
     cardId: instantTrade || eCommerce ? card?.id : null,
-    amount: instantTrade ? price : withdrawalAmount,
+    amount: amount(),
   };
 };
 

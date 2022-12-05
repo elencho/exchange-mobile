@@ -32,8 +32,12 @@ export default function WireBanksModal({ setInfo }) {
       address: obj?.receiverBankAddress,
       iban: obj?.receiverIBAN,
       description: obj?.transferDescription,
-      intermediateSwift: obj?.intermediateBankSwift,
       name: obj?.receiverName,
+
+      intName: obj?.intermediateBankName,
+      intCountry: obj?.intermediateCountry,
+      intSwift: obj?.intermediateBankSwift,
+      intAddress: obj?.intermediateAddress,
     });
     dispatch({ type: 'SET_WIRE_DEPOSIT_PROVIDER', wireDepositProvider: b });
     hide();
