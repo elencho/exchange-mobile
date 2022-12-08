@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { View, Animated } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import colors from '../constants/colors';
 
 const Skeleton = ({ width, height, style }) => {
@@ -20,8 +20,8 @@ const Skeleton = ({ width, height, style }) => {
     <View
       style={[
         {
-          width: width,
-          height: height,
+          width,
+          height,
           overflow: 'hidden',
           backgroundColor: 'rgba(63, 66, 91, 0.3)',
         },

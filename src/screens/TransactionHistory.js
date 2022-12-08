@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
+import { FlatList, StyleSheet, View, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
