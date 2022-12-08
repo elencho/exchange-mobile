@@ -6,11 +6,12 @@ import AppText from '../AppText';
 import GoogleAuthModal from './GoogleAuthModal';
 import GoogleOtpModal from './GoogleOtpModal';
 import PasswordModal from './PasswordModal';
+import PersonalSecuritySkeleton from './PersonalSecuritySkeleton';
 import SecurityRow from './SecurityRow';
 import SmsEmailAuthModal from './SmsEmailAuthModal';
 
-export default function Security() {
-  return (
+export default function Security({ loading }) {
+  return !loading ? (
     <>
       <View style={styles.block}>
         <AppText subtext style={[styles.secondary, styles.margin]}>
@@ -38,6 +39,8 @@ export default function Security() {
       <SmsEmailAuthModal type="SMS" />
       <GoogleOtpModal />
     </>
+  ) : (
+    <PersonalSecuritySkeleton />
   );
 }
 

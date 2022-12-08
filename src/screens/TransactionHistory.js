@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
+import { FlatList, StyleSheet, View, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
@@ -25,6 +19,7 @@ import {
   reachScrollEnd,
   setAbbr,
 } from '../redux/transactions/actions';
+import TransactionSkeleton from '../components/TransactionHistory/TransactionSkeleton';
 
 function TransactionHistory() {
   const navigation = useNavigation();
@@ -60,8 +55,15 @@ function TransactionHistory() {
   const uniqueDates = [...new Set(dates)];
 
   const renderDate = ({ item }) => {
-    return (
-      <TransactionDate date={item} key={item} transactions={transactions} />
+    return loading ? (
+      <TransactionSkeleton />
+    ) : (
+      <TransactionDate
+        date={item}
+        key={item}
+        transactions={transactions}
+        loading={loading}
+      />
     );
   };
 
@@ -88,38 +90,26 @@ function TransactionHistory() {
 
   return (
     <Background>
-      {/* Top Row */}
       <TopRow />
 
       <Headline title="Transaction History" />
 
-      {/* Filter Row */}
-      {loading ? (
-        <ActivityIndicator size="large" color="white" style={styles.loader} />
-      ) : (
-        <>
-          <View style={styles.filter}>
-            <FilterRow array={types} />
-            <FilterIcon
-              onPress={() => navigation.navigate('TransactionFilter')}
-            />
-          </View>
-          {/* Transaction Scrollview */}
-          <FlatList
-            style={styles.transactions}
-            data={uniqueDates}
-            renderItem={renderDate}
-            keyExtractor={(item) => item}
-            onScroll={handleScrollEnd}
-            scrollEventThrottle={1000}
-            refreshControl={
-              <RefreshControl refreshing={loading} onRefresh={onRefresh} />
-            }
-          />
-        </>
-      )}
+      <View style={styles.filter}>
+        <FilterRow array={types} />
+        <FilterIcon onPress={() => navigation.navigate('TransactionFilter')} />
+      </View>
+      <FlatList
+        style={styles.transactions}
+        data={uniqueDates}
+        renderItem={renderDate}
+        keyExtractor={(item) => item}
+        onScroll={handleScrollEnd}
+        scrollEventThrottle={1000}
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+        }
+      />
 
-      {/* Transaction Modal */}
       <TransactionModal transactions />
     </Background>
   );
