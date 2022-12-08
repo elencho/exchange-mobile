@@ -5,4 +5,5 @@ export default {
   SECONDARY_PURPLE: '#6582FD',
   PRIMARY_TEXT: '#FFFFFF',
   SECONDARY_TEXT: '#696F8E',
+  SKELETON: '#4B4B65',
 };

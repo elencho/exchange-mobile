@@ -84,8 +84,8 @@ export default function UserProfile({ navigation }) {
           />
         }
       >
-        {Personal_Security === 'Personal' && <Personal />}
-        {Personal_Security === 'Security' && <Security />}
+        {Personal_Security === 'Personal' && <Personal loading={loading} />}
+        {Personal_Security === 'Security' && <Security loading={loading} />}
       </ScrollView>
     </Background>
   );
