@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { Platform, StyleSheet, SafeAreaView } from 'react-native';
-import codePush from 'react-native-code-push';
+import CodePush from 'react-native-code-push';
 import { StatusBar } from 'expo-status-bar';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
@@ -19,16 +19,15 @@ import AppToast from './src/components/AppToast';
 SplashScreen.preventAutoHideAsync();
 
 const codePushOptions = {
-  checkFrequency: codePush.CheckFrequency.ON_APP_START,
+  updateDialog: true,
+  installMode: CodePush.InstallMode.IMMEDIATE,
+  checkFrequency: CodePush.CheckFrequency.ON_APP_START,
 };
 
 function App() {
   useEffect(() => {
-    codePush.notifyAppReady();
-    codePush.sync({
-      updateDialog: true,
-      installMode: codePush.InstallMode.IMMEDIATE,
-    });
+    CodePush.notifyAppReady();
+    CodePush.sync(codePushOptions);
   });
 
   const [fontsLoaded] = useFonts({
@@ -60,7 +59,7 @@ function App() {
     </Provider>
   );
 }
-export default codePush(codePushOptions)(App);
+export default CodePush(codePushOptions)(App);
 
 const styles = StyleSheet.create({
   container: {
