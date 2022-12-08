@@ -9,44 +9,30 @@ export default async (err) => {
   const state = store.getState();
 
   if (err.response) {
-    // console.log(err.response.data);
-    // console.log(err.response.status);
-    // console.log(err.response.headers);
+    const {
+      response: { status, data },
+    } = err;
+    const generalError = data;
+    const header = data.errorKey;
+    const body = data.errorMessage;
 
-    if (err.response.status > 401) {
+    if (status > 401) {
       if (!state.modals.isToast) {
-        store.dispatch({
-          type: 'SAVE_GENERAL_ERROR',
-          generalError: err.response.data,
-        });
+        store.dispatch({ type: 'SAVE_GENERAL_ERROR', generalError });
       } else {
-        store.dispatch(
-          setAppToast({
-            header: err.response.data.errorKey,
-            body: err.response.data.errorMessage,
-          })
-        );
+        store.dispatch(setAppToast({ header, body }));
       }
     }
-    if (err.response.status === 401) {
+    if (status === 401) {
       const response = await refreshToken(err.config);
       return response;
     }
 
-    if (
-      err.response.status === 400 &&
-      err.response.data.error === 'invalid_grant'
-    ) {
+    if (status === 400 && data.error === 'invalid_grant') {
       await SecureStore.deleteItemAsync('accessToken');
       await SecureStore.deleteItemAsync('refreshToken');
       navigationRef.navigate('Welcome');
       store.dispatch({ type: 'LOGOUT' });
     }
   }
-  // } else if (err.request) {
-  //   console.log(err.request);
-  // } else {
-  //   console.log(err.message);
-  // }
-  // console.log(err.config);
 };

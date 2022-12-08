@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { DICTIONARY } from '../constants/api';
 import store from '../redux/store';
 
 export const errorHappenedHere = (component) => {
@@ -64,4 +66,9 @@ export const errorHappenedHere = (component) => {
     default:
       break;
   }
+};
+
+export const fetchTranslations = async () => {
+  const data = await axios.get(DICTIONARY);
+  return data?.data;
 };

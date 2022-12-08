@@ -23,9 +23,9 @@ import {
   startLoginAction,
   startRegistrationAction,
 } from '../redux/profile/actions';
-import { switchLanguage } from '../utils/i18n';
+import { addResources, switchLanguage } from '../utils/i18n';
 import GeneralError from '../components/GeneralError';
-import { errorHappenedHere } from '../utils/appUtils';
+import { errorHappenedHere, fetchTranslations } from '../utils/appUtils';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
@@ -40,14 +40,23 @@ export default function Welcome({ navigation }) {
   });
 
   useEffect(() => {
+    fetchTranslations()
+      .then((res) => {
+        const languages = Object.keys(res);
+        for (let i = 0; i < languages.length; i++) {
+          addResources(
+            languages[i],
+            'translation',
+            res[languages[i]].translation
+          );
+        }
+      })
+      .catch((err) => console.log(err));
+
     SecureStore.getItemAsync('language')
       .then((l) => {
-        if (!l) {
-          switchLanguage('en');
-          dispatch(setLanguage('en'));
-        } else {
-          dispatch(setLanguage(l));
-        }
+        switchLanguage(l ? l : 'en');
+        dispatch(setLanguage(l ? l : 'en'));
       })
       .catch((err) => console.log(err));
 
