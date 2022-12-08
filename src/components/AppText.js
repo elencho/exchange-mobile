@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 export default function AppText({
   children,
@@ -13,6 +14,8 @@ export default function AppText({
   small,
   ...props
 }) {
+  const generalError = useSelector((state) => state.errors.generalError);
+
   const fontCond = () => {
     if (medium || header) {
       return 'Ubuntu_Medium';
@@ -42,6 +45,9 @@ export default function AppText({
 
   const text = () => {
     if (typeof children === 'string') {
+      if (children.includes('{{') && children.includes('}}')) {
+        return t(children, generalError?.transParams);
+      }
       return t(children);
     } else {
       return children;

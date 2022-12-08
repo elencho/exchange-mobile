@@ -27,7 +27,6 @@ import {
 } from '../../redux/trade/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
 import { setStatusModalInfo } from '../../redux/modals/actions';
-import Fee from '../../components/Wallet/Fee';
 
 export default function Deposit() {
   const dispatch = useDispatch();
