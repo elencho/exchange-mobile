@@ -44,6 +44,7 @@ export default function Deposit() {
   } = state;
 
   const isFiat = currentBalanceObj.type === 'FIAT';
+  const isCrypto = currentBalanceObj.type === 'CRYPTO';
   const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
@@ -136,9 +137,10 @@ export default function Deposit() {
             {!isFiat || code === 'EUR' ? (
               <>
                 <ChooseNetworkDropdown />
-                {cryptoAddress?.address && !hasRestriction && hasMethod && (
-                  <AddressBlock />
-                )}
+                {cryptoAddress?.address &&
+                  !hasRestriction &&
+                  hasMethod &&
+                  isCrypto && <AddressBlock />}
                 {hasMethod && content() && (
                   <AppInfoBlock content={content()} warning />
                 )}

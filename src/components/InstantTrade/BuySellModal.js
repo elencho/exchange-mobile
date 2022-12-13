@@ -22,7 +22,6 @@ import {
   setCard,
   setCurrentTrade,
   setDepositProvider,
-  setFee,
   submitTrade,
   switchBalanceCard,
 } from '../../redux/trade/actions';
@@ -44,14 +43,17 @@ export default function BuySellModal() {
       crypto,
       fiat,
       pairObject,
-      balance: { balances },
-      currentTrade: { size, price },
+      balance,
+      currentTrade,
       card,
     },
   } = state;
 
   const baseScale = pairObject?.pair?.baseScale;
   const quoteScale = pairObject?.pair?.quoteScale;
+  const size = currentTrade?.size;
+  const price = currentTrade?.price;
+  const balances = balance?.balances;
 
   const hide = () => {
     dispatch(toggleBuySellModal(false));

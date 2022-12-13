@@ -19,6 +19,7 @@ import images from '../constants/images';
 import Logo from '../assets/images/Logo.svg';
 import {
   fetchCountries,
+  saveUserInfo,
   setLanguage,
   startLoginAction,
   startRegistrationAction,
@@ -32,6 +33,7 @@ export default function Welcome({ navigation }) {
   const [loading, setLoading] = useState(true);
 
   useFocusEffect(() => {
+    dispatch(saveUserInfo({}));
     SecureStore.getItemAsync('accessToken').then((token) => {
       if (token) {
         navigation.navigate('Main');

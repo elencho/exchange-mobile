@@ -133,7 +133,7 @@ function* cryptoAddressesSaga(action) {
   const walletTab = yield select((state) => state.wallet.walletTab);
 
   const hasMethod = Object.keys(currentBalanceObj?.depositMethods)?.length;
-  if (hasMethod) {
+  if (!!hasMethod) {
     const cryptoAddress = yield call(fetchCryptoAddresses, code, network);
     yield put(setNetwork(network));
     yield put(saveCryptoAddress(cryptoAddress ? cryptoAddress : {}));
@@ -142,7 +142,7 @@ function* cryptoAddressesSaga(action) {
   yield put(goToBalanceAction(name, code, navigation));
   yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
 
-  if (hasMethod) {
+  if (!!hasMethod) {
     // Fees
     const amountAction =
       walletTab === 'Deposit'

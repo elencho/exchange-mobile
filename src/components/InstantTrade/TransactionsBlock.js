@@ -1,7 +1,6 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 
 import colors from '../../constants/colors';
 import {
@@ -28,12 +27,10 @@ const TopRow = ({ text, onPress }) => (
 
 export default function TransactionsBlock() {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
   const state = useSelector((state) => state);
   const {
     trade: { trades, hideOtherPairs },
-    transactions: { tabRoute },
   } = state;
 
   const toggleShowHide = () => {
@@ -42,22 +39,14 @@ export default function TransactionsBlock() {
     dispatch(fetchTrades());
   };
 
-  const handleScrollEnd = (e) => {
-    if (
-      isCloseToBottom(e.nativeEvent) &&
-      navigation.isFocused() &&
-      tabRoute === 'Trade'
-    ) {
-      dispatch(reachScrollEnd('trades'));
-    }
-  };
+  useEffect(() => {
+    return () => dispatch(saveTrades([]));
+  }, []);
 
-  const isCloseToBottom = ({
-    layoutMeasurement,
-    contentOffset,
-    contentSize,
-  }) => {
-    return layoutMeasurement.height + contentOffset.y >= contentSize.height;
+  const handleScrollEnd = () => dispatch(reachScrollEnd('trades'));
+
+  const renderTrade = ({ item }) => {
+    return <Trade trade={item} key={item.creationTime} />;
   };
 
   return (
@@ -67,19 +56,17 @@ export default function TransactionsBlock() {
         onPress={toggleShowHide}
       />
 
-      <ScrollView
-        nestedScrollEnabled
-        showsVerticalScrollIndicator={false}
-        // onScroll={handleScrollEnd}
-        // onMomentumScrollEnd={handleScrollEnd}
-        onScrollEndDrag={handleScrollEnd}
-        scrollEventThrottle={4}
+      <FlatList
         style={{ height: 280 }}
-      >
-        {trades?.map((trade) => (
-          <Trade trade={trade} key={Math.random()} />
-        ))}
-      </ScrollView>
+        data={trades}
+        renderItem={renderTrade}
+        keyExtractor={(item) => item.creationTime}
+        onEndReached={handleScrollEnd}
+        nestedScrollEnabled
+        // refreshControl={
+        //   <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+        // }
+      />
     </View>
   );
 }
