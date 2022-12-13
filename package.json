@@ -6,7 +6,7 @@
     "ios-test": "DEV=true react-native run-ios",
     "ios-device": "react-native run-ios --device",
     "web": "npx expo start --web",
-    "start": "npx expo start",
+    "start": "npx react-native start",
     "start-dev-client": "npx expo start --dev-client",
     "dev": "DEV=true npx expo start",
     "publish-test": "DEV=true npx expo publish",

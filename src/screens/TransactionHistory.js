@@ -67,26 +67,7 @@ function TransactionHistory() {
     );
   };
 
-  const handleScrollEnd = (e) => {
-    if (
-      isCloseToBottom(e.nativeEvent) &&
-      navigation.isFocused() &&
-      tabRoute === 'Transactions'
-    ) {
-      dispatch(reachScrollEnd('transactions'));
-    }
-  };
-
-  const isCloseToBottom = ({
-    layoutMeasurement,
-    contentOffset,
-    contentSize,
-  }) => {
-    return (
-      Math.floor(layoutMeasurement.height + contentOffset.y) >=
-      Math.floor(contentSize.height)
-    );
-  };
+  const handleScrollEnd = () => dispatch(reachScrollEnd('transactions'));
 
   return (
     <Background>
@@ -103,7 +84,7 @@ function TransactionHistory() {
         data={uniqueDates}
         renderItem={renderDate}
         keyExtractor={(item) => item}
-        onScroll={handleScrollEnd}
+        onEndReached={handleScrollEnd}
         scrollEventThrottle={1000}
         refreshControl={
           <RefreshControl refreshing={loading} onRefresh={onRefresh} />
