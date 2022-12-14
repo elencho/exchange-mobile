@@ -37,8 +37,8 @@ const TradeBlockSkeleton = () => {
     <View style={styles.container}>
       <FirstPart />
       <View style={styles.wrapper}>
-        {[1, 2, 3, 4].map(() => (
-          <MiddlePart />
+        {[1, 2, 3, 4].map((n) => (
+          <MiddlePart key={n} />
         ))}
       </View>
       <Timer />

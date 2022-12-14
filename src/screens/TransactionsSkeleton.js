@@ -32,11 +32,11 @@ const SecondPart = () => (
 const TransactionsSkeleton = () => (
   <View style={styles.box}>
     <TopRow text={'Hide '} />
-    {[1, 2, 3].map(() => (
-      <>
+    {[1, 2, 3].map((n) => (
+      <View key={n}>
         <SecondPart />
         <View style={styles.line} />
-      </>
+      </View>
     ))}
   </View>
 );
