@@ -26,6 +26,7 @@ import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
 import { setFee } from '../../redux/trade/actions';
+import { MaterialIndicator } from 'react-native-indicators';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
@@ -176,7 +177,7 @@ export default function Withdrawal() {
           ) : null}
         </ScrollView>
       ) : (
-        <ActivityIndicator />
+        <MaterialIndicator color="#6582FD" animationDuration={3000} />
       )}
 
       {!hasRestriction &&

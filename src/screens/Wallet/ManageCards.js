@@ -21,6 +21,7 @@ import images from '../../constants/images';
 import { toggleAddCardModal } from '../../redux/modals/actions';
 import StatusModal from '../../components/Wallet/StatusModal';
 import DeleteModal from '../../components/Wallet/ManageCards/DeleteModal';
+import { MaterialIndicator } from 'react-native-indicators';
 
 export default function ManageCards() {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ export default function ManageCards() {
       </View>
 
       {cardsLoading && (
-        <ActivityIndicator size="large" color="white" style={{ flex: 1 }} />
+        <MaterialIndicator color="#6582FD" animationDuration={3000} />
       )}
 
       {cards?.length && !cardsLoading ? (

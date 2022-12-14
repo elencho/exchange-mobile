@@ -1,10 +1,10 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
-import { COINS_URL_PNG } from '../../constants/api';
+import { COINS_URL_SVG } from '../../constants/api';
 import { setCurrentBalanceObj } from '../../redux/trade/actions';
 import {
   cryptoAddressesAction,
@@ -14,6 +14,7 @@ import {
   wireDepositAction,
 } from '../../redux/wallet/actions';
 import AppText from '../AppText';
+import { SvgUri } from 'react-native-svg';
 
 function Currency({ code, name, total, available, valueUSD, valueBTC }) {
   const navigation = useNavigation();
@@ -53,14 +54,18 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
     if (usdBtcSwitch === 'USD') return valueUSD;
     if (usdBtcSwitch === 'BTC') return valueBTC;
   };
-
   return (
     <Pressable style={styles.container} onPress={handlePress}>
-      <Image
-        source={{ uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png` }}
-        style={styles.image}
-      />
-
+      <View style={styles.img}>
+        <SvgUri
+          height={36}
+          width={36}
+          style={styles.image}
+          uri={`${COINS_URL_SVG}/${code.toLowerCase()}.svg`}
+          onLoad={() => console.log('loading', code)}
+          onError={() => console.log('error', code)}
+        />
+      </View>
       <View style={styles.balance}>
         <AppText calendarDay medium style={styles.primary}>
           {available} {code}
@@ -86,8 +91,16 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   image: {
-    width: 42,
-    height: 42,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  img: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: 36,
+    height: 36,
   },
   primary: {
     color: colors.PRIMARY_TEXT,

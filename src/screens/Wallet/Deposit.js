@@ -27,6 +27,7 @@ import {
 } from '../../redux/trade/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
 import { setStatusModalInfo } from '../../redux/modals/actions';
+import { MaterialIndicator } from 'react-native-indicators';
 
 export default function Deposit() {
   const dispatch = useDispatch();
@@ -192,7 +193,7 @@ export default function Deposit() {
           />
         </ScrollView>
       ) : (
-        <ActivityIndicator />
+        <MaterialIndicator color="#6582FD" animationDuration={3000} />
       )}
     </>
   );

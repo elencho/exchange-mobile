@@ -55,6 +55,16 @@ export default function BuySellModal() {
   const price = currentTrade?.price;
   const balances = balance?.balances;
 
+  const getMaxLength = (value, scale) => {
+    const isDecimal = value && (value % 1 != 0 || value.includes('.'));
+    const factoredDigit = Math.trunc(value);
+    const factoredDigitLength = parseFloat(factoredDigit.toString().length);
+    return isDecimal ? factoredDigitLength + 1 + parseFloat(scale) : 1000;
+  };
+
+  const maxLengthQuote = getMaxLength(price, pairObject?.pair?.quoteScale);
+  const maxLengthBase = getMaxLength(size, pairObject?.pair?.baseScale);
+
   const hide = () => {
     dispatch(toggleBuySellModal(false));
     dispatch(switchBalanceCard('balance'));
@@ -134,7 +144,6 @@ export default function BuySellModal() {
       dispatch(toggleBuySellModal(false));
     }
   };
-
   const children = (
     <>
       <View style={styles.flex}>
@@ -157,12 +166,14 @@ export default function BuySellModal() {
               onChangeText={(t) => handleChangeText(t, 'crypto')}
               keyboardType="decimal-pad"
               value={price ? price.trim() : ''}
+              maxLength={maxLengthQuote}
               right={<AppText style={styles.code}>{fiat}</AppText>}
             />
             <View style={styles.margin} />
             <AppInput
               onChangeText={(t) => handleChangeText(t, 'fiat')}
               keyboardType="decimal-pad"
+              maxLength={maxLengthBase}
               value={size ? size.trim() : ''}
               right={<AppText style={styles.code}>{crypto}</AppText>}
               style={{ marginBottom: 10 }}

@@ -5,14 +5,13 @@ import * as SecureStore from 'expo-secure-store';
 
 import TransactionHistory from '../screens/TransactionHistory';
 import InstantTrade from '../screens/InstantTrade';
-// import TestScreen from '../screens/Test';
 import BottomTabs from '../components/BottomTabs';
 import {
   fetchCurrencies,
   setTabRouteName,
 } from '../redux/transactions/actions';
-// import Exercise from '../screens/Exercise';
 import Wallet from '../screens/Wallet';
+import Exchange from '../screens/Exchange';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,7 +45,7 @@ export default function MainScreen() {
         />
       )}
     >
-      {/* <Tab.Screen name="Exchange" component={Exercise} /> */}
+      <Tab.Screen name="Exchange" component={Exchange} />
       <Tab.Screen name="Trade" component={InstantTrade} />
       <Tab.Screen name="Wallet" component={Wallet} />
       <Tab.Screen name="Transactions" component={TransactionHistory} />

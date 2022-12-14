@@ -13,7 +13,7 @@ import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import Trade from './Trade';
 
-const TopRow = ({ text, onPress }) => (
+export const TopRow = ({ text, onPress }) => (
   <View style={styles.topRow}>
     <AppText header style={styles.header}>
       Transactions

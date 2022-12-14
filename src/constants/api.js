@@ -91,6 +91,8 @@ export const CARD_VERIFICATION_TOKEN = `${core}/private/users/cardVerificationTo
 
 export const COINS_URL_PNG = `https://static.cryptal.com/icons/png/coins/36x36`;
 
+export const COINS_URL_SVG = `https://static.cryptal.com/icons/svg/coins`;
+
 export const COUNTRIES_URL_PNG = `https://static.cryptal.com/icons/png/countries`;
 
 export const ICONS_URL_PNG = `https://static.cryptal.com/icons/png`;

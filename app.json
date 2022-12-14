@@ -18,8 +18,11 @@
     ],
     "ios": {
       "infoPlist": {
-        "NSFaceIDUsageDescription": "This app will optionally use Face ID or Touch ID to save login"
+        "NSFaceIDUsageDescription": "This app will optionally use Face ID or Touch ID to save login",
+        "NSLocationAlwaysUsageDescription": "This app will optionally use location for identity check",
+        "NSLocationWhenInUseUsageDescription": "Your location allows you to detect your language and country guidlines"
       },
+
       "bundleIdentifier": "com.cryptal.cryptalapp",
       "buildNumber": "1.0.0"
     },

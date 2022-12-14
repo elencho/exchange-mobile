@@ -14,6 +14,7 @@ import images from '../../constants/images';
 import AppInput from '../AppInput';
 import AppText from '../AppText';
 import Currency from './Currency';
+import CurrencySkeleton from './CurrencySkeleton';
 
 export default function BalancesList() {
   const dispatch = useDispatch();
@@ -57,17 +58,20 @@ export default function BalancesList() {
     setFilteredBalances(filteredArray);
   };
 
-  const renderCurrency = ({ item }) => (
-    <Currency
-      key={item.currencyName}
-      code={item.currencyCode}
-      name={item.currencyName}
-      available={item.available}
-      total={item.total}
-      valueBTC={item.valueBTC}
-      valueUSD={item.valueUSD}
-    />
-  );
+  const renderCurrency = ({ item }) =>
+    !loading ? (
+      <Currency
+        key={item.currencyName}
+        code={item.currencyCode}
+        name={item.currencyName}
+        available={item.available}
+        total={item.total}
+        valueBTC={item.valueBTC}
+        valueUSD={item.valueUSD}
+      />
+    ) : (
+      <CurrencySkeleton />
+    );
 
   return (
     <View style={styles.container}>
@@ -87,20 +91,18 @@ export default function BalancesList() {
         </AppText>
       </Pressable>
 
-      {balances && (
-        <FlatList
-          data={filteredBalances}
-          renderItem={renderCurrency}
-          keyExtractor={(item) => item.currencyCode}
-          refreshControl={
-            <RefreshControl
-              tintColor={colors.PRIMARY_PURPLE}
-              refreshing={loading}
-              onRefresh={onRefresh}
-            />
-          }
-        />
-      )}
+      <FlatList
+        data={filteredBalances}
+        renderItem={renderCurrency}
+        keyExtractor={(item) => item.currencyCode}
+        refreshControl={
+          <RefreshControl
+            tintColor={colors.PRIMARY_PURPLE}
+            refreshing={loading}
+            onRefresh={onRefresh}
+          />
+        }
+      />
     </View>
   );
 }

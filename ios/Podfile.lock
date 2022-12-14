@@ -36,6 +36,8 @@ PODS:
     - ExpoModulesCore
   - EXConstants (13.2.4):
     - ExpoModulesCore
+  - EXErrorRecovery (3.2.0):
+    - ExpoModulesCore
   - EXFileSystem (14.1.0):
     - ExpoModulesCore
   - EXFont (10.2.1):
@@ -434,6 +436,7 @@ DEPENDENCIES:
   - EXApplication (from `../node_modules/expo-application/ios`)
   - EXBlur (from `../node_modules/expo-blur/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
+  - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
   - EXJSONUtils (from `../node_modules/expo-json-utils/ios`)
@@ -528,6 +531,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-blur/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
+  EXErrorRecovery:
+    :path: "../node_modules/expo-error-recovery/ios"
   EXFileSystem:
     :path: "../node_modules/expo-file-system/ios"
   EXFont:
@@ -659,6 +664,7 @@ SPEC CHECKSUMS:
   EXApplication: e418d737a036e788510f2c4ad6c10a7d54d18586
   EXBlur: a3556f992ca1cdf117f0e19d6e4775f3406e77c3
   EXConstants: 7c44785d41d8e959d527d23d29444277a4d1ee73
+  EXErrorRecovery: 74d71ee59f6814315457b09d68e86aa95cc7d05d
   EXFileSystem: 927e0a8885aa9c49e50fc38eaba2c2389f2f1019
   EXFont: 06df627203afcb8a3b3152ec06eb2f11f46f0cff
   EXJSONUtils: 2a74b8f40f1523cc3f92af99c91aa78201737a77
@@ -681,10 +687,10 @@ SPEC CHECKSUMS:
   FBLazyVector: 739d2f9719faecb463c7aa191591af31c8c94182
   FBReactNativeSpec: 957de82f66e31f2f14bbec34e37242282fdd26de
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: cfec46900e485b4b7613ff79308c30791825f32c
+  glog: 3d02b25ca00c2d456734d0bcff864cbc62f6ae1a
   IdensicMobileSDK: 099f3398b2a326931d042d99ac4e01e351e50d4f
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
-  RCT-Folly: 6c7dfdb649d9eac5f93fa0891b11725aa9b2f1ed
+  RCT-Folly: b9d9fe1fc70114b751c076104e52f3b1b5e5a95a
   RCTRequired: c8c080849a3670601d5c7056023a2176067a69d8
   RCTTypeSafety: 710aef40f5ae246bc5fff7e873855b17ed11c180
   React: b6bb382534be4de9d367ef3d04f92108c1768160
@@ -698,7 +704,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: c61b60de03b3474e5749b8a8fd8e6507630d62c4
   React-jsinspector: eaacb698c5af7a99131bc1933806372c20222dfd
   React-logger: ebb4d31bbbe4f1a8a1a9b658d7429210b8f68160
-  react-native-mobilesdk-module: 46faa29721e6ff9b0e2c1e4600c054b05cca53f1
+  react-native-mobilesdk-module: 51272d42ed29f69dc7fffea34a6eb549496241a8
   react-native-pkce-challenge: 920193e277f9d3ccdf30edd9228b3095aed28af7
   react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
   react-native-webview: e771bc375f789ebfa02a26939a57dbc6fa897336
