@@ -23,13 +23,14 @@ import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
 import colors from '../../constants/colors';
 import { setCard, setDepositProvider, setFee } from '../../redux/trade/actions';
+import { toggleLoading } from '../../redux/transactions/actions';
 
 export default function Balance({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     wallet: { walletTab, network },
-    transactions: { tabNavigationRef, code },
+    transactions: { tabNavigationRef, code, loading },
   } = state;
 
   const onRefresh = () => {
@@ -82,6 +83,7 @@ export default function Balance({ navigation }) {
             <RefreshControl
               tintColor={colors.PRIMARY_PURPLE}
               onRefresh={onRefresh}
+              refreshing={loading}
             />
           }
         >

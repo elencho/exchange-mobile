@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -29,6 +29,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
       cryptoAddress,
       network,
       whitelist,
+      currentTemplate,
     },
     trade: { card, currentBalanceObj, depositProvider },
   } = state;
@@ -44,14 +45,24 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
     ? factoredDigitLength + 1 + parseFloat(cur?.withdrawalScale)
     : 1000;
 
+  useEffect(() => {
+    if (Object.keys(currentTemplate)?.length) {
+      dispatch(setWithdrawalNote(''));
+      dispatch(setWithdrawalAmount(0));
+      dispatch(setFee(null));
+    }
+  }, [currentTemplate]);
+
   const setAmount = (text) => {
     const amount = text.replace(',', '.');
+    const condition =
+      depositProvider ||
+      cur?.type === 'CRYPTO' ||
+      currentTemplate?.templateName;
 
     if (validateScale(amount, cur?.withdrawalScale)) {
       dispatch(setWithdrawalAmount(amount ? amount : 0));
-      if (depositProvider || cur?.type === 'CRYPTO') {
-        dispatch(fetchFee('withdrawal'));
-      }
+      if (condition) dispatch(fetchFee('withdrawal'));
     }
   };
 
