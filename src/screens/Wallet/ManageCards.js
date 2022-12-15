@@ -36,7 +36,7 @@ export default function ManageCards() {
 
   const addCardModal = () => dispatch(toggleAddCardModal(true));
   const onContentSizeChange = () => {
-    scrollRef.current.scrollToEnd();
+    scrollRef.current.scrollTo({ x: 0, y: 3, animated: true });
   };
 
   return (

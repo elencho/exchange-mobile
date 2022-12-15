@@ -12,7 +12,7 @@ import {
 } from '../../redux/modals/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
-import { setCard } from '../../redux/trade/actions';
+import { setCard, setDepositProvider } from '../../redux/trade/actions';
 import Fee from '../Wallet/Fee';
 
 function CardSection() {
