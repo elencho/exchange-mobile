@@ -22,6 +22,7 @@ import IdentityModal from './IdentityModal';
 import { errorHappenedHere } from '../../utils/appUtils';
 import AppSwitcher from '../AppSwitcher';
 import PersonalProfileSkeleton from './PersonalProfileSkeleton';
+import DeleteAccount from './DeleteAccount';
 
 export default function Personal({ loading }) {
   const dispatch = useDispatch();
@@ -198,7 +199,7 @@ export default function Personal({ loading }) {
 
       <PersonalInformation />
       {userInfo.company && <CompanyInformation />}
-
+      <DeleteAccount />
       <PersonalInfoModal />
       <PhoneNumberModal />
       <ChooseLanguageModal />
