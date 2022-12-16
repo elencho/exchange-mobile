@@ -1,4 +1,4 @@
-package com.vaxo_nba.cryptalapp.newarchitecture;
+package com.cryptal.exchange.mobile.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -20,9 +20,9 @@ import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.vaxo_nba.cryptalapp.BuildConfig;
-import com.vaxo_nba.cryptalapp.newarchitecture.components.MainComponentsRegistry;
-import com.vaxo_nba.cryptalapp.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.cryptal.exchange.mobile.BuildConfig;
+import com.cryptal.exchange.mobile.newarchitecture.components.MainComponentsRegistry;
+import com.cryptal.exchange.mobile.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
