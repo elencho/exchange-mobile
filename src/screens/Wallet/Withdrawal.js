@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
@@ -19,13 +19,12 @@ import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMeth
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
 import WithdrawalInfo from '../../components/Wallet/Withdrawal/WithdrawalInfo';
 import SaveAsTemplate from '../../components/Wallet/Withdrawal/SaveAsTemplate';
-import WithdrawalFees from '../../components/Wallet/Withdrawal/WithdrawalFees';
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import GeneralError from '../../components/GeneralError';
 import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
-import { setFee } from '../../redux/trade/actions';
+import { setCard, setFee } from '../../redux/trade/actions';
 import { MaterialIndicator } from 'react-native-indicators';
 
 export default function Withdrawal() {
@@ -101,6 +100,10 @@ export default function Withdrawal() {
     setHasRestriction(Object.keys(withdrawalRestriction).length);
   }, [withdrawalRestriction]);
 
+  useEffect(() => {
+    return () => dispatch(setCard(null));
+  }, []);
+
   const withdraw = () => {
     if (googleAuth) dispatch(toggleGoogleOtpModal(true));
     if (emailAuth) dispatch(toggleEmailAuthModal(true));
@@ -161,12 +164,7 @@ export default function Withdrawal() {
           {!hasRestriction && hasMethod && (
             <WithdrawalInputs isFiat={isFiat} hasRestriction={hasRestriction} />
           )}
-          {saveTemplateCheck() ? (
-            <>
-              <WithdrawalFees />
-              <SaveAsTemplate />
-            </>
-          ) : null}
+          {saveTemplateCheck() ? <SaveAsTemplate /> : null}
 
           {hasRestriction || !hasMethod ? (
             <FlexBlock
