@@ -16,7 +16,8 @@ export default function ChooseCardModal() {
   );
   const state = useSelector((state) => state.trade);
 
-  const { card, cards, depositProvider, cardsToDisplayInModal } = state;
+  const { card, cards, depositProvider, cardsToDisplayInModal, Balance_Card } =
+    state;
 
   useEffect(() => {
     let cardsToDisplayInModal = [];
@@ -32,7 +33,7 @@ export default function ChooseCardModal() {
         type: 'SET_CARDS_TO_DISPLAY_IN_MODAL',
         cardsToDisplayInModal: [],
       });
-  }, [depositProvider]);
+  }, [depositProvider, Balance_Card]);
 
   const hide = () => {
     dispatch(toggleChooseCardModal(false));

@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: -20,
     marginTop: 28,
-    width: '33%',
+    width: '40%',
   },
   backText: {
     marginBottom: 2,

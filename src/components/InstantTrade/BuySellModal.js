@@ -22,6 +22,7 @@ import {
   setCard,
   setCurrentTrade,
   setDepositProvider,
+  setFee,
   submitTrade,
   switchBalanceCard,
 } from '../../redux/trade/actions';
@@ -45,6 +46,7 @@ export default function BuySellModal() {
       pairObject,
       balance,
       currentTrade,
+      depositProviders,
       card,
     },
   } = state;
@@ -69,6 +71,7 @@ export default function BuySellModal() {
     dispatch(toggleBuySellModal(false));
     dispatch(switchBalanceCard('balance'));
     dispatch(setCurrentTrade({ price: '', size: '' }));
+    dispatch(setFee(null));
   };
 
   const onDismiss = () => {
@@ -88,6 +91,19 @@ export default function BuySellModal() {
   useEffect(() => {
     handleChangeText(price, 'crypto');
   }, [pairObject]);
+
+  useEffect(() => {
+    if (depositProviders?.length > 1) {
+      dispatch(setDepositProvider(null));
+    }
+    if (depositProviders?.length === 1) {
+      dispatch(setDepositProvider(depositProviders[0].provider));
+    }
+  }, [depositProviders]);
+
+  useEffect(() => {
+    if (card) handleChangeText(price, 'crypto');
+  }, [card]);
 
   const handleChangeText = (text, type) => {
     const t = text ? text.replace(',', '.') : 0;
