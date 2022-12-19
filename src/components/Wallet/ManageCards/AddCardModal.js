@@ -91,10 +91,10 @@ export default function AddCardModal() {
           <Image source={images['Arrow']} />
         </Pressable>
 
-        <AppText subtext style={styles.subText}>
+        {/* <AppText subtext style={styles.subText}>
           100 ₾-500 ₾ Visa / MC Card 4% Amex 6 %{' '}
           <PurpleText text=" See More" onPress={showFees} />
-        </AppText>
+        </AppText> */}
       </>
       {/* ) : (
         <AppText style={styles.grey}>

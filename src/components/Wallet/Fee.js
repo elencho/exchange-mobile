@@ -33,10 +33,12 @@ export default function Fee() {
         },
       } = fee;
 
+      // if (fixedValue) return null;
+
       const value = () => {
         if (fixedValue && percentageValue)
           return `${percentageValue * 100}% + ${fixedValue} ${currency}`;
-        if (fixedValue) return `${fixedValue} ${currency}`;
+        if (fixedValue) return ` ${fixedValue} ${currency}`;
         if (percentageValue) return ` ${percentageValue * 100}%`;
       };
 

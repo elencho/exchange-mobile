@@ -5,7 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ICONS_URL_PNG } from '../../constants/api';
 import colors from '../../constants/colors';
 import { toggleChooseBankModal } from '../../redux/modals/actions';
-import { cardsSagaAction, setDepositProvider } from '../../redux/trade/actions';
+import {
+  cardsSagaAction,
+  setCard,
+  setDepositProvider,
+} from '../../redux/trade/actions';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 
@@ -51,6 +55,7 @@ export default function ChooseBankModal() {
 
   const choose = (b) => {
     dispatch(setDepositProvider(b));
+    dispatch(setCard(null));
     // dispatch(cardsSagaAction());
     hide();
   };

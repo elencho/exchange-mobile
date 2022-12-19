@@ -24,7 +24,7 @@ import GeneralError from '../../components/GeneralError';
 import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
-import { setCard, setFee } from '../../redux/trade/actions';
+import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
 import { MaterialIndicator } from 'react-native-indicators';
 
 export default function Withdrawal() {
@@ -94,6 +94,11 @@ export default function Withdrawal() {
   useEffect(() => {
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setFee(null));
+    if (isEcommerce) {
+      card && dispatch(fetchFee('withdrawal'));
+    } else {
+      dispatch(fetchFee('withdrawal'));
+    }
   }, [network, depositProvider, card]);
 
   useEffect(() => {
