@@ -24,6 +24,7 @@ import {
   fetchFee,
   setCard,
   setDepositProvider,
+  setFee,
 } from '../../redux/trade/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
 import { setStatusModalInfo } from '../../redux/modals/actions';
@@ -65,8 +66,9 @@ export default function Deposit() {
 
   useEffect(() => {
     dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
-    card && dispatch(fetchFee('deposit'));
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
+    dispatch(setFee(null));
+    card && dispatch(fetchFee('deposit'));
   }, [network, depositProvider, card]);
 
   useEffect(() => {
