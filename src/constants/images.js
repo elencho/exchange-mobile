@@ -80,6 +80,7 @@ export default {
   Add: require('../assets/images/Wallet/Add.png'),
   Check_Full: require('../assets/images/Wallet/Check_Full.png'),
   Check_Empty: require('../assets/images/Wallet/Check_Empty.png'),
+  Check_Red: require('../assets/images/Wallet/Check_Red.png'),
   Info: require('../assets/images/Wallet/Info.png'),
   Verified: require('../assets/images/Wallet/Verified.png'),
   Status_Success: require('../assets/images/Wallet/Status_Success.png'),
