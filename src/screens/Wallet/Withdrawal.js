@@ -26,6 +26,7 @@ import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
 import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
 import { MaterialIndicator } from 'react-native-indicators';
+import { validateAmount } from '../../utils/appUtils';
 
 export default function Withdrawal() {
   const dispatch = useDispatch();
@@ -36,25 +37,20 @@ export default function Withdrawal() {
     transactions: { code },
     wallet: {
       withdrawalRestriction,
+      withdrawalNote,
+      currentWhitelistObj,
       currentTemplate,
       withdrawalBank,
-      currentWhitelistObj,
       hasMultipleMethods,
       network,
-
-      // Withdrawal Params
       withdrawalAmount,
-      withdrawalNote,
-      saveTemplate,
-      newTemplateName,
-      iban,
-      receiverBank,
     },
   } = state;
 
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
   const [loading, setloading] = useState(true);
+  const [error, setError] = useState(false);
 
   const isFiat = currentBalanceObj.type === 'FIAT';
   const isEcommerce = network === 'ECOMMERCE';
@@ -62,19 +58,6 @@ export default function Withdrawal() {
     if (currentBalanceObj?.infos && hasMethod && !hasRestriction) {
       return currentBalanceObj?.infos[network]?.walletInfo;
     }
-  };
-
-  const hasParams = withdrawalAmount && withdrawalNote && iban && receiverBank;
-
-  const enabled = () => {
-    if (network === 'SWIFT' || network === 'SEPA') {
-      if (saveTemplate) return hasParams && newTemplateName;
-      return hasParams;
-    }
-
-    if (isEcommerce) return card?.id && withdrawalAmount;
-
-    return withdrawalAmount && currentWhitelistObj?.address;
   };
 
   useEffect(() => {
@@ -96,7 +79,8 @@ export default function Withdrawal() {
     dispatch(setFee(null));
     if (isEcommerce) {
       card && dispatch(fetchFee('withdrawal'));
-    } else {
+    }
+    if (!isEcommerce && network) {
       dispatch(fetchFee('withdrawal'));
     }
   }, [network, depositProvider, card]);
@@ -109,11 +93,29 @@ export default function Withdrawal() {
     return () => dispatch(setCard(null));
   }, []);
 
+  useEffect(() => {
+    error && setError(false);
+  }, [depositProvider, card, withdrawalAmount, currentWhitelistObj]);
+
   const withdraw = () => {
-    if (googleAuth) dispatch(toggleGoogleOtpModal(true));
-    if (emailAuth) dispatch(toggleEmailAuthModal(true));
-    if (smsAuth) dispatch(toggleSmsAuthModal(true));
-    if (!googleAuth) sendOtp();
+    const length = Object.keys(currentWhitelistObj)?.length;
+
+    let condition;
+    if (isFiat) {
+      condition =
+        !validateAmount(withdrawalAmount) || !card || !depositProvider;
+    } else {
+      condition = !validateAmount(withdrawalAmount) || !length;
+    }
+
+    if (condition) {
+      setError(true);
+    } else {
+      if (googleAuth) dispatch(toggleGoogleOtpModal(true));
+      if (emailAuth) dispatch(toggleEmailAuthModal(true));
+      if (smsAuth) dispatch(toggleSmsAuthModal(true));
+      if (!googleAuth) sendOtp();
+    }
   };
 
   const saveTemplateCheck = () => {
@@ -167,7 +169,11 @@ export default function Withdrawal() {
             <WithdrawalInfo />
           )}
           {!hasRestriction && hasMethod && (
-            <WithdrawalInputs isFiat={isFiat} hasRestriction={hasRestriction} />
+            <WithdrawalInputs
+              error={error}
+              isFiat={isFiat}
+              hasRestriction={hasRestriction}
+            />
           )}
           {saveTemplateCheck() ? <SaveAsTemplate /> : null}
 
@@ -186,11 +192,7 @@ export default function Withdrawal() {
       {!hasRestriction &&
         hasMethod && ( // Button
           <View style={styles.button}>
-            <AppButton
-              text="Withdrawal"
-              onPress={withdraw}
-              disabled={!enabled()}
-            />
+            <AppButton text="Withdrawal" onPress={withdraw} />
           </View>
         )}
 

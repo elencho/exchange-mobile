@@ -13,7 +13,7 @@ import { chooseWhitelist } from '../../../redux/wallet/actions';
 let addr =
   'addr1qxyskt5fmj4dczqhfmkw2ljamtlnynpruv2l2susl4ylxyd2wvsvtpknan706f90cxvzuqs6cw9xs7487jnhn6hr6szqlq5c0k';
 
-export default function WithdrawalAddress() {
+export default function WithdrawalAddress({ error }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -21,7 +21,11 @@ export default function WithdrawalAddress() {
   } = state;
 
   const w = currentWhitelistObj;
-  const color = colors[w?.address ? 'PRIMARY_TEXT' : 'SECONDARY_TEXT'];
+  const color =
+    error && !w?.address
+      ? '#F45E8C'
+      : colors[w?.address ? 'PRIMARY_TEXT' : 'SECONDARY_TEXT'];
+  const borderColor = error && !w?.address ? '#F45E8C' : '#3C4167';
 
   const chooseAddress = () => dispatch(toggleChooseAddressModal(true));
   const setAddress = (address) => dispatch(chooseWhitelist({ ...w, address }));
@@ -56,7 +60,10 @@ export default function WithdrawalAddress() {
   return (
     <>
       {hasWhitelist ? (
-        <Pressable style={styles.dropdown} onPress={chooseAddress}>
+        <Pressable
+          style={[styles.dropdown, { borderColor }]}
+          onPress={chooseAddress}
+        >
           <AppText medium body style={{ color }}>
             {w.name ? w.name : 'Choose Address'}
           </AppText>
@@ -74,6 +81,7 @@ export default function WithdrawalAddress() {
           style={{ marginBottom: 22 }}
           onChangeText={setAddress}
           value={w.address}
+          error={error && !w?.address}
         />
       )}
 
@@ -95,7 +103,6 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     borderWidth: 1,
-    borderColor: '#3C4167',
     paddingHorizontal: 20,
     paddingVertical: 15,
     flexDirection: 'row',

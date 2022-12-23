@@ -36,10 +36,10 @@ const AppInput = ({
     }).start();
   }, [focusAnim, isFocused, value]);
 
-  let borderColor = isFocused
-    ? colors.SECONDARY_PURPLE
-    : error
+  let borderColor = error
     ? '#F45E8C'
+    : isFocused
+    ? colors.SECONDARY_PURPLE
     : '#42475D';
 
   return (

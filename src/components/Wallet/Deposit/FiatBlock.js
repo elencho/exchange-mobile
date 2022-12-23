@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,6 +16,7 @@ import { validateScale } from '../../../utils/formUtils';
 import { fetchFee } from '../../../redux/trade/actions';
 import StatusModal from '../StatusModal';
 import Fee from '../Fee';
+import { validateAmount } from '../../../utils/appUtils';
 
 export default function FiatBlock() {
   const dispatch = useDispatch();
@@ -43,14 +44,21 @@ export default function FiatBlock() {
     ? factoredDigitLength + parseFloat(depositScale) + 1
     : 1000;
 
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    error && setError(false);
+  }, [card, depositAmount, depositProvider]);
+
   const generatePdf = () => {
-    if (depositAmount) {
+    if (!validateAmount(depositAmount)) {
+      setError(true);
+    } else {
       generateWirePdf(code, depositAmount, en[0].id);
     }
   };
 
   const handleAmount = (text) => {
-    const d = text.replace(',', '.');
+    const d = text?.trim().replace(',', '.');
 
     if (validateScale(d, depositScale)) {
       dispatch({
@@ -69,7 +77,9 @@ export default function FiatBlock() {
   };
 
   const deposit = async () => {
-    if (card) {
+    if (!card || !depositProvider || !validateAmount(depositAmount)) {
+      setError(true);
+    } else {
       const params = {
         currency: code,
         cardId: card.id,
@@ -103,7 +113,7 @@ export default function FiatBlock() {
           {network === 'ECOMMERCE' && (
             <>
               <View style={{ marginTop: -20 }}>
-                <CardSection />
+                <CardSection error={error} />
               </View>
               <ChooseBankModal />
               <ChooseCardModal />
@@ -120,6 +130,7 @@ export default function FiatBlock() {
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             right={right}
             editable={!!editable}
+            error={error && !validateAmount(depositAmount)}
           />
         </>
       </View>
@@ -131,16 +142,10 @@ export default function FiatBlock() {
           text="Generate"
           onPress={generatePdf}
           left={<Image source={images.Generate} />}
-          style={[styles.button, { opacity: depositAmount ? 1 : 0.5 }]}
-          disabled={!depositAmount}
+          style={styles.button}
         />
       ) : (
-        <AppButton
-          text="Deposit"
-          onPress={deposit}
-          style={[styles.button, { opacity: depositAmount ? 1 : 0.5 }]}
-          disabled={!depositAmount && !depositProvider && !card}
-        />
+        <AppButton text="Deposit" onPress={deposit} style={styles.button} />
       )}
     </View>
   );

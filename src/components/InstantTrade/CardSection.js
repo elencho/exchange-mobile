@@ -12,10 +12,10 @@ import {
 } from '../../redux/modals/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
-import { setCard, setDepositProvider } from '../../redux/trade/actions';
+import { setCard } from '../../redux/trade/actions';
 import Fee from '../Wallet/Fee';
 
-function CardSection() {
+function CardSection({ error }) {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -69,8 +69,21 @@ function CardSection() {
       fiat,
     });
 
-  const color = depositProvider ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT;
+  const color =
+    !depositProvider && error
+      ? '#F45E8C'
+      : depositProvider
+      ? colors.PRIMARY_TEXT
+      : colors.SECONDARY_TEXT;
+  const cardTextColor =
+    !card && error
+      ? '#F45E8C'
+      : card
+      ? colors.PRIMARY_TEXT
+      : colors.SECONDARY_TEXT;
   const opacity = cardsToDisplayInModal?.length ? 1 : 0.5;
+  const bankBorder = !depositProvider && error ? '#F45E8C' : '#525A86';
+  const cardBorder = !card && error ? '#F45E8C' : '#525A86';
 
   const displayName = () => {
     let displayName = 'Payment Service Provider';
@@ -98,7 +111,10 @@ function CardSection() {
       {multipleBanks() && (
         <>
           <Pressable
-            style={[styles.dropdown, { marginBottom: 25 }]}
+            style={[
+              styles.dropdown,
+              { marginBottom: 25, borderColor: bankBorder },
+            ]}
             onPress={showBanks}
           >
             <AppText style={[styles.text, { color }]} medium={depositProvider}>
@@ -119,15 +135,15 @@ function CardSection() {
       {depositProvider && (
         <>
           <Pressable
-            style={[styles.dropdown, { opacity, marginBottom: 10 }]}
+            style={[
+              styles.dropdown,
+              { opacity, marginBottom: 10, borderColor: cardBorder },
+            ]}
             onPress={showCards}
             disabled={!cardsToDisplayInModal?.length}
           >
             <AppText
-              style={[
-                styles.text,
-                { color: card ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT },
-              ]}
+              style={[styles.text, { color: cardTextColor }]}
               medium={card ? card.cardNumber : false}
             >
               {card ? card.cardNumber : 'Choose Card'}
@@ -155,7 +171,6 @@ export default CardSection;
 
 const styles = StyleSheet.create({
   dropdown: {
-    borderColor: '#525A86',
     borderWidth: 1,
     alignItems: 'center',
     flexDirection: 'row',
