@@ -25,16 +25,37 @@ import { COUNTRIES_URL_PNG } from '../../constants/api';
 import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function PersonalInfoModal() {
-  const [countryDrop, setCountryDrop] = useState(false);
-  const [citizenshipDrop, setCitizenshipDrop] = useState(false);
-  const [userInfoVariable, setUserInfoVariable] = useState(null);
-
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     modals: { personalInfoModalVisible },
     profile: { userInfo, countriesConstant },
   } = state;
+
+  const [countryDrop, setCountryDrop] = useState(false);
+  const [citizenshipDrop, setCitizenshipDrop] = useState(false);
+  const [userInfoVariable, setUserInfoVariable] = useState(null);
+  const [error, setError] = useState(false);
+
+  const firstName = userInfo?.firstName;
+  const lastName = userInfo?.lastName;
+  const country = userInfo?.country;
+  const countryCode = userInfo?.countryCode;
+  const city = userInfo?.city;
+  const postalCode = userInfo?.postalCode;
+  const address = userInfo?.address;
+  const citizenship = userInfo?.citizenship;
+  const userStatus = userInfo?.userStatus;
+  const countriesBorder = {
+    borderColor: error && !country ? '#F45E8C' : '#42475D',
+  };
+  const citizenshipBorder = {
+    borderColor: error && !citizenship ? '#F45E8C' : '#42475D',
+  };
+
+  useEffect(() => {
+    error && setError(false);
+  }, [userInfo, personalInfoModalVisible]);
 
   useEffect(() => {
     if (personalInfoModalVisible && !userInfoVariable) {
@@ -49,7 +70,23 @@ export default function PersonalInfoModal() {
     dispatch(saveUserInfo(userInfoVariable));
     dispatch(togglePersonalInfoModal(false));
   };
-  const handleSave = () => dispatch(saveUserInfoSaga());
+  const handleSave = () => {
+    const condition = isVerified
+      ? !country || !city || !postalCode || !address
+      : !country ||
+        !city ||
+        !postalCode ||
+        !address ||
+        !firstName ||
+        !lastName ||
+        !citizenship;
+
+    if (error || condition) {
+      setError(true);
+    } else {
+      dispatch(saveUserInfoSaga());
+    }
+  };
 
   const handleCountries = (countryDrop, citizenshipDrop) => {
     dispatch(toggleCountriesModal(true));
@@ -61,7 +98,7 @@ export default function PersonalInfoModal() {
     setCitizenshipDrop(false), setCountryDrop(false);
   };
 
-  const citizenship = (code) => {
+  const citizenshipText = (code) => {
     let country;
     countriesConstant?.forEach((c) => {
       if (c.code === code) country = c.name;
@@ -69,7 +106,7 @@ export default function PersonalInfoModal() {
     return country;
   };
 
-  const isVerified = userInfo?.userStatus === 'VERIFIED';
+  const isVerified = userStatus === 'VERIFIED';
 
   const children = (
     <>
@@ -88,7 +125,8 @@ export default function PersonalInfoModal() {
                   dispatch(saveUserInfo({ ...userInfo, firstName }))
                 }
                 label="First Name"
-                value={userInfo?.firstName}
+                value={firstName}
+                error={error && !firstName}
               />
               <AppInput
                 style={styles.inputContainer}
@@ -96,13 +134,14 @@ export default function PersonalInfoModal() {
                   dispatch(saveUserInfo({ ...userInfo, lastName }))
                 }
                 label="Last Name"
-                value={userInfo?.lastName}
+                value={lastName}
+                error={error && !lastName}
               />
             </>
           )}
 
           <Pressable
-            style={styles.dropdown}
+            style={[styles.dropdown, countriesBorder]}
             onPress={() => handleCountries(true)}
           >
             <View style={styles.subtext}>
@@ -113,12 +152,12 @@ export default function PersonalInfoModal() {
 
             <Image
               source={{
-                uri: `${COUNTRIES_URL_PNG}/${userInfo?.countryCode}.png`,
+                uri: `${COUNTRIES_URL_PNG}/${countryCode}.png`,
               }}
               style={styles.image}
             />
             <AppText medium style={styles.dropdownText}>
-              {userInfo?.country}
+              {country}
             </AppText>
             <Image source={images.Arrow} />
           </Pressable>
@@ -130,7 +169,8 @@ export default function PersonalInfoModal() {
                 dispatch(saveUserInfo({ ...userInfo, city }))
               }
               label="City"
-              value={userInfo?.city}
+              value={city}
+              error={error && !city}
             />
             <AppInput
               style={[styles.inputContainer, styles.rowInputs]}
@@ -138,7 +178,8 @@ export default function PersonalInfoModal() {
                 dispatch(saveUserInfo({ ...userInfo, postalCode }))
               }
               label="Postal Code"
-              value={userInfo?.postalCode}
+              value={postalCode}
+              error={error && !postalCode}
             />
           </View>
 
@@ -148,12 +189,13 @@ export default function PersonalInfoModal() {
               dispatch(saveUserInfo({ ...userInfo, address }))
             }
             label="Address"
-            value={userInfo?.address}
+            value={address}
+            error={error && !address}
           />
 
           {!isVerified && (
             <Pressable
-              style={styles.dropdown}
+              style={[styles.dropdown, citizenshipBorder]}
               onPress={() => handleCountries(null, true)}
             >
               <View style={styles.subtext}>
@@ -164,12 +206,12 @@ export default function PersonalInfoModal() {
 
               <Image
                 source={{
-                  uri: `${COUNTRIES_URL_PNG}/${userInfo?.citizenship}.png`,
+                  uri: `${COUNTRIES_URL_PNG}/${citizenship}.png`,
                 }}
                 style={styles.image}
               />
               <AppText medium style={styles.dropdownText}>
-                {citizenship(userInfo?.citizenship)}
+                {citizenshipText(citizenship)}
               </AppText>
               <Image source={images.Arrow} />
             </Pressable>
@@ -225,7 +267,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    borderColor: '#42475D',
+    marginTop: 10,
     paddingHorizontal: 15,
   },
   error: {

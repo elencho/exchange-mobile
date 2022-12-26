@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
@@ -40,12 +39,25 @@ export default function PhoneNumberModal() {
 
   const [userInfoVariable, setUserInfoVariable] = useState(null);
   const [code, setCode] = useState(null);
+  const [error, setError] = useState(false);
+  const [sendError, setSendError] = useState(false);
+
+  useEffect(() => {
+    if (error || sendError) {
+      setSendError(false);
+      setError(false);
+    }
+  }, [userInfo, code]);
 
   useEffect(() => {
     if (phoneNumberModalVisible) setUserInfoVariable(userInfo);
   }, [phoneNumberModalVisible]);
 
-  const disabled = !(userInfo.phoneNumber && code);
+  const number = userInfo?.phoneNumber;
+  const country = userInfo?.phoneCountry;
+  const borderColor = (error || sendError) && !country ? '#F45E8C' : '#42475D';
+  const color =
+    (error || sendError) && !country ? '#F45E8C' : colors.PRIMARY_TEXT;
 
   const hide = () => {
     setCode(null);
@@ -53,33 +65,27 @@ export default function PhoneNumberModal() {
     dispatch(togglePhoneNumberModal(false));
   };
 
-  const validate = (number) => /^\d+$/.test(number) || !number;
+  const handlePhoneNumber = (phoneNumber) =>
+    dispatch(saveUserInfo({ ...userInfo, phoneNumber }));
 
-  const handlePhoneNumber = (phoneNumber) => {
-    if (validate(phoneNumber))
-      dispatch(saveUserInfo({ ...userInfo, phoneNumber }));
-  };
-
-  const handleVerificationCode = (code) => {
-    if (validate(code)) setCode(code);
-  };
+  const handleVerificationCode = (code) => setCode(code);
 
   const handleSend = () => {
-    dispatch(
-      sendVerificationCode(userInfo?.phoneNumber, userInfo?.phoneCountry)
-    );
+    if (!country || !number) {
+      setSendError(true);
+    } else {
+      dispatch(sendVerificationCode(number, country));
+    }
   };
 
   const handleSave = () => {
-    dispatch(
-      updatePhoneNumber(
-        userInfo?.phoneNumber,
-        userInfo?.phoneCountry,
-        code,
-        setCode,
-        setUserInfoVariable
-      )
-    );
+    if (error || !code || !country || !number) {
+      setError(true);
+    } else {
+      dispatch(
+        updatePhoneNumber(number, country, code, setCode, setUserInfoVariable)
+      );
+    }
   };
 
   const handleCountries = () => dispatch(toggleCountriesModal(true));
@@ -89,7 +95,7 @@ export default function PhoneNumberModal() {
   const phoneCountry = () => {
     let phoneCountry;
     countries?.forEach((c) => {
-      if (userInfo.phoneCountry === c.code) {
+      if (country === c.code) {
         phoneCountry = c.phoneCode;
       }
     });
@@ -107,16 +113,16 @@ export default function PhoneNumberModal() {
             />
 
             <Pressable
-              style={styles.dropdown}
+              style={[styles.dropdown, { borderColor }]}
               onPress={() => handleCountries()}
             >
               <Image
                 source={{
-                  uri: `${COUNTRIES_URL_PNG}/${userInfo.phoneCountry}.png`,
+                  uri: `${COUNTRIES_URL_PNG}/${country}.png`,
                 }}
                 style={styles.image}
               />
-              <AppText medium style={styles.dropdownText}>
+              <AppText medium style={[styles.dropdownText, { color }]}>
                 {phoneCountry()}
               </AppText>
               <Image source={images.Arrow} />
@@ -127,8 +133,9 @@ export default function PhoneNumberModal() {
               label="Phone Number"
               right={send}
               onChangeText={(text) => handlePhoneNumber(text)}
-              value={userInfo?.phoneNumber}
+              value={number}
               keyboardType="number-pad"
+              error={(error || sendError) && !number}
             />
             <AppInput
               style={styles.inputContainer}
@@ -136,16 +143,12 @@ export default function PhoneNumberModal() {
               onChangeText={handleVerificationCode}
               value={code}
               keyboardType="number-pad"
+              error={error && !code}
             />
           </TouchableOpacity>
         </ScrollView>
 
-        <AppButton
-          text="Save"
-          onPress={handleSave}
-          style={styles.button}
-          disabled={disabled}
-        />
+        <AppButton text="Save" onPress={handleSave} style={styles.button} />
 
         <CountriesModal phoneCountry />
       </>
@@ -169,7 +172,6 @@ const styles = StyleSheet.create({
   },
   dropdownText: {
     flex: 1,
-    color: colors.PRIMARY_TEXT,
     marginLeft: 12,
   },
   dropdown: {
@@ -179,7 +181,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    borderColor: '#42475D',
     paddingHorizontal: 15,
   },
   error: {
