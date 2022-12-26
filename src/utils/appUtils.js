@@ -75,6 +75,6 @@ export const fetchTranslations = async () => {
 
 export const validateAmount = (amount) => {
   const validation =
-    !!amount && parseInt(amount) > 0 && /^\d*\.?\d*$/.test(amount);
+    !!amount && Number(amount) > 0 && /^\d*\.?\d*$/.test(amount);
   return validation;
 };

@@ -56,7 +56,7 @@ export default function InstantTrade() {
         }
       >
         {loading ? <TradeBlockSkeleton /> : <TradeBlock />}
-        {loading ? <TransactionsSkeleton /> : <TransactionsBlock />}
+        {/* {loading ? <TransactionsSkeleton /> : <TransactionsBlock />} */}
       </ScrollView>
 
       <InfoModal />
