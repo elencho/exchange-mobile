@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import {
   Image,
   Pressable,
@@ -32,6 +32,8 @@ export default function PasswordModal() {
   const {
     modals: { passwordModalVisible },
   } = state;
+
+  const [error, setError] = useState(false);
 
   const initialState = {
     secure: true,
@@ -69,23 +71,21 @@ export default function PasswordModal() {
 
   const [passwordState, dispatchToReducer] = useReducer(reducer, initialState);
 
-  const readyToSave = () => {
-    const {
-      eightChars,
-      hasNumber,
-      hasUpperAndLower,
-      newPassword,
-      repeatPassword,
-      curentPassword,
-    } = passwordState;
-    return (
-      eightChars &&
-      hasNumber &&
-      hasUpperAndLower &&
-      newPassword === repeatPassword &&
-      curentPassword
-    );
-  };
+  const {
+    eightChars,
+    hasNumber,
+    hasUpperAndLower,
+    newPassword,
+    repeatPassword,
+    curentPassword,
+    secure,
+  } = passwordState;
+  const newPassCond =
+    newPassword && eightChars && hasUpperAndLower && hasNumber;
+
+  useEffect(() => {
+    error && setError(false);
+  }, [passwordModalVisible, passwordState]);
 
   const hide = () => {
     dispatch(togglePasswordModal(false));
@@ -93,8 +93,22 @@ export default function PasswordModal() {
   };
 
   const handleSave = () => {
-    const { curentPassword, newPassword, repeatPassword } = passwordState;
-    dispatch(updatePassword(curentPassword, newPassword, repeatPassword, hide));
+    const condition =
+      error ||
+      !curentPassword ||
+      !newPassword ||
+      !repeatPassword ||
+      !eightChars ||
+      !hasNumber ||
+      !hasUpperAndLower ||
+      newPassword !== repeatPassword;
+    if (condition) {
+      setError(true);
+    } else {
+      dispatch(
+        updatePassword(curentPassword, newPassword, repeatPassword, hide)
+      );
+    }
   };
 
   const toggle = () => dispatchToReducer({ type: 'toggleSecure' });
@@ -118,7 +132,6 @@ export default function PasswordModal() {
   };
 
   const background = (i) => {
-    const { eightChars, hasNumber, hasUpperAndLower } = passwordState;
     switch (i) {
       case 0:
         return { backgroundColor: eightChars ? '#25D8D1' : '#F83974' };
@@ -132,7 +145,6 @@ export default function PasswordModal() {
   };
 
   const color = (i) => {
-    const { eightChars, hasNumber, hasUpperAndLower } = passwordState;
     switch (i) {
       case 0:
         return { color: eightChars ? colors.SECONDARY_TEXT : '#969CBF' };
@@ -147,13 +159,11 @@ export default function PasswordModal() {
 
   const hideIcon = (
     <Pressable onPress={toggle}>
-      <Image source={passwordState.secure ? images.Hide : images.Show} />
+      <Image source={secure ? images.Hide : images.Show} />
     </Pressable>
   );
 
   const children = () => {
-    const { secure, newPassword, curentPassword, repeatPassword } =
-      passwordState;
     return (
       <>
         <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
@@ -169,6 +179,7 @@ export default function PasswordModal() {
               secureTextEntry={secure}
               onChangeText={(text) => handleCurrentPass(text)}
               value={curentPassword}
+              error={error && !curentPassword}
             />
             <AppInput
               style={styles.inputContainer}
@@ -177,6 +188,7 @@ export default function PasswordModal() {
               onChangeText={(text) => handleNewPass(text)}
               value={newPassword}
               right={hideIcon}
+              error={error && !newPassCond}
             />
             <AppInput
               style={styles.inputContainer}
@@ -184,6 +196,7 @@ export default function PasswordModal() {
               secureTextEntry={secure}
               onChangeText={(text) => handleRepeatPass(text)}
               value={repeatPassword}
+              error={error && newPassword !== repeatPassword}
             />
 
             {array.map((v, i) => (
@@ -197,11 +210,7 @@ export default function PasswordModal() {
           </TouchableOpacity>
         </ScrollView>
 
-        <Pressable
-          onPress={handleSave}
-          style={[styles.button, readyToSave() && styles.opacity]}
-          disabled={!readyToSave()}
-        >
+        <Pressable onPress={handleSave} style={styles.button}>
           <AppText medium style={styles.buttonText}>
             Save
           </AppText>
@@ -228,7 +237,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
     backgroundColor: colors.PRIMARY_PURPLE,
-    opacity: 0.5,
   },
   buttonText: {
     color: colors.PRIMARY_TEXT,

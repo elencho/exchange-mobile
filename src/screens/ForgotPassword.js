@@ -32,6 +32,11 @@ export default function ForgotPassword({ navigation }) {
   } = state;
 
   const [seconds, setSeconds] = useState(30);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    error && setError(false);
+  }, [forgotPassInfo]);
 
   useEffect(() => {
     if (!seconds) {
@@ -54,13 +59,23 @@ export default function ForgotPassword({ navigation }) {
   }, []);
 
   const secondsFormat = seconds < 10 ? `00 : 0${seconds}` : `00 : ${seconds}`;
+  const f = forgotPassInfo;
+  const mailValid =
+    f.username && /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(f.username);
 
   const goToLogin = () => {
     navigation.navigate('Login');
     dispatch(startLoginAction(navigation));
   };
 
-  const sendCode = () => dispatch({ type: 'SEND_FORGOT_PASS_CODE' });
+  const sendCode = () => {
+    if (!mailValid) {
+      setError(true);
+    } else {
+      dispatch({ type: 'SEND_FORGOT_PASS_CODE' });
+    }
+  };
+
   const Right = () => {
     if (loading) {
       return <ActivityIndicator />;
@@ -74,21 +89,31 @@ export default function ForgotPassword({ navigation }) {
   const saveUsername = (username) =>
     dispatch({
       type: 'SAVE_FORGOT_PASS_INFO',
-      forgotPassInfo: { ...forgotPassInfo, username },
+      forgotPassInfo: { ...f, username },
     });
 
   const saveCode = (code) => {
     dispatch({
       type: 'SAVE_FORGOT_PASS_INFO',
-      forgotPassInfo: { ...forgotPassInfo, code },
+      forgotPassInfo: { ...f, code },
     });
   };
 
-  const next = () =>
-    dispatch({
-      type: 'FORGOT_PASS_ENTER_CODE',
-      navigation,
-    });
+  const next = () => {
+    if (!f.code || !f.username) {
+      setError(true);
+    } else {
+      dispatch({
+        type: 'FORGOT_PASS_ENTER_CODE',
+        navigation,
+      });
+    }
+  };
+
+  const errorText = (type) => {
+    if (error && !mailValid && type === 'Username') return 'Enter Valid Email';
+    if (error && !f.code && type === 'Code') return 'Enter Password';
+  };
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
@@ -123,15 +148,19 @@ export default function ForgotPassword({ navigation }) {
             style={styles.input}
             label="Enter Email"
             onChangeText={saveUsername}
-            value={forgotPassInfo.username}
+            value={f.username}
             right={<Right />}
+            error={!mailValid && error}
+            errorText={errorText('Username')}
           />
           <AppInput
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             style={styles.input}
             label="Enter Code"
             onChangeText={saveCode}
-            value={forgotPassInfo.code}
+            value={f.code}
+            error={!f.code && error}
+            errorText={errorText('Code')}
           />
 
           <AppButton text="Next" style={styles.button} onPress={next} />

@@ -18,6 +18,7 @@ const AppInput = ({
   style,
   value,
   error = false,
+  errorText = null,
   labelBackgroundColor = colors.PRIMARY_BACKGROUND,
   ...rest
 }) => {
@@ -35,10 +36,10 @@ const AppInput = ({
     }).start();
   }, [focusAnim, isFocused, value]);
 
-  let borderColor = isFocused
-    ? colors.SECONDARY_PURPLE
-    : error
+  let borderColor = error
     ? '#F45E8C'
+    : isFocused
+    ? colors.SECONDARY_PURPLE
     : '#42475D';
 
   return (
@@ -102,17 +103,27 @@ const AppInput = ({
 
         {right}
       </View>
+      {errorText && (
+        <AppText small style={styles.errorText}>
+          {errorText}
+        </AppText>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  errorText: {
+    color: '#F45E8C',
+    marginTop: 8,
+  },
   input: {
     fontFamily: 'Ubuntu_Medium',
     fontSize: 14,
     flex: 1,
     color: colors.PRIMARY_TEXT,
     height: '100%',
+    marginRight: 10,
   },
   inputContainer: {
     borderWidth: 1,

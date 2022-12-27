@@ -72,3 +72,9 @@ export const fetchTranslations = async () => {
   const data = await axios.get(DICTIONARY);
   return data?.data;
 };
+
+export const validateAmount = (amount) => {
+  const validation =
+    !!amount && Number(amount) > 0 && /^\d*\.?\d*$/.test(amount);
+  return validation;
+};

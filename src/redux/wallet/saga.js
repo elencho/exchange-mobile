@@ -142,6 +142,8 @@ function* cryptoAddressesSaga(action) {
   yield put(goToBalanceAction(name, code, navigation));
   yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
 
+  if (walletTab === 'Whitelist') yield put(getWhitelistAction());
+
   if (!!hasMethod) {
     // Fees
     const amountAction =

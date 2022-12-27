@@ -29,12 +29,11 @@ import {
 import GeneralError from '../GeneralError';
 import AppWebView from '../AppWebView';
 import { validateScale } from '../../utils/formUtils';
-import { errorHappenedHere } from '../../utils/appUtils';
+import { errorHappenedHere, validateAmount } from '../../utils/appUtils';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [webViewUrl, setWebViewUrl] = useState('');
 
   const {
     modals: { buySellModalVisible, webViewObj },
@@ -47,9 +46,42 @@ export default function BuySellModal() {
       balance,
       currentTrade,
       depositProviders,
+      depositProvider,
       card,
     },
   } = state;
+
+  const [webViewUrl, setWebViewUrl] = useState('');
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    error && setError(false);
+  }, [
+    currentTrade,
+    depositProvider,
+    card,
+    Balance_Card,
+    fiat,
+    crypto,
+    buySellModalVisible,
+  ]);
+
+  useEffect(() => {
+    handleChangeText(price, 'crypto');
+  }, [pairObject]);
+
+  useEffect(() => {
+    if (depositProviders?.length > 1) {
+      dispatch(setDepositProvider(null));
+    }
+    if (depositProviders?.length === 1) {
+      dispatch(setDepositProvider(depositProviders[0].provider));
+    }
+  }, [depositProviders]);
+
+  useEffect(() => {
+    if (card) handleChangeText(price, 'crypto');
+  }, [card]);
 
   const baseScale = pairObject?.pair?.baseScale;
   const quoteScale = pairObject?.pair?.quoteScale;
@@ -79,31 +111,17 @@ export default function BuySellModal() {
     dispatch(setCard(null));
   };
 
-  const handleSubmit = () => dispatch(submitTrade());
+  const handleSubmit = () => {
+    const balanceCondition = !validateAmount(price) || !validateAmount(size);
+    const cardCondition = balanceCondition || !depositProvider || !card;
 
-  const enabled = () => {
-    if (Balance_Card === 'card' && !card) {
-      return false;
-    }
-    return true;
+    if (
+      (Balance_Card === 'balance' && balanceCondition) ||
+      (Balance_Card === 'card' && cardCondition)
+    ) {
+      setError(true);
+    } else dispatch(submitTrade());
   };
-
-  useEffect(() => {
-    handleChangeText(price, 'crypto');
-  }, [pairObject]);
-
-  useEffect(() => {
-    if (depositProviders?.length > 1) {
-      dispatch(setDepositProvider(null));
-    }
-    if (depositProviders?.length === 1) {
-      dispatch(setDepositProvider(depositProviders[0].provider));
-    }
-  }, [depositProviders]);
-
-  useEffect(() => {
-    if (card) handleChangeText(price, 'crypto');
-  }, [card]);
 
   const handleChangeText = (text, type) => {
     const t = text ? text.replace(',', '.') : 0;
@@ -184,6 +202,7 @@ export default function BuySellModal() {
               value={price ? price.trim() : ''}
               maxLength={maxLengthQuote}
               right={<AppText style={styles.code}>{fiat}</AppText>}
+              error={error && !validateAmount(price)}
             />
             <View style={styles.margin} />
             <AppInput
@@ -193,9 +212,10 @@ export default function BuySellModal() {
               value={size ? size.trim() : ''}
               right={<AppText style={styles.code}>{crypto}</AppText>}
               style={{ marginBottom: 10 }}
+              error={error && !validateAmount(size)}
             />
 
-            {Balance_Card === 'card' && <CardSection />}
+            {Balance_Card === 'card' && <CardSection error={error} />}
 
             <CryptoModal />
             <FiatModal />
@@ -208,10 +228,9 @@ export default function BuySellModal() {
 
       <AppButton
         onPress={handleSubmit}
-        disabled={!enabled()}
         backgroundColor={tradeType === 'Buy' ? '#0CCBB5' : '#F83974'}
         text={tradeType}
-        style={{ opacity: enabled() ? 1 : 0.5, marginBottom: 20 }}
+        style={{ marginBottom: 20 }}
       />
 
       <AppWebView

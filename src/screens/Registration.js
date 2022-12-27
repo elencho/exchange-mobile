@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   StyleSheet,
   TouchableWithoutFeedback,
@@ -42,35 +42,59 @@ export default function Registration({ navigation }) {
     }, [])
   );
 
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    error && setError(false);
+  }, [registrationInputs]);
+
   const {
     firstName,
     lastName,
     email,
     phoneNumber,
+    phoneCountry,
     acceptTerms,
     passwordNew,
     passwordConfirm,
   } = registrationInputs;
 
-  const passwordCheck =
-    passwordNew?.length >= 8 && // 8 symbols
-    /\d/.test(passwordNew) && // number
-    /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(passwordNew); // upper and lower case
+  const passLength = passwordNew?.length >= 8;
+  const hasUpperAndLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(passwordNew);
+  const hasNumber = /\d/.test(passwordNew);
 
-  const isEmail = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email);
-  const similarPasswords = passwordNew === passwordConfirm;
-  const terms = acceptTerms === 'on';
+  const o = {
+    nameCheck: firstName && /^[a-zA-Z !@#\$%\^\&*\)\(+=._-]+$/g.test(firstName),
+    lastNameCheck:
+      lastName && /^[a-zA-Z !@#\$%\^\&*\)\(+=._-]+$/g.test(lastName),
+    passwordCheck: passLength && hasNumber && hasUpperAndLower,
+    isEmail: /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email),
+    similarPasswords: passwordNew === passwordConfirm,
+    terms: acceptTerms === 'on',
+
+    passLength,
+    hasUpperAndLower,
+    hasNumber,
+  };
 
   const enabled =
-    isEmail &&
-    similarPasswords &&
-    passwordCheck &&
+    o.nameCheck &&
+    o.lastNameCheck &&
+    o.isEmail &&
+    o.similarPasswords &&
+    o.passwordCheck &&
     firstName &&
     lastName &&
     phoneNumber &&
-    terms;
+    phoneCountry &&
+    o.terms;
 
-  const handleRegistration = () => dispatch(registrationFormAction());
+  const handleRegistration = () => {
+    if (!enabled) {
+      setError(true);
+    } else {
+      dispatch(registrationFormAction());
+    }
+  };
   const signIn = () => dispatch(startLoginAction(navigation));
 
   return (
@@ -100,14 +124,10 @@ export default function Registration({ navigation }) {
           show={errorHappenedHere('Registration')}
         />
 
-        <RegistrationInputs />
-        <CheckMarks />
+        <RegistrationInputs error={error} validations={o} />
+        <CheckMarks error={error} validations={o} />
 
-        <AppButton
-          text="Register"
-          onPress={handleRegistration}
-          disabled={!enabled}
-        />
+        <AppButton text="Register" onPress={handleRegistration} />
 
         <AppText style={styles.subtext}>
           Have an account? <PurpleText text="Sign In" onPress={signIn} />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -47,19 +47,16 @@ export default function AddEditWhitelistModal({ add, edit }) {
     dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };
 
-  const handleAdd = () => {
-    if (add) {
-      if (googleAuth) dispatch(toggleGoogleOtpModal(true));
-      if (emailAuth) dispatch(toggleEmailAuthModal(true));
-      if (smsAuth) dispatch(toggleSmsAuthModal(true));
-      if (!googleAuth) sendOtp();
-    }
-    if (edit) {
-      dispatch(editWhitelistAction());
-    }
-  };
-
-  const clearInputs = () => dispatch(setNewWhitelist({}));
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    error && setError(false);
+  }, [
+    network,
+    currentWhitelistObj,
+    newWhitelist,
+    addWhitelistModalVisble,
+    editWhitelistModalVisble,
+  ]);
 
   const tag = () => {
     if (currentBalanceObj.infos) {
@@ -72,18 +69,52 @@ export default function AddEditWhitelistModal({ add, edit }) {
     }
   };
 
-  let enabled = true;
-  if (add && tag()) {
-    enabled =
-      newWhitelist.address && newWhitelist.name && newWhitelist.tag?.trim();
-  } else if (add) {
-    enabled = newWhitelist.address && newWhitelist.name;
-  }
+  const handleAdd = () => {
+    const condition = () => {
+      const obj = add ? newWhitelist : currentWhitelistObj;
+      if (tag()) {
+        return !network || !obj?.name || !obj?.address || !obj?.tag;
+      } else {
+        return !network || !obj?.name || !obj?.address;
+      }
+    };
+
+    if (condition()) {
+      setError(true);
+    } else {
+      if (add) {
+        if (googleAuth) dispatch(toggleGoogleOtpModal(true));
+        if (emailAuth) dispatch(toggleEmailAuthModal(true));
+        if (smsAuth) dispatch(toggleSmsAuthModal(true));
+        if (!googleAuth) sendOtp();
+      }
+      if (edit) {
+        dispatch(editWhitelistAction());
+      }
+    }
+  };
+
+  const clearInputs = () => dispatch(setNewWhitelist({}));
 
   const handleChange = (name) => {
     if (add) dispatch(setNewWhitelist({ ...newWhitelist, name }));
     if (edit) dispatch(chooseWhitelist({ ...currentWhitelistObj, name }));
   };
+
+  const tagStyle = {
+    opacity: add ? 1 : 0.5,
+    borderColor: error && !currentWhitelistObj?.tag && '#F45E8C',
+  };
+  const addressStyle = {
+    opacity: add ? 1 : 0.5,
+    borderColor: error && !currentWhitelistObj?.address && '#F45E8C',
+  };
+  const nameStyle = {
+    borderColor: error && !currentWhitelistObj?.name && '#F45E8C',
+  };
+  const nameError = add ? !newWhitelist?.name : !currentWhitelistObj?.name;
+  const addressError = add ? !newWhitelist?.address : false;
+  const tagError = add ? !newWhitelist?.tag : false;
 
   const children = (
     <>
@@ -94,19 +125,20 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
       {hasMultipleNetworks && (
         <View style={styles.input}>
-          <ChooseNetworkDropdown disabled={!!edit} whitelist />
+          <ChooseNetworkDropdown disabled={!!edit} whitelist error={error} />
           <ChooseNetworkModal />
         </View>
       )}
 
       <AppInput
-        style={styles.input}
+        style={[styles.input, nameStyle]}
         onChangeText={(name) => handleChange(name)}
         value={add ? newWhitelist.name : currentWhitelistObj.name}
         label="Enter Address Name"
+        error={error && nameError}
       />
       <AppInput
-        style={[styles.input, { opacity: add ? 1 : 0.5 }]}
+        style={[styles.input, addressStyle]}
         onChangeText={(address) =>
           dispatch(setNewWhitelist({ ...newWhitelist, address }))
         }
@@ -114,10 +146,11 @@ export default function AddEditWhitelistModal({ add, edit }) {
         label="Destination Address"
         editable={add ? true : false}
         focusable={add ? true : false}
+        error={error && addressError}
       />
       {tag() && (
         <AppInput
-          style={[styles.input, { opacity: add ? 1 : 0.5 }]}
+          style={[styles.input, tagStyle]}
           onChangeText={(tag) =>
             dispatch(setNewWhitelist({ ...newWhitelist, tag }))
           }
@@ -125,14 +158,14 @@ export default function AddEditWhitelistModal({ add, edit }) {
           label="Address Tag"
           editable={add ? true : false}
           focusable={add ? true : false}
+          error={error && tagError}
         />
       )}
 
       <AppButton
         text={add ? 'Add Address' : 'Edit Address'}
-        style={[styles.button, { opacity: enabled ? 1 : 0.5 }]}
+        style={styles.button}
         onPress={handleAdd}
-        disabled={!enabled}
       />
 
       <SmsEmailAuthModal type="SMS" whitelist />

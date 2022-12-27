@@ -17,8 +17,9 @@ import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import { validateScale } from '../../../utils/formUtils';
 import Fee from '../Fee';
+import { validateAmount } from '../../../utils/appUtils';
 
-export default function WithdrawalInputs({ isFiat, hasRestriction }) {
+export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -80,7 +81,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
   return (
     <>
       <View style={styles.block}>
-        {!hasRestriction && !isFiat && <WithdrawalAddress />}
+        {!hasRestriction && !isFiat && <WithdrawalAddress error={error} />}
 
         {cryptoAddress?.tag && !whitelist?.length && (
           <AppInput
@@ -94,7 +95,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
         {isEcommerce ? (
           <>
             <View style={{ marginTop: -20, marginBottom: -22 }}>
-              <CardSection />
+              <CardSection error={error} />
               <ChooseBankModal />
               <ChooseCardModal />
             </View>
@@ -117,6 +118,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction }) {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           right={<Max />}
           editable={!!editable}
+          error={error && !validateAmount(withdrawalAmount)}
         />
       </View>
 

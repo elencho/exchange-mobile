@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, ImageBackground, Image, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
@@ -24,6 +24,14 @@ export default function Login({ navigation }) {
   const {
     profile: { credentials },
   } = state;
+  const login = credentials.login;
+  const password = credentials.password;
+
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    error && setError(false);
+  }, [credentials]);
 
   useFocusEffect(
     useCallback(() => {
@@ -39,11 +47,22 @@ export default function Login({ navigation }) {
   const typeLogin = (t) =>
     dispatch(setCredentials({ ...credentials, login: t }));
 
-  const handleLogin = () => dispatch(usernameAndPasswordAction(navigation));
+  const handleLogin = () => {
+    if (!login || !password) {
+      setError(true);
+    } else {
+      dispatch(usernameAndPasswordAction(navigation));
+    }
+  };
   const forgotPassword = () =>
     dispatch({ type: 'FORGOT_PASSWORD_SAGA', navigation });
 
   const register = () => dispatch(startRegistrationAction(navigation));
+
+  const errorText = (type) => {
+    if (error && !login && type === 'Login') return 'Enter Email';
+    if (error && !password && type === 'Password') return 'Enter Password';
+  };
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
@@ -60,14 +79,18 @@ export default function Login({ navigation }) {
         placeholder="Enter Email"
         style={styles.email}
         onChangeText={typeLogin}
-        value={credentials.login}
+        value={login}
+        error={error && !login}
+        errorText={errorText('Login')}
       />
       <AppInput
         secureTextEntry
         placeholder="Enter Password"
         onChangeText={typePassword}
-        value={credentials.password}
+        value={password}
         style={styles.password}
+        error={error && !password}
+        errorText={errorText('Password')}
         right={
           <PurpleText
             text="Forgot?"
