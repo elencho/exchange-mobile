@@ -151,7 +151,7 @@ export default function Withdrawal() {
                 <TransferMethodDropdown />
                 <TransferMethodModal />
                 {network === 'SWIFT' && (
-                  <AppInfoBlock content={warnings.swift.deposit} warning />
+                  <AppInfoBlock content={warnings.swift.withdrawal} warning />
                 )}
                 {network === 'SEPA' && (
                   <AppInfoBlock content={warnings.sepa} warning />
