@@ -10,5 +10,7 @@ COCOAPODS_VER=`sed -n -e 's/^COCOAPODS: \([0-9.]*\)/\1/p' Podfile.lock`
 echo "Installing CocoaPods version $COCOAPODS_VER"
 sudo gem install cocoapods -v $COCOAPODS_VER
 
-cd $APPCENTER_SOURCE_DIRECTORY
 pod install
+echo $APPCENTER_SOURCE_DIRECTORY
+
+cd $APPCENTER_SOURCE_DIRECTORY
