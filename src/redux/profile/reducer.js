@@ -17,11 +17,12 @@ const baneta_realuri = { login: 'ibanet@cryptx.com', password: 'Malina125$' };
 
 const INITIAL_STATE = {
   timerVisible: false,
+  userProfileLoading: false,
 
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: baneta_realuri,
+  credentials: {},
   userAndPassInfo: {},
   forgotPassInfo: {
     username: '',
@@ -67,6 +68,7 @@ export default (state = INITIAL_STATE, action) => {
     pkceInfo,
     credentials,
     userAndPassInfo,
+    userProfileLoading,
     forgotPassInfo,
     forgotPassMode,
     loginStartInfo,
@@ -88,6 +90,11 @@ export default (state = INITIAL_STATE, action) => {
     timerVisible,
   } = action;
   switch (action.type) {
+    case actionTypes.TOGGLE_USER_PROFILE_LOADING:
+      return {
+        ...state,
+        userProfileLoading,
+      };
     case actionTypes.SAVE_PKCE_INFO:
       return {
         ...state,

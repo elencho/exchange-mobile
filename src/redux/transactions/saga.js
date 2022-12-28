@@ -11,6 +11,7 @@ import {
   toggleLoading,
   setTransactionsOffset,
   setMethodFilter,
+  setTotalTransactions,
   typeAction,
   saveCurrencies,
   saveCurrenciesConstant,
@@ -41,7 +42,15 @@ function* fetchTransactionsSaga() {
   const params = yield select(getParams);
   const transactions = yield select(getTransactions);
   const newTransactions = yield call(fetch, params);
+  const total = yield call(totalAmount, params);
 
+  const totalTransactions = yield select(
+    (state) => state.transactions.totalTransactions
+  );
+
+  if (!totalTransactions) {
+    yield put(setTotalTransactions(total));
+  }
   if (newTransactions) {
     yield put(saveTransactions([...transactions, ...newTransactions]));
   }
@@ -49,6 +58,16 @@ function* fetchTransactionsSaga() {
 
 function* refreshTransactionsSaga() {
   yield put(toggleLoading(true));
+
+  const total = yield call(totalAmount, params);
+
+  const totalTransactions = yield select(
+    (state) => state.transactions.totalTransactions
+  );
+
+  if (!totalTransactions) {
+    yield put(setTotalTransactions(total));
+  }
 
   yield put(setTransactionsOffset(0));
   const params = yield select(getParams);
@@ -80,10 +99,17 @@ function* reachScrollEndSaga(action) {
     const params = yield select(getParams);
     const offset = yield select(getOffset);
     const loadedTransactions = yield select(totalLoadedTransactions);
-
     const total = yield call(totalAmount, params);
 
-    if (loadedTransactions < total) {
+    const totalTransactions = yield select(
+      (state) => state.transactions.totalTransactions
+    );
+
+    if (!totalTransactions) {
+      yield put(setTotalTransactions(total));
+    }
+
+    if (loadedTransactions < totalTransactions) {
       yield put(setTransactionsOffset(offset + 1));
       yield put(fetchTransactions());
     }
@@ -92,6 +118,7 @@ function* reachScrollEndSaga(action) {
   if (transactionType === 'trades') {
     const offset = yield select((state) => state.trade.offset);
     const limit = yield select((state) => state.trade.limit);
+
     yield put(setTradeOffset(offset + limit));
     yield put(fetchTrades());
   }

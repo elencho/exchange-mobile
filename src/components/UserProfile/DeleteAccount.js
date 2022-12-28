@@ -4,7 +4,8 @@ import Deactivate from '../../assets/images/Deactivate.svg';
 import colors from '../../constants/colors';
 import AppText from '../AppText';
 
-const DEACTIVATE_LINK = 'https://support.cryptal.com/hc/en-us/requests/new';
+const DEACTIVATE_LINK =
+  'https://support.cryptal.com/hc/en-us/articles/360020438540-How-do-I-delete-my-Cryptal-Account-';
 
 const DeleteAccount = () => {
   const handlePress = () => {

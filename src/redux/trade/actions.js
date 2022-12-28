@@ -19,6 +19,8 @@ export const actionTypes = {
   SET_FIATS_ARRAY: 'SET_FIATS_ARRAY',
   SET_CRYPTOS_ARRAY: 'SET_CRYPTOS_ARRAY',
   SET_CRYPTOS_ARRAY_CONSTANT: 'SET_CRYPTOS_ARRAY_CONSTANT',
+  MORE_TRADES_LOADING: 'MORE_TRADES_LOADING',
+  SET_TOTAL_TRADES: 'SET_TOTAL_TRADES',
 
   // PURE VISUALS
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
@@ -40,6 +42,10 @@ export const actionTypes = {
 export const saveTrades = (trades) => ({
   type: actionTypes.SAVE_TRADES,
   trades,
+});
+export const setTotalTrades = (totalTrades) => ({
+  type: actionTypes.SET_TOTAL_TRADES,
+  totalTrades,
 });
 export const saveOffers = (offers) => ({
   type: actionTypes.SAVE_OFFERS,

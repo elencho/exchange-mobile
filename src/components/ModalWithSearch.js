@@ -6,7 +6,7 @@ import ModalTop from './ModalTop';
 import ModalSearchItem from './ModalSearchItem';
 import images from '../constants/images';
 import colors from '../constants/colors';
-import { COINS_URL_PNG, COUNTRIES_URL_PNG } from '../constants/api';
+import { COINS_URL_SVG, COUNTRIES_URL_SVG } from '../constants/api';
 
 export default function ModalWithSearch({
   array,
@@ -23,8 +23,8 @@ export default function ModalWithSearch({
 
   const uri = (code) => {
     return title === 'Choose Currency'
-      ? `${COINS_URL_PNG}/${code.toLowerCase()}.png`
-      : `${COUNTRIES_URL_PNG}/${code}.png`;
+      ? `${COINS_URL_SVG}/${code.toLowerCase()}.svg`
+      : `${COUNTRIES_URL_SVG}/${code}.svg`;
   };
 
   const searchItem = ({ item }) => (

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -11,6 +11,7 @@ import {
 import { reachScrollEnd } from '../../redux/transactions/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
+import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
 import Trade from './Trade';
 
 export const TopRow = ({ text, onPress }) => (
@@ -25,13 +26,19 @@ export const TopRow = ({ text, onPress }) => (
   </View>
 );
 
-export default function TransactionsBlock() {
+export default function TransactionsBlock({ loading }) {
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state);
   const {
-    trade: { trades, hideOtherPairs },
+    trade: { trades, hideOtherPairs, totalTrades },
   } = state;
+
+  const [moreLoading, setMoreLoading] = useState(false);
+
+  useEffect(() => {
+    return () => dispatch(saveTrades([]));
+  }, []);
 
   const toggleShowHide = () => {
     dispatch(hideOtherPairsAction(!hideOtherPairs));
@@ -39,15 +46,20 @@ export default function TransactionsBlock() {
     dispatch(fetchTrades());
   };
 
-  useEffect(() => {
-    return () => dispatch(saveTrades([]));
-  }, []);
-
-  const handleScrollEnd = () => dispatch(reachScrollEnd('trades'));
-
-  const renderTrade = ({ item }) => {
-    return <Trade trade={item} key={item.creationTime} />;
+  const handleScrollEnd = () => {
+    dispatch(reachScrollEnd('trades'));
+    if (trades.length < totalTrades) {
+      setMoreLoading(true);
+    } else {
+      setMoreLoading(false);
+    }
   };
+
+  const renderTrade = ({ item }) => (
+    <Trade trade={item} key={item.creationTime} />
+  );
+
+  const footer = () => (moreLoading ? <OneTransactionSkeleton /> : <View />);
 
   return (
     <View style={styles.container}>
@@ -57,15 +69,19 @@ export default function TransactionsBlock() {
       />
 
       <FlatList
-        style={{ height: 280 }}
+        style={{ height: 280, flex: 1, zIndex: 999 }}
         data={trades}
         renderItem={renderTrade}
         keyExtractor={(item) => item.creationTime}
         onEndReached={handleScrollEnd}
         nestedScrollEnabled
-        // refreshControl={
-        //   <RefreshControl refreshing={loading} onRefresh={onRefresh} />
-        // }
+        ListFooterComponent={footer}
+        refreshControl={() => (
+          <RefreshControl
+            tintColor={colors.PRIMARY_PURPLE}
+            refreshing={loading}
+          />
+        )}
       />
     </View>
   );

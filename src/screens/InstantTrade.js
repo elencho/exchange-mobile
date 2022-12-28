@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+  FlatList,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../components/Background';
@@ -26,7 +32,7 @@ export default function InstantTrade() {
     transactions: { tabRoute },
   } = state;
 
-  const loading = tradesLoading || offersLoading;
+  const loading = tradesLoading && offersLoading;
   const onRefresh = () => dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
 
   useEffect(() => {
@@ -55,8 +61,8 @@ export default function InstantTrade() {
           />
         }
       >
-        {loading ? <TradeBlockSkeleton /> : <TradeBlock />}
-        {/* {loading ? <TransactionsSkeleton /> : <TransactionsBlock />} */}
+        {offersLoading ? <TradeBlockSkeleton /> : <TradeBlock />}
+        <TransactionsBlock loading={tradesLoading} />
       </ScrollView>
 
       <InfoModal />

@@ -16,10 +16,9 @@ import AppText from '../AppText';
 import Currency from './Currency';
 import CurrencySkeleton from './CurrencySkeleton';
 
-export default function BalancesList() {
+export default function BalancesList({ loading }) {
   const dispatch = useDispatch();
   const balances = useSelector((state) => state.trade.balance.balances);
-  const loading = useSelector((state) => state.transactions.loading);
   const tabRoute = useSelector((state) => state.transactions.tabRoute);
   const [showZeroBalances, setShowZeroBalances] = useState(true);
   const [nonZeroBalances, setNonZeroBalances] = useState([]);

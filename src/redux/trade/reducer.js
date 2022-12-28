@@ -24,7 +24,9 @@ const INITIAL_STATE = {
   cryptosArray: [],
   cryptosArrayConstant: [],
 
+  totalTrades: null,
   tradesLoading: false,
+  moreTradesLoading: false,
   offersLoading: false,
 
   // Query Params
@@ -57,13 +59,25 @@ export default (state = INITIAL_STATE, action) => {
     depositProviders,
     fiatsArray,
     cryptosArray,
+    totalTrades,
     cryptosArrayConstant,
+    moreTradesLoading,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_TRADES:
       return {
         ...state,
         trades,
+      };
+    case actionTypes.SET_TOTAL_TRADES:
+      return {
+        ...state,
+        totalTrades,
+      };
+    case actionTypes.MORE_TRADES_LOADING:
+      return {
+        ...state,
+        moreTradesLoading,
       };
     case actionTypes.SAVE_OFFERS:
       return {

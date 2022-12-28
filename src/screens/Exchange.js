@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.PRIMARY_BACKGROUND,
     alignItems: 'center',
+    paddingTop: 30,
   },
   mainText: {
     color: colors.PRIMARY_TEXT,
