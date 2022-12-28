@@ -1,0 +1,9 @@
+pipelines:
+  custom:
+    testflight-code-push:
+    - step:
+        name: Code push to testflight
+        image: "cryptxcom/codepush:16-alpine"
+        script:
+        - appcenter login --token "$APPCENTER_CODEPUSH_TOKEN" # this is dk personal token, might change later
+        - appcenter codepush release-react -a Cryptx/Exchange-iOS
