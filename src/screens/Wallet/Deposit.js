@@ -61,7 +61,10 @@ export default function Deposit() {
     setHasMethod(!!Object.keys(m).length);
     setLoading(false);
 
-    return () => dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
+    return () => {
+      dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
+      dispatch(setCard(null));
+    };
   }, [code]);
 
   useEffect(() => {

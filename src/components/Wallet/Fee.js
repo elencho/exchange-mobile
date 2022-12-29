@@ -21,6 +21,26 @@ export default function Fee() {
 
   const currency = tabRoute === 'Wallet' ? code : fiat;
 
+  const UpperLine = () => {
+    let feeText;
+    let totalText = `Total : ${notEmpty() ? fee?.totalAmount : 0} ${currency}`;
+
+    if (fee?.feeData) {
+      const {
+        feeData: { fixedValue },
+      } = fee;
+
+      const feeCond = !notEmpty() || fixedValue || fixedValue === 0;
+      feeText = feeCond ? null : `Fee : ${fee?.totalFee ?? '0'} ${currency} | `;
+    }
+    return (
+      <AppText small style={styles.feeText}>
+        {feeText}
+        {totalText}
+      </AppText>
+    );
+  };
+
   const LowerLine = () => {
     if (fee?.feeData) {
       const {
@@ -32,8 +52,6 @@ export default function Fee() {
           rangeEnd,
         },
       } = fee;
-
-      // if (fixedValue) return null;
 
       const value = () => {
         if (fixedValue && percentageValue)
@@ -56,7 +74,7 @@ export default function Fee() {
       return (
         <AppText small style={styles.feeText}>
           {subMethod ? subMethod : 'Fixed : '}
-          {value()}
+          {value() ?? `0 ${currency}`}
         </AppText>
       );
     }
@@ -67,10 +85,7 @@ export default function Fee() {
       <Image source={images.Fee} />
 
       <View style={styles.flex}>
-        <AppText small style={styles.feeText}>
-          {notEmpty() ? `Fee : ${fee?.totalFee ?? '0'} ${currency} | ` : null}
-          Total : {notEmpty() ? fee?.totalAmount : 0} {currency}
-        </AppText>
+        <UpperLine />
         <LowerLine />
       </View>
     </View>
@@ -79,7 +94,6 @@ export default function Fee() {
 
 const styles = StyleSheet.create({
   fee: {
-    marginHorizontal: 16,
     marginBottom: 50,
     alignItems: 'center',
     flexDirection: 'row',
