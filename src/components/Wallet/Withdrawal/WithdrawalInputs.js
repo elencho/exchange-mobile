@@ -50,12 +50,11 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
     if (Object.keys(currentTemplate)?.length) {
       dispatch(setWithdrawalNote(''));
       dispatch(setWithdrawalAmount(0));
-      dispatch(setFee(null));
     }
   }, [currentTemplate]);
 
   const setAmount = (text) => {
-    const amount = text.replace(',', '.');
+    const amount = text?.trim()?.replace(',', '.');
     const condition =
       depositProvider ||
       cur?.type === 'CRYPTO' ||
@@ -122,7 +121,9 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
         />
       </View>
 
-      <Fee />
+      <View style={{ marginHorizontal: 16 }}>
+        <Fee />
+      </View>
     </>
   );
 }

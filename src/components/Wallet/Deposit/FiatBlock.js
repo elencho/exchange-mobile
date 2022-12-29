@@ -135,7 +135,9 @@ export default function FiatBlock() {
         </>
       </View>
 
-      <Fee />
+      <View style={{ marginHorizontal: 16 }}>
+        <Fee />
+      </View>
 
       {network === 'SWIFT' || network === 'SEPA' ? (
         <AppButton
