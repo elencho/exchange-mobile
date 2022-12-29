@@ -5,14 +5,6 @@ const vaxo_realuri = {
   password: '11111!Aa',
 };
 const vaxo_satesto = { login: 'metro21@mailinator.com', password: '11111!Aa' };
-const sali_satesto = {
-  login: 'salibukhiashvili@mailinator.com',
-  password: 'Salome1996$',
-};
-const sali_realuri = {
-  login: 'bukhiashvilisalome@gmail.com',
-  password: '',
-};
 const baneta_realuri = { login: 'ibanet@cryptx.com', password: 'Malina125$' };
 const kervala = { login: 'gkerva@cryptal.com', password: 'TestGexCryptal7' };
 
