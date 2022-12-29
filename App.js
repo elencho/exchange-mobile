@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
-import { Platform, StyleSheet, SafeAreaView } from 'react-native';
-// import CodePush from 'react-native-code-push';
-import { StatusBar } from 'expo-status-bar';
+import {
+  Platform,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+  LogBox,
+} from 'react-native';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
-import Constants from 'expo-constants';
 import * as SplashScreen from 'expo-splash-screen';
 
 import Navigator from './src/navigation';
@@ -16,6 +19,10 @@ import './src/utils/i18n';
 import './src/utils/interceptor';
 import AppToast from './src/components/AppToast';
 
+LogBox.ignoreLogs([
+  // TODO: Remove when fixed
+  'VirtualizedLists should never be nested',
+]);
 SplashScreen.preventAutoHideAsync();
 
 // const codePushOptions = {
@@ -67,7 +74,7 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
     backgroundColor: colors.PRIMARY_BACKGROUND,
-    paddingTop: Platform.OS == 'android' ? Constants.statusBarHeight : 0,
+    paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0,
   },
   statusBar: {
     flex: 0,

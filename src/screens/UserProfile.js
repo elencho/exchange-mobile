@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   Image,
   RefreshControl,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  FlatList,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
@@ -31,9 +32,12 @@ export default function UserProfile({ navigation }) {
   const state = useSelector((state) => state);
 
   const {
-    profile: { Personal_Security, userInfo },
-    transactions: { loading },
+    profile: { Personal_Security, userInfo, userProfileLoading },
   } = state;
+
+  useEffect(() => {
+    dispatch(fetchUserInfo());
+  }, []);
 
   useFocusEffect(
     useCallback(() => {
@@ -53,10 +57,19 @@ export default function UserProfile({ navigation }) {
     dispatch({ type: 'LOGOUT' });
     // }
   };
-
   const onRefresh = () => dispatch(fetchUserInfo());
   const back = () => navigation.goBack();
 
+  const renderItem = () => (
+    <>
+      {Personal_Security === 'Personal' && (
+        <Personal loading={userProfileLoading} />
+      )}
+      {Personal_Security === 'Security' && (
+        <Security loading={userProfileLoading} />
+      )}
+    </>
+  );
   return (
     <Background>
       <View style={styles.topRow}>
@@ -74,19 +87,13 @@ export default function UserProfile({ navigation }) {
       <AppText style={styles.secondary}>{userInfo?.email}</AppText>
 
       <PersonalSecuritySwitcher />
-
-      <ScrollView
-        refreshControl={
-          <RefreshControl
-            tintColor={colors.PRIMARY_PURPLE}
-            refreshing={loading}
-            onRefresh={onRefresh}
-          />
-        }
-      >
-        {Personal_Security === 'Personal' && <Personal loading={loading} />}
-        {Personal_Security === 'Security' && <Security loading={loading} />}
-      </ScrollView>
+      <FlatList
+        data={[0]}
+        renderItem={renderItem}
+        tintColor={colors.PRIMARY_PURPLE}
+        refreshing={userProfileLoading}
+        onRefresh={onRefresh}
+      />
     </Background>
   );
 }

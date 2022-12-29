@@ -26,7 +26,7 @@ export default function InstantTrade() {
     transactions: { tabRoute },
   } = state;
 
-  const loading = tradesLoading || offersLoading;
+  const loading = tradesLoading && offersLoading;
   const onRefresh = () => dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
 
   useEffect(() => {
@@ -55,8 +55,8 @@ export default function InstantTrade() {
           />
         }
       >
-        {loading ? <TradeBlockSkeleton /> : <TradeBlock />}
-        {loading ? <TransactionsSkeleton /> : <TransactionsBlock />}
+        {offersLoading ? <TradeBlockSkeleton /> : <TradeBlock />}
+        <TransactionsBlock loading={tradesLoading} />
       </ScrollView>
 
       <InfoModal />

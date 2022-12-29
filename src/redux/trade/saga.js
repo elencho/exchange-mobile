@@ -20,6 +20,7 @@ import {
   setCurrentBalanceObj,
   setCrypto,
   switchBalanceCard,
+  setTotalTrades,
 } from './actions';
 import {
   getParams,
@@ -51,10 +52,14 @@ function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
   const params = yield select(getParams);
   const trades = yield select((state) => state.trade.trades);
-  const newTrades = yield call(fetchTrades, params);
+  const totalTrades = yield select((state) => state.trade.totalTrades);
 
-  if (newTrades) {
-    yield put(saveTrades([...trades, ...newTrades]));
+  const newTrades = yield call(fetchTrades, params);
+  const newestTrades = newTrades?.data;
+
+  if (newestTrades) {
+    yield put(setTotalTrades(newTrades?.paging.pageCount));
+    yield put(saveTrades([...trades, ...newestTrades]));
   }
   yield put(setTradesLoading(false));
 }

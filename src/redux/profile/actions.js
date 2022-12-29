@@ -48,6 +48,8 @@ export const actionTypes = {
   CREDENTIALS_FOR_EMAIL: 'CREDENTIALS_FOR_EMAIL',
   CREDENTIALS_FOR_GOOGLE: 'CREDENTIALS_FOR_GOOGLE',
   ACTIVATE_GOOGLE_OTP: 'ACTIVATE_GOOGLE_OTP',
+
+  TOGGLE_USER_PROFILE_LOADING: 'TOGGLE_USER_PROFILE_LOADING',
 };
 
 // Login
@@ -161,6 +163,10 @@ export const fetchCountries = () => ({
 });
 export const fetchUserInfo = () => ({
   type: actionTypes.FETCH_USER_INFO_SAGA,
+});
+export const toggleUserInfoLoading = (userProfileLoading) => ({
+  type: actionTypes.TOGGLE_USER_PROFILE_LOADING,
+  userProfileLoading,
 });
 export const saveUserInfoSaga = () => ({
   type: actionTypes.SAVE_USER_INFO_SAGA,

@@ -22,7 +22,7 @@ export default function Login({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { credentials },
+    profile: { credentials, userProfileLoading },
   } = state;
   const login = credentials.login;
   const password = credentials.password;
@@ -100,7 +100,12 @@ export default function Login({ navigation }) {
         }
       />
 
-      <AppButton text="Login" style={styles.button} onPress={handleLogin} />
+      <AppButton
+        text="Login"
+        style={styles.button}
+        onPress={handleLogin}
+        loading={userProfileLoading}
+      />
       <AppText style={styles.secondary}>
         New User? <PurpleText text="Register" onPress={register} />
       </AppText>

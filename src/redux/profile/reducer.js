@@ -18,11 +18,12 @@ const kervala = { login: 'gkerva@cryptal.com', password: 'TestGexCryptal7' };
 
 const INITIAL_STATE = {
   timerVisible: false,
+  userProfileLoading: false,
 
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: kervala,
+  credentials: {},
   userAndPassInfo: {},
   forgotPassInfo: {
     username: 'Vakhtang.elisabedashvili@gmail.com',
@@ -68,6 +69,7 @@ export default (state = INITIAL_STATE, action) => {
     pkceInfo,
     credentials,
     userAndPassInfo,
+    userProfileLoading,
     forgotPassInfo,
     forgotPassMode,
     loginStartInfo,
@@ -89,6 +91,11 @@ export default (state = INITIAL_STATE, action) => {
     timerVisible,
   } = action;
   switch (action.type) {
+    case actionTypes.TOGGLE_USER_PROFILE_LOADING:
+      return {
+        ...state,
+        userProfileLoading,
+      };
     case actionTypes.SAVE_PKCE_INFO:
       return {
         ...state,

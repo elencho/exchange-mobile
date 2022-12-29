@@ -21,7 +21,9 @@ export const CURRENCIES_URL = `${core}/public/currencies`;
 
 export const COUNTRIES_URL = `${core}/public/countries`;
 
-export const TRADES_URL = `${core}/private/simpleTrade/trades`;
+//export const TRADES_URL = `${core}/private/simpleTrade/trades`;
+
+export const TRADES_URL = `${core}/private/simpleTrade/tradesPaged`;
 
 export const OFFERS_URL = `${core}/private/simpleTrade/offers`;
 
@@ -94,5 +96,7 @@ export const COINS_URL_PNG = `https://static.cryptal.com/icons/png/coins/36x36`;
 export const COINS_URL_SVG = `https://static.cryptal.com/icons/svg/coins`;
 
 export const COUNTRIES_URL_PNG = `https://static.cryptal.com/icons/png/countries`;
+
+export const COUNTRIES_URL_SVG = `https://static.cryptal.com/icons/svg/countries`;
 
 export const ICONS_URL_PNG = `https://static.cryptal.com/icons/png`;

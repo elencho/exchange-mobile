@@ -61,9 +61,7 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
           height={36}
           width={36}
           style={styles.image}
-          // uri={`${COINS_URL_SVG}/${code.toLowerCase()}.svg`}
-          onLoad={() => console.log('loading', code)}
-          onError={() => console.log('error', code)}
+          uri={`${COINS_URL_SVG}/${code.toLowerCase()}.svg`}
         />
       </View>
       <View style={styles.balance}>

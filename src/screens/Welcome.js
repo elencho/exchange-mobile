@@ -9,7 +9,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
-import Constants from 'expo-constants';
 
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
@@ -67,8 +66,6 @@ export default function Welcome({ navigation }) {
 
   const startLogin = () => dispatch(startLoginAction(navigation));
   const startRegistration = () => dispatch(startRegistrationAction(navigation));
-
-  const auth = Constants.manifest.extra.auth;
 
   return (
     <TouchableWithoutFeedback

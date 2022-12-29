@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
@@ -26,7 +26,9 @@ function TransactionHistory() {
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
-  const { transactions, loading, tabRoute } = state;
+  const { transactions, loading, totalTransactions } = state;
+
+  const [moreLoading, setMoreLoading] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -54,21 +56,22 @@ function TransactionHistory() {
 
   const uniqueDates = [...new Set(dates)];
 
-  const renderDate = ({ item }) => {
-    return loading ? (
-      <TransactionSkeleton />
-    ) : (
-      <TransactionDate
-        date={item}
-        key={item}
-        transactions={transactions}
-        loading={loading}
-      />
-    );
+  const renderDate = ({ item }) => (
+    <TransactionDate
+      date={item}
+      transactions={transactions}
+      loading={loading}
+    />
+  );
+
+  const handleScrollEnd = () => {
+    dispatch(reachScrollEnd('transactions'));
+    if (transactions.length < totalTransactions) {
+      setMoreLoading(true);
+    } else {
+      setMoreLoading(false);
+    }
   };
-
-  const handleScrollEnd = () => dispatch(reachScrollEnd('transactions'));
-
   return (
     <Background>
       <TopRow />
@@ -79,17 +82,27 @@ function TransactionHistory() {
         <FilterRow array={types} />
         <FilterIcon onPress={() => navigation.navigate('TransactionFilter')} />
       </View>
-      <FlatList
-        style={styles.transactions}
-        data={uniqueDates}
-        renderItem={renderDate}
-        keyExtractor={(item) => item}
-        onEndReached={handleScrollEnd}
-        scrollEventThrottle={1000}
-        refreshControl={
-          <RefreshControl refreshing={loading} onRefresh={onRefresh} />
-        }
-      />
+
+      {loading ? (
+        <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
+      ) : (
+        <FlatList
+          style={styles.transactions}
+          data={uniqueDates}
+          renderItem={renderDate}
+          keyExtractor={({ index }) => index}
+          onEndReached={handleScrollEnd}
+          onEndReachedThreshold={0.5}
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={1000}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+          }
+          ListFooterComponent={() =>
+            moreLoading ? <TransactionSkeleton length={[0, 1, 2]} /> : <View />
+          }
+        />
+      )}
 
       <TransactionModal transactions />
     </Background>

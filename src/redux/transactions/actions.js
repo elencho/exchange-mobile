@@ -12,7 +12,7 @@ export const actionTypes = {
   CLEAR_FILTERS: 'CLEAR_FILTERS',
   INCREASE_OFFSET: 'INCREASE_OFFSET',
   SET_TAB_ROUTE_NAME: 'SET_TAB_ROUTE_NAME',
-
+  SET_TOTAL_TRANSACTIONS: 'SET_TOTAL_TRANSACTIONS',
   // PURE VISUALS
   TOGGLE_LOADING: 'TOGGLE_LOADING',
 
@@ -80,6 +80,10 @@ export const toggleLoading = (loading) => ({
 export const setTransactionsOffset = (offset) => ({
   type: actionTypes.INCREASE_OFFSET,
   offset,
+});
+export const setTotalTransactions = (totalTransactions) => ({
+  type: actionTypes.SET_TOTAL_TRANSACTIONS,
+  totalTransactions,
 });
 export const setTabRouteName = (tabRoute) => ({
   type: actionTypes.SET_TAB_ROUTE_NAME,
