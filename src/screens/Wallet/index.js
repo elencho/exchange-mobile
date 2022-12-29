@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { useSelector } from 'react-redux';
+
 import Background from '../../components/Background';
 import TopRow from '../../components/TransactionHistory/TopRow';
 import Headline from '../../components/TransactionHistory/Headline';
@@ -9,6 +11,8 @@ import TotalBalance from '../../components/Wallet/TotalBalance';
 import BalancesList from '../../components/Wallet/BalancesList';
 
 export default function Wallet() {
+  const loading = useSelector((state) => state.transactions.loading);
+
   return (
     <Background>
       <TopRow />
@@ -18,9 +22,9 @@ export default function Wallet() {
         <CurrencySwitch />
       </View>
 
-      <TotalBalance />
+      <TotalBalance loading={loading} />
 
-      <BalancesList />
+      <BalancesList loading={loading} />
     </Background>
   );
 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import colors from '../constants/colors';
 import AppText from './AppText';
@@ -11,6 +12,7 @@ export default function AppButton({
   right,
   style,
   disabled,
+  loading,
   ...rest
 }) {
   return (
@@ -24,9 +26,13 @@ export default function AppButton({
       {...rest}
     >
       {left}
-      <AppText medium style={[styles.buttonText, left && { marginLeft: 9 }]}>
-        {text}
-      </AppText>
+      {loading ? (
+        <MaterialIndicator color="#FFFFFF" animationDuration={3000} size={20} />
+      ) : (
+        <AppText medium style={[styles.buttonText, left && { marginLeft: 9 }]}>
+          {text}
+        </AppText>
+      )}
       {right}
     </Pressable>
   );

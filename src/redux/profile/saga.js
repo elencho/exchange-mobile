@@ -21,6 +21,7 @@ import {
   saveRegistrationStartInfo,
   saveVerificationInfo,
   fetchUserInfo,
+  toggleUserInfoLoading,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -122,13 +123,13 @@ function* registrationFormSaga(action) {
 // VERIFY REGISTRATION
 function* verifyAccountSaga(action) {
   const { otp, navigation } = action;
-  yield put(toggleLoading(true));
 
   const state = yield select((state) => state.profile);
   const {
     verificationInfo,
     pkceInfo: { codeVerifier },
   } = state;
+  yield put(toggleUserInfoLoading(true));
 
   const verified = yield call(
     verifyAccount,
@@ -147,9 +148,9 @@ function* verifyAccountSaga(action) {
     yield put(toggleLoading(false));
     yield call(launchSumsubSdk);
   } else {
-    yield put(toggleLoading(false));
     yield put(saveVerificationInfo(verified));
   }
+  yield put(toggleUserInfoLoading(false));
 }
 
 function* codeToTokenSaga(action) {
@@ -175,6 +176,9 @@ function* usernameAndPasswordSaga(action) {
   const credentials = yield select((state) => state.profile.credentials);
   const loginStartInfo = yield select((state) => state.profile.loginStartInfo);
   const { login, password } = credentials;
+
+  yield put(toggleUserInfoLoading(true));
+
   const userAndPassInfo = yield call(
     usernameAndPasswordForm,
     login,
@@ -202,6 +206,8 @@ function* usernameAndPasswordSaga(action) {
 
     yield put({ type: 'CODE_TO_TOKEN_SAGA', code, codeVerifier, navigation });
   }
+  yield put(toggleUserInfoLoading(false));
+
   // Till here
 }
 
@@ -341,7 +347,7 @@ function* fetchCountriesSaga() {
 
 //  FETCH USER INFO
 function* fetchUserInfoSaga() {
-  // yield put(toggleLoading(true));
+  yield put(toggleUserInfoLoading(true));
   // yield delay(1000);
 
   const userInfo = yield call(fetchUserInfoUtil);
@@ -352,7 +358,8 @@ function* fetchUserInfoSaga() {
     yield put({ type: 'OTP_SAGA', token });
   }
 
-  // yield put(toggleLoading(false));
+  yield put(toggleUserInfoLoading(false));
+  //yield put(toggleLoading(false));
 }
 
 //  UPDATE USER INFO
