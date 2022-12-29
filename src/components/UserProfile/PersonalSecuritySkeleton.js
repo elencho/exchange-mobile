@@ -52,13 +52,17 @@ const SecondPart = () => (
 const PersonalSecuritySkeleton = () => (
   <>
     <View style={styles.container}>
-      {[1, 2, 3].map(() => (
-        <FirstPart />
+      {[1, 2, 3].map((n, i) => (
+        <View key={i}>
+          <FirstPart />
+        </View>
       ))}
     </View>
     <View style={styles.container}>
-      {[1, 2].map(() => (
-        <FirstPart />
+      {[1, 2].map((n, i) => (
+        <View key={i}>
+          <FirstPart />
+        </View>
       ))}
     </View>
     <View style={styles.container}>

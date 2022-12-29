@@ -16,7 +16,6 @@ import CryptoModal from '../components/InstantTrade/CryptoModal';
 import colors from '../constants/colors';
 import FiatModal from '../components/InstantTrade/FiatModal';
 import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton';
-import TransactionsSkeleton from './TransactionsSkeleton';
 
 export default function InstantTrade() {
   const dispatch = useDispatch();

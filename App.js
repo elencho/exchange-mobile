@@ -56,7 +56,7 @@ function App() {
 
   return (
     <Provider store={store}>
-      {iphone && <StatusBar style="light" />}
+      {iphone && <StatusBar barStyle="light-content" />}
       {iphone && <SafeAreaView style={styles.statusBar} />}
       <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
         <AppToast />

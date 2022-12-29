@@ -3,8 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import colors from '../../constants/colors';
 import Skeleton from '../Skeleton';
 
-const FirstPart = ({ key }) => (
-  <View key={key} style={styles.mainWrapper}>
+const FirstPart = () => (
+  <View style={styles.mainWrapper}>
     <View style={styles.wrapper}>
       <View style={styles.lastWrapper}>
         <Skeleton width={34} height={34} style={{ borderRadius: 100 }} />
@@ -52,12 +52,13 @@ const SecondPart = () => (
 const PersonalProfileSkeleton = () => (
   <>
     <View style={styles.container}>
-      {[1, 2, 3, 4].map(({ index }) => (
-        <FirstPart key={index} />
+      {[1, 2, 3, 4].map((n, i) => (
+        <View key={i}>
+          <FirstPart />
+        </View>
       ))}
     </View>
     <SecondPart />
-    <View></View>
   </>
 );
 

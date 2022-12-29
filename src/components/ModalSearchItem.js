@@ -25,7 +25,7 @@ export default function ModalSearchItem({
       style={[styles.container, backgroundCond()]}
       onPress={onPress}
     >
-      <SvgUri height={36} width={36} style={styles.image} uri={uri} />
+      <SvgUri height={36} width={36} style={styles.image} /* uri={uri} */ />
       <AppText medium style={{ color: colors.PRIMARY_TEXT }}>
         {name}
       </AppText>
