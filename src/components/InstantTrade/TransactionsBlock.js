@@ -76,12 +76,12 @@ export default function TransactionsBlock({ loading }) {
         onEndReached={handleScrollEnd}
         nestedScrollEnabled
         ListFooterComponent={footer}
-        refreshControl={() => (
+        refreshControl={
           <RefreshControl
             tintColor={colors.PRIMARY_PURPLE}
             refreshing={loading}
           />
-        )}
+        }
       />
     </View>
   );
