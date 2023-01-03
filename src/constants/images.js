@@ -50,7 +50,7 @@ export default {
   Strong_Password: require('../assets/images/User_profile/Strong_Password.png'),
   Hide: require('../assets/images/User_profile/Hide.png'),
   Show: require('../assets/images/User_profile/Show.png'),
-  Appstore: require('../assets/images/User_profile/Appstore.png'),
+  IosStore: require('../assets/images/User_profile/IosStore.png'),
   Playstore: require('../assets/images/User_profile/Playstore.png'),
   User: require('../assets/images/User_profile/User.png'),
   Portfolio: require('../assets/images/User_profile/Portfolio.png'),
