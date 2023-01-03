@@ -51,7 +51,7 @@ export default {
   Hide: require('../assets/images/User_profile/Hide.png'),
   Show: require('../assets/images/User_profile/Show.png'),
   IosStore: require('../assets/images/User_profile/IosStore.png'),
-  Playstore: require('../assets/images/User_profile/Playstore.png'),
+  AndroidStore: require('../assets/images/User_profile/AndroidStore.png'),
   User: require('../assets/images/User_profile/User.png'),
   Portfolio: require('../assets/images/User_profile/Portfolio.png'),
   Browser: require('../assets/images/User_profile/Browser.png'),
