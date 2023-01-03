@@ -2,8 +2,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Skeleton from '../Skeleton';
 
-const MainPart = (index) => (
-  <View key={index} style={styles.mainWrapper}>
+const MainPart = () => (
+  <View style={styles.mainWrapper}>
     <Skeleton width={78} height={8} style={{ marginBottom: 30 }} />
     <View style={styles.wrapper}>
       <View style={styles.lastWrapper}>
@@ -22,7 +22,11 @@ const MainPart = (index) => (
 );
 
 const TransactionSkeleton = ({ length }) =>
-  length?.map(({ index }) => <MainPart key={index} />);
+  length?.map((a, i) => (
+    <View key={i}>
+      <MainPart />
+    </View>
+  ));
 
 export default TransactionSkeleton;
 

@@ -7,27 +7,29 @@ import colors from '../../constants/colors';
 import Logo from '../../assets/images/Logo.svg';
 import AppText from '../AppText';
 
-function TopRow() {
+function TopRow({ clear }) {
   const navigation = useNavigation();
 
   const userInfo = useSelector((state) => state.profile.userInfo);
   const { firstName, lastName } = userInfo;
 
   const initials = () => {
-    if (userInfo.firstName && userInfo.lastName) {
+    if (firstName && lastName) {
       return `${firstName[0]} ${lastName[0]}`;
     } else {
       return `ME`;
     }
   };
 
+  const navigate = () => {
+    navigation.navigate('UserProfile');
+    clear();
+  };
+
   return (
     <View style={styles.topRow}>
       <Logo style={styles.logo} />
-      <Pressable
-        style={styles.profile}
-        onPress={() => navigation.navigate('UserProfile')}
-      >
+      <Pressable style={styles.profile} onPress={navigate}>
         <AppText medium style={styles.text}>
           {initials()}
         </AppText>

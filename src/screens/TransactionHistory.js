@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import Background from '../components/Background';
 import FilterIcon from '../components/TransactionHistory/FilterIcon';
@@ -30,20 +30,14 @@ function TransactionHistory() {
 
   const [moreLoading, setMoreLoading] = useState(false);
 
-  useFocusEffect(
-    useCallback(() => {
-      return () => onRefresh();
-    }, [])
-  );
-
   useEffect(() => {
     dispatch(chooseCurrency('Show All Currency'));
     dispatch(setAbbr(null));
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+    return () => dispatch(clearFilters());
   }, []);
 
   const onRefresh = () => {
-    dispatch(clearFilters());
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
   };
 
@@ -74,7 +68,7 @@ function TransactionHistory() {
   };
   return (
     <Background>
-      <TopRow />
+      <TopRow clear={() => dispatch(clearFilters())} />
 
       <Headline title="Transaction History" />
 

@@ -104,17 +104,18 @@ export default function TemplatesModal() {
 const styles = StyleSheet.create({
   flex: {
     flex: 1,
+    justifyContent: 'center',
   },
   icon: {
     width: 18,
     alignItems: 'center',
+    alignSelf: 'center',
   },
   template: {
     flexDirection: 'row',
     paddingHorizontal: 18,
     marginHorizontal: -18,
     height: 60,
-    alignItems: 'center',
     borderRadius: 5,
   },
   subtext: {
