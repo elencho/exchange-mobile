@@ -45,7 +45,6 @@ export default function BuySellModal() {
       pairObject,
       balance,
       currentTrade,
-      depositProviders,
       depositProvider,
       card,
     },
@@ -69,15 +68,6 @@ export default function BuySellModal() {
   useEffect(() => {
     handleChangeText(price, 'crypto');
   }, [pairObject]);
-
-  useEffect(() => {
-    if (depositProviders?.length > 1) {
-      dispatch(setDepositProvider(null));
-    }
-    if (depositProviders?.length === 1) {
-      dispatch(setDepositProvider(depositProviders[0].provider));
-    }
-  }, [depositProviders]);
 
   useEffect(() => {
     if (card) handleChangeText(price, 'crypto');

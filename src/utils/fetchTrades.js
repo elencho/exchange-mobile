@@ -6,10 +6,11 @@ import {
   BALANCE_URL,
   CARDS_URL,
   CALCULATE_FEE_URL,
+  TRADES_URL_PAGED,
 } from '../constants/api';
 
 export const fetchTrades = async (params) => {
-  const data = await axios.get(TRADES_URL, { params });
+  const data = await axios.get(TRADES_URL_PAGED, { params });
   return data?.data;
 };
 

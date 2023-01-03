@@ -21,9 +21,9 @@ export const CURRENCIES_URL = `${core}/public/currencies`;
 
 export const COUNTRIES_URL = `${core}/public/countries`;
 
-//export const TRADES_URL = `${core}/private/simpleTrade/trades`;
+export const TRADES_URL = `${core}/private/simpleTrade/trades`;
 
-export const TRADES_URL = `${core}/private/simpleTrade/tradesPaged`;
+export const TRADES_URL_PAGED = `${core}/private/simpleTrade/tradesPaged`;
 
 export const OFFERS_URL = `${core}/private/simpleTrade/offers`;
 

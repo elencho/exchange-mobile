@@ -73,11 +73,9 @@ function ChooseCurrencyModal({ wallet = false }) {
 
     if (wallet) {
       if (fiats.includes(currencyCode)) {
-        walletTab === 'Whitelist' && dispatch(setWalletTab('Manage Cards'));
         dispatch(wireDepositAction(name, currencyCode, navigation));
         dispatch(saveCryptoAddress({}));
       } else {
-        walletTab === 'Manage Cards' && dispatch(setWalletTab('Whitelist'));
         dispatch(
           cryptoAddressesAction(name, currencyCode, navigation, network)
         );
