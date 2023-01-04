@@ -124,6 +124,7 @@ export default function FiatBlock() {
           <AppInput
             onChangeText={handleAmount}
             value={depositAmount}
+            style={{ marginTop: !depositProvider ? -35 : 0 }}
             keyboardType="numeric"
             maxLength={maxLength}
             label="Enter Amount"
