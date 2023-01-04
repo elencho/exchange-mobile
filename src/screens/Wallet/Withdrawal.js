@@ -33,11 +33,10 @@ export default function Withdrawal() {
   const state = useSelector((state) => state);
   const {
     profile: { googleAuth, emailAuth, smsAuth },
-    trade: { currentBalanceObj, card, depositProvider },
+    trade: { currentBalanceObj, card, depositProvider, cardsLoading },
     transactions: { code },
     wallet: {
       withdrawalRestriction,
-      withdrawalNote,
       currentWhitelistObj,
       currentTemplate,
       withdrawalBank,
@@ -140,7 +139,7 @@ export default function Withdrawal() {
 
   return (
     <>
-      {!loading ? (
+      {!cardsLoading ? (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.block}>
             {/* <GeneralError style={{ marginBottom: 16 }} /> */}

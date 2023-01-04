@@ -42,6 +42,7 @@ function CardSection({ error }) {
   const showFees = () => dispatch(toggleBankFeesModal(true));
 
   const multipleBanks = () => {
+    if (tabRoute === 'Wallet') return true;
     let isMultiple;
     balances?.forEach((b) => {
       if (fiat === b.currencyCode) {
@@ -179,14 +180,6 @@ const styles = StyleSheet.create({
   },
   container: {
     marginVertical: 20,
-  },
-  info: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  infoText: {
-    color: colors.SECONDARY_TEXT,
   },
   newCard: {
     color: colors.SECONDARY_TEXT,

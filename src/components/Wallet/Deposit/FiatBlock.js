@@ -58,20 +58,21 @@ export default function FiatBlock() {
   };
 
   const handleAmount = (text) => {
-    const d = text?.trim().replace(',', '.');
+    const replacedAmount = text?.trim().replace(',', '.');
+    if (/^[0-9]+(\.|\.[0-9]{1,2})?$/.test(replacedAmount) || !replacedAmount) {
+      if (validateScale(replacedAmount, depositScale)) {
+        dispatch({
+          type: 'SET_DEPOSIT_AMOUNT',
+          depositAmount: replacedAmount ? replacedAmount : 0,
+        });
 
-    if (validateScale(d, depositScale)) {
-      dispatch({
-        type: 'SET_DEPOSIT_AMOUNT',
-        depositAmount: d ? d : 0,
-      });
-
-      if (
-        (depositProvider && card) ||
-        network === 'SWIFT' ||
-        network === 'SEPA'
-      ) {
-        dispatch(fetchFee('deposit'));
+        if (
+          (depositProvider && card) ||
+          network === 'SWIFT' ||
+          network === 'SEPA'
+        ) {
+          dispatch(fetchFee('deposit'));
+        }
       }
     }
   };
@@ -124,6 +125,7 @@ export default function FiatBlock() {
           <AppInput
             onChangeText={handleAmount}
             value={depositAmount}
+            style={{ marginTop: !depositProvider ? -35 : 0 }}
             keyboardType="numeric"
             maxLength={maxLength}
             label="Enter Amount"
