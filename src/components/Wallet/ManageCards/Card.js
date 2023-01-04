@@ -10,47 +10,67 @@ import { setDeleteModalInfo } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
 
-export default function Card({ name, cardNumber, network, status, id }) {
+export default function Card({ card }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  const isVerified = status === 'VERIFIED';
+  const { provider, cardNumber, network, status, id, expired } = card;
+
+  const toVerify = (white, purple) => (
+    <>
+      <AppText style={styles.verified}>{white} </AppText>
+      <PurpleText
+        text={purple}
+        onPress={() => navigation.navigate('CardVerificationOne', { id })}
+      />
+    </>
+  );
+
+  const notToVerify = (text) => (
+    <AppText style={styles.verified}>{text}</AppText>
+  );
+
+  const textCond = () => {
+    if (expired) {
+      return notToVerify('Card Expired');
+    }
+    if (status === 'VERIFIED' || status === 'BANNED') {
+      return notToVerify(`Card ${status}`);
+    }
+    if (status === 'UNVERIFIED') {
+      return toVerify('Click to', 'Verify');
+    }
+    if (status === 'FAILED') {
+      return toVerify('Failed', 'Retry');
+    }
+  };
+
+  const imageCond = () => {
+    if (expired) return images.Card_Expired;
+    if (status === 'VERIFIED') return images.Verified;
+    if (status === 'UNVERIFIED') return images.Info;
+    if (status === 'BANNED' || status === 'FAILED') return images.Card_Error;
+  };
 
   const openModal = () => dispatch(setDeleteModalInfo({ id, visible: true }));
 
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: `${ICONS_URL_PNG}/${name}.png` }}
+        source={{ uri: `${ICONS_URL_PNG}/${provider}.png` }}
         style={styles.image}
       />
 
-      <View style={{ flex: 1, marginLeft: 20, marginTop: -3 }}>
+      <View style={styles.block}>
         <AppText medium style={styles.primary}>
-          Provider: {name}
+          Provider: {provider}
         </AppText>
         <AppText subtext style={styles.secondary}>
           {cardNumber} / {network}
         </AppText>
         <View style={styles.verifiedRow}>
-          <Image
-            source={images[isVerified ? 'Verified' : 'Info']}
-            style={styles.icon}
-          />
-
-          {isVerified ? (
-            <AppText style={styles.verified}>Already Verified</AppText>
-          ) : (
-            <>
-              <AppText style={styles.verified}>Click to </AppText>
-              <PurpleText
-                text="Verify"
-                onPress={() =>
-                  navigation.navigate('CardVerificationOne', { id })
-                }
-              />
-            </>
-          )}
+          <Image source={imageCond()} style={styles.icon} />
+          {textCond()}
         </View>
       </View>
 
@@ -62,11 +82,16 @@ export default function Card({ name, cardNumber, network, status, id }) {
 }
 
 const styles = StyleSheet.create({
+  block: {
+    flex: 1,
+    marginLeft: 20,
+    marginTop: -3,
+  },
   container: {
     flexDirection: 'row',
     marginVertical: 15,
   },
-  icon: { marginRight: 10 },
+  icon: { marginRight: 10, width: 16, height: 16 },
   image: {
     width: 30,
     height: 25,
@@ -80,7 +105,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 15,
   },
-  verified: { color: '#C0C5E0' },
+  verified: { color: '#C0C5E0', marginTop: -1 },
   verifiedRow: {
     flexDirection: 'row',
     alignItems: 'center',

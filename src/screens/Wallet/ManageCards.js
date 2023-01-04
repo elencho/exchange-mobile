@@ -1,12 +1,5 @@
 import React, { useRef } from 'react';
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  View,
-  Pressable,
-  ActivityIndicator,
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, View, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../../components/AppText';
@@ -62,14 +55,7 @@ export default function ManageCards() {
             ref={scrollRef}
           >
             {cards?.map((c) => (
-              <Card
-                key={c.id}
-                name={c.provider}
-                cardNumber={c.cardNumber}
-                network={c.network}
-                status={c.status}
-                id={c.id}
-              />
+              <Card key={c.id} card={c} />
             ))}
             {/* Code below for testing purposes only */}
             {/* {[1, 2, 3, 4, 5, 6, 7].map((c) => (
