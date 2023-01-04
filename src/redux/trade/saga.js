@@ -216,6 +216,7 @@ function* refreshWalletAndTradesSaga() {
     Object.keys(obj[m])?.length && !Object.keys(restriction)?.length;
 
   if (main && trade) {
+    yield put(saveTrades([]));
     yield put(instantTradeTabAction());
     yield put(fetchTradesAction());
   }
