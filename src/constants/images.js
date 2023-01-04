@@ -81,10 +81,14 @@ export default {
   Check_Full: require('../assets/images/Wallet/Check_Full.png'),
   Check_Empty: require('../assets/images/Wallet/Check_Empty.png'),
   Check_Red: require('../assets/images/Wallet/Check_Red.png'),
-  Info: require('../assets/images/Wallet/Info.png'),
-  Verified: require('../assets/images/Wallet/Verified.png'),
   Status_Success: require('../assets/images/Wallet/Status_Success.png'),
   Status_Error: require('../assets/images/Wallet/Status_Error.png'),
+
+  // Card Statuses
+  Info: require('../assets/images/Wallet/Info.png'),
+  Verified: require('../assets/images/Wallet/Verified.png'),
+  Card_Error: require('../assets/images/Wallet/Card_Error.png'),
+  Card_Expired: require('../assets/images/Wallet/Card_Expired.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),
