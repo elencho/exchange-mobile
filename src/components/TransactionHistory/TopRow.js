@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
@@ -23,7 +23,7 @@ function TopRow({ clear }) {
 
   const navigate = () => {
     navigation.navigate('UserProfile');
-    clear();
+    clear && clear();
   };
 
   return (

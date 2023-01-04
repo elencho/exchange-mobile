@@ -69,7 +69,7 @@ export default function TransactionsBlock({ loading }) {
       />
 
       <FlatList
-        style={{ height: 280, flex: 1, zIndex: 999 }}
+        style={{ height: 280 }}
         data={trades}
         renderItem={renderTrade}
         keyExtractor={(item) => item.creationTime}

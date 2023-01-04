@@ -13,6 +13,7 @@ export default function ModalSearchItem({
   uri,
   phoneCountry,
   phoneCode,
+  type,
 }) {
   const backgroundCond = () => {
     if (name === currentItem || code === currentItem) {
@@ -25,7 +26,11 @@ export default function ModalSearchItem({
       style={[styles.container, backgroundCond()]}
       onPress={onPress}
     >
-      <SvgUri height={36} width={36} style={styles.image} uri={uri} />
+      {type === 'countries' ? (
+        <Image style={styles.image} source={{ uri }} />
+      ) : (
+        <SvgUri height={36} width={36} style={styles.image} uri={uri} />
+      )}
       <AppText medium style={{ color: colors.PRIMARY_TEXT }}>
         {name}
       </AppText>

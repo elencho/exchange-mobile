@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
     paddingVertical: 14,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   text: {
     color: colors.SECONDARY_TEXT,

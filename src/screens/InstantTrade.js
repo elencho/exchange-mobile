@@ -46,6 +46,8 @@ export default function InstantTrade() {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
+        style={{ overflow: 'hidden' }}
+        contentContainerStyle={{ overflow: 'hidden' }}
         refreshControl={
           <RefreshControl
             tintColor={colors.PRIMARY_PURPLE}
@@ -54,8 +56,10 @@ export default function InstantTrade() {
           />
         }
       >
-        {offersLoading ? <TradeBlockSkeleton /> : <TradeBlock />}
-        <TransactionsBlock loading={tradesLoading} />
+        <View>
+          {offersLoading ? <TradeBlockSkeleton /> : <TradeBlock />}
+          <TransactionsBlock loading={tradesLoading} />
+        </View>
       </ScrollView>
 
       <InfoModal />
