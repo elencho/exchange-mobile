@@ -90,7 +90,6 @@ export default function UserProfile({ navigation }) {
       <FlatList
         data={[0]}
         renderItem={renderItem}
-        tintColor={colors.PRIMARY_PURPLE}
         refreshing={userProfileLoading}
         onRefresh={onRefresh}
       />

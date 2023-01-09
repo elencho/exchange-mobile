@@ -73,9 +73,11 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
   const Max = () => (
     <View style={styles.row}>
       <View style={styles.line} />
-      <PurpleText text="Max" onPress={handleMax} />
+      <PurpleText text="Max" onPress={handleMax} disabled={!depositProvider} />
     </View>
   );
+
+  const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 20;
 
   return (
     <>
@@ -111,7 +113,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
           onChangeText={setAmount}
           value={withdrawalAmount}
           label="Enter Amount"
-          style={styles.amount}
+          style={{ marginTop, marginBottom: 8 }}
           keyboardType="numeric"
           maxLength={maxLength}
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
@@ -129,10 +131,6 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
 }
 
 const styles = StyleSheet.create({
-  amount: {
-    marginTop: 22,
-    marginBottom: 7,
-  },
   block: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingVertical: 22,

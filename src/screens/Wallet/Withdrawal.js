@@ -48,7 +48,6 @@ export default function Withdrawal() {
 
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
-  const [loading, setloading] = useState(true);
   const [error, setError] = useState(false);
 
   const isFiat = currentBalanceObj.type === 'FIAT';
@@ -70,16 +69,12 @@ export default function Withdrawal() {
     }
 
     setHasMethod(!!Object.keys(m).length);
-    setloading(false);
   }, [code]);
 
   useEffect(() => {
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setFee(null));
-    if (isEcommerce) {
-      card && dispatch(fetchFee('withdrawal'));
-    }
-    if (!isEcommerce && network) {
+    if ((isEcommerce && card) || (!isEcommerce && network)) {
       dispatch(fetchFee('withdrawal'));
     }
   }, [network, depositProvider, card]);
@@ -98,11 +93,14 @@ export default function Withdrawal() {
 
   const withdraw = () => {
     const length = Object.keys(currentWhitelistObj)?.length;
+    const empty = !currentTemplate?.templateName;
 
     let condition;
-    if (isFiat) {
+    if (isEcommerce) {
       condition =
         !validateAmount(withdrawalAmount) || !card || !depositProvider;
+    } else if (isFiat) {
+      condition = !validateAmount(withdrawalAmount) || empty;
     } else {
       condition = !validateAmount(withdrawalAmount) || !length;
     }

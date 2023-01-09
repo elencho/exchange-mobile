@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { setNetwork, setWalletTab } from '../../redux/wallet/actions';
+import { setCard } from '../../redux/trade/actions';
 
 export default function WalletSwitcher() {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ export default function WalletSwitcher() {
 
   const handleWalletTab = (f) => {
     dispatch(setWalletTab(f));
+    dispatch(setCard(null));
 
     const m = f === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
 

@@ -101,6 +101,14 @@ export default function FiatBlock() {
     </View>
   );
 
+  const marginTop = () => {
+    if (network === 'ECOMMERCE') {
+      return !depositProvider ? -35 : 0;
+    } else {
+      return -10;
+    }
+  };
+
   return (
     <View>
       {network !== 'ECOMMERCE' && (
@@ -125,7 +133,7 @@ export default function FiatBlock() {
           <AppInput
             onChangeText={handleAmount}
             value={depositAmount}
-            style={{ marginTop: !depositProvider ? -35 : 0 }}
+            style={{ marginTop: marginTop() }}
             keyboardType="numeric"
             maxLength={maxLength}
             label="Enter Amount"

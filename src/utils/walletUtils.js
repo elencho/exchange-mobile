@@ -91,9 +91,9 @@ export const cryptoWithdrawal = async (OTP, params) => {
   if (data) return data.status;
 };
 
-export const fetchWhitelist = async (currency) => {
+export const fetchWhitelist = async (currency, provider) => {
   const data = await axios.get(CRYPTO_WHITELIST, {
-    params: { currency },
+    params: { currency, provider },
   });
   if (data) return data.data;
 };

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
@@ -28,7 +29,6 @@ import {
 } from '../../redux/trade/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
 import { setStatusModalInfo } from '../../redux/modals/actions';
-import { MaterialIndicator } from 'react-native-indicators';
 
 export default function Deposit() {
   const dispatch = useDispatch();

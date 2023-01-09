@@ -23,7 +23,8 @@ export default function Fee() {
 
   const UpperLine = () => {
     let feeText;
-    let totalText = `Total : ${notEmpty() ? fee?.totalAmount : 0} ${currency}`;
+    const total = fee?.totalAmount ?? 0;
+    let totalText = `Total : ${notEmpty() ? total : 0} ${currency}`;
 
     if (fee?.feeData) {
       const {

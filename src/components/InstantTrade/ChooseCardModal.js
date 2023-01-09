@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ICONS_URL_PNG } from '../../constants/api';
@@ -22,7 +22,7 @@ export default function ChooseCardModal() {
   useEffect(() => {
     let cardsToDisplayInModal = [];
     cards?.forEach((c) => {
-      if (c.provider === depositProvider && c.status === 'VERIFIED') {
+      if (c.provider === depositProvider) {
         cardsToDisplayInModal.push(c);
       }
     });
@@ -35,9 +35,7 @@ export default function ChooseCardModal() {
       });
   }, [depositProvider, Balance_Card]);
 
-  const hide = () => {
-    dispatch(toggleChooseCardModal(false));
-  };
+  const hide = () => dispatch(toggleChooseCardModal(false));
 
   const choose = (c) => {
     dispatch(setCard(c));

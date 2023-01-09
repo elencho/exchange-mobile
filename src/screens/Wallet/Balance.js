@@ -23,7 +23,7 @@ import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
 import colors from '../../constants/colors';
 import { setCard, setDepositProvider, setFee } from '../../redux/trade/actions';
-import { toggleLoading } from '../../redux/transactions/actions';
+import { setWalletTab } from '../../redux/wallet/actions';
 
 export default function Balance({ navigation }) {
   const dispatch = useDispatch();
@@ -44,6 +44,7 @@ export default function Balance({ navigation }) {
   };
 
   const back = () => {
+    dispatch(setWalletTab('Deposit'));
     tabNavigationRef.navigate('Wallet');
     navigation.navigate('Main');
   };

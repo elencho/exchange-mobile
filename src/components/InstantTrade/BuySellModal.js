@@ -19,6 +19,7 @@ import FiatModal from './FiatModal';
 import {
   fetchFee,
   fetchTrades,
+  saveTrades,
   setCard,
   setCurrentTrade,
   setDepositProvider,
@@ -67,6 +68,8 @@ export default function BuySellModal() {
 
   useEffect(() => {
     handleChangeText(price, 'crypto');
+    dispatch(saveTrades([]));
+    dispatch(fetchTrades());
   }, [pairObject]);
 
   useEffect(() => {
@@ -114,6 +117,15 @@ export default function BuySellModal() {
   };
 
   const handleChangeText = (text, type) => {
+    if (text === '') {
+      dispatch(
+        setCurrentTrade({
+          price: '',
+          size: '',
+        })
+      );
+      return;
+    }
     const t = text ? text.replace(',', '.') : 0;
     const rate =
       tradeType === 'Buy' ? pairObject.buyPrice : pairObject.sellPrice;
@@ -164,6 +176,7 @@ export default function BuySellModal() {
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
       dispatch({ type: 'BALANCE_SAGA' });
+      dispatch(saveTrades([]));
       dispatch(fetchTrades());
       dispatch(toggleBuySellModal(false));
     }
