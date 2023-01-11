@@ -19,6 +19,7 @@ const AppInput = ({
   value,
   error = false,
   errorText = null,
+  onChangeText = () => {},
   labelBackgroundColor = colors.PRIMARY_BACKGROUND,
   ...rest
 }) => {
@@ -52,6 +53,7 @@ const AppInput = ({
           onBlur={() => setIsFocused(false)}
           onFocus={() => setIsFocused(true)}
           value={value}
+          onChangeText={(text) => onChangeText(text)}
           placeholderTextColor={colors.SECONDARY_TEXT}
           {...rest}
         />
