@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import {
   Image,
-  KeyboardAvoidingView,
-  Platform,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -69,28 +67,22 @@ export default function Balance({ navigation }) {
 
       <WalletSwitcher />
 
-      <KeyboardAvoidingView
-        style={styles.flex}
-        behavior={Platform.select({ android: undefined, ios: 'padding' })}
-        keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
+      <ScrollView
+        contentContainerStyle={styles.flex}
+        nestedScrollEnabled
+        refreshControl={
+          <RefreshControl
+            tintColor={colors.PRIMARY_PURPLE}
+            onRefresh={onRefresh}
+            refreshing={loading}
+          />
+        }
       >
-        <ScrollView
-          contentContainerStyle={{ flex: 1 }}
-          nestedScrollEnabled
-          refreshControl={
-            <RefreshControl
-              tintColor={colors.PRIMARY_PURPLE}
-              onRefresh={onRefresh}
-              refreshing={loading}
-            />
-          }
-        >
-          {walletTab === 'Deposit' && <Deposit />}
-          {walletTab === 'Withdrawal' && <Withdrawal />}
-          {walletTab === 'Whitelist' && <Whitelist />}
-          {walletTab === 'Manage Cards' && <ManageCards />}
-        </ScrollView>
-      </KeyboardAvoidingView>
+        {walletTab === 'Deposit' && <Deposit />}
+        {walletTab === 'Withdrawal' && <Withdrawal />}
+        {walletTab === 'Whitelist' && <Whitelist />}
+        {walletTab === 'Manage Cards' && <ManageCards />}
+      </ScrollView>
 
       <ChooseCurrencyModal wallet />
       <ChooseNetworkModal />
