@@ -67,7 +67,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
         if (condition) dispatch(fetchFee('withdrawal'));
       }
     } else {
-      dispatch(setWithdrawalAmount(text.replace(/[^0-9]/g, '')));
+      dispatch(setWithdrawalAmount(''));
     }
   };
 

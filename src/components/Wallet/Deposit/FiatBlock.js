@@ -79,7 +79,7 @@ export default function FiatBlock() {
     } else {
       dispatch({
         type: 'SET_DEPOSIT_AMOUNT',
-        depositAmount: text.replace(/[^0-9]/g, ''),
+        depositAmount: '',
       });
     }
   };
