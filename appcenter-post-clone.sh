@@ -13,5 +13,7 @@ else
     echo "CocoaPods version is suitable for the project"
 fi;
 
-
+echo "Test env variable"
+echo $CODEPUSH_KEY_ANDROID
 echo $CODEPUSH_KEY_ANDROID | tee .env
+echo "Test end"
