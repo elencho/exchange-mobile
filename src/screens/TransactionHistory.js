@@ -84,7 +84,7 @@ function TransactionHistory() {
           style={styles.transactions}
           data={uniqueDates}
           renderItem={renderDate}
-          keyExtractor={({ index }) => index}
+          keyExtractor={(item) => item}
           onEndReached={handleScrollEnd}
           onEndReachedThreshold={0.5}
           showsVerticalScrollIndicator={false}
