@@ -6,14 +6,36 @@ pipelines:
           name: Code push to testflight
           image: 'cryptxcom/codepush:16-alpine'
           script:
+            - npm install
             - appcenter login --token "$APPCENTER_API_TOKEN" # this is dk personal token, might change later
             - appcenter codepush release-react -a Cryptx/Exchange-iOS -d Staging
-            
+
     appstore-code-push:
       - step:
           deployment: production
           name: Code push to appstore
           image: 'cryptxcom/codepush:16-alpine'
           script:
+            - npm install
             - appcenter login --token "$APPCENTER_API_TOKEN"
             - appcenter codepush release-react -a Cryptx/Exchange-iOS -d Production
+
+    android-staging-code-push:
+      - step:
+          deployment: staging
+          name: Code push to testflight
+          image: 'cryptxcom/codepush:16-alpine'
+          script:
+            - npm install
+            - appcenter login --token "$APPCENTER_API_TOKEN"
+            - appcenter codepush release-react -a Cryptx/Exchange-android -d Staging
+            
+    playstore-code-push:
+      - step:
+          deployment: production
+          name: Code push to appstore
+          image: 'cryptxcom/codepush:16-alpine'
+          script:
+            - npm install
+            - appcenter login --token "$APPCENTER_API_TOKEN"
+            - appcenter codepush release-react -a Cryptx/Exchange-android -d Production
