@@ -16,7 +16,7 @@ import StatusModal from '../../components/Wallet/StatusModal';
 import DeleteModal from '../../components/Wallet/ManageCards/DeleteModal';
 import { MaterialIndicator } from 'react-native-indicators';
 
-export default function ManageCards() {
+export default function ManageCards({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -53,6 +53,7 @@ export default function ManageCards() {
             nestedScrollEnabled
             onContentSizeChange={onContentSizeChange}
             ref={scrollRef}
+            refreshControl={refreshControl}
           >
             {cards?.map((c) => (
               <Card key={c.id} card={c} />

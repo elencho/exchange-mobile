@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, ImageBackground, Image, View } from 'react-native';
+import { StyleSheet, ImageBackground, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 
 import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
 import AppText from '../components/AppText';
+import WithKeyboard from '../components/WithKeyboard';
 import GeneralError from '../components/GeneralError';
 import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
@@ -65,50 +66,52 @@ export default function Login({ navigation }) {
   };
 
   return (
-    <ImageBackground source={images.Background} style={styles.container}>
-      <Logo style={styles.logo} />
-      <AppText header style={styles.primary}>
-        Welcome to Cryptal
-      </AppText>
+    <ImageBackground source={images.Background} style={{ flex: 1 }}>
+      <WithKeyboard padding flexGrow contentContainerStyle={styles.container}>
+        <Logo style={styles.logo} />
+        <AppText header style={styles.primary}>
+          Welcome to Cryptal
+        </AppText>
 
-      <View style={styles.height42}>
-        <GeneralError show={errorHappenedHere('Login')} />
-      </View>
+        <View style={styles.height42}>
+          <GeneralError show={errorHappenedHere('Login')} />
+        </View>
 
-      <AppInput
-        placeholder="Enter Email"
-        style={styles.email}
-        onChangeText={typeLogin}
-        value={login}
-        error={error && !login}
-        errorText={errorText('Login')}
-      />
-      <AppInput
-        secureTextEntry
-        placeholder="Enter Password"
-        onChangeText={typePassword}
-        value={password}
-        style={styles.password}
-        error={error && !password}
-        errorText={errorText('Password')}
-        right={
-          <PurpleText
-            text="Forgot?"
-            style={{ marginLeft: 10 }}
-            onPress={forgotPassword}
-          />
-        }
-      />
+        <AppInput
+          placeholder="Enter Email"
+          style={styles.email}
+          onChangeText={typeLogin}
+          value={login}
+          error={error && !login}
+          errorText={errorText('Login')}
+        />
+        <AppInput
+          secureTextEntry
+          placeholder="Enter Password"
+          onChangeText={typePassword}
+          value={password}
+          style={styles.password}
+          error={error && !password}
+          errorText={errorText('Password')}
+          right={
+            <PurpleText
+              text="Forgot?"
+              style={{ marginLeft: 10 }}
+              onPress={forgotPassword}
+            />
+          }
+        />
 
-      <AppButton
-        text="Login"
-        style={styles.button}
-        onPress={handleLogin}
-        loading={userProfileLoading}
-      />
-      <AppText style={styles.secondary}>
-        New User? <PurpleText text="Register" onPress={register} />
-      </AppText>
+        <AppButton
+          text="Login"
+          style={styles.button}
+          onPress={handleLogin}
+          loading={userProfileLoading}
+        />
+        <AppText style={styles.secondary}>
+          New User? <PurpleText text="Register" onPress={register} />
+        </AppText>
+      </WithKeyboard>
     </ImageBackground>
   );
 }
@@ -120,7 +123,6 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   container: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: '20%',

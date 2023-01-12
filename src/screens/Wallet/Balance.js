@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  Image,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Image, RefreshControl, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../../components/Background';
@@ -19,9 +13,9 @@ import ChooseCurrencyModal from '../../components/TransactionFilter/ChooseCurren
 import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkModal';
 import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
-import colors from '../../constants/colors';
 import { setCard, setDepositProvider, setFee } from '../../redux/trade/actions';
 import { setWalletTab } from '../../redux/wallet/actions';
+import colors from '../../constants/colors';
 
 export default function Balance({ navigation }) {
   const dispatch = useDispatch();
@@ -52,6 +46,14 @@ export default function Balance({ navigation }) {
     return () => dispatch(setCard(null));
   }, [walletTab, code]);
 
+  const refreshControl = (
+    <RefreshControl
+      tintColor={colors.PRIMARY_PURPLE}
+      onRefresh={onRefresh}
+      refreshing={loading}
+    />
+  );
+
   return (
     <Background>
       <View style={styles.back}>
@@ -67,22 +69,16 @@ export default function Balance({ navigation }) {
 
       <WalletSwitcher />
 
-      <ScrollView
-        contentContainerStyle={styles.flex}
-        nestedScrollEnabled
-        refreshControl={
-          <RefreshControl
-            tintColor={colors.PRIMARY_PURPLE}
-            onRefresh={onRefresh}
-            refreshing={loading}
-          />
-        }
-      >
-        {walletTab === 'Deposit' && <Deposit />}
-        {walletTab === 'Withdrawal' && <Withdrawal />}
-        {walletTab === 'Whitelist' && <Whitelist />}
-        {walletTab === 'Manage Cards' && <ManageCards />}
-      </ScrollView>
+      {walletTab === 'Deposit' && <Deposit refreshControl={refreshControl} />}
+      {walletTab === 'Withdrawal' && (
+        <Withdrawal refreshControl={refreshControl} />
+      )}
+      {walletTab === 'Whitelist' && (
+        <Whitelist refreshControl={refreshControl} />
+      )}
+      {walletTab === 'Manage Cards' && (
+        <ManageCards refreshControl={refreshControl} />
+      )}
 
       <ChooseCurrencyModal wallet />
       <ChooseNetworkModal />

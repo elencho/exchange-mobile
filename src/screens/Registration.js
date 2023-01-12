@@ -1,14 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Image,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  View,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppButton from '../components/AppButton';
@@ -28,6 +19,7 @@ import {
 import { useFocusEffect } from '@react-navigation/native';
 import GeneralError from '../components/GeneralError';
 import { errorHappenedHere } from '../utils/appUtils';
+import WithKeyboard from '../components/WithKeyboard';
 
 export default function Registration({ navigation }) {
   const dispatch = useDispatch();
@@ -98,20 +90,8 @@ export default function Registration({ navigation }) {
   const signIn = () => dispatch(startLoginAction(navigation));
 
   return (
-    // <TouchableWithoutFeedback
-    //   style={styles.flex}
-    //   onPress={Keyboard.dismiss}
-    //   accessible={false}
-    // >
-    <KeyboardAvoidingView
-      style={styles.flex}
-      behavior={Platform.select({ android: undefined, ios: 'padding' })}
-      keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
-    >
-      <ScrollView
-        contentContainerStyle={styles.container}
-        style={styles.scrollview}
-      >
+    <WithKeyboard padding style={styles.scrollview}>
+      <View style={styles.container}>
         <Logo style={styles.logo} />
         <AppText header style={styles.header}>
           Welcome to Cryptal
@@ -134,9 +114,8 @@ export default function Registration({ navigation }) {
         </AppText>
 
         <EmailVerificationModal />
-      </ScrollView>
-    </KeyboardAvoidingView>
-    // </TouchableWithoutFeedback>
+      </View>
+    </WithKeyboard>
   );
 }
 

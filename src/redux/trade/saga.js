@@ -52,7 +52,6 @@ function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
   const params = yield select(getParams);
   const trades = yield select((state) => state.trade.trades);
-  const totalTrades = yield select((state) => state.trade.totalTrades);
 
   const newTrades = yield call(fetchTrades, params);
   const newestTrades = newTrades?.data;
