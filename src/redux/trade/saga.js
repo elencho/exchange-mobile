@@ -21,6 +21,7 @@ import {
   setCrypto,
   switchBalanceCard,
   setTotalTrades,
+  setTradeOffset,
 } from './actions';
 import {
   getParams,
@@ -56,7 +57,6 @@ function* fetchTradesSaga() {
 
   const newTrades = yield call(fetchTrades, params);
   const newestTrades = newTrades?.data;
-
   if (newestTrades) {
     yield put(setTotalTrades(newTrades?.paging.pageCount));
     yield put(saveTrades([...trades, ...newestTrades]));
@@ -216,6 +216,7 @@ function* refreshWalletAndTradesSaga() {
     Object.keys(obj[m])?.length && !Object.keys(restriction)?.length;
 
   if (main && trade) {
+    yield put(setTradeOffset(0));
     yield put(saveTrades([]));
     yield put(instantTradeTabAction());
     yield put(fetchTradesAction());

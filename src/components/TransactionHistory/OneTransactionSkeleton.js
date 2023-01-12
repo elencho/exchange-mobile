@@ -28,9 +28,9 @@ const SecondPart = () => (
   </View>
 );
 
-const OneTransactionSkeleton = () => {
+const OneTransactionSkeleton = ({ key = 0 }) => {
   return (
-    <View style={styles.box}>
+    <View style={styles.box} key={key}>
       {[0].map((n) => (
         <View key={n}>
           <SecondPart />
