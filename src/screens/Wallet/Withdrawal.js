@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
@@ -27,8 +27,9 @@ import { infos, warnings } from '../../constants/warningsAndInfos';
 import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
 import { MaterialIndicator } from 'react-native-indicators';
 import { validateAmount } from '../../utils/appUtils';
+import WithKeyboard from '../../components/WithKeyboard';
 
-export default function Withdrawal() {
+export default function Withdrawal({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -138,7 +139,7 @@ export default function Withdrawal() {
   return (
     <>
       {!cardsLoading ? (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <WithKeyboard flexGrow padding refreshControl={refreshControl}>
           <View style={styles.block}>
             {/* <GeneralError style={{ marginBottom: 16 }} /> */}
             <WalletCoinsDropdown />
@@ -181,7 +182,7 @@ export default function Withdrawal() {
               restrictedUntil={withdrawalRestriction.restrictedUntil}
             />
           ) : null}
-        </ScrollView>
+        </WithKeyboard>
       ) : (
         <MaterialIndicator color="#6582FD" animationDuration={3000} />
       )}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
 
@@ -29,8 +29,9 @@ import {
 } from '../../redux/trade/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
 import { setStatusModalInfo } from '../../redux/modals/actions';
+import WithKeyboard from '../../components/WithKeyboard';
 
-export default function Deposit() {
+export default function Deposit({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -125,10 +126,7 @@ export default function Deposit() {
   };
 
   return !cardsLoading ? (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      showsVerticalScrollIndicator={false}
-    >
+    <WithKeyboard flexGrow padding refreshControl={refreshControl}>
       <View style={styles.block}>
         <GeneralError
           style={styles.error}
@@ -189,7 +187,7 @@ export default function Deposit() {
         source={{ uri: webViewObj?.actionUrl }}
         deposit
       />
-    </ScrollView>
+    </WithKeyboard>
   ) : (
     <MaterialIndicator color="#6582FD" animationDuration={3000} />
   );

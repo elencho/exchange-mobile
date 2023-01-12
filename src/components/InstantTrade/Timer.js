@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProgressBar from 'react-native-animated-progress';
 
 import AppText from '../AppText';
-import { saveTrades } from '../../redux/trade/actions';
+import { instantTradeTabAction } from '../../redux/trade/actions';
 
 export default function Timer() {
   const dispatch = useDispatch();
@@ -12,8 +12,8 @@ export default function Timer() {
 
   useEffect(() => {
     if (!seconds) {
-      dispatch(saveTrades([]));
-      dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+      // dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+      dispatch(instantTradeTabAction());
       setSeconds(90);
     }
 

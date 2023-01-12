@@ -31,6 +31,7 @@ import GeneralError from '../GeneralError';
 import AppWebView from '../AppWebView';
 import { validateScale } from '../../utils/formUtils';
 import { errorHappenedHere, validateAmount } from '../../utils/appUtils';
+import WithKeyboard from '../WithKeyboard';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
@@ -195,7 +196,7 @@ export default function BuySellModal() {
           show={errorHappenedHere('BuySellModal')}
         />
 
-        <ScrollView nestedScrollEnabled>
+        <WithKeyboard>
           <TouchableOpacity activeOpacity={0.99}>
             <CurrencyDropdowns style={styles.dropdowns} />
 
@@ -226,7 +227,7 @@ export default function BuySellModal() {
             <ChooseCardModal />
             <BankFeesModal />
           </TouchableOpacity>
-        </ScrollView>
+        </WithKeyboard>
       </View>
 
       <AppButton

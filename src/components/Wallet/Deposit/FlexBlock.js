@@ -90,16 +90,13 @@ const styles = StyleSheet.create({
   description: {
     color: colors.SECONDARY_TEXT,
     textAlign: 'center',
-    // marginHorizontal: '20%',
     lineHeight: 20,
     marginBottom: 40,
   },
   flexBlock: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingHorizontal: 30,
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 50,
+    flex: 1,
   },
 });
