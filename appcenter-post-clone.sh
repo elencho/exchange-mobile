@@ -12,3 +12,4 @@ then
 else 
     echo "CocoaPods version is suitable for the project"
 fi;
+

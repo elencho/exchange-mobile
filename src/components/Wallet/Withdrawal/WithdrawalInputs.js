@@ -45,7 +45,9 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
   const maxLength = isDecimal
     ? factoredDigitLength + 1 + parseFloat(cur?.withdrawalScale)
     : 1000;
-
+  const inputValidation = new RegExp(
+    `^[0-9]+(\.|\\.[0-9]{1,${cur?.withdrawalScale}})?$`
+  );
   useEffect(() => {
     if (Object.keys(currentTemplate)?.length) {
       dispatch(setWithdrawalNote(''));
@@ -59,10 +61,13 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
       depositProvider ||
       cur?.type === 'CRYPTO' ||
       currentTemplate?.templateName;
-
-    if (validateScale(amount, cur?.withdrawalScale)) {
-      dispatch(setWithdrawalAmount(amount ? amount : 0));
-      if (condition) dispatch(fetchFee('withdrawal'));
+    if (inputValidation.test(amount) || !amount) {
+      if (validateScale(amount, cur?.withdrawalScale)) {
+        dispatch(setWithdrawalAmount(amount ? amount : 0));
+        if (condition) dispatch(fetchFee('withdrawal'));
+      }
+    } else {
+      dispatch(setWithdrawalAmount(''));
     }
   };
 

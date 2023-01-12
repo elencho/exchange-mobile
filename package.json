@@ -98,6 +98,6 @@
     "react-native-svg-transformer": "^1.0.0"
   },
   "private": true,
-  "name": "cryptalApp",
+  "name": "cryptalapp",
   "version": "1.0.0"
 }

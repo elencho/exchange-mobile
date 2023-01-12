@@ -7,6 +7,7 @@ import {
   fetchTrades,
   hideOtherPairsAction,
   saveTrades,
+  setTradeOffset,
 } from '../../redux/trade/actions';
 import { reachScrollEnd } from '../../redux/transactions/actions';
 import AppText from '../AppText';
@@ -25,8 +26,11 @@ export const TopRow = ({ text, onPress }) => (
     </AppText>
   </View>
 );
-
-export default function TransactionsBlock({ loading }) {
+const TransactionsBlock = ({
+  loading,
+  innerScrollEnabled,
+  handleInnerScroll,
+}) => {
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state);
@@ -41,6 +45,7 @@ export default function TransactionsBlock({ loading }) {
   }, []);
 
   const toggleShowHide = () => {
+    dispatch(setTradeOffset(0));
     dispatch(hideOtherPairsAction(!hideOtherPairs));
     dispatch(saveTrades([]));
     dispatch(fetchTrades());
@@ -55,6 +60,7 @@ export default function TransactionsBlock({ loading }) {
     }
   };
 
+  const onRefresh = () => dispatch(fetchTrades());
   const renderTrade = ({ item }) => (
     <Trade trade={item} key={item.creationTime} />
   );
@@ -68,25 +74,34 @@ export default function TransactionsBlock({ loading }) {
         onPress={toggleShowHide}
       />
 
-      <FlatList
-        style={{ height: 280 }}
-        data={trades}
-        renderItem={renderTrade}
-        keyExtractor={(item) => item.creationTime}
-        onEndReached={handleScrollEnd}
-        nestedScrollEnabled
-        ListFooterComponent={footer}
-        refreshControl={
-          <RefreshControl
-            tintColor={colors.PRIMARY_PURPLE}
-            refreshing={loading}
-          />
-        }
-      />
+      {loading && !moreLoading ? (
+        [1, 2, 3].map(({ item }) => <OneTransactionSkeleton key={item} />)
+      ) : (
+        <FlatList
+          style={{ height: 280 }}
+          data={trades}
+          renderItem={renderTrade}
+          keyExtractor={(item) => item.creationTime}
+          onEndReached={handleScrollEnd}
+          //onEndReachedThreshold={0.7}
+          nestedScrollEnabled
+          initialNumToRender={5}
+          ListFooterComponent={footer}
+          scrollEnabled={innerScrollEnabled}
+          onScroll={handleInnerScroll}
+          refreshControl={
+            <RefreshControl
+              tintColor={colors.PRIMARY_PURPLE}
+              refreshing={loading}
+              onRefresh={onRefresh}
+            />
+          }
+        />
+      )}
     </View>
   );
-}
-
+};
+export default TransactionsBlock;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.SECONDARY_BACKGROUND,

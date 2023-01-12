@@ -43,7 +43,9 @@ export default function FiatBlock() {
   const maxLength = isDecimal
     ? factoredDigitLength + parseFloat(depositScale) + 1
     : 1000;
-
+  const inputValidation = new RegExp(
+    `^[0-9]+(\.|\\.[0-9]{1,${depositScale}})?$`
+  );
   const [error, setError] = useState(false);
   useEffect(() => {
     error && setError(false);
@@ -59,7 +61,7 @@ export default function FiatBlock() {
 
   const handleAmount = (text) => {
     const replacedAmount = text?.trim().replace(',', '.');
-    if (/^[0-9]+(\.|\.[0-9]{1,2})?$/.test(replacedAmount) || !replacedAmount) {
+    if (inputValidation.test(replacedAmount) || !replacedAmount) {
       if (validateScale(replacedAmount, depositScale)) {
         dispatch({
           type: 'SET_DEPOSIT_AMOUNT',
@@ -74,6 +76,11 @@ export default function FiatBlock() {
           dispatch(fetchFee('deposit'));
         }
       }
+    } else {
+      dispatch({
+        type: 'SET_DEPOSIT_AMOUNT',
+        depositAmount: '',
+      });
     }
   };
 
