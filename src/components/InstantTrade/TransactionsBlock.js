@@ -75,7 +75,11 @@ const TransactionsBlock = ({
       />
 
       {loading && !moreLoading ? (
-        [1, 2, 3].map(({ item }) => <OneTransactionSkeleton key={item} />)
+        [1, 2, 3].map((i) => (
+          <View key={i}>
+            <OneTransactionSkeleton />
+          </View>
+        ))
       ) : (
         <FlatList
           style={{ height: 280 }}

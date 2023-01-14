@@ -29,6 +29,7 @@ export default function Login({ navigation }) {
   const password = credentials.password;
 
   const [error, setError] = useState(false);
+  const validate = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(login);
 
   useEffect(() => {
     error && setError(false);
@@ -49,7 +50,7 @@ export default function Login({ navigation }) {
     dispatch(setCredentials({ ...credentials, login: t }));
 
   const handleLogin = () => {
-    if (!login || !password) {
+    if (!login || !password || !validate) {
       setError(true);
     } else {
       dispatch(usernameAndPasswordAction(navigation));
@@ -60,10 +61,8 @@ export default function Login({ navigation }) {
 
   const register = () => dispatch(startRegistrationAction(navigation));
 
-  const errorText = (type) => {
-    if (error && !login && type === 'Login') return 'Enter Email';
-    if (error && !password && type === 'Password') return 'Enter Password';
-  };
+  const errorText = () =>
+    error && login?.trim() && !validate ? 'Enter Valid Email' : null;
 
   return (
     <ImageBackground source={images.Background} style={{ flex: 1 }}>
@@ -82,8 +81,8 @@ export default function Login({ navigation }) {
           style={styles.email}
           onChangeText={typeLogin}
           value={login}
-          error={error && !login}
-          errorText={errorText('Login')}
+          error={error && (!login || !validate)}
+          errorText={errorText()}
         />
         <AppInput
           secureTextEntry
@@ -92,7 +91,6 @@ export default function Login({ navigation }) {
           value={password}
           style={styles.password}
           error={error && !password}
-          errorText={errorText('Password')}
           right={
             <PurpleText
               text="Forgot?"
