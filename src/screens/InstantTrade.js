@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,6 +15,8 @@ import TransactionModal from '../components/TransactionHistory/TransactionModal'
 import CryptoModal from '../components/InstantTrade/CryptoModal';
 import colors from '../constants/colors';
 import FiatModal from '../components/InstantTrade/FiatModal';
+import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton';
+import { fetchTrades } from '../redux/trade/actions';
 
 export default function InstantTrade() {
   const dispatch = useDispatch();
@@ -24,12 +26,31 @@ export default function InstantTrade() {
     transactions: { tabRoute },
   } = state;
 
-  const loading = tradesLoading || offersLoading;
-  const onRefresh = () => dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+  const loading = tradesLoading && offersLoading;
+  const onRefresh = () => {
+    dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+    dispatch(fetchTrades());
+  };
+
+  const [innerScrollEnabled, setInnerScrollEnabled] = useState(false);
 
   useEffect(() => {
     tabRoute === 'Trade' && onRefresh();
   }, [tabRoute]);
+
+  const handleOuterScroll = (event) => {
+    // disable inner scroll when outer scroll is at top
+    if (event.nativeEvent.contentOffset.y === 0) {
+      setInnerScrollEnabled(false);
+    }
+  };
+
+  const handleInnerScroll = (event) => {
+    // enable inner scroll when outer scroll is not at top
+    if (event.nativeEvent.contentOffset.y !== 0) {
+      setInnerScrollEnabled(true);
+    }
+  };
 
   return (
     <Background>
@@ -45,6 +66,9 @@ export default function InstantTrade() {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
+        style={{ overflow: 'hidden' }}
+        contentContainerStyle={{ overflow: 'hidden' }}
+        onScroll={(e) => handleOuterScroll(e)}
         refreshControl={
           <RefreshControl
             tintColor={colors.PRIMARY_PURPLE}
@@ -53,8 +77,12 @@ export default function InstantTrade() {
           />
         }
       >
-        <TradeBlock />
-        <TransactionsBlock />
+        {offersLoading ? <TradeBlockSkeleton /> : <TradeBlock />}
+        <TransactionsBlock
+          loading={tradesLoading}
+          onScroll={handleInnerScroll}
+          scrollEnabled={innerScrollEnabled}
+        />
       </ScrollView>
 
       <InfoModal />

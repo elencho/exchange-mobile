@@ -1,4 +1,4 @@
-package com.vaxo_nba.cryptalapp.newarchitecture.components;
+package com.cryptal.exchange.mobile.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

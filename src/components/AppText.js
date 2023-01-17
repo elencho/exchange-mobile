@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 export default function AppText({
   children,
@@ -10,15 +11,16 @@ export default function AppText({
   header,
   subtext,
   calendarDay,
+  small,
   ...props
 }) {
+  const generalError = useSelector((state) => state.errors.generalError);
+
   const fontCond = () => {
     if (medium || header) {
       return 'Ubuntu_Medium';
     }
-    if (subtext || body) {
-      return 'Ubuntu_Regular';
-    }
+    return 'Ubuntu_Regular';
   };
 
   const sizeCond = () => {
@@ -34,12 +36,18 @@ export default function AppText({
     if (subtext) {
       return 12;
     }
+    if (small) {
+      return 11;
+    }
   };
 
   const { t } = useTranslation();
 
   const text = () => {
     if (typeof children === 'string') {
+      if (children.includes('{{') && children.includes('}}')) {
+        return t(children, generalError?.transParams);
+      }
       return t(children);
     } else {
       return children;

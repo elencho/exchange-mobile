@@ -1,4 +1,4 @@
-package com.vaxo_nba.cryptalapp.newarchitecture.modules;
+package com.cryptal.exchange.mobile.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
@@ -20,26 +21,32 @@ import GeneralError from '../../components/GeneralError';
 import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
-import { setCard, setDepositProvider, setFee } from '../../redux/trade/actions';
+import {
+  fetchFee,
+  setCard,
+  setDepositProvider,
+  setFee,
+} from '../../redux/trade/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
 import { setStatusModalInfo } from '../../redux/modals/actions';
+import WithKeyboard from '../../components/WithKeyboard';
 
-export default function Deposit() {
+export default function Deposit({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   const {
     transactions: { code },
-    trade: { currentBalanceObj, depositProvider, card },
+    trade: { currentBalanceObj, depositProvider, card, cardsLoading },
     wallet: { cryptoAddress, hasMultipleMethods, depositRestriction, network },
-    modals: { webViewObj, chooseCurrencyModalVisible },
+    modals: { webViewObj },
   } = state;
 
   const isFiat = currentBalanceObj.type === 'FIAT';
+  const isCrypto = currentBalanceObj.type === 'CRYPTO';
   const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
@@ -52,15 +59,18 @@ export default function Deposit() {
     }
 
     setHasMethod(!!Object.keys(m).length);
-    setLoading(false);
-    dispatch(setFee(null));
 
-    return () => dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
+    return () => {
+      dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
+      dispatch(setCard(null));
+    };
   }, [code]);
 
   useEffect(() => {
+    dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setFee(null));
+    card && dispatch(fetchFee('deposit'));
   }, [network, depositProvider, card]);
 
   useEffect(() => {
@@ -83,8 +93,8 @@ export default function Deposit() {
     dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
     dispatch(setDepositProvider(null));
     dispatch(setCard(null));
-    dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
-    dispatch(setFee(null));
+    dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
+    dispatch(fetchFee('deposit'));
     dispatch({ type: 'BALANCE_SAGA' });
   };
 
@@ -115,80 +125,71 @@ export default function Deposit() {
     }
   };
 
-  return (
-    <>
-      {!loading ? (
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={styles.block}>
-            <GeneralError
-              style={styles.error}
-              show={errorHappenedHere('Deposit')}
-            />
-            <WalletCoinsDropdown />
+  return !cardsLoading ? (
+    <WithKeyboard flexGrow padding refreshControl={refreshControl}>
+      <View style={styles.block}>
+        <GeneralError
+          style={styles.error}
+          show={errorHappenedHere('Deposit')}
+        />
+        <WalletCoinsDropdown />
 
-            {!isFiat || code === 'EUR' ? (
+        {!isFiat || code === 'EUR' ? (
+          <>
+            <ChooseNetworkDropdown />
+            {cryptoAddress?.address &&
+              !hasRestriction &&
+              hasMethod &&
+              isCrypto && <AddressBlock />}
+            {hasMethod && content() && (
+              <AppInfoBlock content={content()} warning />
+            )}
+          </>
+        ) : (
+          <>
+            {hasMultipleMethods && (
               <>
-                <ChooseNetworkDropdown />
-                {cryptoAddress?.address && !hasRestriction && hasMethod && (
-                  <AddressBlock />
+                <TransferMethodDropdown />
+                {isEcommerce && (
+                  <AppInfoBlock content={infos.ecommerce.deposit} info />
                 )}
-                {hasMethod && content() && (
-                  <AppInfoBlock content={content()} warning />
+                {network === 'SWIFT' && (
+                  <AppInfoBlock content={warnings.swift.deposit} warning />
                 )}
-              </>
-            ) : (
-              <>
-                {hasMultipleMethods && (
-                  <>
-                    <TransferMethodDropdown />
-                    {isEcommerce && (
-                      <AppInfoBlock content={infos.ecommerce.deposit} info />
-                    )}
-                    {network === 'SWIFT' && (
-                      <AppInfoBlock content={warnings.swift.deposit} warning />
-                    )}
-                    {network === 'SEPA' && (
-                      <AppInfoBlock content={warnings.sepa} warning />
-                    )}
-                    <TransferMethodModal />
-                  </>
+                {network === 'SEPA' && (
+                  <AppInfoBlock content={warnings.sepa} warning />
                 )}
+                <TransferMethodModal />
               </>
             )}
-          </View>
+          </>
+        )}
+      </View>
 
-          {!cryptoAddress?.address &&
-          !isFiat &&
-          !hasRestriction &&
-          hasMethod ? (
-            <View style={styles.flex}>
-              <BulletsBlock />
-              <AppButton text="Generate" onPress={generate} />
-            </View>
-          ) : null}
+      {!cryptoAddress?.address && !isFiat && !hasRestriction && hasMethod ? (
+        <View style={styles.flex}>
+          <BulletsBlock />
+          <AppButton text="Generate" onPress={generate} />
+        </View>
+      ) : null}
 
-          {isFiat && !hasRestriction && hasMethod && <FiatBlock />}
-          {hasRestriction || !hasMethod ? (
-            <FlexBlock
-              type="Deposit"
-              reason={reason()}
-              restrictedUntil={depositRestriction.restrictedUntil}
-            />
-          ) : null}
+      {isFiat && !hasRestriction && hasMethod && <FiatBlock />}
+      {hasRestriction || !hasMethod ? (
+        <FlexBlock
+          type="Deposit"
+          reason={reason()}
+          restrictedUntil={depositRestriction.restrictedUntil}
+        />
+      ) : null}
 
-          <AppWebView
-            onNavigationStateChange={onNavigationStateChange}
-            source={{ uri: webViewObj?.actionUrl }}
-            deposit
-          />
-        </ScrollView>
-      ) : (
-        <ActivityIndicator />
-      )}
-    </>
+      <AppWebView
+        onNavigationStateChange={onNavigationStateChange}
+        source={{ uri: webViewObj?.actionUrl }}
+        deposit
+      />
+    </WithKeyboard>
+  ) : (
+    <MaterialIndicator color="#6582FD" animationDuration={3000} />
   );
 }
 

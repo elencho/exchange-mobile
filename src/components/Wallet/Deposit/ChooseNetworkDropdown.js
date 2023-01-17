@@ -9,7 +9,11 @@ import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { setNetwork } from '../../../redux/wallet/actions';
 
-export default function ChooseNetworkDropdown({ disabled = false, whitelist }) {
+export default function ChooseNetworkDropdown({
+  disabled = false,
+  whitelist,
+  error,
+}) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -61,6 +65,13 @@ export default function ChooseNetworkDropdown({ disabled = false, whitelist }) {
 
   const backgroundColor =
     colors[whitelist ? 'PRIMARY_BACKGROUND' : 'SECONDARY_BACKGROUND'];
+  const dropdown = {
+    opacity: disabled ? 0.5 : 1,
+    borderColor: error && !network ? '#F45E8C' : '#42475D',
+  };
+  const dropdownText = {
+    color: error && !network ? '#F45E8C' : colors.PRIMARY_TEXT,
+  };
 
   return (
     <>
@@ -68,7 +79,7 @@ export default function ChooseNetworkDropdown({ disabled = false, whitelist }) {
         <>
           {hasMultipleNetworks ? (
             <Pressable
-              style={[styles.dropdown, { opacity: disabled ? 0.5 : 1 }]}
+              style={[styles.dropdown, dropdown]}
               onPress={handleDropdown}
               disabled={disabled}
             >
@@ -83,13 +94,13 @@ export default function ChooseNetworkDropdown({ disabled = false, whitelist }) {
                     source={{ uri }}
                     style={[styles.image, iconDimensions]}
                   />
-                  <AppText medium style={styles.dropdownText}>
+                  <AppText medium style={[styles.dropdownText, dropdownText]}>
                     {networkName()}{' '}
                     <AppText style={styles.secondary}>({network})</AppText>
                   </AppText>
                 </>
               ) : (
-                <AppText style={[styles.secondary, { flex: 1 }]}>
+                <AppText style={[styles.secondary, dropdownText, { flex: 1 }]}>
                   Choose Network
                 </AppText>
               )}
@@ -103,7 +114,7 @@ export default function ChooseNetworkDropdown({ disabled = false, whitelist }) {
                   style={[styles.image, styles.iconDimensions]}
                 />
               )}
-              <AppText medium style={styles.dropdownText}>
+              <AppText medium style={[styles.dropdownText, dropdownText]}>
                 {networkName()}{' '}
                 <AppText style={styles.secondary}>({network})</AppText>
               </AppText>
@@ -119,7 +130,6 @@ const styles = StyleSheet.create({
   dropdownText: {
     flex: 1,
     marginRight: 12,
-    color: colors.PRIMARY_TEXT,
   },
   view: {
     height: 45,
@@ -136,7 +146,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 20,
-    borderColor: '#42475D',
     paddingHorizontal: 15,
   },
   iconDimensions: {

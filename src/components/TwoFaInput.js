@@ -17,6 +17,7 @@ import {
   deleteWhitelistAction,
   wireWithdrawalAction,
 } from '../redux/wallet/actions';
+import { MaterialIndicator } from 'react-native-indicators';
 
 export default function TwoFaInput({
   withdrawal,
@@ -37,7 +38,7 @@ export default function TwoFaInput({
       emailAuthModalVisible,
       googleOtpModalVisible,
     },
-    profile: { currentSecurityAction },
+    profile: { currentSecurityAction, userProfileLoading },
     wallet: { newWhitelist },
   } = state;
 
@@ -78,8 +79,13 @@ export default function TwoFaInput({
   }, [value]);
 
   const handleChange = (text) => setValue(text);
-
-  return (
+  return userProfileLoading ? (
+    <MaterialIndicator
+      color="#6582FD"
+      animationDuration={3000}
+      style={{ position: 'absolute', alignSelf: 'center' }}
+    />
+  ) : (
     <CodeInput cellCount={cellCount} value={value} setValue={handleChange} />
   );
 }

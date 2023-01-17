@@ -1,34 +1,35 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
-import images from '../../constants/images';
+import Logo from '../../assets/images/Logo.svg';
 import AppText from '../AppText';
 
-function TopRow() {
+function TopRow({ clear }) {
   const navigation = useNavigation();
 
   const userInfo = useSelector((state) => state.profile.userInfo);
   const { firstName, lastName } = userInfo;
 
   const initials = () => {
-    if (userInfo.firstName && userInfo.lastName) {
+    if (firstName && lastName) {
       return `${firstName[0]} ${lastName[0]}`;
     } else {
       return `ME`;
     }
   };
 
+  const navigate = () => {
+    navigation.navigate('UserProfile');
+    clear && clear();
+  };
+
   return (
     <View style={styles.topRow}>
-      <Image source={images.Logo} style={styles.logo} />
-
-      <Pressable
-        style={styles.profile}
-        onPress={() => navigation.navigate('UserProfile')}
-      >
+      <Logo style={styles.logo} />
+      <Pressable style={styles.profile} onPress={navigate}>
         <AppText medium style={styles.text}>
           {initials()}
         </AppText>

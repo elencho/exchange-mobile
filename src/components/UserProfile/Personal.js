@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet, View, Switch } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -21,8 +21,10 @@ import EditCompanyModal from './EditCompanyModal';
 import IdentityModal from './IdentityModal';
 import { errorHappenedHere } from '../../utils/appUtils';
 import AppSwitcher from '../AppSwitcher';
+import PersonalProfileSkeleton from './PersonalProfileSkeleton';
+import DeleteAccount from './DeleteAccount';
 
-export default function Personal() {
+export default function Personal({ loading }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -175,7 +177,7 @@ export default function Personal() {
     }
   };
 
-  return (
+  return !loading ? (
     <>
       <View style={styles.block}>
         {['Identity', 'Phone', 'Notifications', 'Language'].map((r, i, a) => (
@@ -197,13 +199,15 @@ export default function Personal() {
 
       <PersonalInformation />
       {userInfo.company && <CompanyInformation />}
-
+      <DeleteAccount />
       <PersonalInfoModal />
       <PhoneNumberModal />
       <ChooseLanguageModal />
       <EditCompanyModal />
       <IdentityModal />
     </>
+  ) : (
+    <PersonalProfileSkeleton />
   );
 }
 

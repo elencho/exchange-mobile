@@ -20,6 +20,8 @@ import {
   setCurrentBalanceObj,
   setCrypto,
   switchBalanceCard,
+  setTotalTrades,
+  setTradeOffset,
 } from './actions';
 import {
   getParams,
@@ -44,17 +46,19 @@ import {
   setWalletTab,
   withdrawalTemplatesAction,
 } from '../wallet/actions';
-import { toggleLoading } from '../transactions/actions';
+import { fetchCurrencies, toggleLoading } from '../transactions/actions';
 import { fetchUserInfo } from '../profile/actions';
 
 function* fetchTradesSaga() {
   yield put(setTradesLoading(true));
   const params = yield select(getParams);
   const trades = yield select((state) => state.trade.trades);
-  const newTrades = yield call(fetchTrades, params);
 
-  if (newTrades) {
-    yield put(saveTrades([...trades, ...newTrades]));
+  const newTrades = yield call(fetchTrades, params);
+  const newestTrades = newTrades?.data;
+  if (newestTrades) {
+    yield put(setTotalTrades(newTrades?.paging.pageCount));
+    yield put(saveTrades([...trades, ...newestTrades]));
   }
   yield put(setTradesLoading(false));
 }
@@ -145,12 +149,17 @@ function* balanceSaga() {
 
 function* submitTradeSaga() {
   const params = yield select(paramsForTrade);
+  const card = yield select((state) => state.trade.card);
+
   const data = yield call(submitTrade, params);
   if (data?.status >= 200 && data?.status < 300) {
-    yield put({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: data?.data });
-    yield put({ type: 'BALANCE_SAGA' });
-    yield put(fetchTradesAction());
-    yield put(toggleBuySellModal(false));
+    if (card) {
+      yield put({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: data?.data });
+    } else {
+      yield put({ type: 'BALANCE_SAGA' });
+      yield put(fetchTradesAction());
+      yield put(toggleBuySellModal(false));
+    }
   }
 }
 
@@ -206,6 +215,8 @@ function* refreshWalletAndTradesSaga() {
     Object.keys(obj[m])?.length && !Object.keys(restriction)?.length;
 
   if (main && trade) {
+    yield put(setTradeOffset(0));
+    yield put(saveTrades([]));
     yield put(instantTradeTabAction());
     yield put(fetchTradesAction());
   }
@@ -218,8 +229,13 @@ function* refreshWalletAndTradesSaga() {
     }
 
     if (crypto && isAvailable(currentBalanceObj)) {
-      if (withdrawal || whitelist) yield put(getWhitelistAction());
-      else yield put(cryptoAddressesAction(currency, code, null, network));
+      if (withdrawal || whitelist) {
+        yield put(getWhitelistAction());
+      } else {
+        // Because of this line crypto addresses action is
+        // called twice while navigating th the balance screen
+        /* yield put(cryptoAddressesAction(currency, code, null, network)); */
+      }
     }
   }
 

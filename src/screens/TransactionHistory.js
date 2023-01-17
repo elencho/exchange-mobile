@@ -1,13 +1,7 @@
-import React, { useCallback, useEffect } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  RefreshControl,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, View, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import Background from '../components/Background';
 import FilterIcon from '../components/TransactionHistory/FilterIcon';
@@ -25,28 +19,25 @@ import {
   reachScrollEnd,
   setAbbr,
 } from '../redux/transactions/actions';
+import TransactionSkeleton from '../components/TransactionHistory/TransactionSkeleton';
 
 function TransactionHistory() {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
-  const { transactions, loading, tabRoute } = state;
+  const { transactions, loading, totalTransactions } = state;
 
-  useFocusEffect(
-    useCallback(() => {
-      return () => onRefresh();
-    }, [])
-  );
+  const [moreLoading, setMoreLoading] = useState(false);
 
   useEffect(() => {
     dispatch(chooseCurrency('Show All Currency'));
     dispatch(setAbbr(null));
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+    return () => dispatch(clearFilters());
   }, []);
 
   const onRefresh = () => {
-    dispatch(clearFilters());
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
   };
 
@@ -59,67 +50,54 @@ function TransactionHistory() {
 
   const uniqueDates = [...new Set(dates)];
 
-  const renderDate = ({ item }) => {
-    return (
-      <TransactionDate date={item} key={item} transactions={transactions} />
-    );
-  };
+  const renderDate = ({ item }) => (
+    <TransactionDate
+      date={item}
+      transactions={transactions}
+      loading={loading}
+    />
+  );
 
-  const handleScrollEnd = (e) => {
-    if (
-      isCloseToBottom(e.nativeEvent) &&
-      navigation.isFocused() &&
-      tabRoute === 'Transactions'
-    ) {
-      dispatch(reachScrollEnd('transactions'));
+  const handleScrollEnd = () => {
+    dispatch(reachScrollEnd('transactions'));
+    if (transactions.length < totalTransactions) {
+      setMoreLoading(true);
+    } else {
+      setMoreLoading(false);
     }
   };
-
-  const isCloseToBottom = ({
-    layoutMeasurement,
-    contentOffset,
-    contentSize,
-  }) => {
-    return (
-      Math.floor(layoutMeasurement.height + contentOffset.y) >=
-      Math.floor(contentSize.height)
-    );
-  };
-
   return (
     <Background>
-      {/* Top Row */}
-      <TopRow />
+      <TopRow clear={() => dispatch(clearFilters())} />
 
       <Headline title="Transaction History" />
 
-      {/* Filter Row */}
+      <View style={styles.filter}>
+        <FilterRow array={types} />
+        <FilterIcon onPress={() => navigation.navigate('TransactionFilter')} />
+      </View>
+
       {loading ? (
-        <ActivityIndicator size="large" color="white" style={styles.loader} />
+        <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
       ) : (
-        <>
-          <View style={styles.filter}>
-            <FilterRow array={types} />
-            <FilterIcon
-              onPress={() => navigation.navigate('TransactionFilter')}
-            />
-          </View>
-          {/* Transaction Scrollview */}
-          <FlatList
-            style={styles.transactions}
-            data={uniqueDates}
-            renderItem={renderDate}
-            keyExtractor={(item) => item}
-            onScroll={handleScrollEnd}
-            scrollEventThrottle={1000}
-            refreshControl={
-              <RefreshControl refreshing={loading} onRefresh={onRefresh} />
-            }
-          />
-        </>
+        <FlatList
+          style={styles.transactions}
+          data={uniqueDates}
+          renderItem={renderDate}
+          keyExtractor={(item) => item}
+          onEndReached={handleScrollEnd}
+          onEndReachedThreshold={0.5}
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={1000}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+          }
+          ListFooterComponent={() =>
+            moreLoading ? <TransactionSkeleton length={[0, 1, 2]} /> : <View />
+          }
+        />
       )}
 
-      {/* Transaction Modal */}
       <TransactionModal transactions />
     </Background>
   );

@@ -7,7 +7,6 @@ import images from '../../constants/images';
 import colors from '../../constants/colors';
 import { toggleCryptoModal, toggleFiatModal } from '../../redux/modals/actions';
 import { COINS_URL_PNG } from '../../constants/api';
-import { fetchCurrencies } from '../../redux/transactions/actions';
 
 export default function CurrencyDropdowns({ style }) {
   const dispatch = useDispatch();
@@ -15,12 +14,7 @@ export default function CurrencyDropdowns({ style }) {
   const { crypto, fiat } = state;
 
   const open = (currency) => {
-    if (currency === crypto) {
-      dispatch(fetchCurrencies());
-      setTimeout(() => {
-        dispatch(toggleCryptoModal(true));
-      }, 400);
-    }
+    if (currency === crypto) dispatch(toggleCryptoModal(true));
     if (currency === fiat) dispatch(toggleFiatModal(true));
   };
 

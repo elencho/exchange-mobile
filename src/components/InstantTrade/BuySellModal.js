@@ -18,6 +18,8 @@ import CryptoModal from './CryptoModal';
 import FiatModal from './FiatModal';
 import {
   fetchFee,
+  fetchTrades,
+  saveTrades,
   setCard,
   setCurrentTrade,
   setDepositProvider,
@@ -28,12 +30,12 @@ import {
 import GeneralError from '../GeneralError';
 import AppWebView from '../AppWebView';
 import { validateScale } from '../../utils/formUtils';
-import { errorHappenedHere } from '../../utils/appUtils';
+import { errorHappenedHere, validateAmount } from '../../utils/appUtils';
+import WithKeyboard from '../WithKeyboard';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [webViewUrl, setWebViewUrl] = useState('');
 
   const {
     modals: { buySellModalVisible, webViewObj },
@@ -43,19 +45,59 @@ export default function BuySellModal() {
       crypto,
       fiat,
       pairObject,
-      balance: { balances },
-      currentTrade: { size, price },
+      balance,
+      currentTrade,
+      depositProvider,
       card,
     },
   } = state;
 
+  const [webViewUrl, setWebViewUrl] = useState('');
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    error && setError(false);
+  }, [
+    currentTrade,
+    depositProvider,
+    card,
+    Balance_Card,
+    fiat,
+    crypto,
+    buySellModalVisible,
+  ]);
+
+  useEffect(() => {
+    handleChangeText(price, 'crypto');
+    dispatch(saveTrades([]));
+    dispatch(fetchTrades());
+  }, [pairObject]);
+
+  useEffect(() => {
+    if (card) handleChangeText(price, 'crypto');
+  }, [card]);
+
   const baseScale = pairObject?.pair?.baseScale;
   const quoteScale = pairObject?.pair?.quoteScale;
+  const size = currentTrade?.size;
+  const price = currentTrade?.price;
+  const balances = balance?.balances;
+
+  const getMaxLength = (value, scale) => {
+    const isDecimal = value && (value % 1 != 0 || value.includes('.'));
+    const factoredDigit = Math.trunc(value);
+    const factoredDigitLength = parseFloat(factoredDigit.toString().length);
+    return isDecimal ? factoredDigitLength + 1 + parseFloat(scale) : 1000;
+  };
+
+  const maxLengthQuote = getMaxLength(price, pairObject?.pair?.quoteScale);
+  const maxLengthBase = getMaxLength(size, pairObject?.pair?.baseScale);
 
   const hide = () => {
     dispatch(toggleBuySellModal(false));
     dispatch(switchBalanceCard('balance'));
     dispatch(setCurrentTrade({ price: '', size: '' }));
+    dispatch(setFee(null));
   };
 
   const onDismiss = () => {
@@ -63,21 +105,29 @@ export default function BuySellModal() {
     dispatch(setCard(null));
   };
 
-  const handleSubmit = () => dispatch(submitTrade());
+  const handleSubmit = () => {
+    const balanceCondition = !validateAmount(price) || !validateAmount(size);
+    const cardCondition = balanceCondition || !depositProvider || !card;
 
-  const enabled = () => {
-    if (Balance_Card === 'card' && !card) {
-      return false;
-    }
-    return true;
+    if (
+      (Balance_Card === 'balance' && balanceCondition) ||
+      (Balance_Card === 'card' && cardCondition)
+    ) {
+      setError(true);
+    } else dispatch(submitTrade());
   };
 
-  useEffect(() => {
-    handleChangeText(price, 'crypto');
-  }, [pairObject]);
-
   const handleChangeText = (text, type) => {
-    const t = text.replace(',', '.');
+    if (text === '') {
+      dispatch(
+        setCurrentTrade({
+          price: '',
+          size: '',
+        })
+      );
+      return;
+    }
+    const t = text ? text.replace(',', '.') : 0;
     const rate =
       tradeType === 'Buy' ? pairObject.buyPrice : pairObject.sellPrice;
 
@@ -88,7 +138,7 @@ export default function BuySellModal() {
           size: (t / rate).toFixed(baseScale),
         })
       );
-      card && t && dispatch(fetchFee());
+      card && dispatch(fetchFee());
     }
     if (type === 'fiat' && validateScale(t, baseScale)) {
       dispatch(
@@ -97,9 +147,8 @@ export default function BuySellModal() {
           size: t,
         })
       );
-      card && t && dispatch(fetchFee());
+      card && dispatch(fetchFee());
     }
-    !t && dispatch(setFee(null));
   };
 
   const myBalance = () => {
@@ -127,9 +176,12 @@ export default function BuySellModal() {
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+      dispatch({ type: 'BALANCE_SAGA' });
+      dispatch(saveTrades([]));
+      dispatch(fetchTrades());
+      dispatch(toggleBuySellModal(false));
     }
   };
-
   const children = (
     <>
       <View style={styles.flex}>
@@ -144,26 +196,30 @@ export default function BuySellModal() {
           show={errorHappenedHere('BuySellModal')}
         />
 
-        <ScrollView nestedScrollEnabled>
+        <WithKeyboard>
           <TouchableOpacity activeOpacity={0.99}>
             <CurrencyDropdowns style={styles.dropdowns} />
 
             <AppInput
               onChangeText={(t) => handleChangeText(t, 'crypto')}
               keyboardType="decimal-pad"
-              value={price.trim()}
+              value={price ? price.trim() : ''}
+              maxLength={maxLengthQuote}
               right={<AppText style={styles.code}>{fiat}</AppText>}
+              error={error && !validateAmount(price)}
             />
             <View style={styles.margin} />
             <AppInput
               onChangeText={(t) => handleChangeText(t, 'fiat')}
               keyboardType="decimal-pad"
-              value={size.trim()}
+              maxLength={maxLengthBase}
+              value={size ? size.trim() : ''}
               right={<AppText style={styles.code}>{crypto}</AppText>}
               style={{ marginBottom: 10 }}
+              error={error && !validateAmount(size)}
             />
 
-            {Balance_Card === 'card' && <CardSection />}
+            {Balance_Card === 'card' && <CardSection error={error} />}
 
             <CryptoModal />
             <FiatModal />
@@ -171,20 +227,20 @@ export default function BuySellModal() {
             <ChooseCardModal />
             <BankFeesModal />
           </TouchableOpacity>
-        </ScrollView>
+        </WithKeyboard>
       </View>
 
       <AppButton
         onPress={handleSubmit}
-        disabled={!enabled()}
         backgroundColor={tradeType === 'Buy' ? '#0CCBB5' : '#F83974'}
         text={tradeType}
-        style={{ opacity: enabled() ? 1 : 0.5, marginBottom: 20 }}
+        style={{ marginBottom: 20 }}
       />
 
       <AppWebView
         onNavigationStateChange={onNavigationStateChange}
         source={{ uri: webViewObj?.actionUrl }}
+        trade
       />
     </>
   );

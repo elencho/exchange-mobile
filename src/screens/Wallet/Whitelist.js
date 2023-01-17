@@ -16,11 +16,10 @@ import GeneralError from '../../components/GeneralError';
 import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import SmsEmailAuthModal from '../../components/UserProfile/SmsEmailAuthModal';
 
-export default function Whitelist() {
+export default function Whitelist({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    transactions: { code },
     wallet: { whitelist, hasWhitelist },
   } = state;
 
@@ -42,7 +41,7 @@ export default function Whitelist() {
           <ScrollView
             style={styles.scrollView}
             contentContainerStyle={styles.scrollContent}
-            nestedScrollEnabled
+            refreshControl={refreshControl}
           >
             {whitelist?.map((w) => (
               <WhitelistItem key={w.id} whitelistItem={w} />

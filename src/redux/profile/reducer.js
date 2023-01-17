@@ -5,18 +5,13 @@ const vaxo_realuri = {
   password: '11111!Aa',
 };
 const vaxo_satesto = { login: 'metro21@mailinator.com', password: '11111!Aa' };
-const sali_satesto = {
-  login: 'salibukhiashvili@mailinator.com',
-  password: 'Salome1996$',
-};
-const sali_realuri = {
-  login: 'bukhiashvilisalome@gmail.com',
-  password: '',
-};
 const baneta_realuri = { login: 'ibanet@cryptx.com', password: 'Malina125$' };
+const kervala = { login: 'gkerva@cryptal.com', password: 'TestGexCryptal7' };
+const sali = { login: 'bukhiashvilisalome@gmail.com', password: 'Salome1996' };
 
 const INITIAL_STATE = {
   timerVisible: false,
+  userProfileLoading: false,
 
   // Login
   pkceInfo: {},
@@ -33,13 +28,13 @@ const INITIAL_STATE = {
   Personal_Company: 'Personal',
   registrationStartInfo: {},
   registrationInputs: {
-    firstName: 'aa',
-    lastName: 'aa',
-    email: 'vaxo2@mailinator.com',
-    passwordNew: '11111!Aa',
-    passwordConfirm: '11111!Aa',
+    firstName: '',
+    lastName: '',
+    email: '',
+    passwordNew: '',
+    passwordConfirm: '',
     phoneCountry: 'GEO',
-    phoneNumber: '555554555',
+    phoneNumber: '',
     promoCode: '',
     referralCode: '',
     acceptTerms: 'on',
@@ -67,6 +62,7 @@ export default (state = INITIAL_STATE, action) => {
     pkceInfo,
     credentials,
     userAndPassInfo,
+    userProfileLoading,
     forgotPassInfo,
     forgotPassMode,
     loginStartInfo,
@@ -88,6 +84,11 @@ export default (state = INITIAL_STATE, action) => {
     timerVisible,
   } = action;
   switch (action.type) {
+    case actionTypes.TOGGLE_USER_PROFILE_LOADING:
+      return {
+        ...state,
+        userProfileLoading,
+      };
     case actionTypes.SAVE_PKCE_INFO:
       return {
         ...state,

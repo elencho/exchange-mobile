@@ -1,12 +1,5 @@
 import React, { useRef } from 'react';
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  View,
-  Pressable,
-  ActivityIndicator,
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, View, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../../components/AppText';
@@ -21,12 +14,14 @@ import images from '../../constants/images';
 import { toggleAddCardModal } from '../../redux/modals/actions';
 import StatusModal from '../../components/Wallet/StatusModal';
 import DeleteModal from '../../components/Wallet/ManageCards/DeleteModal';
+import { MaterialIndicator } from 'react-native-indicators';
 
-export default function ManageCards() {
+export default function ManageCards({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     modals: { webViewObj },
+    wallet: { cardBeingVerified },
     trade: { cards, cardsLoading },
   } = state;
 
@@ -34,7 +29,7 @@ export default function ManageCards() {
 
   const addCardModal = () => dispatch(toggleAddCardModal(true));
   const onContentSizeChange = () => {
-    scrollRef.current.scrollToEnd();
+    scrollRef.current.scrollTo({ x: 0, y: 3, animated: true });
   };
 
   return (
@@ -45,7 +40,7 @@ export default function ManageCards() {
       </View>
 
       {cardsLoading && (
-        <ActivityIndicator size="large" color="white" style={{ flex: 1 }} />
+        <MaterialIndicator color="#6582FD" animationDuration={3000} />
       )}
 
       {cards?.length && !cardsLoading ? (
@@ -58,16 +53,10 @@ export default function ManageCards() {
             nestedScrollEnabled
             onContentSizeChange={onContentSizeChange}
             ref={scrollRef}
+            refreshControl={refreshControl}
           >
             {cards?.map((c) => (
-              <Card
-                key={c.id}
-                name={c.provider}
-                cardNumber={c.cardNumber}
-                network={c.network}
-                status={c.status}
-                id={c.id}
-              />
+              <Card key={c.id} card={c} />
             ))}
             {/* Code below for testing purposes only */}
             {/* {[1, 2, 3, 4, 5, 6, 7].map((c) => (
@@ -98,7 +87,7 @@ export default function ManageCards() {
       <AddCardModal />
       <StatusModal cards />
 
-      <AppWebView refresh source={{ html: webViewObj }} />
+      {cardBeingVerified && <AppWebView cards source={{ html: webViewObj }} />}
     </View>
   );
 }

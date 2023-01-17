@@ -2,7 +2,7 @@ export default {
   name: 'cryptal-app',
   version: '1.0.0',
   android: {
-    package: 'com.vaxo_nba.cryptalapp',
+    package: 'com.cryptal.exchange.mobile',
   },
   ios: {
     bundleIdentifier: 'cryptalapp',

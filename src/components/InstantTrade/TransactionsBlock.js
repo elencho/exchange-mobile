@@ -1,16 +1,21 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 
 import colors from '../../constants/colors';
-import { fetchTrades, hideOtherPairsAction } from '../../redux/trade/actions';
+import {
+  fetchTrades,
+  hideOtherPairsAction,
+  saveTrades,
+  setTradeOffset,
+} from '../../redux/trade/actions';
 import { reachScrollEnd } from '../../redux/transactions/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
+import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
 import Trade from './Trade';
 
-const TopRow = ({ text, onPress }) => (
+export const TopRow = ({ text, onPress }) => (
   <View style={styles.topRow}>
     <AppText header style={styles.header}>
       Transactions
@@ -21,39 +26,46 @@ const TopRow = ({ text, onPress }) => (
     </AppText>
   </View>
 );
-
-export default function TransactionsBlock() {
+const TransactionsBlock = ({
+  loading,
+  innerScrollEnabled,
+  handleInnerScroll,
+}) => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
   const state = useSelector((state) => state);
   const {
-    trade: { trades, hideOtherPairs },
-    transactions: { tabRoute },
+    trade: { trades, hideOtherPairs, totalTrades },
   } = state;
 
+  const [moreLoading, setMoreLoading] = useState(false);
+
+  useEffect(() => {
+    return () => dispatch(saveTrades([]));
+  }, []);
+
   const toggleShowHide = () => {
+    dispatch(setTradeOffset(0));
     dispatch(hideOtherPairsAction(!hideOtherPairs));
+    dispatch(saveTrades([]));
     dispatch(fetchTrades());
   };
 
-  const handleScrollEnd = (e) => {
-    if (
-      isCloseToBottom(e.nativeEvent) &&
-      navigation.isFocused() &&
-      tabRoute === 'Trade'
-    ) {
-      dispatch(reachScrollEnd('trades'));
+  const handleScrollEnd = () => {
+    dispatch(reachScrollEnd('trades'));
+    if (trades.length < totalTrades) {
+      setMoreLoading(true);
+    } else {
+      setMoreLoading(false);
     }
   };
 
-  const isCloseToBottom = ({
-    layoutMeasurement,
-    contentOffset,
-    contentSize,
-  }) => {
-    return layoutMeasurement.height + contentOffset.y >= contentSize.height;
-  };
+  const onRefresh = () => dispatch(fetchTrades());
+  const renderTrade = ({ item }) => (
+    <Trade trade={item} key={item.creationTime} />
+  );
+
+  const footer = () => (moreLoading ? <OneTransactionSkeleton /> : <View />);
 
   return (
     <View style={styles.container}>
@@ -62,23 +74,34 @@ export default function TransactionsBlock() {
         onPress={toggleShowHide}
       />
 
-      <ScrollView
-        nestedScrollEnabled
-        showsVerticalScrollIndicator={false}
-        // onScroll={handleScrollEnd}
-        // onMomentumScrollEnd={handleScrollEnd}
-        onScrollEndDrag={handleScrollEnd}
-        scrollEventThrottle={4}
-        style={{ height: 280 }}
-      >
-        {trades?.map((trade) => (
-          <Trade trade={trade} key={Math.random()} />
-        ))}
-      </ScrollView>
+      {loading && !moreLoading ? (
+        [1, 2, 3].map(({ item }) => <OneTransactionSkeleton key={item} />)
+      ) : (
+        <FlatList
+          style={{ height: 280 }}
+          data={trades}
+          renderItem={renderTrade}
+          keyExtractor={(item) => item.creationTime}
+          onEndReached={handleScrollEnd}
+          //onEndReachedThreshold={0.7}
+          nestedScrollEnabled
+          initialNumToRender={5}
+          ListFooterComponent={footer}
+          scrollEnabled={innerScrollEnabled}
+          onScroll={handleInnerScroll}
+          refreshControl={
+            <RefreshControl
+              tintColor={colors.PRIMARY_PURPLE}
+              refreshing={loading}
+              onRefresh={onRefresh}
+            />
+          }
+        />
+      )}
     </View>
   );
-}
-
+};
+export default TransactionsBlock;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.SECONDARY_BACKGROUND,

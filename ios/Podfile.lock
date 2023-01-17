@@ -1,6 +1,32 @@
 PODS:
+  - appcenter-analytics (4.4.5):
+    - AppCenter/Analytics (~> 4.0)
+    - AppCenterReactNativeShared (~> 4.0)
+    - React-Core
+  - appcenter-core (4.4.5):
+    - AppCenterReactNativeShared (~> 4.0)
+    - React-Core
+  - appcenter-crashes (4.4.5):
+    - AppCenter/Crashes (~> 4.0)
+    - AppCenterReactNativeShared (~> 4.0)
+    - React-Core
+  - AppCenter/Analytics (4.4.3):
+    - AppCenter/Core
+  - AppCenter/Core (4.4.3)
+  - AppCenter/Crashes (4.4.3):
+    - AppCenter/Core
+  - AppCenterReactNativeShared (4.4.5):
+    - AppCenter/Core (= 4.4.3)
   - ASN1Decoder (1.8.0)
+  - Base64 (1.1.2)
   - boost (1.76.0)
+  - BVLinearGradient (2.6.2):
+    - React-Core
+  - CodePush (7.0.5):
+    - Base64 (~> 1.1)
+    - JWT (~> 3.0.0-beta.12)
+    - React-Core
+    - SSZipArchive (~> 2.2.2)
   - DoubleConversion (1.1.6)
   - EASClient (0.3.0):
     - ExpoModulesCore
@@ -22,15 +48,15 @@ PODS:
   - EXMediaLibrary (14.2.0):
     - ExpoModulesCore
     - React-Core
-  - Expo (46.0.13):
+  - Expo (46.0.17):
     - ExpoModulesCore
   - ExpoClipboard (3.1.0):
     - ExpoModulesCore
-  - ExpoKeepAwake (10.2.0):
+  - ExpoKeepAwake (10.2.1):
     - ExpoModulesCore
   - ExpoLinearGradient (11.4.0):
     - ExpoModulesCore
-  - ExpoModulesCore (0.11.5):
+  - ExpoModulesCore (0.11.9):
     - React-Core
     - ReactCommon/turbomodule/core
   - ExpoRandom (12.3.0):
@@ -45,7 +71,7 @@ PODS:
     - ExpoModulesCore
     - React-Core
   - EXStructuredHeaders (2.2.1)
-  - EXUpdates (0.14.6):
+  - EXUpdates (0.14.7):
     - ASN1Decoder (~> 1.8)
     - EASClient
     - EXManifests
@@ -64,11 +90,13 @@ PODS:
     - ReactCommon/turbomodule/core (= 0.69.6)
   - fmt (6.2.1)
   - glog (0.3.5)
-  - IdensicMobileSDK (1.19.7):
-    - IdensicMobileSDK/Default (= 1.19.7)
-  - IdensicMobileSDK/Core (1.19.7)
-  - IdensicMobileSDK/Default (1.19.7):
+  - IdensicMobileSDK (1.20.2):
+    - IdensicMobileSDK/Default (= 1.20.2)
+  - IdensicMobileSDK/Core (1.20.2)
+  - IdensicMobileSDK/Default (1.20.2):
     - IdensicMobileSDK/Core
+  - JWT (3.0.0-beta.14):
+    - Base64 (~> 1.1.2)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -278,8 +306,8 @@ PODS:
   - React-jsinspector (0.69.6)
   - React-logger (0.69.6):
     - glog
-  - react-native-mobilesdk-module (1.19.7):
-    - IdensicMobileSDK (= 1.19.7)
+  - react-native-mobilesdk-module (1.20.3):
+    - IdensicMobileSDK (= 1.20.2)
     - React
   - react-native-pkce-challenge (3.2.0):
     - React-Core
@@ -391,10 +419,16 @@ PODS:
     - React-RCTImage
   - RNSVG (12.3.0):
     - React-Core
+  - SSZipArchive (2.2.3)
   - Yoga (1.14.0)
 
 DEPENDENCIES:
+  - appcenter-analytics (from `../node_modules/appcenter-analytics`)
+  - appcenter-core (from `../node_modules/appcenter`)
+  - appcenter-crashes (from `../node_modules/appcenter-crashes`)
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
+  - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
+  - CodePush (from `../node_modules/react-native-code-push`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - EASClient (from `../node_modules/expo-eas-client/ios`)
   - EXApplication (from `../node_modules/expo-application/ios`)
@@ -463,12 +497,27 @@ SPEC REPOS:
   https://github.com/SumSubstance/Specs.git:
     - IdensicMobileSDK
   trunk:
+    - AppCenter
+    - AppCenterReactNativeShared
     - ASN1Decoder
+    - Base64
     - fmt
+    - JWT
+    - SSZipArchive
 
 EXTERNAL SOURCES:
+  appcenter-analytics:
+    :path: "../node_modules/appcenter-analytics"
+  appcenter-core:
+    :path: "../node_modules/appcenter"
+  appcenter-crashes:
+    :path: "../node_modules/appcenter-crashes"
   boost:
     :podspec: "../node_modules/react-native/third-party-podspecs/boost.podspec"
+  BVLinearGradient:
+    :path: "../node_modules/react-native-linear-gradient"
+  CodePush:
+    :path: "../node_modules/react-native-code-push"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EASClient:
@@ -595,8 +644,16 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
 SPEC CHECKSUMS:
+  AppCenter: 3fd04aa1b166e16fdb03ec81dabe488aece83fbd
+  appcenter-analytics: 1aea9ada8922d2e2df3e069a28eda21157c9d30d
+  appcenter-core: c593b2e4ac28d6a21b6a217c4a5e6b3de7b0b00f
+  appcenter-crashes: d9ae1c9296974c1c433600fa2f320e0ba1f12bdf
+  AppCenterReactNativeShared: f395caeabde0dc3a11609dbcb737d0f14cd40e79
   ASN1Decoder: 6110fdeacfdb41559b1481457a1645be716610aa
+  Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   boost: a7c83b31436843459a1961bfd74b96033dc77234
+  BVLinearGradient: 34a999fda29036898a09c6a6b728b0b4189e1a44
+  CodePush: ef496b6fd053012e985e3d4a0ab9f9dbf2739eac
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
   EASClient: a2581835cf9b97d0defd5d630fc6eb1bf77045e7
   EXApplication: e418d737a036e788510f2c4ad6c10a7d54d18586
@@ -608,24 +665,25 @@ SPEC CHECKSUMS:
   EXLocalAuthentication: a714f4e7370c4efba4ed4345a55110f22ac3d85f
   EXManifests: b38dc61303f5eede990b4c8ecbfac32f82160e65
   EXMediaLibrary: e8c8a365701629b7b21dd29769b86e8320610f18
-  Expo: 39582e41ae9e0aa9ed016d3918da87ee61e87525
+  Expo: 4de8a31146bb0480353b3ed1850e015c4862625f
   ExpoClipboard: 7a5a26a3119bd1d0337ee065db3bf5d8a40e23a1
-  ExpoKeepAwake: 0e8f18142e71bbf2c7f6aa66ebed249ba1420320
+  ExpoKeepAwake: 8b47e5358d54ea4922b630a74f2acb026ab7a28b
   ExpoLinearGradient: 1a3af07c6dab3c612967a294836df9ae717431df
-  ExpoModulesCore: 5a973701f4400d70254bc836305228731c829010
+  ExpoModulesCore: f9d1730cc2dde38e46b0becb97628b3ebbd29f21
   ExpoRandom: f9f1faa299a40733867f344d6b7bfa2d1f4ab04d
   ExpoWebBrowser: 5804ac42a8269d0e534bc4461993005f72535649
   EXSecureStore: ac4b3c89dd5810528074d9422d5fed5a9e684467
   EXSharing: 8530ef08cb899328a7c61de7f4836af6208b567b
   EXSplashScreen: 799bece80089219b2c989c1082d70f3b00995cda
   EXStructuredHeaders: 5d86829469399370a9fc7cb1e4391b09de87681d
-  EXUpdates: 8afd5cff44d3936e08be0e1688f0ed118134433f
+  EXUpdates: 7a705a119c7551d50fbcdd8e3b5b414c4fefadb8
   EXUpdatesInterface: 2bbc11815dfa2ec3fc02e5534c7592c6b42b5327
   FBLazyVector: 739d2f9719faecb463c7aa191591af31c8c94182
   FBReactNativeSpec: 957de82f66e31f2f14bbec34e37242282fdd26de
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: cfec46900e485b4b7613ff79308c30791825f32c
-  IdensicMobileSDK: 5b56aae41519bdb8fe287f135033b4399cc3f50e
+  IdensicMobileSDK: 099f3398b2a326931d042d99ac4e01e351e50d4f
+  JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   RCT-Folly: 6c7dfdb649d9eac5f93fa0891b11725aa9b2f1ed
   RCTRequired: c8c080849a3670601d5c7056023a2176067a69d8
   RCTTypeSafety: 710aef40f5ae246bc5fff7e873855b17ed11c180
@@ -640,7 +698,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: c61b60de03b3474e5749b8a8fd8e6507630d62c4
   React-jsinspector: eaacb698c5af7a99131bc1933806372c20222dfd
   React-logger: ebb4d31bbbe4f1a8a1a9b658d7429210b8f68160
-  react-native-mobilesdk-module: de5c27557047b97d8ec94d7f456f41d2b51f47d4
+  react-native-mobilesdk-module: 46faa29721e6ff9b0e2c1e4600c054b05cca53f1
   react-native-pkce-challenge: 920193e277f9d3ccdf30edd9228b3095aed28af7
   react-native-safe-area-context: 6c12e3859b6f27b25de4fee8201cfb858432d8de
   react-native-webview: e771bc375f789ebfa02a26939a57dbc6fa897336
@@ -660,8 +718,9 @@ SPEC CHECKSUMS:
   RNReanimated: 2cf7451318bb9cc430abeec8d67693f9cf4e039c
   RNScreens: 4a1af06327774490d97342c00aee0c2bafb497b7
   RNSVG: 302bfc9905bd8122f08966dc2ce2d07b7b52b9f8
+  SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Yoga: 75bf4b0131cfb46a659cd0c13309b79a6fcff66d
 
-PODFILE CHECKSUM: 48d73b373b762079c53b5200315bd9fc956369fe
+PODFILE CHECKSUM: c9a0d4ef46cb74a8e5af0a55793290ea28cb1392
 
 COCOAPODS: 1.11.3

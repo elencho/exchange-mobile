@@ -5,6 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Pressable,
+  Keyboard,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -59,37 +61,39 @@ export default function Login2Fa({ navigation }) {
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
-      <TouchableOpacity style={styles.back} onPress={goBack}>
-        <Image source={images.Back} />
-        <PurpleText text="Back to Log In" style={styles.backText} />
-      </TouchableOpacity>
-      <View style={styles.middle}>
-        <Image source={image()} />
-        <AppText header style={styles.primary}>
-          {type()}
-        </AppText>
-        <AppText style={styles.secondary}>Enter One Time Password</AppText>
-
-        <View style={styles.twoFaInput}>
-          <TwoFaInput
-            cellCount={cellCount}
-            value={value}
-            setValue={setValue}
-            login
-          />
-        </View>
-      </View>
-
-      <View style={styles.bottom}>
-        {t !== 'TOTP' ? (
-          <AppText style={[styles.secondary, { marginBottom: 20 }]}>
-            Didn't receive code? <PurpleText text="Resend" onPress={resend} />
+      <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
+        <TouchableOpacity style={styles.back} onPress={goBack}>
+          <Image source={images.Back} />
+          <PurpleText text="Back to Log In" style={styles.backText} />
+        </TouchableOpacity>
+        <View style={styles.middle}>
+          <Image source={image()} />
+          <AppText header style={styles.primary}>
+            {type()}
           </AppText>
-        ) : null}
-        {t !== 'EMAIL' ? (
-          <PurpleText text="Reset OTP" onPress={goToReset} />
-        ) : null}
-      </View>
+          <AppText style={styles.secondary}>Enter One Time Password</AppText>
+
+          <View style={styles.twoFaInput}>
+            <TwoFaInput
+              cellCount={cellCount}
+              value={value}
+              setValue={setValue}
+              login
+            />
+          </View>
+        </View>
+
+        <View style={styles.bottom}>
+          {t !== 'TOTP' ? (
+            <AppText style={[styles.secondary, { marginBottom: 20 }]}>
+              Didn't receive code? <PurpleText text="Resend" onPress={resend} />
+            </AppText>
+          ) : null}
+          {t !== 'EMAIL' ? (
+            <PurpleText text="Reset OTP" onPress={goToReset} />
+          ) : null}
+        </View>
+      </Pressable>
     </ImageBackground>
   );
 }

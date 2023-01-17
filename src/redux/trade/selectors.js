@@ -19,25 +19,25 @@ export const depositFeeParams = (state) => {
       card,
       currentBalanceObj,
     },
-    transactions: { code },
-    wallet: { walletTab, depositAmount, network },
+    transactions: { code, tabRoute },
+    wallet: { depositAmount, network },
   } = state;
 
-  const instantTrade = walletTab === 'Trade';
+  const instantTrade = tabRoute === 'Trade';
   const eCommerce = network === 'ECOMMERCE';
+  const crypto = currentBalanceObj?.type === 'CRYPTO';
 
   const method = () => {
     if (!instantTrade) {
-      if (currentBalanceObj?.type === 'CRYPTO') {
-        return 'WALLET';
-      } else if (eCommerce) {
-        return 'ECOMMERCE';
-      } else {
-        return 'WIRE';
-      }
-    } else {
-      return 'ECOMMERCE';
+      if (crypto) return 'WALLET';
+      if (!crypto && !eCommerce) return 'WIRE';
     }
+    return 'ECOMMERCE';
+  };
+
+  const amount = () => {
+    if (instantTrade) return price;
+    else return depositAmount ?? 0;
   };
 
   return {
@@ -46,13 +46,13 @@ export const depositFeeParams = (state) => {
     type: 'DEPOSIT',
     provider: instantTrade || eCommerce ? depositProvider : network,
     cardId: instantTrade || eCommerce ? card?.id : null,
-    amount: instantTrade ? price : depositAmount,
+    amount: amount(),
   };
 };
 
 export const withdrawalFeeParams = (state) => {
   const {
-    transactions: { code },
+    transactions: { code, tabRoute },
     trade: {
       currentBalanceObj,
       depositProvider,
@@ -60,24 +60,24 @@ export const withdrawalFeeParams = (state) => {
       fiat,
       currentTrade: { price },
     },
-    wallet: { network, withdrawalAmount, walletTab },
+    wallet: { network, withdrawalAmount },
   } = state;
 
-  const instantTrade = walletTab === 'Trade';
+  const instantTrade = tabRoute === 'Trade';
   const eCommerce = network === 'ECOMMERCE';
+  const crypto = currentBalanceObj?.type === 'CRYPTO';
 
   const method = () => {
     if (!instantTrade) {
-      if (currentBalanceObj?.type === 'CRYPTO') {
-        return 'WALLET';
-      } else if (eCommerce) {
-        return 'ECOMMERCE';
-      } else {
-        return 'WIRE';
-      }
-    } else {
-      return 'ECOMMERCE';
+      if (crypto) return 'WALLET';
+      if (!crypto && !eCommerce) return 'WIRE';
     }
+    return 'ECOMMERCE';
+  };
+
+  const amount = () => {
+    if (instantTrade) return price;
+    else return withdrawalAmount ?? 0;
   };
 
   return {
@@ -86,7 +86,7 @@ export const withdrawalFeeParams = (state) => {
     type: 'WITHDRAWAL',
     provider: instantTrade || eCommerce ? depositProvider : network,
     cardId: instantTrade || eCommerce ? card?.id : null,
-    amount: instantTrade ? price : withdrawalAmount,
+    amount: amount(),
   };
 };
 
@@ -99,7 +99,8 @@ export const getCardParams = (state) => {
 
   const currency = code ?? 'GEL';
   const status = walletTab !== 'Manage Cards' ? 'VERIFIED' : null;
-  const transactionType = walletTab === 'Withdrawal' ? 'WITHDRAWAL' : 'DEPOSIT';
+  const transactionType =
+    walletTab === 'Manage Cards' ? null : walletTab.toUpperCase();
 
   return {
     currency: tabRoute === 'Trade' ? fiat : currency,

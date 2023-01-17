@@ -13,8 +13,9 @@ import {
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import { setCard } from '../../redux/trade/actions';
+import Fee from '../Wallet/Fee';
 
-function CardSection() {
+function CardSection({ error }) {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -25,7 +26,6 @@ function CardSection() {
       currentBalanceObj,
       card,
       fiat,
-      fee,
       cardsToDisplayInModal,
       balance: { balances },
     },
@@ -42,10 +42,11 @@ function CardSection() {
   const showFees = () => dispatch(toggleBankFeesModal(true));
 
   const multipleBanks = () => {
+    if (tabRoute === 'Wallet') return true;
     let isMultiple;
-    balances.forEach((b) => {
+    balances?.forEach((b) => {
       if (fiat === b.currencyCode) {
-        isMultiple = b.depositMethods.ECOMMERCE.length > 1;
+        isMultiple = b?.depositMethods?.ECOMMERCE?.length > 1;
       }
     });
     return isMultiple;
@@ -69,29 +70,41 @@ function CardSection() {
       fiat,
     });
 
-  const color = depositProvider ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT;
+  const color =
+    !depositProvider && error
+      ? '#F45E8C'
+      : depositProvider
+      ? colors.PRIMARY_TEXT
+      : colors.SECONDARY_TEXT;
+  const cardTextColor =
+    !card && error
+      ? '#F45E8C'
+      : card
+      ? colors.PRIMARY_TEXT
+      : colors.SECONDARY_TEXT;
   const opacity = cardsToDisplayInModal?.length ? 1 : 0.5;
+  const bankBorder = !depositProvider && error ? '#F45E8C' : '#525A86';
+  const cardBorder = !card && error ? '#F45E8C' : '#525A86';
 
   const displayName = () => {
     let displayName = 'Payment Service Provider';
     const m =
       walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
-    currentBalanceObj[m]?.ECOMMERCE.forEach((d) => {
-      if (depositProvider === d.provider) displayName = d.displayName;
-    });
-    return displayName;
-  };
 
-  const FeeInfo = () => {
-    if (fee && tabRoute === 'Trade') {
-      return (
-        <View style={styles.info}>
-          <AppText subtext style={styles.infoText}>
-            MasterCard 3%; Total amount = {fee.totalAmount} {fiat}
-          </AppText>
-        </View>
-      );
-    }
+    tabRoute === 'Trade' &&
+      balances.forEach((b) => {
+        if (b.currencyCode === fiat) {
+          b[m]?.ECOMMERCE?.forEach((d) => {
+            if (depositProvider === d.provider) displayName = d.displayName;
+          });
+        }
+      });
+
+    tabRoute === 'Wallet' &&
+      currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
+        if (depositProvider === d.provider) displayName = d.displayName;
+      });
+    return displayName;
   };
 
   return (
@@ -99,7 +112,10 @@ function CardSection() {
       {multipleBanks() && (
         <>
           <Pressable
-            style={[styles.dropdown, { marginBottom: 25 }]}
+            style={[
+              styles.dropdown,
+              { marginBottom: 25, borderColor: bankBorder },
+            ]}
             onPress={showBanks}
           >
             <AppText style={[styles.text, { color }]} medium={depositProvider}>
@@ -108,27 +124,27 @@ function CardSection() {
             <Image source={images['Arrow']} />
           </Pressable>
 
-          {tabRoute === 'Trade' && depositProvider && (
+          {/* {tabRoute === 'Trade' && depositProvider && (
             <AppText subtext style={styles.subText}>
               0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
               <PurpleText text=" More Fees" onPress={showFees} />
             </AppText>
-          )}
+          )} */}
         </>
       )}
 
       {depositProvider && (
         <>
           <Pressable
-            style={[styles.dropdown, { opacity, marginBottom: 10 }]}
+            style={[
+              styles.dropdown,
+              { opacity, marginBottom: 10, borderColor: cardBorder },
+            ]}
             onPress={showCards}
             disabled={!cardsToDisplayInModal?.length}
           >
             <AppText
-              style={[
-                styles.text,
-                { color: card ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT },
-              ]}
+              style={[styles.text, { color: cardTextColor }]}
               medium={card ? card.cardNumber : false}
             >
               {card ? card.cardNumber : 'Choose Card'}
@@ -142,10 +158,12 @@ function CardSection() {
               : "You don't have cards yet"}{' '}
             <PurpleText text=" Add Card" onPress={addNewCard} />
           </AppText>
+
+          {tabRoute === 'Trade' && (
+            <View style={{ marginVertical: 22 }}>{card && <Fee />}</View>
+          )}
         </>
       )}
-
-      {FeeInfo()}
     </View>
   );
 }
@@ -154,7 +172,6 @@ export default CardSection;
 
 const styles = StyleSheet.create({
   dropdown: {
-    borderColor: '#525A86',
     borderWidth: 1,
     alignItems: 'center',
     flexDirection: 'row',
@@ -163,14 +180,6 @@ const styles = StyleSheet.create({
   },
   container: {
     marginVertical: 20,
-  },
-  info: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  infoText: {
-    color: colors.SECONDARY_TEXT,
   },
   newCard: {
     color: colors.SECONDARY_TEXT,

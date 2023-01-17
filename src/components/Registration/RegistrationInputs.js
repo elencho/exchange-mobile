@@ -18,7 +18,7 @@ import { setRegistrationInputs } from '../../redux/profile/actions';
 import { toggleCountriesModal } from '../../redux/modals/actions';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
 
-export default function RegistrationInputs() {
+export default function RegistrationInputs({ validations, error }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -26,15 +26,17 @@ export default function RegistrationInputs() {
   } = state;
 
   const i = registrationInputs;
+  const v = validations;
   const set = (obj) => dispatch(setRegistrationInputs({ ...i, ...obj }));
 
-  const passLength = i.passwordNew?.length >= 8;
-  const hasNumber = /\d/.test(i.passwordNew);
-  const hasUpperAndLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(i.passwordNew);
-
-  const passwordCheck = passLength && hasNumber && hasUpperAndLower;
-
   const red = { color: '#F45E8C' };
+  const border = { borderColor: '#F45E8C' };
+  const phoneNumberStyle =
+    error && (!i.phoneNumber || !i.phoneCountry) && border;
+  const placeholderTextColor =
+    error && !i.phoneNumber && !i.phoneCountry
+      ? '#F45E8C'
+      : colors.SECONDARY_TEXT;
 
   const handleInputs = (text, type) => {
     if (type === 'name') set({ firstName: text });
@@ -51,6 +53,19 @@ export default function RegistrationInputs() {
   const phoneCode = () =>
     countriesConstant?.find((c) => i.phoneCountry === c.code);
 
+  const errorText = (type) => {
+    if (error) {
+      if (!i.firstName && !v.nameCheck && type === 'First Name')
+        return 'Enter First Name';
+      if (!i.lastName && !v.lastNameCheck && type === 'Last Name')
+        return 'Enter Last Name';
+      if (!i.email && !v.isEmail && type === 'Email')
+        return 'Enter Valid Email';
+      if (!v.similarPasswords && type === 'Repeat Pass')
+        return 'Passwords Do Not Match';
+    }
+  };
+
   return (
     <>
       <AppInput
@@ -59,6 +74,8 @@ export default function RegistrationInputs() {
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'name')}
+        error={error && !i.firstName && !v.nameCheck}
+        errorText={errorText('First Name')}
       />
       <AppInput
         value={i.lastName}
@@ -66,6 +83,8 @@ export default function RegistrationInputs() {
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'last name')}
+        error={error && !i.lastName && !v.lastNameCheck}
+        errorText={errorText('Last Name')}
       />
       <AppInput
         value={i.email}
@@ -73,6 +92,8 @@ export default function RegistrationInputs() {
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'email')}
+        error={error && !i.email && !v.isEmail}
+        errorText={errorText('Email')}
       />
       <AppInput
         value={i.passwordNew}
@@ -81,19 +102,17 @@ export default function RegistrationInputs() {
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'pass')}
         secureTextEntry
-        error={i.passwordNew && !passwordCheck}
+        error={error && !v.passwordCheck}
       />
 
       <Text style={styles.validations}>
-        <Text style={i.passwordNew && !passLength && red}>
+        <Text style={error && !v.passLength && red}>
           8 or more characters,{' '}
         </Text>
-        <Text style={i.passwordNew && !hasUpperAndLower && red}>
+        <Text style={error && !v.hasUpperAndLower && red}>
           Upper & lowercase letters,{' '}
         </Text>
-        <Text style={i.passwordNew && !hasNumber && red}>
-          At least one number,{' '}
-        </Text>
+        <Text style={error && !v.hasNumber && red}>At least one number, </Text>
       </Text>
 
       <AppInput
@@ -103,9 +122,10 @@ export default function RegistrationInputs() {
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'confirm')}
         secureTextEntry
-        error={i.passwordConfirm && i.passwordNew !== i.passwordConfirm}
+        error={error && !v.similarPasswords}
+        errorText={errorText('Repeat Pass')}
       />
-      <View style={styles.phoneNumber}>
+      <View style={[styles.phoneNumber, phoneNumberStyle]}>
         <Pressable style={styles.number} onPress={openCountriesModal}>
           {i.phoneCountry ? (
             <>
@@ -130,7 +150,7 @@ export default function RegistrationInputs() {
         <TextInput
           value={i.phoneNumber}
           placeholder="Phone Number"
-          placeholderTextColor={colors.SECONDARY_TEXT}
+          placeholderTextColor={placeholderTextColor}
           style={{ flex: 1, color: 'white' }}
           keyboardType="numeric"
           onChangeText={(text) => handleInputs(text, 'phone')}

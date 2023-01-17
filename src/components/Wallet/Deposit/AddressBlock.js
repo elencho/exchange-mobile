@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,19 +8,13 @@ import AppText from '../../AppText';
 import { toggleQrAddressModal } from '../../../redux/modals/actions';
 import AddressQrModal from './AddressQrModal';
 import { copyToClipboard } from '../../../utils/copyToClipboard';
-import { saveCryptoAddress } from '../../../redux/wallet/actions';
 
 export default function AddressBlock() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     wallet: { cryptoAddress },
-    transactions: { code },
   } = state;
-
-  useEffect(() => {
-    return () => dispatch(saveCryptoAddress({}));
-  }, [code]);
 
   const copyAddress = () => copyToClipboard(cryptoAddress.address);
   const showQr = () => dispatch(toggleQrAddressModal(true));

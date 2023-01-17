@@ -4,7 +4,7 @@ const INITIAL_STATE = {
   tabRoute: null,
   stackRoute: null,
   tabNavigationRef: {},
-
+  totalTransactions: null,
   transactions: [],
   currencies: [],
   currenciesConstant: [],
@@ -40,6 +40,7 @@ export default (state = INITIAL_STATE, action) => {
     stackRoute,
     currenciesConstant,
     tabNavigationRef,
+    totalTransactions,
   } = action;
   switch (action.type) {
     case 'SET_TAB_NAVIGATION_REF':
@@ -106,6 +107,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         offset,
+      };
+    case actionTypes.SET_TOTAL_TRANSACTIONS:
+      return {
+        ...state,
+        totalTransactions,
       };
     case actionTypes.TOGGLE_LOADING:
       return {

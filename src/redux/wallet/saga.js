@@ -24,7 +24,12 @@ import {
   toggleGoogleOtpModal,
   toggleSmsAuthModal,
 } from '../modals/actions';
-import { setCard, setDepositProvider, setFee } from '../trade/actions';
+import {
+  fetchFee,
+  setCard,
+  setDepositProvider,
+  setFee,
+} from '../trade/actions';
 import { chooseCurrency, setAbbr } from '../transactions/actions';
 import {
   actionTypes,
@@ -121,11 +126,14 @@ function* wireDepositSaga(action) {
 
 function* cryptoAddressesSaga(action) {
   const { name, code, navigation, network } = action;
+
   const currentBalanceObj = yield select(
     (state) => state.trade.currentBalanceObj
   );
+  const walletTab = yield select((state) => state.wallet.walletTab);
 
-  if (Object.keys(currentBalanceObj?.depositMethods)?.length) {
+  const hasMethod = Object.keys(currentBalanceObj?.depositMethods)?.length;
+  if (!!hasMethod) {
     const cryptoAddress = yield call(fetchCryptoAddresses, code, network);
     yield put(setNetwork(network));
     yield put(saveCryptoAddress(cryptoAddress ? cryptoAddress : {}));
@@ -133,6 +141,18 @@ function* cryptoAddressesSaga(action) {
 
   yield put(goToBalanceAction(name, code, navigation));
   yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
+
+  if (walletTab === 'Whitelist') yield put(getWhitelistAction());
+
+  if (!!hasMethod) {
+    // Fees
+    const amountAction =
+      walletTab === 'Deposit'
+        ? { type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 }
+        : setWithdrawalAmount();
+    yield put(amountAction);
+    yield put(fetchFee(walletTab.toLowerCase()));
+  }
 }
 
 function* generateCryptoAddressSaga(action) {

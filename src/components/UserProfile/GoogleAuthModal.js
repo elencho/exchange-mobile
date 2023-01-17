@@ -77,7 +77,7 @@ export default function GoogleAuthModal() {
 
         <TouchableOpacity style={styles.store} onPress={handleStore}>
           <Image
-            source={images[isIos ? 'Appstore' : 'Playstore']}
+            source={images[isIos ? 'IosStore' : 'AndroidStore']}
             style={styles.storeIcon}
           />
         </TouchableOpacity>

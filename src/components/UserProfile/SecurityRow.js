@@ -88,7 +88,7 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
   const secondaryTextCond = () => {
     switch (text) {
       case 'Google_Auth':
-        return 'Some description here';
+        return 'Google Auth Description';
       case 'E_mail_Auth':
         return userInfo.email;
       case 'SMS_Auth':

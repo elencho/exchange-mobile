@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
@@ -10,10 +10,7 @@ import {
   toggleGoogleOtpModal,
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
-import {
-  setNetwork,
-  withdrawalTemplatesAction,
-} from '../../redux/wallet/actions';
+import { setNetwork } from '../../redux/wallet/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
 import AppButton from '../../components/AppButton';
 import WithdrawalInputs from '../../components/Wallet/Withdrawal/WithdrawalInputs';
@@ -22,42 +19,37 @@ import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMeth
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
 import WithdrawalInfo from '../../components/Wallet/Withdrawal/WithdrawalInfo';
 import SaveAsTemplate from '../../components/Wallet/Withdrawal/SaveAsTemplate';
-import WithdrawalFees from '../../components/Wallet/Withdrawal/WithdrawalFees';
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import GeneralError from '../../components/GeneralError';
 import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
-import { setFee } from '../../redux/trade/actions';
+import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
+import { MaterialIndicator } from 'react-native-indicators';
+import { validateAmount } from '../../utils/appUtils';
+import WithKeyboard from '../../components/WithKeyboard';
 
-export default function Withdrawal() {
+export default function Withdrawal({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     profile: { googleAuth, emailAuth, smsAuth },
-    trade: { currentBalanceObj, card, depositProvider },
+    trade: { currentBalanceObj, card, depositProvider, cardsLoading },
     transactions: { code },
     wallet: {
       withdrawalRestriction,
+      currentWhitelistObj,
       currentTemplate,
       withdrawalBank,
-      currentWhitelistObj,
       hasMultipleMethods,
       network,
-
-      // Withdrawal Params
       withdrawalAmount,
-      withdrawalNote,
-      saveTemplate,
-      newTemplateName,
-      iban,
-      receiverBank,
     },
   } = state;
 
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
-  const [loading, setloading] = useState(true);
+  const [error, setError] = useState(false);
 
   const isFiat = currentBalanceObj.type === 'FIAT';
   const isEcommerce = network === 'ECOMMERCE';
@@ -65,19 +57,6 @@ export default function Withdrawal() {
     if (currentBalanceObj?.infos && hasMethod && !hasRestriction) {
       return currentBalanceObj?.infos[network]?.walletInfo;
     }
-  };
-
-  const hasParams = withdrawalAmount && withdrawalNote && iban && receiverBank;
-
-  const enabled = () => {
-    if (network === 'SWIFT' || network === 'SEPA') {
-      if (saveTemplate) return hasParams && newTemplateName;
-      return hasParams;
-    }
-
-    if (isEcommerce) return card?.id && withdrawalAmount;
-
-    return withdrawalAmount && currentWhitelistObj?.address;
   };
 
   useEffect(() => {
@@ -91,23 +70,50 @@ export default function Withdrawal() {
     }
 
     setHasMethod(!!Object.keys(m).length);
-    setloading(false);
   }, [code]);
 
   useEffect(() => {
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setFee(null));
+    if ((isEcommerce && card) || (!isEcommerce && network)) {
+      dispatch(fetchFee('withdrawal'));
+    }
   }, [network, depositProvider, card]);
 
   useEffect(() => {
     setHasRestriction(Object.keys(withdrawalRestriction).length);
   }, [withdrawalRestriction]);
 
+  useEffect(() => {
+    return () => dispatch(setCard(null));
+  }, []);
+
+  useEffect(() => {
+    error && setError(false);
+  }, [depositProvider, card, withdrawalAmount, currentWhitelistObj]);
+
   const withdraw = () => {
-    if (googleAuth) dispatch(toggleGoogleOtpModal(true));
-    if (emailAuth) dispatch(toggleEmailAuthModal(true));
-    if (smsAuth) dispatch(toggleSmsAuthModal(true));
-    if (!googleAuth) sendOtp();
+    const length = Object.keys(currentWhitelistObj)?.length;
+    const empty = !currentTemplate?.templateName;
+
+    let condition;
+    if (isEcommerce) {
+      condition =
+        !validateAmount(withdrawalAmount) || !card || !depositProvider;
+    } else if (isFiat) {
+      condition = !validateAmount(withdrawalAmount) || empty;
+    } else {
+      condition = !validateAmount(withdrawalAmount) || !length;
+    }
+
+    if (condition) {
+      setError(true);
+    } else {
+      if (googleAuth) dispatch(toggleGoogleOtpModal(true));
+      if (emailAuth) dispatch(toggleEmailAuthModal(true));
+      if (smsAuth) dispatch(toggleSmsAuthModal(true));
+      if (!googleAuth) sendOtp();
+    }
   };
 
   const saveTemplateCheck = () => {
@@ -132,8 +138,8 @@ export default function Withdrawal() {
 
   return (
     <>
-      {!loading ? (
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+      {!cardsLoading ? (
+        <WithKeyboard flexGrow padding refreshControl={refreshControl}>
           <View style={styles.block}>
             {/* <GeneralError style={{ marginBottom: 16 }} /> */}
             <WalletCoinsDropdown />
@@ -143,7 +149,7 @@ export default function Withdrawal() {
                 <TransferMethodDropdown />
                 <TransferMethodModal />
                 {network === 'SWIFT' && (
-                  <AppInfoBlock content={warnings.swift.deposit} warning />
+                  <AppInfoBlock content={warnings.swift.withdrawal} warning />
                 )}
                 {network === 'SEPA' && (
                   <AppInfoBlock content={warnings.sepa} warning />
@@ -161,14 +167,13 @@ export default function Withdrawal() {
             <WithdrawalInfo />
           )}
           {!hasRestriction && hasMethod && (
-            <WithdrawalInputs isFiat={isFiat} hasRestriction={hasRestriction} />
+            <WithdrawalInputs
+              error={error}
+              isFiat={isFiat}
+              hasRestriction={hasRestriction}
+            />
           )}
-          {saveTemplateCheck() ? (
-            <>
-              <WithdrawalFees />
-              <SaveAsTemplate />
-            </>
-          ) : null}
+          {saveTemplateCheck() ? <SaveAsTemplate /> : null}
 
           {hasRestriction || !hasMethod ? (
             <FlexBlock
@@ -177,20 +182,17 @@ export default function Withdrawal() {
               restrictedUntil={withdrawalRestriction.restrictedUntil}
             />
           ) : null}
-        </ScrollView>
+        </WithKeyboard>
       ) : (
-        <ActivityIndicator />
+        <MaterialIndicator color="#6582FD" animationDuration={3000} />
       )}
 
-      {!hasRestriction && hasMethod && (
-        <View style={styles.button}>
-          <AppButton
-            text="Withdrawal"
-            onPress={withdraw}
-            disabled={!enabled()}
-          />
-        </View>
-      )}
+      {!hasRestriction &&
+        hasMethod && ( // Button
+          <View style={styles.button}>
+            <AppButton text="Withdrawal" onPress={withdraw} />
+          </View>
+        )}
 
       <SmsEmailAuthModal type="SMS" withdrawal={withdrawalType()} />
       <SmsEmailAuthModal type="Email" withdrawal={withdrawalType()} />

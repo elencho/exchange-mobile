@@ -2,7 +2,7 @@ export default {
   Background: require('../assets/images/BG.png'),
   Background2x: require('../assets/images/BG2x.png'),
   Background3x: require('../assets/images/BG3x.png'),
-
+  Stars: require('../assets/images/Stars.png'),
   // Transactions and instant trades
   Arrow: require('../assets/images/Arrow.png'),
   Left: require('../assets/images/Left.png'),
@@ -19,7 +19,6 @@ export default {
   Failed: require('../assets/images/Failed.png'),
   Filter: require('../assets/images/Filter.png'),
   Focused: require('../assets/images/Focused.png'),
-  Logo: require('../assets/images/Logo.png'),
   Pending: require('../assets/images/Pending.png'),
   Search: require('../assets/images/Search.png'),
   Success: require('../assets/images/Success.png'),
@@ -51,8 +50,8 @@ export default {
   Strong_Password: require('../assets/images/User_profile/Strong_Password.png'),
   Hide: require('../assets/images/User_profile/Hide.png'),
   Show: require('../assets/images/User_profile/Show.png'),
-  // Appstore: require('../assets/images/User_profile/Appstore.png'),
-  // Playstore: require('../assets/images/User_profile/Playstore.png'),
+  IosStore: require('../assets/images/User_profile/IosStore.png'),
+  AndroidStore: require('../assets/images/User_profile/AndroidStore.png'),
   User: require('../assets/images/User_profile/User.png'),
   Portfolio: require('../assets/images/User_profile/Portfolio.png'),
   Browser: require('../assets/images/User_profile/Browser.png'),
@@ -74,16 +73,22 @@ export default {
   White_Copy: require('../assets/images/Wallet/White_Copy.png'),
   List: require('../assets/images/Wallet/List.png'),
   Card: require('../assets/images/Wallet/Card.png'),
+  Fee: require('../assets/images/Wallet/Fee.png'),
   Address_List: require('../assets/images/Wallet/Address_List.png'),
   Time: require('../assets/images/Wallet/Time.png'),
   Generate: require('../assets/images/Wallet/Generate.png'),
   Add: require('../assets/images/Wallet/Add.png'),
   Check_Full: require('../assets/images/Wallet/Check_Full.png'),
   Check_Empty: require('../assets/images/Wallet/Check_Empty.png'),
-  Info: require('../assets/images/Wallet/Info.png'),
-  Verified: require('../assets/images/Wallet/Verified.png'),
+  Check_Red: require('../assets/images/Wallet/Check_Red.png'),
   Status_Success: require('../assets/images/Wallet/Status_Success.png'),
   Status_Error: require('../assets/images/Wallet/Status_Error.png'),
+
+  // Card Statuses
+  Info: require('../assets/images/Wallet/Info.png'),
+  Verified: require('../assets/images/Wallet/Verified.png'),
+  Card_Error: require('../assets/images/Wallet/Card_Error.png'),
+  Card_Expired: require('../assets/images/Wallet/Card_Expired.png'),
 
   // CURRENCIES
   BTC: require('../assets/images/Currencies/BTC.png'),

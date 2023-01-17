@@ -92,6 +92,8 @@ project.ext.react = [
 
 apply from: new File(reactNativeRoot, "react.gradle")
 
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+
 /**
  * Set this to true to create two separate APKs instead of one:
  *   - An APK that only works on ARM devices
@@ -152,10 +154,10 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId 'com.vaxo_nba.cryptalapp'
+        applicationId 'com.cryptal.exchange.mobile'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 3
         versionName "1.0.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 

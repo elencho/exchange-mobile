@@ -5,8 +5,9 @@ import { useSelector } from 'react-redux';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import AppText from '../AppText';
+import TotalBalanceSkeleton from './TotalBalanceSkeleton';
 
-export default function TotalBalance() {
+export default function TotalBalance({ loading }) {
   const filter = useSelector((state) => state.wallet.usdBtcSwitch);
   const balance = useSelector((state) => state.trade.balance);
 
@@ -26,7 +27,7 @@ export default function TotalBalance() {
     }
   };
 
-  return (
+  return !loading ? (
     <View style={styles.container}>
       <View style={styles.image}>
         <Image source={images.Wallet} />
@@ -41,6 +42,8 @@ export default function TotalBalance() {
         </AppText>
       </View>
     </View>
+  ) : (
+    <TotalBalanceSkeleton />
   );
 }
 

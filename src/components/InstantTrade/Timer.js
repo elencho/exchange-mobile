@@ -12,6 +12,7 @@ export default function Timer() {
 
   useEffect(() => {
     if (!seconds) {
+      // dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
       dispatch(instantTradeTabAction());
       setSeconds(90);
     }

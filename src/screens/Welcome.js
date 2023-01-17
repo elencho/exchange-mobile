@@ -4,35 +4,35 @@ import * as SecureStore from 'expo-secure-store';
 import {
   StyleSheet,
   ImageBackground,
-  Image,
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
-  View,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
-import Constants from 'expo-constants';
 
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 import images from '../constants/images';
+import Logo from '../assets/images/Logo.svg';
 import {
   fetchCountries,
+  saveUserInfo,
   setLanguage,
   startLoginAction,
   startRegistrationAction,
 } from '../redux/profile/actions';
-import { switchLanguage } from '../utils/i18n';
+import { addResources, switchLanguage } from '../utils/i18n';
 import GeneralError from '../components/GeneralError';
-import { errorHappenedHere } from '../utils/appUtils';
+import { errorHappenedHere, fetchTranslations } from '../utils/appUtils';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
   useFocusEffect(() => {
+    dispatch(saveUserInfo({}));
     SecureStore.getItemAsync('accessToken').then((token) => {
       if (token) {
         navigation.navigate('Main');
@@ -41,14 +41,23 @@ export default function Welcome({ navigation }) {
   });
 
   useEffect(() => {
+    fetchTranslations()
+      .then((res) => {
+        const languages = Object.keys(res);
+        for (let i = 0; i < languages.length; i++) {
+          addResources(
+            languages[i],
+            'translation',
+            res[languages[i]].translation
+          );
+        }
+      })
+      .catch((err) => console.log(err));
+
     SecureStore.getItemAsync('language')
       .then((l) => {
-        if (!l) {
-          switchLanguage('en');
-          dispatch(setLanguage('en'));
-        } else {
-          dispatch(setLanguage(l));
-        }
+        switchLanguage(l ? l : 'en');
+        dispatch(setLanguage(l ? l : 'en'));
       })
       .catch((err) => console.log(err));
 
@@ -57,8 +66,6 @@ export default function Welcome({ navigation }) {
 
   const startLogin = () => dispatch(startLoginAction(navigation));
   const startRegistration = () => dispatch(startRegistrationAction(navigation));
-
-  const auth = Constants.manifest.extra.auth;
 
   return (
     <TouchableWithoutFeedback
@@ -71,13 +78,12 @@ export default function Welcome({ navigation }) {
           <ActivityIndicator size="large" color="white" style={styles.loader} />
         ) : (
           <>
-            <Image source={images.Logo} style={styles.logo} />
-
+            <Logo style={styles.logo} />
             <AppText header style={styles.primary}>
               Welcome to Cryptal
             </AppText>
 
-            <AppText style={styles.secondary}>{auth}</AppText>
+            {/* <AppText style={styles.secondary}>{auth}</AppText> */}
 
             <GeneralError
               style={styles.error}

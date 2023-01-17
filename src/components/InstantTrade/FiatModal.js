@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,6 +7,7 @@ import { COINS_URL_PNG } from '../../constants/api';
 import { toggleFiatModal } from '../../redux/modals/actions';
 import {
   instantTradeTabAction,
+  setDepositProvider,
   setFiat,
   switchBalanceCard,
 } from '../../redux/trade/actions';
@@ -18,13 +19,22 @@ export default function FiatModal() {
   const state = useSelector((state) => state);
 
   const {
-    trade: { fiat, fiatsArray },
+    trade: { fiat, fiatsArray, depositProviders },
     modals: { fiatModalVisible },
   } = state;
 
-  const hide = () => {
-    dispatch(toggleFiatModal(false));
-  };
+  useEffect(() => {
+    setTimeout(() => {
+      if (depositProviders?.length > 1) {
+        dispatch(setDepositProvider(null));
+      }
+      if (depositProviders?.length === 1) {
+        dispatch(setDepositProvider(depositProviders[0].provider));
+      }
+    }, 500);
+  }, [depositProviders]);
+
+  const hide = () => dispatch(toggleFiatModal(false));
 
   const choose = (f) => {
     dispatch(setFiat(f));

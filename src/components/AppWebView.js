@@ -1,9 +1,13 @@
 import React from 'react';
-import { TouchableOpacity, Modal, Image, StyleSheet } from 'react-native';
+import { TouchableOpacity, Modal, Image, StyleSheet, View } from 'react-native';
 import WebView from 'react-native-webview';
 import { useDispatch, useSelector } from 'react-redux';
 
 import images from '../constants/images';
+import {
+  toggleAddCardModal,
+  toggleBuySellModal,
+} from '../redux/modals/actions';
 import {
   cardsSagaAction,
   setCard,
@@ -12,18 +16,33 @@ import {
 } from '../redux/trade/actions';
 
 export default function AppWebView(props) {
+  const { cards, trade, deposit } = props;
+
   const dispatch = useDispatch();
   const webViewObj = useSelector((state) => state.modals.webViewObj);
 
   const closeWebView = () => {
     dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
-    if (props.refresh) dispatch(cardsSagaAction());
+    if (cards) {
+      dispatch(toggleAddCardModal(false));
+      dispatch(cardsSagaAction());
+      dispatch({
+        type: 'SET_CARD_VERIFICATION_STATUS',
+        cardBeingVerified: false,
+      });
+    }
 
-    if (props.deposit) {
+    if (trade) {
+      dispatch(toggleBuySellModal(false));
+      dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+    }
+
+    if (deposit) {
       dispatch(setDepositProvider(null));
       dispatch(setCard(null));
-      dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
       dispatch(setFee(null));
+      dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null });
+      dispatch({ type: 'BALANCE_SAGA' });
     }
   };
 
@@ -34,9 +53,12 @@ export default function AppWebView(props) {
       animationType="slide"
     >
       <TouchableOpacity activeOpacity={0.99} style={styles.flex}>
-        <TouchableOpacity style={styles.close} onPress={closeWebView}>
-          <Image source={images.Close} />
-        </TouchableOpacity>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.close} onPress={closeWebView}>
+            <Image source={images.Close} />
+          </TouchableOpacity>
+        </View>
+
         <WebView
           nestedScrollEnabled
           originWhitelist={['*']}
@@ -58,12 +80,13 @@ export default function AppWebView(props) {
 const styles = StyleSheet.create({
   close: {
     position: 'absolute',
-    top: 30,
-    right: 30,
-    zIndex: 100,
-    backgroundColor: 'rgba(230,230,230,0.5)',
+    bottom: 10,
+    right: 22,
     padding: 10,
-    borderRadius: 30,
   },
   flex: { flex: 1 },
+  header: {
+    backgroundColor: 'white',
+    height: 66,
+  },
 });

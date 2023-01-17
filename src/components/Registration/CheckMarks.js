@@ -7,7 +7,7 @@ import PurpleText from '../PurpleText';
 import images from '../../constants/images';
 import { setRegistrationInputs } from '../../redux/profile/actions';
 
-export default function CheckMarks() {
+export default function CheckMarks({ error, validations }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -15,11 +15,14 @@ export default function CheckMarks() {
   } = state;
 
   const i = registrationInputs;
+  const v = validations;
   const set = (obj) => dispatch(setRegistrationInputs({ ...i, ...obj }));
 
   const image = (type) => {
-    if (type === 'acceptTerms' && i.acceptTerms === 'on')
-      return images.Check_Full;
+    if (type === 'acceptTerms') {
+      if (v.terms) return images.Check_Full;
+      if (error && !v.terms) return images.Check_Red;
+    }
     if (type === 'updates' && i.getEmailUpdates === 'on')
       return images.Check_Full;
     return images.Check_Empty;
@@ -32,10 +35,11 @@ export default function CheckMarks() {
       set({ getEmailUpdates: i.getEmailUpdates !== 'on' ? 'on' : 'off' });
   };
 
+  const textColor = { color: error && !v.terms ? '#F45E8C' : '#B7BFDB' };
   const text = (type) => {
     if (type === 'acceptTerms')
       return (
-        <AppText style={styles.text}>
+        <AppText style={[styles.text, textColor]}>
           I'm over 18 years old and agree to{' '}
           <PurpleText text="Terms & Conditions" />
         </AppText>
@@ -79,8 +83,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    color: '#B7BFDB',
     lineHeight: 20,
     flex: 1,
+    color: '#B7BFDB',
   },
 });

@@ -14,6 +14,7 @@ import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 
 import images from '../constants/images';
+import Logo from '../assets/images/Logo';
 import TwoFaInput from '../components/TwoFaInput';
 
 export default function ResetOtpInstructions({ navigation, route }) {
@@ -40,7 +41,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
       </TouchableOpacity>
 
       <View style={styles.middle}>
-        <Image source={images.Logo} style={styles.logo} />
+        <Logo style={styles.logo} />
         <AppText header style={styles.primary}>
           Reset One Time Password
         </AppText>

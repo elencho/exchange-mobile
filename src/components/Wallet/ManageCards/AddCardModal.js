@@ -32,6 +32,11 @@ export default function AddCardModal() {
 
   const [saveCardAgreeTerms, setSaveCardAgreeTerms] = useState(false);
   const [statusObj, setStatusObj] = useState(null);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    error && setError(false);
+  }, [saveCardAgreeTerms, depositProvider]);
 
   useEffect(() => {
     setSaveCardAgreeTerms(depositProvider !== 'BOG');
@@ -40,20 +45,28 @@ export default function AddCardModal() {
   const hide = () => dispatch(toggleAddCardModal(false));
 
   const image = () =>
-    saveCardAgreeTerms ? images.Check_Full : images.Check_Empty;
+    !saveCardAgreeTerms && error
+      ? images.Check_Red
+      : saveCardAgreeTerms
+      ? images.Check_Full
+      : images.Check_Empty;
   const toggle = () => setSaveCardAgreeTerms(!saveCardAgreeTerms);
   const showBanks = () => dispatch(toggleChooseBankModal(true));
   const showFees = () => dispatch(toggleBankFeesModal(true));
   const multipleBanks = () => depositProviders?.length > 1;
 
   const handleAddCard = async () => {
-    const params = {
-      currency: code,
-      redirectUri: 'cryptal.com',
-      provider: depositProvider,
-    };
-    const webViewObj = await addCard(params);
-    dispatch({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj });
+    if (!depositProvider || !saveCardAgreeTerms) {
+      setError(true);
+    } else {
+      const params = {
+        currency: code,
+        redirectUri: 'cryptal.com',
+        provider: depositProvider,
+      };
+      const webViewObj = await addCard(params);
+      dispatch({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj });
+    }
   };
 
   const onNavigationStateChange = (state) => {
@@ -78,23 +91,33 @@ export default function AddCardModal() {
     return data.toString();
   };
 
-  const color = depositProvider ? colors.PRIMARY_TEXT : colors.SECONDARY_TEXT;
+  const color =
+    !depositProvider && error
+      ? '#F45E8C'
+      : depositProvider
+      ? colors.PRIMARY_TEXT
+      : colors.SECONDARY_TEXT;
+  const borderColor = !depositProvider && error ? '#F45E8C' : '#525A86';
+  const termsColor = !saveCardAgreeTerms && error ? '#F45E8C' : '#525A86';
 
   const children = (
     <>
       {/* {!multipleBanks() ? ( */}
       <>
-        <Pressable style={styles.dropdown} onPress={showBanks}>
+        <Pressable
+          style={[styles.dropdown, { borderColor }]}
+          onPress={showBanks}
+        >
           <AppText style={[styles.text, { color }]} medium={depositProvider}>
             {depositProvider ? depositProvider : 'Payment Service Provider'}
           </AppText>
           <Image source={images['Arrow']} />
         </Pressable>
 
-        <AppText subtext style={styles.subText}>
+        {/* <AppText subtext style={styles.subText}>
           100 ₾-500 ₾ Visa / MC Card 4% Amex 6 %{' '}
           <PurpleText text=" See More" onPress={showFees} />
-        </AppText>
+        </AppText> */}
       </>
       {/* ) : (
         <AppText style={styles.grey}>
@@ -109,24 +132,20 @@ export default function AddCardModal() {
           <Pressable style={styles.image} onPress={toggle}>
             <Image source={image()} style={{ marginRight: 10 }} />
           </Pressable>
-          <AppText style={styles.grey}>
+          <AppText style={[styles.grey, { color: termsColor }]}>
             Save Card & Agree <PurpleText text="Terms" />
           </AppText>
         </View>
       )}
 
-      <AppButton
-        text="Next"
-        style={styles.button}
-        disabled={!saveCardAgreeTerms}
-        onPress={handleAddCard}
-      />
+      <AppButton text="Next" style={styles.button} onPress={handleAddCard} />
 
       <ChooseBankModal />
       <BankFeesModal />
 
       {webViewObj?.actionMethod === 'POST' && (
         <AppWebView
+          cards
           onNavigationStateChange={onNavigationStateChange}
           source={{
             uri: webViewObj?.actionUrl,
@@ -139,6 +158,7 @@ export default function AddCardModal() {
 
       {webViewObj?.actionMethod === 'GET' && (
         <AppWebView
+          cards
           onNavigationStateChange={onNavigationStateChange}
           source={{ uri: webViewObj?.actionUrl }}
         />
@@ -166,7 +186,6 @@ const styles = StyleSheet.create({
     right: 15,
   },
   dropdown: {
-    borderColor: '#525A86',
     borderWidth: 1,
     alignItems: 'center',
     flexDirection: 'row',

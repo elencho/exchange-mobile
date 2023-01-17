@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="37" viewBox="0 0 34 37">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_173" data-name="Rectangle 173" width="34" height="37" transform="translate(102 88)" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Crypto" transform="translate(-102 -88)" clip-path="url(#clip-path)">
+    <path id="Path_229" data-name="Path 229" d="M2-14,18.164-5.918V14.864L2,6.782Z" transform="translate(100 110.082)" fill="#6582fd"/>
+    <path id="Path_230" data-name="Path 230" d="M2,9.92V25.507l14.348-7.043Z" transform="translate(118.473 99.439)" fill="#4a6dff" opacity="0.451"/>
+    <path id="Path_231" data-name="Path 231" d="M6.931,6.931,22.514,0l-5.73,16.784L0,22.514Z" transform="translate(118.497 78.186) rotate(45)" fill="#4a6dff"/>
+  </g>
+</svg>

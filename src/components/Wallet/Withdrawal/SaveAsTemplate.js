@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 30,
     marginLeft: 10,
-    marginTop: 32,
-    marginBottom: 28,
+    marginTop: -15,
+    marginBottom: 15,
   },
   text: {
     color: '#B7BFDB',

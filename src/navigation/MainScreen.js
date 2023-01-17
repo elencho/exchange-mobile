@@ -5,11 +5,13 @@ import * as SecureStore from 'expo-secure-store';
 
 import TransactionHistory from '../screens/TransactionHistory';
 import InstantTrade from '../screens/InstantTrade';
-// import TestScreen from '../screens/Test';
 import BottomTabs from '../components/BottomTabs';
-import { setTabRouteName } from '../redux/transactions/actions';
-// import Exercise from '../screens/Exercise';
+import {
+  fetchCurrencies,
+  setTabRouteName,
+} from '../redux/transactions/actions';
 import Wallet from '../screens/Wallet';
+import Exchange from '../screens/Exchange';
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +21,8 @@ export default function MainScreen() {
     SecureStore.getItemAsync('accessToken')
       .then((t) => dispatch({ type: 'OTP_SAGA', token: t }))
       .catch((err) => console.log(err));
+
+    dispatch(fetchCurrencies());
   }, []);
 
   const setTabRoute = (e) => {
@@ -41,7 +45,7 @@ export default function MainScreen() {
         />
       )}
     >
-      {/* <Tab.Screen name="Exchange" component={Exercise} /> */}
+      <Tab.Screen name="Exchange" component={Exchange} />
       <Tab.Screen name="Trade" component={InstantTrade} />
       <Tab.Screen name="Wallet" component={Wallet} />
       <Tab.Screen name="Transactions" component={TransactionHistory} />
