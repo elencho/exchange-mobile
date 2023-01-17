@@ -60,8 +60,7 @@ export default function ForgotPassword({ navigation }) {
 
   const secondsFormat = seconds < 10 ? `00 : 0${seconds}` : `00 : ${seconds}`;
   const f = forgotPassInfo;
-  const mailValid =
-    f.username && /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(f.username);
+  const mailValid = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(f.username);
 
   const goToLogin = () => {
     navigation.navigate('Login');
@@ -110,10 +109,8 @@ export default function ForgotPassword({ navigation }) {
     }
   };
 
-  const errorText = (type) => {
-    if (error && !mailValid && type === 'Username') return 'Enter Valid Email';
-    if (error && !f.code && type === 'Code') return 'Enter Password';
-  };
+  const errorText = () =>
+    error && f.username?.trim() && !mailValid ? 'Enter Valid Email' : null;
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
@@ -151,7 +148,7 @@ export default function ForgotPassword({ navigation }) {
             value={f.username}
             right={<Right />}
             error={!mailValid && error}
-            errorText={errorText('Username')}
+            errorText={errorText()}
           />
           <AppInput
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
@@ -160,7 +157,6 @@ export default function ForgotPassword({ navigation }) {
             onChangeText={saveCode}
             value={f.code}
             error={!f.code && error}
-            errorText={errorText('Code')}
           />
 
           <AppButton text="Next" style={styles.button} onPress={next} />

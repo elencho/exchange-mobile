@@ -119,12 +119,7 @@ export default function BuySellModal() {
 
   const handleChangeText = (text, type) => {
     if (text === '') {
-      dispatch(
-        setCurrentTrade({
-          price: '',
-          size: '',
-        })
-      );
+      dispatch(setCurrentTrade({ price: '', size: '' }));
       return;
     }
     const t = text ? text.replace(',', '.') : 0;

@@ -71,7 +71,7 @@ export default function PhoneNumberModal() {
   const handleVerificationCode = (code) => setCode(code);
 
   const handleSend = () => {
-    if (!country || !number) {
+    if (!country || !number?.trim()) {
       setSendError(true);
     } else {
       dispatch(sendVerificationCode(number, country));
@@ -79,7 +79,7 @@ export default function PhoneNumberModal() {
   };
 
   const handleSave = () => {
-    if (error || !code || !country || !number) {
+    if (error || !code?.trim() || !country || !number?.trim()) {
       setError(true);
     } else {
       dispatch(
@@ -135,7 +135,7 @@ export default function PhoneNumberModal() {
               onChangeText={(text) => handlePhoneNumber(text)}
               value={number}
               keyboardType="number-pad"
-              error={(error || sendError) && !number}
+              error={(error || sendError) && !number?.trim()}
             />
             <AppInput
               style={styles.inputContainer}
@@ -143,7 +143,7 @@ export default function PhoneNumberModal() {
               onChangeText={handleVerificationCode}
               value={code}
               keyboardType="number-pad"
-              error={error && !code}
+              error={error && !code?.trim()}
             />
           </TouchableOpacity>
         </ScrollView>

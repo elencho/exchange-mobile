@@ -55,13 +55,15 @@ export default function Registration({ navigation }) {
   const hasNumber = /\d/.test(passwordNew);
 
   const o = {
-    nameCheck: firstName && /^[a-zA-Z !@#\$%\^\&*\)\(+=._-]+$/g.test(firstName),
+    nameCheck:
+      firstName?.trim() && /^[a-zA-Z !@#\$%\^\&*\)\(+=._-]+$/g.test(firstName),
     lastNameCheck:
-      lastName && /^[a-zA-Z !@#\$%\^\&*\)\(+=._-]+$/g.test(lastName),
+      lastName?.trim() && /^[a-zA-Z !@#\$%\^\&*\)\(+=._-]+$/g.test(lastName),
     passwordCheck: passLength && hasNumber && hasUpperAndLower,
     isEmail: /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email),
     similarPasswords: passwordNew === passwordConfirm,
     terms: acceptTerms === 'on',
+    phoneNumberCheck: /^[0-9]+$/.test(phoneNumber),
 
     passLength,
     hasUpperAndLower,
@@ -74,6 +76,7 @@ export default function Registration({ navigation }) {
     o.isEmail &&
     o.similarPasswords &&
     o.passwordCheck &&
+    o.phoneNumberCheck &&
     firstName &&
     lastName &&
     phoneNumber &&

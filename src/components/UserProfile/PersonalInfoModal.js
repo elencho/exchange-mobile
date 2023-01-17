@@ -72,13 +72,13 @@ export default function PersonalInfoModal() {
   };
   const handleSave = () => {
     const condition = isVerified
-      ? !country || !city || !postalCode || !address
+      ? !country || !city?.trim() || !postalCode?.trim() || !address?.trim()
       : !country ||
-        !city ||
-        !postalCode ||
-        !address ||
-        !firstName ||
-        !lastName ||
+        !city?.trim() ||
+        !postalCode?.trim() ||
+        !address?.trim() ||
+        !firstName?.trim() ||
+        !lastName?.trim() ||
         !citizenship;
 
     if (error || condition) {
@@ -126,7 +126,7 @@ export default function PersonalInfoModal() {
                 }
                 label="First Name"
                 value={firstName}
-                error={error && !firstName}
+                error={error && !firstName?.trim()}
               />
               <AppInput
                 style={styles.inputContainer}
@@ -135,7 +135,7 @@ export default function PersonalInfoModal() {
                 }
                 label="Last Name"
                 value={lastName}
-                error={error && !lastName}
+                error={error && !lastName?.trim()}
               />
             </>
           )}
@@ -170,7 +170,7 @@ export default function PersonalInfoModal() {
               }
               label="City"
               value={city}
-              error={error && !city}
+              error={error && !city?.trim()}
             />
             <AppInput
               style={[styles.inputContainer, styles.rowInputs]}
@@ -179,7 +179,7 @@ export default function PersonalInfoModal() {
               }
               label="Postal Code"
               value={postalCode}
-              error={error && !postalCode}
+              error={error && !postalCode?.trim()}
             />
           </View>
 
@@ -190,7 +190,7 @@ export default function PersonalInfoModal() {
             }
             label="Address"
             value={address}
-            error={error && !address}
+            error={error && !address?.trim()}
           />
 
           {!isVerified && (
