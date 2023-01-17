@@ -29,7 +29,7 @@ pipelines:
             - npm install
             - appcenter login --token "$APPCENTER_API_TOKEN"
             - appcenter codepush release-react -a Cryptx/Exchange-android -d Staging
-            
+
     playstore-code-push:
       - step:
           deployment: production
