@@ -70,7 +70,7 @@ export default function Login({ navigation }) {
       <WithKeyboard padding flexGrow contentContainerStyle={styles.container}>
         <Logo style={styles.logo} />
         <AppText header style={styles.primary}>
-          Welcome to Cryptal
+          Welcome to Cryptal test
         </AppText>
 
         <View style={styles.height42}>
