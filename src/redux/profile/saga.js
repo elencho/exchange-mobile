@@ -102,6 +102,7 @@ function* registrationFormSaga(action) {
   const params = yield select(registrationParams);
   const state = yield select((state) => state.profile);
   const { registrationStartInfo } = state;
+  yield put(toggleUserInfoLoading(true));
 
   const data = yield call(
     registrationForm,
@@ -118,6 +119,7 @@ function* registrationFormSaga(action) {
       callbackUrl: data?.callbackUrl,
     })
   );
+  yield put(toggleUserInfoLoading(false));
 }
 
 // VERIFY REGISTRATION

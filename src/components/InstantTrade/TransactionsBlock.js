@@ -60,13 +60,15 @@ const TransactionsBlock = ({
     }
   };
 
-  const onRefresh = () => dispatch(fetchTrades());
+  const onRefresh = () => {
+    dispatch(saveTrades([]));
+    dispatch(fetchTrades());
+  };
   const renderTrade = ({ item }) => (
     <Trade trade={item} key={item.creationTime} />
   );
 
   const footer = () => (moreLoading ? <OneTransactionSkeleton /> : <View />);
-
   return (
     <View style={styles.container}>
       <TopRow
@@ -87,7 +89,7 @@ const TransactionsBlock = ({
           renderItem={renderTrade}
           keyExtractor={(item) => item.creationTime}
           onEndReached={handleScrollEnd}
-          //onEndReachedThreshold={0.7}
+          onEndReachedThreshold={1}
           nestedScrollEnabled
           initialNumToRender={5}
           ListFooterComponent={footer}

@@ -24,7 +24,7 @@ import WithKeyboard from '../components/WithKeyboard';
 export default function Registration({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.profile);
-  const { registrationInputs } = state;
+  const { registrationInputs, userProfileLoading } = state;
 
   useFocusEffect(
     useCallback(() => {
@@ -35,6 +35,8 @@ export default function Registration({ navigation }) {
   );
 
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     error && setError(false);
   }, [registrationInputs]);
@@ -83,11 +85,14 @@ export default function Registration({ navigation }) {
     phoneCountry &&
     o.terms;
 
-  const handleRegistration = () => {
+  const handleRegistration = async () => {
+    await setLoading(true);
     if (!enabled) {
       setError(true);
+      setLoading(false);
     } else {
-      dispatch(registrationFormAction());
+      await dispatch(registrationFormAction());
+      setLoading(false);
     }
   };
   const signIn = () => dispatch(startLoginAction(navigation));
@@ -110,7 +115,11 @@ export default function Registration({ navigation }) {
         <RegistrationInputs error={error} validations={o} />
         <CheckMarks error={error} validations={o} />
 
-        <AppButton text="Register" onPress={handleRegistration} />
+        <AppButton
+          text="Register"
+          onPress={handleRegistration}
+          loading={userProfileLoading}
+        />
 
         <AppText style={styles.subtext}>
           Have an account? <PurpleText text="Sign In" onPress={signIn} />
