@@ -34,10 +34,9 @@ export default function Welcome({ navigation }) {
   useFocusEffect(() => {
     dispatch(saveUserInfo({}));
     SecureStore.getItemAsync('accessToken').then((token) => {
-      if (token) {
-        navigation.navigate('Main');
-      } else setLoading(false);
+      if (token) navigation.navigate('Main');
     });
+    setLoading(false);
   });
 
   useEffect(() => {
