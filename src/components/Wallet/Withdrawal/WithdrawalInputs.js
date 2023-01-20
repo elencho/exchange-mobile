@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppInput from '../../AppInput';
@@ -75,13 +75,17 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
   const handleMemotag = (memo) => dispatch(setMemoTag(memo));
   const handleMax = () => dispatch({ type: 'MAX_WITHDRAWAL_SAGA' });
 
-  const enabled = currentBalanceObj?.type === 'CRYPTO' || depositProvider;
+  const enabled = !isEcommerce || depositProvider;
 
   const Max = () => (
-    <View style={styles.row}>
+    <TouchableOpacity
+      onPress={handleMax}
+      disabled={!enabled}
+      style={styles.row}
+    >
       <View style={styles.line} />
-      <PurpleText text="Max" onPress={handleMax} disabled={!enabled} />
-    </View>
+      <PurpleText text="Max" />
+    </TouchableOpacity>
   );
 
   const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 20;

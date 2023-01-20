@@ -18,6 +18,7 @@ import { toggleEmailVerificationModal } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
 import TwoFaInput from '../TwoFaInput';
 import { startRegistrationAction } from '../../redux/profile/actions';
+import WithKeyboard from '../WithKeyboard';
 
 export default function EmailVerificationModal() {
   const navigation = useNavigation();
@@ -50,10 +51,13 @@ export default function EmailVerificationModal() {
   const checkMailText = () => {
     if (verificationInfo.attributes) {
       return (
-        <AppText style={[styles.secondary, { marginBottom: 36 }]}>
-          Check your E-mail {registrationInputs.email} and enter the code
-          account
-        </AppText>
+        /* Animate */
+        <View>
+          <AppText style={[styles.secondary, { marginBottom: 36 }]}>
+            Check your E-mail {registrationInputs.email} and enter the code
+            account
+          </AppText>
+        </View>
       );
     }
     return null;
@@ -61,27 +65,36 @@ export default function EmailVerificationModal() {
 
   const children = (
     <ImageBackground source={images.Background} style={styles.container}>
-      <View style={styles.top}>
-        <CloseModalIcon onPress={hide} />
-      </View>
-
-      {loading ? (
-        <ActivityIndicator size="large" style={styles.middle} />
-      ) : (
-        <View style={styles.middle}>
-          <Image source={images.E_mail_Auth} />
-          <AppText header style={styles.primary}>
-            E-mail Has Been Sent
-          </AppText>
-          {checkMailText()}
-
-          <TwoFaInput value={value} setValue={setValue} registration />
+      <WithKeyboard flexGrow padding>
+        <View style={styles.top}>
+          <CloseModalIcon onPress={hide} />
         </View>
-      )}
 
-      <AppText style={styles.secondary}>
-        Didn't receive link? <PurpleText text="Resend" onPress={resend} />
-      </AppText>
+        {loading ? (
+          <ActivityIndicator size="large" style={styles.middle} />
+        ) : (
+          <View style={styles.middle}>
+            <Image source={images.E_mail_Auth} />
+
+            {/* Animate */}
+            <View>
+              <AppText header style={styles.primary}>
+                E-mail Has Been Sent
+              </AppText>
+            </View>
+            {checkMailText()}
+
+            <TwoFaInput value={value} setValue={setValue} registration />
+          </View>
+        )}
+
+        {/* Animate */}
+        <View>
+          <AppText style={styles.secondary}>
+            Didn't receive link? <PurpleText text="Resend" onPress={resend} />
+          </AppText>
+        </View>
+      </WithKeyboard>
     </ImageBackground>
   );
 

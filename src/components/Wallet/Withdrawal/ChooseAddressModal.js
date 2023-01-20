@@ -22,9 +22,9 @@ export default function ChooseAddressModal() {
     hide();
   };
 
-  useEffect(() => {
-    dispatch(chooseWhitelist({}));
-  }, [network]);
+  // useEffect(() => {
+  //   dispatch(chooseWhitelist({}));
+  // }, [network]);
 
   const children = (
     <>

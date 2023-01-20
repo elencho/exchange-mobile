@@ -7,6 +7,7 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import ModalTop from './ModalTop';
 import colors from '../constants/colors';
 import AppText from './AppText';
+import AppToast from './AppToast';
 import Background from './Background';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
 import Headline from './TransactionHistory/Headline';
@@ -78,6 +79,7 @@ function AppModal({
         )}
         {custom && children}
       </RootSiblingParent>
+      <AppToast />
     </Modal>
   );
 }

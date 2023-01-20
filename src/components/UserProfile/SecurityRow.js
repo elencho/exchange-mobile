@@ -166,11 +166,11 @@ const styles = StyleSheet.create({
   justify: {
     justifyContent: 'space-between',
     flex: 1,
-    height: 38,
     marginHorizontal: 20,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
+    marginTop: 5,
   },
   row: {
     flexDirection: 'row',
