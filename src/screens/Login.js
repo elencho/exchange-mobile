@@ -68,9 +68,11 @@ export default function Login({ navigation }) {
     <ImageBackground source={images.Background} style={{ flex: 1 }}>
       <WithKeyboard padding flexGrow contentContainerStyle={styles.container}>
         <Logo style={styles.logo} />
-        <AppText header style={styles.primary}>
-          Welcome to Cryptal
-        </AppText>
+        <View>
+          <AppText header style={styles.primary}>
+            Welcome to Cryptal
+          </AppText>
+        </View>
 
         <View style={styles.height42}>
           <GeneralError show={errorHappenedHere('Login')} />
@@ -106,9 +108,12 @@ export default function Login({ navigation }) {
           onPress={handleLogin}
           loading={userProfileLoading}
         />
-        <AppText style={styles.secondary}>
-          New User? <PurpleText text="Register" onPress={register} />
-        </AppText>
+
+        <View>
+          <AppText style={styles.secondary}>
+            New User? <PurpleText text="Register" onPress={register} />
+          </AppText>
+        </View>
       </WithKeyboard>
     </ImageBackground>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -26,6 +26,11 @@ export default function SetNewPassword({ navigation }) {
 
   const [pass, setPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    error && setError(false);
+  }, [pass, confirmPass]);
 
   const goToLogin = () => dispatch(startLoginAction(navigation));
 
@@ -35,11 +40,15 @@ export default function SetNewPassword({ navigation }) {
 
   const passwordCheck = passLength && hasNumber && hasUpperAndLower;
 
-  const enabled = pass === confirmPass && passwordCheck;
   const red = { color: '#F45E8C' };
 
-  const setNewPassword = () =>
-    dispatch({ type: 'SET_NEW_PASS_SAGA', pass, confirmPass, navigation });
+  const setNewPassword = () => {
+    if (pass !== confirmPass || !passwordCheck) {
+      setError(true);
+    } else {
+      dispatch({ type: 'SET_NEW_PASS_SAGA', pass, confirmPass, navigation });
+    }
+  };
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
@@ -73,15 +82,17 @@ export default function SetNewPassword({ navigation }) {
             onChangeText={(t) => setPass(t)}
             value={pass}
             secureTextEntry
-            error={!passwordCheck}
+            error={error && (!passwordCheck || !pass)}
           />
 
           <Text style={styles.validations}>
-            <Text style={!passLength && red}>8 or more characters, </Text>
-            <Text style={!hasUpperAndLower && red}>
+            <Text style={!passLength && pass && red}>
+              8 or more characters,{' '}
+            </Text>
+            <Text style={!hasUpperAndLower && pass && red}>
               Upper & lowercase letters,{' '}
             </Text>
-            <Text style={!hasNumber && red}>At least one number, </Text>
+            <Text style={!hasNumber && pass && red}>At least one number, </Text>
           </Text>
 
           <AppInput
@@ -91,17 +102,13 @@ export default function SetNewPassword({ navigation }) {
             onChangeText={(t) => setConfirmPass(t)}
             value={confirmPass}
             secureTextEntry
-            error={pass !== confirmPass}
+            error={error && pass !== confirmPass}
           />
 
           <AppButton
             text="Save"
             style={styles.button}
             onPress={setNewPassword}
-            disabled={!enabled}
-            backgroundColor={
-              !enabled ? colors.SECONDARY_TEXT : colors.SECONDARY_PURPLE
-            }
           />
         </ScrollView>
       </KeyboardAvoidingView>
@@ -115,7 +122,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: -20,
     marginTop: 28,
-    width: '33%',
+    width: '45%',
   },
   backText: {
     marginBottom: 2,

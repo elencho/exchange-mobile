@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 import TwoFaInput from '../components/TwoFaInput';
+import WithKeyboard from '../components/WithKeyboard';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
@@ -61,39 +62,48 @@ export default function Login2Fa({ navigation }) {
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
-      <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
-        <TouchableOpacity style={styles.back} onPress={goBack}>
-          <Image source={images.Back} />
-          <PurpleText text="Back to Log In" style={styles.backText} />
-        </TouchableOpacity>
-        <View style={styles.middle}>
-          <Image source={image()} />
-          <AppText header style={styles.primary}>
-            {type()}
-          </AppText>
-          <AppText style={styles.secondary}>Enter One Time Password</AppText>
+      <WithKeyboard padding flexGrow>
+        <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
+          <TouchableOpacity style={styles.back} onPress={goBack}>
+            <Image source={images.Back} />
+            <PurpleText text="Back to Log In" style={styles.backText} />
+          </TouchableOpacity>
+          <View style={styles.middle}>
+            <Image source={image()} />
 
-          <View style={styles.twoFaInput}>
-            <TwoFaInput
-              cellCount={cellCount}
-              value={value}
-              setValue={setValue}
-              login
-            />
+            {/* Animate */}
+            <View>
+              <AppText header style={styles.primary}>
+                {type()}
+              </AppText>
+              <AppText style={styles.secondary}>
+                Enter One Time Password
+              </AppText>
+            </View>
+
+            <View style={styles.twoFaInput}>
+              <TwoFaInput
+                cellCount={cellCount}
+                value={value}
+                setValue={setValue}
+                login
+              />
+            </View>
           </View>
-        </View>
 
-        <View style={styles.bottom}>
-          {t !== 'TOTP' ? (
-            <AppText style={[styles.secondary, { marginBottom: 20 }]}>
-              Didn't receive code? <PurpleText text="Resend" onPress={resend} />
-            </AppText>
-          ) : null}
-          {t !== 'EMAIL' ? (
-            <PurpleText text="Reset OTP" onPress={goToReset} />
-          ) : null}
-        </View>
-      </Pressable>
+          <View style={styles.bottom}>
+            {t !== 'TOTP' ? (
+              <AppText style={[styles.secondary, { marginBottom: 20 }]}>
+                Didn't receive code?{' '}
+                <PurpleText text="Resend" onPress={resend} />
+              </AppText>
+            ) : null}
+            {t !== 'EMAIL' ? (
+              <PurpleText text="Reset OTP" onPress={goToReset} />
+            ) : null}
+          </View>
+        </Pressable>
+      </WithKeyboard>
     </ImageBackground>
   );
 }
@@ -131,6 +141,7 @@ const styles = StyleSheet.create({
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
+    textAlign: 'center',
   },
   twoFaInput: {
     marginTop: 40,

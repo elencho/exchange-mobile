@@ -8,6 +8,10 @@ const vaxo_satesto = { login: 'metro21@mailinator.com', password: '11111!Aa' };
 const baneta_realuri = { login: 'ibanet@cryptx.com', password: 'Malina125$' };
 const kervala = { login: 'gkerva@cryptal.com', password: 'TestGexCryptal7' };
 const sali = { login: 'bukhiashvilisalome@gmail.com', password: 'Salome1996' };
+const saliSatesto = {
+  login: 'salibukhiashvili@mailinator.com',
+  password: 'Salome1996',
+};
 
 const INITIAL_STATE = {
   timerVisible: false,
@@ -28,13 +32,13 @@ const INITIAL_STATE = {
   Personal_Company: 'Personal',
   registrationStartInfo: {},
   registrationInputs: {
-    firstName: '',
-    lastName: '',
-    email: '',
-    passwordNew: '',
-    passwordConfirm: '',
+    firstName: 'aa',
+    lastName: 'aa',
+    email: 'aa1702@mailinator.com',
+    passwordNew: '11111!Aa',
+    passwordConfirm: '11111!Aa',
     phoneCountry: 'GEO',
-    phoneNumber: '',
+    phoneNumber: '123654897',
     promoCode: '',
     referralCode: '',
     acceptTerms: 'on',

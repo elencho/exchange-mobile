@@ -161,8 +161,9 @@ export const otpForLoginAction = (otp, navigation) => ({
 export const fetchCountries = () => ({
   type: actionTypes.FETCH_COUNTRIES_SAGA,
 });
-export const fetchUserInfo = () => ({
+export const fetchUserInfo = (fromRegistration) => ({
   type: actionTypes.FETCH_USER_INFO_SAGA,
+  fromRegistration,
 });
 export const toggleUserInfoLoading = (userProfileLoading) => ({
   type: actionTypes.TOGGLE_USER_PROFILE_LOADING,

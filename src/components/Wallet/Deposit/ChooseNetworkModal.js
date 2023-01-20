@@ -6,7 +6,12 @@ import AppModal from '../../AppModal';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
-import { setNetwork, wireDepositAction } from '../../../redux/wallet/actions';
+import {
+  cryptoAddressesAction,
+  getWhitelistAction,
+  setNetwork,
+  wireDepositAction,
+} from '../../../redux/wallet/actions';
 import { ICONS_URL_PNG } from '../../../constants/api';
 
 export default function ChooseNetworkModal() {
@@ -23,6 +28,9 @@ export default function ChooseNetworkModal() {
   } = state;
 
   const fiat = currentBalanceObj?.type === 'FIAT';
+  const crypto = currentBalanceObj?.type === 'CRYPTO';
+  const deposit = walletTab === 'Deposit';
+  const withdrawal = walletTab === 'Withdrawal';
 
   const hide = () => dispatch(toggleChooseNetworkModal(false));
   const handlePress = (n) => {
@@ -32,6 +40,14 @@ export default function ChooseNetworkModal() {
       dispatch(wireDepositAction('', code));
       dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
       dispatch({ type: 'CLEAN_WALLET_INPUTS' });
+    }
+    if (crypto) {
+      if (deposit) {
+        dispatch(cryptoAddressesAction(null, code, null, n));
+      }
+      if (withdrawal) {
+        dispatch(getWhitelistAction());
+      }
     }
     hide();
   };
@@ -49,8 +65,7 @@ export default function ChooseNetworkModal() {
 
   useEffect(() => {
     let networksToDisplay = [];
-    const m =
-      walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
+    const m = withdrawal ? 'withdrawalMethods' : 'depositMethods';
     const n = currentBalanceObj[m];
 
     if (n.WALLET) n.WALLET.forEach((n) => networksToDisplay.push(n));

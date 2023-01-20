@@ -139,13 +139,13 @@ function* cryptoAddressesSaga(action) {
     yield put(saveCryptoAddress(cryptoAddress ? cryptoAddress : {}));
   }
 
-  yield put(goToBalanceAction(name, code, navigation));
+  if (navigation) yield put(goToBalanceAction(name, code, navigation));
   yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
 
   if (walletTab === 'Whitelist') yield put(getWhitelistAction());
 
+  // Fees
   if (!!hasMethod) {
-    // Fees
     const amountAction =
       walletTab === 'Deposit'
         ? { type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 }

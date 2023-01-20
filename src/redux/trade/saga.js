@@ -22,6 +22,7 @@ import {
   switchBalanceCard,
   setTotalTrades,
   setTradeOffset,
+  fetchFee,
 } from './actions';
 import {
   getParams,
@@ -46,7 +47,7 @@ import {
   setWalletTab,
   withdrawalTemplatesAction,
 } from '../wallet/actions';
-import { fetchCurrencies, toggleLoading } from '../transactions/actions';
+import { toggleLoading } from '../transactions/actions';
 import { fetchUserInfo } from '../profile/actions';
 
 function* fetchTradesSaga() {
@@ -180,6 +181,10 @@ function* addNewCardSaga(action) {
     if (b.currencyCode === fiat) obj = b;
   });
 
+  const tab = yield select((state) => state.transactions.tabNavigationRef);
+  const tabRoute = yield select((state) => state.transactions.tabRoute);
+  if (tabRoute !== 'Wallet') yield call(() => tab.navigate('Wallet'));
+
   yield put(setCurrentBalanceObj(obj));
   yield put(setWalletTab('Manage Cards'));
   yield put(toggleBuySellModal(false));
@@ -229,13 +234,8 @@ function* refreshWalletAndTradesSaga() {
     }
 
     if (crypto && isAvailable(currentBalanceObj)) {
-      if (withdrawal || whitelist) {
-        yield put(getWhitelistAction());
-      } else {
-        // Because of this line crypto addresses action is
-        // called twice while navigating th the balance screen
-        /* yield put(cryptoAddressesAction(currency, code, null, network)); */
-      }
+      if (withdrawal || whitelist) yield put(getWhitelistAction());
+      if (withdrawal) yield put(fetchFee('withdrawal'));
     }
   }
 
