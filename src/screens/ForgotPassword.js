@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  Dimensions,
   Image,
   ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,6 +13,7 @@ import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
 import PurpleText from '../components/PurpleText';
+import WithKeyboard from '../components/WithKeyboard';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
@@ -119,17 +117,10 @@ export default function ForgotPassword({ navigation }) {
         <PurpleText text="Back to Log In" style={styles.backText} />
       </TouchableOpacity>
 
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.select({ android: undefined, ios: 'padding' })}
-        keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
-      >
-        <ScrollView
-          contentContainerStyle={styles.middle}
-          style={{ flex: 1 }}
-          showsVerticalScrollIndicator={false}
-        >
-          <Image source={images.Strong_Password} />
+      <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
+        <Image source={images.Strong_Password} />
+
+        <View>
           <AppText header style={styles.primary}>
             Forgot Your Password?
           </AppText>
@@ -137,31 +128,31 @@ export default function ForgotPassword({ navigation }) {
             Enter the code you will receive on your e-mail to recover the
             password
           </AppText>
+        </View>
 
-          <GeneralError show={errorHappenedHere('ForgotPassword')} />
+        <GeneralError show={errorHappenedHere('ForgotPassword')} />
 
-          <AppInput
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-            style={styles.input}
-            label="Enter Email"
-            onChangeText={saveUsername}
-            value={f.username}
-            right={<Right />}
-            error={!mailValid && error}
-            errorText={errorText()}
-          />
-          <AppInput
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-            style={styles.input}
-            label="Enter Code"
-            onChangeText={saveCode}
-            value={f.code}
-            error={!f.code && error}
-          />
+        <AppInput
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          style={styles.input}
+          label="Enter Email"
+          onChangeText={saveUsername}
+          value={f.username}
+          right={<Right />}
+          error={!mailValid && error}
+          errorText={errorText()}
+        />
+        <AppInput
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          style={styles.input}
+          label="Enter Code"
+          onChangeText={saveCode}
+          value={f.code}
+          error={!f.code && error}
+        />
 
-          <AppButton text="Next" style={styles.button} onPress={next} />
-        </ScrollView>
-      </KeyboardAvoidingView>
+        <AppButton text="Next" style={styles.button} onPress={next} />
+      </WithKeyboard>
     </ImageBackground>
   );
 }
@@ -193,12 +184,12 @@ const styles = StyleSheet.create({
   middle: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: Dimensions.get('window').height - 100,
   },
   primary: {
     color: colors.PRIMARY_TEXT,
     marginTop: 18,
     marginBottom: 12,
+    textAlign: 'center',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

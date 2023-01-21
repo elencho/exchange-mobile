@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Dimensions,
   Image,
   ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
+import WithKeyboard from '../components/WithKeyboard';
 import PurpleText from '../components/PurpleText';
 
 import colors from '../constants/colors';
@@ -57,34 +55,29 @@ export default function SetNewPassword({ navigation }) {
         <PurpleText text="Back to Log In" style={styles.backText} />
       </TouchableOpacity>
 
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.select({ android: undefined, ios: 'padding' })}
-        keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
-      >
-        <ScrollView
-          contentContainerStyle={styles.middle}
-          style={{ flex: 1 }}
-          showsVerticalScrollIndicator={false}
-        >
-          <Image source={images.Strong_Password} />
+      <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
+        <Image source={images.Strong_Password} />
+
+        <View>
           <AppText header style={styles.primary}>
             Set New Password
           </AppText>
           <AppText style={styles.secondary}>
             Generate new password for your account
           </AppText>
+        </View>
 
-          <AppInput
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-            style={styles.input}
-            label="Enter New Password"
-            onChangeText={(t) => setPass(t)}
-            value={pass}
-            secureTextEntry
-            error={error && (!passwordCheck || !pass)}
-          />
+        <AppInput
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          style={styles.input}
+          label="Enter New Password"
+          onChangeText={(t) => setPass(t)}
+          value={pass}
+          secureTextEntry
+          error={error && (!passwordCheck || !pass)}
+        />
 
+        <View>
           <Text style={styles.validations}>
             <Text style={!passLength && pass && red}>
               8 or more characters,{' '}
@@ -94,24 +87,20 @@ export default function SetNewPassword({ navigation }) {
             </Text>
             <Text style={!hasNumber && pass && red}>At least one number, </Text>
           </Text>
+        </View>
 
-          <AppInput
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-            style={styles.input}
-            label="Confirm New Password"
-            onChangeText={(t) => setConfirmPass(t)}
-            value={confirmPass}
-            secureTextEntry
-            error={error && pass !== confirmPass}
-          />
+        <AppInput
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          style={styles.input}
+          label="Confirm New Password"
+          onChangeText={(t) => setConfirmPass(t)}
+          value={confirmPass}
+          secureTextEntry
+          error={error && pass !== confirmPass}
+        />
 
-          <AppButton
-            text="Save"
-            style={styles.button}
-            onPress={setNewPassword}
-          />
-        </ScrollView>
-      </KeyboardAvoidingView>
+        <AppButton text="Save" style={styles.button} onPress={setNewPassword} />
+      </WithKeyboard>
     </ImageBackground>
   );
 }
@@ -143,7 +132,6 @@ const styles = StyleSheet.create({
   middle: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: Dimensions.get('window').height - 100,
   },
   primary: {
     color: colors.PRIMARY_TEXT,

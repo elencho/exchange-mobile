@@ -9,6 +9,7 @@ import { useKeyboard } from '@react-native-community/hooks';
 
 export default function WithKeyboard({
   children,
+  modal,
   padding,
   flexGrow,
   style = {},
@@ -21,7 +22,7 @@ export default function WithKeyboard({
   const android = Platform.OS === 'android';
 
   const contentStyle = {
-    paddingBottom: android && padding && visible ? height : 0,
+    paddingBottom: android && padding && !modal && visible ? height : 0,
     flexGrow: flexGrow ? 1 : null,
   };
 

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Image,
   Pressable,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -12,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import AppInput from '../AppInput';
+import AppButton from '../AppButton';
+import WithKeyboard from '../WithKeyboard';
 import {
   toggleCountriesModal,
   togglePersonalInfoModal,
@@ -109,128 +110,122 @@ export default function PersonalInfoModal() {
   const isVerified = userStatus === 'VERIFIED';
 
   const children = (
-    <>
-      <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
-        <TouchableOpacity activeOpacity={0.99}>
-          <GeneralError
-            style={styles.error}
-            show={errorHappenedHere('PersonalInfoModal')}
+    <WithKeyboard padding flexGrow modal>
+      <TouchableOpacity activeOpacity={0.99} style={styles.flex}>
+        <GeneralError
+          style={styles.error}
+          show={errorHappenedHere('PersonalInfoModal')}
+        />
+
+        {!isVerified && (
+          <>
+            <AppInput
+              style={styles.inputContainer}
+              onChangeText={(firstName) =>
+                dispatch(saveUserInfo({ ...userInfo, firstName }))
+              }
+              label="First Name"
+              value={firstName}
+              error={error && !firstName?.trim()}
+            />
+            <AppInput
+              style={styles.inputContainer}
+              onChangeText={(lastName) =>
+                dispatch(saveUserInfo({ ...userInfo, lastName }))
+              }
+              label="Last Name"
+              value={lastName}
+              error={error && !lastName?.trim()}
+            />
+          </>
+        )}
+
+        <Pressable
+          style={[styles.dropdown, countriesBorder]}
+          onPress={() => handleCountries(true)}
+        >
+          <View style={styles.subtext}>
+            <AppText body style={styles.secondary}>
+              Country
+            </AppText>
+          </View>
+
+          <Image
+            source={{
+              uri: `${COUNTRIES_URL_PNG}/${countryCode}.png`,
+            }}
+            style={styles.image}
           />
+          <AppText medium style={styles.dropdownText}>
+            {country}
+          </AppText>
+          <Image source={images.Arrow} />
+        </Pressable>
 
-          {!isVerified && (
-            <>
-              <AppInput
-                style={styles.inputContainer}
-                onChangeText={(firstName) =>
-                  dispatch(saveUserInfo({ ...userInfo, firstName }))
-                }
-                label="First Name"
-                value={firstName}
-                error={error && !firstName?.trim()}
-              />
-              <AppInput
-                style={styles.inputContainer}
-                onChangeText={(lastName) =>
-                  dispatch(saveUserInfo({ ...userInfo, lastName }))
-                }
-                label="Last Name"
-                value={lastName}
-                error={error && !lastName?.trim()}
-              />
-            </>
-          )}
+        <View style={styles.row}>
+          <AppInput
+            style={[styles.inputContainer, styles.rowInputs]}
+            onChangeText={(city) =>
+              dispatch(saveUserInfo({ ...userInfo, city }))
+            }
+            label="City"
+            value={city}
+            error={error && !city?.trim()}
+          />
+          <AppInput
+            style={[styles.inputContainer, styles.rowInputs]}
+            onChangeText={(postalCode) =>
+              dispatch(saveUserInfo({ ...userInfo, postalCode }))
+            }
+            label="Postal Code"
+            value={postalCode}
+            error={error && !postalCode?.trim()}
+          />
+        </View>
 
+        <AppInput
+          style={styles.inputContainer}
+          onChangeText={(address) =>
+            dispatch(saveUserInfo({ ...userInfo, address }))
+          }
+          label="Address"
+          value={address}
+          error={error && !address?.trim()}
+        />
+
+        {!isVerified && (
           <Pressable
-            style={[styles.dropdown, countriesBorder]}
-            onPress={() => handleCountries(true)}
+            style={[styles.dropdown, citizenshipBorder]}
+            onPress={() => handleCountries(null, true)}
           >
             <View style={styles.subtext}>
               <AppText body style={styles.secondary}>
-                Country
+                Citizenship
               </AppText>
             </View>
 
             <Image
               source={{
-                uri: `${COUNTRIES_URL_PNG}/${countryCode}.png`,
+                uri: `${COUNTRIES_URL_PNG}/${citizenship}.png`,
               }}
               style={styles.image}
             />
             <AppText medium style={styles.dropdownText}>
-              {country}
+              {citizenshipText(citizenship)}
             </AppText>
             <Image source={images.Arrow} />
           </Pressable>
+        )}
+      </TouchableOpacity>
 
-          <View style={styles.row}>
-            <AppInput
-              style={[styles.inputContainer, styles.rowInputs]}
-              onChangeText={(city) =>
-                dispatch(saveUserInfo({ ...userInfo, city }))
-              }
-              label="City"
-              value={city}
-              error={error && !city?.trim()}
-            />
-            <AppInput
-              style={[styles.inputContainer, styles.rowInputs]}
-              onChangeText={(postalCode) =>
-                dispatch(saveUserInfo({ ...userInfo, postalCode }))
-              }
-              label="Postal Code"
-              value={postalCode}
-              error={error && !postalCode?.trim()}
-            />
-          </View>
-
-          <AppInput
-            style={styles.inputContainer}
-            onChangeText={(address) =>
-              dispatch(saveUserInfo({ ...userInfo, address }))
-            }
-            label="Address"
-            value={address}
-            error={error && !address?.trim()}
-          />
-
-          {!isVerified && (
-            <Pressable
-              style={[styles.dropdown, citizenshipBorder]}
-              onPress={() => handleCountries(null, true)}
-            >
-              <View style={styles.subtext}>
-                <AppText body style={styles.secondary}>
-                  Citizenship
-                </AppText>
-              </View>
-
-              <Image
-                source={{
-                  uri: `${COUNTRIES_URL_PNG}/${citizenship}.png`,
-                }}
-                style={styles.image}
-              />
-              <AppText medium style={styles.dropdownText}>
-                {citizenshipText(citizenship)}
-              </AppText>
-              <Image source={images.Arrow} />
-            </Pressable>
-          )}
-        </TouchableOpacity>
-      </ScrollView>
-
-      <Pressable onPress={handleSave} style={styles.button}>
-        <AppText medium style={styles.buttonText}>
-          Save
-        </AppText>
-      </Pressable>
+      <AppButton onPress={handleSave} style={styles.button} text="Save" />
 
       <CountriesModal
         citizenshipDrop={citizenshipDrop}
         countryDrop={countryDrop}
         reset={handleReset}
       />
-    </>
+    </WithKeyboard>
   );
 
   return (
@@ -246,14 +241,7 @@ export default function PersonalInfoModal() {
 
 const styles = StyleSheet.create({
   button: {
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-    backgroundColor: colors.PRIMARY_PURPLE,
-  },
-  buttonText: {
-    color: colors.PRIMARY_TEXT,
+    marginVertical: 20,
   },
   dropdownText: {
     flex: 1,
@@ -275,12 +263,10 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
-    paddingTop: 5,
   },
   image: {
     width: 18,
     height: 18,
-    // resizeMode: 'contain',
     borderRadius: 20,
   },
   inputContainer: {

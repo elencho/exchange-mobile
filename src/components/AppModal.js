@@ -44,7 +44,7 @@ function AppModal({
       swipeDirection="down"
       propagateSwipe={true}
       style={styles.modal}
-      animationOutTiming={300}
+      animationOutTiming={1000}
       backdropTransitionInTiming={300}
       onModalHide={onModalHide}
       hideModalContentWhileAnimating
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   bottom: {
     padding: 35,
     backgroundColor: colors.SECONDARY_BACKGROUND,
+    marginBottom: -3,
   },
   header: {
     color: colors.PRIMARY_TEXT,

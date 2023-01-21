@@ -28,6 +28,7 @@ import GeneralError from '../GeneralError';
 import PurpleText from '../PurpleText';
 import CountriesModal from './CountriesModal';
 import { errorHappenedHere } from '../../utils/appUtils';
+import WithKeyboard from '../WithKeyboard';
 
 export default function PhoneNumberModal() {
   const dispatch = useDispatch();
@@ -104,54 +105,52 @@ export default function PhoneNumberModal() {
 
   const children = () => {
     return (
-      <>
-        <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
-          <TouchableOpacity activeOpacity={0.99}>
-            <GeneralError
-              style={styles.error}
-              show={errorHappenedHere('PhoneNumberModal')}
-            />
+      <WithKeyboard padding flexGrow modal>
+        <TouchableOpacity activeOpacity={0.99} style={styles.flex}>
+          <GeneralError
+            style={styles.error}
+            show={errorHappenedHere('PhoneNumberModal')}
+          />
 
-            <Pressable
-              style={[styles.dropdown, { borderColor }]}
-              onPress={() => handleCountries()}
-            >
-              <Image
-                source={{
-                  uri: `${COUNTRIES_URL_PNG}/${country}.png`,
-                }}
-                style={styles.image}
-              />
-              <AppText medium style={[styles.dropdownText, { color }]}>
-                {phoneCountry()}
-              </AppText>
-              <Image source={images.Arrow} />
-            </Pressable>
+          <Pressable
+            style={[styles.dropdown, { borderColor }]}
+            onPress={() => handleCountries()}
+          >
+            <Image
+              source={{
+                uri: `${COUNTRIES_URL_PNG}/${country}.png`,
+              }}
+              style={styles.image}
+            />
+            <AppText medium style={[styles.dropdownText, { color }]}>
+              {phoneCountry()}
+            </AppText>
+            <Image source={images.Arrow} />
+          </Pressable>
 
-            <AppInput
-              style={styles.inputContainer}
-              label="Phone Number"
-              right={send}
-              onChangeText={(text) => handlePhoneNumber(text)}
-              value={number}
-              keyboardType="number-pad"
-              error={(error || sendError) && !number?.trim()}
-            />
-            <AppInput
-              style={styles.inputContainer}
-              label="Verification Code"
-              onChangeText={handleVerificationCode}
-              value={code}
-              keyboardType="number-pad"
-              error={error && !code?.trim()}
-            />
-          </TouchableOpacity>
-        </ScrollView>
+          <AppInput
+            style={styles.inputContainer}
+            label="Phone Number"
+            right={send}
+            onChangeText={(text) => handlePhoneNumber(text)}
+            value={number}
+            keyboardType="number-pad"
+            error={(error || sendError) && !number?.trim()}
+          />
+          <AppInput
+            style={styles.inputContainer}
+            label="Verification Code"
+            onChangeText={handleVerificationCode}
+            value={code}
+            keyboardType="number-pad"
+            error={error && !code?.trim()}
+          />
+        </TouchableOpacity>
 
         <AppButton text="Save" onPress={handleSave} style={styles.button} />
 
         <CountriesModal phoneCountry />
-      </>
+      </WithKeyboard>
     );
   };
 
@@ -168,7 +167,7 @@ export default function PhoneNumberModal() {
 
 const styles = StyleSheet.create({
   button: {
-    marginBottom: 20,
+    marginVertical: 20,
   },
   dropdownText: {
     flex: 1,
@@ -188,7 +187,6 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
-    paddingTop: 5,
   },
   image: {
     width: 18,
