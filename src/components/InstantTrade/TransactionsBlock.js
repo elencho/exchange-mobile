@@ -35,10 +35,8 @@ const TransactionsBlock = ({
 
   const state = useSelector((state) => state);
   const {
-    trade: { trades, hideOtherPairs, totalTrades },
+    trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
   } = state;
-
-  const [moreLoading, setMoreLoading] = useState(false);
 
   useEffect(() => {
     return () => dispatch(saveTrades([]));
@@ -52,23 +50,23 @@ const TransactionsBlock = ({
   };
 
   const handleScrollEnd = () => {
-    dispatch(reachScrollEnd('trades'));
-    if (trades.length < totalTrades) {
-      setMoreLoading(true);
-    } else {
-      setMoreLoading(false);
+    if (trades.length === totalTrades) {
+      return;
+    } else if (trades.length <= totalTrades) {
+      dispatch(reachScrollEnd('trades'));
     }
   };
 
   const onRefresh = () => {
+    dispatch(setTradeOffset(0));
     dispatch(saveTrades([]));
     dispatch(fetchTrades());
   };
   const renderTrade = ({ item }) => (
     <Trade trade={item} key={item.creationTime} />
   );
-
-  const footer = () => (moreLoading ? <OneTransactionSkeleton /> : <View />);
+  const footer = () =>
+    moreTradesLoading ? <OneTransactionSkeleton /> : <View />;
   return (
     <View style={styles.container}>
       <TopRow
@@ -76,7 +74,7 @@ const TransactionsBlock = ({
         onPress={toggleShowHide}
       />
 
-      {loading && !moreLoading ? (
+      {loading && !moreTradesLoading ? (
         [1, 2, 3].map((i) => (
           <View key={i}>
             <OneTransactionSkeleton />

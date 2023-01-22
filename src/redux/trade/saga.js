@@ -22,6 +22,7 @@ import {
   switchBalanceCard,
   setTotalTrades,
   setTradeOffset,
+  setMoreTradesLoading,
 } from './actions';
 import {
   getParams,
@@ -49,17 +50,22 @@ import {
 import { fetchCurrencies, toggleLoading } from '../transactions/actions';
 import { fetchUserInfo } from '../profile/actions';
 
-function* fetchTradesSaga() {
-  yield put(setTradesLoading(true));
+function* fetchTradesSaga({ isMoreLoading }) {
+  if (isMoreLoading) {
+    yield put(setMoreTradesLoading(true));
+  } else {
+    yield put(setTradesLoading(true));
+  }
   const params = yield select(getParams);
   const trades = yield select((state) => state.trade.trades);
 
   const newTrades = yield call(fetchTrades, params);
   const newestTrades = newTrades?.data;
-  if (newestTrades) {
+  if (newestTrades.length > 0) {
     yield put(setTotalTrades(newTrades?.paging.pageCount));
     yield put(saveTrades([...trades, ...newestTrades]));
   }
+  yield put(setMoreTradesLoading(false));
   yield put(setTradesLoading(false));
 }
 
@@ -116,7 +122,7 @@ function* instantTradeTabSaga() {
   yield put(setOffersLoading(true));
   const offers = yield call(fetchOffers);
   yield put(saveOffers(offers));
-
+  yield put(setTradeOffset(0));
   yield put(pairObjectSagaAction(offers));
 
   // yield put({ type: 'BALANCE_SAGA' });
