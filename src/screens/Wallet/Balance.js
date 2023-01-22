@@ -26,10 +26,9 @@ export default function Balance({ navigation }) {
   } = state;
 
   const onRefresh = () => {
+    dispatch(setCard(null));
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
-    dispatch(setCard(null));
-    dispatch(setFee(null));
     if (network !== 'SWIFT') {
       dispatch(setDepositProvider(null));
     }

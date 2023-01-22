@@ -1,8 +1,6 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import {
   Image,
-  RefreshControl,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -12,22 +10,23 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import { useFocusEffect } from '@react-navigation/native';
 
+import AppText from '../components/AppText';
 import Background from '../components/Background';
 import PurpleText from '../components/PurpleText';
 import Headline from '../components/TransactionHistory/Headline';
 import Personal from '../components/UserProfile/Personal';
 import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecuritySwitcher';
 import Security from '../components/UserProfile/Security';
-import images from '../constants/images';
-import { logoutUtil } from '../utils/userProfileUtils';
+
 import {
   fetchUserInfo,
   switchPersonalSecurity,
 } from '../redux/profile/actions';
+import images from '../constants/images';
 import colors from '../constants/colors';
-import AppText from '../components/AppText';
+import { logoutUtil } from '../utils/userProfileUtils';
 
-export default function UserProfile({ navigation }) {
+function UserProfile({ navigation, route }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -36,7 +35,7 @@ export default function UserProfile({ navigation }) {
   } = state;
 
   useEffect(() => {
-    dispatch(fetchUserInfo());
+    dispatch(fetchUserInfo(route.params?.fromRegistration));
   }, []);
 
   useFocusEffect(
@@ -96,6 +95,8 @@ export default function UserProfile({ navigation }) {
     </Background>
   );
 }
+
+export default memo(UserProfile);
 
 const styles = StyleSheet.create({
   arrow: {

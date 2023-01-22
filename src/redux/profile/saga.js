@@ -8,7 +8,6 @@ import {
   saveCountries,
   saveCountriesConstant,
   saveUserInfo,
-  fetchUserInfo as fetchUserInfoAction,
   saveOtpChangeToken,
   setCurrentSecurityAction,
   setSmsAuth,
@@ -53,6 +52,7 @@ import {
   verifyAccount,
   verifyPhoneNumber,
 } from '../../utils/userProfileUtils';
+import launchSumsubSdk from '../../utils/sumsubMobileSdk';
 import {
   toggleEmailAuthModal,
   toggleEmailVerificationModal,
@@ -65,7 +65,6 @@ import {
 import { resetTradesState } from '../trade/actions';
 import { resetTransactionsState, toggleLoading } from '../transactions/actions';
 import { resetWalletState } from '../wallet/actions';
-import launchSumsubSdk from '../../utils/sumsubMobileSdk';
 
 //  START LOGIN
 function* startLoginSaga(action) {
@@ -130,6 +129,7 @@ function* verifyAccountSaga(action) {
   const {
     verificationInfo,
     pkceInfo: { codeVerifier },
+    userInfo,
   } = state;
   yield put(toggleUserInfoLoading(true));
 
@@ -147,8 +147,11 @@ function* verifyAccountSaga(action) {
     });
 
     yield put(toggleEmailVerificationModal(false));
+    yield delay(800);
+    yield call(() =>
+      navigation.navigate('UserProfile', { fromRegistration: true })
+    );
     yield put(toggleLoading(false));
-    yield call(launchSumsubSdk);
   } else {
     yield put(saveVerificationInfo(verified));
   }
@@ -348,9 +351,9 @@ function* fetchCountriesSaga() {
 }
 
 //  FETCH USER INFO
-function* fetchUserInfoSaga() {
+function* fetchUserInfoSaga(action) {
+  const { fromRegistration } = action;
   yield put(toggleUserInfoLoading(true));
-  // yield delay(1000);
 
   const userInfo = yield call(fetchUserInfoUtil);
   if (userInfo) yield put(saveUserInfo(userInfo));
@@ -359,9 +362,11 @@ function* fetchUserInfoSaga() {
   if (typeof token === 'string') {
     yield put({ type: 'OTP_SAGA', token });
   }
+  if (userInfo?.verificationToolEnabled && fromRegistration) {
+    yield call(launchSumsubSdk);
+  }
 
   yield put(toggleUserInfoLoading(false));
-  //yield put(toggleLoading(false));
 }
 
 //  UPDATE USER INFO
@@ -412,7 +417,7 @@ function* updatePhoneNumberSaga(action) {
   if (data?.status >= 200 && data?.status < 300) {
     yield call(() => setCode(null));
     yield call(() => setUserInfoVariable(null));
-    yield put(fetchUserInfoAction());
+    yield put(fetchUserInfo());
     yield put(togglePhoneNumberModal(false));
   }
 }

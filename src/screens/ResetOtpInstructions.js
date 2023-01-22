@@ -16,6 +16,7 @@ import colors from '../constants/colors';
 import images from '../constants/images';
 import Logo from '../assets/images/Logo';
 import TwoFaInput from '../components/TwoFaInput';
+import WithKeyboard from '../components/WithKeyboard';
 
 export default function ResetOtpInstructions({ navigation, route }) {
   const ex = route?.params?.execution;
@@ -35,42 +36,45 @@ export default function ResetOtpInstructions({ navigation, route }) {
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
-      <TouchableOpacity style={styles.back} onPress={goBack}>
-        <Image source={images.Back} />
-        <PurpleText text="Go Back" style={styles.backText} />
-      </TouchableOpacity>
+      <WithKeyboard padding flexGrow>
+        <TouchableOpacity style={styles.back} onPress={goBack}>
+          <Image source={images.Back} />
+          <PurpleText text="Go Back" style={styles.backText} />
+        </TouchableOpacity>
 
-      <View style={styles.middle}>
-        <Logo style={styles.logo} />
-        <AppText header style={styles.primary}>
-          Reset One Time Password
-        </AppText>
-        {ex === 'OTP_RESET_INSTRUCTIONS' && (
-          <AppText style={styles.secondary}>
-            Contact Our <PurpleText text="Support Team" onPress={openSupport} />{' '}
-            for instructions
+        <View style={styles.middle}>
+          <Logo style={styles.logo} />
+          <AppText header style={styles.primary}>
+            Reset One Time Password
           </AppText>
-        )}
-        {ex === 'RESET_OTP' && (
-          <>
-            <AppText style={[styles.secondary, { marginBottom: 40 }]}>
-              Enter the code you received on the email
+          {ex === 'OTP_RESET_INSTRUCTIONS' && (
+            <AppText style={styles.secondary}>
+              Contact Our{' '}
+              <PurpleText text="Support Team" onPress={openSupport} /> for
+              instructions
             </AppText>
-            <TwoFaInput value={value} setValue={setValue} login />
-          </>
-        )}
-      </View>
-
-      {ex === 'OTP_RESET_INSTRUCTIONS' && (
-        <View style={styles.bottom}>
-          <AppText style={[styles.secondary, { marginHorizontal: '15%' }]}>
-            Note: After OTP reset, withdrawals will not be available for{' '}
-            <AppText medium style={{ color: '#8D92AD' }}>
-              48 hours
-            </AppText>
-          </AppText>
+          )}
+          {ex === 'RESET_OTP' && (
+            <>
+              <AppText style={[styles.secondary, { marginBottom: 40 }]}>
+                Enter the code you received on the email
+              </AppText>
+              <TwoFaInput value={value} setValue={setValue} login />
+            </>
+          )}
         </View>
-      )}
+
+        {ex === 'OTP_RESET_INSTRUCTIONS' && (
+          <View style={styles.bottom}>
+            <AppText style={[styles.secondary, { marginHorizontal: '15%' }]}>
+              Note: After OTP reset, withdrawals will not be available for{' '}
+              <AppText medium style={{ color: '#8D92AD' }}>
+                48 hours
+              </AppText>
+            </AppText>
+          </View>
+        )}
+      </WithKeyboard>
     </ImageBackground>
   );
 }

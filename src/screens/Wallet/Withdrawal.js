@@ -124,9 +124,9 @@ export default function Withdrawal({ refreshControl }) {
   };
 
   const withdrawalType = () => {
-    if (currentBalanceObj.withdrawalMethods.WALLET) return 'crypto';
-    if (network === 'SWIFT') return 'wire';
     if (isEcommerce) return 'card';
+    if (currentBalanceObj?.type === 'CRYPTO') return 'crypto';
+    if (currentBalanceObj?.type === 'FIAT') return 'wire';
   };
 
   const reason = () => {

@@ -214,7 +214,9 @@ export default function BuySellModal() {
               error={error && !validateAmount(size)}
             />
 
-            {Balance_Card === 'card' && <CardSection error={error} />}
+            {Balance_Card === 'card' && tradeType === 'Buy' && (
+              <CardSection error={error} />
+            )}
 
             <CryptoModal />
             <FiatModal />
