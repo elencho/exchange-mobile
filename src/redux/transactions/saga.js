@@ -120,7 +120,7 @@ function* reachScrollEndSaga(action) {
     const limit = yield select((state) => state.trade.limit);
 
     yield put(setTradeOffset(offset + limit));
-    yield put(fetchTrades());
+    yield put(fetchTrades(true));
   }
 }
 

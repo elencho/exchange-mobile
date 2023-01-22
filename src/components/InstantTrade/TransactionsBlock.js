@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  View,
+  Platform,
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -14,6 +20,8 @@ import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
 import Trade from './Trade';
+
+const IS_IOS = Platform.OS === 'ios';
 
 export const TopRow = ({ text, onPress }) => (
   <View style={styles.topRow}>
@@ -35,10 +43,8 @@ const TransactionsBlock = ({
 
   const state = useSelector((state) => state);
   const {
-    trade: { trades, hideOtherPairs, totalTrades },
+    trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
   } = state;
-
-  const [moreLoading, setMoreLoading] = useState(false);
 
   useEffect(() => {
     return () => dispatch(saveTrades([]));
@@ -52,21 +58,23 @@ const TransactionsBlock = ({
   };
 
   const handleScrollEnd = () => {
-    dispatch(reachScrollEnd('trades'));
-    if (trades.length < totalTrades) {
-      setMoreLoading(true);
-    } else {
-      setMoreLoading(false);
+    if (trades.length === totalTrades) {
+      return;
+    } else if (trades.length <= totalTrades) {
+      dispatch(reachScrollEnd('trades'));
     }
   };
 
-  const onRefresh = () => dispatch(fetchTrades());
+  const onRefresh = () => {
+    dispatch(setTradeOffset(0));
+    dispatch(saveTrades([]));
+    dispatch(fetchTrades());
+  };
   const renderTrade = ({ item }) => (
     <Trade trade={item} key={item.creationTime} />
   );
-
-  const footer = () => (moreLoading ? <OneTransactionSkeleton /> : <View />);
-
+  const footer = () =>
+    moreTradesLoading ? <OneTransactionSkeleton /> : <View />;
   return (
     <View style={styles.container}>
       <TopRow
@@ -74,12 +82,14 @@ const TransactionsBlock = ({
         onPress={toggleShowHide}
       />
 
-      {loading && !moreLoading ? (
-        [1, 2, 3].map((i) => (
-          <View key={i}>
-            <OneTransactionSkeleton />
-          </View>
-        ))
+      {loading && !moreTradesLoading ? (
+        <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
+          {[1, 2, 3].map((i) => (
+            <View key={i}>
+              <OneTransactionSkeleton />
+            </View>
+          ))}
+        </View>
       ) : (
         <FlatList
           style={{ height: 280 }}
@@ -87,7 +97,7 @@ const TransactionsBlock = ({
           renderItem={renderTrade}
           keyExtractor={(item) => item.creationTime}
           onEndReached={handleScrollEnd}
-          //onEndReachedThreshold={0.7}
+          onEndReachedThreshold={1}
           nestedScrollEnabled
           initialNumToRender={5}
           ListFooterComponent={footer}

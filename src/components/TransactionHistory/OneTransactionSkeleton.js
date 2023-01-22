@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import colors from '../../constants/colors';
 import Skeleton from '../Skeleton';
+
+const IS_IOS = Platform.OS === 'ios';
 
 const SecondPart = () => (
   <View style={styles.container}>
@@ -68,6 +70,7 @@ const styles = StyleSheet.create({
   box: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingBottom: 30,
+    marginBottom: IS_IOS ? 0 : 30,
   },
   line: {
     backgroundColor: '#232945',

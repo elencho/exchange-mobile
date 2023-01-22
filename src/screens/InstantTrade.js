@@ -16,7 +16,7 @@ import CryptoModal from '../components/InstantTrade/CryptoModal';
 import colors from '../constants/colors';
 import FiatModal from '../components/InstantTrade/FiatModal';
 import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton';
-import { fetchTrades } from '../redux/trade/actions';
+import { fetchTrades, setTradeOffset } from '../redux/trade/actions';
 
 export default function InstantTrade() {
   const dispatch = useDispatch();
@@ -29,6 +29,7 @@ export default function InstantTrade() {
   const loading = tradesLoading && offersLoading;
   const onRefresh = () => {
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+    dispatch(setTradeOffset(0));
     dispatch(fetchTrades());
   };
 
