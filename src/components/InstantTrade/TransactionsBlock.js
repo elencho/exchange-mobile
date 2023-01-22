@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+  View,
+  Platform,
+} from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -14,6 +20,8 @@ import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
 import Trade from './Trade';
+
+const IS_IOS = Platform.OS === 'ios';
 
 export const TopRow = ({ text, onPress }) => (
   <View style={styles.topRow}>
@@ -75,11 +83,13 @@ const TransactionsBlock = ({
       />
 
       {loading && !moreTradesLoading ? (
-        [1, 2, 3].map((i) => (
-          <View key={i}>
-            <OneTransactionSkeleton />
-          </View>
-        ))
+        <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
+          {[1, 2, 3].map((i) => (
+            <View key={i}>
+              <OneTransactionSkeleton />
+            </View>
+          ))}
+        </View>
       ) : (
         <FlatList
           style={{ height: 280 }}
