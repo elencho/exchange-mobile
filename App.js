@@ -1,15 +1,17 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Platform,
   StyleSheet,
   SafeAreaView,
   StatusBar,
   LogBox,
+  AppState,
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
 import * as SplashScreen from 'expo-splash-screen';
+import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 import Navigator from './src/navigation';
 import store from './src/redux/store';
@@ -32,10 +34,30 @@ SplashScreen.preventAutoHideAsync();
 // };
 
 function App() {
+  const appState = useRef(AppState.currentState);
+  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
   // useEffect(() => {
   //   CodePush.notifyAppReady();
   //   CodePush.sync(codePushOptions);
   // });
+  SystemNavigationBar.stickyImmersive();
+  SystemNavigationBar.setNavigationColor(
+    colors.PRIMARY_BACKGROUND,
+    'light',
+    'both'
+  );
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      appState.current = nextAppState;
+      setAppStateVisible(appState.current);
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   const [fontsLoaded] = useFonts({
     Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
@@ -56,7 +78,7 @@ function App() {
 
   return (
     <Provider store={store}>
-      {iphone && <StatusBar barStyle="light-content" />}
+      <StatusBar barStyle="light-content" hidden={!iphone} />
       {iphone && <SafeAreaView style={styles.statusBar} />}
       <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
         <AppToast />
@@ -74,7 +96,6 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: 'hidden',
     backgroundColor: colors.PRIMARY_BACKGROUND,
-    paddingTop: Platform.OS == 'android' ? StatusBar.currentHeight : 0,
   },
   statusBar: {
     flex: 0,
