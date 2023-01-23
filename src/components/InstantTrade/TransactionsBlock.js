@@ -60,7 +60,7 @@ const TransactionsBlock = ({
   const handleScrollEnd = () => {
     if (trades.length === totalTrades) {
       return;
-    } else if (trades.length <= totalTrades) {
+    } else if (trades.length <= totalTrades && !moreTradesLoading) {
       dispatch(reachScrollEnd('trades'));
     }
   };
