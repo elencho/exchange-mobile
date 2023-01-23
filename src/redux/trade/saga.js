@@ -62,7 +62,7 @@ function* fetchTradesSaga({ isMoreLoading }) {
 
   const newTrades = yield call(fetchTrades, params);
   const newestTrades = newTrades?.data;
-  if (newestTrades.length > 0) {
+  if (newestTrades?.length > 0) {
     yield put(setTotalTrades(newTrades?.paging.pageCount));
     yield put(saveTrades([...trades, ...newestTrades]));
   }
