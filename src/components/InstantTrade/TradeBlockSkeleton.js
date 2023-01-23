@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingHorizontal: 24,
     paddingVertical: 36,
+    marginBottom: 10,
   },
   smallBoxMiddle: {
     backgroundColor: 'rgba(63, 66, 91, 0.18)',

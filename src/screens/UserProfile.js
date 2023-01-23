@@ -1,10 +1,11 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import {
   Image,
   StyleSheet,
   TouchableOpacity,
   View,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
@@ -29,6 +30,7 @@ import { logoutUtil } from '../utils/userProfileUtils';
 function UserProfile({ navigation, route }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const [showRefreshControl, setShowRefreshControl] = useState(false);
 
   const {
     profile: { Personal_Security, userInfo, userProfileLoading },
@@ -59,6 +61,12 @@ function UserProfile({ navigation, route }) {
   const onRefresh = () => dispatch(fetchUserInfo());
   const back = () => navigation.goBack();
 
+  const onScroll = (event) => {
+    const { y } = event.nativeEvent.contentOffset;
+    if (y > 0) {
+      setShowRefreshControl(true);
+    }
+  };
   const renderItem = () => (
     <>
       {Personal_Security === 'Personal' && (
@@ -89,8 +97,16 @@ function UserProfile({ navigation, route }) {
       <FlatList
         data={[0]}
         renderItem={renderItem}
-        refreshing={userProfileLoading}
-        onRefresh={onRefresh}
+        onScroll={onScroll}
+        refreshControl={
+          showRefreshControl ? (
+            <RefreshControl
+              tintColor={colors.PRIMARY_PURPLE}
+              refreshing={userProfileLoading}
+              onRefresh={onRefresh}
+            />
+          ) : null
+        }
       />
     </Background>
   );
