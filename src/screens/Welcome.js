@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -89,11 +90,19 @@ export default function Welcome({ navigation }) {
               show={errorHappenedHere('Welcome')}
             />
 
-            <AppButton
-              text="Login"
-              style={styles.button}
+            <TouchableOpacity
               onPress={startLogin}
-            />
+              style={{
+                width: 100,
+                height: 50,
+                backgroundColor: 'blue',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              {/* <AppButton text="Login" style={styles.button} /> */}
+              <AppText style={{ color: 'white' }}>Login</AppText>
+            </TouchableOpacity>
             <PurpleText text="Registration" onPress={startRegistration} />
           </>
         )}
