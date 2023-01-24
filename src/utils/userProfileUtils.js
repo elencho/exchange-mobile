@@ -52,6 +52,8 @@ export const loginStart = async (code_challenge) => {
     },
     headers: { requestName: 'loginStart', toast: false },
   });
+  console.log(data?.data);
+  alert(JSON.stringify({ ...data?.data, status: data.status }));
   if (data) return data.data;
 };
 
