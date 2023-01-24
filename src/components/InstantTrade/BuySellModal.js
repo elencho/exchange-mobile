@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -177,8 +177,9 @@ export default function BuySellModal() {
       dispatch(toggleBuySellModal(false));
     }
   };
+
   const children = (
-    <>
+    <WithKeyboard padding flexGrow modal>
       <View style={styles.flex}>
         <AppText subtext body style={styles.balance}>
           My Balance: {myBalance()} {tradeType === 'Buy' ? fiat : crypto}
@@ -191,55 +192,55 @@ export default function BuySellModal() {
           show={errorHappenedHere('BuySellModal')}
         />
 
-        <WithKeyboard>
-          <TouchableOpacity activeOpacity={0.99}>
-            <CurrencyDropdowns style={styles.dropdowns} />
+        <TouchableOpacity
+          activeOpacity={0.99}
+          style={{ marginBottom: 30, flex: 1 }}
+        >
+          <CurrencyDropdowns style={styles.dropdowns} />
 
-            <AppInput
-              onChangeText={(t) => handleChangeText(t, 'crypto')}
-              keyboardType="decimal-pad"
-              value={price ? price.trim() : ''}
-              maxLength={maxLengthQuote}
-              right={<AppText style={styles.code}>{fiat}</AppText>}
-              error={error && !validateAmount(price)}
-            />
-            <View style={styles.margin} />
-            <AppInput
-              onChangeText={(t) => handleChangeText(t, 'fiat')}
-              keyboardType="decimal-pad"
-              maxLength={maxLengthBase}
-              value={size ? size.trim() : ''}
-              right={<AppText style={styles.code}>{crypto}</AppText>}
-              style={{ marginBottom: 10 }}
-              error={error && !validateAmount(size)}
-            />
+          <AppInput
+            onChangeText={(t) => handleChangeText(t, 'crypto')}
+            keyboardType="decimal-pad"
+            value={price ? price.trim() : ''}
+            maxLength={maxLengthQuote}
+            right={<AppText style={styles.code}>{fiat}</AppText>}
+            error={error && !validateAmount(price)}
+          />
+          <View style={styles.margin} />
+          <AppInput
+            onChangeText={(t) => handleChangeText(t, 'fiat')}
+            keyboardType="decimal-pad"
+            maxLength={maxLengthBase}
+            value={size ? size.trim() : ''}
+            right={<AppText style={styles.code}>{crypto}</AppText>}
+            style={{ marginBottom: 10 }}
+            error={error && !validateAmount(size)}
+          />
 
-            {Balance_Card === 'card' && tradeType === 'Buy' && (
-              <CardSection error={error} />
-            )}
+          {Balance_Card === 'card' && tradeType === 'Buy' && (
+            <CardSection error={error} />
+          )}
 
-            <CryptoModal />
-            <FiatModal />
-            <ChooseBankModal />
-            <ChooseCardModal />
-            <BankFeesModal />
-          </TouchableOpacity>
-        </WithKeyboard>
+          <CryptoModal />
+          <FiatModal />
+          <ChooseBankModal />
+          <ChooseCardModal />
+          <BankFeesModal />
+        </TouchableOpacity>
+        <AppButton
+          onPress={handleSubmit}
+          backgroundColor={tradeType === 'Buy' ? '#0CCBB5' : '#F83974'}
+          text={tradeType}
+          style={{ marginBottom: 20 }}
+        />
       </View>
-
-      <AppButton
-        onPress={handleSubmit}
-        backgroundColor={tradeType === 'Buy' ? '#0CCBB5' : '#F83974'}
-        text={tradeType}
-        style={{ marginBottom: 20 }}
-      />
 
       <AppWebView
         onNavigationStateChange={onNavigationStateChange}
         source={{ uri: webViewObj?.actionUrl }}
         trade
       />
-    </>
+    </WithKeyboard>
   );
 
   return (

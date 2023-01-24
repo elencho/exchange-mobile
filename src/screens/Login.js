@@ -109,7 +109,7 @@ export default function Login({ navigation }) {
           loading={userProfileLoading}
         />
 
-        <View>
+        <View style={{ marginBottom: 20 }}>
           <AppText style={styles.secondary}>
             New User? <PurpleText text="Register" onPress={register} />
           </AppText>

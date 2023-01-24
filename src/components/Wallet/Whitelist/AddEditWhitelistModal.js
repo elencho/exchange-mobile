@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../../AppModal';
 import AppButton from '../../AppButton';
 import AppInput from '../../AppInput';
+import WithKeyboard from '../../WithKeyboard';
 import ChooseNetworkDropdown from '../../Wallet/Deposit/ChooseNetworkDropdown';
 import ChooseNetworkModal from '../../Wallet/Deposit/ChooseNetworkModal';
 import {
@@ -117,61 +118,62 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const tagError = add ? !newWhitelist?.tag : false;
 
   const children = (
-    <>
-      <GeneralError
-        style={styles.error}
-        show={errorHappenedHere('AddEditWhitelistModal')}
-      />
+    <WithKeyboard padding flexGrow modal>
+      <TouchableOpacity activeOpacity={0.99} style={{ flex: 1 }}>
+        <GeneralError
+          style={styles.error}
+          show={errorHappenedHere('AddEditWhitelistModal')}
+        />
 
-      {hasMultipleNetworks && (
-        <View style={styles.input}>
-          <ChooseNetworkDropdown disabled={!!edit} whitelist error={error} />
-          <ChooseNetworkModal />
-        </View>
-      )}
+        {hasMultipleNetworks && (
+          <View style={styles.input}>
+            <ChooseNetworkDropdown disabled={!!edit} whitelist error={error} />
+            <ChooseNetworkModal />
+          </View>
+        )}
 
-      <AppInput
-        style={[styles.input, nameStyle]}
-        onChangeText={(name) => handleChange(name)}
-        value={add ? newWhitelist.name : currentWhitelistObj.name}
-        label="Enter Address Name"
-        error={error && nameError}
-      />
-      <AppInput
-        style={[styles.input, addressStyle]}
-        onChangeText={(address) =>
-          dispatch(setNewWhitelist({ ...newWhitelist, address }))
-        }
-        value={add ? newWhitelist.address : currentWhitelistObj.address}
-        label="Destination Address"
-        editable={add ? true : false}
-        focusable={add ? true : false}
-        error={error && addressError}
-      />
-      {tag() && (
         <AppInput
-          style={[styles.input, tagStyle]}
-          onChangeText={(tag) =>
-            dispatch(setNewWhitelist({ ...newWhitelist, tag }))
+          style={[styles.input, nameStyle]}
+          onChangeText={(name) => handleChange(name)}
+          value={add ? newWhitelist.name : currentWhitelistObj.name}
+          label="Enter Address Name"
+          error={error && nameError}
+        />
+        <AppInput
+          style={[styles.input, addressStyle]}
+          onChangeText={(address) =>
+            dispatch(setNewWhitelist({ ...newWhitelist, address }))
           }
-          value={add ? newWhitelist.tag : currentWhitelistObj.tag}
-          label="Address Tag"
+          value={add ? newWhitelist.address : currentWhitelistObj.address}
+          label="Destination Address"
           editable={add ? true : false}
           focusable={add ? true : false}
-          error={error && tagError}
+          error={error && addressError}
         />
-      )}
-
+        {tag() && (
+          <AppInput
+            style={[styles.input, tagStyle]}
+            onChangeText={(tag) =>
+              dispatch(setNewWhitelist({ ...newWhitelist, tag }))
+            }
+            value={add ? newWhitelist.tag : currentWhitelistObj.tag}
+            label="Address Tag"
+            editable={add ? true : false}
+            focusable={add ? true : false}
+            error={error && tagError}
+          />
+        )}
+      </TouchableOpacity>
       <AppButton
         text={add ? 'Add Address' : 'Edit Address'}
-        style={styles.button}
         onPress={handleAdd}
+        style={{ marginTop: 20 }}
       />
 
       <SmsEmailAuthModal type="SMS" whitelist />
       <SmsEmailAuthModal type="Email" whitelist />
       <GoogleOtpModal whitelist />
-    </>
+    </WithKeyboard>
   );
 
   return (
@@ -187,12 +189,6 @@ export default function AddEditWhitelistModal({ add, edit }) {
 }
 
 const styles = StyleSheet.create({
-  button: {
-    position: 'absolute',
-    bottom: 30,
-    right: 15,
-    left: 15,
-  },
   error: {
     marginBottom: 10,
   },
