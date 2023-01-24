@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import * as SecureStore from 'expo-secure-store';
+// import * as SecureStore from 'expo-secure-store';
 import {
   StyleSheet,
   ImageBackground,
@@ -35,34 +35,33 @@ export default function Welcome({ navigation }) {
 
   useFocusEffect(() => {
     dispatch(saveUserInfo({}));
-    SecureStore.getItemAsync('accessToken')
-      .then((token) => {
-        if (token) navigation.navigate('Main');
-      })
-      .catch((err) => Alert.alert('accessToken', err));
+    // SecureStore.getItemAsync('accessToken')
+    //   .then((token) => {
+    //     if (token) navigation.navigate('Main');
+    //   })
+    //.catch((err) => Alert.alert('accessToken', err));
     setLoading(false);
   });
 
   useEffect(() => {
-    fetchTranslations()
-      .then((res) => {
-        const languages = Object.keys(res);
-        for (let i = 0; i < languages.length; i++) {
-          addResources(
-            languages[i],
-            'translation',
-            res[languages[i]].translation
-          );
-        }
-      })
-      .catch((err) => Alert.alert('fetchTranslations', err));
+    fetchTranslations().then((res) => {
+      const languages = Object.keys(res);
+      for (let i = 0; i < languages.length; i++) {
+        addResources(
+          languages[i],
+          'translation',
+          res[languages[i]].translation
+        );
+      }
+    });
+    //.catch((err) => Alert.alert('fetchTranslations', err));
 
-    SecureStore.getItemAsync('language')
-      .then((l) => {
-        switchLanguage(l ? l : 'en');
-        dispatch(setLanguage(l ? l : 'en'));
-      })
-      .catch((err) => Alert.alert('language', err));
+    // SecureStore.getItemAsync('language')
+    //   .then((l) => {
+    //     switchLanguage(l ? l : 'en');
+    //     dispatch(setLanguage(l ? l : 'en'));
+    //   })
+    //   .catch((err) => Alert.alert('language', err));
 
     dispatch(fetchCountries());
   }, []);
