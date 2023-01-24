@@ -8,6 +8,7 @@ import {
   Keyboard,
   ActivityIndicator,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -34,9 +35,11 @@ export default function Welcome({ navigation }) {
 
   useFocusEffect(() => {
     dispatch(saveUserInfo({}));
-    SecureStore.getItemAsync('accessToken').then((token) => {
-      if (token) navigation.navigate('Main');
-    });
+    SecureStore.getItemAsync('accessToken')
+      .then((token) => {
+        if (token) navigation.navigate('Main');
+      })
+      .catch((err) => Alert.alert('accessToken', err));
     setLoading(false);
   });
 
@@ -52,14 +55,14 @@ export default function Welcome({ navigation }) {
           );
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => Alert.alert('fetchTranslations', err));
 
     SecureStore.getItemAsync('language')
       .then((l) => {
         switchLanguage(l ? l : 'en');
         dispatch(setLanguage(l ? l : 'en'));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => Alert.alert('language', err));
 
     dispatch(fetchCountries());
   }, []);
@@ -82,8 +85,6 @@ export default function Welcome({ navigation }) {
             <AppText header style={styles.primary}>
               Welcome to Cryptal test
             </AppText>
-
-            {/* <AppText style={styles.secondary}>{auth}</AppText> */}
 
             <GeneralError
               style={styles.error}

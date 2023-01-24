@@ -65,6 +65,7 @@ import {
 import { resetTradesState } from '../trade/actions';
 import { resetTransactionsState, toggleLoading } from '../transactions/actions';
 import { resetWalletState } from '../wallet/actions';
+import { Alert } from 'react-native';
 
 //  START LOGIN
 function* startLoginSaga(action) {
@@ -75,7 +76,7 @@ function* startLoginSaga(action) {
 
   const loginStartInfo = yield call(loginStart, pkceInfo?.codeChallenge);
   yield put(saveLoginStartInfo(loginStartInfo));
-
+  Alert.alert('loginStartInfo?.execution', loginStartInfo?.execution);
   if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
     navigation.navigate('Login');
   }
