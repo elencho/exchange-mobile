@@ -6,6 +6,7 @@ import {
   StatusBar,
   LogBox,
   AppState,
+  Text,
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
@@ -81,8 +82,9 @@ function App() {
       <StatusBar barStyle="light-content" hidden={!iphone} />
       {iphone && <SafeAreaView style={styles.statusBar} />}
       <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-        <AppToast />
-        <Navigator />
+        {/* <AppToast />
+        <Navigator /> */}
+        <Text style={{ color: '#FFFFFF' }}>asd</Text>
       </SafeAreaView>
       {iphone && <SafeAreaView style={styles.statusBar} />}
     </Provider>
