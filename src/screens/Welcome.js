@@ -80,7 +80,7 @@ export default function Welcome({ navigation }) {
           <>
             <Logo style={styles.logo} />
             <AppText header style={styles.primary}>
-              Welcome to Cryptal test
+              Welcome to Cryptal
             </AppText>
 
             {/* <AppText style={styles.secondary}>{auth}</AppText> */}
@@ -90,19 +90,11 @@ export default function Welcome({ navigation }) {
               show={errorHappenedHere('Welcome')}
             />
 
-            <TouchableOpacity
+            <AppButton
+              text="Login"
+              style={styles.button}
               onPress={startLogin}
-              style={{
-                width: 100,
-                height: 50,
-                backgroundColor: 'blue',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              {/* <AppButton text="Login" style={styles.button} /> */}
-              <AppText style={{ color: 'white' }}>Login</AppText>
-            </TouchableOpacity>
+            />
             <PurpleText text="Registration" onPress={startRegistration} />
           </>
         )}
