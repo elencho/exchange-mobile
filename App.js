@@ -82,9 +82,8 @@ function App() {
       <StatusBar barStyle="light-content" hidden={!iphone} />
       {iphone && <SafeAreaView style={styles.statusBar} />}
       <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-        {/* <AppToast />
-        <Navigator /> */}
-        <Text style={{ color: '#FFFFFF' }}>asd</Text>
+        <AppToast />
+        <Navigator />
       </SafeAreaView>
       {iphone && <SafeAreaView style={styles.statusBar} />}
     </Provider>
