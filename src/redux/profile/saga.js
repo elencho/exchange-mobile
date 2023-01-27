@@ -1,6 +1,6 @@
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
 import { asyncPkceChallenge } from 'react-native-pkce-challenge';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode';
 
 import {
@@ -74,10 +74,6 @@ function* startLoginSaga(action) {
   yield put(savePkceInfo(pkceInfo));
 
   const loginStartInfo = yield call(loginStart, pkceInfo?.codeChallenge);
-  alert(`loginStartInfo: ${loginStartInfo}`);
-  // const { response, error } = yield call();
-  // if (response) alert(`loginStartInfo: ${response}`);
-  // else alert(`error: ${error}`);
 
   yield put(saveLoginStartInfo(loginStartInfo));
   if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
@@ -169,8 +165,8 @@ function* codeToTokenSaga(action) {
 
   if (data) {
     yield call(async () => {
-      await AsyncStorage.setItem('accessToken', data?.access_token);
-      await AsyncStorage.setItem('refreshToken', data?.refresh_token);
+      await SecureStore.setItemAsync('accessToken', data?.access_token);
+      await SecureStore.setItemAsync('refreshToken', data?.refresh_token);
     });
     yield put({ type: 'OTP_SAGA', token: data?.access_token });
     yield call(() => navigation.navigate('Main'));

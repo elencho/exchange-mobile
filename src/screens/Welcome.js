@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 import {
   StyleSheet,
   ImageBackground,
@@ -32,12 +32,11 @@ export default function Welcome({ navigation }) {
   const [loading, setLoading] = useState(false);
 
   useFocusEffect(() => {
-    async () => {
-      dispatch(saveUserInfo({}));
+    dispatch(saveUserInfo({}));
 
-      const accessToken = await AsyncStorage.getItem('accessToken');
-      if (accessToken) navigation.navigate('Main');
-    };
+    SecureStore.getItemAsync('accessToken').then((t) => {
+      if (t) navigation.navigate('Main');
+    });
   });
 
   useEffect(() => {
@@ -54,12 +53,12 @@ export default function Welcome({ navigation }) {
       })
       .catch((err) => console.log(err));
 
-    // AsyncStorage.getItem('language')
-    //   .then((l) => {
-    //     switchLanguage(l ? l : 'en');
-    //     dispatch(setLanguage(l ? l : 'en'));
-    //   })
-    //   .catch((err) => console.log(err));
+    SecureStore.getItemAsync('language')
+      .then((l) => {
+        switchLanguage(l ? l : 'en');
+        dispatch(setLanguage(l ? l : 'en'));
+      })
+      .catch((err) => console.log(err));
 
     dispatch(fetchCountries());
   }, []);

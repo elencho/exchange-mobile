@@ -31,7 +31,11 @@ export default function Navigator() {
   const state = useSelector((state) => state);
   const {
     errors: { generalError },
+    wallet: { wireDepositProvider, wireDepositProviders },
   } = state;
+
+  console.log('wireDepositProvider:', wireDepositProvider);
+  console.log('wireDepositProvidersssss:', wireDepositProviders);
 
   BackHandler.addEventListener('hardwareBackPress', () => true);
 

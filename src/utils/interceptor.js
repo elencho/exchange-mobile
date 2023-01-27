@@ -1,5 +1,5 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SecureStore from 'expo-secure-store';
 
 import store from '../redux/store';
 import handleError from './errorHandling';
@@ -9,7 +9,7 @@ axios.interceptors.request.use(async (config) => {
     headers: { toast, requestName },
   } = config;
 
-  const token = await AsyncStorage.getItem('accessToken');
+  const token = await SecureStore.getItemAsync('accessToken');
   if (token) config.headers.Authorization = `Bearer ${token}`;
 
   const isToast = toast === false ? false : true;
