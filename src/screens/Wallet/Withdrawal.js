@@ -75,7 +75,7 @@ export default function Withdrawal({ refreshControl }) {
   useEffect(() => {
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setFee(null));
-    if ((isEcommerce && card) || (!isEcommerce && network)) {
+    if ((isEcommerce && card && depositProvider) || (!isEcommerce && network)) {
       dispatch(fetchFee('withdrawal'));
     }
   }, [network, depositProvider, card]);

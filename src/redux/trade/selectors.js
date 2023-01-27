@@ -80,12 +80,15 @@ export const withdrawalFeeParams = (state) => {
     else return withdrawalAmount ?? 0;
   };
 
+  const provider = instantTrade || eCommerce ? depositProvider : network;
+  const cardId = instantTrade || eCommerce ? card?.id : null;
+
   return {
     currency: instantTrade ? fiat : code,
     method: method(),
     type: 'WITHDRAWAL',
-    provider: instantTrade || eCommerce ? depositProvider : network,
-    cardId: instantTrade || eCommerce ? card?.id : null,
+    provider,
+    cardId,
     amount: amount(),
   };
 };

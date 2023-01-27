@@ -68,14 +68,19 @@ import { resetWalletState } from '../wallet/actions';
 
 //  START LOGIN
 function* startLoginSaga(action) {
+  alert('entered login saga');
   const { navigation } = action;
 
   const pkceInfo = yield call(async () => await asyncPkceChallenge());
+  alert(`pkceInfo: ${pkceInfo}`);
   yield put(savePkceInfo(pkceInfo));
 
   const loginStartInfo = yield call(loginStart, pkceInfo?.codeChallenge);
+  alert(`loginStartInfo: ${loginStartInfo}`);
+
   yield put(saveLoginStartInfo(loginStartInfo));
   if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
+    alert(`navigaciamde erti nabijit adre`);
     navigation.navigate('Login');
   }
 }
@@ -361,10 +366,16 @@ function* fetchUserInfoSaga(action) {
   if (typeof token === 'string') {
     yield put({ type: 'OTP_SAGA', token });
   }
-  if (userInfo?.verificationToolEnabled && fromRegistration) {
-    yield call(launchSumsubSdk);
-  }
 
+  if (fromRegistration) {
+    if (userInfo?.verificationToolEnabled) {
+      yield call(launchSumsubSdk);
+    } else {
+      if (userInfo?.userType === 'CORPORATE') {
+        yield put({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
+      }
+    }
+  }
   yield put(toggleUserInfoLoading(false));
 }
 

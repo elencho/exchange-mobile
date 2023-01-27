@@ -34,8 +34,11 @@ export default function Welcome({ navigation }) {
 
   useFocusEffect(() => {
     dispatch(saveUserInfo({}));
+    alert(`tokenis amogebamde laini`);
     SecureStore.getItemAsync('accessToken').then((token) => {
+      alert(`token: ${token}`);
       if (token) navigation.navigate('Main');
+      alert(`loading: ${loading}`);
     });
     setLoading(false);
   });
@@ -64,7 +67,10 @@ export default function Welcome({ navigation }) {
     dispatch(fetchCountries());
   }, []);
 
-  const startLogin = () => dispatch(startLoginAction(navigation));
+  const startLogin = () => {
+    alert('login start button pressed');
+    dispatch(startLoginAction(navigation));
+  };
   const startRegistration = () => dispatch(startRegistrationAction(navigation));
 
   return (

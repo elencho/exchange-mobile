@@ -40,6 +40,7 @@ export default function PersonalInfoModal() {
 
   const firstName = userInfo?.firstName;
   const lastName = userInfo?.lastName;
+  const email = userInfo?.email;
   const country = userInfo?.country;
   const countryCode = userInfo?.countryCode;
   const city = userInfo?.city;
@@ -109,9 +110,22 @@ export default function PersonalInfoModal() {
 
   const isVerified = userStatus === 'VERIFIED';
 
+  const subtext = {
+    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
+    position: 'absolute',
+    left: -5,
+    top: -7,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
+    paddingHorizontal: 8,
+  };
+
+  const countryLabel = country ? subtext : {};
+  const citizenshipLabel = citizenship ? subtext : {};
+
   const children = (
-    <WithKeyboard padding flexGrow modal>
+    <WithKeyboard padding flexGrow modal style={{ marginTop: -14 }}>
       <TouchableOpacity activeOpacity={0.99} style={styles.flex}>
+        <AppText style={styles.email}>{email}</AppText>
         <GeneralError
           style={styles.error}
           show={errorHappenedHere('PersonalInfoModal')}
@@ -140,11 +154,35 @@ export default function PersonalInfoModal() {
           </>
         )}
 
+        {!isVerified && (
+          <Pressable
+            style={[styles.dropdown, citizenshipBorder]}
+            onPress={() => handleCountries(null, true)}
+          >
+            <View style={citizenshipLabel}>
+              <AppText body style={styles.secondary}>
+                Citizenship
+              </AppText>
+            </View>
+
+            <Image
+              source={{
+                uri: `${COUNTRIES_URL_PNG}/${citizenship}.png`,
+              }}
+              style={styles.image}
+            />
+            <AppText medium style={styles.dropdownText}>
+              {citizenshipText(citizenship)}
+            </AppText>
+            <Image source={images.Arrow} />
+          </Pressable>
+        )}
+
         <Pressable
           style={[styles.dropdown, countriesBorder]}
           onPress={() => handleCountries(true)}
         >
-          <View style={styles.subtext}>
+          <View style={countryLabel}>
             <AppText body style={styles.secondary}>
               Country
             </AppText>
@@ -192,30 +230,6 @@ export default function PersonalInfoModal() {
           value={address}
           error={error && !address?.trim()}
         />
-
-        {!isVerified && (
-          <Pressable
-            style={[styles.dropdown, citizenshipBorder]}
-            onPress={() => handleCountries(null, true)}
-          >
-            <View style={styles.subtext}>
-              <AppText body style={styles.secondary}>
-                Citizenship
-              </AppText>
-            </View>
-
-            <Image
-              source={{
-                uri: `${COUNTRIES_URL_PNG}/${citizenship}.png`,
-              }}
-              style={styles.image}
-            />
-            <AppText medium style={styles.dropdownText}>
-              {citizenshipText(citizenship)}
-            </AppText>
-            <Image source={images.Arrow} />
-          </Pressable>
-        )}
       </TouchableOpacity>
 
       <AppButton onPress={handleSave} style={styles.button} text="Save" />
@@ -282,12 +296,8 @@ const styles = StyleSheet.create({
   secondary: {
     color: colors.SECONDARY_TEXT,
   },
-  subtext: {
-    transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
-    position: 'absolute',
-    left: -5,
-    top: -7,
-    backgroundColor: colors.PRIMARY_BACKGROUND,
-    paddingHorizontal: 8,
+  email: {
+    color: colors.SECONDARY_TEXT,
+    marginBottom: 22,
   },
 });

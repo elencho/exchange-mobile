@@ -15,6 +15,7 @@ import {
   registrationFormAction,
   setRegistrationInputs,
   startLoginAction,
+  switchPersonalCompany,
 } from '../redux/profile/actions';
 import { useFocusEffect } from '@react-navigation/native';
 import GeneralError from '../components/GeneralError';
@@ -30,6 +31,7 @@ export default function Registration({ navigation }) {
     useCallback(() => {
       return () => {
         dispatch(setRegistrationInputs({}));
+        dispatch(switchPersonalCompany('Personal'));
       };
     }, [])
   );
@@ -98,7 +100,7 @@ export default function Registration({ navigation }) {
   const signIn = () => dispatch(startLoginAction(navigation));
 
   return (
-    <WithKeyboard padding style={styles.scrollview}>
+    <WithKeyboard scrollUp padding style={styles.scrollview}>
       <View style={styles.container}>
         <Logo style={styles.logo} />
         <AppText header style={styles.header}>

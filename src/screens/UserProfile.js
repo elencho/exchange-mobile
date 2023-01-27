@@ -80,10 +80,10 @@ function UserProfile({ navigation, route }) {
   return (
     <Background>
       <View style={styles.topRow}>
-        <View style={styles.back}>
+        <TouchableOpacity onPress={back} style={styles.back}>
           <Image source={images.Back} style={styles.arrow} />
-          <PurpleText text="Back" onPress={back} style={styles.purpleText} />
-        </View>
+          <PurpleText text="Back" style={styles.purpleText} />
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={logout}>
           <Image source={images.Logout} />
@@ -121,6 +121,9 @@ const styles = StyleSheet.create({
   back: {
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 5,
+    marginLeft: -5,
+    marginTop: 5,
   },
   purpleText: {
     marginHorizontal: 10,

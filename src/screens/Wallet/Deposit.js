@@ -70,7 +70,7 @@ export default function Deposit({ refreshControl }) {
     dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setFee(null));
-    card && dispatch(fetchFee('deposit'));
+    card && depositProvider && dispatch(fetchFee('deposit'));
   }, [network, depositProvider, card]);
 
   useEffect(() => {
@@ -94,7 +94,6 @@ export default function Deposit({ refreshControl }) {
     dispatch(setDepositProvider(null));
     dispatch(setCard(null));
     dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
-    dispatch(fetchFee('deposit'));
     dispatch({ type: 'BALANCE_SAGA' });
   };
 
@@ -103,11 +102,7 @@ export default function Deposit({ refreshControl }) {
     const alternateUrlArray = state.url.split('/');
     const ending = urlArray[urlArray.length - 1];
     const alternateEnding = alternateUrlArray[alternateUrlArray.length - 1];
-    if (
-      ending === 'false' ||
-      ending === 'true' ||
-      alternateEnding === 'Cancel'
-    ) {
+    if (ending === 'false' || ending === 'true') {
       clear();
       dispatch(setStatusModalInfo({ success: ending, visible: true }));
     }

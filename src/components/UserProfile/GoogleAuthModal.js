@@ -103,6 +103,7 @@ export default function GoogleAuthModal() {
         right={right}
         onChangeText={handleKey}
         value={key}
+        keyboardType="numeric"
       />
     </>
   );

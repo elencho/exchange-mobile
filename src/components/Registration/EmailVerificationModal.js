@@ -64,8 +64,8 @@ export default function EmailVerificationModal() {
   };
 
   const children = (
-    <ImageBackground source={images.Background} style={styles.container}>
-      <WithKeyboard flexGrow padding>
+    <WithKeyboard flexGrow padding modal>
+      <ImageBackground source={images.Background} style={styles.container}>
         <View style={styles.top}>
           <CloseModalIcon onPress={hide} />
         </View>
@@ -94,8 +94,8 @@ export default function EmailVerificationModal() {
             Didn't receive link? <PurpleText text="Resend" onPress={resend} />
           </AppText>
         </View>
-      </WithKeyboard>
-    </ImageBackground>
+      </ImageBackground>
+    </WithKeyboard>
   );
 
   return (

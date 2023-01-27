@@ -13,5 +13,8 @@ export default function Headline({ title }) {
 }
 
 const styles = StyleSheet.create({
-  text: { color: colors.PRIMARY_TEXT, marginVertical: 20 },
+  text: {
+    color: colors.PRIMARY_TEXT,
+    marginVertical: 20,
+  },
 });

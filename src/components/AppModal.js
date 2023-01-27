@@ -44,7 +44,7 @@ function AppModal({
       swipeDirection="down"
       propagateSwipe={true}
       style={styles.modal}
-      animationOutTiming={1000}
+      animationOutTiming={500}
       backdropTransitionInTiming={300}
       onModalHide={onModalHide}
       hideModalContentWhileAnimating

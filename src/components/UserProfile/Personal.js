@@ -31,7 +31,8 @@ export default function Personal({ loading }) {
     profile: { userInfo, language },
     errors: { generalError },
   } = state;
-  const isVerified = userInfo?.userStatus === 'VERIFIED';
+  const isVerified =
+    userInfo?.userStatus === 'VERIFIED' || !userInfo?.verificationToolEnabled;
 
   const hideError = () =>
     dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
@@ -69,11 +70,13 @@ export default function Personal({ loading }) {
                 Identification
               </AppText>
 
-              <Pressable style={styles.circle} onPress={openModal}>
-                <AppText medium body style={{ color: '#9EA6D0' }}>
-                  i
-                </AppText>
-              </Pressable>
+              {!isVerified && (
+                <Pressable style={styles.circle} onPress={openModal}>
+                  <AppText medium body style={{ color: '#9EA6D0' }}>
+                    i
+                  </AppText>
+                </Pressable>
+              )}
             </View>
 
             {!isVerified && (
@@ -198,7 +201,7 @@ export default function Personal({ loading }) {
       </View>
 
       <PersonalInformation />
-      {userInfo.company && <CompanyInformation />}
+      {userInfo?.userType === 'CORPORATE' && <CompanyInformation />}
       <DeleteAccount />
       <PersonalInfoModal />
       <PhoneNumberModal />

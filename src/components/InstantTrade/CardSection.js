@@ -29,9 +29,12 @@ function CardSection({ error }) {
       cardsToDisplayInModal,
       balance: { balances },
     },
-    transactions: { tabRoute },
+    transactions: { tabRoute, code },
     wallet: { walletTab },
   } = state;
+
+  const wallet = tabRoute === 'Wallet';
+  const trade = tabRoute === 'Trade';
 
   useEffect(() => {
     if (card) dispatch(setCard(null));
@@ -42,7 +45,7 @@ function CardSection({ error }) {
   const showFees = () => dispatch(toggleBankFeesModal(true));
 
   const multipleBanks = () => {
-    if (tabRoute === 'Wallet') return true;
+    if (wallet) return true;
     let isMultiple;
     balances?.forEach((b) => {
       if (fiat === b.currencyCode) {
@@ -63,11 +66,10 @@ function CardSection({ error }) {
   const addNewCard = () =>
     dispatch({
       type: 'ADD_NEW_CARD_SAGA',
-      name: currencyName(fiat),
-      code: fiat,
+      name: currencyName(trade ? fiat : code),
+      code: trade ? fiat : code,
       navigation,
       balances,
-      fiat,
     });
 
   const color =
@@ -91,7 +93,7 @@ function CardSection({ error }) {
     const m =
       walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
 
-    tabRoute === 'Trade' &&
+    trade &&
       balances.forEach((b) => {
         if (b.currencyCode === fiat) {
           b[m]?.ECOMMERCE?.forEach((d) => {
@@ -100,7 +102,7 @@ function CardSection({ error }) {
         }
       });
 
-    tabRoute === 'Wallet' &&
+    wallet &&
       currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
         if (depositProvider === d.provider) displayName = d.displayName;
       });
@@ -124,7 +126,7 @@ function CardSection({ error }) {
             <Image source={images['Arrow']} />
           </Pressable>
 
-          {/* {tabRoute === 'Trade' && depositProvider && (
+          {/* {trade && depositProvider && (
             <AppText subtext style={styles.subText}>
               0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
               <PurpleText text=" More Fees" onPress={showFees} />
@@ -159,7 +161,7 @@ function CardSection({ error }) {
             <PurpleText text=" Add Card" onPress={addNewCard} />
           </AppText>
 
-          {tabRoute === 'Trade' && (
+          {trade && (
             <View style={{ marginVertical: 22 }}>{card && <Fee />}</View>
           )}
         </>

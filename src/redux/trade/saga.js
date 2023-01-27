@@ -62,7 +62,7 @@ function* fetchTradesSaga({ isMoreLoading }) {
 
   const newTrades = yield call(fetchTrades, params);
   const newestTrades = newTrades?.data;
-  if (newestTrades) {
+  if (newestTrades?.length > 0) {
     yield put(setTotalTrades(newTrades?.paging.pageCount));
     yield put(saveTrades([...trades, ...newestTrades]));
   }
@@ -180,11 +180,11 @@ function* fetchFeeSaga(action) {
 }
 
 function* addNewCardSaga(action) {
-  const { navigation, balances, fiat, name, code } = action;
+  const { navigation, balances, name, code } = action;
   let obj;
 
   balances.forEach((b) => {
-    if (b.currencyCode === fiat) obj = b;
+    if (b.currencyCode === code) obj = b;
   });
 
   const tab = yield select((state) => state.transactions.tabNavigationRef);
@@ -193,6 +193,7 @@ function* addNewCardSaga(action) {
 
   yield put(setCurrentBalanceObj(obj));
   yield put(setWalletTab('Manage Cards'));
+  yield put(cardsSagaAction());
   yield put(toggleBuySellModal(false));
   yield delay(500);
   yield put({ type: 'GO_TO_BALANCE', name, code, navigation });

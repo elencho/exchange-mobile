@@ -13,13 +13,20 @@ export default function ChooseAddressModal() {
   const state = useSelector((state) => state);
   const {
     modals: { chooseAddressModalVisible },
-    wallet: { whitelist, network },
+    wallet: { whitelist, network, currentWhitelistObj },
   } = state;
 
   const hide = () => dispatch(toggleChooseAddressModal(false));
   const choose = (whitelist) => {
+    console.log(whitelist);
     dispatch(chooseWhitelist(whitelist));
     hide();
+  };
+
+  const background = (w) => {
+    if (w.id === currentWhitelistObj.id) {
+      return { backgroundColor: 'rgba(101, 130, 253, 0.1)' };
+    }
   };
 
   // useEffect(() => {
@@ -32,7 +39,7 @@ export default function ChooseAddressModal() {
         <View key={w.id}>
           {network === w.provider && (
             <TouchableOpacity
-              style={styles.pressable}
+              style={[styles.pressable, background(w)]}
               onPress={() => choose(w)}
             >
               <View style={styles.flex}>
@@ -72,6 +79,8 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 18,
+    marginHorizontal: -18,
   },
 
   flex: {

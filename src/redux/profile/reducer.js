@@ -20,7 +20,7 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: {},
+  credentials: kervala,
   userAndPassInfo: {},
   forgotPassInfo: {
     username: '',
@@ -31,18 +31,19 @@ const INITIAL_STATE = {
   // Register
   Personal_Company: 'Personal',
   registrationStartInfo: {},
-  registrationInputs: {
-    firstName: '',
-    lastName: '',
-    email: '',
-    passwordNew: '',
-    passwordConfirm: '',
-    phoneCountry: '',
-    phoneNumber: '',
-    promoCode: '',
-    referralCode: '',
-    acceptTerms: '',
-  },
+  registrationInputs: {},
+  // registrationInputs: {
+  //   firstName: 'dd',
+  //   lastName: 'dd',
+  //   email: 'aa1715@mailinator.com',
+  //   passwordNew: '11111!Aa',
+  //   passwordConfirm: '11111!Aa',
+  //   phoneCountry: 'GEO',
+  //   phoneNumber: '995567765',
+  //   promoCode: '',
+  //   referralCode: '',
+  //   acceptTerms: 'on',
+  // },
   verificationInfo: {},
 
   Personal_Security: 'Personal',

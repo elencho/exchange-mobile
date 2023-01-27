@@ -25,7 +25,10 @@ export default function BalancesList({ loading }) {
   const [filteredBalances, setFilteredBalances] = useState([]);
   const [value, setValue] = useState('');
 
-  const onRefresh = () => dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+  const onRefresh = () => {
+    setShowZeroBalances(true);
+    dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+  };
 
   useEffect(() => {
     tabRoute === 'Wallet' && onRefresh();

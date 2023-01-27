@@ -36,7 +36,7 @@ export default function ModalWithSearch({
       phoneCode={item.phoneCode}
       currentItem={currentItem}
       onPress={() => handlePress(item.name, item.code)}
-      uri={uri(item.code)}
+      // uri={uri(item.code)}
       type={type}
       phoneCountry={phoneCountry}
     />
