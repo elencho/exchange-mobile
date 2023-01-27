@@ -3,7 +3,7 @@ import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   GET_CRYPTO_ADDRESSES,
@@ -31,7 +31,7 @@ export const fetchWireDeposit = async (currency, provider) => {
 };
 
 export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
-  const token = await SecureStore.getItemAsync('accessToken');
+  const token = await AsyncStorage.getItem('accessToken');
   const bearer = `Bearer ${token}`;
 
   FileSystem.downloadAsync(

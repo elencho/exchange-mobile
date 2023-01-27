@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
   ACTIVATE_EMAIL_OTP,
@@ -212,13 +212,13 @@ const refreshTokenService = async (refresh_token) => {
 };
 
 export const refreshToken = async (config) => {
-  const refresh_token = await SecureStore.getItemAsync('refreshToken');
+  const refresh_token = await AsyncStorage.getItem('refreshToken');
   const data = await refreshTokenService(refresh_token);
 
   if (data) {
     if (data.access_token && data.refresh_token) {
-      await SecureStore.setItemAsync('accessToken', data.access_token);
-      await SecureStore.setItemAsync('refreshToken', data.refresh_token);
+      await AsyncStorage.setItem('accessToken', data.access_token);
+      await AsyncStorage.setItem('refreshToken', data.refresh_token);
 
       if (config) return axios.request(config);
       return data.access_token;

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Linking from 'expo-linking';
 
 import AppText from '../components/AppText';
@@ -27,7 +27,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
   const openSupport = () => Linking.openURL(url);
 
   useEffect(() => {
-    SecureStore.getItemAsync('language')
+    AsyncStorage.getItem('language')
       .then((l) => setUrl(`https://support.cryptal.com/hc/${l}`))
       .catch((err) => console.log(err));
 

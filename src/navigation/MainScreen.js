@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useDispatch } from 'react-redux';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import TransactionHistory from '../screens/TransactionHistory';
 import InstantTrade from '../screens/InstantTrade';
@@ -18,7 +18,7 @@ const Tab = createBottomTabNavigator();
 export default function MainScreen() {
   const dispatch = useDispatch();
   useEffect(() => {
-    SecureStore.getItemAsync('accessToken')
+    AsyncStorage.getItem('accessToken')
       .then((t) => dispatch({ type: 'OTP_SAGA', token: t }))
       .catch((err) => console.log(err));
 

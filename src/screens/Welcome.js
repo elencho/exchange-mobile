@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-// import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   StyleSheet,
   ImageBackground,
   TouchableWithoutFeedback,
   Keyboard,
   ActivityIndicator,
-  TouchableOpacity,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -30,18 +29,16 @@ import { errorHappenedHere, fetchTranslations } from '../utils/appUtils';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  // useFocusEffect(() => {
-  //   dispatch(saveUserInfo({}));
-  //   alert(`tokenis amogebamde laini`);
-  //   SecureStore.getItemAsync('accessToken').then((token) => {
-  //     alert(`token: ${token}`);
-  //     if (token) navigation.navigate('Main');
-  //     alert(`loading: ${loading}`);
-  //   });
-  //   setLoading(false);
-  // });
+  useFocusEffect(() => {
+    async () => {
+      dispatch(saveUserInfo({}));
+
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      if (accessToken) navigation.navigate('Main');
+    };
+  });
 
   useEffect(() => {
     fetchTranslations()
@@ -57,7 +54,7 @@ export default function Welcome({ navigation }) {
       })
       .catch((err) => console.log(err));
 
-    // SecureStore.getItemAsync('language')
+    // AsyncStorage.getItem('language')
     //   .then((l) => {
     //     switchLanguage(l ? l : 'en');
     //     dispatch(setLanguage(l ? l : 'en'));
@@ -68,7 +65,6 @@ export default function Welcome({ navigation }) {
   }, []);
 
   const startLogin = () => {
-    alert('login start button pressed');
     dispatch(startLoginAction(navigation));
   };
   const startRegistration = () => dispatch(startRegistrationAction(navigation));

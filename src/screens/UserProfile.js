@@ -8,7 +8,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import * as SecureStore from 'expo-secure-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 
 import AppText from '../components/AppText';
@@ -47,12 +47,12 @@ function UserProfile({ navigation, route }) {
   );
 
   const logout = async () => {
-    const refresh_token = await SecureStore.getItemAsync('refreshToken');
+    const refresh_token = await AsyncStorage.getItem('refreshToken');
     const status = await logoutUtil(refresh_token);
     // if (status === 204) {
-    await SecureStore.deleteItemAsync('accessToken');
-    await SecureStore.deleteItemAsync('refreshToken');
-    await SecureStore.deleteItemAsync('language');
+    await AsyncStorage.removeItem('accessToken');
+    await AsyncStorage.removeItem('refreshToken');
+    await AsyncStorage.removeItem('language');
     navigation.navigate('Welcome');
 
     dispatch({ type: 'LOGOUT' });
