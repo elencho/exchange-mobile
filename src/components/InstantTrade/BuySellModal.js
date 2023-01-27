@@ -95,7 +95,6 @@ export default function BuySellModal() {
 
   const hide = () => {
     dispatch(toggleBuySellModal(false));
-    dispatch(switchBalanceCard('balance'));
     dispatch(setCurrentTrade({ price: '', size: '' }));
     dispatch(setFee(null));
   };
@@ -103,6 +102,7 @@ export default function BuySellModal() {
   const onDismiss = () => {
     dispatch(setDepositProvider(null));
     dispatch(setCard(null));
+    dispatch(switchBalanceCard('balance'));
   };
 
   const handleSubmit = () => {
@@ -250,7 +250,7 @@ export default function BuySellModal() {
       fullScreen
       title={tradeType + ' ' + crypto}
       children={children}
-      onDismiss={onDismiss}
+      onModalHide={onDismiss}
     />
   );
 }

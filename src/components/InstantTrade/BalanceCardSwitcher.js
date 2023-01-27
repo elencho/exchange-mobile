@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import { switchBalanceCard } from '../../redux/trade/actions';
+import {
+  setDepositProvider,
+  switchBalanceCard,
+} from '../../redux/trade/actions';
 
 export default function BalanceCardSwitcher() {
   const dispatch = useDispatch();
@@ -12,6 +15,7 @@ export default function BalanceCardSwitcher() {
 
   const handleFilter = (filter) => {
     dispatch(switchBalanceCard(filter));
+    dispatch(setDepositProvider(null));
   };
 
   const stylesCond = (f) => {

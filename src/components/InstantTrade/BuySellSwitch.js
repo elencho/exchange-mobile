@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,9 +21,11 @@ export default function BuySellSwitch() {
     return { backgroundColor: colors.SECONDARY_BACKGROUND };
   };
 
-  const handleType = (t) => {
-    dispatch(setTradeType(t));
-  };
+  const handleType = (t) => dispatch(setTradeType(t));
+
+  useEffect(() => {
+    return () => handleType('Buy');
+  }, []);
 
   return (
     <View style={styles.container}>

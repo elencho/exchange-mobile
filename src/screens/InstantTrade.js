@@ -16,7 +16,11 @@ import CryptoModal from '../components/InstantTrade/CryptoModal';
 import colors from '../constants/colors';
 import FiatModal from '../components/InstantTrade/FiatModal';
 import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton';
-import { fetchTrades, setTradeOffset } from '../redux/trade/actions';
+import {
+  fetchTrades,
+  setTradeOffset,
+  setTradeType,
+} from '../redux/trade/actions';
 
 export default function InstantTrade() {
   const dispatch = useDispatch();
@@ -55,7 +59,7 @@ export default function InstantTrade() {
 
   return (
     <Background>
-      <TopRow />
+      <TopRow clear={() => dispatch(setTradeType('Buy'))} />
 
       <View style={styles.headRow}>
         <Headline title="Instant Trade" />
