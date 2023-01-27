@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import * as SecureStore from 'expo-secure-store';
+// import * as SecureStore from 'expo-secure-store';
 import {
   StyleSheet,
   ImageBackground,
@@ -32,16 +32,16 @@ export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
-  useFocusEffect(() => {
-    dispatch(saveUserInfo({}));
-    alert(`tokenis amogebamde laini`);
-    SecureStore.getItemAsync('accessToken').then((token) => {
-      alert(`token: ${token}`);
-      if (token) navigation.navigate('Main');
-      alert(`loading: ${loading}`);
-    });
-    setLoading(false);
-  });
+  // useFocusEffect(() => {
+  //   dispatch(saveUserInfo({}));
+  //   alert(`tokenis amogebamde laini`);
+  //   SecureStore.getItemAsync('accessToken').then((token) => {
+  //     alert(`token: ${token}`);
+  //     if (token) navigation.navigate('Main');
+  //     alert(`loading: ${loading}`);
+  //   });
+  //   setLoading(false);
+  // });
 
   useEffect(() => {
     fetchTranslations()
@@ -57,12 +57,12 @@ export default function Welcome({ navigation }) {
       })
       .catch((err) => console.log(err));
 
-    SecureStore.getItemAsync('language')
-      .then((l) => {
-        switchLanguage(l ? l : 'en');
-        dispatch(setLanguage(l ? l : 'en'));
-      })
-      .catch((err) => console.log(err));
+    // SecureStore.getItemAsync('language')
+    //   .then((l) => {
+    //     switchLanguage(l ? l : 'en');
+    //     dispatch(setLanguage(l ? l : 'en'));
+    //   })
+    //   .catch((err) => console.log(err));
 
     dispatch(fetchCountries());
   }, []);

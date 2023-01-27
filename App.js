@@ -6,7 +6,6 @@ import {
   StatusBar,
   LogBox,
   AppState,
-  Text,
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
