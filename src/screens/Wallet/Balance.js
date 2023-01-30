@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { Image, RefreshControl, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  RefreshControl,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../../components/Background';
@@ -13,7 +19,7 @@ import ChooseCurrencyModal from '../../components/TransactionFilter/ChooseCurren
 import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkModal';
 import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
-import { setCard, setDepositProvider, setFee } from '../../redux/trade/actions';
+import { setCard, setDepositProvider } from '../../redux/trade/actions';
 import { setWalletTab } from '../../redux/wallet/actions';
 import colors from '../../constants/colors';
 
@@ -22,7 +28,8 @@ export default function Balance({ navigation }) {
   const state = useSelector((state) => state);
   const {
     wallet: { walletTab, network },
-    transactions: { tabNavigationRef, code, loading },
+    trade: { cardsLoading },
+    transactions: { tabNavigationRef, loading },
   } = state;
 
   const onRefresh = () => {
@@ -43,7 +50,7 @@ export default function Balance({ navigation }) {
   useEffect(() => {
     onRefresh();
     return () => dispatch(setCard(null));
-  }, [walletTab, code]);
+  }, [walletTab, network]);
 
   const refreshControl = (
     <RefreshControl
@@ -53,16 +60,14 @@ export default function Balance({ navigation }) {
     />
   );
 
+  const disabled = loading || cardsLoading;
+
   return (
     <Background>
-      <View style={styles.back}>
+      <TouchableOpacity onPress={back} style={styles.back} disabled={disabled}>
         <Image source={images.Back} style={styles.arrow} />
-        <PurpleText
-          text="Back to Wallet"
-          onPress={back}
-          style={styles.purpleText}
-        />
-      </View>
+        <PurpleText text="Back to Wallet" style={styles.purpleText} />
+      </TouchableOpacity>
 
       <Headline title="My Wallet" />
 
@@ -93,6 +98,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+    paddingVertical: 5,
+    width: '45%',
   },
   flexGrow: {
     flexGrow: 1,

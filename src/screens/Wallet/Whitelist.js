@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import Headline from '../../components/TransactionHistory/Headline';
 import AppText from '../../components/AppText';
@@ -20,57 +21,65 @@ export default function Whitelist({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { whitelist, hasWhitelist },
+    wallet: { whitelist, hasWhitelist, whitelistLoading },
+    transactions: { loading },
   } = state;
 
   const showAddModal = () => dispatch(toggleAddWhitelistModal(true));
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.block}>
-        {/* <GeneralError style={{ marginBottom: 16 }} /> */}
-
-        <WalletCoinsDropdown />
-        <AppText subtext style={styles.secondary}>
-          Add address for easy withdrawal, Some description here about whitelist
-        </AppText>
-      </View>
-
-      {hasWhitelist ? (
-        <>
-          <ScrollView
-            style={styles.scrollView}
-            contentContainerStyle={styles.scrollContent}
-            refreshControl={refreshControl}
-          >
-            {whitelist?.map((w) => (
-              <WhitelistItem key={w.id} whitelistItem={w} />
-            ))}
-          </ScrollView>
-
-          <Pressable style={styles.button} onPress={showAddModal}>
-            <PurpleText text="+ " />
-            <PurpleText text="Add Address" />
-          </Pressable>
-        </>
+    <>
+      {loading || whitelistLoading ? (
+        <MaterialIndicator color="#6582FD" animationDuration={3000} />
       ) : (
-        <View style={styles.flex}>
-          <Image source={images.List} />
-          <Headline title="My Whitelists" />
-          <AppText body style={styles.description}>
-            Description here about whitelist
-          </AppText>
-          <PurpleText text="+ Add Address" onPress={showAddModal} />
+        <View style={{ flex: 1 }}>
+          <View style={styles.block}>
+            {/* <GeneralError style={{ marginBottom: 16 }} /> */}
+
+            <WalletCoinsDropdown />
+            <AppText subtext style={styles.secondary}>
+              Add address for easy withdrawal, Some description here about
+              whitelist
+            </AppText>
+          </View>
+
+          {hasWhitelist ? (
+            <>
+              <ScrollView
+                style={styles.scrollView}
+                contentContainerStyle={styles.scrollContent}
+                refreshControl={refreshControl}
+              >
+                {whitelist?.map((w) => (
+                  <WhitelistItem key={w.id} whitelistItem={w} />
+                ))}
+              </ScrollView>
+
+              <Pressable style={styles.button} onPress={showAddModal}>
+                <PurpleText text="+ " />
+                <PurpleText text="Add Address" />
+              </Pressable>
+            </>
+          ) : (
+            <View style={styles.flex}>
+              <Image source={images.List} />
+              <Headline title="My Whitelists" />
+              <AppText body style={styles.description}>
+                Description here about whitelist
+              </AppText>
+              <PurpleText text="+ Add Address" onPress={showAddModal} />
+            </View>
+          )}
+
+          <WhitelistActionsModal />
+          <AddEditWhitelistModal add />
+          <AddEditWhitelistModal edit />
+
+          <GoogleOtpModal whitelist />
+          <SmsEmailAuthModal whitelist />
         </View>
       )}
-
-      <WhitelistActionsModal />
-      <AddEditWhitelistModal add />
-      <AddEditWhitelistModal edit />
-
-      <GoogleOtpModal whitelist />
-      <SmsEmailAuthModal whitelist />
-    </View>
+    </>
   );
 }
 

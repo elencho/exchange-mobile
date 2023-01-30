@@ -3,7 +3,6 @@ import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import AppText from './AppText';
 import colors from '../constants/colors';
-import { SvgUri } from 'react-native-svg';
 
 export default function ModalSearchItem({
   name,
@@ -13,7 +12,6 @@ export default function ModalSearchItem({
   uri,
   phoneCountry,
   phoneCode,
-  type,
 }) {
   const backgroundCond = () => {
     if (name === currentItem || code === currentItem) {
@@ -26,11 +24,7 @@ export default function ModalSearchItem({
       style={[styles.container, backgroundCond()]}
       onPress={onPress}
     >
-      {type === 'countries' ? (
-        <Image style={styles.image} source={{ uri }} />
-      ) : (
-        <SvgUri height={36} width={36} style={styles.image} uri={uri} />
-      )}
+      <Image style={styles.image} source={{ uri }} />
       <AppText medium style={{ color: colors.PRIMARY_TEXT }}>
         {name}
       </AppText>

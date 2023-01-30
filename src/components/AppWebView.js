@@ -16,20 +16,25 @@ import {
 } from '../redux/trade/actions';
 
 export default function AppWebView(props) {
-  const { cards, trade, deposit } = props;
+  const { verifyCards, trade, deposit, cardsAdd, setStatusObj } = props;
 
   const dispatch = useDispatch();
   const webViewObj = useSelector((state) => state.modals.webViewObj);
 
   const closeWebView = () => {
     dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
-    if (cards) {
-      dispatch(toggleAddCardModal(false));
+    if (verifyCards) {
       dispatch(cardsSagaAction());
       dispatch({
         type: 'SET_CARD_VERIFICATION_STATUS',
         cardBeingVerified: false,
       });
+    }
+
+    if (cardsAdd) {
+      dispatch(toggleAddCardModal(false));
+      dispatch(cardsSagaAction());
+      setStatusObj({ success: 'false', visible: true });
     }
 
     if (trade) {

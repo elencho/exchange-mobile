@@ -164,6 +164,7 @@ function* submitTradeSaga() {
       yield put({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: data?.data });
     } else {
       yield put({ type: 'BALANCE_SAGA' });
+      yield put(saveTrades([]));
       yield put(fetchTradesAction());
       yield put(toggleBuySellModal(false));
     }

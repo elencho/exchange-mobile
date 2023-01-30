@@ -87,7 +87,9 @@ export default function ManageCards({ refreshControl }) {
       <AddCardModal />
       <StatusModal cards />
 
-      {cardBeingVerified && <AppWebView cards source={{ html: webViewObj }} />}
+      {cardBeingVerified && (
+        <AppWebView verifyCards source={{ html: webViewObj }} />
+      )}
     </View>
   );
 }

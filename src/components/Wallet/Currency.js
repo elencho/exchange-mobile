@@ -1,10 +1,10 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
-import { COINS_URL_SVG } from '../../constants/api';
+import { COINS_URL_PNG } from '../../constants/api';
 import { setCurrentBalanceObj } from '../../redux/trade/actions';
 import {
   cryptoAddressesAction,
@@ -14,7 +14,6 @@ import {
   wireDepositAction,
 } from '../../redux/wallet/actions';
 import AppText from '../AppText';
-import { SvgUri } from 'react-native-svg';
 
 function Currency({ code, name, total, available, valueUSD, valueBTC }) {
   const navigation = useNavigation();
@@ -57,11 +56,9 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
   return (
     <Pressable style={styles.container} onPress={handlePress}>
       <View style={styles.img}>
-        <SvgUri
-          height={36}
-          width={36}
+        <Image
           style={styles.image}
-          uri={`${COINS_URL_SVG}/${code.toLowerCase()}.svg`}
+          source={{ uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png` }}
         />
       </View>
       <View style={styles.balance}>
@@ -89,9 +86,8 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   image: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
+    width: 34,
+    height: 34,
   },
   img: {
     justifyContent: 'center',
