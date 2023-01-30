@@ -39,7 +39,7 @@ export default function Deposit({ refreshControl }) {
   const [hasMethod, setHasMethod] = useState(false);
 
   const {
-    transactions: { code },
+    transactions: { code, loading },
     trade: { currentBalanceObj, depositProvider, card, cardsLoading },
     wallet: { cryptoAddress, hasMultipleMethods, depositRestriction, network },
     modals: { webViewObj },
@@ -120,7 +120,9 @@ export default function Deposit({ refreshControl }) {
     }
   };
 
-  return !cardsLoading ? (
+  return cardsLoading || loading ? (
+    <MaterialIndicator color="#6582FD" animationDuration={3000} />
+  ) : (
     <WithKeyboard flexGrow padding refreshControl={refreshControl}>
       <View style={styles.block}>
         <GeneralError
@@ -183,8 +185,6 @@ export default function Deposit({ refreshControl }) {
         deposit
       />
     </WithKeyboard>
-  ) : (
-    <MaterialIndicator color="#6582FD" animationDuration={3000} />
   );
 }
 

@@ -38,6 +38,7 @@ const INITIAL_STATE = {
   hasWhitelist: null,
   currentWhitelistObj: {},
   newWhitelist: {},
+  whitelistLoading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -59,6 +60,7 @@ export default (state = INITIAL_STATE, action) => {
     hasWhitelist,
     currentWhitelistObj,
     newWhitelist,
+    whitelistLoading,
     templates,
     currentTemplate,
     banks,
@@ -157,6 +159,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         newWhitelist,
+      };
+    case 'TOGGLE_WHITELIST_LOADING':
+      return {
+        ...state,
+        whitelistLoading,
       };
     case actionTypes.SAVE_TEMPLATES:
       return {

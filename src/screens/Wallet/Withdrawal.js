@@ -35,7 +35,7 @@ export default function Withdrawal({ refreshControl }) {
   const {
     profile: { googleAuth, emailAuth, smsAuth },
     trade: { currentBalanceObj, card, depositProvider, cardsLoading },
-    transactions: { code },
+    transactions: { code, loading },
     wallet: {
       withdrawalRestriction,
       currentWhitelistObj,
@@ -138,7 +138,9 @@ export default function Withdrawal({ refreshControl }) {
 
   return (
     <>
-      {!cardsLoading ? (
+      {cardsLoading || loading ? (
+        <MaterialIndicator color="#6582FD" animationDuration={3000} />
+      ) : (
         <WithKeyboard flexGrow padding refreshControl={refreshControl}>
           <View style={styles.block}>
             {/* <GeneralError style={{ marginBottom: 16 }} /> */}
@@ -183,8 +185,6 @@ export default function Withdrawal({ refreshControl }) {
             />
           ) : null}
         </WithKeyboard>
-      ) : (
-        <MaterialIndicator color="#6582FD" animationDuration={3000} />
       )}
 
       {!hasRestriction &&

@@ -30,7 +30,11 @@ import {
   setDepositProvider,
   setFee,
 } from '../trade/actions';
-import { chooseCurrency, setAbbr } from '../transactions/actions';
+import {
+  chooseCurrency,
+  setAbbr,
+  toggleLoading,
+} from '../transactions/actions';
 import {
   actionTypes,
   chooseTemplate,
@@ -97,7 +101,11 @@ function* methodNetworkRestrictionSaga() {
 }
 
 function* wireDepositSaga(action) {
+  yield put(toggleLoading(true));
+
   const { name, code, navigation } = action;
+  if (navigation) yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
+
   const language = yield select((s) => s.profile.language);
   const currentBalanceObj = yield select((s) => s.trade.currentBalanceObj);
   const network = yield select((s) => s.wallet.network);
@@ -121,10 +129,11 @@ function* wireDepositSaga(action) {
   }
 
   yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
-  if (navigation) yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
+  yield put(toggleLoading(false));
 }
 
 function* cryptoAddressesSaga(action) {
+  yield put(toggleLoading(true));
   const { name, code, navigation, network } = action;
 
   const currentBalanceObj = yield select(
@@ -146,13 +155,16 @@ function* cryptoAddressesSaga(action) {
 
   // Fees
   if (!!hasMethod) {
-    const amountAction =
-      walletTab === 'Deposit'
-        ? { type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 }
-        : setWithdrawalAmount();
+    const deposit = walletTab === 'Deposit';
+    const withdrawal = walletTab === 'Withdrawal';
+    const amountAction = deposit
+      ? { type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 }
+      : setWithdrawalAmount();
     yield put(amountAction);
-    yield put(fetchFee(walletTab.toLowerCase()));
+    if (deposit || withdrawal) yield put(fetchFee(walletTab.toLowerCase()));
   }
+
+  yield put(toggleLoading(false));
 }
 
 function* generateCryptoAddressSaga(action) {
@@ -169,10 +181,14 @@ function* goToBalanceSaga(action) {
 }
 
 function* getWhitelistSaga() {
+  yield put({ type: 'TOGGLE_WHITELIST_LOADING', whitelistLoading: true });
+
   const currency = yield select((state) => state.transactions.code);
   const whitelist = yield call(fetchWhitelist, currency);
   yield put(saveWhitelist(whitelist));
   yield put(setHasWhitelist(whitelist?.length > 0));
+
+  yield put({ type: 'TOGGLE_WHITELIST_LOADING', whitelistLoading: false });
 }
 
 export function* addWhitelistSaga(action) {
@@ -226,6 +242,8 @@ function* deleteWhitelistSaga(action) {
 }
 
 function* withdrawalTemplatesSaga() {
+  yield put(toggleLoading(true));
+
   const currency = yield select((state) => state.transactions.code);
   const provider = yield select((state) => state.wallet.network);
 
@@ -236,6 +254,8 @@ function* withdrawalTemplatesSaga() {
     const banks = yield call(fetchBanks, provider);
     if (banks) yield put(saveBanks(banks));
   }
+
+  yield put(toggleLoading(false));
 }
 
 function* cryptoWithdrawalSaga(action) {
