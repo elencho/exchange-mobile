@@ -74,7 +74,8 @@ const TransactionsBlock = ({
     <Trade trade={item} key={item.creationTime} />
   );
   const footer = () =>
-    moreTradesLoading ? <OneTransactionSkeleton /> : <View />;
+    moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />;
+
   return (
     <View style={styles.container}>
       <TopRow

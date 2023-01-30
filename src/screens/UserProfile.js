@@ -26,6 +26,7 @@ import {
 import images from '../constants/images';
 import colors from '../constants/colors';
 import { logoutUtil } from '../utils/userProfileUtils';
+import { IS_ANDROID } from '../constants/system';
 
 function UserProfile({ navigation, route }) {
   const dispatch = useDispatch();
@@ -99,7 +100,7 @@ function UserProfile({ navigation, route }) {
         renderItem={renderItem}
         onScroll={onScroll}
         refreshControl={
-          showRefreshControl ? (
+          IS_ANDROID || showRefreshControl ? (
             <RefreshControl
               tintColor={colors.PRIMARY_PURPLE}
               refreshing={userProfileLoading}

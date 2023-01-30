@@ -70,11 +70,12 @@ const styles = StyleSheet.create({
   box: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingBottom: 30,
-    marginBottom: IS_IOS ? 0 : 30,
+    marginBottom: IS_IOS ? 0 : 10,
   },
   line: {
     backgroundColor: '#232945',
     height: 2,
-    flex: 1,
+    flex: IS_IOS ? 1 : 0,
+    marginTop: IS_IOS ? 0 : 40,
   },
 });
