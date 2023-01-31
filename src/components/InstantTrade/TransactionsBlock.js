@@ -20,6 +20,7 @@ import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
 import Trade from './Trade';
+import List from '../../assets/images/List.svg';
 
 const IS_IOS = Platform.OS === 'ios';
 
@@ -76,22 +77,9 @@ const TransactionsBlock = ({
   const footer = () =>
     moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />;
 
-  return (
-    <View style={styles.container}>
-      <TopRow
-        text={hideOtherPairs ? 'Show ' : 'Hide '}
-        onPress={toggleShowHide}
-      />
-
-      {loading && !moreTradesLoading ? (
-        <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
-          {[1, 2, 3].map((i) => (
-            <View key={i}>
-              <OneTransactionSkeleton />
-            </View>
-          ))}
-        </View>
-      ) : (
+  const tradesToShow = () => {
+    if (trades.length) {
+      return (
         <FlatList
           style={{ height: 280 }}
           data={trades}
@@ -112,6 +100,38 @@ const TransactionsBlock = ({
             />
           }
         />
+      );
+    } else {
+      return (
+        <View style={styles.empty}>
+          <List />
+          <AppText subtext style={[styles.subText, { marginTop: 17 }]}>
+            Instant trade no transactions
+          </AppText>
+        </View>
+      );
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      {trades.length ? (
+        <TopRow
+          text={hideOtherPairs ? 'Show ' : 'Hide '}
+          onPress={toggleShowHide}
+        />
+      ) : null}
+
+      {loading && !moreTradesLoading ? (
+        <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
+          {[1, 2, 3].map((i) => (
+            <View key={i}>
+              <OneTransactionSkeleton />
+            </View>
+          ))}
+        </View>
+      ) : (
+        tradesToShow()
       )}
     </View>
   );
@@ -121,6 +141,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
     padding: 25,
+  },
+  empty: {
+    height: 280,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   header: {
     color: colors.PRIMARY_TEXT,
