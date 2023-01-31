@@ -243,7 +243,9 @@ function* refreshWalletAndTradesSaga() {
 
     if (crypto && isAvailable(currentBalanceObj)) {
       if (withdrawal || whitelist) yield put(getWhitelistAction());
-      if (withdrawal) yield put(fetchFee('withdrawal'));
+      if (withdrawal) {
+        yield put(fetchFee('withdrawal'));
+      }
     }
   }
 

@@ -31,8 +31,10 @@ export default function Personal({ loading }) {
     profile: { userInfo, language },
     errors: { generalError },
   } = state;
-  const isVerified =
-    userInfo?.userStatus === 'VERIFIED' || !userInfo?.verificationToolEnabled;
+
+  const isVerified = userInfo?.userStatus === 'VERIFIED';
+  const corporate = userInfo?.userType === 'CORPORATE';
+  const eligibleToVerify = userInfo?.verificationToolEnabled;
 
   const hideError = () =>
     dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
@@ -44,6 +46,11 @@ export default function Personal({ loading }) {
   const edit = () => {
     hideError();
     dispatch(togglePhoneNumberModal(true));
+  };
+
+  const verify = () => {
+    if (eligibleToVerify) launchSumsubSdk();
+    else dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
   };
 
   const editLanguage = () => {
@@ -80,7 +87,7 @@ export default function Personal({ loading }) {
             </View>
 
             {!isVerified && (
-              <PurpleText text="Verify" subtext onPress={launchSumsubSdk} />
+              <PurpleText text="Verify" subtext onPress={verify} />
             )}
           </View>
         );
@@ -201,7 +208,7 @@ export default function Personal({ loading }) {
       </View>
 
       <PersonalInformation />
-      {userInfo?.userType === 'CORPORATE' && <CompanyInformation />}
+      {corporate && <CompanyInformation />}
       <DeleteAccount />
       <PersonalInfoModal />
       <PhoneNumberModal />

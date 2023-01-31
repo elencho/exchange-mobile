@@ -363,14 +363,8 @@ function* fetchUserInfoSaga(action) {
     yield put({ type: 'OTP_SAGA', token });
   }
 
-  if (fromRegistration) {
-    if (userInfo?.verificationToolEnabled) {
-      yield call(launchSumsubSdk);
-    } else {
-      if (userInfo?.userType === 'CORPORATE') {
-        yield put({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
-      }
-    }
+  if (fromRegistration && userInfo?.verificationToolEnabled) {
+    yield call(launchSumsubSdk);
   }
   yield put(toggleUserInfoLoading(false));
 }
