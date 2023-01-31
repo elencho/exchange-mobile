@@ -7,9 +7,11 @@ import Background from '../components/Background';
 import FilterIcon from '../components/TransactionHistory/FilterIcon';
 import FilterRow from '../components/TransactionHistory/FilterRow';
 import Headline from '../components/TransactionHistory/Headline';
+import AppText from '../components/AppText';
 import TopRow from '../components/TransactionHistory/TopRow';
 import TransactionDate from '../components/TransactionHistory/TransactionDate';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
+import List from '../assets/images/List.svg';
 
 import { types } from '../constants/filters';
 import { monthsShort } from '../constants/months';
@@ -20,6 +22,7 @@ import {
   setAbbr,
 } from '../redux/transactions/actions';
 import TransactionSkeleton from '../components/TransactionHistory/TransactionSkeleton';
+import colors from '../constants/colors';
 
 function TransactionHistory() {
   const navigation = useNavigation();
@@ -66,20 +69,10 @@ function TransactionHistory() {
       setMoreLoading(false);
     }
   };
-  return (
-    <Background>
-      <TopRow clear={() => dispatch(clearFilters())} />
 
-      <Headline title="Transaction History" />
-
-      <View style={styles.filter}>
-        <FilterRow array={types} />
-        <FilterIcon onPress={() => navigation.navigate('TransactionFilter')} />
-      </View>
-
-      {loading ? (
-        <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
-      ) : (
+  const transactionsToShow = () => {
+    if (transactions.length) {
+      return (
         <FlatList
           style={styles.transactions}
           data={uniqueDates}
@@ -96,6 +89,34 @@ function TransactionHistory() {
             moreLoading ? <TransactionSkeleton length={[0, 1, 2]} /> : <View />
           }
         />
+      );
+    } else {
+      return (
+        <View style={styles.empty}>
+          <List />
+          <AppText subtext style={styles.subtext}>
+            Transaction history no transactions
+          </AppText>
+        </View>
+      );
+    }
+  };
+
+  return (
+    <Background>
+      <TopRow clear={() => dispatch(clearFilters())} />
+
+      <Headline title="Transaction History" />
+
+      <View style={styles.filter}>
+        <FilterRow array={types} />
+        <FilterIcon onPress={() => navigation.navigate('TransactionFilter')} />
+      </View>
+
+      {loading ? (
+        <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
+      ) : (
+        transactionsToShow()
       )}
 
       <TransactionModal transactions />
@@ -106,6 +127,11 @@ function TransactionHistory() {
 export default TransactionHistory;
 
 const styles = StyleSheet.create({
+  empty: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   loader: {
     flex: 1,
   },
@@ -117,5 +143,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  subtext: {
+    color: colors.SECONDARY_TEXT,
+    marginTop: 17,
   },
 });
