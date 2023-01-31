@@ -52,7 +52,13 @@ export default function ChooseNetworkDropdown({
   const handleDropdown = () => dispatch(toggleChooseNetworkModal(true));
 
   const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
-  const isAvailable = !!Object.keys(cur[m]).length;
+
+  const isAvailable = () => {
+    if (Object.keys(cur).length) {
+      return !!Object.keys(cur[m]).length;
+    }
+    return false;
+  };
 
   const networkName = () => {
     if (network === 'ERC20') return 'Ethereum Network';
@@ -75,7 +81,7 @@ export default function ChooseNetworkDropdown({
 
   return (
     <>
-      {isAvailable && (
+      {isAvailable() && (
         <>
           {hasMultipleNetworks ? (
             <Pressable

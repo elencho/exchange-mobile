@@ -136,6 +136,8 @@ function* cryptoAddressesSaga(action) {
   yield put(toggleLoading(true));
   const { name, code, navigation, network } = action;
 
+  if (navigation) yield put(goToBalanceAction(name, code, navigation));
+
   const currentBalanceObj = yield select(
     (state) => state.trade.currentBalanceObj
   );
@@ -148,7 +150,6 @@ function* cryptoAddressesSaga(action) {
     yield put(saveCryptoAddress(cryptoAddress ? cryptoAddress : {}));
   }
 
-  if (navigation) yield put(goToBalanceAction(name, code, navigation));
   yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
 
   if (walletTab === 'Whitelist') yield put(getWhitelistAction());
@@ -156,12 +157,10 @@ function* cryptoAddressesSaga(action) {
   // Fees
   if (!!hasMethod) {
     const deposit = walletTab === 'Deposit';
-    const withdrawal = walletTab === 'Withdrawal';
     const amountAction = deposit
       ? { type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 }
       : setWithdrawalAmount();
     yield put(amountAction);
-    if (deposit || withdrawal) yield put(fetchFee(walletTab.toLowerCase()));
   }
 
   yield put(toggleLoading(false));
