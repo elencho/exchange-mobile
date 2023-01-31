@@ -81,7 +81,7 @@ export default function Welcome({ navigation }) {
           <>
             <Logo style={styles.logo} />
             <AppText header style={styles.primary}>
-              Welcome to Cryptal 97
+              Welcome to Cryptal 98
             </AppText>
 
             {/* <AppText style={styles.secondary}>{auth}</AppText> */}
