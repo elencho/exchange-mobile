@@ -175,7 +175,7 @@ export default function AddCardModal() {
       fullScreen
       visible={addCardModalVisible}
       hide={hide}
-      onDismiss={handleHide}
+      onModalHide={handleHide}
     />
   );
 }
