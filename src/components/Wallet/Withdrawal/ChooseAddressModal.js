@@ -46,7 +46,7 @@ export default function ChooseAddressModal() {
                 <AppText medium style={styles.primary}>
                   {w.name}
                 </AppText>
-                <AppText subtext style={styles.secondary}>
+                <AppText subtext style={styles.secondary} numberOfLines={1}>
                   {w.address}
                 </AppText>
               </View>
@@ -55,6 +55,11 @@ export default function ChooseAddressModal() {
                 <AppText subtext style={{ color: '#C0C5E0' }}>
                   {w.provider}
                 </AppText>
+                {w.tag && (
+                  <AppText subtext style={{ color: colors.SECONDARY_TEXT }}>
+                    {w.tag}
+                  </AppText>
+                )}
               </View>
             </TouchableOpacity>
           )}
@@ -81,6 +86,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 18,
     marginHorizontal: -18,
+    borderRadius: 5,
   },
 
   flex: {
