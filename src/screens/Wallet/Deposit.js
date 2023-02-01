@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
@@ -34,6 +35,8 @@ import WithKeyboard from '../../components/WithKeyboard';
 export default function Deposit({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
+  const { t } = useTranslation();
 
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
@@ -112,10 +115,17 @@ export default function Deposit({ refreshControl }) {
     let infoObj;
     if (hasMethod && currentBalanceObj.infos) {
       infoObj = currentBalanceObj.infos[network];
-      let array = [
-        `Expected Arrival: ${infoObj?.minConfirmsForDeposit} network confirmations`,
-      ];
-      if (infoObj?.walletInfo) array.push(infoObj?.walletInfo);
+      const minConfirmsForDeposit = infoObj?.minConfirmsForDeposit;
+      const walletInfo = infoObj?.walletInfo;
+
+      let array = [t(`{{minConfirmsForDeposit}}`, { minConfirmsForDeposit })];
+      if (walletInfo) {
+        array.push(
+          t('{{onlyThisNetwork}}', {
+            onlyThisNetwork: walletInfo.split(' ')[1],
+          })
+        );
+      }
       return array;
     }
   };

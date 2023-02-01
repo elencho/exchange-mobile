@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   Platform,
+  Text,
 } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -21,20 +22,33 @@ import PurpleText from '../PurpleText';
 import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
 import Trade from './Trade';
 import List from '../../assets/images/List.svg';
+import { Trans, useTranslation } from 'react-i18next';
 
 const IS_IOS = Platform.OS === 'ios';
 
-export const TopRow = ({ text, onPress }) => (
-  <View style={styles.topRow}>
-    <AppText header style={styles.header}>
-      Transactions
-    </AppText>
-    <AppText subtext body style={styles.subText}>
-      <PurpleText text={text} onPress={onPress} />
-      other pairs
-    </AppText>
-  </View>
-);
+export const TopRow = ({ text, onPress }) => {
+  const { t } = useTranslation();
+
+  return (
+    <View style={styles.topRow}>
+      <AppText header style={styles.header}>
+        Transactions
+      </AppText>
+
+      <View style={styles.right}>
+        <AppText subtext body style={styles.subText}>
+          <Trans
+            i18nKey="togglePairs"
+            components={{
+              purple: <PurpleText onPress={onPress} text={t(text)} />,
+            }}
+          />
+        </AppText>
+      </View>
+    </View>
+  );
+};
+
 const TransactionsBlock = ({
   loading,
   innerScrollEnabled,
@@ -117,7 +131,7 @@ const TransactionsBlock = ({
     <View style={styles.container}>
       {trades.length ? (
         <TopRow
-          text={hideOtherPairs ? 'Show ' : 'Hide '}
+          text={hideOtherPairs ? 'Show' : 'Hide'}
           onPress={toggleShowHide}
         />
       ) : null}
@@ -150,13 +164,16 @@ const styles = StyleSheet.create({
   header: {
     color: colors.PRIMARY_TEXT,
   },
+  right: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
   subText: {
     color: colors.SECONDARY_TEXT,
   },
   topRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     marginBottom: 10,
   },
 });

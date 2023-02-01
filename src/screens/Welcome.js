@@ -40,18 +40,18 @@ export default function Welcome({ navigation }) {
   });
 
   useEffect(() => {
-    fetchTranslations()
-      .then((res) => {
-        const languages = Object.keys(res);
-        for (let i = 0; i < languages.length; i++) {
-          addResources(
-            languages[i],
-            'translation',
-            res[languages[i]].translation
-          );
-        }
-      })
-      .catch((err) => console.log(err));
+    // fetchTranslations()
+    //   .then((res) => {
+    //     const languages = Object.keys(res);
+    //     for (let i = 0; i < languages.length; i++) {
+    //       addResources(
+    //         languages[i],
+    //         'translation',
+    //         res[languages[i]].translation
+    //       );
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
 
     SecureStore.getItemAsync('language')
       .then((l) => {

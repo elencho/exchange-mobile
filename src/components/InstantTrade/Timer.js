@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ProgressBar from 'react-native-animated-progress';
+import { useTranslation } from 'react-i18next';
 
 import AppText from '../AppText';
 import { instantTradeTabAction } from '../../redux/trade/actions';
@@ -9,6 +10,8 @@ export default function Timer() {
   const dispatch = useDispatch();
   const tradeType = useSelector((state) => state.trade.tradeType);
   const [seconds, setSeconds] = useState(90);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!seconds) {
@@ -52,7 +55,8 @@ export default function Timer() {
         progress={progress(seconds)}
       />
       <AppText style={{ marginTop: 10, color: '#C0C5E0' }} subtext body>
-        Price update in {min}:
+        {t('priceUpdate')}
+        <AppText>{min}:</AppText>
         <AppText style={seconds <= 30 && { color: '#FA6392' }}>{sec}</AppText>
       </AppText>
     </>

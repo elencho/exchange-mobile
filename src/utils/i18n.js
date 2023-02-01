@@ -7,7 +7,35 @@ i18next.use(initReactI18next).init({
   compatibilityJSON: 'v3',
   lng: 'en-US',
   fallbackLng: 'en-US',
-  resources: {},
+  resources: {
+    en: {
+      translation: {
+        togglePairs: '<purple/> other pairs',
+        priceUpdate: 'Price update in ',
+        Hide: 'Hideee',
+        Show: 'Showwww',
+        '{{minConfirmsForDeposit}}':
+          'Shuashi --> {{minConfirmsForDeposit}} <-- shuashi',
+        '{{onlyThisNetwork}}': 'Onlyyyyyy {{onlyThisNetwork}}',
+        deactivateAccount:
+          '<t>saports miweret rom</t> <b>gagiuqmot eqaunti</b>',
+      },
+    },
+    ka: {
+      translation: {
+        blaa: 'blaa:',
+        togglePairs: 'დანარჩენი წყვილები <purple/>',
+        priceUpdate: 'ფასები განახლდება ',
+        Hide: 'დამალე',
+        Show: 'გამოაჩინე',
+        '{{minConfirmsForDeposit}}': '{{minConfirmsForDeposit}} <-- თავში',
+        '{{onlyThisNetwork}}':
+          'მხოლოდ {{onlyThisNetwork}} და არაფერი {{onlyThisNetwork}}-ის გარდა',
+        deactivateAccount:
+          '<b>ექაუნთის გასაუქმებლად</b> <t>მიწერეთ საფორთს</t>',
+      },
+    },
+  },
   interpolation: true,
 });
 
