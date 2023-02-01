@@ -3,15 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
-import SmsEmailAuthModal from '../../components/UserProfile/SmsEmailAuthModal';
 import colors from '../../constants/colors';
-import {
-  toggleEmailAuthModal,
-  toggleGoogleOtpModal,
-  toggleSmsAuthModal,
-} from '../../redux/modals/actions';
 import { setNetwork } from '../../redux/wallet/actions';
-import { sendOtp } from '../../utils/userProfileUtils';
 import AppButton from '../../components/AppButton';
 import WithdrawalInputs from '../../components/Wallet/Withdrawal/WithdrawalInputs';
 import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
@@ -21,19 +14,18 @@ import WithdrawalInfo from '../../components/Wallet/Withdrawal/WithdrawalInfo';
 import SaveAsTemplate from '../../components/Wallet/Withdrawal/SaveAsTemplate';
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import GeneralError from '../../components/GeneralError';
-import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import AppInfoBlock from '../../components/AppInfoBlock';
 import { infos, warnings } from '../../constants/warningsAndInfos';
 import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
 import { MaterialIndicator } from 'react-native-indicators';
 import { validateAmount } from '../../utils/appUtils';
 import WithKeyboard from '../../components/WithKeyboard';
+import WithdrawalConfirmModal from '../../components/Wallet/Withdrawal/WithdrawalConfirmModal';
 
 export default function Withdrawal({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { googleAuth, emailAuth, smsAuth },
     trade: { currentBalanceObj, card, depositProvider, cardsLoading },
     transactions: { code, loading },
     wallet: {
@@ -110,10 +102,10 @@ export default function Withdrawal({ refreshControl }) {
     if (condition) {
       setError(true);
     } else {
-      if (googleAuth) dispatch(toggleGoogleOtpModal(true));
-      if (emailAuth) dispatch(toggleEmailAuthModal(true));
-      if (smsAuth) dispatch(toggleSmsAuthModal(true));
-      if (!googleAuth) sendOtp();
+      dispatch({
+        type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
+        withdrawalConfirmModalVisible: true,
+      });
     }
   };
 
@@ -122,12 +114,6 @@ export default function Withdrawal({ refreshControl }) {
       currentTemplate.templateName === 'New Template' &&
       Object.keys(withdrawalBank).length
     );
-  };
-
-  const withdrawalType = () => {
-    if (isEcommerce) return 'card';
-    if (currentBalanceObj?.type === 'CRYPTO') return 'crypto';
-    if (currentBalanceObj?.type === 'FIAT') return 'wire';
   };
 
   const reason = () => {
@@ -195,9 +181,7 @@ export default function Withdrawal({ refreshControl }) {
           </View>
         )}
 
-      <SmsEmailAuthModal type="SMS" withdrawal={withdrawalType()} />
-      <SmsEmailAuthModal type="Email" withdrawal={withdrawalType()} />
-      <GoogleOtpModal withdrawal={withdrawalType()} />
+      <WithdrawalConfirmModal />
     </>
   );
 }
