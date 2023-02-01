@@ -45,6 +45,7 @@ const INITIAL_STATE = {
   generateRequestModalVisible: false,
   qrAddressModalVisible: false,
   chooseAddressModalVisible: false,
+  withdrawalConfirmModalVisible: false,
   whitelistActionsModalVisible: false,
   addWhitelistModalVisble: false,
   editWhitelistModalVisble: false,
@@ -72,6 +73,7 @@ export default (state = INITIAL_STATE, action) => {
     statusModalInfo,
     deleteModalInfo,
     personalInfoModalVisible,
+    withdrawalConfirmModalVisible,
     passwordModalVisible,
     phoneNumberModalVisible,
     googleAuthModalVisible,
@@ -170,6 +172,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         statusModalInfo,
+      };
+    case 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL':
+      return {
+        ...state,
+        withdrawalConfirmModalVisible,
       };
     case actionTypes.DELETE_MODAL_INFO:
       return {

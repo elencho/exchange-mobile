@@ -270,6 +270,11 @@ function* cryptoWithdrawalSaga(action) {
     if (sms) yield put(toggleSmsAuthModal(false));
     if (email) yield put(toggleEmailAuthModal(false));
 
+    yield put({
+      type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
+      withdrawalConfirmModalVisible: true,
+    });
+
     yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
     yield put({ type: 'BALANCE_SAGA' });
   }
@@ -288,6 +293,11 @@ function* wireWithdrawalSaga(action) {
     if (sms) yield put(toggleSmsAuthModal(false));
     if (email) yield put(toggleEmailAuthModal(false));
 
+    yield put({
+      type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
+      withdrawalConfirmModalVisible: true,
+    });
+
     yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
     yield put({ type: 'BALANCE_SAGA' });
   }
@@ -305,6 +315,11 @@ function* cardWithdrawalSaga(action) {
     if (google) yield put(toggleGoogleOtpModal(false));
     if (sms) yield put(toggleSmsAuthModal(false));
     if (email) yield put(toggleEmailAuthModal(false));
+
+    yield put({
+      type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
+      withdrawalConfirmModalVisible: true,
+    });
 
     yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
     yield put({ type: 'BALANCE_SAGA' });

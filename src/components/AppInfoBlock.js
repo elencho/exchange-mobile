@@ -3,7 +3,13 @@ import { StyleSheet, View } from 'react-native';
 
 import AppText from './AppText';
 
-export default function AppInfoBlock({ content = [], info, warning, ...rest }) {
+export default function AppInfoBlock({
+  content = [],
+  info,
+  warning,
+  style,
+  ...rest
+}) {
   const lastItemStyle = (i) => {
     if (i === content.length - 1) return { marginBottom: 0 };
   };
@@ -24,7 +30,7 @@ export default function AppInfoBlock({ content = [], info, warning, ...rest }) {
   };
 
   return (
-    <View style={[styles.info, background()]} {...rest}>
+    <View style={[styles.info, background(), style]} {...rest}>
       {content.map((c, i) => (
         <View style={[styles.row, lastItemStyle(i)]} key={c}>
           {content.length > 1 && <View style={[styles.bullet, bullet()]} />}
