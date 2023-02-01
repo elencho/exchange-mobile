@@ -26,7 +26,6 @@ import {
 import images from '../constants/images';
 import colors from '../constants/colors';
 import { logoutUtil } from '../utils/userProfileUtils';
-import { IS_ANDROID } from '../constants/system';
 
 function UserProfile({ navigation, route }) {
   const dispatch = useDispatch();
@@ -39,6 +38,10 @@ function UserProfile({ navigation, route }) {
 
   useEffect(() => {
     dispatch(fetchUserInfo(route.params?.fromRegistration));
+    const timer = setTimeout(() => {
+      setShowRefreshControl(true);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   useFocusEffect(
@@ -99,8 +102,9 @@ function UserProfile({ navigation, route }) {
         data={[0]}
         renderItem={renderItem}
         onScroll={onScroll}
+        showsVerticalScrollIndicator={false}
         refreshControl={
-          IS_ANDROID || showRefreshControl ? (
+          showRefreshControl ? (
             <RefreshControl
               tintColor={colors.PRIMARY_PURPLE}
               refreshing={userProfileLoading}

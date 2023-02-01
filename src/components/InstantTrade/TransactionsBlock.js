@@ -103,24 +103,24 @@ const TransactionsBlock = ({
       );
     } else {
       return (
-        <View style={styles.empty}>
-          <List />
-          <AppText subtext style={[styles.subText, { marginTop: 17 }]}>
-            Instant trade no transactions
-          </AppText>
-        </View>
+        !loading && (
+          <View style={styles.empty}>
+            <List />
+            <AppText subtext style={[styles.subText, { marginTop: 17 }]}>
+              Instant trade no transactions
+            </AppText>
+          </View>
+        )
       );
     }
   };
 
   return (
     <View style={styles.container}>
-      {trades.length ? (
-        <TopRow
-          text={hideOtherPairs ? 'Show ' : 'Hide '}
-          onPress={toggleShowHide}
-        />
-      ) : null}
+      <TopRow
+        text={hideOtherPairs ? 'Show ' : 'Hide '}
+        onPress={toggleShowHide}
+      />
 
       {loading && !moreTradesLoading ? (
         <View style={{ marginTop: IS_IOS ? 0 : 20 }}>

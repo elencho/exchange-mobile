@@ -38,9 +38,14 @@ export default function InstantTrade() {
   };
 
   const [innerScrollEnabled, setInnerScrollEnabled] = useState(false);
+  const [showRefreshControl, setShowRefreshControl] = useState(false);
 
   useEffect(() => {
     tabRoute === 'Trade' && onRefresh();
+    const timer = setTimeout(() => {
+      setShowRefreshControl(true);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [tabRoute]);
 
   const handleOuterScroll = (event) => {
@@ -75,11 +80,13 @@ export default function InstantTrade() {
         contentContainerStyle={{ overflow: 'hidden' }}
         onScroll={(e) => handleOuterScroll(e)}
         refreshControl={
-          <RefreshControl
-            tintColor={colors.PRIMARY_PURPLE}
-            refreshing={loading}
-            onRefresh={onRefresh}
-          />
+          showRefreshControl ? (
+            <RefreshControl
+              tintColor={colors.PRIMARY_PURPLE}
+              refreshing={loading}
+              onRefresh={onRefresh}
+            />
+          ) : null
         }
       >
         {offersLoading ? <TradeBlockSkeleton /> : <TradeBlock />}
