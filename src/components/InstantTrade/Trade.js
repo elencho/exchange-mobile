@@ -29,9 +29,12 @@ export default function Trade({ trade }) {
 
   const date = () => {
     const date = new Date(lastChangeTime);
-    return `${date.getDate()} ${
-      monthsShort[date.getMonth()]
-    }, ${date.getFullYear()} / ${date.toLocaleTimeString()}`;
+    const number = date.getDate();
+    const month = monthsShort[date.getMonth()];
+    const year = date.getFullYear();
+    const time = date.toLocaleTimeString();
+
+    return `${number} ${month}, ${year} / ${time}`;
   };
 
   const backgroundColor =

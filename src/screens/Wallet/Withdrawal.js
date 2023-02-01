@@ -44,6 +44,7 @@ export default function Withdrawal({ refreshControl }) {
       hasMultipleMethods,
       network,
       withdrawalAmount,
+      whitelistLoading,
     },
   } = state;
 
@@ -138,7 +139,7 @@ export default function Withdrawal({ refreshControl }) {
 
   return (
     <>
-      {cardsLoading || loading ? (
+      {cardsLoading || loading || whitelistLoading ? (
         <MaterialIndicator color="#6582FD" animationDuration={3000} />
       ) : (
         <WithKeyboard flexGrow padding refreshControl={refreshControl}>
