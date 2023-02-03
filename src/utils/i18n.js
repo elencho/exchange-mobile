@@ -34,6 +34,7 @@ i18next.use(initReactI18next).init({
         deactivateAccount:
           '<b>ექაუნთის გასაუქმებლად</b> <t>მიწერეთ საფორთს</t>',
         confirmWithdrawal: `<light>Please confirm that your withdrawal addresses supports the</light> <gold>{{network}}.</gold> <light>If the other platform does not support it,</light> <gold>your assets may be lost.</gold> <light>If you are not sure whether the rece iver supports it, you can click the butto below to verify it yourself.</light>`,
+        // "confirmWithdrawal: network, subject": `<light>Please confirm that your withdrawal addresses supports the</light> <gold>{{network}}.</gold> <light>If the other platform does not support it,</light> <gold>your assets may be lost.</gold> <light>If you are not sure whether the rece iver supports it, you can click the butto below to verify it yourself.</light>`,
       },
     },
   },

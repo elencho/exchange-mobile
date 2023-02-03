@@ -41,7 +41,7 @@ function App() {
   //   CodePush.notifyAppReady();
   //   CodePush.sync(codePushOptions);
   // });
-  SystemNavigationBar.stickyImmersive();
+  SystemNavigationBar.navigationHide();
   SystemNavigationBar.setNavigationColor(
     colors.PRIMARY_BACKGROUND,
     'light',
@@ -78,7 +78,10 @@ function App() {
 
   return (
     <Provider store={store}>
-      <StatusBar barStyle="light-content" hidden={!iphone} />
+      <StatusBar
+        backgroundColor={colors.PRIMARY_BACKGROUND}
+        barStyle="light-content"
+      />
       {iphone && <SafeAreaView style={styles.statusBar} />}
       <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
         <AppToast />

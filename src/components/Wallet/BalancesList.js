@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   FlatList,
   Image,
@@ -29,6 +30,12 @@ export default function BalancesList({ loading }) {
     setShowZeroBalances(true);
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => setShowZeroBalances(true);
+    }, [])
+  );
 
   useEffect(() => {
     tabRoute === 'Wallet' && onRefresh();

@@ -132,7 +132,7 @@ const TransactionsBlock = ({
   return (
     <View style={styles.container}>
       <TopRow
-        text={hideOtherPairs ? 'Show ' : 'Hide '}
+        text={hideOtherPairs ? 'Show' : 'Hide'}
         onPress={toggleShowHide}
       />
 

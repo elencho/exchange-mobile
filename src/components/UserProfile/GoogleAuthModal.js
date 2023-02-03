@@ -51,9 +51,12 @@ export default function GoogleAuthModal() {
   };
 
   const handleKey = (key) => {
-    setKey(key);
+    if (key && /^[0-9]+$/.test(key)) setKey(key);
+    else setKey('');
+
     dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };
+
   const handleCopy = () => copyToClipboard(totpSecretObj?.totpSecretEncoded);
 
   const right = (
