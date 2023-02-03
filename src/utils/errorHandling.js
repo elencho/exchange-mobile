@@ -5,6 +5,8 @@ import { navigationRef } from '../navigation';
 import { refreshToken } from './userProfileUtils';
 import { setAppToast } from '../redux/modals/actions';
 
+import SplashScreen from 'react-native-splash-screen';
+
 export default async (err) => {
   const state = store.getState();
 
@@ -33,6 +35,7 @@ export default async (err) => {
       await SecureStore.deleteItemAsync('refreshToken');
       navigationRef.navigate('Welcome');
       store.dispatch({ type: 'LOGOUT' });
+      SplashScreen.hide();
     }
   }
 };

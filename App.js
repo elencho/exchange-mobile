@@ -10,7 +10,6 @@ import {
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
-import * as SplashScreen from 'expo-splash-screen';
 import SystemNavigationBar from 'react-native-system-navigation-bar';
 
 import Navigator from './src/navigation';
@@ -25,7 +24,6 @@ LogBox.ignoreLogs([
   // TODO: Remove when fixed
   'VirtualizedLists should never be nested',
 ]);
-SplashScreen.preventAutoHideAsync();
 
 // const codePushOptions = {
 //   updateDialog: true,
@@ -67,7 +65,7 @@ function App() {
   const [assets] = useAssets(Object.values(images));
 
   const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) await SplashScreen.hideAsync();
+    if (fontsLoaded) return;
   }, [fontsLoaded]);
 
   if (!fontsLoaded || !assets) {
