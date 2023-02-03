@@ -3,6 +3,15 @@ import { useDispatch } from 'react-redux';
 import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import Exchange from '../assets/images/BottomTabs/Exchange.svg';
+import Trade from '../assets/images/BottomTabs/Trade.svg';
+import Wallet from '../assets/images/BottomTabs/Wallet.svg';
+import Transactions from '../assets/images/BottomTabs/Transactions.svg';
+import ExchangeActive from '../assets/images/BottomTabs/Exchange_Active.svg';
+import TradeActive from '../assets/images/BottomTabs/Trade_Active.svg';
+import WalletActive from '../assets/images/BottomTabs/Wallet_Active.svg';
+import TransactionsActive from '../assets/images/BottomTabs/Transactions_Active.svg';
+
 import colors from '../constants/colors';
 import images from '../constants/images';
 
@@ -17,18 +26,18 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
   }, []);
 
   const active = {
-    Wallet: images.Wallet_Tab_Active,
-    Transactions: images.Transactions_Active,
-    Exchange: images.Exchange_Active,
-    Trade: images.Trade_Active,
+    Wallet: <WalletActive />,
+    Transactions: <TransactionsActive />,
+    Exchange: <ExchangeActive />,
+    Trade: <TradeActive />,
     FocusIcon: images.Focused,
   };
 
   const inactive = {
-    Wallet: images.Wallet_Tab,
-    Transactions: images.Transactions,
-    Exchange: images.Exchange,
-    Trade: images.Trade,
+    Wallet: <Wallet />,
+    Transactions: <Transactions />,
+    Exchange: <Exchange />,
+    Trade: <Trade />,
   };
 
   return (
@@ -44,10 +53,7 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
               style={styles.gradient}
               locations={[0.3, 0.8]}
             >
-              <Image
-                source={focused ? active[route.name] : inactive[route.name]}
-                style={styles.icon}
-              />
+              {focused ? active[route.name] : inactive[route.name]}
               {focused && (
                 <Image source={active.FocusIcon} style={styles.focus} />
               )}
@@ -75,10 +81,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  icon: {
-    width: 18,
-    height: 18,
   },
   tab: {
     flex: 1,

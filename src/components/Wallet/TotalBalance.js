@@ -1,11 +1,11 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
-import colors from '../../constants/colors';
-import images from '../../constants/images';
 import AppText from '../AppText';
 import TotalBalanceSkeleton from './TotalBalanceSkeleton';
+import WalletIcon from '../../assets/images/Wallet/Wallet_Icon.svg';
+import colors from '../../constants/colors';
 
 export default function TotalBalance({ loading }) {
   const filter = useSelector((state) => state.wallet.usdBtcSwitch);
@@ -29,9 +29,7 @@ export default function TotalBalance({ loading }) {
 
   return !loading ? (
     <View style={styles.container}>
-      <View style={styles.image}>
-        <Image source={images.Wallet} />
-      </View>
+      <WalletIcon />
 
       <View style={styles.justify}>
         <AppText calendarDay style={styles.primary}>
@@ -52,15 +50,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.SECONDARY_BACKGROUND,
     padding: 25,
     flexDirection: 'row',
-  },
-  image: {
-    height: 40,
-    justifyContent: 'center',
-    marginRight: 20,
+    borderWidth: 1,
+    alignItems: 'center',
   },
   justify: {
     justifyContent: 'space-between',
     height: 40,
+    marginLeft: 20,
   },
   primary: {
     color: colors.PRIMARY_TEXT,

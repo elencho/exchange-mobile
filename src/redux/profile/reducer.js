@@ -20,7 +20,7 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: {},
+  credentials: kervala,
   userAndPassInfo: {},
   forgotPassInfo: {
     username: '',

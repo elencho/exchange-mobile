@@ -1,14 +1,7 @@
 import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import colors from '../../constants/colors';
-import images from '../../constants/images';
-import {
-  toggleLanguageModal,
-  togglePhoneNumberModal,
-} from '../../redux/modals/actions';
-import { toggleEmailSubscription } from '../../redux/profile/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import ChooseLanguageModal from './ChooseLanguageModal';
@@ -19,10 +12,21 @@ import PhoneNumberModal from './PhoneNumberModal';
 import launchSumsubSdk from '../../utils/sumsubMobileSdk';
 import EditCompanyModal from './EditCompanyModal';
 import IdentityModal from './IdentityModal';
-import { errorHappenedHere } from '../../utils/appUtils';
 import AppSwitcher from '../AppSwitcher';
 import PersonalProfileSkeleton from './PersonalProfileSkeleton';
 import DeleteAccount from './DeleteAccount';
+import Identity from '../../assets/images/User_profile/Identity.svg';
+import Phone from '../../assets/images/User_profile/Phone.svg';
+import Notifications from '../../assets/images/User_profile/Notifications.svg';
+import Language from '../../assets/images/User_profile/Language.svg';
+
+import { errorHappenedHere } from '../../utils/appUtils';
+import { toggleEmailSubscription } from '../../redux/profile/actions';
+import {
+  toggleLanguageModal,
+  togglePhoneNumberModal,
+} from '../../redux/modals/actions';
+import colors from '../../constants/colors';
 
 export default function Personal({ loading }) {
   const dispatch = useDispatch();
@@ -187,6 +191,13 @@ export default function Personal({ loading }) {
     }
   };
 
+  const images = {
+    Identity: <Identity />,
+    Phone: <Phone />,
+    Notifications: <Notifications />,
+    Language: <Language />,
+  };
+
   return !loading ? (
     <>
       <View style={styles.block}>
@@ -195,10 +206,7 @@ export default function Personal({ loading }) {
             style={[styles.row, i < a.length - 1 && { marginBottom: 30 }]}
             key={r}
           >
-            <View style={styles.imageContainer}>
-              <Image source={images[r]} />
-            </View>
-
+            {images[r]}
             <View style={styles.justify}>
               {textCond(r)}
               {secondaryTextCond(r)}
@@ -254,12 +262,6 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
-  },
-  imageContainer: {
-    width: 35,
-    height: 37,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   justify: {
     justifyContent: 'space-between',

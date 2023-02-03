@@ -39,7 +39,6 @@ function App() {
   //   CodePush.notifyAppReady();
   //   CodePush.sync(codePushOptions);
   // });
-  SystemNavigationBar.navigationHide();
   SystemNavigationBar.setNavigationColor(
     colors.PRIMARY_BACKGROUND,
     'light',

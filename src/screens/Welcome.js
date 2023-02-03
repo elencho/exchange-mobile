@@ -27,7 +27,7 @@ import { addResources, switchLanguage } from '../utils/i18n';
 import GeneralError from '../components/GeneralError';
 import { errorHappenedHere, fetchTranslations } from '../utils/appUtils';
 
-import SplashScreen from 'react-native-splash-screen'; //import SplashScreen
+import SplashScreen from 'react-native-splash-screen';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();

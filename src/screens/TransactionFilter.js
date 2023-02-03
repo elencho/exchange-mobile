@@ -10,6 +10,7 @@ import FilterRow from '../components/TransactionHistory/FilterRow';
 import Headline from '../components/TransactionHistory/Headline';
 import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
 import DatePicker from '../components/TransactionFilter/DatePicker';
+import Close from '../assets/images/Close.svg';
 
 import { clearFilters } from '../redux/transactions/actions';
 import { toggleCurrencyModal } from '../redux/modals/actions';
@@ -43,7 +44,7 @@ export default function TransactionFilter({ navigation }) {
   return (
     <Background>
       <TouchableOpacity style={styles.closeContainer} onPress={close}>
-        <Image source={images.Close} style={styles.close} />
+        <Close />
       </TouchableOpacity>
 
       <Headline title="Transaction Filter" />
@@ -100,10 +101,6 @@ const styles = StyleSheet.create({
   purple: {
     fontSize: 15,
     marginHorizontal: 5,
-  },
-  close: {
-    width: 15,
-    height: 15,
   },
   closeContainer: {
     position: 'absolute',

@@ -1,24 +1,28 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
-import colors from '../../constants/colors';
-import images from '../../constants/images';
+import AppSwitcher from '../AppSwitcher';
+import PurpleText from '../PurpleText';
+import Google_Auth from '../../assets/images/User_profile/Totp_Auth';
+import E_mail_Auth from '../../assets/images/User_profile/Email_Auth';
+import SMS_Auth from '../../assets/images/User_profile/Sms_Auth';
+import Strong_Password from '../../assets/images/User_profile/Strong_Password';
+
 import {
   toggleEmailAuthModal,
   toggleGoogleOtpModal,
   togglePasswordModal,
   toggleSmsAuthModal,
 } from '../../redux/modals/actions';
-import PurpleText from '../PurpleText';
 import {
   setCurrentSecurityAction,
   setEmailAuth,
   setGoogleAuth,
 } from '../../redux/profile/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
-import AppSwitcher from '../AppSwitcher';
+import colors from '../../constants/colors';
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
   const dispatch = useDispatch();
@@ -119,18 +123,23 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
 
   const renderCond = () => {
     if (text === 'SMS_Auth') {
-      return smsAuth;
+      // return smsAuth;
     }
     return true;
+  };
+
+  const images = {
+    Google_Auth: <Google_Auth />,
+    E_mail_Auth: <E_mail_Auth />,
+    SMS_Auth: <SMS_Auth />,
+    Strong_Password: <Strong_Password />,
   };
 
   return (
     <>
       {renderCond() && (
         <View style={styles.row} key={text}>
-          <View style={styles.imageContainer}>
-            <Image source={images[text]} />
-          </View>
+          {images[text]}
 
           <View style={styles.justify}>
             <AppText medium style={styles.white}>
@@ -157,12 +166,6 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
 }
 
 const styles = StyleSheet.create({
-  imageContainer: {
-    width: 35,
-    height: 37,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   justify: {
     justifyContent: 'space-between',
     flex: 1,
