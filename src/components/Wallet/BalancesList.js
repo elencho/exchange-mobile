@@ -25,6 +25,7 @@ export default function BalancesList({ loading }) {
   const [nonZeroBalances, setNonZeroBalances] = useState([]);
   const [filteredBalances, setFilteredBalances] = useState([]);
   const [value, setValue] = useState('');
+  const [showRefreshControl, setShowRefreshControl] = useState(false);
 
   const onRefresh = () => {
     setShowZeroBalances(true);
@@ -38,7 +39,11 @@ export default function BalancesList({ loading }) {
   );
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowRefreshControl(true);
+    }, 1000);
     tabRoute === 'Wallet' && onRefresh();
+    return () => clearTimeout(timer);
   }, [tabRoute]);
 
   useEffect(() => {
@@ -105,11 +110,13 @@ export default function BalancesList({ loading }) {
         renderItem={renderCurrency}
         keyExtractor={(item) => item.currencyCode}
         refreshControl={
-          <RefreshControl
-            tintColor={colors.PRIMARY_PURPLE}
-            refreshing={loading}
-            onRefresh={onRefresh}
-          />
+          showRefreshControl ? (
+            <RefreshControl
+              tintColor={colors.PRIMARY_PURPLE}
+              refreshing={loading}
+              onRefresh={onRefresh}
+            />
+          ) : null
         }
       />
     </View>

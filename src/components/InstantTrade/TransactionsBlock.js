@@ -91,48 +91,20 @@ const TransactionsBlock = ({
   const footer = () =>
     moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />;
 
-  const tradesToShow = () => {
-    if (trades.length) {
-      return (
-        <FlatList
-          style={{ height: 280 }}
-          data={trades}
-          renderItem={renderTrade}
-          keyExtractor={(item) => item.creationTime}
-          onEndReached={handleScrollEnd}
-          onEndReachedThreshold={1}
-          nestedScrollEnabled
-          initialNumToRender={5}
-          ListFooterComponent={footer}
-          scrollEnabled={innerScrollEnabled}
-          onScroll={handleInnerScroll}
-          refreshControl={
-            <RefreshControl
-              tintColor={colors.PRIMARY_PURPLE}
-              refreshing={loading}
-              onRefresh={onRefresh}
-            />
-          }
-        />
-      );
-    } else {
-      return (
-        !loading && (
-          <View style={styles.empty}>
-            <List />
-            <AppText subtext style={[styles.subText, { marginTop: 17 }]}>
-              Instant trade no transactions
-            </AppText>
-          </View>
-        )
-      );
-    }
-  };
+  const listEmptyContainer = () =>
+    !loading && (
+      <View style={styles.empty}>
+        <List />
+        <AppText subtext style={[styles.subText, { marginTop: 17 }]}>
+          Instant trade no transactions
+        </AppText>
+      </View>
+    );
 
   return (
     <View style={styles.container}>
       <TopRow
-        text={hideOtherPairs ? 'Show' : 'Hide'}
+        text={hideOtherPairs ? 'Show ' : 'Hide '}
         onPress={toggleShowHide}
       />
 
@@ -145,7 +117,27 @@ const TransactionsBlock = ({
           ))}
         </View>
       ) : (
-        tradesToShow()
+        <FlatList
+          style={{ height: 280 }}
+          data={trades}
+          renderItem={renderTrade}
+          keyExtractor={(item) => item.creationTime}
+          onEndReached={handleScrollEnd}
+          onEndReachedThreshold={1}
+          nestedScrollEnabled
+          initialNumToRender={5}
+          ListFooterComponent={footer}
+          scrollEnabled={innerScrollEnabled}
+          onScroll={handleInnerScroll}
+          ListEmptyComponent={listEmptyContainer}
+          refreshControl={
+            <RefreshControl
+              tintColor={colors.PRIMARY_PURPLE}
+              refreshing={loading}
+              onRefresh={onRefresh}
+            />
+          }
+        />
       )}
     </View>
   );

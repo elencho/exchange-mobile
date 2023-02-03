@@ -27,6 +27,8 @@ import { addResources, switchLanguage } from '../utils/i18n';
 import GeneralError from '../components/GeneralError';
 import { errorHappenedHere, fetchTranslations } from '../utils/appUtils';
 
+import SplashScreen from 'react-native-splash-screen'; //import SplashScreen
+
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -36,6 +38,7 @@ export default function Welcome({ navigation }) {
 
     SecureStore.getItemAsync('accessToken').then((t) => {
       if (t) navigation.navigate('Main');
+      else SplashScreen.hide();
     });
   });
 

@@ -24,6 +24,8 @@ import {
   VERIFY_PHONE_NUMBER,
 } from '../constants/api';
 
+import SplashScreen from 'react-native-splash-screen';
+
 const authRedirectUrl = Constants.manifest.extra.authRedirectUrl;
 
 export const sumsubVerificationToken = async () => {
@@ -214,12 +216,12 @@ const refreshTokenService = async (refresh_token) => {
 export const refreshToken = async (config) => {
   const refresh_token = await SecureStore.getItemAsync('refreshToken');
   const data = await refreshTokenService(refresh_token);
-
   if (data) {
     if (data.access_token && data.refresh_token) {
       await SecureStore.setItemAsync('accessToken', data.access_token);
       await SecureStore.setItemAsync('refreshToken', data.refresh_token);
 
+      SplashScreen.hide();
       if (config) return axios.request(config);
       return data.access_token;
     }
