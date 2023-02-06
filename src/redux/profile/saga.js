@@ -485,7 +485,9 @@ function* activateEmailSaga(action) {
 
 //  ACTIVATE GOOGLE
 function* activateGoogleSaga(action) {
-  const { OTP } = action;
+  const { OTP, setGoogleAuthLoading } = action;
+  yield call(() => setGoogleAuthLoading(true));
+
   const otpChangeToken = yield select((state) => state.profile.otpChangeToken);
   const totpSecret = yield select(
     (state) => state.profile.totpSecretObj.totpSecret
@@ -501,6 +503,7 @@ function* activateGoogleSaga(action) {
       yield put({ type: 'OTP_SAGA', token });
     }
   }
+  yield call(() => setGoogleAuthLoading(false));
 }
 
 // OTP SAGA

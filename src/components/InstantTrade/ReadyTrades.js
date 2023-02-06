@@ -12,6 +12,7 @@ export default function ReadyTrades() {
 
   const state = useSelector((state) => state.trade);
   const { tradeType, pairObject, fiat, crypto } = state;
+  const buy = tradeType === 'Buy';
 
   const handleTrade = (t) => {
     const { price, size } = t;
@@ -28,9 +29,29 @@ export default function ReadyTrades() {
   if (pairObject) {
     const buyArray = pairObject.offerEntriesMap?.BID;
     const sellArray = pairObject.offerEntriesMap?.ASK;
-    arrayToIterate = tradeType === 'Buy' ? buyArray : sellArray;
+    arrayToIterate = buy ? buyArray : sellArray;
     slicedArray = arrayToIterate?.slice(0, 3);
   }
+
+  const primary = (t) => {
+    const price = buy ? t.price : t.size;
+    const currency = buy ? fiat : crypto;
+    return (
+      <AppText style={styles.primary} header>
+        {price} <AppText body>{currency}</AppText>
+      </AppText>
+    );
+  };
+
+  const secondary = (t) => {
+    const size = buy ? t.size : t.price;
+    const currency = buy ? crypto : fiat;
+    return (
+      <AppText body subtext style={styles.secondary}>
+        {size} {currency}
+      </AppText>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -40,12 +61,8 @@ export default function ReadyTrades() {
           key={Math.random()}
           onPress={() => handleTrade(t)}
         >
-          <AppText style={styles.primary} header>
-            {Math.trunc(t.price)} <AppText body>{fiat}</AppText>
-          </AppText>
-          <AppText body subtext style={styles.secondary}>
-            {t.size} {crypto}
-          </AppText>
+          {primary(t)}
+          {secondary(t)}
         </Pressable>
       ))}
       <Pressable style={styles.block} onPress={handleTrade}>

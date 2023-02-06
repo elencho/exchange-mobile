@@ -221,7 +221,8 @@ export const credentialsForGoogle = (OTP) => ({
   type: actionTypes.CREDENTIALS_FOR_GOOGLE,
   OTP,
 });
-export const activateGoogleOtp = (OTP) => ({
+export const activateGoogleOtp = (OTP, setGoogleAuthLoading) => ({
   type: actionTypes.ACTIVATE_GOOGLE_OTP,
   OTP,
+  setGoogleAuthLoading,
 });

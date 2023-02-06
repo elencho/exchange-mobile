@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   Platform,
   TouchableOpacity,
   Linking,
+  ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -27,12 +28,19 @@ export default function GoogleAuthModal() {
   const {
     modals: { googleAuthModalVisible },
     profile: { totpSecretObj },
+    errors: { generalError },
+    transactions: { loading },
   } = state;
 
   const [key, setKey] = useState('');
+  const [googleAuthLoading, setGoogleAuthLoading] = useState(false);
   const isIos = Platform.OS === 'ios';
 
-  const enable = () => dispatch(activateGoogleOtp(key));
+  useEffect(() => {
+    return () => setGoogleAuthLoading(false);
+  }, []);
+
+  const enable = () => dispatch(activateGoogleOtp(key, setGoogleAuthLoading));
 
   const handleStore = () => {
     const androidLink =
@@ -62,7 +70,11 @@ export default function GoogleAuthModal() {
   const right = (
     <View style={styles.row}>
       <View style={styles.smallLine} />
-      <PurpleText text="Enable" onPress={enable} />
+      {googleAuthLoading ? (
+        <ActivityIndicator size="small" />
+      ) : (
+        <PurpleText text="Enable" onPress={enable} />
+      )}
     </View>
   );
 
