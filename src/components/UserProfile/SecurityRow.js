@@ -123,7 +123,7 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
 
   const renderCond = () => {
     if (text === 'SMS_Auth') {
-      // return smsAuth;
+      return smsAuth;
     }
     return true;
   };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, Linking, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
@@ -7,6 +7,7 @@ import AppText from '../AppText';
 import AppButton from '../AppButton';
 import images from '../../constants/images';
 import colors from '../../constants/colors';
+import PurpleText from '../PurpleText';
 
 export default function EditCompanyModal({ type = 'Company' }) {
   const dispatch = useDispatch();
@@ -15,6 +16,10 @@ export default function EditCompanyModal({ type = 'Company' }) {
   );
 
   const hide = () => dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
+  const goToWeb = () => {
+    Linking.openURL('https://cryptal.com');
+    hide();
+  };
 
   const children = (
     <View style={styles.container}>
@@ -23,7 +28,9 @@ export default function EditCompanyModal({ type = 'Company' }) {
       <AppText header style={styles.white}>
         Edit {type}
       </AppText>
-      <AppText style={styles.secondary}>Edit {type} Text</AppText>
+      <AppText style={styles.secondary}>
+        Edit {type} Text with <PurpleText text="Web Link" onPress={goToWeb} />
+      </AppText>
 
       <AppButton text="OK" style={styles.button} onPress={hide} />
     </View>
