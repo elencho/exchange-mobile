@@ -51,7 +51,7 @@ export default function ModalWithSearch({
 
         <View style={styles.inputContainer}>
           <TextInput
-            placeholder="Search Currency"
+            placeholder={title.replace('Choose', 'Search')}
             placeholderTextColor="rgba(105, 111, 142, 0.5)"
             style={styles.input}
             onChangeText={filter}

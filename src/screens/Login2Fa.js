@@ -14,6 +14,9 @@ import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 import TwoFaInput from '../components/TwoFaInput';
 import WithKeyboard from '../components/WithKeyboard';
+import SmsAuth from '../assets/images/User_profile/Sms_Auth.svg';
+import EmailAuth from '../assets/images/User_profile/Email_Auth.svg';
+import TotpAuth from '../assets/images/User_profile/Totp_Auth.svg';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
@@ -26,9 +29,10 @@ export default function Login2Fa({ navigation }) {
   const [value, setValue] = useState('');
 
   useEffect(() => {
-    return () =>
+    return () => {
       dispatch({ type: 'TOGGLE_FORGOT_PASS_MODE', forgotPassMode: false });
-    setValue('');
+      setValue('');
+    };
   }, []);
 
   const {
@@ -42,15 +46,9 @@ export default function Login2Fa({ navigation }) {
   const goToReset = () => dispatch({ type: 'RESET_OTP', navigation });
 
   const image = () => {
-    if (t === 'TOTP') return images.Google_Auth;
-    if (t === 'EMAIL') return images.E_mail_Auth;
-    if (t === 'SMS') return images.SMS_Auth;
-  };
-
-  const type = () => {
-    if (t === 'TOTP') return 'Google Authentication';
-    if (t === 'EMAIL') return 'E-mail Authentication';
-    if (t === 'SMS') return 'SMS Authentication';
+    if (t === 'TOTP') return <TotpAuth />;
+    if (t === 'EMAIL') return <EmailAuth />;
+    if (t === 'SMS') return <SmsAuth />;
   };
 
   const resend = () =>
@@ -69,15 +67,15 @@ export default function Login2Fa({ navigation }) {
             <PurpleText text="Back to Log In" style={styles.backText} />
           </TouchableOpacity>
           <View style={styles.middle}>
-            <Image source={image()} />
+            {image()}
 
             {/* Animate */}
             <View>
               <AppText header style={styles.primary}>
-                {type()}
+                {t} authentication login
               </AppText>
               <AppText style={styles.secondary}>
-                Enter One Time Password
+                enter one time password
               </AppText>
             </View>
 

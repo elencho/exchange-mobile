@@ -4,12 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Linking from 'expo-linking';
 
 import AppText from '../AppText';
+import AppModal from '../AppModal';
+import Copy from '../../assets/images/Copy.svg';
+import Link from '../../assets/images/Link.svg';
+
 import TransactionDetails from './TransactionDetails';
 import TradeDetails from '../InstantTrade/TradeDetails';
-import colors from '../../constants/colors';
-import AppModal from '../AppModal';
+
 import { toggleTransactionDetails } from '../../redux/modals/actions';
-import images from '../../constants/images';
+import colors from '../../constants/colors';
 import { COINS_URL_PNG } from '../../constants/api';
 import { copyToClipboard } from '../../utils/copyToClipboard';
 
@@ -68,18 +71,11 @@ function TransactionModal({ transactions, trades }) {
   const backgroundColor =
     action === 'BID' ? 'rgba(12, 203, 181, 0.08)' : 'rgba(234, 121, 156, 0.08)';
 
-  const transactionTypeImage = () => {
-    if (type === 'DEPOSIT') return images.Deposit;
-    if (type === 'WITHDRAWAL') return images.Withdrawal;
-  };
-
   const children = () => {
     if (transactions) {
       return (
         <>
           <View style={styles.top}>
-            <Image source={transactionTypeImage()} style={styles.image} />
-
             <View style={styles.middle}>
               <AppText medium style={styles.white}>
                 Identifier (TXID):
@@ -93,14 +89,14 @@ function TransactionModal({ transactions, trades }) {
 
             <View style={styles.row}>
               <TouchableOpacity onPress={copyId}>
-                <Image source={images.Copy} />
+                <Copy />
               </TouchableOpacity>
               {method === 'WALLET' && (
                 <TouchableOpacity
                   onPress={handleTransactionUrl}
                   style={{ marginLeft: 25 }}
                 >
-                  <Image source={images.Link} />
+                  <Link />
                 </TouchableOpacity>
               )}
             </View>
@@ -116,10 +112,10 @@ function TransactionModal({ transactions, trades }) {
               <View style={styles.line} />
               <View style={styles.row}>
                 <View style={{ flex: 1, marginRight: 15 }}>
-                  <AppText medium style={[styles.white]}>
-                    Destination :
+                  <AppText medium style={[styles.white, {}]}>
+                    Destination
                   </AppText>
-                  <AppText subtext style={[styles.address, { marginTop: 5 }]}>
+                  <AppText subtext style={styles.address}>
                     {recipient}
                   </AppText>
                 </View>
@@ -127,14 +123,14 @@ function TransactionModal({ transactions, trades }) {
                 <View style={styles.vertical} />
                 <View style={styles.row}>
                   <TouchableOpacity onPress={copyDestination}>
-                    <Image source={images.Copy} />
+                    <Copy />
                   </TouchableOpacity>
                   {(method === 'WALLET' || method === 'WALLET_INTERNAL') && (
                     <TouchableOpacity
                       onPress={handleAddressUrl}
                       style={{ marginLeft: 25 }}
                     >
-                      <Image source={images.Link} />
+                      <Link />
                     </TouchableOpacity>
                   )}
                 </View>
@@ -220,7 +216,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icons: { alignSelf: 'center', marginRight: 15 },
-  image: { height: 37, width: 37 },
   leftIcon: {
     marginRight: -7,
     zIndex: 10,
@@ -233,7 +228,7 @@ const styles = StyleSheet.create({
   },
   middle: {
     flex: 1,
-    marginHorizontal: 15,
+    marginRight: 15,
     justifyContent: 'space-between',
   },
   line: {
@@ -254,7 +249,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // height: 37,
   },
-  address: { color: '#C0C5E0' },
+  address: { color: '#C0C5E0', marginTop: 5 },
   instantTrade: { color: colors.SECONDARY_TEXT, marginTop: 3 },
   white: { color: colors.PRIMARY_TEXT },
 });

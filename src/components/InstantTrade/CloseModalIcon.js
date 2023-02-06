@@ -1,13 +1,13 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import images from '../../constants/images';
+import Close from '../../assets/images/Close.svg';
 
 export default function CloseModalIcon({ onPress }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.close} onPress={onPress}>
-        <Image source={images.Close} />
+        <Close />
       </TouchableOpacity>
     </View>
   );

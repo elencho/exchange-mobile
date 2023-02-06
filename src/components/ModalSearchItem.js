@@ -19,26 +19,35 @@ export default function ModalSearchItem({
     }
   };
 
+  const text = phoneCountry ? (
+    <>
+      <AppText medium style={styles.primary}>
+        ({phoneCode})
+      </AppText>
+      <AppText medium numberOfLines={1} style={[styles.secondary, { flex: 1 }]}>
+        {' '}
+        {name}
+      </AppText>
+    </>
+  ) : (
+    <>
+      <AppText medium style={styles.primary}>
+        {name}
+      </AppText>
+      <AppText medium style={styles.secondary}>
+        {' '}
+        ({code})
+      </AppText>
+    </>
+  );
+
   return (
     <TouchableOpacity
       style={[styles.container, backgroundCond()]}
       onPress={onPress}
     >
       <Image style={styles.image} source={{ uri }} />
-      <AppText medium style={{ color: colors.PRIMARY_TEXT }}>
-        {name}
-      </AppText>
-      {code ? (
-        <AppText
-          medium
-          style={{
-            color: colors[phoneCountry ? 'PRIMARY_TEXT' : 'SECONDARY_TEXT'],
-          }}
-        >
-          {' '}
-          ({phoneCountry ? phoneCode : code})
-        </AppText>
-      ) : null}
+      {text}
     </TouchableOpacity>
   );
 }
@@ -57,4 +66,6 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
   },
+  primary: { color: colors.PRIMARY_TEXT },
+  secondary: { color: colors.SECONDARY_TEXT },
 });
