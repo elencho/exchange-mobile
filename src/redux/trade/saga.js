@@ -207,7 +207,7 @@ function* refreshWalletAndTradesSaga() {
     wallet: { walletTab, network, depositRestriction, withdrawalRestriction },
     trade: { currentBalanceObj },
     profile: { userInfo },
-    modals: { addWhitelistModalVisble },
+    modals: { addWhitelistModalVisble, whitelistActionsModalVisible },
     transactions: { stackRoute, tabRoute, currency, code },
   } = state;
 
@@ -243,7 +243,10 @@ function* refreshWalletAndTradesSaga() {
     }
 
     if (crypto && isAvailable(currentBalanceObj)) {
-      if (withdrawal || (whitelist && !addWhitelistModalVisble))
+      if (
+        withdrawal ||
+        (whitelist && !addWhitelistModalVisble && !whitelistActionsModalVisible)
+      )
         yield put(getWhitelistAction());
       if (withdrawal) {
         yield put(fetchFee('withdrawal'));

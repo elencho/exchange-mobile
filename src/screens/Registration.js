@@ -64,7 +64,10 @@ export default function Registration({ navigation }) {
     lastNameCheck:
       lastName?.trim() && /^[a-zA-Z !@#\$%\^\&*\)\(+=._-]+$/g.test(lastName),
     passwordCheck: passLength && hasNumber && hasUpperAndLower,
-    isEmail: /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(email),
+    isEmail:
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        email
+      ),
     similarPasswords: passwordNew === passwordConfirm,
     terms: acceptTerms === 'on',
     phoneNumberCheck: /^[0-9]+$/.test(phoneNumber),
