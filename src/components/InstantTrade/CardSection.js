@@ -49,7 +49,7 @@ function CardSection({ error }) {
     let isMultiple;
     balances?.forEach((b) => {
       if (fiat === b.currencyCode) {
-        isMultiple = b?.depositMethods?.ECOMMERCE?.length > 1;
+        isMultiple = b?.depositMethods?.ECOMMERCE?.length;
       }
     });
     return isMultiple;

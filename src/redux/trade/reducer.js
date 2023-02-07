@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   crypto: 'BTC',
   tradeType: 'Buy',
   Balance_Card: 'balance',
+  balanceLoading: false,
   balance: {},
   currentBalanceObj: {},
   card: null,
@@ -51,6 +52,7 @@ export default (state = INITIAL_STATE, action) => {
     fiat,
     hideOtherPairs,
     balance,
+    balanceLoading,
     cards,
     cardsToDisplayInModal,
     cardsLoading,
@@ -133,6 +135,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cardsLoading,
+      };
+    case 'TOGGLE_BALANCE_LOADING':
+      return {
+        ...state,
+        balanceLoading,
       };
     case actionTypes.SET_DEPOSIT_PROVIDER:
       return {

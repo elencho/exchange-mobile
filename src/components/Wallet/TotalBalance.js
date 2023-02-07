@@ -7,7 +7,7 @@ import TotalBalanceSkeleton from './TotalBalanceSkeleton';
 import WalletIcon from '../../assets/images/Wallet/Wallet_Icon.svg';
 import colors from '../../constants/colors';
 
-export default function TotalBalance({ loading }) {
+export default function TotalBalance({ balanceLoading }) {
   const filter = useSelector((state) => state.wallet.usdBtcSwitch);
   const balance = useSelector((state) => state.trade.balance);
 
@@ -27,7 +27,7 @@ export default function TotalBalance({ loading }) {
     }
   };
 
-  return !loading ? (
+  return !balanceLoading ? (
     <View style={styles.container}>
       <WalletIcon />
 

@@ -59,7 +59,12 @@ export default function ResetOtpInstructions({ navigation, route }) {
               <AppText style={[styles.secondary, { marginBottom: 40 }]}>
                 Enter the code you received on the email
               </AppText>
-              <TwoFaInput value={value} setValue={setValue} login />
+              <TwoFaInput
+                value={value}
+                setValue={setValue}
+                login
+                fromResetOtp
+              />
             </>
           )}
         </View>
