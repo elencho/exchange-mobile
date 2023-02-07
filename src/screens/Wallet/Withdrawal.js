@@ -33,6 +33,7 @@ export default function Withdrawal({ refreshControl }) {
       currentWhitelistObj,
       currentTemplate,
       withdrawalBank,
+      iban,
       hasMultipleMethods,
       network,
       withdrawalAmount,
@@ -76,7 +77,6 @@ export default function Withdrawal({ refreshControl }) {
   useEffect(() => {
     setHasRestriction(Object.keys(withdrawalRestriction).length);
   }, [withdrawalRestriction]);
-
   useEffect(() => {
     return () => dispatch(setCard(null));
   }, []);
@@ -87,14 +87,14 @@ export default function Withdrawal({ refreshControl }) {
 
   const withdraw = () => {
     const length = Object.keys(currentWhitelistObj)?.length;
-    const empty = !currentTemplate?.templateName;
+    const notEmpty = currentTemplate?.templateName || (iban && withdrawalBank);
 
     let condition;
     if (isEcommerce) {
       condition =
         !validateAmount(withdrawalAmount) || !card || !depositProvider;
     } else if (isFiat) {
-      condition = !validateAmount(withdrawalAmount) || empty;
+      condition = !validateAmount(withdrawalAmount) || !notEmpty;
     } else {
       condition = !validateAmount(withdrawalAmount) || !length;
     }
@@ -153,7 +153,7 @@ export default function Withdrawal({ refreshControl }) {
           </View>
 
           {!hasRestriction && isFiat && hasMethod && !isEcommerce && (
-            <WithdrawalInfo />
+            <WithdrawalInfo error={error} />
           )}
           {!hasRestriction && hasMethod && (
             <WithdrawalInputs
@@ -171,16 +171,17 @@ export default function Withdrawal({ refreshControl }) {
               restrictedUntil={withdrawalRestriction.restrictedUntil}
             />
           ) : null}
+
+          {!hasRestriction &&
+            hasMethod && ( // Button
+              <AppButton
+                text="Withdrawal"
+                onPress={withdraw}
+                style={styles.button}
+              />
+            )}
         </WithKeyboard>
       )}
-
-      {!hasRestriction &&
-        hasMethod && ( // Button
-          <View style={styles.button}>
-            <AppButton text="Withdrawal" onPress={withdraw} />
-          </View>
-        )}
-
       <WithdrawalConfirmModal />
     </>
   );
@@ -195,6 +196,5 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 15,
-    marginTop: 40,
   },
 });

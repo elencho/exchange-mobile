@@ -17,7 +17,7 @@ import AppText from '../AppText';
 import Currency from './Currency';
 import CurrencySkeleton from './CurrencySkeleton';
 
-export default function BalancesList({ loading }) {
+export default function BalancesList({ balanceLoading }) {
   const dispatch = useDispatch();
   const balances = useSelector((state) => state.trade.balance.balances);
   const tabRoute = useSelector((state) => state.transactions.tabRoute);
@@ -28,6 +28,7 @@ export default function BalancesList({ loading }) {
   const [showRefreshControl, setShowRefreshControl] = useState(false);
 
   const onRefresh = () => {
+    setValue('');
     setShowZeroBalances(true);
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
   };
@@ -73,7 +74,7 @@ export default function BalancesList({ loading }) {
   };
 
   const renderCurrency = ({ item }) =>
-    !loading ? (
+    !balanceLoading ? (
       <Currency
         key={item.currencyName}
         code={item.currencyCode}
@@ -94,6 +95,7 @@ export default function BalancesList({ loading }) {
         placeholderTextColor="rgba(105, 111, 142, 0.5)"
         onChangeText={type}
         left={<Image source={images.Search} style={styles.searchIcon} />}
+        value={value}
       />
 
       <Pressable style={styles.hide} onPress={toggleZeroBalances}>
@@ -113,7 +115,7 @@ export default function BalancesList({ loading }) {
           showRefreshControl ? (
             <RefreshControl
               tintColor={colors.PRIMARY_PURPLE}
-              refreshing={loading}
+              refreshing={balanceLoading}
               onRefresh={onRefresh}
             />
           ) : null

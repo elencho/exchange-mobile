@@ -3,7 +3,7 @@ import { TouchableOpacity, Modal, Image, StyleSheet, View } from 'react-native';
 import WebView from 'react-native-webview';
 import { useDispatch, useSelector } from 'react-redux';
 
-import images from '../constants/images';
+import Close from '../assets/images/Close.svg';
 import {
   toggleAddCardModal,
   toggleBuySellModal,
@@ -60,7 +60,7 @@ export default function AppWebView(props) {
       <TouchableOpacity activeOpacity={0.99} style={styles.flex}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.close} onPress={closeWebView}>
-            <Image source={images.Close} />
+            <Close />
           </TouchableOpacity>
         </View>
 
