@@ -71,7 +71,7 @@ function AppModal({
           </KeyboardAvoidingView>
         )}
         {fullScreen && (
-          <Background>
+          <Background modal>
             <CloseModalIcon onPress={hide} />
             {title && <Headline title={title} />}
             {children}
