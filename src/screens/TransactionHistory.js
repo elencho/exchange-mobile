@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, View, RefreshControl } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -28,10 +28,11 @@ function TransactionHistory() {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.transactions);
-  const { transactions, loading, totalTransactions } = state;
-
-  const [moreLoading, setMoreLoading] = useState(false);
+  const state = useSelector((state) => state);
+  const {
+    transactions: { transactions, loading, totalTransactions },
+    trade: { moreTradesLoading },
+  } = state;
 
   useEffect(() => {
     dispatch(chooseCurrency('Show All Currency'));
@@ -60,48 +61,22 @@ function TransactionHistory() {
       loading={loading}
     />
   );
+  const listEmptyContainer = () => (
+    <View style={styles.empty}>
+      <List />
+      <AppText subtext style={styles.subtext}>
+        Transaction history no transactions
+      </AppText>
+    </View>
+  );
 
   const handleScrollEnd = () => {
-    dispatch(reachScrollEnd('transactions'));
-    if (transactions.length < totalTransactions) {
-      setMoreLoading(true);
-    } else {
-      setMoreLoading(false);
+    if (transactions.length === totalTransactions) {
+      return;
+    } else if (transactions.length <= totalTransactions && !moreTradesLoading) {
+      dispatch(reachScrollEnd('transactions'));
     }
   };
-
-  const transactionsToShow = () => {
-    if (transactions.length) {
-      return (
-        <FlatList
-          style={styles.transactions}
-          data={uniqueDates}
-          renderItem={renderDate}
-          keyExtractor={(item) => item}
-          onEndReached={handleScrollEnd}
-          onEndReachedThreshold={0.5}
-          showsVerticalScrollIndicator={false}
-          scrollEventThrottle={1000}
-          refreshControl={
-            <RefreshControl refreshing={loading} onRefresh={onRefresh} />
-          }
-          ListFooterComponent={() =>
-            moreLoading ? <TransactionSkeleton length={[0, 1, 2]} /> : <View />
-          }
-        />
-      );
-    } else {
-      return (
-        <View style={styles.empty}>
-          <List />
-          <AppText subtext style={styles.subtext}>
-            Transaction history no transactions
-          </AppText>
-        </View>
-      );
-    }
-  };
-
   return (
     <Background>
       <TopRow clear={() => dispatch(clearFilters())} />
@@ -116,7 +91,27 @@ function TransactionHistory() {
       {loading ? (
         <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
       ) : (
-        transactionsToShow()
+        <FlatList
+          style={styles.transactions}
+          data={uniqueDates}
+          renderItem={renderDate}
+          keyExtractor={(item) => item}
+          onEndReached={handleScrollEnd}
+          onEndReachedThreshold={0.5}
+          showsVerticalScrollIndicator={false}
+          scrollEventThrottle={1000}
+          ListEmptyComponent={listEmptyContainer}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+          }
+          ListFooterComponent={() =>
+            moreTradesLoading ? (
+              <TransactionSkeleton length={[0, 1, 2]} />
+            ) : (
+              <View />
+            )
+          }
+        />
       )}
 
       <TransactionModal transactions />
