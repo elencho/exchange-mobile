@@ -167,7 +167,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
       <AppButton
         text={add ? 'Add Address' : 'Edit Address'}
         onPress={handleAdd}
-        style={{ marginTop: 20 }}
+        style={{ marginTop: 20, marginBottom: 36 }}
       />
 
       <SmsEmailAuthModal type="SMS" whitelist />
