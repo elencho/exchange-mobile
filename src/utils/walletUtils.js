@@ -1,9 +1,9 @@
-import { Platform } from 'react-native';
+import { Platform, PermissionsAndroid } from 'react-native';
 import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
-import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import * as SecureStore from 'expo-secure-store';
+import RNFetchBlob from 'rn-fetch-blob';
 
 import {
   GET_CRYPTO_ADDRESSES,
@@ -31,15 +31,15 @@ export const fetchWireDeposit = async (currency, provider) => {
 };
 
 export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
-  const token = await SecureStore.getItemAsync('accessToken');
-  const bearer = `Bearer ${token}`;
+  try {
+    const token = await SecureStore.getItemAsync('accessToken');
+    const bearer = `Bearer ${token}`;
 
-  FileSystem.downloadAsync(
-    `${GENERATE_WIRE_PDF}?currency=${currency}&amount=${amount}&wireDepositInfoId=${wireDepositInfoId}&timeZone=UTC`,
-    FileSystem.documentDirectory + 'wiredeposit.pdf',
-    { headers: { Authorization: bearer } }
-  )
-    .then(async (data) => {
+    FileSystem.downloadAsync(
+      `${GENERATE_WIRE_PDF}?currency=${currency}&amount=${amount}&wireDepositInfoId=${wireDepositInfoId}&timeZone=UTC`,
+      FileSystem.documentDirectory + 'wiredeposit.pdf',
+      { headers: { Authorization: bearer } }
+    ).then(async (data) => {
       const { uri } = data;
 
       if (Platform.OS === 'ios') {
@@ -47,20 +47,57 @@ export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
       }
 
       if (Platform.OS === 'android') {
-        const perm = await MediaLibrary.requestPermissionsAsync();
-        if (perm.status !== 'granted') return;
+        await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+        );
+        await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+        );
+        downloadFile(currency, amount, wireDepositInfoId, bearer);
+      }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-        const asset = await MediaLibrary.createAssetAsync(uri);
-        const album = await MediaLibrary.getAlbumAsync('Download');
-        if (!album) {
-          await MediaLibrary.createAlbumAsync('Download', asset, false);
-        } else {
-          await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
-        }
+const downloadFile = async (currency, amount, wireDepositInfoId, bearer) => {
+  const pdfLocation =
+    RNFetchBlob.fs.dirs.DownloadDir + '/' + `wiredeposit${amount}.pdf`;
+  const android = RNFetchBlob.android;
+
+  RNFetchBlob.config({
+    fileCache: true,
+    path: pdfLocation,
+    addAndroidDownloads: {
+      useDownloadManager: true,
+      notification: true,
+      mime: 'application/pdf',
+      title: 'Wiredeposit',
+      mediaScannable: true,
+      description: 'File downloaded by download manager.',
+    },
+  });
+
+  RNFetchBlob.fetch(
+    'GET',
+    `${GENERATE_WIRE_PDF}?currency=${currency}&amount=${amount}&wireDepositInfoId=${wireDepositInfoId}&timeZone=UTC`,
+    {
+      Authorization: bearer,
+    }
+  )
+    .then((res) => {
+      let status = res.info().status;
+      if (status == 200) {
+        let base64Str = res.base64();
+        RNFetchBlob.fs
+          .writeFile(pdfLocation, base64Str, 'base64')
+          .then(() => android.actionViewIntent(pdfLocation, 'application/pdf'))
+          .catch((err) => console.log('createFile', err));
       }
     })
-    .catch((error) => {
-      console.error(error);
+    .catch((errorMessage) => {
+      console.log('errorMessage', errorMessage);
     });
 };
 
