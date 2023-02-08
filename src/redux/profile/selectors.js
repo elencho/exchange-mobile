@@ -13,7 +13,7 @@ export const getUserData = (state) => {
     formData.append('firstName', userInfo.firstName);
     formData.append('lastName', userInfo.lastName);
   }
-  // formData.append('citizenship', userInfo.citizenship);
+  formData.append('citizenship', userInfo.citizenship);
 
   return formData;
 };

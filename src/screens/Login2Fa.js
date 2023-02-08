@@ -15,7 +15,7 @@ import PurpleText from '../components/PurpleText';
 import TwoFaInput from '../components/TwoFaInput';
 import WithKeyboard from '../components/WithKeyboard';
 import SmsAuth from '../assets/images/User_profile/Sms_Auth.svg';
-import EmailAuth from '../assets/images/User_profile/Email_Auth.svg';
+import EmailLoginAuth from '../assets/images/User_profile/EmailLoginAuth.svg';
 import TotpAuth from '../assets/images/User_profile/Totp_Auth.svg';
 
 import colors from '../constants/colors';
@@ -47,7 +47,7 @@ export default function Login2Fa({ navigation }) {
 
   const image = () => {
     if (t === 'TOTP') return <TotpAuth />;
-    if (t === 'EMAIL') return <EmailAuth />;
+    if (t === 'EMAIL') return <EmailLoginAuth />;
     if (t === 'SMS') return <SmsAuth />;
   };
 

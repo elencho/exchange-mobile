@@ -160,7 +160,7 @@ function* verifyAccountSaga(action) {
 }
 
 function* codeToTokenSaga(action) {
-  const { code, codeVerifier, navigation } = action;
+  const { code, codeVerifier, navigation, fromResetOtp } = action;
 
   const data = yield call(codeToToken, code, codeVerifier);
 
@@ -170,7 +170,10 @@ function* codeToTokenSaga(action) {
       await SecureStore.setItemAsync('refreshToken', data?.refresh_token);
     });
     yield put({ type: 'OTP_SAGA', token: data?.access_token });
-    yield call(() => navigation.navigate('Main'));
+    yield call(() =>
+      navigation.navigate(fromResetOtp ? 'UserProfile' : 'Main')
+    );
+    if (fromResetOtp) yield put(switchPersonalSecurity('Security'));
   } else {
     yield put(saveUserAndPassInfo(data));
   }
@@ -241,11 +244,8 @@ function* otpForLoginSaga(action) {
       code: loginData?.code,
       codeVerifier,
       navigation,
+      fromResetOtp,
     });
-    if (fromResetOtp) {
-      navigation.navigate('UserProfile');
-      yield put(switchPersonalSecurity('Security'));
-    }
   } else {
     yield put({
       type: 'SAVE_FORGOT_PASS_INFO',

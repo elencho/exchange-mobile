@@ -10,15 +10,17 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { toggleGoogleAuthModal } from '../../redux/modals/actions';
-import { activateGoogleOtp, setGoogleAuth } from '../../redux/profile/actions';
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
+import GeneralError from '../GeneralError';
+import Copy from '../../assets/images/Copy.svg';
+
 import colors from '../../constants/colors';
 import images from '../../constants/images';
-import GeneralError from '../GeneralError';
+import { toggleGoogleAuthModal } from '../../redux/modals/actions';
+import { activateGoogleOtp, setGoogleAuth } from '../../redux/profile/actions';
 import { copyToClipboard } from '../../utils/copyToClipboard';
 import { errorHappenedHere } from '../../utils/appUtils';
 
@@ -110,7 +112,7 @@ export default function GoogleAuthModal() {
         </AppText>
         <View style={styles.line} />
         <TouchableOpacity onPress={handleCopy}>
-          <Image source={images.Copy} />
+          <Copy />
         </TouchableOpacity>
       </View>
 
