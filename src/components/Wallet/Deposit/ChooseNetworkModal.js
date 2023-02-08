@@ -74,7 +74,7 @@ export default function ChooseNetworkModal() {
 
     handleDimensions();
     return () => setNetworks([]);
-  }, [code]);
+  }, [code, walletTab]);
 
   const name = (n) => {
     if (n === 'ERC20') return 'Ethereum Network';

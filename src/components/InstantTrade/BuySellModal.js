@@ -74,6 +74,10 @@ export default function BuySellModal() {
   }, [pairObject]);
 
   useEffect(() => {
+    dispatch(setCurrentTrade({ price: '', size: '' }));
+  }, [fiat, crypto]);
+
+  useEffect(() => {
     if (card) handleChangeText(price, 'crypto');
   }, [card]);
 

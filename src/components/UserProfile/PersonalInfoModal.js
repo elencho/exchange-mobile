@@ -73,7 +73,7 @@ export default function PersonalInfoModal() {
     dispatch(togglePersonalInfoModal(false));
   };
   const handleSave = () => {
-    const condition = isVerified
+    const condition = canEditInfo
       ? !country || !city?.trim() || !postalCode?.trim() || !address?.trim()
       : !country ||
         !city?.trim() ||
@@ -108,7 +108,7 @@ export default function PersonalInfoModal() {
     return country;
   };
 
-  const isVerified = userStatus === 'VERIFIED';
+  const canEditInfo = userStatus === 'VERIFIED' || userStatus === 'PENDING';
 
   const subtext = {
     transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
@@ -131,7 +131,7 @@ export default function PersonalInfoModal() {
           show={errorHappenedHere('PersonalInfoModal')}
         />
 
-        {!isVerified && (
+        {!canEditInfo && (
           <>
             <AppInput
               style={styles.inputContainer}
@@ -154,7 +154,7 @@ export default function PersonalInfoModal() {
           </>
         )}
 
-        {!isVerified && (
+        {!canEditInfo && (
           <Pressable
             style={[styles.dropdown, citizenshipBorder]}
             onPress={() => handleCountries(null, true)}

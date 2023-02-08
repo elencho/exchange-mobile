@@ -156,9 +156,9 @@ function CardSection({ error }) {
 
           <AppText subtext style={styles.newCard}>
             {cardsToDisplayInModal?.length
-              ? 'Or you can add'
+              ? 'Or you can '
               : "You don't have cards yet"}{' '}
-            <PurpleText text=" Add Card" onPress={addNewCard} />
+            <PurpleText text="Add Card" onPress={addNewCard} />
           </AppText>
 
           {trade && (
