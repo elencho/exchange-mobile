@@ -49,7 +49,7 @@ function CardSection({ error }) {
     let isMultiple;
     balances?.forEach((b) => {
       if (fiat === b.currencyCode) {
-        isMultiple = b?.depositMethods?.ECOMMERCE?.length > 1;
+        isMultiple = b?.depositMethods?.ECOMMERCE?.length;
       }
     });
     return isMultiple;
@@ -156,9 +156,9 @@ function CardSection({ error }) {
 
           <AppText subtext style={styles.newCard}>
             {cardsToDisplayInModal?.length
-              ? 'Or you can add'
+              ? 'Or you can '
               : "You don't have cards yet"}{' '}
-            <PurpleText text=" Add Card" onPress={addNewCard} />
+            <PurpleText text="Add Card" onPress={addNewCard} />
           </AppText>
 
           {trade && (

@@ -28,8 +28,6 @@ export default function GoogleAuthModal() {
   const {
     modals: { googleAuthModalVisible },
     profile: { totpSecretObj },
-    errors: { generalError },
-    transactions: { loading },
   } = state;
 
   const [key, setKey] = useState('');
@@ -55,6 +53,9 @@ export default function GoogleAuthModal() {
   const hide = () => {
     dispatch(toggleGoogleAuthModal(false));
     dispatch(setGoogleAuth(false));
+  };
+
+  const onModalHide = () => {
     setKey('');
   };
 
@@ -129,6 +130,7 @@ export default function GoogleAuthModal() {
       bottom
       hide={hide}
       visible={googleAuthModalVisible}
+      onModalHide={onModalHide}
     />
   );
 }

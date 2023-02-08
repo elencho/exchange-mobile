@@ -34,11 +34,17 @@ import {
   setCryptosArray,
   setCryptosArrayConstant,
   setFiatsArray,
+  setMoreTradesLoading,
   setTradeOffset,
 } from '../trade/actions';
 import { fetchTrades } from '../trade/actions';
 
-function* fetchTransactionsSaga() {
+function* fetchTransactionsSaga({ isMoreLoading }) {
+  if (isMoreLoading) {
+    yield put(setMoreTradesLoading(true));
+  } else {
+    yield put(setMoreTradesLoading(false));
+  }
   const params = yield select(getParams);
   const transactions = yield select(getTransactions);
   const newTransactions = yield call(fetch, params);
@@ -54,6 +60,7 @@ function* fetchTransactionsSaga() {
   if (newTransactions) {
     yield put(saveTransactions([...transactions, ...newTransactions]));
   }
+  yield put(setMoreTradesLoading(false));
 }
 
 function* refreshTransactionsSaga() {
@@ -100,18 +107,15 @@ function* reachScrollEndSaga(action) {
     const offset = yield select(getOffset);
     const loadedTransactions = yield select(totalLoadedTransactions);
     const total = yield call(totalAmount, params);
+    yield put(setTotalTransactions(total));
 
     const totalTransactions = yield select(
       (state) => state.transactions.totalTransactions
     );
 
-    if (!totalTransactions) {
-      yield put(setTotalTransactions(total));
-    }
-
     if (loadedTransactions < totalTransactions) {
       yield put(setTransactionsOffset(offset + 1));
-      yield put(fetchTransactions());
+      yield put(fetchTransactions(true));
     }
   }
 

@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   },
   box: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingBottom: 30,
+    paddingBottom: IS_IOS ? 0 : 30,
     marginBottom: IS_IOS ? 0 : 10,
   },
   line: {

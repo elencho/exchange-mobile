@@ -15,7 +15,7 @@ import AppText from '../../AppText';
 import TemplatesModal from './TemplatesModal';
 import WithdrawalBanksModal from './WithdrawalBanksModal';
 
-export default function WithdrawalInfo() {
+export default function WithdrawalInfo({ error }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -26,43 +26,43 @@ export default function WithdrawalInfo() {
 
   const showTemplates = () => dispatch(toggleTemplatesModal(true));
   const showBanks = () => dispatch(toggleChooseBankModal(true));
-  const title = () => {
-    if (!isTemplate()) {
-      return 'Choose or Add Template';
-    }
-    return currentTemplate.templateName;
-  };
+
+  const isBank = !!Object.keys(withdrawalBank).length;
+  const bankTitle = isBank ? withdrawalBank.bankName : 'Choose bank';
+  const isTemplate = !!Object.keys(currentTemplate).length;
+
+  const title = !isTemplate
+    ? 'Choose or Add Template'
+    : currentTemplate.templateName;
+
+  const bankColor = error && !isBank && { borderColor: '#F45E8C' };
+  const templateRed = error && !isTemplate && { borderColor: '#F45E8C' };
 
   const titleColor = (t) => {
     if (t === 'template') {
-      if (!isTemplate()) {
-        return { color: colors.SECONDARY_TEXT };
+      if (!isTemplate) {
+        return { color: error ? '#F45E8C' : colors.SECONDARY_TEXT };
       }
       return { color: colors.PRIMARY_TEXT };
+    }
+
+    if (error && !isBank) {
+      return { color: '#F45E8C' };
     }
 
     if (t === 'bank') {
-      if (!isBank()) {
+      if (!isBank) {
         return { color: colors.SECONDARY_TEXT };
       }
       return { color: colors.PRIMARY_TEXT };
     }
   };
 
-  const bankTitle = () => {
-    if (isBank()) {
-      return withdrawalBank.bankName;
-    }
-    return 'Choose bank';
-  };
-
-  const isTemplate = () => Object.keys(currentTemplate).length;
-  const isBank = () => Object.keys(withdrawalBank).length;
   const showIban = () => {
     return (
       (currentTemplate.templateName === 'New Template' &&
         Object.keys(withdrawalBank).length) ||
-      (isTemplate() && currentTemplate.templateName !== 'New Template')
+      (isTemplate && currentTemplate.templateName !== 'New Template')
     );
   };
   const handleIban = (t) => dispatch(setIban(t));
@@ -155,18 +155,18 @@ export default function WithdrawalInfo() {
         Bank Info
       </AppText>
 
-      <Pressable style={styles.dropdown} onPress={showTemplates}>
+      <Pressable style={[styles.dropdown, templateRed]} onPress={showTemplates}>
         <AppText style={[styles.dropdownText, titleColor('template')]}>
-          {title()}
+          {title}
         </AppText>
         <Image source={images.Arrow} />
       </Pressable>
 
       {currentTemplate.templateName === 'New Template' ? (
         <>
-          <Pressable style={styles.dropdown} onPress={showBanks}>
+          <Pressable style={[styles.dropdown, bankColor]} onPress={showBanks}>
             <AppText style={[styles.dropdownText, titleColor('bank')]}>
-              {bankTitle()}
+              {bankTitle}
             </AppText>
             <Image source={images.Arrow} />
           </Pressable>
@@ -191,6 +191,7 @@ export default function WithdrawalInfo() {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           value={iban}
           onChangeText={handleIban}
+          error={error && !iban}
         />
       ) : null}
 

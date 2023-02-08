@@ -75,9 +75,9 @@ const TransactionsBlock = ({
     trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
   } = state;
 
-  useEffect(() => {
-    return () => dispatch(saveTrades([]));
-  }, []);
+  // useEffect(() => {
+  //   return () => dispatch(saveTrades([]));
+  // }, []);
 
   const toggleShowHide = () => {
     dispatch(setTradeOffset(0));

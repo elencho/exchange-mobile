@@ -21,6 +21,7 @@ import {
   saveVerificationInfo,
   fetchUserInfo,
   toggleUserInfoLoading,
+  switchPersonalSecurity,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -218,7 +219,7 @@ function* usernameAndPasswordSaga(action) {
 
 //  O T P    F O R    L O G I N
 function* otpForLoginSaga(action) {
-  const { otp, navigation } = action;
+  const { otp, navigation, fromResetOtp } = action;
   const profile = yield select((state) => state.profile);
   const {
     userAndPassInfo,
@@ -241,6 +242,10 @@ function* otpForLoginSaga(action) {
       codeVerifier,
       navigation,
     });
+    if (fromResetOtp) {
+      navigation.navigate('UserProfile');
+      yield put(switchPersonalSecurity('Security'));
+    }
   } else {
     yield put({
       type: 'SAVE_FORGOT_PASS_INFO',

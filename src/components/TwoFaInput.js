@@ -26,6 +26,7 @@ export default function TwoFaInput({
   setValue,
   cellCount = 6,
   login,
+  fromResetOtp,
   registration,
 }) {
   const dispatch = useDispatch();
@@ -70,7 +71,7 @@ export default function TwoFaInput({
         if (emailAuthModalVisible) dispatch(activateEmailOtp(value));
       }
 
-      if (login) dispatch(otpForLoginAction(value, navigation));
+      if (login) dispatch(otpForLoginAction(value, navigation, fromResetOtp));
 
       setTimeout(() => {
         setValue('');

@@ -137,7 +137,8 @@ function* instantTradeTabSaga() {
 }
 
 function* balanceSaga() {
-  yield put(toggleLoading(true));
+  yield put({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: true });
+
   const balance = yield call(fetchBalance);
   if (balance) {
     yield put(setBalance(balance));
@@ -151,7 +152,7 @@ function* balanceSaga() {
       yield put(setCurrentBalanceObj(obj));
     }
   }
-  yield put(toggleLoading(false));
+  yield put({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: false });
 }
 
 function* submitTradeSaga() {
@@ -236,6 +237,8 @@ function* refreshWalletAndTradesSaga() {
   }
 
   if (balance) {
+    yield put(setFee(null));
+
     if (wallet && !whitelist && isAvailable(currentBalanceObj)) {
       // wire deposit saga is exclusion
       if (ecommerce) yield put(cardsSagaAction());

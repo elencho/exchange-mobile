@@ -14,6 +14,7 @@ import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
 import PurpleText from '../components/PurpleText';
 import WithKeyboard from '../components/WithKeyboard';
+import Strong_Password from '../assets/images/User_profile/Strong_Password';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
@@ -118,9 +119,9 @@ export default function ForgotPassword({ navigation }) {
       </TouchableOpacity>
 
       <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
-        <Image source={images.Strong_Password} />
+        <Strong_Password width={38} height={46} />
 
-        <View>
+        <View style={{ alignItems: 'center' }}>
           <AppText header style={styles.primary}>
             Forgot Your Password?
           </AppText>

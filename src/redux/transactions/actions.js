@@ -91,8 +91,9 @@ export const setTabRouteName = (tabRoute) => ({
 });
 
 // FOR SAGAS
-export const fetchTransactions = () => ({
+export const fetchTransactions = (isMoreLoading) => ({
   type: actionTypes.FETCH_TRANSACTIONS,
+  isMoreLoading,
 });
 export const fetchCurrencies = () => ({
   type: actionTypes.FETCH_CURRENCIES,

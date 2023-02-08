@@ -49,7 +49,7 @@ export default function FiatBlock() {
   const [error, setError] = useState(false);
   useEffect(() => {
     error && setError(false);
-  }, [card, depositAmount, depositProvider]);
+  }, [card, depositAmount, depositProvider, network]);
 
   const generatePdf = () => {
     if (!validateAmount(depositAmount)) {

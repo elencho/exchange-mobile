@@ -18,7 +18,6 @@ export default function ChooseAddressModal() {
 
   const hide = () => dispatch(toggleChooseAddressModal(false));
   const choose = (whitelist) => {
-    console.log(whitelist);
     dispatch(chooseWhitelist(whitelist));
     hide();
   };
@@ -27,6 +26,14 @@ export default function ChooseAddressModal() {
     if (w.id === currentWhitelistObj.id) {
       return { backgroundColor: 'rgba(101, 130, 253, 0.1)' };
     }
+  };
+
+  const addressFormat = (address) => {
+    if (address.length > 15)
+      return `${address.substring(0, 5)}...${address.substring(
+        address.length - 5
+      )}`;
+    else return address;
   };
 
   // useEffect(() => {
@@ -47,7 +54,7 @@ export default function ChooseAddressModal() {
                   {w.name}
                 </AppText>
                 <AppText subtext style={styles.secondary} numberOfLines={1}>
-                  {w.address}
+                  {addressFormat(w.address)}
                 </AppText>
               </View>
 

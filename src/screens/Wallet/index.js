@@ -11,7 +11,7 @@ import TotalBalance from '../../components/Wallet/TotalBalance';
 import BalancesList from '../../components/Wallet/BalancesList';
 
 export default function Wallet() {
-  const loading = useSelector((state) => state.transactions.loading);
+  const balanceLoading = useSelector((state) => state.trade.balanceLoading);
 
   return (
     <Background>
@@ -22,9 +22,9 @@ export default function Wallet() {
         <CurrencySwitch />
       </View>
 
-      <TotalBalance loading={loading} />
+      <TotalBalance balanceLoading={balanceLoading} />
 
-      <BalancesList loading={loading} />
+      <BalancesList balanceLoading={balanceLoading} />
     </Background>
   );
 }

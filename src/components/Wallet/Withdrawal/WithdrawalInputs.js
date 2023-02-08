@@ -31,6 +31,9 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
       network,
       whitelist,
       currentTemplate,
+      currentWhitelistObj,
+      iban,
+      withdrawalBank,
     },
     trade: { card, currentBalanceObj, depositProvider },
   } = state;
@@ -77,10 +80,24 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
 
   const enabled = !isEcommerce || depositProvider;
 
+  const disabled = () => {
+    const length = Object.keys(currentWhitelistObj)?.length;
+    const notEmpty = currentTemplate?.templateName || (iban && withdrawalBank);
+
+    let disabled;
+    if (isEcommerce) {
+      disabled = !card || !depositProvider;
+    } else if (isFiat) {
+      disabled = !notEmpty;
+    }
+
+    return disabled;
+  };
+
   const Max = () => (
     <TouchableOpacity
       onPress={handleMax}
-      disabled={!enabled}
+      disabled={disabled()}
       style={styles.row}
     >
       <View style={styles.line} />

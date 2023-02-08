@@ -1,11 +1,11 @@
-import { StyleSheet, Text, View, ImageBackground, Linking } from 'react-native';
 import React from 'react';
-import images from '../constants/images';
-import colors from '../constants/colors';
+import { StyleSheet, ImageBackground, Linking, Pressable } from 'react-native';
+
 import Logo from '../assets/images/Logo';
 import Rocket from '../assets/images/Rocket';
 import AppText from '../components/AppText';
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import images from '../constants/images';
+import colors from '../constants/colors';
 
 const Exchange = () => {
   const handlePress = () => Linking.openURL('https://cryptal.com/ex');

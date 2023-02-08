@@ -14,6 +14,7 @@ import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
 import WithKeyboard from '../components/WithKeyboard';
 import PurpleText from '../components/PurpleText';
+import Strong_Password from '../assets/images/User_profile/Strong_Password';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
@@ -56,7 +57,7 @@ export default function SetNewPassword({ navigation }) {
       </TouchableOpacity>
 
       <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
-        <Image source={images.Strong_Password} />
+        <Strong_Password width={38} height={46} />
 
         <View>
           <AppText header style={styles.primary}>
