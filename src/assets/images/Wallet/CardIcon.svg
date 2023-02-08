@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="46.029" height="45.024" viewBox="0 0 46.029 45.024">
+  <g id="Card" transform="translate(-930.982 -253.72)">
+    <g id="Group_43625" data-name="Group 43625" transform="translate(930.982 278.235) rotate(-41)">
+      <g id="Path_9467" data-name="Path 9467" transform="translate(0 0)" fill="none">
+        <path d="M0,0H37.366V27.175L6.524,26.687l-6.3-5.475Z" stroke="none"/>
+        <path d="M 1.617103576660156 1.600004196166992 L 1.817779541015625 20.475830078125 L 7.132867813110352 25.09617233276367 L 35.76618194580078 25.54985046386719 L 35.76618194580078 1.600004196166992 L 1.617103576660156 1.600004196166992 M 3.814697265625e-06 3.814697265625e-06 L 37.36618041992188 3.814697265625e-06 L 37.36618041992188 27.1754035949707 L 6.523782730102539 26.68672370910645 L 0.2255134582519531 21.21171379089355 L 3.814697265625e-06 3.814697265625e-06 Z" stroke="none" fill="#696f8e"/>
+      </g>
+      <rect id="Rectangle_725" data-name="Rectangle 725" width="36.007" height="2.038" transform="translate(1.359 7.473)" fill="#696f8e"/>
+      <rect id="Rectangle_726" data-name="Rectangle 726" width="6.794" height="2.038" transform="translate(24.458 18.343)" fill="#696f8e"/>
+    </g>
+    <path id="Path_62041" data-name="Path 62041" d="M0,.4H33.962V1.909H0Z" transform="translate(934.052 292.28)" fill="#696f8e"/>
+  </g>
+</svg>

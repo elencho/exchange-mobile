@@ -49,7 +49,6 @@ export default {
   Delete: require('../assets/images/Wallet/Delete.png'),
   Delete_Card: require('../assets/images/Wallet/Delete_Card.png'),
   White_Copy: require('../assets/images/Wallet/White_Copy.png'),
-  Card: require('../assets/images/Wallet/Card.png'),
   Fee: require('../assets/images/Wallet/Fee.png'),
   Address_List: require('../assets/images/Wallet/Address_List.png'),
   Time: require('../assets/images/Wallet/Time.png'),

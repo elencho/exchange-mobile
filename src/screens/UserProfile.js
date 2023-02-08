@@ -63,7 +63,7 @@ function UserProfile({ navigation, route }) {
     // }
   };
   const onRefresh = () => dispatch(fetchUserInfo());
-  const back = () => navigation.goBack();
+  const back = () => navigation.navigate('Main');
 
   const onScroll = (event) => {
     const { y } = event.nativeEvent.contentOffset;

@@ -11,6 +11,7 @@ import AppText from '../components/AppText';
 import TopRow from '../components/TransactionHistory/TopRow';
 import TransactionDate from '../components/TransactionHistory/TransactionDate';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
+import TransactionSkeleton from '../components/TransactionHistory/TransactionSkeleton';
 import List from '../assets/images/List.svg';
 
 import { types } from '../constants/filters';
@@ -21,7 +22,6 @@ import {
   reachScrollEnd,
   setAbbr,
 } from '../redux/transactions/actions';
-import TransactionSkeleton from '../components/TransactionHistory/TransactionSkeleton';
 import colors from '../constants/colors';
 
 function TransactionHistory() {
@@ -61,7 +61,7 @@ function TransactionHistory() {
       loading={loading}
     />
   );
-  const listEmptyContainer = () => (
+  const listEmptyContainer = (
     <View style={styles.empty}>
       <List />
       <AppText subtext style={styles.subtext}>
@@ -93,6 +93,7 @@ function TransactionHistory() {
       ) : (
         <FlatList
           style={styles.transactions}
+          contentContainerStyle={{ flexGrow: 1 }}
           data={uniqueDates}
           renderItem={renderDate}
           keyExtractor={(item) => item}
