@@ -83,7 +83,15 @@ export default function Withdrawal({ refreshControl }) {
 
   useEffect(() => {
     error && setError(false);
-  }, [depositProvider, card, withdrawalAmount, currentWhitelistObj]);
+  }, [
+    depositProvider,
+    card,
+    withdrawalAmount,
+    currentWhitelistObj,
+    currentTemplate,
+    withdrawalBank,
+    iban,
+  ]);
 
   const withdraw = () => {
     const length = Object.keys(currentWhitelistObj)?.length;

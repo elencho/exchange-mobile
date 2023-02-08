@@ -13,16 +13,17 @@ export default function PurpleText({
   ...rest
 }) {
   return (
-    <TouchableOpacity onPress={onPress} disabled={!onPress}>
-      <AppText
-        medium
-        subtext={subtext}
-        onPress={onPress}
-        style={[{ color: colors.SECONDARY_PURPLE, fontSize: 30 }, style]}
-        {...rest}
-      >
-        {text}
-      </AppText>
-    </TouchableOpacity>
+    // <TouchableOpacity >
+    <AppText
+      medium
+      subtext={subtext}
+      onPress={onPress}
+      style={[{ color: colors.SECONDARY_PURPLE, fontSize: 30 }, style]}
+      disabled={!onPress}
+      {...rest}
+    >
+      {text}
+    </AppText>
+    // </TouchableOpacity>
   );
 }

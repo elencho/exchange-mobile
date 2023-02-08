@@ -22,12 +22,11 @@ import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton
 import Trade from './Trade';
 import List from '../../assets/images/List.svg';
 import { Trans, useTranslation } from 'react-i18next';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const IS_IOS = Platform.OS === 'ios';
 
 export const TopRow = ({ text, onPress }) => {
-  const { t } = useTranslation();
-
   return (
     <View style={styles.topRow}>
       <AppText header style={styles.header}>
@@ -39,12 +38,28 @@ export const TopRow = ({ text, onPress }) => {
           <Trans
             i18nKey="togglePairs"
             components={{
-              purple: <PurpleText onPress={onPress} text={t(text)} />,
+              purple: <Purple text={text} onPress={onPress} />,
             }}
           />
         </AppText>
       </View>
     </View>
+  );
+};
+
+const Purple = ({ text, onPress }) => {
+  const { t } = useTranslation();
+
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{
+        position: 'relative',
+        top: 2,
+      }}
+    >
+      <PurpleText onPress={onPress} text={t(text)} />
+    </TouchableOpacity>
   );
 };
 

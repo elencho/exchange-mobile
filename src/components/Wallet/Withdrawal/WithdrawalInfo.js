@@ -29,16 +29,19 @@ export default function WithdrawalInfo({ error }) {
 
   const isBank = !!Object.keys(withdrawalBank).length;
   const bankTitle = isBank ? withdrawalBank.bankName : 'Choose bank';
+  const isTemplate = !!Object.keys(currentTemplate).length;
+
   const title = !isTemplate
     ? 'Choose or Add Template'
     : currentTemplate.templateName;
-  const isTemplate = !!Object.keys(currentTemplate).length;
+
   const bankColor = error && !isBank && { borderColor: '#F45E8C' };
+  const templateRed = error && !isTemplate && { borderColor: '#F45E8C' };
 
   const titleColor = (t) => {
     if (t === 'template') {
       if (!isTemplate) {
-        return { color: colors.SECONDARY_TEXT };
+        return { color: error ? '#F45E8C' : colors.SECONDARY_TEXT };
       }
       return { color: colors.PRIMARY_TEXT };
     }
@@ -152,7 +155,7 @@ export default function WithdrawalInfo({ error }) {
         Bank Info
       </AppText>
 
-      <Pressable style={styles.dropdown} onPress={showTemplates}>
+      <Pressable style={[styles.dropdown, templateRed]} onPress={showTemplates}>
         <AppText style={[styles.dropdownText, titleColor('template')]}>
           {title}
         </AppText>
