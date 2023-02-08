@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
-    paddingLeft: 18,
+    paddingLeft: 13,
     backgroundColor: 'rgba(63, 66, 91, 0.18)',
 
     paddingRight: 25,

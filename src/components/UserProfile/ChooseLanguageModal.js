@@ -23,11 +23,11 @@ export default function ChooseLanguageModal() {
   const chooseLanguage = (l) => {
     dispatch(setLanguage(l));
     hide();
+    dispatch(fetchUserInfo());
   };
 
   const handleHide = () => {
     switchLanguage(language);
-    dispatch(fetchUserInfo());
   };
 
   const background = (l) => {
