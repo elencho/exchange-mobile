@@ -400,8 +400,13 @@ function* updatePasswordSaga(action) {
 
 //  VERIFY PHONE NUMBER
 function* verifyPhoneNumberSaga(action) {
+  yield put(toggleLoading(true));
+
   const { phoneNumber, phoneCountry } = action;
   yield call(verifyPhoneNumber, phoneNumber, phoneCountry);
+
+  yield put({ type: 'TOGGLE_TIMER', timerVisible: true });
+  yield put(toggleLoading(false));
 }
 
 //  UPDATE PHONE NUMBER
@@ -522,6 +527,8 @@ function* otpSaga(action) {
 
 // RESEND SAGA
 function* resendSaga(action) {
+  yield put(toggleLoading(true));
+
   const state = yield select((state) => state.profile);
   const { url, emailVerification, smsEmailAuth, login2Fa } = action;
   const { googleAuth } = state;
@@ -540,6 +547,8 @@ function* resendSaga(action) {
     const data = yield call(resendEmail, url);
     if (data) yield put(saveUserAndPassInfo(data));
   }
+  yield put({ type: 'TOGGLE_TIMER', timerVisible: true });
+  yield put(toggleLoading(false));
 }
 
 function* logoutSaga() {

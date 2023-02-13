@@ -7,6 +7,7 @@ import {
   View,
   Pressable,
   Keyboard,
+  ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -25,19 +26,36 @@ import { startLoginAction } from '../redux/profile/actions';
 export default function Login2Fa({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const {
+    profile: { userAndPassInfo, timerVisible },
+    transactions: { loading },
+  } = state;
 
   const [value, setValue] = useState('');
+  const [seconds, setSeconds] = useState(30);
 
   useEffect(() => {
+    if (!seconds) {
+      dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
+      setSeconds(30);
+    }
+    if (seconds && timerVisible) {
+      setTimeout(() => {
+        setSeconds(seconds - 1);
+      }, 1000);
+    }
+  }, [seconds, timerVisible]);
+
+  useEffect(() => {
+    dispatch({ type: 'TOGGLE_TIMER', timerVisible: true });
+
     return () => {
       dispatch({ type: 'TOGGLE_FORGOT_PASS_MODE', forgotPassMode: false });
       setValue('');
+      dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
+      setSeconds(30);
     };
   }, []);
-
-  const {
-    profile: { userAndPassInfo },
-  } = state;
 
   const t = userAndPassInfo?.attributes?.otpType;
   const cellCount = t === 'SMS' ? 4 : 6;
@@ -58,6 +76,18 @@ export default function Login2Fa({ navigation }) {
       login2Fa: true,
       url: userAndPassInfo.callbackUrl,
     });
+
+  const resendOrCountDown = () => {
+    if (loading) {
+      return <ActivityIndicator style={{ marginTop: -5 }} />;
+    } else if (timerVisible) {
+      return (
+        <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
+      );
+    } else {
+      return <PurpleText text="Resend" onPress={resend} />;
+    }
+  };
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
@@ -93,8 +123,7 @@ export default function Login2Fa({ navigation }) {
           <View style={styles.bottom}>
             {t !== 'TOTP' ? (
               <AppText style={[styles.secondary, { marginBottom: 20 }]}>
-                Didn't receive code?{' '}
-                <PurpleText text="Resend" onPress={resend} />
+                Didn't receive code? {resendOrCountDown()}
               </AppText>
             ) : null}
             {t !== 'EMAIL' ? (

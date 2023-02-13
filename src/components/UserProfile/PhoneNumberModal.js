@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
@@ -35,13 +36,27 @@ export default function PhoneNumberModal() {
   const state = useSelector((state) => state);
   const {
     modals: { phoneNumberModalVisible },
-    profile: { userInfo, countries },
+    profile: { userInfo, countries, timerVisible },
+    transactions: { loading },
   } = state;
 
   const [userInfoVariable, setUserInfoVariable] = useState(null);
   const [code, setCode] = useState(null);
   const [error, setError] = useState(false);
   const [sendError, setSendError] = useState(false);
+  const [seconds, setSeconds] = useState(30);
+
+  useEffect(() => {
+    if (!seconds) {
+      dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
+      setSeconds(30);
+    }
+    if (seconds && timerVisible) {
+      setTimeout(() => {
+        setSeconds(seconds - 1);
+      }, 1000);
+    }
+  }, [seconds, timerVisible]);
 
   useEffect(() => {
     if (error || sendError) {
@@ -91,7 +106,15 @@ export default function PhoneNumberModal() {
 
   const handleCountries = () => dispatch(toggleCountriesModal(true));
 
-  const send = <PurpleText text="Send" onPress={handleSend} />;
+  const Right = () => {
+    if (loading) {
+      return <ActivityIndicator />;
+    } else if (timerVisible) {
+      return <AppText style={{ color: '#C0C5E0' }}>{seconds}</AppText>;
+    } else {
+      return <PurpleText text="Send" onPress={handleSend} />;
+    }
+  };
 
   const phoneCountry = () => {
     let phoneCountry;
@@ -131,7 +154,7 @@ export default function PhoneNumberModal() {
           <AppInput
             style={styles.inputContainer}
             label="Phone Number"
-            right={send}
+            right={<Right />}
             onChangeText={(text) => handlePhoneNumber(text)}
             value={number}
             keyboardType="number-pad"

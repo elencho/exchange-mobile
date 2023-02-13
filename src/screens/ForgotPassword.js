@@ -57,7 +57,6 @@ export default function ForgotPassword({ navigation }) {
     };
   }, []);
 
-  const secondsFormat = seconds < 10 ? `00 : 0${seconds}` : `00 : ${seconds}`;
   const f = forgotPassInfo;
   const mailValid = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(f.username);
 
@@ -78,7 +77,7 @@ export default function ForgotPassword({ navigation }) {
     if (loading) {
       return <ActivityIndicator />;
     } else if (timerVisible) {
-      return <AppText style={{ color: '#C0C5E0' }}>{secondsFormat}</AppText>;
+      return <AppText style={{ color: '#C0C5E0' }}>{seconds}</AppText>;
     } else {
       return <PurpleText text="Send" onPress={sendCode} />;
     }

@@ -56,7 +56,7 @@ export default function Timer() {
       />
       <AppText style={{ marginTop: 10, color: '#C0C5E0' }} subtext body>
         {t('priceUpdate')}
-        <AppText>{min}:</AppText>
+        {min > 0 && <AppText>{min}:</AppText>}
         <AppText style={seconds <= 30 && { color: '#FA6392' }}>{sec}</AppText>
       </AppText>
     </>

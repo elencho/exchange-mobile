@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -26,17 +26,38 @@ export default function EmailVerificationModal() {
   const state = useSelector((state) => state);
 
   const [value, setValue] = useState('');
+  const [seconds, setSeconds] = useState(30);
 
   const {
     modals: { emailVerificationModalVisible },
-    profile: { verificationInfo, registrationInputs },
+    profile: { verificationInfo, registrationInputs, timerVisible },
     transactions: { loading },
   } = state;
+
+  useEffect(() => {
+    if (emailVerificationModalVisible) {
+      dispatch({ type: 'TOGGLE_TIMER', timerVisible: true });
+    }
+  }, [emailVerificationModalVisible]);
+
+  useEffect(() => {
+    if (!seconds) {
+      dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
+      setSeconds(30);
+    }
+    if (seconds && timerVisible) {
+      setTimeout(() => {
+        setSeconds(seconds - 1);
+      }, 1000);
+    }
+  }, [seconds, timerVisible]);
 
   const hide = () => {
     dispatch(toggleEmailVerificationModal(false));
     dispatch(startRegistrationAction(navigation));
     setValue('');
+    setSeconds(30);
+    dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
   };
 
   const resend = () => {
@@ -63,6 +84,18 @@ export default function EmailVerificationModal() {
     return null;
   };
 
+  const resendOrCountDown = () => {
+    if (loading) {
+      return <ActivityIndicator style={{ marginTop: -5 }} />;
+    } else if (timerVisible) {
+      return (
+        <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
+      );
+    } else {
+      return <PurpleText text="Resend" onPress={resend} />;
+    }
+  };
+
   const children = (
     <WithKeyboard flexGrow padding modal>
       <ImageBackground source={images.Background} style={styles.container}>
@@ -70,28 +103,24 @@ export default function EmailVerificationModal() {
           <CloseModalIcon onPress={hide} />
         </View>
 
-        {loading ? (
-          <ActivityIndicator size="large" style={styles.middle} />
-        ) : (
-          <View style={styles.middle}>
-            <Image source={images.E_mail_Auth} />
+        <View style={styles.middle}>
+          <Image source={images.E_mail_Auth} />
 
-            {/* Animate */}
-            <View>
-              <AppText header style={styles.primary}>
-                E-mail Has Been Sent
-              </AppText>
-            </View>
-            {checkMailText()}
-
-            <TwoFaInput value={value} setValue={setValue} registration />
+          {/* Animate */}
+          <View>
+            <AppText header style={styles.primary}>
+              E-mail Has Been Sent
+            </AppText>
           </View>
-        )}
+          {checkMailText()}
+
+          <TwoFaInput value={value} setValue={setValue} registration />
+        </View>
 
         {/* Animate */}
         <View>
           <AppText style={styles.secondary}>
-            Didn't receive link? <PurpleText text="Resend" onPress={resend} />
+            Didn't receive link? {resendOrCountDown()}
           </AppText>
         </View>
       </ImageBackground>
