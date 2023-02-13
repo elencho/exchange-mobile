@@ -109,6 +109,7 @@ function* wireDepositSaga(action) {
   const language = yield select((s) => s.profile.language);
   const currentBalanceObj = yield select((s) => s.trade.currentBalanceObj);
   const network = yield select((s) => s.wallet.network);
+  const walletTab = yield select((s) => s.wallet.walletTab);
 
   const hasMethods = Object.keys(currentBalanceObj?.depositMethods)?.length;
 
@@ -119,7 +120,7 @@ function* wireDepositSaga(action) {
     n = network;
   }
 
-  if (hasMethods) {
+  if (hasMethods && walletTab !== 'Withdrawal') {
     const wireDepositData = yield call(fetchWireDeposit, code, n);
     if (wireDepositData) {
       const wireDepositProviders = wireDepositData[language];
