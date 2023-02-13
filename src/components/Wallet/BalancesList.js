@@ -35,7 +35,10 @@ export default function BalancesList({ balanceLoading }) {
 
   useFocusEffect(
     useCallback(() => {
-      return () => setShowZeroBalances(true);
+      return () => {
+        setShowZeroBalances(true);
+        setValue('');
+      };
     }, [])
   );
 

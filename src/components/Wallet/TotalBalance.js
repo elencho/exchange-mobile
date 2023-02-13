@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.SECONDARY_BACKGROUND,
     padding: 25,
     flexDirection: 'row',
-    borderWidth: 1,
     alignItems: 'center',
   },
   justify: {

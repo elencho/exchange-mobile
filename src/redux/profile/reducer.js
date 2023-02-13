@@ -9,7 +9,7 @@ const baneta_realuri = { login: 'ibanet@cryptx.com', password: 'Malina125$' };
 const kervala = { login: 'gkerva@cryptal.com', password: 'TestGexCryptal7' };
 const sali = { login: 'bukhiashvilisalome@gmail.com', password: 'Salome1996' };
 const saliSatesto = {
-  login: 'sbukhiashvili2@mailinator.com',
+  login: 'salibukhiashvili@mailinator.com',
   password: 'Salome1996',
 };
 

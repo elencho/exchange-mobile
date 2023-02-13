@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
@@ -36,7 +36,9 @@ export default function Personal({ loading }) {
     errors: { generalError },
   } = state;
 
-  const isVerified = userInfo?.userStatus === 'VERIFIED';
+  const verified = userInfo?.userStatus === 'VERIFIED';
+  const unverified = userInfo?.userStatus === 'UNVERIFIED';
+  const pending = userInfo?.userStatus === 'PENDING';
   const corporate = userInfo?.userType === 'CORPORATE';
   const eligibleToVerify = userInfo?.verificationToolEnabled;
 
@@ -56,6 +58,9 @@ export default function Personal({ loading }) {
     if (eligibleToVerify) launchSumsubSdk();
     else dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
   };
+
+  const goToSupport = () =>
+    Linking.openURL('https://support.cryptal.com/hc/en-us/requests/new');
 
   const editLanguage = () => {
     hideError();
@@ -81,7 +86,7 @@ export default function Personal({ loading }) {
                 Identification
               </AppText>
 
-              {!isVerified && (
+              {!verified && (
                 <Pressable style={styles.circle} onPress={openModal}>
                   <AppText medium body style={{ color: '#9EA6D0' }}>
                     i
@@ -90,8 +95,11 @@ export default function Personal({ loading }) {
               )}
             </View>
 
-            {!isVerified && (
+            {unverified && (
               <PurpleText text="Verify" subtext onPress={verify} />
+            )}
+            {pending && (
+              <PurpleText text="Go To Support" subtext onPress={goToSupport} />
             )}
           </View>
         );
@@ -155,11 +163,11 @@ export default function Personal({ loading }) {
             <View
               style={[
                 styles.check,
-                { backgroundColor: isVerified ? '#25D8D1' : '#FFC65C' },
+                { backgroundColor: verified ? '#25D8D1' : '#FFC65C' },
               ]}
             />
             <AppText subtext style={styles.secondary}>
-              {isVerified ? 'Upload documents' : 'Not verified'}
+              Verification subtext {userInfo?.userStatus}
             </AppText>
           </View>
         );
