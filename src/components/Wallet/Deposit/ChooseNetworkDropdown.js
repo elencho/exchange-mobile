@@ -24,20 +24,13 @@ export default function ChooseNetworkDropdown({
   } = state;
 
   const cur = currentBalanceObj;
-  const [iconDimensions, setIconDimensions] = useState({});
+  const uri = `${ICONS_URL_PNG}/${network}.png`;
+  const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
+  const fiat = cur?.type === 'FIAT';
+
   const [icon, setIcon] = useState(null);
 
-  const uri = `${ICONS_URL_PNG}/${network}.png`;
-
   useEffect(() => {
-    if (network && network !== 'MAINNET') {
-      Image.getSize(uri, (w, h) => {
-        setIconDimensions({ width: 18 * (w / h), height: 18 });
-      });
-    } else {
-      setIconDimensions({ width: 18, height: 18 });
-    }
-
     cur?.depositMethods?.WALLET?.forEach((m) => {
       if (m.provider === network) setIcon(m.iconName);
     });
@@ -50,8 +43,6 @@ export default function ChooseNetworkDropdown({
   }, [addWhitelistModalVisble]);
 
   const handleDropdown = () => dispatch(toggleChooseNetworkModal(true));
-
-  const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
 
   const isAvailable = () => {
     if (Object.keys(cur).length) {
@@ -79,6 +70,10 @@ export default function ChooseNetworkDropdown({
     color: error && !network ? '#F45E8C' : colors.PRIMARY_TEXT,
   };
 
+  const imageDimensions = fiat
+    ? { width: 60, height: 12 }
+    : { width: 18, height: 18 };
+
   return (
     <>
       {isAvailable() && (
@@ -98,7 +93,7 @@ export default function ChooseNetworkDropdown({
                   </View>
                   <Image
                     source={{ uri }}
-                    style={[styles.image, iconDimensions]}
+                    style={[styles.image, imageDimensions]}
                   />
                   <AppText medium style={[styles.dropdownText, dropdownText]}>
                     {networkName()}{' '}

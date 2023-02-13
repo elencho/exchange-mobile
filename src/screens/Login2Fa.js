@@ -46,9 +46,10 @@ export default function Login2Fa({ navigation }) {
   const goToReset = () => dispatch({ type: 'RESET_OTP', navigation });
 
   const image = () => {
-    if (t === 'TOTP') return <TotpAuth />;
+    if (t === 'TOTP')
+      return <TotpAuth style={{ transform: [{ scale: 1.3 }] }} />;
     if (t === 'EMAIL') return <EmailLoginAuth />;
-    if (t === 'SMS') return <SmsAuth />;
+    if (t === 'SMS') return <SmsAuth style={{ transform: [{ scale: 1.3 }] }} />;
   };
 
   const resend = () =>

@@ -57,7 +57,10 @@ function App() {
 
   return (
     <Provider store={store}>
-      <StatusBar backgroundColor={colors.PRIMARY_BACKGROUND} />
+      <StatusBar
+        backgroundColor={colors.PRIMARY_BACKGROUND}
+        barStyle="light-content"
+      />
       {iphone && <SafeAreaView style={styles.statusBar} />}
       <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
         <AppToast />

@@ -52,7 +52,6 @@ export default function BuySellModal() {
     },
   } = state;
 
-  const [webViewUrl, setWebViewUrl] = useState('');
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -170,8 +169,7 @@ export default function BuySellModal() {
   };
 
   const onNavigationStateChange = (state) => {
-    setWebViewUrl(state.url);
-    const urlArray = webViewUrl.split('=');
+    const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });

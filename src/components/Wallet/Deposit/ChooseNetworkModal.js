@@ -18,7 +18,6 @@ export default function ChooseNetworkModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [networks, setNetworks] = useState([]);
-  const [iconDimensions, setIconDimensions] = useState({});
 
   const {
     modals: { chooseNetworkModalVisible },
@@ -52,17 +51,6 @@ export default function ChooseNetworkModal() {
     hide();
   };
 
-  const handleDimensions = () => {
-    if (network && network !== 'MAINNET') {
-      const uri = () => `${ICONS_URL_PNG}/${network}.png`;
-      Image.getSize(uri(), (w, h) => {
-        setIconDimensions({ width: 25 * (w / h), height: 25 });
-      });
-    } else {
-      setIconDimensions({ width: 25, height: 25 });
-    }
-  };
-
   useEffect(() => {
     let networksToDisplay = [];
     const m = withdrawal ? 'withdrawalMethods' : 'depositMethods';
@@ -71,8 +59,6 @@ export default function ChooseNetworkModal() {
     if (n.WALLET) n.WALLET.forEach((n) => networksToDisplay.push(n));
     if (n.WIRE) n.WIRE.forEach((n) => networksToDisplay.push(n));
     setNetworks(networksToDisplay);
-
-    handleDimensions();
     return () => setNetworks([]);
   }, [code, walletTab]);
 
@@ -88,6 +74,10 @@ export default function ChooseNetworkModal() {
     }
   };
 
+  const imageDimensions = fiat
+    ? { width: 60, height: 12 }
+    : { width: 18, height: 18 };
+
   const children = (
     <>
       {networks.map((n, i) => (
@@ -102,7 +92,7 @@ export default function ChooseNetworkModal() {
         >
           <Image
             source={{ uri: `${ICONS_URL_PNG}/${n.provider}.png` }}
-            style={[styles.image, iconDimensions]}
+            style={[styles.image, imageDimensions]}
           />
           <View style={styles.name}>
             <AppText medium body style={styles.primary}>
@@ -132,7 +122,9 @@ export default function ChooseNetworkModal() {
 }
 
 const styles = StyleSheet.create({
-  image: { resizeMode: 'contain' },
+  image: {
+    resizeMode: 'contain',
+  },
   name: {
     marginLeft: 20,
     justifyContent: 'space-between',

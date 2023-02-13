@@ -19,7 +19,7 @@ import TwoFaInput from '../components/TwoFaInput';
 import WithKeyboard from '../components/WithKeyboard';
 
 export default function ResetOtpInstructions({ navigation, route }) {
-  const ex = route?.params?.execution;
+  const ex = 'RESET_OTP';
   const [url, setUrl] = useState('');
   const [value, setValue] = useState('');
 
@@ -44,9 +44,13 @@ export default function ResetOtpInstructions({ navigation, route }) {
 
         <View style={styles.middle}>
           <Logo style={styles.logo} />
-          <AppText header style={styles.primary}>
-            Reset One Time Password
-          </AppText>
+
+          <View>
+            <AppText header style={styles.primary}>
+              Reset One Time Password
+            </AppText>
+          </View>
+
           {ex === 'OTP_RESET_INSTRUCTIONS' && (
             <AppText style={styles.secondary}>
               Contact Our{' '}
@@ -55,7 +59,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
             </AppText>
           )}
           {ex === 'RESET_OTP' && (
-            <>
+            <View>
               <AppText style={[styles.secondary, { marginBottom: 40 }]}>
                 Enter the code you received on the email
               </AppText>
@@ -65,7 +69,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
                 login
                 fromResetOtp
               />
-            </>
+            </View>
           )}
         </View>
 
