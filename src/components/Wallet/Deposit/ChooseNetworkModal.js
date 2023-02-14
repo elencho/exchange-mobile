@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   },
   primary: {
     color: colors.PRIMARY_TEXT,
-    marginBottom: 5,
+    marginBottom: 1,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

@@ -8,6 +8,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useDispatch, useSelector } from 'react-redux';
 
 import WelcomeScreen from '../screens/Welcome';
+import UpdateAvailableScreen from '../screens/UpdateAvailable';
 import MaintananceScreen from '../screens/Maintanance';
 import LoginScreen from '../screens/Login';
 import RegistrationScreen from '../screens/Registration';
@@ -55,6 +56,10 @@ export default function Navigator() {
     <NavigationContainer onStateChange={onStateChange} ref={navigationRef}>
       <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen
+          name="UpdateAvailable"
+          component={UpdateAvailableScreen}
+        />
         <Stack.Screen name="Maintanance" component={MaintananceScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Registration" component={RegistrationScreen} />

@@ -20,13 +20,20 @@ function GeneralError({ style, show = true }) {
     }
   }, [modals, trade, transactions, wallet, profile]);
 
+  const params =
+    generalError?.transParams && Object.keys(generalError?.transParams);
+  const message = generalError?.errorMessage;
+  const errorMessage = !params
+    ? message
+    : `${message} params[${params.join()}]`;
+
   return (
     <>
       {generalError && show ? (
         <View style={[styles.container, style]}>
           <Image source={images.General_Error} />
           <AppText subtext style={styles.red}>
-            {generalError?.errorMessage}
+            {errorMessage}
           </AppText>
         </View>
       ) : null}

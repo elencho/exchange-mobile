@@ -76,7 +76,7 @@ export default function WithdrawalConfirmModal() {
             warning
             content={[
               <Trans
-                i18nKey="confirmWithdrawal"
+                i18nKey="confirmWithdrawal modal key params[network]"
                 values={{ network: networkName() }}
                 components={{
                   light: <AppText style={{ color: '#FFFBF3' }} />,
