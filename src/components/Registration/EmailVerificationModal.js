@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   ImageBackground,
-  Image,
   ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,12 +12,14 @@ import AppModal from '../AppModal';
 import AppText from '../AppText';
 import CloseModalIcon from '../InstantTrade/CloseModalIcon';
 import PurpleText from '../PurpleText';
-import images from '../../constants/images';
-import { toggleEmailVerificationModal } from '../../redux/modals/actions';
-import colors from '../../constants/colors';
 import TwoFaInput from '../TwoFaInput';
-import { startRegistrationAction } from '../../redux/profile/actions';
 import WithKeyboard from '../WithKeyboard';
+import EmailLoginAuth from '../../assets/images/User_profile/EmailLoginAuth.svg';
+
+import images from '../../constants/images';
+import colors from '../../constants/colors';
+import { startRegistrationAction } from '../../redux/profile/actions';
+import { toggleEmailVerificationModal } from '../../redux/modals/actions';
 
 export default function EmailVerificationModal() {
   const navigation = useNavigation();
@@ -104,7 +105,7 @@ export default function EmailVerificationModal() {
         </View>
 
         <View style={styles.middle}>
-          <Image source={images.E_mail_Auth} />
+          <EmailLoginAuth />
 
           {/* Animate */}
           <View>
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
   },
   primary: {
     color: colors.PRIMARY_TEXT,
-    marginTop: 18,
+    marginTop: 23,
     marginBottom: 12,
   },
   secondary: {

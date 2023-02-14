@@ -58,7 +58,9 @@ export default function ForgotPassword({ navigation }) {
   }, []);
 
   const f = forgotPassInfo;
-  const mailValid = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(f.username);
+  const mailValid = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(
+    f.username
+  );
 
   const goToLogin = () => {
     navigation.navigate('Login');
@@ -77,7 +79,9 @@ export default function ForgotPassword({ navigation }) {
     if (loading) {
       return <ActivityIndicator />;
     } else if (timerVisible) {
-      return <AppText style={{ color: '#C0C5E0' }}>{seconds}</AppText>;
+      return (
+        <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
+      );
     } else {
       return <PurpleText text="Send" onPress={sendCode} />;
     }

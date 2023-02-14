@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import AppText from '../AppText';
 import { instantTradeTabAction } from '../../redux/trade/actions';
+import colors from '../../constants/colors';
 
 export default function Timer() {
   const dispatch = useDispatch();
@@ -56,8 +57,14 @@ export default function Timer() {
       />
       <AppText style={{ marginTop: 10, color: '#C0C5E0' }} subtext body>
         {t('priceUpdate')}
-        {min > 0 && <AppText>{min}:</AppText>}
-        <AppText style={seconds <= 30 && { color: '#FA6392' }}>{sec}</AppText>
+        {min > 0 && (
+          <AppText style={{ color: colors.PRIMARY_TEXT }}>{min}:</AppText>
+        )}
+        <AppText
+          style={{ color: seconds <= 30 ? '#F45E8C' : colors.PRIMARY_TEXT }}
+        >
+          {sec}
+        </AppText>
       </AppText>
     </>
   );
