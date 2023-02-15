@@ -1,12 +1,13 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../../AppModal';
 import QrCode from '../../QrCode';
-import { toggleQrAddressModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
-import images from '../../../constants/images';
+import Copy from '../../../assets/images/Copy';
+
+import { toggleQrAddressModal } from '../../../redux/modals/actions';
 import { copyToClipboard } from '../../../utils/copyToClipboard';
 
 export default function AddressQrModal() {
@@ -34,7 +35,7 @@ export default function AddressQrModal() {
       </AppText>
 
       <TouchableOpacity style={styles.copy} onPress={copy}>
-        <Image source={images.Copy} />
+        <Copy />
       </TouchableOpacity>
     </View>
   );

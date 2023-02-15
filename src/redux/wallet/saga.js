@@ -273,7 +273,7 @@ function* cryptoWithdrawalSaga(action) {
 
     yield put({
       type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
-      withdrawalConfirmModalVisible: true,
+      withdrawalConfirmModalVisible: false,
     });
 
     yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
@@ -296,7 +296,7 @@ function* wireWithdrawalSaga(action) {
 
     yield put({
       type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
-      withdrawalConfirmModalVisible: true,
+      withdrawalConfirmModalVisible: false,
     });
 
     yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
@@ -319,7 +319,7 @@ function* cardWithdrawalSaga(action) {
 
     yield put({
       type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
-      withdrawalConfirmModalVisible: true,
+      withdrawalConfirmModalVisible: false,
     });
 
     yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });

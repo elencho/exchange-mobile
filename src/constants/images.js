@@ -41,7 +41,6 @@ export default {
   // Wallet
   Warning: require('../assets/images/Wallet/Warning.png'),
   Warning_White: require('../assets/images/Wallet/Warning_White.png'),
-  QR: require('../assets/images/Wallet/QR.png'),
   Binance: require('../assets/images/Wallet/Binance.png'),
   Menu: require('../assets/images/Wallet/Menu.png'),
   Edit: require('../assets/images/Wallet/Edit.png'),
