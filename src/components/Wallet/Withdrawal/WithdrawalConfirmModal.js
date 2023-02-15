@@ -143,7 +143,7 @@ export default function WithdrawalConfirmModal() {
   return (
     <AppModal
       title={`${type} Withdrawal Confirm`}
-      visible={withdrawalConfirmModalVisible}
+      visible={true}
       hide={hide}
       fullScreen
       children={children}

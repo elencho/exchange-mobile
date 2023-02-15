@@ -6,9 +6,9 @@ import {
   Platform,
   TouchableOpacity,
   Linking,
-  ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
@@ -74,7 +74,12 @@ export default function GoogleAuthModal() {
     <View style={styles.row}>
       <View style={styles.smallLine} />
       {googleAuthLoading ? (
-        <ActivityIndicator size="small" />
+        <MaterialIndicator
+          color="#6582FD"
+          animationDuration={3000}
+          size={16}
+          style={{ flex: 0 }}
+        />
       ) : (
         <PurpleText text="Enable" onPress={enable} />
       )}

@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  ImageBackground,
-  ActivityIndicator,
-} from 'react-native';
+import { StyleSheet, View, ImageBackground } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import AppModal from '../AppModal';
 import AppText from '../AppText';
@@ -87,7 +83,14 @@ export default function EmailVerificationModal() {
 
   const resendOrCountDown = () => {
     if (loading) {
-      return <ActivityIndicator style={{ marginTop: -5 }} />;
+      return (
+        <MaterialIndicator
+          color="#6582FD"
+          animationDuration={3000}
+          size={16}
+          style={{ flex: 0 }}
+        />
+      );
     } else if (timerVisible) {
       return (
         <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
@@ -119,10 +122,11 @@ export default function EmailVerificationModal() {
         </View>
 
         {/* Animate */}
-        <View>
-          <AppText style={styles.secondary}>
-            Didn't receive link? {resendOrCountDown()}
+        <View style={styles.row}>
+          <AppText style={[styles.secondary, { marginRight: 5 }]}>
+            Didn't receive link?
           </AppText>
+          {resendOrCountDown()}
         </View>
       </ImageBackground>
     </WithKeyboard>
@@ -152,6 +156,11 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
     marginTop: 23,
     marginBottom: 12,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

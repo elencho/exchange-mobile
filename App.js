@@ -40,9 +40,9 @@ function App() {
   //   CodePush.notifyAppReady();
   //   CodePush.sync(codePushOptions);
   // })
-  useEffect(() => {
-    checkVersion();
-  }, []);
+  // useEffect(() => {
+  //   checkVersion();
+  // }, []);
 
   const checkVersion = async () => {
     try {

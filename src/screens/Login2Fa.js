@@ -7,9 +7,9 @@ import {
   View,
   Pressable,
   Keyboard,
-  ActivityIndicator,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
@@ -79,7 +79,14 @@ export default function Login2Fa({ navigation }) {
 
   const resendOrCountDown = () => {
     if (loading) {
-      return <ActivityIndicator style={{ marginTop: -5 }} />;
+      return (
+        <MaterialIndicator
+          color="#6582FD"
+          animationDuration={3000}
+          size={16}
+          style={{ flex: 0 }}
+        />
+      );
     } else if (timerVisible) {
       return (
         <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
@@ -122,9 +129,12 @@ export default function Login2Fa({ navigation }) {
 
           <View style={styles.bottom}>
             {t !== 'TOTP' ? (
-              <AppText style={[styles.secondary, { marginBottom: 20 }]}>
-                Didn't receive code? {resendOrCountDown()}
-              </AppText>
+              <View style={styles.row}>
+                <AppText style={[styles.secondary, { marginRight: 5 }]}>
+                  Didn't receive code?
+                </AppText>
+                {resendOrCountDown()}
+              </View>
             ) : null}
             {t !== 'EMAIL' ? (
               <PurpleText text="Reset OTP" onPress={goToReset} />
@@ -166,6 +176,11 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
     marginTop: 27,
     marginBottom: 12,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

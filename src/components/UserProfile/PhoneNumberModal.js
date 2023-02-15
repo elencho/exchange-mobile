@@ -1,26 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ActivityIndicator,
-} from 'react-native';
+import { Pressable, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { COUNTRIES_URL_PNG } from '../../constants/api';
+import { MaterialIndicator } from 'react-native-indicators';
 
-import colors from '../../constants/colors';
-import images from '../../constants/images';
-import {
-  toggleCountriesModal,
-  togglePhoneNumberModal,
-} from '../../redux/modals/actions';
-import {
-  saveUserInfo,
-  sendVerificationCode,
-  updatePhoneNumber,
-} from '../../redux/profile/actions';
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
 import AppButton from '../AppButton';
@@ -28,8 +10,21 @@ import AppText from '../AppText';
 import GeneralError from '../GeneralError';
 import PurpleText from '../PurpleText';
 import CountriesModal from './CountriesModal';
-import { errorHappenedHere } from '../../utils/appUtils';
 import WithKeyboard from '../WithKeyboard';
+
+import colors from '../../constants/colors';
+import images from '../../constants/images';
+import {
+  toggleCountriesModal,
+  togglePhoneNumberModal,
+} from '../../redux/modals/actions';
+import { COUNTRIES_URL_PNG } from '../../constants/api';
+import {
+  saveUserInfo,
+  sendVerificationCode,
+  updatePhoneNumber,
+} from '../../redux/profile/actions';
+import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function PhoneNumberModal() {
   const dispatch = useDispatch();
@@ -66,7 +61,10 @@ export default function PhoneNumberModal() {
   }, [userInfo, code]);
 
   useEffect(() => {
-    if (phoneNumberModalVisible) setUserInfoVariable(userInfo);
+    if (phoneNumberModalVisible) {
+      setUserInfoVariable(userInfo);
+      setSeconds(30);
+    }
   }, [phoneNumberModalVisible]);
 
   const number = userInfo?.phoneNumber;
@@ -76,9 +74,13 @@ export default function PhoneNumberModal() {
     (error || sendError) && !country ? '#F45E8C' : colors.PRIMARY_TEXT;
 
   const hide = () => {
-    setCode(null);
     dispatch(saveUserInfo(userInfoVariable));
     dispatch(togglePhoneNumberModal(false));
+  };
+
+  const onModalHide = () => {
+    setCode(null);
+    dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
   };
 
   const handlePhoneNumber = (phoneNumber) =>
@@ -108,9 +110,18 @@ export default function PhoneNumberModal() {
 
   const Right = () => {
     if (loading) {
-      return <ActivityIndicator />;
+      return (
+        <MaterialIndicator
+          color="#6582FD"
+          animationDuration={3000}
+          size={16}
+          style={{ flex: 0 }}
+        />
+      );
     } else if (timerVisible) {
-      return <AppText style={{ color: '#C0C5E0' }}>{seconds}</AppText>;
+      return (
+        <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
+      );
     } else {
       return <PurpleText text="Send" onPress={handleSend} />;
     }
@@ -181,6 +192,7 @@ export default function PhoneNumberModal() {
     <AppModal
       visible={phoneNumberModalVisible}
       hide={hide}
+      onModalHide={onModalHide}
       fullScreen
       title="My Phone Number"
       children={children()}
