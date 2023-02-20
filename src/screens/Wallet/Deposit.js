@@ -118,13 +118,13 @@ export default function Deposit({ refreshControl }) {
       const minConfirmsForDeposit = infoObj?.minConfirmsForDeposit;
       const walletInfo = infoObj?.walletInfo;
 
-      let array = [t(`{{minConfirmsForDeposit}}`, { minConfirmsForDeposit })];
+      let array = [
+        t(`{{minConfirmsForDeposit}} params[minConfirmsForDeposit]`, {
+          minConfirmsForDeposit,
+        }),
+      ];
       if (walletInfo) {
-        array.push(
-          t('{{onlyThisNetwork}}', {
-            onlyThisNetwork: walletInfo.split(' ')[1],
-          })
-        );
+        array.push(t(walletInfo));
       }
       return array;
     }

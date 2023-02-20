@@ -3,6 +3,8 @@ import Constants from 'expo-constants';
 const auth = Constants.manifest.extra.auth;
 const core = Constants.manifest.extra.core;
 
+export const READINESS_URL = `${core}/health/readiness`;
+
 export const LOGIN_START_URL = `${auth}/auth/realms/GEX/protocol/openid-connect/auth`;
 
 export const REGISTRATION_START_URL = `${auth}/auth/realms/GEX/protocol/openid-connect/registrations`;

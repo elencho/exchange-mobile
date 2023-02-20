@@ -257,24 +257,6 @@ function* otpForLoginSaga(action) {
   }
 }
 
-// RESET OTP
-function* resetOtpSaga(action) {
-  const { navigation } = action;
-  const userAndPassInfo = yield select(
-    (state) => state.profile.userAndPassInfo
-  );
-  const data = yield call(resetOtp, userAndPassInfo?.callbackUrl);
-  if (data) {
-    yield put(
-      saveUserAndPassInfo({
-        ...userAndPassInfo,
-        callbackUrl: data?.callbackUrl,
-      })
-    );
-    navigation.navigate('ResetOtpInstructions', { execution: data?.execution });
-  }
-}
-
 // FORGOT PASSWORD
 function* forgotPasswordSaga(action) {
   const { navigation } = action;
@@ -400,8 +382,13 @@ function* updatePasswordSaga(action) {
 
 //  VERIFY PHONE NUMBER
 function* verifyPhoneNumberSaga(action) {
+  yield put(toggleLoading(true));
+
   const { phoneNumber, phoneCountry } = action;
   yield call(verifyPhoneNumber, phoneNumber, phoneCountry);
+
+  yield put({ type: 'TOGGLE_TIMER', timerVisible: true });
+  yield put(toggleLoading(false));
 }
 
 //  UPDATE PHONE NUMBER
@@ -520,11 +507,34 @@ function* otpSaga(action) {
   yield put(setSmsAuth(otpType === 'SMS'));
 }
 
+// RESET OTP
+function* resetOtpSaga(action) {
+  const { navigation } = action;
+  const userAndPassInfo = yield select(
+    (state) => state.profile.userAndPassInfo
+  );
+  const data = yield call(resetOtp, userAndPassInfo?.callbackUrl);
+  if (data) {
+    yield put(
+      saveUserAndPassInfo({
+        ...userAndPassInfo,
+        callbackUrl: data?.callbackUrl,
+      })
+    );
+    navigation.navigate('ResetOtpInstructions', { execution: data?.execution });
+  }
+}
+
 // RESEND SAGA
 function* resendSaga(action) {
   const state = yield select((state) => state.profile);
-  const { url, emailVerification, smsEmailAuth, login2Fa } = action;
+  const { url, emailVerification, smsEmailAuth, login2Fa, setOtpLoading } =
+    action;
   const { googleAuth } = state;
+
+  if (setOtpLoading) {
+    yield call(() => setOtpLoading(true));
+  } else yield put(toggleLoading(true));
 
   // Email Verification After Registration
   if (emailVerification) {
@@ -540,6 +550,11 @@ function* resendSaga(action) {
     const data = yield call(resendEmail, url);
     if (data) yield put(saveUserAndPassInfo(data));
   }
+  yield put({ type: 'TOGGLE_TIMER', timerVisible: true });
+
+  if (setOtpLoading) {
+    yield call(() => setOtpLoading(false));
+  } else yield put(toggleLoading(false));
 }
 
 function* logoutSaga() {

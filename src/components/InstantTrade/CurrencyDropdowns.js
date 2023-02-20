@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     flexDirection: 'row',
-    width: '48%',
+    width: '47%',
     height: 45,
     paddingHorizontal: 15,
   },

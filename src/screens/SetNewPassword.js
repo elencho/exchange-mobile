@@ -61,7 +61,7 @@ export default function SetNewPassword({ navigation }) {
           style={{ alignSelf: 'center', transform: [{ scaleY: 1.1 }] }}
         />
 
-        <View>
+        <View style={{ alignItems: 'center' }}>
           <AppText header style={styles.primary}>
             Set New Password
           </AppText>
@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
     marginVertical: 6,
   },
   middle: {
-    alignItems: 'center',
     justifyContent: 'center',
   },
   primary: {

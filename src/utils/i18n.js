@@ -16,7 +16,7 @@ i18next.use(initReactI18next).init({
         Show: 'Showwww',
         '{{minConfirmsForDeposit}}':
           'Shuashi --> {{minConfirmsForDeposit}} <-- shuashi',
-        '{{onlyThisNetwork}}': 'Onlyyyyyy {{onlyThisNetwork}}',
+        '{{onlyThisNetwork}}': '{{onlyThisNetwork}}',
         deactivateAccount:
           '<t>saports miweret rom</t> <b>gagiuqmot eqaunti</b>',
       },

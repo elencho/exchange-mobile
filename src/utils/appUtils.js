@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { DICTIONARY } from '../constants/api';
+import { DICTIONARY, READINESS_URL } from '../constants/api';
 import store from '../redux/store';
 
 export const errorHappenedHere = (component) => {
@@ -70,6 +70,11 @@ export const errorHappenedHere = (component) => {
 
 export const fetchTranslations = async () => {
   const data = await axios.get(DICTIONARY);
+  return data?.data;
+};
+
+export const checkReadiness = async (version) => {
+  const data = await axios.get(READINESS_URL, { params: { version } });
   return data?.data;
 };
 

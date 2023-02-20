@@ -9,6 +9,7 @@ import {
   Keyboard,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
@@ -25,19 +26,36 @@ import { startLoginAction } from '../redux/profile/actions';
 export default function Login2Fa({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const {
+    profile: { userAndPassInfo, timerVisible },
+    transactions: { loading },
+  } = state;
 
   const [value, setValue] = useState('');
+  const [seconds, setSeconds] = useState(30);
 
   useEffect(() => {
+    if (!seconds) {
+      dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
+      setSeconds(30);
+    }
+    if (seconds && timerVisible) {
+      setTimeout(() => {
+        setSeconds(seconds - 1);
+      }, 1000);
+    }
+  }, [seconds, timerVisible]);
+
+  useEffect(() => {
+    dispatch({ type: 'TOGGLE_TIMER', timerVisible: true });
+
     return () => {
       dispatch({ type: 'TOGGLE_FORGOT_PASS_MODE', forgotPassMode: false });
       setValue('');
+      dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
+      setSeconds(30);
     };
   }, []);
-
-  const {
-    profile: { userAndPassInfo },
-  } = state;
 
   const t = userAndPassInfo?.attributes?.otpType;
   const cellCount = t === 'SMS' ? 4 : 6;
@@ -58,6 +76,25 @@ export default function Login2Fa({ navigation }) {
       login2Fa: true,
       url: userAndPassInfo.callbackUrl,
     });
+
+  const resendOrCountDown = () => {
+    if (loading) {
+      return (
+        <MaterialIndicator
+          color="#6582FD"
+          animationDuration={3000}
+          size={16}
+          style={{ flex: 0 }}
+        />
+      );
+    } else if (timerVisible) {
+      return (
+        <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
+      );
+    } else {
+      return <PurpleText text="Resend" onPress={resend} />;
+    }
+  };
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
@@ -92,10 +129,12 @@ export default function Login2Fa({ navigation }) {
 
           <View style={styles.bottom}>
             {t !== 'TOTP' ? (
-              <AppText style={[styles.secondary, { marginBottom: 20 }]}>
-                Didn't receive code?{' '}
-                <PurpleText text="Resend" onPress={resend} />
-              </AppText>
+              <View style={styles.row}>
+                <AppText style={[styles.secondary, { marginRight: 5 }]}>
+                  Didn't receive code?
+                </AppText>
+                {resendOrCountDown()}
+              </View>
             ) : null}
             {t !== 'EMAIL' ? (
               <PurpleText text="Reset OTP" onPress={goToReset} />
@@ -137,6 +176,11 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
     marginTop: 27,
     marginBottom: 12,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

@@ -1,10 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   Platform,
   StyleSheet,
   SafeAreaView,
   StatusBar,
   LogBox,
+  Alert,
+  Linking,
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
@@ -18,6 +20,7 @@ import colors from './src/constants/colors';
 import './src/utils/i18n';
 import './src/utils/interceptor';
 import AppToast from './src/components/AppToast';
+import VersionCheck from 'react-native-version-check';
 
 LogBox.ignoreLogs([
   // TODO: Remove when fixed
@@ -37,6 +40,31 @@ function App() {
   //   CodePush.notifyAppReady();
   //   CodePush.sync(codePushOptions);
   // })
+  // useEffect(() => {
+  //   checkVersion();
+  // }, []);
+
+  const checkVersion = async () => {
+    try {
+      const updateNeeded = await VersionCheck.needUpdate();
+      alert(updateNeeded);
+      if (updateNeeded && updateNeeded.isNeeded) {
+        Alert.alert(
+          'Please Update',
+          'You will have to update',
+          [
+            {
+              text: 'Update',
+              onPress: () => {
+                Linking.openURL(updateNeeded.storeUrl);
+              },
+            },
+          ],
+          { cancelable: false }
+        );
+      }
+    } catch (error) {}
+  };
 
   const [fontsLoaded] = useFonts({
     Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   Image,
   ImageBackground,
   StyleSheet,
@@ -8,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
@@ -15,10 +15,10 @@ import AppButton from '../components/AppButton';
 import PurpleText from '../components/PurpleText';
 import WithKeyboard from '../components/WithKeyboard';
 import Strong_Password from '../assets/images/User_profile/Strong_Password';
+import GeneralError from '../components/GeneralError';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
-import GeneralError from '../components/GeneralError';
 import { startLoginAction } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
 
@@ -57,9 +57,10 @@ export default function ForgotPassword({ navigation }) {
     };
   }, []);
 
-  const secondsFormat = seconds < 10 ? `00 : 0${seconds}` : `00 : ${seconds}`;
   const f = forgotPassInfo;
-  const mailValid = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(f.username);
+  const mailValid = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(
+    f.username
+  );
 
   const goToLogin = () => {
     navigation.navigate('Login');
@@ -76,9 +77,18 @@ export default function ForgotPassword({ navigation }) {
 
   const Right = () => {
     if (loading) {
-      return <ActivityIndicator />;
+      return (
+        <MaterialIndicator
+          color="#6582FD"
+          animationDuration={3000}
+          size={16}
+          style={{ flex: 0 }}
+        />
+      );
     } else if (timerVisible) {
-      return <AppText style={{ color: '#C0C5E0' }}>{secondsFormat}</AppText>;
+      return (
+        <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
+      );
     } else {
       return <PurpleText text="Send" onPress={sendCode} />;
     }

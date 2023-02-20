@@ -135,10 +135,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: -15,
     paddingHorizontal: 15,
+    borderRadius: 5,
   },
   primary: {
     color: colors.PRIMARY_TEXT,
-    marginBottom: 5,
+    marginBottom: 1,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

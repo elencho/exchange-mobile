@@ -47,6 +47,8 @@ export default function FiatBlock() {
     `^[0-9]+(\.|\\.[0-9]{1,${depositScale}})?$`
   );
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     error && setError(false);
   }, [card, depositAmount, depositProvider, network]);
@@ -55,7 +57,7 @@ export default function FiatBlock() {
     if (!validateAmount(depositAmount)) {
       setError(true);
     } else {
-      generateWirePdf(code, depositAmount, en[0].id);
+      generateWirePdf(code, depositAmount, en[0].id, setLoading);
     }
   };
 
@@ -160,8 +162,9 @@ export default function FiatBlock() {
         <AppButton
           text="Generate"
           onPress={generatePdf}
-          left={<Image source={images.Generate} />}
+          left={loading ? null : <Image source={images.Generate} />}
           style={styles.button}
+          loading={loading}
         />
       ) : (
         <AppButton text="Deposit" onPress={deposit} style={styles.button} />

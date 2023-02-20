@@ -4,7 +4,6 @@ import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import * as SecureStore from 'expo-secure-store';
 import RNFetchBlob from 'rn-fetch-blob';
-
 import {
   GET_CRYPTO_ADDRESSES,
   WIRE_DEPOSIT,
@@ -30,8 +29,14 @@ export const fetchWireDeposit = async (currency, provider) => {
   if (data) return data.data;
 };
 
-export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
+export const generateWirePdf = async (
+  currency,
+  amount,
+  wireDepositInfoId,
+  setLoading
+) => {
   try {
+    setLoading(true);
     const token = await SecureStore.getItemAsync('accessToken');
     const bearer = `Bearer ${token}`;
 
@@ -56,6 +61,7 @@ export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
         downloadFile(currency, amount, wireDepositInfoId, bearer);
       }
     });
+    setLoading(false);
   } catch (error) {
     console.error(error);
   }

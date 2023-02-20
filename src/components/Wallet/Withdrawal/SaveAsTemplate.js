@@ -24,7 +24,7 @@ export default function SaveAsTemplate() {
 
   return (
     <>
-      <View style={styles.row}>
+      <View style={[styles.row, { marginBottom: saveTemplate ? 15 : 38 }]}>
         <Pressable style={styles.image} onPress={toggle}>
           <Image source={image()} />
         </Pressable>
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   },
   input: {
     marginHorizontal: 15,
+    marginBottom: 47,
   },
   row: {
     flexDirection: 'row',
@@ -59,7 +60,6 @@ const styles = StyleSheet.create({
     height: 30,
     marginLeft: 10,
     marginTop: -15,
-    marginBottom: 15,
   },
   text: {
     color: '#B7BFDB',

@@ -1,12 +1,14 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import colors from '../../../constants/colors';
-import images from '../../../constants/images';
+import Copy from '../../../assets/images/Copy';
+import QR from '../../../assets/images/QR';
 import AppText from '../../AppText';
-import { toggleQrAddressModal } from '../../../redux/modals/actions';
 import AddressQrModal from './AddressQrModal';
+
+import colors from '../../../constants/colors';
+import { toggleQrAddressModal } from '../../../redux/modals/actions';
 import { copyToClipboard } from '../../../utils/copyToClipboard';
 
 export default function AddressBlock() {
@@ -26,10 +28,10 @@ export default function AddressBlock() {
         <AppText style={styles.address}>{cryptoAddress.address}</AppText>
 
         <TouchableOpacity onPress={showQr} style={{ marginRight: 20 }}>
-          <Image source={images.QR} />
+          <QR />
         </TouchableOpacity>
         <TouchableOpacity onPress={copyAddress}>
-          <Image source={images.Copy} />
+          <Copy />
         </TouchableOpacity>
       </View>
 
@@ -41,7 +43,7 @@ export default function AddressBlock() {
           </AppText>
 
           <TouchableOpacity onPress={copyTag}>
-            <Image source={images.Copy} />
+            <Copy />
           </TouchableOpacity>
         </View>
       ) : null}

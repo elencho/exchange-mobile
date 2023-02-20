@@ -63,7 +63,9 @@ function ChooseCurrencyModal({ wallet = false }) {
 
     dispatch(setNetwork(null));
     let network;
-    const m = walletTab === 'Deposit' ? 'depositMethods' : 'withdrawalMethods';
+    // const m = walletTab === 'Deposit' ? 'depositMethods' : 'withdrawalMethods';
+    // Cryptoadresses is only needed in Deposit wallet tab
+    const m = 'depositMethods';
     balance?.balances?.forEach((b) => {
       if (currencyCode === b.currencyCode) {
         if (b[m].WALLET) network = b[m].WALLET[0].provider;
