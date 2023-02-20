@@ -20,10 +20,10 @@ const INITIAL_STATE = {
   // Login
   pkceInfo: {},
   loginStartInfo: {},
-  credentials: {},
+  credentials: kervala,
   userAndPassInfo: {},
   forgotPassInfo: {
-    username: '',
+    username: 'aa1705@mailinator.com',
     code: '',
   },
   forgotPassMode: false,

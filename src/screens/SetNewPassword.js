@@ -57,7 +57,9 @@ export default function SetNewPassword({ navigation }) {
       </TouchableOpacity>
 
       <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
-        <Strong_Password width={38} height={46} />
+        <Strong_Password
+          style={{ alignSelf: 'center', transform: [{ scaleY: 1.1 }] }}
+        />
 
         <View>
           <AppText header style={styles.primary}>
