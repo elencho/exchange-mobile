@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+import DeviceInfo from 'react-native-device-info';
 
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
@@ -25,7 +26,11 @@ import {
 } from '../redux/profile/actions';
 import { addResources, switchLanguage } from '../utils/i18n';
 import GeneralError from '../components/GeneralError';
-import { errorHappenedHere, fetchTranslations } from '../utils/appUtils';
+import {
+  checkReadiness,
+  errorHappenedHere,
+  fetchTranslations,
+} from '../utils/appUtils';
 
 import SplashScreen from 'react-native-splash-screen';
 
@@ -33,13 +38,25 @@ export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
-  useFocusEffect(() => {
-    dispatch(saveUserInfo({}));
+  const isWorkingVersion = async () => {
+    const version = DeviceInfo.getVersion();
 
-    SecureStore.getItemAsync('accessToken').then((t) => {
-      if (t) navigation.navigate('Main');
-      else SplashScreen.hide();
-    });
+    const { status } = await checkReadiness(version);
+    if (status === 'DOWN') {
+      navigation.navigate('Maintanance');
+      return false;
+    } else return true;
+  };
+
+  useFocusEffect(() => {
+    if (isWorkingVersion()) {
+      SecureStore.getItemAsync('accessToken').then((t) => {
+        if (t) navigation.navigate('Main');
+        else SplashScreen.hide();
+      });
+    } else SplashScreen.hide();
+
+    dispatch(saveUserInfo({}));
   });
 
   useEffect(() => {
@@ -55,7 +72,6 @@ export default function Welcome({ navigation }) {
     //     }
     //   })
     //   .catch((err) => console.log(err));
-
     SecureStore.getItemAsync('language')
       .then((l) => {
         switchLanguage(l ? l : 'en');

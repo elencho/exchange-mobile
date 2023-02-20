@@ -1,22 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ImageBackground, Linking, StyleSheet, Text, View } from 'react-native';
+import DeviceInfo from 'react-native-device-info';
 
 import Logo from '../assets/images/Logo';
 import Gear from '../assets/images/Gear';
 import AppText from '../components/AppText';
-
-import images from '../constants/images';
-import colors from '../constants/colors';
 import AppButton from '../components/AppButton';
 import PurpleText from '../components/PurpleText';
 
-export default function Maintanance() {
+import images from '../constants/images';
+import colors from '../constants/colors';
+import { checkReadiness } from '../utils/appUtils';
+
+export default function Maintanance({ navigation }) {
+  const [loading, setLoading] = useState(false);
+
   const goToSupport = () =>
     Linking.openURL('https://support.cryptal.com/hc/en-us/requests/new');
 
   const Margin = ({ margin }) => (
     <View style={{ marginVertical: margin / 2 }} />
   );
+
+  const refresh = async () => {
+    setLoading(true);
+
+    const version = DeviceInfo.getVersion();
+    const { status } = await checkReadiness(version);
+    if (status !== 'DOWN') navigation.navigate('Welcome');
+    setLoading(false);
+  };
 
   return (
     <ImageBackground
@@ -40,7 +53,12 @@ export default function Maintanance() {
         Thanks for your patience and understanding.
       </AppText>
 
-      <AppButton text="Refresh" style={styles.button} />
+      <AppButton
+        text="Refresh"
+        loading={loading}
+        style={styles.button}
+        onPress={refresh}
+      />
 
       <View style={styles.footer}>
         <AppText style={styles.supportText}>

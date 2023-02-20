@@ -11,13 +11,13 @@ import Headline from '../components/TransactionHistory/Headline';
 import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
 import DatePicker from '../components/TransactionFilter/DatePicker';
 import Close from '../assets/images/Close.svg';
+import PurpleText from '../components/PurpleText';
 
 import { clearFilters } from '../redux/transactions/actions';
 import { toggleCurrencyModal } from '../redux/modals/actions';
-import PurpleText from '../components/PurpleText';
 import images from '../constants/images';
-import { types, methods } from '../constants/filters';
 import colors from '../constants/colors';
+import { types, methods } from '../constants/filters';
 import { COINS_URL_PNG } from '../constants/api';
 
 export default function TransactionFilter({ navigation }) {
