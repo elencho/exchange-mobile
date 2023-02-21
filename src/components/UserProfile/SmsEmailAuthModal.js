@@ -25,7 +25,6 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const {
     modals: { smsAuthModalVisible, emailAuthModalVisible },
     profile: { currentSecurityAction, timerVisible },
-    transactions: { loading },
   } = state;
 
   const action =
@@ -42,11 +41,18 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const reset = () => {
     dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
     setSeconds(30);
+    return;
   };
 
   useEffect(() => {
-    if (emailAuthModalVisible) {
-      if (!seconds) reset();
+    if (emailAuthModalVisible || smsAuthModalVisible) {
+      dispatch({ type: 'TOGGLE_TIMER', timerVisible: true });
+    }
+  }, [emailAuthModalVisible, smsAuthModalVisible]);
+
+  useEffect(() => {
+    if (emailAuthModalVisible || smsAuthModalVisible) {
+      if (!seconds || !timerVisible) reset();
       if (seconds && timerVisible) {
         setTimeout(() => {
           setSeconds(seconds - 1);
@@ -55,7 +61,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
     } else {
       reset();
     }
-  }, [seconds, timerVisible, emailAuthModalVisible]);
+  }, [seconds, timerVisible]);
 
   const handleHide = () => {
     setSeconds(30);

@@ -74,9 +74,14 @@ export default function AddEditWhitelistModal({ add, edit }) {
     const condition = () => {
       const obj = add ? newWhitelist : currentWhitelistObj;
       if (tag()) {
-        return !network || !obj?.name || !obj?.address || !obj?.tag;
+        return (
+          !network ||
+          !obj?.name?.trim() ||
+          !obj?.address?.trim() ||
+          !obj?.tag?.trim()
+        );
       } else {
-        return !network || !obj?.name || !obj?.address;
+        return !network || !obj?.name?.trim() || !obj?.address?.trim();
       }
     };
 
@@ -113,8 +118,10 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const nameStyle = {
     borderColor: error && !currentWhitelistObj?.name && '#F45E8C',
   };
-  const nameError = add ? !newWhitelist?.name : !currentWhitelistObj?.name;
-  const addressError = add ? !newWhitelist?.address : false;
+  const nameError = add
+    ? !newWhitelist?.name?.trim()
+    : !currentWhitelistObj?.name?.trim();
+  const addressError = add ? !newWhitelist?.address?.trim() : false;
   const tagError = add ? !newWhitelist?.tag : false;
 
   const children = (

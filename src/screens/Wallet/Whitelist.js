@@ -75,7 +75,8 @@ export default function Whitelist({ refreshControl }) {
           <AddEditWhitelistModal edit />
 
           <GoogleOtpModal whitelist />
-          <SmsEmailAuthModal whitelist />
+          <SmsEmailAuthModal whitelist type="E-mail" />
+          <SmsEmailAuthModal whitelist type="SMS" />
         </View>
       )}
     </>

@@ -38,6 +38,10 @@ export default function EmailVerificationModal() {
   }, [emailVerificationModalVisible]);
 
   useEffect(() => {
+    if (!timerVisible) {
+      setSeconds(30);
+      return;
+    }
     if (!seconds) {
       dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
       setSeconds(30);

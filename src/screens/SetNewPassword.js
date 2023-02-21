@@ -58,9 +58,7 @@ export default function SetNewPassword({ navigation }) {
 
       <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
         <Strong_Password
-          width={38}
-          height={46}
-          style={{ alignSelf: 'center' }}
+          style={{ alignSelf: 'center', transform: [{ scaleY: 1.1 }] }}
         />
 
         <View style={{ alignItems: 'center' }}>

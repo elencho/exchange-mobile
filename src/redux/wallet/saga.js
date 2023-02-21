@@ -328,6 +328,14 @@ function* cardWithdrawalSaga(action) {
 }
 
 function* clearWithdrawalInputsSaga() {
+  const state = yield select((state) => state);
+  const {
+    wallet: { network },
+    trade: { currentBalanceObj },
+  } = state;
+  const fiat = currentBalanceObj?.type === 'FIAT';
+  const ecommerce = network === 'ECOMMERCE';
+
   // crypto
   yield put(chooseWhitelist({}));
   yield put(setWithdrawalAmount(null));
@@ -335,17 +343,21 @@ function* clearWithdrawalInputsSaga() {
   yield put(setFee(null));
 
   // + wire
-  yield put(chooseTemplate({}));
-  yield put(setIban(''));
-  yield put(setWithdrawalBank({}));
-  yield put(saveTemplateAction(false));
-  yield put(setNewTemplateName(''));
-  yield put(setReceiverBank({}));
-  yield put(withdrawalTemplatesAction());
+  if (fiat && !ecommerce) {
+    yield put(chooseTemplate({}));
+    yield put(setIban(''));
+    yield put(setWithdrawalBank({}));
+    yield put(saveTemplateAction(false));
+    yield put(setNewTemplateName(''));
+    yield put(setReceiverBank({}));
+    yield put(withdrawalTemplatesAction());
+  }
 
   // + card
-  yield put(setDepositProvider(null));
-  yield put(setCard(null));
+  if (fiat && network) {
+    yield put(setDepositProvider(null));
+    yield put(setCard(null));
+  }
 }
 
 function* maxWithdrawalSaga() {
