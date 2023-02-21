@@ -21,7 +21,7 @@ const AppInput = ({
   error = false,
   errorText = null,
   labelBackgroundColor = colors.PRIMARY_BACKGROUND,
-  onChangeText,
+  onChangeText = () => {},
   ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false);
