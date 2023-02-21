@@ -23,7 +23,7 @@ const INITIAL_STATE = {
   credentials: {},
   userAndPassInfo: {},
   forgotPassInfo: {
-    username: 'aa1705@mailinator.com',
+    username: '',
     code: '',
   },
   forgotPassMode: false,

@@ -25,8 +25,6 @@ export default function EmailVerificationModal() {
   const [value, setValue] = useState('');
   const [seconds, setSeconds] = useState(30);
 
-  console.log(seconds);
-
   const {
     modals: { emailVerificationModalVisible },
     profile: { verificationInfo, registrationInputs, timerVisible },

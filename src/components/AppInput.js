@@ -21,6 +21,7 @@ const AppInput = ({
   error = false,
   errorText = null,
   labelBackgroundColor = colors.PRIMARY_BACKGROUND,
+  onChangeText,
   ...rest
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -56,6 +57,7 @@ const AppInput = ({
           onFocus={() => setIsFocused(true)}
           value={value}
           placeholderTextColor={colors.SECONDARY_TEXT}
+          onChangeText={(text) => onChangeText(text)}
           {...rest}
         />
         {label ? (
