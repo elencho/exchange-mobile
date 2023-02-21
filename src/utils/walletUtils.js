@@ -61,8 +61,12 @@ export const generateWirePdf = async (
         downloadFile(currency, amount, wireDepositInfoId, bearer);
       }
     });
-    setLoading(false);
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   } catch (error) {
+    setLoading(false);
+
     console.error(error);
   }
 };

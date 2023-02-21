@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingLeft: 13,
     backgroundColor: 'rgba(63, 66, 91, 0.18)',
-
+    width: '47%',
+    height: 45,
     paddingRight: 25,
   },
 
@@ -73,6 +74,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(63, 66, 91, 0.18)',
     padding: 26,
     marginBottom: 10,
+    height: 80,
+    width: '47%',
   },
   wrapper: {
     flexDirection: 'row',

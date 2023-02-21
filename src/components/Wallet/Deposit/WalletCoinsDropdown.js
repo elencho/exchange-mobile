@@ -28,7 +28,7 @@ export default function WalletCoinsDropdown() {
     <>
       <Pressable style={styles.container} onPress={handleDropdown}>
         <Image
-          source={{ uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png` }}
+          source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
           style={styles.image}
         />
 
