@@ -12,13 +12,14 @@ import AppButton from '../AppButton';
 import AppModal from '../AppModal';
 import AppInput from '../AppInput';
 import AppText from '../AppText';
+import WithKeyboard from '../WithKeyboard';
+import GeneralError from '../GeneralError';
+
 import { togglePasswordModal } from '../../redux/modals/actions';
 import { updatePassword } from '../../redux/profile/actions';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
-import GeneralError from '../GeneralError';
 import { errorHappenedHere } from '../../utils/appUtils';
-import WithKeyboard from '../WithKeyboard';
 
 export default function PasswordModal() {
   const array = [
@@ -160,7 +161,7 @@ export default function PasswordModal() {
 
   const hideIcon = (
     <Pressable onPress={toggle}>
-      <Image source={secure ? images.Hide : images.Show} />
+      <Image source={secure ? images.Show : images.Hide} />
     </Pressable>
   );
 

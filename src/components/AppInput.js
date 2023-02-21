@@ -14,12 +14,12 @@ import colors from '../constants/colors';
 const AppInput = ({
   label = '',
   left = null,
+  activeRight = null,
   right = null,
   style,
   value,
   error = false,
   errorText = null,
-  onChangeText = () => {},
   labelBackgroundColor = colors.PRIMARY_BACKGROUND,
   ...rest
 }) => {
@@ -43,6 +43,8 @@ const AppInput = ({
     ? colors.SECONDARY_PURPLE
     : '#42475D';
 
+  const rightComponent = isFocused && activeRight ? activeRight : right;
+
   return (
     <View style={style}>
       <View style={[styles.inputContainer, { borderColor }]}>
@@ -53,7 +55,6 @@ const AppInput = ({
           onBlur={() => setIsFocused(false)}
           onFocus={() => setIsFocused(true)}
           value={value}
-          onChangeText={(text) => onChangeText(text)}
           placeholderTextColor={colors.SECONDARY_TEXT}
           {...rest}
         />
@@ -103,7 +104,7 @@ const AppInput = ({
           </TouchableWithoutFeedback>
         ) : null}
 
-        {right}
+        {rightComponent}
       </View>
       {errorText && (
         <AppText small style={styles.errorText}>

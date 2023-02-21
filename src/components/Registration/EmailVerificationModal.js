@@ -25,6 +25,8 @@ export default function EmailVerificationModal() {
   const [value, setValue] = useState('');
   const [seconds, setSeconds] = useState(30);
 
+  console.log(seconds);
+
   const {
     modals: { emailVerificationModalVisible },
     profile: { verificationInfo, registrationInputs, timerVisible },
@@ -38,6 +40,10 @@ export default function EmailVerificationModal() {
   }, [emailVerificationModalVisible]);
 
   useEffect(() => {
+    if (!timerVisible) {
+      setSeconds(30);
+      return;
+    }
     if (!seconds) {
       dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
       setSeconds(30);

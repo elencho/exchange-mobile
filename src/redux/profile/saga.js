@@ -303,7 +303,7 @@ function* forgotPassEnterCodeSaga(action) {
   if (data?.execution === 'LOGIN_OTP') {
     yield put(saveUserAndPassInfo(data));
     yield put({ type: 'TOGGLE_FORGOT_PASS_MODE', forgotPassMode: true });
-    navigation.navigate('Login2Fa', { type: 'forgotPassword' });
+    navigation.replace('Login2Fa', { type: 'forgotPassword' });
   }
   yield put({
     type: 'SAVE_FORGOT_PASS_INFO',
@@ -521,7 +521,7 @@ function* resetOtpSaga(action) {
         callbackUrl: data?.callbackUrl,
       })
     );
-    navigation.navigate('ResetOtpInstructions', { execution: data?.execution });
+    navigation.replace('ResetOtpInstructions', { execution: data?.execution });
   }
 }
 

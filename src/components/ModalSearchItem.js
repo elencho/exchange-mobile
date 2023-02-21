@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 import AppText from './AppText';
+import ShowAll from '../assets/images/ShowAll';
 import colors from '../constants/colors';
 
 export default function ModalSearchItem({
@@ -12,41 +13,51 @@ export default function ModalSearchItem({
   uri,
   phoneCountry,
   phoneCode,
+  countryDrop,
+  citizenshipDrop,
 }) {
   const backgroundCond = () => {
     if (name === currentItem || code === currentItem) {
       return styles.background;
     }
   };
-
-  const text = phoneCountry ? (
-    <>
-      <AppText medium style={styles.primary}>
-        ({phoneCode})
-      </AppText>
-      <AppText medium numberOfLines={1} style={[styles.secondary, { flex: 1 }]}>
-        {' '}
-        {name}
-      </AppText>
-    </>
-  ) : (
-    <>
-      <AppText medium style={styles.primary}>
-        {name}
-      </AppText>
-      <AppText medium style={styles.secondary}>
-        {' '}
-        ({code})
-      </AppText>
-    </>
-  );
+  const codeText = phoneCountry ? phoneCode : code;
+  const text =
+    phoneCountry || countryDrop || citizenshipDrop ? (
+      <>
+        <AppText medium style={styles.primary}>
+          ({codeText})
+        </AppText>
+        <AppText
+          medium
+          numberOfLines={1}
+          style={[styles.secondary, { flex: 1 }]}
+        >
+          {' '}
+          {name}
+        </AppText>
+      </>
+    ) : (
+      <>
+        <AppText medium style={styles.primary}>
+          {name}
+        </AppText>
+        <AppText medium style={styles.secondary}>
+          {code ? ` (${code})` : null}
+        </AppText>
+      </>
+    );
 
   return (
     <TouchableOpacity
       style={[styles.container, backgroundCond()]}
       onPress={onPress}
     >
-      <Image style={styles.image} source={{ uri }} />
+      {code ? (
+        <Image style={styles.image} source={{ uri }} />
+      ) : (
+        <ShowAll style={{ marginRight: 20 }} />
+      )}
       {text}
     </TouchableOpacity>
   );
@@ -59,12 +70,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 5,
     borderRadius: 5,
-    paddingVertical: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 18,
+    marginHorizontal: 22,
   },
   image: {
-    marginHorizontal: 10,
-    width: 30,
-    height: 30,
+    marginRight: 20,
+    width: 36,
+    height: 36,
   },
   primary: { color: colors.PRIMARY_TEXT },
   secondary: { color: colors.SECONDARY_TEXT },

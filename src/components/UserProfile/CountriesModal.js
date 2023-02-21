@@ -90,6 +90,8 @@ export default function CountriesModal({
       currentItem={currentItem()}
       title="Choose Country"
       phoneCountry={phoneCountry}
+      countryDrop={countryDrop}
+      citizenshipDrop={citizenshipDrop}
     />
   );
 
