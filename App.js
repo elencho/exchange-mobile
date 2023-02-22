@@ -35,7 +35,6 @@ LogBox.ignoreLogs([
 
 function App() {
   changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
-
   // useEffect(() => {
   //   CodePush.notifyAppReady();
   //   CodePush.sync(codePushOptions);
