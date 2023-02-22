@@ -100,7 +100,7 @@ export default function EmailVerificationModal() {
         <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
       );
     } else {
-      return <PurpleText text="Resend" onPress={resend} />;
+      return <PurpleText text="resend purple" onPress={resend} />;
     }
   };
 
@@ -128,7 +128,7 @@ export default function EmailVerificationModal() {
         {/* Animate */}
         <View style={styles.row}>
           <AppText style={[styles.secondary, { marginRight: 5 }]}>
-            Didn't receive link?
+            Didn't receive code?
           </AppText>
           {resendOrCountDown()}
         </View>

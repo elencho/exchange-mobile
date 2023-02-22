@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, ImageBackground, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
+import { Trans } from 'react-i18next';
+import { t } from 'i18next';
 
 import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
@@ -9,6 +11,8 @@ import AppText from '../components/AppText';
 import WithKeyboard from '../components/WithKeyboard';
 import GeneralError from '../components/GeneralError';
 import PurpleText from '../components/PurpleText';
+import Logo from '../assets/images/Logo.svg';
+
 import colors from '../constants/colors';
 import images from '../constants/images';
 import {
@@ -17,7 +21,6 @@ import {
   usernameAndPasswordAction,
 } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
-import Logo from '../assets/images/Logo.svg';
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
@@ -111,7 +114,17 @@ export default function Login({ navigation }) {
 
         <View style={{ marginBottom: 20 }}>
           <AppText style={styles.secondary}>
-            New User? <PurpleText text="Register" onPress={register} />
+            <Trans
+              i18nKey="new user? register"
+              components={{
+                purple: (
+                  <PurpleText
+                    text={t('new user register purple')}
+                    onPress={register}
+                  />
+                ),
+              }}
+            />
           </AppText>
         </View>
       </WithKeyboard>
@@ -153,5 +166,6 @@ const styles = StyleSheet.create({
   secondary: {
     color: colors.SECONDARY_TEXT,
     textAlign: 'center',
+    lineHeight: 21,
   },
 });

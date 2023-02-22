@@ -7,14 +7,17 @@ import {
   View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { Trans } from 'react-i18next';
+import { t } from 'i18next';
 
 import AppInput from '../../AppInput';
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
+import ChooseAddressModal from './ChooseAddressModal';
+
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import { toggleChooseAddressModal } from '../../../redux/modals/actions';
-import ChooseAddressModal from './ChooseAddressModal';
 import { chooseWhitelist, setWalletTab } from '../../../redux/wallet/actions';
 
 let addr =
@@ -79,8 +82,18 @@ export default function WithdrawalAddress({ error }) {
               </AppText>
             </View>
             <AppText subtext style={styles.addWhitelist}>
-              Don't have address yet.
-              <PurpleText text="Add Whitelist" subtext onPress={whitelistTab} />
+              <Trans
+                i18nKey="do not have address whitelist"
+                components={{
+                  purple: (
+                    <PurpleText
+                      text={t('Add Whitelist')}
+                      subtext
+                      onPress={whitelistTab}
+                    />
+                  ),
+                }}
+              />
             </AppText>
           </>
         );

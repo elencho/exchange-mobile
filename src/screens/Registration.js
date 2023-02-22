@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
+import { Trans } from 'react-i18next';
+import { t } from 'i18next';
 
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
@@ -9,18 +12,18 @@ import CheckMarks from '../components/Registration/CheckMarks';
 import PersonalCompanySwitcher from '../components/Registration/PersonalCompanySwitcher';
 import RegistrationInputs from '../components/Registration/RegistrationInputs';
 import EmailVerificationModal from '../components/Registration/EmailVerificationModal';
-import colors from '../constants/colors';
+import WithKeyboard from '../components/WithKeyboard';
 import Logo from '../assets/images/Logo.svg';
+import GeneralError from '../components/GeneralError';
+
 import {
   registrationFormAction,
   setRegistrationInputs,
   startLoginAction,
   switchPersonalCompany,
 } from '../redux/profile/actions';
-import { useFocusEffect } from '@react-navigation/native';
-import GeneralError from '../components/GeneralError';
 import { errorHappenedHere } from '../utils/appUtils';
-import WithKeyboard from '../components/WithKeyboard';
+import colors from '../constants/colors';
 
 export default function Registration({ navigation }) {
   const dispatch = useDispatch();
@@ -124,7 +127,17 @@ export default function Registration({ navigation }) {
         />
 
         <AppText style={styles.subtext}>
-          Have an account? <PurpleText text="Sign In" onPress={signIn} />
+          <Trans
+            i18nKey="have an account? sign in"
+            components={{
+              purple: (
+                <PurpleText
+                  text={t('have an account? sign in purple')}
+                  onPress={signIn}
+                />
+              ),
+            }}
+          />
         </AppText>
 
         <EmailVerificationModal />

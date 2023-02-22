@@ -84,7 +84,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
         <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
       );
     } else {
-      return <PurpleText text="Resend" onPress={resend} />;
+      return <PurpleText text="resend purple" onPress={resend} />;
     }
   };
 

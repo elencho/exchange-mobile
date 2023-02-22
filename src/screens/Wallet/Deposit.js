@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
-import colors from '../../constants/colors';
 import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock';
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
-import {
-  generateCryptoAddressAction,
-  setNetwork,
-} from '../../redux/wallet/actions';
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
 import AppButton from '../../components/AppButton';
 import FiatBlock from '../../components/Wallet/Deposit/FiatBlock';
@@ -21,16 +16,23 @@ import AppWebView from '../../components/AppWebView';
 import GeneralError from '../../components/GeneralError';
 import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
 import AppInfoBlock from '../../components/AppInfoBlock';
+import WithKeyboard from '../../components/WithKeyboard';
+import AppText from '../../components/AppText';
+
 import { infos, warnings } from '../../constants/warningsAndInfos';
+import colors from '../../constants/colors';
 import {
   fetchFee,
   setCard,
   setDepositProvider,
   setFee,
 } from '../../redux/trade/actions';
-import { errorHappenedHere } from '../../utils/appUtils';
+import {
+  generateCryptoAddressAction,
+  setNetwork,
+} from '../../redux/wallet/actions';
 import { setStatusModalInfo } from '../../redux/modals/actions';
-import WithKeyboard from '../../components/WithKeyboard';
+import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function Deposit({ refreshControl }) {
   const dispatch = useDispatch();
@@ -117,15 +119,26 @@ export default function Deposit({ refreshControl }) {
       infoObj = currentBalanceObj.infos[network];
       const minConfirmsForDeposit = infoObj?.minConfirmsForDeposit;
       const walletInfo = infoObj?.walletInfo;
+      const needsTag = infoObj?.transactionRecipientType === 'ADDRESS_AND_TAG';
+
+      const transComponent = (
+        <Trans
+          i18nKey="needs tag for deposit {{currency}} params[currency]"
+          values={{ currency: code }}
+          components={{
+            light: <AppText style={{ color: '#FFFBF3' }} />,
+            gold: <AppText style={{ color: '#F2DFB4' }} />,
+          }}
+        />
+      );
 
       let array = [
         t(`{{minConfirmsForDeposit}} params[minConfirmsForDeposit]`, {
           minConfirmsForDeposit,
         }),
       ];
-      if (walletInfo) {
-        array.push(t(walletInfo));
-      }
+      if (walletInfo) array.push(t(walletInfo));
+      if (needsTag) array.push(transComponent);
       return array;
     }
   };

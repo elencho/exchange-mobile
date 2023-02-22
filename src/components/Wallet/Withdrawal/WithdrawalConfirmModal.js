@@ -10,6 +10,7 @@ import PurpleText from '../../PurpleText';
 import GoogleOtpModal from '../../UserProfile/GoogleOtpModal';
 import AppInfoBlock from '../../AppInfoBlock';
 import SmsEmailAuthModal from '../../UserProfile/SmsEmailAuthModal';
+
 import {
   toggleEmailAuthModal,
   toggleGoogleOtpModal,
@@ -68,6 +69,17 @@ export default function WithdrawalConfirmModal() {
     if (card?.cardNumber) return card?.cardNumber;
   };
 
+  const needsTag = () => {
+    if (currentBalanceObj?.infos) {
+      return (
+        currentBalanceObj?.infos[network]?.transactionRecipientType ===
+        'ADDRESS_AND_TAG'
+      );
+    } else {
+      return false;
+    }
+  };
+
   const children = (
     <View style={styles.flex}>
       <View style={styles.flex}>
@@ -76,7 +88,9 @@ export default function WithdrawalConfirmModal() {
             warning
             content={[
               <Trans
-                i18nKey="confirmWithdrawal modal key params[network]"
+                i18nKey={`confirmWithdrawal modal key ${
+                  needsTag() ? 'with tag' : 'without tag'
+                } params[network]`}
                 values={{ network: networkName() }}
                 components={{
                   light: <AppText style={{ color: '#FFFBF3' }} />,

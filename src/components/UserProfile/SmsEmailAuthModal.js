@@ -100,7 +100,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
         <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
       );
     } else {
-      return <PurpleText text="Resend" onPress={resend} />;
+      return <PurpleText text="resend purple" onPress={resend} />;
     }
   };
 
