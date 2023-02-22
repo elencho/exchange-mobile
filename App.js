@@ -12,15 +12,15 @@ import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import VersionCheck from 'react-native-version-check';
 
+import AppToast from './src/components/AppToast';
 import Navigator from './src/navigation';
 import store from './src/redux/store';
 import images from './src/constants/images';
 import colors from './src/constants/colors';
 import './src/utils/i18n';
 import './src/utils/interceptor';
-import AppToast from './src/components/AppToast';
-import VersionCheck from 'react-native-version-check';
 
 LogBox.ignoreLogs([
   // TODO: Remove when fixed
@@ -40,14 +40,13 @@ function App() {
   //   CodePush.notifyAppReady();
   //   CodePush.sync(codePushOptions);
   // })
-  // useEffect(() => {
-  //   checkVersion();
-  // }, []);
+  useEffect(() => {
+    checkVersion();
+  }, []);
 
   const checkVersion = async () => {
     try {
       const updateNeeded = await VersionCheck.needUpdate();
-      alert(updateNeeded);
       if (updateNeeded && updateNeeded.isNeeded) {
         Alert.alert(
           'Please Update',
