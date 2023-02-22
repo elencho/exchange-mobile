@@ -19,6 +19,27 @@ i18next.use(initReactI18next).init({
         '{{onlyThisNetwork}}': '{{onlyThisNetwork}}',
         deactivateAccount:
           '<t>saports miweret rom</t> <b>gagiuqmot eqaunti</b>',
+        'needs tag for deposit {{currency}} params[currency]':
+          '<light>მიუთითეთ თეგიც და მისამართიც, რომელიც აუცილებელია იმისათვის, რომ</light> <gold>მოხდეს {{currency}}-ის დეპოზიტი</gold> ',
+        'confirmWithdrawal modal key with tag params[network]':
+          '<light>აუცილებლად მიუთითეთ თეგიც და მისამართიც</light> <gold>უეჭველი ეს ნეთვორქი {{network}}</gold> ',
+        'confirmWithdrawal modal key without tag params[network]':
+          '<light>თეგი საჭირო არაა</light> <gold>უეჭველი ეს ნეთვორქი {{network}}</gold> <light>რენდომ ინფო</light> ',
+        'we do not have cards add card': 'არ გაქვთ ბარათები <purple />',
+        'we already have cards add card': 'გაქვთ უკვე ბარათები <purple />',
+        'Add Card': 'დაამატეთ',
+        'do not have address whitelist': 'არ გაქვთ მისამართები <purple />',
+        'Add Whitelist': 'დაამატეთ ვაითლისტი',
+        'card verification purple text full': 'click to <purple />',
+        'retry card verification purple text full':
+          'double click to <purple />',
+        'card verification purple text': 'Verifyyyy',
+        'retry card verification purple text': 'Retryyyy',
+        'new user? register': 'ახალი მომხმარებელი ხართ? <purple />',
+        'new user register purple': 'დარეგისტრირდით',
+        'have an account? sign in': 'გაქვთ ექაუნთი? <purple />',
+        'have an account? sign in purple': 'დალოგინდით',
+        'resend purple': 'გაგზავნეთ ხელახლა',
       },
     },
     ka: {
