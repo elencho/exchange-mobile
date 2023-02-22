@@ -170,9 +170,7 @@ function* codeToTokenSaga(action) {
       await SecureStore.setItemAsync('refreshToken', data?.refresh_token);
     });
     yield put({ type: 'OTP_SAGA', token: data?.access_token });
-    yield call(() =>
-      navigation.navigate(fromResetOtp ? 'UserProfile' : 'Main')
-    );
+    yield call(() => navigation.replace(fromResetOtp ? 'UserProfile' : 'Main'));
     if (fromResetOtp) yield put(switchPersonalSecurity('Security'));
   } else {
     yield put(saveUserAndPassInfo(data));

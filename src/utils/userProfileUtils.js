@@ -297,7 +297,7 @@ export const updatePassword = async (
 export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {
   await axios({
     method: 'POST',
-    headers: { requestName: 'verifyPhoneNumber', toast: false },
+    headers: { requestName: 'verifyPhoneNumber' },
     url: VERIFY_PHONE_NUMBER,
     params: { phoneCountry, phoneNumber },
   });

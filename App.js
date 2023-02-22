@@ -46,6 +46,7 @@ function App() {
   const checkVersion = async () => {
     try {
       const updateNeeded = await VersionCheck.needUpdate();
+      alert(updateNeeded);
       if (updateNeeded && updateNeeded.isNeeded) {
         Alert.alert(
           'Please Update',
