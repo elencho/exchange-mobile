@@ -3,13 +3,12 @@ import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
-import { Trans } from 'react-i18next';
 
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
-import { ICONS_URL_PNG } from '../../../constants/api';
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
+import { ICONS_URL_PNG } from '../../../constants/api';
 import { setDeleteModalInfo } from '../../../redux/modals/actions';
 
 export default function Card({ card }) {
@@ -18,22 +17,14 @@ export default function Card({ card }) {
 
   const { provider, cardNumber, network, status, id, expired } = card;
 
-  const toVerify = (purpleText) => (
+  const toVerify = (text, purple) => (
     <>
       <AppText style={styles.verified}>
-        <Trans
-          i18nKey={`${purpleText} full`}
-          components={{
-            purple: (
-              <PurpleText
-                text={t(purpleText)}
-                onPress={() =>
-                  navigation.navigate('CardVerificationOne', { id })
-                }
-              />
-            ),
-          }}
-        />{' '}
+        {t(text)}{' '}
+        <PurpleText
+          text={t(purple)}
+          onPress={() => navigation.navigate('CardVerificationOne', { id })}
+        />
       </AppText>
     </>
   );
@@ -50,10 +41,10 @@ export default function Card({ card }) {
       return notToVerify(`Card ${status}`);
     }
     if (status === 'UNVERIFIED') {
-      return toVerify('card verification purple text');
+      return toVerify('Not Verified', 'Verify');
     }
     if (status === 'FAILED') {
-      return toVerify('retry card verification purple text');
+      return toVerify('Failed', 'Retry');
     }
   };
 

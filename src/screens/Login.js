@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, ImageBackground, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import { Trans } from 'react-i18next';
 import { t } from 'i18next';
 
 import AppButton from '../components/AppButton';
@@ -114,17 +113,8 @@ export default function Login({ navigation }) {
 
         <View style={{ marginBottom: 20 }}>
           <AppText style={styles.secondary}>
-            <Trans
-              i18nKey="new user? register"
-              components={{
-                purple: (
-                  <PurpleText
-                    text={t('new user register purple')}
-                    onPress={register}
-                  />
-                ),
-              }}
-            />
+            {t('New User?')}{' '}
+            <PurpleText text={t('Register')} onPress={register} />
           </AppText>
         </View>
       </WithKeyboard>

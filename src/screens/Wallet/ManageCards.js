@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../../components/AppText';
 import AppWebView from '../../components/AppWebView';
-import GeneralError from '../../components/GeneralError';
 import PurpleText from '../../components/PurpleText';
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
 import AddCardModal from '../../components/Wallet/ManageCards/AddCardModal';
@@ -36,7 +35,6 @@ export default function ManageCards({ refreshControl }) {
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.block}>
-        {/* <GeneralError style={{ marginBottom: 16 }} /> */}
         <WalletCoinsDropdown />
       </View>
 

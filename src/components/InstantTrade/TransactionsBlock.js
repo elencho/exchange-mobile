@@ -21,8 +21,8 @@ import PurpleText from '../PurpleText';
 import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
 import Trade from './Trade';
 import List from '../../assets/images/List.svg';
-import { Trans, useTranslation } from 'react-i18next';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { t } from 'i18next';
 
 const IS_IOS = Platform.OS === 'ios';
 
@@ -35,12 +35,7 @@ export const TopRow = ({ text, onPress }) => {
 
       <View style={styles.right}>
         <AppText subtext body style={styles.subText}>
-          <Trans
-            i18nKey="togglePairs"
-            components={{
-              purple: <Purple text={text} onPress={onPress} />,
-            }}
-          />
+          <Purple text={t(text)} onPress={onPress} /> {t('Other Pairs')}
         </AppText>
       </View>
     </View>
@@ -48,8 +43,6 @@ export const TopRow = ({ text, onPress }) => {
 };
 
 const Purple = ({ text, onPress }) => {
-  const { t } = useTranslation();
-
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -58,7 +51,7 @@ const Purple = ({ text, onPress }) => {
         top: 2,
       }}
     >
-      <PurpleText onPress={onPress} text={t(text)} />
+      <PurpleText onPress={onPress} text={text} />
     </TouchableOpacity>
   );
 };
@@ -118,7 +111,7 @@ const TransactionsBlock = ({
   return (
     <View style={styles.container}>
       <TopRow
-        text={hideOtherPairs ? 'Show ' : 'Hide '}
+        text={hideOtherPairs ? 'Show' : 'Hide'}
         onPress={toggleShowHide}
       />
 
