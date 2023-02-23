@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-import { Trans } from 'react-i18next';
 import { t } from 'i18next';
 
 import Fee from '../Wallet/Fee';
@@ -158,16 +157,12 @@ function CardSection({ error }) {
           </Pressable>
 
           <AppText subtext style={styles.newCard}>
-            <Trans
-              i18nKey={`we ${
-                !cardsToDisplayInModal?.length ? 'do not' : 'already'
-              } have cards add card`}
-              components={{
-                purple: (
-                  <PurpleText text={t('Add Card')} onPress={addNewCard} />
-                ),
-              }}
-            />
+            {t(
+              !cardsToDisplayInModal?.length
+                ? "You don't have cards"
+                : 'You can add a new card'
+            )}{' '}
+            <PurpleText text={t('Add Card')} onPress={addNewCard} />
           </AppText>
 
           {trade && (

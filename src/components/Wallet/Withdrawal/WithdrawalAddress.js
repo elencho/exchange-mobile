@@ -1,13 +1,6 @@
 import React from 'react';
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Trans } from 'react-i18next';
 import { t } from 'i18next';
 
 import AppInput from '../../AppInput';
@@ -82,18 +75,8 @@ export default function WithdrawalAddress({ error }) {
               </AppText>
             </View>
             <AppText subtext style={styles.addWhitelist}>
-              <Trans
-                i18nKey="do not have address whitelist"
-                components={{
-                  purple: (
-                    <PurpleText
-                      text={t('Add Whitelist')}
-                      subtext
-                      onPress={whitelistTab}
-                    />
-                  ),
-                }}
-              />
+              {t('Do Not Have Address')}{' '}
+              <PurpleText text={t('Add Whitelist')} onPress={whitelistTab} />
             </AppText>
           </>
         );

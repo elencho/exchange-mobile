@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
-import { Trans } from 'react-i18next';
 import { t } from 'i18next';
 
 import AppButton from '../components/AppButton';
@@ -127,17 +126,8 @@ export default function Registration({ navigation }) {
         />
 
         <AppText style={styles.subtext}>
-          <Trans
-            i18nKey="have an account? sign in"
-            components={{
-              purple: (
-                <PurpleText
-                  text={t('have an account? sign in purple')}
-                  onPress={signIn}
-                />
-              ),
-            }}
-          />
+          {t('Have an Account?')}{' '}
+          <PurpleText text={t('Sign In')} onPress={signIn} />
         </AppText>
 
         <EmailVerificationModal />
