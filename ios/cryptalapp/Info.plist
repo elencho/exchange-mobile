@@ -54,6 +54,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+    <string>itms-apps</string>
+    </array>
 	<key>NSCameraUsageDescription</key>
 	<string>Allow $(PRODUCT_NAME) to use Camera</string>
 	<key>NSFaceIDUsageDescription</key>

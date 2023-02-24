@@ -28,6 +28,7 @@ export default function TwoFaInput({
   login,
   fromResetOtp,
   registration,
+  indicatorStyle,
 }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -84,7 +85,7 @@ export default function TwoFaInput({
     <MaterialIndicator
       color="#6582FD"
       animationDuration={3000}
-      style={{ position: 'absolute', alignSelf: 'center' }}
+      style={[{ position: 'absolute', alignSelf: 'center' }, indicatorStyle]}
     />
   ) : (
     <CodeInput cellCount={cellCount} value={value} setValue={handleChange} />

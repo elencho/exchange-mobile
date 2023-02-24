@@ -122,7 +122,12 @@ export default function EmailVerificationModal() {
           </View>
           {checkMailText()}
 
-          <TwoFaInput value={value} setValue={setValue} registration />
+          <TwoFaInput
+            value={value}
+            setValue={setValue}
+            registration
+            indicatorStyle={{ top: '60%' }}
+          />
         </View>
 
         {/* Animate */}

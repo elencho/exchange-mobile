@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -38,19 +38,8 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
     trade: { card, currentBalanceObj, depositProvider },
   } = state;
 
-  const cur = currentBalanceObj;
+  const [maxLength, setMaxLength] = useState(13);
 
-  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
-  const isEcommerce = network === 'ECOMMERCE';
-  const isDecimal = withdrawalAmount % 1 != 0;
-  const factoredDigit = Math.trunc(withdrawalAmount);
-  const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-  const maxLength = isDecimal
-    ? factoredDigitLength + 1 + parseFloat(cur?.withdrawalScale)
-    : 1000;
-  const inputValidation = new RegExp(
-    `^[0-9]+(\.|\\.[0-9]{1,${cur?.withdrawalScale}})?$`
-  );
   useEffect(() => {
     if (Object.keys(currentTemplate)?.length) {
       dispatch(setWithdrawalNote(''));
@@ -58,19 +47,50 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
     }
   }, [currentTemplate]);
 
-  const setAmount = (text) => {
-    const amount = text?.trim()?.replace(',', '.');
+  const cur = currentBalanceObj;
+
+  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
+  const isEcommerce = network === 'ECOMMERCE';
+
+  const inputValidation = new RegExp(
+    `^[0-9]{1,13}(\.|\\.[0-9]{1,${cur?.withdrawalScale}})?$`
+  );
+
+  const setAmount = (amount) => {
     const condition =
       depositProvider ||
       cur?.type === 'CRYPTO' ||
       currentTemplate?.templateName;
-    if (inputValidation.test(amount) || !amount) {
-      if (validateScale(amount, cur?.withdrawalScale)) {
-        dispatch(setWithdrawalAmount(amount ? amount : 0));
-        if (condition) dispatch(fetchFee('withdrawal'));
-      }
+    dispatch(setWithdrawalAmount(amount ? amount : 0));
+    if (condition) dispatch(fetchFee('withdrawal'));
+  };
+
+  const getMaxLength = (replacedAmount) => {
+    const factoredDigit = Math.trunc(replacedAmount);
+    const factoredDigitLengthi = parseFloat(factoredDigit.toString().length);
+    const maxLengthDecimal =
+      factoredDigitLengthi + parseFloat(cur?.withdrawalScale) + 1;
+    setMaxLength(maxLengthDecimal);
+  };
+
+  const handleAmount = (text) => {
+    const replacedAmount = text?.trim().replace(',', '.');
+
+    if (!inputValidation.test(replacedAmount) && replacedAmount) {
+      return dispatch(setWithdrawalAmount(''));
+    }
+
+    if (!validateScale(replacedAmount, cur?.withdrawalScale)) {
+      return;
+    }
+
+    const parts = replacedAmount.split('.');
+    if (parts.length === 2) {
+      getMaxLength(replacedAmount);
+      setAmount(replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0);
     } else {
-      dispatch(setWithdrawalAmount(''));
+      setMaxLength(14);
+      setAmount(replacedAmount ? parts[0].substr(0, 13) : 0);
     }
   };
 
@@ -138,7 +158,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
           />
         )}
         <AppInput
-          onChangeText={setAmount}
+          onChangeText={handleAmount}
           value={withdrawalAmount}
           label="Enter Amount"
           style={{ marginTop, marginBottom: 8 }}

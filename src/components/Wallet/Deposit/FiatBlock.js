@@ -36,22 +36,18 @@ export default function FiatBlock() {
     },
   } = state;
 
-  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
-  const isDecimal = depositAmount % 1 != 0;
-  const factoredDigit = Math.trunc(depositAmount);
-  const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-  const maxLength = isDecimal
-    ? factoredDigitLength + parseFloat(depositScale) + 1
-    : 1000;
-  const inputValidation = new RegExp(
-    `^[0-9]+(\.|\\.[0-9]{1,${depositScale}})?$`
-  );
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [maxLength, setMaxLength] = useState(13);
 
   useEffect(() => {
     error && setError(false);
   }, [card, depositAmount, depositProvider, network]);
+
+  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
+  const inputValidation = new RegExp(
+    `^[0-9]{1,13}(\.|\\.[0-9]{1,${depositScale}})?$`
+  );
 
   const generatePdf = () => {
     if (!validateAmount(depositAmount)) {
@@ -61,28 +57,47 @@ export default function FiatBlock() {
     }
   };
 
+  const setAmount = (amount) => {
+    dispatch({
+      type: 'SET_DEPOSIT_AMOUNT',
+      depositAmount: amount,
+    });
+    if (
+      (depositProvider && card) ||
+      network === 'SWIFT' ||
+      network === 'SEPA'
+    ) {
+      dispatch(fetchFee('deposit'));
+    }
+  };
+
+  const getMaxLength = (replacedAmount) => {
+    const factoredDigit = Math.trunc(replacedAmount);
+    const factoredDigitLength = parseFloat(factoredDigit.toString().length);
+    setMaxLength(factoredDigitLength + parseFloat(depositScale) + 1);
+  };
+
   const handleAmount = (text) => {
     const replacedAmount = text?.trim().replace(',', '.');
-    if (inputValidation.test(replacedAmount) || !replacedAmount) {
-      if (validateScale(replacedAmount, depositScale)) {
-        dispatch({
-          type: 'SET_DEPOSIT_AMOUNT',
-          depositAmount: replacedAmount ? replacedAmount : 0,
-        });
 
-        if (
-          (depositProvider && card) ||
-          network === 'SWIFT' ||
-          network === 'SEPA'
-        ) {
-          dispatch(fetchFee('deposit'));
-        }
-      }
-    } else {
-      dispatch({
+    if (!inputValidation.test(replacedAmount) && replacedAmount) {
+      return dispatch({
         type: 'SET_DEPOSIT_AMOUNT',
         depositAmount: '',
       });
+    }
+
+    if (!validateScale(replacedAmount, depositScale)) {
+      return;
+    }
+
+    const parts = replacedAmount.split('.');
+    if (parts.length === 2) {
+      getMaxLength(replacedAmount);
+      setAmount(replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0);
+    } else {
+      setMaxLength(14);
+      setAmount(replacedAmount ? parts[0].substr(0, 13) : 0);
     }
   };
 

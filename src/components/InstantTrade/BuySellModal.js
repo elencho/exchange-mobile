@@ -53,6 +53,8 @@ export default function BuySellModal() {
   } = state;
 
   const [error, setError] = useState(false);
+  const [maxLengthBase, setMaxLengthBase] = useState(13);
+  const [maxLengthQuote, setMaxLengthQuote] = useState(13);
 
   useEffect(() => {
     error && setError(false);
@@ -86,15 +88,17 @@ export default function BuySellModal() {
   const price = currentTrade?.price;
   const balances = balance?.balances;
 
-  const getMaxLength = (value, scale) => {
-    const isDecimal = value && (value % 1 != 0 || value.includes('.'));
+  const getMaxLength = (value, scale, setFunction) => {
     const factoredDigit = Math.trunc(value);
     const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-    return isDecimal ? factoredDigitLength + 1 + parseFloat(scale) : 1000;
+    setFunction(factoredDigitLength + parseFloat(scale) + 1);
   };
 
-  const maxLengthQuote = getMaxLength(price, pairObject?.pair?.quoteScale);
-  const maxLengthBase = getMaxLength(size, pairObject?.pair?.baseScale);
+  const inputValidation = (scale) =>
+    new RegExp(`^[0-9]{1,13}(\.|\\.[0-9]{1,${scale}})?$`);
+
+  const quoteValidation = inputValidation(pairObject?.pair?.quoteScale);
+  const baseValidation = inputValidation(pairObject?.pair?.baseScale);
 
   const hide = () => {
     dispatch(toggleBuySellModal(false));
@@ -120,32 +124,60 @@ export default function BuySellModal() {
     } else dispatch(submitTrade());
   };
 
+  const setTrade = (price, size) => {
+    dispatch(setCurrentTrade({ price, size }));
+    card && dispatch(fetchFee());
+  };
+
   const handleChangeText = (text, type) => {
-    if (text === '') {
-      dispatch(setCurrentTrade({ price: '', size: '' }));
-      return;
-    }
-    const t = text ? text.replace(',', '.') : 0;
+    const replacedAmount = text ? text.replace(',', '.') : 0;
     const rate =
       tradeType === 'Buy' ? pairObject.buyPrice : pairObject.sellPrice;
 
-    if (type === 'crypto' && validateScale(t, quoteScale)) {
-      dispatch(
-        setCurrentTrade({
-          price: t,
-          size: (t / rate).toFixed(baseScale),
-        })
-      );
-      card && dispatch(fetchFee());
+    if (text === '') {
+      return setTrade('', '');
     }
-    if (type === 'fiat' && validateScale(t, baseScale)) {
-      dispatch(
-        setCurrentTrade({
-          price: (t * rate).toFixed(quoteScale),
-          size: t,
-        })
-      );
-      card && dispatch(fetchFee());
+    if (text && (!quoteValidation.test(text) || !baseValidation.test(text))) {
+      return setTrade('', '');
+    }
+
+    const parts = replacedAmount?.split('.');
+
+    if (type === 'crypto' && validateScale(replacedAmount, quoteScale)) {
+      if (parts.length === 2) {
+        let cryptoAmount = (
+          parts[0].substr(0, 14) +
+          '.' +
+          parts[1] / rate
+        ).toFixed(baseScale);
+        getMaxLength(replacedAmount, quoteScale, setMaxLengthQuote);
+        setTrade(
+          replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0,
+          cryptoAmount
+        );
+      } else {
+        let cryptoAmount = (parts[0].substr(0, 13) / rate).toFixed(baseScale);
+        setMaxLengthQuote(14);
+        setTrade(replacedAmount ? parts[0].substr(0, 13) : 0, cryptoAmount);
+      }
+    }
+    if (type === 'fiat' && validateScale(replacedAmount, baseScale)) {
+      if (parts.length === 2) {
+        let fiatAmount = (
+          parts[0].substr(0, 14) +
+          '.' +
+          parts[1] * rate
+        ).toFixed(quoteScale);
+        getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
+        setTrade(
+          fiatAmount,
+          replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0
+        );
+      } else {
+        let fiatAmount = (parts[0].substr(0, 13) * rate).toFixed(quoteScale);
+        setMaxLengthBase(14);
+        setTrade(fiatAmount, replacedAmount ? parts[0].substr(0, 13) : 0);
+      }
     }
   };
 
