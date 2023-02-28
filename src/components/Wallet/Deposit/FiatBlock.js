@@ -79,12 +79,12 @@ export default function FiatBlock() {
 
   const handleAmount = (text) => {
     const replacedAmount = text?.trim().replace(',', '.');
-
     if (!inputValidation.test(replacedAmount) && replacedAmount) {
-      return dispatch({
-        type: 'SET_DEPOSIT_AMOUNT',
-        depositAmount: '',
-      });
+      // return dispatch({
+      //   type: 'SET_DEPOSIT_AMOUNT',
+      //   depositAmount: '',
+      // });
+      return;
     }
 
     if (!validateScale(replacedAmount, depositScale)) {

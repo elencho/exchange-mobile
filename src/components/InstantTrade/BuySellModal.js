@@ -137,19 +137,18 @@ export default function BuySellModal() {
     if (text === '') {
       return setTrade('', '');
     }
-    if (text && (!quoteValidation.test(text) || !baseValidation.test(text))) {
-      return setTrade('', '');
-    }
+    // if (text && (!quoteValidation.test(text) || !baseValidation.test(text))) {
+    //   return;
+    // }
 
     const parts = replacedAmount?.split('.');
 
     if (type === 'crypto' && validateScale(replacedAmount, quoteScale)) {
+      if (text && !quoteValidation.test(text)) {
+        return;
+      }
       if (parts.length === 2) {
-        let cryptoAmount = (
-          parts[0].substr(0, 14) +
-          '.' +
-          parts[1] / rate
-        ).toFixed(baseScale);
+        let cryptoAmount = (replacedAmount / rate).toFixed(baseScale);
         getMaxLength(replacedAmount, quoteScale, setMaxLengthQuote);
         setTrade(
           replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0,
@@ -162,12 +161,11 @@ export default function BuySellModal() {
       }
     }
     if (type === 'fiat' && validateScale(replacedAmount, baseScale)) {
+      if (text && !baseValidation.test(text)) {
+        return;
+      }
       if (parts.length === 2) {
-        let fiatAmount = (
-          parts[0].substr(0, 14) +
-          '.' +
-          parts[1] * rate
-        ).toFixed(quoteScale);
+        let fiatAmount = (replacedAmount * rate).toFixed(quoteScale);
         getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
         setTrade(
           fiatAmount,
