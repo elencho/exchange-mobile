@@ -18,6 +18,7 @@ const DeleteAccount = () => {
       <AppText medium style={styles.text}>
         <Trans
           i18nKey="deactivateAccount"
+          defaults="<t>Contact support to</t>  <b>Deactivate Account</b>"
           components={{
             b: <AppText medium style={styles.textSec} onPress={handlePress} />,
             t: <AppText />,

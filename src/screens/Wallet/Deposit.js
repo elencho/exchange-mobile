@@ -46,7 +46,7 @@ export default function Deposit({ refreshControl }) {
   const {
     transactions: { code, loading },
     trade: { currentBalanceObj, depositProvider, card, cardsLoading },
-    wallet: { cryptoAddress, hasMultipleMethods, depositRestriction, network },
+    wallet: { cryptoAddress, depositRestriction, network },
     modals: { webViewObj },
   } = state;
 
@@ -167,21 +167,17 @@ export default function Deposit({ refreshControl }) {
           </>
         ) : (
           <>
-            {hasMultipleMethods && (
-              <>
-                <TransferMethodDropdown />
-                {isEcommerce && (
-                  <AppInfoBlock content={infos.ecommerce.deposit} info />
-                )}
-                {network === 'SWIFT' && (
-                  <AppInfoBlock content={warnings.swift.deposit} warning />
-                )}
-                {network === 'SEPA' && (
-                  <AppInfoBlock content={warnings.sepa} warning />
-                )}
-                <TransferMethodModal />
-              </>
+            <TransferMethodDropdown />
+            {isEcommerce && (
+              <AppInfoBlock content={infos.ecommerce.deposit} info />
             )}
+            {network === 'SWIFT' && (
+              <AppInfoBlock content={warnings.swift.deposit} warning />
+            )}
+            {network === 'SEPA' && (
+              <AppInfoBlock content={warnings.sepa} warning />
+            )}
+            <TransferMethodModal />
           </>
         )}
       </View>

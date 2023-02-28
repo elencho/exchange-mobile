@@ -27,7 +27,7 @@ export default function WithdrawalConfirmModal() {
     modals: { withdrawalConfirmModalVisible },
     trade: { currentBalanceObj, fee, card },
     profile: { googleAuth, emailAuth, smsAuth },
-    wallet: { network, withdrawalAmount, currentWhitelistObj, iban },
+    wallet: { network, withdrawalAmount, currentWhitelistObj, iban, memoTag },
     transactions: { code },
   } = state;
 
@@ -123,11 +123,11 @@ export default function WithdrawalConfirmModal() {
           <AppText style={styles.leftText}>Confirm Identifier</AppText>
           <AppText style={styles.rightText}>{identifier()}</AppText>
         </View>
-        {currentWhitelistObj?.tag && (
+        {needsTag() && (
           <View style={styles.row}>
             <AppText style={styles.leftText}>Confirm Tag</AppText>
             <AppText style={styles.rightText}>
-              {currentWhitelistObj?.tag}
+              {currentWhitelistObj?.tag ?? memoTag}
             </AppText>
           </View>
         )}

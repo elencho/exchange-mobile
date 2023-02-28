@@ -14,6 +14,7 @@ const INITIAL_STATE = {
   // Deposit
   wireDepositInfo: {},
   cryptoAddress: {},
+  methodsToDisplay: [],
   wireDepositProviders: [],
   wireDepositProvider: null,
   depositAmount: null,
@@ -48,6 +49,7 @@ export default (state = INITIAL_STATE, action) => {
     usdBtcSwitch,
     depositRestriction,
     withdrawalRestriction,
+    methodsToDisplay,
     hasMultipleNetworks,
     hasMultipleMethods,
     wireDepositInfo,
@@ -94,6 +96,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         hasMultipleNetworks,
+      };
+    case 'SET_METHODS_TO_DISPLAY':
+      return {
+        ...state,
+        methodsToDisplay,
       };
     case actionTypes.SET_DEPOSIT_RESTRICTION:
       return {
