@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
@@ -60,6 +61,8 @@ export default function Welcome({ navigation }) {
   });
 
   useEffect(() => {
+    changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
+
     fetchTranslations()
       .then((res) => {
         const languages = Object.keys(res);

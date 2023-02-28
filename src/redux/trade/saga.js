@@ -46,6 +46,7 @@ import {
   cryptoAddressesAction,
   getWhitelistAction,
   setWalletTab,
+  wireDepositAction,
   withdrawalTemplatesAction,
 } from '../wallet/actions';
 import { toggleLoading } from '../transactions/actions';
@@ -238,6 +239,10 @@ function* refreshWalletAndTradesSaga() {
 
   if (balance) {
     yield put(setFee(null));
+
+    if (deposit && fiat && !ecommerce) {
+      yield put(wireDepositAction(currency, code));
+    }
 
     if (wallet && !whitelist && isAvailable(currentBalanceObj)) {
       // wire deposit saga is exclusion

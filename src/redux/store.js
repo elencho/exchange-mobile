@@ -5,7 +5,7 @@ import { reducer } from '../redux/rootReducer';
 import mySaga from '../redux/sagas';
 
 const sagaMiddleware = createSagaMiddleware({
-  onError: (error) => alert(error),
+  // onError: (error) => alert(error),
 });
 
 const store = configureStore({

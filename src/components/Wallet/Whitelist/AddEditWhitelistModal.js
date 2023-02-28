@@ -122,7 +122,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
     ? !newWhitelist?.name?.trim()
     : !currentWhitelistObj?.name?.trim();
   const addressError = add ? !newWhitelist?.address?.trim() : false;
-  const tagError = add ? !newWhitelist?.tag : false;
+  const tagError = add ? !newWhitelist?.tag?.trim() : false;
 
   const children = (
     <WithKeyboard padding flexGrow modal>

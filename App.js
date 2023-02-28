@@ -11,7 +11,6 @@ import {
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import VersionCheck from 'react-native-version-check';
 
 import AppToast from './src/components/AppToast';
@@ -34,7 +33,6 @@ LogBox.ignoreLogs([
 // };
 
 function App() {
-  changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
   // useEffect(() => {
   //   CodePush.notifyAppReady();
   //   CodePush.sync(codePushOptions);
@@ -46,7 +44,6 @@ function App() {
   const checkVersion = async () => {
     try {
       const updateNeeded = await VersionCheck.needUpdate();
-      alert(updateNeeded);
       if (updateNeeded && updateNeeded.isNeeded) {
         Alert.alert(
           'Please Update',
