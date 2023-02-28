@@ -31,6 +31,7 @@ LogBox.ignoreLogs([
 //   installMode: CodePush.InstallMode.IMMEDIATE,
 //   checkFrequency: CodePush.CheckFrequency.ON_APP_START,
 // };
+//
 
 function App() {
   // useEffect(() => {
