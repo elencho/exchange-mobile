@@ -167,7 +167,8 @@ function* submitTradeSaga() {
     } else {
       yield put({ type: 'BALANCE_SAGA' });
       yield put(saveTrades([]));
-      yield put(fetchTradesAction());
+      yield put(setTradeOffset(0));
+      yield put(fetchTradesAction(false));
       yield put(toggleBuySellModal(false));
     }
   }

@@ -66,7 +66,7 @@ export const generateWirePdf = async (
     }, 500);
   } catch (error) {
     setLoading(false);
-
+    alert(error);
     console.error(error);
   }
 };
@@ -107,6 +107,7 @@ const downloadFile = async (currency, amount, wireDepositInfoId, bearer) => {
       }
     })
     .catch((errorMessage) => {
+      alert(errorMessage);
       console.log('errorMessage', errorMessage);
     });
 };

@@ -77,7 +77,8 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
     const replacedAmount = text?.trim().replace(',', '.');
 
     if (!inputValidation.test(replacedAmount) && replacedAmount) {
-      return dispatch(setWithdrawalAmount(''));
+      //return dispatch(setWithdrawalAmount(''));
+      return;
     }
 
     if (!validateScale(replacedAmount, cur?.withdrawalScale)) {

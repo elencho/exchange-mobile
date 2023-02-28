@@ -37,7 +37,6 @@ export default function InstantTrade() {
     dispatch(fetchTrades());
   };
 
-  const [innerScrollEnabled, setInnerScrollEnabled] = useState(false);
   const [showRefreshControl, setShowRefreshControl] = useState(false);
 
   useEffect(() => {
@@ -47,20 +46,6 @@ export default function InstantTrade() {
     }, 1000);
     return () => clearTimeout(timer);
   }, [tabRoute]);
-
-  const handleOuterScroll = (event) => {
-    // disable inner scroll when outer scroll is at top
-    if (event.nativeEvent.contentOffset.y === 0) {
-      setInnerScrollEnabled(false);
-    }
-  };
-
-  const handleInnerScroll = (event) => {
-    // enable inner scroll when outer scroll is not at top
-    if (event.nativeEvent.contentOffset.y !== 0) {
-      setInnerScrollEnabled(true);
-    }
-  };
 
   return (
     <Background>
@@ -78,7 +63,6 @@ export default function InstantTrade() {
         showsVerticalScrollIndicator={false}
         style={{ overflow: 'hidden' }}
         contentContainerStyle={{ overflow: 'hidden' }}
-        onScroll={(e) => handleOuterScroll(e)}
         refreshControl={
           showRefreshControl ? (
             <RefreshControl
@@ -90,11 +74,7 @@ export default function InstantTrade() {
         }
       >
         {offersLoading ? <TradeBlockSkeleton /> : <TradeBlock />}
-        <TransactionsBlock
-          loading={tradesLoading}
-          onScroll={handleInnerScroll}
-          scrollEnabled={innerScrollEnabled}
-        />
+        <TransactionsBlock loading={tradesLoading} />
       </ScrollView>
 
       <InfoModal />
