@@ -3,6 +3,9 @@ package com.cryptal.exchange.mobile;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.app.Activity;
+import android.content.pm.ActivityInfo;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;

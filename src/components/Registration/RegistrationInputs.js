@@ -192,6 +192,7 @@ const styles = StyleSheet.create({
   number: {
     flexDirection: 'row',
     alignItems: 'center',
+    height: '100%',
   },
   phoneNumber: {
     borderWidth: 1,

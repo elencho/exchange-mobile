@@ -56,7 +56,7 @@ export default function Timer() {
         progress={progress(seconds)}
       />
       <AppText style={{ marginTop: 10, color: '#C0C5E0' }} subtext body>
-        {t('priceUpdate')}
+        {t('priceUpdate')}{' '}
         {min > 0 && (
           <AppText style={{ color: colors.PRIMARY_TEXT }}>{min}:</AppText>
         )}

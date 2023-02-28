@@ -1,14 +1,20 @@
 export const withdrawalParams = (state) => {
   const {
     transactions: { code },
-    wallet: { currentWhitelistObj, withdrawalAmount, withdrawalNote, network },
+    wallet: {
+      currentWhitelistObj,
+      withdrawalAmount,
+      withdrawalNote,
+      network,
+      memoTag,
+    },
   } = state;
 
   return {
     currency: code,
     amount: withdrawalAmount,
     address: currentWhitelistObj?.address,
-    addressTag: currentWhitelistObj?.tag,
+    addressTag: currentWhitelistObj?.tag ?? memoTag,
     note: withdrawalNote,
     provider: network,
   };

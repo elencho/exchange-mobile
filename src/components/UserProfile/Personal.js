@@ -122,7 +122,7 @@ export default function Personal({ loading }) {
       case 'Notifications':
         return (
           <View style={styles.row}>
-            <AppText medium style={styles.white}>
+            <AppText medium style={[styles.white, { maxWidth: '80%' }]}>
               Receive Notifications
             </AppText>
             <View style={[styles.flex, { alignItems: 'flex-end' }]}>

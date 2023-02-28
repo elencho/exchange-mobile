@@ -34,7 +34,6 @@ export default function Withdrawal({ refreshControl }) {
       currentTemplate,
       withdrawalBank,
       iban,
-      hasMultipleMethods,
       network,
       withdrawalAmount,
       whitelistLoading,
@@ -141,7 +140,7 @@ export default function Withdrawal({ refreshControl }) {
             {/* <GeneralError style={{ marginBottom: 16 }} /> */}
             <WalletCoinsDropdown />
             {(!isFiat || code === 'EUR') && <ChooseNetworkDropdown />}
-            {isFiat && hasMultipleMethods && (
+            {isFiat && (
               <>
                 <TransferMethodDropdown />
                 <TransferMethodModal />
