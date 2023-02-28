@@ -24,6 +24,7 @@ import {
   setCurrentTrade,
   setDepositProvider,
   setFee,
+  setTradeOffset,
   submitTrade,
   switchBalanceCard,
 } from '../../redux/trade/actions';
@@ -205,6 +206,7 @@ export default function BuySellModal() {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
       dispatch({ type: 'BALANCE_SAGA' });
       dispatch(saveTrades([]));
+      dispatch(setTradeOffset(0));
       dispatch(fetchTrades());
       dispatch(toggleBuySellModal(false));
     }

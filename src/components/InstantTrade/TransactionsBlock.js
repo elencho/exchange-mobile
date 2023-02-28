@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -56,21 +56,13 @@ const Purple = ({ text, onPress }) => {
   );
 };
 
-const TransactionsBlock = ({
-  loading,
-  innerScrollEnabled,
-  handleInnerScroll,
-}) => {
+const TransactionsBlock = ({ loading }) => {
   const dispatch = useDispatch();
 
   const state = useSelector((state) => state);
   const {
     trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
   } = state;
-
-  // useEffect(() => {
-  //   return () => dispatch(saveTrades([]));
-  // }, []);
 
   const toggleShowHide = () => {
     dispatch(setTradeOffset(0));
@@ -92,6 +84,14 @@ const TransactionsBlock = ({
     dispatch(saveTrades([]));
     dispatch(fetchTrades());
   };
+
+  const onScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    if (offsetY === 0) {
+      onRefresh();
+    }
+  };
+
   const renderTrade = ({ item }) => (
     <Trade trade={item} key={item.creationTime} />
   );
@@ -134,8 +134,7 @@ const TransactionsBlock = ({
           nestedScrollEnabled
           initialNumToRender={5}
           ListFooterComponent={footer}
-          scrollEnabled={innerScrollEnabled}
-          onScroll={handleInnerScroll}
+          onScroll={onScroll}
           ListEmptyComponent={listEmptyContainer}
           refreshControl={
             <RefreshControl
