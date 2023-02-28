@@ -36,8 +36,8 @@ export const depositFeeParams = (state) => {
   };
 
   const amount = () => {
-    if (instantTrade) return price;
-    else return depositAmount ?? 0;
+    if (instantTrade) return price ? price : 0;
+    else return depositAmount ? depositAmount : 0;
   };
 
   return {

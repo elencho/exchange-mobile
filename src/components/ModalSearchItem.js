@@ -1,5 +1,6 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import AppText from './AppText';
 import ShowAll from '../assets/images/ShowAll';
@@ -49,17 +50,14 @@ export default function ModalSearchItem({
     );
 
   return (
-    <TouchableOpacity
-      style={[styles.container, backgroundCond()]}
-      onPress={onPress}
-    >
+    <Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
       {code ? (
-        <Image style={styles.image} source={{ uri }} />
+        <FastImage style={styles.image} source={{ uri }} />
       ) : (
         <ShowAll style={{ marginRight: 20 }} />
       )}
       {text}
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 
