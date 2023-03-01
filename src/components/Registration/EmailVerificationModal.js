@@ -126,7 +126,7 @@ export default function EmailVerificationModal() {
             value={value}
             setValue={setValue}
             registration
-            indicatorStyle={{ top: '60%' }}
+            indicatorStyle={{ top: '70%' }}
           />
         </View>
 
