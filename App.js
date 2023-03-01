@@ -5,13 +5,10 @@ import {
   SafeAreaView,
   StatusBar,
   LogBox,
-  Alert,
-  Linking,
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
-import VersionCheck from 'react-native-version-check';
 
 import AppToast from './src/components/AppToast';
 import Navigator from './src/navigation';
@@ -38,30 +35,6 @@ function App() {
   //   CodePush.notifyAppReady();
   //   CodePush.sync(codePushOptions);
   // })
-  useEffect(() => {
-    checkVersion();
-  }, []);
-
-  const checkVersion = async () => {
-    try {
-      const updateNeeded = await VersionCheck.needUpdate();
-      if (updateNeeded && updateNeeded.isNeeded) {
-        Alert.alert(
-          'Please Update',
-          'You will have to update',
-          [
-            {
-              text: 'Update',
-              onPress: () => {
-                Linking.openURL(updateNeeded.storeUrl);
-              },
-            },
-          ],
-          { cancelable: false }
-        );
-      }
-    } catch (error) {}
-  };
 
   const [fontsLoaded] = useFonts({
     Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
