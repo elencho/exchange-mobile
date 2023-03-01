@@ -73,7 +73,7 @@ export const generateWirePdf = async (
 
 const downloadFile = async (currency, amount, wireDepositInfoId, bearer) => {
   const pdfLocation =
-    RNFetchBlob.fs.dirs.DownloadDir + '/' + `wiredeposit${amount}.pdf`;
+    RNFetchBlob.fs.dirs.DownloadDir + '/' + `wiredeposit/${Math.random()}.pdf`;
   const android = RNFetchBlob.android;
 
   RNFetchBlob.config({
