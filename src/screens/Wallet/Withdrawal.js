@@ -139,8 +139,7 @@ export default function Withdrawal({ refreshControl }) {
           <View style={styles.block}>
             {/* <GeneralError style={{ marginBottom: 16 }} /> */}
             <WalletCoinsDropdown />
-            {(!isFiat || code === 'EUR') && <ChooseNetworkDropdown />}
-            {isFiat && (
+            {isFiat ? (
               <>
                 <TransferMethodDropdown />
                 <TransferMethodModal />
@@ -154,6 +153,8 @@ export default function Withdrawal({ refreshControl }) {
                   <AppInfoBlock content={infos.ecommerce.withdrawal} info />
                 )}
               </>
+            ) : (
+              <ChooseNetworkDropdown />
             )}
 
             {walletInfo() && <AppInfoBlock content={[walletInfo()]} warning />}
