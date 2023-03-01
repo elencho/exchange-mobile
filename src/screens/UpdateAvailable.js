@@ -1,5 +1,5 @@
 import React from 'react';
-import { Linking, Platform, StyleSheet } from 'react-native';
+import { Linking, StyleSheet } from 'react-native';
 
 import Background from '../components/Background';
 import Update from '../assets/images/Update';
@@ -7,15 +7,18 @@ import AppText from '../components/AppText';
 import colors from '../constants/colors';
 import AppButton from '../components/AppButton';
 
-export default function UpdateAvailable() {
-  const isIos = Platform.OS === 'ios';
-  const androidLink = 'https://play.google.com/';
-  const iosLink = 'https://apps.apple.com/';
+import VersionCheck from 'react-native-version-check';
+import { packageName, APP_ID } from '../constants/system';
 
-  const update = () =>
-    Linking.openURL(isIos ? iosLink : androidLink)
-      .then(() => {})
-      .catch((err) => console.log(err));
+export default function UpdateAvailable() {
+  const update = async () => {
+    const options = { packageName: packageName, appID: APP_ID };
+
+    const storeUrl = await VersionCheck.getStoreUrl(options);
+    Linking.canOpenURL(storeUrl).then((supported) => {
+      supported && Linking.openURL(storeUrl);
+    });
+  };
 
   return (
     <Background style={styles.container}>

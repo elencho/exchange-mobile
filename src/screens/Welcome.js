@@ -32,12 +32,46 @@ import {
   errorHappenedHere,
   fetchTranslations,
 } from '../utils/appUtils';
+import {
+  getCountryName,
+  APP_ID,
+  packageName,
+  currentVersion,
+} from '../constants/system';
 
 import SplashScreen from 'react-native-splash-screen';
 
+import VersionCheck from 'react-native-version-check';
+
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+
+  const checkVersion = async () => {
+    try {
+      const countryName = await getCountryName;
+
+      const storeData = await VersionCheck.getLatestVersion({
+        forceUpdate: true,
+        appID: APP_ID,
+        packageName: packageName,
+        country: countryName.toLowerCase() || 'ge',
+      });
+
+      const latestVersion = await storeData;
+      const updateNeeded = await VersionCheck.needUpdate({
+        currentVersion: currentVersion,
+        latestVersion: latestVersion,
+      });
+
+      if (updateNeeded && updateNeeded.isNeeded) {
+        navigation.navigate('UpdateAvailable');
+        SplashScreen.hide();
+      }
+      SplashScreen.hide();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const isWorkingVersion = async () => {
     const version = DeviceInfo.getVersion();
@@ -50,6 +84,7 @@ export default function Welcome({ navigation }) {
   };
 
   useFocusEffect(() => {
+    checkVersion();
     if (isWorkingVersion()) {
       SecureStore.getItemAsync('accessToken').then((t) => {
         if (t) navigation.navigate('Main');
@@ -97,30 +132,22 @@ export default function Welcome({ navigation }) {
       accessible={false}
     >
       <ImageBackground source={images.Background} style={styles.container}>
-        {loading ? (
-          <ActivityIndicator size="large" color="white" style={styles.loader} />
-        ) : (
-          <>
-            <Logo style={styles.logo} />
-            <AppText header style={styles.primary}>
-              Welcome to Cryptal
-            </AppText>
+        <>
+          <Logo style={styles.logo} />
+          <AppText header style={styles.primary}>
+            Welcome to Cryptal
+          </AppText>
 
-            {/* <AppText style={styles.secondary}>{auth}</AppText> */}
+          {/* <AppText style={styles.secondary}>{auth}</AppText> */}
 
-            <GeneralError
-              style={styles.error}
-              show={errorHappenedHere('Welcome')}
-            />
+          <GeneralError
+            style={styles.error}
+            show={errorHappenedHere('Welcome')}
+          />
 
-            <AppButton
-              text="Login"
-              style={styles.button}
-              onPress={startLogin}
-            />
-            <PurpleText text="Registration" onPress={startRegistration} />
-          </>
-        )}
+          <AppButton text="Login" style={styles.button} onPress={startLogin} />
+          <PurpleText text="Registration" onPress={startRegistration} />
+        </>
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
