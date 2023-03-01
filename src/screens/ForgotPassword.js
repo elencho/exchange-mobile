@@ -108,7 +108,7 @@ export default function ForgotPassword({ navigation }) {
   };
 
   const next = () => {
-    if (!f.code || !f.username) {
+    if (!f.code?.trim() || !f.username?.trim()) {
       setError(true);
     } else {
       dispatch({
@@ -159,7 +159,7 @@ export default function ForgotPassword({ navigation }) {
           label="Enter Code"
           onChangeText={saveCode}
           value={f.code}
-          error={!f.code && error}
+          error={!f.code?.trim() && error}
         />
 
         <AppButton text="Next" style={styles.button} onPress={next} />

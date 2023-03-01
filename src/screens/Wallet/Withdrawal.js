@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
-import colors from '../../constants/colors';
-import { setNetwork } from '../../redux/wallet/actions';
 import AppButton from '../../components/AppButton';
 import WithdrawalInputs from '../../components/Wallet/Withdrawal/WithdrawalInputs';
 import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
@@ -15,12 +14,14 @@ import SaveAsTemplate from '../../components/Wallet/Withdrawal/SaveAsTemplate';
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import GeneralError from '../../components/GeneralError';
 import AppInfoBlock from '../../components/AppInfoBlock';
-import { infos, warnings } from '../../constants/warningsAndInfos';
-import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
-import { MaterialIndicator } from 'react-native-indicators';
-import { validateAmount } from '../../utils/appUtils';
 import WithKeyboard from '../../components/WithKeyboard';
 import WithdrawalConfirmModal from '../../components/Wallet/Withdrawal/WithdrawalConfirmModal';
+
+import colors from '../../constants/colors';
+import { infos, warnings } from '../../constants/warningsAndInfos';
+import { setNetwork } from '../../redux/wallet/actions';
+import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
+import { validateAmount } from '../../utils/appUtils';
 
 export default function Withdrawal({ refreshControl }) {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ export default function Withdrawal({ refreshControl }) {
   const {
     trade: { currentBalanceObj, card, depositProvider, cardsLoading },
     transactions: { code, loading },
+    profile: { userInfo },
     wallet: {
       withdrawalRestriction,
       currentWhitelistObj,
@@ -37,6 +39,7 @@ export default function Withdrawal({ refreshControl }) {
       network,
       withdrawalAmount,
       whitelistLoading,
+      receiverBank,
     },
   } = state;
 
@@ -90,18 +93,36 @@ export default function Withdrawal({ refreshControl }) {
     currentTemplate,
     withdrawalBank,
     iban,
+    receiverBank,
+    userInfo,
   ]);
+
+  const { bankName, bankPostalCity, bankPostalCode, bankAddress, swift } =
+    receiverBank;
+  const receiverBankInputs = [
+    iban,
+    bankName,
+    bankPostalCity,
+    bankPostalCode,
+    bankAddress,
+    swift,
+  ];
+  const notEmpty = () => {
+    if (withdrawalBank?.bankName === 'Other')
+      return receiverBankInputs.every((i) => i && i.trim());
+    if (withdrawalBank?.bankName || currentTemplate?.templateName)
+      return iban?.trim();
+  };
 
   const withdraw = () => {
     const length = Object.keys(currentWhitelistObj)?.length;
-    const notEmpty = currentTemplate?.templateName || (iban && withdrawalBank);
 
     let condition;
     if (isEcommerce) {
       condition =
         !validateAmount(withdrawalAmount) || !card || !depositProvider;
     } else if (isFiat) {
-      condition = !validateAmount(withdrawalAmount) || !notEmpty;
+      condition = !validateAmount(withdrawalAmount) || !notEmpty();
     } else {
       condition = !validateAmount(withdrawalAmount) || !length;
     }
@@ -139,8 +160,7 @@ export default function Withdrawal({ refreshControl }) {
           <View style={styles.block}>
             {/* <GeneralError style={{ marginBottom: 16 }} /> */}
             <WalletCoinsDropdown />
-            {(!isFiat || code === 'EUR') && <ChooseNetworkDropdown />}
-            {isFiat && (
+            {isFiat ? (
               <>
                 <TransferMethodDropdown />
                 <TransferMethodModal />
@@ -154,6 +174,8 @@ export default function Withdrawal({ refreshControl }) {
                   <AppInfoBlock content={infos.ecommerce.withdrawal} info />
                 )}
               </>
+            ) : (
+              <ChooseNetworkDropdown />
             )}
 
             {walletInfo() && <AppInfoBlock content={[walletInfo()]} warning />}
@@ -167,6 +189,7 @@ export default function Withdrawal({ refreshControl }) {
               error={error}
               isFiat={isFiat}
               hasRestriction={hasRestriction}
+              notEmpty={notEmpty}
             />
           )}
           {saveTemplateCheck() ? <SaveAsTemplate /> : null}

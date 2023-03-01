@@ -130,6 +130,7 @@ export default function WithdrawalInfo({ error }) {
             style={styles.address}
             value={userInfo.address}
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+            error={error && !userInfo?.address?.trim()}
           />
 
           <View style={styles.row}>
@@ -139,6 +140,7 @@ export default function WithdrawalInfo({ error }) {
               label="City"
               value={userInfo.city}
               labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+              error={error && !userInfo?.city?.trim()}
             />
             <AppInput
               style={[styles.inputContainer, styles.rowInputs]}
@@ -146,6 +148,7 @@ export default function WithdrawalInfo({ error }) {
               label="Postal Code"
               value={userInfo.postalCode}
               labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+              error={error && !userInfo?.postalCode?.trim()}
             />
           </View>
         </>
@@ -181,6 +184,7 @@ export default function WithdrawalInfo({ error }) {
           value={receiverBank.bankName}
           onChangeText={(t) => handleBankInfo(t, 'bank name')}
           style={styles.marginTop}
+          error={error && !receiverBank?.bankName?.trim()}
         />
       )}
 
@@ -191,7 +195,7 @@ export default function WithdrawalInfo({ error }) {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           value={iban}
           onChangeText={handleIban}
-          error={error && !iban}
+          error={error && !iban?.trim()}
         />
       ) : null}
 
@@ -204,6 +208,7 @@ export default function WithdrawalInfo({ error }) {
               label="City"
               value={receiverBank.bankPostalCity}
               labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+              error={error && !receiverBank?.bankPostalCity?.trim()}
             />
             <AppInput
               style={styles.rowInputs}
@@ -211,6 +216,7 @@ export default function WithdrawalInfo({ error }) {
               label="Postal Code"
               value={receiverBank.bankPostalCode}
               labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+              error={error && !receiverBank?.bankPostalCode?.trim()}
             />
           </View>
 
@@ -220,6 +226,7 @@ export default function WithdrawalInfo({ error }) {
             value={receiverBank.bankAddress}
             onChangeText={(t) => handleBankInfo(t, 'bank address')}
             style={styles.marginTop}
+            error={error && !receiverBank?.bankAddress?.trim()}
           />
 
           <AppInput
@@ -228,6 +235,7 @@ export default function WithdrawalInfo({ error }) {
             value={receiverBank.swift}
             onChangeText={(t) => handleBankInfo(t, 'bank swift code')}
             style={styles.marginTop}
+            error={error && !receiverBank?.swift?.trim()}
           />
         </>
       )}

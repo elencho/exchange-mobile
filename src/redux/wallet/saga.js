@@ -340,7 +340,6 @@ function* clearWithdrawalInputsSaga() {
   yield put(chooseWhitelist({}));
   yield put(setWithdrawalAmount(null));
   yield put(setWithdrawalNote(null));
-  yield put(setFee(null));
 
   // + wire
   if (fiat && !ecommerce) {
@@ -351,6 +350,7 @@ function* clearWithdrawalInputsSaga() {
     yield put(setNewTemplateName(''));
     yield put(setReceiverBank({}));
     yield put(withdrawalTemplatesAction());
+    yield put(setMemoTag(null));
   }
 
   // + card
@@ -358,6 +358,8 @@ function* clearWithdrawalInputsSaga() {
     yield put(setDepositProvider(null));
     yield put(setCard(null));
   }
+
+  yield put(fetchFee('withdrawal'));
 }
 
 function* maxWithdrawalSaga() {

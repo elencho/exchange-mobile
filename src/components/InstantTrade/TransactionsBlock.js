@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   FlatList,
   RefreshControl,
@@ -6,7 +6,15 @@ import {
   View,
   Platform,
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
+import { t } from 'i18next';
+
+import AppText from '../AppText';
+import PurpleText from '../PurpleText';
+import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
+import Trade from './Trade';
+import List from '../../assets/images/List.svg';
 
 import colors from '../../constants/colors';
 import {
@@ -16,13 +24,6 @@ import {
   setTradeOffset,
 } from '../../redux/trade/actions';
 import { reachScrollEnd } from '../../redux/transactions/actions';
-import AppText from '../AppText';
-import PurpleText from '../PurpleText';
-import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
-import Trade from './Trade';
-import List from '../../assets/images/List.svg';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { t } from 'i18next';
 
 const IS_IOS = Platform.OS === 'ios';
 
@@ -58,6 +59,12 @@ const Purple = ({ text, onPress }) => {
 
 const TransactionsBlock = ({ loading }) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(hideOtherPairsAction(false));
+    };
+  }, []);
 
   const state = useSelector((state) => state);
   const {
