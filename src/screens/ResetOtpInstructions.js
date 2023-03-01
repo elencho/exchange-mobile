@@ -122,6 +122,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
                 setValue={setValue}
                 login
                 fromResetOtp
+                indicatorStyle={{ top: '70%' }}
               />
             </View>
           )}
