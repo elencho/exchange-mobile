@@ -31,6 +31,7 @@ export default function FiatBlock() {
     },
     wallet: {
       wireDepositInfo: { en },
+      wireDepositProvider,
       network,
       depositAmount,
     },
@@ -48,12 +49,15 @@ export default function FiatBlock() {
   const inputValidation = new RegExp(
     `^[0-9]{1,13}(\.|\\.[0-9]{1,${depositScale}})?$`
   );
+  const providerBankId = en.find((x) =>
+    x.iconName.includes(wireDepositProvider)
+  )?.id;
 
   const generatePdf = () => {
     if (!validateAmount(depositAmount)) {
       setError(true);
     } else {
-      generateWirePdf(code, depositAmount, en[0].id, setLoading);
+      generateWirePdf(code, depositAmount, providerBankId, setLoading);
     }
   };
 
