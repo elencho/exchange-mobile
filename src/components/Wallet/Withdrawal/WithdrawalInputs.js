@@ -19,7 +19,12 @@ import { validateScale } from '../../../utils/formUtils';
 import Fee from '../Fee';
 import { validateAmount } from '../../../utils/appUtils';
 
-export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
+export default function WithdrawalInputs({
+  isFiat,
+  hasRestriction,
+  error,
+  notEmpty,
+}) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -99,17 +104,12 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
   const handleMemotag = (memo) => dispatch(setMemoTag(memo));
   const handleMax = () => dispatch({ type: 'MAX_WITHDRAWAL_SAGA' });
 
-  const enabled = !isEcommerce || depositProvider;
-
   const disabled = () => {
-    const length = Object.keys(currentWhitelistObj)?.length;
-    const notEmpty = currentTemplate?.templateName || (iban && withdrawalBank);
-
     let disabled;
     if (isEcommerce) {
       disabled = !card || !depositProvider;
     } else if (isFiat) {
-      disabled = !notEmpty;
+      disabled = !notEmpty();
     }
 
     return disabled;

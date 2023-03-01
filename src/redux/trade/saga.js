@@ -244,6 +244,9 @@ function* refreshWalletAndTradesSaga() {
     if (deposit && fiat && !ecommerce) {
       yield put(wireDepositAction(currency, code));
     }
+    if (withdrawal && fiat && !ecommerce) {
+      yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
+    }
 
     if (wallet && !whitelist && isAvailable(currentBalanceObj)) {
       // wire deposit saga is exclusion
