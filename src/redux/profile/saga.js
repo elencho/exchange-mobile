@@ -130,7 +130,6 @@ function* verifyAccountSaga(action) {
   const {
     verificationInfo,
     pkceInfo: { codeVerifier },
-    userInfo,
   } = state;
   yield put(toggleUserInfoLoading(true));
 
@@ -144,14 +143,13 @@ function* verifyAccountSaga(action) {
       type: 'CODE_TO_TOKEN_SAGA',
       code: verified.code,
       codeVerifier,
-      navigation,
     });
 
     yield put(toggleEmailVerificationModal(false));
-    yield delay(800);
-    yield call(() =>
-      navigation.navigate('UserProfile', { fromRegistration: true })
-    );
+    yield delay(600);
+    yield call(() => {
+      navigation.replace('UserProfile', { fromRegistration: true });
+    });
     yield put(toggleLoading(false));
   } else {
     yield put(saveVerificationInfo(verified));
@@ -170,7 +168,10 @@ function* codeToTokenSaga(action) {
       await SecureStore.setItemAsync('refreshToken', data?.refresh_token);
     });
     yield put({ type: 'OTP_SAGA', token: data?.access_token });
-    yield call(() => navigation.replace(fromResetOtp ? 'UserProfile' : 'Main'));
+    if (navigation) {
+      const screenName = fromResetOtp ? 'UserProfile' : 'Main';
+      yield call(() => navigation.replace(screenName));
+    }
     if (fromResetOtp) yield put(switchPersonalSecurity('Security'));
   } else {
     yield put(saveUserAndPassInfo(data));
