@@ -185,7 +185,7 @@ export default function Deposit({ refreshControl }) {
       {!cryptoAddress?.address && !isFiat && !hasRestriction && hasMethod ? (
         <View style={styles.flex}>
           <BulletsBlock />
-          <AppButton text="Generate" onPress={generate} />
+          <AppButton text="Generate Address" onPress={generate} />
         </View>
       ) : null}
 

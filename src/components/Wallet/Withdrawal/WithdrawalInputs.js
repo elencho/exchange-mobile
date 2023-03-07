@@ -32,13 +32,10 @@ export default function WithdrawalInputs({
       withdrawalAmount,
       withdrawalNote,
       memoTag,
-      cryptoAddress,
       network,
       whitelist,
       currentTemplate,
       currentWhitelistObj,
-      iban,
-      withdrawalBank,
     },
     trade: { card, currentBalanceObj, depositProvider },
   } = state;
@@ -127,13 +124,16 @@ export default function WithdrawalInputs({
   );
 
   const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 20;
+  const needsTag =
+    currentBalanceObj?.infos[network]?.transactionRecipientType ===
+    'ADDRESS_AND_TAG';
 
   return (
     <>
       <View style={styles.block}>
         {!hasRestriction && !isFiat && <WithdrawalAddress error={error} />}
 
-        {cryptoAddress?.tag && !whitelist?.length && (
+        {needsTag && !whitelist?.length && (
           <AppInput
             label="Address tag"
             onChangeText={handleMemotag}
