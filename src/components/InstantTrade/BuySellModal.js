@@ -89,12 +89,6 @@ export default function BuySellModal() {
   const price = currentTrade?.price;
   const balances = balance?.balances;
 
-  const getMaxLength = (value, scale, setFunction) => {
-    const factoredDigit = Math.trunc(value);
-    const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-    setFunction(factoredDigitLength + parseFloat(scale) + 1);
-  };
-
   const inputValidation = (scale) =>
     new RegExp(`^[0-9]{1,13}(\.|\\.[0-9]{1,${scale}})?$`);
 
@@ -123,6 +117,12 @@ export default function BuySellModal() {
     ) {
       setError(true);
     } else dispatch(submitTrade());
+  };
+
+  const getMaxLength = (value, scale, setFunction) => {
+    const factoredDigit = Math.trunc(value);
+    const factoredDigitLength = parseFloat(factoredDigit.toString().length);
+    setFunction(factoredDigitLength + parseFloat(scale) + 1);
   };
 
   const setTrade = (price, size) => {
@@ -158,6 +158,7 @@ export default function BuySellModal() {
       } else {
         let cryptoAmount = (parts[0].substr(0, 13) / rate).toFixed(baseScale);
         setMaxLengthQuote(14);
+        getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
         setTrade(replacedAmount ? parts[0].substr(0, 13) : 0, cryptoAmount);
       }
     }
@@ -175,11 +176,11 @@ export default function BuySellModal() {
       } else {
         let fiatAmount = (parts[0].substr(0, 13) * rate).toFixed(quoteScale);
         setMaxLengthBase(14);
+        getMaxLength(replacedAmount, quoteScale, setMaxLengthQuote);
         setTrade(fiatAmount, replacedAmount ? parts[0].substr(0, 13) : 0);
       }
     }
   };
-
   const myBalance = () => {
     const currency = tradeType === 'Buy' ? fiat : crypto;
     const fix = currency === fiat ? quoteScale : baseScale;
