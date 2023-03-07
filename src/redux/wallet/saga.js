@@ -52,6 +52,7 @@ import {
   setHasMultipleNetworks,
   setHasWhitelist,
   setIban,
+  setMemoTag,
   setNetwork,
   setNewTemplateName,
   setNewWhitelist,
