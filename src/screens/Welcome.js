@@ -108,15 +108,14 @@ export default function Welcome({ navigation }) {
             res[languages[i]].translation
           );
         }
+        SecureStore.getItemAsync('language')
+          .then((l) => {
+            switchLanguage(l ? l : 'en');
+            dispatch(setLanguage(l ? l : 'en'));
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
-    SecureStore.getItemAsync('language')
-      .then((l) => {
-        switchLanguage(l ? l : 'en');
-        dispatch(setLanguage(l ? l : 'en'));
-      })
-      .catch((err) => console.log(err));
-
     dispatch(fetchCountries());
   }, []);
 
