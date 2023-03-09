@@ -22,12 +22,9 @@ export default function ChooseLanguageModal() {
 
   const chooseLanguage = (l) => {
     dispatch(setLanguage(l));
+    switchLanguage(l);
     hide();
     dispatch(fetchUserInfo());
-  };
-
-  const handleHide = () => {
-    switchLanguage(language);
   };
 
   const background = (l) => {
@@ -69,7 +66,6 @@ export default function ChooseLanguageModal() {
       bottom
       title="Choose Language"
       children={children}
-      onModalHide={handleHide}
     />
   );
 }

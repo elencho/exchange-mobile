@@ -56,6 +56,9 @@ export default function EmailVerificationModal() {
   const hide = () => {
     dispatch(toggleEmailVerificationModal(false));
     dispatch(startRegistrationAction(navigation));
+  };
+
+  const onModalHide = () => {
     setValue('');
     setSeconds(30);
     dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
@@ -146,6 +149,7 @@ export default function EmailVerificationModal() {
       custom
       children={children}
       hide={hide}
+      onModalHide={onModalHide}
       visible={emailVerificationModalVisible}
     />
   );

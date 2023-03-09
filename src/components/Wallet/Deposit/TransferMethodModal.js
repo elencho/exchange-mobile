@@ -17,7 +17,7 @@ export default function TransferMethodModal() {
   const {
     modals: { transferMethodModalVisible },
     transactions: { code },
-    wallet: { network, methodsToDisplay },
+    wallet: { network, methodsToDisplay, walletTab },
     trade: {
       balance: { balances },
     },
@@ -25,21 +25,20 @@ export default function TransferMethodModal() {
 
   useEffect(() => {
     let methodsToDisplay = [];
+    const m =
+      walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
     balances.forEach((b) => {
       if (code === b.currencyCode) {
-        if (b.depositMethods.ECOMMERCE)
+        if (b[m]?.ECOMMERCE)
           methodsToDisplay.push({
             displayName: 'Payment Card',
             provider: 'ECOMMERCE',
           });
-        if (b.depositMethods.WIRE) {
-          b.depositMethods.WIRE.reduceRight(
-            (_, m) => methodsToDisplay.push(m),
-            0
-          );
+        if (b[m]?.WIRE) {
+          b[m]?.WIRE.reduceRight((_, m) => methodsToDisplay.push(m), 0);
         }
-        if (b.depositMethods.WALLET) {
-          b.depositMethods.WALLET.forEach((m) => methodsToDisplay.push(m));
+        if (b[m]?.WALLET) {
+          b[m]?.WALLET.forEach((m) => methodsToDisplay.push(m));
         }
         dispatch({ type: 'SET_METHODS_TO_DISPLAY', methodsToDisplay });
       }

@@ -69,7 +69,9 @@ export const errorHappenedHere = (component) => {
 };
 
 export const fetchTranslations = async () => {
-  const data = await axios.get(DICTIONARY);
+  const data = await axios.get(DICTIONARY, {
+    headers: { requestName: 'fetchTranslations' },
+  });
   return data?.data;
 };
 

@@ -4,19 +4,20 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppInput from '../../AppInput';
 import PurpleText from '../../PurpleText';
+import WithdrawalAddress from './WithdrawalAddress';
+import CardSection from '../../InstantTrade/CardSection';
+import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
+import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
+import Fee from '../Fee';
+
+import colors from '../../../constants/colors';
+import { fetchFee } from '../../../redux/trade/actions';
 import {
   setMemoTag,
   setWithdrawalAmount,
   setWithdrawalNote,
 } from '../../../redux/wallet/actions';
-import colors from '../../../constants/colors';
-import WithdrawalAddress from './WithdrawalAddress';
-import { fetchFee, setFee } from '../../../redux/trade/actions';
-import CardSection from '../../InstantTrade/CardSection';
-import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
-import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import { validateScale } from '../../../utils/formUtils';
-import Fee from '../Fee';
 import { validateAmount } from '../../../utils/appUtils';
 
 export default function WithdrawalInputs({
@@ -32,13 +33,9 @@ export default function WithdrawalInputs({
       withdrawalAmount,
       withdrawalNote,
       memoTag,
-      cryptoAddress,
       network,
       whitelist,
       currentTemplate,
-      currentWhitelistObj,
-      iban,
-      withdrawalBank,
     },
     trade: { card, currentBalanceObj, depositProvider },
   } = state;
@@ -127,19 +124,29 @@ export default function WithdrawalInputs({
   );
 
   const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 20;
+  const needsTag = () => {
+    if (currentBalanceObj?.infos) {
+      return (
+        currentBalanceObj?.infos[network]?.transactionRecipientType ===
+        'ADDRESS_AND_TAG'
+      );
+    }
+    return false;
+  };
 
   return (
     <>
       <View style={styles.block}>
         {!hasRestriction && !isFiat && <WithdrawalAddress error={error} />}
 
-        {cryptoAddress?.tag && !whitelist?.length && (
+        {needsTag() && !whitelist?.length && (
           <AppInput
             label="Address tag"
             onChangeText={handleMemotag}
             value={memoTag}
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             style={{ marginBottom: 22 }}
+            error={error && !memoTag?.trim()}
           />
         )}
         {isEcommerce ? (

@@ -52,6 +52,7 @@ import {
   setHasMultipleNetworks,
   setHasWhitelist,
   setIban,
+  setMemoTag,
   setNetwork,
   setNewTemplateName,
   setNewWhitelist,
@@ -340,6 +341,7 @@ function* clearWithdrawalInputsSaga() {
   yield put(chooseWhitelist({}));
   yield put(setWithdrawalAmount(null));
   yield put(setWithdrawalNote(null));
+  yield put(setMemoTag(null));
 
   // + wire
   if (fiat && !ecommerce) {
@@ -350,7 +352,6 @@ function* clearWithdrawalInputsSaga() {
     yield put(setNewTemplateName(''));
     yield put(setReceiverBank({}));
     yield put(withdrawalTemplatesAction());
-    yield put(setMemoTag(null));
   }
 
   // + card
@@ -359,7 +360,7 @@ function* clearWithdrawalInputsSaga() {
     yield put(setCard(null));
   }
 
-  yield put(fetchFee('withdrawal'));
+  if (network) yield put(fetchFee('withdrawal'));
 }
 
 function* maxWithdrawalSaga() {

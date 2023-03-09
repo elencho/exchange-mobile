@@ -56,7 +56,7 @@
     "react-i18next": "^12.0.0",
     "react-native": "0.69.6",
     "react-native-animated-progress": "^1.0.2",
-    "react-native-calendars": "^1.1272.0",
+    "react-native-calendars": "^1.1293.0",
     "react-native-check-version": "^1.0.20",
     "react-native-code-push": "^7.0.5",
     "react-native-confirmation-code-field": "^7.3.0",

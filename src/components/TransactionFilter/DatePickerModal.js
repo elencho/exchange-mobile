@@ -3,14 +3,15 @@ import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Calendar } from 'react-native-calendars';
 
-import { setFromTime, setToTime } from '../../redux/transactions/actions';
-import { toggleDatePicker } from '../../redux/modals/actions';
-import colors from '../../constants/colors';
 import AppModal from '../AppModal';
 import CalendarHeader from './CalendarHeader';
 import CalendarDay from './CalendarDay';
 import AppText from '../AppText';
+import { setFromTime, setToTime } from '../../redux/transactions/actions';
+import { toggleDatePicker } from '../../redux/modals/actions';
 import { months } from '../../constants/months';
+import { IS_ANDROID, IS_IOS } from '../../constants/system';
+import colors from '../../constants/colors';
 
 const theme = {
   calendarBackground: colors.SECONDARY_BACKGROUND,
@@ -94,14 +95,14 @@ export default function DatePickerModal({ from, to }) {
     if (fromDateTime && to) {
       const date = new Date(fromDateTime).toLocaleDateString().split('/');
       var day, month, year;
-      if (Platform.OS === 'ios') {
+      if (IS_IOS) {
         day = date[1] < 10 ? date[1] : date[1];
         month = date[0] < 10 ? date[0] : date[0];
         year = date[2];
         return `${year}-${day}-${month}`;
       }
 
-      if (Platform.OS === 'android') {
+      if (IS_ANDROID) {
         day = date[1] < 10 ? date[1] : date[1];
         month = date[0] < 10 ? date[0] : date[0];
         year = `20${date[2]}`;
@@ -112,14 +113,14 @@ export default function DatePickerModal({ from, to }) {
     if (toDateTime && from) {
       const date = new Date(toDateTime).toLocaleDateString().split('/');
       var day, month, year;
-      if (Platform.OS === 'ios') {
+      if (IS_IOS) {
         day = date[1] < 10 ? date[1] : date[1];
         month = date[0] < 10 ? date[0] : date[0];
         year = date[2];
         return `${year}-${day}-${month}`;
       }
 
-      if (Platform.OS === 'android') {
+      if (IS_ANDROID) {
         day = date[1] < 10 ? date[1] : date[1];
         month = date[0] < 10 ? date[0] : date[0];
         year = `20${date[2]}`;
@@ -128,10 +129,19 @@ export default function DatePickerModal({ from, to }) {
     }
   };
 
+  const todayDisabled = () => {
+    const now = Date.now();
+    const condition =
+      (to && now < parseInt(fromDateTime)) ||
+      (from && parseInt(toDateTime) < now);
+    return !!condition;
+  };
+
   const children = (
     <Calendar
       style={styles.container}
       theme={theme}
+      context={{ date: '' }}
       minDate={to && minMaxDate()}
       maxDate={from && minMaxDate()}
       customHeader={({ month, addMonth }) => (
@@ -146,6 +156,7 @@ export default function DatePickerModal({ from, to }) {
           state={state}
           handleChange={handleChange}
           dateMark={dateMark}
+          todayDisabled={todayDisabled}
         />
       )}
     />

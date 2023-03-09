@@ -50,7 +50,7 @@ export default function FiatBlock() {
   const inputValidation = new RegExp(
     `^[0-9]{1,13}(\.|\\.[0-9]{1,${depositScale}})?$`
   );
-  const providerBankId = en.find((x) =>
+  const providerBankId = en?.find((x) =>
     x.iconName.includes(wireDepositProvider)
   )?.id;
 
@@ -182,7 +182,7 @@ export default function FiatBlock() {
 
       {network === 'SWIFT' || network === 'SEPA' ? (
         <AppButton
-          text="Generate"
+          text="Generate PDF"
           onPress={generatePdf}
           left={loading ? null : <Image source={images.Generate} />}
           style={styles.button}
