@@ -13,8 +13,8 @@ export const withdrawalParams = (state) => {
   return {
     currency: code,
     amount: withdrawalAmount,
-    address: currentWhitelistObj?.address,
-    addressTag: currentWhitelistObj?.tag ?? memoTag,
+    address: currentWhitelistObj?.address?.trim(),
+    addressTag: currentWhitelistObj?.tag ?? memoTag?.trim(),
     note: withdrawalNote,
     provider: network,
   };

@@ -130,9 +130,11 @@ export default function DatePickerModal({ from, to }) {
   };
 
   const todayDisabled = () => {
-    const now = new Date(Date.now());
-    const condition = (to && now < fromDateTime) || (from && toDateTime < now);
-    if (condition) return true;
+    const now = Date.now();
+    const condition =
+      (to && now < parseInt(fromDateTime)) ||
+      (from && parseInt(toDateTime) < now);
+    return !!condition;
   };
 
   const children = (

@@ -146,6 +146,7 @@ export default function WithdrawalInputs({
             value={memoTag}
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             style={{ marginBottom: 22 }}
+            error={error && !memoTag?.trim()}
           />
         )}
         {isEcommerce ? (

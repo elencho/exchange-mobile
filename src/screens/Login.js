@@ -31,7 +31,9 @@ export default function Login({ navigation }) {
   const password = credentials.password;
 
   const [error, setError] = useState(false);
-  const validate = /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(login);
+  const validate = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(
+    login
+  );
 
   useEffect(() => {
     error && setError(false);

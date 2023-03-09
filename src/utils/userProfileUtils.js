@@ -170,6 +170,7 @@ export const forgotPasswordCode = async (url, username) => {
 };
 
 export const forgotPasswordEnterCode = async (url, username, otp) => {
+  const params = new URLSearchParams({ username, otp });
   const data = await axios({
     method: 'POST',
     headers: {
@@ -178,7 +179,7 @@ export const forgotPasswordEnterCode = async (url, username, otp) => {
       toast: false,
     },
     url,
-    data: `username=${username}&otp=${otp}`,
+    data: params,
   });
   if (data) return data.data;
 };

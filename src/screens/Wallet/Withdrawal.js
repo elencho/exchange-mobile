@@ -40,6 +40,7 @@ export default function Withdrawal({ refreshControl }) {
       withdrawalAmount,
       whitelistLoading,
       receiverBank,
+      memoTag,
     },
   } = state;
 
@@ -93,6 +94,7 @@ export default function Withdrawal({ refreshControl }) {
     currentTemplate,
     withdrawalBank,
     iban,
+    memoTag,
     receiverBank,
     userInfo,
   ]);
@@ -116,6 +118,14 @@ export default function Withdrawal({ refreshControl }) {
 
   const withdraw = () => {
     const length = Object.keys(currentWhitelistObj)?.length;
+    const tag = () => {
+      const tagCondition =
+        currentBalanceObj?.infos[network]?.transactionRecipientType ===
+        'ADDRESS_AND_TAG';
+      if (tagCondition)
+        return currentWhitelistObj?.tag?.trim() || memoTag?.trim();
+      return true;
+    };
 
     let condition;
     if (isEcommerce) {
@@ -124,7 +134,7 @@ export default function Withdrawal({ refreshControl }) {
     } else if (isFiat) {
       condition = !validateAmount(withdrawalAmount) || !notEmpty();
     } else {
-      condition = !validateAmount(withdrawalAmount) || !length;
+      condition = !validateAmount(withdrawalAmount) || !length || !tag();
     }
 
     if (condition) {
