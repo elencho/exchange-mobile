@@ -1,12 +1,12 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { ICONS_URL_PNG } from '../../../constants/api';
 
+import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
+import { ICONS_URL_PNG } from '../../../constants/api';
 import { toggleTransferMethodModal } from '../../../redux/modals/actions';
-import AppText from '../../AppText';
 
 export default function TransferMethodDropdown() {
   const dispatch = useDispatch();
