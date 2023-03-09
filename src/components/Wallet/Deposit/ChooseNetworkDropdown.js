@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import AppText from '../../AppText';
+
 import images from '../../../constants/images';
 import colors from '../../../constants/colors';
-import AppText from '../../AppText';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { setNetwork } from '../../../redux/wallet/actions';
