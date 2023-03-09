@@ -49,7 +49,7 @@ export default function FiatBlock() {
   const inputValidation = new RegExp(
     `^[0-9]{1,13}(\.|\\.[0-9]{1,${depositScale}})?$`
   );
-  const providerBankId = en.find((x) =>
+  const providerBankId = en?.find((x) =>
     x.iconName.includes(wireDepositProvider)
   )?.id;
 

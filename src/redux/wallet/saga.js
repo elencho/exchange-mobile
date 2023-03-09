@@ -360,7 +360,7 @@ function* clearWithdrawalInputsSaga() {
     yield put(setCard(null));
   }
 
-  yield put(fetchFee('withdrawal'));
+  if (network) yield put(fetchFee('withdrawal'));
 }
 
 function* maxWithdrawalSaga() {
