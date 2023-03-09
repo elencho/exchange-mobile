@@ -29,87 +29,95 @@ export const fetchWireDeposit = async (currency, provider) => {
   if (data) return data.data;
 };
 
-export const generateWirePdf = async (
-  currency,
-  amount,
-  wireDepositInfoId,
-  setLoading
+export const generateFile = async (
+  link,
+  setLoading = () => {},
+  fileName,
+  type
 ) => {
   try {
     setLoading(true);
     const token = await SecureStore.getItemAsync('accessToken');
     const bearer = `Bearer ${token}`;
-
+    const linkForFile = link;
     FileSystem.downloadAsync(
-      `${GENERATE_WIRE_PDF}?currency=${currency}&amount=${amount}&wireDepositInfoId=${wireDepositInfoId}&timeZone=UTC`,
-      FileSystem.documentDirectory + 'wiredeposit.pdf',
-      { headers: { Authorization: bearer } }
-    ).then(async (data) => {
-      const { uri } = data;
-
-      if (Platform.OS === 'ios') {
-        await Sharing.shareAsync(uri);
+      linkForFile,
+      FileSystem.documentDirectory + `${fileName}.${type}`,
+      {
+        headers: { Authorization: bearer },
       }
+    )
+      .then(async (data) => {
+        const { uri } = data;
+        if (Platform.OS === 'ios') {
+          await Sharing.shareAsync(uri);
+        }
 
-      if (Platform.OS === 'android') {
-        await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-        );
-        await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-        );
-        downloadFile(currency, amount, wireDepositInfoId, bearer);
-      }
-    });
+        if (Platform.OS === 'android') {
+          await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+          );
+          await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+          );
+          downloadFile(linkForFile, bearer, fileName, type);
+        }
+      })
+      .catch((err) => console.log(err));
     setTimeout(() => {
       setLoading(false);
     }, 500);
   } catch (error) {
     setLoading(false);
-    alert(error);
     console.error(error);
   }
 };
 
-const downloadFile = async (currency, amount, wireDepositInfoId, bearer) => {
-  const pdfLocation =
-    RNFetchBlob.fs.dirs.DownloadDir + '/' + `wiredeposit/${Math.random()}.pdf`;
-  const android = RNFetchBlob.android;
+const downloadFile = async (link, bearer, fileName, type) => {
+  try {
+    const location =
+      RNFetchBlob.fs.dirs.DownloadDir +
+      '/' +
+      `${fileName}/${Math.random()}.${type}`;
+    const android = RNFetchBlob.android;
+    const mime = `application/${type}`;
 
-  RNFetchBlob.config({
-    fileCache: true,
-    path: pdfLocation,
-    addAndroidDownloads: {
-      useDownloadManager: true,
-      notification: true,
-      mime: 'application/pdf',
-      title: 'Wiredeposit',
-      mediaScannable: true,
-      description: 'File downloaded by download manager.',
-    },
-  });
-
-  RNFetchBlob.fetch(
-    'GET',
-    `${GENERATE_WIRE_PDF}?currency=${currency}&amount=${amount}&wireDepositInfoId=${wireDepositInfoId}&timeZone=UTC`,
-    {
-      Authorization: bearer,
-    }
-  )
-    .then((res) => {
-      let status = res.info().status;
-      if (status == 200) {
-        let base64Str = res.base64();
-        RNFetchBlob.fs
-          .writeFile(pdfLocation, base64Str, 'base64')
-          .then(() => android.actionViewIntent(pdfLocation, 'application/pdf'))
-          .catch((err) => console.log('createFile', err));
-      }
-    })
-    .catch((errorMessage) => {
-      alert(errorMessage);
-      console.log('errorMessage', errorMessage);
+    RNFetchBlob.config({
+      fileCache: true,
+      path: location,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        mime: mime,
+        title: fileName,
+        mediaScannable: true,
+        description: 'File downloaded by download manager.',
+      },
     });
+
+    RNFetchBlob.fetch('GET', link, {
+      Authorization: bearer,
+    })
+      .then((res) => {
+        let status = res.info().status;
+        if (status == 200) {
+          let base64Str = res.base64();
+          console.log(res);
+
+          RNFetchBlob.fs
+            .writeFile(location, base64Str, 'base64')
+            .then(() => {
+              android.actionViewIntent(location, mime);
+            })
+            .catch((err) => console.log('createFile', err));
+        }
+      })
+      .catch((errorMessage) => {
+        console.log('errorMessage', errorMessage);
+      });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const fetchCryptoAddresses = async (currency, network) => {

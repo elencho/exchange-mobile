@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
-import { generateWirePdf, cardDeposit } from '../../../utils/walletUtils';
+import { generateFile, cardDeposit } from '../../../utils/walletUtils';
 import AppButton from '../../AppButton';
 import AppInput from '../../AppInput';
 import AppText from '../../AppText';
@@ -17,6 +17,7 @@ import { fetchFee } from '../../../redux/trade/actions';
 import StatusModal from '../StatusModal';
 import Fee from '../Fee';
 import { validateAmount } from '../../../utils/appUtils';
+import { GENERATE_WIRE_PDF } from '../../../constants/api';
 
 export default function FiatBlock() {
   const dispatch = useDispatch();
@@ -54,10 +55,12 @@ export default function FiatBlock() {
   )?.id;
 
   const generatePdf = () => {
+    const pdfLink = `${GENERATE_WIRE_PDF}?currency=${code}&amount=${depositAmount}&wireDepositInfoId=${providerBankId}&timeZone=UTC`;
+
     if (!validateAmount(depositAmount)) {
       setError(true);
     } else {
-      generateWirePdf(code, depositAmount, providerBankId, setLoading);
+      generateFile(pdfLink, setLoading, 'wiredeposit', 'pdf');
     }
   };
 

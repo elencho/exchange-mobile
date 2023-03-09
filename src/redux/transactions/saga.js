@@ -72,9 +72,7 @@ function* refreshTransactionsSaga() {
     (state) => state.transactions.totalTransactions
   );
 
-  if (!totalTransactions) {
-    yield put(setTotalTransactions(total));
-  }
+  yield put(setTotalTransactions(total));
 
   yield put(setTransactionsOffset(0));
   const params = yield select(getParams);
@@ -144,7 +142,6 @@ function* filterSaga(action) {
   method = method || [];
 
   let newMultiFilter;
-
   if (filter !== 'All') {
     if (multiselect && !method.includes(filter)) {
       newMultiFilter = [...method, filter].splice(
