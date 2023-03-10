@@ -1,4 +1,4 @@
-import Reac, { useState } from 'react';
+import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -42,7 +42,12 @@ function TransactionFilterBottom() {
     dispatch(showResultsAction(navigation));
   };
   const downloadFile = () => {
-    generateFile(linkFidl, setLoading, 'transactions', 'xlsx');
+    generateFile(
+      'https://exchange.cryptal.com/exchange/api/v1/private/report/transactions/user?transactionReportTypes[]=DEPOSIT&transactionReportTypes[]=WITHDRAWAL&transactionReportTypes[]=ORDER&transactionReportTypes[]=SIMPLE_TRADE',
+      setLoading,
+      'transactions',
+      'xlsx'
+    );
   };
 
   return (
