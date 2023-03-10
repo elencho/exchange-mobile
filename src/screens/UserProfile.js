@@ -56,7 +56,6 @@ function UserProfile({ navigation, route }) {
     // if (status === 204) {
     await SecureStore.deleteItemAsync('accessToken');
     await SecureStore.deleteItemAsync('refreshToken');
-    await SecureStore.deleteItemAsync('language');
     navigation.navigate('Welcome');
 
     dispatch({ type: 'LOGOUT' });
