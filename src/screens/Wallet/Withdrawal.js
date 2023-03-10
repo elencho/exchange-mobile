@@ -170,25 +170,35 @@ export default function Withdrawal({ refreshControl }) {
           <View style={styles.block}>
             {/* <GeneralError style={{ marginBottom: 16 }} /> */}
             <WalletCoinsDropdown />
-            {isFiat ? (
+
+            {!hasRestriction && hasMethod && (
               <>
-                <TransferMethodDropdown />
-                <TransferMethodModal />
-                {network === 'SWIFT' && (
-                  <AppInfoBlock content={warnings.swift.withdrawal} warning />
+                {isFiat ? (
+                  <>
+                    <TransferMethodDropdown />
+                    <TransferMethodModal />
+                    {network === 'SWIFT' && (
+                      <AppInfoBlock
+                        content={warnings.swift.withdrawal}
+                        warning
+                      />
+                    )}
+                    {network === 'SEPA' && (
+                      <AppInfoBlock content={warnings.sepa} warning />
+                    )}
+                    {network === 'ECOMMERCE' && (
+                      <AppInfoBlock content={infos.ecommerce.withdrawal} info />
+                    )}
+                  </>
+                ) : (
+                  <ChooseNetworkDropdown />
                 )}
-                {network === 'SEPA' && (
-                  <AppInfoBlock content={warnings.sepa} warning />
-                )}
-                {network === 'ECOMMERCE' && (
-                  <AppInfoBlock content={infos.ecommerce.withdrawal} info />
+
+                {walletInfo() && (
+                  <AppInfoBlock content={[walletInfo()]} warning />
                 )}
               </>
-            ) : (
-              <ChooseNetworkDropdown />
             )}
-
-            {walletInfo() && <AppInfoBlock content={[walletInfo()]} warning />}
           </View>
 
           {!hasRestriction && isFiat && hasMethod && !isEcommerce && (

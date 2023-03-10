@@ -19,11 +19,7 @@ import {
   togglePhoneNumberModal,
 } from '../../redux/modals/actions';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
-import {
-  saveUserInfo,
-  sendVerificationCode,
-  updatePhoneNumber,
-} from '../../redux/profile/actions';
+import { saveUserInfo, updatePhoneNumber } from '../../redux/profile/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function PhoneNumberModal() {
@@ -36,9 +32,7 @@ export default function PhoneNumberModal() {
   } = state;
 
   const [userInfoVariable, setUserInfoVariable] = useState(null);
-  const [code, setCode] = useState(null);
   const [error, setError] = useState(false);
-  const [sendError, setSendError] = useState(false);
   const [seconds, setSeconds] = useState(30);
 
   useEffect(() => {
@@ -58,11 +52,10 @@ export default function PhoneNumberModal() {
   }, [seconds, timerVisible]);
 
   useEffect(() => {
-    if (error || sendError) {
-      setSendError(false);
+    if (error) {
       setError(false);
     }
-  }, [userInfo, code]);
+  }, [userInfo]);
 
   useEffect(() => {
     if (phoneNumberModalVisible) {
@@ -73,9 +66,8 @@ export default function PhoneNumberModal() {
 
   const number = userInfo?.phoneNumber;
   const country = userInfo?.phoneCountry;
-  const borderColor = (error || sendError) && !country ? '#F45E8C' : '#42475D';
-  const color =
-    (error || sendError) && !country ? '#F45E8C' : colors.PRIMARY_TEXT;
+  const borderColor = error && !country ? '#F45E8C' : '#42475D';
+  const color = error && !country ? '#F45E8C' : colors.PRIMARY_TEXT;
 
   const hide = () => {
     dispatch(saveUserInfo(userInfoVariable));
@@ -83,53 +75,21 @@ export default function PhoneNumberModal() {
   };
 
   const onModalHide = () => {
-    setCode(null);
     dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
   };
 
   const handlePhoneNumber = (phoneNumber) =>
     dispatch(saveUserInfo({ ...userInfo, phoneNumber }));
 
-  const handleVerificationCode = (code) => setCode(code);
-
-  const handleSend = () => {
-    if (!country || !number?.trim()) {
-      setSendError(true);
-    } else {
-      dispatch(sendVerificationCode(number, country));
-    }
-  };
-
   const handleSave = () => {
-    if (error || !code?.trim() || !country || !number?.trim()) {
+    if (error || !country || !(number?.trim()?.length > 2)) {
       setError(true);
     } else {
-      dispatch(
-        updatePhoneNumber(number, country, code, setCode, setUserInfoVariable)
-      );
+      dispatch(updatePhoneNumber(number, country, setUserInfoVariable));
     }
   };
 
   const handleCountries = () => dispatch(toggleCountriesModal(true));
-
-  const Right = () => {
-    if (loading) {
-      return (
-        <MaterialIndicator
-          color="#6582FD"
-          animationDuration={3000}
-          size={16}
-          style={{ flex: 0 }}
-        />
-      );
-    } else if (timerVisible) {
-      return (
-        <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
-      );
-    } else {
-      return <PurpleText text="Send" onPress={handleSend} />;
-    }
-  };
 
   const phoneCountry = () => {
     let phoneCountry;
@@ -169,19 +129,10 @@ export default function PhoneNumberModal() {
           <AppInput
             style={styles.inputContainer}
             label="Phone Number"
-            right={<Right />}
             onChangeText={(text) => handlePhoneNumber(text)}
             value={number}
             keyboardType="number-pad"
-            error={(error || sendError) && !number?.trim()}
-          />
-          <AppInput
-            style={styles.inputContainer}
-            label="Verification Code"
-            onChangeText={handleVerificationCode}
-            value={code}
-            keyboardType="number-pad"
-            error={error && !code?.trim()}
+            error={error && !(number?.trim()?.length > 2)}
           />
         </TouchableOpacity>
 

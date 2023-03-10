@@ -379,34 +379,11 @@ function* updatePasswordSaga(action) {
   }
 }
 
-//  VERIFY PHONE NUMBER
-function* verifyPhoneNumberSaga(action) {
-  yield put(toggleLoading(true));
-
-  const { phoneNumber, phoneCountry } = action;
-  yield call(verifyPhoneNumber, phoneNumber, phoneCountry);
-
-  yield put({ type: 'TOGGLE_TIMER', timerVisible: true });
-  yield put(toggleLoading(false));
-}
-
 //  UPDATE PHONE NUMBER
 function* updatePhoneNumberSaga(action) {
-  const {
-    phoneNumber,
-    phoneCountry,
-    verificationNumber,
-    setCode,
-    setUserInfoVariable,
-  } = action;
-  const data = yield call(
-    updatePhoneNumber,
-    phoneNumber,
-    phoneCountry,
-    verificationNumber
-  );
+  const { phoneNumber, phoneCountry, setUserInfoVariable } = action;
+  const data = yield call(updatePhoneNumber, phoneNumber, phoneCountry);
   if (data?.status >= 200 && data?.status < 300) {
-    yield call(() => setCode(null));
     yield call(() => setUserInfoVariable(null));
     yield put(fetchUserInfo());
     yield put(togglePhoneNumberModal(false));
@@ -582,7 +559,6 @@ export default function* () {
     actionTypes.TOGGLE_MAIL_SUBSCRIPTION_SAGA,
     toggleSubscriptionSaga
   );
-  yield takeLatest(actionTypes.SEND_VERIFICATION_CODE, verifyPhoneNumberSaga);
   yield takeLatest(actionTypes.UPDATE_PHONE_NUMBER, updatePhoneNumberSaga);
   yield takeLatest(actionTypes.CREDENTIALS_FOR_EMAIL, credentialsForEmailSaga);
   yield takeLatest(actionTypes.ACTIVATE_EMAIL_OTP, activateEmailSaga);

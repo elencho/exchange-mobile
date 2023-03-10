@@ -1,15 +1,16 @@
 import React from 'react';
 import { Image, Linking, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { t } from 'i18next';
 
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import AppButton from '../AppButton';
+import PurpleText from '../PurpleText';
 import images from '../../constants/images';
 import colors from '../../constants/colors';
-import PurpleText from '../PurpleText';
 
-export default function EditCompanyModal({ type = 'Company' }) {
+export default function EditCompanyModal() {
   const dispatch = useDispatch();
   const companyInfoModalVisible = useSelector(
     (state) => state.modals.companyInfoModalVisible
@@ -26,10 +27,11 @@ export default function EditCompanyModal({ type = 'Company' }) {
       <Image source={images.Browser} />
 
       <AppText header style={styles.white}>
-        Edit {type}
+        Go to web header
       </AppText>
       <AppText style={styles.secondary}>
-        Edit {type} Text with <PurpleText text="Web Link" onPress={goToWeb} />
+        {t('Go to web text', { defaultValue: 'Visit Website' })}{' '}
+        <PurpleText text="Web Link" onPress={goToWeb} />
       </AppText>
 
       <AppButton text="OK" style={styles.button} onPress={hide} />
