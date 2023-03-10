@@ -1,20 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showResultsAction } from '../../redux/transactions/actions';
+import { generateFile } from '../../utils/walletUtils';
 import PurpleText from '../PurpleText';
 import images from '../../constants/images';
+import { GENERATE_TRANSACTIONS_FILE } from '../../constants/api';
+import queryString from 'query-string';
+import { reportTypes } from '../../constants/filters';
 
 function TransactionFilterBottom() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  //TODO: Refactor
+  const [loading, setLoading] = useState(false);
+  const { currency, code, method, typeFilter, fromDateTime, toDateTime } =
+    useSelector((state) => state.transactions);
+
+  const transactionReportTypes = typeFilter === null ? reportTypes : typeFilter;
+
+  const linkFidl =
+    'https://exchange.cryptal.com/exchange/api/v1/private/report/transactions/user';
+
+  const queryParams = {
+    transactionReportTypes: typeFilter,
+
+    fromDateTime,
+    toDateTime,
+  };
+  Object.keys(queryParams).forEach(
+    (key) => queryParams[key] === null && delete queryParams[key]
+  );
+  const queryStringParams = queryString.stringify(queryParams);
+
   const showResults = () => {
     dispatch(showResultsAction(navigation));
+  };
+  const downloadFile = () => {
+    generateFile(
+      'https://exchange.cryptal.com/exchange/api/v1/private/report/transactions/user?transactionReportTypes[]=DEPOSIT&transactionReportTypes[]=WITHDRAWAL&transactionReportTypes[]=ORDER&transactionReportTypes[]=SIMPLE_TRADE',
+      setLoading,
+      'transactions',
+      'xlsx'
+    );
   };
 
   return (
@@ -25,7 +58,7 @@ function TransactionFilterBottom() {
         </AppText>
       </Pressable>
 
-      <Pressable style={styles.download}>
+      <Pressable style={styles.download} onPress={downloadFile}>
         <Image source={images.Download} />
         <PurpleText style={styles.purple} text="Download" />
       </Pressable>

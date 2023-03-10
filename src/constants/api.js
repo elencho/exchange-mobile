@@ -63,6 +63,8 @@ export const WIRE_DEPOSIT = `${core}/private/account/wire/deposit`;
 
 export const GENERATE_WIRE_PDF = `${core}/private/report/wire`;
 
+export const GENERATE_TRANSACTIONS_FILE = `${core}/private/report/transactions/user`;
+
 export const GET_CRYPTO_ADDRESSES = `${core}/private/account/deposit/crypto/getAddresses`;
 
 export const GENERATE_CRYPTO_ADDRESS = `${core}/private/account/deposit/crypto`;
