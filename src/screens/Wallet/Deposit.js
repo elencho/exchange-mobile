@@ -154,30 +154,34 @@ export default function Deposit({ refreshControl }) {
         />
         <WalletCoinsDropdown />
 
-        {!isFiat || code === 'EUR' ? (
+        {!hasRestriction && hasMethod && (
           <>
-            <ChooseNetworkDropdown />
-            {cryptoAddress?.address &&
-              !hasRestriction &&
-              hasMethod &&
-              isCrypto && <AddressBlock />}
-            {hasMethod && content() && (
-              <AppInfoBlock content={content()} warning />
+            {!isFiat || code === 'EUR' ? (
+              <>
+                <ChooseNetworkDropdown />
+                {cryptoAddress?.address &&
+                  !hasRestriction &&
+                  hasMethod &&
+                  isCrypto && <AddressBlock />}
+                {hasMethod && content() && (
+                  <AppInfoBlock content={content()} warning />
+                )}
+              </>
+            ) : (
+              <>
+                <TransferMethodDropdown />
+                {isEcommerce && (
+                  <AppInfoBlock content={infos.ecommerce.deposit} info />
+                )}
+                {network === 'SWIFT' && (
+                  <AppInfoBlock content={warnings.swift.deposit} warning />
+                )}
+                {network === 'SEPA' && (
+                  <AppInfoBlock content={warnings.sepa} warning />
+                )}
+                <TransferMethodModal />
+              </>
             )}
-          </>
-        ) : (
-          <>
-            <TransferMethodDropdown />
-            {isEcommerce && (
-              <AppInfoBlock content={infos.ecommerce.deposit} info />
-            )}
-            {network === 'SWIFT' && (
-              <AppInfoBlock content={warnings.swift.deposit} warning />
-            )}
-            {network === 'SEPA' && (
-              <AppInfoBlock content={warnings.sepa} warning />
-            )}
-            <TransferMethodModal />
           </>
         )}
       </View>

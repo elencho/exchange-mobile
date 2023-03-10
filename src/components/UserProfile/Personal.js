@@ -32,7 +32,7 @@ export default function Personal({ loading }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { userInfo, language },
+    profile: { userInfo, language, smsAuth },
     errors: { generalError },
   } = state;
 
@@ -50,8 +50,12 @@ export default function Personal({ loading }) {
   }, []);
 
   const edit = () => {
+    if (smsAuth) {
+      dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
+    } else {
+      dispatch(togglePhoneNumberModal(true));
+    }
     hideError();
-    dispatch(togglePhoneNumberModal(true));
   };
 
   const verify = () => {

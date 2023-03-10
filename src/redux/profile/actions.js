@@ -189,23 +189,14 @@ export const updatePassword = (
   repeatPassword,
   hide,
 });
-export const sendVerificationCode = (phoneNumber, phoneCountry) => ({
-  type: actionTypes.SEND_VERIFICATION_CODE,
-  phoneNumber,
-  phoneCountry,
-});
 export const updatePhoneNumber = (
   phoneNumber,
   phoneCountry,
-  verificationNumber,
-  setCode,
   setUserInfoVariable
 ) => ({
   type: actionTypes.UPDATE_PHONE_NUMBER,
   phoneNumber,
   phoneCountry,
-  verificationNumber,
-  setCode,
   setUserInfoVariable,
 });
 

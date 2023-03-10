@@ -315,15 +315,10 @@ export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {
   });
 };
 
-export const updatePhoneNumber = async (
-  phoneNumber,
-  phoneCountry,
-  verificationNumber
-) => {
+export const updatePhoneNumber = async (phoneNumber, phoneCountry) => {
   const params = new URLSearchParams({
     phoneNumber,
     phoneCountry,
-    verificationNumber,
   });
   const data = await axios({
     method: 'POST',
