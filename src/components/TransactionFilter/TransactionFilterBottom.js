@@ -12,6 +12,7 @@ import images from '../../constants/images';
 import { GENERATE_TRANSACTIONS_FILE } from '../../constants/api';
 import queryString from 'query-string';
 import { reportTypes } from '../../constants/filters';
+import { MaterialIndicator } from 'react-native-indicators';
 
 function TransactionFilterBottom() {
   const navigation = useNavigation();
@@ -51,11 +52,22 @@ function TransactionFilterBottom() {
           Show Result
         </AppText>
       </Pressable>
+      <View style={{ height: 80 }}>
+        {loading ? (
+          <MaterialIndicator
+            color="#6582FD"
+            size={25}
+            animationDuration={3000}
+            style={[{ marginVertical: 17, position: 'relative' }]}
+          />
+        ) : (
+          <Pressable style={styles.download} onPress={downloadFile}>
+            <Image source={images.Download} />
 
-      <Pressable style={styles.download} onPress={downloadFile}>
-        <Image source={images.Download} />
-        <PurpleText style={styles.purple} text="Download" />
-      </Pressable>
+            <PurpleText style={styles.purple} text="Download" />
+          </Pressable>
+        )}
+      </View>
     </View>
   );
 }
