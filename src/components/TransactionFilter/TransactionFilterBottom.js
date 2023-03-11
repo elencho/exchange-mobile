@@ -24,12 +24,11 @@ function TransactionFilterBottom() {
 
   const transactionReportTypes = typeFilter === null ? reportTypes : typeFilter;
 
-  const linkFidl =
+  const linkMain =
     'https://exchange.cryptal.com/exchange/api/v1/private/report/transactions/user';
 
   const queryParams = {
     transactionReportTypes: typeFilter,
-
     fromDateTime,
     toDateTime,
   };
@@ -42,12 +41,7 @@ function TransactionFilterBottom() {
     dispatch(showResultsAction(navigation));
   };
   const downloadFile = () => {
-    generateFile(
-      'https://exchange.cryptal.com/exchange/api/v1/private/report/transactions/user?transactionReportTypes[]=DEPOSIT&transactionReportTypes[]=WITHDRAWAL&transactionReportTypes[]=ORDER&transactionReportTypes[]=SIMPLE_TRADE',
-      setLoading,
-      'transactions',
-      'xlsx'
-    );
+    generateFile(linkMain, setLoading, 'transactions', 'xlsx');
   };
 
   return (
