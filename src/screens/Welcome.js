@@ -90,15 +90,17 @@ export default function Welcome({ navigation }) {
         if (t) navigation.navigate('Main');
         else SplashScreen.hide();
       });
-    } else SplashScreen.hide();
-
+    }
     dispatch(saveUserInfo({}));
   });
 
   useEffect(() => {
     changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
+    fetchData();
+  }, []);
 
-    fetchTranslations()
+  const fetchData = async () => {
+    await fetchTranslations()
       .then((res) => {
         const languages = Object.keys(res);
         for (let i = 0; i < languages.length; i++) {
@@ -116,8 +118,9 @@ export default function Welcome({ navigation }) {
           .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
-    dispatch(fetchCountries());
-  }, []);
+    await dispatch(fetchCountries());
+    SplashScreen.hide();
+  };
 
   const startLogin = () => {
     dispatch(startLoginAction(navigation));
