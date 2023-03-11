@@ -89,8 +89,13 @@ export default function BuySellModal() {
   const price = currentTrade?.price;
   const balances = balance?.balances;
 
-  const inputValidation = (scale) =>
-    new RegExp(`^[0-9]{1,13}(\.|\\.[0-9]{1,${scale}})?$`);
+  const inputValidation = (scale) => {
+    if (scale == 0) {
+      return /^[0-9]{1,13}$/;
+    } else {
+      return new RegExp(`^[0-9]{1,13}(\.|\\.[0-9]{1,${scale}})?$`);
+    }
+  };
 
   const quoteValidation = inputValidation(pairObject?.pair?.quoteScale);
   const baseValidation = inputValidation(pairObject?.pair?.baseScale);
@@ -122,7 +127,11 @@ export default function BuySellModal() {
   const getMaxLength = (value, scale, setFunction) => {
     const factoredDigit = Math.trunc(value);
     const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-    setFunction(factoredDigitLength + parseFloat(scale) + 1);
+    if (scale == 0) {
+      setFunction(14);
+    } else {
+      setFunction(factoredDigitLength + parseFloat(scale) + 1);
+    }
   };
 
   const setTrade = (price, size) => {
@@ -138,14 +147,10 @@ export default function BuySellModal() {
     if (text === '') {
       return setTrade('', '');
     }
-    // if (text && (!quoteValidation.test(text) || !baseValidation.test(text))) {
-    //   return;
-    // }
 
     const parts = replacedAmount?.split('.');
-
     if (type === 'crypto' && validateScale(replacedAmount, quoteScale)) {
-      if (text && !quoteValidation.test(text)) {
+      if (text && !quoteValidation?.test(text)) {
         return;
       }
       if (parts.length === 2) {
@@ -163,7 +168,7 @@ export default function BuySellModal() {
       }
     }
     if (type === 'fiat' && validateScale(replacedAmount, baseScale)) {
-      if (text && !baseValidation.test(text)) {
+      if (text && !baseValidation?.test(text)) {
         return;
       }
       if (parts.length === 2) {
