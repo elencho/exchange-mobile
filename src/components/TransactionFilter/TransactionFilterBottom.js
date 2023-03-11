@@ -52,20 +52,22 @@ function TransactionFilterBottom() {
           Show Result
         </AppText>
       </Pressable>
-      {loading ? (
-        <MaterialIndicator
-          color="#6582FD"
-          size={25}
-          animationDuration={3000}
-          style={[{ marginVertical: 17 }]}
-        />
-      ) : (
-        <Pressable style={styles.download} onPress={downloadFile}>
-          <Image source={images.Download} />
+      <View style={{ height: 80 }}>
+        {loading ? (
+          <MaterialIndicator
+            color="#6582FD"
+            size={25}
+            animationDuration={3000}
+            style={[{ marginVertical: 17, position: 'relative' }]}
+          />
+        ) : (
+          <Pressable style={styles.download} onPress={downloadFile}>
+            <Image source={images.Download} />
 
-          <PurpleText style={styles.purple} text="Download" />
-        </Pressable>
-      )}
+            <PurpleText style={styles.purple} text="Download" />
+          </Pressable>
+        )}
+      </View>
     </View>
   );
 }
