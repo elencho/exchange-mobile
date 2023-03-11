@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FlatList, StyleSheet, View, RefreshControl } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -23,6 +23,7 @@ import {
   setAbbr,
 } from '../redux/transactions/actions';
 import colors from '../constants/colors';
+import CustomRefreshContol from '../components/CustomRefreshContol';
 
 function TransactionHistory() {
   const navigation = useNavigation();
@@ -103,7 +104,7 @@ function TransactionHistory() {
           scrollEventThrottle={1000}
           ListEmptyComponent={listEmptyContainer}
           refreshControl={
-            <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+            <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }
           ListFooterComponent={() =>
             moreTradesLoading ? (

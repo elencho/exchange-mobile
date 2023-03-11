@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import CustomRefreshContol from '../components/CustomRefreshContol';
 import Background from '../components/Background';
 import BuySellSwitch from '../components/InstantTrade/BuySellSwitch';
 import InfoMark from '../components/InstantTrade/InfoMark';
@@ -65,11 +66,7 @@ export default function InstantTrade() {
         contentContainerStyle={{ overflow: 'hidden' }}
         refreshControl={
           showRefreshControl ? (
-            <RefreshControl
-              tintColor={colors.PRIMARY_PURPLE}
-              refreshing={loading}
-              onRefresh={onRefresh}
-            />
+            <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           ) : null
         }
       >
