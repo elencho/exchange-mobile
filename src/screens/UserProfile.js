@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   View,
   FlatList,
-  RefreshControl,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
@@ -26,6 +25,7 @@ import {
 import images from '../constants/images';
 import colors from '../constants/colors';
 import { logoutUtil } from '../utils/userProfileUtils';
+import CustomRefreshContol from '../components/CustomRefreshContol';
 
 function UserProfile({ navigation, route }) {
   const dispatch = useDispatch();
@@ -104,8 +104,7 @@ function UserProfile({ navigation, route }) {
         showsVerticalScrollIndicator={false}
         refreshControl={
           showRefreshControl ? (
-            <RefreshControl
-              tintColor={colors.PRIMARY_PURPLE}
+            <CustomRefreshContol
               refreshing={userProfileLoading}
               onRefresh={onRefresh}
             />

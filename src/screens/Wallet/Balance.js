@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  Image,
-  RefreshControl,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../../components/Background';
@@ -21,7 +15,7 @@ import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
 import { setCard, setDepositProvider } from '../../redux/trade/actions';
 import { setWalletTab } from '../../redux/wallet/actions';
-import colors from '../../constants/colors';
+import CustomRefreshContol from '../../components/CustomRefreshContol';
 
 export default function Balance({ navigation }) {
   const dispatch = useDispatch();
@@ -53,11 +47,7 @@ export default function Balance({ navigation }) {
   }, [walletTab, network]);
 
   const refreshControl = (
-    <RefreshControl
-      tintColor={colors.PRIMARY_PURPLE}
-      onRefresh={onRefresh}
-      refreshing={loading}
-    />
+    <CustomRefreshContol onRefresh={onRefresh} refreshing={loading} />
   );
 
   const disabled = loading || cardsLoading;

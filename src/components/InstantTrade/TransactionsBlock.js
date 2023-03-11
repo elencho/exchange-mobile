@@ -1,11 +1,5 @@
 import React, { useEffect } from 'react';
-import {
-  FlatList,
-  RefreshControl,
-  StyleSheet,
-  View,
-  Platform,
-} from 'react-native';
+import { FlatList, StyleSheet, View, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'i18next';
@@ -17,6 +11,8 @@ import Trade from './Trade';
 import List from '../../assets/images/List.svg';
 
 import colors from '../../constants/colors';
+import CustomRefreshContol from '../CustomRefreshContol';
+
 import {
   fetchTrades,
   hideOtherPairsAction,
@@ -144,11 +140,7 @@ const TransactionsBlock = ({ loading }) => {
           onScroll={onScroll}
           ListEmptyComponent={listEmptyContainer}
           refreshControl={
-            <RefreshControl
-              tintColor={colors.PRIMARY_PURPLE}
-              refreshing={loading}
-              onRefresh={onRefresh}
-            />
+            <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }
         />
       )}

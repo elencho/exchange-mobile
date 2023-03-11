@@ -1,19 +1,13 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import {
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  View,
-  RefreshControl,
-} from 'react-native';
+import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import AppInput from '../AppInput';
 import AppText from '../AppText';
+import CustomRefreshContol from '../CustomRefreshContol';
 import Currency from './Currency';
 import CurrencySkeleton from './CurrencySkeleton';
 
@@ -116,8 +110,7 @@ export default function BalancesList({ balanceLoading }) {
         keyExtractor={(item) => item.currencyCode}
         refreshControl={
           showRefreshControl ? (
-            <RefreshControl
-              tintColor={colors.PRIMARY_PURPLE}
+            <CustomRefreshContol
               refreshing={balanceLoading}
               onRefresh={onRefresh}
             />
