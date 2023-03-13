@@ -22,6 +22,8 @@ import {
   fetchUserInfo,
   switchPersonalSecurity,
 } from '../redux/profile/actions';
+import { clearFilters } from '../redux/transactions/actions';
+
 import images from '../constants/images';
 import colors from '../constants/colors';
 import { logoutUtil } from '../utils/userProfileUtils';
@@ -62,7 +64,15 @@ function UserProfile({ navigation, route }) {
     // }
   };
   const onRefresh = () => dispatch(fetchUserInfo());
-  const back = () => navigation.navigate('Main');
+  const back = () => {
+    clear();
+    navigation.navigate('Main');
+  };
+
+  const clear = () => {
+    dispatch(clearFilters());
+    dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+  };
 
   const onScroll = (event) => {
     const { y } = event.nativeEvent.contentOffset;
