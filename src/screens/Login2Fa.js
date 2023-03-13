@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
 
     marginLeft: 24,
     marginTop: 28,
-    width: '33%',
+    alignSelf: 'flex-start',
   },
   backText: {
     marginBottom: 2,

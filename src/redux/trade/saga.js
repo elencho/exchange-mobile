@@ -127,7 +127,7 @@ function* instantTradeTabSaga() {
   yield put(setTradeOffset(0));
   yield put(pairObjectSagaAction(offers));
 
-  // yield put({ type: 'BALANCE_SAGA' });
+  yield put({ type: 'BALANCE_SAGA' });
 
   yield put(depositProvidersSagaAction());
   yield put(cardsSagaAction());

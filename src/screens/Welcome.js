@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
     marginTop: 30,
     marginBottom: 12,
+    textAlign: 'center',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

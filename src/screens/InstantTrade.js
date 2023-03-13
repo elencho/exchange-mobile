@@ -14,9 +14,10 @@ import BuySellModal from '../components/InstantTrade/BuySellModal';
 import InfoModal from '../components/InstantTrade/InfoModal';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
 import CryptoModal from '../components/InstantTrade/CryptoModal';
-import colors from '../constants/colors';
 import FiatModal from '../components/InstantTrade/FiatModal';
 import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton';
+
+import colors from '../constants/colors';
 import {
   fetchTrades,
   setTradeOffset,

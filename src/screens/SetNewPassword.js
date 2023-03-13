@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: -20,
     marginTop: 28,
-    width: '45%',
+    alignSelf: 'flex-start',
   },
   backText: {
     marginBottom: 2,
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
     marginTop: 18,
     marginBottom: 12,
+    textAlign: 'center',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

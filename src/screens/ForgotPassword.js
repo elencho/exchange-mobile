@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: -20,
     marginTop: 28,
-    width: '40%',
+    alignSelf: 'flex-start',
   },
   backText: {
     marginBottom: 2,

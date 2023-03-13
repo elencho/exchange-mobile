@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
   primary: {
     color: colors.PRIMARY_TEXT,
     marginTop: 30,
+    textAlign: 'center',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
