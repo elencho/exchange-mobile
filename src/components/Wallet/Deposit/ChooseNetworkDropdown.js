@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import AppText from '../../AppText';
+
 import images from '../../../constants/images';
 import colors from '../../../constants/colors';
-import AppText from '../../AppText';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { setNetwork } from '../../../redux/wallet/actions';
@@ -24,20 +25,13 @@ export default function ChooseNetworkDropdown({
   } = state;
 
   const cur = currentBalanceObj;
-  const [iconDimensions, setIconDimensions] = useState({});
+  const uri = `${ICONS_URL_PNG}/${network}.png`;
+  const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
+  const fiat = cur?.type === 'FIAT';
+
   const [icon, setIcon] = useState(null);
 
-  const uri = `${ICONS_URL_PNG}/${network}.png`;
-
   useEffect(() => {
-    if (network && network !== 'MAINNET') {
-      Image.getSize(uri, (w, h) => {
-        setIconDimensions({ width: 18 * (w / h), height: 18 });
-      });
-    } else {
-      setIconDimensions({ width: 18, height: 18 });
-    }
-
     cur?.depositMethods?.WALLET?.forEach((m) => {
       if (m.provider === network) setIcon(m.iconName);
     });
@@ -51,8 +45,12 @@ export default function ChooseNetworkDropdown({
 
   const handleDropdown = () => dispatch(toggleChooseNetworkModal(true));
 
-  const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
-  const isAvailable = !!Object.keys(cur[m]).length;
+  const isAvailable = () => {
+    if (Object.keys(cur).length) {
+      return !!Object.keys(cur[m]).length;
+    }
+    return false;
+  };
 
   const networkName = () => {
     if (network === 'ERC20') return 'Ethereum Network';
@@ -73,9 +71,13 @@ export default function ChooseNetworkDropdown({
     color: error && !network ? '#F45E8C' : colors.PRIMARY_TEXT,
   };
 
+  const imageDimensions = fiat
+    ? { width: 60, height: 12 }
+    : { width: 18, height: 18 };
+
   return (
     <>
-      {isAvailable && (
+      {isAvailable() && (
         <>
           {hasMultipleNetworks ? (
             <Pressable
@@ -92,7 +94,7 @@ export default function ChooseNetworkDropdown({
                   </View>
                   <Image
                     source={{ uri }}
-                    style={[styles.image, iconDimensions]}
+                    style={[styles.image, imageDimensions]}
                   />
                   <AppText medium style={[styles.dropdownText, dropdownText]}>
                     {networkName()}{' '}
@@ -141,7 +143,6 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     borderWidth: 1,
-    borderRadius: 4,
     height: 45,
     flexDirection: 'row',
     alignItems: 'center',

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View, RefreshControl } from 'react-native';
+import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,9 +7,12 @@ import Background from '../components/Background';
 import FilterIcon from '../components/TransactionHistory/FilterIcon';
 import FilterRow from '../components/TransactionHistory/FilterRow';
 import Headline from '../components/TransactionHistory/Headline';
+import AppText from '../components/AppText';
 import TopRow from '../components/TransactionHistory/TopRow';
 import TransactionDate from '../components/TransactionHistory/TransactionDate';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
+import TransactionSkeleton from '../components/TransactionHistory/TransactionSkeleton';
+import List from '../assets/images/List.svg';
 
 import { types } from '../constants/filters';
 import { monthsShort } from '../constants/months';
@@ -19,16 +22,18 @@ import {
   reachScrollEnd,
   setAbbr,
 } from '../redux/transactions/actions';
-import TransactionSkeleton from '../components/TransactionHistory/TransactionSkeleton';
+import colors from '../constants/colors';
+import CustomRefreshContol from '../components/CustomRefreshContol';
 
 function TransactionHistory() {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.transactions);
-  const { transactions, loading, totalTransactions } = state;
-
-  const [moreLoading, setMoreLoading] = useState(false);
+  const state = useSelector((state) => state);
+  const {
+    transactions: { transactions, loading, totalTransactions },
+    trade: { moreTradesLoading },
+  } = state;
 
   useEffect(() => {
     dispatch(chooseCurrency('Show All Currency'));
@@ -57,13 +62,20 @@ function TransactionHistory() {
       loading={loading}
     />
   );
+  const listEmptyContainer = (
+    <View style={styles.empty}>
+      <List />
+      <AppText subtext style={styles.subtext}>
+        Transaction history no transactions
+      </AppText>
+    </View>
+  );
 
   const handleScrollEnd = () => {
-    dispatch(reachScrollEnd('transactions'));
-    if (transactions.length < totalTransactions) {
-      setMoreLoading(true);
-    } else {
-      setMoreLoading(false);
+    if (transactions.length === totalTransactions) {
+      return;
+    } else if (transactions.length <= totalTransactions && !moreTradesLoading) {
+      dispatch(reachScrollEnd('transactions'));
     }
   };
   return (
@@ -82,6 +94,7 @@ function TransactionHistory() {
       ) : (
         <FlatList
           style={styles.transactions}
+          contentContainerStyle={{ flexGrow: 1 }}
           data={uniqueDates}
           renderItem={renderDate}
           keyExtractor={(item) => item}
@@ -89,11 +102,16 @@ function TransactionHistory() {
           onEndReachedThreshold={0.5}
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={1000}
+          ListEmptyComponent={listEmptyContainer}
           refreshControl={
-            <RefreshControl refreshing={loading} onRefresh={onRefresh} />
+            <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }
           ListFooterComponent={() =>
-            moreLoading ? <TransactionSkeleton length={[0, 1, 2]} /> : <View />
+            moreTradesLoading ? (
+              <TransactionSkeleton length={[0, 1, 2]} />
+            ) : (
+              <View />
+            )
           }
         />
       )}
@@ -106,6 +124,11 @@ function TransactionHistory() {
 export default TransactionHistory;
 
 const styles = StyleSheet.create({
+  empty: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   loader: {
     flex: 1,
   },
@@ -117,5 +140,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  subtext: {
+    color: colors.SECONDARY_TEXT,
+    marginTop: 17,
   },
 });

@@ -5,6 +5,8 @@ import { navigationRef } from '../navigation';
 import { refreshToken } from './userProfileUtils';
 import { setAppToast } from '../redux/modals/actions';
 
+import SplashScreen from 'react-native-splash-screen';
+
 export default async (err) => {
   const state = store.getState();
 
@@ -13,8 +15,11 @@ export default async (err) => {
       response: { status, data },
     } = err;
     const generalError = data;
+    const params = data?.transParams && Object.keys(data?.transParams);
     const header = data.errorKey;
-    const body = data.errorMessage;
+    const body = !data?.transParams
+      ? data?.errorMessage
+      : `${data?.errorMessage} params[${params?.join()}]`;
 
     if (status > 401) {
       if (!state.modals.isToast) {
@@ -33,6 +38,7 @@ export default async (err) => {
       await SecureStore.deleteItemAsync('refreshToken');
       navigationRef.navigate('Welcome');
       store.dispatch({ type: 'LOGOUT' });
+      SplashScreen.hide();
     }
   }
 };

@@ -24,6 +24,8 @@ import {
   VERIFY_PHONE_NUMBER,
 } from '../constants/api';
 
+import SplashScreen from 'react-native-splash-screen';
+
 const authRedirectUrl = Constants.manifest.extra.authRedirectUrl;
 
 export const sumsubVerificationToken = async () => {
@@ -71,6 +73,7 @@ export const registrationStart = async () => {
 };
 
 export const usernameAndPasswordForm = async (username, password, url) => {
+  const params = new URLSearchParams({ username, password });
   const data = await axios({
     method: 'POST',
     headers: {
@@ -79,7 +82,7 @@ export const usernameAndPasswordForm = async (username, password, url) => {
       toast: false,
     },
     url,
-    data: `username=${username}&password=${password}`,
+    data: params,
   });
   if (data) return data.data;
 };
@@ -147,11 +150,12 @@ export const resetOtp = async (url) => {
 };
 
 export const forgotPassword = async (url) => {
-  const data = await axios.get(url);
+  const data = await axios.post(url);
   if (data) return data.data;
 };
 
 export const forgotPasswordCode = async (url, username) => {
+  const params = new URLSearchParams({ username, send: true });
   const data = await axios({
     method: 'POST',
     headers: {
@@ -160,12 +164,13 @@ export const forgotPasswordCode = async (url, username) => {
       toast: false,
     },
     url,
-    data: `username=${username}&send=true`,
+    data: params,
   });
   if (data) return data.data;
 };
 
 export const forgotPasswordEnterCode = async (url, username, otp) => {
+  const params = new URLSearchParams({ username, otp });
   const data = await axios({
     method: 'POST',
     headers: {
@@ -174,19 +179,23 @@ export const forgotPasswordEnterCode = async (url, username, otp) => {
       toast: false,
     },
     url,
-    data: `username=${username}&otp=${otp}`,
+    data: params,
   });
   if (data) return data.data;
 };
 
 export const setNewPassword = async (url, newPass, confirmPass) => {
+  const params = new URLSearchParams({
+    'password-new': newPass,
+    'password-confirm': confirmPass,
+  });
   const data = await axios({
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     url,
-    data: `password-new=${newPass}&password-confirm=${confirmPass}`,
+    data: params,
   });
   if (data) return data.data;
 };
@@ -214,12 +223,12 @@ const refreshTokenService = async (refresh_token) => {
 export const refreshToken = async (config) => {
   const refresh_token = await SecureStore.getItemAsync('refreshToken');
   const data = await refreshTokenService(refresh_token);
-
   if (data) {
     if (data.access_token && data.refresh_token) {
       await SecureStore.setItemAsync('accessToken', data.access_token);
       await SecureStore.setItemAsync('refreshToken', data.refresh_token);
 
+      SplashScreen.hide();
       if (config) return axios.request(config);
       return data.access_token;
     }
@@ -275,10 +284,15 @@ export const updateUserData = async (data) => {
 };
 
 export const updatePassword = async (
-  currentPassword,
-  newPassword,
-  confirmNewPassword
+  password,
+  passwordNew,
+  passwordConfirm
 ) => {
+  const params = new URLSearchParams({
+    password,
+    passwordNew,
+    passwordConfirm,
+  });
   const data = await axios({
     method: 'POST',
     headers: {
@@ -287,7 +301,7 @@ export const updatePassword = async (
       toast: false,
     },
     url: UPDATE_PASSWORD,
-    data: `password=${currentPassword}&passwordNew=${newPassword}&passwordConfirm=${confirmNewPassword}`,
+    data: params,
   });
   return data;
 };
@@ -295,17 +309,17 @@ export const updatePassword = async (
 export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {
   await axios({
     method: 'POST',
-    headers: { requestName: 'verifyPhoneNumber', toast: false },
+    headers: { requestName: 'verifyPhoneNumber' },
     url: VERIFY_PHONE_NUMBER,
     params: { phoneCountry, phoneNumber },
   });
 };
 
-export const updatePhoneNumber = async (
-  phoneNumber,
-  phoneCountry,
-  verificationNumber
-) => {
+export const updatePhoneNumber = async (phoneNumber, phoneCountry) => {
+  const params = new URLSearchParams({
+    phoneNumber,
+    phoneCountry,
+  });
   const data = await axios({
     method: 'POST',
     headers: {
@@ -314,7 +328,7 @@ export const updatePhoneNumber = async (
       toast: false,
     },
     url: UPDATE_PHONE_NUMBER,
-    data: `phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
+    data: params,
   });
   return data;
 };

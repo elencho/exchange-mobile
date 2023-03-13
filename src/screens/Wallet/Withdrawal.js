@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
-import SmsEmailAuthModal from '../../components/UserProfile/SmsEmailAuthModal';
-import colors from '../../constants/colors';
-import {
-  toggleEmailAuthModal,
-  toggleGoogleOtpModal,
-  toggleSmsAuthModal,
-} from '../../redux/modals/actions';
-import { setNetwork } from '../../redux/wallet/actions';
-import { sendOtp } from '../../utils/userProfileUtils';
 import AppButton from '../../components/AppButton';
 import WithdrawalInputs from '../../components/Wallet/Withdrawal/WithdrawalInputs';
 import FlexBlock from '../../components/Wallet/Deposit/FlexBlock';
@@ -21,29 +13,34 @@ import WithdrawalInfo from '../../components/Wallet/Withdrawal/WithdrawalInfo';
 import SaveAsTemplate from '../../components/Wallet/Withdrawal/SaveAsTemplate';
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import GeneralError from '../../components/GeneralError';
-import GoogleOtpModal from '../../components/UserProfile/GoogleOtpModal';
 import AppInfoBlock from '../../components/AppInfoBlock';
-import { infos, warnings } from '../../constants/warningsAndInfos';
-import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
-import { MaterialIndicator } from 'react-native-indicators';
-import { validateAmount } from '../../utils/appUtils';
 import WithKeyboard from '../../components/WithKeyboard';
+import WithdrawalConfirmModal from '../../components/Wallet/Withdrawal/WithdrawalConfirmModal';
+
+import colors from '../../constants/colors';
+import { infos, warnings } from '../../constants/warningsAndInfos';
+import { setNetwork } from '../../redux/wallet/actions';
+import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
+import { validateAmount } from '../../utils/appUtils';
 
 export default function Withdrawal({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { googleAuth, emailAuth, smsAuth },
     trade: { currentBalanceObj, card, depositProvider, cardsLoading },
-    transactions: { code },
+    transactions: { code, loading },
+    profile: { userInfo },
     wallet: {
       withdrawalRestriction,
       currentWhitelistObj,
       currentTemplate,
       withdrawalBank,
-      hasMultipleMethods,
+      iban,
       network,
       withdrawalAmount,
+      whitelistLoading,
+      receiverBank,
+      memoTag,
     },
   } = state;
 
@@ -75,7 +72,7 @@ export default function Withdrawal({ refreshControl }) {
   useEffect(() => {
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setFee(null));
-    if ((isEcommerce && card) || (!isEcommerce && network)) {
+    if (isEcommerce && card && depositProvider) {
       dispatch(fetchFee('withdrawal'));
     }
   }, [network, depositProvider, card]);
@@ -83,36 +80,70 @@ export default function Withdrawal({ refreshControl }) {
   useEffect(() => {
     setHasRestriction(Object.keys(withdrawalRestriction).length);
   }, [withdrawalRestriction]);
-
   useEffect(() => {
     return () => dispatch(setCard(null));
   }, []);
 
   useEffect(() => {
     error && setError(false);
-  }, [depositProvider, card, withdrawalAmount, currentWhitelistObj]);
+  }, [
+    depositProvider,
+    card,
+    withdrawalAmount,
+    currentWhitelistObj,
+    currentTemplate,
+    withdrawalBank,
+    iban,
+    memoTag,
+    receiverBank,
+    userInfo,
+  ]);
+
+  const { bankName, bankPostalCity, bankPostalCode, bankAddress, swift } =
+    receiverBank;
+  const receiverBankInputs = [
+    iban,
+    bankName,
+    bankPostalCity,
+    bankPostalCode,
+    bankAddress,
+    swift,
+  ];
+  const notEmpty = () => {
+    if (withdrawalBank?.bankName === 'Other')
+      return receiverBankInputs.every((i) => i && i.trim());
+    if (withdrawalBank?.bankName || currentTemplate?.templateName)
+      return iban?.trim();
+  };
 
   const withdraw = () => {
     const length = Object.keys(currentWhitelistObj)?.length;
-    const empty = !currentTemplate?.templateName;
+    const tag = () => {
+      const tagCondition =
+        currentBalanceObj?.infos[network]?.transactionRecipientType ===
+        'ADDRESS_AND_TAG';
+      if (tagCondition)
+        return currentWhitelistObj?.tag?.trim() || memoTag?.trim();
+      return true;
+    };
 
     let condition;
     if (isEcommerce) {
       condition =
         !validateAmount(withdrawalAmount) || !card || !depositProvider;
     } else if (isFiat) {
-      condition = !validateAmount(withdrawalAmount) || empty;
+      condition = !validateAmount(withdrawalAmount) || !notEmpty();
     } else {
-      condition = !validateAmount(withdrawalAmount) || !length;
+      condition = !validateAmount(withdrawalAmount) || !length || !tag();
     }
 
     if (condition) {
       setError(true);
     } else {
-      if (googleAuth) dispatch(toggleGoogleOtpModal(true));
-      if (emailAuth) dispatch(toggleEmailAuthModal(true));
-      if (smsAuth) dispatch(toggleSmsAuthModal(true));
-      if (!googleAuth) sendOtp();
+      dispatch({
+        type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
+        withdrawalConfirmModalVisible: true,
+      });
     }
   };
 
@@ -121,12 +152,6 @@ export default function Withdrawal({ refreshControl }) {
       currentTemplate.templateName === 'New Template' &&
       Object.keys(withdrawalBank).length
     );
-  };
-
-  const withdrawalType = () => {
-    if (currentBalanceObj.withdrawalMethods.WALLET) return 'crypto';
-    if (network === 'SWIFT') return 'wire';
-    if (isEcommerce) return 'card';
   };
 
   const reason = () => {
@@ -138,39 +163,53 @@ export default function Withdrawal({ refreshControl }) {
 
   return (
     <>
-      {!cardsLoading ? (
+      {cardsLoading || loading || whitelistLoading ? (
+        <MaterialIndicator color="#6582FD" animationDuration={3000} />
+      ) : (
         <WithKeyboard flexGrow padding refreshControl={refreshControl}>
           <View style={styles.block}>
             {/* <GeneralError style={{ marginBottom: 16 }} /> */}
             <WalletCoinsDropdown />
-            {(!isFiat || code === 'EUR') && <ChooseNetworkDropdown />}
-            {isFiat && hasMultipleMethods && (
+
+            {!hasRestriction && hasMethod && (
               <>
-                <TransferMethodDropdown />
-                <TransferMethodModal />
-                {network === 'SWIFT' && (
-                  <AppInfoBlock content={warnings.swift.withdrawal} warning />
+                {isFiat ? (
+                  <>
+                    <TransferMethodDropdown />
+                    <TransferMethodModal />
+                    {network === 'SWIFT' && (
+                      <AppInfoBlock
+                        content={warnings.swift.withdrawal}
+                        warning
+                      />
+                    )}
+                    {network === 'SEPA' && (
+                      <AppInfoBlock content={warnings.sepa} warning />
+                    )}
+                    {network === 'ECOMMERCE' && (
+                      <AppInfoBlock content={infos.ecommerce.withdrawal} info />
+                    )}
+                  </>
+                ) : (
+                  <ChooseNetworkDropdown />
                 )}
-                {network === 'SEPA' && (
-                  <AppInfoBlock content={warnings.sepa} warning />
-                )}
-                {network === 'ECOMMERCE' && (
-                  <AppInfoBlock content={infos.ecommerce.withdrawal} info />
+
+                {walletInfo() && (
+                  <AppInfoBlock content={[walletInfo()]} warning />
                 )}
               </>
             )}
-
-            {walletInfo() && <AppInfoBlock content={[walletInfo()]} warning />}
           </View>
 
           {!hasRestriction && isFiat && hasMethod && !isEcommerce && (
-            <WithdrawalInfo />
+            <WithdrawalInfo error={error} />
           )}
           {!hasRestriction && hasMethod && (
             <WithdrawalInputs
               error={error}
               isFiat={isFiat}
               hasRestriction={hasRestriction}
+              notEmpty={notEmpty}
             />
           )}
           {saveTemplateCheck() ? <SaveAsTemplate /> : null}
@@ -182,21 +221,18 @@ export default function Withdrawal({ refreshControl }) {
               restrictedUntil={withdrawalRestriction.restrictedUntil}
             />
           ) : null}
+
+          {!hasRestriction &&
+            hasMethod && ( // Button
+              <AppButton
+                text="Withdrawal"
+                onPress={withdraw}
+                style={styles.button}
+              />
+            )}
         </WithKeyboard>
-      ) : (
-        <MaterialIndicator color="#6582FD" animationDuration={3000} />
       )}
-
-      {!hasRestriction &&
-        hasMethod && ( // Button
-          <View style={styles.button}>
-            <AppButton text="Withdrawal" onPress={withdraw} />
-          </View>
-        )}
-
-      <SmsEmailAuthModal type="SMS" withdrawal={withdrawalType()} />
-      <SmsEmailAuthModal type="Email" withdrawal={withdrawalType()} />
-      <GoogleOtpModal withdrawal={withdrawalType()} />
+      <WithdrawalConfirmModal />
     </>
   );
 }
@@ -210,6 +246,5 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 15,
-    marginTop: 40,
   },
 });

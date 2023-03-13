@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Dimensions,
   Image,
   ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
+import WithKeyboard from '../components/WithKeyboard';
 import PurpleText from '../components/PurpleText';
+import Strong_Password from '../assets/images/User_profile/Strong_Password';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
@@ -26,6 +25,11 @@ export default function SetNewPassword({ navigation }) {
 
   const [pass, setPass] = useState('');
   const [confirmPass, setConfirmPass] = useState('');
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    error && setError(false);
+  }, [pass, confirmPass]);
 
   const goToLogin = () => dispatch(startLoginAction(navigation));
 
@@ -35,11 +39,15 @@ export default function SetNewPassword({ navigation }) {
 
   const passwordCheck = passLength && hasNumber && hasUpperAndLower;
 
-  const enabled = pass === confirmPass && passwordCheck;
   const red = { color: '#F45E8C' };
 
-  const setNewPassword = () =>
-    dispatch({ type: 'SET_NEW_PASS_SAGA', pass, confirmPass, navigation });
+  const setNewPassword = () => {
+    if (pass !== confirmPass || !passwordCheck) {
+      setError(true);
+    } else {
+      dispatch({ type: 'SET_NEW_PASS_SAGA', pass, confirmPass, navigation });
+    }
+  };
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
@@ -48,63 +56,54 @@ export default function SetNewPassword({ navigation }) {
         <PurpleText text="Back to Log In" style={styles.backText} />
       </TouchableOpacity>
 
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.select({ android: undefined, ios: 'padding' })}
-        keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
-      >
-        <ScrollView
-          contentContainerStyle={styles.middle}
-          style={{ flex: 1 }}
-          showsVerticalScrollIndicator={false}
-        >
-          <Image source={images.Strong_Password} />
+      <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
+        <Strong_Password
+          style={{ alignSelf: 'center', transform: [{ scaleY: 1.1 }] }}
+        />
+
+        <View style={{ alignItems: 'center' }}>
           <AppText header style={styles.primary}>
             Set New Password
           </AppText>
           <AppText style={styles.secondary}>
             Generate new password for your account
           </AppText>
+        </View>
 
-          <AppInput
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-            style={styles.input}
-            label="Enter New Password"
-            onChangeText={(t) => setPass(t)}
-            value={pass}
-            secureTextEntry
-            error={!passwordCheck}
-          />
+        <AppInput
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          style={styles.input}
+          label="Enter New Password"
+          onChangeText={(t) => setPass(t)}
+          value={pass}
+          secureTextEntry
+          error={error && (!passwordCheck || !pass)}
+        />
 
+        <View>
           <Text style={styles.validations}>
-            <Text style={!passLength && red}>8 or more characters, </Text>
-            <Text style={!hasUpperAndLower && red}>
+            <Text style={!passLength && pass && red}>
+              8 or more characters,{' '}
+            </Text>
+            <Text style={!hasUpperAndLower && pass && red}>
               Upper & lowercase letters,{' '}
             </Text>
-            <Text style={!hasNumber && red}>At least one number, </Text>
+            <Text style={!hasNumber && pass && red}>At least one number, </Text>
           </Text>
+        </View>
 
-          <AppInput
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-            style={styles.input}
-            label="Confirm New Password"
-            onChangeText={(t) => setConfirmPass(t)}
-            value={confirmPass}
-            secureTextEntry
-            error={pass !== confirmPass}
-          />
+        <AppInput
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          style={styles.input}
+          label="Confirm New Password"
+          onChangeText={(t) => setConfirmPass(t)}
+          value={confirmPass}
+          secureTextEntry
+          error={error && pass !== confirmPass}
+        />
 
-          <AppButton
-            text="Save"
-            style={styles.button}
-            onPress={setNewPassword}
-            disabled={!enabled}
-            backgroundColor={
-              !enabled ? colors.SECONDARY_TEXT : colors.SECONDARY_PURPLE
-            }
-          />
-        </ScrollView>
-      </KeyboardAvoidingView>
+        <AppButton text="Save" style={styles.button} onPress={setNewPassword} />
+      </WithKeyboard>
     </ImageBackground>
   );
 }
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: -20,
     marginTop: 28,
-    width: '33%',
+    alignSelf: 'flex-start',
   },
   backText: {
     marginBottom: 2,
@@ -134,14 +133,13 @@ const styles = StyleSheet.create({
     marginVertical: 6,
   },
   middle: {
-    alignItems: 'center',
     justifyContent: 'center',
-    height: Dimensions.get('window').height - 100,
   },
   primary: {
     color: colors.PRIMARY_TEXT,
     marginTop: 18,
     marginBottom: 12,
+    textAlign: 'center',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

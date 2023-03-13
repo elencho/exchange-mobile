@@ -26,7 +26,9 @@ export default function TwoFaInput({
   setValue,
   cellCount = 6,
   login,
+  fromResetOtp,
   registration,
+  indicatorStyle,
 }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -70,7 +72,7 @@ export default function TwoFaInput({
         if (emailAuthModalVisible) dispatch(activateEmailOtp(value));
       }
 
-      if (login) dispatch(otpForLoginAction(value, navigation));
+      if (login) dispatch(otpForLoginAction(value, navigation, fromResetOtp));
 
       setTimeout(() => {
         setValue('');
@@ -83,7 +85,7 @@ export default function TwoFaInput({
     <MaterialIndicator
       color="#6582FD"
       animationDuration={3000}
-      style={{ position: 'absolute', alignSelf: 'center' }}
+      style={[{ position: 'absolute', alignSelf: 'center' }, indicatorStyle]}
     />
   ) : (
     <CodeInput cellCount={cellCount} value={value} setValue={handleChange} />

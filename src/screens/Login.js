@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, ImageBackground, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
+import { t } from 'i18next';
 
 import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
@@ -9,6 +10,8 @@ import AppText from '../components/AppText';
 import WithKeyboard from '../components/WithKeyboard';
 import GeneralError from '../components/GeneralError';
 import PurpleText from '../components/PurpleText';
+import Logo from '../assets/images/Logo.svg';
+
 import colors from '../constants/colors';
 import images from '../constants/images';
 import {
@@ -17,7 +20,6 @@ import {
   usernameAndPasswordAction,
 } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
-import Logo from '../assets/images/Logo.svg';
 
 export default function Login({ navigation }) {
   const dispatch = useDispatch();
@@ -29,6 +31,9 @@ export default function Login({ navigation }) {
   const password = credentials.password;
 
   const [error, setError] = useState(false);
+  const validate = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(
+    login
+  );
 
   useEffect(() => {
     error && setError(false);
@@ -49,7 +54,7 @@ export default function Login({ navigation }) {
     dispatch(setCredentials({ ...credentials, login: t }));
 
   const handleLogin = () => {
-    if (!login || !password) {
+    if (!login || !password || !validate) {
       setError(true);
     } else {
       dispatch(usernameAndPasswordAction(navigation));
@@ -60,18 +65,18 @@ export default function Login({ navigation }) {
 
   const register = () => dispatch(startRegistrationAction(navigation));
 
-  const errorText = (type) => {
-    if (error && !login && type === 'Login') return 'Enter Email';
-    if (error && !password && type === 'Password') return 'Enter Password';
-  };
+  const errorText = () =>
+    error && login?.trim() && !validate ? 'Enter Valid Email' : null;
 
   return (
     <ImageBackground source={images.Background} style={{ flex: 1 }}>
       <WithKeyboard padding flexGrow contentContainerStyle={styles.container}>
         <Logo style={styles.logo} />
-        <AppText header style={styles.primary}>
-          Welcome to Cryptal
-        </AppText>
+        <View>
+          <AppText header style={styles.primary}>
+            Welcome to Cryptal
+          </AppText>
+        </View>
 
         <View style={styles.height42}>
           <GeneralError show={errorHappenedHere('Login')} />
@@ -82,8 +87,8 @@ export default function Login({ navigation }) {
           style={styles.email}
           onChangeText={typeLogin}
           value={login}
-          error={error && !login}
-          errorText={errorText('Login')}
+          error={error && (!login || !validate)}
+          errorText={errorText()}
         />
         <AppInput
           secureTextEntry
@@ -92,7 +97,6 @@ export default function Login({ navigation }) {
           value={password}
           style={styles.password}
           error={error && !password}
-          errorText={errorText('Password')}
           right={
             <PurpleText
               text="Forgot?"
@@ -108,9 +112,13 @@ export default function Login({ navigation }) {
           onPress={handleLogin}
           loading={userProfileLoading}
         />
-        <AppText style={styles.secondary}>
-          New User? <PurpleText text="Register" onPress={register} />
-        </AppText>
+
+        <View style={{ marginBottom: 20 }}>
+          <AppText style={styles.secondary}>
+            {t('New User?')}{' '}
+            <PurpleText text={t('Register')} onPress={register} />
+          </AppText>
+        </View>
       </WithKeyboard>
     </ImageBackground>
   );
@@ -146,9 +154,11 @@ const styles = StyleSheet.create({
   primary: {
     color: colors.PRIMARY_TEXT,
     marginTop: 30,
+    textAlign: 'center',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
     textAlign: 'center',
+    lineHeight: 21,
   },
 });

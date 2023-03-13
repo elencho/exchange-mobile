@@ -14,6 +14,7 @@ const INITIAL_STATE = {
   // Deposit
   wireDepositInfo: {},
   cryptoAddress: {},
+  methodsToDisplay: [],
   wireDepositProviders: [],
   wireDepositProvider: null,
   depositAmount: null,
@@ -38,6 +39,7 @@ const INITIAL_STATE = {
   hasWhitelist: null,
   currentWhitelistObj: {},
   newWhitelist: {},
+  whitelistLoading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -47,6 +49,7 @@ export default (state = INITIAL_STATE, action) => {
     usdBtcSwitch,
     depositRestriction,
     withdrawalRestriction,
+    methodsToDisplay,
     hasMultipleNetworks,
     hasMultipleMethods,
     wireDepositInfo,
@@ -59,6 +62,7 @@ export default (state = INITIAL_STATE, action) => {
     hasWhitelist,
     currentWhitelistObj,
     newWhitelist,
+    whitelistLoading,
     templates,
     currentTemplate,
     banks,
@@ -92,6 +96,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         hasMultipleNetworks,
+      };
+    case 'SET_METHODS_TO_DISPLAY':
+      return {
+        ...state,
+        methodsToDisplay,
       };
     case actionTypes.SET_DEPOSIT_RESTRICTION:
       return {
@@ -157,6 +166,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         newWhitelist,
+      };
+    case 'TOGGLE_WHITELIST_LOADING':
+      return {
+        ...state,
+        whitelistLoading,
       };
     case actionTypes.SAVE_TEMPLATES:
       return {

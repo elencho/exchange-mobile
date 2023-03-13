@@ -1,14 +1,17 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { t } from 'i18next';
 
 import AppInput from '../../AppInput';
 import AppText from '../../AppText';
+import PurpleText from '../../PurpleText';
+import ChooseAddressModal from './ChooseAddressModal';
+
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import { toggleChooseAddressModal } from '../../../redux/modals/actions';
-import ChooseAddressModal from './ChooseAddressModal';
-import { chooseWhitelist } from '../../../redux/wallet/actions';
+import { chooseWhitelist, setWalletTab } from '../../../redux/wallet/actions';
 
 let addr =
   'addr1qxyskt5fmj4dczqhfmkw2ljamtlnynpruv2l2susl4ylxyd2wvsvtpknan706f90cxvzuqs6cw9xs7487jnhn6hr6szqlq5c0k';
@@ -17,9 +20,10 @@ export default function WithdrawalAddress({ error }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { hasWhitelist, currentWhitelistObj },
+    wallet: { hasWhitelist, currentWhitelistObj, whitelist, network },
   } = state;
 
+  const hasOnThisNetwork = whitelist.some((w) => w.provider === network);
   const w = currentWhitelistObj;
   const color =
     error && !w?.address
@@ -29,6 +33,7 @@ export default function WithdrawalAddress({ error }) {
 
   const chooseAddress = () => dispatch(toggleChooseAddressModal(true));
   const setAddress = (address) => dispatch(chooseWhitelist({ ...w, address }));
+  const whitelistTab = () => dispatch(setWalletTab('Whitelist'));
 
   const AddressAndTag = () => {
     const { address, tag } = w;
@@ -57,24 +62,27 @@ export default function WithdrawalAddress({ error }) {
     );
   };
 
-  return (
-    <>
-      {hasWhitelist ? (
-        <Pressable
-          style={[styles.dropdown, { borderColor }]}
-          onPress={chooseAddress}
-        >
-          <AppText medium body style={{ color }}>
-            {w.name ? w.name : 'Choose Address'}
-          </AppText>
-
-          <View style={styles.arrow}>
-            <Image source={images.Arrow} />
-          </View>
-
-          <ChooseAddressModal />
-        </Pressable>
-      ) : (
+  const address = () => {
+    if (hasWhitelist) {
+      if (hasOnThisNetwork) {
+        return <AddressDropdown />;
+      } else {
+        return (
+          <>
+            <View style={styles.disabled}>
+              <AppText style={{ color: colors.SECONDARY_TEXT }}>
+                Destination Address
+              </AppText>
+            </View>
+            <AppText subtext style={styles.addWhitelist}>
+              {t('Do Not Have Address')}{' '}
+              <PurpleText text={t('Add Whitelist')} onPress={whitelistTab} />
+            </AppText>
+          </>
+        );
+      }
+    } else {
+      return (
         <AppInput
           label="Destination Address"
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
@@ -83,14 +91,41 @@ export default function WithdrawalAddress({ error }) {
           value={w.address}
           error={error && !w?.address}
         />
-      )}
+      );
+    }
+  };
 
+  const AddressDropdown = () => (
+    <Pressable
+      style={[styles.dropdown, { borderColor }]}
+      onPress={chooseAddress}
+    >
+      <AppText medium body style={{ color }}>
+        {w.name ? w.name : 'Choose Address'}
+      </AppText>
+
+      <View style={styles.arrow}>
+        <Image source={images.Arrow} />
+      </View>
+
+      <ChooseAddressModal />
+    </Pressable>
+  );
+
+  return (
+    <>
+      {address()}
       {w?.id && <AddressAndTag />}
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  addWhitelist: {
+    color: colors.SECONDARY_TEXT,
+    marginTop: 8,
+    marginBottom: 14,
+  },
   arrow: {
     marginLeft: 20,
     justifyContent: 'center',
@@ -100,6 +135,14 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: -1,
     lineHeight: 16,
+  },
+  disabled: {
+    height: 44,
+    borderWidth: 1,
+    borderColor: '#42475D',
+    justifyContent: 'center',
+    paddingHorizontal: 22,
+    opacity: 0.5,
   },
   dropdown: {
     borderWidth: 1,

@@ -2,21 +2,23 @@ import React, { useEffect, useReducer, useState } from 'react';
 import {
   Image,
   Pressable,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import AppButton from '../AppButton';
 import AppModal from '../AppModal';
 import AppInput from '../AppInput';
 import AppText from '../AppText';
+import WithKeyboard from '../WithKeyboard';
+import GeneralError from '../GeneralError';
+
 import { togglePasswordModal } from '../../redux/modals/actions';
 import { updatePassword } from '../../redux/profile/actions';
 import colors from '../../constants/colors';
 import images from '../../constants/images';
-import GeneralError from '../GeneralError';
 import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function PasswordModal() {
@@ -159,63 +161,57 @@ export default function PasswordModal() {
 
   const hideIcon = (
     <Pressable onPress={toggle}>
-      <Image source={secure ? images.Hide : images.Show} />
+      <Image source={secure ? images.Show : images.Hide} />
     </Pressable>
   );
 
   const children = () => {
     return (
-      <>
-        <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
-          <TouchableOpacity activeOpacity={0.99}>
-            <GeneralError
-              style={styles.error}
-              show={errorHappenedHere('PasswordModal')}
-            />
+      <WithKeyboard padding flexGrow modal>
+        <TouchableOpacity activeOpacity={0.99} style={{ flex: 1 }}>
+          <GeneralError
+            style={styles.error}
+            show={errorHappenedHere('PasswordModal')}
+          />
 
-            <AppInput
-              style={styles.inputContainer}
-              label="Current Password"
-              secureTextEntry={secure}
-              onChangeText={(text) => handleCurrentPass(text)}
-              value={curentPassword}
-              error={error && !curentPassword}
-            />
-            <AppInput
-              style={styles.inputContainer}
-              label="New Password"
-              secureTextEntry={secure}
-              onChangeText={(text) => handleNewPass(text)}
-              value={newPassword}
-              right={hideIcon}
-              error={error && !newPassCond}
-            />
-            <AppInput
-              style={styles.inputContainer}
-              label="Repeat Password"
-              secureTextEntry={secure}
-              onChangeText={(text) => handleRepeatPass(text)}
-              value={repeatPassword}
-              error={error && newPassword !== repeatPassword}
-            />
+          <AppInput
+            style={styles.inputContainer}
+            label="Current Password"
+            secureTextEntry={secure}
+            onChangeText={(text) => handleCurrentPass(text)}
+            value={curentPassword}
+            error={error && !curentPassword}
+          />
+          <AppInput
+            style={styles.inputContainer}
+            label="New Password"
+            secureTextEntry={secure}
+            onChangeText={(text) => handleNewPass(text)}
+            value={newPassword}
+            right={hideIcon}
+            error={error && !newPassCond}
+          />
+          <AppInput
+            style={styles.inputContainer}
+            label="Repeat Password"
+            secureTextEntry={secure}
+            onChangeText={(text) => handleRepeatPass(text)}
+            value={repeatPassword}
+            error={error && newPassword !== repeatPassword}
+          />
 
-            {array.map((v, i) => (
-              <View key={v} style={styles.validation}>
-                <View style={[styles.dot, background(i)]} />
-                <AppText subtext style={color(i)}>
-                  {v}
-                </AppText>
-              </View>
-            ))}
-          </TouchableOpacity>
-        </ScrollView>
+          {array.map((v, i) => (
+            <View key={v} style={styles.validation}>
+              <View style={[styles.dot, background(i)]} />
+              <AppText subtext style={color(i)}>
+                {v}
+              </AppText>
+            </View>
+          ))}
+        </TouchableOpacity>
 
-        <Pressable onPress={handleSave} style={styles.button}>
-          <AppText medium style={styles.buttonText}>
-            Save
-          </AppText>
-        </Pressable>
-      </>
+        <AppButton onPress={handleSave} style={styles.button} text="Save" />
+      </WithKeyboard>
     );
   };
 
@@ -232,14 +228,7 @@ export default function PasswordModal() {
 
 const styles = StyleSheet.create({
   button: {
-    height: 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-    backgroundColor: colors.PRIMARY_PURPLE,
-  },
-  buttonText: {
-    color: colors.PRIMARY_TEXT,
+    marginVertical: 20,
   },
   dot: {
     width: 3,
@@ -249,10 +238,6 @@ const styles = StyleSheet.create({
   },
   error: {
     marginBottom: 15,
-  },
-  flex: {
-    flex: 1,
-    paddingTop: 5,
   },
   inputContainer: {
     marginBottom: 20,

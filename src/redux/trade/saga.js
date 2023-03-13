@@ -22,6 +22,8 @@ import {
   switchBalanceCard,
   setTotalTrades,
   setTradeOffset,
+  setMoreTradesLoading,
+  fetchFee,
 } from './actions';
 import {
   getParams,
@@ -44,22 +46,28 @@ import {
   cryptoAddressesAction,
   getWhitelistAction,
   setWalletTab,
+  wireDepositAction,
   withdrawalTemplatesAction,
 } from '../wallet/actions';
-import { fetchCurrencies, toggleLoading } from '../transactions/actions';
+import { toggleLoading } from '../transactions/actions';
 import { fetchUserInfo } from '../profile/actions';
 
-function* fetchTradesSaga() {
-  yield put(setTradesLoading(true));
+function* fetchTradesSaga({ isMoreLoading }) {
+  if (isMoreLoading) {
+    yield put(setMoreTradesLoading(true));
+  } else {
+    yield put(setTradesLoading(true));
+  }
   const params = yield select(getParams);
   const trades = yield select((state) => state.trade.trades);
 
   const newTrades = yield call(fetchTrades, params);
   const newestTrades = newTrades?.data;
-  if (newestTrades) {
+  if (newestTrades?.length > 0) {
     yield put(setTotalTrades(newTrades?.paging.pageCount));
     yield put(saveTrades([...trades, ...newestTrades]));
   }
+  yield put(setMoreTradesLoading(false));
   yield put(setTradesLoading(false));
 }
 
@@ -116,10 +124,10 @@ function* instantTradeTabSaga() {
   yield put(setOffersLoading(true));
   const offers = yield call(fetchOffers);
   yield put(saveOffers(offers));
-
+  yield put(setTradeOffset(0));
   yield put(pairObjectSagaAction(offers));
 
-  // yield put({ type: 'BALANCE_SAGA' });
+  yield put({ type: 'BALANCE_SAGA' });
 
   yield put(depositProvidersSagaAction());
   yield put(cardsSagaAction());
@@ -130,7 +138,8 @@ function* instantTradeTabSaga() {
 }
 
 function* balanceSaga() {
-  yield put(toggleLoading(true));
+  yield put({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: true });
+
   const balance = yield call(fetchBalance);
   if (balance) {
     yield put(setBalance(balance));
@@ -144,7 +153,7 @@ function* balanceSaga() {
       yield put(setCurrentBalanceObj(obj));
     }
   }
-  yield put(toggleLoading(false));
+  yield put({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: false });
 }
 
 function* submitTradeSaga() {
@@ -157,7 +166,9 @@ function* submitTradeSaga() {
       yield put({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: data?.data });
     } else {
       yield put({ type: 'BALANCE_SAGA' });
-      yield put(fetchTradesAction());
+      yield put(saveTrades([]));
+      yield put(setTradeOffset(0));
+      yield put(fetchTradesAction(false));
       yield put(toggleBuySellModal(false));
     }
   }
@@ -173,15 +184,20 @@ function* fetchFeeSaga(action) {
 }
 
 function* addNewCardSaga(action) {
-  const { navigation, balances, fiat, name, code } = action;
+  const { navigation, balances, name, code } = action;
   let obj;
 
   balances.forEach((b) => {
-    if (b.currencyCode === fiat) obj = b;
+    if (b.currencyCode === code) obj = b;
   });
+
+  const tab = yield select((state) => state.transactions.tabNavigationRef);
+  const tabRoute = yield select((state) => state.transactions.tabRoute);
+  if (tabRoute !== 'Wallet') yield call(() => tab.navigate('Wallet'));
 
   yield put(setCurrentBalanceObj(obj));
   yield put(setWalletTab('Manage Cards'));
+  yield put(cardsSagaAction());
   yield put(toggleBuySellModal(false));
   yield delay(500);
   yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
@@ -194,6 +210,7 @@ function* refreshWalletAndTradesSaga() {
     wallet: { walletTab, network, depositRestriction, withdrawalRestriction },
     trade: { currentBalanceObj },
     profile: { userInfo },
+    modals: { addWhitelistModalVisble, whitelistActionsModalVisible },
     transactions: { stackRoute, tabRoute, currency, code },
   } = state;
 
@@ -222,6 +239,15 @@ function* refreshWalletAndTradesSaga() {
   }
 
   if (balance) {
+    yield put(setFee(null));
+
+    if (deposit && fiat && !ecommerce) {
+      yield put(wireDepositAction(currency, code));
+    }
+    if (withdrawal && fiat && !ecommerce) {
+      yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
+    }
+
     if (wallet && !whitelist && isAvailable(currentBalanceObj)) {
       // wire deposit saga is exclusion
       if (ecommerce) yield put(cardsSagaAction());
@@ -229,12 +255,13 @@ function* refreshWalletAndTradesSaga() {
     }
 
     if (crypto && isAvailable(currentBalanceObj)) {
-      if (withdrawal || whitelist) {
+      if (
+        withdrawal ||
+        (whitelist && !addWhitelistModalVisble && !whitelistActionsModalVisible)
+      )
         yield put(getWhitelistAction());
-      } else {
-        // Because of this line crypto addresses action is
-        // called twice while navigating th the balance screen
-        /* yield put(cryptoAddressesAction(currency, code, null, network)); */
+      if (withdrawal) {
+        yield put(fetchFee('withdrawal'));
       }
     }
   }

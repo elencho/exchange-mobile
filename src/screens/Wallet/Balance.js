@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Image, RefreshControl, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../../components/Background';
@@ -13,23 +13,23 @@ import ChooseCurrencyModal from '../../components/TransactionFilter/ChooseCurren
 import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkModal';
 import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
-import { setCard, setDepositProvider, setFee } from '../../redux/trade/actions';
+import { setCard, setDepositProvider } from '../../redux/trade/actions';
 import { setWalletTab } from '../../redux/wallet/actions';
-import colors from '../../constants/colors';
+import CustomRefreshContol from '../../components/CustomRefreshContol';
 
 export default function Balance({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     wallet: { walletTab, network },
-    transactions: { tabNavigationRef, code, loading },
+    trade: { cardsLoading },
+    transactions: { tabNavigationRef, loading },
   } = state;
 
   const onRefresh = () => {
-    dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
-    dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setCard(null));
-    dispatch(setFee(null));
+    dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+    walletTab !== 'Whitelist' && dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     if (network !== 'SWIFT') {
       dispatch(setDepositProvider(null));
     }
@@ -44,26 +44,20 @@ export default function Balance({ navigation }) {
   useEffect(() => {
     onRefresh();
     return () => dispatch(setCard(null));
-  }, [walletTab, code]);
+  }, [walletTab, network]);
 
   const refreshControl = (
-    <RefreshControl
-      tintColor={colors.PRIMARY_PURPLE}
-      onRefresh={onRefresh}
-      refreshing={loading}
-    />
+    <CustomRefreshContol onRefresh={onRefresh} refreshing={loading} />
   );
+
+  const disabled = loading || cardsLoading;
 
   return (
     <Background>
-      <View style={styles.back}>
+      <TouchableOpacity onPress={back} style={styles.back} disabled={disabled}>
         <Image source={images.Back} style={styles.arrow} />
-        <PurpleText
-          text="Back to Wallet"
-          onPress={back}
-          style={styles.purpleText}
-        />
-      </View>
+        <PurpleText text="Back to Wallet" style={styles.purpleText} />
+      </TouchableOpacity>
 
       <Headline title="My Wallet" />
 
@@ -94,6 +88,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+    paddingVertical: 5,
+    width: '45%',
   },
   flexGrow: {
     flexGrow: 1,

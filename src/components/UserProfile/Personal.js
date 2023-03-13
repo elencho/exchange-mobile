@@ -1,14 +1,7 @@
 import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import colors from '../../constants/colors';
-import images from '../../constants/images';
-import {
-  toggleLanguageModal,
-  togglePhoneNumberModal,
-} from '../../redux/modals/actions';
-import { toggleEmailSubscription } from '../../redux/profile/actions';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import ChooseLanguageModal from './ChooseLanguageModal';
@@ -19,19 +12,35 @@ import PhoneNumberModal from './PhoneNumberModal';
 import launchSumsubSdk from '../../utils/sumsubMobileSdk';
 import EditCompanyModal from './EditCompanyModal';
 import IdentityModal from './IdentityModal';
-import { errorHappenedHere } from '../../utils/appUtils';
 import AppSwitcher from '../AppSwitcher';
 import PersonalProfileSkeleton from './PersonalProfileSkeleton';
 import DeleteAccount from './DeleteAccount';
+import Identity from '../../assets/images/User_profile/Identity.svg';
+import Phone from '../../assets/images/User_profile/Phone.svg';
+import Notifications from '../../assets/images/User_profile/Notifications.svg';
+import Language from '../../assets/images/User_profile/Language.svg';
+
+import { errorHappenedHere } from '../../utils/appUtils';
+import { toggleEmailSubscription } from '../../redux/profile/actions';
+import {
+  toggleLanguageModal,
+  togglePhoneNumberModal,
+} from '../../redux/modals/actions';
+import colors from '../../constants/colors';
 
 export default function Personal({ loading }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    profile: { userInfo, language },
+    profile: { userInfo, language, smsAuth },
     errors: { generalError },
   } = state;
-  const isVerified = userInfo?.userStatus === 'VERIFIED';
+
+  const verified = userInfo?.userStatus === 'VERIFIED';
+  const unverified = userInfo?.userStatus === 'UNVERIFIED';
+  const pending = userInfo?.userStatus === 'PENDING';
+  const corporate = userInfo?.userType === 'CORPORATE';
+  const eligibleToVerify = userInfo?.verificationToolEnabled;
 
   const hideError = () =>
     dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
@@ -41,9 +50,21 @@ export default function Personal({ loading }) {
   }, []);
 
   const edit = () => {
+    if (smsAuth) {
+      dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
+    } else {
+      dispatch(togglePhoneNumberModal(true));
+    }
     hideError();
-    dispatch(togglePhoneNumberModal(true));
   };
+
+  const verify = () => {
+    if (eligibleToVerify) launchSumsubSdk();
+    else dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
+  };
+
+  const goToSupport = () =>
+    Linking.openURL('https://support.cryptal.com/hc/en-us/requests/new');
 
   const editLanguage = () => {
     hideError();
@@ -69,15 +90,20 @@ export default function Personal({ loading }) {
                 Identification
               </AppText>
 
-              <Pressable style={styles.circle} onPress={openModal}>
-                <AppText medium body style={{ color: '#9EA6D0' }}>
-                  i
-                </AppText>
-              </Pressable>
+              {!verified && (
+                <Pressable style={styles.circle} onPress={openModal}>
+                  <AppText medium body style={{ color: '#9EA6D0' }}>
+                    i
+                  </AppText>
+                </Pressable>
+              )}
             </View>
 
-            {!isVerified && (
-              <PurpleText text="Verify" subtext onPress={launchSumsubSdk} />
+            {unverified && (
+              <PurpleText text="Verify" subtext onPress={verify} />
+            )}
+            {pending && (
+              <PurpleText text="Go To Support" subtext onPress={goToSupport} />
             )}
           </View>
         );
@@ -100,7 +126,7 @@ export default function Personal({ loading }) {
       case 'Notifications':
         return (
           <View style={styles.row}>
-            <AppText medium style={styles.white}>
+            <AppText medium style={[styles.white, { maxWidth: '80%' }]}>
               Receive Notifications
             </AppText>
             <View style={[styles.flex, { alignItems: 'flex-end' }]}>
@@ -141,11 +167,11 @@ export default function Personal({ loading }) {
             <View
               style={[
                 styles.check,
-                { backgroundColor: isVerified ? '#25D8D1' : '#FFC65C' },
+                { backgroundColor: verified ? '#25D8D1' : '#FFC65C' },
               ]}
             />
             <AppText subtext style={styles.secondary}>
-              {isVerified ? 'Upload documents' : 'Not verified'}
+              Verification subtext {userInfo?.userStatus}
             </AppText>
           </View>
         );
@@ -177,6 +203,13 @@ export default function Personal({ loading }) {
     }
   };
 
+  const images = {
+    Identity: <Identity />,
+    Phone: <Phone />,
+    Notifications: <Notifications />,
+    Language: <Language />,
+  };
+
   return !loading ? (
     <>
       <View style={styles.block}>
@@ -185,10 +218,7 @@ export default function Personal({ loading }) {
             style={[styles.row, i < a.length - 1 && { marginBottom: 30 }]}
             key={r}
           >
-            <View style={styles.imageContainer}>
-              <Image source={images[r]} />
-            </View>
-
+            {images[r]}
             <View style={styles.justify}>
               {textCond(r)}
               {secondaryTextCond(r)}
@@ -198,7 +228,7 @@ export default function Personal({ loading }) {
       </View>
 
       <PersonalInformation />
-      {userInfo.company && <CompanyInformation />}
+      {corporate && <CompanyInformation />}
       <DeleteAccount />
       <PersonalInfoModal />
       <PhoneNumberModal />
@@ -244,12 +274,6 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
-  },
-  imageContainer: {
-    width: 35,
-    height: 37,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   justify: {
     justifyContent: 'space-between',

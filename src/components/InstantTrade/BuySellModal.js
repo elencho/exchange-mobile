@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -24,6 +24,7 @@ import {
   setCurrentTrade,
   setDepositProvider,
   setFee,
+  setTradeOffset,
   submitTrade,
   switchBalanceCard,
 } from '../../redux/trade/actions';
@@ -52,9 +53,12 @@ export default function BuySellModal() {
     },
   } = state;
 
-  const [webViewUrl, setWebViewUrl] = useState('');
   const [error, setError] = useState(false);
 
+  //TODO: refactor
+  // const [maxLengthBase, setMaxLengthBase] = useState(13);
+  // const [maxLengthQuote, setMaxLengthQuote] = useState(13);
+  const [focusedInput, setFocusedInput] = useState(null);
   useEffect(() => {
     error && setError(false);
   }, [
@@ -74,6 +78,10 @@ export default function BuySellModal() {
   }, [pairObject]);
 
   useEffect(() => {
+    dispatch(setCurrentTrade({ price: '', size: '' }));
+  }, [fiat, crypto]);
+
+  useEffect(() => {
     if (card) handleChangeText(price, 'crypto');
   }, [card]);
 
@@ -83,19 +91,19 @@ export default function BuySellModal() {
   const price = currentTrade?.price;
   const balances = balance?.balances;
 
-  const getMaxLength = (value, scale) => {
-    const isDecimal = value && (value % 1 != 0 || value.includes('.'));
-    const factoredDigit = Math.trunc(value);
-    const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-    return isDecimal ? factoredDigitLength + 1 + parseFloat(scale) : 1000;
+  const inputValidation = (scale) => {
+    if (scale == 0) {
+      return /^[0-9]{1,13}$/;
+    } else {
+      return new RegExp(`^[0-9]{1,13}(\.|\\.[0-9]{1,${scale}})?$`);
+    }
   };
 
-  const maxLengthQuote = getMaxLength(price, pairObject?.pair?.quoteScale);
-  const maxLengthBase = getMaxLength(size, pairObject?.pair?.baseScale);
+  const quoteValidation = inputValidation(pairObject?.pair?.quoteScale);
+  const baseValidation = inputValidation(pairObject?.pair?.baseScale);
 
   const hide = () => {
     dispatch(toggleBuySellModal(false));
-    dispatch(switchBalanceCard('balance'));
     dispatch(setCurrentTrade({ price: '', size: '' }));
     dispatch(setFee(null));
   };
@@ -103,6 +111,7 @@ export default function BuySellModal() {
   const onDismiss = () => {
     dispatch(setDepositProvider(null));
     dispatch(setCard(null));
+    dispatch(switchBalanceCard('balance'));
   };
 
   const handleSubmit = () => {
@@ -117,40 +126,72 @@ export default function BuySellModal() {
     } else dispatch(submitTrade());
   };
 
+  //TODO: remove if not used
+  // const getMaxLength = (value, scale, setFunction) => {
+  //
+  //   const factoredDigit = Math.trunc(value);
+  //   const factoredDigitLength = parseFloat(factoredDigit.toString().length);
+  //   if (scale == 0) {
+  //     setFunction(14);
+  //   } else {
+  //     setFunction(factoredDigitLength + parseFloat(scale) + 1);
+  //   }
+  // };
+
+  const setTrade = (price, size) => {
+    dispatch(setCurrentTrade({ price, size }));
+    card && dispatch(fetchFee());
+  };
+
+  //TODO: refactor
   const handleChangeText = (text, type) => {
-    if (text === '') {
-      dispatch(
-        setCurrentTrade({
-          price: '',
-          size: '',
-        })
-      );
-      return;
-    }
-    const t = text ? text.replace(',', '.') : 0;
+    const replacedAmount = text ? text.replace(',', '.') : 0;
     const rate =
       tradeType === 'Buy' ? pairObject.buyPrice : pairObject.sellPrice;
 
-    if (type === 'crypto' && validateScale(t, quoteScale)) {
-      dispatch(
-        setCurrentTrade({
-          price: t,
-          size: (t / rate).toFixed(baseScale),
-        })
-      );
-      card && dispatch(fetchFee());
+    if (text === '') {
+      return setTrade('', '');
     }
-    if (type === 'fiat' && validateScale(t, baseScale)) {
-      dispatch(
-        setCurrentTrade({
-          price: (t * rate).toFixed(quoteScale),
-          size: t,
-        })
-      );
-      card && dispatch(fetchFee());
+
+    const parts = replacedAmount?.split('.');
+    if (type === 'crypto' && validateScale(replacedAmount, quoteScale)) {
+      if (text && !quoteValidation?.test(text) && focusedInput === 'crypto') {
+        return;
+      }
+
+      if (parts.length === 2) {
+        let cryptoAmount = (replacedAmount / rate).toFixed(baseScale);
+        // getMaxLength(replacedAmount, quoteScale, setMaxLengthQuote);
+        setTrade(
+          replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0,
+          cryptoAmount
+        );
+      } else {
+        let cryptoAmount = (parts[0].substr(0, 13) / rate).toFixed(baseScale);
+        // setMaxLengthQuote(14);
+        //getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
+        setTrade(replacedAmount ? parts[0].substr(0, 13) : 0, cryptoAmount);
+      }
+    }
+    if (type === 'fiat' && validateScale(replacedAmount, baseScale)) {
+      if (text && !baseValidation?.test(text) && focusedInput === 'fiat') {
+        return;
+      }
+      if (parts.length === 2) {
+        let fiatAmount = (replacedAmount * rate).toFixed(quoteScale);
+        // getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
+        setTrade(
+          fiatAmount,
+          replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0
+        );
+      } else {
+        let fiatAmount = (parts[0].substr(0, 13) * rate).toFixed(quoteScale);
+        // setMaxLengthBase(14);
+        // getMaxLength(replacedAmount, quoteScale, setMaxLengthQuote);
+        setTrade(fiatAmount, replacedAmount ? parts[0].substr(0, 13) : 0);
+      }
     }
   };
-
   const myBalance = () => {
     const currency = tradeType === 'Buy' ? fiat : crypto;
     const fix = currency === fiat ? quoteScale : baseScale;
@@ -171,19 +212,20 @@ export default function BuySellModal() {
   };
 
   const onNavigationStateChange = (state) => {
-    setWebViewUrl(state.url);
-    const urlArray = webViewUrl.split('=');
+    const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
       dispatch({ type: 'BALANCE_SAGA' });
       dispatch(saveTrades([]));
+      dispatch(setTradeOffset(0));
       dispatch(fetchTrades());
       dispatch(toggleBuySellModal(false));
     }
   };
+
   const children = (
-    <>
+    <WithKeyboard padding flexGrow modal>
       <View style={styles.flex}>
         <AppText subtext body style={styles.balance}>
           My Balance: {myBalance()} {tradeType === 'Buy' ? fiat : crypto}
@@ -196,55 +238,58 @@ export default function BuySellModal() {
           show={errorHappenedHere('BuySellModal')}
         />
 
-        <WithKeyboard>
-          <TouchableOpacity activeOpacity={0.99}>
-            <CurrencyDropdowns style={styles.dropdowns} />
+        <TouchableOpacity
+          activeOpacity={0.99}
+          style={{ marginBottom: 30, flex: 1 }}
+        >
+          <CurrencyDropdowns style={styles.dropdowns} />
 
-            <AppInput
-              onChangeText={(t) => handleChangeText(t, 'crypto')}
-              keyboardType="decimal-pad"
-              value={price ? price.trim() : ''}
-              maxLength={maxLengthQuote}
-              right={<AppText style={styles.code}>{fiat}</AppText>}
-              error={error && !validateAmount(price)}
-            />
-            <View style={styles.margin} />
-            <AppInput
-              onChangeText={(t) => handleChangeText(t, 'fiat')}
-              keyboardType="decimal-pad"
-              maxLength={maxLengthBase}
-              value={size ? size.trim() : ''}
-              right={<AppText style={styles.code}>{crypto}</AppText>}
-              style={{ marginBottom: 10 }}
-              error={error && !validateAmount(size)}
-            />
+          <AppInput
+            onChangeText={(t) => handleChangeText(t, 'crypto')}
+            keyboardType="decimal-pad"
+            value={price ? price.trim() : ''}
+            onFocus={() => setFocusedInput('fiat')}
+            //maxLength={maxLengthQuote}
+            right={<AppText style={styles.code}>{fiat}</AppText>}
+            error={error && !validateAmount(price)}
+          />
+          <View style={styles.margin} />
+          <AppInput
+            onChangeText={(t) => handleChangeText(t, 'fiat')}
+            keyboardType="decimal-pad"
+            //maxLength={maxLengthBase}
+            onFocus={() => setFocusedInput('crypto')}
+            value={size ? size.trim() : ''}
+            right={<AppText style={styles.code}>{crypto}</AppText>}
+            style={{ marginBottom: 10 }}
+            error={error && !validateAmount(size)}
+          />
 
-            {Balance_Card === 'card' && <CardSection error={error} />}
+          {Balance_Card === 'card' && tradeType === 'Buy' && (
+            <CardSection error={error} />
+          )}
 
-            <CryptoModal />
-            <FiatModal />
-            <ChooseBankModal />
-            <ChooseCardModal />
-            <BankFeesModal />
-          </TouchableOpacity>
-        </WithKeyboard>
+          <CryptoModal />
+          <FiatModal />
+          <ChooseBankModal />
+          <ChooseCardModal />
+          <BankFeesModal />
+        </TouchableOpacity>
+        <AppButton
+          onPress={handleSubmit}
+          backgroundColor={tradeType === 'Buy' ? '#0CCBB5' : '#F83974'}
+          text={tradeType}
+          style={{ marginBottom: 20 }}
+        />
       </View>
-
-      <AppButton
-        onPress={handleSubmit}
-        backgroundColor={tradeType === 'Buy' ? '#0CCBB5' : '#F83974'}
-        text={tradeType}
-        style={{ marginBottom: 20 }}
-      />
 
       <AppWebView
         onNavigationStateChange={onNavigationStateChange}
         source={{ uri: webViewObj?.actionUrl }}
         trade
       />
-    </>
+    </WithKeyboard>
   );
-
   return (
     <AppModal
       visible={buySellModalVisible}
@@ -252,7 +297,7 @@ export default function BuySellModal() {
       fullScreen
       title={tradeType + ' ' + crypto}
       children={children}
-      onDismiss={onDismiss}
+      onModalHide={onDismiss}
     />
   );
 }

@@ -1,8 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { FlatList, StyleSheet, View, Platform } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
+import { t } from 'i18next';
+
+import AppText from '../AppText';
+import PurpleText from '../PurpleText';
+import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
+import Trade from './Trade';
+import List from '../../assets/images/List.svg';
 
 import colors from '../../constants/colors';
+import CustomRefreshContol from '../CustomRefreshContol';
+
 import {
   fetchTrades,
   hideOtherPairsAction,
@@ -10,39 +20,52 @@ import {
   setTradeOffset,
 } from '../../redux/trade/actions';
 import { reachScrollEnd } from '../../redux/transactions/actions';
-import AppText from '../AppText';
-import PurpleText from '../PurpleText';
-import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
-import Trade from './Trade';
 
-export const TopRow = ({ text, onPress }) => (
-  <View style={styles.topRow}>
-    <AppText header style={styles.header}>
-      Transactions
-    </AppText>
-    <AppText subtext body style={styles.subText}>
-      <PurpleText text={text} onPress={onPress} />
-      other pairs
-    </AppText>
-  </View>
-);
-const TransactionsBlock = ({
-  loading,
-  innerScrollEnabled,
-  handleInnerScroll,
-}) => {
+const IS_IOS = Platform.OS === 'ios';
+
+export const TopRow = ({ text, onPress }) => {
+  return (
+    <View style={styles.topRow}>
+      <AppText header style={styles.header}>
+        Transactions
+      </AppText>
+
+      <View style={styles.right}>
+        <AppText subtext body style={styles.subText}>
+          <Purple text={t(text)} onPress={onPress} /> {t('Other Pairs')}
+        </AppText>
+      </View>
+    </View>
+  );
+};
+
+const Purple = ({ text, onPress }) => {
+  return (
+    <TouchableOpacity
+      onPress={onPress}
+      style={{
+        position: 'relative',
+        top: 2,
+      }}
+    >
+      <PurpleText onPress={onPress} text={text} />
+    </TouchableOpacity>
+  );
+};
+
+const TransactionsBlock = ({ loading }) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(hideOtherPairsAction(false));
+    };
+  }, []);
 
   const state = useSelector((state) => state);
   const {
-    trade: { trades, hideOtherPairs, totalTrades },
+    trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
   } = state;
-
-  const [moreLoading, setMoreLoading] = useState(false);
-
-  useEffect(() => {
-    return () => dispatch(saveTrades([]));
-  }, []);
 
   const toggleShowHide = () => {
     dispatch(setTradeOffset(0));
@@ -52,30 +75,57 @@ const TransactionsBlock = ({
   };
 
   const handleScrollEnd = () => {
-    dispatch(reachScrollEnd('trades'));
-    if (trades.length < totalTrades) {
-      setMoreLoading(true);
-    } else {
-      setMoreLoading(false);
+    if (trades.length === totalTrades) {
+      return;
+    } else if (trades.length <= totalTrades && !moreTradesLoading) {
+      dispatch(reachScrollEnd('trades'));
     }
   };
 
-  const onRefresh = () => dispatch(fetchTrades());
+  const onRefresh = () => {
+    dispatch(setTradeOffset(0));
+    dispatch(saveTrades([]));
+    dispatch(fetchTrades());
+  };
+
+  const onScroll = (event) => {
+    const offsetY = event.nativeEvent.contentOffset.y;
+    if (offsetY === 0) {
+      onRefresh();
+    }
+  };
+
   const renderTrade = ({ item }) => (
     <Trade trade={item} key={item.creationTime} />
   );
+  const footer = () =>
+    moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />;
 
-  const footer = () => (moreLoading ? <OneTransactionSkeleton /> : <View />);
+  const listEmptyContainer = () =>
+    !loading && (
+      <View style={styles.empty}>
+        <List />
+        <AppText subtext style={[styles.subText, { marginTop: 17 }]}>
+          Instant trade no transactions
+        </AppText>
+      </View>
+    );
 
   return (
     <View style={styles.container}>
       <TopRow
-        text={hideOtherPairs ? 'Show ' : 'Hide '}
+        text={hideOtherPairs ? 'Show' : 'Hide'}
         onPress={toggleShowHide}
       />
 
-      {loading && !moreLoading ? (
-        [1, 2, 3].map(({ item }) => <OneTransactionSkeleton key={item} />)
+      {loading && !moreTradesLoading ? (
+        <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
+          {[1, 2, 3].map((i) => (
+            <View key={i}>
+              <OneTransactionSkeleton />
+            </View>
+          ))}
+        </View>
       ) : (
         <FlatList
           style={{ height: 280 }}
@@ -83,18 +133,14 @@ const TransactionsBlock = ({
           renderItem={renderTrade}
           keyExtractor={(item) => item.creationTime}
           onEndReached={handleScrollEnd}
-          //onEndReachedThreshold={0.7}
+          onEndReachedThreshold={1}
           nestedScrollEnabled
           initialNumToRender={5}
           ListFooterComponent={footer}
-          scrollEnabled={innerScrollEnabled}
-          onScroll={handleInnerScroll}
+          onScroll={onScroll}
+          ListEmptyComponent={listEmptyContainer}
           refreshControl={
-            <RefreshControl
-              tintColor={colors.PRIMARY_PURPLE}
-              refreshing={loading}
-              onRefresh={onRefresh}
-            />
+            <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }
         />
       )}
@@ -107,8 +153,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.SECONDARY_BACKGROUND,
     padding: 25,
   },
+  empty: {
+    height: 280,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   header: {
     color: colors.PRIMARY_TEXT,
+  },
+  right: {
+    flex: 1,
+    alignItems: 'flex-end',
   },
   subText: {
     color: colors.SECONDARY_TEXT,
@@ -116,7 +171,6 @@ const styles = StyleSheet.create({
   topRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     marginBottom: 10,
   },
 });

@@ -21,7 +21,7 @@ const FirstPart = () => (
 );
 
 const SecondPart = () => (
-  <View style={styles.container}>
+  <View style={styles.containerSec}>
     <View style={styles.wrapper}>
       <View style={styles.lastWrapper}>
         <View style={styles.smallWrapper}>
@@ -89,5 +89,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingBottom: 30,
     marginBottom: 12,
+  },
+  containerSec: {
+    backgroundColor: colors.SECONDARY_BACKGROUND,
+    paddingRight: 24,
+    paddingBottom: 30,
+    marginBottom: 12,
+    paddingLeft: 12,
   },
 });

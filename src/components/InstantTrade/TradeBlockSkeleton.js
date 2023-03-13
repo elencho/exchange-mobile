@@ -53,9 +53,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
-    paddingLeft: 18,
+    paddingLeft: 13,
     backgroundColor: 'rgba(63, 66, 91, 0.18)',
-
+    width: '47%',
+    height: 45,
     paddingRight: 25,
   },
 
@@ -67,11 +68,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingHorizontal: 24,
     paddingVertical: 36,
+    marginBottom: 10,
   },
   smallBoxMiddle: {
     backgroundColor: 'rgba(63, 66, 91, 0.18)',
     padding: 26,
     marginBottom: 10,
+    height: 80,
+    width: '47%',
   },
   wrapper: {
     flexDirection: 'row',

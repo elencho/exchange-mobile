@@ -9,11 +9,11 @@ export const getUserData = (state) => {
   formData.append('city', userInfo.city);
   formData.append('postalCode', userInfo.postalCode);
 
-  if (userInfo?.userStatus !== 'VERIFIED') {
+  if (userInfo?.userStatus === 'UNVERIFIED') {
     formData.append('firstName', userInfo.firstName);
     formData.append('lastName', userInfo.lastName);
+    formData.append('citizenship', userInfo.citizenship);
   }
-  // formData.append('citizenship', userInfo.citizenship);
 
   return formData;
 };

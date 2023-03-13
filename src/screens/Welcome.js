@@ -9,6 +9,8 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
+import DeviceInfo from 'react-native-device-info';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
@@ -25,23 +27,78 @@ import {
 } from '../redux/profile/actions';
 import { addResources, switchLanguage } from '../utils/i18n';
 import GeneralError from '../components/GeneralError';
-import { errorHappenedHere, fetchTranslations } from '../utils/appUtils';
+import {
+  checkReadiness,
+  errorHappenedHere,
+  fetchTranslations,
+} from '../utils/appUtils';
+import {
+  getCountryName,
+  APP_ID,
+  packageName,
+  currentVersion,
+} from '../constants/system';
+
+import SplashScreen from 'react-native-splash-screen';
+
+import VersionCheck from 'react-native-version-check';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+
+  const checkVersion = async () => {
+    try {
+      const countryName = await getCountryName;
+
+      const storeData = await VersionCheck.getLatestVersion({
+        forceUpdate: true,
+        appID: APP_ID,
+        packageName: packageName,
+        country: countryName.toLowerCase() || 'ge',
+      });
+
+      const latestVersion = await storeData;
+      const updateNeeded = await VersionCheck.needUpdate({
+        currentVersion: currentVersion,
+        latestVersion: latestVersion,
+      });
+
+      if (updateNeeded && updateNeeded.isNeeded) {
+        navigation.navigate('UpdateAvailable');
+        SplashScreen.hide();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const isWorkingVersion = async () => {
+    const version = DeviceInfo.getVersion();
+
+    const { status } = await checkReadiness(version);
+    if (status === 'DOWN') {
+      navigation.navigate('Maintanance');
+      return false;
+    } else return true;
+  };
 
   useFocusEffect(() => {
+    checkVersion();
+    if (isWorkingVersion()) {
+      SecureStore.getItemAsync('accessToken').then((t) => {
+        if (t) navigation.navigate('Main');
+      });
+    }
     dispatch(saveUserInfo({}));
-    SecureStore.getItemAsync('accessToken').then((token) => {
-      if (token) {
-        navigation.navigate('Main');
-      } else setLoading(false);
-    });
   });
 
   useEffect(() => {
-    fetchTranslations()
+    changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    await fetchTranslations()
       .then((res) => {
         const languages = Object.keys(res);
         for (let i = 0; i < languages.length; i++) {
@@ -51,20 +108,21 @@ export default function Welcome({ navigation }) {
             res[languages[i]].translation
           );
         }
+        SecureStore.getItemAsync('language')
+          .then((l) => {
+            switchLanguage(l ? l : 'en');
+            dispatch(setLanguage(l ? l : 'en'));
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
+    await dispatch(fetchCountries());
+    SplashScreen.hide();
+  };
 
-    SecureStore.getItemAsync('language')
-      .then((l) => {
-        switchLanguage(l ? l : 'en');
-        dispatch(setLanguage(l ? l : 'en'));
-      })
-      .catch((err) => console.log(err));
-
-    dispatch(fetchCountries());
-  }, []);
-
-  const startLogin = () => dispatch(startLoginAction(navigation));
+  const startLogin = () => {
+    dispatch(startLoginAction(navigation));
+  };
   const startRegistration = () => dispatch(startRegistrationAction(navigation));
 
   return (
@@ -74,30 +132,22 @@ export default function Welcome({ navigation }) {
       accessible={false}
     >
       <ImageBackground source={images.Background} style={styles.container}>
-        {loading ? (
-          <ActivityIndicator size="large" color="white" style={styles.loader} />
-        ) : (
-          <>
-            <Logo style={styles.logo} />
-            <AppText header style={styles.primary}>
-              Welcome to Cryptal
-            </AppText>
+        <>
+          <Logo style={styles.logo} />
+          <AppText header style={styles.primary}>
+            Welcome to Cryptal
+          </AppText>
 
-            {/* <AppText style={styles.secondary}>{auth}</AppText> */}
+          {/* <AppText style={styles.secondary}>{auth}</AppText> */}
 
-            <GeneralError
-              style={styles.error}
-              show={errorHappenedHere('Welcome')}
-            />
+          <GeneralError
+            style={styles.error}
+            show={errorHappenedHere('Welcome')}
+          />
 
-            <AppButton
-              text="Login"
-              style={styles.button}
-              onPress={startLogin}
-            />
-            <PurpleText text="Registration" onPress={startRegistration} />
-          </>
-        )}
+          <AppButton text="Login" style={styles.button} onPress={startLogin} />
+          <PurpleText text="Registration" onPress={startRegistration} />
+        </>
       </ImageBackground>
     </TouchableWithoutFeedback>
   );
@@ -132,6 +182,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
     marginTop: 30,
     marginBottom: 12,
+    textAlign: 'center',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

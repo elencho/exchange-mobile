@@ -1,10 +1,9 @@
-import { Platform } from 'react-native';
+import { Platform, PermissionsAndroid } from 'react-native';
 import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
-import * as MediaLibrary from 'expo-media-library';
 import * as Sharing from 'expo-sharing';
 import * as SecureStore from 'expo-secure-store';
-
+import RNFetchBlob from 'rn-fetch-blob';
 import {
   GET_CRYPTO_ADDRESSES,
   WIRE_DEPOSIT,
@@ -30,38 +29,95 @@ export const fetchWireDeposit = async (currency, provider) => {
   if (data) return data.data;
 };
 
-export const generateWirePdf = async (currency, amount, wireDepositInfoId) => {
-  const token = await SecureStore.getItemAsync('accessToken');
-  const bearer = `Bearer ${token}`;
-
-  FileSystem.downloadAsync(
-    `${GENERATE_WIRE_PDF}?currency=${currency}&amount=${amount}&wireDepositInfoId=${wireDepositInfoId}&timeZone=UTC`,
-    FileSystem.documentDirectory + 'wiredeposit.pdf',
-    { headers: { Authorization: bearer } }
-  )
-    .then(async (data) => {
-      const { uri } = data;
-
-      if (Platform.OS === 'ios') {
-        await Sharing.shareAsync(uri);
+export const generateFile = async (
+  link,
+  setLoading = () => {},
+  fileName,
+  type
+) => {
+  try {
+    setLoading(true);
+    const token = await SecureStore.getItemAsync('accessToken');
+    const bearer = `Bearer ${token}`;
+    const linkForFile = link;
+    FileSystem.downloadAsync(
+      linkForFile,
+      FileSystem.documentDirectory + `${fileName}.${type}`,
+      {
+        headers: { Authorization: bearer },
       }
-
-      if (Platform.OS === 'android') {
-        const perm = await MediaLibrary.requestPermissionsAsync();
-        if (perm.status !== 'granted') return;
-
-        const asset = await MediaLibrary.createAssetAsync(uri);
-        const album = await MediaLibrary.getAlbumAsync('Download');
-        if (!album) {
-          await MediaLibrary.createAlbumAsync('Download', asset, false);
-        } else {
-          await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+    )
+      .then(async (data) => {
+        const { uri } = data;
+        if (Platform.OS === 'ios') {
+          await Sharing.shareAsync(uri);
         }
-      }
-    })
-    .catch((error) => {
-      console.error(error);
+
+        if (Platform.OS === 'android') {
+          await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+          );
+          await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+          );
+          downloadFile(linkForFile, bearer, fileName, type);
+        }
+      })
+      .catch((err) => console.log(err));
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  } catch (error) {
+    setLoading(false);
+    console.error(error);
+  }
+};
+
+const downloadFile = async (link, bearer, fileName, type) => {
+  try {
+    const location =
+      RNFetchBlob.fs.dirs.DownloadDir +
+      '/' +
+      `${fileName}/${Math.random()}.${type}`;
+    const android = RNFetchBlob.android;
+    const mime = `application/${type}`;
+
+    RNFetchBlob.config({
+      fileCache: true,
+      path: location,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        mime: mime,
+        title: fileName,
+        mediaScannable: true,
+        description: 'File downloaded by download manager.',
+      },
     });
+
+    RNFetchBlob.fetch('GET', link, {
+      Authorization: bearer,
+    })
+      .then((res) => {
+        let status = res.info().status;
+        if (status == 200) {
+          let base64Str = res.base64();
+          console.log(res);
+
+          RNFetchBlob.fs
+            .writeFile(location, base64Str, 'base64')
+            .then(() => {
+              android.actionViewIntent(location, mime);
+            })
+            .catch((err) => console.log('createFile', err));
+        }
+      })
+      .catch((errorMessage) => {
+        console.log('errorMessage', errorMessage);
+      });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const fetchCryptoAddresses = async (currency, network) => {
@@ -91,9 +147,9 @@ export const cryptoWithdrawal = async (OTP, params) => {
   if (data) return data.status;
 };
 
-export const fetchWhitelist = async (currency, provider) => {
+export const fetchWhitelist = async (currency) => {
   const data = await axios.get(CRYPTO_WHITELIST, {
-    params: { currency, provider },
+    params: { currency },
   });
   if (data) return data.data;
 };

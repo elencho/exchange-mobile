@@ -30,7 +30,11 @@ import {
   setDepositProvider,
   setFee,
 } from '../trade/actions';
-import { chooseCurrency, setAbbr } from '../transactions/actions';
+import {
+  chooseCurrency,
+  setAbbr,
+  toggleLoading,
+} from '../transactions/actions';
 import {
   actionTypes,
   chooseTemplate,
@@ -48,6 +52,7 @@ import {
   setHasMultipleNetworks,
   setHasWhitelist,
   setIban,
+  setMemoTag,
   setNetwork,
   setNewTemplateName,
   setNewWhitelist,
@@ -97,10 +102,15 @@ function* methodNetworkRestrictionSaga() {
 }
 
 function* wireDepositSaga(action) {
+  yield put(toggleLoading(true));
+
   const { name, code, navigation } = action;
+  if (navigation) yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
+
   const language = yield select((s) => s.profile.language);
   const currentBalanceObj = yield select((s) => s.trade.currentBalanceObj);
   const network = yield select((s) => s.wallet.network);
+  const walletTab = yield select((s) => s.wallet.walletTab);
 
   const hasMethods = Object.keys(currentBalanceObj?.depositMethods)?.length;
 
@@ -111,7 +121,7 @@ function* wireDepositSaga(action) {
     n = network;
   }
 
-  if (hasMethods) {
+  if (hasMethods && walletTab !== 'Withdrawal') {
     const wireDepositData = yield call(fetchWireDeposit, code, n);
     if (wireDepositData) {
       const wireDepositProviders = wireDepositData[language];
@@ -121,11 +131,14 @@ function* wireDepositSaga(action) {
   }
 
   yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
-  if (navigation) yield put({ type: 'GO_TO_BALANCE', name, code, navigation });
+  yield put(toggleLoading(false));
 }
 
 function* cryptoAddressesSaga(action) {
+  yield put(toggleLoading(true));
   const { name, code, navigation, network } = action;
+
+  if (navigation) yield put(goToBalanceAction(name, code, navigation));
 
   const currentBalanceObj = yield select(
     (state) => state.trade.currentBalanceObj
@@ -133,26 +146,26 @@ function* cryptoAddressesSaga(action) {
   const walletTab = yield select((state) => state.wallet.walletTab);
 
   const hasMethod = Object.keys(currentBalanceObj?.depositMethods)?.length;
-  if (!!hasMethod) {
+  if (!!hasMethod && network) {
     const cryptoAddress = yield call(fetchCryptoAddresses, code, network);
     yield put(setNetwork(network));
     yield put(saveCryptoAddress(cryptoAddress ? cryptoAddress : {}));
   }
 
-  yield put(goToBalanceAction(name, code, navigation));
   yield put({ type: 'METHOD_NETWORK_RESTRICTION' });
 
   if (walletTab === 'Whitelist') yield put(getWhitelistAction());
 
+  // Fees
   if (!!hasMethod) {
-    // Fees
-    const amountAction =
-      walletTab === 'Deposit'
-        ? { type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 }
-        : setWithdrawalAmount();
+    const deposit = walletTab === 'Deposit';
+    const amountAction = deposit
+      ? { type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 }
+      : setWithdrawalAmount();
     yield put(amountAction);
-    yield put(fetchFee(walletTab.toLowerCase()));
   }
+
+  yield put(toggleLoading(false));
 }
 
 function* generateCryptoAddressSaga(action) {
@@ -169,10 +182,14 @@ function* goToBalanceSaga(action) {
 }
 
 function* getWhitelistSaga() {
+  yield put({ type: 'TOGGLE_WHITELIST_LOADING', whitelistLoading: true });
+
   const currency = yield select((state) => state.transactions.code);
   const whitelist = yield call(fetchWhitelist, currency);
   yield put(saveWhitelist(whitelist));
   yield put(setHasWhitelist(whitelist?.length > 0));
+
+  yield put({ type: 'TOGGLE_WHITELIST_LOADING', whitelistLoading: false });
 }
 
 export function* addWhitelistSaga(action) {
@@ -226,6 +243,8 @@ function* deleteWhitelistSaga(action) {
 }
 
 function* withdrawalTemplatesSaga() {
+  yield put(toggleLoading(true));
+
   const currency = yield select((state) => state.transactions.code);
   const provider = yield select((state) => state.wallet.network);
 
@@ -236,6 +255,8 @@ function* withdrawalTemplatesSaga() {
     const banks = yield call(fetchBanks, provider);
     if (banks) yield put(saveBanks(banks));
   }
+
+  yield put(toggleLoading(false));
 }
 
 function* cryptoWithdrawalSaga(action) {
@@ -250,6 +271,11 @@ function* cryptoWithdrawalSaga(action) {
     if (google) yield put(toggleGoogleOtpModal(false));
     if (sms) yield put(toggleSmsAuthModal(false));
     if (email) yield put(toggleEmailAuthModal(false));
+
+    yield put({
+      type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
+      withdrawalConfirmModalVisible: false,
+    });
 
     yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
     yield put({ type: 'BALANCE_SAGA' });
@@ -269,6 +295,11 @@ function* wireWithdrawalSaga(action) {
     if (sms) yield put(toggleSmsAuthModal(false));
     if (email) yield put(toggleEmailAuthModal(false));
 
+    yield put({
+      type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
+      withdrawalConfirmModalVisible: false,
+    });
+
     yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
     yield put({ type: 'BALANCE_SAGA' });
   }
@@ -287,30 +318,49 @@ function* cardWithdrawalSaga(action) {
     if (sms) yield put(toggleSmsAuthModal(false));
     if (email) yield put(toggleEmailAuthModal(false));
 
+    yield put({
+      type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
+      withdrawalConfirmModalVisible: false,
+    });
+
     yield put({ type: 'CLEAR_WITHDRAWAL_INPUTS' });
     yield put({ type: 'BALANCE_SAGA' });
   }
 }
 
 function* clearWithdrawalInputsSaga() {
+  const state = yield select((state) => state);
+  const {
+    wallet: { network },
+    trade: { currentBalanceObj },
+  } = state;
+  const fiat = currentBalanceObj?.type === 'FIAT';
+  const ecommerce = network === 'ECOMMERCE';
+
   // crypto
   yield put(chooseWhitelist({}));
   yield put(setWithdrawalAmount(null));
   yield put(setWithdrawalNote(null));
-  yield put(setFee(null));
+  yield put(setMemoTag(null));
 
   // + wire
-  yield put(chooseTemplate({}));
-  yield put(setIban(''));
-  yield put(setWithdrawalBank({}));
-  yield put(saveTemplateAction(false));
-  yield put(setNewTemplateName(''));
-  yield put(setReceiverBank({}));
-  yield put(withdrawalTemplatesAction());
+  if (fiat && !ecommerce) {
+    yield put(chooseTemplate({}));
+    yield put(setIban(''));
+    yield put(setWithdrawalBank({}));
+    yield put(saveTemplateAction(false));
+    yield put(setNewTemplateName(''));
+    yield put(setReceiverBank({}));
+    yield put(withdrawalTemplatesAction());
+  }
 
   // + card
-  yield put(setDepositProvider(null));
-  yield put(setCard(null));
+  if (fiat && network) {
+    yield put(setDepositProvider(null));
+    yield put(setCard(null));
+  }
+
+  if (network) yield put(fetchFee('withdrawal'));
 }
 
 function* maxWithdrawalSaga() {

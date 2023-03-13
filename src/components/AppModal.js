@@ -7,6 +7,7 @@ import { RootSiblingParent } from 'react-native-root-siblings';
 import ModalTop from './ModalTop';
 import colors from '../constants/colors';
 import AppText from './AppText';
+import AppToast from './AppToast';
 import Background from './Background';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
 import Headline from './TransactionHistory/Headline';
@@ -43,7 +44,7 @@ function AppModal({
       swipeDirection="down"
       propagateSwipe={true}
       style={styles.modal}
-      animationOutTiming={300}
+      animationOutTiming={500}
       backdropTransitionInTiming={300}
       onModalHide={onModalHide}
       hideModalContentWhileAnimating
@@ -70,7 +71,7 @@ function AppModal({
           </KeyboardAvoidingView>
         )}
         {fullScreen && (
-          <Background>
+          <Background modal>
             <CloseModalIcon onPress={hide} />
             {title && <Headline title={title} />}
             {children}
@@ -78,6 +79,7 @@ function AppModal({
         )}
         {custom && children}
       </RootSiblingParent>
+      <AppToast />
     </Modal>
   );
 }
@@ -87,6 +89,7 @@ const styles = StyleSheet.create({
   bottom: {
     padding: 35,
     backgroundColor: colors.SECONDARY_BACKGROUND,
+    marginBottom: -3,
   },
   header: {
     color: colors.PRIMARY_TEXT,

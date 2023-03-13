@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
-  Dimensions,
   Image,
   ImageBackground,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import AppText from '../components/AppText';
 import AppInput from '../components/AppInput';
 import AppButton from '../components/AppButton';
 import PurpleText from '../components/PurpleText';
+import WithKeyboard from '../components/WithKeyboard';
+import Strong_Password from '../assets/images/User_profile/Strong_Password';
+import GeneralError from '../components/GeneralError';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
-import GeneralError from '../components/GeneralError';
 import { startLoginAction } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
 
@@ -58,10 +57,10 @@ export default function ForgotPassword({ navigation }) {
     };
   }, []);
 
-  const secondsFormat = seconds < 10 ? `00 : 0${seconds}` : `00 : ${seconds}`;
   const f = forgotPassInfo;
-  const mailValid =
-    f.username && /^[a-z0-9.]{1,64}@[a-z0-9.]{1,64}$/i.test(f.username);
+  const mailValid = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(
+    f.username
+  );
 
   const goToLogin = () => {
     navigation.navigate('Login');
@@ -78,9 +77,18 @@ export default function ForgotPassword({ navigation }) {
 
   const Right = () => {
     if (loading) {
-      return <ActivityIndicator />;
+      return (
+        <MaterialIndicator
+          color="#6582FD"
+          animationDuration={3000}
+          size={16}
+          style={{ flex: 0 }}
+        />
+      );
     } else if (timerVisible) {
-      return <AppText style={{ color: '#C0C5E0' }}>{secondsFormat}</AppText>;
+      return (
+        <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
+      );
     } else {
       return <PurpleText text="Send" onPress={sendCode} />;
     }
@@ -100,7 +108,7 @@ export default function ForgotPassword({ navigation }) {
   };
 
   const next = () => {
-    if (!f.code || !f.username) {
+    if (!f.code?.trim() || !f.username?.trim()) {
       setError(true);
     } else {
       dispatch({
@@ -110,10 +118,8 @@ export default function ForgotPassword({ navigation }) {
     }
   };
 
-  const errorText = (type) => {
-    if (error && !mailValid && type === 'Username') return 'Enter Valid Email';
-    if (error && !f.code && type === 'Code') return 'Enter Password';
-  };
+  const errorText = () =>
+    error && f.username?.trim() && !mailValid ? 'Enter Valid Email' : null;
 
   return (
     <ImageBackground source={images.Background} style={styles.container}>
@@ -122,17 +128,10 @@ export default function ForgotPassword({ navigation }) {
         <PurpleText text="Back to Log In" style={styles.backText} />
       </TouchableOpacity>
 
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.select({ android: undefined, ios: 'padding' })}
-        keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
-      >
-        <ScrollView
-          contentContainerStyle={styles.middle}
-          style={{ flex: 1 }}
-          showsVerticalScrollIndicator={false}
-        >
-          <Image source={images.Strong_Password} />
+      <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
+        <Strong_Password width={38} height={46} />
+
+        <View style={{ alignItems: 'center' }}>
           <AppText header style={styles.primary}>
             Forgot Your Password?
           </AppText>
@@ -140,32 +139,31 @@ export default function ForgotPassword({ navigation }) {
             Enter the code you will receive on your e-mail to recover the
             password
           </AppText>
+        </View>
 
-          <GeneralError show={errorHappenedHere('ForgotPassword')} />
+        <GeneralError show={errorHappenedHere('ForgotPassword')} />
 
-          <AppInput
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-            style={styles.input}
-            label="Enter Email"
-            onChangeText={saveUsername}
-            value={f.username}
-            right={<Right />}
-            error={!mailValid && error}
-            errorText={errorText('Username')}
-          />
-          <AppInput
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-            style={styles.input}
-            label="Enter Code"
-            onChangeText={saveCode}
-            value={f.code}
-            error={!f.code && error}
-            errorText={errorText('Code')}
-          />
+        <AppInput
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          style={styles.input}
+          label="Enter Email"
+          onChangeText={saveUsername}
+          value={f.username}
+          right={<Right />}
+          error={!mailValid && error}
+          errorText={errorText()}
+        />
+        <AppInput
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          style={styles.input}
+          label="Enter Code"
+          onChangeText={saveCode}
+          value={f.code}
+          error={!f.code?.trim() && error}
+        />
 
-          <AppButton text="Next" style={styles.button} onPress={next} />
-        </ScrollView>
-      </KeyboardAvoidingView>
+        <AppButton text="Next" style={styles.button} onPress={next} />
+      </WithKeyboard>
     </ImageBackground>
   );
 }
@@ -176,7 +174,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: -20,
     marginTop: 28,
-    width: '40%',
+    alignSelf: 'flex-start',
   },
   backText: {
     marginBottom: 2,
@@ -197,12 +195,12 @@ const styles = StyleSheet.create({
   middle: {
     alignItems: 'center',
     justifyContent: 'center',
-    height: Dimensions.get('window').height - 100,
   },
   primary: {
     color: colors.PRIMARY_TEXT,
     marginTop: 18,
     marginBottom: 12,
+    textAlign: 'center',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

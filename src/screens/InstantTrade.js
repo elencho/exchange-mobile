@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import CustomRefreshContol from '../components/CustomRefreshContol';
 import Background from '../components/Background';
 import BuySellSwitch from '../components/InstantTrade/BuySellSwitch';
 import InfoMark from '../components/InstantTrade/InfoMark';
@@ -13,10 +14,15 @@ import BuySellModal from '../components/InstantTrade/BuySellModal';
 import InfoModal from '../components/InstantTrade/InfoModal';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
 import CryptoModal from '../components/InstantTrade/CryptoModal';
-import colors from '../constants/colors';
 import FiatModal from '../components/InstantTrade/FiatModal';
 import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton';
-import { fetchTrades } from '../redux/trade/actions';
+
+import colors from '../constants/colors';
+import {
+  fetchTrades,
+  setTradeOffset,
+  setTradeType,
+} from '../redux/trade/actions';
 
 export default function InstantTrade() {
   const dispatch = useDispatch();
@@ -29,32 +35,23 @@ export default function InstantTrade() {
   const loading = tradesLoading && offersLoading;
   const onRefresh = () => {
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+    dispatch(setTradeOffset(0));
     dispatch(fetchTrades());
   };
 
-  const [innerScrollEnabled, setInnerScrollEnabled] = useState(false);
+  const [showRefreshControl, setShowRefreshControl] = useState(false);
 
   useEffect(() => {
     tabRoute === 'Trade' && onRefresh();
+    const timer = setTimeout(() => {
+      setShowRefreshControl(true);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [tabRoute]);
-
-  const handleOuterScroll = (event) => {
-    // disable inner scroll when outer scroll is at top
-    if (event.nativeEvent.contentOffset.y === 0) {
-      setInnerScrollEnabled(false);
-    }
-  };
-
-  const handleInnerScroll = (event) => {
-    // enable inner scroll when outer scroll is not at top
-    if (event.nativeEvent.contentOffset.y !== 0) {
-      setInnerScrollEnabled(true);
-    }
-  };
 
   return (
     <Background>
-      <TopRow />
+      <TopRow clear={() => dispatch(setTradeType('Buy'))} />
 
       <View style={styles.headRow}>
         <Headline title="Instant Trade" />
@@ -68,21 +65,14 @@ export default function InstantTrade() {
         showsVerticalScrollIndicator={false}
         style={{ overflow: 'hidden' }}
         contentContainerStyle={{ overflow: 'hidden' }}
-        onScroll={(e) => handleOuterScroll(e)}
         refreshControl={
-          <RefreshControl
-            tintColor={colors.PRIMARY_PURPLE}
-            refreshing={loading}
-            onRefresh={onRefresh}
-          />
+          showRefreshControl ? (
+            <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
+          ) : null
         }
       >
         {offersLoading ? <TradeBlockSkeleton /> : <TradeBlock />}
-        <TransactionsBlock
-          loading={tradesLoading}
-          onScroll={handleInnerScroll}
-          scrollEnabled={innerScrollEnabled}
-        />
+        <TransactionsBlock loading={tradesLoading} />
       </ScrollView>
 
       <InfoModal />

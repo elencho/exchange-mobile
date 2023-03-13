@@ -6,14 +6,18 @@ import AppModal from '../../AppModal';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
-import { setNetwork, wireDepositAction } from '../../../redux/wallet/actions';
+import {
+  cryptoAddressesAction,
+  getWhitelistAction,
+  setNetwork,
+  wireDepositAction,
+} from '../../../redux/wallet/actions';
 import { ICONS_URL_PNG } from '../../../constants/api';
 
 export default function ChooseNetworkModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [networks, setNetworks] = useState([]);
-  const [iconDimensions, setIconDimensions] = useState({});
 
   const {
     modals: { chooseNetworkModalVisible },
@@ -23,6 +27,9 @@ export default function ChooseNetworkModal() {
   } = state;
 
   const fiat = currentBalanceObj?.type === 'FIAT';
+  const crypto = currentBalanceObj?.type === 'CRYPTO';
+  const deposit = walletTab === 'Deposit';
+  const withdrawal = walletTab === 'Withdrawal';
 
   const hide = () => dispatch(toggleChooseNetworkModal(false));
   const handlePress = (n) => {
@@ -33,33 +40,27 @@ export default function ChooseNetworkModal() {
       dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
       dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     }
-    hide();
-  };
-
-  const handleDimensions = () => {
-    if (network && network !== 'MAINNET') {
-      const uri = () => `${ICONS_URL_PNG}/${network}.png`;
-      Image.getSize(uri(), (w, h) => {
-        setIconDimensions({ width: 25 * (w / h), height: 25 });
-      });
-    } else {
-      setIconDimensions({ width: 25, height: 25 });
+    if (crypto) {
+      if (deposit) {
+        dispatch(cryptoAddressesAction(null, code, null, n));
+      }
+      if (withdrawal) {
+        dispatch(getWhitelistAction());
+      }
     }
+    hide();
   };
 
   useEffect(() => {
     let networksToDisplay = [];
-    const m =
-      walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
+    const m = withdrawal ? 'withdrawalMethods' : 'depositMethods';
     const n = currentBalanceObj[m];
 
     if (n.WALLET) n.WALLET.forEach((n) => networksToDisplay.push(n));
     if (n.WIRE) n.WIRE.forEach((n) => networksToDisplay.push(n));
     setNetworks(networksToDisplay);
-
-    handleDimensions();
     return () => setNetworks([]);
-  }, [code]);
+  }, [code, walletTab]);
 
   const name = (n) => {
     if (n === 'ERC20') return 'Ethereum Network';
@@ -72,6 +73,10 @@ export default function ChooseNetworkModal() {
       return { backgroundColor: 'rgba(101, 130, 253, 0.1)' };
     }
   };
+
+  const imageDimensions = fiat
+    ? { width: 60, height: 12 }
+    : { width: 18, height: 18 };
 
   const children = (
     <>
@@ -87,7 +92,7 @@ export default function ChooseNetworkModal() {
         >
           <Image
             source={{ uri: `${ICONS_URL_PNG}/${n.provider}.png` }}
-            style={[styles.image, iconDimensions]}
+            style={[styles.image, imageDimensions]}
           />
           <View style={styles.name}>
             <AppText medium body style={styles.primary}>
@@ -117,7 +122,9 @@ export default function ChooseNetworkModal() {
 }
 
 const styles = StyleSheet.create({
-  image: { resizeMode: 'contain' },
+  image: {
+    resizeMode: 'contain',
+  },
   name: {
     marginLeft: 20,
     justifyContent: 'space-between',
@@ -128,10 +135,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: -15,
     paddingHorizontal: 15,
+    borderRadius: 5,
   },
   primary: {
     color: colors.PRIMARY_TEXT,
-    marginBottom: 5,
+    marginBottom: 1,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

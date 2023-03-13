@@ -1,22 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import {
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  View,
-  RefreshControl,
-} from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import images from '../../constants/images';
 import AppInput from '../AppInput';
 import AppText from '../AppText';
+import CustomRefreshContol from '../CustomRefreshContol';
 import Currency from './Currency';
 import CurrencySkeleton from './CurrencySkeleton';
 
-export default function BalancesList({ loading }) {
+export default function BalancesList({ balanceLoading }) {
   const dispatch = useDispatch();
   const balances = useSelector((state) => state.trade.balance.balances);
   const tabRoute = useSelector((state) => state.transactions.tabRoute);
@@ -24,11 +19,29 @@ export default function BalancesList({ loading }) {
   const [nonZeroBalances, setNonZeroBalances] = useState([]);
   const [filteredBalances, setFilteredBalances] = useState([]);
   const [value, setValue] = useState('');
+  const [showRefreshControl, setShowRefreshControl] = useState(false);
 
-  const onRefresh = () => dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+  const onRefresh = () => {
+    setValue('');
+    setShowZeroBalances(true);
+    dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        setShowZeroBalances(true);
+        setValue('');
+      };
+    }, [])
+  );
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowRefreshControl(true);
+    }, 1000);
     tabRoute === 'Wallet' && onRefresh();
+    return () => clearTimeout(timer);
   }, [tabRoute]);
 
   useEffect(() => {
@@ -58,7 +71,7 @@ export default function BalancesList({ loading }) {
   };
 
   const renderCurrency = ({ item }) =>
-    !loading ? (
+    !balanceLoading ? (
       <Currency
         key={item.currencyName}
         code={item.currencyCode}
@@ -79,6 +92,7 @@ export default function BalancesList({ loading }) {
         placeholderTextColor="rgba(105, 111, 142, 0.5)"
         onChangeText={type}
         left={<Image source={images.Search} style={styles.searchIcon} />}
+        value={value}
       />
 
       <Pressable style={styles.hide} onPress={toggleZeroBalances}>
@@ -95,11 +109,12 @@ export default function BalancesList({ loading }) {
         renderItem={renderCurrency}
         keyExtractor={(item) => item.currencyCode}
         refreshControl={
-          <RefreshControl
-            tintColor={colors.PRIMARY_PURPLE}
-            refreshing={loading}
-            onRefresh={onRefresh}
-          />
+          showRefreshControl ? (
+            <CustomRefreshContol
+              refreshing={balanceLoading}
+              onRefresh={onRefresh}
+            />
+          ) : null
         }
       />
     </View>

@@ -3,6 +3,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
 #import <React/RCTConvert.h>
 
@@ -66,6 +67,9 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
   
+  [RNSplashScreen show];  // here
+    // or
+    //[RNSplashScreen showSplash:@"LaunchScreen" inRootView:rootView];
   return YES;
 }
 

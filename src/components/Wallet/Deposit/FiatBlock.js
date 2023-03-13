@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
 import images from '../../../constants/images';
-import { generateWirePdf, cardDeposit } from '../../../utils/walletUtils';
+import { generateFile, cardDeposit } from '../../../utils/walletUtils';
 import AppButton from '../../AppButton';
 import AppInput from '../../AppInput';
 import AppText from '../../AppText';
@@ -17,6 +17,7 @@ import { fetchFee } from '../../../redux/trade/actions';
 import StatusModal from '../StatusModal';
 import Fee from '../Fee';
 import { validateAmount } from '../../../utils/appUtils';
+import { GENERATE_WIRE_PDF } from '../../../constants/api';
 
 export default function FiatBlock() {
   const dispatch = useDispatch();
@@ -31,56 +32,79 @@ export default function FiatBlock() {
     },
     wallet: {
       wireDepositInfo: { en },
+      wireDepositProvider,
       network,
       depositAmount,
     },
   } = state;
 
-  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
-  const isDecimal = depositAmount % 1 != 0;
-  const factoredDigit = Math.trunc(depositAmount);
-  const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-  const maxLength = isDecimal
-    ? factoredDigitLength + parseFloat(depositScale) + 1
-    : 1000;
-  const inputValidation = new RegExp(
-    `^[0-9]+(\.|\\.[0-9]{1,${depositScale}})?$`
-  );
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [maxLength, setMaxLength] = useState(13);
+
   useEffect(() => {
     error && setError(false);
-  }, [card, depositAmount, depositProvider]);
+  }, [card, depositAmount, depositProvider, network]);
+
+  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
+  const inputValidation = new RegExp(
+    `^[0-9]{1,13}(\.|\\.[0-9]{1,${depositScale}})?$`
+  );
+  const providerBankId = en?.find((x) =>
+    x.iconName.includes(wireDepositProvider)
+  )?.id;
 
   const generatePdf = () => {
+    const pdfLink = `${GENERATE_WIRE_PDF}?currency=${code}&amount=${depositAmount}&wireDepositInfoId=${providerBankId}&timeZone=UTC`;
+
     if (!validateAmount(depositAmount)) {
       setError(true);
     } else {
-      generateWirePdf(code, depositAmount, en[0].id);
+      generateFile(pdfLink, setLoading, 'wiredeposit', 'pdf');
     }
+  };
+
+  const setAmount = (amount) => {
+    dispatch({
+      type: 'SET_DEPOSIT_AMOUNT',
+      depositAmount: amount,
+    });
+    if (
+      (depositProvider && card) ||
+      network === 'SWIFT' ||
+      network === 'SEPA'
+    ) {
+      dispatch(fetchFee('deposit'));
+    }
+  };
+
+  const getMaxLength = (replacedAmount) => {
+    const factoredDigit = Math.trunc(replacedAmount);
+    const factoredDigitLength = parseFloat(factoredDigit.toString().length);
+    setMaxLength(factoredDigitLength + parseFloat(depositScale) + 1);
   };
 
   const handleAmount = (text) => {
     const replacedAmount = text?.trim().replace(',', '.');
-    if (inputValidation.test(replacedAmount) || !replacedAmount) {
-      if (validateScale(replacedAmount, depositScale)) {
-        dispatch({
-          type: 'SET_DEPOSIT_AMOUNT',
-          depositAmount: replacedAmount ? replacedAmount : 0,
-        });
+    if (!inputValidation.test(replacedAmount) && replacedAmount) {
+      // return dispatch({
+      //   type: 'SET_DEPOSIT_AMOUNT',
+      //   depositAmount: '',
+      // });
+      return;
+    }
 
-        if (
-          (depositProvider && card) ||
-          network === 'SWIFT' ||
-          network === 'SEPA'
-        ) {
-          dispatch(fetchFee('deposit'));
-        }
-      }
+    if (!validateScale(replacedAmount, depositScale)) {
+      return;
+    }
+
+    const parts = replacedAmount.split('.');
+    if (parts.length === 2) {
+      getMaxLength(replacedAmount);
+      setAmount(replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0);
     } else {
-      dispatch({
-        type: 'SET_DEPOSIT_AMOUNT',
-        depositAmount: '',
-      });
+      setMaxLength(14);
+      setAmount(replacedAmount ? parts[0].substr(0, 13) : 0);
     }
   };
 
@@ -158,10 +182,11 @@ export default function FiatBlock() {
 
       {network === 'SWIFT' || network === 'SEPA' ? (
         <AppButton
-          text="Generate"
+          text="Generate PDF"
           onPress={generatePdf}
-          left={<Image source={images.Generate} />}
+          left={loading ? null : <Image source={images.Generate} />}
           style={styles.button}
+          loading={loading}
         />
       ) : (
         <AppButton text="Deposit" onPress={deposit} style={styles.button} />

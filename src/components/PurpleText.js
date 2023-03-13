@@ -2,6 +2,8 @@ import React from 'react';
 
 import AppText from './AppText';
 import colors from '../constants/colors';
+//TIP: using react-native-gesture-handler btn to handle press onScroll
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function PurpleText({
   text,
@@ -11,14 +13,17 @@ export default function PurpleText({
   ...rest
 }) {
   return (
+    // <TouchableOpacity >
     <AppText
       medium
       subtext={subtext}
       onPress={onPress}
       style={[{ color: colors.SECONDARY_PURPLE, fontSize: 30 }, style]}
+      disabled={!onPress}
       {...rest}
     >
       {text}
     </AppText>
+    // </TouchableOpacity>
   );
 }

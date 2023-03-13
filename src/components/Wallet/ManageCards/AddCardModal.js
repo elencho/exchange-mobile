@@ -145,7 +145,8 @@ export default function AddCardModal() {
 
       {webViewObj?.actionMethod === 'POST' && (
         <AppWebView
-          cards
+          setStatusObj={setStatusObj}
+          cardsAdd
           onNavigationStateChange={onNavigationStateChange}
           source={{
             uri: webViewObj?.actionUrl,
@@ -158,7 +159,8 @@ export default function AddCardModal() {
 
       {webViewObj?.actionMethod === 'GET' && (
         <AppWebView
-          cards
+          setStatusObj={setStatusObj}
+          cardsAdd
           onNavigationStateChange={onNavigationStateChange}
           source={{ uri: webViewObj?.actionUrl }}
         />
@@ -173,7 +175,7 @@ export default function AddCardModal() {
       fullScreen
       visible={addCardModalVisible}
       hide={hide}
-      onDismiss={handleHide}
+      onModalHide={handleHide}
     />
   );
 }

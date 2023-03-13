@@ -52,13 +52,13 @@ const SecondPart = () => (
 const PersonalSecuritySkeleton = () => (
   <>
     <View style={styles.container}>
-      {[1, 2, 3].map((n, i) => (
-        <View key={i}>
-          <FirstPart />
-        </View>
-      ))}
-    </View>
-    <View style={styles.container}>
+      <Skeleton
+        width={295}
+        height={8}
+        style={{ marginBottom: 12, marginTop: 34 }}
+      />
+      <Skeleton width={140} height={8} />
+
       {[1, 2].map((n, i) => (
         <View key={i}>
           <FirstPart />

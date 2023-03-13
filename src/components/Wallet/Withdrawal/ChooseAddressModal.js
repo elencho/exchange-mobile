@@ -13,7 +13,7 @@ export default function ChooseAddressModal() {
   const state = useSelector((state) => state);
   const {
     modals: { chooseAddressModalVisible },
-    wallet: { whitelist, network },
+    wallet: { whitelist, network, currentWhitelistObj },
   } = state;
 
   const hide = () => dispatch(toggleChooseAddressModal(false));
@@ -22,9 +22,23 @@ export default function ChooseAddressModal() {
     hide();
   };
 
-  useEffect(() => {
-    dispatch(chooseWhitelist({}));
-  }, [network]);
+  const background = (w) => {
+    if (w.id === currentWhitelistObj.id) {
+      return { backgroundColor: 'rgba(101, 130, 253, 0.1)' };
+    }
+  };
+
+  const addressFormat = (address) => {
+    if (address.length > 15)
+      return `${address.substring(0, 5)}...${address.substring(
+        address.length - 5
+      )}`;
+    else return address;
+  };
+
+  // useEffect(() => {
+  //   dispatch(chooseWhitelist({}));
+  // }, [network]);
 
   const children = (
     <>
@@ -32,15 +46,15 @@ export default function ChooseAddressModal() {
         <View key={w.id}>
           {network === w.provider && (
             <TouchableOpacity
-              style={styles.pressable}
+              style={[styles.pressable, background(w)]}
               onPress={() => choose(w)}
             >
               <View style={styles.flex}>
                 <AppText medium style={styles.primary}>
                   {w.name}
                 </AppText>
-                <AppText subtext style={styles.secondary}>
-                  {w.address}
+                <AppText subtext style={styles.secondary} numberOfLines={1}>
+                  {addressFormat(w.address)}
                 </AppText>
               </View>
 
@@ -48,6 +62,11 @@ export default function ChooseAddressModal() {
                 <AppText subtext style={{ color: '#C0C5E0' }}>
                   {w.provider}
                 </AppText>
+                {w.tag && (
+                  <AppText subtext style={{ color: colors.SECONDARY_TEXT }}>
+                    {w.tag}
+                  </AppText>
+                )}
               </View>
             </TouchableOpacity>
           )}
@@ -72,6 +91,9 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 18,
+    marginHorizontal: -18,
+    borderRadius: 5,
   },
 
   flex: {

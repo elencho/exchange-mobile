@@ -10,32 +10,42 @@ import FilterRow from '../components/TransactionHistory/FilterRow';
 import Headline from '../components/TransactionHistory/Headline';
 import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
 import DatePicker from '../components/TransactionFilter/DatePicker';
-
-import { clearFilters, fetchCurrencies } from '../redux/transactions/actions';
-import { toggleCurrencyModal } from '../redux/modals/actions';
+import Close from '../assets/images/Close.svg';
 import PurpleText from '../components/PurpleText';
+
+import { clearFilters } from '../redux/transactions/actions';
+import { toggleCurrencyModal } from '../redux/modals/actions';
 import images from '../constants/images';
-import { types, methods } from '../constants/filters';
 import colors from '../constants/colors';
+import { types, methods } from '../constants/filters';
 import { COINS_URL_PNG } from '../constants/api';
 
 export default function TransactionFilter({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
-  const { currency, code } = state;
+  const { currency, code, method, typeFilter, fromDateTime, toDateTime } =
+    state;
 
   const openModal = () => dispatch(toggleCurrencyModal(true));
 
-  const clear = () => dispatch(clearFilters());
+  const close = () => {
+    clear();
+    navigation.goBack();
+  };
+
+  const clear = () => {
+    dispatch(clearFilters());
+    dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+  };
+
+  const clearCond =
+    code || typeFilter || fromDateTime || toDateTime || method[0] !== 'All';
 
   return (
     <Background>
-      <Pressable
-        style={styles.closeContainer}
-        onPress={() => navigation.goBack()}
-      >
-        <Image source={images.Close} style={styles.close} />
-      </Pressable>
+      <TouchableOpacity style={styles.closeContainer} onPress={close}>
+        <Close />
+      </TouchableOpacity>
 
       <Headline title="Transaction Filter" />
 
@@ -61,10 +71,12 @@ export default function TransactionFilter({ navigation }) {
       <DatePicker from />
       <DatePicker to />
 
-      <TouchableOpacity style={styles.clear} onPress={clear}>
-        <Image source={images.Clear} />
-        <PurpleText style={styles.purple} text="Clear Filters" />
-      </TouchableOpacity>
+      {clearCond && (
+        <TouchableOpacity style={styles.clear} onPress={clear}>
+          <Image source={images.Clear} />
+          <PurpleText style={styles.purple} text="Clear Filters" />
+        </TouchableOpacity>
+      )}
 
       <TransactionFilterBottom />
       <ChooseCurrencyModal />
@@ -90,14 +102,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginHorizontal: 5,
   },
-  close: {
-    width: 15,
-    height: 15,
-  },
   closeContainer: {
     position: 'absolute',
-    top: 25,
-    right: 25,
+    top: 10,
+    right: 20,
+    padding: 5,
   },
   dropdown: {
     paddingHorizontal: 20,

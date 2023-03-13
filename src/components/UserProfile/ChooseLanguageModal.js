@@ -6,7 +6,7 @@ import AppModal from '../AppModal';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { toggleLanguageModal } from '../../redux/modals/actions';
-import { setLanguage } from '../../redux/profile/actions';
+import { fetchUserInfo, setLanguage } from '../../redux/profile/actions';
 import { switchLanguage } from '../../utils/i18n';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
 
@@ -22,10 +22,10 @@ export default function ChooseLanguageModal() {
 
   const chooseLanguage = (l) => {
     dispatch(setLanguage(l));
+    switchLanguage(l);
     hide();
+    dispatch(fetchUserInfo());
   };
-
-  const handleHide = () => switchLanguage(language);
 
   const background = (l) => {
     if (l === language) {
@@ -66,7 +66,6 @@ export default function ChooseLanguageModal() {
       bottom
       title="Choose Language"
       children={children}
-      onModalHide={handleHide}
     />
   );
 }

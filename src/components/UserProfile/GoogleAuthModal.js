@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Image,
   StyleSheet,
@@ -8,16 +8,19 @@ import {
   Linking,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
-import { toggleGoogleAuthModal } from '../../redux/modals/actions';
-import { activateGoogleOtp, setGoogleAuth } from '../../redux/profile/actions';
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
+import GeneralError from '../GeneralError';
+import Copy from '../../assets/images/Copy.svg';
+
 import colors from '../../constants/colors';
 import images from '../../constants/images';
-import GeneralError from '../GeneralError';
+import { toggleGoogleAuthModal } from '../../redux/modals/actions';
+import { activateGoogleOtp, setGoogleAuth } from '../../redux/profile/actions';
 import { copyToClipboard } from '../../utils/copyToClipboard';
 import { errorHappenedHere } from '../../utils/appUtils';
 
@@ -30,9 +33,14 @@ export default function GoogleAuthModal() {
   } = state;
 
   const [key, setKey] = useState('');
+  const [googleAuthLoading, setGoogleAuthLoading] = useState(false);
   const isIos = Platform.OS === 'ios';
 
-  const enable = () => dispatch(activateGoogleOtp(key));
+  useEffect(() => {
+    return () => setGoogleAuthLoading(false);
+  }, []);
+
+  const enable = () => dispatch(activateGoogleOtp(key, setGoogleAuthLoading));
 
   const handleStore = () => {
     const androidLink =
@@ -47,19 +55,34 @@ export default function GoogleAuthModal() {
   const hide = () => {
     dispatch(toggleGoogleAuthModal(false));
     dispatch(setGoogleAuth(false));
+  };
+
+  const onModalHide = () => {
     setKey('');
   };
 
   const handleKey = (key) => {
-    setKey(key);
+    if (key && /^[0-9]+$/.test(key)) setKey(key);
+    else setKey('');
+
     dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };
+
   const handleCopy = () => copyToClipboard(totpSecretObj?.totpSecretEncoded);
 
   const right = (
     <View style={styles.row}>
       <View style={styles.smallLine} />
-      <PurpleText text="Enable" onPress={enable} />
+      {googleAuthLoading ? (
+        <MaterialIndicator
+          color="#6582FD"
+          animationDuration={3000}
+          size={16}
+          style={{ flex: 0 }}
+        />
+      ) : (
+        <PurpleText text="Enable" onPress={enable} />
+      )}
     </View>
   );
 
@@ -94,7 +117,7 @@ export default function GoogleAuthModal() {
         </AppText>
         <View style={styles.line} />
         <TouchableOpacity onPress={handleCopy}>
-          <Image source={images.Copy} />
+          <Copy />
         </TouchableOpacity>
       </View>
 
@@ -103,6 +126,7 @@ export default function GoogleAuthModal() {
         right={right}
         onChangeText={handleKey}
         value={key}
+        keyboardType="numeric"
       />
     </>
   );
@@ -113,6 +137,7 @@ export default function GoogleAuthModal() {
       bottom
       hide={hide}
       visible={googleAuthModalVisible}
+      onModalHide={onModalHide}
     />
   );
 }

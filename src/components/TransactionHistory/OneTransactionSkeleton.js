@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import colors from '../../constants/colors';
 import Skeleton from '../Skeleton';
+
+const IS_IOS = Platform.OS === 'ios';
 
 const SecondPart = () => (
   <View style={styles.container}>
@@ -28,9 +30,9 @@ const SecondPart = () => (
   </View>
 );
 
-const OneTransactionSkeleton = ({ key = 0 }) => {
+const OneTransactionSkeleton = () => {
   return (
-    <View style={styles.box} key={key}>
+    <View style={styles.box}>
       {[0].map((n) => (
         <View key={n}>
           <SecondPart />
@@ -67,11 +69,13 @@ const styles = StyleSheet.create({
   },
   box: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingBottom: 30,
+    paddingBottom: IS_IOS ? 0 : 30,
+    marginBottom: IS_IOS ? 0 : 10,
   },
   line: {
     backgroundColor: '#232945',
     height: 2,
-    flex: 1,
+    flex: IS_IOS ? 1 : 0,
+    marginTop: IS_IOS ? 0 : 40,
   },
 });

@@ -111,6 +111,10 @@ export const setTradesLoading = (tradesLoading) => ({
   type: actionTypes.SET_TRADES_LOADING,
   tradesLoading,
 });
+export const setMoreTradesLoading = (moreTradesLoading) => ({
+  type: actionTypes.MORE_TRADES_LOADING,
+  moreTradesLoading,
+});
 export const setOffersLoading = (offersLoading) => ({
   type: actionTypes.SET_OFFERS_LOADING,
   offersLoading,
@@ -133,8 +137,9 @@ export const setCryptosArrayConstant = (cryptosArrayConstant) => ({
 });
 
 // FOR SAGAS
-export const fetchTrades = () => ({
+export const fetchTrades = (isMoreLoading) => ({
   type: actionTypes.FETCH_TRADES,
+  isMoreLoading,
 });
 export const instantTradeTabAction = () => ({
   type: actionTypes.INSTANT_TRADE_TAB_SAGA,

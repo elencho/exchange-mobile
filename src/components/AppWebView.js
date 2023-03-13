@@ -3,7 +3,7 @@ import { TouchableOpacity, Modal, Image, StyleSheet, View } from 'react-native';
 import WebView from 'react-native-webview';
 import { useDispatch, useSelector } from 'react-redux';
 
-import images from '../constants/images';
+import Close from '../assets/images/Close.svg';
 import {
   toggleAddCardModal,
   toggleBuySellModal,
@@ -16,20 +16,25 @@ import {
 } from '../redux/trade/actions';
 
 export default function AppWebView(props) {
-  const { cards, trade, deposit } = props;
+  const { verifyCards, trade, deposit, cardsAdd, setStatusObj } = props;
 
   const dispatch = useDispatch();
   const webViewObj = useSelector((state) => state.modals.webViewObj);
 
   const closeWebView = () => {
     dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
-    if (cards) {
-      dispatch(toggleAddCardModal(false));
+    if (verifyCards) {
       dispatch(cardsSagaAction());
       dispatch({
         type: 'SET_CARD_VERIFICATION_STATUS',
         cardBeingVerified: false,
       });
+    }
+
+    if (cardsAdd) {
+      dispatch(toggleAddCardModal(false));
+      dispatch(cardsSagaAction());
+      setStatusObj({ success: 'false', visible: true });
     }
 
     if (trade) {
@@ -55,7 +60,7 @@ export default function AppWebView(props) {
       <TouchableOpacity activeOpacity={0.99} style={styles.flex}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.close} onPress={closeWebView}>
-            <Image source={images.Close} />
+            <Close />
           </TouchableOpacity>
         </View>
 

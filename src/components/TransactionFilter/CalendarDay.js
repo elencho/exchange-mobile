@@ -1,13 +1,18 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
-import colors from '../../constants/colors';
 
 import AppText from '../AppText';
+import colors from '../../constants/colors';
 
-export default function CalendarDay({ state, handleChange, dateMark }) {
+export default function CalendarDay({
+  state,
+  handleChange,
+  dateMark,
+  todayDisabled,
+}) {
   const {
-    date: { day, timestamp },
+    date: { day, month, year, timestamp },
   } = state;
 
   const from = useSelector((state) => state.transactions.fromDateTime);
@@ -43,8 +48,16 @@ export default function CalendarDay({ state, handleChange, dateMark }) {
     }
   };
 
-  const selectDate = () =>
-    state.state !== 'disabled' && handleChange(timestamp);
+  const selectDate = () => {
+    const date = new Date(Date.now());
+    const isToday =
+      date.getMonth() + 1 === month &&
+      date.getDate() === day &&
+      date.getFullYear() === year;
+    if (state.state === 'disabled' || (todayDisabled() && isToday))
+      return false;
+    else handleChange(timestamp);
+  };
 
   return (
     <TouchableOpacity onPress={selectDate} style={[styles.container, mark()]}>

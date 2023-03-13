@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
-import colors from '../../constants/colors';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import TwoFaInput from '../TwoFaInput';
 import PurpleText from '../PurpleText';
 
+import colors from '../../constants/colors';
 import {
   toggleEmailAuthModal,
   toggleSmsAuthModal,
@@ -23,10 +24,8 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const state = useSelector((state) => state);
   const {
     modals: { smsAuthModalVisible, emailAuthModalVisible },
-    profile: { currentSecurityAction },
+    profile: { currentSecurityAction, timerVisible },
   } = state;
-
-  const [value, setValue] = useState('');
 
   const action =
     type === 'SMS' ? toggleSmsAuthModal(false) : toggleEmailAuthModal(false);
@@ -35,7 +34,38 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const email = currentSecurityAction === 'email';
   const google = currentSecurityAction === 'google';
 
+  const [value, setValue] = useState('');
+  const [seconds, setSeconds] = useState(30);
+  const [otpLoading, setOtpLoading] = useState(false);
+
+  const reset = () => {
+    dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
+    setSeconds(30);
+    return;
+  };
+
+  useEffect(() => {
+    if (emailAuthModalVisible || smsAuthModalVisible) {
+      dispatch({ type: 'TOGGLE_TIMER', timerVisible: true });
+    }
+  }, [emailAuthModalVisible, smsAuthModalVisible]);
+
+  useEffect(() => {
+    if (emailAuthModalVisible || smsAuthModalVisible) {
+      if (!seconds || !timerVisible) reset();
+      if (seconds && timerVisible) {
+        setTimeout(() => {
+          setSeconds(seconds - 1);
+        }, 1000);
+      }
+    } else {
+      reset();
+    }
+  }, [seconds, timerVisible]);
+
   const handleHide = () => {
+    setSeconds(30);
+    setValue('');
     if (value.length === cellCount && email) {
       dispatch(setSmsAuth(false));
       dispatch(setGoogleAuth(false));
@@ -46,10 +76,33 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
     dispatch(action);
     if (email) dispatch(setEmailAuth(false));
     if (google) dispatch(setGoogleAuth(false));
-    setValue('');
   };
 
-  const resend = () => dispatch({ type: 'RESEND_SAGA', smsEmailAuth: true });
+  const resend = () =>
+    dispatch({
+      type: 'RESEND_SAGA',
+      smsEmailAuth: true,
+      setOtpLoading,
+    });
+
+  const resendOrCountDown = () => {
+    if (otpLoading) {
+      return (
+        <MaterialIndicator
+          color="#6582FD"
+          animationDuration={3000}
+          size={16}
+          style={styles.indicator}
+        />
+      );
+    } else if (timerVisible) {
+      return (
+        <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
+      );
+    } else {
+      return <PurpleText text="resend purple" onPress={resend} />;
+    }
+  };
 
   const children = (
     <View style={styles.container}>
@@ -70,9 +123,12 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
         />
       </View>
 
-      <AppText body style={styles.secondary}>
-        Didn't receive code? <PurpleText text="Resend" onPress={resend} />
-      </AppText>
+      <View style={styles.row}>
+        <AppText body style={[styles.secondary, { marginRight: 5 }]}>
+          Didn't receive code?
+        </AppText>
+        {resendOrCountDown()}
+      </View>
     </View>
   );
 
@@ -97,6 +153,13 @@ const styles = StyleSheet.create({
   header: {
     color: colors.PRIMARY_TEXT,
     marginBottom: 10,
+  },
+  indicator: {
+    flex: 0,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

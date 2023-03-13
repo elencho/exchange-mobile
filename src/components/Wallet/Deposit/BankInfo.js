@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     borderWidth: 1,
-    borderRadius: 4,
     height: 45,
     flexDirection: 'row',
     alignItems: 'center',

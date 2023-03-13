@@ -3,6 +3,8 @@ import Constants from 'expo-constants';
 const auth = Constants.manifest.extra.auth;
 const core = Constants.manifest.extra.core;
 
+export const READINESS_URL = `${core}/health/readiness`;
+
 export const LOGIN_START_URL = `${auth}/auth/realms/GEX/protocol/openid-connect/auth`;
 
 export const REGISTRATION_START_URL = `${auth}/auth/realms/GEX/protocol/openid-connect/registrations`;
@@ -60,6 +62,8 @@ export const ACTIVATE_GOOGLE_OTP = `${auth}/auth/realms/GEX/GEX-resource/enableT
 export const WIRE_DEPOSIT = `${core}/private/account/wire/deposit`;
 
 export const GENERATE_WIRE_PDF = `${core}/private/report/wire`;
+
+export const GENERATE_TRANSACTIONS_FILE = `${core}/private/report/transactions/user`;
 
 export const GET_CRYPTO_ADDRESSES = `${core}/private/account/deposit/crypto/getAddresses`;
 

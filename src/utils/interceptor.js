@@ -9,8 +9,9 @@ axios.interceptors.request.use(async (config) => {
     headers: { toast, requestName },
   } = config;
 
+  const dictionaryReq = requestName === 'fetchTranslations';
   const token = await SecureStore.getItemAsync('accessToken');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  if (token && !dictionaryReq) config.headers.Authorization = `Bearer ${token}`;
 
   const isToast = toast === false ? false : true;
 

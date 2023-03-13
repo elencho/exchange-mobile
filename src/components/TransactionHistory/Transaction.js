@@ -3,6 +3,9 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import AppText from '../AppText';
+import DepositlIcon from '../../assets/images/Deposit.svg';
+import WithdrawalIcon from '../../assets/images/Withdrawal.svg';
+
 import colors from '../../constants/colors';
 import { transactionDetailsSaga } from '../../redux/transactions/actions';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
@@ -27,30 +30,20 @@ export default function Transaction({ transaction, date, time }) {
   const getReducedAddress = (address) =>
     `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
 
-  const typeIcon = () => {
-    if (type === 'DEPOSIT') {
-      return images.Deposit;
-    }
-    if (type === 'WITHDRAWAL') {
-      return images.Withdrawal;
-    }
+  const image = () => {
+    if (type === 'DEPOSIT') return <DepositlIcon />;
+    if (type === 'WITHDRAWAL') return <WithdrawalIcon />;
   };
 
   const statusIcon = () => {
-    if (status === 'PENDING') {
-      return images.Pending;
-    }
-    if (status === 'SUCCESS') {
-      return images.Success;
-    }
-    if (status === 'FAILED') {
-      return images.Failed;
-    }
+    if (status === 'PENDING') return images.Pending;
+    if (status === 'SUCCESS') return images.Success;
+    if (status === 'FAILED') return images.Failed;
   };
 
   return (
     <Pressable onPress={showModal} style={styles.container}>
-      <Image source={typeIcon()} />
+      {image()}
 
       <View style={styles.middle}>
         <AppText medium style={styles.type}>

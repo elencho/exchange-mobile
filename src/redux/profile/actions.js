@@ -152,17 +152,19 @@ export const usernameAndPasswordAction = (navigation) => ({
   type: actionTypes.USERNAME_AND_PASSWORD_ACTION,
   navigation,
 });
-export const otpForLoginAction = (otp, navigation) => ({
+export const otpForLoginAction = (otp, navigation, fromResetOtp) => ({
   type: actionTypes.OTP_FOR_LOGIN_ACTION,
   otp,
   navigation,
+  fromResetOtp,
 });
 
 export const fetchCountries = () => ({
   type: actionTypes.FETCH_COUNTRIES_SAGA,
 });
-export const fetchUserInfo = () => ({
+export const fetchUserInfo = (fromRegistration) => ({
   type: actionTypes.FETCH_USER_INFO_SAGA,
+  fromRegistration,
 });
 export const toggleUserInfoLoading = (userProfileLoading) => ({
   type: actionTypes.TOGGLE_USER_PROFILE_LOADING,
@@ -187,23 +189,14 @@ export const updatePassword = (
   repeatPassword,
   hide,
 });
-export const sendVerificationCode = (phoneNumber, phoneCountry) => ({
-  type: actionTypes.SEND_VERIFICATION_CODE,
-  phoneNumber,
-  phoneCountry,
-});
 export const updatePhoneNumber = (
   phoneNumber,
   phoneCountry,
-  verificationNumber,
-  setCode,
   setUserInfoVariable
 ) => ({
   type: actionTypes.UPDATE_PHONE_NUMBER,
   phoneNumber,
   phoneCountry,
-  verificationNumber,
-  setCode,
   setUserInfoVariable,
 });
 
@@ -220,7 +213,8 @@ export const credentialsForGoogle = (OTP) => ({
   type: actionTypes.CREDENTIALS_FOR_GOOGLE,
   OTP,
 });
-export const activateGoogleOtp = (OTP) => ({
+export const activateGoogleOtp = (OTP, setGoogleAuthLoading) => ({
   type: actionTypes.ACTIVATE_GOOGLE_OTP,
   OTP,
+  setGoogleAuthLoading,
 });

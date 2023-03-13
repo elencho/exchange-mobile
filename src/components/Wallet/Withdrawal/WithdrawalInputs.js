@@ -1,25 +1,31 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppInput from '../../AppInput';
 import PurpleText from '../../PurpleText';
+import WithdrawalAddress from './WithdrawalAddress';
+import CardSection from '../../InstantTrade/CardSection';
+import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
+import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
+import Fee from '../Fee';
+
+import colors from '../../../constants/colors';
+import { fetchFee } from '../../../redux/trade/actions';
 import {
   setMemoTag,
   setWithdrawalAmount,
   setWithdrawalNote,
 } from '../../../redux/wallet/actions';
-import colors from '../../../constants/colors';
-import WithdrawalAddress from './WithdrawalAddress';
-import { fetchFee, setFee } from '../../../redux/trade/actions';
-import CardSection from '../../InstantTrade/CardSection';
-import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
-import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import { validateScale } from '../../../utils/formUtils';
-import Fee from '../Fee';
 import { validateAmount } from '../../../utils/appUtils';
 
-export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
+export default function WithdrawalInputs({
+  isFiat,
+  hasRestriction,
+  error,
+  notEmpty,
+}) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -27,7 +33,6 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
       withdrawalAmount,
       withdrawalNote,
       memoTag,
-      cryptoAddress,
       network,
       whitelist,
       currentTemplate,
@@ -35,19 +40,8 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
     trade: { card, currentBalanceObj, depositProvider },
   } = state;
 
-  const cur = currentBalanceObj;
+  const [maxLength, setMaxLength] = useState(13);
 
-  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
-  const isEcommerce = network === 'ECOMMERCE';
-  const isDecimal = withdrawalAmount % 1 != 0;
-  const factoredDigit = Math.trunc(withdrawalAmount);
-  const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-  const maxLength = isDecimal
-    ? factoredDigitLength + 1 + parseFloat(cur?.withdrawalScale)
-    : 1000;
-  const inputValidation = new RegExp(
-    `^[0-9]+(\.|\\.[0-9]{1,${cur?.withdrawalScale}})?$`
-  );
   useEffect(() => {
     if (Object.keys(currentTemplate)?.length) {
       dispatch(setWithdrawalNote(''));
@@ -55,19 +49,51 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
     }
   }, [currentTemplate]);
 
-  const setAmount = (text) => {
-    const amount = text?.trim()?.replace(',', '.');
+  const cur = currentBalanceObj;
+
+  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
+  const isEcommerce = network === 'ECOMMERCE';
+
+  const inputValidation = new RegExp(
+    `^[0-9]{1,13}(\.|\\.[0-9]{1,${cur?.withdrawalScale}})?$`
+  );
+
+  const setAmount = (amount) => {
     const condition =
       depositProvider ||
       cur?.type === 'CRYPTO' ||
       currentTemplate?.templateName;
-    if (inputValidation.test(amount) || !amount) {
-      if (validateScale(amount, cur?.withdrawalScale)) {
-        dispatch(setWithdrawalAmount(amount ? amount : 0));
-        if (condition) dispatch(fetchFee('withdrawal'));
-      }
+    dispatch(setWithdrawalAmount(amount ? amount : 0));
+    if (condition) dispatch(fetchFee('withdrawal'));
+  };
+
+  const getMaxLength = (replacedAmount) => {
+    const factoredDigit = Math.trunc(replacedAmount);
+    const factoredDigitLengthi = parseFloat(factoredDigit.toString().length);
+    const maxLengthDecimal =
+      factoredDigitLengthi + parseFloat(cur?.withdrawalScale) + 1;
+    setMaxLength(maxLengthDecimal);
+  };
+
+  const handleAmount = (text) => {
+    const replacedAmount = text?.trim().replace(',', '.');
+
+    if (!inputValidation.test(replacedAmount) && replacedAmount) {
+      //return dispatch(setWithdrawalAmount(''));
+      return;
+    }
+
+    if (!validateScale(replacedAmount, cur?.withdrawalScale)) {
+      return;
+    }
+
+    const parts = replacedAmount.split('.');
+    if (parts.length === 2) {
+      getMaxLength(replacedAmount);
+      setAmount(replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0);
     } else {
-      dispatch(setWithdrawalAmount(''));
+      setMaxLength(14);
+      setAmount(replacedAmount ? parts[0].substr(0, 13) : 0);
     }
   };
 
@@ -75,27 +101,52 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
   const handleMemotag = (memo) => dispatch(setMemoTag(memo));
   const handleMax = () => dispatch({ type: 'MAX_WITHDRAWAL_SAGA' });
 
+  const disabled = () => {
+    let disabled;
+    if (isEcommerce) {
+      disabled = !card || !depositProvider;
+    } else if (isFiat) {
+      disabled = !notEmpty();
+    }
+
+    return disabled;
+  };
+
   const Max = () => (
-    <View style={styles.row}>
+    <TouchableOpacity
+      onPress={handleMax}
+      disabled={disabled()}
+      style={styles.row}
+    >
       <View style={styles.line} />
-      <PurpleText text="Max" onPress={handleMax} disabled={!depositProvider} />
-    </View>
+      <PurpleText text="Max" />
+    </TouchableOpacity>
   );
 
   const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 20;
+  const needsTag = () => {
+    if (currentBalanceObj?.infos) {
+      return (
+        currentBalanceObj?.infos[network]?.transactionRecipientType ===
+        'ADDRESS_AND_TAG'
+      );
+    }
+    return false;
+  };
 
   return (
     <>
       <View style={styles.block}>
         {!hasRestriction && !isFiat && <WithdrawalAddress error={error} />}
 
-        {cryptoAddress?.tag && !whitelist?.length && (
+        {needsTag() && !whitelist?.length && (
           <AppInput
             label="Address tag"
             onChangeText={handleMemotag}
             value={memoTag}
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             style={{ marginBottom: 22 }}
+            error={error && !memoTag?.trim()}
           />
         )}
         {isEcommerce ? (
@@ -115,7 +166,7 @@ export default function WithdrawalInputs({ isFiat, hasRestriction, error }) {
           />
         )}
         <AppInput
-          onChangeText={setAmount}
+          onChangeText={handleAmount}
           value={withdrawalAmount}
           label="Enter Amount"
           style={{ marginTop, marginBottom: 8 }}

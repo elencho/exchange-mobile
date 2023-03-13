@@ -1,52 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, StyleSheet, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+
+import AppModal from '../../AppModal';
+import AppText from '../../AppText';
 
 import colors from '../../../constants/colors';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { toggleTransferMethodModal } from '../../../redux/modals/actions';
 import { setNetwork } from '../../../redux/wallet/actions';
-import AppModal from '../../AppModal';
-import AppText from '../../AppText';
 
 export default function TransferMethodModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const [methods, setMethods] = useState([]);
 
   const {
     modals: { transferMethodModalVisible },
     transactions: { code },
-    wallet: { network, hasMultipleMethods },
+    wallet: { network, methodsToDisplay, walletTab },
     trade: {
       balance: { balances },
     },
   } = state;
 
-  let methodsToDisplay = [];
-
   useEffect(() => {
+    let methodsToDisplay = [];
+    const m =
+      walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
     balances.forEach((b) => {
-      if (hasMultipleMethods && code === b.currencyCode) {
-        if (b.depositMethods.ECOMMERCE)
+      if (code === b.currencyCode) {
+        if (b[m]?.ECOMMERCE)
           methodsToDisplay.push({
             displayName: 'Payment Card',
             provider: 'ECOMMERCE',
           });
-        if (b.depositMethods.WIRE) {
-          b.depositMethods.WIRE.reduceRight(
-            (_, m) => methodsToDisplay.push(m),
-            0
-          );
+        if (b[m]?.WIRE) {
+          b[m]?.WIRE.reduceRight((_, m) => methodsToDisplay.push(m), 0);
         }
-        if (b.depositMethods.WALLET) {
-          b.depositMethods.WALLET.forEach((m) => methodsToDisplay.push(m));
+        if (b[m]?.WALLET) {
+          b[m]?.WALLET.forEach((m) => methodsToDisplay.push(m));
         }
-        setMethods(methodsToDisplay);
+        dispatch({ type: 'SET_METHODS_TO_DISPLAY', methodsToDisplay });
       }
     });
 
-    return () => setMethods([]);
+    return () =>
+      dispatch({ type: 'SET_METHODS_TO_DISPLAY', methodsToDisplay: [] });
   }, [code]);
 
   const hide = () => dispatch(toggleTransferMethodModal(false));
@@ -71,7 +70,7 @@ export default function TransferMethodModal() {
 
   const children = (
     <>
-      {methods.map((m) => (
+      {methodsToDisplay.map((m) => (
         <Pressable
           style={[styles.pressable, background(m.provider)]}
           key={m.displayName}

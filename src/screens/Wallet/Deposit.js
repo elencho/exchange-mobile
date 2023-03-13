@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { Trans, useTranslation } from 'react-i18next';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
-import colors from '../../constants/colors';
 import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock';
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown';
-import {
-  generateCryptoAddressAction,
-  setNetwork,
-} from '../../redux/wallet/actions';
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal';
 import AppButton from '../../components/AppButton';
 import FiatBlock from '../../components/Wallet/Deposit/FiatBlock';
@@ -20,28 +16,37 @@ import AppWebView from '../../components/AppWebView';
 import GeneralError from '../../components/GeneralError';
 import AddressBlock from '../../components/Wallet/Deposit/AddressBlock';
 import AppInfoBlock from '../../components/AppInfoBlock';
+import WithKeyboard from '../../components/WithKeyboard';
+import AppText from '../../components/AppText';
+
 import { infos, warnings } from '../../constants/warningsAndInfos';
+import colors from '../../constants/colors';
 import {
   fetchFee,
   setCard,
   setDepositProvider,
   setFee,
 } from '../../redux/trade/actions';
-import { errorHappenedHere } from '../../utils/appUtils';
+import {
+  generateCryptoAddressAction,
+  setNetwork,
+} from '../../redux/wallet/actions';
 import { setStatusModalInfo } from '../../redux/modals/actions';
-import WithKeyboard from '../../components/WithKeyboard';
+import { errorHappenedHere } from '../../utils/appUtils';
 
 export default function Deposit({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
+  const { t } = useTranslation();
+
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
 
   const {
-    transactions: { code },
+    transactions: { code, loading },
     trade: { currentBalanceObj, depositProvider, card, cardsLoading },
-    wallet: { cryptoAddress, hasMultipleMethods, depositRestriction, network },
+    wallet: { cryptoAddress, depositRestriction, network },
     modals: { webViewObj },
   } = state;
 
@@ -70,7 +75,7 @@ export default function Deposit({ refreshControl }) {
     dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setFee(null));
-    card && dispatch(fetchFee('deposit'));
+    card && depositProvider && dispatch(fetchFee('deposit'));
   }, [network, depositProvider, card]);
 
   useEffect(() => {
@@ -94,7 +99,6 @@ export default function Deposit({ refreshControl }) {
     dispatch(setDepositProvider(null));
     dispatch(setCard(null));
     dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
-    dispatch(fetchFee('deposit'));
     dispatch({ type: 'BALANCE_SAGA' });
   };
 
@@ -103,11 +107,7 @@ export default function Deposit({ refreshControl }) {
     const alternateUrlArray = state.url.split('/');
     const ending = urlArray[urlArray.length - 1];
     const alternateEnding = alternateUrlArray[alternateUrlArray.length - 1];
-    if (
-      ending === 'false' ||
-      ending === 'true' ||
-      alternateEnding === 'Cancel'
-    ) {
+    if (ending === 'false' || ending === 'true') {
       clear();
       dispatch(setStatusModalInfo({ success: ending, visible: true }));
     }
@@ -117,15 +117,35 @@ export default function Deposit({ refreshControl }) {
     let infoObj;
     if (hasMethod && currentBalanceObj.infos) {
       infoObj = currentBalanceObj.infos[network];
+      const minConfirmsForDeposit = infoObj?.minConfirmsForDeposit;
+      const walletInfo = infoObj?.walletInfo;
+      const needsTag = infoObj?.transactionRecipientType === 'ADDRESS_AND_TAG';
+
+      const transComponent = (
+        <Trans
+          i18nKey="needs tag for deposit {{currency}} params[currency]"
+          values={{ currency: code }}
+          components={{
+            light: <AppText style={{ color: '#FFFBF3' }} />,
+            gold: <AppText style={{ color: '#F2DFB4' }} />,
+          }}
+        />
+      );
+
       let array = [
-        `Expected Arrival: ${infoObj?.minConfirmsForDeposit} network confirmations`,
+        t(`{{minConfirmsForDeposit}} params[minConfirmsForDeposit]`, {
+          minConfirmsForDeposit,
+        }),
       ];
-      if (infoObj?.walletInfo) array.push(infoObj?.walletInfo);
+      if (walletInfo) array.push(t(walletInfo));
+      if (needsTag) array.push(transComponent);
       return array;
     }
   };
 
-  return !cardsLoading ? (
+  return cardsLoading || loading ? (
+    <MaterialIndicator color="#6582FD" animationDuration={3000} />
+  ) : (
     <WithKeyboard flexGrow padding refreshControl={refreshControl}>
       <View style={styles.block}>
         <GeneralError
@@ -134,20 +154,20 @@ export default function Deposit({ refreshControl }) {
         />
         <WalletCoinsDropdown />
 
-        {!isFiat || code === 'EUR' ? (
+        {!hasRestriction && hasMethod && (
           <>
-            <ChooseNetworkDropdown />
-            {cryptoAddress?.address &&
-              !hasRestriction &&
-              hasMethod &&
-              isCrypto && <AddressBlock />}
-            {hasMethod && content() && (
-              <AppInfoBlock content={content()} warning />
-            )}
-          </>
-        ) : (
-          <>
-            {hasMultipleMethods && (
+            {!isFiat || code === 'EUR' ? (
+              <>
+                <ChooseNetworkDropdown />
+                {cryptoAddress?.address &&
+                  !hasRestriction &&
+                  hasMethod &&
+                  isCrypto && <AddressBlock />}
+                {hasMethod && content() && (
+                  <AppInfoBlock content={content()} warning />
+                )}
+              </>
+            ) : (
               <>
                 <TransferMethodDropdown />
                 {isEcommerce && (
@@ -169,7 +189,7 @@ export default function Deposit({ refreshControl }) {
       {!cryptoAddress?.address && !isFiat && !hasRestriction && hasMethod ? (
         <View style={styles.flex}>
           <BulletsBlock />
-          <AppButton text="Generate" onPress={generate} />
+          <AppButton text="Generate Address" onPress={generate} />
         </View>
       ) : null}
 
@@ -188,8 +208,6 @@ export default function Deposit({ refreshControl }) {
         deposit
       />
     </WithKeyboard>
-  ) : (
-    <MaterialIndicator color="#6582FD" animationDuration={3000} />
   );
 }
 

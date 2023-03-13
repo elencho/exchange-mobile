@@ -13,7 +13,7 @@ export default function ModalTop() {
 
 const styles = StyleSheet.create({
   line: {
-    height: 5,
+    height: 6,
     width: '25%',
     backgroundColor: colors.SECONDARY_BACKGROUND,
   },
@@ -21,6 +21,5 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(15, 15, 31, 1)',
   },
 });

@@ -1,8 +1,6 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import {
   Image,
-  RefreshControl,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -12,31 +10,40 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import { useFocusEffect } from '@react-navigation/native';
 
+import AppText from '../components/AppText';
 import Background from '../components/Background';
 import PurpleText from '../components/PurpleText';
 import Headline from '../components/TransactionHistory/Headline';
 import Personal from '../components/UserProfile/Personal';
 import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecuritySwitcher';
 import Security from '../components/UserProfile/Security';
-import images from '../constants/images';
-import { logoutUtil } from '../utils/userProfileUtils';
+
 import {
   fetchUserInfo,
   switchPersonalSecurity,
 } from '../redux/profile/actions';
-import colors from '../constants/colors';
-import AppText from '../components/AppText';
+import { clearFilters } from '../redux/transactions/actions';
 
-export default function UserProfile({ navigation }) {
+import images from '../constants/images';
+import colors from '../constants/colors';
+import { logoutUtil } from '../utils/userProfileUtils';
+import CustomRefreshContol from '../components/CustomRefreshContol';
+
+function UserProfile({ navigation, route }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+  const [showRefreshControl, setShowRefreshControl] = useState(false);
 
   const {
     profile: { Personal_Security, userInfo, userProfileLoading },
   } = state;
 
   useEffect(() => {
-    dispatch(fetchUserInfo());
+    dispatch(fetchUserInfo(route.params?.fromRegistration));
+    const timer = setTimeout(() => {
+      setShowRefreshControl(true);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   useFocusEffect(
@@ -51,15 +58,28 @@ export default function UserProfile({ navigation }) {
     // if (status === 204) {
     await SecureStore.deleteItemAsync('accessToken');
     await SecureStore.deleteItemAsync('refreshToken');
-    await SecureStore.deleteItemAsync('language');
     navigation.navigate('Welcome');
 
     dispatch({ type: 'LOGOUT' });
     // }
   };
   const onRefresh = () => dispatch(fetchUserInfo());
-  const back = () => navigation.goBack();
+  const back = () => {
+    clear();
+    navigation.navigate('Main');
+  };
 
+  const clear = () => {
+    dispatch(clearFilters());
+    dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+  };
+
+  const onScroll = (event) => {
+    const { y } = event.nativeEvent.contentOffset;
+    if (y > 0) {
+      setShowRefreshControl(true);
+    }
+  };
   const renderItem = () => (
     <>
       {Personal_Security === 'Personal' && (
@@ -73,10 +93,10 @@ export default function UserProfile({ navigation }) {
   return (
     <Background>
       <View style={styles.topRow}>
-        <View style={styles.back}>
+        <TouchableOpacity onPress={back} style={styles.back}>
           <Image source={images.Back} style={styles.arrow} />
-          <PurpleText text="Back" onPress={back} style={styles.purpleText} />
-        </View>
+          <PurpleText text="Back" style={styles.purpleText} />
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={logout}>
           <Image source={images.Logout} />
@@ -90,12 +110,22 @@ export default function UserProfile({ navigation }) {
       <FlatList
         data={[0]}
         renderItem={renderItem}
-        refreshing={userProfileLoading}
-        onRefresh={onRefresh}
+        onScroll={onScroll}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          showRefreshControl ? (
+            <CustomRefreshContol
+              refreshing={userProfileLoading}
+              onRefresh={onRefresh}
+            />
+          ) : null
+        }
       />
     </Background>
   );
 }
+
+export default memo(UserProfile);
 
 const styles = StyleSheet.create({
   arrow: {
@@ -104,6 +134,9 @@ const styles = StyleSheet.create({
   back: {
     flexDirection: 'row',
     alignItems: 'center',
+    padding: 5,
+    marginLeft: -5,
+    marginTop: 5,
   },
   purpleText: {
     marginHorizontal: 10,

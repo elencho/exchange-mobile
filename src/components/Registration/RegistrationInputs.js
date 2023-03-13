@@ -21,6 +21,7 @@ import { COUNTRIES_URL_PNG } from '../../constants/api';
 export default function RegistrationInputs({ validations, error }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
   const {
     profile: { registrationInputs, countriesConstant },
   } = state;
@@ -32,9 +33,9 @@ export default function RegistrationInputs({ validations, error }) {
   const red = { color: '#F45E8C' };
   const border = { borderColor: '#F45E8C' };
   const phoneNumberStyle =
-    error && (!i.phoneNumber || !i.phoneCountry) && border;
+    error && (!v.phoneNumberCheck || !i.phoneCountry) && border;
   const placeholderTextColor =
-    error && !i.phoneNumber && !i.phoneCountry
+    error && (!v.phoneNumberCheck || !i.phoneCountry)
       ? '#F45E8C'
       : colors.SECONDARY_TEXT;
 
@@ -55,14 +56,12 @@ export default function RegistrationInputs({ validations, error }) {
 
   const errorText = (type) => {
     if (error) {
-      if (!i.firstName && !v.nameCheck && type === 'First Name')
-        return 'Enter First Name';
-      if (!i.lastName && !v.lastNameCheck && type === 'Last Name')
-        return 'Enter Last Name';
-      if (!i.email && !v.isEmail && type === 'Email')
-        return 'Enter Valid Email';
-      if (!v.similarPasswords && type === 'Repeat Pass')
-        return 'Passwords Do Not Match';
+      if (!v.nameCheck && type === 'First Name')
+        return i.firstName?.trim() ? 'Enter Valid First Name' : null;
+      if (!v.lastNameCheck && type === 'Last Name')
+        return i.lastName?.trim() ? 'Enter Valid Last Name' : null;
+      if (!v.isEmail && type === 'Email')
+        return i.email ? 'Enter Valid Email' : null;
     }
   };
 
@@ -74,7 +73,7 @@ export default function RegistrationInputs({ validations, error }) {
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'name')}
-        error={error && !i.firstName && !v.nameCheck}
+        error={error && !v.nameCheck}
         errorText={errorText('First Name')}
       />
       <AppInput
@@ -83,7 +82,7 @@ export default function RegistrationInputs({ validations, error }) {
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'last name')}
-        error={error && !i.lastName && !v.lastNameCheck}
+        error={error && !v.lastNameCheck}
         errorText={errorText('Last Name')}
       />
       <AppInput
@@ -92,7 +91,7 @@ export default function RegistrationInputs({ validations, error }) {
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'email')}
-        error={error && !i.email && !v.isEmail}
+        error={error && (!i.email || !v.isEmail)}
         errorText={errorText('Email')}
       />
       <AppInput
@@ -123,7 +122,6 @@ export default function RegistrationInputs({ validations, error }) {
         onChangeText={(text) => handleInputs(text, 'confirm')}
         secureTextEntry
         error={error && !v.similarPasswords}
-        errorText={errorText('Repeat Pass')}
       />
       <View style={[styles.phoneNumber, phoneNumberStyle]}>
         <Pressable style={styles.number} onPress={openCountriesModal}>
@@ -194,10 +192,10 @@ const styles = StyleSheet.create({
   number: {
     flexDirection: 'row',
     alignItems: 'center',
+    height: '100%',
   },
   phoneNumber: {
     borderWidth: 1,
-    borderRadius: 4,
     height: 45,
     paddingHorizontal: 15,
     flexDirection: 'row',
