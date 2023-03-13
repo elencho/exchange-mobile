@@ -67,7 +67,6 @@ export default function Welcome({ navigation }) {
         navigation.navigate('UpdateAvailable');
         SplashScreen.hide();
       }
-      SplashScreen.hide();
     } catch (error) {
       console.log(error);
     }
@@ -88,7 +87,6 @@ export default function Welcome({ navigation }) {
     if (isWorkingVersion()) {
       SecureStore.getItemAsync('accessToken').then((t) => {
         if (t) navigation.navigate('Main');
-        else SplashScreen.hide();
       });
     }
     dispatch(saveUserInfo({}));
