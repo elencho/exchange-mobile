@@ -130,7 +130,7 @@ export default function BuySellModal() {
     if (scale == 0) {
       setFunction(14);
     } else {
-      setFunction(factoredDigitLength + parseFloat(scale) + 1);
+      setFunction(factoredDigitLength + parseFloat(scale) + 2);
     }
   };
 
