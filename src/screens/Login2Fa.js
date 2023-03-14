@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
+import { t } from 'i18next';
 
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
@@ -57,7 +58,7 @@ export default function Login2Fa({ navigation }) {
     };
   }, []);
 
-  const t = userAndPassInfo?.attributes?.otpType;
+  const type = userAndPassInfo?.attributes?.otpType;
   const cellCount = t === 'SMS' ? 4 : 6;
 
   const goBack = () => dispatch(startLoginAction(navigation));
@@ -110,7 +111,7 @@ export default function Login2Fa({ navigation }) {
             {/* Animate */}
             <View>
               <AppText header style={styles.primary}>
-                {t} authentication login
+                {t(`${type} authentication login`)}
               </AppText>
               <AppText style={styles.secondary}>
                 enter one time password

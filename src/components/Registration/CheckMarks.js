@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Pressable, Image } from 'react-native';
+import { StyleSheet, View, Pressable, Image, Linking } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { t } from 'i18next';
 
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
@@ -36,12 +37,16 @@ export default function CheckMarks({ error, validations }) {
   };
 
   const textColor = { color: error && !v.terms ? '#F45E8C' : '#B7BFDB' };
+
   const text = (type) => {
+    const goToTerms = () =>
+      Linking.openURL('https://ge.cryptal.com/en/terms-of-use');
+
     if (type === 'acceptTerms')
       return (
         <AppText style={[styles.text, textColor]}>
-          I'm over 18 years old and agree to{' '}
-          <PurpleText text="Terms & Conditions" />
+          {t("I'm over 18 years old and agree to")}{' '}
+          <PurpleText text="Terms & Conditions" onPress={goToTerms} />
         </AppText>
       );
     if (type === 'updates')

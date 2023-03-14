@@ -83,7 +83,7 @@ export default function Login({ navigation }) {
         </View>
 
         <AppInput
-          placeholder="Enter Email"
+          placeholder={t('Enter Email')}
           style={styles.email}
           onChangeText={typeLogin}
           value={login}
@@ -92,7 +92,7 @@ export default function Login({ navigation }) {
         />
         <AppInput
           secureTextEntry
-          placeholder="Enter Password"
+          placeholder={t('Enter Password')}
           onChangeText={typePassword}
           value={password}
           style={styles.password}

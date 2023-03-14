@@ -2,16 +2,12 @@ import React, { useEffect } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import AppModal from '../AppModal';
+import AppText from '../AppText';
 import { ICONS_URL_PNG } from '../../constants/api';
 import colors from '../../constants/colors';
 import { toggleChooseBankModal } from '../../redux/modals/actions';
-import {
-  cardsSagaAction,
-  setCard,
-  setDepositProvider,
-} from '../../redux/trade/actions';
-import AppModal from '../AppModal';
-import AppText from '../AppText';
+import { setCard, setDepositProvider } from '../../redux/trade/actions';
 
 export default function ChooseBankModal() {
   const dispatch = useDispatch();
@@ -56,7 +52,6 @@ export default function ChooseBankModal() {
   const choose = (b) => {
     dispatch(setDepositProvider(b));
     dispatch(setCard(null));
-    // dispatch(cardsSagaAction());
     hide();
   };
 
