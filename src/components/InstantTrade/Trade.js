@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { t } from 'i18next';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
@@ -68,13 +69,14 @@ export default function Trade({ trade }) {
 
       <View style={styles.row}>
         <AppText style={styles.primary} subtext>
-          {action === 'BID' ? 'Buy ' : 'Sell '}
+          {action === 'BID' ? t('Buy') : t('Sell')}
           <AppText subtext style={styles.secondary}>
-            / Instant Trade
+            {' / '}
+            {t('Instant Trade')}
           </AppText>
         </AppText>
         <AppText subtext style={styles.secondary}>
-          Price: {price} {quoteCurrency}
+          {t('Price :')} {price} {quoteCurrency}
         </AppText>
       </View>
 

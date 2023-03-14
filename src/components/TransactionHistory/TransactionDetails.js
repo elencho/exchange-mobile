@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { t } from 'i18next';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
@@ -25,7 +26,7 @@ export default function TransactionDetails() {
 
   const LeftText = ({ text }) => (
     <View style={styles.leftTextContainer}>
-      <AppText style={styles.leftText}>{text} :</AppText>
+      <AppText style={styles.leftText}>{text}</AppText>
     </View>
   );
 
@@ -38,14 +39,14 @@ export default function TransactionDetails() {
   );
 
   const leftArray = [
-    'Type',
-    'Network',
-    'Date / Time',
-    'Amount',
-    'Fee',
-    'Total Amount',
-    'Status',
-    'Method',
+    'Type :',
+    'Network :',
+    'Date / Time :',
+    'Amount :',
+    'Fee :',
+    'Total Amount :',
+    'Status :',
+    'Method :',
   ];
   const rightArray = [
     type,

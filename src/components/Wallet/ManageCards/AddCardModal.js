@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { t } from 'i18next';
 
 import AppModal from '../../AppModal';
 import AppText from '../../AppText';
@@ -91,6 +92,11 @@ export default function AddCardModal() {
     return data.toString();
   };
 
+  const goToTerms = () =>
+    Linking.openURL(
+      'https://support.cryptal.com/hc/en-us/articles/4402770737682-Privacy-Policy'
+    );
+
   const color =
     !depositProvider && error
       ? '#F45E8C'
@@ -133,7 +139,8 @@ export default function AddCardModal() {
             <Image source={image()} style={{ marginRight: 10 }} />
           </Pressable>
           <AppText style={[styles.grey, { color: termsColor }]}>
-            Save Card & Agree <PurpleText text="Terms" />
+            {t('Save Card & Agree')}{' '}
+            <PurpleText text="Terms" onPress={goToTerms} />
           </AppText>
         </View>
       )}
@@ -145,7 +152,6 @@ export default function AddCardModal() {
 
       {webViewObj?.actionMethod === 'POST' && (
         <AppWebView
-          setStatusObj={setStatusObj}
           cardsAdd
           onNavigationStateChange={onNavigationStateChange}
           source={{
@@ -159,7 +165,6 @@ export default function AddCardModal() {
 
       {webViewObj?.actionMethod === 'GET' && (
         <AppWebView
-          setStatusObj={setStatusObj}
           cardsAdd
           onNavigationStateChange={onNavigationStateChange}
           source={{ uri: webViewObj?.actionUrl }}

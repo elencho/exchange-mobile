@@ -16,6 +16,7 @@ import images from '../../constants/images';
 import colors from '../../constants/colors';
 import { startRegistrationAction } from '../../redux/profile/actions';
 import { toggleEmailVerificationModal } from '../../redux/modals/actions';
+import { t } from 'i18next';
 
 export default function EmailVerificationModal() {
   const navigation = useNavigation();
@@ -79,8 +80,8 @@ export default function EmailVerificationModal() {
         /* Animate */
         <View>
           <AppText style={[styles.secondary, { marginBottom: 36 }]}>
-            Check your E-mail {registrationInputs.email} and enter the code
-            account
+            {t('check your email')} {registrationInputs.email} and enter the
+            code account
           </AppText>
         </View>
       );
