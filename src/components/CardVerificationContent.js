@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import { t } from 'i18next';
 
 import AppButton from './AppButton';
 import AppText from './AppText';
@@ -48,7 +49,7 @@ export default function CardVerificationContent({ step = 0, cardId }) {
         <View style={[styles.row, { marginBottom: 14 }]}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            Bank card should have holder{' '}
+            {t('Bank card should have holder')}{' '}
             <AppText medium>name & last name</AppText>
           </AppText>
         </View>
@@ -56,7 +57,8 @@ export default function CardVerificationContent({ step = 0, cardId }) {
         <View style={styles.row}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            Card holder must match <AppText medium>account holder</AppText>
+            {t('Card holder must match')}{' '}
+            <AppText medium>account holder</AppText>
           </AppText>
         </View>
       </>
@@ -65,16 +67,16 @@ export default function CardVerificationContent({ step = 0, cardId }) {
         <View style={[styles.row, { marginBottom: 14 }]}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            Only <AppText medium>first 6 & last 4 digits</AppText>are required
-            for a verification
+            {t('Only')} <AppText medium>first 6 & last 4 digits</AppText>{' '}
+            {t('are required for a verification')}
           </AppText>
         </View>
 
         <View style={styles.row}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            Recommended to <AppText medium>hide other digits</AppText> using a
-            sticky note or a piece of paper
+            {t('Recommended to')} <AppText medium>hide other digits</AppText>{' '}
+            {t('using a sticky note or a piece of paper')}
           </AppText>
         </View>
       </>
@@ -102,7 +104,7 @@ export default function CardVerificationContent({ step = 0, cardId }) {
 
       <Image source={image} style={styles.image} />
 
-      <Text style={styles.title}>Let's Get You Verified</Text>
+      <Text style={styles.title}>{t("Let's Get You Verified")}</Text>
       <AppText subtext style={styles.secondary}>
         Bank card should suit following demands
       </AppText>

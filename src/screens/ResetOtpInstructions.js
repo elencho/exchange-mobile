@@ -10,15 +10,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
 import * as SecureStore from 'expo-secure-store';
 import * as Linking from 'expo-linking';
+import { t } from 'i18next';
 
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
-import colors from '../constants/colors';
 
-import images from '../constants/images';
 import Logo from '../assets/images/Logo';
 import TwoFaInput from '../components/TwoFaInput';
 import WithKeyboard from '../components/WithKeyboard';
+import images from '../constants/images';
+import colors from '../constants/colors';
 
 export default function ResetOtpInstructions({ navigation, route }) {
   const dispatch = useDispatch();
@@ -107,9 +108,9 @@ export default function ResetOtpInstructions({ navigation, route }) {
 
           {ex === 'OTP_RESET_INSTRUCTIONS' && (
             <AppText style={styles.secondary}>
-              Contact Our{' '}
-              <PurpleText text="Support Team" onPress={openSupport} /> for
-              instructions
+              {t('Contact Our')}{' '}
+              <PurpleText text="support team" onPress={openSupport} />{' '}
+              {t('for instructions')}
             </AppText>
           )}
           {ex === 'RESET_OTP' && (

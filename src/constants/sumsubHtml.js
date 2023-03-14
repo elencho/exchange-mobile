@@ -6,7 +6,6 @@ export default (token) => `
  </head>
  <body>
 	<script src="https://static.sumsub.com/idensic/static/sns-websdk-builder.js"></script>
-    <h1>TEST</h1>
 	<div id="sumsub-websdk-container"></div>
 </body>
 </html>

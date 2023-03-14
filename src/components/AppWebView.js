@@ -1,7 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, Modal, Image, StyleSheet, View } from 'react-native';
-import WebView from 'react-native-webview';
+import { TouchableOpacity, Modal, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import WebView from 'react-native-webview';
 
 import Close from '../assets/images/Close.svg';
 import {
@@ -16,7 +16,7 @@ import {
 } from '../redux/trade/actions';
 
 export default function AppWebView(props) {
-  const { verifyCards, trade, deposit, cardsAdd, setStatusObj } = props;
+  const { verifyCards, trade, deposit, cardsAdd } = props;
 
   const dispatch = useDispatch();
   const webViewObj = useSelector((state) => state.modals.webViewObj);
@@ -34,7 +34,6 @@ export default function AppWebView(props) {
     if (cardsAdd) {
       dispatch(toggleAddCardModal(false));
       dispatch(cardsSagaAction());
-      setStatusObj({ success: 'false', visible: true });
     }
 
     if (trade) {

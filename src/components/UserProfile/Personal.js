@@ -171,7 +171,7 @@ export default function Personal({ loading }) {
               ]}
             />
             <AppText subtext style={styles.secondary}>
-              Verification subtext {userInfo?.userStatus}
+              {`Verification subtext ${userInfo?.userStatus}`}
             </AppText>
           </View>
         );

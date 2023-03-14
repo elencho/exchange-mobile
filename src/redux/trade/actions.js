@@ -148,8 +148,9 @@ export const pairObjectSagaAction = (offers) => ({
   type: actionTypes.PAIR_OBJECT_SAGA,
   offers,
 });
-export const depositProvidersSagaAction = () => ({
+export const depositProvidersSagaAction = (balances) => ({
   type: actionTypes.DEPOSIT_PROVIDERS_SAGA,
+  balances,
 });
 export const cardsSagaAction = () => ({
   type: actionTypes.CARDS_SAGA,
