@@ -56,9 +56,11 @@ export default function BuySellModal() {
   } = state;
 
   const [error, setError] = useState(false);
-  const [maxLengthBase, setMaxLengthBase] = useState(13);
-  const [maxLengthQuote, setMaxLengthQuote] = useState(13);
 
+  //TODO: refactor
+  // const [maxLengthBase, setMaxLengthBase] = useState(13);
+  // const [maxLengthQuote, setMaxLengthQuote] = useState(13);
+  const [focusedInput, setFocusedInput] = useState(null);
   useEffect(() => {
     error && setError(false);
   }, [
@@ -126,21 +128,24 @@ export default function BuySellModal() {
     } else dispatch(submitTrade());
   };
 
-  const getMaxLength = (value, scale, setFunction) => {
-    const factoredDigit = Math.trunc(value);
-    const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-    if (scale == 0) {
-      setFunction(14);
-    } else {
-      setFunction(factoredDigitLength + parseFloat(scale) + 2);
-    }
-  };
+  //TODO: remove if not used
+  // const getMaxLength = (value, scale, setFunction) => {
+  //
+  //   const factoredDigit = Math.trunc(value);
+  //   const factoredDigitLength = parseFloat(factoredDigit.toString().length);
+  //   if (scale == 0) {
+  //     setFunction(14);
+  //   } else {
+  //     setFunction(factoredDigitLength + parseFloat(scale) + 1);
+  //   }
+  // };
 
   const setTrade = (price, size) => {
     dispatch(setCurrentTrade({ price, size }));
     card && dispatch(fetchFee());
   };
 
+  //TODO: refactor
   const handleChangeText = (text, type) => {
     const replacedAmount = text ? text.replace(',', '.') : 0;
     const rate =
@@ -152,38 +157,39 @@ export default function BuySellModal() {
 
     const parts = replacedAmount?.split('.');
     if (type === 'crypto' && validateScale(replacedAmount, quoteScale)) {
-      if (text && !quoteValidation?.test(text)) {
+      if (text && !quoteValidation?.test(text) && focusedInput === 'crypto') {
         return;
       }
+
       if (parts.length === 2) {
         let cryptoAmount = (replacedAmount / rate).toFixed(baseScale);
-        getMaxLength(replacedAmount, quoteScale, setMaxLengthQuote);
+        // getMaxLength(replacedAmount, quoteScale, setMaxLengthQuote);
         setTrade(
           replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0,
           cryptoAmount
         );
       } else {
         let cryptoAmount = (parts[0].substr(0, 13) / rate).toFixed(baseScale);
-        setMaxLengthQuote(14);
-        getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
+        // setMaxLengthQuote(14);
+        //getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
         setTrade(replacedAmount ? parts[0].substr(0, 13) : 0, cryptoAmount);
       }
     }
     if (type === 'fiat' && validateScale(replacedAmount, baseScale)) {
-      if (text && !baseValidation?.test(text)) {
+      if (text && !baseValidation?.test(text) && focusedInput === 'fiat') {
         return;
       }
       if (parts.length === 2) {
         let fiatAmount = (replacedAmount * rate).toFixed(quoteScale);
-        getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
+        // getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
         setTrade(
           fiatAmount,
           replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0
         );
       } else {
         let fiatAmount = (parts[0].substr(0, 13) * rate).toFixed(quoteScale);
-        setMaxLengthBase(14);
-        getMaxLength(replacedAmount, quoteScale, setMaxLengthQuote);
+        // setMaxLengthBase(14);
+        // getMaxLength(replacedAmount, quoteScale, setMaxLengthQuote);
         setTrade(fiatAmount, replacedAmount ? parts[0].substr(0, 13) : 0);
       }
     }
@@ -244,7 +250,8 @@ export default function BuySellModal() {
             onChangeText={(t) => handleChangeText(t, 'crypto')}
             keyboardType="decimal-pad"
             value={price ? price.trim() : ''}
-            maxLength={maxLengthQuote}
+            onFocus={() => setFocusedInput('fiat')}
+            //maxLength={maxLengthQuote}
             right={<AppText style={styles.code}>{fiat}</AppText>}
             error={error && !validateAmount(price)}
           />
@@ -252,7 +259,8 @@ export default function BuySellModal() {
           <AppInput
             onChangeText={(t) => handleChangeText(t, 'fiat')}
             keyboardType="decimal-pad"
-            maxLength={maxLengthBase}
+            //maxLength={maxLengthBase}
+            onFocus={() => setFocusedInput('crypto')}
             value={size ? size.trim() : ''}
             right={<AppText style={styles.code}>{crypto}</AppText>}
             style={{ marginBottom: 10 }}
@@ -284,7 +292,6 @@ export default function BuySellModal() {
       />
     </WithKeyboard>
   );
-
   return (
     <AppModal
       visible={buySellModalVisible}
