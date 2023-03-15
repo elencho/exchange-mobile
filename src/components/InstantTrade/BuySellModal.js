@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { t } from 'i18next';
 
-import colors from '../../constants/colors';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import AppButton from '../AppButton';
 import AppInput from '../AppInput';
 import CurrencyDropdowns from './CurrencyDropdowns';
-import { toggleBuySellModal } from '../../redux/modals/actions';
 import BalanceCardSwitcher from './BalanceCardSwitcher';
 import CardSection from './CardSection';
 import ChooseCardModal from './ChooseCardModal';
@@ -16,6 +15,14 @@ import ChooseBankModal from './ChooseBankModal';
 import BankFeesModal from './BankFeesModal';
 import CryptoModal from './CryptoModal';
 import FiatModal from './FiatModal';
+import GeneralError from '../GeneralError';
+import AppWebView from '../AppWebView';
+import WithKeyboard from '../WithKeyboard';
+
+import colors from '../../constants/colors';
+import { toggleBuySellModal } from '../../redux/modals/actions';
+import { validateScale } from '../../utils/formUtils';
+import { errorHappenedHere, validateAmount } from '../../utils/appUtils';
 import {
   fetchFee,
   fetchTrades,
@@ -28,11 +35,6 @@ import {
   submitTrade,
   switchBalanceCard,
 } from '../../redux/trade/actions';
-import GeneralError from '../GeneralError';
-import AppWebView from '../AppWebView';
-import { validateScale } from '../../utils/formUtils';
-import { errorHappenedHere, validateAmount } from '../../utils/appUtils';
-import WithKeyboard from '../WithKeyboard';
 
 export default function BuySellModal() {
   const dispatch = useDispatch();
@@ -228,7 +230,7 @@ export default function BuySellModal() {
     <WithKeyboard padding flexGrow modal>
       <View style={styles.flex}>
         <AppText subtext body style={styles.balance}>
-          My Balance: {myBalance()} {tradeType === 'Buy' ? fiat : crypto}
+          {t('My Balance:')} {myBalance()} {tradeType === 'Buy' ? fiat : crypto}
         </AppText>
 
         {tradeType === 'Buy' && hasEcommerce() && <BalanceCardSwitcher />}
@@ -295,7 +297,7 @@ export default function BuySellModal() {
       visible={buySellModalVisible}
       hide={hide}
       fullScreen
-      title={tradeType + ' ' + crypto}
+      title={t(tradeType) + ' ' + crypto}
       children={children}
       onModalHide={onDismiss}
     />

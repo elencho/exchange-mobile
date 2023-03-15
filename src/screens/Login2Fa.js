@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
+import { t } from 'i18next';
 
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
@@ -57,17 +58,18 @@ export default function Login2Fa({ navigation }) {
     };
   }, []);
 
-  const t = userAndPassInfo?.attributes?.otpType;
-  const cellCount = t === 'SMS' ? 4 : 6;
+  const type = userAndPassInfo?.attributes?.otpType;
+  const cellCount = type === 'SMS' ? 4 : 6;
 
   const goBack = () => dispatch(startLoginAction(navigation));
   const goToReset = () => dispatch({ type: 'RESET_OTP', navigation });
 
   const image = () => {
-    if (t === 'TOTP')
+    if (type === 'TOTP')
       return <TotpAuth style={{ transform: [{ scale: 1.3 }] }} />;
-    if (t === 'EMAIL') return <EmailLoginAuth />;
-    if (t === 'SMS') return <SmsAuth style={{ transform: [{ scale: 1.3 }] }} />;
+    if (type === 'EMAIL') return <EmailLoginAuth />;
+    if (type === 'SMS')
+      return <SmsAuth style={{ transform: [{ scale: 1.3 }] }} />;
   };
 
   const resend = () =>
@@ -110,7 +112,7 @@ export default function Login2Fa({ navigation }) {
             {/* Animate */}
             <View>
               <AppText header style={styles.primary}>
-                {t} authentication login
+                {t(`${type} authentication login`)}
               </AppText>
               <AppText style={styles.secondary}>
                 enter one time password
@@ -128,7 +130,7 @@ export default function Login2Fa({ navigation }) {
           </View>
 
           <View style={styles.bottom}>
-            {t !== 'TOTP' ? (
+            {type !== 'TOTP' ? (
               <View style={styles.row}>
                 <AppText style={[styles.secondary, { marginRight: 5 }]}>
                   Didn't receive code?
@@ -136,7 +138,7 @@ export default function Login2Fa({ navigation }) {
                 {resendOrCountDown()}
               </View>
             ) : null}
-            {t !== 'EMAIL' ? (
+            {type !== 'EMAIL' ? (
               <PurpleText text="Reset OTP" onPress={goToReset} />
             ) : null}
           </View>

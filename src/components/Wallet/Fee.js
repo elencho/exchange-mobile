@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
+import { t } from 'i18next';
 
 import AppText from '../AppText';
 import images from '../../constants/images';
@@ -24,7 +25,7 @@ export default function Fee() {
   const UpperLine = () => {
     let feeText;
     const total = fee?.totalAmount ?? 0;
-    let totalText = `Total : ${notEmpty() ? total : 0} ${currency}`;
+    let totalText = `${t('Total')}: ${notEmpty() ? total : 0} ${currency}`;
 
     if (fee?.feeData) {
       const {

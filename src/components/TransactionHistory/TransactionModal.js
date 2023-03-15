@@ -7,7 +7,6 @@ import AppText from '../AppText';
 import AppModal from '../AppModal';
 import Copy from '../../assets/images/Copy.svg';
 import Link from '../../assets/images/Link.svg';
-
 import TransactionDetails from './TransactionDetails';
 import TradeDetails from '../InstantTrade/TradeDetails';
 
@@ -31,7 +30,6 @@ function TransactionModal({ transactions, trades }) {
         quoteCurrency,
         action,
         recipient,
-        type,
       },
       currencies,
     },
@@ -78,7 +76,7 @@ function TransactionModal({ transactions, trades }) {
           <View style={styles.top}>
             <View style={styles.middle}>
               <AppText medium style={styles.white}>
-                Identifier (TXID):
+                identifier (TXID):
               </AppText>
               <AppText style={[styles.address]} subtext>
                 {transactionInfo}

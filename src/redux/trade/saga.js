@@ -91,22 +91,20 @@ function* pairObjectSaga(action) {
   }
 }
 
-function* depositProvidersSaga() {
-  let provider; // It will become first item of depositProviders array for a particular fiat
+function* depositProvidersSaga(action) {
+  const { balances } = action;
+
   let providers; // Banks that have ecommerce
-  const trade = yield select((state) => state.trade);
-  const { balance, fiat, depositProvider } = trade;
+  const fiat = yield select((state) => state.trade.fiat);
 
   const setProviders = () =>
-    balance?.balances.forEach((b) => {
+    balances?.forEach((b) => {
       if (b?.depositMethods?.ECOMMERCE && fiat === b?.currencyCode) {
         providers = b?.depositMethods?.ECOMMERCE;
-        // if (!depositProvider) provider = b.depositMethods.ECOMMERCE[0].provider;
       }
     });
 
-  if (balance?.balances) yield call(setProviders);
-  // yield put(setDepositProvider(provider));
+  if (balances) yield call(setProviders);
   yield put(setDepositProviders(providers));
 }
 
@@ -122,14 +120,13 @@ function* cardsSaga() {
 
 function* instantTradeTabSaga() {
   yield put(setOffersLoading(true));
+  yield put({ type: 'BALANCE_SAGA' });
+
   const offers = yield call(fetchOffers);
   yield put(saveOffers(offers));
   yield put(setTradeOffset(0));
   yield put(pairObjectSagaAction(offers));
 
-  yield put({ type: 'BALANCE_SAGA' });
-
-  yield put(depositProvidersSagaAction());
   yield put(cardsSagaAction());
 
   yield put({ type: 'CLASIFY_CURRENCIES' });
@@ -143,6 +140,7 @@ function* balanceSaga() {
   const balance = yield call(fetchBalance);
   if (balance) {
     yield put(setBalance(balance));
+    yield put(depositProvidersSagaAction(balance?.balances));
 
     const code = yield select((state) => state.transactions.code);
     if (code) {

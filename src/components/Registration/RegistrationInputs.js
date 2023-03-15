@@ -8,6 +8,7 @@ import {
   Text,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { t } from 'i18next';
 
 import AppInput from '../AppInput';
 import AppText from '../AppText';
@@ -106,12 +107,16 @@ export default function RegistrationInputs({ validations, error }) {
 
       <Text style={styles.validations}>
         <Text style={error && !v.passLength && red}>
-          8 or more characters,{' '}
+          {t('8 or more characters')}
+          {', '}
         </Text>
         <Text style={error && !v.hasUpperAndLower && red}>
-          Upper & lowercase letters,{' '}
+          {t('Upper & lowercase letters')}
+          {', '}
         </Text>
-        <Text style={error && !v.hasNumber && red}>At least one number, </Text>
+        <Text style={error && !v.hasNumber && red}>
+          {t('At least one number')}
+        </Text>
       </Text>
 
       <AppInput

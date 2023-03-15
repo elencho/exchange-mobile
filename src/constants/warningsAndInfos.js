@@ -12,6 +12,6 @@ export const warnings = {
 export const infos = {
   ecommerce: {
     deposit: ['Deposit Ecommerce Info'],
-    withdrawal: ['Withdrawal Ecommerce Info'],
+    withdrawal: ['Withdrawal Ecommerce info'],
   },
 };

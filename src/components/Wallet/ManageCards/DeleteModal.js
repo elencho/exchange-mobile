@@ -49,7 +49,7 @@ export default function DeleteModal({ type }) {
       <Image source={images.Delete_Card} style={{ marginVertical: 20 }} />
 
       <AppText header style={styles.white}>
-        Delete {type}
+        {`Delete ${type}`}
       </AppText>
 
       <GeneralError
@@ -58,7 +58,7 @@ export default function DeleteModal({ type }) {
       />
 
       <AppText style={styles.secondary}>
-        Are you sure you want to delete this {type}?
+        {`Are you sure you want to delete this ${type}?`}
       </AppText>
 
       <AppButton text="Delete" onPress={handleDelete} style={styles.button} />
@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: colors.SECONDARY_TEXT,
     marginTop: 12,
+    lineHeight: 20,
   },
   white: {
     textAlign: 'center',

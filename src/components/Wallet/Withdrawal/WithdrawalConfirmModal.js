@@ -80,18 +80,21 @@ export default function WithdrawalConfirmModal() {
     }
   };
 
+  const networkInfo = () => {
+    if (currentBalanceObj?.infos) {
+      return currentBalanceObj?.infos[network]?.walletInfo;
+    }
+  };
+
   const children = (
     <View style={styles.flex}>
       <View style={styles.flex}>
-        {isCrypto && (
+        {networkInfo() && (
           <AppInfoBlock
             warning
             content={[
               <Trans
-                i18nKey={`confirmWithdrawal modal key ${
-                  needsTag() ? 'with tag' : 'without tag'
-                } params[network]`}
-                values={{ network: networkName() }}
+                i18nKey={`${networkInfo()} modal`}
                 components={{
                   light: <AppText style={{ color: '#FFFBF3' }} />,
                   gold: <AppText style={{ color: '#F2DFB4' }} />,
