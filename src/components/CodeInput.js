@@ -40,6 +40,7 @@ export default function CodeInput({ cellCount = 6, value, setValue }) {
         {...props}
         value={value}
         onChangeText={handleValue}
+        caretHidden={false}
         cellCount={cellCount}
         keyboardType="number-pad"
         textContentType="oneTimeCode"
