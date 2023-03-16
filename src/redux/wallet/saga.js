@@ -360,7 +360,7 @@ function* clearWithdrawalInputsSaga() {
     yield put(setCard(null));
   }
 
-  if (network) yield put(fetchFee('withdrawal'));
+  if (network && !ecommerce) yield put(fetchFee('withdrawal'));
 }
 
 function* maxWithdrawalSaga() {

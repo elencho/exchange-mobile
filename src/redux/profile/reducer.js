@@ -9,7 +9,7 @@ const baneta_realuri = { login: 'ibanet@cryptx.com', password: 'Malina125$' };
 const kervala = { login: 'gkerva@cryptal.com', password: 'TestGexCryptal7' };
 const sali = { login: 'bukhiashvilisalome@gmail.com', password: 'Salome1996' };
 const saliSatesto = {
-  login: 'salibukhiashvili@mailinator.com',
+  login: 'salo131@mailinator.com',
   password: 'Salome1996',
 };
 
@@ -34,11 +34,11 @@ const INITIAL_STATE = {
   registrationInputs: {
     // firstName: 'dd',
     // lastName: 'dd',
-    // email: 'aa1720@mailinator.com',
+    // email: 'aa1761@mailinator.com',
     // passwordNew: '11111!Aa',
     // passwordConfirm: '11111!Aa',
     // phoneCountry: 'GEO',
-    // phoneNumber: '995567720',
+    // phoneNumber: '995567761',
     // promoCode: '',
     // referralCode: '',
     // acceptTerms: 'on',
