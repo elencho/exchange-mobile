@@ -1,29 +1,51 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
+import { setFromTime, setToTime } from '../../redux/transactions/actions';
 
-export default function CalendarDay({
-  state,
-  handleChange,
-  dateMark,
-  todayDisabled,
-}) {
+export default function CalendarDay({ state, from, to }) {
   const {
     date: { day, month, year, timestamp },
   } = state;
 
-  const from = useSelector((state) => state.transactions.fromDateTime);
-  const to = useSelector((state) => state.transactions.toDateTime);
+  const dispatch = useDispatch();
+  const fromDateTime = useSelector((state) => state.transactions.fromDateTime);
+  const toDateTime = useSelector((state) => state.transactions.toDateTime);
+
+  const disabled = () => {
+    const now = Date.now();
+    const future = timestamp > now;
+
+    if (fromDateTime && to) {
+      return future || timestamp < fromDateTime;
+    }
+    if (toDateTime && from) {
+      return future || timestamp > toDateTime;
+    }
+  };
 
   const textColor =
-    state.state === 'today'
-      ? '#7B94FD'
-      : state.state === 'disabled'
-      ? '#4A5071'
-      : '#C0C5E0';
+    state.state === 'today' ? '#7B94FD' : disabled() ? '#4A5071' : '#C0C5E0';
+
+  const dateMark = (timestamp, fromDate, toDate) => {
+    if (from) {
+      return (
+        fromDate.getDate() === timestamp.getDate() &&
+        fromDate.getFullYear() === timestamp.getFullYear() &&
+        fromDate.getMonth() === timestamp.getMonth()
+      );
+    }
+    if (to) {
+      return (
+        toDate.getDate() === timestamp.getDate() &&
+        toDate.getFullYear() === timestamp.getFullYear() &&
+        toDate.getMonth() === timestamp.getMonth()
+      );
+    }
+  };
 
   const mark = () => {
     const style = {
@@ -40,11 +62,34 @@ export default function CalendarDay({
         backgroundColor: 'rgba(101, 130, 253, 0.1)',
       };
     }
-    if (dateMark(new Date(timestamp), new Date(from), new Date(to))) {
+    if (
+      dateMark(
+        new Date(timestamp),
+        new Date(fromDateTime),
+        new Date(toDateTime)
+      )
+    ) {
       return {
         ...style,
         backgroundColor: colors.SECONDARY_PURPLE,
       };
+    }
+  };
+
+  const todayDisabled = () => {
+    const now = Date.now();
+    const condition =
+      (to && now < parseInt(fromDateTime)) ||
+      (from && parseInt(toDateTime) < now);
+    return !!condition;
+  };
+
+  const handleChange = (timestamp) => {
+    if (from) {
+      dispatch(setFromTime(timestamp - 3600000 * 4));
+    }
+    if (to) {
+      dispatch(setToTime(timestamp + 3600000 * 20 - 1));
     }
   };
 
@@ -54,8 +99,8 @@ export default function CalendarDay({
       date.getMonth() + 1 === month &&
       date.getDate() === day &&
       date.getFullYear() === year;
-    if (state.state === 'disabled' || (todayDisabled() && isToday))
-      return false;
+
+    if ((todayDisabled() && isToday) || disabled()) return false;
     else handleChange(timestamp);
   };
 
