@@ -30,10 +30,14 @@ export const TopRow = ({ text, onPress }) => {
         Transactions
       </AppText>
 
-      <View style={styles.right}>
-        <AppText subtext body style={styles.subText}>
-          <Purple text={t(text)} onPress={onPress} /> {t('Other Pairs')}
-        </AppText>
+      <View style={{ flex: 1 }}>
+        <View style={styles.right}>
+          <Purple text={t(text)} onPress={onPress} />
+          <AppText subtext body style={styles.subText}>
+            {' '}
+            {t('Other Pairs')}
+          </AppText>
+        </View>
       </View>
     </View>
   );
@@ -41,13 +45,7 @@ export const TopRow = ({ text, onPress }) => {
 
 const Purple = ({ text, onPress }) => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={{
-        position: 'relative',
-        top: 2,
-      }}
-    >
+    <TouchableOpacity onPress={onPress}>
       <PurpleText onPress={onPress} text={text} />
     </TouchableOpacity>
   );
@@ -162,8 +160,8 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
   },
   right: {
-    flex: 1,
-    alignItems: 'flex-end',
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
   },
   subText: {
     color: colors.SECONDARY_TEXT,

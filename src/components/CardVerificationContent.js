@@ -3,6 +3,7 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { t } from 'i18next';
+import { Trans } from 'react-i18next';
 
 import AppButton from './AppButton';
 import AppText from './AppText';
@@ -49,16 +50,20 @@ export default function CardVerificationContent({ step = 0, cardId }) {
         <View style={[styles.row, { marginBottom: 14 }]}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            {t('Bank card should have holder')}{' '}
-            <AppText medium>name & last name</AppText>
+            <Trans
+              i18nKey="Bank card should have holder name"
+              components={{ b: <AppText medium /> }}
+            />
           </AppText>
         </View>
 
         <View style={styles.row}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            {t('Card holder must match')}{' '}
-            <AppText medium>account holder</AppText>
+            <Trans
+              i18nKey="Card holder must match account holder"
+              components={{ b: <AppText medium /> }}
+            />
           </AppText>
         </View>
       </>
@@ -67,16 +72,20 @@ export default function CardVerificationContent({ step = 0, cardId }) {
         <View style={[styles.row, { marginBottom: 14 }]}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            {t('Only')} <AppText medium>first 6 & last 4 digits</AppText>{' '}
-            {t('are required for a verification')}
+            <Trans
+              i18nKey="Only first 6 & last 4 digits"
+              components={{ b: <AppText medium /> }}
+            />
           </AppText>
         </View>
 
         <View style={styles.row}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            {t('Recommended to')} <AppText medium>hide other digits</AppText>{' '}
-            {t('using a sticky note or a piece of paper')}
+            <Trans
+              i18nKey="Recommended to hide other digits"
+              components={{ b: <AppText medium /> }}
+            />
           </AppText>
         </View>
       </>

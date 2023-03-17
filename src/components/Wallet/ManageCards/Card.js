@@ -66,7 +66,7 @@ export default function Card({ card }) {
 
       <View style={styles.block}>
         <AppText medium style={styles.primary}>
-          {`${t('Provider:')} ${provider}`}
+          {t('Provider:')} {provider}
         </AppText>
         <AppText subtext style={styles.secondary}>
           {cardNumber} / {network}

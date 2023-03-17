@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
+import { Trans } from 'react-i18next';
 
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown';
 import AppButton from '../../components/AppButton';
@@ -22,6 +23,7 @@ import { infos, warnings } from '../../constants/warningsAndInfos';
 import { setNetwork } from '../../redux/wallet/actions';
 import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
 import { validateAmount } from '../../utils/appUtils';
+import AppText from '../../components/AppText';
 
 export default function Withdrawal({ refreshControl }) {
   const dispatch = useDispatch();
@@ -52,7 +54,15 @@ export default function Withdrawal({ refreshControl }) {
   const isEcommerce = network === 'ECOMMERCE';
   const walletInfo = () => {
     if (currentBalanceObj?.infos && hasMethod && !hasRestriction) {
-      return currentBalanceObj?.infos[network]?.walletInfo;
+      return (
+        <Trans
+          i18nKey={currentBalanceObj?.infos[network]?.walletInfo}
+          components={{
+            light: <AppText style={{ color: '#FFFBF3' }} />,
+            gold: <AppText style={{ color: '#F2DFB4' }} />,
+          }}
+        />
+      );
     }
   };
 

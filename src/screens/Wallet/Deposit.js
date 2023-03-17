@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Trans, useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
@@ -37,8 +37,6 @@ import { errorHappenedHere } from '../../utils/appUtils';
 export default function Deposit({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
-  const { t } = useTranslation();
 
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
@@ -121,7 +119,7 @@ export default function Deposit({ refreshControl }) {
       const walletInfo = infoObj?.walletInfo;
       const needsTag = infoObj?.transactionRecipientType === 'ADDRESS_AND_TAG';
 
-      const transComponent = (
+      const tagTransComponent = (
         <Trans
           i18nKey="needs tag for deposit {{currency}} params[currency]"
           values={{ currency: code }}
@@ -131,14 +129,29 @@ export default function Deposit({ refreshControl }) {
           }}
         />
       );
+      const minConfirmsTransComponent = (
+        <Trans
+          i18nKey="{{minConfirmsForDeposit}} params[minConfirmsForDeposit]"
+          values={{ minConfirmsForDeposit }}
+          components={{
+            light: <AppText style={{ color: '#FFFBF3' }} />,
+            gold: <AppText style={{ color: '#F2DFB4' }} />,
+          }}
+        />
+      );
+      const walletInfoTransComponent = (
+        <Trans
+          i18nKey={walletInfo}
+          components={{
+            light: <AppText style={{ color: '#FFFBF3' }} />,
+            gold: <AppText style={{ color: '#F2DFB4' }} />,
+          }}
+        />
+      );
 
-      let array = [
-        t(`{{minConfirmsForDeposit}} params[minConfirmsForDeposit]`, {
-          minConfirmsForDeposit,
-        }),
-      ];
-      if (walletInfo) array.push(t(walletInfo));
-      if (needsTag) array.push(transComponent);
+      let array = [minConfirmsTransComponent];
+      if (walletInfo) array.push(walletInfoTransComponent);
+      if (needsTag) array.push(tagTransComponent);
       return array;
     }
   };

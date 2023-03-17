@@ -31,7 +31,7 @@ export default function TradeDetails() {
 
   const LeftText = ({ text }) => (
     <View style={styles.leftTextContainer}>
-      <AppText style={styles.leftText}>{text} :</AppText>
+      <AppText style={styles.leftText}>{`${text} :`}</AppText>
     </View>
   );
 
