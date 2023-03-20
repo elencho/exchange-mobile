@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Image,
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
@@ -16,6 +15,7 @@ import PurpleText from '../components/PurpleText';
 import WithKeyboard from '../components/WithKeyboard';
 import Strong_Password from '../assets/images/User_profile/Strong_Password';
 import GeneralError from '../components/GeneralError';
+import Back from '../assets/images/Back';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
@@ -124,7 +124,7 @@ export default function ForgotPassword({ navigation }) {
   return (
     <ImageBackground source={images.Background} style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={goToLogin}>
-        <Image source={images.Back} />
+        <Back />
         <PurpleText text="Back to Log In" style={styles.backText} />
       </TouchableOpacity>
 

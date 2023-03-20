@@ -19,6 +19,7 @@ import images from '../constants/images';
 import colors from '../constants/colors';
 import { types, methods } from '../constants/filters';
 import { COINS_URL_PNG } from '../constants/api';
+import FastImage from 'react-native-fast-image';
 
 export default function TransactionFilter({ navigation }) {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ export default function TransactionFilter({ navigation }) {
 
       <Pressable style={styles.dropdown} onPress={openModal}>
         {code && (
-          <Image
+          <FastImage
             source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
             style={styles.coin}
           />

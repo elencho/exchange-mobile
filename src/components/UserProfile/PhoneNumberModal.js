@@ -21,6 +21,7 @@ import {
 import { COUNTRIES_URL_PNG } from '../../constants/api';
 import { saveUserInfo, updatePhoneNumber } from '../../redux/profile/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
+import FastImage from 'react-native-fast-image';
 
 export default function PhoneNumberModal() {
   const dispatch = useDispatch();
@@ -114,7 +115,7 @@ export default function PhoneNumberModal() {
             style={[styles.dropdown, { borderColor }]}
             onPress={() => handleCountries()}
           >
-            <Image
+            <FastImage
               source={{
                 uri: `${COUNTRIES_URL_PNG}/${country}.png`,
               }}

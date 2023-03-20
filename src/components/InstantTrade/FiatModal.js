@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+
+import FastImage from 'react-native-fast-image';
 
 import colors from '../../constants/colors';
 import { COINS_URL_PNG } from '../../constants/api';
@@ -53,7 +55,7 @@ export default function FiatModal() {
       ]}
       onPress={() => choose(f.code)}
     >
-      <Image
+      <FastImage
         source={{
           uri: `${COINS_URL_PNG}/${f.code.toLowerCase()}.png`,
         }}

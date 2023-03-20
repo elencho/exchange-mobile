@@ -7,6 +7,7 @@ import images from '../../constants/images';
 import colors from '../../constants/colors';
 import { toggleCryptoModal, toggleFiatModal } from '../../redux/modals/actions';
 import { COINS_URL_PNG } from '../../constants/api';
+import FastImage from 'react-native-fast-image';
 
 export default function CurrencyDropdowns({ style }) {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ export default function CurrencyDropdowns({ style }) {
     <View style={[styles.container, style]}>
       {[crypto, fiat].map((c) => (
         <Pressable style={styles.block} key={c} onPress={() => open(c)}>
-          <Image
+          <FastImage
             style={styles.icon}
             source={{ uri: `${COINS_URL_PNG}/${c.toLowerCase()}.png` }}
           />

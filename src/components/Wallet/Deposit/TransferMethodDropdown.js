@@ -7,6 +7,7 @@ import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { toggleTransferMethodModal } from '../../../redux/modals/actions';
+import FastImage from 'react-native-fast-image';
 
 export default function TransferMethodDropdown() {
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ export default function TransferMethodDropdown() {
       onPress={show}
       disabled={oneMethod}
     >
-      <Image source={source} style={styles.image} />
+      <FastImage source={source} style={styles.image} />
       <AppText medium style={styles.dropdownText}>
         {network} {walletTab}
       </AppText>

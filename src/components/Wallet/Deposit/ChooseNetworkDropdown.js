@@ -9,6 +9,7 @@ import colors from '../../../constants/colors';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { setNetwork } from '../../../redux/wallet/actions';
+import FastImage from 'react-native-fast-image';
 
 export default function ChooseNetworkDropdown({
   disabled = false,
@@ -92,7 +93,7 @@ export default function ChooseNetworkDropdown({
                       Choose Network
                     </AppText>
                   </View>
-                  <Image
+                  <FastImage
                     source={{ uri }}
                     style={[styles.image, imageDimensions]}
                   />
@@ -111,7 +112,7 @@ export default function ChooseNetworkDropdown({
           ) : (
             <View style={styles.view}>
               {icon && (
-                <Image
+                <FastImage
                   source={{ uri }}
                   style={[styles.image, styles.iconDimensions]}
                 />

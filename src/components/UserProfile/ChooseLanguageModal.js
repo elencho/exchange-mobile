@@ -9,6 +9,7 @@ import { toggleLanguageModal } from '../../redux/modals/actions';
 import { fetchUserInfo, setLanguage } from '../../redux/profile/actions';
 import { switchLanguage } from '../../utils/i18n';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
+import FastImage from 'react-native-fast-image';
 
 export default function ChooseLanguageModal() {
   const dispatch = useDispatch();
@@ -50,7 +51,7 @@ export default function ChooseLanguageModal() {
             style={[styles.button, background(l)]}
             onPress={() => chooseLanguage(l)}
           >
-            <Image source={{ uri: uri(l) }} style={styles.flag} />
+            <FastImage source={{ uri: uri(l) }} style={styles.flag} />
             <AppText style={styles.text}>{text(l)}</AppText>
           </Pressable>
           {i < a.length - 1 && <View style={styles.margin} />}

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import FastImage from 'react-native-fast-image';
 
 import AppModal from '../AppModal';
 import AppText from '../AppText';
@@ -67,7 +68,7 @@ export default function ChooseBankModal() {
           ]}
           onPress={() => choose(b.provider)}
         >
-          <Image
+          <FastImage
             source={{ uri: `${ICONS_URL_PNG}/${b.provider}.png` }}
             style={styles.image}
           />

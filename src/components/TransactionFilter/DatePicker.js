@@ -1,11 +1,11 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import { toggleDatePicker } from '../../redux/modals/actions';
+import CalendarIcon from '../../assets/images/Calendar';
 
 export default function DatePicker({ to = false, from = false }) {
   const dispatch = useDispatch();
@@ -37,7 +37,7 @@ export default function DatePicker({ to = false, from = false }) {
   return (
     <Pressable onPress={showDatePickerModal} style={styles.dropdown}>
       <AppText style={{ color: color() }}>{text()}</AppText>
-      <Image source={images.Calendar} />
+      <CalendarIcon />
     </Pressable>
   );
 }

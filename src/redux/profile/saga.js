@@ -1,5 +1,5 @@
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
-import { asyncPkceChallenge } from 'react-native-pkce-challenge';
+import pkceChallenge from 'react-native-pkce-challenge';
 import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode';
 
@@ -69,31 +69,32 @@ import { resetWalletState } from '../wallet/actions';
 
 //  START LOGIN
 function* startLoginSaga(action) {
+  const pkceInfo = pkceChallenge();
   const { navigation } = action;
+  if (pkceInfo) {
+    yield put(savePkceInfo(pkceInfo));
+    const loginStartInfo = yield call(loginStart, pkceInfo?.codeChallenge);
 
-  const pkceInfo = yield call(async () => await asyncPkceChallenge());
-  yield put(savePkceInfo(pkceInfo));
-
-  const loginStartInfo = yield call(loginStart, pkceInfo?.codeChallenge);
-
-  yield put(saveLoginStartInfo(loginStartInfo));
-  if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
-    navigation.navigate('Login');
+    yield put(saveLoginStartInfo(loginStartInfo));
+    if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
+      navigation.navigate('Login');
+    }
   }
 }
 
 //  START REGISTRATION
 function* startRegistrationSaga(action) {
+  const pkceInfo = pkceChallenge();
   const { navigation } = action;
+  if (pkceInfo) {
+    yield put(savePkceInfo(pkceInfo));
 
-  const pkceInfo = yield call(async () => await asyncPkceChallenge());
-  yield put(savePkceInfo(pkceInfo));
+    const registrationStartInfo = yield call(registrationStart);
+    yield put(saveRegistrationStartInfo(registrationStartInfo));
 
-  const registrationStartInfo = yield call(registrationStart);
-  yield put(saveRegistrationStartInfo(registrationStartInfo));
-
-  if (registrationStartInfo?.execution === 'REGISTRATION_START') {
-    navigation.navigate('Registration');
+    if (registrationStartInfo?.execution === 'REGISTRATION_START') {
+      navigation.navigate('Registration');
+    }
   }
 }
 

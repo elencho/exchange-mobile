@@ -8,6 +8,7 @@ import colors from '../../../constants/colors';
 import { COINS_URL_PNG } from '../../../constants/api';
 import { fetchCurrencies } from '../../../redux/transactions/actions';
 import { toggleCurrencyModal } from '../../../redux/modals/actions';
+import FastImage from 'react-native-fast-image';
 
 export default function WalletCoinsDropdown() {
   const dispatch = useDispatch();
@@ -27,11 +28,10 @@ export default function WalletCoinsDropdown() {
   return (
     <>
       <Pressable style={styles.container} onPress={handleDropdown}>
-        <Image
+        <FastImage
           source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
           style={styles.image}
         />
-
         <View style={styles.balance}>
           <AppText body medium style={styles.primary}>
             {available} {code}

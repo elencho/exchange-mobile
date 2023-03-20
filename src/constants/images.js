@@ -7,14 +7,10 @@ export default {
   Arrow: require('../assets/images/Arrow.png'),
   Left: require('../assets/images/Left.png'),
   Right: require('../assets/images/Right.png'),
-  Calendar: require('../assets/images/Calendar.png'),
   Clear: require('../assets/images/Clear.png'),
-  Download: require('../assets/images/Download.png'),
   Failed: require('../assets/images/Failed.png'),
-  Filter: require('../assets/images/Filter.png'),
   Focused: require('../assets/images/Focused.png'),
   Pending: require('../assets/images/Pending.png'),
-  Search: require('../assets/images/Search.png'),
   Success: require('../assets/images/Success.png'),
   AMEX: require('../assets/images/Amex.png'),
   MASTERCARD: require('../assets/images/MC_Card.png'),
@@ -22,7 +18,6 @@ export default {
 
   //User Profile
   General_Error: require('../assets/images/User_profile/General_Error.png'),
-  Back: require('../assets/images/User_profile/Back.png'),
   Biometric: require('../assets/images/User_profile/Biometric.png'),
   E_Mail_Verified: require('../assets/images/User_profile/E_Mail_Verified.png'),
   E_Mail_Not_Verified: require('../assets/images/User_profile/E_Mail_Not_Verified.png'),
@@ -31,10 +26,7 @@ export default {
   Show: require('../assets/images/User_profile/Show.png'),
   IosStore: require('../assets/images/User_profile/IosStore.png'),
   AndroidStore: require('../assets/images/User_profile/AndroidStore.png'),
-  User: require('../assets/images/User_profile/User.png'),
-  Portfolio: require('../assets/images/User_profile/Portfolio.png'),
   Browser: require('../assets/images/User_profile/Browser.png'),
-  Logout: require('../assets/images/User_profile/Logout.png'),
   Card_Name: require('../assets/images/User_profile/Card_Name.png'),
   Card_Digits: require('../assets/images/User_profile/Card_Digits.png'),
 

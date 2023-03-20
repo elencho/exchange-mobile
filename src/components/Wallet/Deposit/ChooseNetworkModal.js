@@ -13,6 +13,7 @@ import {
   wireDepositAction,
 } from '../../../redux/wallet/actions';
 import { ICONS_URL_PNG } from '../../../constants/api';
+import FastImage from 'react-native-fast-image';
 
 export default function ChooseNetworkModal() {
   const dispatch = useDispatch();
@@ -90,7 +91,7 @@ export default function ChooseNetworkModal() {
           key={n.provider}
           onPress={() => handlePress(n.provider)}
         >
-          <Image
+          <FastImage
             source={{ uri: `${ICONS_URL_PNG}/${n.provider}.png` }}
             style={[styles.image, imageDimensions]}
           />

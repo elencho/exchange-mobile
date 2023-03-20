@@ -16,6 +16,7 @@ import AppText from '../../AppText';
 import WireBanksModal from './WireBanksModal';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { copyToClipboard } from '../../../utils/copyToClipboard';
+import FastImage from 'react-native-fast-image';
 
 const InfoRow = ({ title, text }) => {
   const copy = () => copyToClipboard(text);
@@ -96,8 +97,7 @@ export default function BankInfo() {
             Payment Service Provider
           </AppText>
         </View>
-
-        <Image
+        <FastImage
           source={{ uri: `${ICONS_URL_PNG}/${wireDepositProvider}.png` }}
           style={styles.image}
         />

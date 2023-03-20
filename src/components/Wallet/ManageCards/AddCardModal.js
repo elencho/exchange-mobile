@@ -13,6 +13,10 @@ import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import BankFeesModal from '../../InstantTrade/BankFeesModal';
 import images from '../../../constants/images';
 import colors from '../../../constants/colors';
+
+import CheckFull from '../../../assets/images/Check_Full.svg';
+import CheckRed from '../../../assets/images/Check_Red.svg';
+import CheckEmpty from '../../../assets/images/Check_Empty.svg';
 import {
   setStatusModalInfo,
   toggleAddCardModal,
@@ -45,12 +49,22 @@ export default function AddCardModal() {
 
   const hide = () => dispatch(toggleAddCardModal(false));
 
-  const image = () =>
-    !saveCardAgreeTerms && error
-      ? images.Check_Red
-      : saveCardAgreeTerms
-      ? images.Check_Full
-      : images.Check_Empty;
+  const image = () => {
+    let result;
+    switch (true) {
+      case !saveCardAgreeTerms && error:
+        result = <CheckRed />;
+        break;
+      case saveCardAgreeTerms:
+        result = <CheckFull />;
+        break;
+      default:
+        result = <CheckEmpty />;
+        break;
+    }
+    return result;
+  };
+
   const toggle = () => setSaveCardAgreeTerms(!saveCardAgreeTerms);
   const showBanks = () => dispatch(toggleChooseBankModal(true));
   const showFees = () => dispatch(toggleBankFeesModal(true));
@@ -136,7 +150,7 @@ export default function AddCardModal() {
       {depositProvider === 'BOG' && (
         <View style={styles.row}>
           <Pressable style={styles.image} onPress={toggle}>
-            <Image source={image()} style={{ marginRight: 10 }} />
+            {image()}
           </Pressable>
           <AppText style={[styles.grey, { color: termsColor }]}>
             {t('Save Card & Agree')}{' '}

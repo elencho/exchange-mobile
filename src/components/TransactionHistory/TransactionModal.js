@@ -14,6 +14,7 @@ import { toggleTransactionDetails } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
 import { COINS_URL_PNG } from '../../constants/api';
 import { copyToClipboard } from '../../utils/copyToClipboard';
+import FastImage from 'react-native-fast-image';
 
 function TransactionModal({ transactions, trades }) {
   const dispatch = useDispatch();
@@ -143,13 +144,13 @@ function TransactionModal({ transactions, trades }) {
         <>
           <View style={[styles.top, { alignItems: 'flex-end' }]}>
             <View style={[styles.top, styles.icons]}>
-              <Image
+              <FastImage
                 source={{
                   uri: `${COINS_URL_PNG}/${quoteCurrency?.toLowerCase()}.png`,
                 }}
                 style={styles.leftIcon}
               />
-              <Image
+              <FastImage
                 source={{
                   uri: `${COINS_URL_PNG}/${baseCurrency?.toLowerCase()}.png`,
                 }}

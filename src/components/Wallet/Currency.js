@@ -14,6 +14,7 @@ import {
   wireDepositAction,
 } from '../../redux/wallet/actions';
 import AppText from '../AppText';
+import FastImage from 'react-native-fast-image';
 
 function Currency({ code, name, total, available, valueUSD, valueBTC }) {
   const navigation = useNavigation();
@@ -56,7 +57,7 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
   return (
     <Pressable style={styles.container} onPress={handlePress}>
       <View style={styles.img}>
-        <Image
+        <FastImage
           style={styles.image}
           source={{ uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png` }}
         />

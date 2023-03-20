@@ -1,0 +1,29 @@
+diff --git a/node_modules/react-native-pkce-challenge/src/.generate-random-bytes.native.ts.swp b/node_modules/react-native-pkce-challenge/src/.generate-random-bytes.native.ts.swp
+new file mode 100644
+index 0000000..060656f
+Binary files /dev/null and b/node_modules/react-native-pkce-challenge/src/.generate-random-bytes.native.ts.swp differ
+diff --git a/node_modules/react-native-pkce-challenge/src/generate-random-bytes.native.ts b/node_modules/react-native-pkce-challenge/src/generate-random-bytes.native.ts
+index 31db1d6..bc86195 100644
+--- a/node_modules/react-native-pkce-challenge/src/generate-random-bytes.native.ts
++++ b/node_modules/react-native-pkce-challenge/src/generate-random-bytes.native.ts
+@@ -10,14 +10,16 @@ export default function generateRandomBytes(): string {
+     return bytes;
+   }
+   
+-  if ((global as any).ExpoModules) {
+-    const bytes = (global as any).ExpoModules.ExpoRandom.getRandomBase64String(BYTE_LENGTH);
++  const globelObj = (global as any)
++
++  if (globelObj?.ExpoModules?.ExpoRandom) {
++        const bytes = globelObj.ExpoRandom.getRandomBase64String(BYTE_LENGTH);
+      
+     return bytes;
+   }
+ 
+-  if ((global as any).RNPkceChallenge) {
+-    const bytes = (global as any).RNPkceChallenge.randomBytes(BYTE_LENGTH);
++  if (globelObj?.RNPkceChallenge) {
++       const bytes = globelObj.RNPkceChallenge.randomBytes(BYTE_LENGTH);
+ 
+     return bytes;
+   }
