@@ -10,7 +10,6 @@ import colors from '../../../constants/colors';
 import images from '../../../constants/images';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { setDeleteModalInfo } from '../../../redux/modals/actions';
-import FastImage from 'react-native-fast-image';
 
 export default function Card({ card }) {
   const dispatch = useDispatch();
@@ -60,7 +59,7 @@ export default function Card({ card }) {
 
   return (
     <View style={styles.container}>
-      <FastImage
+      <Image
         source={{ uri: `${ICONS_URL_PNG}/${provider}.png` }}
         style={styles.image}
       />

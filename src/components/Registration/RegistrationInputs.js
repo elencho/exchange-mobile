@@ -18,7 +18,6 @@ import images from '../../constants/images';
 import { setRegistrationInputs } from '../../redux/profile/actions';
 import { toggleCountriesModal } from '../../redux/modals/actions';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
-import FastImage from 'react-native-fast-image';
 
 export default function RegistrationInputs({ validations, error }) {
   const dispatch = useDispatch();
@@ -133,7 +132,7 @@ export default function RegistrationInputs({ validations, error }) {
         <Pressable style={styles.number} onPress={openCountriesModal}>
           {i.phoneCountry ? (
             <>
-              <FastImage
+              <Image
                 source={{ uri: `${COUNTRIES_URL_PNG}/${i.phoneCountry}.png` }}
                 style={styles.flag}
               />

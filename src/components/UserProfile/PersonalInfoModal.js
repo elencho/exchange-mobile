@@ -24,7 +24,6 @@ import { saveUserInfo, saveUserInfoSaga } from '../../redux/profile/actions';
 import GeneralError from '../GeneralError';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
 import { errorHappenedHere } from '../../utils/appUtils';
-import FastImage from 'react-native-fast-image';
 
 export default function PersonalInfoModal() {
   const dispatch = useDispatch();
@@ -166,7 +165,7 @@ export default function PersonalInfoModal() {
               </AppText>
             </View>
 
-            <FastImage
+            <Image
               source={{
                 uri: `${COUNTRIES_URL_PNG}/${citizenship}.png`,
               }}
@@ -188,7 +187,7 @@ export default function PersonalInfoModal() {
               Country
             </AppText>
           </View>
-          <FastImage
+          <Image
             source={{
               uri: `${COUNTRIES_URL_PNG}/${countryCode}.png`,
             }}

@@ -9,7 +9,6 @@ import colors from '../../../constants/colors';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { toggleTransferMethodModal } from '../../../redux/modals/actions';
 import { setNetwork } from '../../../redux/wallet/actions';
-import FastImage from 'react-native-fast-image';
 
 export default function TransferMethodModal() {
   const dispatch = useDispatch();
@@ -77,7 +76,7 @@ export default function TransferMethodModal() {
           key={m.displayName}
           onPress={() => handlePress(m.provider)}
         >
-          <FastImage source={source(m.provider)} style={styles.image} />
+          <Image source={source(m.provider)} style={styles.image} />
           <AppText body style={styles.primary}>
             {m.displayName}
           </AppText>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../../AppModal';
@@ -7,7 +7,6 @@ import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { toggleWireBanksModal } from '../../../redux/modals/actions';
-import FastImage from 'react-native-fast-image';
 
 export default function WireBanksModal({ setInfo }) {
   const dispatch = useDispatch();
@@ -57,7 +56,7 @@ export default function WireBanksModal({ setInfo }) {
           ]}
           onPress={() => choose(abbr(b))}
         >
-          <FastImage
+          <Image
             source={{ uri: `${ICONS_URL_PNG}/${abbr(b)}.png` }}
             style={styles.icon}
           />

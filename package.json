@@ -63,7 +63,6 @@
     "react-native-confirmation-code-field": "^7.3.1",
     "react-native-device-info": "^10.4.0",
     "react-native-extra-dimensions-android": "^1.2.5",
-    "react-native-fast-image": "^8.6.3",
     "react-native-flipper": "^0.184.0",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-indicators": "^0.17.0",

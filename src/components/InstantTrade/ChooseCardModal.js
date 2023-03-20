@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { ICONS_URL_PNG } from '../../constants/api';
 
@@ -56,7 +55,7 @@ export default function ChooseCardModal() {
       onPress={() => choose(c)}
     >
       <View style={styles.iconContainer}>
-        <FastImage
+        <Image
           source={{ uri: `${ICONS_URL_PNG}/${c.network}.png` }}
           style={{ width: '100%', height: '100%' }}
         />
