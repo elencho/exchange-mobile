@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import {
@@ -6,7 +6,6 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
   Keyboard,
-  ActivityIndicator,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
