@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../../AppModal';
@@ -10,11 +10,14 @@ import {
   toggleSmsAuthModal,
   toggleWhitelistActionsModal,
 } from '../../../redux/modals/actions';
-import images from '../../../constants/images';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import { sendOtp } from '../../../utils/userProfileUtils';
 import { copyToClipboard } from '../../../utils/copyToClipboard';
+
+import DeleteWhite from '../../../assets/images/Wallet/DeleteWhite.svg';
+import CopyWhite from '../../../assets/images/Wallet/CopyWhite.svg';
+import Edit from '../../../assets/images/Wallet/Edit.svg';
 
 export default function WhitelistActionsModal() {
   const dispatch = useDispatch();
@@ -60,11 +63,11 @@ export default function WhitelistActionsModal() {
   const image = (a) => {
     switch (a) {
       case 'Edit Whitelist':
-        return images.Edit;
+        return <Edit />;
       case 'Delete Whitelist':
-        return images.Delete_White;
+        return <DeleteWhite />;
       case 'Copy Address':
-        return images.White_Copy;
+        return <CopyWhite />;
       default:
         break;
     }
@@ -87,7 +90,7 @@ export default function WhitelistActionsModal() {
           key={a}
           onPress={() => handlePress(a)}
         >
-          <Image source={image(a)} />
+          {image(a)}
           <AppText body style={styles.primary}>
             {a}
           </AppText>
@@ -98,7 +101,7 @@ export default function WhitelistActionsModal() {
           style={styles.pressable}
           onPress={() => handlePress('Copy Tag')}
         >
-          <Image source={images.White_Copy} />
+          <CopyWhite />
           <AppText body style={styles.primary}>
             Copy Tag
           </AppText>

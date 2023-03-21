@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
-import images from '../../../constants/images';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { toggleTransferMethodModal } from '../../../redux/modals/actions';
+
+import Arrow from '../../../assets/images/Arrow';
 
 export default function TransferMethodDropdown() {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ export default function TransferMethodDropdown() {
       <AppText medium style={styles.dropdownText}>
         {network} {walletTab}
       </AppText>
-      {!oneMethod && <Image source={images.Arrow} />}
+      {!oneMethod && <Arrow />}
     </Pressable>
   );
 }

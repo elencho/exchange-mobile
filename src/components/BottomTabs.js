@@ -11,9 +11,8 @@ import ExchangeActive from '../assets/images/BottomTabs/Exchange_Active.svg';
 import TradeActive from '../assets/images/BottomTabs/Trade_Active.svg';
 import WalletActive from '../assets/images/BottomTabs/Wallet_Active.svg';
 import TransactionsActive from '../assets/images/BottomTabs/Transactions_Active.svg';
-
+import FocusIcon from '../assets/images/Focused';
 import colors from '../constants/colors';
-import images from '../constants/images';
 
 export default function BottomTabs({ navigation, descriptors, routes }) {
   const dispatch = useDispatch();
@@ -30,7 +29,6 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
     Transactions: <TransactionsActive />,
     Exchange: <ExchangeActive />,
     Trade: <TradeActive />,
-    FocusIcon: images.Focused,
   };
 
   const inactive = {
@@ -54,9 +52,7 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
               locations={[0.3, 0.8]}
             >
               {focused ? active[route.name] : inactive[route.name]}
-              {focused && (
-                <Image source={active.FocusIcon} style={styles.focus} />
-              )}
+              {focused && <FocusIcon style={styles.focus} />}
             </LinearGradient>
           </Pressable>
         );

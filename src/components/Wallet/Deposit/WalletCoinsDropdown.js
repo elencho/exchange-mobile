@@ -2,12 +2,12 @@ import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import images from '../../../constants/images';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import { COINS_URL_PNG } from '../../../constants/api';
-import { fetchCurrencies } from '../../../redux/transactions/actions';
 import { toggleCurrencyModal } from '../../../redux/modals/actions';
+
+import Arrow from '../../../assets/images/Arrow';
 
 export default function WalletCoinsDropdown() {
   const dispatch = useDispatch();
@@ -40,7 +40,7 @@ export default function WalletCoinsDropdown() {
         <View style={styles.line} />
 
         <View style={styles.arrow}>
-          <Image source={images.Arrow} />
+          <Arrow />
         </View>
       </Pressable>
 

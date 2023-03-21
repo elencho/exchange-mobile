@@ -1,12 +1,14 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import { setStatusModalInfo } from '../../redux/modals/actions';
+
+import StatusError from '../../assets/images/Wallet/ErrorStatus.svg';
+import StatusSuccess from '../../assets/images/Wallet/SuccessStatus.svg';
 
 export default function StatusModal({ deposit, cards }) {
   const dispatch = useDispatch();
@@ -18,9 +20,6 @@ export default function StatusModal({ deposit, cards }) {
   const hide = () =>
     dispatch(setStatusModalInfo({ ...statusModalInfo, visible: false }));
   const onModalHide = () => dispatch(setStatusModalInfo(null));
-
-  const image =
-    statusModalInfo?.success === 'true' ? 'Status_Success' : 'Status_Error';
 
   const text = () => {
     if (cards) return `card add header ${statusModalInfo?.success}`;
@@ -35,8 +34,11 @@ export default function StatusModal({ deposit, cards }) {
 
   const children = (
     <View style={styles.container}>
-      <Image source={images[image]} style={{ marginVertical: 30 }} />
-
+      {statusModalInfo?.success === 'true' ? (
+        <StatusSuccess />
+      ) : (
+        <StatusError />
+      )}
       <AppText header style={styles.white}>
         {text()}
       </AppText>

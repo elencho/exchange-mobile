@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Image,
-  StyleSheet,
-  View,
-  Platform,
-  TouchableOpacity,
-  Linking,
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
 
@@ -18,12 +11,14 @@ import GeneralError from '../GeneralError';
 import Copy from '../../assets/images/Copy.svg';
 
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import { toggleGoogleAuthModal } from '../../redux/modals/actions';
 import { activateGoogleOtp, setGoogleAuth } from '../../redux/profile/actions';
 import { copyToClipboard } from '../../utils/copyToClipboard';
 import { errorHappenedHere } from '../../utils/appUtils';
 import { IS_IOS } from '../../constants/system';
+
+import AppStoreIcon from '../../assets/images/User_profile/Appstore.svg';
+import PlayStoreIcon from '../../assets/images/User_profile/Playstore.svg';
 
 export default function GoogleAuthModal() {
   const dispatch = useDispatch();
@@ -99,10 +94,7 @@ export default function GoogleAuthModal() {
         </View>
 
         <TouchableOpacity style={styles.store} onPress={handleStore}>
-          <Image
-            source={images[IS_IOS ? 'IosStore' : 'AndroidStore']}
-            style={styles.storeIcon}
-          />
+          {IS_IOS ? <AppStoreIcon /> : <PlayStoreIcon />}
         </TouchableOpacity>
       </View>
 

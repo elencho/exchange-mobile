@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'i18next';
 
@@ -11,7 +11,6 @@ import AppInfoBlock from '../../AppInfoBlock';
 import PurpleText from '../../PurpleText';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import BankFeesModal from '../../InstantTrade/BankFeesModal';
-import images from '../../../constants/images';
 import colors from '../../../constants/colors';
 
 import CheckFull from '../../../assets/images/Check_Full.svg';
@@ -25,6 +24,8 @@ import {
 } from '../../../redux/modals/actions';
 import { addCard } from '../../../utils/walletUtils';
 import { cardsSagaAction } from '../../../redux/trade/actions';
+
+import Arrow from '../../../assets/images/Arrow';
 
 export default function AddCardModal() {
   const dispatch = useDispatch();
@@ -131,7 +132,7 @@ export default function AddCardModal() {
           <AppText style={[styles.text, { color }]} medium={depositProvider}>
             {depositProvider ? depositProvider : 'Payment Service Provider'}
           </AppText>
-          <Image source={images['Arrow']} />
+          <Arrow />
         </Pressable>
 
         {/* <AppText subtext style={styles.subText}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import AppText from '../AppText';
@@ -9,7 +9,10 @@ import WithdrawalIcon from '../../assets/images/Withdrawal.svg';
 import colors from '../../constants/colors';
 import { transactionDetailsSaga } from '../../redux/transactions/actions';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
-import images from '../../constants/images';
+
+import Pending from '../../assets/images/Pending.svg';
+import Success from '../../assets/images/Success.svg';
+import Failed from '../../assets/images/Failed.svg';
 
 export default function Transaction({ transaction, date, time }) {
   const dispatch = useDispatch();
@@ -36,9 +39,9 @@ export default function Transaction({ transaction, date, time }) {
   };
 
   const statusIcon = () => {
-    if (status === 'PENDING') return images.Pending;
-    if (status === 'SUCCESS') return images.Success;
-    if (status === 'FAILED') return images.Failed;
+    if (status === 'PENDING') return <Pending style={styles.dot} />;
+    if (status === 'SUCCESS') return <Success style={styles.dot} />;
+    if (status === 'FAILED') return <Failed style={styles.dot} />;
   };
 
   return (
@@ -61,7 +64,7 @@ export default function Transaction({ transaction, date, time }) {
           <AppText style={[styles.status, { marginRight: 5 }]}>
             {status}
           </AppText>
-          <Image source={statusIcon()} style={styles.dot} />
+          {statusIcon()}
         </View>
 
         <AppText medium style={styles.currency}>

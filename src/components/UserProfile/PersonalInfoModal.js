@@ -24,6 +24,7 @@ import { saveUserInfo, saveUserInfoSaga } from '../../redux/profile/actions';
 import GeneralError from '../GeneralError';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
 import { errorHappenedHere } from '../../utils/appUtils';
+import Arrow from '../../assets/images/Arrow';
 
 export default function PersonalInfoModal() {
   const dispatch = useDispatch();
@@ -174,7 +175,7 @@ export default function PersonalInfoModal() {
             <AppText medium style={styles.dropdownText}>
               {citizenshipText(citizenship)}
             </AppText>
-            <Image source={images.Arrow} />
+            <Arrow />
           </Pressable>
         )}
 
@@ -196,7 +197,7 @@ export default function PersonalInfoModal() {
           <AppText medium style={styles.dropdownText}>
             {country}
           </AppText>
-          <Image source={images.Arrow} />
+          <Arrow />
         </Pressable>
 
         <View style={styles.row}>

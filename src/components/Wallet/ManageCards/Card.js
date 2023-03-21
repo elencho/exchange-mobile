@@ -11,6 +11,12 @@ import images from '../../../constants/images';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { setDeleteModalInfo } from '../../../redux/modals/actions';
 
+import CardVerified from '../../../assets/images/Wallet/Verified.svg';
+import CardError from '../../../assets/images/Wallet/Card_Error';
+import CardExpired from '../../../assets/images/Wallet/Card_Expired';
+import CardInfo from '../../../assets/images/Wallet/Info';
+import Delete from '../../../assets/images/Wallet/Delete.svg';
+
 export default function Card({ card }) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -49,10 +55,11 @@ export default function Card({ card }) {
   };
 
   const imageCond = () => {
-    if (expired) return images.Card_Expired;
-    if (status === 'VERIFIED') return images.Verified;
-    if (status === 'UNVERIFIED') return images.Info;
-    if (status === 'BANNED' || status === 'FAILED') return images.Card_Error;
+    if (expired) return <CardExpired style={styles.icon} />;
+    if (status === 'VERIFIED') return <CardVerified style={styles.icon} />;
+    if (status === 'UNVERIFIED') return <CardInfo style={styles.icon} />;
+    if (status === 'BANNED' || status === 'FAILED')
+      return <CardError style={styles.icon} />;
   };
 
   const openModal = () => dispatch(setDeleteModalInfo({ id, visible: true }));
@@ -72,13 +79,13 @@ export default function Card({ card }) {
           {cardNumber} / {network}
         </AppText>
         <View style={styles.verifiedRow}>
-          <Image source={imageCond()} style={styles.icon} />
+          {imageCond()}
           {textCond()}
         </View>
       </View>
 
       <TouchableOpacity onPress={openModal}>
-        <Image source={images.Delete} />
+        <Delete />
       </TouchableOpacity>
     </View>
   );

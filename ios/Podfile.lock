@@ -885,8 +885,8 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: cbdee19bdd4e7f05472a66ce290f1b729ba3cb86
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
-  hermes-engine: a1f157c49ea579c28b0296bda8530e980c45bdb3
+  glog: 791fe035093b84822da7f0870421a25839ca7870
+  hermes-engine: 5d86dc4303697a1251c830f0ee45e6e9f33877d4
   IdensicMobileSDK: 6270bcb02c9e85fa0b73f85e1135a99cb5959d87
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
