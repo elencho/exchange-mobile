@@ -17,7 +17,7 @@ function TopRow({ clear }) {
     if (firstName && lastName) {
       return `${firstName[0]} ${lastName[0]}`;
     } else {
-      return `ME`;
+      return '';
     }
   };
 
