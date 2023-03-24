@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import colors from '../../constants/colors';
+import { IS_IOS } from '../../constants/system';
 import Skeleton from '../Skeleton';
-
-const IS_IOS = Platform.OS === 'ios';
 
 const SecondPart = () => (
   <View style={styles.container}>

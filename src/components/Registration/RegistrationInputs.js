@@ -14,10 +14,10 @@ import AppInput from '../AppInput';
 import AppText from '../AppText';
 import CountriesModal from '../UserProfile/CountriesModal';
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import { setRegistrationInputs } from '../../redux/profile/actions';
 import { toggleCountriesModal } from '../../redux/modals/actions';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
+import Arrow from '../../assets/images/Arrow';
 
 export default function RegistrationInputs({ validations, error }) {
   const dispatch = useDispatch();
@@ -145,8 +145,7 @@ export default function RegistrationInputs({ validations, error }) {
               Code
             </AppText>
           )}
-
-          <Image source={images.Arrow} />
+          <Arrow />
           <View style={styles.line} />
         </Pressable>
 

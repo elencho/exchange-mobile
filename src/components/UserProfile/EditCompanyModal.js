@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Linking, StyleSheet, View } from 'react-native';
+import { Linking, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'i18next';
 
@@ -7,8 +7,9 @@ import AppModal from '../AppModal';
 import AppText from '../AppText';
 import AppButton from '../AppButton';
 import PurpleText from '../PurpleText';
-import images from '../../constants/images';
 import colors from '../../constants/colors';
+
+import Browser from '../../assets/images/User_profile/Browser.svg';
 
 export default function EditCompanyModal() {
   const dispatch = useDispatch();
@@ -24,8 +25,7 @@ export default function EditCompanyModal() {
 
   const children = (
     <View style={styles.container}>
-      <Image source={images.Browser} />
-
+      <Browser />
       <AppText header style={styles.white}>
         Go to web header
       </AppText>

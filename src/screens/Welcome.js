@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import {
@@ -6,7 +6,6 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
   Keyboard,
-  ActivityIndicator,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
@@ -46,6 +45,21 @@ import VersionCheck from 'react-native-version-check';
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
 
+  useFocusEffect(() => {
+    checkVersion();
+    if (isWorkingVersion()) {
+      SecureStore.getItemAsync('accessToken').then((t) => {
+        if (t) navigation.navigate('Main');
+      });
+    }
+    dispatch(saveUserInfo({}));
+  });
+
+  useEffect(() => {
+    changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
+    fetchData();
+  }, []);
+
   const checkVersion = async () => {
     try {
       const countryName = await getCountryName;
@@ -81,21 +95,6 @@ export default function Welcome({ navigation }) {
       return false;
     } else return true;
   };
-
-  useFocusEffect(() => {
-    checkVersion();
-    if (isWorkingVersion()) {
-      SecureStore.getItemAsync('accessToken').then((t) => {
-        if (t) navigation.navigate('Main');
-      });
-    }
-    dispatch(saveUserInfo({}));
-  });
-
-  useEffect(() => {
-    changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
-    fetchData();
-  }, []);
 
   const fetchData = async () => {
     await fetchTranslations()
@@ -137,8 +136,6 @@ export default function Welcome({ navigation }) {
           <AppText header style={styles.primary}>
             Welcome to Cryptal
           </AppText>
-
-          {/* <AppText style={styles.secondary}>{auth}</AppText> */}
 
           <GeneralError
             style={styles.error}

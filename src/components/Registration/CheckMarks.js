@@ -7,6 +7,9 @@ import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import images from '../../constants/images';
 import { setRegistrationInputs } from '../../redux/profile/actions';
+import CheckRed from '../../assets/images/Check_Red.svg';
+import CheckFull from '../../assets/images/Check_Full.svg';
+import CheckEmpty from '../../assets/images/Check_Empty.svg';
 
 export default function CheckMarks({ error, validations }) {
   const dispatch = useDispatch();
@@ -21,12 +24,15 @@ export default function CheckMarks({ error, validations }) {
 
   const image = (type) => {
     if (type === 'acceptTerms') {
-      if (v.terms) return images.Check_Full;
-      if (error && !v.terms) return images.Check_Red;
+      if (v.terms) {
+        return <CheckFull />;
+      } else if (error) {
+        return <CheckRed />;
+      }
+    } else if (type === 'updates' && i.getEmailUpdates === 'on') {
+      return <CheckFull />;
     }
-    if (type === 'updates' && i.getEmailUpdates === 'on')
-      return images.Check_Full;
-    return images.Check_Empty;
+    return <CheckEmpty />;
   };
 
   const toggle = (type) => {
@@ -63,7 +69,7 @@ export default function CheckMarks({ error, validations }) {
           key={c}
         >
           <Pressable style={styles.image} onPress={() => toggle(c)}>
-            <Image source={image(c)} />
+            {image(c)}
           </Pressable>
           {text(c)}
         </View>

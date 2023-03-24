@@ -1,6 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { Pressable, StyleSheet, Image } from 'react-native';
 
 import AppText from './AppText';
 import ShowAll from '../assets/images/ShowAll';
@@ -52,7 +51,7 @@ export default function ModalSearchItem({
   return (
     <Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
       {code ? (
-        <FastImage style={styles.image} source={{ uri }} />
+        <Image style={styles.image} source={{ uri }} />
       ) : (
         <ShowAll style={{ marginRight: 20 }} />
       )}

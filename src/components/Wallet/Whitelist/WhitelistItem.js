@@ -1,12 +1,13 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import images from '../../../constants/images';
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import { toggleWhitelistActionsModal } from '../../../redux/modals/actions';
 import { chooseWhitelist, setNetwork } from '../../../redux/wallet/actions';
+
+import Menu from '../../../assets/images/Wallet/Menu.svg';
 
 export default function WhitelistItem({ whitelistItem }) {
   const { name, address, tag, provider } = whitelistItem;
@@ -30,7 +31,7 @@ export default function WhitelistItem({ whitelistItem }) {
       </View>
 
       <TouchableOpacity onPress={openModal} style={styles.menu}>
-        <Image source={images.Menu} />
+        <Menu />
       </TouchableOpacity>
     </View>
   );

@@ -8,9 +8,14 @@ const sagaMiddleware = createSagaMiddleware({
   // onError: (error) => alert(error),
 });
 
+const middlewares = [sagaMiddleware];
+if (__DEV__) {
+  const createDebugger = require('redux-flipper').default;
+  middlewares.push(createDebugger());
+}
 const store = configureStore({
   reducer,
-  middleware: [sagaMiddleware],
+  middleware: [...middlewares],
   devTools: true,
 });
 sagaMiddleware.run(mySaga);

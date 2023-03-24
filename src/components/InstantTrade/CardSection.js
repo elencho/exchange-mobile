@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
@@ -9,13 +9,13 @@ import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import {
   toggleChooseCardModal,
   toggleChooseBankModal,
   toggleBankFeesModal,
 } from '../../redux/modals/actions';
 import { setCard } from '../../redux/trade/actions';
+import Arrow from '../../assets/images/Arrow.svg';
 
 function CardSection({ error }) {
   const navigation = useNavigation();
@@ -125,7 +125,7 @@ function CardSection({ error }) {
             <AppText style={[styles.text, { color }]} medium={depositProvider}>
               {displayName()}
             </AppText>
-            <Image source={images['Arrow']} />
+            <Arrow />
           </Pressable>
 
           {/* {trade && depositProvider && (
@@ -153,7 +153,7 @@ function CardSection({ error }) {
             >
               {card ? card.cardNumber : 'Choose Card'}
             </AppText>
-            <Image source={images['Arrow']} />
+            <Arrow />
           </Pressable>
 
           <AppText subtext style={styles.newCard}>

@@ -19,6 +19,8 @@ import Fee from '../Fee';
 import { validateAmount } from '../../../utils/appUtils';
 import { GENERATE_WIRE_PDF } from '../../../constants/api';
 
+import Generate from '../../../assets/images/Wallet/Generate.svg';
+
 export default function FiatBlock() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -184,7 +186,7 @@ export default function FiatBlock() {
         <AppButton
           text="Generate PDF"
           onPress={generatePdf}
-          left={loading ? null : <Image source={images.Generate} />}
+          left={loading ? null : <Generate />}
           style={styles.button}
           loading={loading}
         />

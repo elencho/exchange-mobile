@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../../AppText';
 
-import images from '../../../constants/images';
 import colors from '../../../constants/colors';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { setNetwork } from '../../../redux/wallet/actions';
+
+import Arrow from '../../../assets/images/Arrow';
 
 export default function ChooseNetworkDropdown({
   disabled = false,
@@ -106,7 +107,7 @@ export default function ChooseNetworkDropdown({
                   Choose Network
                 </AppText>
               )}
-              <Image source={images.Arrow} />
+              <Arrow />
             </Pressable>
           ) : (
             <View style={styles.view}>

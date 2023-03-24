@@ -1,10 +1,10 @@
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import Search from '../../assets/images/Search';
 
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import AppInput from '../AppInput';
 import AppText from '../AppText';
 import CustomRefreshContol from '../CustomRefreshContol';
@@ -91,7 +91,7 @@ export default function BalancesList({ balanceLoading }) {
         placeholder="Search Coin"
         placeholderTextColor="rgba(105, 111, 142, 0.5)"
         onChangeText={type}
-        left={<Image source={images.Search} style={styles.searchIcon} />}
+        left={<Search style={styles.searchIcon} />}
         value={value}
       />
 

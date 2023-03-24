@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import React from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
-import images from '../../../constants/images';
 import {
   toggleChooseBankModal,
   toggleTemplatesModal,
@@ -14,6 +13,7 @@ import AppInput from '../../AppInput';
 import AppText from '../../AppText';
 import TemplatesModal from './TemplatesModal';
 import WithdrawalBanksModal from './WithdrawalBanksModal';
+import Arrow from '../../../assets/images/Arrow';
 
 export default function WithdrawalInfo({ error }) {
   const dispatch = useDispatch();
@@ -162,7 +162,7 @@ export default function WithdrawalInfo({ error }) {
         <AppText style={[styles.dropdownText, titleColor('template')]}>
           {title}
         </AppText>
-        <Image source={images.Arrow} />
+        <Arrow />
       </Pressable>
 
       {currentTemplate.templateName === 'New Template' ? (
@@ -171,7 +171,7 @@ export default function WithdrawalInfo({ error }) {
             <AppText style={[styles.dropdownText, titleColor('bank')]}>
               {bankTitle}
             </AppText>
-            <Image source={images.Arrow} />
+            <Arrow />
           </Pressable>
           <WithdrawalBanksModal />
         </>

@@ -1,14 +1,16 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import images from '../../../constants/images';
 import {
   saveTemplateAction,
   setNewTemplateName,
 } from '../../../redux/wallet/actions';
 import AppInput from '../../AppInput';
 import AppText from '../../AppText';
+
+import CheckFull from '../../../assets/images/Check_Full.svg';
+import CheckEmpty from '../../../assets/images/Check_Empty.svg';
 
 export default function SaveAsTemplate() {
   const dispatch = useDispatch();
@@ -18,7 +20,6 @@ export default function SaveAsTemplate() {
     wallet: { saveTemplate, newTemplateName },
   } = state;
 
-  const image = () => (saveTemplate ? images.Check_Full : images.Check_Empty);
   const toggle = () => dispatch(saveTemplateAction(!saveTemplate));
   const handleNewTemplate = (t) => dispatch(setNewTemplateName(t));
 
@@ -26,7 +27,7 @@ export default function SaveAsTemplate() {
     <>
       <View style={[styles.row, { marginBottom: saveTemplate ? 15 : 38 }]}>
         <Pressable style={styles.image} onPress={toggle}>
-          <Image source={image()} />
+          {saveTemplate ? <CheckFull /> : <CheckEmpty />}
         </Pressable>
         <AppText style={styles.text}>Save as Template</AppText>
       </View>

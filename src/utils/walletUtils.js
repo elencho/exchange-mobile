@@ -1,4 +1,4 @@
-import { Platform, PermissionsAndroid } from 'react-native';
+import { PermissionsAndroid } from 'react-native';
 import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
@@ -20,6 +20,7 @@ import {
   DELETE_CARD_URL,
   MAX_WITHDRAWAL,
 } from '../constants/api';
+import { IS_ANDROID, IS_IOS } from '../constants/system';
 
 export const fetchWireDeposit = async (currency, provider) => {
   const data = await axios.get(`${WIRE_DEPOSIT}/${currency}`, {
@@ -49,11 +50,11 @@ export const generateFile = async (
     )
       .then(async (data) => {
         const { uri } = data;
-        if (Platform.OS === 'ios') {
+        if (IS_IOS) {
           await Sharing.shareAsync(uri);
         }
 
-        if (Platform.OS === 'android') {
+        if (IS_ANDROID) {
           await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
           );
