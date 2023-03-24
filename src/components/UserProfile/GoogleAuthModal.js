@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  View,
+  Platform,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
 
@@ -11,14 +18,11 @@ import GeneralError from '../GeneralError';
 import Copy from '../../assets/images/Copy.svg';
 
 import colors from '../../constants/colors';
+import images from '../../constants/images';
 import { toggleGoogleAuthModal } from '../../redux/modals/actions';
 import { activateGoogleOtp, setGoogleAuth } from '../../redux/profile/actions';
 import { copyToClipboard } from '../../utils/copyToClipboard';
 import { errorHappenedHere } from '../../utils/appUtils';
-import { IS_IOS } from '../../constants/system';
-
-import AppStoreIcon from '../../assets/images/User_profile/Appstore.svg';
-import PlayStoreIcon from '../../assets/images/User_profile/Playstore.svg';
 
 export default function GoogleAuthModal() {
   const dispatch = useDispatch();
@@ -30,6 +34,7 @@ export default function GoogleAuthModal() {
 
   const [key, setKey] = useState('');
   const [googleAuthLoading, setGoogleAuthLoading] = useState(false);
+  const isIos = Platform.OS === 'ios';
 
   useEffect(() => {
     return () => setGoogleAuthLoading(false);
@@ -42,7 +47,7 @@ export default function GoogleAuthModal() {
       'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&gl=US';
     const iosLink =
       'https://apps.apple.com/us/app/google-authenticator/id388497605';
-    Linking.openURL(IS_IOS ? iosLink : androidLink)
+    Linking.openURL(isIos ? iosLink : androidLink)
       .then(() => {})
       .catch((err) => console.log(err));
   };
@@ -94,7 +99,10 @@ export default function GoogleAuthModal() {
         </View>
 
         <TouchableOpacity style={styles.store} onPress={handleStore}>
-          {IS_IOS ? <AppStoreIcon /> : <PlayStoreIcon />}
+          <Image
+            source={images[isIos ? 'IosStore' : 'AndroidStore']}
+            style={styles.storeIcon}
+          />
         </TouchableOpacity>
       </View>
 

@@ -3,10 +3,10 @@ import { StyleSheet, Image, View, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
+import images from '../../constants/images';
 import colors from '../../constants/colors';
 import { toggleCryptoModal, toggleFiatModal } from '../../redux/modals/actions';
 import { COINS_URL_PNG } from '../../constants/api';
-import Arrow from '../../assets/images/Arrow';
 
 export default function CurrencyDropdowns({ style }) {
   const dispatch = useDispatch();
@@ -27,7 +27,7 @@ export default function CurrencyDropdowns({ style }) {
             source={{ uri: `${COINS_URL_PNG}/${c.toLowerCase()}.png` }}
           />
           <AppText style={styles.text}>{c}</AppText>
-          <Arrow />
+          <Image source={images.Arrow} />
         </Pressable>
       ))}
     </View>

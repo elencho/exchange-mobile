@@ -1,5 +1,11 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppButton from '../AppButton';
@@ -12,10 +18,8 @@ import GeneralError from '../GeneralError';
 import { togglePasswordModal } from '../../redux/modals/actions';
 import { updatePassword } from '../../redux/profile/actions';
 import colors from '../../constants/colors';
+import images from '../../constants/images';
 import { errorHappenedHere } from '../../utils/appUtils';
-
-import ShowIcon from '../../assets/images/User_profile/Show';
-import HideIcon from '../../assets/images/User_profile/Hide';
 
 export default function PasswordModal() {
   const array = [
@@ -157,7 +161,7 @@ export default function PasswordModal() {
 
   const hideIcon = (
     <Pressable onPress={toggle}>
-      {secure ? <ShowIcon /> : <HideIcon />}
+      <Image source={secure ? images.Show : images.Hide} />
     </Pressable>
   );
 

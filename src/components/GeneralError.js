@@ -1,9 +1,8 @@
 import React, { memo, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import GeneralErrorIcon from '../assets/images/User_profile/General_Error.svg';
-
+import images from '../constants/images';
 import AppText from './AppText';
 
 function GeneralError({ style, show = true }) {
@@ -32,7 +31,7 @@ function GeneralError({ style, show = true }) {
     <>
       {generalError && show ? (
         <View style={[styles.container, style]}>
-          <GeneralErrorIcon />
+          <Image source={images.General_Error} />
           <AppText subtext style={styles.red}>
             {errorMessage}
           </AppText>

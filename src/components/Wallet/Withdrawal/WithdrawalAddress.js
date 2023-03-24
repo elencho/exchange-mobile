@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'i18next';
 
@@ -9,10 +9,12 @@ import PurpleText from '../../PurpleText';
 import ChooseAddressModal from './ChooseAddressModal';
 
 import colors from '../../../constants/colors';
+import images from '../../../constants/images';
 import { toggleChooseAddressModal } from '../../../redux/modals/actions';
 import { chooseWhitelist, setWalletTab } from '../../../redux/wallet/actions';
 
-import Arrow from '../../../assets/images/Arrow';
+let addr =
+  'addr1qxyskt5fmj4dczqhfmkw2ljamtlnynpruv2l2susl4ylxyd2wvsvtpknan706f90cxvzuqs6cw9xs7487jnhn6hr6szqlq5c0k';
 
 export default function WithdrawalAddress({ error }) {
   const dispatch = useDispatch();
@@ -103,7 +105,7 @@ export default function WithdrawalAddress({ error }) {
       </AppText>
 
       <View style={styles.arrow}>
-        <Arrow />
+        <Image source={images.Arrow} />
       </View>
 
       <ChooseAddressModal />

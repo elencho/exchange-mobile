@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../../components/Background';
 import Headline from '../../components/TransactionHistory/Headline';
 import PurpleText from '../../components/PurpleText';
-import Back from '../../assets/images/Back.svg';
+import images from '../../constants/images';
 import WalletSwitcher from '../../components/Wallet/WalletSwitcher';
 import Deposit from './Deposit';
 import Withdrawal from './Withdrawal';
@@ -55,7 +55,7 @@ export default function Balance({ navigation }) {
   return (
     <Background>
       <TouchableOpacity onPress={back} style={styles.back} disabled={disabled}>
-        <Back tyle={styles.arrow} />
+        <Image source={images.Back} style={styles.arrow} />
         <PurpleText text="Back to Wallet" style={styles.purpleText} />
       </TouchableOpacity>
 

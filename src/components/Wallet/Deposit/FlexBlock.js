@@ -11,9 +11,6 @@ import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
 import Headline from '../../TransactionHistory/Headline';
 
-import List from '../../../assets/images/List.svg';
-import WarningWhite from '../../../assets/images/Wallet/Warning_White.svg';
-
 export default function FlexBlock({ reason, restrictedUntil, type }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -39,9 +36,9 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
 
   const image = () => {
     if (reason === 'no address') {
-      return <List />;
+      return images.Address_List;
     } else {
-      return <WarningWhite />;
+      return images.Warning_White;
     }
   };
 
@@ -71,7 +68,7 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
 
   return (
     <View style={styles.flexBlock}>
-      {image()}
+      <Image source={image()} />
       <Headline title={headline()} />
       <AppText body style={styles.description}>
         {text()}

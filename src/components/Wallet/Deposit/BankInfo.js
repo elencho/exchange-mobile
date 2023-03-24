@@ -17,8 +17,6 @@ import WireBanksModal from './WireBanksModal';
 import { ICONS_URL_PNG } from '../../../constants/api';
 import { copyToClipboard } from '../../../utils/copyToClipboard';
 
-import Arrow from '../../../assets/images/Arrow';
-import CopyIcon from '../../../assets/images/Copy.svg';
 const InfoRow = ({ title, text }) => {
   const copy = () => copyToClipboard(text);
 
@@ -29,7 +27,7 @@ const InfoRow = ({ title, text }) => {
       </AppText>
       <View style={styles.row}>
         <AppText style={styles.text}>{text}</AppText>
-        <CopyIcon />
+        <Image source={images.White_Copy} />
       </View>
     </TouchableOpacity>
   );
@@ -98,6 +96,7 @@ export default function BankInfo() {
             Payment Service Provider
           </AppText>
         </View>
+
         <Image
           source={{ uri: `${ICONS_URL_PNG}/${wireDepositProvider}.png` }}
           style={styles.image}
@@ -106,7 +105,7 @@ export default function BankInfo() {
           {wireDepositProvider ?? 'Choose Bank'}
         </AppText>
         <View style={styles.line} />
-        <Arrow />
+        <Image source={images.Arrow} />
       </Pressable>
 
       <>

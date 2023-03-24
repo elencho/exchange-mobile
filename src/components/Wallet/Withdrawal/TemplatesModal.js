@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
+import images from '../../../constants/images';
 import {
   setDeleteModalInfo,
   toggleTemplatesModal,
@@ -16,9 +17,6 @@ import AppModal from '../../AppModal';
 import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
 import DeleteModal from '../ManageCards/DeleteModal';
-
-import Delete from '../../../assets/images/Wallet/Delete.svg';
-import Add from '../../../assets/images/Wallet/Add.svg';
 
 export default function TemplatesModal() {
   const dispatch = useDispatch();
@@ -65,7 +63,7 @@ export default function TemplatesModal() {
           </Pressable>
 
           <Pressable onPress={() => deleteTemplate(t.id)} style={styles.icon}>
-            <Delete />
+            <Image source={images.Delete} />
           </Pressable>
         </View>
       ))}
@@ -84,7 +82,7 @@ export default function TemplatesModal() {
         </Pressable>
 
         <Pressable style={styles.icon}>
-          <Add />
+          <Image source={images.Add} />
         </Pressable>
       </View>
 

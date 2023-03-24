@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, Platform } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'i18next';
@@ -20,7 +20,8 @@ import {
   setTradeOffset,
 } from '../../redux/trade/actions';
 import { reachScrollEnd } from '../../redux/transactions/actions';
-import { IS_IOS } from '../../constants/system';
+
+const IS_IOS = Platform.OS === 'ios';
 
 export const TopRow = ({ text, onPress }) => {
   return (

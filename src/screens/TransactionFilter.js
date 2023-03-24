@@ -15,12 +15,10 @@ import PurpleText from '../components/PurpleText';
 
 import { clearFilters } from '../redux/transactions/actions';
 import { toggleCurrencyModal } from '../redux/modals/actions';
+import images from '../constants/images';
 import colors from '../constants/colors';
 import { types, methods } from '../constants/filters';
 import { COINS_URL_PNG } from '../constants/api';
-
-import Arrow from '../assets/images/Arrow.svg';
-import Clear from '../assets/images/Clear.svg';
 
 export default function TransactionFilter({ navigation }) {
   const dispatch = useDispatch();
@@ -67,7 +65,7 @@ export default function TransactionFilter({ navigation }) {
         <AppText medium style={styles.bigText}>
           {currency || 'Show All Currencies'}
         </AppText>
-        <Arrow />
+        <Image source={images.Arrow} />
       </Pressable>
 
       <DatePicker from />
@@ -75,7 +73,7 @@ export default function TransactionFilter({ navigation }) {
 
       {clearCond && (
         <TouchableOpacity style={styles.clear} onPress={clear}>
-          <Clear />
+          <Image source={images.Clear} />
           <PurpleText style={styles.purple} text="Clear Filters" />
         </TouchableOpacity>
       )}

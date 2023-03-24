@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { MaterialIndicator } from 'react-native-indicators';
 
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
 import AppButton from '../AppButton';
 import AppText from '../AppText';
 import GeneralError from '../GeneralError';
+import PurpleText from '../PurpleText';
 import CountriesModal from './CountriesModal';
 import WithKeyboard from '../WithKeyboard';
 
 import colors from '../../constants/colors';
+import images from '../../constants/images';
 import {
   toggleCountriesModal,
   togglePhoneNumberModal,
@@ -18,7 +21,6 @@ import {
 import { COUNTRIES_URL_PNG } from '../../constants/api';
 import { saveUserInfo, updatePhoneNumber } from '../../redux/profile/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
-import Arrow from '../../assets/images/Arrow';
 
 export default function PhoneNumberModal() {
   const dispatch = useDispatch();
@@ -121,7 +123,7 @@ export default function PhoneNumberModal() {
             <AppText medium style={[styles.dropdownText, { color }]}>
               {phoneCountry()}
             </AppText>
-            <Arrow />
+            <Image source={images.Arrow} />
           </Pressable>
 
           <AppInput

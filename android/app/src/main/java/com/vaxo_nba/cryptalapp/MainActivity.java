@@ -9,9 +9,7 @@ import java.lang.Exception;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
-import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
-import com.facebook.react.defaults.DefaultReactActivityDelegate;
-
+import com.facebook.react.ReactRootView;
 import org.devio.rn.splashscreen.SplashScreen;
 
 import expo.modules.ReactActivityDelegateWrapper;
@@ -43,24 +41,16 @@ public class MainActivity extends ReactActivity {
   }
 
   /**
-   * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link
-	 * DefaultReactActivityDelegate} which allows you to easily enable Fabric and Concurrent React
-	 * (aka React 18) with two boolean flags.
-	 */	
-
+   * Returns the instance of the {@link ReactActivityDelegate}. There the RootView is created and
+   * you can specify the renderer you wish to use - the new renderer (Fabric) or the old renderer
+   * (Paper).
+   */
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
-    return new DefaultReactActivityDelegate(
-	        this,
-	        getMainComponentName(),
-	        // If you opted-in for the New Architecture, we enable the Fabric Renderer.
- 	        DefaultNewArchitectureEntryPoint.getFabricEnabled(), // fabricEnabled
-	        // If you opted-in for the New Architecture, we enable Concurrent React (i.e. React 18).
-	        DefaultNewArchitectureEntryPoint.getConcurrentReactEnabled() // concurrentRootEnabled
-	        );
-	  		  
+    return new ReactActivityDelegateWrapper(this, BuildConfig.IS_NEW_ARCHITECTURE_ENABLED,
+      new MainActivityDelegate(this, getMainComponentName())
+    );
   }
-  
 
   /**
    * Align the back button behavior with Android S
@@ -76,6 +66,7 @@ public class MainActivity extends ReactActivity {
       }
       return;
     }
+
     // Use the default back button implementation on Android S
     // because it's doing more than {@link Activity#moveTaskToBack} in fact.
     super.invokeDefaultOnBackPressed();
@@ -84,6 +75,21 @@ public class MainActivity extends ReactActivity {
   public static class MainActivityDelegate extends ReactActivityDelegate {
     public MainActivityDelegate(ReactActivity activity, String mainComponentName) {
       super(activity, mainComponentName);
+    }
+
+    @Override
+    protected ReactRootView createRootView() {
+      ReactRootView reactRootView = new ReactRootView(getContext());
+      // If you opted-in for the New Architecture, we enable the Fabric Renderer.
+      reactRootView.setIsFabric(BuildConfig.IS_NEW_ARCHITECTURE_ENABLED);
+      return reactRootView;
+    }
+
+    @Override
+    protected boolean isConcurrentRootEnabled() {
+      // If you opted-in for the New Architecture, we enable Concurrent Root (i.e. React 18).
+      // More on this on https://reactjs.org/blog/2022/03/29/react-v18.html
+      return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
     }
   }
 }

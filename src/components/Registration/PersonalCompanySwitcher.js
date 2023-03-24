@@ -1,12 +1,10 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-
-import Portfolio from '../../assets/images/Portfolio.svg';
-import User from '../../assets/images/User.svg';
 
 import { switchPersonalCompany } from '../../redux/profile/actions';
 import colors from '../../constants/colors';
+import images from '../../constants/images';
 import AppButton from '../AppButton';
 
 export default function PersonalCompanySwitcher() {
@@ -25,6 +23,9 @@ export default function PersonalCompanySwitcher() {
       return 'rgba(101, 130, 253, 0.1)';
     }
   };
+
+  const User = () => <Image source={images.User} />;
+  const Portfolio = () => <Image source={images.Portfolio} />;
 
   return (
     <View style={styles.switchers}>

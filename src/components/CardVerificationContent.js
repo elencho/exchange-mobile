@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { t } from 'i18next';
@@ -10,14 +10,15 @@ import AppText from './AppText';
 import Background from './Background';
 import PurpleText from './PurpleText';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
+import images from '../constants/images';
 import sumsubHtmlPattern from '../constants/sumsubHtml.js';
 import { cardVerificationToken } from '../utils/userProfileUtils';
-import CardName from '../assets/images/User_profile/Card_name';
-import CardDigit from '../assets/images/User_profile/Card_Digits';
 
 export default function CardVerificationContent({ step = 0, cardId }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
+  const image = step === 1 ? images.Card_Name : images.Card_Digits;
 
   const goToStepOne = () => navigation.goBack();
   const goToStepTwo = () =>
@@ -110,11 +111,8 @@ export default function CardVerificationContent({ step = 0, cardId }) {
     <Background>
       <CloseModalIcon onPress={close} />
 
-      {step === 1 ? (
-        <CardName style={styles.image} />
-      ) : (
-        <CardDigit style={styles.image} />
-      )}
+      <Image source={image} style={styles.image} />
+
       <Text style={styles.title}>{t("Let's Get You Verified")}</Text>
       <AppText subtext style={styles.secondary}>
         Bank card should suit following demands

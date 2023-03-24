@@ -53,11 +53,7 @@ export default function Navigator() {
   };
 
   return (
-    <NavigationContainer
-      onStateChange={onStateChange}
-      ref={navigationRef}
-      theme={{ colors: { background: 'transparent' } }}
-    >
+    <NavigationContainer onStateChange={onStateChange} ref={navigationRef}>
       <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen

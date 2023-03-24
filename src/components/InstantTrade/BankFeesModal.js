@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
+import images from '../../constants/images';
 import { toggleBankFeesModal } from '../../redux/modals/actions';
 import FeeModalRow from './FeeModalRow';
-import Mastercard from '../../assets/images/MC_Card';
-import Visa from '../../assets/images/Visa';
-import Amex from '../../assets/images/Amex';
 
 export default function BankFeesModal() {
   const dispatch = useDispatch();
@@ -64,14 +62,14 @@ export default function BankFeesModal() {
         </AppText>
         <View style={[styles.icons, hasAmex && styles.flex]}>
           <View style={styles.iconContainer}>
-            <Mastercard />
+            <Image source={images.MASTERCARD} />
           </View>
           <View style={[styles.iconContainer, !hasAmex && { marginLeft: 35 }]}>
-            <Visa />
+            <Image source={images.VISA} />
           </View>
           {hasAmex && (
             <View style={styles.iconContainer}>
-              <Amex />
+              <Image source={images.AMEX} />
             </View>
           )}
         </View>

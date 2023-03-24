@@ -83,16 +83,16 @@ export default function Login({ navigation }) {
         </View>
 
         <AppInput
+          placeholder={t('Enter Email')}
           style={styles.email}
           onChangeText={typeLogin}
           value={login}
           error={error && (!login || !validate)}
           errorText={errorText()}
-          label={'Enter Email'}
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         />
         <AppInput
           secureTextEntry
+          placeholder={t('Enter Password')}
           onChangeText={typePassword}
           value={password}
           style={styles.password}
@@ -104,8 +104,6 @@ export default function Login({ navigation }) {
               onPress={forgotPassword}
             />
           }
-          label={'Enter Password'}
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         />
 
         <AppButton

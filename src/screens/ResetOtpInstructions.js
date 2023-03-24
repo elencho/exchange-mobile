@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Image,
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
@@ -15,7 +16,6 @@ import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 
 import Logo from '../assets/images/Logo';
-import Back from '../assets/images/Back';
 import TwoFaInput from '../components/TwoFaInput';
 import WithKeyboard from '../components/WithKeyboard';
 import images from '../constants/images';
@@ -93,7 +93,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
     <ImageBackground source={images.Background} style={styles.container}>
       <WithKeyboard padding flexGrow>
         <TouchableOpacity style={styles.back} onPress={goBack}>
-          <Back />
+          <Image source={images.Back} />
           <PurpleText text="Go Back" style={styles.backText} />
         </TouchableOpacity>
 

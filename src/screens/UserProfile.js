@@ -17,8 +17,6 @@ import Headline from '../components/TransactionHistory/Headline';
 import Personal from '../components/UserProfile/Personal';
 import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecuritySwitcher';
 import Security from '../components/UserProfile/Security';
-import Back from '../assets/images/Back';
-import Logout from '../assets/images/User_profile/Logout';
 
 import {
   fetchUserInfo,
@@ -96,12 +94,12 @@ function UserProfile({ navigation, route }) {
     <Background>
       <View style={styles.topRow}>
         <TouchableOpacity onPress={back} style={styles.back}>
-          <Back style={styles.arrow} />
+          <Image source={images.Back} style={styles.arrow} />
           <PurpleText text="Back" style={styles.purpleText} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={logout}>
-          <Logout />
+          <Image source={images.Logout} />
         </TouchableOpacity>
       </View>
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Image,
   ImageBackground,
   StyleSheet,
   Text,
@@ -14,7 +15,6 @@ import AppButton from '../components/AppButton';
 import WithKeyboard from '../components/WithKeyboard';
 import PurpleText from '../components/PurpleText';
 import Strong_Password from '../assets/images/User_profile/Strong_Password';
-import Back from '../assets/images/Back';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
@@ -52,7 +52,7 @@ export default function SetNewPassword({ navigation }) {
   return (
     <ImageBackground source={images.Background} style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={goToLogin}>
-        <Back />
+        <Image source={images.Back} />
         <PurpleText text="Back to Log In" style={styles.backText} />
       </TouchableOpacity>
 

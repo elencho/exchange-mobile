@@ -73,6 +73,7 @@ export const registrationStart = async () => {
 };
 
 export const usernameAndPasswordForm = async (username, password, url) => {
+  const params = new URLSearchParams({ username, password });
   const data = await axios({
     method: 'POST',
     headers: {
@@ -81,12 +82,13 @@ export const usernameAndPasswordForm = async (username, password, url) => {
       toast: false,
     },
     url,
-    data: `username=${username}&password=${password}`,
+    data: params,
   });
   if (data) return data.data;
 };
 
 export const registrationForm = async (obj, url) => {
+  const params = new URLSearchParams(obj);
   const data = await axios({
     method: 'POST',
     headers: {
@@ -95,7 +97,7 @@ export const registrationForm = async (obj, url) => {
       toast: false,
     },
     url,
-    data: obj,
+    data: params,
   });
   if (data) return data.data;
 };
@@ -153,6 +155,7 @@ export const forgotPassword = async (url) => {
 };
 
 export const forgotPasswordCode = async (url, username) => {
+  const params = new URLSearchParams({ username, send: true });
   const data = await axios({
     method: 'POST',
     headers: {
@@ -161,12 +164,13 @@ export const forgotPasswordCode = async (url, username) => {
       toast: false,
     },
     url,
-    data: `username=${username}&send=true`,
+    data: params,
   });
   if (data) return data.data;
 };
 
 export const forgotPasswordEnterCode = async (url, username, otp) => {
+  const params = new URLSearchParams({ username, otp });
   const data = await axios({
     method: 'POST',
     headers: {
@@ -175,19 +179,23 @@ export const forgotPasswordEnterCode = async (url, username, otp) => {
       toast: false,
     },
     url,
-    data: `username=${username}&otp=${otp}`,
+    data: params,
   });
   if (data) return data.data;
 };
 
 export const setNewPassword = async (url, newPass, confirmPass) => {
+  const params = new URLSearchParams({
+    'password-new': newPass,
+    'password-confirm': confirmPass,
+  });
   const data = await axios({
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     url,
-    data: `password-new=${newPass}&password-confirm=${confirmPass}`,
+    data: params,
   });
   if (data) return data.data;
 };
@@ -280,6 +288,11 @@ export const updatePassword = async (
   passwordNew,
   passwordConfirm
 ) => {
+  const params = new URLSearchParams({
+    password,
+    passwordNew,
+    passwordConfirm,
+  });
   const data = await axios({
     method: 'POST',
     headers: {
@@ -288,7 +301,7 @@ export const updatePassword = async (
       toast: false,
     },
     url: UPDATE_PASSWORD,
-    data: `password=${password}&passwordNew=${passwordNew}&passwordConfirm=${passwordConfirm}`,
+    data: params,
   });
   return data;
 };
@@ -303,6 +316,10 @@ export const verifyPhoneNumber = async (phoneNumber, phoneCountry) => {
 };
 
 export const updatePhoneNumber = async (phoneNumber, phoneCountry) => {
+  const params = new URLSearchParams({
+    phoneNumber,
+    phoneCountry,
+  });
   const data = await axios({
     method: 'POST',
     headers: {
@@ -311,7 +328,7 @@ export const updatePhoneNumber = async (phoneNumber, phoneCountry) => {
       toast: false,
     },
     url: UPDATE_PHONE_NUMBER,
-    data: `phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
+    data: params,
   });
   return data;
 };

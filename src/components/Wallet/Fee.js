@@ -1,12 +1,11 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { t } from 'i18next';
 
 import AppText from '../AppText';
+import images from '../../constants/images';
 import colors from '../../constants/colors';
-
-import FeeIcon from '../../assets/images/Wallet/Fee';
 
 export default function Fee() {
   const state = useSelector((state) => state);
@@ -85,7 +84,8 @@ export default function Fee() {
 
   return (
     <View style={styles.fee}>
-      <FeeIcon />
+      <Image source={images.Fee} />
+
       <View style={styles.flex}>
         <UpperLine />
         <LowerLine />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../../AppModal';
@@ -12,9 +12,9 @@ import { setDeleteModalInfo } from '../../../redux/modals/actions';
 import { deleteCard } from '../../../utils/walletUtils';
 import { saveCards } from '../../../redux/trade/actions';
 import colors from '../../../constants/colors';
+import images from '../../../constants/images';
 import { deleteTemplatesAction } from '../../../redux/wallet/actions';
 import { errorHappenedHere } from '../../../utils/appUtils';
-import DeleteCard from '../../../assets/images/Wallet/Delete_Card.svg';
 
 export default function DeleteModal({ type }) {
   const dispatch = useDispatch();
@@ -46,7 +46,8 @@ export default function DeleteModal({ type }) {
 
   const children = (
     <View style={styles.container}>
-      <DeleteCard style={{ marginVertical: 20 }} />
+      <Image source={images.Delete_Card} style={{ marginVertical: 20 }} />
+
       <AppText header style={styles.white}>
         {`Delete ${type}`}
       </AppText>
