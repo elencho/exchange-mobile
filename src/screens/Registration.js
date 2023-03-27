@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { t } from 'i18next';
@@ -13,6 +13,7 @@ import RegistrationInputs from '../components/Registration/RegistrationInputs';
 import EmailVerificationModal from '../components/Registration/EmailVerificationModal';
 import WithKeyboard from '../components/WithKeyboard';
 import Logo from '../assets/images/Logo.svg';
+import Back from '../assets/images/Back.svg';
 import GeneralError from '../components/GeneralError';
 
 import {
@@ -103,6 +104,10 @@ export default function Registration({ navigation }) {
 
   return (
     <WithKeyboard scrollUp padding style={styles.scrollview}>
+      <Pressable style={styles.back} onPress={signIn}>
+        <Back />
+        <PurpleText text="Back to Log In" style={styles.backText} />
+      </Pressable>
       <View style={styles.container}>
         <Logo style={styles.logo} />
         <AppText header style={styles.header}>
@@ -166,5 +171,17 @@ const styles = StyleSheet.create({
     color: colors.SECONDARY_TEXT,
     marginTop: 40,
     alignSelf: 'center',
+  },
+  back: {
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    marginLeft: 24,
+    marginTop: 28,
+    width: '33%',
+  },
+  backText: {
+    marginBottom: 2,
+    marginLeft: 10,
   },
 });
