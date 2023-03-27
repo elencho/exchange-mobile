@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
@@ -9,11 +9,7 @@ import {
   filterCurrencies,
 } from '../../redux/transactions/actions';
 import { toggleCryptoModal } from '../../redux/modals/actions';
-import {
-  instantTradeTabAction,
-  setCrypto,
-  setCryptosArray,
-} from '../../redux/trade/actions';
+import { instantTradeTabAction, setCrypto } from '../../redux/trade/actions';
 
 export default function CryptoModal() {
   const dispatch = useDispatch();
@@ -21,16 +17,18 @@ export default function CryptoModal() {
 
   const {
     modals: { cryptoModalVisible },
-    trade: { crypto, cryptosArray, cryptosArrayConstant },
+    trade: { crypto, offers, fiat, tradeType },
   } = state;
 
+  const [filteredData, setFiletredData] = useState(offers[fiat]);
+
   const filter = (text) => {
-    const filteredArray = cryptosArrayConstant.filter(
+    const filteredArray = offers[fiat]?.filter(
       (c) =>
-        c.name.toLowerCase().includes(text.toLowerCase()) ||
-        c.code.toLowerCase().includes(text.toLowerCase())
+        c?.pair?.baseCurrencyName.toLowerCase().includes(text.toLowerCase()) ||
+        c?.pair?.baseCurrency.toLowerCase().includes(text.toLowerCase())
     );
-    dispatch(setCryptosArray(filteredArray));
+    setFiletredData(filteredArray);
   };
 
   const hide = () => dispatch(toggleCryptoModal(false));
@@ -38,18 +36,18 @@ export default function CryptoModal() {
 
   const choose = (code) => {
     dispatch(setCrypto(code));
-    dispatch(filterCurrencies(cryptosArray));
+    dispatch(filterCurrencies(filteredData));
     dispatch(instantTradeTabAction());
     hide();
   };
-
   const children = (
     <ModalWithSearch
-      array={cryptosArray}
+      array={filteredData}
       choose={choose}
       filter={filter}
       currentItem={crypto}
       crypto
+      tradeType={tradeType}
       title="Choose Currency"
     />
   );

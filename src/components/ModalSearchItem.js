@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, Image } from 'react-native';
+import { Pressable, StyleSheet, Image, View } from 'react-native';
 
 import AppText from './AppText';
 import ShowAll from '../assets/images/ShowAll';
@@ -15,6 +15,8 @@ export default function ModalSearchItem({
   phoneCode,
   countryDrop,
   citizenshipDrop,
+  total,
+  canShowCode,
 }) {
   const backgroundCond = () => {
     if (name === currentItem || code === currentItem) {
@@ -24,7 +26,7 @@ export default function ModalSearchItem({
   const codeText = phoneCountry ? phoneCode : code;
   const text =
     phoneCountry || countryDrop || citizenshipDrop ? (
-      <>
+      <View style={styles.codeWrapper}>
         <AppText medium style={styles.primary}>
           ({codeText})
         </AppText>
@@ -36,17 +38,22 @@ export default function ModalSearchItem({
           {' '}
           {name}
         </AppText>
-      </>
+      </View>
     ) : (
-      <>
+      <View style={styles.row}>
         <AppText medium style={styles.primary}>
           {name}
         </AppText>
         <AppText medium style={styles.secondary}>
-          {code ? ` (${code})` : null}
+          {!!canShowCode && ` (${code})`}
         </AppText>
-      </>
+      </View>
     );
+  const altText = !!total && (
+    <AppText medium style={styles.secondary}>
+      {total}
+    </AppText>
+  );
 
   return (
     <Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
@@ -55,7 +62,10 @@ export default function ModalSearchItem({
       ) : (
         <ShowAll style={{ marginRight: 20 }} />
       )}
-      {text}
+      <View>
+        {text}
+        {altText}
+      </View>
     </Pressable>
   );
 }
@@ -78,4 +88,9 @@ const styles = StyleSheet.create({
   },
   primary: { color: colors.PRIMARY_TEXT },
   secondary: { color: colors.SECONDARY_TEXT },
+  codeWrapper: {
+    flexDirection: 'row',
+    width: 500,
+  },
+  row: { flexDirection: 'row' },
 });

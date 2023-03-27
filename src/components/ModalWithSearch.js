@@ -22,6 +22,7 @@ export default function ModalWithSearch({
   phoneCountry,
   countryDrop,
   citizenshipDrop,
+  tradeType,
 }) {
   const handlePress = (name, code) => {
     crypto ? choose(code) : choose(name, code);
@@ -33,21 +34,37 @@ export default function ModalWithSearch({
       : `${COUNTRIES_URL_PNG}/${code}.png`;
   };
 
-  const searchItem = ({ item }) => (
-    <ModalSearchItem
-      name={item.name}
-      code={item.code}
-      key={item.code}
-      phoneCode={item.phoneCode}
-      currentItem={currentItem}
-      onPress={() => handlePress(item.name, item.code)}
-      uri={uri(item.code)}
-      phoneCountry={phoneCountry}
-      countryDrop={countryDrop}
-      citizenshipDrop={citizenshipDrop}
-    />
-  );
+  const searchItem = ({ item }) => {
+    const name =
+      item?.name ||
+      item?.pair?.baseCurrencyName ||
+      `${item?.available} ${item?.currencyCode}`;
 
+    const code = item?.code || item?.pair?.baseCurrency || item?.currencyCode;
+    const totalPrice = tradeType === 'Buy' ? item?.buyPrice : item?.sellPrice;
+    const currency = item?.pair?.quoteCurrency;
+
+    const totalTradePrice =
+      item?.pair?.baseCurrencyName && `${totalPrice} ${currency}`;
+    const totalAvailablePrice =
+      item?.valueUSD && `Total: ${item?.total} = ${item?.valueUSD} USD`;
+
+    return (
+      <ModalSearchItem
+        name={name}
+        code={code}
+        phoneCode={item?.phoneCode}
+        currentItem={currentItem}
+        canShowCode={!item?.currencyCode}
+        onPress={() => handlePress(name, code)}
+        uri={uri(code)}
+        phoneCountry={phoneCountry}
+        countryDrop={countryDrop}
+        citizenshipDrop={citizenshipDrop}
+        total={totalTradePrice || totalAvailablePrice}
+      />
+    );
+  };
   return (
     <View style={styles.container}>
       <ModalTop />
@@ -70,7 +87,9 @@ export default function ModalWithSearch({
           <FlatList
             data={array}
             renderItem={searchItem}
-            keyExtractor={(item) => item.code}
+            keyExtractor={({ item }) =>
+              item?.code || item?.pair?.baseCurrency || item?.currencyCode
+            }
             scrollEventThrottle={1000}
             initialNumToRender={25}
           />

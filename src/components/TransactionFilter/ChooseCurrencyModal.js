@@ -42,10 +42,10 @@ function ChooseCurrencyModal({ wallet = false }) {
   }, [currencies]);
 
   const filter = (text) => {
-    const filteredArray = currenciesConstant.filter(
+    const filteredArray = balance?.balances.filter(
       (c) =>
-        c.name.toLowerCase().includes(text.toLowerCase()) ||
-        c.code.toLowerCase().includes(text.toLowerCase())
+        c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
+        c.currencyName.toLowerCase().includes(text.toLowerCase())
     );
     dispatch(filterCurrencies(filteredArray));
   };
