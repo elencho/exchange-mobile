@@ -10,6 +10,7 @@ then
     echo "Installing CocoaPods version $CUR_COCOAPODS_VER"
     sudo gem install cocoapods -v $CUR_COCOAPODS_VER
 else 
+    cd ios && pod update
     echo "CocoaPods version is suitable for the project"
 fi;
 
