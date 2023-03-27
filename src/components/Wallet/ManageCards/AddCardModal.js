@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'i18next';
 
@@ -12,6 +12,7 @@ import PurpleText from '../../PurpleText';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import BankFeesModal from '../../InstantTrade/BankFeesModal';
 import colors from '../../../constants/colors';
+import { ICONS_URL_PNG } from '../../../constants/api';
 
 import CheckFull from '../../../assets/images/Check_Full.svg';
 import CheckRed from '../../../assets/images/Check_Red.svg';
@@ -107,6 +108,17 @@ export default function AddCardModal() {
     return data.toString();
   };
 
+  const displayName = () => {
+    let displayName = 'Payment Service Provider';
+
+    depositProviders.forEach((provider) => {
+      if (depositProvider === provider.provider)
+        displayName = provider.displayName;
+    });
+
+    return displayName;
+  };
+
   const goToTerms = () =>
     Linking.openURL(
       'https://support.cryptal.com/hc/en-us/articles/4402770737682-Privacy-Policy'
@@ -129,8 +141,14 @@ export default function AddCardModal() {
           style={[styles.dropdown, { borderColor }]}
           onPress={showBanks}
         >
+          {depositProvider && (
+            <Image
+              source={{ uri: `${ICONS_URL_PNG}/${depositProvider}.png` }}
+              style={styles.imageSmall}
+            />
+          )}
           <AppText style={[styles.text, { color }]} medium={depositProvider}>
-            {depositProvider ? depositProvider : 'Payment Service Provider'}
+            {displayName()}
           </AppText>
           <Arrow />
         </Pressable>
@@ -239,5 +257,11 @@ const styles = StyleSheet.create({
   text: {
     color: colors.PRIMARY_TEXT,
     flex: 1,
+  },
+  imageSmall: {
+    width: 24,
+    height: 20,
+    resizeMode: 'contain',
+    marginRight: 15,
   },
 });

@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
-
 import Fee from '../Wallet/Fee';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 
 import colors from '../../constants/colors';
+import { ICONS_URL_PNG } from '../../constants/api';
 import {
   toggleChooseCardModal,
   toggleChooseBankModal,
@@ -114,27 +114,31 @@ function CardSection({ error }) {
   return (
     <View style={styles.container}>
       {multipleBanks() && (
-        <>
-          <Pressable
-            style={[
-              styles.dropdown,
-              { marginBottom: 25, borderColor: bankBorder },
-            ]}
-            onPress={showBanks}
-          >
-            <AppText style={[styles.text, { color }]} medium={depositProvider}>
-              {displayName()}
-            </AppText>
-            <Arrow />
-          </Pressable>
+        <Pressable
+          style={[
+            styles.dropdown,
+            { marginBottom: 25, borderColor: bankBorder },
+          ]}
+          onPress={showBanks}
+        >
+          {depositProvider && (
+            <Image
+              source={{ uri: `${ICONS_URL_PNG}/${depositProvider}.png` }}
+              style={styles.image}
+            />
+          )}
+          <AppText style={[styles.text, { color }]} medium={depositProvider}>
+            {displayName()}
+          </AppText>
+          <Arrow />
+        </Pressable>
 
-          {/* {trade && depositProvider && (
+        /* {trade && depositProvider && (
             <AppText subtext style={styles.subText}>
               0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
               <PurpleText text=" More Fees" onPress={showFees} />
             </AppText>
-          )} */}
-        </>
+          )} */
       )}
 
       {depositProvider && (
@@ -198,5 +202,11 @@ const styles = StyleSheet.create({
   text: {
     color: colors.PRIMARY_TEXT,
     flex: 1,
+  },
+  image: {
+    width: 24,
+    height: 20,
+    resizeMode: 'contain',
+    marginRight: 15,
   },
 });
