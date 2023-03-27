@@ -20,6 +20,7 @@ import TwoFaInput from '../components/TwoFaInput';
 import WithKeyboard from '../components/WithKeyboard';
 import images from '../constants/images';
 import colors from '../constants/colors';
+import { startLoginAction } from '../redux/profile/actions';
 
 export default function ResetOtpInstructions({ navigation, route }) {
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
   const [value, setValue] = useState('');
   const [seconds, setSeconds] = useState(30);
 
-  const goBack = () => navigation.goBack();
+  const goBack = () => dispatch(startLoginAction(navigation));
   const openSupport = () => Linking.openURL(url);
 
   useEffect(() => {
