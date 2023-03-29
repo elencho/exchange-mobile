@@ -10,15 +10,16 @@ export default {
   extra: {
     auth:
       process.env.DEV === 'true'
-        ? 'http://test-auth-cryptal.cryptx.loc'
-        : 'https://auth.cryptal.com',
+        ? 'https://auth.cryptal.com'
+        : 'http://test-auth-cryptal.cryptx.loc',
     core:
       process.env.DEV === 'true'
-        ? 'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile'
-        : 'https://exchange.cryptal.com/exchange/api/v1/mobile',
+        ? 'https://exchange.cryptal.com/exchange/api/v1/mobile'
+        : 'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile',
+
     authRedirectUrl:
       process.env.DEV === 'true'
-        ? 'http://test-core-matching.cryptx.loc'
-        : 'https://cryptal.com',
+        ? 'https://cryptal.com'
+        : 'http://test-core-matching.cryptx.loc',
   },
 };
