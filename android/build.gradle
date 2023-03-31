@@ -18,12 +18,21 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:7.3.1")
         classpath("com.facebook.react:react-native-gradle-plugin")
+        // classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.0") // <- this should math kotlin version
     }
 }
+def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs').readFileSync(require.resolve('react-native/package.json'), 'utf-8')).version"].execute(null, rootDir).text.trim())
+
 allprojects {
+
   repositories {
       // ...
       maven { url "https://maven.sumsub.com/repository/maven-public/" }
       // ...
   }
+      configurations.all {
+        resolutionStrategy {
+            force "com.facebook.react:react-native:" + REACT_NATIVE_VERSION
+        }
+    }
 }
