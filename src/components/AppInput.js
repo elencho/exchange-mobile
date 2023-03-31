@@ -7,7 +7,7 @@ import {
   Easing,
   TouchableWithoutFeedback,
 } from 'react-native';
-
+import { TextInput as GestureInput } from 'react-native-gesture-handler';
 import AppText from '../components/AppText';
 import colors from '../constants/colors';
 
@@ -20,6 +20,7 @@ const AppInput = ({
   value,
   error = false,
   errorText = null,
+  isForModal,
   labelBackgroundColor = colors.PRIMARY_BACKGROUND,
   onChangeText = () => {},
   ...rest
@@ -50,16 +51,29 @@ const AppInput = ({
     <View style={style}>
       <View style={[styles.inputContainer, { borderColor }]}>
         {left}
-        <TextInput
-          style={styles.input}
-          ref={inputRef}
-          onBlur={() => setIsFocused(false)}
-          onFocus={() => setIsFocused(true)}
-          value={value}
-          placeholderTextColor={colors.SECONDARY_TEXT}
-          onChangeText={(text) => onChangeText(text)}
-          {...rest}
-        />
+        {isForModal ? (
+          <GestureInput
+            style={styles.input}
+            ref={inputRef}
+            onBlur={() => setIsFocused(false)}
+            onFocus={() => setIsFocused(true)}
+            value={value}
+            placeholderTextColor={colors.SECONDARY_TEXT}
+            onChangeText={(text) => onChangeText(text)}
+            {...rest}
+          />
+        ) : (
+          <TextInput
+            style={styles.input}
+            ref={inputRef}
+            onBlur={() => setIsFocused(false)}
+            onFocus={() => setIsFocused(true)}
+            value={value}
+            placeholderTextColor={colors.SECONDARY_TEXT}
+            onChangeText={(text) => onChangeText(text)}
+            {...rest}
+          />
+        )}
         {label ? (
           <TouchableWithoutFeedback onPress={() => inputRef.current?.focus()}>
             <Animated.View

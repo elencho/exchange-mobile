@@ -75,6 +75,7 @@ export default function ModalWithSearch({
         </AppText>
 
         <AppInput
+          isForModal
           placeholder={title.replace('Choose', 'Search')}
           placeholderTextColor="rgba(105, 111, 142, 0.5)"
           onChangeText={filter}
