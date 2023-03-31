@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
@@ -20,7 +20,12 @@ export default function CryptoModal() {
     trade: { crypto, offers, fiat, tradeType },
   } = state;
 
-  const [filteredData, setFiletredData] = useState(offers[fiat]);
+  const [filteredData, setFiletredData] = useState(null);
+
+  useEffect(() => {
+    dispatch({ type: 'INSTANT_TRADE_TAB_SAGA' });
+    offers && setFiletredData(offers[fiat]);
+  }, []);
 
   const filter = (text) => {
     const filteredArray = offers[fiat]?.filter(
