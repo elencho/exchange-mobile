@@ -1,16 +1,9 @@
 import React from 'react';
-import {
-  Pressable,
-  StyleSheet,
-  Image,
-  View,
-  TouchableOpacity,
-} from 'react-native';
+import { Pressable, StyleSheet, Image, View } from 'react-native';
 
 import AppText from './AppText';
 import ShowAll from '../assets/images/ShowAll';
 import colors from '../constants/colors';
-//import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function ModalSearchItem({
   name,
@@ -63,10 +56,7 @@ export default function ModalSearchItem({
   );
 
   return (
-    <TouchableOpacity
-      style={[styles.container, backgroundCond()]}
-      onPress={onPress}
-    >
+    <Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
       {code ? (
         <Image style={styles.image} source={{ uri }} />
       ) : (
@@ -76,7 +66,7 @@ export default function ModalSearchItem({
         {text}
         {altText}
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 }
 

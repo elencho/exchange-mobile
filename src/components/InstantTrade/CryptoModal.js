@@ -20,7 +20,7 @@ export default function CryptoModal() {
     trade: { crypto, offers, fiat, tradeType },
   } = state;
 
-  const [filteredData, setFiletredData] = useState(null);
+  const [filteredData, setFiletredData] = useState(offers[fiat]);
 
   useEffect(() => {
     dispatch({ type: 'INSTANT_TRADE_TAB_SAGA' });
@@ -47,7 +47,7 @@ export default function CryptoModal() {
   };
   const children = (
     <ModalWithSearch
-      array={filteredData}
+      array={filteredData.length > 0 || offers[fiat]}
       choose={choose}
       filter={filter}
       currentItem={crypto}
@@ -58,12 +58,14 @@ export default function CryptoModal() {
   );
 
   return (
-    <AppModal
-      visible={cryptoModalVisible}
-      hide={hide}
-      children={children}
-      onModalHide={onModalHide}
-      custom
-    />
+    filteredData && (
+      <AppModal
+        visible={cryptoModalVisible}
+        hide={hide}
+        children={children}
+        onModalHide={onModalHide}
+        custom
+      />
+    )
   );
 }

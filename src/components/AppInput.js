@@ -119,8 +119,7 @@ const AppInput = ({
             </Animated.View>
           </TouchableWithoutFeedback>
         ) : null}
-
-        {rightComponent}
+        <View style={styles.icon}>{rightComponent}</View>
       </View>
       {errorText && (
         <AppText small style={styles.errorText}>
@@ -148,11 +147,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Ubuntu_Medium',
     fontSize: 14,
     flex: 1,
+    paddingLeft: 22,
     color: colors.PRIMARY_TEXT,
     height: '100%',
     marginRight: 10,
     position: 'absolute',
-    width: 500,
+    width: 250,
   },
   inputContainer: {
     borderWidth: 1,
@@ -167,6 +167,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     height: 25,
     justifyContent: 'center',
+  },
+  icon: {
+    flex: 1,
+    alignItems: 'flex-end',
+    zIndex: -1,
   },
 });
 

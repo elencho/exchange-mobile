@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,7 +8,6 @@ import ModalWithSearch from '../ModalWithSearch';
 import {
   currencyAction,
   fetchCurrencies,
-  filterCurrencies,
 } from '../../redux/transactions/actions';
 import { toggleCurrencyModal } from '../../redux/modals/actions';
 import {
@@ -33,11 +32,11 @@ function ChooseCurrencyModal({ wallet = false }) {
     wallet: { walletTab },
   } = state;
 
-  let walletCurrencies = currencies;
+  const [filteredData, setFiletredData] = useState(balance?.balances);
 
   useEffect(() => {
-    if (wallet && walletCurrencies[0]?.name === 'Show All Currency') {
-      walletCurrencies.shift();
+    if (wallet && filteredData[0]?.name === 'Show All Currency') {
+      filteredData.shift();
     }
   }, [currencies]);
 
@@ -47,7 +46,7 @@ function ChooseCurrencyModal({ wallet = false }) {
         c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
         c.currencyName.toLowerCase().includes(text.toLowerCase())
     );
-    dispatch(filterCurrencies(filteredArray));
+    setFiletredData(filteredArray);
   };
 
   const hide = () => dispatch(toggleCurrencyModal(false));
@@ -100,7 +99,7 @@ function ChooseCurrencyModal({ wallet = false }) {
 
   const children = (
     <ModalWithSearch
-      array={walletCurrencies}
+      array={filteredData}
       choose={choose}
       filter={filter}
       currentItem={currency}
