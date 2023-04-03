@@ -91,6 +91,7 @@ export default function RegistrationInputs({ validations, error }) {
         label="Enter E-mail"
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
+        autoCapitalize={'none'}
         onChangeText={(text) => handleInputs(text, 'email')}
         error={error && (!i.email || !v.isEmail)}
         errorText={errorText('Email')}

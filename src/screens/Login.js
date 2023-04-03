@@ -88,6 +88,7 @@ export default function Login({ navigation }) {
           value={login}
           error={error && (!login || !validate)}
           errorText={errorText()}
+          autoCapitalize={'none'}
           label={'Enter Email'}
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         />
