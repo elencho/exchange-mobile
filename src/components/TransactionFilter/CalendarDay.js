@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { setFromTime, setToTime } from '../../redux/transactions/actions';
+import { toggleDatePicker } from '../../redux/modals/actions';
 
 export default function CalendarDay({ state, from, to }) {
   const {
@@ -102,6 +103,7 @@ export default function CalendarDay({ state, from, to }) {
 
     if ((todayDisabled() && isToday) || disabled()) return false;
     else handleChange(timestamp);
+    dispatch(toggleDatePicker({ from: false, to: false }));
   };
 
   return (
