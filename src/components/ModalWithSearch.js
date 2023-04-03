@@ -79,8 +79,8 @@ export default function ModalWithSearch({
           placeholder={title.replace('Choose', 'Search')}
           placeholderTextColor="rgba(105, 111, 142, 0.5)"
           onChangeText={filter}
-          right={<Search />}
-          activeRight={<SearchActive />}
+          //right={<Search />}
+          //activeRight={<SearchActive />}
           style={{ marginVertical: 20, marginHorizontal: 39 }}
         />
 

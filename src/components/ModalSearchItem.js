@@ -1,10 +1,16 @@
 import React from 'react';
-import { Pressable, StyleSheet, Image, View } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Image,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 
 import AppText from './AppText';
 import ShowAll from '../assets/images/ShowAll';
 import colors from '../constants/colors';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+//import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function ModalSearchItem({
   name,

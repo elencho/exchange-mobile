@@ -53,7 +53,7 @@ const AppInput = ({
         {left}
         {isForModal ? (
           <GestureInput
-            style={styles.input}
+            style={styles.Gesinput}
             ref={inputRef}
             onBlur={() => setIsFocused(false)}
             onFocus={() => setIsFocused(true)}
@@ -143,6 +143,16 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
     height: '100%',
     marginRight: 10,
+  },
+  Gesinput: {
+    fontFamily: 'Ubuntu_Medium',
+    fontSize: 14,
+    flex: 1,
+    color: colors.PRIMARY_TEXT,
+    height: '100%',
+    marginRight: 10,
+    position: 'absolute',
+    width: 500,
   },
   inputContainer: {
     borderWidth: 1,
