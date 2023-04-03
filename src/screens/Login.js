@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, ImageBackground, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { t } from 'i18next';
@@ -13,7 +13,6 @@ import PurpleText from '../components/PurpleText';
 import Logo from '../assets/images/Logo.svg';
 
 import colors from '../constants/colors';
-import images from '../constants/images';
 import {
   setCredentials,
   startRegistrationAction,
@@ -69,7 +68,7 @@ export default function Login({ navigation }) {
     error && login?.trim() && !validate ? 'Enter Valid Email' : null;
 
   return (
-    <ImageBackground source={images.Background} style={{ flex: 1 }}>
+    <View style={styles.background}>
       <WithKeyboard padding flexGrow contentContainerStyle={styles.container}>
         <Logo style={styles.logo} />
         <View>
@@ -123,7 +122,7 @@ export default function Login({ navigation }) {
           </AppText>
         </View>
       </WithKeyboard>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -132,6 +131,10 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 84,
     marginBottom: 40,
+  },
+  background: {
+    backgroundColor: colors.SECONDARY_BACKGROUND,
+    flex: 1,
   },
   container: {
     alignItems: 'center',
