@@ -23,7 +23,7 @@ export default function CryptoModal() {
   const [filteredData, setFiletredData] = useState(offers[fiat]);
 
   useEffect(() => {
-    dispatch({ type: 'INSTANT_TRADE_TAB_SAGA' });
+    dispatch(instantTradeTabAction());
     offers && setFiletredData(offers[fiat]);
   }, []);
 
@@ -37,7 +37,7 @@ export default function CryptoModal() {
   };
 
   const hide = () => dispatch(toggleCryptoModal(false));
-  const onModalHide = () => dispatch(fetchCurrencies());
+  const onModalHide = () => dispatch(instantTradeTabAction());
 
   const choose = (code) => {
     dispatch(setCrypto(code));

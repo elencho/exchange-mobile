@@ -1,21 +1,16 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Modal,
-  TouchableWithoutFeedback,
-  KeyboardAvoidingView,
-  Animated,
-} from 'react-native';
-import { memo, useState, useEffect } from 'react';
-import GestureRecognizer from 'react-native-swipe-gestures';
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { memo } from 'react';
+import Modal from 'react-native-modal';
 import ModalTop from './ModalTop';
+import colors from '../constants/colors';
 import AppText from './AppText';
+import AppToast from './AppToast';
 import Background from './Background';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
-import colors from '../constants/colors';
 import Headline from './TransactionHistory/Headline';
-import AppToast from './AppToast';
+import GestureRecognizer from 'react-native-swipe-gestures';
+
+import Constants from 'expo-constants';
 
 const AndroidModal = ({
   children,
@@ -29,102 +24,56 @@ const AndroidModal = ({
   onDismiss,
   position = '120%',
 }) => {
-  //TODO:refactor
-
-  //   const [fadeAnim] = useState(new Animated.Value(0));
-  //   useEffect(() => {
-  //     fadeIn();
-  //   }, []);
-
-  //   const fadeIn = () => {
-  //     Animated.timing(fadeAnim, {
-  //       toValue: 1,
-  //       duration: 100,
-  //       useNativeDriver: true,
-  //     }).start();
-  //   };
-
-  //   useCallback(() => {
-  //     Animated.timing(fadeAnim, {
-  //       toValue: 0,
-  //       duration: 4000,
-  //       useNativeDriver: true,
-  //     }).start();
-  //   }, [hide]);
-
-  //   const fadeOut = () => {
-  //     Animated.timing(fadeAnim, {
-  //       toValue: 0,
-  //       duration: 4000,
-  //       useNativeDriver: true,
-  //     }).start();
-  //   };
-  //   const onSwipeDown = () => {
-  //     hide();
-  //     fadeOut();
-  //   };
-
   return (
-    visible && (
-      <GestureRecognizer style={{ flex: 1 }} onSwipeDown={hide}>
+    <GestureRecognizer style={{ flex: 1 }} onSwipeDown={hide}>
+      <Modal
+        isVisible={visible}
+        onBackdropPress={hide}
+        onSwipeComplete={hide}
+        //swipeDirection="down"
+        propagateSwipe={true}
+        style={styles.modal}
+        animationOutTiming={500}
+        backdropTransitionInTiming={300}
+        onModalHide={onModalHide}
+        hideModalContentWhileAnimating
+        //useNativeDriver
+        useNativeDriverForBackdrop
+        onDismiss={onDismiss}
+        // coverScreen={false}
+      >
         <>
-          <Modal
-            transparent={true}
-            visible={visible}
-            //   swipeDirection="down"
-            //   animationType={'swipe'}
-            style={styles.modal}
-          >
-            <TouchableWithoutFeedback
-              onPress={hide}
-              style={{ backgroundColor: 'red', height: '100%' }}
+          {bottom && (
+            <KeyboardAvoidingView
+              behavior={Platform.select({ android: undefined, ios: 'padding' })}
+              keyboardVerticalOffset={Platform.select({
+                ios: 50,
+                android: 500,
+              })}
             >
-              <>
-                {bottom && (
-                  <KeyboardAvoidingView
-                    behavior={'position'}
-                    keyboardVerticalOffset={200}
-                    style={{
-                      height: position,
-                      backgroundColor: 'rgba(0,0,0,0.5)',
-                      justifyContent: 'flex-end',
-                    }}
-                  >
-                    <View
-                      style={{
-                        zIndex: -1,
-                        height: '50%',
-                        marginTop: 'auto',
-                        backgroundColor: 'rgba(0,0,0,0.5)',
-                      }}
-                    >
-                      <ModalTop />
-                      <View style={styles.bottom}>
-                        {title && (
-                          <AppText header style={styles.header}>
-                            {title}
-                          </AppText>
-                        )}
-                        {children}
-                      </View>
-                    </View>
-                  </KeyboardAvoidingView>
+              <ModalTop />
+              <View style={styles.bottom}>
+                {title && (
+                  <AppText header style={styles.header}>
+                    {title}
+                  </AppText>
                 )}
-                {fullScreen && (
-                  <Background modal>
-                    <CloseModalIcon onPress={hide} />
-                    {title && <Headline title={title} />}
-                    {children}
-                  </Background>
-                )}
-                {custom && children}
-                <AppToast />
-              </>
-            </TouchableWithoutFeedback>
-          </Modal>
+                {children}
+              </View>
+            </KeyboardAvoidingView>
+          )}
+          {fullScreen && (
+            <Background modal>
+              <CloseModalIcon onPress={hide} />
+              {title && <Headline title={title} />}
+              {children}
+            </Background>
+          )}
+          {custom && children}
         </>
-      </GestureRecognizer>
-    )
+        <AppToast />
+      </Modal>
+    </GestureRecognizer>
   );
 };
 
@@ -142,10 +91,11 @@ const styles = StyleSheet.create({
   },
   modal: {
     marginHorizontal: 0,
-    marginTop: 0,
-    marginBottom: 0,
+    marginTop: Platform.select({ ios: Constants.statusBarHeight, android: 0 }),
+    marginBottom: Platform.select({
+      ios: undefined,
+      android: 0,
+    }),
     justifyContent: 'flex-end',
-    flex: 1,
-    height: '50%',
   },
 });
