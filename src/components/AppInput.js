@@ -119,7 +119,7 @@ const AppInput = ({
             </Animated.View>
           </TouchableWithoutFeedback>
         ) : null}
-        <View style={styles.icon}>{rightComponent}</View>
+        {rightComponent && <View style={styles.icon}>{rightComponent}</View>}
       </View>
       {errorText && (
         <AppText small style={styles.errorText}>

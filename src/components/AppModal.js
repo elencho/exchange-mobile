@@ -1,8 +1,15 @@
 import React, { memo } from 'react';
 import Modal from 'react-native-modal';
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  Modal as RNModal,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Constants from 'expo-constants';
-import { RootSiblingParent } from 'react-native-root-siblings';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 import ModalTop from './ModalTop';
 import colors from '../constants/colors';
@@ -11,6 +18,9 @@ import AppToast from './AppToast';
 import Background from './Background';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
 import Headline from './TransactionHistory/Headline';
+import { IS_ANDROID, IS_IOS } from '../constants/system';
+import IOSModal from './IOSModal';
+import AndroidModal from './AndroidModal';
 
 function AppModal({
   children,
@@ -22,6 +32,7 @@ function AppModal({
   custom,
   onModalHide,
   onDismiss,
+  position = '120%',
 }) {
   // const deviceHeight =
   //   Platform.OS === 'ios'
@@ -35,52 +46,83 @@ function AppModal({
   //   dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   //   hide();
   // };
-
-  return (
-    <Modal
-      isVisible={visible}
-      onBackdropPress={hide}
-      onSwipeComplete={hide}
-      swipeDirection="down"
-      propagateSwipe={true}
-      style={styles.modal}
-      animationOutTiming={500}
-      backdropTransitionInTiming={300}
-      onModalHide={onModalHide}
-      hideModalContentWhileAnimating
-      //useNativeDriver
-      useNativeDriverForBackdrop
-      onDismiss={onDismiss}
-      // coverScreen={false}
-    >
-      <RootSiblingParent>
-        {bottom && (
-          <KeyboardAvoidingView
-            behavior={Platform.select({ android: undefined, ios: 'padding' })}
-            keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
-          >
-            <ModalTop />
-            <View style={styles.bottom}>
-              {title && (
-                <AppText header style={styles.header}>
-                  {title}
-                </AppText>
-              )}
+  console.log(visible);
+  const CustomModal = ({ children }) =>
+    (IS_IOS && (
+      <Modal
+        isVisible={visible}
+        onBackdropPress={hide}
+        onSwipeComplete={hide}
+        swipeDirection="down"
+        propagateSwipe={true}
+        style={styles.modal}
+        animationOutTiming={500}
+        backdropTransitionInTiming={300}
+        onModalHide={onModalHide}
+        hideModalContentWhileAnimating
+        useNativeDriver
+        useNativeDriverForBackdrop
+        onDismiss={onDismiss}
+      >
+        {children}
+      </Modal>
+    )) || (
+      <GestureRecognizer style={{ flex: 1 }} onSwipeDown={hide}>
+        <RNModal
+          transparent={true}
+          visible={visible}
+          swipeDirection="down"
+          animationType={'slide'}
+          propagateSwipe={true}
+          style={styles.modal}
+          animationOutTiming={500}
+          backdropTransitionInTiming={300}
+          onModalHide={onModalHide}
+          hideModalContentWhileAnimating
+          useNativeDriver
+          useNativeDriverForBackdrop
+          onDismiss={onDismiss}
+        >
+          <TouchableWithoutFeedback onPress={hide}>
+            <View
+              style={{
+                height: '100%',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              }}
+            >
               {children}
             </View>
-          </KeyboardAvoidingView>
-        )}
-        {fullScreen && (
-          <Background modal>
-            <CloseModalIcon onPress={hide} />
-            {title && <Headline title={title} />}
-            {children}
-          </Background>
-        )}
-        {custom && children}
-      </RootSiblingParent>
-      <AppToast />
-    </Modal>
+          </TouchableWithoutFeedback>
+        </RNModal>
+      </GestureRecognizer>
+    );
+
+  return IS_IOS ? (
+    <IOSModal
+      children={children}
+      visible={visible}
+      hide={hide}
+      bottom={bottom}
+      title={title}
+      fullScreen={fullScreen}
+      custom={custom}
+      onModalHide={onModalHide}
+      onDismiss={onDismiss}
+      position={position}
+    />
+  ) : (
+    <AndroidModal
+      children={children}
+      visible={visible}
+      hide={hide}
+      bottom={bottom}
+      title={title}
+      fullScreen={fullScreen}
+      custom={custom}
+      onModalHide={onModalHide}
+      onDismiss={onDismiss}
+      position={position}
+    />
   );
 }
 export default memo(AppModal);
@@ -103,5 +145,7 @@ const styles = StyleSheet.create({
       android: 0,
     }),
     justifyContent: 'flex-end',
+    flex: 1,
+    height: IS_ANDROID && '50%',
   },
 });

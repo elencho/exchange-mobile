@@ -71,6 +71,7 @@ export default function ChooseLanguageModal() {
       bottom
       title="Choose Language"
       children={children}
+      position="130%"
     />
   );
 }

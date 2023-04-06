@@ -151,5 +151,6 @@ const styles = StyleSheet.create({
     color: colors.SECONDARY_TEXT,
     fontSize: 11,
     textAlign: 'justify',
+    lineHeight: 15,
   },
 });

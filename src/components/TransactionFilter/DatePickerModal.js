@@ -82,7 +82,13 @@ export default function DatePickerModal({ from, to }) {
   );
 
   return (
-    <AppModal children={children} bottom visible={visible()} hide={hide} />
+    <AppModal
+      children={children}
+      bottom
+      visible={visible()}
+      hide={hide}
+      position="80%"
+    />
   );
 }
 
