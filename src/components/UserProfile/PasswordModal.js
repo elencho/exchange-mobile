@@ -173,6 +173,7 @@ export default function PasswordModal() {
           <AppInput
             style={styles.inputContainer}
             label="Current Password"
+            autoCapitalize={'none'}
             secureTextEntry={secure}
             onChangeText={(text) => handleCurrentPass(text)}
             value={curentPassword}
@@ -181,6 +182,7 @@ export default function PasswordModal() {
           <AppInput
             style={styles.inputContainer}
             label="New Password"
+            autoCapitalize={'none'}
             secureTextEntry={secure}
             onChangeText={(text) => handleNewPass(text)}
             value={newPassword}
@@ -190,6 +192,7 @@ export default function PasswordModal() {
           <AppInput
             style={styles.inputContainer}
             label="Repeat Password"
+            autoCapitalize={'none'}
             secureTextEntry={secure}
             onChangeText={(text) => handleRepeatPass(text)}
             value={repeatPassword}

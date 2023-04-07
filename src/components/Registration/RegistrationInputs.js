@@ -99,6 +99,7 @@ export default function RegistrationInputs({ validations, error }) {
       <AppInput
         value={i.passwordNew}
         label="Enter Password"
+        autoCapitalize={'none'}
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'pass')}
@@ -219,6 +220,7 @@ const styles = StyleSheet.create({
     color: colors.SECONDARY_TEXT,
     fontSize: 11,
     textAlign: 'justify',
+    lineHeight: 15,
     marginTop: 8,
   },
   white: {

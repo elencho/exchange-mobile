@@ -74,6 +74,7 @@ export default function SetNewPassword({ navigation }) {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           style={styles.input}
           label="Enter New Password"
+          autoCapitalize={'none'}
           onChangeText={(t) => setPass(t)}
           value={pass}
           secureTextEntry
@@ -96,6 +97,7 @@ export default function SetNewPassword({ navigation }) {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           style={styles.input}
           label="Confirm New Password"
+          autoCapitalize={'none'}
           onChangeText={(t) => setConfirmPass(t)}
           value={confirmPass}
           secureTextEntry

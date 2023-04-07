@@ -158,6 +158,7 @@ export default function ForgotPassword({ navigation }) {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           style={styles.input}
           label="Enter Code"
+          autoCapitalize={'none'}
           onChangeText={saveCode}
           value={f.code}
           error={!f.code?.trim() && error}
