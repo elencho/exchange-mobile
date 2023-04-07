@@ -78,20 +78,7 @@ export default function AppText({
       return children;
     }
   };
-  console.log(
-    'asd',
-    children,
-    JSON.stringify(
-      style,
-      medium,
-      body,
-      header,
-      subtext,
-      calendarDay,
-      small,
-      onPress
-    )
-  );
+
   return onPress ? (
     <Pressable onPress={onPress}>
       <Text

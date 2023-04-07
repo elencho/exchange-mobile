@@ -25,55 +25,60 @@ const AndroidModal = ({
   position = '120%',
 }) => {
   return (
-    <GestureRecognizer style={{ flex: 1 }} onSwipeDown={hide}>
-      <Modal
-        isVisible={visible}
-        onBackdropPress={hide}
-        onSwipeComplete={hide}
-        //swipeDirection="down"
-        propagateSwipe={true}
-        style={styles.modal}
-        animationOutTiming={500}
-        backdropTransitionInTiming={300}
-        onModalHide={onModalHide}
-        hideModalContentWhileAnimating
-        //useNativeDriver
-        useNativeDriverForBackdrop
-        onDismiss={onDismiss}
-        // coverScreen={false}
-      >
-        <>
-          {bottom && (
-            <KeyboardAvoidingView
-              behavior={Platform.select({ android: undefined, ios: 'padding' })}
-              keyboardVerticalOffset={Platform.select({
-                ios: 50,
-                android: 500,
-              })}
-            >
-              <ModalTop />
-              <View style={styles.bottom}>
-                {title && (
-                  <AppText header style={styles.header}>
-                    {title}
-                  </AppText>
-                )}
+    visible && (
+      <GestureRecognizer style={{ flex: 1 }} onSwipeDown={hide}>
+        <Modal
+          isVisible={visible}
+          onBackdropPress={hide}
+          onSwipeComplete={hide}
+          //swipeDirection="down"
+          propagateSwipe={true}
+          style={styles.modal}
+          animationOutTiming={500}
+          backdropTransitionInTiming={300}
+          onModalHide={onModalHide}
+          hideModalContentWhileAnimating
+          //useNativeDriver
+          useNativeDriverForBackdrop
+          onDismiss={onDismiss}
+          // coverScreen={false}
+        >
+          <>
+            {bottom && (
+              <KeyboardAvoidingView
+                behavior={Platform.select({
+                  android: undefined,
+                  ios: 'padding',
+                })}
+                keyboardVerticalOffset={Platform.select({
+                  ios: 50,
+                  android: 500,
+                })}
+              >
+                <ModalTop />
+                <View style={styles.bottom}>
+                  {title && (
+                    <AppText header style={styles.header}>
+                      {title}
+                    </AppText>
+                  )}
+                  {children}
+                </View>
+              </KeyboardAvoidingView>
+            )}
+            {fullScreen && (
+              <Background modal>
+                <CloseModalIcon onPress={hide} />
+                {title && <Headline title={title} />}
                 {children}
-              </View>
-            </KeyboardAvoidingView>
-          )}
-          {fullScreen && (
-            <Background modal>
-              <CloseModalIcon onPress={hide} />
-              {title && <Headline title={title} />}
-              {children}
-            </Background>
-          )}
-          {custom && children}
-        </>
-        <AppToast />
-      </Modal>
-    </GestureRecognizer>
+              </Background>
+            )}
+            {custom && children}
+          </>
+          <AppToast />
+        </Modal>
+      </GestureRecognizer>
+    )
   );
 };
 

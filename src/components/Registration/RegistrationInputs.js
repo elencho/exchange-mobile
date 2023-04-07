@@ -124,6 +124,7 @@ export default function RegistrationInputs({ validations, error }) {
       <AppInput
         value={i.passwordConfirm}
         label="Repeat Password"
+        autoCapitalize={'none'}
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'confirm')}
