@@ -233,6 +233,7 @@ function* otpForLoginSaga(action) {
     pkceInfo: { codeVerifier },
     forgotPassMode,
   } = profile;
+  yield put(toggleUserInfoLoading(true));
 
   const loginData = yield call(loginOtp, otp, userAndPassInfo.callbackUrl);
   yield put(
@@ -259,6 +260,7 @@ function* otpForLoginSaga(action) {
       navigation.navigate('SetNewPassword');
     }
   }
+  yield put(toggleUserInfoLoading(false));
 }
 
 // FORGOT PASSWORD
