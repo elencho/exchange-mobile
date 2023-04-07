@@ -45,10 +45,10 @@ export default function MainScreen() {
         />
       )}
     >
-      <Tab.Screen name="Exchange" component={Exchange} />
       <Tab.Screen name="Trade" component={InstantTrade} />
       <Tab.Screen name="Wallet" component={Wallet} />
       <Tab.Screen name="Transactions" component={TransactionHistory} />
+      <Tab.Screen name="Exchange" component={Exchange} />
     </Tab.Navigator>
   );
 }
