@@ -95,6 +95,7 @@ export default function Login({ navigation }) {
           secureTextEntry
           onChangeText={typePassword}
           value={password}
+          autoCapitalize={'none'}
           style={styles.password}
           error={error && !password}
           right={

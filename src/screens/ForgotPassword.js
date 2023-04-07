@@ -147,6 +147,7 @@ export default function ForgotPassword({ navigation }) {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           style={styles.input}
           label="Enter Email"
+          autoCapitalize={'none'}
           onChangeText={saveUsername}
           value={f.username}
           right={<Right />}
