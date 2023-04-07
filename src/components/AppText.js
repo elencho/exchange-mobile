@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Pressable, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -12,6 +12,7 @@ export default function AppText({
   subtext,
   calendarDay,
   small,
+  onPress,
   ...props
 }) {
   const generalError = useSelector((state) => state.errors.generalError);
@@ -54,7 +55,16 @@ export default function AppText({
     }
   };
 
-  return (
+  return onPress ? (
+    <Pressable onPress={onPress}>
+      <Text
+        style={[style, { fontFamily: fontCond(), fontSize: sizeCond() }]}
+        {...props}
+      >
+        {text()}
+      </Text>
+    </Pressable>
+  ) : (
     <Text
       style={[style, { fontFamily: fontCond(), fontSize: sizeCond() }]}
       {...props}
