@@ -106,7 +106,11 @@ export default function Registration({ navigation }) {
     <WithKeyboard scrollUp padding style={styles.scrollview}>
       <Pressable style={styles.back} onPress={signIn}>
         <Back />
-        <PurpleText text="Back to Log In" style={styles.backText} />
+        <PurpleText
+          numberOfLines={1}
+          text="Back to Log In"
+          style={styles.backText}
+        />
       </Pressable>
       <View style={styles.container}>
         <Logo style={styles.logo} />
@@ -183,5 +187,6 @@ const styles = StyleSheet.create({
   backText: {
     marginBottom: 2,
     marginLeft: 10,
+    flex: 1,
   },
 });

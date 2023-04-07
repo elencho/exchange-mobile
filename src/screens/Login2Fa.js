@@ -104,7 +104,11 @@ export default function Login2Fa({ navigation }) {
         <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
           <TouchableOpacity style={styles.back} onPress={goBack}>
             <Back />
-            <PurpleText text="Back to Log In" style={styles.backText} />
+            <PurpleText
+              numberOfLines={1}
+              text="Back to Log In"
+              style={styles.backText}
+            />
           </TouchableOpacity>
           <View style={styles.middle}>
             {image()}
@@ -160,6 +164,7 @@ const styles = StyleSheet.create({
   backText: {
     marginBottom: 2,
     marginLeft: 10,
+    flex: 1,
   },
   bottom: {
     alignItems: 'center',

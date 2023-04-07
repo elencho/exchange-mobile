@@ -53,7 +53,11 @@ export default function SetNewPassword({ navigation }) {
     <ImageBackground source={images.Background} style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={goToLogin}>
         <Back />
-        <PurpleText text="Back to Log In" style={styles.backText} />
+        <PurpleText
+          numberOfLines={1}
+          text="Back to Log In"
+          style={styles.backText}
+        />
       </TouchableOpacity>
 
       <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
@@ -121,6 +125,7 @@ const styles = StyleSheet.create({
   backText: {
     marginBottom: 2,
     marginLeft: 10,
+    flex: 1,
   },
   button: {
     width: '100%',
