@@ -51,7 +51,7 @@ export default function CardVerificationContent({ step = 0, cardId }) {
           <AppText style={styles.bulletText}>
             <Trans
               i18nKey="Bank card should have holder name"
-              components={{ b: <AppText medium /> }}
+              components={{ b: <AppText medium body /> }}
             />
           </AppText>
         </View>
@@ -61,7 +61,7 @@ export default function CardVerificationContent({ step = 0, cardId }) {
           <AppText style={styles.bulletText}>
             <Trans
               i18nKey="Card holder must match account holder"
-              components={{ b: <AppText medium /> }}
+              components={{ b: <AppText medium body /> }}
             />
           </AppText>
         </View>
@@ -73,7 +73,7 @@ export default function CardVerificationContent({ step = 0, cardId }) {
           <AppText style={styles.bulletText}>
             <Trans
               i18nKey="Only first 6 & last 4 digits"
-              components={{ b: <AppText medium /> }}
+              components={{ b: <AppText medium body /> }}
             />
           </AppText>
         </View>
@@ -83,7 +83,7 @@ export default function CardVerificationContent({ step = 0, cardId }) {
           <AppText style={styles.bulletText}>
             <Trans
               i18nKey="Recommended to hide other digits"
-              components={{ b: <AppText medium /> }}
+              components={{ b: <AppText medium body /> }}
             />
           </AppText>
         </View>
@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#CCD9DD',
     fontSize: 18,
+    lineHeight: 22,
     fontFamily: 'Ubuntu_Medium',
     marginTop: 42,
     marginBottom: 8,

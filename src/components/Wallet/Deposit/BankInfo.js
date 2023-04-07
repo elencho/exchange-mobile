@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
     color: '#F2DFB4',
     fontFamily: 'Ubuntu_Regular',
     fontSize: 11,
+    lineHeight: 15,
   },
   marginVertical: {
     marginVertical: 20,

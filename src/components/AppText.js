@@ -42,6 +42,30 @@ export default function AppText({
     }
   };
 
+  const heightCond = () => {
+    if (header) {
+      return 24;
+    }
+    if (calendarDay) {
+      return 20;
+    }
+    if (body) {
+      return 18;
+    }
+    if (subtext) {
+      return 16;
+    }
+    if (small) {
+      return 15;
+    }
+    if (!medium) {
+      return 18;
+    }
+    if (medium && !body && !header && !calendarDay) {
+      return 18;
+    }
+  };
+
   const { t } = useTranslation();
 
   const text = () => {
@@ -54,11 +78,31 @@ export default function AppText({
       return children;
     }
   };
-
+  console.log(
+    'asd',
+    children,
+    JSON.stringify(
+      style,
+      medium,
+      body,
+      header,
+      subtext,
+      calendarDay,
+      small,
+      onPress
+    )
+  );
   return onPress ? (
     <Pressable onPress={onPress}>
       <Text
-        style={[style, { fontFamily: fontCond(), fontSize: sizeCond() }]}
+        style={[
+          style,
+          {
+            fontFamily: fontCond(),
+            fontSize: sizeCond(),
+            lineHeight: heightCond(),
+          },
+        ]}
         {...props}
       >
         {text()}
@@ -66,7 +110,14 @@ export default function AppText({
     </Pressable>
   ) : (
     <Text
-      style={[style, { fontFamily: fontCond(), fontSize: sizeCond() }]}
+      style={[
+        style,
+        {
+          fontFamily: fontCond(),
+          fontSize: sizeCond(),
+          lineHeight: heightCond(),
+        },
+      ]}
       {...props}
     >
       {text()}

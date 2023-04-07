@@ -27,10 +27,11 @@ export default function ModalSearchItem({
   const text =
     phoneCountry || countryDrop || citizenshipDrop ? (
       <View style={styles.codeWrapper}>
-        <AppText medium style={styles.primary}>
+        <AppText body medium style={styles.primary}>
           ({codeText})
         </AppText>
         <AppText
+          body
           medium
           numberOfLines={1}
           style={[styles.secondary, { flex: 1 }]}
@@ -41,16 +42,16 @@ export default function ModalSearchItem({
       </View>
     ) : (
       <View style={styles.row}>
-        <AppText medium style={styles.primary}>
+        <AppText body medium style={styles.primary}>
           {name}
         </AppText>
-        <AppText medium style={styles.secondary}>
+        <AppText body medium style={styles.secondary}>
           {!!canShowCode && ` (${code})`}
         </AppText>
       </View>
     );
   const altText = !!total && (
-    <AppText medium style={styles.secondary}>
+    <AppText body medium style={styles.secondary}>
       {total}
     </AppText>
   );

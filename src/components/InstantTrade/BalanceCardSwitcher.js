@@ -38,6 +38,7 @@ export default function BalanceCardSwitcher() {
     const isActive = f === Balance_Card;
     return (
       <AppText
+        body
         medium={isActive}
         style={{ color: isActive ? colors.SECONDARY_PURPLE : '#C0C5E0' }}
       >
@@ -83,6 +84,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
+    lineHeight: 19,
     color: colors.SECONDARY_TEXT,
   },
 });

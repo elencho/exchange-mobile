@@ -49,7 +49,7 @@ export default function Transaction({ transaction, date, time }) {
       {image()}
 
       <View style={styles.middle}>
-        <AppText medium style={styles.type}>
+        <AppText medium style={styles.type} body>
           {type}
         </AppText>
         {transactionInfo ? (
@@ -61,7 +61,7 @@ export default function Transaction({ transaction, date, time }) {
 
       <View style={styles.right}>
         <View style={styles.statusRow}>
-          <AppText style={[styles.status, { marginRight: 5 }]}>
+          <AppText style={[styles.status, { marginRight: 5 }]} body>
             {status}
           </AppText>
           {statusIcon()}
@@ -94,16 +94,18 @@ const styles = StyleSheet.create({
   statusRow: { flexDirection: 'row', alignItems: 'center' },
 
   // Texts
-  address: { fontSize: 12, color: colors.SECONDARY_TEXT },
+  address: { fontSize: 12, lineHeight: 16, color: colors.SECONDARY_TEXT },
   status: {
     fontSize: 12,
+    lineHeight: 16,
     color: colors.SECONDARY_TEXT,
     marginBottom: 5,
   },
   type: {
     fontSize: 14,
+    lineHeight: 18,
     color: colors.PRIMARY_TEXT,
     marginBottom: 5,
   },
-  currency: { fontSize: 14, color: colors.PRIMARY_TEXT },
+  currency: { fontSize: 14, lineHeight: 18, color: colors.PRIMARY_TEXT },
 });

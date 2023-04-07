@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
+    lineHeight: 19,
     color: colors.SECONDARY_TEXT,
   },
 });

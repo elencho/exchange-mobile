@@ -60,6 +60,7 @@ export default TransactionFilterBottom;
 const styles = StyleSheet.create({
   purple: {
     fontSize: 14,
+    lineHeight: 18,
     marginVertical: 30,
     marginHorizontal: 5,
   },
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
   },
   white: {
     fontSize: 14,
+    lineHeight: 18,
     color: colors.PRIMARY_TEXT,
   },
 });

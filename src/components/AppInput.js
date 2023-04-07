@@ -138,6 +138,7 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: 'Ubuntu_Medium',
     fontSize: 14,
+    lineHeight: 18,
     flex: 1,
     color: colors.PRIMARY_TEXT,
     height: '100%',
@@ -146,6 +147,7 @@ const styles = StyleSheet.create({
   Gesinput: {
     fontFamily: 'Ubuntu_Medium',
     fontSize: 14,
+    lineHeight: 18,
     flex: 1,
     paddingLeft: 22,
     color: colors.PRIMARY_TEXT,

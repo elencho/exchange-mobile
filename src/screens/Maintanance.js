@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginTop: 22,
     marginBottom: 15,
+    lineHeight: 28,
   },
   secondary: {
     color: '#838BB2',

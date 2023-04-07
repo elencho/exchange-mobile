@@ -72,5 +72,6 @@ const styles = StyleSheet.create({
   secondary: {
     color: colors.SECONDARY_TEXT,
     fontSize: 24,
+    lineHeight: 28,
   },
 });

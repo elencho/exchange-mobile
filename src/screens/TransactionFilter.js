@@ -1,5 +1,11 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../components/AppText';
@@ -45,16 +51,20 @@ export default function TransactionFilter({ navigation }) {
 
   return (
     <Background>
-      <TouchableOpacity style={styles.closeContainer} onPress={close}>
-        <Close />
-      </TouchableOpacity>
-
-      <Headline title="Transaction Filter" />
-
-      <AppText style={styles.text}>Choose Type:</AppText>
+      <View style={styles.closeContainer}>
+        <Headline title="Transaction Filter" />
+        <TouchableOpacity onPress={close}>
+          <Close />
+        </TouchableOpacity>
+      </View>
+      <AppText body style={styles.text}>
+        Choose Type:
+      </AppText>
       <FilterRow array={types} />
 
-      <AppText style={styles.text}>Choose Methods:</AppText>
+      <AppText body style={styles.text}>
+        Choose Methods:
+      </AppText>
       <FilterRow array={methods} multiselect />
 
       <Pressable style={styles.dropdown} onPress={openModal}>
@@ -64,7 +74,7 @@ export default function TransactionFilter({ navigation }) {
             style={styles.coin}
           />
         )}
-        <AppText medium style={styles.bigText}>
+        <AppText body medium style={styles.bigText}>
           {currency || 'Show All Currencies'}
         </AppText>
         <Arrow />
@@ -102,13 +112,14 @@ const styles = StyleSheet.create({
   },
   purple: {
     fontSize: 15,
+    lineHeight: 19,
     marginHorizontal: 5,
   },
   closeContainer: {
-    position: 'absolute',
-    top: 10,
-    right: 20,
-    padding: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 5,
+    justifyContent: 'space-between',
   },
   dropdown: {
     paddingHorizontal: 20,
@@ -121,6 +132,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 13,
+    lineHeight: 17,
     color: colors.PRIMARY_TEXT,
     marginVertical: 15,
   },

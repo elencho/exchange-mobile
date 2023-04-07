@@ -219,6 +219,7 @@ const styles = StyleSheet.create({
   validations: {
     color: colors.SECONDARY_TEXT,
     fontSize: 11,
+    lineHeight: 15,
     textAlign: 'justify',
     lineHeight: 15,
     marginTop: 8,

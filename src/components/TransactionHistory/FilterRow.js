@@ -41,6 +41,7 @@ export default function FilterRow({ array = [''], multiselect = false }) {
               filterConditional(fil) && { color: colors.SECONDARY_PURPLE },
             ]}
             medium={filterConditional(fil)}
+            body
           >
             {fil}
           </AppText>

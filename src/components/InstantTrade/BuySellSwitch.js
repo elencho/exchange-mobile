@@ -48,16 +48,18 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 35,
-    width: '48%',
+    paddingVertical: 10,
     borderRadius: 40,
+    flex: 1,
   },
   text: {
     color: colors.PRIMARY_TEXT,
   },
   container: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+    alignItems: 'center',
     paddingBottom: 20,
+    gap: 10,
   },
 });

@@ -63,5 +63,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: colors.SECONDARY_BACKGROUND,
   },
-  date: { fontSize: 15, color: colors.SECONDARY_TEXT, marginBottom: 15 },
+  date: {
+    fontSize: 15,
+    lineHeight: 19,
+    color: colors.SECONDARY_TEXT,
+    marginBottom: 15,
+  },
 });

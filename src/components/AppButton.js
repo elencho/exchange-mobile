@@ -29,7 +29,11 @@ export default function AppButton({
       {loading ? (
         <MaterialIndicator color="#FFFFFF" animationDuration={3000} size={20} />
       ) : (
-        <AppText medium style={[styles.buttonText, left && { marginLeft: 9 }]}>
+        <AppText
+          body
+          medium
+          style={[styles.buttonText, left && { marginLeft: 9 }]}
+        >
           {text}
         </AppText>
       )}

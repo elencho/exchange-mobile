@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 15,
     color: colors.PRIMARY_TEXT,
-
+    lineHeight: 19,
     marginRight: 8,
   },
 });

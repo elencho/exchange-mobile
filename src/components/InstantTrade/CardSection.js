@@ -127,7 +127,11 @@ function CardSection({ error }) {
               style={styles.image}
             />
           )}
-          <AppText style={[styles.text, { color }]} medium={depositProvider}>
+          <AppText
+            body
+            style={[styles.text, { color }]}
+            medium={depositProvider}
+          >
             {displayName()}
           </AppText>
           <Arrow />
@@ -152,6 +156,7 @@ function CardSection({ error }) {
             disabled={!cardsToDisplayInModal?.length}
           >
             <AppText
+              body
               style={[styles.text, { color: cardTextColor }]}
               medium={card ? card.cardNumber : false}
             >

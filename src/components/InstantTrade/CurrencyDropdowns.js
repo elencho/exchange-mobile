@@ -26,7 +26,9 @@ export default function CurrencyDropdowns({ style }) {
             style={styles.icon}
             source={{ uri: `${COINS_URL_PNG}/${c.toLowerCase()}.png` }}
           />
-          <AppText style={styles.text}>{c}</AppText>
+          <AppText body style={styles.text}>
+            {c}
+          </AppText>
           <Arrow />
         </Pressable>
       ))}

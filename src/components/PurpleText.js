@@ -15,7 +15,10 @@ export default function PurpleText({
       medium
       subtext={subtext}
       onPress={onPress}
-      style={[{ color: colors.SECONDARY_PURPLE, fontSize: 30 }, style]}
+      style={[
+        { color: colors.SECONDARY_PURPLE, fontSize: 30, lineHeight: 34 },
+        style,
+      ]}
       disabled={!onPress}
       {...rest}
     >

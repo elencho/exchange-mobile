@@ -252,7 +252,11 @@ export default function BuySellModal() {
             value={price ? price.trim() : ''}
             onFocus={() => setFocusedInput('fiat')}
             //maxLength={maxLengthQuote}
-            right={<AppText style={styles.code}>{fiat}</AppText>}
+            right={
+              <AppText body style={styles.code}>
+                {fiat}
+              </AppText>
+            }
             error={error && !validateAmount(price)}
           />
           <View style={styles.margin} />
@@ -262,7 +266,11 @@ export default function BuySellModal() {
             //maxLength={maxLengthBase}
             onFocus={() => setFocusedInput('crypto')}
             value={size ? size.trim() : ''}
-            right={<AppText style={styles.code}>{crypto}</AppText>}
+            right={
+              <AppText body style={styles.code}>
+                {crypto}
+              </AppText>
+            }
             style={{ marginBottom: 10 }}
             error={error && !validateAmount(size)}
           />
