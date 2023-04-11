@@ -61,6 +61,8 @@ PODS:
     - React-Core
     - React-RCTAppDelegate
     - ReactCommon/turbomodule/core
+  - ExpoSystemUI (2.2.1):
+    - ExpoModulesCore
   - ExpoWebBrowser (12.1.1):
     - ExpoModulesCore
   - EXSecureStore (12.1.1):
@@ -424,6 +426,8 @@ PODS:
   - react-native-mobilesdk-module (1.23.0):
     - IdensicMobileSDK (= 1.23.0)
     - React-Core
+  - react-native-pager-view (6.1.2):
+    - React-Core
   - react-native-pkce-challenge (5.1.1):
     - React-Core
   - react-native-safe-area-context (4.5.0):
@@ -591,6 +595,7 @@ DEPENDENCIES:
   - ExpoLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - ExpoLocalAuthentication (from `../node_modules/expo-local-authentication/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
+  - ExpoSystemUI (from `../node_modules/expo-system-ui/ios`)
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - EXSecureStore (from `../node_modules/expo-secure-store/ios`)
   - EXSharing (from `../node_modules/expo-sharing/ios`)
@@ -644,6 +649,7 @@ DEPENDENCIES:
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - react-native-flipper-performance-plugin (from `../node_modules/react-native-flipper-performance-plugin`)
   - "react-native-mobilesdk-module (from `../node_modules/@sumsub/react-native-mobilesdk-module`)"
+  - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-pkce-challenge (from `../node_modules/react-native-pkce-challenge`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
@@ -742,6 +748,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-local-authentication/ios"
   ExpoModulesCore:
     :path: "../node_modules/expo-modules-core"
+  ExpoSystemUI:
+    :path: "../node_modules/expo-system-ui/ios"
   ExpoWebBrowser:
     :path: "../node_modules/expo-web-browser/ios"
   EXSecureStore:
@@ -798,6 +806,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-flipper-performance-plugin"
   react-native-mobilesdk-module:
     :path: "../node_modules/@sumsub/react-native-mobilesdk-module"
+  react-native-pager-view:
+    :path: "../node_modules/react-native-pager-view"
   react-native-pkce-challenge:
     :path: "../node_modules/react-native-pkce-challenge"
   react-native-safe-area-context:
@@ -879,6 +889,7 @@ SPEC CHECKSUMS:
   ExpoLinearGradient: 8eaab76b7f55c612ed8348c8be8c2a18a9b4529f
   ExpoLocalAuthentication: b870b7a8df5e15b8b0be042185a2bb7764093096
   ExpoModulesCore: 397fc99e9d6c9dcc010f36d5802097c17b90424c
+  ExpoSystemUI: 0be5173ee2a7c01e9abc44f56d879a1eaaa16527
   ExpoWebBrowser: 033d34c478d9986da2f1679729041423837626e0
   EXSecureStore: e8923258361cc406d0401af380f12bd05b2b720f
   EXSharing: 09839ace249f61bfa13c50c6a28256c31d260355
@@ -921,6 +932,7 @@ SPEC CHECKSUMS:
   react-native-flipper: f5b2b27bfbbf64ffbf8d1e7030905e43a22144c1
   react-native-flipper-performance-plugin: 42ec5017abd26e7c5a1f527f2db92c14a90cabdb
   react-native-mobilesdk-module: 5e481736ffeabd3ed8b52edf04dde24b89b1cfb9
+  react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
   react-native-pkce-challenge: 3cf066b39715c7057b6a9d8b21ab0eb60343bcf6
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
@@ -951,6 +963,6 @@ SPEC CHECKSUMS:
   Yoga: 79dd7410de6f8ad73a77c868d3d368843f0c93e0
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 25af803d8321b5459548509a479519865514ef2e
+PODFILE CHECKSUM: 85fd6b9bd5a13e8896e15abef5f5de24a3d65a79
 
 COCOAPODS: 1.12.0
