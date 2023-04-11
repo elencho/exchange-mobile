@@ -50,6 +50,7 @@ export default function Navigator() {
     headerShown: false,
     gestureEnabled: false,
     headerLeft: () => null,
+    animation: 'slide_from_right',
   };
 
   return (

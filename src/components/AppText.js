@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, Text } from 'react-native';
+import { Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -79,24 +79,9 @@ export default function AppText({
     }
   };
 
-  return onPress ? (
-    <Pressable onPress={onPress}>
-      <Text
-        style={[
-          style,
-          {
-            fontFamily: fontCond(),
-            fontSize: sizeCond(),
-            lineHeight: heightCond(),
-          },
-        ]}
-        {...props}
-      >
-        {text()}
-      </Text>
-    </Pressable>
-  ) : (
+  return (
     <Text
+      accessibilityRole={onPress ? 'button' : 'text'}
       style={[
         style,
         {
@@ -105,6 +90,7 @@ export default function AppText({
           lineHeight: heightCond(),
         },
       ]}
+      onPress={onPress}
       {...props}
     >
       {text()}

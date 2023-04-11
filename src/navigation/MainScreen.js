@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useDispatch } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 
@@ -12,8 +11,9 @@ import {
 } from '../redux/transactions/actions';
 import Wallet from '../screens/Wallet';
 import Exchange from '../screens/Exchange';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-const Tab = createBottomTabNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 export default function MainScreen() {
   const dispatch = useDispatch();
@@ -32,9 +32,13 @@ export default function MainScreen() {
   return (
     <Tab.Navigator
       screenListeners={setTabRoute}
+      tabBarPosition="bottom"
       screenOptions={{
         headerShown: false,
         unmountOnBlur: true,
+        animationEnabled: true,
+        lazy: true,
+        freezeOnBlur: true,
       }}
       initialRouteName="Trade"
       tabBar={({ state, navigation, descriptors }) => (

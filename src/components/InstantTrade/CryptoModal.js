@@ -21,6 +21,7 @@ export default function CryptoModal() {
   } = state;
 
   const [filteredData, setFiletredData] = useState(offers[fiat]);
+  const arrayToPass = filteredData.length > 0 ? filteredData : offers[fiat];
 
   useEffect(() => {
     dispatch(instantTradeTabAction());
@@ -47,7 +48,7 @@ export default function CryptoModal() {
   };
   const children = (
     <ModalWithSearch
-      array={filteredData.length > 0 || offers[fiat]}
+      array={arrayToPass}
       choose={choose}
       filter={filter}
       currentItem={crypto}
