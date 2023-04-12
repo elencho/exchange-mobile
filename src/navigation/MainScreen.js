@@ -13,11 +13,8 @@ import {
 import Wallet from '../screens/Wallet';
 import Exchange from '../screens/Exchange';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { IS_IOS } from '../constants/system';
 
-const Tab = IS_IOS
-  ? createBottomTabNavigator()
-  : createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator();
 
 export default function MainScreen() {
   const dispatch = useDispatch();
