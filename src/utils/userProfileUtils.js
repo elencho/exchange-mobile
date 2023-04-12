@@ -311,7 +311,7 @@ export const updatePhoneNumber = async (phoneNumber, phoneCountry) => {
       toast: false,
     },
     url: UPDATE_PHONE_NUMBER,
-    data: `phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}&verificationNumber=${verificationNumber}`,
+    data: `phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}`,
   });
   return data;
 };
