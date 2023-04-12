@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Pressable, StyleSheet, Image, View } from 'react-native';
 
 import AppText from './AppText';
 import ShowAll from '../assets/images/ShowAll';
 import colors from '../constants/colors';
+import { SvgUri } from 'react-native-svg';
+import FastImage from 'react-native-fast-image';
 
-export default function ModalSearchItem({
+const ModalSearchItem = ({
   name,
   code,
   onPress,
@@ -17,7 +19,7 @@ export default function ModalSearchItem({
   citizenshipDrop,
   total,
   canShowCode,
-}) {
+}) => {
   const backgroundCond = () => {
     if (name === currentItem || code === currentItem) {
       return styles.background;
@@ -59,8 +61,20 @@ export default function ModalSearchItem({
   return (
     <Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
       {code ? (
-        <Image style={styles.image} source={{ uri }} />
+        <FastImage
+          style={styles.image}
+          source={{
+            uri,
+            priority: FastImage.priority.normal,
+          }}
+        />
       ) : (
+        // <Image style={styles.image} source={{ uri }} />
+        // <SvgUri
+        //   style={styles.image}
+        //   uri={'https://static.cryptal.com/icons/svg/countries/ECU.svg'}
+        // />
+
         <ShowAll style={{ marginRight: 20 }} />
       )}
       <View>
@@ -69,8 +83,8 @@ export default function ModalSearchItem({
       </View>
     </Pressable>
   );
-}
-
+};
+export default memo(ModalSearchItem);
 const styles = StyleSheet.create({
   background: { backgroundColor: 'rgba(101, 130, 253, 0.1 )' },
   container: {
