@@ -270,7 +270,11 @@ export const updateUserData = async (data) => {
     method: 'POST',
     url: UPDATE_USER_DATA,
     data,
-    headers: { requestName: 'updateUserData', toast: false },
+    headers: {
+      requestName: 'updateUserData',
+      toast: false,
+      'Content-Type': 'multipart/form-data',
+    },
   });
   return userInfo;
 };
