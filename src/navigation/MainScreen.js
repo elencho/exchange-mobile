@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import TransactionHistory from '../screens/TransactionHistory';
 import InstantTrade from '../screens/InstantTrade';
@@ -12,8 +13,11 @@ import {
 import Wallet from '../screens/Wallet';
 import Exchange from '../screens/Exchange';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { IS_IOS } from '../constants/system';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = IS_IOS
+  ? createBottomTabNavigator()
+  : createMaterialTopTabNavigator();
 
 export default function MainScreen() {
   const dispatch = useDispatch();

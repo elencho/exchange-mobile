@@ -35,7 +35,7 @@ const IOSModal = ({
       backdropTransitionInTiming={300}
       onModalHide={onModalHide}
       hideModalContentWhileAnimating
-      //useNativeDriver
+      useNativeDriver
       useNativeDriverForBackdrop
       onDismiss={onDismiss}
       // coverScreen={false}
