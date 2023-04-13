@@ -107,7 +107,7 @@ function TransactionHistory() {
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }
           ListFooterComponent={() =>
-            moreTradesLoading ? (
+            moreTradesLoading && uniqueDates.length > 0 ? (
               <TransactionSkeleton length={[0, 1, 2]} />
             ) : (
               <View />
