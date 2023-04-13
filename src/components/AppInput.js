@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { TextInput as GestureInput } from 'react-native-gesture-handler';
+import { IS_ANDROID } from '../constants/system';
 import AppText from '../components/AppText';
 import colors from '../constants/colors';
 
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: 'Ubuntu_Medium',
     fontSize: 14,
-    lineHeight: 18,
+    lineHeight: IS_ANDROID ? 18 : null,
     flex: 1,
     color: colors.PRIMARY_TEXT,
     height: '100%',
