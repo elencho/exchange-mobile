@@ -19,6 +19,7 @@ import {
 } from '../../../redux/wallet/actions';
 import { validateScale } from '../../../utils/formUtils';
 import { validateAmount } from '../../../utils/appUtils';
+import QrScanner from '../../QrScanner';
 
 export default function WithdrawalInputs({
   isFiat,
@@ -149,6 +150,7 @@ export default function WithdrawalInputs({
             error={error && !memoTag?.trim()}
           />
         )}
+        <QrScanner />
         {isEcommerce ? (
           <>
             <View style={{ marginTop: -20, marginBottom: -22 }}>
