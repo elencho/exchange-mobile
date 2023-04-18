@@ -25,6 +25,7 @@ export const actionTypes = {
   CHOOSE_NETWORK_MODAL: 'CHOOSE_NETWORK_MODAL',
   GENERATE_REQUEST_MODAL: 'GENERATE_REQUEST_MODAL',
   QR_ADDRESS_MODAL: 'QR_ADDRESS_MODAL',
+  QR_SCANNER_MODAL: 'QR_SCANNER_MODAL',
   CHOOSE_ADDRESS_MODAL: 'CHOOSE_ADDRESS_MODAL',
   WHITELIST_ACTIONS_MODAL: 'WHITELIST_ACTIONS_MODAL',
   ADD_WHITELIST_MODAL: 'ADD_WHITELIST_MODAL',
@@ -140,6 +141,10 @@ export const toggleGenerateRequestModal = (generateRequestModalVisible) => ({
 export const toggleQrAddressModal = (qrAddressModalVisible) => ({
   type: actionTypes.QR_ADDRESS_MODAL,
   qrAddressModalVisible,
+});
+export const toggleQrScannerModal = (qrScannerModalVisible) => ({
+  type: actionTypes.QR_SCANNER_MODAL,
+  qrScannerModalVisible,
 });
 export const toggleChooseAddressModal = (chooseAddressModalVisible) => ({
   type: actionTypes.CHOOSE_ADDRESS_MODAL,

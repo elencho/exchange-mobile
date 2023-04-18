@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19" height="15.643" viewBox="0 0 19 15.643">
+  <g id="Scan" transform="translate(-203.75 -126)">
+    <g id="Group_50541" data-name="Group 50541" transform="translate(205.75 126)">
+      <path id="Path_61527" data-name="Path 61527" d="M213.078,127.328h3.4V126H211.75v4.1h1.328Z" transform="translate(-211.75 -126)" fill="#6582fd" fill-rule="evenodd"/>
+      <path id="Path_61528" data-name="Path 61528" d="M412.6,130.1h1.328V126h-4.571v1.328H412.6Z" transform="translate(-398.923 -126)" fill="#6582fd" fill-rule="evenodd"/>
+      <path id="Path_61529" data-name="Path 61529" d="M213.078,330H211.75v4.1h4.723v-1.328h-3.4Z" transform="translate(-211.75 -318.462)" fill="#6582fd" fill-rule="evenodd"/>
+      <path id="Path_61530" data-name="Path 61530" d="M412.6,332.777h-3.244V334.1h4.571V330H412.6Z" transform="translate(-398.923 -318.462)" fill="#6582fd" fill-rule="evenodd"/>
+    </g>
+    <path id="Path_61531" data-name="Path 61531" d="M204.75,266h19v1.328h-19Z" transform="translate(-1 -132.843)" fill="#6582fd" fill-rule="evenodd"/>
+  </g>
+</svg>
