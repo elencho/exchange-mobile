@@ -33,6 +33,7 @@ export default function MainScreen() {
   return (
     <Tab.Navigator
       screenListeners={setTabRoute}
+      swipeEnabled={false}
       tabBarPosition="bottom"
       screenOptions={{
         headerShown: false,

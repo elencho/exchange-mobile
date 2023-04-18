@@ -46,7 +46,6 @@ function AppModal({
   //   dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   //   hide();
   // };
-  console.log(visible);
   const CustomModal = ({ children }) =>
     (IS_IOS && (
       <Modal
