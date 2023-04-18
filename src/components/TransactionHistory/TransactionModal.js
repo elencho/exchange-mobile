@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   buy_sell: {
     height: 20,
-    width: 45,
+    paddingHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 28,
