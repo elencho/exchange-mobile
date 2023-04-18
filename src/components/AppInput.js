@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   icon: {
-    flex: 1,
+    // flex: 1,
     alignItems: 'flex-end',
     zIndex: -1,
   },

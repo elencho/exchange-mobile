@@ -1,37 +1,39 @@
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Linking,
-} from 'react-native';
+import { AppRegistry, StyleSheet } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import { RNCamera } from 'react-native-camera';
+import AppModal from './AppModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleQrScannerModal } from '../redux/modals/actions';
 
-const QrScanner = () => {
-  const onSuccess = () =>
-    Linking.openURL(e.data).catch((err) =>
-      console.error('An error occured', err)
-    );
+const QrScanner = ({ setAddress }) => {
+  const dispatch = useDispatch();
+  const closeQrScannerModal = () => dispatch(toggleQrScannerModal(false));
+  const hide = () => {
+    closeQrScannerModal();
+  };
+  const isModalVisible = useSelector(
+    (state) => state.modals.qrScannerModalVisible
+  );
 
-  return (
+  const onSuccess = (e) => {
+    setAddress(e.data);
+    closeQrScannerModal();
+  };
+
+  const children = () => (
     <QRCodeScanner
       onRead={onSuccess}
-      flashMode={RNCamera.Constants.FlashMode.torch}
-      topContent={
-        <Text style={styles.centerText}>
-          Go to <Text style={styles.textBold}>wikipedia.org/wiki/QR_code</Text>{' '}
-          on your computer and scan the QR code.
-        </Text>
-      }
-      bottomContent={
-        <TouchableOpacity style={styles.buttonTouchable}>
-          <Text style={styles.buttonText}>OK. Got it!</Text>
-        </TouchableOpacity>
-      }
-      containerStyle={styles.container}
-      cameraContainerStyle={styles.camera}
       showMarker={true}
+      markerStyle={styles.marker}
+    />
+  );
+
+  return (
+    <AppModal
+      visible={isModalVisible}
+      hide={hide}
+      children={children()}
+      title="QR Scanner"
+      custom
     />
   );
 };
@@ -39,31 +41,9 @@ const QrScanner = () => {
 export default QrScanner;
 
 const styles = StyleSheet.create({
-  centerText: {
-    flex: 1,
-    fontSize: 18,
-    padding: 32,
-    color: '#777',
-  },
-  textBold: {
-    fontWeight: '500',
-    color: '#000',
-  },
-  buttonText: {
-    fontSize: 21,
-    color: 'rgb(0,122,255)',
-  },
-  buttonTouchable: {
-    padding: 16,
-  },
-  camera: {
-    height: 100,
-    borderWidth: 1,
-    borderColor: 'blue',
-  },
-  container: {
-    borderWidth: 1,
-    borderColor: 'red',
+  marker: {
+    borderColor: '#25D8D1',
+    borderWidth: 2,
   },
 });
 

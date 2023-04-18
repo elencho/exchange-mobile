@@ -14,7 +14,7 @@ import { chooseWhitelist, setWalletTab } from '../../../redux/wallet/actions';
 
 import Arrow from '../../../assets/images/Arrow';
 
-export default function WithdrawalAddress({ error }) {
+export default function WithdrawalAddress({ error, right }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -88,6 +88,7 @@ export default function WithdrawalAddress({ error }) {
           onChangeText={setAddress}
           value={w.address}
           error={error && !w?.address}
+          right={right && right}
         />
       );
     }
