@@ -26,7 +26,9 @@ export default function TradeDetails() {
     const date = new Date(timestamp);
     return `${date.getDate()} ${
       monthsShort[date.getMonth()]
-    }, ${date.getFullYear()} / ${date.toLocaleTimeString()}`;
+    }, ${date.getFullYear()} / ${date.toLocaleTimeString('en-US', {
+      hour12: false,
+    })}`;
   };
 
   const LeftText = ({ text }) => (
