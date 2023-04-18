@@ -109,6 +109,7 @@ android {
         applicationId 'com.cryptal.exchange.mobile'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        missingDimensionStrategy 'react-native-camera', 'general'
         versionCode 1
         versionName "1.1.0"
     }

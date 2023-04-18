@@ -9,6 +9,8 @@ import CardSection from '../../InstantTrade/CardSection';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import Fee from '../Fee';
+import QrScanner from '../../QrScanner';
+import QrScannerToggler from './QrScannerToggler';
 
 import colors from '../../../constants/colors';
 import { fetchFee } from '../../../redux/trade/actions';
@@ -16,6 +18,7 @@ import {
   setMemoTag,
   setWithdrawalAmount,
   setWithdrawalNote,
+  chooseWhitelist,
 } from '../../../redux/wallet/actions';
 import { validateScale } from '../../../utils/formUtils';
 import { validateAmount } from '../../../utils/appUtils';
@@ -100,6 +103,7 @@ export default function WithdrawalInputs({
   const setNote = (note) => dispatch(setWithdrawalNote(note));
   const handleMemotag = (memo) => dispatch(setMemoTag(memo));
   const handleMax = () => dispatch({ type: 'MAX_WITHDRAWAL_SAGA' });
+  const setQrAddress = (address) => dispatch(chooseWhitelist({ address }));
 
   const disabled = () => {
     let disabled;
@@ -137,7 +141,9 @@ export default function WithdrawalInputs({
   return (
     <>
       <View style={styles.block}>
-        {!hasRestriction && !isFiat && <WithdrawalAddress error={error} />}
+        {!hasRestriction && !isFiat && (
+          <WithdrawalAddress right={<QrScannerToggler />} error={error} />
+        )}
 
         {needsTag() && !whitelist?.length && (
           <AppInput
@@ -149,6 +155,8 @@ export default function WithdrawalInputs({
             error={error && !memoTag?.trim()}
           />
         )}
+
+        <QrScanner setAddress={setQrAddress} />
         {isEcommerce ? (
           <>
             <View style={{ marginTop: -20, marginBottom: -22 }}>

@@ -44,6 +44,7 @@ const INITIAL_STATE = {
   chooseNetworkModalVisible: false,
   generateRequestModalVisible: false,
   qrAddressModalVisible: false,
+  qrScannerModalVisible: false,
   chooseAddressModalVisible: false,
   withdrawalConfirmModalVisible: false,
   whitelistActionsModalVisible: false,
@@ -66,6 +67,7 @@ export default (state = INITIAL_STATE, action) => {
     infoVisible,
     chooseCardModalVisible,
     qrAddressModalVisible,
+    qrScannerModalVisible,
     chooseBankModalVisible,
     bankFeesModalVisible,
     cryptoModalVisible,
@@ -292,6 +294,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         addCardModalVisible,
+      };
+    case actionTypes.QR_SCANNER_MODAL:
+      return {
+        ...state,
+        qrScannerModalVisible,
       };
     case 'SET_APP_WEBVIEW_OBJ':
       return {
