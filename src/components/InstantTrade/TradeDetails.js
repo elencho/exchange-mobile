@@ -65,18 +65,17 @@ export default function TradeDetails() {
   return (
     <View style={styles.container}>
       <View>
-        {['Amount', 'Price', 'Create Date', 'End Date', 'Status'].map((e) => (
-          <LeftText key={e} text={e} />
-        ))}
+        {['Amount', 'Price', 'Total', 'Create Date', 'End Date', 'Status'].map(
+          (e) => (
+            <LeftText key={e} text={e} />
+          )
+        )}
       </View>
 
       <View style={styles.right}>
         <RightText
           text={
             <>
-              <AppText medium style={{ color: '#C0C5E0' }}>
-                {cumulativeCost} {quoteCurrency}
-              </AppText>
               <AppText medium style={{ color: colors.PRIMARY_TEXT }}>
                 {size} {baseCurrency}
               </AppText>
@@ -84,6 +83,7 @@ export default function TradeDetails() {
           }
         />
         <RightText text={`${price} ${quoteCurrency}`} />
+        <RightText text={`${cumulativeCost} ${quoteCurrency}`} />
         <RightText text={date(creationTime)} />
         <RightText text={date(lastChangeTime)} />
 
