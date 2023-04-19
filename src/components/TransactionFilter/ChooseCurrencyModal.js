@@ -40,6 +40,8 @@ function ChooseCurrencyModal({ wallet = false }) {
     }
   }, [currencies]);
 
+  useEffect(() => filter(''), [chooseCurrencyModalVisible]);
+
   const filter = (text) => {
     const filteredArray = balance?.balances.filter(
       (c) =>
@@ -48,7 +50,6 @@ function ChooseCurrencyModal({ wallet = false }) {
     );
     setFiletredData(filteredArray);
   };
-
   const hide = () => dispatch(toggleCurrencyModal(false));
   const onModalHide = () => dispatch(fetchCurrencies());
 

@@ -177,7 +177,7 @@ function* generateCryptoAddressSaga(action) {
 function* goToBalanceSaga(action) {
   const { name, code, navigation } = action;
   yield put(setAbbr(code));
-  yield put(chooseCurrency(name));
+  yield put(chooseCurrency(code));
   yield call(() => navigation?.navigate('Balance'));
 }
 
