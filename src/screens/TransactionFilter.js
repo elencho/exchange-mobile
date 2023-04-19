@@ -53,7 +53,7 @@ export default function TransactionFilter({ navigation }) {
     <Background>
       <View style={styles.closeContainer}>
         <Headline title="Transaction Filter" />
-        <TouchableOpacity onPress={close}>
+        <TouchableOpacity onPress={close} hitSlop={50}>
           <Close />
         </TouchableOpacity>
       </View>
