@@ -33,7 +33,6 @@ export default function MainScreen() {
   return (
     <Tab.Navigator
       screenListeners={setTabRoute}
-      swipeEnabled={false}
       tabBarPosition="bottom"
       screenOptions={{
         headerShown: false,
@@ -41,6 +40,7 @@ export default function MainScreen() {
         animationEnabled: true,
         lazy: true,
         freezeOnBlur: true,
+        swipeEnabled: false,
       }}
       initialRouteName="Trade"
       tabBar={({ state, navigation, descriptors }) => (
