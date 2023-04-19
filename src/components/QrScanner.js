@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, Button, View } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import AppModal from './AppModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleQrScannerModal } from '../redux/modals/actions';
@@ -22,11 +22,8 @@ const QrScanner = ({ setAddress }) => {
     <View style={styles.container}>
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
+        style={[StyleSheet.absoluteFillObject, styles.camera]}
       />
-      {scanned && (
-        <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />
-      )}
     </View>
   );
 
@@ -45,11 +42,8 @@ const QrScanner = ({ setAddress }) => {
     closeQrScannerModal();
   };
 
-  if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+  if (hasPermission === false && isModalVisible === true) {
+    return Alert.alert('', 'You need to enable camera permissions');
   }
 
   return (
@@ -70,5 +64,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  camera: {
+    marginVertical: '20%',
+    marginHorizontal: '15%',
   },
 });
