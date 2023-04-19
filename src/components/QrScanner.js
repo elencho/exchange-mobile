@@ -1,20 +1,14 @@
-import { Alert, StyleSheet } from 'react-native';
-import QRCodeScanner from 'react-native-qrcode-scanner';
+import { useState, useEffect } from 'react';
+import { StyleSheet, Text, Button, View } from 'react-native';
 import AppModal from './AppModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleQrScannerModal } from '../redux/modals/actions';
-import {
-  PERMISSIONS,
-  RESULTS,
-  request,
-  check,
-  checkMultiple,
-  requestMultiple,
-} from 'react-native-permissions';
-
-import { useEffect } from 'react';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 
 const QrScanner = ({ setAddress }) => {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+
   const dispatch = useDispatch();
   const closeQrScannerModal = () => dispatch(toggleQrScannerModal(false));
   const hide = () => {
@@ -24,28 +18,39 @@ const QrScanner = ({ setAddress }) => {
     (state) => state.modals.qrScannerModalVisible
   );
 
+  const children = () => (
+    <View style={styles.container}>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      {scanned && (
+        <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />
+      )}
+    </View>
+  );
+
   useEffect(() => {
-    checkPermission();
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    };
+
+    getBarCodeScannerPermissions();
   }, []);
 
-  //FOR Test PURPOSE
-  const checkPermission = async () => {
-    const checkResult = await request(PERMISSIONS.IOS.CAMERA);
-    return Alert.alert(checkResult);
-  };
-
-  const onSuccess = (e) => {
-    setAddress(e.data);
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    setAddress(data);
     closeQrScannerModal();
   };
 
-  const children = () => (
-    <QRCodeScanner
-      onRead={onSuccess}
-      showMarker={true}
-      markerStyle={styles.marker}
-    />
-  );
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
 
   return (
     <AppModal
@@ -61,8 +66,9 @@ const QrScanner = ({ setAddress }) => {
 export default QrScanner;
 
 const styles = StyleSheet.create({
-  marker: {
-    borderColor: '#25D8D1',
-    borderWidth: 2,
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 });
