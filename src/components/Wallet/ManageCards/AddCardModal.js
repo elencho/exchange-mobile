@@ -111,7 +111,7 @@ export default function AddCardModal() {
   const displayName = () => {
     let displayName = 'Payment Service Provider';
 
-    depositProviders.forEach((provider) => {
+    depositProviders?.forEach((provider) => {
       if (depositProvider === provider.provider)
         displayName = provider.displayName;
     });

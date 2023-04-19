@@ -28,6 +28,10 @@ export default function CryptoModal() {
     offers && setFiletredData(offers[fiat]);
   }, []);
 
+  useEffect(() => {
+    filter('');
+  }, [cryptoModalVisible]);
+
   const filter = (text) => {
     const filteredArray = offers[fiat]?.filter(
       (c) =>

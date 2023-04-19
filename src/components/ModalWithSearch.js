@@ -83,7 +83,7 @@ export default function ModalWithSearch({
           style={{ marginVertical: 20, marginHorizontal: 39 }}
         />
 
-        <WithKeyboard padding flexGrow>
+        <WithKeyboard padding flexGrow modal>
           <FlatList
             data={array}
             renderItem={searchItem}
