@@ -12,7 +12,6 @@ import TwoFaInput from '../TwoFaInput';
 import WithKeyboard from '../WithKeyboard';
 import EmailLoginAuth from '../../assets/images/User_profile/EmailLoginAuth.svg';
 
-import images from '../../constants/images';
 import colors from '../../constants/colors';
 import { startRegistrationAction } from '../../redux/profile/actions';
 import { toggleEmailVerificationModal } from '../../redux/modals/actions';
@@ -111,7 +110,7 @@ export default function EmailVerificationModal() {
 
   const children = (
     <WithKeyboard flexGrow padding modal>
-      <ImageBackground source={images.Background} style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.top}>
           <CloseModalIcon onPress={hide} />
         </View>
@@ -142,7 +141,7 @@ export default function EmailVerificationModal() {
           </AppText>
           {resendOrCountDown()}
         </View>
-      </ImageBackground>
+      </View>
     </WithKeyboard>
   );
 
@@ -161,6 +160,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 45,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   middle: {
     flex: 1,

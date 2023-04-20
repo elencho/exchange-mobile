@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: '20%',
+    paddingHorizontal: '8%',
   },
   email: {
     marginBottom: 22,

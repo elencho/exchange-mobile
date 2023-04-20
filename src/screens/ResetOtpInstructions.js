@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ImageBackground,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
 import * as SecureStore from 'expo-secure-store';
@@ -91,7 +86,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
   };
 
   return (
-    <ImageBackground source={images.Background} style={styles.container}>
+    <View style={styles.container}>
       <WithKeyboard padding flexGrow>
         <TouchableOpacity style={styles.back} onPress={goBack}>
           <Back />
@@ -148,7 +143,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
           </View>
         )}
       </WithKeyboard>
-    </ImageBackground>
+    </View>
   );
 }
 

@@ -3,7 +3,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
 import {
   StyleSheet,
-  ImageBackground,
+  View,
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
@@ -15,7 +15,6 @@ import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
-import images from '../constants/images';
 import Logo from '../assets/images/Logo.svg';
 import {
   fetchCountries,
@@ -39,7 +38,6 @@ import {
 } from '../constants/system';
 
 import SplashScreen from 'react-native-splash-screen';
-
 import VersionCheck from 'react-native-version-check';
 
 export default function Welcome({ navigation }) {
@@ -130,22 +128,23 @@ export default function Welcome({ navigation }) {
       onPress={Keyboard.dismiss}
       accessible={false}
     >
-      <ImageBackground source={images.Background} style={styles.container}>
-        <>
-          <Logo style={styles.logo} />
-          <AppText header style={styles.primary}>
-            Welcome to Cryptal
-          </AppText>
+      <View style={styles.container}>
+        <Logo style={styles.logo} />
+        <AppText header style={styles.primary}>
+          Welcome to Cryptal
+        </AppText>
+        <AppText body style={styles.subtext}>
+          Secure and Simple · Your Gateway to the Global Crypto Universe
+        </AppText>
 
-          <GeneralError
-            style={styles.error}
-            show={errorHappenedHere('Welcome')}
-          />
+        <GeneralError
+          style={styles.error}
+          show={errorHappenedHere('Welcome')}
+        />
 
-          <AppButton text="Login" style={styles.button} onPress={startLogin} />
-          <PurpleText text="Registration" onPress={startRegistration} />
-        </>
-      </ImageBackground>
+        <AppButton text="Login" style={styles.button} onPress={startLogin} />
+        <PurpleText text="Registration" onPress={startRegistration} />
+      </View>
     </TouchableWithoutFeedback>
   );
 }
@@ -179,6 +178,11 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
     marginTop: 30,
     marginBottom: 12,
+    textAlign: 'center',
+  },
+  subtext: {
+    color: colors.SECONDARY_TEXT,
+    marginTop: 12,
     textAlign: 'center',
   },
   secondary: {

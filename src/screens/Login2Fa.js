@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  ImageBackground,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -99,7 +98,7 @@ export default function Login2Fa({ navigation }) {
   };
 
   return (
-    <ImageBackground source={images.Background} style={styles.container}>
+    <View style={styles.container}>
       <WithKeyboard padding flexGrow>
         <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
           <TouchableOpacity style={styles.back} onPress={goBack}>
@@ -148,7 +147,7 @@ export default function Login2Fa({ navigation }) {
           </View>
         </Pressable>
       </WithKeyboard>
-    </ImageBackground>
+    </View>
   );
 }
 
