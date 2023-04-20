@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     borderRadius: 10,
+    resizeMode: 'stretch',
   },
   input: {
     marginTop: 22,
