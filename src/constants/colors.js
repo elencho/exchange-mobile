@@ -7,4 +7,5 @@ export default {
   SECONDARY_TEXT: '#696F8E',
   SKELETON: '#4B4B65',
   LITE_RED: '#DE90A8',
+  BORDER: '#42475D',
 };
