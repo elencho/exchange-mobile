@@ -1,5 +1,6 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 
 import AppText from './AppText';
 import AppInput from './AppInput';
@@ -84,14 +85,15 @@ export default function ModalWithSearch({
         />
 
         <WithKeyboard padding flexGrow modal>
-          <FlatList
+          <FlashList
             data={array}
             renderItem={searchItem}
-            keyExtractor={({ item }) =>
+            keyExtractor={(item) =>
               item?.code || item?.pair?.baseCurrency || item?.currencyCode
             }
             scrollEventThrottle={1000}
             initialNumToRender={25}
+            estimatedItemSize={200}
           />
         </WithKeyboard>
       </View>
