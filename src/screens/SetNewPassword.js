@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import AppText from '../components/AppText';
@@ -17,7 +11,6 @@ import Strong_Password from '../assets/images/User_profile/Strong_Password';
 import Back from '../assets/images/Back';
 
 import colors from '../constants/colors';
-import images from '../constants/images';
 import { startLoginAction } from '../redux/profile/actions';
 
 export default function SetNewPassword({ navigation }) {
@@ -50,7 +43,7 @@ export default function SetNewPassword({ navigation }) {
   };
 
   return (
-    <ImageBackground source={images.Background} style={styles.container}>
+    <View style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={goToLogin}>
         <Back />
         <PurpleText
@@ -110,7 +103,7 @@ export default function SetNewPassword({ navigation }) {
 
         <AppButton text="Save" style={styles.button} onPress={setNewPassword} />
       </WithKeyboard>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -134,6 +127,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: '12%',
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   input: {
     width: '100%',

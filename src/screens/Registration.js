@@ -147,7 +147,8 @@ export default function Registration({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 45,
+    paddingVertical: 45,
+    paddingHorizontal: '8%',
   },
   scrollview: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
