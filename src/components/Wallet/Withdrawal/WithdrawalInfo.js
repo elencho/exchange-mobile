@@ -16,7 +16,6 @@ import TemplatesModal from './TemplatesModal';
 import WithdrawalBanksModal from './WithdrawalBanksModal';
 import Arrow from '../../../assets/images/Arrow';
 import CountriesModal from '../../UserProfile/CountriesModal';
-
 import { COUNTRIES_URL_PNG } from '../../../constants/api';
 
 export default function WithdrawalInfo({ error }) {
@@ -27,9 +26,6 @@ export default function WithdrawalInfo({ error }) {
     profile: { userInfo },
     wallet: { currentTemplate, withdrawalBank, iban, receiverBank },
   } = state;
-
-  console.log('country', userInfo?.country);
-  console.log('countryCode', userInfo?.countryCode);
 
   const showTemplates = () => dispatch(toggleTemplatesModal(true));
   const showBanks = () => dispatch(toggleChooseBankModal(true));
