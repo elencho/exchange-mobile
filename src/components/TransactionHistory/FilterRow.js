@@ -17,8 +17,10 @@ export default function FilterRow({ array = [''], multiselect = false }) {
   const filterConditional = (fil) => {
     if (!multiselect) {
       return typeFilter === fil || (fil === 'ALL' && !typeFilter);
+    } else if (method?.length > 0) {
+      return method?.includes(fil);
     } else {
-      return method && method.includes(fil);
+      return dispatch(filterAction('All', true));
     }
   };
 
