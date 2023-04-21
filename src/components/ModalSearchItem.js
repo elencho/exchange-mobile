@@ -1,10 +1,9 @@
 import React, { memo } from 'react';
-import { Pressable, StyleSheet, Image, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import AppText from './AppText';
 import ShowAll from '../assets/images/ShowAll';
 import colors from '../constants/colors';
-import { SvgUri } from 'react-native-svg';
 import FastImage from 'react-native-fast-image';
 
 const ModalSearchItem = ({
@@ -69,12 +68,6 @@ const ModalSearchItem = ({
           }}
         />
       ) : (
-        // <Image style={styles.image} source={{ uri }} />
-        // <SvgUri
-        //   style={styles.image}
-        //   uri={'https://static.cryptal.com/icons/svg/countries/ECU.svg'}
-        // />
-
         <ShowAll style={{ marginRight: 20 }} />
       )}
       <View>
@@ -85,6 +78,7 @@ const ModalSearchItem = ({
   );
 };
 export default memo(ModalSearchItem);
+
 const styles = StyleSheet.create({
   background: { backgroundColor: 'rgba(101, 130, 253, 0.1 )' },
   container: {
@@ -105,7 +99,7 @@ const styles = StyleSheet.create({
   secondary: { color: colors.SECONDARY_TEXT },
   codeWrapper: {
     flexDirection: 'row',
-    width: 500,
+    width: 250,
   },
   row: { flexDirection: 'row' },
 });
