@@ -38,6 +38,7 @@ export default function PersonalInfoModal() {
   const [citizenshipDrop, setCitizenshipDrop] = useState(false);
   const [userInfoVariable, setUserInfoVariable] = useState(null);
   const [error, setError] = useState(false);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
 
   const firstName = userInfo?.firstName;
   const lastName = userInfo?.lastName;
@@ -87,7 +88,10 @@ export default function PersonalInfoModal() {
     if (error || condition) {
       setError(true);
     } else {
-      dispatch(saveUserInfoSaga());
+      setIsButtonLoading(true);
+      setTimeout(() => {
+        dispatch(saveUserInfoSaga());
+      }, 0);
     }
   };
 
@@ -232,7 +236,12 @@ export default function PersonalInfoModal() {
         />
       </TouchableOpacity>
 
-      <AppButton onPress={handleSave} style={styles.button} text="Save" />
+      <AppButton
+        onPress={handleSave}
+        loading={isButtonLoading}
+        style={styles.button}
+        text="Save"
+      />
 
       <CountriesModal
         citizenshipDrop={citizenshipDrop}

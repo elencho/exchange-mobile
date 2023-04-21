@@ -32,6 +32,7 @@ export default function PhoneNumberModal() {
   const [userInfoVariable, setUserInfoVariable] = useState(null);
   const [error, setError] = useState(false);
   const [seconds, setSeconds] = useState(30);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
 
   useEffect(() => {
     if (!timerVisible) {
@@ -83,7 +84,11 @@ export default function PhoneNumberModal() {
     if (error || !country || !(number?.trim()?.length > 2)) {
       setError(true);
     } else {
-      dispatch(updatePhoneNumber(number, country, setUserInfoVariable));
+      setIsButtonLoading(true);
+      setTimeout(() => {
+        dispatch(updatePhoneNumber(number, country, setUserInfoVariable));
+        setIsButtonLoading(false);
+      }, 0);
     }
   };
 
@@ -134,7 +139,12 @@ export default function PhoneNumberModal() {
           />
         </TouchableOpacity>
 
-        <AppButton text="Save" onPress={handleSave} style={styles.button} />
+        <AppButton
+          text="Save"
+          onPress={handleSave}
+          style={styles.button}
+          loading={isButtonLoading}
+        />
 
         <CountriesModal phoneCountry />
       </WithKeyboard>
