@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
   camera: {
     height: 300,
     width: 300,
-    borderColor: '#25D8D1',
     alignSelf: 'center',
   },
   barCodeBox: {
