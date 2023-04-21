@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Pressable } from 'react-native';
 import AppModal from './AppModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleQrScannerModal } from '../redux/modals/actions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import Close from '../assets/images/Close.svg';
 
 const QrScanner = ({ setAddress }) => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -20,10 +21,16 @@ const QrScanner = ({ setAddress }) => {
 
   const children = () => (
     <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={[StyleSheet.absoluteFillObject, styles.camera]}
-      />
+      <Pressable hitSlop={200} style={styles.btn} onPress={hide}>
+        <Close />
+      </Pressable>
+      <View style={styles.barCodeBox}>
+        <BarCodeScanner
+          barCodeSize={{ height: 300, width: 100 }}
+          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          style={styles.camera}
+        />
+      </View>
     </View>
   );
 
@@ -62,12 +69,20 @@ export default QrScanner;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
+  },
+  camera: {
+    height: 300,
+    width: 300,
+    borderColor: '#25D8D1',
+    alignSelf: 'center',
+  },
+  barCodeBox: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  camera: {
-    marginVertical: '20%',
-    marginHorizontal: '15%',
+  btn: {
+    alignSelf: 'flex-end',
+    margin: 20,
   },
 });
