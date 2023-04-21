@@ -12,6 +12,7 @@ import PurpleText from '../../PurpleText';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import BankFeesModal from '../../InstantTrade/BankFeesModal';
 import colors from '../../../constants/colors';
+import { IS_ANDROID } from '../../../constants/system';
 import { ICONS_URL_PNG } from '../../../constants/api';
 
 import CheckFull from '../../../assets/images/Check_Full.svg';
@@ -132,6 +133,10 @@ export default function AddCardModal() {
       : colors.SECONDARY_TEXT;
   const borderColor = !depositProvider && error ? '#F45E8C' : '#525A86';
   const termsColor = !saveCardAgreeTerms && error ? '#F45E8C' : '#525A86';
+
+  useEffect(() => {
+    if (statusObj && IS_ANDROID) dispatch(setStatusModalInfo(statusObj));
+  }, [statusObj]);
 
   const children = (
     <>
