@@ -18,6 +18,7 @@ const ModalSearchItem = ({
   citizenshipDrop,
   total,
   canShowCode,
+  isForTransactions,
 }) => {
   const backgroundCond = () => {
     if (name === currentItem || code === currentItem) {
@@ -44,14 +45,18 @@ const ModalSearchItem = ({
     ) : (
       <View style={styles.row}>
         <AppText body medium style={styles.primary}>
-          {name}
+          {isForTransactions ? name.split('(')[0] : name}
         </AppText>
+        {isForTransactions && (
+          <AppText style={styles.secondary}> ({name.split('(')[1]} </AppText>
+        )}
         <AppText body medium style={styles.secondary}>
           {!!canShowCode && ` (${code})`}
         </AppText>
       </View>
     );
-  const altText = !!total && (
+
+  const altText = !!total && !isForTransactions && (
     <AppText body medium style={styles.secondary}>
       {total}
     </AppText>
