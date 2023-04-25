@@ -14,7 +14,7 @@ import Wallet from '../screens/Wallet';
 import Exchange from '../screens/Exchange';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function MainScreen() {
   const dispatch = useDispatch();
