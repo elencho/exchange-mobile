@@ -8,7 +8,6 @@ import Close from '../assets/images/Close.svg';
 
 const QrScanner = ({ setAddress }) => {
   const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
 
   const dispatch = useDispatch();
   const closeQrScannerModal = () => dispatch(toggleQrScannerModal(false));
@@ -27,7 +26,7 @@ const QrScanner = ({ setAddress }) => {
       <View style={styles.barCodeBox}>
         <BarCodeScanner
           barCodeSize={{ height: 300, width: 100 }}
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          onBarCodeScanned={handleBarCodeScanned}
           style={styles.camera}
         />
       </View>
@@ -44,7 +43,6 @@ const QrScanner = ({ setAddress }) => {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
     setAddress(data);
     closeQrScannerModal();
   };
