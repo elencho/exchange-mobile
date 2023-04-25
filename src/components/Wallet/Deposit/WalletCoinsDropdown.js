@@ -45,7 +45,7 @@ export default function WalletCoinsDropdown() {
       </Pressable>
 
       <AppText subtext style={styles.secondary}>
-        {`Total: ${total} = ${value} ${usdBtcSwitch}`}
+        {`Total: ${total} ≈ ${value} ${usdBtcSwitch}`}
       </AppText>
     </>
   );

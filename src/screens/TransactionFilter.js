@@ -91,7 +91,7 @@ export default function TransactionFilter({ navigation }) {
       )}
 
       <TransactionFilterBottom />
-      <ChooseCurrencyModal />
+      <ChooseCurrencyModal isForTransactions />
 
       <DatePickerModal from />
       <DatePickerModal to />

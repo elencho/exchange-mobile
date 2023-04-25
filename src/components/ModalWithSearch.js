@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
+import { useSelector } from 'react-redux';
 
 import AppText from './AppText';
 import AppInput from './AppInput';
@@ -24,7 +25,9 @@ export default function ModalWithSearch({
   countryDrop,
   citizenshipDrop,
   tradeType,
+  isForTransactions,
 }) {
+  const usdBtcSwitch = useSelector((state) => state.wallet.usdBtcSwitch);
   const handlePress = (name, code) => {
     crypto ? choose(code) : choose(name, code);
   };
@@ -39,6 +42,7 @@ export default function ModalWithSearch({
     const name =
       item?.name ||
       item?.pair?.baseCurrencyName ||
+      (isForTransactions && `${item.currencyName} (${item.currencyCode})`) ||
       `${item?.available} ${item?.currencyCode}`;
 
     const code = item?.code || item?.pair?.baseCurrency || item?.currencyCode;
@@ -48,7 +52,9 @@ export default function ModalWithSearch({
     const totalTradePrice =
       item?.pair?.baseCurrencyName && `${totalPrice} ${currency}`;
     const totalAvailablePrice =
-      item?.valueUSD && `Total: ${item?.total} = ${item?.valueUSD} USD`;
+      item?.valueUSD && usdBtcSwitch === 'USD'
+        ? `Total: ${item?.total} ≈ ${item?.valueUSD} USD`
+        : `Total: ${item?.total} ≈ ${item?.valueBTC} BTC`;
 
     return (
       <ModalSearchItem
@@ -63,6 +69,7 @@ export default function ModalWithSearch({
         countryDrop={countryDrop}
         citizenshipDrop={citizenshipDrop}
         total={totalTradePrice || totalAvailablePrice}
+        isForTransactions={isForTransactions}
       />
     );
   };

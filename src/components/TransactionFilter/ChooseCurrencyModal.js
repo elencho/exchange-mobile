@@ -19,7 +19,7 @@ import {
 } from '../../redux/wallet/actions';
 import { setCurrentBalanceObj } from '../../redux/trade/actions';
 
-function ChooseCurrencyModal({ wallet = false }) {
+function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -105,6 +105,7 @@ function ChooseCurrencyModal({ wallet = false }) {
       filter={filter}
       currentItem={currency}
       title="Choose Currency"
+      isForTransactions={isForTransactions}
     />
   );
 
