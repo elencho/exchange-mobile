@@ -7,6 +7,7 @@ import colors from '../../constants/colors';
 import {
   setDepositProvider,
   switchBalanceCard,
+  setCard,
 } from '../../redux/trade/actions';
 
 export default function BalanceCardSwitcher() {
@@ -16,6 +17,7 @@ export default function BalanceCardSwitcher() {
   const handleFilter = (filter) => {
     dispatch(switchBalanceCard(filter));
     dispatch(setDepositProvider(null));
+    dispatch(setCard(null));
   };
 
   const stylesCond = (f) => {
