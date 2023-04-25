@@ -9,7 +9,11 @@ import {
   toggleCountriesModal,
 } from '../../../redux/modals/actions';
 import { saveUserInfo } from '../../../redux/profile/actions';
-import { setIban, setReceiverBank } from '../../../redux/wallet/actions';
+import {
+  setIban,
+  setReceiverBank,
+  setIntermediateBank,
+} from '../../../redux/wallet/actions';
 import AppInput from '../../AppInput';
 import AppText from '../../AppText';
 import TemplatesModal from './TemplatesModal';
@@ -24,7 +28,15 @@ export default function WithdrawalInfo({ error }) {
 
   const {
     profile: { userInfo },
-    wallet: { currentTemplate, withdrawalBank, iban, receiverBank },
+    wallet: {
+      currentTemplate,
+      withdrawalBank,
+      iban,
+      receiverBank,
+      intermediateBank,
+      network,
+    },
+    transactions: { currency },
   } = state;
 
   const showTemplates = () => dispatch(toggleTemplatesModal(true));
@@ -34,6 +46,7 @@ export default function WithdrawalInfo({ error }) {
   const bankTitle = isBank ? withdrawalBank.bankName : 'Choose bank';
   const isTemplate = !!Object.keys(currentTemplate).length;
   const isBankOther = withdrawalBank.bankName === 'Other';
+  const hasIntermediate = network === 'SWIFT' && currency !== 'GEL';
 
   const title = !isTemplate
     ? 'Choose or Add Template'
@@ -113,6 +126,10 @@ export default function WithdrawalInfo({ error }) {
     dispatch(setReceiverBank(updatedInfo));
   };
 
+  const handleIntermediateBank = (t) => {
+    dispatch(setIntermediateBank({ swift: t }));
+  };
+
   return (
     <View style={styles.block}>
       <AppText body style={styles.text}>
@@ -128,33 +145,6 @@ export default function WithdrawalInfo({ error }) {
 
       {isBankOther && (
         <>
-          <AppInput
-            label="Address"
-            onChangeText={(t) => handleUserInfo(t, 'address')}
-            style={styles.address}
-            value={userInfo.address}
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-            error={error && !userInfo?.address?.trim()}
-          />
-          <View style={styles.row}>
-            <AppInput
-              style={[styles.inputContainer, styles.rowInputs]}
-              onChangeText={(t) => handleUserInfo(t, 'city')}
-              label="City"
-              value={userInfo.city}
-              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-              error={error && !userInfo?.city?.trim()}
-            />
-            <AppInput
-              style={[styles.inputContainer, styles.rowInputs]}
-              onChangeText={(t) => handleUserInfo(t, 'postal code')}
-              label="Postal Code"
-              value={userInfo.postalCode}
-              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-              error={error && !userInfo?.postalCode?.trim()}
-            />
-          </View>
-
           <Pressable
             style={styles.languageSelector}
             onPress={openCountriesModal}
@@ -172,6 +162,24 @@ export default function WithdrawalInfo({ error }) {
             </View>
             <Arrow />
           </Pressable>
+
+          <AppInput
+            style={styles.inputContainer}
+            onChangeText={(t) => handleUserInfo(t, 'city')}
+            label="City"
+            value={userInfo.city}
+            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+            error={error && !userInfo?.city?.trim()}
+          />
+
+          <AppInput
+            label="Address"
+            onChangeText={(t) => handleUserInfo(t, 'address')}
+            style={styles.address}
+            value={userInfo.address}
+            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+            error={error && !userInfo?.address?.trim()}
+          />
         </>
       )}
       <CountriesModal title="Select Country" countryDrop />
@@ -199,17 +207,6 @@ export default function WithdrawalInfo({ error }) {
         </>
       ) : null}
 
-      {isBankOther && (
-        <AppInput
-          label="Enter Bank Name"
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-          value={receiverBank.bankName}
-          onChangeText={(t) => handleBankInfo(t, 'bank name')}
-          style={styles.marginTop}
-          error={error && !receiverBank?.bankName?.trim()}
-        />
-      )}
-
       {showIban() ? (
         <AppInput
           label="Account Number / IBAN"
@@ -223,34 +220,6 @@ export default function WithdrawalInfo({ error }) {
 
       {isBankOther && (
         <>
-          <View style={[styles.row, styles.marginTop]}>
-            <AppInput
-              style={styles.rowInputs}
-              onChangeText={(t) => handleBankInfo(t, 'bank city')}
-              label="City"
-              value={receiverBank.bankPostalCity}
-              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-              error={error && !receiverBank?.bankPostalCity?.trim()}
-            />
-            <AppInput
-              style={styles.rowInputs}
-              onChangeText={(t) => handleBankInfo(t, 'bank postal code')}
-              label="Postal Code"
-              value={receiverBank.bankPostalCode}
-              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-              error={error && !receiverBank?.bankPostalCode?.trim()}
-            />
-          </View>
-
-          <AppInput
-            label="Bank Address"
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-            value={receiverBank.bankAddress}
-            onChangeText={(t) => handleBankInfo(t, 'bank address')}
-            style={styles.marginTop}
-            error={error && !receiverBank?.bankAddress?.trim()}
-          />
-
           <AppInput
             label="SWIFT / BIC / Routing number"
             labelBackgroundColor={colors.SECONDARY_BACKGROUND}
@@ -259,6 +228,16 @@ export default function WithdrawalInfo({ error }) {
             style={styles.marginTop}
             error={error && !receiverBank?.swift?.trim()}
           />
+          {hasIntermediate && (
+            <AppInput
+              label="Intermediary bank SWIFT / BIC / Routing number"
+              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+              value={intermediateBank.swift}
+              onChangeText={(t) => handleIntermediateBank(t)}
+              style={styles.marginTop}
+              error={error && !intermediateBank?.swift?.trim()}
+            />
+          )}
         </>
       )}
 

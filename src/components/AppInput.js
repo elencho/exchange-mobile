@@ -69,6 +69,7 @@ const AppInput = ({
               style={[
                 styles.labelContainer,
                 {
+                  width: !isFocused && !value ? '100%' : null,
                   backgroundColor: labelBackgroundColor,
                   transform: [
                     {

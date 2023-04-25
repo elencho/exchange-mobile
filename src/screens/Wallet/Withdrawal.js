@@ -109,16 +109,8 @@ export default function Withdrawal({ refreshControl }) {
     userInfo,
   ]);
 
-  const { bankName, bankPostalCity, bankPostalCode, bankAddress, swift } =
-    receiverBank;
-  const receiverBankInputs = [
-    iban,
-    bankName,
-    bankPostalCity,
-    bankPostalCode,
-    bankAddress,
-    swift,
-  ];
+  const { swift } = receiverBank;
+  const receiverBankInputs = [iban, swift];
   const notEmpty = () => {
     if (withdrawalBank?.bankName === 'Other')
       return receiverBankInputs.every((i) => i && i.trim());
