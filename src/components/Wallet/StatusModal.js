@@ -62,6 +62,7 @@ export default function StatusModal({ deposit, cards }) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    paddingTop: 30,
   },
   secondary: {
     textAlign: 'center',
@@ -71,5 +72,6 @@ const styles = StyleSheet.create({
   white: {
     textAlign: 'center',
     color: colors.PRIMARY_TEXT,
+    paddingTop: 30,
   },
 });
