@@ -1,7 +1,11 @@
 import React, { useCallback } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import {
+  useNavigation,
+  useFocusEffect,
+  useIsFocused,
+} from '@react-navigation/native';
 
 import Background from '../components/Background';
 import FilterIcon from '../components/TransactionHistory/FilterIcon';
@@ -27,8 +31,9 @@ import CustomRefreshContol from '../components/CustomRefreshContol';
 
 function TransactionHistory() {
   const navigation = useNavigation();
-
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
+
   const state = useSelector((state) => state);
   const {
     transactions: { transactions, loading, totalTransactions },
@@ -118,7 +123,7 @@ function TransactionHistory() {
         />
       )}
 
-      <TransactionModal transactions />
+      {isFocused && <TransactionModal transactions />}
     </Background>
   );
 }
