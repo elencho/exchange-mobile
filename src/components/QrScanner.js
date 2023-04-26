@@ -2,13 +2,17 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, View, Alert, Pressable } from 'react-native';
 import AppModal from './AppModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleQrScannerModal } from '../redux/modals/actions';
+import {
+  grantCameraPermission,
+  toggleQrScannerModal,
+} from '../redux/modals/actions';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Close from '../assets/images/Close.svg';
 
 const QrScanner = ({ setAddress }) => {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [scanned, setScanned] = useState(false);
+  const hasPermission = useSelector(
+    (state) => state.modals.hasCameraPermission
+  );
 
   const dispatch = useDispatch();
   const closeQrScannerModal = () => dispatch(toggleQrScannerModal(false));
@@ -27,7 +31,7 @@ const QrScanner = ({ setAddress }) => {
       <View style={styles.barCodeBox}>
         <BarCodeScanner
           barCodeSize={{ height: 300, width: 100 }}
-          onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+          onBarCodeScanned={handleBarCodeScanned}
           style={styles.camera}
         />
       </View>
@@ -37,25 +41,28 @@ const QrScanner = ({ setAddress }) => {
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
+      dispatch(grantCameraPermission(status === 'granted'));
+      return status;
     };
 
-    getBarCodeScannerPermissions();
-  }, []);
+    isModalVisible &&
+      !hasPermission &&
+      getBarCodeScannerPermissions().then((status) => {
+        if (status === 'denied') {
+          closeQrScannerModal();
+          return Alert.alert('', 'You need to enable camera permissions');
+        }
+      });
+  }, [isModalVisible]);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
     setAddress(data);
     closeQrScannerModal();
   };
 
-  if (hasPermission === false && isModalVisible === true) {
-    return Alert.alert('', 'You need to enable camera permissions');
-  }
-
   return (
     <AppModal
-      visible={isModalVisible}
+      visible={hasPermission && isModalVisible}
       hide={hide}
       children={children()}
       title="QR Scanner"

@@ -35,6 +35,7 @@ export const actionTypes = {
   TOGGLE_ADD_CARD_MODAL: 'TOGGLE_ADD_CARD_MODAL',
   SET_STATUS_MODAL_INFO: 'SET_STATUS_MODAL_INFO',
   DELETE_MODAL_INFO: 'DELETE_MODAL_INFO',
+  GRANT_CAMERA_PERMISSION: 'GRANT_CAMERA_PERMISSION',
 
   SET_APP_TOAST: 'SET_APP_TOAST',
   SET_TOAST_OBJ: 'SET_TOAST_OBJ',
@@ -190,4 +191,8 @@ export const setAppToast = (appToastObj) => ({
 export const setToastObj = (toastObj) => ({
   type: actionTypes.SET_TOAST_OBJ,
   toastObj,
+});
+export const grantCameraPermission = (hasCameraPermission) => ({
+  type: actionTypes.GRANT_CAMERA_PERMISSION,
+  hasCameraPermission,
 });

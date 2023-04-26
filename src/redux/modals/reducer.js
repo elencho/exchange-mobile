@@ -39,6 +39,7 @@ const INITIAL_STATE = {
   smsAuthModalVisible: false,
   emailAuthModalVisible: false,
   googleOtpModalVisible: false,
+  hasCameraPermission: false,
 
   // WALLET
   chooseNetworkModalVisible: false,
@@ -98,6 +99,7 @@ export default (state = INITIAL_STATE, action) => {
     toastObj,
     webViewObj,
     isToast,
+    hasCameraPermission,
   } = action;
   switch (action.type) {
     case actionTypes.SET_TOAST_OBJ:
@@ -309,6 +311,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         webViewObj: INITIAL_STATE.webViewObj,
+      };
+    case actionTypes.GRANT_CAMERA_PERMISSION:
+      return {
+        ...state,
+        hasCameraPermission,
       };
     default:
       return state;
