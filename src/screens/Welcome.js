@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: '20%',
+    paddingHorizontal: '12%',
   },
   error: {
     marginTop: 20,

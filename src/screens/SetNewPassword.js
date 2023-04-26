@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: '12%',
+    paddingHorizontal: '8%',
     backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   input: {
