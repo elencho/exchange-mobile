@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import AppText from '../AppText';
@@ -18,7 +18,9 @@ export default function FilterIcon({ onPress }) {
     <Pressable onPress={onPress} style={styles.container}>
       <Filter style={styles.icon} />
       {filters.length ? (
-        <AppText style={styles.text}>{filters.length}</AppText>
+        <View style={styles.dotOutline}>
+          <View style={styles.dot} />
+        </View>
       ) : null}
     </Pressable>
   );
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
     height: 35,
     minWidth: 35,
     borderRadius: 30,
-    backgroundColor: '#6582FD',
+    backgroundColor: colors.SECONDARY_PURPLE,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
@@ -38,10 +40,21 @@ const styles = StyleSheet.create({
     width: 13,
     height: 13,
   },
-  text: {
-    fontSize: 15,
-    color: colors.PRIMARY_TEXT,
-    lineHeight: 19,
-    marginRight: 8,
+  dot: {
+    width: 6,
+    height: 6,
+    borderRadius: 30,
+    backgroundColor: colors.SECONDARY_PURPLE,
+  },
+  dotOutline: {
+    width: 12,
+    height: 12,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
+    borderRadius: 30,
+    position: 'absolute',
+    top: -1,
+    right: -1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
