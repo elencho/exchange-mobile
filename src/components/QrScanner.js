@@ -42,19 +42,23 @@ const QrScanner = ({ setAddress }) => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
       dispatch(grantCameraPermission(status === 'granted'));
+      return status;
     };
 
-    isModalVisible && !hasPermission && getBarCodeScannerPermissions();
+    isModalVisible &&
+      !hasPermission &&
+      getBarCodeScannerPermissions().then((status) => {
+        if (status === 'denied') {
+          closeQrScannerModal();
+          return Alert.alert('', 'You need to enable camera permissions');
+        }
+      });
   }, [isModalVisible]);
 
   const handleBarCodeScanned = ({ type, data }) => {
     setAddress(data);
     closeQrScannerModal();
   };
-
-  // if (!hasPermission && isModalVisible) {
-  //   return Alert.alert('', 'You need to enable camera permissions');
-  // }
 
   return (
     <AppModal
