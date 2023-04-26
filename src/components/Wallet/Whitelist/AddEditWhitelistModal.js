@@ -6,7 +6,7 @@ import AppModal from '../../AppModal';
 import AppButton from '../../AppButton';
 import AppInput from '../../AppInput';
 import QrScanner from '../../QrScanner';
-import QrScannerToggler from '../Withdrawal/QrScannerToggler';
+import QrScannerToggler from '../Withdrawal/widgets/QrScannerToggler';
 import WithKeyboard from '../../WithKeyboard';
 import ChooseNetworkDropdown from '../../Wallet/Deposit/ChooseNetworkDropdown';
 import ChooseNetworkModal from '../../Wallet/Deposit/ChooseNetworkModal';

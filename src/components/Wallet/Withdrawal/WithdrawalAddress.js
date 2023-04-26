@@ -36,7 +36,7 @@ export default function WithdrawalAddress({ error, right }) {
   const AddressAndTag = () => {
     const { address, tag } = w;
     return (
-      <View style={{ marginBottom: 10 }}>
+      <View style={styles.mb10}>
         <View style={styles.flex}>
           <AppText subtext style={styles.subtext}>
             Address :
@@ -47,7 +47,7 @@ export default function WithdrawalAddress({ error, right }) {
         </View>
 
         {tag && (
-          <View style={[styles.flex, { marginTop: 10 }]}>
+          <View style={[styles.flex, styles.mt10]}>
             <AppText subtext style={styles.subtext}>
               Address Tag :
             </AppText>
@@ -67,11 +67,14 @@ export default function WithdrawalAddress({ error, right }) {
       } else {
         return (
           <>
-            <View style={styles.disabled}>
-              <AppText style={{ color: colors.SECONDARY_TEXT }}>
-                Destination Address
-              </AppText>
-            </View>
+            <AppInput
+              label="Destination Address"
+              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+              onChangeText={setAddress}
+              value={w.address}
+              error={error && !w?.address}
+              right={right ? right : null}
+            />
             <AppText subtext style={styles.addWhitelist}>
               {t('Do Not Have Address')}{' '}
               <PurpleText text={t('Add Whitelist')} onPress={whitelistTab} />
@@ -84,11 +87,11 @@ export default function WithdrawalAddress({ error, right }) {
         <AppInput
           label="Destination Address"
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-          style={{ marginBottom: 22 }}
+          style={styles.mb22}
           onChangeText={setAddress}
           value={w.address}
           error={error && !w?.address}
-          right={right && right}
+          right={right ? right : null}
         />
       );
     }
@@ -158,5 +161,14 @@ const styles = StyleSheet.create({
   subtext: {
     color: colors.SECONDARY_TEXT,
     width: '25%',
+  },
+  mt10: {
+    marginTop: 10,
+  },
+  mb10: {
+    marginBottom: 10,
+  },
+  mb22: {
+    marginBottom: 22,
   },
 });
