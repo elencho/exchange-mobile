@@ -46,6 +46,7 @@ const AppInput = ({
     : '#42475D';
 
   const rightComponent = isFocused && activeRight ? activeRight : right;
+  const isPlaceholder = !isFocused && !value && !right;
 
   return (
     <View style={style}>
@@ -69,7 +70,7 @@ const AppInput = ({
               style={[
                 styles.labelContainer,
                 {
-                  width: !isFocused && !value ? '100%' : null,
+                  width: isPlaceholder ? '100%' : null,
                   backgroundColor: labelBackgroundColor,
                   transform: [
                     {
