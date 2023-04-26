@@ -60,16 +60,15 @@ export default function Transaction({ transaction, date, time }) {
       </View>
 
       <View style={styles.right}>
+        <AppText medium style={styles.currency}>
+          {amount} {currency}
+        </AppText>
         <View style={styles.statusRow}>
-          <AppText style={[styles.status, { marginRight: 5 }]} body>
+          <AppText subtext style={styles.status}>
             {status}
           </AppText>
           {statusIcon()}
         </View>
-
-        <AppText medium style={styles.currency}>
-          {amount} {currency}
-        </AppText>
       </View>
     </Pressable>
   );
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-end',
   },
-  statusRow: { flexDirection: 'row', alignItems: 'center' },
+  statusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 5 },
 
   // Texts
   address: { fontSize: 12, lineHeight: 16, color: colors.SECONDARY_TEXT },
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16,
     color: colors.SECONDARY_TEXT,
-    marginBottom: 5,
+    marginRight: 5,
   },
   type: {
     fontSize: 14,
