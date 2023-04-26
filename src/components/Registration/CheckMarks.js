@@ -51,7 +51,8 @@ export default function CheckMarks({ error, validations }) {
     if (type === 'acceptTerms')
       return (
         <AppText style={[styles.text, textColor]}>
-          {t("I'm over 18 years old and agree to")}{' '}
+          {t("I'm over 18 years old and agree to")}
+          {'\n'}
           <PurpleText text="Terms & Conditions" onPress={goToTerms} />
         </AppText>
       );
