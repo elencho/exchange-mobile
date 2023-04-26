@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../AppText';
@@ -13,7 +13,6 @@ export default function FilterRow({ array = [''], multiselect = false }) {
   const { typeFilter, method } = state;
 
   const handleFilter = (filter) => dispatch(filterAction(filter, multiselect));
-
   const filterConditional = (fil) => {
     if (!multiselect) {
       return typeFilter === fil || (fil === 'ALL' && !typeFilter);
@@ -24,31 +23,40 @@ export default function FilterRow({ array = [''], multiselect = false }) {
     }
   };
 
-  return (
-    <View style={styles.filterRow}>
-      {array.map((fil) => (
-        <Pressable
-          key={fil}
+  const renderItem = ({ item }) => {
+    return (
+      <Pressable
+        style={[
+          styles.filterButton,
+          filterConditional(item) && {
+            backgroundColor: 'rgba(74, 109, 255, 0.18)',
+          },
+        ]}
+        onPress={() => handleFilter(item)}
+      >
+        <AppText
           style={[
-            styles.filterButton,
-            filterConditional(fil) && {
-              backgroundColor: 'rgba(74, 109, 255, 0.18)',
-            },
+            styles.text,
+            filterConditional(item) && { color: colors.SECONDARY_PURPLE },
           ]}
-          onPress={() => handleFilter(fil)}
+          medium={filterConditional(item)}
+          body
         >
-          <AppText
-            style={[
-              styles.text,
-              filterConditional(fil) && { color: colors.SECONDARY_PURPLE },
-            ]}
-            medium={filterConditional(fil)}
-            body
-          >
-            {fil}
-          </AppText>
-        </Pressable>
-      ))}
+          {item}
+        </AppText>
+      </Pressable>
+    );
+  };
+
+  return (
+    <View>
+      <FlatList
+        data={array}
+        keyExtractor={(item) => item}
+        renderItem={renderItem}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+      />
     </View>
   );
 }
@@ -62,10 +70,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
     justifyContent: 'center',
   },
-  filterRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+
   text: {
     color: colors.SECONDARY_TEXT,
   },
