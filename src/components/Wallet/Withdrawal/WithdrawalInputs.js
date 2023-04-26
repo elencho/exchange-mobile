@@ -10,7 +10,7 @@ import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import Fee from '../Fee';
 import QrScanner from '../../QrScanner';
-import QrScannerToggler from './QrScannerToggler';
+import QrScannerToggler from './widgets/QrScannerToggler';
 
 import colors from '../../../constants/colors';
 import { fetchFee } from '../../../redux/trade/actions';
