@@ -6,6 +6,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  Platform,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
@@ -87,7 +88,7 @@ export default function Welcome({ navigation }) {
   const isWorkingVersion = async () => {
     const version = DeviceInfo.getVersion();
 
-    const { status } = await checkReadiness(version);
+    const { status } = await checkReadiness(version, Platform.OS);
     if (status === 'DOWN') {
       navigation.navigate('Maintanance');
       return false;
