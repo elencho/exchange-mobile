@@ -8,4 +8,5 @@ export default {
   SKELETON: '#4B4B65',
   LITE_RED: '#DE90A8',
   BORDER: '#42475D',
+  BUTTON_DISABLED: '#292943',
 };

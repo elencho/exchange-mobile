@@ -157,7 +157,10 @@ export default function Deposit({ refreshControl }) {
   };
 
   return cardsLoading || loading ? (
-    <MaterialIndicator color="#6582FD" animationDuration={3000} />
+    <MaterialIndicator
+      color={colors.SECONDARY_PURPLE}
+      animationDuration={3000}
+    />
   ) : (
     <WithKeyboard flexGrow padding refreshControl={refreshControl}>
       <View style={styles.block}>
@@ -176,7 +179,7 @@ export default function Deposit({ refreshControl }) {
                   !hasRestriction &&
                   hasMethod &&
                   isCrypto && <AddressBlock />}
-                {hasMethod && content() && (
+                {hasMethod && cryptoAddress?.address && content() && (
                   <AppInfoBlock content={content()} warning />
                 )}
               </>
@@ -202,7 +205,11 @@ export default function Deposit({ refreshControl }) {
       {!cryptoAddress?.address && !isFiat && !hasRestriction && hasMethod ? (
         <View style={styles.flex}>
           <BulletsBlock />
-          <AppButton text="Generate Address" onPress={generate} />
+          <AppButton
+            text="Generate Address"
+            onPress={generate}
+            style={styles.button}
+          />
         </View>
       ) : null}
 
@@ -246,4 +253,5 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     marginTop: 10,
   },
+  button: { backgroundColor: colors.PRIMARY_PURPLE },
 });

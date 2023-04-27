@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   block: {
     padding: 35,
     marginTop: 12,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: 'rgba(140, 144, 252, 0.1)',
     marginBottom: 20,
   },
   bullet: {

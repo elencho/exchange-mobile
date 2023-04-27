@@ -52,7 +52,7 @@ export default function WalletSwitcher() {
   const buttonStyle = (f) => {
     return {
       backgroundColor:
-        colors[f === walletTab ? 'SECONDARY_PURPLE' : 'SECONDARY_BACKGROUND'],
+        colors[f === walletTab ? 'PRIMARY_PURPLE' : 'BUTTON_DISABLED'],
       width: switchers.length === 3 ? '32%' : '48%',
     };
   };
