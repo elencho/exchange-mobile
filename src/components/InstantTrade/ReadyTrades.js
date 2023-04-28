@@ -55,14 +55,14 @@ export default function ReadyTrades() {
 
   return (
     <View style={styles.container}>
-      {slicedArray?.map((t) => (
+      {slicedArray?.map((item, index) => (
         <Pressable
           style={styles.block}
-          key={Math.random()}
-          onPress={() => handleTrade(t)}
+          key={index}
+          onPress={() => handleTrade(item)}
         >
-          {primary(t)}
-          {secondary(t)}
+          {primary(item)}
+          {secondary(item)}
         </Pressable>
       ))}
       <Pressable style={styles.block} onPress={handleTrade}>

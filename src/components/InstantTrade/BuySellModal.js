@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'i18next';
@@ -36,7 +36,7 @@ import {
   switchBalanceCard,
 } from '../../redux/trade/actions';
 
-export default function BuySellModal() {
+const BuySellModal = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -310,7 +310,8 @@ export default function BuySellModal() {
       onModalHide={onDismiss}
     />
   );
-}
+};
+export default memo(BuySellModal);
 
 const styles = StyleSheet.create({
   balance: {
