@@ -25,49 +25,27 @@ export default function BulletsBlock() {
       {bullets.map((b) => (
         <Bullet key={b} b={b} />
       ))}
-
-      <View
-        style={[
-          styles.row,
-          {
-            marginBottom: 0,
-            flexWrap: 'wrap',
-          },
-        ]}
-      >
-        <View style={styles.bullet} />
-        <AppText subtext style={styles.subtext}>
-          Contact
-        </AppText>
-        <PurpleText style={styles.purpleText} text="support@cryptal.com" />
-        <AppText subtext style={[styles.subtext, { marginLeft: 20 }]}>
-          to request a deposit address
-        </AppText>
-      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   block: {
-    padding: 35,
-    marginTop: 12,
+    paddingVertical: 18,
+    paddingHorizontal: 22,
+    marginVertical: 10,
     backgroundColor: 'rgba(140, 144, 252, 0.1)',
-    marginBottom: 20,
   },
   bullet: {
     width: 5,
     height: 5,
-    borderRadius: 3,
     backgroundColor: '#838BB2',
     marginTop: 5,
   },
-  purpleText: {
-    transform: [{ scale: 0.9 }, { translateY: -1 }],
-  },
+
   row: {
     flexDirection: 'row',
-    marginBottom: 24,
+    marginBottom: 16,
   },
   subtext: {
     color: '#838BB2',
