@@ -54,7 +54,14 @@ const ModalSearchItem = ({
       </View>
     );
 
-  const altText = !!total && !isForTransactions && (
+  const shouldShowText =
+    !!total &&
+    !isForTransactions &&
+    !phoneCountry &&
+    !countryDrop &&
+    !citizenshipDrop;
+
+  const altText = shouldShowText && (
     <AppText body medium style={styles.secondary}>
       {total}
     </AppText>

@@ -56,6 +56,7 @@ export default function FilterRow({ array = [''], multiselect = false }) {
         renderItem={renderItem}
         horizontal
         showsHorizontalScrollIndicator={false}
+        bounces={false}
       />
     </View>
   );
