@@ -47,9 +47,7 @@ const ModalSearchItem = ({
         <AppText body medium style={styles.primary}>
           {isForTransactions ? name.split('(')[0] : name}
         </AppText>
-        {isForTransactions && (
-          <AppText style={styles.secondary}> ({name.split('(')[1]} </AppText>
-        )}
+
         <AppText body medium style={styles.secondary}>
           {!!canShowCode && ` (${code})`}
         </AppText>

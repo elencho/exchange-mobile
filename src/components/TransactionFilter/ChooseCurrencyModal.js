@@ -34,12 +34,6 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 
   const [filteredData, setFiletredData] = useState(balance?.balances);
 
-  useEffect(() => {
-    if (wallet && filteredData[0]?.name === 'Show All Currency') {
-      filteredData.shift();
-    }
-  }, [currencies]);
-
   useEffect(() => filter(''), [chooseCurrencyModalVisible]);
 
   const filter = (text) => {
@@ -48,7 +42,18 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
         c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
         c.currencyName.toLowerCase().includes(text.toLowerCase())
     );
-    setFiletredData(filteredArray);
+    setFiletredData(
+      isForTransactions
+        ? [
+            {
+              name: 'Show All Currency',
+              currencyName: 'Show All Currency',
+              currencyCode: '',
+            },
+            ...filteredArray,
+          ]
+        : filteredArray
+    );
   };
   const hide = () => dispatch(toggleCurrencyModal(false));
   const onModalHide = () => dispatch(fetchCurrencies());

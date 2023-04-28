@@ -21,7 +21,6 @@ const INITIAL_STATE = {
   fromDateTime: null,
   toDateTime: null,
   typeFilter: null,
-  currency: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
