@@ -62,7 +62,7 @@ export default function ModalWithSearch({
         code={code}
         phoneCode={item?.phoneCode}
         currentItem={currentItem}
-        canShowCode={!item?.currencyCode}
+        canShowCode={!!item?.currencyCode?.length}
         onPress={() => handlePress(name, code)}
         uri={uri(code)}
         phoneCountry={phoneCountry}
@@ -95,8 +95,10 @@ export default function ModalWithSearch({
           <FlashList
             data={array}
             renderItem={searchItem}
-            keyExtractor={(item) =>
-              item?.code || item?.pair?.baseCurrency || item?.currencyCode
+            keyExtractor={(item, index) =>
+              item?.code + index ||
+              item?.pair?.baseCurrency + index ||
+              item?.currencyCode + index
             }
             scrollEventThrottle={1000}
             initialNumToRender={25}

@@ -49,6 +49,8 @@ export default function TransactionFilter({ navigation }) {
   const clearCond =
     code || typeFilter || fromDateTime || toDateTime || method[0] !== 'All';
 
+  const seperateCurrencyName = (currency) => currency.split('(')[0];
+
   return (
     <Background>
       <View style={styles.closeContainer}>
@@ -75,7 +77,7 @@ export default function TransactionFilter({ navigation }) {
           />
         )}
         <AppText body medium style={styles.bigText}>
-          {currency || 'Show All Currencies'}
+          {seperateCurrencyName(currency) || 'Show All Currencies'}
         </AppText>
         <Arrow />
       </Pressable>

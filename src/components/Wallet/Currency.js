@@ -65,7 +65,7 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
           {available} {code}
         </AppText>
         <AppText body style={styles.secondary}>
-          Total: {total} = {usdBitcoin()} {usdBtcSwitch}
+          Total: {total} ≈ {usdBitcoin()} {usdBtcSwitch}
         </AppText>
       </View>
     </Pressable>
