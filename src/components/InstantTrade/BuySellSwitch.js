@@ -1,7 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
@@ -24,11 +23,9 @@ export default function BuySellSwitch() {
 
   const handleType = (t) => dispatch(setTradeType(t));
 
-  useFocusEffect(
-    useCallback(() => {
-      return () => handleType('Buy');
-    }, [])
-  );
+  useEffect(() => {
+    return () => handleType('Buy');
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
@@ -95,8 +95,9 @@ const TransactionsBlock = ({ loading }) => {
   const renderTrade = ({ item }) => (
     <Trade trade={item} key={item.creationTime} />
   );
-  const footer = () =>
-    moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />;
+  const footer = memo(() =>
+    moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />
+  );
 
   const listEmptyContainer = () =>
     !loading && (
@@ -133,7 +134,7 @@ const TransactionsBlock = ({ loading }) => {
           onEndReachedThreshold={1}
           nestedScrollEnabled
           initialNumToRender={5}
-          ListFooterComponent={footer}
+          ListFooterComponent={trades.length > 0 && footer}
           onScroll={onScroll}
           ListEmptyComponent={listEmptyContainer}
           refreshControl={
@@ -144,7 +145,7 @@ const TransactionsBlock = ({ loading }) => {
     </View>
   );
 };
-export default TransactionsBlock;
+export default memo(TransactionsBlock);
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
