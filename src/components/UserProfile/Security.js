@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import colors from '../../constants/colors';
+import { checkIsCompatable } from '../../utils/biometricsAuth';
+
 import AppText from '../AppText';
 import GoogleAuthModal from './GoogleAuthModal';
 import GoogleOtpModal from './GoogleOtpModal';
@@ -11,6 +13,18 @@ import SecurityRow from './SecurityRow';
 import SmsEmailAuthModal from './SmsEmailAuthModal';
 
 export default function Security({ loading }) {
+  const [bioAvailable, setBioAvailable] = useState(false);
+
+  useEffect(() => {
+    checkCompitable();
+  }, []);
+
+  const checkCompitable = async () => {
+    const compitable = await checkIsCompatable();
+    console.log(compitable);
+    setBioAvailable(compitable);
+  };
+
   return !loading ? (
     <>
       <View style={styles.block}>
@@ -30,6 +44,7 @@ export default function Security({ loading }) {
       </View> */}
 
       <View style={styles.block}>
+        {bioAvailable && <SecurityRow text="Biometric" />}
         <SecurityRow text="Strong_Password" />
       </View>
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -7,9 +7,10 @@ import AppSwitcher from '../AppSwitcher';
 import PurpleText from '../PurpleText';
 import Google_Auth from '../../assets/images/User_profile/Totp_Auth';
 import E_mail_Auth from '../../assets/images/User_profile/Email_Auth';
+import FaceID from '../../assets/images/Face_ID';
+import TouchID from '../../assets/images/Touch_ID';
 import SMS_Auth from '../../assets/images/User_profile/Sms_Auth';
 import Strong_Password from '../../assets/images/User_profile/Strong_Password';
-
 import {
   toggleEmailAuthModal,
   toggleGoogleOtpModal,
@@ -23,14 +24,36 @@ import {
 } from '../../redux/profile/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
 import colors from '../../constants/colors';
+import { supportedAuthenticationTypesAsync } from 'expo-local-authentication';
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.profile);
   const { userInfo, smsAuth, emailAuth, googleAuth } = state;
+  const [bioType, setBioType] = useState(null);
+
+  useEffect(() => {
+    handleBiometricIcon();
+  }, []);
 
   const handlePassword = () => {
     dispatch(togglePasswordModal(true));
+  };
+
+  const handleBiometricIcon = async () => {
+    try {
+      await supportedAuthenticationTypesAsync()
+        .then((data) => {
+          if (data[0] === 2) {
+            setBioType('FACEID');
+          } else {
+            setBioType('TOUCHID');
+          }
+        })
+        .catch((err) => console.log(err));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const handleChange = () => {
@@ -133,6 +156,7 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
     E_mail_Auth: <E_mail_Auth />,
     SMS_Auth: <SMS_Auth />,
     Strong_Password: <Strong_Password />,
+    Biometric: bioType === 'FACEID' ? <FaceID /> : <TouchID />,
   };
 
   return (

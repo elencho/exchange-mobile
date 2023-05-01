@@ -2,6 +2,7 @@ import {
   hasHardwareAsync,
   isEnrolledAsync,
   authenticateAsync,
+  supportedAuthenticationTypesAsync,
 } from 'expo-local-authentication';
 
 export const handleAuth = async () => {
@@ -17,4 +18,14 @@ export const handleAuth = async () => {
     });
     console.log(result);
   }
+};
+
+export const getBiometricTypes = async () => {
+  const biometricType = await supportedAuthenticationTypesAsync();
+  return biometricType;
+};
+
+export const checkIsCompatable = async () => {
+  const enrolled = await isEnrolledAsync();
+  return enrolled;
 };
