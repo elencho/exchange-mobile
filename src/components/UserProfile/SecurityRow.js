@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import AppText from '../AppText';
 import AppSwitcher from '../AppSwitcher';
@@ -24,20 +25,48 @@ import {
 } from '../../redux/profile/actions';
 import { sendOtp } from '../../utils/userProfileUtils';
 import colors from '../../constants/colors';
-import { supportedAuthenticationTypesAsync } from 'expo-local-authentication';
+import {
+  isEnrolledAsync,
+  authenticateAsync,
+  supportedAuthenticationTypesAsync,
+} from 'expo-local-authentication';
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.profile);
   const { userInfo, smsAuth, emailAuth, googleAuth } = state;
+
   const [bioType, setBioType] = useState(null);
+  const [isBioOn, setIsBioOn] = useState(null);
 
   useEffect(() => {
     handleBiometricIcon();
+    getBiometricEnabled();
   }, []);
 
   const handlePassword = () => {
     dispatch(togglePasswordModal(true));
+  };
+
+  const handleAuth = async (type) => {
+    const enabled = await AsyncStorage.getItem('BiometricEnabled');
+    const enrolled = await isEnrolledAsync();
+
+    if (enabled) {
+      await AsyncStorage.removeItem('BiometricEnabled');
+      return setIsBioOn(false);
+    }
+
+    if (enrolled) {
+      const result = await authenticateAsync({
+        promptMessage: 'Log in with fingerprint or faceid',
+        cancelLabel: 'Abort',
+      });
+      if (result.success) {
+        await AsyncStorage.setItem('BiometricEnabled', type);
+        setIsBioOn(true);
+      }
+    }
   };
 
   const handleBiometricIcon = async () => {
@@ -53,6 +82,13 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
         .catch((err) => console.log(err));
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const getBiometricEnabled = async () => {
+    const enabled = await AsyncStorage.getItem('BiometricEnabled');
+    if (enabled) {
+      setIsBioOn(true);
     }
   };
 
@@ -75,6 +111,8 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
         dispatch(setEmailAuth(true));
 
         break;
+      case 'Biometric':
+        handleAuth(bioType);
       default:
         break;
     }
@@ -139,6 +177,8 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
         return smsAuth;
       case 'Google_Auth':
         return googleAuth;
+      case 'Biometric':
+        return isBioOn;
       default:
         break;
     }
