@@ -37,7 +37,7 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
   const { userInfo, smsAuth, emailAuth, googleAuth } = state;
 
   const [bioType, setBioType] = useState(null);
-  const [isBioOn, setIsBioOn] = useState(null);
+  const [isBioOn, setIsBioOn] = useState(false);
 
   useEffect(() => {
     handleBiometricIcon();

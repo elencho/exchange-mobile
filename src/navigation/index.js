@@ -22,6 +22,7 @@ import ForgotPasswordScreen from '../screens/ForgotPassword';
 import SetNewPasswordScreen from '../screens/SetNewPassword';
 import CardVerificationOneScreen from '../screens/CardVerificationOne';
 import CardVerificationTwoScreen from '../screens/CardVerificationTwo';
+import Resume from '../screens/Resume';
 
 // import ExerciseScreen from '../screens/Exercise';
 
@@ -90,6 +91,7 @@ export default function Navigator() {
         />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="SetNewPassword" component={SetNewPasswordScreen} />
+        <Stack.Screen name="Resume" component={Resume} />
       </Stack.Navigator>
     </NavigationContainer>
   );
