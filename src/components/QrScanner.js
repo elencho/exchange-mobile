@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, View, Alert, Pressable } from 'react-native';
+import { useEffect } from 'react';
+import { StyleSheet, View, Alert, Pressable, Dimensions } from 'react-native';
 import AppModal from './AppModal';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,6 +10,8 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import Close from '../assets/images/Close.svg';
 import AppText from './AppText';
 
+const WINDOW_WIDTH = Dimensions.get('window').width;
+
 const QrScanner = ({ setAddress }) => {
   const hasPermission = useSelector(
     (state) => state.modals.hasCameraPermission
@@ -17,21 +19,44 @@ const QrScanner = ({ setAddress }) => {
 
   const dispatch = useDispatch();
   const closeQrScannerModal = () => dispatch(toggleQrScannerModal(false));
-  const hide = () => {
-    closeQrScannerModal();
-  };
+
   const isModalVisible = useSelector(
     (state) => state.modals.qrScannerModalVisible
   );
 
+  const getBarCodeScannerPermissions = async () => {
+    try {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      dispatch(grantCameraPermission(status === 'granted'));
+      if (status === 'denied') {
+        Alert.alert('', 'You need to enable camera permissions', [
+          { text: 'Ok', onPress: () => closeQrScannerModal() },
+        ]);
+      }
+      return status;
+    } catch (e) {
+      console.log('erroe', e);
+    }
+  };
+
+  useEffect(() => {
+    if (isModalVisible && !hasPermission) {
+      getBarCodeScannerPermissions();
+    }
+  }, [isModalVisible]);
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setAddress(data);
+    closeQrScannerModal();
+  };
+
   const children = () => (
     <View style={styles.container}>
-      <Pressable hitSlop={200} style={styles.btn} onPress={hide}>
+      <Pressable hitSlop={200} style={styles.btn} onPress={closeQrScannerModal}>
         <Close />
       </Pressable>
       <View style={styles.barCodeBox}>
         <BarCodeScanner
-          barCodeSize={{ height: 300, width: 100 }}
           onBarCodeScanned={handleBarCodeScanned}
           style={styles.camera}
         >
@@ -47,32 +72,10 @@ const QrScanner = ({ setAddress }) => {
     </View>
   );
 
-  useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      dispatch(grantCameraPermission(status === 'granted'));
-      return status;
-    };
-
-    isModalVisible &&
-      !hasPermission &&
-      getBarCodeScannerPermissions().then((status) => {
-        if (status === 'denied') {
-          closeQrScannerModal();
-          return Alert.alert('', 'You need to enable camera permissions');
-        }
-      });
-  }, [isModalVisible]);
-
-  const handleBarCodeScanned = ({ type, data }) => {
-    setAddress(data);
-    closeQrScannerModal();
-  };
-
   return (
     <AppModal
       visible={hasPermission && isModalVisible}
-      hide={hide}
+      hide={closeQrScannerModal}
       children={children()}
       title="QR Scanner"
       custom
@@ -89,12 +92,13 @@ const styles = StyleSheet.create({
   },
   camera: {
     height: 300,
-    width: 300,
+    width: WINDOW_WIDTH * 0.62,
     alignSelf: 'center',
   },
   barCodeBox: {
     flex: 1,
-    justifyContent: 'center',
+    width: '100%',
+    marginTop: '23%',
     alignItems: 'center',
   },
   btn: {

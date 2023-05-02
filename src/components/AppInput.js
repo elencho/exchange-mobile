@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 import {
   TextInput,
   StyleSheet,
@@ -167,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppInput;
+export default memo(AppInput);
