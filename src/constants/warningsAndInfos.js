@@ -6,8 +6,14 @@ const gold = <AppText style={{ color: '#F2DFB4' }} />;
 
 export const warnings = {
   sepa: [
-    'Make sure your bank supports SEPA transfers',
-    'Wire transfers take up to 1 working day',
+    <Trans
+      i18nKey="Make sure your bank supports SEPA transfers"
+      components={{ light, gold }}
+    />,
+    <Trans
+      i18nKey="Wire transfers take up to 1 working day"
+      components={{ light, gold }}
+    />,
   ],
   swift: {
     deposit: [

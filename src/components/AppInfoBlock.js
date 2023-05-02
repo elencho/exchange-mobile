@@ -32,7 +32,7 @@ export default function AppInfoBlock({
   return (
     <View style={[styles.info, background(), style]} {...rest}>
       {content.map((c, i) => (
-        <View style={[styles.row, lastItemStyle(i)]} key={c}>
+        <View style={[styles.row, lastItemStyle(i)]} key={`appInfo${i}`}>
           {content.length > 1 && <View style={[styles.bullet, bullet()]} />}
           <AppText subtext style={[styles.infoText, text()]} key={c}>
             {c}
