@@ -23,8 +23,7 @@ import SetNewPasswordScreen from '../screens/SetNewPassword';
 import CardVerificationOneScreen from '../screens/CardVerificationOne';
 import CardVerificationTwoScreen from '../screens/CardVerificationTwo';
 import Resume from '../screens/Resume';
-
-// import ExerciseScreen from '../screens/Exercise';
+import Splash from '../screens/SplashScreen';
 
 const Stack = createNativeStackNavigator();
 export const navigationRef = createNavigationContainerRef();
@@ -60,8 +59,20 @@ export default function Navigator() {
       ref={navigationRef}
       theme={{ colors: { background: 'transparent' } }}
     >
-      <Stack.Navigator screenOptions={screenOptions}>
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Navigator
+        // initialRouteName={'SplashScreen'}
+        screenOptions={screenOptions}
+      >
+        <Stack.Screen
+          options={{ animation: 'fade' }}
+          name="SplashScreen"
+          component={Splash}
+        />
+        <Stack.Screen
+          options={{ animation: 'fade' }}
+          name="Welcome"
+          component={WelcomeScreen}
+        />
         <Stack.Screen
           name="UpdateAvailable"
           component={UpdateAvailableScreen}
@@ -69,7 +80,11 @@ export default function Navigator() {
         <Stack.Screen name="Maintanance" component={MaintananceScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Registration" component={RegistrationScreen} />
-        <Stack.Screen name="Main" component={MainScreen} />
+        <Stack.Screen
+          options={{ animation: 'fade' }}
+          name="Main"
+          component={MainScreen}
+        />
 
         <Stack.Screen name="TransactionFilter" component={TransactionFilter} />
         <Stack.Screen name="UserProfile" component={UserProfileScreen} />
@@ -91,7 +106,11 @@ export default function Navigator() {
         />
         <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
         <Stack.Screen name="SetNewPassword" component={SetNewPasswordScreen} />
-        <Stack.Screen name="Resume" component={Resume} />
+        <Stack.Screen
+          name="Resume"
+          options={{ animation: 'fade' }}
+          component={Resume}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
