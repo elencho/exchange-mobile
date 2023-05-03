@@ -204,26 +204,22 @@ export default function PersonalInfoModal() {
           <Arrow />
         </Pressable>
 
-        <View style={styles.row}>
-          <AppInput
-            style={[styles.inputContainer, styles.rowInputs]}
-            onChangeText={(city) =>
-              dispatch(saveUserInfo({ ...userInfo, city }))
-            }
-            label="City"
-            value={city}
-            error={error && !city?.trim()}
-          />
-          <AppInput
-            style={[styles.inputContainer, styles.rowInputs]}
-            onChangeText={(postalCode) =>
-              dispatch(saveUserInfo({ ...userInfo, postalCode }))
-            }
-            label="Postal Code"
-            value={postalCode}
-            error={error && !postalCode?.trim()}
-          />
-        </View>
+        <AppInput
+          style={styles.inputContainer}
+          onChangeText={(city) => dispatch(saveUserInfo({ ...userInfo, city }))}
+          label="City"
+          value={city}
+          error={error && !city?.trim()}
+        />
+        <AppInput
+          style={styles.inputContainer}
+          onChangeText={(postalCode) =>
+            dispatch(saveUserInfo({ ...userInfo, postalCode }))
+          }
+          label="Postal Code"
+          value={postalCode}
+          error={error && !postalCode?.trim()}
+        />
 
         <AppInput
           style={styles.inputContainer}
