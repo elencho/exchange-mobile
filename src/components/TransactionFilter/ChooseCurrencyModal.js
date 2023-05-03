@@ -111,6 +111,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
       currentItem={currency}
       title="Choose Currency"
       isForTransactions={isForTransactions}
+      wallet={wallet}
     />
   );
 

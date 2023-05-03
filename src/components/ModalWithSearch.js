@@ -26,6 +26,7 @@ export default function ModalWithSearch({
   citizenshipDrop,
   tradeType,
   isForTransactions,
+  wallet,
 }) {
   const usdBtcSwitch = useSelector((state) => state.wallet.usdBtcSwitch);
   const handlePress = (name, code) => {
@@ -48,6 +49,7 @@ export default function ModalWithSearch({
     const code = item?.code || item?.pair?.baseCurrency || item?.currencyCode;
     const totalPrice = tradeType === 'Buy' ? item?.buyPrice : item?.sellPrice;
     const currency = item?.pair?.quoteCurrency;
+    const isInstantTrade = item?.pair?.baseCurrency.length > 0;
 
     const totalTradePrice =
       item?.pair?.baseCurrencyName && `${totalPrice} ${currency}`;
@@ -62,7 +64,9 @@ export default function ModalWithSearch({
         code={code}
         phoneCode={item?.phoneCode}
         currentItem={currentItem}
-        canShowCode={!!item?.currencyCode?.length}
+        canShowCode={
+          (!wallet && !!item?.currencyCode?.length) || isInstantTrade
+        }
         onPress={() => handlePress(name, code)}
         uri={uri(code)}
         phoneCountry={phoneCountry}
