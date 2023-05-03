@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 
 import TouchID from '../assets/images/TouchID-Purple';
 import FaceID from '../assets/images/Face_ID-pruple';
@@ -14,8 +14,9 @@ import AppText from '../components/AppText';
 import { useDispatch, useSelector } from 'react-redux';
 import AppButton from '../components/AppButton';
 import PurpleText from '../components/PurpleText';
-import { startLoginAction } from '../redux/profile/actions';
+import { fetchUserInfo, startLoginAction } from '../redux/profile/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Resume = ({ navigation }) => {
   const state = useSelector((state) => state.profile);
@@ -24,9 +25,13 @@ const Resume = ({ navigation }) => {
   const { userInfo } = state;
   const [bioType, setBioType] = useState(null);
 
-  useEffect(() => {
-    handleBiometricIcon();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(fetchUserInfo());
+      handleBiometricIcon();
+      startAuth();
+    }, [])
+  );
 
   const handleBiometricIcon = async () => {
     try {
@@ -84,7 +89,7 @@ const Resume = ({ navigation }) => {
   );
 };
 
-export default Resume;
+export default memo(Resume);
 
 const styles = StyleSheet.create({
   container: {
