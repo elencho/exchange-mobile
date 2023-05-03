@@ -9,6 +9,7 @@ import {
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import Close from '../assets/images/Close.svg';
 import AppText from './AppText';
+import { IS_IOS } from '../constants/system';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   },
   camera: {
     height: 300,
-    width: WINDOW_WIDTH * 0.62,
+    width: IS_IOS ? 300 : WINDOW_WIDTH * 0.62,
     alignSelf: 'center',
   },
   barCodeBox: {
