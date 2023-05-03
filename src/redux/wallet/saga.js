@@ -59,6 +59,7 @@ import {
   setReceiverBank,
   setWithdrawalAmount,
   setWithdrawalBank,
+  setIntermediateBank,
   setWithdrawalNote,
   setWithdrawalRestriction,
   withdrawalTemplatesAction,
@@ -348,6 +349,7 @@ function* clearWithdrawalInputsSaga() {
     yield put(chooseTemplate({}));
     yield put(setIban(''));
     yield put(setWithdrawalBank({}));
+    yield put(setIntermediateBank({}));
     yield put(saveTemplateAction(false));
     yield put(setNewTemplateName(''));
     yield put(setReceiverBank({}));

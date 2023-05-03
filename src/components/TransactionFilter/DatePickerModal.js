@@ -12,7 +12,7 @@ import { months } from '../../constants/months';
 import colors from '../../constants/colors';
 
 const theme = {
-  calendarBackground: colors.SECONDARY_BACKGROUND,
+  calendarBackground: colors.PRIMARY_BACKGROUND,
 };
 
 export default function DatePickerModal({ from, to }) {
