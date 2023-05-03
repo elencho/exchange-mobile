@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="42" height="44" viewBox="0 0 42 44">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_10697" data-name="Rectangle 10697" width="42" height="44" transform="translate(20 527)" fill="#696f8e"/>
+    </clipPath>
+  </defs>
+  <g id="Face_ID" data-name="Face ID" transform="translate(-20 -527)" clip-path="url(#clip-path)">
+    <g id="Face_ID-2" data-name="Face ID" transform="translate(23.5 531.388)">
+      <g id="Face-ID" transform="translate(0 0)">
+        <g id="Group_71697" data-name="Group 71697">
+          <g id="Group_71696" data-name="Group 71696">
+            <g id="Corners">
+              <g id="Corner">
+                <path id="Path_62419" data-name="Path 62419" d="M1.774,10.348V5.617A3.783,3.783,0,0,1,5.617,1.774h4.73V0H5.617A5.557,5.557,0,0,0,0,5.617v4.73H1.774Z" transform="translate(0 0)" fill="#696f8e"/>
+              </g>
+              <g id="Corner-2" data-name="Corner" transform="translate(35 10.348) rotate(180)">
+                <path id="Path_62420" data-name="Path 62420" d="M1.774,0V4.73A3.783,3.783,0,0,0,5.617,8.574h4.73v1.774H5.617A5.557,5.557,0,0,1,0,4.73V0H1.774Z" fill="#696f8e"/>
+              </g>
+              <g id="Corner-3" data-name="Corner" transform="translate(0 24.652)">
+                <path id="Path_62421" data-name="Path 62421" d="M1.774-24v4.73a3.783,3.783,0,0,0,3.844,3.844h4.73v1.774H5.617A5.557,5.557,0,0,1,0-19.27V-24H1.774Z" transform="translate(0 24)" fill="#696f8e"/>
+              </g>
+              <g id="Corner-4" data-name="Corner" transform="translate(35 35) rotate(180)">
+                <path id="Path_62422" data-name="Path 62422" d="M1.774,10.348V5.617A3.783,3.783,0,0,1,5.617,1.774h4.73V0H5.617A5.557,5.557,0,0,0,0,5.617v4.73H1.774Z" fill="#696f8e"/>
+              </g>
+            </g>
+            <g id="Eye" transform="translate(9.525 12.306)">
+              <path id="Path" d="M0,0V4.313H1.725V0H0Z" transform="translate(0)" fill="#696f8e"/>
+            </g>
+            <g id="Eye-2" data-name="Eye" transform="translate(23.445 12.306)">
+              <path id="Path-2" data-name="Path" d="M0,0V4.313H1.725V0H0Z" transform="translate(0)" fill="#696f8e"/>
+            </g>
+            <path id="Mouth" d="M25.552,57.01a8.969,8.969,0,0,0,12.131,0,7.867,7.867,0,0,0,.668-.716L36.97,55.155l-.526.527a6.8,6.8,0,0,1-4.827,1.874c-1.89,0-3.483-.62-5.478-2.4L24.9,56.294A6.284,6.284,0,0,0,25.552,57.01Z" transform="translate(-14.117 -31.139)" fill="#696f8e"/>
+            <path id="Nose" d="M37.206,28.978v6.354a.533.533,0,0,1-.607.605H36a.908.908,0,0,0,0,1.815h.6a2.334,2.334,0,0,0,2.423-2.421V28.978a.908.908,0,1,0-1.815,0Z" transform="translate(-19.708 -15.72)" fill="#696f8e"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

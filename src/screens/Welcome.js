@@ -1,16 +1,11 @@
-import React, { useEffect } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import * as SecureStore from 'expo-secure-store';
+import React from 'react';
 import {
   StyleSheet,
   View,
   TouchableWithoutFeedback,
   Keyboard,
-  Platform,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
-import DeviceInfo from 'react-native-device-info';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
@@ -18,105 +13,14 @@ import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
 import Logo from '../assets/images/Logo.svg';
 import {
-  fetchCountries,
-  saveUserInfo,
-  setLanguage,
   startLoginAction,
   startRegistrationAction,
 } from '../redux/profile/actions';
-import { addResources, switchLanguage } from '../utils/i18n';
 import GeneralError from '../components/GeneralError';
-import {
-  checkReadiness,
-  errorHappenedHere,
-  fetchTranslations,
-} from '../utils/appUtils';
-import {
-  getCountryName,
-  APP_ID,
-  packageName,
-  currentVersion,
-} from '../constants/system';
-
-import SplashScreen from 'react-native-splash-screen';
-import VersionCheck from 'react-native-version-check';
+import { errorHappenedHere } from '../utils/appUtils';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
-
-  useFocusEffect(() => {
-    checkVersion();
-    if (isWorkingVersion()) {
-      SecureStore.getItemAsync('accessToken').then((t) => {
-        if (t) navigation.navigate('Main');
-      });
-    }
-    dispatch(saveUserInfo({}));
-  });
-
-  useEffect(() => {
-    changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
-    fetchData();
-  }, []);
-
-  const checkVersion = async () => {
-    try {
-      const countryName = await getCountryName;
-
-      const storeData = await VersionCheck.getLatestVersion({
-        forceUpdate: true,
-        appID: APP_ID,
-        packageName: packageName,
-        country: countryName.toLowerCase() || 'ge',
-      });
-
-      const latestVersion = await storeData;
-      const updateNeeded = await VersionCheck.needUpdate({
-        currentVersion: currentVersion,
-        latestVersion: latestVersion,
-      });
-
-      if (updateNeeded && updateNeeded.isNeeded) {
-        navigation.navigate('UpdateAvailable');
-        SplashScreen.hide();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const isWorkingVersion = async () => {
-    const version = DeviceInfo.getVersion();
-
-    const { status } = await checkReadiness(version, Platform.OS);
-    if (status === 'DOWN') {
-      navigation.navigate('Maintanance');
-      return false;
-    } else return true;
-  };
-
-  const fetchData = async () => {
-    await fetchTranslations()
-      .then((res) => {
-        const languages = Object.keys(res);
-        for (let i = 0; i < languages.length; i++) {
-          addResources(
-            languages[i],
-            'translation',
-            res[languages[i]].translation
-          );
-        }
-        SecureStore.getItemAsync('language')
-          .then((l) => {
-            switchLanguage(l ? l : 'en');
-            dispatch(setLanguage(l ? l : 'en'));
-          })
-          .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
-    await dispatch(fetchCountries());
-    SplashScreen.hide();
-  };
 
   const startLogin = () => {
     dispatch(startLoginAction(navigation));

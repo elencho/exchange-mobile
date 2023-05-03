@@ -38,7 +38,6 @@ export default async (err) => {
       await SecureStore.deleteItemAsync('refreshToken');
       navigationRef.navigate('Welcome');
       store.dispatch({ type: 'LOGOUT' });
-      SplashScreen.hide();
     }
   }
 };

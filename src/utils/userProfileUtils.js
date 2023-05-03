@@ -219,8 +219,6 @@ export const refreshToken = async (config) => {
     if (data.access_token && data.refresh_token) {
       await SecureStore.setItemAsync('accessToken', data.access_token);
       await SecureStore.setItemAsync('refreshToken', data.refresh_token);
-
-      SplashScreen.hide();
       if (config) return axios.request(config);
       return data.access_token;
     }
