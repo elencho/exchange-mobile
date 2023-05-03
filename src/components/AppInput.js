@@ -22,6 +22,7 @@ const AppInput = ({
   errorText = null,
   isForModal,
   labelBackgroundColor = colors.PRIMARY_BACKGROUND,
+  disabled,
   onChangeText = () => {},
   ...rest
 }) => {
@@ -54,13 +55,14 @@ const AppInput = ({
         {left}
 
         <TextInput
-          style={styles.input}
+          style={[styles.input, disabled && styles.disabledInput]}
           ref={inputRef}
           onBlur={() => setIsFocused(false)}
           onFocus={() => setIsFocused(true)}
           value={value}
           placeholderTextColor={colors.SECONDARY_TEXT}
           onChangeText={(text) => onChangeText(text)}
+          editable={!disabled}
           {...rest}
         />
 
@@ -103,6 +105,7 @@ const AppInput = ({
                     : error
                     ? '#F45E8C'
                     : colors.SECONDARY_TEXT,
+                  opacity: disabled ? 0.5 : 1,
                 }}
               >
                 {label}
@@ -135,6 +138,7 @@ const styles = StyleSheet.create({
     height: '100%',
     marginRight: 10,
   },
+  disabledInput: { color: colors.SECONDARY_TEXT },
   Gesinput: {
     fontFamily: 'Ubuntu_Medium',
     fontSize: 14,

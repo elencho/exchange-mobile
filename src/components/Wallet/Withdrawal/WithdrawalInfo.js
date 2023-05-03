@@ -141,6 +141,7 @@ export default function WithdrawalInfo({ error }) {
         style={styles.name}
         value={`${userInfo.firstName} ${userInfo.lastName}`}
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        disabled
       />
 
       {isBankOther && (
