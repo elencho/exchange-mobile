@@ -61,6 +61,7 @@ export default function GoogleOtpModal({ withdrawal, whitelist }) {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   codeInput: {
     marginTop: 35,
