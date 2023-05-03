@@ -22,7 +22,7 @@ function AppModal({
   custom,
   onModalHide,
   onDismiss,
-  hasBlurredBackground,
+  modalStyle,
 }) {
   // const deviceHeight =
   //   Platform.OS === 'ios'
@@ -37,8 +37,6 @@ function AppModal({
   //   hide();
   // };
 
-  const blurredBackground = { backgroundColor: colors.PRIMARY_BACKGROUND };
-
   return (
     <Modal
       isVisible={visible}
@@ -46,7 +44,7 @@ function AppModal({
       onSwipeComplete={hide}
       swipeDirection="down"
       propagateSwipe={true}
-      style={[styles.modal, hasBlurredBackground && blurredBackground]}
+      style={[styles.modal, modalStyle]}
       animationOutTiming={500}
       backdropTransitionInTiming={300}
       onModalHide={onModalHide}

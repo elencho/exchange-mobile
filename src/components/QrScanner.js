@@ -10,6 +10,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 import Close from '../assets/images/Close.svg';
 import AppText from './AppText';
 import { IS_IOS } from '../constants/system';
+import colors from '../constants/colors';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
@@ -80,7 +81,7 @@ const QrScanner = ({ setAddress }) => {
       children={children()}
       title="QR Scanner"
       custom
-      hasBlurredBackground
+      modalStyle={hasPermission && isModalVisible && styles.modalStyle}
     />
   );
 };
@@ -150,4 +151,5 @@ const styles = StyleSheet.create({
     borderRightWidth: 3,
     borderBottomWidth: 3,
   },
+  modalStyle: { backgroundColor: colors.PRIMARY_BACKGROUND },
 });
