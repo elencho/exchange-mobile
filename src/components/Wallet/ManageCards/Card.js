@@ -63,6 +63,7 @@ export default function Card({ card }) {
   };
 
   const openModal = () => dispatch(setDeleteModalInfo({ id, visible: true }));
+  const bankDisplayName = provider === 'TBC' ? 'TBC Bank' : 'Bank of Georgia';
 
   return (
     <View style={styles.container}>
@@ -73,7 +74,7 @@ export default function Card({ card }) {
 
       <View style={styles.block}>
         <AppText medium style={styles.primary}>
-          {t('Provider:')} {provider}
+          {`Provider: ${bankDisplayName}`}
         </AppText>
         <AppText subtext style={styles.secondary}>
           {cardNumber} / {network}

@@ -59,6 +59,7 @@ export default function ChooseBankModal() {
     return array()?.map((b, i, a) => (
       <View key={i}>
         <Pressable
+          key={b.displayName}
           style={[
             styles.row,
             b.provider === depositProvider && {

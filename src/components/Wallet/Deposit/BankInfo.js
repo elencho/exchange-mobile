@@ -85,6 +85,8 @@ export default function BankInfo() {
     { title: 'SWIFT Code', text: info.intSwift },
     { title: 'Address', text: info.intAddress },
   ];
+  const bankDisplayName =
+    wireDepositProvider === 'TBC' ? 'TBC Bank' : 'Bank of Georgia';
 
   return (
     <>
@@ -103,7 +105,7 @@ export default function BankInfo() {
           style={styles.image}
         />
         <AppText medium style={styles.dropdownText}>
-          {wireDepositProvider ?? 'Choose Bank'}
+          {bankDisplayName ?? 'Choose Bank'}
         </AppText>
         <View style={styles.line} />
         <Arrow />
