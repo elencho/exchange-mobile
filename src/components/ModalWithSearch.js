@@ -106,7 +106,7 @@ export default function ModalWithSearch({
             }
             scrollEventThrottle={1000}
             initialNumToRender={25}
-            estimatedItemSize={200}
+            estimatedItemSize={50}
           />
         </WithKeyboard>
       </View>
