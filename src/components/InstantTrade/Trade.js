@@ -57,11 +57,12 @@ export default function Trade({ trade }) {
         <AppText style={[styles.primary, { marginRight: 10 }]} medium body>
           {baseCurrency} - {quoteCurrency}
         </AppText>
-        <View style={{ alignItems: 'flex-end' }}>
+        <View style={styles.amount}>
           <AppText style={styles.secondary} subtext>
             {cumulativeCost} {quoteCurrency}
           </AppText>
           <AppText subtext style={styles.primary}>
+            {' / '}
             {size} {baseCurrency}
           </AppText>
         </View>
@@ -122,5 +123,8 @@ const styles = StyleSheet.create({
   status: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  amount: {
+    flexDirection: 'row',
   },
 });
