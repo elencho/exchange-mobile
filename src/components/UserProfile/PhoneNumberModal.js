@@ -25,14 +25,12 @@ export default function PhoneNumberModal() {
   const state = useSelector((state) => state);
   const {
     modals: { phoneNumberModalVisible },
-    profile: { userInfo, countries, timerVisible },
-    transactions: { loading },
+    profile: { userInfo, countries, timerVisible, isProfileUpdating },
   } = state;
 
   const [userInfoVariable, setUserInfoVariable] = useState(null);
   const [error, setError] = useState(false);
   const [seconds, setSeconds] = useState(30);
-  const [isButtonLoading, setIsButtonLoading] = useState(false);
 
   useEffect(() => {
     if (!timerVisible) {
@@ -84,11 +82,7 @@ export default function PhoneNumberModal() {
     if (error || !country || !(number?.trim()?.length > 2)) {
       setError(true);
     } else {
-      setIsButtonLoading(true);
-      setTimeout(() => {
-        dispatch(updatePhoneNumber(number, country, setUserInfoVariable));
-        setIsButtonLoading(false);
-      }, 0);
+      dispatch(updatePhoneNumber(number, country, setUserInfoVariable));
     }
   };
 
@@ -143,7 +137,7 @@ export default function PhoneNumberModal() {
           text="Save"
           onPress={handleSave}
           style={styles.button}
-          loading={isButtonLoading}
+          loading={isProfileUpdating}
         />
 
         <CountriesModal phoneCountry />

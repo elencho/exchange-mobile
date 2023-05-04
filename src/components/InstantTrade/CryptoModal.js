@@ -20,8 +20,8 @@ export default function CryptoModal() {
     trade: { crypto, offers, fiat, tradeType },
   } = state;
 
-  const [filteredData, setFiletredData] = useState(offers[fiat]);
-  const arrayToPass = filteredData.length > 0 ? filteredData : offers[fiat];
+  const [filteredData, setFiletredData] = useState(offers?.[fiat]);
+  const arrayToPass = filteredData.length > 0 ? filteredData : offers?.[fiat];
 
   useEffect(() => {
     dispatch(instantTradeTabAction());

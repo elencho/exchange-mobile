@@ -50,6 +50,7 @@ export const actionTypes = {
   ACTIVATE_GOOGLE_OTP: 'ACTIVATE_GOOGLE_OTP',
 
   TOGGLE_USER_PROFILE_LOADING: 'TOGGLE_USER_PROFILE_LOADING',
+  TOGGLE_IS_PROFILE_UPDATING: 'TOGGLE_IS_PROFILE_UPDATING',
 };
 
 // Login
@@ -108,6 +109,10 @@ export const saveUserInfo = (userInfo) => ({
 export const setLanguage = (language) => ({
   type: actionTypes.SET_LANGUAGE,
   language,
+});
+export const setIsProfileUpdating = (isProfileUpdating) => ({
+  type: actionTypes.TOGGLE_IS_PROFILE_UPDATING,
+  isProfileUpdating,
 });
 
 // SECURITY
