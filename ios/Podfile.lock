@@ -996,7 +996,7 @@ SPEC CHECKSUMS:
   react-native-camera: 3eae183c1d111103963f3dd913b65d01aef8110f
   react-native-flipper: f5b2b27bfbbf64ffbf8d1e7030905e43a22144c1
   react-native-flipper-performance-plugin: 42ec5017abd26e7c5a1f527f2db92c14a90cabdb
-  react-native-mobilesdk-module: 5e481736ffeabd3ed8b52edf04dde24b89b1cfb9
+  react-native-mobilesdk-module: 594c743c921a765a0ad9f165775c2f44c8c6d8b9
   react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
   react-native-pkce-challenge: 3cf066b39715c7057b6a9d8b21ab0eb60343bcf6
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
