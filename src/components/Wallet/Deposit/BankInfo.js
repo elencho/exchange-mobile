@@ -86,7 +86,11 @@ export default function BankInfo() {
     { title: 'Address', text: info.intAddress },
   ];
   const bankDisplayName =
-    wireDepositProvider === 'TBC' ? 'TBC Bank' : 'Bank of Georgia';
+    wireDepositProvider === 'TBC'
+      ? 'TBC Bank'
+      : wireDepositProvider === 'BOG'
+      ? 'Bank of Georgia'
+      : wireDepositProvider;
 
   return (
     <>
