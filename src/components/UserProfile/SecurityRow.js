@@ -41,19 +41,26 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
 
   useEffect(() => {
     handleBiometricIcon();
-    getBiometricEnabled();
+    getBiometricEnabled(userInfo?.email);
   }, []);
 
   const handlePassword = () => {
     dispatch(togglePasswordModal(true));
   };
 
-  const handleAuth = async (type) => {
-    const enabled = await AsyncStorage.getItem('BiometricEnabled');
+  const handleAuth = async (type, user) => {
+    const enabledUsers = await AsyncStorage.getItem('BiometricEnabled');
     const enrolled = await isEnrolledAsync();
 
-    if (enabled) {
+    let newUser = JSON.parse(enabledUsers);
+    if (!newUser) {
+      newUser = [];
+    }
+
+    if (isBioOn) {
+      const newUsers = newUser.filter((u) => u.user !== user);
       await AsyncStorage.removeItem('BiometricEnabled');
+      await AsyncStorage.setItem('BiometricEnabled', JSON.stringify(newUsers));
       return setIsBioOn(false);
     }
 
@@ -63,8 +70,14 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
         cancelLabel: 'Abort',
       });
       if (result.success) {
-        await AsyncStorage.setItem('BiometricEnabled', type);
-        setIsBioOn(true);
+        newUser?.push({ user: user, enabled: true, type: type });
+        await AsyncStorage.setItem('BiometricEnabled', JSON.stringify(newUser))
+          .then(() => {
+            setIsBioOn(true);
+          })
+          .catch(() => {
+            console.log('‘There was an error saving the product’');
+          });
       }
     }
   };
@@ -85,9 +98,13 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
     }
   };
 
-  const getBiometricEnabled = async () => {
-    const enabled = await AsyncStorage.getItem('BiometricEnabled');
-    if (enabled) {
+  const getBiometricEnabled = async (user) => {
+    const enabledUsers = await AsyncStorage.getItem('BiometricEnabled');
+    let parsedUsers = JSON.parse(enabledUsers);
+    const userIndex = parsedUsers?.find(
+      (u) => u?.user === user && u?.enabled === true
+    );
+    if (userIndex) {
       setIsBioOn(true);
     }
   };
@@ -112,7 +129,7 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
 
         break;
       case 'Biometric':
-        handleAuth(bioType);
+        handleAuth(bioType, userInfo?.email);
       default:
         break;
     }
