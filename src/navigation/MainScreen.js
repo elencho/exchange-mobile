@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { AppState } from 'react-native';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,6 +13,7 @@ import {
   fetchCurrencies,
   setTabRouteName,
 } from '../redux/transactions/actions';
+import { fetchUserInfo } from '../redux/profile/actions';
 import Wallet from '../screens/Wallet';
 import Exchange from '../screens/Exchange';
 
@@ -20,10 +21,12 @@ const Tab = createBottomTabNavigator();
 
 export default function MainScreen({ navigation }) {
   const dispatch = useDispatch();
-
+  const state = useSelector((state) => state.profile);
+  const { userInfo } = state;
   const [subscription, setSubscription] = useState();
 
   useEffect(() => {
+    dispatch(fetchUserInfo());
     onBeforeShow();
     return () => {
       onClose();
@@ -38,7 +41,7 @@ export default function MainScreen({ navigation }) {
         .then((t) => dispatch({ type: 'OTP_SAGA', token: t }))
         .catch((err) => console.log(err));
       dispatch(fetchCurrencies());
-      return getBiometricEnabled();
+      return getBiometricEnabled(userInfo?.email);
     } else if (newState !== 'active' && isOpen) {
       await AsyncStorage.removeItem('isOpen');
     }
@@ -52,12 +55,19 @@ export default function MainScreen({ navigation }) {
     subscription?.remove();
   }, [subscription]);
 
-  const getBiometricEnabled = useCallback(async () => {
-    const enabled = await AsyncStorage.getItem('BiometricEnabled');
-    if (enabled) {
-      navigation.navigate('Resume');
-    }
-  }, [AppState.currentState]);
+  const getBiometricEnabled = useCallback(
+    async (user) => {
+      const enabled = await AsyncStorage.getItem('BiometricEnabled');
+      let parsedUsers = JSON.parse(enabled);
+      const userIndex = parsedUsers?.find(
+        (u) => u?.user === user && u?.enabled === true
+      );
+      if (userIndex) {
+        navigation.navigate('Resume');
+      }
+    },
+    [AppState.currentState]
+  );
 
   const setTabRoute = (e) => {
     dispatch(setTabRouteName(e.route.name));

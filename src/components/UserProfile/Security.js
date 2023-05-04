@@ -21,7 +21,6 @@ export default function Security({ loading }) {
 
   const checkCompitable = async () => {
     const compitable = await checkIsCompatable();
-    console.log(compitable);
     setBioAvailable(compitable);
   };
 

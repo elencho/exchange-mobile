@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { BackHandler, Text, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import VersionCheck from 'react-native-version-check';
 import * as SecureStore from 'expo-secure-store';
@@ -19,6 +19,7 @@ import colors from '../constants/colors';
 
 import {
   fetchCountries,
+  fetchUserInfo,
   saveUserInfo,
   setLanguage,
 } from '../redux/profile/actions';
@@ -27,13 +28,16 @@ import { addResources, switchLanguage } from '../utils/i18n';
 
 const Splash = ({ navigation }) => {
   const dispatch = useDispatch();
+  const state = useSelector((state) => state.profile);
+  const { userInfo } = state;
 
   useEffect(() => {
+    dispatch(fetchUserInfo());
     checkVersion();
     if (isWorkingVersion()) {
       SecureStore.getItemAsync('accessToken').then((t) => {
         if (t) {
-          getBiometricEnabled();
+          getBiometricEnabled(userInfo?.email);
         } else {
           navigation.navigate('Welcome');
         }
@@ -48,9 +52,13 @@ const Splash = ({ navigation }) => {
 
     return () => clearTimeout(timer);
   }, []);
-  const getBiometricEnabled = async () => {
+  const getBiometricEnabled = async (user) => {
     const enabled = await AsyncStorage.getItem('BiometricEnabled');
-    if (enabled) {
+    let parsedUsers = JSON.parse(enabled);
+    const userIndex = parsedUsers?.find(
+      (u) => u?.user === user && u?.enabled === true
+    );
+    if (userIndex) {
       navigation.navigate('Resume');
     } else {
       navigation.navigate('Main');
