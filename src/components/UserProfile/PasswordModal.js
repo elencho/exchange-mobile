@@ -29,6 +29,7 @@ export default function PasswordModal() {
   const state = useSelector((state) => state);
   const {
     modals: { passwordModalVisible },
+    profile: { isProfileUpdating },
   } = state;
 
   const [error, setError] = useState(false);
@@ -209,7 +210,12 @@ export default function PasswordModal() {
           ))}
         </TouchableOpacity>
 
-        <AppButton onPress={handleSave} style={styles.button} text="Save" />
+        <AppButton
+          onPress={handleSave}
+          style={styles.button}
+          loading={isProfileUpdating}
+          text="Save"
+        />
       </WithKeyboard>
     );
   };

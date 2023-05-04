@@ -16,6 +16,7 @@ const saliSatesto = {
 const INITIAL_STATE = {
   timerVisible: false,
   userProfileLoading: false,
+  isProfileUpdating: false,
 
   // Login
   pkceInfo: {},
@@ -86,12 +87,18 @@ export default (state = INITIAL_STATE, action) => {
     otpChangeToken,
     totpSecretObj,
     timerVisible,
+    isProfileUpdating,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_USER_PROFILE_LOADING:
       return {
         ...state,
         userProfileLoading,
+      };
+    case actionTypes.TOGGLE_IS_PROFILE_UPDATING:
+      return {
+        ...state,
+        isProfileUpdating,
       };
     case actionTypes.SAVE_PKCE_INFO:
       return {

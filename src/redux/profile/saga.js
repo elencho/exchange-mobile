@@ -22,6 +22,7 @@ import {
   fetchUserInfo,
   toggleUserInfoLoading,
   switchPersonalSecurity,
+  setIsProfileUpdating,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -374,6 +375,7 @@ function* saveUserInfoSaga() {
 
 //  UPDATE PASSWORD
 function* updatePasswordSaga(action) {
+  yield put(setIsProfileUpdating(true));
   const { curentPassword, newPassword, repeatPassword, hide } = action;
   const data = yield call(
     updatePassword,
@@ -384,10 +386,12 @@ function* updatePasswordSaga(action) {
   if (data?.status >= 200 && data?.status < 300) {
     yield call(hide);
   }
+  yield put(setIsProfileUpdating(false));
 }
 
 //  UPDATE PHONE NUMBER
 function* updatePhoneNumberSaga(action) {
+  yield put(setIsProfileUpdating(true));
   const { phoneNumber, phoneCountry, setUserInfoVariable } = action;
   const data = yield call(updatePhoneNumber, phoneNumber, phoneCountry);
   if (data?.status >= 200 && data?.status < 300) {
@@ -395,6 +399,7 @@ function* updatePhoneNumberSaga(action) {
     yield put(fetchUserInfo());
     yield put(togglePhoneNumberModal(false));
   }
+  yield put(setIsProfileUpdating(false));
 }
 
 //  TOGGLE SUBSCRIPTION
