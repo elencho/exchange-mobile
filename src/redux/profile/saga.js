@@ -365,12 +365,14 @@ function* fetchUserInfoSaga(action) {
 
 //  UPDATE USER INFO
 function* saveUserInfoSaga() {
+  yield put(setIsProfileUpdating(true));
   const userData = yield select(getUserData);
   const data = yield call(updateUserData, userData);
   if (data?.status >= 200 && data?.status < 300) {
     yield put(fetchUserInfo());
     yield put(togglePersonalInfoModal(false));
   }
+  yield put(setIsProfileUpdating(false));
 }
 
 //  UPDATE PASSWORD

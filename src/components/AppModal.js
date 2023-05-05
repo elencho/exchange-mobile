@@ -60,7 +60,7 @@ function AppModal({
             behavior={Platform.select({ android: undefined, ios: 'padding' })}
             keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
           >
-            <ModalTop />
+            <ModalTop bottom={bottom} />
             <View style={styles.bottom}>
               {title && (
                 <AppText header style={styles.header}>

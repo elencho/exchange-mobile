@@ -24,6 +24,7 @@ import {
   setTradeOffset,
   setMoreTradesLoading,
   fetchFee,
+  setTradesButtonLoading,
 } from './actions';
 import {
   getParams,
@@ -157,6 +158,7 @@ function* balanceSaga() {
 function* submitTradeSaga() {
   const params = yield select(paramsForTrade);
   const card = yield select((state) => state.trade.card);
+  yield put(setTradesButtonLoading(true));
 
   const data = yield call(submitTrade, params);
   if (data?.status >= 200 && data?.status < 300) {
@@ -170,6 +172,7 @@ function* submitTradeSaga() {
       yield put(toggleBuySellModal(false));
     }
   }
+  yield put(setTradesButtonLoading(false));
 }
 
 function* fetchFeeSaga(action) {

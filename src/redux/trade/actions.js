@@ -26,6 +26,7 @@ export const actionTypes = {
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
   SET_TRADES_LOADING: 'SET_TRADES_LOADING',
   SET_OFFERS_LOADING: 'SET_OFFERS_LOADING',
+  SET_TRADES_BUTTON_LOADING: 'SET_TRADES_BUTTON_LOADING',
 
   // FOR SAGAS
   FETCH_TRADES: 'FETCH_TRADES',
@@ -110,6 +111,10 @@ export const hideOtherPairsAction = (hideOtherPairs) => ({
 export const setTradesLoading = (tradesLoading) => ({
   type: actionTypes.SET_TRADES_LOADING,
   tradesLoading,
+});
+export const setTradesButtonLoading = (isTradesButtonLoading) => ({
+  type: actionTypes.SET_TRADES_BUTTON_LOADING,
+  isTradesButtonLoading,
 });
 export const setMoreTradesLoading = (moreTradesLoading) => ({
   type: actionTypes.MORE_TRADES_LOADING,
