@@ -3,9 +3,9 @@ import { StyleSheet, View } from 'react-native';
 
 import colors from '../constants/colors';
 
-export default function ModalTop() {
+export default function ModalTop({ bottom }) {
   return (
-    <View style={styles.top}>
+    <View style={[styles.top, bottom && { backgroundColor: 'none' }]}>
       <View style={styles.line} />
     </View>
   );

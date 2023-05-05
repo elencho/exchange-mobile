@@ -52,6 +52,7 @@ const BuySellModal = () => {
       currentTrade,
       depositProvider,
       card,
+      isTradesButtonLoading,
     },
   } = state;
 
@@ -289,6 +290,7 @@ const BuySellModal = () => {
           onPress={handleSubmit}
           backgroundColor={tradeType === 'Buy' ? '#0CCBB5' : '#F83974'}
           text={tradeType}
+          loading={isTradesButtonLoading}
           style={{ marginBottom: 20 }}
         />
       </View>
