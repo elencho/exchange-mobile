@@ -52,11 +52,12 @@ export default function Withdrawal({ refreshControl }) {
 
   const isFiat = currentBalanceObj.type === 'FIAT';
   const isEcommerce = network === 'ECOMMERCE';
+  const infoMessage = currentBalanceObj?.infos?.[network]?.walletInfo;
   const walletInfo = () => {
-    if (currentBalanceObj?.infos && hasMethod && !hasRestriction) {
+    if (infoMessage && hasMethod && !hasRestriction) {
       return (
         <Trans
-          i18nKey={currentBalanceObj?.infos[network]?.walletInfo}
+          i18nKey={infoMessage}
           components={{
             light: <AppText style={{ color: '#FFFBF3' }} />,
             gold: <AppText style={{ color: '#F2DFB4' }} />,

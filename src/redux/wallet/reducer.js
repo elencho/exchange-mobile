@@ -18,6 +18,7 @@ const INITIAL_STATE = {
   wireDepositProviders: [],
   wireDepositProvider: null,
   depositAmount: null,
+  isAddressGenerating: false,
 
   //Withdrawal
   templates: [],
@@ -75,6 +76,7 @@ export default (state = INITIAL_STATE, action) => {
     depositAmount,
     wireDepositProviders,
     wireDepositProvider,
+    isAddressGenerating,
   } = action;
   switch (action.type) {
     case 'SET_CARD_VERIFICATION_STATUS':
@@ -126,6 +128,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cryptoAddress,
+      };
+    case actionTypes.SET_IS_ADDRESS_GENERATING:
+      return {
+        ...state,
+        isAddressGenerating,
       };
     case actionTypes.SET_NETWORK:
       return {

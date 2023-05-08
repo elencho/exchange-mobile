@@ -44,7 +44,7 @@ export default function Deposit({ refreshControl }) {
   const {
     transactions: { code, loading },
     trade: { currentBalanceObj, depositProvider, card, cardsLoading },
-    wallet: { cryptoAddress, depositRestriction, network },
+    wallet: { cryptoAddress, depositRestriction, network, isAddressGenerating },
     modals: { webViewObj },
   } = state;
 
@@ -207,8 +207,9 @@ export default function Deposit({ refreshControl }) {
           <BulletsBlock />
           <AppButton
             text="Generate Address"
-            onPress={generate}
             style={styles.button}
+            loading={isAddressGenerating}
+            onPress={generate}
           />
         </View>
       ) : null}
