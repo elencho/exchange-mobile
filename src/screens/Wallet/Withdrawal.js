@@ -52,7 +52,7 @@ export default function Withdrawal({ refreshControl }) {
 
   const isFiat = currentBalanceObj.type === 'FIAT';
   const isEcommerce = network === 'ECOMMERCE';
-  const infoMessage = currentBalanceObj?.infos[network]?.walletInfo;
+  const infoMessage = currentBalanceObj?.infos?.[network]?.walletInfo;
   const walletInfo = () => {
     if (infoMessage && hasMethod && !hasRestriction) {
       return (
