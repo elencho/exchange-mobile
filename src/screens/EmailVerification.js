@@ -4,20 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialIndicator } from 'react-native-indicators';
 
-import AppModal from '../AppModal';
-import AppText from '../AppText';
-import CloseModalIcon from '../InstantTrade/CloseModalIcon';
-import PurpleText from '../PurpleText';
-import TwoFaInput from '../TwoFaInput';
-import WithKeyboard from '../WithKeyboard';
-import EmailLoginAuth from '../../assets/images/User_profile/EmailLoginAuth.svg';
+import AppText from '../components/AppText';
+import CloseModalIcon from '../components/InstantTrade/CloseModalIcon';
+import PurpleText from '../components/PurpleText';
+import TwoFaInput from '../components/TwoFaInput';
+import WithKeyboard from '../components/WithKeyboard';
+import EmailLoginAuth from '../assets/images/User_profile/EmailLoginAuth.svg';
 
-import colors from '../../constants/colors';
-import { startRegistrationAction } from '../../redux/profile/actions';
-import { toggleEmailVerificationModal } from '../../redux/modals/actions';
+import colors from '../constants/colors';
 import { t } from 'i18next';
 
-export default function EmailVerificationModal() {
+export default function EmailVerification() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -26,16 +23,13 @@ export default function EmailVerificationModal() {
   const [seconds, setSeconds] = useState(30);
 
   const {
-    modals: { emailVerificationModalVisible },
     profile: { verificationInfo, registrationInputs, timerVisible },
     transactions: { loading },
   } = state;
 
   useEffect(() => {
-    if (emailVerificationModalVisible) {
-      dispatch({ type: 'TOGGLE_TIMER', timerVisible: true });
-    }
-  }, [emailVerificationModalVisible]);
+    dispatch({ type: 'TOGGLE_TIMER', timerVisible: true });
+  }, []);
 
   useEffect(() => {
     if (!timerVisible) {
@@ -54,14 +48,7 @@ export default function EmailVerificationModal() {
   }, [seconds, timerVisible]);
 
   const hide = () => {
-    dispatch(toggleEmailVerificationModal(false));
-    dispatch(startRegistrationAction(navigation));
-  };
-
-  const onModalHide = () => {
-    setValue('');
-    setSeconds(30);
-    dispatch({ type: 'TOGGLE_TIMER', timerVisible: false });
+    navigation.goBack();
   };
 
   const resend = () => {
@@ -108,7 +95,7 @@ export default function EmailVerificationModal() {
     }
   };
 
-  const children = (
+  return (
     <WithKeyboard flexGrow padding modal>
       <View style={styles.container}>
         <View style={styles.top}>
@@ -143,16 +130,6 @@ export default function EmailVerificationModal() {
         </View>
       </View>
     </WithKeyboard>
-  );
-
-  return (
-    <AppModal
-      custom
-      children={children}
-      hide={hide}
-      onModalHide={onModalHide}
-      visible={emailVerificationModalVisible}
-    />
   );
 }
 

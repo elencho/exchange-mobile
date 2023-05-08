@@ -103,6 +103,7 @@ function* startRegistrationSaga(action) {
 function* registrationFormSaga(action) {
   const params = yield select(registrationParams);
   const state = yield select((state) => state.profile);
+  const { navigation } = action;
   const { registrationStartInfo } = state;
   yield put(toggleUserInfoLoading(true));
 
@@ -112,7 +113,7 @@ function* registrationFormSaga(action) {
     registrationStartInfo?.callbackUrl
   );
   if (data?.execution === 'EMAIL_VERIFICATION_OTP') {
-    yield put(toggleEmailVerificationModal(true));
+    navigation.push('EmailVerification');
     yield put(saveVerificationInfo(data));
   }
   yield put(

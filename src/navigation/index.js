@@ -24,6 +24,7 @@ import CardVerificationOneScreen from '../screens/CardVerificationOne';
 import CardVerificationTwoScreen from '../screens/CardVerificationTwo';
 import Resume from '../screens/Resume';
 import Splash from '../screens/SplashScreen';
+import EmailVerification from '../screens/EmailVerification';
 
 const Stack = createNativeStackNavigator();
 export const navigationRef = createNavigationContainerRef();
@@ -80,6 +81,7 @@ export default function Navigator() {
         <Stack.Screen name="Maintanance" component={MaintananceScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Registration" component={RegistrationScreen} />
+        <Stack.Screen name="EmailVerification" component={EmailVerification} />
         <Stack.Screen
           options={{ animation: 'fade' }}
           name="Main"
