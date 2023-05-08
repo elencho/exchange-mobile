@@ -8,9 +8,6 @@ const INITIAL_STATE = {
 
   // Login
 
-  // Register
-  emailVerificationModalVisible: false,
-
   // Transactions
   datePickerVisible: { to: false, from: false },
   chooseCurrencyModalVisible: false,
@@ -95,7 +92,6 @@ export default (state = INITIAL_STATE, action) => {
     templatesModalVisible,
     addCardModalVisible,
     languageModalVisible,
-    emailVerificationModalVisible,
     toastObj,
     webViewObj,
     isToast,
@@ -192,11 +188,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         personalInfoModalVisible,
       };
-    case actionTypes.EMAIL_VERIFICATION_MODAL:
-      return {
-        ...state,
-        emailVerificationModalVisible,
-      };
+
     case actionTypes.TOGGLE_LANGUAGE_MODAL:
       return {
         ...state,
