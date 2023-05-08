@@ -10,6 +10,7 @@ export const actionTypes = {
   // DEPOSIT
   SAVE_WIRE_DEPOSIT_INFO: 'SAVE_WIRE_DEPOSIT_INFO',
   SAVE_CRYPTO_ADDRESS: 'SAVE_CRYPTO_ADDRESS',
+  SET_IS_ADDRESS_GENERATING: 'SET_IS_ADDRESS_GENERATING',
 
   // Withdrawal
   SET_WITHDRAWAL_AMOUNT: 'SET_WITHDRAWAL_AMOUNT',
@@ -86,6 +87,10 @@ export const saveWireDepositInfo = (wireDepositInfo) => ({
 export const saveCryptoAddress = (cryptoAddress) => ({
   type: actionTypes.SAVE_CRYPTO_ADDRESS,
   cryptoAddress,
+});
+export const setIsAddressGenerating = (isAddressGenerating) => ({
+  type: actionTypes.SET_IS_ADDRESS_GENERATING,
+  isAddressGenerating,
 });
 
 //WITHDRAWAL
