@@ -43,7 +43,7 @@ function App(): JSX.Element {
   return (
     <Provider store={store}>
       <StatusBar
-        backgroundColor={colors.PRIMARY_BACKGROUND}
+        backgroundColor={colors.SECONDARY_BACKGROUND}
         barStyle="light-content"
       />
       {IS_IOS && <SafeAreaView style={styles.statusBar} />}
@@ -61,10 +61,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     overflow: 'hidden',
-    backgroundColor: colors.PRIMARY_BACKGROUND,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   statusBar: {
     flex: 0,
-    backgroundColor: colors.PRIMARY_BACKGROUND,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
 });
