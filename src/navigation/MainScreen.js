@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { AppState } from 'react-native';
+import { AppState, Text } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
@@ -21,27 +21,27 @@ const Tab = createBottomTabNavigator();
 
 export default function MainScreen({ navigation }) {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.profile);
-  const { userInfo } = state;
+  const state = useSelector((state) => state.profile.userInfo);
+  const { email } = state;
   const [subscription, setSubscription] = useState();
 
   useEffect(() => {
-    dispatch(fetchUserInfo());
     onBeforeShow();
     return () => {
       onClose();
     };
-  }, []);
+  }, [email]);
 
   const handleAppStateChange = useCallback(async (newState) => {
     const isOpen = await AsyncStorage.getItem('isOpen');
-
+    if (!email) {
+      dispatch(fetchUserInfo());
+    }
     if (newState === 'active' && !isOpen) {
       SecureStore.getItemAsync('accessToken')
         .then((t) => dispatch({ type: 'OTP_SAGA', token: t }))
         .catch((err) => console.log(err));
-      dispatch(fetchCurrencies());
-      return getBiometricEnabled(userInfo?.email);
+      return getBiometricEnabled(email);
     } else if (newState !== 'active' && isOpen) {
       await AsyncStorage.removeItem('isOpen');
     }
@@ -58,12 +58,16 @@ export default function MainScreen({ navigation }) {
   const getBiometricEnabled = useCallback(
     async (user) => {
       const enabled = await AsyncStorage.getItem('BiometricEnabled');
-      let parsedUsers = JSON.parse(enabled);
-      const userIndex = parsedUsers?.find(
-        (u) => u?.user === user && u?.enabled === true
-      );
-      if (userIndex) {
-        navigation.navigate('Resume');
+      if (enabled) {
+        let parsedUsers = await JSON.parse(enabled);
+        const userIndex = await parsedUsers?.find(
+          (u) => u?.user === user && u?.enabled === true
+        );
+        if (userIndex) {
+          navigation.navigate('Resume');
+        } else {
+          return;
+        }
       }
     },
     [AppState.currentState]
@@ -72,7 +76,8 @@ export default function MainScreen({ navigation }) {
   const setTabRoute = (e) => {
     dispatch(setTabRouteName(e.route.name));
   };
-
+  //REMOVE WHEN TESTED
+  //if (!email) return <Text>noEmail</Text>;
   return (
     <Tab.Navigator
       screenListeners={setTabRoute}

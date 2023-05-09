@@ -56,14 +56,15 @@ const Resume = ({ navigation }) => {
     });
     if (result.success) {
       await AsyncStorage.setItem('isOpen', 'open');
-      navigation.navigate('Main');
+      // navigation.navigate('Main');
+      navigation.goBack();
     }
   };
 
   const startLogin = async () => {
     await AsyncStorage.removeItem('isOpen');
-    navigation.navigate('Login');
     dispatch(startLoginAction(navigation));
+    navigation.navigate('Login');
   };
 
   return (

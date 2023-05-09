@@ -547,6 +547,7 @@ function* resendSaga(action) {
 
 function* logoutSaga() {
   yield put(resetTradesState());
+  yield put(saveUserInfo({}));
   yield put(resetTransactionsState());
   yield put(resetWalletState());
 }

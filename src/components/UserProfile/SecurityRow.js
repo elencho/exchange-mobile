@@ -51,7 +51,6 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
   const handleAuth = async (type, user) => {
     const enabledUsers = await AsyncStorage.getItem('BiometricEnabled');
     const enrolled = await isEnrolledAsync();
-
     let newUser = JSON.parse(enabledUsers);
     if (!newUser) {
       newUser = [];
@@ -100,12 +99,14 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
 
   const getBiometricEnabled = async (user) => {
     const enabledUsers = await AsyncStorage.getItem('BiometricEnabled');
-    let parsedUsers = JSON.parse(enabledUsers);
-    const userIndex = parsedUsers?.find(
-      (u) => u?.user === user && u?.enabled === true
-    );
-    if (userIndex) {
-      setIsBioOn(true);
+    if (enabledUsers) {
+      let parsedUsers = JSON.parse(enabledUsers);
+      const userIndex = parsedUsers?.find(
+        (u) => u?.user === user && u?.enabled === true
+      );
+      if (userIndex) {
+        setIsBioOn(true);
+      }
     }
   };
 
