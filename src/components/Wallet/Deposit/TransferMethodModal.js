@@ -35,7 +35,7 @@ export default function TransferMethodModal() {
             provider: 'ECOMMERCE',
           });
         if (b[m]?.WIRE) {
-          b[m]?.WIRE.reduceRight((_, m) => methodsToDisplay.push(m), 0);
+          b[m]?.WIRE.reduce((_, m) => methodsToDisplay.push(m), 0);
         }
         if (b[m]?.WALLET) {
           b[m]?.WALLET.forEach((m) => methodsToDisplay.push(m));

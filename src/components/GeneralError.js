@@ -17,7 +17,9 @@ function GeneralError({ style, show = true }) {
 
   useEffect(() => {
     if (generalError) {
-      dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
+      setTimeout(() => {
+        dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
+      }, 3000);
     }
   }, [modals, trade, transactions, wallet, profile]);
 

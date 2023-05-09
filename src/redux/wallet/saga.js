@@ -63,6 +63,7 @@ import {
   setWithdrawalNote,
   setWithdrawalRestriction,
   withdrawalTemplatesAction,
+  setIsAddressGenerating,
 } from '../wallet/actions';
 import {
   addWhitelistParams,
@@ -170,9 +171,13 @@ function* cryptoAddressesSaga(action) {
 }
 
 function* generateCryptoAddressSaga(action) {
+  yield put(setIsAddressGenerating(true));
   const { code, network } = action;
   const cryptoAddress = yield call(generateCryptoAddress, code, network);
-  if (cryptoAddress) yield put(saveCryptoAddress(cryptoAddress));
+  if (cryptoAddress) {
+    yield put(saveCryptoAddress(cryptoAddress));
+  }
+  yield put(setIsAddressGenerating(false));
 }
 
 function* goToBalanceSaga(action) {

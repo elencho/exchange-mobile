@@ -150,8 +150,9 @@ export const startRegistrationAction = (navigation) => ({
   type: actionTypes.START_REGISTRATION_ACTION,
   navigation,
 });
-export const registrationFormAction = () => ({
+export const registrationFormAction = (navigation) => ({
   type: actionTypes.REGISTRATION_FORM_ACTION,
+  navigation,
 });
 export const usernameAndPasswordAction = (navigation) => ({
   type: actionTypes.USERNAME_AND_PASSWORD_ACTION,

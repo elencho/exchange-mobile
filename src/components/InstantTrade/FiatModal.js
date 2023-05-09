@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Pressable, StyleSheet, Image, Text } from 'react-native';
+import { Pressable, StyleSheet, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -43,7 +43,7 @@ export default function FiatModal() {
     hide();
   };
 
-  const fiatsFromOffers = offers && Object.keys(offers);
+  const fiatsFromOffers = Object.keys(offers ?? {});
 
   const children = fiatsFromOffers?.map((code, index, list) => (
     <Pressable

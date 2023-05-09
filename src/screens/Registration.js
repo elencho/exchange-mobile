@@ -10,7 +10,7 @@ import PurpleText from '../components/PurpleText';
 import CheckMarks from '../components/Registration/CheckMarks';
 import PersonalCompanySwitcher from '../components/Registration/PersonalCompanySwitcher';
 import RegistrationInputs from '../components/Registration/RegistrationInputs';
-import EmailVerificationModal from '../components/Registration/EmailVerificationModal';
+import EmailVerification from './EmailVerification';
 import WithKeyboard from '../components/WithKeyboard';
 import Logo from '../assets/images/Logo.svg';
 import Back from '../assets/images/Back.svg';
@@ -30,17 +30,7 @@ export default function Registration({ navigation }) {
   const state = useSelector((state) => state.profile);
   const { registrationInputs, userProfileLoading } = state;
 
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        dispatch(setRegistrationInputs({}));
-        dispatch(switchPersonalCompany('Personal'));
-      };
-    }, [])
-  );
-
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     error && setError(false);
@@ -90,21 +80,24 @@ export default function Registration({ navigation }) {
     phoneCountry &&
     o.terms;
 
-  const handleRegistration = async () => {
-    await setLoading(true);
+  const handleRegistration = () => {
     if (!enabled) {
       setError(true);
-      setLoading(false);
     } else {
-      await dispatch(registrationFormAction());
-      setLoading(false);
+      dispatch(registrationFormAction(navigation));
     }
   };
-  const signIn = () => dispatch(startLoginAction(navigation));
+  const goToSignIn = () => {
+    dispatch(startLoginAction(navigation));
+    setTimeout(() => {
+      dispatch(setRegistrationInputs({}));
+      dispatch(switchPersonalCompany('Personal'));
+    }, 1000);
+  };
 
   return (
     <WithKeyboard scrollUp padding style={styles.scrollview}>
-      <Pressable style={styles.back} onPress={signIn}>
+      <Pressable style={styles.back} onPress={goToSignIn}>
         <Back />
         <PurpleText
           numberOfLines={1}
@@ -136,10 +129,8 @@ export default function Registration({ navigation }) {
 
         <AppText style={styles.subtext}>
           {t('Have an Account?')}{' '}
-          <PurpleText text={t('Sign In')} onPress={signIn} />
+          <PurpleText text={t('Sign In')} onPress={goToSignIn} />
         </AppText>
-
-        <EmailVerificationModal />
       </View>
     </WithKeyboard>
   );

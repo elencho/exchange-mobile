@@ -18,7 +18,6 @@ import {
   togglePersonalInfoModal,
 } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import CountriesModal from './CountriesModal';
 import { saveUserInfo, saveUserInfoSaga } from '../../redux/profile/actions';
 import GeneralError from '../GeneralError';
@@ -31,14 +30,13 @@ export default function PersonalInfoModal() {
   const state = useSelector((state) => state);
   const {
     modals: { personalInfoModalVisible },
-    profile: { userInfo, countriesConstant },
+    profile: { userInfo, countriesConstant, isProfileUpdating },
   } = state;
 
   const [countryDrop, setCountryDrop] = useState(false);
   const [citizenshipDrop, setCitizenshipDrop] = useState(false);
   const [userInfoVariable, setUserInfoVariable] = useState(null);
   const [error, setError] = useState(false);
-  const [isButtonLoading, setIsButtonLoading] = useState(false);
 
   const firstName = userInfo?.firstName;
   const lastName = userInfo?.lastName;
@@ -56,6 +54,7 @@ export default function PersonalInfoModal() {
   const citizenshipBorder = {
     borderColor: error && !citizenship ? '#F45E8C' : '#42475D',
   };
+  const cityRegex = /^([A-Za-z\s]*)$/.test(city?.trim());
 
   useEffect(() => {
     error && setError(false);
@@ -69,16 +68,20 @@ export default function PersonalInfoModal() {
       setUserInfoVariable(null);
     }
   });
-
   const hide = () => {
     dispatch(saveUserInfo(userInfoVariable));
     dispatch(togglePersonalInfoModal(false));
   };
   const handleSave = () => {
     const condition = canEditInfo
-      ? !country || !city?.trim() || !postalCode?.trim() || !address?.trim()
+      ? !country ||
+        !city?.trim() ||
+        !cityRegex ||
+        !postalCode?.trim() ||
+        !address?.trim()
       : !country ||
         !city?.trim() ||
+        !cityRegex ||
         !postalCode?.trim() ||
         !address?.trim() ||
         !firstName?.trim() ||
@@ -87,12 +90,7 @@ export default function PersonalInfoModal() {
 
     if (error || condition) {
       setError(true);
-    } else {
-      setIsButtonLoading(true);
-      setTimeout(() => {
-        dispatch(saveUserInfoSaga());
-      }, 0);
-    }
+    } else dispatch(saveUserInfoSaga());
   };
 
   const handleCountries = (countryDrop, citizenshipDrop) => {
@@ -209,7 +207,7 @@ export default function PersonalInfoModal() {
           onChangeText={(city) => dispatch(saveUserInfo({ ...userInfo, city }))}
           label="City"
           value={city}
-          error={error && !city?.trim()}
+          error={(error && !city?.trim()) || !cityRegex}
         />
         <AppInput
           style={styles.inputContainer}
@@ -234,7 +232,7 @@ export default function PersonalInfoModal() {
 
       <AppButton
         onPress={handleSave}
-        loading={isButtonLoading}
+        loading={isProfileUpdating}
         style={styles.button}
         text="Save"
       />
