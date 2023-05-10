@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: '12%',
-    backgroundColor: colors.PRIMARY_BACKGROUND,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   error: {
     marginTop: 20,

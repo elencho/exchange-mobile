@@ -33,8 +33,6 @@ const Splash = ({ navigation }) => {
   const { userInfo } = state;
   const [loadedUser, setLoadedUser] = useState({});
 
-  useEffect(() => {}, [userInfo]);
-
   useFocusEffect(
     useCallback(() => {
       dispatch(fetchUserInfo());
