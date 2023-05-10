@@ -57,7 +57,6 @@ import {
 import launchSumsubSdk from '../../utils/sumsubMobileSdk';
 import {
   toggleEmailAuthModal,
-  toggleEmailVerificationModal,
   toggleGoogleAuthModal,
   toggleGoogleOtpModal,
   togglePersonalInfoModal,
@@ -158,7 +157,6 @@ function* verifyAccountSaga(action) {
 function* codeToTokenSaga(action) {
   const { code, codeVerifier, navigation, fromResetOtp, fromRegistration } =
     action;
-
   const data = yield call(codeToToken, code, codeVerifier);
 
   if (data) {
@@ -172,7 +170,6 @@ function* codeToTokenSaga(action) {
       yield call(() => navigation.replace(screenName));
     }
     if (fromRegistration) {
-      yield put(toggleEmailVerificationModal(false));
       yield delay(600);
       yield call(() => {
         navigation.replace('UserProfile', { fromRegistration: true });
@@ -201,7 +198,6 @@ function* usernameAndPasswordSaga(action) {
     loginStartInfo?.callbackUrl
   );
   yield put(saveUserAndPassInfo(userAndPassInfo));
-
   if (userAndPassInfo?.execution === 'LOGIN_OTP') {
     navigation.navigate('Login2Fa');
   }
