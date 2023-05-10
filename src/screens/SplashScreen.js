@@ -48,11 +48,9 @@ const Splash = ({ navigation }) => {
     if (isWorkingVersion()) {
       SecureStore.getItemAsync('accessToken').then((t) => {
         if (t) {
-          console.log('this is reason');
           getBiometricEnabled(loadedUser?.email);
         } else {
           dispatch(saveUserInfo({}));
-          console.log('ssss');
           navigation.navigate('Welcome');
         }
       });
@@ -63,7 +61,6 @@ const Splash = ({ navigation }) => {
   };
 
   const getBiometricEnabled = async (user) => {
-    console.log('cannot get', user);
     const enabled = await AsyncStorage.getItem('BiometricEnabled');
 
     let parsedUsers = JSON.parse(enabled);
