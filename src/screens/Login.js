@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 
 import AppButton from '../components/AppButton';
@@ -20,9 +20,11 @@ import {
 } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
 
-export default function Login({ navigation }) {
+export default function Login() {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
   const {
     profile: { credentials, userProfileLoading },
   } = state;
