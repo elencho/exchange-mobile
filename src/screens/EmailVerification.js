@@ -61,7 +61,7 @@ export default function EmailVerification() {
   };
 
   const checkMailText = () => {
-    if (verificationInfo.attributes) {
+    if (verificationInfo?.attributes) {
       return (
         /* Animate */
         <View>
