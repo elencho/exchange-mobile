@@ -45,7 +45,7 @@ export default function FiatModal() {
 
   const fiatsFromOffers = Object.keys(offers ?? {});
 
-  const children = fiatsFromOffers.map((code, index, list) => (
+  const children = fiatsFromOffers?.map((code, index, list) => (
     <Pressable
       key={code}
       style={[

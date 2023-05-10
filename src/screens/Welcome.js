@@ -18,9 +18,11 @@ import {
 } from '../redux/profile/actions';
 import GeneralError from '../components/GeneralError';
 import { errorHappenedHere } from '../utils/appUtils';
+import { useNavigation } from '@react-navigation/native';
 
-export default function Welcome({ navigation }) {
+export default function Welcome({}) {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const startLogin = () => {
     dispatch(startLoginAction(navigation));
@@ -65,6 +67,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: '12%',
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   error: {
     marginTop: 20,

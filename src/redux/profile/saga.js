@@ -492,6 +492,7 @@ function* activateGoogleSaga(action) {
 // OTP SAGA
 function* otpSaga(action) {
   const { token } = action;
+  console.log(token, 'token is this');
   const otpType = jwt_decode(token)?.otpType;
   yield put(setEmailAuth(otpType === 'EMAIL'));
   yield put(setGoogleAuth(otpType === 'TOTP'));
@@ -550,6 +551,7 @@ function* resendSaga(action) {
 
 function* logoutSaga() {
   yield put(resetTradesState());
+  yield put(saveUserInfo({}));
   yield put(resetTransactionsState());
   yield put(resetWalletState());
 }

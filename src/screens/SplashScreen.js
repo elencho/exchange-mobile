@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 
 import { BackHandler, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,35 +25,42 @@ import {
 } from '../redux/profile/actions';
 import { checkReadiness, fetchTranslations } from '../utils/appUtils';
 import { addResources, switchLanguage } from '../utils/i18n';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Splash = ({ navigation }) => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.profile);
   const { userInfo } = state;
+  const [loadedUser, setLoadedUser] = useState({});
 
-  useEffect(() => {
-    dispatch(fetchUserInfo());
-    checkVersion();
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(fetchUserInfo());
+      userInfo && setLoadedUser(userInfo);
+      startApp();
+    }, [])
+  );
+
+  const startApp = async () => {
+    await checkVersion();
     if (isWorkingVersion()) {
       SecureStore.getItemAsync('accessToken').then((t) => {
         if (t) {
-          getBiometricEnabled(userInfo?.email);
+          getBiometricEnabled(loadedUser?.email);
         } else {
+          dispatch(saveUserInfo({}));
           navigation.navigate('Welcome');
         }
       });
     }
-    dispatch(saveUserInfo({}));
-    changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
-    fetchData();
-    const timer = setTimeout(() => {
-      SplashScreen.hide();
-    }, 1000);
+    await changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
+    await fetchData();
+    SplashScreen.hide();
+  };
 
-    return () => clearTimeout(timer);
-  }, []);
   const getBiometricEnabled = async (user) => {
     const enabled = await AsyncStorage.getItem('BiometricEnabled');
+
     let parsedUsers = JSON.parse(enabled);
     const userIndex = parsedUsers?.find(
       (u) => u?.user === user && u?.enabled === true
@@ -134,7 +141,8 @@ const Splash = ({ navigation }) => {
 
   return (
     <View>
-      <Text>ajsfhkfhjaskfhakh</Text>
+      {/* REMOVE WHEN TESTED */}
+      <Text>SplashScreen</Text>
     </View>
   );
 };
