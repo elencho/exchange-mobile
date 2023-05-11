@@ -19,7 +19,7 @@ export default function CalendarDay({ state, from, to }) {
   const disabled = () => {
     const now = Date.now();
     const future = timestamp > now;
-
+    if (future) return true;
     if (fromDateTime && to) {
       return future || timestamp < fromDateTime;
     }
