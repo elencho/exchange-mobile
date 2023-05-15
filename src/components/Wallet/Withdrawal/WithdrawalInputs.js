@@ -72,9 +72,9 @@ export default function WithdrawalInputs({
 
   const getMaxLength = (replacedAmount) => {
     const factoredDigit = Math.trunc(replacedAmount);
-    const factoredDigitLengthi = parseFloat(factoredDigit.toString().length);
+    const factoredDigitLength = parseFloat(factoredDigit.toString().length);
     const maxLengthDecimal =
-      factoredDigitLengthi + parseFloat(cur?.withdrawalScale) + 1;
+      factoredDigitLength + parseFloat(cur?.withdrawalScale) + 1;
     setMaxLength(maxLengthDecimal);
   };
 
@@ -90,10 +90,16 @@ export default function WithdrawalInputs({
       return;
     }
 
+    const startsWithZeroNoDecimal =
+      replacedAmount[1] &&
+      replacedAmount[0] === '0' &&
+      replacedAmount[1] !== '.';
     const parts = replacedAmount.split('.');
     if (parts.length === 2) {
       getMaxLength(replacedAmount);
       setAmount(replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0);
+    } else if (startsWithZeroNoDecimal) {
+      setMaxLength(2);
     } else {
       setMaxLength(14);
       setAmount(replacedAmount ? parts[0].substr(0, 13) : 0);
