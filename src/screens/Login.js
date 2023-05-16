@@ -49,10 +49,14 @@ export default function Login() {
     }, [])
   );
 
-  const typePassword = (t) =>
-    dispatch(setCredentials({ ...credentials, password: t }));
-  const typeLogin = (t) =>
-    dispatch(setCredentials({ ...credentials, login: t }));
+  const typePassword = useCallback(
+    (t) => dispatch(setCredentials({ ...credentials, password: t })),
+    [credentials]
+  );
+  const typeLogin = useCallback(
+    (t) => dispatch(setCredentials({ ...credentials, login: t })),
+    [credentials]
+  );
 
   const handleLogin = () => {
     if (!login || !password || !validate) {
