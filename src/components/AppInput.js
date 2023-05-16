@@ -36,7 +36,7 @@ const AppInput = ({
       toValue: isFocused || value ? 1 : 0,
       duration: 150,
       easing: Easing.bezier(0.4, 0, 0.2, 1),
-      useNativeDriver: true,
+      useNativeDriver: false,
     }).start();
   }, [focusAnim, isFocused, value]);
 
