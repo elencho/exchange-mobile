@@ -38,11 +38,7 @@ export default function ManageCards({ refreshControl }) {
         <WalletCoinsDropdown />
       </View>
 
-      {cardsLoading && (
-        <MaterialIndicator color="#6582FD" animationDuration={3000} />
-      )}
-
-      {cards?.length && !cardsLoading ? (
+      {cards?.length ? (
         <>
           <ScrollView
             style={styles.scrollView}

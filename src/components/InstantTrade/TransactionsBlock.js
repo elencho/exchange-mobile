@@ -85,13 +85,6 @@ const TransactionsBlock = ({ loading }) => {
     dispatch(fetchTrades());
   };
 
-  const onScroll = (event) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY === 0) {
-      onRefresh();
-    }
-  };
-
   const renderTrade = ({ item }) => (
     <Trade trade={item} key={item.creationTime} />
   );
@@ -135,7 +128,6 @@ const TransactionsBlock = ({ loading }) => {
           nestedScrollEnabled
           initialNumToRender={5}
           ListFooterComponent={trades.length > 0 && footer}
-          onScroll={onScroll}
           ListEmptyComponent={listEmptyContainer}
           refreshControl={
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
