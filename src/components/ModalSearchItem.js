@@ -72,6 +72,7 @@ const ModalSearchItem = ({
       {code ? (
         <FastImage
           style={styles.image}
+          resizeMode="contain"
           source={{
             uri,
             priority: FastImage.priority.normal,

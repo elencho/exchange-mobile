@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     borderRadius: 10,
+    resizeMode: 'stretch',
   },
   inputContainer: {
     marginBottom: 20,

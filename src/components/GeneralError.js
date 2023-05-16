@@ -16,11 +16,11 @@ function GeneralError({ style, show = true }) {
   const profile = useSelector((state) => state.profile);
 
   useEffect(() => {
-    if (generalError) {
-      setTimeout(() => {
+    return () => {
+      if (generalError) {
         dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
-      }, 3000);
-    }
+      }
+    };
   }, [modals, trade, transactions, wallet, profile]);
 
   const params =
