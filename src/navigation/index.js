@@ -69,11 +69,7 @@ export default function Navigator() {
           name="SplashScreen"
           component={Splash}
         />
-        <Stack.Screen
-          options={{ animation: 'fade' }}
-          name="Welcome"
-          component={WelcomeScreen}
-        />
+        <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen
           name="UpdateAvailable"
           component={UpdateAvailableScreen}
