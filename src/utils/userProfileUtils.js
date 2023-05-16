@@ -81,7 +81,7 @@ export const usernameAndPasswordForm = async (username, password, url) => {
       toast: false,
     },
     url,
-    data: `username=${username}&password=${password}`,
+    data: `username=${encodeURIComponent(username)}&password=${password}`,
   });
   if (data) return data.data;
 };
@@ -161,7 +161,7 @@ export const forgotPasswordCode = async (url, username) => {
       toast: false,
     },
     url,
-    data: `username=${username}&send=true`,
+    data: `username=${encodeURIComponent(username)}&send=true`,
   });
   if (data) return data.data;
 };
@@ -175,7 +175,7 @@ export const forgotPasswordEnterCode = async (url, username, otp) => {
       toast: false,
     },
     url,
-    data: `username=${username}&otp=${otp}`,
+    data: `username=${encodeURIComponent(username)}&otp=${otp}`,
   });
   if (data) return data.data;
 };
