@@ -40,7 +40,7 @@ export default function TradeDetails() {
   const RightText = ({ text }) => (
     <View style={styles.rightTextContainer}>
       {typeof text === 'string' ? (
-        <AppText medium style={styles.rightText}>
+        <AppText medium numberOfLines={1} style={styles.rightText}>
           {text}
         </AppText>
       ) : (
@@ -119,9 +119,11 @@ const styles = StyleSheet.create({
   },
   rightText: {
     color: colors.PRIMARY_TEXT,
+    width: '100%',
   },
   status: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
