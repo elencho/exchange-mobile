@@ -57,13 +57,13 @@ function UserProfile({ navigation, route }) {
   const logout = async () => {
     const refresh_token = await SecureStore.getItemAsync('refreshToken');
     const status = await logoutUtil(refresh_token);
-    // if (status === 204) {
-    await SecureStore.deleteItemAsync('accessToken');
-    await SecureStore.deleteItemAsync('refreshToken');
-    navigation.navigate('Welcome');
+    if (status === 204) {
+      await SecureStore.deleteItemAsync('accessToken');
+      await SecureStore.deleteItemAsync('refreshToken');
+      navigation.navigate('Welcome');
 
-    dispatch({ type: 'LOGOUT' });
-    // }
+      dispatch({ type: 'LOGOUT' });
+    }
   };
   const onRefresh = () => dispatch(fetchUserInfo());
   const back = () => {

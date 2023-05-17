@@ -23,6 +23,7 @@ import {
   toggleUserInfoLoading,
   switchPersonalSecurity,
   setIsProfileUpdating,
+  setCredentials,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -550,6 +551,7 @@ function* resendSaga(action) {
 function* logoutSaga() {
   yield put(resetTradesState());
   yield put(saveUserInfo({}));
+  yield put(setCredentials({}));
   yield put(resetTransactionsState());
   yield put(resetWalletState());
 }

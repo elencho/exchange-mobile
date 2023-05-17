@@ -29,19 +29,22 @@ import { useFocusEffect } from '@react-navigation/native';
 
 const Splash = ({ navigation }) => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.profile);
-  const { userInfo } = state;
+  const userInfo = useSelector((state) => state?.profile?.userInfo);
   const [loadedUser, setLoadedUser] = useState({});
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(fetchUserInfo());
-      userInfo && setLoadedUser(userInfo);
       startApp();
     }, [])
   );
 
+  useEffect(() => {
+    getBiometricEnabled(userInfo?.email);
+  }, []);
+
   const startApp = async () => {
+    await dispatch(fetchUserInfo());
+    userInfo && setLoadedUser(userInfo);
     await checkVersion();
     if (isWorkingVersion()) {
       SecureStore.getItemAsync('accessToken').then((t) => {
