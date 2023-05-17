@@ -20,7 +20,7 @@ import {
   setWithdrawalNote,
   chooseWhitelist,
 } from '../../../redux/wallet/actions';
-import { validateScale } from '../../../utils/formUtils';
+import { handleAmountInput } from '../../../utils/formUtils';
 import { validateAmount } from '../../../utils/appUtils';
 
 export default function WithdrawalInputs({
@@ -70,40 +70,14 @@ export default function WithdrawalInputs({
     if (condition) dispatch(fetchFee('withdrawal'));
   };
 
-  const getMaxLength = (replacedAmount) => {
-    const factoredDigit = Math.trunc(replacedAmount);
-    const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-    const maxLengthDecimal =
-      factoredDigitLength + parseFloat(cur?.withdrawalScale) + 1;
-    setMaxLength(maxLengthDecimal);
-  };
-
   const handleAmount = (text) => {
-    const replacedAmount = text?.trim().replace(',', '.');
-
-    if (!inputValidation.test(replacedAmount) && replacedAmount) {
-      //return dispatch(setWithdrawalAmount(''));
-      return;
-    }
-
-    if (!validateScale(replacedAmount, cur?.withdrawalScale)) {
-      return;
-    }
-
-    const startsWithZeroNoDecimal =
-      replacedAmount[1] &&
-      replacedAmount[0] === '0' &&
-      replacedAmount[1] !== '.';
-    const parts = replacedAmount.split('.');
-    if (parts.length === 2) {
-      getMaxLength(replacedAmount);
-      setAmount(replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0);
-    } else if (startsWithZeroNoDecimal) {
-      setMaxLength(2);
-    } else {
-      setMaxLength(14);
-      setAmount(replacedAmount ? parts[0].substr(0, 13) : 0);
-    }
+    handleAmountInput(
+      text,
+      inputValidation,
+      cur?.withdrawalScale,
+      setMaxLength,
+      setAmount
+    );
   };
 
   const setNote = (note) => dispatch(setWithdrawalNote(note));
