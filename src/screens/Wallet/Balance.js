@@ -46,9 +46,12 @@ export default function Balance({ navigation }) {
     return () => dispatch(setCard(null));
   }, [walletTab, network]);
 
-  const refreshControl = (
-    <CustomRefreshContol onRefresh={onRefresh} refreshing={loading} />
-  );
+  const refreshControl = (isTransparent = false) => {
+    const props = { onRefresh, refreshing: loading || cardsLoading };
+    if (isTransparent) props.tintColor = 'transparent';
+
+    return <CustomRefreshContol {...props} />;
+  };
 
   const disabled = loading || cardsLoading;
 
@@ -65,13 +68,13 @@ export default function Balance({ navigation }) {
 
       {walletTab === 'Deposit' && <Deposit refreshControl={refreshControl} />}
       {walletTab === 'Withdrawal' && (
-        <Withdrawal refreshControl={refreshControl} />
+        <Withdrawal refreshControl={refreshControl()} />
       )}
       {walletTab === 'Whitelist' && (
-        <Whitelist refreshControl={refreshControl} />
+        <Whitelist refreshControl={refreshControl()} />
       )}
       {walletTab === 'Manage Cards' && (
-        <ManageCards refreshControl={refreshControl} />
+        <ManageCards refreshControl={refreshControl(true)} />
       )}
 
       <ChooseCurrencyModal wallet />

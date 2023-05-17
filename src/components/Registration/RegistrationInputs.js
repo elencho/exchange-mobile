@@ -40,19 +40,16 @@ export default function RegistrationInputs({ validations, error }) {
       ? '#F45E8C'
       : colors.SECONDARY_TEXT;
 
-  const handleInputs = useCallback(
-    (text, type) => {
-      if (type === 'name') set({ firstName: text });
-      if (type === 'last name') set({ lastName: text });
-      if (type === 'email') set({ email: text });
-      if (type === 'pass') set({ passwordNew: text });
-      if (type === 'confirm') set({ passwordConfirm: text });
-      if (type === 'phone') set({ phoneNumber: text });
-      if (type === 'referal') set({ referralCode: text });
-      if (type === 'promoCode') set({ promoCode: text });
-    },
-    [i]
-  );
+  const handleInputs = (text, type) => {
+    if (type === 'name') set({ firstName: text });
+    if (type === 'last name') set({ lastName: text });
+    if (type === 'email') set({ email: text });
+    if (type === 'pass') set({ passwordNew: text });
+    if (type === 'confirm') set({ passwordConfirm: text });
+    if (type === 'phone') set({ phoneNumber: text });
+    if (type === 'referal') set({ referralCode: text });
+    if (type === 'promoCode') set({ promoCode: text });
+  };
 
   const openCountriesModal = () => dispatch(toggleCountriesModal(true));
   const phoneCode = () =>
