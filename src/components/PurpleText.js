@@ -1,15 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import AppText from './AppText';
 import colors from '../constants/colors';
 
-export default function PurpleText({
-  text,
-  style,
-  onPress,
-  subtext = false,
-  ...rest
-}) {
+function PurpleText({ text, style, onPress, subtext = false, ...rest }) {
   return (
     <AppText
       medium
@@ -26,3 +20,5 @@ export default function PurpleText({
     </AppText>
   );
 }
+
+export default memo(PurpleText);
