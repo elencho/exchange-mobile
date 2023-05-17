@@ -16,6 +16,7 @@ import {
 import { fetchUserInfo } from '../redux/profile/actions';
 import Wallet from '../screens/Wallet';
 import Exchange from '../screens/Exchange';
+import BackgroundTimer from 'react-native-background-timer';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +24,11 @@ export default function MainScreen({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.profile.userInfo);
   const { email } = state;
+
   const [subscription, setSubscription] = useState();
+
+  const [secondsLeft, setSecondsLeft] = useState(30);
+  const [timerOn, setTimerOn] = useState(false);
 
   useEffect(() => {
     onBeforeShow();
@@ -32,22 +37,61 @@ export default function MainScreen({ navigation }) {
     };
   }, [email]);
 
-  const handleAppStateChange = useCallback(async (newState) => {
-    const isOpen = await AsyncStorage.getItem('isOpen');
-    if (!email) {
-      dispatch(fetchUserInfo());
+  useEffect(() => {
+    if (timerOn) {
+      startTimer();
+    } else {
+      BackgroundTimer.stopBackgroundTimer();
     }
-    if (newState === 'active' && !isOpen) {
-      SecureStore.getItemAsync('accessToken')
-        .then((t) => dispatch({ type: 'OTP_SAGA', token: t }))
-        .catch((err) => console.log(err));
-      return getBiometricEnabled(email);
-    } else if (newState !== 'active' && isOpen) {
-      await AsyncStorage.removeItem('isOpen');
-    }
-  }, []);
+    return () => {
+      BackgroundTimer.stopBackgroundTimer();
+    };
+  }, [timerOn]);
 
-  const onBeforeShow = useCallback(() => {
+  useEffect(() => {
+    if (secondsLeft === 0) stopTimer();
+  }, [secondsLeft]);
+
+  const startTimer = () => {
+    BackgroundTimer.runBackgroundTimer(() => {
+      setSecondsLeft((secs) => {
+        if (secs > 0) return secs - 1;
+        else return 0;
+      });
+    }, 1000);
+  };
+
+  const stopTimer = async () => {
+    getBiometricEnabled(email);
+    BackgroundTimer.stopBackgroundTimer();
+  };
+
+  const handleAppStateChange = useCallback(
+    async (newState) => {
+      const isOpen = await AsyncStorage.getItem('isOpen');
+      if (!email) {
+        dispatch(fetchUserInfo());
+      }
+      if (newState !== 'active') {
+        setTimerOn(true);
+        secondsLeft && setSecondsLeft(30);
+      }
+      if (newState === 'active') {
+        setTimerOn(false);
+      }
+
+      if (newState === 'active' && !isOpen) {
+        SecureStore.getItemAsync('accessToken')
+          .then((t) => dispatch({ type: 'OTP_SAGA', token: t }))
+          .catch((err) => console.log(err));
+        return getBiometricEnabled(email);
+      }
+    },
+
+    [AppState]
+  );
+
+  const onBeforeShow = useCallback(async () => {
     setSubscription(AppState.addEventListener('change', handleAppStateChange));
   }, [handleAppStateChange]);
 
@@ -76,8 +120,7 @@ export default function MainScreen({ navigation }) {
   const setTabRoute = (e) => {
     dispatch(setTabRouteName(e.route.name));
   };
-  //REMOVE WHEN TESTED
-  //if (!email) return <Text>noEmail</Text>;
+
   return (
     <Tab.Navigator
       screenListeners={setTabRoute}

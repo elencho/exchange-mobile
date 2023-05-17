@@ -27,7 +27,8 @@ export default function Maintanance({ navigation }) {
 
     const version = DeviceInfo.getVersion();
     const { status } = await checkReadiness(version);
-    if (status !== 'DOWN') navigation.navigate('Welcome');
+    //TODO: fix in CAP-819
+    //if (status !== 'DOWN') navigation.navigate('Welcome');
     setLoading(false);
   };
 
