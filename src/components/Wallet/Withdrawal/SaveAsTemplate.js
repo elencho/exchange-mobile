@@ -12,7 +12,7 @@ import AppText from '../../AppText';
 import CheckFull from '../../../assets/images/Check_Full.svg';
 import CheckEmpty from '../../../assets/images/Check_Empty.svg';
 
-export default function SaveAsTemplate() {
+export default function SaveAsTemplate({ error }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -38,6 +38,7 @@ export default function SaveAsTemplate() {
           label="Template Name"
           onChangeText={handleNewTemplate}
           style={styles.input}
+          error={error && !newTemplateName?.trim()}
         />
       )}
     </>
