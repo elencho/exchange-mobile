@@ -42,7 +42,7 @@ export default function ManageCards({ refreshControl }) {
         <MaterialIndicator color="#6582FD" animationDuration={3000} />
       )}
 
-      {cards?.length && !cardsLoading ? (
+      {cards?.length && !cardsLoading && (
         <>
           <ScrollView
             style={styles.scrollView}
@@ -57,10 +57,7 @@ export default function ManageCards({ refreshControl }) {
             {cards?.map((c) => (
               <Card key={c.id} card={c} />
             ))}
-            {/* Code below for testing purposes only */}
-            {/* {[1, 2, 3, 4, 5, 6, 7].map((c) => (
-              <Card key={c} />
-            ))} */}
+
             <DeleteModal type="card" />
           </ScrollView>
 
@@ -71,7 +68,7 @@ export default function ManageCards({ refreshControl }) {
             </Pressable>
           ) : null}
         </>
-      ) : null}
+      )}
 
       {!cards?.length && !cardsLoading && (
         <View style={styles.flex}>

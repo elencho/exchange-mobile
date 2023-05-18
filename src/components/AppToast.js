@@ -10,7 +10,7 @@ const Texts = ({ toastObj }) => (
   <View style={styles.texts}>
     {toastObj?.header ? (
       <AppText body medium style={styles.white}>
-        {toastObj?.header}
+        Error
       </AppText>
     ) : null}
     {toastObj?.body ? (

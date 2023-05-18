@@ -43,6 +43,8 @@ export default function Withdrawal({ refreshControl }) {
       whitelistLoading,
       receiverBank,
       memoTag,
+      saveTemplate,
+      newTemplateName,
     },
   } = state;
 
@@ -113,8 +115,14 @@ export default function Withdrawal({ refreshControl }) {
   const { swift } = receiverBank;
   const receiverBankInputs = [iban, swift];
   const notEmpty = () => {
+    if (saveTemplate) {
+      return !!newTemplateName.trim();
+    }
     if (withdrawalBank?.bankName === 'Other')
-      return receiverBankInputs.every((i) => i && i.trim());
+      return (
+        receiverBankInputs.every((i) => i && i.trim()) ||
+        (saveTemplate && !!newTemplateName.length)
+      );
     if (withdrawalBank?.bankName || currentTemplate?.templateName)
       return iban?.trim();
   };
@@ -215,7 +223,7 @@ export default function Withdrawal({ refreshControl }) {
               notEmpty={notEmpty}
             />
           )}
-          {saveTemplateCheck() ? <SaveAsTemplate /> : null}
+          {saveTemplateCheck() ? <SaveAsTemplate error={error} /> : null}
 
           {hasRestriction || !hasMethod ? (
             <FlexBlock

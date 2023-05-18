@@ -33,7 +33,7 @@ export default function Trade({ trade }) {
     const number = date.getDate();
     const month = monthsShort[date.getMonth()];
     const year = date.getFullYear();
-    const time = date.toLocaleTimeString();
+    const time = date?.toTimeString().split(' ')[0];
 
     return `${number} ${month}, ${year} / ${time}`;
   };

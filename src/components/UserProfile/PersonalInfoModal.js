@@ -24,6 +24,7 @@ import GeneralError from '../GeneralError';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
 import { errorHappenedHere } from '../../utils/appUtils';
 import Arrow from '../../assets/images/Arrow';
+import InputErrorMsg from '../InputErrorMsg';
 
 export default function PersonalInfoModal() {
   const dispatch = useDispatch();
@@ -54,7 +55,7 @@ export default function PersonalInfoModal() {
   const citizenshipBorder = {
     borderColor: error && !citizenship ? '#F45E8C' : '#42475D',
   };
-  const cityRegex = /^([A-Za-z\s]*)$/.test(city?.trim());
+  const alphabeticRegex = (text) => /^[a-zA-Z]+$/.test(text?.trim());
 
   useEffect(() => {
     error && setError(false);
@@ -76,12 +77,12 @@ export default function PersonalInfoModal() {
     const condition = canEditInfo
       ? !country ||
         !city?.trim() ||
-        !cityRegex ||
+        !alphabeticRegex(city) ||
         !postalCode?.trim() ||
         !address?.trim()
       : !country ||
         !city?.trim() ||
-        !cityRegex ||
+        !alphabeticRegex(city) ||
         !postalCode?.trim() ||
         !address?.trim() ||
         !firstName?.trim() ||
@@ -143,8 +144,13 @@ export default function PersonalInfoModal() {
               }
               label="First Name"
               value={firstName}
-              error={error && !firstName?.trim()}
+              error={
+                error && (!alphabeticRegex(firstName) || !firstName?.trim())
+              }
             />
+            {error && firstName?.trim() && !alphabeticRegex(firstName) && (
+              <InputErrorMsg message="Only English letters allowed" />
+            )}
             <AppInput
               style={styles.inputContainer}
               onChangeText={(lastName) =>
@@ -152,8 +158,11 @@ export default function PersonalInfoModal() {
               }
               label="Last Name"
               value={lastName}
-              error={error && !lastName?.trim()}
+              error={error && (!alphabeticRegex(lastName) || !lastName?.trim())}
             />
+            {error && lastName?.trim() && !alphabeticRegex(lastName) && (
+              <InputErrorMsg message="Only English letters allowed" />
+            )}
           </>
         )}
 
@@ -207,8 +216,11 @@ export default function PersonalInfoModal() {
           onChangeText={(city) => dispatch(saveUserInfo({ ...userInfo, city }))}
           label="City"
           value={city}
-          error={(error && !city?.trim()) || !cityRegex}
+          error={error && (!alphabeticRegex(city) || !city?.trim())}
         />
+        {error && !alphabeticRegex(city) && city?.trim() && (
+          <InputErrorMsg message="Only English letters allowed" />
+        )}
         <AppInput
           style={styles.inputContainer}
           onChangeText={(postalCode) =>

@@ -9,4 +9,5 @@ export default {
   LITE_RED: '#DE90A8',
   BORDER: '#42475D',
   BUTTON_DISABLED: '#292943',
+  ERROR_TEXT: '#F45E8C',
 };

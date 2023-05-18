@@ -13,6 +13,7 @@ export default function AppButton({
   style,
   disabled,
   loading,
+  onPress,
   ...rest
 }) {
   return (
@@ -23,6 +24,7 @@ export default function AppButton({
         { backgroundColor, opacity: disabled ? 0.5 : 1 },
         style,
       ]}
+      onPress={loading ? null : onPress}
       {...rest}
     >
       {left}

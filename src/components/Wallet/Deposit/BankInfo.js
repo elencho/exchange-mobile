@@ -43,6 +43,7 @@ export default function BankInfo() {
     wallet: { wireDepositInfo, wireDepositProvider },
     profile: { language },
   } = state;
+  const numberOfProviders = wireDepositInfo[language].length;
 
   useEffect(() => {
     const obj = wireDepositInfo[language]?.find((o) => {
@@ -90,6 +91,8 @@ export default function BankInfo() {
       ? 'TBC Bank'
       : wireDepositProvider === 'BOG'
       ? 'Bank of Georgia'
+      : wireDepositProvider === 'SEPA'
+      ? 'Clear Junction Limited'
       : wireDepositProvider;
 
   return (
@@ -98,22 +101,26 @@ export default function BankInfo() {
         Bank Info
       </AppText>
 
-      <Pressable style={styles.dropdown} onPress={handleBanks}>
-        <View style={styles.subtext}>
-          <AppText subtext style={styles.secondary}>
-            Payment Service Provider
+      {numberOfProviders === 1 ? (
+        <InfoRow title="Payment Service Provider" text={bankDisplayName} />
+      ) : (
+        <Pressable style={styles.dropdown} onPress={handleBanks}>
+          <View style={styles.subtext}>
+            <AppText subtext style={styles.secondary}>
+              Payment Service Provider
+            </AppText>
+          </View>
+          <Image
+            source={{ uri: `${ICONS_URL_PNG}/${wireDepositProvider}.png` }}
+            style={styles.image}
+          />
+          <AppText medium style={styles.dropdownText}>
+            {bankDisplayName ?? 'Choose Bank'}
           </AppText>
-        </View>
-        <Image
-          source={{ uri: `${ICONS_URL_PNG}/${wireDepositProvider}.png` }}
-          style={styles.image}
-        />
-        <AppText medium style={styles.dropdownText}>
-          {bankDisplayName ?? 'Choose Bank'}
-        </AppText>
-        <View style={styles.line} />
-        <Arrow />
-      </Pressable>
+          <View style={styles.line} />
+          <Arrow />
+        </Pressable>
+      )}
 
       <>
         {infoArray.map((i) => (

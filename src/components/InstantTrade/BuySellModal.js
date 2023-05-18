@@ -59,8 +59,7 @@ const BuySellModal = () => {
   const [error, setError] = useState(false);
 
   //TODO: refactor
-  // const [maxLengthBase, setMaxLengthBase] = useState(13);
-  // const [maxLengthQuote, setMaxLengthQuote] = useState(13);
+  const [maxLength, setMaxLength] = useState(13);
   const [focusedInput, setFocusedInput] = useState(null);
   useEffect(() => {
     error && setError(false);
@@ -129,18 +128,6 @@ const BuySellModal = () => {
     } else dispatch(submitTrade());
   };
 
-  //TODO: remove if not used
-  // const getMaxLength = (value, scale, setFunction) => {
-  //
-  //   const factoredDigit = Math.trunc(value);
-  //   const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-  //   if (scale == 0) {
-  //     setFunction(14);
-  //   } else {
-  //     setFunction(factoredDigitLength + parseFloat(scale) + 1);
-  //   }
-  // };
-
   const setTrade = (price, size) => {
     dispatch(setCurrentTrade({ price, size }));
     card && dispatch(fetchFee());
@@ -157,6 +144,10 @@ const BuySellModal = () => {
     }
 
     const parts = replacedAmount?.split('.');
+    const startsWithZeroNoDecimal =
+      replacedAmount[1] &&
+      replacedAmount[0] === '0' &&
+      replacedAmount[1] !== '.';
     if (type === 'crypto' && validateScale(replacedAmount, quoteScale)) {
       if (text && !quoteValidation?.test(text) && focusedInput === 'crypto') {
         return;
@@ -169,6 +160,8 @@ const BuySellModal = () => {
           replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0,
           cryptoAmount
         );
+      } else if (startsWithZeroNoDecimal) {
+        setMaxLength(2);
       } else {
         let cryptoAmount = (parts[0].substr(0, 13) / rate).toFixed(baseScale);
         // setMaxLengthQuote(14);
@@ -187,6 +180,8 @@ const BuySellModal = () => {
           fiatAmount,
           replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0
         );
+      } else if (startsWithZeroNoDecimal) {
+        setMaxLength(2);
       } else {
         let fiatAmount = (parts[0].substr(0, 13) * rate).toFixed(quoteScale);
         // setMaxLengthBase(14);
@@ -252,7 +247,7 @@ const BuySellModal = () => {
             keyboardType="decimal-pad"
             value={price ? price.trim() : ''}
             onFocus={() => setFocusedInput('fiat')}
-            //maxLength={maxLengthQuote}
+            // maxLength={maxLength}
             right={
               <AppText body style={styles.code}>
                 {fiat}
@@ -264,7 +259,7 @@ const BuySellModal = () => {
           <AppInput
             onChangeText={(t) => handleChangeText(t, 'fiat')}
             keyboardType="decimal-pad"
-            //maxLength={maxLengthBase}
+            // maxLength={maxLength}
             onFocus={() => setFocusedInput('crypto')}
             value={size ? size.trim() : ''}
             right={
