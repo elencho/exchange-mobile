@@ -28,7 +28,7 @@ import { clearFilters } from '../redux/transactions/actions';
 
 import images from '../constants/images';
 import colors from '../constants/colors';
-import { logoutUtil } from '../utils/userProfileUtils';
+import { logout } from '../utils/userProfileUtils';
 import CustomRefreshContol from '../components/CustomRefreshContol';
 
 function UserProfile({ navigation, route }) {
@@ -54,17 +54,6 @@ function UserProfile({ navigation, route }) {
     }, [])
   );
 
-  const logout = async () => {
-    const refresh_token = await SecureStore.getItemAsync('refreshToken');
-    const status = await logoutUtil(refresh_token);
-    if (status === 204) {
-      await SecureStore.deleteItemAsync('accessToken');
-      await SecureStore.deleteItemAsync('refreshToken');
-      navigation.navigate('Welcome');
-
-      dispatch({ type: 'LOGOUT' });
-    }
-  };
   const onRefresh = () => dispatch(fetchUserInfo());
   const back = () => {
     clear();
