@@ -140,7 +140,7 @@ export default function MainScreen({ route, navigation }) {
           freezeOnBlur: true,
           swipeEnabled: false,
         }}
-        initialRouteName="Transactions"
+        initialRouteName="Trade"
         tabBar={({ state, navigation, descriptors }) => (
           <BottomTabs
             routes={state.routes}
