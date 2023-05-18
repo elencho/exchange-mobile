@@ -26,12 +26,17 @@ export default function WithKeyboard({
 
   useFocusEffect(
     useCallback(() => {
-      scrollUp && scrollRef.current.scrollTo({ x: 0, y: 0, animated: true });
+      return () => {
+        if (scrollUp)
+          setTimeout(() => {
+            scrollRef?.current?.scrollTo({ x: 0, y: 0, animated: true });
+          }, 1000);
+      };
     }, [])
   );
 
   const contentStyle = {
-    paddingBottom: android && padding && !modal && visible ? height : 0,
+    paddingBottom: android && padding && visible ? height : 0,
     flexGrow: flexGrow ? 1 : null,
   };
 

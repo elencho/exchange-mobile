@@ -24,6 +24,7 @@ import {
   switchPersonalSecurity,
   setIsProfileUpdating,
   setCredentials,
+  setRegistrationInputs,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -85,6 +86,7 @@ function* startLoginSaga(action) {
 
 //  START REGISTRATION
 function* startRegistrationSaga(action) {
+  yield put(setRegistrationInputs({}));
   const pkceInfo = pkceChallenge();
   const { navigation } = action;
   if (pkceInfo) {
