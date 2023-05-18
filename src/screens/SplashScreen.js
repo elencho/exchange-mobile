@@ -30,26 +30,19 @@ import { useFocusEffect } from '@react-navigation/native';
 const Splash = ({ navigation }) => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state?.profile?.userInfo);
-  const [loadedUser, setLoadedUser] = useState({});
-
   useFocusEffect(
     useCallback(() => {
       startApp();
-    }, [])
+    }, [userInfo])
   );
-
-  useEffect(() => {
-    getBiometricEnabled(userInfo?.email);
-  }, []);
 
   const startApp = async () => {
     await dispatch(fetchUserInfo());
-    userInfo && setLoadedUser(userInfo);
     await checkVersion();
     if (isWorkingVersion()) {
       SecureStore.getItemAsync('accessToken').then((t) => {
         if (t) {
-          getBiometricEnabled(loadedUser?.email);
+          getBiometricEnabled();
         } else {
           dispatch(saveUserInfo({}));
           navigation.navigate('Welcome');
@@ -61,8 +54,12 @@ const Splash = ({ navigation }) => {
     SplashScreen.hide();
   };
 
-  const getBiometricEnabled = async (user) => {
+  const getBiometricEnabled = async () => {
+    if (!userInfo?.email) {
+      await dispatch(fetchUserInfo());
+    }
     const enabled = await AsyncStorage.getItem('BiometricEnabled');
+    const user = userInfo?.email;
 
     let parsedUsers = JSON.parse(enabled);
     const userIndex = parsedUsers?.find(

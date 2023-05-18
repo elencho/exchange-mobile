@@ -43,7 +43,8 @@ export default function MainScreen({ route, navigation }) {
   useEffect(() => {
     if (timerOn) {
       startTimer();
-    } else {
+    }
+    if (!timerOn) {
       BackgroundTimer.stopBackgroundTimer();
     }
     return () => {
@@ -56,12 +57,14 @@ export default function MainScreen({ route, navigation }) {
   }, [secondsLeft]);
 
   const startTimer = () => {
-    BackgroundTimer.runBackgroundTimer(() => {
-      setSecondsLeft((secs) => {
-        if (secs > 0) return secs - 1;
-        else return 0;
-      });
-    }, 1000);
+    if (timerOn) {
+      BackgroundTimer.runBackgroundTimer(() => {
+        setSecondsLeft((secs) => {
+          if (secs > 0) return secs - 1;
+          else return 0;
+        });
+      }, 1000);
+    }
   };
 
   const stopTimer = async () => {
@@ -73,17 +76,15 @@ export default function MainScreen({ route, navigation }) {
     async (newState) => {
       const isOpen = await AsyncStorage.getItem('isOpen');
 
-      // if (!email) {
-      //   console.log("this")
-      //   dispatch(fetchUserInfo());
-      // }
-
       if (newState !== 'active') {
         setTimerOn(true);
         secondsLeft && setSecondsLeft(30);
       }
       if (newState === 'active') {
         setTimerOn(false);
+      }
+      if (newState === 'active' && !timerOn) {
+        return;
       }
 
       if (newState === 'active' && !isOpen) {
