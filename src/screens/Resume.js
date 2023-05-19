@@ -17,6 +17,7 @@ import PurpleText from '../components/PurpleText';
 import { fetchUserInfo, startLoginAction } from '../redux/profile/actions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import { logout } from '../utils/userProfileUtils';
 
 const Resume = ({ navigation }) => {
   const state = useSelector((state) => state.profile);
@@ -63,8 +64,8 @@ const Resume = ({ navigation }) => {
 
   const startLogin = async () => {
     await AsyncStorage.removeItem('isOpen');
-    dispatch(startLoginAction(navigation));
-    navigation.navigate('Login');
+
+    logout();
   };
 
   return (

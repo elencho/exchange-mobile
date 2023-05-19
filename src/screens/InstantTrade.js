@@ -30,6 +30,7 @@ export default function InstantTrade() {
   const {
     trade: { tradesLoading, offersLoading },
     transactions: { tabRoute },
+    profile: { userProfileLoading },
   } = state;
 
   const loading = tradesLoading && offersLoading;
@@ -71,8 +72,12 @@ export default function InstantTrade() {
           ) : null
         }
       >
-        {offersLoading ? <TradeBlockSkeleton /> : <TradeBlock />}
-        <TransactionsBlock loading={tradesLoading} />
+        {offersLoading || userProfileLoading ? (
+          <TradeBlockSkeleton />
+        ) : (
+          <TradeBlock />
+        )}
+        <TransactionsBlock loading={tradesLoading || userProfileLoading} />
       </ScrollView>
 
       <InfoModal />

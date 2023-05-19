@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { AppState, Text } from 'react-native';
+import { AppState } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useIsFocused } from '@react-navigation/native';
 
 import TransactionHistory from '../screens/TransactionHistory';
 import InstantTrade from '../screens/InstantTrade';
@@ -20,8 +21,10 @@ import BackgroundTimer from 'react-native-background-timer';
 
 const Tab = createBottomTabNavigator();
 
-export default function MainScreen({ navigation }) {
+export default function MainScreen({ route, navigation }) {
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
+
   const state = useSelector((state) => state.profile.userInfo);
   const { email } = state;
 
@@ -40,7 +43,8 @@ export default function MainScreen({ navigation }) {
   useEffect(() => {
     if (timerOn) {
       startTimer();
-    } else {
+    }
+    if (!timerOn) {
       BackgroundTimer.stopBackgroundTimer();
     }
     return () => {
@@ -53,12 +57,14 @@ export default function MainScreen({ navigation }) {
   }, [secondsLeft]);
 
   const startTimer = () => {
-    BackgroundTimer.runBackgroundTimer(() => {
-      setSecondsLeft((secs) => {
-        if (secs > 0) return secs - 1;
-        else return 0;
-      });
-    }, 1000);
+    if (timerOn) {
+      BackgroundTimer.runBackgroundTimer(() => {
+        setSecondsLeft((secs) => {
+          if (secs > 0) return secs - 1;
+          else return 0;
+        });
+      }, 1000);
+    }
   };
 
   const stopTimer = async () => {
@@ -69,15 +75,16 @@ export default function MainScreen({ navigation }) {
   const handleAppStateChange = useCallback(
     async (newState) => {
       const isOpen = await AsyncStorage.getItem('isOpen');
-      if (!email) {
-        dispatch(fetchUserInfo());
-      }
+
       if (newState !== 'active') {
         setTimerOn(true);
         secondsLeft && setSecondsLeft(30);
       }
       if (newState === 'active') {
         setTimerOn(false);
+      }
+      if (newState === 'active' && !timerOn) {
+        return;
       }
 
       if (newState === 'active' && !isOpen) {
@@ -122,30 +129,32 @@ export default function MainScreen({ navigation }) {
   };
 
   return (
-    <Tab.Navigator
-      screenListeners={setTabRoute}
-      tabBarPosition="bottom"
-      screenOptions={{
-        headerShown: false,
-        unmountOnBlur: true,
-        animationEnabled: true,
-        lazy: true,
-        freezeOnBlur: true,
-        swipeEnabled: false,
-      }}
-      initialRouteName="Trade"
-      tabBar={({ state, navigation, descriptors }) => (
-        <BottomTabs
-          routes={state.routes}
-          navigation={navigation}
-          descriptors={descriptors}
-        />
-      )}
-    >
-      <Tab.Screen name="Trade" component={InstantTrade} />
-      <Tab.Screen name="Wallet" component={Wallet} />
-      <Tab.Screen name="Transactions" component={TransactionHistory} />
-      <Tab.Screen name="Exchange" component={Exchange} />
-    </Tab.Navigator>
+    isFocused && (
+      <Tab.Navigator
+        screenListeners={setTabRoute}
+        tabBarPosition="bottom"
+        screenOptions={{
+          headerShown: false,
+          unmountOnBlur: true,
+          animationEnabled: true,
+          lazy: true,
+          freezeOnBlur: true,
+          swipeEnabled: false,
+        }}
+        initialRouteName="Trade"
+        tabBar={({ state, navigation, descriptors }) => (
+          <BottomTabs
+            routes={state.routes}
+            navigation={navigation}
+            descriptors={descriptors}
+          />
+        )}
+      >
+        <Tab.Screen name="Trade" component={InstantTrade} />
+        <Tab.Screen name="Wallet" component={Wallet} />
+        <Tab.Screen name="Transactions" component={TransactionHistory} />
+        <Tab.Screen name="Exchange" component={Exchange} />
+      </Tab.Navigator>
+    )
   );
 }
