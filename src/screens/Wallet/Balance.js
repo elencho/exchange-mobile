@@ -66,7 +66,7 @@ export default function Balance({ navigation }) {
 
       <WalletSwitcher />
 
-      {walletTab === 'Deposit' && <Deposit refreshControl={refreshControl} />}
+      {walletTab === 'Deposit' && <Deposit refreshControl={refreshControl()} />}
       {walletTab === 'Withdrawal' && (
         <Withdrawal refreshControl={refreshControl()} />
       )}
