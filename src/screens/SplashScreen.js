@@ -62,12 +62,14 @@ const Splash = ({ navigation }) => {
     }
     const enabled = await AsyncStorage.getItem('BiometricEnabled');
     const user = userInfo?.email;
+    const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
+    const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
 
     let parsedUsers = JSON.parse(enabled);
     const userIndex = parsedUsers?.find(
       (u) => u?.user === user && u?.enabled === true
     );
-    if (userIndex) {
+    if (userIndex && timeDifference >= 30000) {
       navigation.navigate('Resume');
     } else {
       navigation.navigate('Main');
@@ -142,9 +144,9 @@ const Splash = ({ navigation }) => {
   };
 
   return (
-    <View>
+    <View style={{ backgroundColor: 'transparent' }}>
       {/* REMOVE WHEN TESTED */}
-      <Text>SplashScreen</Text>
+      {/* <Text>SplashScreen</Text> */}
     </View>
   );
 };
