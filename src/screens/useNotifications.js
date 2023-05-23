@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
-import { PermissionsAndroid } from 'react-native';
+import { PermissionsAndroid, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import * as SecureStore from 'expo-secure-store';
+import { showLocalNotification } from '../utils/NotificationService';
 
 import { IS_IOS } from '../constants/system';
 
@@ -58,7 +59,16 @@ const useNotifications = () => {
 
     // Foreground State
     messaging().onMessage(async (remoteMessage) => {
-      console.log('foreground', remoteMessage);
+      console.log(
+        'foreground',
+        remoteMessage?.notification?.[Platform.OS].imageUrl
+      );
+      const {
+        body,
+        title,
+        [Platform.OS]: { imageUrl },
+      } = remoteMessage?.notification;
+      showLocalNotification(title, body, imageUrl);
     });
   };
 
@@ -71,6 +81,7 @@ const useNotifications = () => {
       );
     }
     getFcmToken();
+    notificationListener();
   }, []);
 
   return { notificationListener };

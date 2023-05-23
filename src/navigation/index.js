@@ -25,13 +25,11 @@ import CardVerificationTwoScreen from '../screens/CardVerificationTwo';
 import Resume from '../screens/Resume';
 import Splash from '../screens/SplashScreen';
 import EmailVerification from '../screens/EmailVerification';
-import useNotifications from '../screens/useNotifications';
 
 const Stack = createNativeStackNavigator();
 export const navigationRef = createNavigationContainerRef();
 
 export default function Navigator() {
-  const {} = useNotifications();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
