@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import <Firebase.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import "RNSplashScreen.h"
@@ -10,21 +11,22 @@
 #import <AppCenterReactNativeCrashes.h>
 #import <CodePush/CodePush.h>
 
-#ifdef FB_SONARKIT_ENABLED
-#import <FlipperKit/FlipperClient.h>
-#import <FlipperPerformancePlugin.h>
-#endif
+// #ifdef FB_SONARKIT_ENABLED
+// #import <FlipperKit/FlipperClient.h>
+// #import <FlipperPerformancePlugin.h>
+// #endif
 
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+[FIRApp configure];
 
-#ifdef FB_SONARKIT_ENABLED
-  FlipperClient *client = [FlipperClient sharedClient];
-  [client addPlugin:[FlipperPerformancePlugin new]];
-#endif
+// #ifdef FB_SONARKIT_ENABLED
+//   FlipperClient *client = [FlipperClient sharedClient];
+//   [client addPlugin:[FlipperPerformancePlugin new]];
+// #endif
   
   self.moduleName = @"main";
 	  // You can add your custom initial props in the dictionary below.
