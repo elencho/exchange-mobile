@@ -13,6 +13,7 @@
     "prepare": "husky install",
     "postinstall": "patch-package",
     "release": "react-native run-android --variant release",
+    "adb:reverse": "adb reverse tcp:8081 tcp:8081",
     "app-center-ios": "appcenter codepush release-react -a Cryptx/Exchange-iOS -d Production",
     "app-center-android": "appcenter codepush release-react -a Cryptx/Exchange-android -d Production"
   },
