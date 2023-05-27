@@ -1,8 +1,10 @@
 import messaging from '@react-native-firebase/messaging';
+import { PermissionsAndroid } from 'react-native';
 import { useEffect } from 'react';
+import { IS_ANDROID } from '../constants/system';
 
 const useNotifications = () => {
-  async function requestUserPermission() {
+  const requestUserPermissionIOS = async () => {
     const authStatus = await messaging().requestPermission();
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
@@ -11,10 +13,25 @@ const useNotifications = () => {
     if (enabled) {
       console.log('Authorization status:', authStatus);
     }
-  }
+  };
+
+  const requestPermissionsAndroid = () =>
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+    );
+
+  const checkToken = async () => {
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      console.log('TOKEN', fcmToken);
+    } else {
+      console.log('Could not fetch');
+    }
+  };
 
   useEffect(() => {
-    requestUserPermission();
+    IS_ANDROID ? requestPermissionsAndroid() : requestUserPermissionIOS();
+    checkToken();
   }, []);
   return {};
 };
