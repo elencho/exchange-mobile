@@ -1,4 +1,5 @@
 #import "AppDelegate.h"
+#import <Firebase.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import "RNSplashScreen.h"
@@ -40,6 +41,8 @@
   //[RNSplashScreen showSplash:@"LaunchScreen" inRootView:rootView];
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNSplashScreen show];
+  [FIRApp configure];
+
   
   return YES;
 }
@@ -82,7 +85,7 @@
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-  return [super application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+  // return [super application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries

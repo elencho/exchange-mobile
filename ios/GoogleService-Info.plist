@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>364340779077-b5p23jeijmbs3vn6auo1anj6uk8c26sv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.364340779077-b5p23jeijmbs3vn6auo1anj6uk8c26sv</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDEmu3808OH5jOcQG3yV_lOFMorhEkiZlo</string>
+	<key>GCM_SENDER_ID</key>
+	<string>364340779077</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.cryptal.exchange.mobile</string>
+	<key>PROJECT_ID</key>
+	<string>cryptal-4144c</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cryptal-4144c.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:364340779077:ios:44a5529a6f3e172d23eb2c</string>
+</dict>
+</plist>
