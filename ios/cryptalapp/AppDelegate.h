@@ -1,4 +1,3 @@
-#import <UserNotifications/UNUserNotificationCenter.h>
 #import <Foundation/Foundation.h>
 #import <RCTAppDelegate.h>
 #import <UIKit/UIKit.h>
