@@ -19,7 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
 import { logout } from '../utils/userProfileUtils';
 
-const Resume = ({ navigation }) => {
+const Resume = ({ navigation, route }) => {
   const state = useSelector((state) => state.profile);
   const dispatch = useDispatch();
 
@@ -57,8 +57,11 @@ const Resume = ({ navigation }) => {
     });
     if (result.success) {
       await AsyncStorage.setItem('isOpen', 'open');
-      // navigation.navigate('Main');
-      navigation.goBack();
+      if (route?.params?.fromSplash) {
+        navigation.navigate('Main');
+      } else {
+        navigation.goBack();
+      }
     }
   };
 

@@ -8,6 +8,7 @@ import * as SecureStore from 'expo-secure-store';
 import DeviceInfo from 'react-native-device-info';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwt_decode from 'jwt-decode';
 
 import {
   getCountryName,
@@ -30,23 +31,24 @@ import useNotifications from './useNotifications';
 
 const Splash = ({ navigation }) => {
   const dispatch = useDispatch();
-  const {} = useNotifications();
-  const userInfo = useSelector((state) => state?.profile?.userInfo);
+  // const {} = useNotifications();
+
   useFocusEffect(
     useCallback(() => {
       startApp();
-    }, [userInfo])
+    }, [])
   );
 
   const startApp = async () => {
-    await dispatch(fetchUserInfo());
+    // await dispatch(fetchUserInfo());
     await checkVersion();
     if (isWorkingVersion()) {
       SecureStore.getItemAsync('accessToken').then((t) => {
         if (t) {
-          getBiometricEnabled();
+          const email = jwt_decode(t)?.email;
+          getBiometricEnabled(email);
         } else {
-          dispatch(saveUserInfo({}));
+          //dispatch(saveUserInfo({}));
           navigation.navigate('Welcome');
         }
       });
@@ -56,12 +58,9 @@ const Splash = ({ navigation }) => {
     SplashScreen.hide();
   };
 
-  const getBiometricEnabled = async () => {
-    if (!userInfo?.email) {
-      await dispatch(fetchUserInfo());
-    }
+  const getBiometricEnabled = async (email) => {
     const enabled = await AsyncStorage.getItem('BiometricEnabled');
-    const user = userInfo?.email;
+    const user = email;
     const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
     const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
 
@@ -69,8 +68,11 @@ const Splash = ({ navigation }) => {
     const userIndex = parsedUsers?.find(
       (u) => u?.user === user && u?.enabled === true
     );
+    console.log(email, userIndex);
     if (userIndex && timeDifference >= 30000) {
-      navigation.navigate('Resume');
+      navigation.navigate('Resume', {
+        fromSplash: true,
+      });
     } else {
       navigation.navigate('Main');
     }
@@ -146,7 +148,7 @@ const Splash = ({ navigation }) => {
   return (
     <View style={{ backgroundColor: 'transparent' }}>
       {/* REMOVE WHEN TESTED */}
-      {/* <Text>SplashScreen</Text> */}
+      <Text>SplashScreen</Text>
     </View>
   );
 };
