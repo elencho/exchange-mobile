@@ -4,6 +4,6 @@
 
 #import <Expo/Expo.h>
 
-@interface AppDelegate : RCTAppDelegate <UNUserNotificationCenterDelegate>
+@interface AppDelegate : RCTAppDelegate
 
 @end
