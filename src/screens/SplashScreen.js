@@ -30,6 +30,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import useNotifications from './useNotifications';
 
 const Splash = ({ navigation }) => {
+  useNotifications();
   const dispatch = useDispatch();
   // const {} = useNotifications();
 

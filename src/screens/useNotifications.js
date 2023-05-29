@@ -1,10 +1,7 @@
-import { useEffect } from 'react';
-import { PermissionsAndroid, Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import * as SecureStore from 'expo-secure-store';
-import { showLocalNotification } from '../utils/NotificationService';
-
-import { IS_IOS } from '../constants/system';
+import { PermissionsAndroid } from 'react-native';
+import { useEffect } from 'react';
+import { IS_ANDROID } from '../constants/system';
 
 const useNotifications = () => {
   const requestUserPermissionIOS = async () => {
@@ -18,73 +15,25 @@ const useNotifications = () => {
     }
   };
 
-  const getFcmToken = async () => {
-    const fcmtoken = await SecureStore.getItemAsync('fcmtoken');
-    console.log('fcmtoken', fcmtoken);
-    if (!fcmtoken) {
-      try {
-        const newFcmToken = await messaging().getToken();
-        await SecureStore.setItemAsync('fcmtoken', newFcmToken);
-        console.log('newFcmToken', newFcmToken);
-        return newFcmToken;
-      } catch (error) {
-        console.error(error);
-      }
+  const requestPermissionsAndroid = () =>
+    PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
+    );
+
+  const checkToken = async () => {
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      console.log('TOKEN', fcmToken);
     } else {
-      console.log('token found', fcmtoken);
-      return fcmtoken;
+      console.log('Could not fetch');
     }
-  };
-
-  const notificationListener = () => {
-    messaging().onNotificationOpenedApp((remoteMessage) => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage.notification
-      );
-    });
-
-    // Quiet and Background State -> Check whether an initial notification is available
-    messaging()
-      .getInitialNotification()
-      .then((remoteMessage) => {
-        if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage.notification
-          );
-        }
-      })
-      .catch((error) => console.log('failed', error));
-
-    // Foreground State
-    messaging().onMessage(async (remoteMessage) => {
-      console.log(
-        'foreground',
-        remoteMessage?.notification?.[Platform.OS].imageUrl
-      );
-      const {
-        body,
-        title,
-        [Platform.OS]: { imageUrl },
-      } = remoteMessage?.notification;
-      showLocalNotification(title, body, imageUrl);
-    });
   };
 
   useEffect(() => {
-    if (IS_IOS) {
-      requestUserPermissionIOS();
-    } else {
-      PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-      );
-    }
-    getFcmToken();
-    notificationListener();
+    IS_ANDROID ? requestPermissionsAndroid() : requestUserPermissionIOS();
+    checkToken();
   }, []);
-
-  return { notificationListener };
+  return {};
 };
 
 export default useNotifications;

@@ -23,11 +23,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-[FIRApp configure];
+  [FIRApp configure];
+  [[UIApplication sharedApplication] registerForRemoteNotifications];
 
-  // Define UNUserNotificationCenter
-  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-  center.delegate = self;
 
 #ifdef FB_SONARKIT_ENABLED
   FlipperClient *client = [FlipperClient sharedClient];
@@ -48,6 +46,7 @@
   //[RNSplashScreen showSplash:@"LaunchScreen" inRootView:rootView];
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   [RNSplashScreen show];
+
   
   return YES;
 }
@@ -87,10 +86,23 @@
   return [super application:application continueUserActivity:userActivity restorationHandler:restorationHandler] || result;
 }
 
+//test
+- (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
+    NSLog(@"FCM registration token: %@", fcmToken);
+    // Notify about received token.
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObject:fcmToken forKey:@"token"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:
+     @"FCMToken" object:nil userInfo:dataDict];
+}
+
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
- [RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+  // return [super application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    NSString *str = [NSString stringWithFormat:@"Device Token=%@",deviceToken];
+    NSLog(@"This is device token%@", deviceToken);
+    //NSString *deviceTokenString = [deviceToken description];
+    [FIRMessaging messaging].APNSToken = deviceToken;
 }
 
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
