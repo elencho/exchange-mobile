@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "364340779077",
+    "project_id": "cryptal-4144c",
+    "storage_bucket": "cryptal-4144c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364340779077:android:b553a48855f4d34323eb2c",
+        "android_client_info": {
+          "package_name": "com.cryptal.exchange.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364340779077-3kodr2atafkcpie1dqs1t6crdm2kol85.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATGPoES8qOzhkJSdtU3fn3R60SXm6oTwI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364340779077-3kodr2atafkcpie1dqs1t6crdm2kol85.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

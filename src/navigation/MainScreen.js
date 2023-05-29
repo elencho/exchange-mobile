@@ -40,17 +40,18 @@ export default function MainScreen({ route, navigation }) {
     };
   }, [email]);
 
-  useEffect(() => {
-    if (timerOn) {
-      startTimer();
-    }
-    if (!timerOn) {
-      BackgroundTimer.stopBackgroundTimer();
-    }
-    return () => {
-      BackgroundTimer.stopBackgroundTimer();
-    };
-  }, [timerOn]);
+  //TODO:Remove
+  // useEffect(() => {
+  //   if (timerOn) {
+  //     startTimer();
+  //   }
+  //   if (!timerOn) {
+  //     BackgroundTimer.stopBackgroundTimer();
+  //   }
+  //   return () => {
+  //     BackgroundTimer.stopBackgroundTimer();
+  //   };
+  // }, [timerOn]);
 
   useEffect(() => {
     if (secondsLeft === 0) stopTimer();
@@ -74,20 +75,25 @@ export default function MainScreen({ route, navigation }) {
 
   const handleAppStateChange = useCallback(
     async (newState) => {
+      //TODO:Remove
       const isOpen = await AsyncStorage.getItem('isOpen');
+      const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
+      const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
 
       if (newState !== 'active') {
+        const date = JSON.stringify(Date.now());
+        await AsyncStorage.setItem('isOpenDate', date);
         setTimerOn(true);
         secondsLeft && setSecondsLeft(30);
       }
-      if (newState === 'active') {
-        setTimerOn(false);
-      }
-      if (newState === 'active' && !timerOn) {
-        return;
-      }
-
-      if (newState === 'active' && !isOpen) {
+      //TODO:Remove
+      // if (newState === 'active') {
+      //   setTimerOn(false);
+      // }
+      // if (newState === 'active' && !timerOn) {
+      //   return;
+      // }
+      if (newState === 'active' && timeDifference >= 30000) {
         SecureStore.getItemAsync('accessToken')
           .then((t) => dispatch({ type: 'OTP_SAGA', token: t }))
           .catch((err) => console.log(err));
