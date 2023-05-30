@@ -109,7 +109,7 @@
   #if DEBUG
   return;
 #else
-  return return [super application:application didFailToRegisterForRemoteNotificationsWithError:error];
+  return [super application:application didFailToRegisterForRemoteNotificationsWithError:error];
 #endif
   
 }

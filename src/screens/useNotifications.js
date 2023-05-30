@@ -1,5 +1,5 @@
 import messaging from '@react-native-firebase/messaging';
-import { PermissionsAndroid } from 'react-native';
+import { PermissionsAndroid, Linking } from 'react-native';
 import { useEffect } from 'react';
 import { IS_ANDROID } from '../constants/system';
 
@@ -29,10 +29,35 @@ const useNotifications = () => {
     }
   };
 
+  const handleForegroundMessage = messaging().onMessage(
+    async (remoteMessage) => {
+      console.log('remoteee', remoteMessage);
+    }
+  );
+
   useEffect(() => {
     IS_ANDROID ? requestPermissionsAndroid() : requestUserPermissionIOS();
     checkToken();
   }, []);
+
+  useEffect(() => {
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      const redirectUrl = remoteMessage.data?.redirectUrl;
+      if (redirectUrl) Linking.openURL(redirectUrl);
+    });
+
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          const redirectUrl = remoteMessage.data?.redirectUrl;
+          if (redirectUrl) Linking.openURL(redirectUrl);
+        }
+      });
+
+    handleForegroundMessage();
+  }, []);
+
   return {};
 };
 
