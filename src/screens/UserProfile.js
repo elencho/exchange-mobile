@@ -81,6 +81,9 @@ function UserProfile({ navigation, route }) {
       )}
     </>
   );
+  const handleLogout = () => {
+    logout(dispatch);
+  };
   return (
     <Background>
       <View style={styles.topRow}>
@@ -89,7 +92,7 @@ function UserProfile({ navigation, route }) {
           <PurpleText text="Back" style={styles.purpleText} />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={logout}>
+        <TouchableOpacity onPress={handleLogout}>
           <Logout />
         </TouchableOpacity>
       </View>

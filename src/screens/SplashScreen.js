@@ -69,7 +69,6 @@ const Splash = ({ navigation }) => {
     const userIndex = parsedUsers?.find(
       (u) => u?.user === user && u?.enabled === true
     );
-    console.log(email, userIndex);
     if (userIndex && timeDifference >= 30000) {
       navigation.navigate('Resume', {
         fromSplash: true,

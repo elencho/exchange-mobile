@@ -236,14 +236,13 @@ export const logoutUtil = async (refresh_token) => {
   if (data) return data.status;
 };
 
-export const logout = async () => {
+export const logout = async (dispatch) => {
   const refresh_token = await SecureStore.getItemAsync('refreshToken');
   const status = await logoutUtil(refresh_token);
   if (status === 204) {
     await SecureStore.deleteItemAsync('accessToken');
     await SecureStore.deleteItemAsync('refreshToken');
     navigationRef.navigate('Welcome');
-
     dispatch({ type: 'LOGOUT' });
   }
 };

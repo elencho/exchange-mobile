@@ -56,9 +56,10 @@ const Resume = ({ navigation, route }) => {
       cancelLabel: 'Abort',
     });
     if (result.success) {
-      await AsyncStorage.setItem('isOpen', 'open');
       if (route?.params?.fromSplash) {
-        navigation.navigate('Main');
+        navigation.navigate('Main', {
+          fromSplash: true,
+        });
       } else {
         navigation.goBack();
       }
@@ -66,9 +67,7 @@ const Resume = ({ navigation, route }) => {
   };
 
   const startLogin = async () => {
-    await AsyncStorage.removeItem('isOpen');
-
-    logout();
+    logout(dispatch);
   };
 
   return (
