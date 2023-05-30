@@ -106,7 +106,12 @@
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
+  #if DEBUG
+  return;
+#else
   return [super application:application didFailToRegisterForRemoteNotificationsWithError:error];
+#endif
+  
 }
 
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries

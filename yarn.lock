@@ -7585,11 +7585,6 @@ react-native-pkce-challenge@^5.1.1:
   dependencies:
     crypto-js "3.3.0"
 
-react-native-push-notification@^8.1.1:
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-8.1.1.tgz#a41d20c70ea5a7709417e96261b225461f8dc73a"
-  integrity sha512-XpBtG/w+a6WXTxu6l1dNYyTiHnbgnvjoc3KxPTxYkaIABRmvuJZkFxqruyGvfCw7ELAlZEAJO+dthdTabCe1XA==
-
 react-native-qrcode-svg@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/react-native-qrcode-svg/-/react-native-qrcode-svg-6.2.0.tgz#62b62c5997ff23ba22544e289a6112a08f8ea306"

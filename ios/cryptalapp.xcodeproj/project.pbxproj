@@ -11,18 +11,17 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		4B49D3E1379EEF2510D1465A /* Pods_cryptalapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0201CFE615A108E04A1EC0E1 /* Pods_cryptalapp.framework */; };
 		71934E281E304063AA14DBC9 /* noop-file.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1EBECB0B0B4736B92EB173 /* noop-file.swift */; };
 		A3F64D92291E4DB600D245FB /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = A3F64D91291E4DB500D245FB /* AppCenter-Config.plist */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		BF682DB12A1FBE73005C7702 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF682DB02A1FBE73005C7702 /* GoogleService-Info.plist */; };
+		C60509D763165EBC8940A0E1 /* libPods-cryptalapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 723BEB986DF2E5A5E56C2BCC /* libPods-cryptalapp.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0038D9925FD1A47AFE8B7BE2 /* Pods-cryptalapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cryptalapp.release.xcconfig"; path = "Target Support Files/Pods-cryptalapp/Pods-cryptalapp.release.xcconfig"; sourceTree = "<group>"; };
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		0201CFE615A108E04A1EC0E1 /* Pods_cryptalapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_cryptalapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* cryptalapp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = cryptalapp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = cryptalapp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = cryptalapp/AppDelegate.mm; sourceTree = "<group>"; };
@@ -31,6 +30,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = cryptalapp/main.m; sourceTree = "<group>"; };
 		1A1EBECB0B0B4736B92EB173 /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "cryptalapp/noop-file.swift"; sourceTree = "<group>"; };
 		316417BF75BC28A0DA88CAC4 /* Pods-cryptalapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cryptalapp.debug.xcconfig"; path = "Target Support Files/Pods-cryptalapp/Pods-cryptalapp.debug.xcconfig"; sourceTree = "<group>"; };
+		723BEB986DF2E5A5E56C2BCC /* libPods-cryptalapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cryptalapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3F64D91291E4DB500D245FB /* AppCenter-Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AppCenter-Config.plist"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = cryptalapp/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
@@ -45,7 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4B49D3E1379EEF2510D1465A /* Pods_cryptalapp.framework in Frameworks */,
+				C60509D763165EBC8940A0E1 /* libPods-cryptalapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				0201CFE615A108E04A1EC0E1 /* Pods_cryptalapp.framework */,
+				723BEB986DF2E5A5E56C2BCC /* libPods-cryptalapp.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -284,12 +284,18 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-cryptalapp/Pods-cryptalapp-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-DoubleConversion/double-conversion.framework/double-conversion",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Flipper-Glog/glog.framework/glog",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/IdensicMobileSDK/Core/IdensicMobileSDK.framework/IdensicMobileSDK",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/double-conversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IdensicMobileSDK.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,7 +456,10 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
