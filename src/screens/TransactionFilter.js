@@ -38,7 +38,7 @@ export default function TransactionFilter({ navigation }) {
 
   const close = () => {
     clear();
-    navigation.goBack();
+    navigation.navigate('Main', { screen: 'Transactions' });
   };
 
   const clear = () => {
