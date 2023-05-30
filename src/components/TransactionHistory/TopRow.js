@@ -1,6 +1,6 @@
 import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -9,6 +9,7 @@ import AppText from '../AppText';
 
 function TopRow({ clear }) {
   const navigation = useNavigation();
+  const route = useRoute();
 
   const userInfo = useSelector((state) => state.profile.userInfo);
   const { firstName, lastName } = userInfo;
@@ -22,7 +23,7 @@ function TopRow({ clear }) {
   };
 
   const navigate = () => {
-    navigation.navigate('UserProfile');
+    navigation.navigate('UserProfile', { sourceScreenName: route.name });
     clear && clear();
   };
 

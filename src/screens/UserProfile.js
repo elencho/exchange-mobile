@@ -57,7 +57,7 @@ function UserProfile({ navigation, route }) {
   const onRefresh = () => dispatch(fetchUserInfo());
   const back = () => {
     clear();
-    navigation.navigate('Main');
+    navigation.navigate('Main', { screen: route.params?.sourceScreenName });
   };
 
   const clear = () => {
