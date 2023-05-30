@@ -21,13 +21,7 @@ export default function MainScreen({ route, navigation }) {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
-  const state = useSelector((state) => state.profile.userInfo);
-  // const { email } = state;
-
   const [subscription, setSubscription] = useState();
-
-  // const [secondsLeft, setSecondsLeft] = useState(30);
-  // const [timerOn, setTimerOn] = useState(false);
 
   useEffect(() => {
     onBeforeShow();
@@ -36,74 +30,28 @@ export default function MainScreen({ route, navigation }) {
     };
   }, []);
 
-  //TODO:Remove
-  // useEffect(() => {
-  //   if (timerOn) {
-  //     startTimer();
-  //   }
-  //   if (!timerOn) {
-  //     BackgroundTimer.stopBackgroundTimer();
-  //   }
-  //   return () => {
-  //     BackgroundTimer.stopBackgroundTimer();
-  //   };
-  // }, [timerOn]);
+  const handleAppStateChange = async (newState) => {
+    const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
+    const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
+    const isFromSplash = route?.params?.fromSplash;
 
-  // useEffect(() => {
-  //   if (secondsLeft === 0) stopTimer();
-  // }, [secondsLeft]);
+    if (newState !== 'active') {
+      const date = JSON.stringify(Date.now());
+      await AsyncStorage.setItem('isOpenDate', date);
+    }
 
-  // const startTimer = () => {
-  //   if (timerOn) {
-  //     BackgroundTimer.runBackgroundTimer(() => {
-  //       setSecondsLeft((secs) => {
-  //         if (secs > 0) return secs - 1;
-  //         else return 0;
-  //       });
-  //     }, 1000);
-  //   }
-  // };
-
-  // const stopTimer = async () => {
-  //   getBiometricEnabled(email);
-  //   BackgroundTimer.stopBackgroundTimer();
-  // };
-
-  const handleAppStateChange = useCallback(
-    async (newState) => {
-      //TODO:Remove
-      const isOpen = await AsyncStorage.getItem('isOpen');
-      const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
-      const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
-
-      if (newState !== 'active') {
-        const date = JSON.stringify(Date.now());
-        await AsyncStorage.setItem('isOpenDate', date);
-        // setTimerOn(true);
-        // secondsLeft && setSecondsLeft(30);
-      }
-      //TODO:Remove
-      // if (newState === 'active') {
-      //   setTimerOn(false);
-      // }
-      // if (newState === 'active' && !timerOn) {
-      //   return;
-      // }
-      if (newState === 'active' && timeDifference >= 30000) {
-        SecureStore.getItemAsync('accessToken')
-          .then((t) => {
-            if (t) {
-              const email = jwt_decode(t)?.email;
-              dispatch({ type: 'OTP_SAGA', token: t });
-              getBiometricEnabled(email);
-            }
-          })
-          .catch((err) => console.log(err));
-      }
-    },
-
-    [AppState]
-  );
+    if (!isFromSplash && newState === 'active' && timeDifference >= 30000) {
+      SecureStore.getItemAsync('accessToken')
+        .then((t) => {
+          if (t) {
+            const email = jwt_decode(t)?.email;
+            dispatch({ type: 'OTP_SAGA', token: t });
+            getBiometricEnabled(email);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   const onBeforeShow = useCallback(async () => {
     setSubscription(AppState.addEventListener('change', handleAppStateChange));
