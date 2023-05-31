@@ -1,11 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useState, useEffect, memo, useCallback } from 'react';
-
+import { StyleSheet, View } from 'react-native';
+import React, { useState, memo, useCallback } from 'react';
 import TouchID from '../assets/images/TouchID-Purple';
 import FaceID from '../assets/images/Face_ID-pruple';
 
 import {
-  isEnrolledAsync,
   authenticateAsync,
   supportedAuthenticationTypesAsync,
 } from 'expo-local-authentication';
@@ -14,10 +12,10 @@ import AppText from '../components/AppText';
 import { useDispatch, useSelector } from 'react-redux';
 import AppButton from '../components/AppButton';
 import PurpleText from '../components/PurpleText';
-import { fetchUserInfo, startLoginAction } from '../redux/profile/actions';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { fetchUserInfo } from '../redux/profile/actions';
 import { useFocusEffect } from '@react-navigation/native';
 import { logout } from '../utils/userProfileUtils';
+import SplashScreen from 'react-native-splash-screen';
 
 const Resume = ({ navigation, route }) => {
   const state = useSelector((state) => state.profile);
@@ -28,6 +26,7 @@ const Resume = ({ navigation, route }) => {
 
   useFocusEffect(
     useCallback(() => {
+      SplashScreen.hide();
       dispatch(fetchUserInfo());
       handleBiometricIcon();
       startAuth();
@@ -51,12 +50,17 @@ const Resume = ({ navigation, route }) => {
   };
 
   const startAuth = async () => {
+    const { fromSplash, version, workingVersion } = route?.params;
+
     const result = await authenticateAsync({
       promptMessage: 'Log in with fingerprint or faceid',
       cancelLabel: 'Abort',
     });
+
     if (result.success) {
-      if (route?.params?.fromSplash) {
+      if (version || workingVersion) {
+        navigation.goBack();
+      } else if (fromSplash) {
         navigation.navigate('Main', {
           fromSplash: true,
         });

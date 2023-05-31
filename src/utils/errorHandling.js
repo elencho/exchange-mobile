@@ -9,7 +9,6 @@ import SplashScreen from 'react-native-splash-screen';
 
 export default async (err) => {
   const state = store.getState();
-
   if (err.response) {
     const {
       response: { status, data },
@@ -36,7 +35,7 @@ export default async (err) => {
     if (status === 400 && data.error === 'invalid_grant') {
       await SecureStore.deleteItemAsync('accessToken');
       await SecureStore.deleteItemAsync('refreshToken');
-      navigationRef.navigate('Welcome');
+      navigationRef.navigate('SplashScreen');
       store.dispatch({ type: 'LOGOUT' });
     }
   }

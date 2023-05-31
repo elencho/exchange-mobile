@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
-import { BackHandler, Text, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { BackHandler, View } from 'react-native';
+import { useDispatch } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import VersionCheck from 'react-native-version-check';
 import * as SecureStore from 'expo-secure-store';
@@ -18,12 +18,7 @@ import {
 } from '../constants/system';
 import colors from '../constants/colors';
 
-import {
-  fetchCountries,
-  fetchUserInfo,
-  saveUserInfo,
-  setLanguage,
-} from '../redux/profile/actions';
+import { fetchCountries, setLanguage } from '../redux/profile/actions';
 import { checkReadiness, fetchTranslations } from '../utils/appUtils';
 import { addResources, switchLanguage } from '../utils/i18n';
 import { useFocusEffect } from '@react-navigation/native';
@@ -32,7 +27,6 @@ import useNotifications from './useNotifications';
 const Splash = ({ navigation }) => {
   useNotifications();
   const dispatch = useDispatch();
-  // const {} = useNotifications();
 
   useFocusEffect(
     useCallback(() => {
@@ -41,25 +35,25 @@ const Splash = ({ navigation }) => {
   );
 
   const startApp = async () => {
-    // await dispatch(fetchUserInfo());
-    await checkVersion();
-    if (isWorkingVersion()) {
-      SecureStore.getItemAsync('accessToken').then((t) => {
-        if (t) {
-          const email = jwt_decode(t)?.email;
-          getBiometricEnabled(email);
-        } else {
-          //dispatch(saveUserInfo({}));
-          navigation.navigate('Welcome');
-        }
-      });
-    }
+    const workingVersion = await isWorkingVersion();
+    const updateNeeded = await checkVersion();
+
+    await SecureStore.getItemAsync('accessToken').then((t) => {
+      if (t) {
+        const email = jwt_decode(t)?.email;
+        getBiometricEnabled(email, updateNeeded, workingVersion);
+      } else if (!workingVersion && !updateNeeded) {
+        navigation.navigate('Welcome');
+      }
+    });
+
     await changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
     await fetchData();
+
     SplashScreen.hide();
   };
 
-  const getBiometricEnabled = async (email) => {
+  const getBiometricEnabled = async (email, updateNeeded, workingVersion) => {
     const enabled = await AsyncStorage.getItem('BiometricEnabled');
     const user = email;
     const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
@@ -72,6 +66,8 @@ const Splash = ({ navigation }) => {
     if (userIndex && timeDifference >= 30000) {
       navigation.navigate('Resume', {
         fromSplash: true,
+        version: updateNeeded,
+        workingVersion: workingVersion,
       });
     } else {
       navigation.navigate('Main');
@@ -80,7 +76,7 @@ const Splash = ({ navigation }) => {
 
   BackHandler.addEventListener('hardwareBackPress', () => true);
 
-  const checkVersion = async () => {
+  const checkVersion = useCallback(async () => {
     try {
       const countryName = await getCountryName;
 
@@ -94,25 +90,28 @@ const Splash = ({ navigation }) => {
       const latestVersion = await storeData;
       const updateNeeded = await VersionCheck.needUpdate({
         currentVersion: currentVersion,
-        latestVersion: latestVersion,
+        //FOR TEST PURPOSE
+        latestVersion: '1.2.0',
       });
 
       if (updateNeeded && updateNeeded.isNeeded) {
         navigation.navigate('UpdateAvailable');
+        return true;
+      } else {
+        return false;
       }
     } catch (error) {
       console.log(error);
     }
-  };
+  });
 
   const isWorkingVersion = async () => {
     const version = DeviceInfo.getVersion();
-
     const { status } = await checkReadiness(version, Platform.OS);
     if (status === 'DOWN') {
       navigation.navigate('Maintanance');
-      return false;
-    } else return true;
+      return true;
+    }
   };
 
   const fetchData = async () => {
@@ -145,12 +144,7 @@ const Splash = ({ navigation }) => {
       dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };
 
-  return (
-    <View style={{ backgroundColor: 'transparent' }}>
-      {/* REMOVE WHEN TESTED */}
-      <Text>SplashScreen</Text>
-    </View>
-  );
+  return <View />;
 };
 
 export default Splash;
