@@ -27,9 +27,7 @@ export default function UpdateAvailable() {
       <AppText header style={styles.header}>
         Update Available
       </AppText>
-      <AppText style={styles.secondary}>
-        We recommended you to update app to have better experience
-      </AppText>
+      <AppText style={styles.secondary}>Update Available descr</AppText>
 
       <AppButton text="Update" style={styles.button} onPress={update} />
     </Background>
