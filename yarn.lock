@@ -1672,6 +1672,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@notifee/react-native@^7.7.1":
+  version "7.7.1"
+  resolved "https://registry.yarnpkg.com/@notifee/react-native/-/react-native-7.7.1.tgz#ce3f982fb7354519406cb7716f8e861bab0056ce"
+  integrity sha512-E+W91ulI4dxdIrhK6YCyjWqXgrUsVNZYYCSn3gDADmveuR2Yd2uGvbbSW2vUIFU4N4gQQT/5HJdk9Jk83KHbVA==
+
 "@npmcli/fs@^1.0.0":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@npmcli/fs/-/fs-1.1.1.tgz#72f719fe935e687c56a4faecf3c03d06ba593257"
@@ -7578,7 +7583,7 @@ react-native-pager-view@6.1.2:
   resolved "https://registry.yarnpkg.com/react-native-pager-view/-/react-native-pager-view-6.1.2.tgz#3522079b9a9d6634ca5e8d153bc0b4d660254552"
   integrity sha512-qs2KSFc+7N7B+UZ6SG2sTvCkppagm5fVyRclv1KFKc7lDtrhXLzN59tXJw575LDP/dRJoXsNwqUAhZJdws6ABQ==
 
-react-native-pkce-challenge@^5.2.0:
+react-native-pkce-challenge@^5.1.1:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/react-native-pkce-challenge/-/react-native-pkce-challenge-5.2.0.tgz#8696bba05062a463bb4a695366c11c35ad3f1202"
   integrity sha512-iuOi0t8NfTzOLFkGECyVHgdUeqawKQYXdW7O4/4MncGHGYnWMCPk4EKvdPdmricIXfPq18uKb5w5RacMo25poA==

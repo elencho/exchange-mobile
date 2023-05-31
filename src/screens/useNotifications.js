@@ -1,7 +1,8 @@
 import messaging from '@react-native-firebase/messaging';
 import { PermissionsAndroid, Linking } from 'react-native';
+import notifee, { EventType, AndroidImportance } from '@notifee/react-native';
 import { useEffect } from 'react';
-import { IS_ANDROID } from '../constants/system';
+import { IS_ANDROID, IS_IOS } from '../constants/system';
 
 const useNotifications = () => {
   const requestUserPermissionIOS = async () => {
@@ -29,36 +30,67 @@ const useNotifications = () => {
     }
   };
 
-  const handleForegroundMessage = messaging().onMessage(
-    async (remoteMessage) => {
-      console.log('remoteee', remoteMessage);
-    }
-  );
-
   useEffect(() => {
     IS_ANDROID ? requestPermissionsAndroid() : requestUserPermissionIOS();
     checkToken();
   }, []);
 
   useEffect(() => {
-    messaging().onNotificationOpenedApp((remoteMessage) => {
-      const redirectUrl = remoteMessage.data?.redirectUrl;
-      if (redirectUrl) Linking.openURL(redirectUrl);
-    });
-
-    messaging()
-      .getInitialNotification()
-      .then((remoteMessage) => {
-        if (remoteMessage) {
-          const redirectUrl = remoteMessage.data?.redirectUrl;
-          if (redirectUrl) Linking.openURL(redirectUrl);
+    const unsubscribe = () => {
+      return notifee.onForegroundEvent(({ type, detail }) => {
+        switch (type) {
+          case EventType.DISMISSED:
+            break;
+          case EventType.PRESS:
+            console.log('useNot', detail.notification);
+            Linking.openURL(detail.notification?.data?.redirectUrl);
+            break;
+          default:
+            break;
         }
       });
+    };
 
-    handleForegroundMessage();
+    unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(onNotifeeMessageReceived);
+
+    return unsubscribe;
   }, []);
 
   return {};
 };
 
 export default useNotifications;
+
+export const onNotifeeMessageReceived = async (message) => {
+  console.log('notifee received on foreground', message);
+  const channelId = await notifee.createChannel({
+    id: 'default',
+    name: 'Default Channel',
+  });
+
+  notifee.displayNotification({
+    id: message.messageId,
+    title: message.notification.title,
+    body: message.notification.body,
+    data: message.data,
+    remote: true,
+    ios: {
+      attachments: [{ url: message?.data?.fcm_options?.image }],
+    },
+    android: {
+      channelId: channelId,
+      attachments: [{ url: message?.data?.fcm_options?.image }],
+      importance: AndroidImportance.HIGH,
+      lightUpScreen: true,
+      sound: 'default',
+      timeoutAfter: 1000,
+      pressAction: {
+        id: 'default',
+      },
+    },
+  });
+};
