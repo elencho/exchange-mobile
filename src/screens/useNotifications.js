@@ -5,16 +5,8 @@ import { useEffect } from 'react';
 import { IS_ANDROID, IS_IOS } from '../constants/system';
 
 const useNotifications = () => {
-  const requestUserPermissionIOS = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-    }
-  };
+  const requestUserPermissionIOS = async () =>
+    await messaging().requestPermission();
 
   const requestPermissionsAndroid = () =>
     PermissionsAndroid.request(
@@ -24,9 +16,7 @@ const useNotifications = () => {
   const checkToken = async () => {
     const fcmToken = await messaging().getToken();
     if (fcmToken) {
-      console.log('TOKEN', fcmToken);
-    } else {
-      console.log('Could not fetch');
+      console.log('fcmToken', fcmToken);
     }
   };
 
@@ -42,7 +32,6 @@ const useNotifications = () => {
           case EventType.DISMISSED:
             break;
           case EventType.PRESS:
-            console.log('useNot', detail.notification);
             Linking.openURL(detail.notification?.data?.redirectUrl);
             break;
           default:
@@ -52,6 +41,23 @@ const useNotifications = () => {
     };
 
     unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    // Handle notification opening event
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      const redirectUrl = remoteMessage?.data?.redirectUrl;
+      if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
+    });
+
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        if (remoteMessage) {
+          const redirectUrl = remoteMessage?.data?.redirectUrl;
+          if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
+        }
+      });
   }, []);
 
   useEffect(() => {
