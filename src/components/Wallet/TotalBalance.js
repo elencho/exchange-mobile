@@ -15,8 +15,8 @@ export default function TotalBalance({ balanceLoading }) {
     if (balance) {
       const { totalValueBTC, totalValueUSD } = balance;
       return filter === 'USD'
-        ? `Total: ${totalValueUSD} USD`
-        : `Total: ${totalValueBTC} BTC`;
+        ? ` ${totalValueUSD} USD`
+        : ` ${totalValueBTC} BTC`;
     }
   };
 
@@ -32,9 +32,14 @@ export default function TotalBalance({ balanceLoading }) {
       <WalletIcon />
 
       <View style={styles.justify}>
-        <AppText calendarDay style={styles.primary}>
-          {primary()}
-        </AppText>
+        <View style={styles.row}>
+          <AppText calendarDay style={styles.primary}>
+            Total :
+          </AppText>
+          <AppText calendarDay style={styles.primary}>
+            {primary()}
+          </AppText>
+        </View>
         <AppText body style={styles.secondary}>
           {secondary()}
         </AppText>
@@ -62,5 +67,8 @@ const styles = StyleSheet.create({
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
+  },
+  row: {
+    flexDirection: 'row',
   },
 });

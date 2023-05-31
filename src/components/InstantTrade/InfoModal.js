@@ -24,29 +24,20 @@ export default function InfoModal() {
         </AppText>
 
         <AppText body style={styles.text}>
-          Instant trade simplifies buying and selling crypto currencies. If you
-          have a limited understanding of how crypto exchanges work but want to
-          get started with cryptocurrencies, our instant trade service is for
-          you.
+          instant trade paragraph 1
         </AppText>
 
         <AppText header style={[styles.header, { marginTop: 40 }]}>
           How Does it Work?
         </AppText>
         <AppText body style={styles.text}>
-          Cryptal.com calculates the price and freezes it for 90 seconds. At any
-          given moment, either select from one of our standard offers or
-          manually input the amount of money you wish to spend, and you will see
-          the amount of cryptocurrency you will receive, or vice versa.
+          instant trade paragraph 2
         </AppText>
         <AppText body style={styles.text}>
-          You can buy coins either from your fiat balance or with your
-          Visa/Mastercard.
+          instant trade paragraph 3
         </AppText>
         <AppText body style={styles.text}>
-          When buying cryptocurrencies, indicate the withdrawal address only if
-          you want to withdraw to an external address, otherwise your purchases
-          will be reflected in your Cryptal wallet balance.
+          instant trade paragraph 4
         </AppText>
       </TouchableOpacity>
     </ScrollView>

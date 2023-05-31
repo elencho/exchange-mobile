@@ -80,13 +80,15 @@ export default function SetNewPassword({ navigation }) {
 
         <View>
           <Text style={styles.validations}>
-            <Text style={!passLength && pass && red}>
-              8 or more characters,{' '}
-            </Text>
-            <Text style={!hasUpperAndLower && pass && red}>
-              Upper & lowercase letters,{' '}
-            </Text>
-            <Text style={!hasNumber && pass && red}>At least one number, </Text>
+            <AppText style={!passLength && pass && red}>
+              8 or more characters,
+            </AppText>{' '}
+            <AppText style={!hasUpperAndLower && pass && red}>
+              Upper & lowercase letters,
+            </AppText>{' '}
+            <AppText style={!hasNumber && pass && red}>
+              At least one number,
+            </AppText>
           </Text>
         </View>
 
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
   validations: {
     color: colors.SECONDARY_TEXT,
     fontSize: 11,
-    textAlign: 'justify',
     lineHeight: 15,
   },
 });
+//

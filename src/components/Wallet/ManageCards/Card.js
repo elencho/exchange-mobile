@@ -73,9 +73,18 @@ export default function Card({ card }) {
       />
 
       <View style={styles.block}>
-        <AppText medium style={styles.primary}>
-          {`Provider: ${bankDisplayName}`}
-        </AppText>
+        <View style={styles.row}>
+          <AppText medium style={styles.primary}>
+            {`Provider :`}
+          </AppText>
+          <AppText medium style={styles.primary}>
+            {' '}
+          </AppText>
+          <AppText medium style={styles.primary}>
+            {`${bankDisplayName}`}
+          </AppText>
+        </View>
+
         <AppText subtext style={styles.secondary}>
           {cardNumber} / {network}
         </AppText>
@@ -120,5 +129,8 @@ const styles = StyleSheet.create({
   verifiedRow: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  row: {
+    flexDirection: 'row',
   },
 });

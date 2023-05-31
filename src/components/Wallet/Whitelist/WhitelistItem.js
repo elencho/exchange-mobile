@@ -22,9 +22,21 @@ export default function WhitelistItem({ whitelistItem }) {
   return (
     <View style={styles.container}>
       <View style={styles.flex}>
-        <AppText body style={styles.primary}>
-          {name} {tag && `/ Tag: ${tag}`}
-        </AppText>
+        <View style={styles.row}>
+          <AppText body style={styles.primary}>
+            {name}
+          </AppText>
+          {tag && (
+            <View style={styles.row}>
+              <AppText body style={styles.primary}>
+                {' ' + `/ Tag :` + ' '}
+              </AppText>
+              <AppText body style={styles.primary}>
+                {`${tag}`}
+              </AppText>
+            </View>
+          )}
+        </View>
         <AppText subtext style={styles.secondary}>
           {address}
         </AppText>
@@ -58,5 +70,8 @@ const styles = StyleSheet.create({
   secondary: {
     color: colors.SECONDARY_TEXT,
     marginTop: 5,
+  },
+  row: {
+    flexDirection: 'row',
   },
 });

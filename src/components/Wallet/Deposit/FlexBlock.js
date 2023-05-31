@@ -31,7 +31,7 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
     } else if (reason === 'SUPPORT') {
       return `${type} Reason: Support`;
     } else if (reason === 'METHOD') {
-      return `Doesn't have ${type} method`;
+      return `does not have ${type} method`;
     } else {
       return null;
     }
@@ -47,6 +47,8 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
 
   const headline = () => {
     if (reason === 'no address') {
+      return 'Deposit Address';
+    } else if (reason === 'SUPPORT') {
       return 'Deposit Address';
     } else {
       return 'Unavailable';

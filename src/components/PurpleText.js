@@ -2,8 +2,22 @@ import React, { memo } from 'react';
 
 import AppText from './AppText';
 import colors from '../constants/colors';
+import { useTranslation } from 'react-i18next';
 
 function PurpleText({ text, style, onPress, subtext = false, ...rest }) {
+  const { t } = useTranslation();
+
+  const purpleText = () => {
+    if (typeof children === 'string') {
+      if (text.includes('{{') && text.includes('}}')) {
+        return t(text, generalError?.transParams);
+      }
+      return t(text);
+    } else {
+      return text;
+    }
+  };
+
   return (
     <AppText
       medium
@@ -16,7 +30,7 @@ function PurpleText({ text, style, onPress, subtext = false, ...rest }) {
       disabled={!onPress}
       {...rest}
     >
-      {text}
+      {purpleText()}
     </AppText>
   );
 }

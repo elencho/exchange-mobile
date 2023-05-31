@@ -34,13 +34,18 @@ export default function Fee() {
       } = fee;
 
       const feeCond = !notEmpty() || fixedValue || fixedValue === 0;
-      feeText = feeCond ? null : `Fee : ${fee?.totalFee ?? '0'} ${currency} | `;
+      feeText = feeCond ? null : ` ${fee?.totalFee ?? '0'} ${currency} | `;
     }
     return (
-      <AppText small style={styles.feeText}>
-        {feeText}
-        {totalText}
-      </AppText>
+      <View style={styles.row}>
+        <AppText small style={styles.feeText}>
+          Fee :
+        </AppText>
+        <AppText small style={styles.feeText}>
+          {feeText}
+          {totalText}
+        </AppText>
+      </View>
     );
   };
 
@@ -75,10 +80,14 @@ export default function Fee() {
       }
 
       return (
-        <AppText small style={styles.feeText}>
-          {subMethod ? subMethod : 'Fixed : '}
-          {value() ?? `0 ${currency}`}
-        </AppText>
+        <View style={styles.container}>
+          <AppText small style={styles.feeText}>
+            {subMethod ? subMethod : 'Fixed :'}
+          </AppText>
+          <AppText small style={styles.feeText}>
+            {' ' + value() ?? `0 ${currency}`}
+          </AppText>
+        </View>
       );
     }
   };
@@ -95,6 +104,7 @@ export default function Fee() {
 }
 
 const styles = StyleSheet.create({
+  container: { flexDirection: 'row' },
   fee: {
     marginBottom: 50,
     alignItems: 'center',
@@ -109,5 +119,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     marginLeft: 12,
+  },
+  row: {
+    flexDirection: 'row',
   },
 });
