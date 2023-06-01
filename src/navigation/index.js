@@ -64,11 +64,12 @@ export default function Navigator() {
         // initialRouteName={'SplashScreen'}
         screenOptions={screenOptions}
       >
-        <Stack.Screen
+        {/* TODO:remove */}
+        {/* <Stack.Screen
           options={{ animation: 'fade' }}
           name="SplashScreen"
           component={Splash}
-        />
+        /> */}
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen
           name="UpdateAvailable"

@@ -35,7 +35,7 @@ export default async (err) => {
     if (status === 400 && data.error === 'invalid_grant') {
       await SecureStore.deleteItemAsync('accessToken');
       await SecureStore.deleteItemAsync('refreshToken');
-      navigationRef.navigate('SplashScreen');
+      navigationRef.navigate('Welcome');
       store.dispatch({ type: 'LOGOUT' });
     }
   }
