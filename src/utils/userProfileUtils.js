@@ -25,7 +25,6 @@ import {
 } from '../constants/api';
 
 import { navigationRef } from '../navigation';
-import { StackActions } from '@react-navigation/native';
 
 const authRedirectUrl = Constants.manifest.extra.authRedirectUrl;
 
@@ -243,7 +242,7 @@ export const logout = async (dispatch) => {
   if (status === 204) {
     await SecureStore.deleteItemAsync('accessToken');
     await SecureStore.deleteItemAsync('refreshToken');
-    navigationRef.dispatch(StackActions.push('Welcome'));
+    navigationRef.navigate('Welcome');
     dispatch({ type: 'LOGOUT' });
   }
 };
