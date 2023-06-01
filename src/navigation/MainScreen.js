@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppState } from 'react-native';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -17,7 +17,7 @@ import Exchange from '../screens/Exchange';
 
 const Tab = createBottomTabNavigator();
 
-export default function MainScreen({ route, navigation }) {
+export default function MainScreen({ navigation }) {
   const dispatch = useDispatch();
   const isFocused = useIsFocused();
 
@@ -33,14 +33,14 @@ export default function MainScreen({ route, navigation }) {
   const handleAppStateChange = async (newState) => {
     const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
     const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
-    const isFromSplash = route?.params?.fromSplash;
+    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
 
     if (newState !== 'active') {
+      await AsyncStorage.removeItem('isLoggedIn');
       const date = JSON.stringify(Date.now());
       await AsyncStorage.setItem('isOpenDate', date);
     }
-
-    if (!isFromSplash && newState === 'active' && timeDifference >= 30000) {
+    if (!isLoggedIn && newState === 'active' && timeDifference >= 30000) {
       SecureStore.getItemAsync('accessToken')
         .then((t) => {
           if (t) {
@@ -53,31 +53,32 @@ export default function MainScreen({ route, navigation }) {
     }
   };
 
-  const onBeforeShow = useCallback(async () => {
+  const onBeforeShow = async () => {
     setSubscription(AppState.addEventListener('change', handleAppStateChange));
-  }, [handleAppStateChange]);
+  };
 
-  const onClose = useCallback(async () => {
+  const onClose = async () => {
     subscription?.remove();
-  }, [subscription]);
+  };
 
-  const getBiometricEnabled = useCallback(
-    async (user) => {
-      const enabled = await AsyncStorage.getItem('BiometricEnabled');
-      if (enabled) {
-        let parsedUsers = await JSON.parse(enabled);
-        const userIndex = await parsedUsers?.find(
-          (u) => u?.user === user && u?.enabled === true
-        );
-        if (userIndex) {
-          navigation.navigate('Resume');
-        } else {
-          return;
-        }
+  const getBiometricEnabled = async (user) => {
+    const enabled = await AsyncStorage.getItem('BiometricEnabled');
+    if (enabled) {
+      let parsedUsers = await JSON.parse(enabled);
+      const userIndex = await parsedUsers?.find(
+        (u) => u?.user === user && u?.enabled === true
+      );
+      if (userIndex) {
+        navigation.navigate('Resume', {
+          fromSplash: false,
+          version: false,
+          isWorkingVersion: false,
+        });
+      } else {
+        return;
       }
-    },
-    [AppState.currentState]
-  );
+    }
+  };
 
   const setTabRoute = (e) => {
     dispatch(setTabRouteName(e.route.name));
