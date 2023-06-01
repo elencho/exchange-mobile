@@ -73,10 +73,6 @@ export default function TwoFaInput({
       }
 
       if (login) dispatch(otpForLoginAction(value, navigation, fromResetOtp));
-
-      setTimeout(() => {
-        setValue('');
-      }, 200);
     }
   }, [value]);
 

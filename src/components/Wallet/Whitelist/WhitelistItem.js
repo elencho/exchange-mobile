@@ -24,15 +24,15 @@ export default function WhitelistItem({ whitelistItem }) {
       <View style={styles.flex}>
         <View style={styles.row}>
           <AppText body style={styles.primary}>
-            {name}
+            {`${name} `}
           </AppText>
           {tag && (
             <View style={styles.row}>
               <AppText body style={styles.primary}>
-                {' ' + `/ Tag :` + ' '}
+                {`/ Tag :`}
               </AppText>
               <AppText body style={styles.primary}>
-                {`${tag}`}
+                {` ${tag}`}
               </AppText>
             </View>
           )}

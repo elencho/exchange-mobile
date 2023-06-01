@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../../AppText';
@@ -44,9 +44,10 @@ export default function WalletCoinsDropdown() {
         </View>
       </Pressable>
 
-      <AppText subtext style={styles.secondary}>
-        {`Total: ${total} ≈ ${value} ${usdBtcSwitch}`}
-      </AppText>
+      <Text style={styles.secondary}>
+        <AppText subtext>Total :</AppText>
+        <AppText subtext>{` ${total} ≈ ${value} ${usdBtcSwitch}`}</AppText>
+      </Text>
     </>
   );
 }

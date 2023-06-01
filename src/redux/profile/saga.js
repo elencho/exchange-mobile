@@ -261,6 +261,7 @@ function* otpForLoginSaga(action) {
       navigation.navigate('SetNewPassword');
     }
   }
+  yield delay(2000);
   yield put(toggleUserInfoLoading(false));
 }
 
