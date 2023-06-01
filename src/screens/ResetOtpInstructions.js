@@ -128,7 +128,9 @@ export default function ResetOtpInstructions({ navigation, route }) {
         {ex === 'OTP_RESET_INSTRUCTIONS' ? (
           <View style={styles.bottom}>
             <AppText style={[styles.secondary, { marginHorizontal: '15%' }]}>
-              Note: After OTP reset, withdrawals will not be available for{' '}
+              <AppText>
+                Note: After OTP reset, withdrawals will not be available for
+              </AppText>{' '}
               <AppText medium style={{ color: '#8D92AD' }}>
                 48 hours
               </AppText>

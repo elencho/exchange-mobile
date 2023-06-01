@@ -126,9 +126,9 @@ export default function BankInfo() {
         {infoArray.map((i) => (
           <InfoRow title={i.title} text={i.text} key={i.title} />
         ))}
-        <Text style={styles.light}>
+        <AppText subtext style={styles.light}>
           This identifier is mandatory when transferring funds
-        </Text>
+        </AppText>
       </>
 
       {/* <View style={styles.marginVertical} /> */}

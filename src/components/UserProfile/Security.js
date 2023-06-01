@@ -49,7 +49,7 @@ export default function Security({ loading }) {
 
       <PasswordModal />
       <GoogleAuthModal />
-      <SmsEmailAuthModal type="E-mail" />
+      <SmsEmailAuthModal type="Email" />
       <SmsEmailAuthModal type="SMS" />
       <GoogleOtpModal />
     </>

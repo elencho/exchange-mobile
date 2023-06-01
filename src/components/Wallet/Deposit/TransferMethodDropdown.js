@@ -34,7 +34,7 @@ export default function TransferMethodDropdown() {
     >
       <Image source={source} style={styles.image} />
       <AppText medium style={styles.dropdownText}>
-        {network} {walletTab}
+        {network}
       </AppText>
       {!oneMethod && <Arrow />}
     </Pressable>

@@ -107,7 +107,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const children = (
     <View style={styles.container}>
       <AppText style={styles.header} header>
-        {type} Authentication
+        {`${type} Authentication`}
       </AppText>
       <AppText style={styles.secondary} body>
         Enter One Time Password

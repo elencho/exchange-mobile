@@ -33,13 +33,16 @@ export default function DatePickerModal({ from, to }) {
       return (
         <View style={styles.subtextContainer}>
           {fromDateTime && (
-            <AppText style={styles.subtext} body>
-              From Date Selected{'  '}
+            <View style={styles.row}>
+              <AppText style={styles.subtext} body>
+                From Date Selected
+              </AppText>
               <AppText medium body style={styles.date}>
+                {'  '}
                 {new Date(fromDateTime).getDate()}{' '}
                 {months[new Date(fromDateTime).getMonth()]}
               </AppText>
-            </AppText>
+            </View>
           )}
         </View>
       );
@@ -48,13 +51,16 @@ export default function DatePickerModal({ from, to }) {
       return (
         <View style={styles.subtextContainer}>
           {toDateTime && (
-            <AppText style={styles.subtext} body>
-              To Date Selected{'  '}
+            <View style={styles.row}>
+              <AppText style={styles.subtext} body>
+                To Date Selected
+              </AppText>
               <AppText medium body style={styles.date}>
+                {'  '}
                 {new Date(toDateTime).getDate()}{' '}
                 {months[new Date(toDateTime).getMonth()]}
               </AppText>
-            </AppText>
+            </View>
           )}
         </View>
       );
@@ -112,6 +118,10 @@ const styles = StyleSheet.create({
   subtext: {
     color: colors.SECONDARY_TEXT,
     textAlign: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   text: { color: colors.PRIMARY_TEXT },
 });
