@@ -169,13 +169,10 @@ function* currencySaga(action) {
   yield put(setAbbr(code));
 }
 
-function* showResultsSaga(action) {
-  const { navigation } = action;
-
+function* showResultsSaga() {
   yield put(saveTransactions([]));
   yield put(setTransactionsOffset(0));
   yield put({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-  yield call(() => navigation && navigation.goBack());
 }
 
 function* transactionDetailsSaga(action) {

@@ -29,8 +29,7 @@ import {
 import colors from '../constants/colors';
 import CustomRefreshContol from '../components/CustomRefreshContol';
 
-function TransactionHistory() {
-  const navigation = useNavigation();
+function TransactionHistory({ navigation, route }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
@@ -58,7 +57,7 @@ function TransactionHistory() {
     dispatch(chooseCurrency('Show All Currency'));
     dispatch(setAbbr(null));
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-    dispatch(clearFilters());
+    if (!route?.params?.isFromTransactions) dispatch(clearFilters());
   }, [navigation]);
 
   const onRefresh = () => {

@@ -92,7 +92,7 @@ export default function TransactionFilter({ navigation }) {
         </TouchableOpacity>
       )}
 
-      <TransactionFilterBottom />
+      <TransactionFilterBottom navigation={navigation} />
       <ChooseCurrencyModal isForTransactions />
 
       <DatePickerModal from />
