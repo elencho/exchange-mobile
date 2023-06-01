@@ -16,6 +16,7 @@ import { fetchUserInfo } from '../redux/profile/actions';
 import { useFocusEffect } from '@react-navigation/native';
 import { logout } from '../utils/userProfileUtils';
 import SplashScreen from 'react-native-splash-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Resume = ({ navigation, route }) => {
   const state = useSelector((state) => state.profile);
@@ -61,12 +62,11 @@ const Resume = ({ navigation, route }) => {
       if (version || workingVersion) {
         navigation.goBack();
       } else if (fromSplash) {
-        navigation.navigate('Main', {
-          fromSplash: true,
-        });
+        navigation.navigate('Main');
       } else {
         navigation.goBack();
       }
+      await AsyncStorage.setItem('isLoggedIn', 'true');
     }
   };
 
