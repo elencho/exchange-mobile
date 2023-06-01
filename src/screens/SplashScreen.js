@@ -90,8 +90,7 @@ const Splash = ({ navigation }) => {
       const latestVersion = await storeData;
       const updateNeeded = await VersionCheck.needUpdate({
         currentVersion: currentVersion,
-        //FOR TEST PURPOSE
-        latestVersion: '1.2.0',
+        latestVersion: latestVersion,
       });
 
       if (updateNeeded && updateNeeded.isNeeded) {
@@ -108,7 +107,7 @@ const Splash = ({ navigation }) => {
   const isWorkingVersion = async () => {
     const version = DeviceInfo.getVersion();
     const { status } = await checkReadiness(version, Platform.OS);
-    if (status === 'DOWN') {
+    if (status !== 'DOWN') {
       navigation.navigate('Maintanance');
       return true;
     }
