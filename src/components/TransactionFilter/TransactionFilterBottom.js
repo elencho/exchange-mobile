@@ -12,8 +12,7 @@ import PurpleText from '../PurpleText';
 import { MaterialIndicator } from 'react-native-indicators';
 import Download from '../../assets/images/Download';
 
-function TransactionFilterBottom() {
-  const navigation = useNavigation();
+function TransactionFilterBottom({ navigation }) {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
@@ -23,6 +22,10 @@ function TransactionFilterBottom() {
 
   const showResults = () => {
     dispatch(showResultsAction(navigation));
+    navigation.navigate('Main', {
+      screen: 'Transactions',
+      params: { isFromTransactions: true },
+    });
   };
 
   const downloadFile = () => {
