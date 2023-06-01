@@ -69,7 +69,7 @@ export default function CryptoModal() {
         hide={hide}
         children={children}
         onModalHide={onModalHide}
-        custom
+        fullScreen
       />
     )
   );

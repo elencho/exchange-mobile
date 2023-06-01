@@ -98,8 +98,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderRadius: 5,
     paddingVertical: 8,
-    paddingHorizontal: 18,
-    marginHorizontal: 22,
   },
   image: {
     marginRight: 20,

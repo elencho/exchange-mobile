@@ -42,7 +42,7 @@ export default function ManageCards({ refreshControl }) {
         <MaterialIndicator color="#6582FD" animationDuration={3000} />
       )}
 
-      {cards?.length && !cardsLoading && (
+      {cards?.length && !cardsLoading ? (
         <>
           <ScrollView
             style={styles.scrollView}
@@ -68,7 +68,7 @@ export default function ManageCards({ refreshControl }) {
             </Pressable>
           ) : null}
         </>
-      )}
+      ) : null}
 
       {!cards?.length && !cardsLoading && (
         <View style={styles.flex}>

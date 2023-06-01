@@ -79,7 +79,7 @@ export default function ModalWithSearch({
   };
   return (
     <View style={styles.container}>
-      <ModalTop />
+      {/* <ModalTop /> */}
 
       <View style={styles.block}>
         <AppText header style={styles.headline}>
@@ -92,7 +92,7 @@ export default function ModalWithSearch({
           onChangeText={filter}
           right={<Search />}
           activeRight={<SearchActive />}
-          style={{ marginVertical: 20, marginHorizontal: 39 }}
+          style={{ marginVertical: 20 }}
         />
 
         <WithKeyboard padding flexGrow modal>
@@ -117,16 +117,14 @@ export default function ModalWithSearch({
 const styles = StyleSheet.create({
   block: {
     flex: 1,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingTop: 40,
-    paddingBottom: 20,
   },
   container: {
     flex: 1,
+    width: '100%',
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   headline: {
     color: colors.PRIMARY_TEXT,
     marginBottom: -10,
-    marginHorizontal: 40,
   },
 });

@@ -100,8 +100,9 @@ export default function CountriesModal({
     <AppModal
       visible={countriesModalVisible}
       hide={hide}
+      onModalHide={hide}
       children={children}
-      custom
+      fullScreen
     />
   );
 }

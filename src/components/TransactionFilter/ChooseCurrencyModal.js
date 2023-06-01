@@ -121,7 +121,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
       hide={hide}
       children={children}
       onModalHide={onModalHide}
-      custom
+      fullScreen
     />
   );
 }
