@@ -107,7 +107,7 @@ const Splash = ({ navigation }) => {
   const isWorkingVersion = async () => {
     const version = DeviceInfo.getVersion();
     const { status } = await checkReadiness(version, Platform.OS);
-    if (status !== 'DOWN') {
+    if (status === 'DOWN') {
       navigation.navigate('Maintanance');
       return true;
     }
