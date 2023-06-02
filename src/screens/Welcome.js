@@ -89,7 +89,7 @@ export default function Welcome({}) {
         version: updateNeeded,
         workingVersion: workingVersion,
       });
-    } else {
+    } else if (!updateNeeded || !workingVersion) {
       navigation.navigate('Main');
     }
   };
@@ -110,7 +110,7 @@ export default function Welcome({}) {
       const latestVersion = await storeData;
       const updateNeeded = await VersionCheck.needUpdate({
         currentVersion: currentVersion,
-        latestVersion: latestVersion,
+        latestVersion: '1.2.0',
       });
 
       if (updateNeeded && updateNeeded.isNeeded) {
