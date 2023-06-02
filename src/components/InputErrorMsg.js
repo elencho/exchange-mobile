@@ -1,12 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import AppText from './AppText';
 import colors from '../constants/colors';
 
 const InputErrorMsg = ({ message = '' }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{message}</Text>
+      <AppText subtext style={styles.text}>
+        {message}
+      </AppText>
     </View>
   );
 };

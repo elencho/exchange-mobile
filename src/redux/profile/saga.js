@@ -234,6 +234,7 @@ function* otpForLoginSaga(action) {
     pkceInfo: { codeVerifier },
     forgotPassMode,
   } = profile;
+  yield delay(500);
   yield put(toggleUserInfoLoading(true));
 
   const loginData = yield call(loginOtp, otp, userAndPassInfo.callbackUrl);

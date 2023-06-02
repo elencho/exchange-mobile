@@ -80,20 +80,24 @@ export default function AppText({
   };
 
   return (
-    <Text
-      accessibilityRole={onPress ? 'button' : 'text'}
-      style={[
-        style,
-        {
-          fontFamily: fontCond(),
-          fontSize: sizeCond(),
-          lineHeight: heightCond(),
-        },
-      ]}
-      onPress={onPress}
-      {...props}
-    >
-      {text()}
-    </Text>
+    <>
+      {text().length > 0 ? (
+        <Text
+          accessibilityRole={onPress ? 'button' : 'text'}
+          style={[
+            style,
+            {
+              fontFamily: fontCond(),
+              fontSize: sizeCond(),
+              lineHeight: heightCond(),
+            },
+          ]}
+          onPress={onPress}
+          {...props}
+        >
+          {text()}
+        </Text>
+      ) : null}
+    </>
   );
 }
