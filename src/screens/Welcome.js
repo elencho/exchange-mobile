@@ -110,7 +110,7 @@ export default function Welcome({}) {
       const latestVersion = await storeData;
       const updateNeeded = await VersionCheck.needUpdate({
         currentVersion: currentVersion,
-        latestVersion: '1.2.0',
+        latestVersion: latestVersion,
       });
 
       if (updateNeeded && updateNeeded.isNeeded) {
