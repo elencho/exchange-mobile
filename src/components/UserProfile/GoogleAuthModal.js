@@ -13,14 +13,15 @@ import Copy from '../../assets/images/Copy.svg';
 import colors from '../../constants/colors';
 import { toggleGoogleAuthModal } from '../../redux/modals/actions';
 import { activateGoogleOtp, setGoogleAuth } from '../../redux/profile/actions';
-import { copyToClipboard } from '../../utils/copyToClipboard';
 import { errorHappenedHere } from '../../utils/appUtils';
 import { IS_IOS } from '../../constants/system';
+import useCopyToClipboard from '../../utils/copyToClipboard';
 
 import AppStoreIcon from '../../assets/images/User_profile/Appstore.svg';
 import PlayStoreIcon from '../../assets/images/User_profile/Playstore.svg';
 
 export default function GoogleAuthModal() {
+  const { copyToClipboard } = useCopyToClipboard();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
