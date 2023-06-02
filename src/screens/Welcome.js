@@ -89,7 +89,7 @@ export default function Welcome({}) {
         version: updateNeeded,
         workingVersion: workingVersion,
       });
-    } else {
+    } else if (!updateNeeded || !workingVersion) {
       navigation.navigate('Main');
     }
   };
