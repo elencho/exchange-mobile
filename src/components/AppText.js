@@ -13,6 +13,7 @@ export default function AppText({
   calendarDay,
   small,
   onPress,
+  isForCodeInput,
   ...props
 }) {
   const generalError = useSelector((state) => state.errors.generalError);
@@ -81,7 +82,7 @@ export default function AppText({
 
   return (
     <>
-      {text().length > 0 ? (
+      {text()?.length > 0 || isForCodeInput ? (
         <Text
           accessibilityRole={onPress ? 'button' : 'text'}
           style={[

@@ -50,6 +50,7 @@ export default function CodeInput({ cellCount = 6, value, setValue }) {
             style={[styles.cell, isFocused && styles.focusCell]}
             onLayout={getCellOnLayoutHandler(index)}
             header
+            isForCodeInput
           >
             {symbol || (isFocused ? <Cursor /> : null)}
           </AppText>

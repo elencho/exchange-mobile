@@ -9,9 +9,10 @@ import AddressQrModal from './AddressQrModal';
 
 import colors from '../../../constants/colors';
 import { toggleQrAddressModal } from '../../../redux/modals/actions';
-import { copyToClipboard } from '../../../utils/copyToClipboard';
+import useCopyToClipboard from '../../../utils/copyToClipboard';
 
 export default function AddressBlock() {
+  const { copyToClipboard } = useCopyToClipboard();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {

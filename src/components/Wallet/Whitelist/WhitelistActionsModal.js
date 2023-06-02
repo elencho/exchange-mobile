@@ -13,13 +13,14 @@ import {
 import AppText from '../../AppText';
 import colors from '../../../constants/colors';
 import { sendOtp } from '../../../utils/userProfileUtils';
-import { copyToClipboard } from '../../../utils/copyToClipboard';
+import useCopyToClipboard from '../../../utils/copyToClipboard';
 
 import DeleteWhite from '../../../assets/images/Wallet/DeleteWhite.svg';
 import CopyWhite from '../../../assets/images/Wallet/CopyWhite.svg';
 import Edit from '../../../assets/images/Wallet/Edit.svg';
 
 export default function WhitelistActionsModal() {
+  const { copyToClipboard } = useCopyToClipboard();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {

@@ -15,11 +15,12 @@ import { toggleWireBanksModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import WireBanksModal from './WireBanksModal';
 import { ICONS_URL_PNG } from '../../../constants/api';
-import { copyToClipboard } from '../../../utils/copyToClipboard';
+import useCopyToClipboard from '../../../utils/copyToClipboard';
 
 import Arrow from '../../../assets/images/Arrow';
 import CopyIcon from '../../../assets/images/Copy.svg';
 const InfoRow = ({ title, text }) => {
+  const { copyToClipboard } = useCopyToClipboard();
   const copy = () => copyToClipboard(text);
 
   return (

@@ -8,9 +8,10 @@ import AppText from '../../AppText';
 import Copy from '../../../assets/images/Copy';
 
 import { toggleQrAddressModal } from '../../../redux/modals/actions';
-import { copyToClipboard } from '../../../utils/copyToClipboard';
+import useCopyToClipboard from '../../../utils/copyToClipboard';
 
 export default function AddressQrModal() {
+  const { copyToClipboard } = useCopyToClipboard();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
