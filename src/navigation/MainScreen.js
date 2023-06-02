@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useIsFocused } from '@react-navigation/native';
 import jwt_decode from 'jwt-decode';
 
 import TransactionHistory from '../screens/TransactionHistory';
@@ -19,7 +18,6 @@ const Tab = createBottomTabNavigator();
 
 export default function MainScreen({ navigation }) {
   const dispatch = useDispatch();
-  const isFocused = useIsFocused();
 
   const [subscription, setSubscription] = useState();
 
@@ -85,32 +83,30 @@ export default function MainScreen({ navigation }) {
   };
 
   return (
-    isFocused && (
-      <Tab.Navigator
-        screenListeners={setTabRoute}
-        tabBarPosition="bottom"
-        screenOptions={{
-          headerShown: false,
-          unmountOnBlur: true,
-          animationEnabled: true,
-          lazy: true,
-          freezeOnBlur: true,
-          swipeEnabled: false,
-        }}
-        initialRouteName="Trade"
-        tabBar={({ state, navigation, descriptors }) => (
-          <BottomTabs
-            routes={state.routes}
-            navigation={navigation}
-            descriptors={descriptors}
-          />
-        )}
-      >
-        <Tab.Screen name="Trade" component={InstantTrade} />
-        <Tab.Screen name="Wallet" component={Wallet} />
-        <Tab.Screen name="Transactions" component={TransactionHistory} />
-        <Tab.Screen name="Exchange" component={Exchange} />
-      </Tab.Navigator>
-    )
+    <Tab.Navigator
+      screenListeners={setTabRoute}
+      tabBarPosition="bottom"
+      screenOptions={{
+        headerShown: false,
+        unmountOnBlur: true,
+        animationEnabled: true,
+        lazy: true,
+        freezeOnBlur: true,
+        swipeEnabled: false,
+      }}
+      initialRouteName="Trade"
+      tabBar={({ state, navigation, descriptors }) => (
+        <BottomTabs
+          routes={state.routes}
+          navigation={navigation}
+          descriptors={descriptors}
+        />
+      )}
+    >
+      <Tab.Screen name="Trade" component={InstantTrade} />
+      <Tab.Screen name="Wallet" component={Wallet} />
+      <Tab.Screen name="Transactions" component={TransactionHistory} />
+      <Tab.Screen name="Exchange" component={Exchange} />
+    </Tab.Navigator>
   );
 }
