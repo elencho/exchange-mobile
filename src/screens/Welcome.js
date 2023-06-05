@@ -120,7 +120,6 @@ export default function Welcome({}) {
       });
 
       if (updateNeeded && updateNeeded.isNeeded) {
-        navigation.navigate('UpdateAvailable');
         return true;
       } else {
         return false;
@@ -136,6 +135,8 @@ export default function Welcome({}) {
     if (status === 'DOWN') {
       navigation.navigate('Maintanance');
       return true;
+    } else {
+      return false;
     }
   };
 
