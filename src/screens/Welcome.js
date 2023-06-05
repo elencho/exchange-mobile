@@ -63,7 +63,13 @@ export default function Welcome({}) {
         const email = jwt_decode(t)?.email;
         getBiometricEnabled(email, updateNeeded, workingVersion);
       } else {
-        navigation.navigate('Welcome');
+        if (updateNeeded) {
+          navigation.navigate('UpdateAvailable');
+        } else if (workingVersion) {
+          navigation.navigate('Maintanance');
+        } else if (!updateNeeded && !workingVersion) {
+          navigation.navigate('Welcome');
+        }
       }
     });
 
@@ -83,19 +89,21 @@ export default function Welcome({}) {
     const userIndex = parsedUsers?.find(
       (u) => u?.user === user && u?.enabled === true
     );
-    if (updateNeeded) {
-      return navigation.navigate('UpdateAvailable');
-    }
     if (workingVersion) {
-      return navigation.navigate('Maintanance');
+      navigation.navigate('Maintanance');
     }
+
+    if (updateNeeded) {
+      navigation.navigate('UpdateAvailable');
+    }
+
     if (userIndex && timeDifference >= 30000) {
       navigation.navigate('Resume', {
         fromSplash: true,
         version: updateNeeded,
         workingVersion: workingVersion,
       });
-    } else if (!updateNeeded || !workingVersion) {
+    } else if (!updateNeeded && !workingVersion) {
       navigation.navigate('Main');
     }
   };
@@ -133,7 +141,6 @@ export default function Welcome({}) {
     const version = DeviceInfo.getVersion();
     const { status } = await checkReadiness(version, Platform.OS);
     if (status === 'DOWN') {
-      navigation.navigate('Maintanance');
       return true;
     } else {
       return false;

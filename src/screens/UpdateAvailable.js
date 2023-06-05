@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 
 import Background from '../components/Background';
@@ -9,8 +9,13 @@ import AppButton from '../components/AppButton';
 
 import VersionCheck from 'react-native-version-check';
 import { packageName, APP_ID } from '../constants/system';
+import SplashScreen from 'react-native-splash-screen';
 
 export default function UpdateAvailable() {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   const update = async () => {
     const options = { packageName: packageName, appID: APP_ID };
 
