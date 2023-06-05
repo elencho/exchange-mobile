@@ -83,6 +83,12 @@ export default function Welcome({}) {
     const userIndex = parsedUsers?.find(
       (u) => u?.user === user && u?.enabled === true
     );
+    if (updateNeeded) {
+      return navigation.navigate('UpdateAvailable');
+    }
+    if (workingVersion) {
+      return navigation.navigate('Maintanance');
+    }
     if (userIndex && timeDifference >= 30000) {
       navigation.navigate('Resume', {
         fromSplash: true,
@@ -110,7 +116,7 @@ export default function Welcome({}) {
       const latestVersion = await storeData;
       const updateNeeded = await VersionCheck.needUpdate({
         currentVersion: currentVersion,
-        latestVersion: latestVersion,
+        latestVersion: '1.2.0',
       });
 
       if (updateNeeded && updateNeeded.isNeeded) {
