@@ -62,7 +62,7 @@ export default function Welcome({}) {
       if (t) {
         const email = jwt_decode(t)?.email;
         getBiometricEnabled(email, updateNeeded, workingVersion);
-      } else if (!workingVersion && !updateNeeded) {
+      } else {
         navigation.navigate('Welcome');
       }
     });
