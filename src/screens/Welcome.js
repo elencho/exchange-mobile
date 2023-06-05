@@ -58,6 +58,13 @@ export default function Welcome({}) {
     const workingVersion = await isWorkingVersion();
     const updateNeeded = await checkVersion();
 
+    if (updateNeeded) {
+      return navigation.navigate('UpdateAvailable');
+    }
+    if (workingVersion) {
+      return navigation.navigate('Maintanance');
+    }
+
     await SecureStore.getItemAsync('accessToken').then((t) => {
       if (t) {
         const email = jwt_decode(t)?.email;
@@ -83,12 +90,7 @@ export default function Welcome({}) {
     const userIndex = parsedUsers?.find(
       (u) => u?.user === user && u?.enabled === true
     );
-    if (updateNeeded) {
-      return navigation.navigate('UpdateAvailable');
-    }
-    if (workingVersion) {
-      return navigation.navigate('Maintanance');
-    }
+
     if (userIndex && timeDifference >= 30000) {
       navigation.navigate('Resume', {
         fromSplash: true,
