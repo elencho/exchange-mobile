@@ -140,7 +140,7 @@ export default function Welcome({}) {
   const isWorkingVersion = async () => {
     const version = DeviceInfo.getVersion();
     const { status } = await checkReadiness(version, Platform.OS);
-    if (status !== 'DOWN') {
+    if (status === 'DOWN') {
       return true;
     } else {
       return false;
