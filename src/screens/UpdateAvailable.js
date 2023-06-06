@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   header: {
     color: colors.PRIMARY_TEXT,
-    marginTop: 5,
+    marginTop: 20,
     marginBottom: 12,
   },
   secondary: {

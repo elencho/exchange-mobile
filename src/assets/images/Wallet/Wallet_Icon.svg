@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="35.485" height="37.485" viewBox="0 0 35.485 37.485">
-  <g id="wallet" transform="translate(0.35 0.35)">
-    <g id="Group_43591" data-name="Group 43591">
-      <g id="Group_43590" data-name="Group 43590">
-        <rect id="Rectangle_708" data-name="Rectangle 708" width="2.395" height="2.395" transform="translate(26.344 21.697)" fill="#939abf" stroke="#1e213f" stroke-width="0.7"/>
-        <path id="Path_9460" data-name="Path 9460" d="M30.437,8.7V0h-25A5.442,5.442,0,0,0,0,5.435V31.35a5.442,5.442,0,0,0,5.435,5.435h29.35V8.7Zm-25-6.522H28.263V8.7H5.435a3.261,3.261,0,0,1,0-6.522ZM32.611,27H23.385V18.48h9.226Zm0-10.7H21.12v12.87H32.611v5.435H5.435A3.261,3.261,0,0,1,2.174,31.35V9.755A5.379,5.379,0,0,0,5.435,10.87H32.611Z" fill="#939abf" stroke="#1e213f" stroke-width="0.7"/>
-      </g>
-    </g>
+<svg id="Wallet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="37.38" height="38.39" viewBox="0 0 37.38 38.39">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_10802" data-name="Rectangle 10802" width="37.38" height="38.39" fill="none"/>
+    </clipPath>
+  </defs>
+  <g id="Group_71856" data-name="Group 71856" clip-path="url(#clip-path)">
+    <path id="Path_62544" data-name="Path 62544" d="M33.03,8.71V0H5.23a4.754,4.754,0,0,0-1.2.15A5.23,5.23,0,0,0,.15,4.04,4.754,4.754,0,0,0,0,5.24V33.15a4.833,4.833,0,0,0,.15,1.21,5.2,5.2,0,0,0,3.88,3.88,4.754,4.754,0,0,0,1.2.15H37.38V8.71ZM5.23,1.78H31.26V8.71H5.23a3.465,3.465,0,0,1,0-6.93M35.61,28H27.98V19.08h7.63Zm0-10.7H26.12V29.77h9.49v6.84H5.23a3.472,3.472,0,0,1-3.46-3.45v-24l.32.24a5.18,5.18,0,0,0,3.14,1.07H35.61Z" fill="#c0c5e0"/>
   </g>
 </svg>
