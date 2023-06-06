@@ -60,9 +60,9 @@ export default function Security({ loading }) {
 
 const styles = StyleSheet.create({
   block: {
-    paddingHorizontal: 25,
+    paddingHorizontal: 5,
     paddingVertical: 15,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 10,
   },
   margin: { marginBottom: 20, marginTop: 10 },

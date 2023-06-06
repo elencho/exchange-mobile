@@ -268,8 +268,8 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   block: {
-    padding: 25,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    padding: 5,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 10,
   },
   flex: {

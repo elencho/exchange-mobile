@@ -123,9 +123,8 @@ export default function BalancesList({ balanceLoading }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 30,
-    paddingHorizontal: 20,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    paddingHorizontal: 5,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     marginVertical: 10,
     flex: 1,
   },

@@ -59,9 +59,9 @@ export default memo(TransactionDate);
 const styles = StyleSheet.create({
   container: {
     paddingTop: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 5,
     marginBottom: 10,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   date: {
     fontSize: 15,
