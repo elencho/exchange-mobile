@@ -152,11 +152,11 @@ export default function Welcome({}) {
       .then((res) => {
         const languages = Object.keys(res);
         for (let i = 0; i < languages.length; i++) {
-          addResources(
-            languages[i],
-            'translation',
-            res[languages[i]].translation
-          );
+          const translations = res[languages[i]].translation;
+          Object.keys(translations).forEach((key) => {
+            if (translations[key] === null) translations[key] = '';
+          });
+          addResources(languages[i], 'translation', translations);
         }
         SecureStore.getItemAsync('language')
           .then((l) => {
