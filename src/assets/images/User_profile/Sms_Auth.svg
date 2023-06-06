@@ -1,20 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="42" height="44" viewBox="0 0 42 44">
-  <g id="SMS_Authentication" data-name="SMS Authentication" transform="translate(-42 -452)">
-    <rect id="Rectangle_7264" data-name="Rectangle 7264" width="42" height="44" transform="translate(42 452)" fill="#fff" opacity="0"/>
-    <g id="My_Phone_Number" data-name="My Phone Number" transform="translate(8 -331.919)">
-      <g id="Group_42661" data-name="Group 42661" transform="translate(38.004 783.395)">
-        <g id="Group_42660" data-name="Group 42660" transform="translate(0)">
-          <path id="Path_8750" data-name="Path 8750" d="M55.632,3H31.037L31,40.234H58.1s.029-.9.029-2.285L58.1,31.983H55.632l-.014,5.736h-22.1v-32H55.632Z" transform="translate(-32)" fill="#696f8e" stroke="#1f1f35" stroke-width="0.7"/>
-        </g>
-      </g>
-      <g id="Group_42668" data-name="Group 42668" transform="translate(5.469 786.332)">
-        <g id="Group_42663" data-name="Group 42663" transform="translate(47.031 7.562)">
-          <g id="Group_42662" data-name="Group 42662" transform="translate(0 0)">
-            <path id="Path_8751" data-name="Path 8751" d="M225,129.194v13.888h4.256v3.158h1.319l5.068-3.141,6.8-.017s-.028-1.348-.058-13.888Zm15.412,11.865h-4.991s-.163.045-4.311,2.554v-2.422H227l.032-10h13.4Z" transform="translate(-225 -129.194)" fill="#696f8e" stroke="#1f1f35" stroke-width="0.4"/>
-          </g>
-        </g>
-      </g>
-      <line id="Line_155" data-name="Line 155" x2="3" transform="translate(49.5 815.5)" fill="none" stroke="#696f8e" stroke-width="2"/>
-    </g>
+<svg id="SMS" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36.14" height="40.83" viewBox="0 0 36.14 40.83">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_10714" data-name="Rectangle 10714" width="36.14" height="40.83" fill="#c0c5e0"/>
+    </clipPath>
+  </defs>
+  <g id="Group_71725" data-name="Group 71725" clip-path="url(#clip-path)">
+    <path id="Path_62461" data-name="Path 62461" d="M29.48,38.76c0,.91-.01,1.62-.02,2.07H0L.04,0H26.67V2.06H2.33a.5.5,0,0,0-.5.5V38.5a.5.5,0,0,0,.5.5H27.15a.5.5,0,0,0,.5-.5l.02-5.94h1.78Z" fill="#c0c5e0"/>
+    <path id="Path_62462" data-name="Path 62462" d="M36.08,8.28H17.26v14.9h4.78v3.54h1.03l5.69-3.52,7.38-.02c-.01-.96-.03-4.29-.06-14.9M34.57,21.6H28.68c-.13.08-.93.52-4.73,2.82l-.54.32V21.75H18.8l.04-11.93H34.59Z" fill="#c0c5e0"/>
+    <rect id="Rectangle_10713" data-name="Rectangle 10713" width="6.852" height="2" transform="translate(11.732 31.013)" fill="#c0c5e0"/>
   </g>
 </svg>
