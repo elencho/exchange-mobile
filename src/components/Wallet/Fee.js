@@ -34,13 +34,19 @@ export default function Fee() {
       } = fee;
 
       const feeCond = !notEmpty() || fixedValue || fixedValue === 0;
-      feeText = feeCond ? null : ` ${fee?.totalFee ?? '0'} ${currency} | `;
+      feeText = feeCond ? null : (
+        <>
+          <AppText small style={styles.feeText}>
+            Fee :
+          </AppText>
+          <AppText small style={styles.feeText}>
+            {` ${fee?.totalFee ?? '0'} ${currency} | `}
+          </AppText>
+        </>
+      );
     }
     return (
       <View style={styles.row}>
-        <AppText small style={styles.feeText}>
-          Fee :
-        </AppText>
         <AppText small style={styles.feeText}>
           {feeText}
           {totalText}
