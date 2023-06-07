@@ -14,24 +14,30 @@ import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkMod
 import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
 import { setCard, setDepositProvider } from '../../redux/trade/actions';
-import { setWalletTab } from '../../redux/wallet/actions';
+import {
+  setShouldRefreshOnScroll,
+  setWalletTab,
+} from '../../redux/wallet/actions';
 import CustomRefreshContol from '../../components/CustomRefreshContol';
 
 export default function Balance({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { walletTab, network },
+    wallet: { walletTab, network, shouldRefreshOnScroll },
     trade: { cardsLoading },
     transactions: { tabNavigationRef, loading },
   } = state;
 
   const onRefresh = () => {
-    dispatch(setCard(null));
-    dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
-    walletTab !== 'Whitelist' && dispatch({ type: 'CLEAN_WALLET_INPUTS' });
-    if (network !== 'SWIFT') {
-      dispatch(setDepositProvider(null));
+    if (shouldRefreshOnScroll) {
+      dispatch(setCard(null));
+      dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+      walletTab !== 'Whitelist' && dispatch({ type: 'CLEAN_WALLET_INPUTS' });
+      if (network !== 'SWIFT') {
+        dispatch(setDepositProvider(null));
+      }
+      dispatch(setShouldRefreshOnScroll(false));
     }
   };
 
@@ -44,7 +50,7 @@ export default function Balance({ navigation }) {
   useEffect(() => {
     onRefresh();
     return () => dispatch(setCard(null));
-  }, [walletTab, network]);
+  }, [walletTab, network, shouldRefreshOnScroll]);
 
   const refreshControl = (isTransparent = false) => {
     const props = { onRefresh, refreshing: loading || cardsLoading };
