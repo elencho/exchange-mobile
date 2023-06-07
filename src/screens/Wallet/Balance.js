@@ -30,6 +30,8 @@ export default function Balance({ navigation }) {
     transactions: { tabNavigationRef, loading },
   } = state;
 
+  console.log('shouldRefreshOnScroll', shouldRefreshOnScroll);
+
   const onRefresh = () => {
     if (shouldRefreshOnScroll || IS_ANDROID) {
       dispatch(setCard(null));
@@ -42,6 +44,10 @@ export default function Balance({ navigation }) {
     }
   };
 
+  useEffect(() => {
+    dispatch(setShouldRefreshOnScroll(true));
+  }, [walletTab]);
+
   const back = () => {
     dispatch(setWalletTab('Deposit'));
     tabNavigationRef.navigate('Wallet');
@@ -53,9 +59,8 @@ export default function Balance({ navigation }) {
     return () => dispatch(setCard(null));
   }, [walletTab, network, shouldRefreshOnScroll]);
 
-  const refreshControl = (isTransparent = false) => {
+  const refreshControl = () => {
     const props = { onRefresh, refreshing: loading || cardsLoading };
-    if (isTransparent) props.tintColor = 'transparent';
 
     return <CustomRefreshContol {...props} />;
   };
@@ -81,7 +86,7 @@ export default function Balance({ navigation }) {
         <Whitelist refreshControl={refreshControl()} />
       )}
       {walletTab === 'Manage Cards' && (
-        <ManageCards refreshControl={refreshControl(true)} />
+        <ManageCards refreshControl={refreshControl()} />
       )}
 
       <ChooseCurrencyModal wallet />
