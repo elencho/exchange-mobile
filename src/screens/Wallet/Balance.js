@@ -30,8 +30,6 @@ export default function Balance({ navigation }) {
     transactions: { tabNavigationRef, loading },
   } = state;
 
-  console.log('shouldRefreshOnScroll', shouldRefreshOnScroll);
-
   const onRefresh = () => {
     if (shouldRefreshOnScroll || IS_ANDROID) {
       dispatch(setCard(null));
