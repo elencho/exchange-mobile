@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 5,
     borderRadius: 5,
-    // paddingVertical: 8,
     padding: 10,
   },
   image: {
