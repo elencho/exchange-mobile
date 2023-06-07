@@ -1,8 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="71.307" height="39.188" viewBox="0 0 71.307 39.188">
-  <g id="Email" transform="translate(-140.5 -232.585)">
-    <path id="E-mail_Authentication" data-name="E-mail Authentication" d="M22061.6,15179.27H22017.2v-39.187h47.105v25.649h-1.992l-.006-13.652-20.33,7.574a2.512,2.512,0,0,1-1.029.214,2.323,2.323,0,0,1-1.006-.214l-20.742-8.809.012,26.439,42.383-.014v2Zm-42.234-37.187.012,6.487,21.2,8.93a.782.782,0,0,0,.379.112.751.751,0,0,0,.363-.106l21-7.863-.012-7.551Z" transform="translate(-21852.5 -14907.497)" fill="#838bb2"/>
-    <line id="Line_253" data-name="Line 253" x2="6" transform="translate(154.5 244)" fill="none" stroke="#838bb2" stroke-width="2.3"/>
-    <line id="Line_254" data-name="Line 254" x2="20" transform="translate(140.5 252)" fill="none" stroke="#838bb2" stroke-width="2.3"/>
-    <path id="Path_61519" data-name="Path 61519" d="M0,0H12" transform="translate(148.5 260)" fill="none" stroke="#838bb2" stroke-width="2.3"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="44.838" height="37.302" viewBox="0 0 44.838 37.302">
+  <g id="Email" transform="translate(-164.701 -232.584)">
+    <path id="E-mail_Authentication" data-name="E-mail Authentication" d="M42.258,37.3H0V0H44.838V24.414h-1.9l0-13-19.354,7.21a2.384,2.384,0,0,1-.979.2,2.211,2.211,0,0,1-.957-.2L1.9,10.244l.01,25.167L42.258,35.4v1.9ZM2.057,1.9l.01,6.175,20.182,8.5a.745.745,0,0,0,.361.106.72.72,0,0,0,.346-.1L42.947,9.1l-.01-7.187Z" transform="translate(164.701 232.585)" fill="#c0c5e0"/>
   </g>
 </svg>
