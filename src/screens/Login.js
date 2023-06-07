@@ -19,8 +19,10 @@ import {
   usernameAndPasswordAction,
 } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
+import useNotifications from './useNotifications';
 
 export default function Login() {
+  useNotifications();
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);

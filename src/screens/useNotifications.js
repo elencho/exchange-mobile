@@ -1,8 +1,9 @@
 import messaging from '@react-native-firebase/messaging';
-import { PermissionsAndroid, Linking } from 'react-native';
+import { PermissionsAndroid, Linking, Image } from 'react-native';
 import notifee, { EventType, AndroidImportance } from '@notifee/react-native';
 import { useEffect } from 'react';
 import { IS_ANDROID, IS_IOS } from '../constants/system';
+// import { ReactComponent as Logo } from '../assets/images/Logo.svg';
 
 const useNotifications = () => {
   const requestUserPermissionIOS = async () =>
@@ -85,7 +86,11 @@ export const onNotifeeMessageReceived = async (message) => {
     data: message.data,
     remote: true,
     ios: {
-      attachments: [{ url: message?.data?.fcm_options?.image }],
+      attachments: [
+        {
+          url: message?.data?.fcm_options?.image ?? ' ',
+        },
+      ],
     },
     android: {
       channelId: channelId,
