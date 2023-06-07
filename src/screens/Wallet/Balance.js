@@ -19,6 +19,7 @@ import {
   setWalletTab,
 } from '../../redux/wallet/actions';
 import CustomRefreshContol from '../../components/CustomRefreshContol';
+import { IS_ANDROID } from '../../constants/system';
 
 export default function Balance({ navigation }) {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ export default function Balance({ navigation }) {
   } = state;
 
   const onRefresh = () => {
-    if (shouldRefreshOnScroll) {
+    if (shouldRefreshOnScroll || IS_ANDROID) {
       dispatch(setCard(null));
       dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
       walletTab !== 'Whitelist' && dispatch({ type: 'CLEAN_WALLET_INPUTS' });

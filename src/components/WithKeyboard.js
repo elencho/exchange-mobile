@@ -10,6 +10,7 @@ import {
 import { useKeyboard } from '@react-native-community/hooks';
 import { useFocusEffect } from '@react-navigation/native';
 import { setShouldRefreshOnScroll } from '../redux/wallet/actions';
+import { IS_IOS } from '../constants/system';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -59,8 +60,7 @@ export default function WithKeyboard({
         refreshControl={refreshControl}
         ref={scrollRef}
         onScrollEndDrag={(e) => {
-          console.log(e.nativeEvent);
-          if (e.nativeEvent?.contentOffset?.y < -90)
+          if (IS_IOS && e.nativeEvent?.contentOffset?.y < -90)
             dispatch(setShouldRefreshOnScroll(true));
         }}
       >
