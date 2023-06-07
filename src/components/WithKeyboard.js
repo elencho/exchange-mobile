@@ -1,12 +1,17 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
+  Dimensions,
 } from 'react-native';
 import { useKeyboard } from '@react-native-community/hooks';
 import { useFocusEffect } from '@react-navigation/native';
+import { setShouldRefreshOnScroll } from '../redux/wallet/actions';
+
+const windowHeight = Dimensions.get('window').height;
 
 export default function WithKeyboard({
   children,
@@ -18,6 +23,7 @@ export default function WithKeyboard({
   contentContainerStyle = {},
   refreshControl,
 }) {
+  const dispatch = useDispatch();
   const scrollRef = useRef();
   const keyboard = useKeyboard();
   const visible = keyboard?.keyboardShown;
@@ -52,6 +58,11 @@ export default function WithKeyboard({
         showsVerticalScrollIndicator={false}
         refreshControl={refreshControl}
         ref={scrollRef}
+        onScrollEndDrag={(e) => {
+          console.log(e.nativeEvent);
+          if (e.nativeEvent?.contentOffset?.y < -90)
+            dispatch(setShouldRefreshOnScroll(true));
+        }}
       >
         {children}
       </ScrollView>
