@@ -22,7 +22,6 @@ import { fetchCountries, setLanguage } from '../redux/profile/actions';
 import { checkReadiness, fetchTranslations } from '../utils/appUtils';
 import { addResources, switchLanguage } from '../utils/i18n';
 import { useFocusEffect } from '@react-navigation/native';
-import useNotifications from './useNotifications';
 
 const Splash = ({ navigation }) => {
   //TODO: REMOVE

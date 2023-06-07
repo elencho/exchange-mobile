@@ -41,11 +41,9 @@ import { fetchCountries, setLanguage } from '../redux/profile/actions';
 import { checkReadiness, fetchTranslations } from '../utils/appUtils';
 import { addResources, switchLanguage } from '../utils/i18n';
 import { useFocusEffect } from '@react-navigation/native';
-import useNotifications from './useNotifications';
 
 export default function Welcome({}) {
   const navigation = useNavigation();
-  useNotifications();
   const dispatch = useDispatch();
 
   useFocusEffect(
