@@ -35,8 +35,12 @@ export default function CryptoModal() {
   const filter = (text) => {
     const filteredArray = offers[fiat]?.filter(
       (c) =>
-        c?.pair?.baseCurrencyName.toLowerCase().includes(text.toLowerCase()) ||
-        c?.pair?.baseCurrency.toLowerCase().includes(text.toLowerCase())
+        (c?.pair?.baseCurrencyName &&
+          c?.pair?.baseCurrencyName
+            .toLowerCase()
+            .includes(text.toLowerCase())) ||
+        (c?.pair?.baseCurrency &&
+          c?.pair?.baseCurrency.toLowerCase().includes(text.toLowerCase()))
     );
     setFiletredData(filteredArray);
   };

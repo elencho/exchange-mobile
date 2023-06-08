@@ -53,12 +53,14 @@ function TransactionHistory({ navigation, route }) {
     }, [currency])
   );
 
-  useEffect(() => {
-    dispatch(chooseCurrency('Show All Currency'));
-    dispatch(setAbbr(null));
-    dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-    if (!route?.params?.isFromTransactions) dispatch(clearFilters());
-  }, [navigation]);
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(chooseCurrency('Show All Currency'));
+      dispatch(setAbbr(null));
+      dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+      if (!route?.params?.isFromTransactions) dispatch(clearFilters());
+    }, [navigation])
+  );
 
   const onRefresh = () => {
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });

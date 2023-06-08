@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 
 import CustomRefreshContol from '../components/CustomRefreshContol';
 import Background from '../components/Background';
@@ -42,13 +43,15 @@ export default function InstantTrade() {
 
   const [showRefreshControl, setShowRefreshControl] = useState(false);
 
-  useEffect(() => {
-    tabRoute === 'Trade' && onRefresh();
-    const timer = setTimeout(() => {
-      setShowRefreshControl(true);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [tabRoute]);
+  useFocusEffect(
+    useCallback(() => {
+      tabRoute === 'Trade' && onRefresh();
+      const timer = setTimeout(() => {
+        setShowRefreshControl(true);
+      }, 1000);
+      return () => clearTimeout(timer);
+    }, [tabRoute])
+  );
 
   return (
     <Background>
