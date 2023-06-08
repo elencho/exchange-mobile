@@ -53,6 +53,7 @@ export default function Welcome({}) {
   );
 
   const startApp = async () => {
+    dispatch({ type: 'RESET_STATE' });
     const workingVersion = await isWorkingVersion();
     const updateNeeded = await checkVersion();
 
