@@ -5,7 +5,6 @@ const INITIAL_STATE = {
   appToastObj: null,
   isToast: true,
   webViewObj: null,
-
   // Login
 
   // Transactions
@@ -133,6 +132,8 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         cryptoModalVisible,
       };
+    case actionTypes.RESET_STATE:
+      return INITIAL_STATE;
     case actionTypes.FIAT_MODAL_VISIBLE:
       return {
         ...state,
