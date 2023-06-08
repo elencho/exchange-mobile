@@ -19,19 +19,21 @@ import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Resume = ({ navigation, route }) => {
-  const state = useSelector((state) => state.profile);
+  const state = useSelector((state) => state?.profile);
+
   const dispatch = useDispatch();
 
   const { userInfo } = state;
   const [bioType, setBioType] = useState(null);
+  const { fromSplash, version, workingVersion } = route?.params;
 
   useFocusEffect(
     useCallback(() => {
       SplashScreen.hide();
       dispatch(fetchUserInfo());
       handleBiometricIcon();
-      startAuth();
-    }, [])
+      startAuth(fromSplash);
+    }, [fromSplash])
   );
 
   const handleBiometricIcon = async () => {
@@ -51,13 +53,10 @@ const Resume = ({ navigation, route }) => {
   };
 
   const startAuth = async () => {
-    const { fromSplash, version, workingVersion } = route?.params;
-
     const result = await authenticateAsync({
       promptMessage: 'Log in with fingerprint or faceid',
       cancelLabel: 'Abort',
     });
-
     if (result.success) {
       if (version || workingVersion) {
         navigation.goBack();
@@ -78,7 +77,7 @@ const Resume = ({ navigation, route }) => {
     <View style={styles.container}>
       {bioType === 'FACEID' ? <FaceID /> : <TouchID />}
       <AppText header style={styles.primary}>
-        Welcome Back, {userInfo.firstName}!
+        Welcome Back, {userInfo?.firstName}!
       </AppText>
       <AppText calendarDay style={styles.second}>
         {bioType === 'FACEID'
