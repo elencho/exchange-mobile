@@ -11,9 +11,14 @@ import FeeIcon from '../../assets/images/Wallet/Fee';
 export default function Fee() {
   const state = useSelector((state) => state);
   const {
-    trade: { fee, currentTrade, fiat },
+    trade: { fee, currentTrade, fiat, currentBalanceObj },
     transactions: { code, tabRoute },
-    wallet: { depositAmount, withdrawalAmount },
+    wallet: {
+      depositAmount,
+      withdrawalAmount,
+      withdrawalBank,
+      currentTemplate,
+    },
   } = state;
 
   const notEmpty = () => {
@@ -73,6 +78,13 @@ export default function Fee() {
         if (fixedValue) return ` ${fixedValue} ${currency}`;
         if (percentageValue) return ` ${percentageValue * 100}%`;
       };
+
+      const shouldHideBankFee =
+        currentBalanceObj.type === 'FIAT' &&
+        !Object.keys(withdrawalBank).length &&
+        !currentTemplate.bankId;
+
+      if (shouldHideBankFee) return;
 
       if (rangeStart || rangeEnd) {
         const start = rangeStart ?? 0;
