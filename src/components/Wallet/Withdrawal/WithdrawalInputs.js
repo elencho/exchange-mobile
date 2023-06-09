@@ -65,6 +65,7 @@ export default function WithdrawalInputs({
     const condition =
       depositProvider ||
       cur?.type === 'CRYPTO' ||
+      cur?.type === 'FIAT' ||
       currentTemplate?.templateName;
     dispatch(setWithdrawalAmount(amount ? amount : 0));
     if (condition) dispatch(fetchFee('withdrawal'));
