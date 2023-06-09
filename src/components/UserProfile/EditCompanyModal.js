@@ -30,8 +30,7 @@ export default function EditCompanyModal() {
         Go to web header
       </AppText>
       <AppText style={styles.secondary}>
-        {t('Go to web text', { defaultValue: 'Visit Website' })}{' '}
-        <PurpleText text="Web Link" onPress={goToWeb} />
+        {t('Visit Website')} <PurpleText text="Web Link" onPress={goToWeb} />
       </AppText>
 
       <AppButton text="OK" style={styles.button} onPress={hide} />
