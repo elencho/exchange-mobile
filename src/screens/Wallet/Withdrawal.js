@@ -24,6 +24,7 @@ import { setNetwork } from '../../redux/wallet/actions';
 import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
 import { validateAmount } from '../../utils/appUtils';
 import AppText from '../../components/AppText';
+import { withdrawalTemplatesAction } from '../../redux/wallet/actions';
 
 export default function Withdrawal({ refreshControl }) {
   const dispatch = useDispatch();
@@ -85,8 +86,11 @@ export default function Withdrawal({ refreshControl }) {
   useEffect(() => {
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setFee(null));
-    if (isEcommerce && card && depositProvider) {
+    if ((isEcommerce && card && depositProvider) || !isFiat) {
       dispatch(fetchFee('withdrawal'));
+    }
+    if (currentBalanceObj.withdrawalMethods.WIRE) {
+      dispatch(withdrawalTemplatesAction());
     }
   }, [network, depositProvider, card]);
 

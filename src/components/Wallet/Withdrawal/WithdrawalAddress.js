@@ -21,7 +21,7 @@ export default function WithdrawalAddress({ error, right }) {
     wallet: { hasWhitelist, currentWhitelistObj, whitelist, network },
   } = state;
 
-  const hasOnThisNetwork = whitelist.some((w) => w.provider === network);
+  const hasOnThisNetwork = whitelist?.some((w) => w.provider === network);
   const w = currentWhitelistObj;
   const color =
     error && !w?.address
