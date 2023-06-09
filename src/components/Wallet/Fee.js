@@ -115,7 +115,7 @@ export default function Fee() {
       <FeeIcon />
       <View style={styles.flex}>
         <UpperLine />
-        <LowerLine />
+        {/* <LowerLine /> */}
       </View>
     </View>
   );

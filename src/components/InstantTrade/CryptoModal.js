@@ -33,7 +33,7 @@ export default function CryptoModal() {
   }, [cryptoModalVisible]);
 
   const filter = (text) => {
-    const filteredArray = offers[fiat]?.filter(
+    const filteredArray = offers?.[fiat]?.filter(
       (c) =>
         (c?.pair?.baseCurrencyName &&
           c?.pair?.baseCurrencyName
