@@ -1,13 +1,6 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  FlatList,
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import * as SecureStore from 'expo-secure-store';
 import { useFocusEffect } from '@react-navigation/native';
 
 import AppText from '../components/AppText';
@@ -26,15 +19,16 @@ import {
 } from '../redux/profile/actions';
 import { clearFilters } from '../redux/transactions/actions';
 
-import images from '../constants/images';
 import colors from '../constants/colors';
 import { logout } from '../utils/userProfileUtils';
 import CustomRefreshContol from '../components/CustomRefreshContol';
+import { checkIsCompatable } from '../utils/biometricsAuth';
 
 function UserProfile({ navigation, route }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [showRefreshControl, setShowRefreshControl] = useState(false);
+  const [bioAvailable, setBioAvailable] = useState(false);
 
   const {
     profile: { Personal_Security, userInfo, userProfileLoading },
@@ -42,11 +36,17 @@ function UserProfile({ navigation, route }) {
 
   useEffect(() => {
     dispatch(fetchUserInfo(route.params?.fromRegistration));
+    checkCompitable();
     const timer = setTimeout(() => {
       setShowRefreshControl(true);
     }, 1000);
     return () => clearTimeout(timer);
   }, []);
+
+  const checkCompitable = async () => {
+    const compitable = await checkIsCompatable();
+    setBioAvailable(compitable);
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -54,7 +54,10 @@ function UserProfile({ navigation, route }) {
     }, [])
   );
 
-  const onRefresh = () => dispatch(fetchUserInfo());
+  const onRefresh = () => {
+    checkCompitable();
+    dispatch(fetchUserInfo());
+  };
   const back = () => {
     clear();
     navigation.navigate('Main', { screen: route.params?.sourceScreenName });
@@ -77,7 +80,7 @@ function UserProfile({ navigation, route }) {
         <Personal loading={userProfileLoading} />
       )}
       {Personal_Security === 'Security' && (
-        <Security loading={userProfileLoading} />
+        <Security loading={userProfileLoading} bioAvailable={bioAvailable} />
       )}
     </>
   );

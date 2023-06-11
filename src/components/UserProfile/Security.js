@@ -12,18 +12,7 @@ import PersonalSecuritySkeleton from './PersonalSecuritySkeleton';
 import SecurityRow from './SecurityRow';
 import SmsEmailAuthModal from './SmsEmailAuthModal';
 
-export default function Security({ loading }) {
-  const [bioAvailable, setBioAvailable] = useState(false);
-
-  useEffect(() => {
-    checkCompitable();
-  }, []);
-
-  const checkCompitable = async () => {
-    const compitable = await checkIsCompatable();
-    setBioAvailable(compitable);
-  };
-
+export default function Security({ loading, bioAvailable }) {
   return !loading ? (
     <>
       <View style={styles.block}>
