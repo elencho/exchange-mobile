@@ -190,13 +190,14 @@ export default function AddEditWhitelistModal({ add, edit }) {
       />
     </WithKeyboard>
   );
+  const isVisible = add ? addWhitelistModalVisble : editWhitelistModalVisble;
 
   return (
     <AppModal
       children={children}
       hide={hide}
       fullScreen
-      visible={add ? addWhitelistModalVisble : editWhitelistModalVisble}
+      visible={isVisible}
       title={`${add ? 'Add' : 'Edit'} Whitelist`}
       onModalHide={clearInputs}
     />

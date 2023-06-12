@@ -24,8 +24,6 @@ import {
   VERIFY_PHONE_NUMBER,
 } from '../constants/api';
 
-import { navigationRef } from '../navigation';
-
 const authRedirectUrl = Constants.manifest.extra.authRedirectUrl;
 
 export const sumsubVerificationToken = async () => {
@@ -234,17 +232,6 @@ export const logoutUtil = async (refresh_token) => {
     data: `refresh_token=${refresh_token}&client_id=mobile-service-public`,
   });
   if (data) return data.status;
-};
-
-export const logout = async (dispatch) => {
-  const refresh_token = await SecureStore.getItemAsync('refreshToken');
-  const status = await logoutUtil(refresh_token);
-  if (status === 204) {
-    await SecureStore.deleteItemAsync('accessToken');
-    await SecureStore.deleteItemAsync('refreshToken');
-    navigationRef.navigate('Welcome');
-    dispatch({ type: 'LOGOUT' });
-  }
 };
 
 export const fetchCountries = async () => {

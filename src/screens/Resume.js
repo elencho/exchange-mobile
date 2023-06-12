@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 import React, { useState, memo, useCallback } from 'react';
 import TouchID from '../assets/images/TouchID-Purple';
 import FaceID from '../assets/images/Face_ID-pruple';
+import * as SecureStore from 'expo-secure-store';
 
 import {
   authenticateAsync,
@@ -14,7 +15,7 @@ import AppButton from '../components/AppButton';
 import PurpleText from '../components/PurpleText';
 import { fetchUserInfo } from '../redux/profile/actions';
 import { useFocusEffect } from '@react-navigation/native';
-import { logout } from '../utils/userProfileUtils';
+import { logoutUtil } from '../utils/userProfileUtils';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -52,12 +53,14 @@ const Resume = ({ navigation, route }) => {
     }
   };
 
-  const startAuth = async () => {
+  const startAuth = async (fromSplash) => {
     const result = await authenticateAsync({
       promptMessage: 'Log in with fingerprint or faceid',
       cancelLabel: 'Abort',
     });
+
     if (result.success) {
+      console.log(version, workingVersion);
       if (version || workingVersion) {
         navigation.goBack();
       } else if (fromSplash) {
@@ -70,7 +73,15 @@ const Resume = ({ navigation, route }) => {
   };
 
   const startLogin = async () => {
-    logout(dispatch);
+    const refresh_token = await SecureStore.getItemAsync('refreshToken');
+    const status = await logoutUtil(refresh_token);
+    if (status === 204) {
+      await SecureStore.deleteItemAsync('accessToken');
+      await SecureStore.deleteItemAsync('refreshToken');
+      navigation.navigate('Welcome');
+
+      dispatch({ type: 'LOGOUT' });
+    }
   };
 
   return (
