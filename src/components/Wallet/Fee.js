@@ -11,9 +11,14 @@ import FeeIcon from '../../assets/images/Wallet/Fee';
 export default function Fee() {
   const state = useSelector((state) => state);
   const {
-    trade: { fee, currentTrade, fiat },
+    trade: { fee, currentTrade, fiat, currentBalanceObj },
     transactions: { code, tabRoute },
-    wallet: { depositAmount, withdrawalAmount },
+    wallet: {
+      depositAmount,
+      withdrawalAmount,
+      withdrawalBank,
+      currentTemplate,
+    },
   } = state;
 
   const notEmpty = () => {
@@ -34,13 +39,19 @@ export default function Fee() {
       } = fee;
 
       const feeCond = !notEmpty() || fixedValue || fixedValue === 0;
-      feeText = feeCond ? null : ` ${fee?.totalFee ?? '0'} ${currency} | `;
+      feeText = feeCond ? null : (
+        <>
+          <AppText small style={styles.feeText}>
+            Fee :
+          </AppText>
+          <AppText small style={styles.feeText}>
+            {` ${fee?.totalFee ?? '0'} ${currency} | `}
+          </AppText>
+        </>
+      );
     }
     return (
       <View style={styles.row}>
-        <AppText small style={styles.feeText}>
-          Fee :
-        </AppText>
         <AppText small style={styles.feeText}>
           {feeText}
           {totalText}
@@ -67,6 +78,13 @@ export default function Fee() {
         if (fixedValue) return ` ${fixedValue} ${currency}`;
         if (percentageValue) return ` ${percentageValue * 100}%`;
       };
+
+      const shouldHideBankFee =
+        currentBalanceObj.type === 'FIAT' &&
+        !Object.keys(withdrawalBank).length &&
+        !currentTemplate.bankId;
+
+      if (shouldHideBankFee) return;
 
       if (rangeStart || rangeEnd) {
         const start = rangeStart ?? 0;

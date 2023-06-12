@@ -6,6 +6,7 @@ export const actionTypes = {
   SET_DEPOSIT_RESTRICTION: 'SET_DEPOSIT_RESTRICTION',
   SET_WITHDRAWAL_RESTRICTION: 'SET_WITHDRAWAL_RESTRICTION',
   SET_USD_BTC: 'SET_USD_BTC',
+  SET_SHOULD_REFRESH: 'SET_SHOULD_REFRESH',
 
   // DEPOSIT
   SAVE_WIRE_DEPOSIT_INFO: 'SAVE_WIRE_DEPOSIT_INFO',
@@ -77,6 +78,10 @@ export const setDepositRestriction = (depositRestriction) => ({
 export const setWithdrawalRestriction = (withdrawalRestriction) => ({
   type: actionTypes.SET_WITHDRAWAL_RESTRICTION,
   withdrawalRestriction,
+});
+export const setShouldRefreshOnScroll = (shouldRefreshOnScroll) => ({
+  type: actionTypes.SET_SHOULD_REFRESH,
+  shouldRefreshOnScroll,
 });
 
 // DEPOSIT

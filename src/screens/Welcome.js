@@ -40,10 +40,8 @@ import { fetchCountries, setLanguage } from '../redux/profile/actions';
 import { checkReadiness, fetchTranslations } from '../utils/appUtils';
 import { addResources, switchLanguage } from '../utils/i18n';
 import { useFocusEffect } from '@react-navigation/native';
-import useNotifications from './useNotifications';
 
 export default function Welcome({ navigation }) {
-  useNotifications();
   const dispatch = useDispatch();
 
   useFocusEffect(
@@ -151,11 +149,11 @@ export default function Welcome({ navigation }) {
       .then((res) => {
         const languages = Object.keys(res);
         for (let i = 0; i < languages.length; i++) {
-          addResources(
-            languages[i],
-            'translation',
-            res[languages[i]].translation
-          );
+          const translations = res[languages[i]].translation;
+          Object.keys(translations).forEach((key) => {
+            if (translations[key] === null) translations[key] = '';
+          });
+          addResources(languages[i], 'translation', translations);
         }
         SecureStore.getItemAsync('language')
           .then((l) => {

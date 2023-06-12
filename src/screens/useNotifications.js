@@ -85,7 +85,11 @@ export const onNotifeeMessageReceived = async (message) => {
     data: message.data,
     remote: true,
     ios: {
-      attachments: [{ url: message?.data?.fcm_options?.image }],
+      attachments: [
+        {
+          url: message?.data?.fcm_options?.image ?? ' ',
+        },
+      ],
     },
     android: {
       channelId: channelId,
