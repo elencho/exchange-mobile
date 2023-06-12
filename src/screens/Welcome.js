@@ -20,7 +20,6 @@ import {
 } from '../redux/profile/actions';
 import GeneralError from '../components/GeneralError';
 import { errorHappenedHere } from '../utils/appUtils';
-import { useNavigation } from '@react-navigation/native';
 
 import SplashScreen from 'react-native-splash-screen';
 import VersionCheck from 'react-native-version-check';
@@ -43,8 +42,7 @@ import { addResources, switchLanguage } from '../utils/i18n';
 import { useFocusEffect } from '@react-navigation/native';
 import useNotifications from './useNotifications';
 
-export default function Welcome({}) {
-  const navigation = useNavigation();
+export default function Welcome({ navigation }) {
   useNotifications();
   const dispatch = useDispatch();
 

@@ -37,7 +37,6 @@ export default function Balance({ navigation }) {
 
   const back = () => {
     dispatch(setWalletTab('Deposit'));
-    tabNavigationRef.navigate('Wallet');
     navigation.navigate('Main', { screen: 'Wallet' });
   };
 

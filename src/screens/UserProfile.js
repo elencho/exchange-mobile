@@ -2,6 +2,7 @@ import React, { memo, useCallback, useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
 
 import AppText from '../components/AppText';
 import Background from '../components/Background';
@@ -20,9 +21,9 @@ import {
 import { clearFilters } from '../redux/transactions/actions';
 
 import colors from '../constants/colors';
-import { logout } from '../utils/userProfileUtils';
 import CustomRefreshContol from '../components/CustomRefreshContol';
 import { checkIsCompatable } from '../utils/biometricsAuth';
+import { logoutUtil } from '../utils/userProfileUtils';
 
 function UserProfile({ navigation, route }) {
   const dispatch = useDispatch();
@@ -43,16 +44,28 @@ function UserProfile({ navigation, route }) {
     return () => clearTimeout(timer);
   }, []);
 
-  const checkCompitable = async () => {
-    const compitable = await checkIsCompatable();
-    setBioAvailable(compitable);
-  };
-
   useFocusEffect(
     useCallback(() => {
       return () => dispatch(switchPersonalSecurity('Personal'));
     }, [])
   );
+
+  const checkCompitable = async () => {
+    const compitable = await checkIsCompatable();
+    setBioAvailable(compitable);
+  };
+
+  const logout = async () => {
+    const refresh_token = await SecureStore.getItemAsync('refreshToken');
+    const status = await logoutUtil(refresh_token);
+    if (status === 204) {
+      await SecureStore.deleteItemAsync('accessToken');
+      await SecureStore.deleteItemAsync('refreshToken');
+      navigation.navigate('Welcome');
+
+      dispatch({ type: 'LOGOUT' });
+    }
+  };
 
   const onRefresh = () => {
     checkCompitable();
@@ -84,9 +97,7 @@ function UserProfile({ navigation, route }) {
       )}
     </>
   );
-  const handleLogout = () => {
-    logout(dispatch);
-  };
+
   return (
     <Background>
       <View style={styles.topRow}>
@@ -95,7 +106,7 @@ function UserProfile({ navigation, route }) {
           <PurpleText text="Back" style={styles.purpleText} />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleLogout}>
+        <TouchableOpacity onPress={logout}>
           <Logout />
         </TouchableOpacity>
       </View>
