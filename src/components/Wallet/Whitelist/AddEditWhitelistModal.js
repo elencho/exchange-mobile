@@ -32,11 +32,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    modals: {
-      addWhitelistModalVisble,
-      editWhitelistModalVisble,
-      webViewVisible,
-    },
+    modals: { addWhitelistModalVisble, editWhitelistModalVisble },
     wallet: {
       newWhitelist,
       currentWhitelistObj,
@@ -197,16 +193,14 @@ export default function AddEditWhitelistModal({ add, edit }) {
   const isVisible = add ? addWhitelistModalVisble : editWhitelistModalVisble;
 
   return (
-    webViewVisible && (
-      <AppModal
-        children={children}
-        hide={hide}
-        fullScreen
-        visible={isVisible}
-        title={`${add ? 'Add' : 'Edit'} Whitelist`}
-        onModalHide={clearInputs}
-      />
-    )
+    <AppModal
+      children={children}
+      hide={hide}
+      fullScreen
+      visible={isVisible}
+      title={`${add ? 'Add' : 'Edit'} Whitelist`}
+      onModalHide={clearInputs}
+    />
   );
 }
 
