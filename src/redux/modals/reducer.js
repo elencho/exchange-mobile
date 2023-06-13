@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   appToastObj: null,
   isToast: true,
   webViewObj: null,
+  webViewVisible: true,
   // Login
 
   // Transactions
@@ -62,6 +63,7 @@ export default (state = INITIAL_STATE, action) => {
     buySellModalVisible,
     transactionDetailsVisible,
     infoVisible,
+    webViewVisible,
     chooseCardModalVisible,
     qrAddressModalVisible,
     qrScannerModalVisible,
@@ -101,6 +103,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         toastObj,
+      };
+    case actionTypes.WEB_VIEW_VISIBLE:
+      return {
+        ...state,
+        webViewVisible,
       };
     case actionTypes.SET_APP_TOAST:
       return {

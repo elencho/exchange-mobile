@@ -20,6 +20,7 @@ export const actionTypes = {
   SMS_AUTH_MODAL: 'SMS_AUTH_MODAL',
   EMAIL_AUTH_MODAL: 'EMAIL_AUTH_MODAL',
   GOOGLE_OTP_MODAL: 'GOOGLE_OTP_MODAL',
+  WEB_VIEW_VISIBLE: 'WEB_VIEW_VISIBLE',
 
   CHOOSE_NETWORK_MODAL: 'CHOOSE_NETWORK_MODAL',
   GENERATE_REQUEST_MODAL: 'GENERATE_REQUEST_MODAL',
@@ -67,6 +68,10 @@ export const toggleFiatModal = (fiatModalVisible) => ({
 export const toggleInfoModal = (infoVisible) => ({
   type: actionTypes.INSTANT_TRADE_INFO,
   infoVisible,
+});
+export const toggleWebViewVisible = (webViewVisible) => ({
+  type: actionTypes.WEB_VIEW_VISIBLE,
+  webViewVisible,
 });
 export const toggleChooseCardModal = (chooseCardModalVisible) => ({
   type: actionTypes.CHOOSE_CARD_MODAL,

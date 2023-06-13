@@ -18,6 +18,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { logoutUtil } from '../utils/userProfileUtils';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { toggleWebViewVisible } from '../redux/modals/actions';
 
 const Resume = ({ navigation, route }) => {
   const state = useSelector((state) => state?.profile);
@@ -30,6 +31,7 @@ const Resume = ({ navigation, route }) => {
 
   useFocusEffect(
     useCallback(() => {
+      dispatch(toggleWebViewVisible(false));
       SplashScreen.hide();
       dispatch(fetchUserInfo());
       handleBiometricIcon();
@@ -68,6 +70,7 @@ const Resume = ({ navigation, route }) => {
       } else {
         navigation.goBack();
       }
+      dispatch(toggleWebViewVisible(true));
       await AsyncStorage.setItem('isLoggedIn', 'true');
     }
   };
