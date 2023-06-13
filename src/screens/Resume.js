@@ -27,7 +27,6 @@ const Resume = ({ navigation, route }) => {
 
   const { userInfo } = state;
   const [bioType, setBioType] = useState(null);
-  const { fromSplash, version, workingVersion } = route?.params;
 
   useFocusEffect(
     useCallback(() => {
@@ -35,8 +34,8 @@ const Resume = ({ navigation, route }) => {
       SplashScreen.hide();
       dispatch(fetchUserInfo());
       handleBiometricIcon();
-      startAuth(fromSplash);
-    }, [fromSplash])
+      startAuth();
+    }, [])
   );
 
   const handleBiometricIcon = async () => {
@@ -55,7 +54,9 @@ const Resume = ({ navigation, route }) => {
     }
   };
 
-  const startAuth = async (fromSplash) => {
+  const startAuth = async () => {
+    const { fromSplash, version, workingVersion } = route?.params;
+
     const result = await authenticateAsync({
       promptMessage: 'Log in with fingerprint or faceid',
       cancelLabel: 'Abort',
