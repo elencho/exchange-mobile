@@ -92,7 +92,7 @@ export default function ModalWithSearch({
           onChangeText={filter}
           right={<Search />}
           activeRight={<SearchActive />}
-          style={{ marginVertical: 20 }}
+          style={styles.searchInput}
         />
 
         <WithKeyboard padding flexGrow modal>
@@ -126,5 +126,10 @@ const styles = StyleSheet.create({
   headline: {
     color: colors.PRIMARY_TEXT,
     marginBottom: -10,
+    marginHorizontal: 10,
+  },
+  searchInput: {
+    marginVertical: 20,
+    marginHorizontal: 10,
   },
 });

@@ -24,8 +24,10 @@ import {
   setTradeOffset,
   setTradeType,
 } from '../redux/trade/actions';
+import useNotifications from './useNotifications';
 
 export default function InstantTrade() {
+  useNotifications();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
