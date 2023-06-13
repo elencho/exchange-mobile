@@ -18,6 +18,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { logoutUtil } from '../utils/userProfileUtils';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { toggleWebViewVisible } from '../redux/modals/actions';
 
 const Resume = ({ navigation, route }) => {
   const state = useSelector((state) => state?.profile);
@@ -26,15 +27,15 @@ const Resume = ({ navigation, route }) => {
 
   const { userInfo } = state;
   const [bioType, setBioType] = useState(null);
-  const { fromSplash, version, workingVersion } = route?.params;
 
   useFocusEffect(
     useCallback(() => {
+      dispatch(toggleWebViewVisible(false));
       SplashScreen.hide();
       dispatch(fetchUserInfo());
       handleBiometricIcon();
-      startAuth(fromSplash);
-    }, [fromSplash])
+      startAuth();
+    }, [])
   );
 
   const handleBiometricIcon = async () => {
@@ -53,7 +54,9 @@ const Resume = ({ navigation, route }) => {
     }
   };
 
-  const startAuth = async (fromSplash) => {
+  const startAuth = async () => {
+    const { fromSplash, version, workingVersion } = route?.params;
+
     const result = await authenticateAsync({
       promptMessage: 'Log in with fingerprint or faceid',
       cancelLabel: 'Abort',
@@ -68,6 +71,7 @@ const Resume = ({ navigation, route }) => {
       } else {
         navigation.goBack();
       }
+      dispatch(toggleWebViewVisible(true));
       await AsyncStorage.setItem('isLoggedIn', 'true');
     }
   };
