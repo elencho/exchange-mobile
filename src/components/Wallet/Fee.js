@@ -79,13 +79,6 @@ export default function Fee() {
         if (percentageValue) return ` ${percentageValue * 100}%`;
       };
 
-      const shouldHideBankFee =
-        currentBalanceObj.type === 'FIAT' &&
-        !Object.keys(withdrawalBank).length &&
-        !currentTemplate.bankId;
-
-      if (shouldHideBankFee) return;
-
       if (rangeStart || rangeEnd) {
         const start = rangeStart ?? 0;
         const end = rangeEnd ?? 'Other Fees';
@@ -103,7 +96,7 @@ export default function Fee() {
             {subMethod ? subMethod : 'Fixed :'}
           </AppText>
           <AppText small style={styles.feeText}>
-            {' ' + value() ?? `0 ${currency}`}
+            {value() ? ` ${value()}` : ` 0 ${currency}`}
           </AppText>
         </View>
       );
