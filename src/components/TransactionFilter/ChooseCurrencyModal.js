@@ -99,7 +99,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
       const currency = name === 'Show All Currency' ? null : currencyCode;
       dispatch(currencyAction(name, currenciesConstant, currency));
     }
-
+    dispatch({ type: 'GET_WHITELIST_ACTION' });
     hide();
   };
 
