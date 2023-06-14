@@ -53,12 +53,12 @@ export default function Deposit({ refreshControl }) {
   const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
-    const m = currentBalanceObj.depositMethods;
-    if (m.ECOMMERCE) {
+    const m = currentBalanceObj?.depositMethods;
+    if (m?.ECOMMERCE) {
       dispatch(setNetwork('ECOMMERCE'));
     } else {
-      if (m.WALLET) dispatch(setNetwork(m.WALLET[0].provider));
-      if (m.WIRE) dispatch(setNetwork(m.WIRE[0].provider));
+      if (m?.WALLET) dispatch(setNetwork(m?.WALLET[0]?.provider));
+      if (m?.WIRE) dispatch(setNetwork(m?.WIRE[0]?.provider));
     }
 
     setHasMethod(!!Object.keys(m).length);

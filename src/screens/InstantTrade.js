@@ -25,6 +25,7 @@ import {
   setTradeType,
 } from '../redux/trade/actions';
 import useNotifications from './useNotifications';
+import { setWalletTab } from '../redux/wallet/actions';
 
 export default function InstantTrade() {
   useNotifications();
@@ -38,6 +39,7 @@ export default function InstantTrade() {
 
   const loading = tradesLoading && offersLoading;
   const onRefresh = () => {
+    dispatch(setWalletTab('Deposit'));
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
     dispatch(setTradeOffset(0));
     dispatch(fetchTrades());
