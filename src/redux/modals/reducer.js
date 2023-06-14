@@ -30,6 +30,10 @@ const INITIAL_STATE = {
   languageModalVisible: false,
   countriesModalVisible: false,
   companyInfoModalVisible: false,
+  companyInfoModalHeader: '',
+  companyInfoModalDescription: '',
+  companyInfoModalLink: '',
+  companyInfoModalButton: '',
   identityModalVisible: false,
   // security
   googleAuthModalVisible: false,
@@ -97,6 +101,10 @@ export default (state = INITIAL_STATE, action) => {
     webViewObj,
     isToast,
     hasCameraPermission,
+    companyInfoModalHeader,
+    companyInfoModalDescription,
+    companyInfoModalLink,
+    companyInfoModalButton,
   } = action;
   switch (action.type) {
     case actionTypes.SET_TOAST_OBJ:
@@ -206,6 +214,10 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         companyInfoModalVisible: !state.companyInfoModalVisible,
+        companyInfoModalHeader,
+        companyInfoModalDescription,
+        companyInfoModalLink,
+        companyInfoModalButton,
       };
     case 'TOGGLE_IDENTITY_MODAL':
       return {

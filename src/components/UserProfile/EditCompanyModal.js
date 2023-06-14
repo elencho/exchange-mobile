@@ -13,9 +13,17 @@ import Browser from '../../assets/images/User_profile/Browser.svg';
 
 export default function EditCompanyModal() {
   const dispatch = useDispatch();
-  const companyInfoModalVisible = useSelector(
-    (state) => state.modals.companyInfoModalVisible
-  );
+  // const companyInfoModalVisible = useSelector(
+  //   (state) => state.modals.companyInfoModalVisible
+  // );
+
+  const {
+    companyInfoModalVisible,
+    companyInfoModalHeader,
+    companyInfoModalDescription,
+    companyInfoModalLink,
+    companyInfoModalButton,
+  } = useSelector((state) => state.modals);
 
   const hide = () => dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
   const goToWeb = () => {
@@ -27,13 +35,21 @@ export default function EditCompanyModal() {
     <View style={styles.container}>
       <Browser />
       <AppText header style={styles.white}>
-        Go to web header
+        {companyInfoModalHeader ?? 'Go To web'}
       </AppText>
       <AppText style={styles.secondary}>
-        {t('Visit Website')} <PurpleText text="Web Link" onPress={goToWeb} />
+        {t(companyInfoModalDescription ?? 'Visit Website')}{' '}
+        <PurpleText
+          text={companyInfoModalLink ?? 'Web Link'}
+          onPress={goToWeb}
+        />
       </AppText>
 
-      <AppButton text="OK" style={styles.button} onPress={hide} />
+      <AppButton
+        text={companyInfoModalButton ?? 'OK'}
+        style={styles.button}
+        onPress={hide}
+      />
     </View>
   );
 

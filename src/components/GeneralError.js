@@ -28,7 +28,7 @@ function GeneralError({ style, show = true }) {
   const message = generalError?.errorMessage;
   const errorMessage = !params
     ? message
-    : `${message} params[${params.join()}]`;
+    : `${message} params{${params.join()}}`;
 
   return (
     <>
