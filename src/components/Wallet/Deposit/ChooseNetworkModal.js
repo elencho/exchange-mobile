@@ -56,8 +56,8 @@ export default function ChooseNetworkModal() {
     const m = withdrawal ? 'withdrawalMethods' : 'depositMethods';
     const n = currentBalanceObj[m];
 
-    if (n.WALLET) n.WALLET.forEach((n) => networksToDisplay.push(n));
-    if (n.WIRE) n.WIRE.forEach((n) => networksToDisplay.push(n));
+    if (n?.WALLET) n?.WALLET?.forEach((n) => networksToDisplay.push(n));
+    if (n?.WIRE) n?.WIRE?.forEach((n) => networksToDisplay.push(n));
     setNetworks(networksToDisplay);
     return () => setNetworks([]);
   }, [code, walletTab]);
