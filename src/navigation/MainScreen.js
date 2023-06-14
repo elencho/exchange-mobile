@@ -75,7 +75,7 @@ export default function MainScreen({ navigation }) {
         (u) => u?.user === user && u?.enabled === true
       );
       if (userIndex) {
-        navigation.navigate('Resume', {
+        navigation.push('Resume', {
           fromSplash: false,
           version: false,
           isWorkingVersion: false,
