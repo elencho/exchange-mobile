@@ -32,13 +32,21 @@ export default function MainScreen({ navigation }) {
     const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
     const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
     const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+    const webViewVisible = await AsyncStorage.getItem('webViewVisible');
 
     if (newState !== 'active') {
       await AsyncStorage.removeItem('isLoggedIn');
       const date = JSON.stringify(Date.now());
       await AsyncStorage.setItem('isOpenDate', date);
     }
-    if (!isLoggedIn && newState === 'active' && timeDifference >= 30000) {
+
+    const bioVisible =
+      !webViewVisible &&
+      !isLoggedIn &&
+      newState === 'active' &&
+      timeDifference >= 30000;
+
+    if (bioVisible) {
       SecureStore.getItemAsync('accessToken')
         .then((t) => {
           if (t) {

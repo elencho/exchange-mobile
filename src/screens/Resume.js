@@ -22,6 +22,7 @@ import { toggleWebViewVisible } from '../redux/modals/actions';
 
 const Resume = ({ navigation, route }) => {
   const state = useSelector((state) => state?.profile);
+  const { fromSplash, version, workingVersion } = route?.params;
 
   const dispatch = useDispatch();
 
@@ -34,8 +35,8 @@ const Resume = ({ navigation, route }) => {
       SplashScreen.hide();
       dispatch(fetchUserInfo());
       handleBiometricIcon();
-      startAuth();
-    }, [])
+      startAuth(fromSplash);
+    }, [fromSplash])
   );
 
   const handleBiometricIcon = async () => {
@@ -54,16 +55,13 @@ const Resume = ({ navigation, route }) => {
     }
   };
 
-  const startAuth = async () => {
-    const { fromSplash, version, workingVersion } = route?.params;
-
+  const startAuth = async (fromSplash) => {
     const result = await authenticateAsync({
       promptMessage: 'Log in with fingerprint or faceid',
       cancelLabel: 'Abort',
     });
 
     if (result.success) {
-      console.log(version, workingVersion);
       if (version || workingVersion) {
         navigation.goBack();
       } else if (fromSplash) {
