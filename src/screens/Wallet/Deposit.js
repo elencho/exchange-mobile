@@ -131,7 +131,7 @@ export default function Deposit({ refreshControl }) {
       );
       const minConfirmsTransComponent = (
         <Trans
-          i18nKey="{{minConfirmsForDeposit}} params[minConfirmsForDeposit]"
+          i18nKey="{{minConfirmsForDeposit}} params{minConfirmsForDeposit}"
           values={{ minConfirmsForDeposit }}
           components={{
             light: <AppText style={{ color: '#FFFBF3' }} />,

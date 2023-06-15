@@ -18,7 +18,7 @@ export default async (err) => {
     const header = data.errorKey;
     const body = !data?.transParams
       ? data?.errorMessage
-      : `${data?.errorMessage} params[${params?.join()}]`;
+      : `${data?.errorMessage} params{${params?.join()}}`;
 
     if (status > 401) {
       if (!state.modals.isToast) {
