@@ -95,7 +95,7 @@ export default function Welcome({ navigation }) {
     }
 
     if (userIndex && timeDifference >= 30000) {
-      navigation.push('Resume', {
+      navigation.navigate('Resume', {
         fromSplash: true,
         version: updateNeeded,
         workingVersion: workingVersion,
