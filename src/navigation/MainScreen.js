@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { AppState } from 'react-native';
 
 import { useDispatch } from 'react-redux';
@@ -16,7 +16,7 @@ import Exchange from '../screens/Exchange';
 
 const Tab = createBottomTabNavigator();
 
-export default function MainScreen({ navigation }) {
+function MainScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const [subscription, setSubscription] = useState();
@@ -125,3 +125,4 @@ export default function MainScreen({ navigation }) {
     </Tab.Navigator>
   );
 }
+export default memo(MainScreen);
