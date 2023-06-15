@@ -10,7 +10,7 @@ import {
 } from 'expo-local-authentication';
 import colors from '../constants/colors';
 import AppText from '../components/AppText';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AppButton from '../components/AppButton';
 import PurpleText from '../components/PurpleText';
 import { fetchUserInfo } from '../redux/profile/actions';
@@ -21,9 +21,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { toggleWebViewVisible } from '../redux/modals/actions';
 
 const Resume = ({ navigation, route }) => {
-  const state = useSelector((state) => state?.profile);
+  const state = useSelector((state) => state?.profile, shallowEqual);
   const { fromSplash, version, workingVersion } = route?.params;
-
   const dispatch = useDispatch();
 
   const { userInfo } = state;
@@ -39,7 +38,7 @@ const Resume = ({ navigation, route }) => {
     }, [fromSplash])
   );
 
-  const handleBiometricIcon = async () => {
+  const handleBiometricIcon = useCallback(async () => {
     try {
       await supportedAuthenticationTypesAsync()
         .then((data) => {
@@ -53,26 +52,29 @@ const Resume = ({ navigation, route }) => {
     } catch (err) {
       console.log(err);
     }
-  };
+  }, [navigation]);
 
-  const startAuth = async (fromSplash) => {
-    const result = await authenticateAsync({
-      promptMessage: 'Log in with fingerprint or faceid',
-      cancelLabel: 'Abort',
-    });
+  const startAuth = useCallback(
+    async (fromSplash) => {
+      const result = await authenticateAsync({
+        promptMessage: 'Log in with fingerprint or faceid',
+        cancelLabel: 'Abort',
+      });
 
-    if (result.success) {
-      if (version || workingVersion) {
-        navigation.goBack();
-      } else if (fromSplash) {
-        navigation.navigate('Main');
-      } else {
-        navigation.goBack();
+      if (result.success) {
+        if (version || workingVersion) {
+          navigation.goBack();
+        } else if (fromSplash) {
+          navigation.navigate('Main');
+        } else {
+          navigation.goBack();
+        }
+        dispatch(toggleWebViewVisible(true));
+        await AsyncStorage.setItem('isLoggedIn', 'true');
       }
-      dispatch(toggleWebViewVisible(true));
-      await AsyncStorage.setItem('isLoggedIn', 'true');
-    }
-  };
+    },
+    [fromSplash]
+  );
 
   const startLogin = async () => {
     const refresh_token = await SecureStore.getItemAsync('refreshToken');

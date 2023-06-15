@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { AppState } from 'react-native';
 
 import { useDispatch } from 'react-redux';
@@ -28,36 +28,39 @@ export default function MainScreen({ navigation }) {
     };
   }, []);
 
-  const handleAppStateChange = async (newState) => {
-    const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
-    const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
-    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-    const webViewVisible = await AsyncStorage.getItem('webViewVisible');
+  const handleAppStateChange = useCallback(
+    async (newState) => {
+      const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
+      const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
+      const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+      const webViewVisible = await AsyncStorage.getItem('webViewVisible');
 
-    if (newState !== 'active') {
-      await AsyncStorage.removeItem('isLoggedIn');
-      const date = JSON.stringify(Date.now());
-      await AsyncStorage.setItem('isOpenDate', date);
-    }
+      if (newState !== 'active') {
+        await AsyncStorage.removeItem('isLoggedIn');
+        const date = JSON.stringify(Date.now());
+        await AsyncStorage.setItem('isOpenDate', date);
+      }
 
-    const bioVisible =
-      !webViewVisible &&
-      !isLoggedIn &&
-      newState === 'active' &&
-      timeDifference >= 30000;
+      const bioVisible =
+        !webViewVisible &&
+        !isLoggedIn &&
+        newState === 'active' &&
+        timeDifference >= 30000;
 
-    if (bioVisible) {
-      SecureStore.getItemAsync('accessToken')
-        .then((t) => {
-          if (t) {
-            const email = jwt_decode(t)?.email;
-            dispatch({ type: 'OTP_SAGA', token: t });
-            getBiometricEnabled(email);
-          }
-        })
-        .catch((err) => console.log(err));
-    }
-  };
+      if (bioVisible) {
+        SecureStore.getItemAsync('accessToken')
+          .then((t) => {
+            if (t) {
+              const email = jwt_decode(t)?.email;
+              dispatch({ type: 'OTP_SAGA', token: t });
+              getBiometricEnabled(email);
+            }
+          })
+          .catch((err) => console.log(err));
+      }
+    },
+    [onBeforeShow]
+  );
 
   const onBeforeShow = async () => {
     setSubscription(AppState.addEventListener('change', handleAppStateChange));
@@ -67,24 +70,28 @@ export default function MainScreen({ navigation }) {
     subscription?.remove();
   };
 
-  const getBiometricEnabled = async (user) => {
-    const enabled = await AsyncStorage.getItem('BiometricEnabled');
-    if (enabled) {
-      let parsedUsers = await JSON.parse(enabled);
-      const userIndex = await parsedUsers?.find(
-        (u) => u?.user === user && u?.enabled === true
-      );
-      if (userIndex) {
-        navigation.push('Resume', {
-          fromSplash: false,
-          version: false,
-          isWorkingVersion: false,
-        });
-      } else {
-        return;
+  const getBiometricEnabled = useCallback(
+    async (user) => {
+      const enabled = await AsyncStorage.getItem('BiometricEnabled');
+      if (enabled) {
+        let parsedUsers = await JSON.parse(enabled);
+        const userIndex = await parsedUsers?.find(
+          (u) => u?.user === user && u?.enabled === true
+        );
+        console.log('userIndex', userIndex);
+        if (userIndex) {
+          navigation.push('Resume', {
+            fromSplash: false,
+            version: false,
+            isWorkingVersion: false,
+          });
+        } else {
+          return;
+        }
       }
-    }
-  };
+    },
+    [navigation]
+  );
 
   const setTabRoute = (e) => {
     dispatch(setTabRouteName(e.route.name));
