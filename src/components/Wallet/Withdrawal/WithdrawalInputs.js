@@ -58,7 +58,7 @@ export default function WithdrawalInputs({
   const isEcommerce = network === 'ECOMMERCE';
 
   const inputValidation = new RegExp(
-    `^[0-9]{1,13}(\.|\\.[0-9]{1,${cur?.withdrawalScale}})?$`
+    `^[0-9]{1,13}(\.|\\.[0-9]{0,${cur?.withdrawalScale}})?$`
   );
 
   const setAmount = (amount) => {
