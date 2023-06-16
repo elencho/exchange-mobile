@@ -52,7 +52,7 @@ export default function Welcome({ navigation }) {
 
   const startApp = async () => {
     dispatch({ type: 'RESET_STATE' });
-    await AsyncStorage.getItem('webViewVisible');
+    await AsyncStorage.removeItem('webViewVisible');
 
     const workingVersion = await isWorkingVersion();
     const updateNeeded = await checkVersion();
