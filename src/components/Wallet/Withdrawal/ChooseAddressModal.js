@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { memo, useMemo } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,7 +8,7 @@ import colors from '../../../constants/colors';
 import { toggleChooseAddressModal } from '../../../redux/modals/actions';
 import { chooseWhitelist } from '../../../redux/wallet/actions';
 
-export default function ChooseAddressModal() {
+function ChooseAddressModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -40,39 +40,42 @@ export default function ChooseAddressModal() {
   //   dispatch(chooseWhitelist({}));
   // }, [network]);
 
-  const children = (
-    <>
-      {whitelist?.map((w) => (
-        <View key={w.id}>
-          {network === w.provider && (
-            <TouchableOpacity
-              style={[styles.pressable, background(w)]}
-              onPress={() => choose(w)}
-            >
-              <View style={styles.flex}>
-                <AppText medium style={styles.primary}>
-                  {w.name}
-                </AppText>
-                <AppText subtext style={styles.secondary} numberOfLines={1}>
-                  {addressFormat(w.address)}
-                </AppText>
-              </View>
-
-              <View style={styles.right}>
-                <AppText subtext style={{ color: '#C0C5E0' }}>
-                  {w.provider}
-                </AppText>
-                {w.tag && (
-                  <AppText subtext style={{ color: colors.SECONDARY_TEXT }}>
-                    {w.tag}
+  const children = useMemo(
+    () => (
+      <>
+        {whitelist?.map((w) => (
+          <View key={w.id}>
+            {network === w.provider && (
+              <TouchableOpacity
+                style={[styles.pressable, background(w)]}
+                onPress={() => choose(w)}
+              >
+                <View style={styles.flex}>
+                  <AppText medium style={styles.primary}>
+                    {w.name}
                   </AppText>
-                )}
-              </View>
-            </TouchableOpacity>
-          )}
-        </View>
-      ))}
-    </>
+                  <AppText subtext style={styles.secondary} numberOfLines={1}>
+                    {addressFormat(w.address)}
+                  </AppText>
+                </View>
+
+                <View style={styles.right}>
+                  <AppText subtext style={{ color: '#C0C5E0' }}>
+                    {w.provider}
+                  </AppText>
+                  {w.tag && (
+                    <AppText subtext style={{ color: colors.SECONDARY_TEXT }}>
+                      {w.tag}
+                    </AppText>
+                  )}
+                </View>
+              </TouchableOpacity>
+            )}
+          </View>
+        ))}
+      </>
+    ),
+    [whitelist, network]
   );
 
   return (
@@ -85,6 +88,7 @@ export default function ChooseAddressModal() {
     />
   );
 }
+export default memo(ChooseAddressModal);
 
 const styles = StyleSheet.create({
   pressable: {
