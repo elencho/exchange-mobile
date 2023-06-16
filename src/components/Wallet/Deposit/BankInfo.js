@@ -44,7 +44,7 @@ export default function BankInfo() {
     wallet: { wireDepositInfo, wireDepositProvider },
     profile: { language },
   } = state;
-  const numberOfProviders = wireDepositInfo[language].length;
+  const numberOfProviders = wireDepositInfo[language]?.length;
 
   useEffect(() => {
     const obj = wireDepositInfo[language]?.find((o) => {

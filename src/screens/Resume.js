@@ -63,7 +63,7 @@ const Resume = ({ navigation, route }) => {
     if (result.success) {
       if (version || workingVersion) {
         navigation.goBack();
-      } else if (fromSplash) {
+      } else if (fromSplash === true) {
         navigation.navigate('Main');
       } else {
         navigation.goBack();
