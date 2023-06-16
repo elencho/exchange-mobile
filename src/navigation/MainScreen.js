@@ -69,24 +69,31 @@ function MainScreen({ navigation }) {
     subscription?.remove();
   };
 
-  const getBiometricEnabled = useCallback(async (user) => {
-    const enabled = await AsyncStorage.getItem('BiometricEnabled');
-    if (enabled) {
-      let parsedUsers = await JSON.parse(enabled);
-      const userIndex = await parsedUsers?.find(
-        (u) => u?.user === user && u?.enabled === true
-      );
-      if (userIndex && isFocused) {
-        navigation.push('Resume', {
-          fromSplash: false,
-          version: false,
-          isWorkingVersion: false,
-        });
-      } else {
-        return;
+  const getBiometricEnabled = useCallback(
+    async (user) => {
+      const enabled = await AsyncStorage.getItem('BiometricEnabled');
+      if (enabled) {
+        let parsedUsers = await JSON.parse(enabled);
+        const userIndex = await parsedUsers?.find(
+          (u) => u?.user === user && u?.enabled === true
+        );
+        if (userIndex && isFocused) {
+          navigation.navigate({
+            key: 'Resume-uniqueKey',
+            name: 'Resume',
+            params: {
+              fromSplash: false,
+              version: false,
+              isWorkingVersion: false,
+            },
+          });
+        } else {
+          return;
+        }
       }
-    }
-  }, []);
+    },
+    [isFocused]
+  );
 
   const setTabRoute = (e) => {
     dispatch(setTabRouteName(e.route.name));
