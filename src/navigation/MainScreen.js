@@ -13,11 +13,13 @@ import BottomTabs from '../components/BottomTabs';
 import { setTabRouteName } from '../redux/transactions/actions';
 import Wallet from '../screens/Wallet';
 import Exchange from '../screens/Exchange';
+import { useIsFocused } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
 function MainScreen({ navigation }) {
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const [subscription, setSubscription] = useState();
 
@@ -28,39 +30,36 @@ function MainScreen({ navigation }) {
     };
   }, []);
 
-  const handleAppStateChange = useCallback(
-    async (newState) => {
-      const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
-      const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
-      const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
-      const webViewVisible = await AsyncStorage.getItem('webViewVisible');
+  const handleAppStateChange = useCallback(async (newState) => {
+    const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
+    const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
+    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+    const webViewVisible = await AsyncStorage.getItem('webViewVisible');
 
-      if (newState !== 'active') {
-        await AsyncStorage.removeItem('isLoggedIn');
-        const date = JSON.stringify(Date.now());
-        await AsyncStorage.setItem('isOpenDate', date);
-      }
+    if (newState !== 'active') {
+      await AsyncStorage.removeItem('isLoggedIn');
+      const date = JSON.stringify(Date.now());
+      await AsyncStorage.setItem('isOpenDate', date);
+    }
 
-      const bioVisible =
-        !webViewVisible &&
-        !isLoggedIn &&
-        newState === 'active' &&
-        timeDifference >= 30000;
+    const bioVisible =
+      !webViewVisible &&
+      !isLoggedIn &&
+      newState === 'active' &&
+      timeDifference >= 30000;
 
-      if (bioVisible) {
-        SecureStore.getItemAsync('accessToken')
-          .then((t) => {
-            if (t) {
-              const email = jwt_decode(t)?.email;
-              dispatch({ type: 'OTP_SAGA', token: t });
-              getBiometricEnabled(email);
-            }
-          })
-          .catch((err) => console.log(err));
-      }
-    },
-    [onBeforeShow]
-  );
+    if (bioVisible) {
+      SecureStore.getItemAsync('accessToken')
+        .then((t) => {
+          if (t) {
+            const email = jwt_decode(t)?.email;
+            dispatch({ type: 'OTP_SAGA', token: t });
+            getBiometricEnabled(email);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
 
   const onBeforeShow = async () => {
     setSubscription(AppState.addEventListener('change', handleAppStateChange));
@@ -77,7 +76,7 @@ function MainScreen({ navigation }) {
       const userIndex = await parsedUsers?.find(
         (u) => u?.user === user && u?.enabled === true
       );
-      if (userIndex) {
+      if (userIndex && isFocused) {
         navigation.push('Resume', {
           fromSplash: false,
           version: false,
