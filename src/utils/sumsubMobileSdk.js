@@ -6,8 +6,6 @@ import { VERIFICATION_TOKEN } from '../constants/api';
 import { sumsubVerificationToken } from '../utils/userProfileUtils';
 
 export default async () => {
-  await AsyncStorage.setItem('webViewVisible', 'true');
-
   const token = await sumsubVerificationToken();
 
   const snsMobileSDK = SNSMobileSDK.init(token, () => {
@@ -34,6 +32,9 @@ export default async () => {
         console.log('onLog: [Idensic] ' + event.message);
       },
       onEvent: async (event) => {
+        if (event?.payload?.eventName === 'msdk:init') {
+          await AsyncStorage.setItem('webViewVisible', 'true');
+        }
         if (event?.payload?.eventName === 'msdk:dismiss') {
           await AsyncStorage.removeItem('webViewVisible');
         }

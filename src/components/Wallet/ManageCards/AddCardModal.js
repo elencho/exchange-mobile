@@ -33,7 +33,12 @@ export default function AddCardModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    modals: { addCardModalVisible, statusModalInfo, webViewObj },
+    modals: {
+      addCardModalVisible,
+      statusModalInfo,
+      webViewObj,
+      webViewVisible,
+    },
     trade: { depositProvider, depositProviders },
     transactions: { code },
   } = state;
@@ -99,9 +104,11 @@ export default function AddCardModal() {
   };
 
   const handleHide = () => {
-    if (statusObj) dispatch(setStatusModalInfo(statusObj));
-    setSaveCardAgreeTerms(false);
-    setStatusObj(null);
+    if (webViewVisible) {
+      if (statusObj) dispatch(setStatusModalInfo(statusObj));
+      setSaveCardAgreeTerms(false);
+      setStatusObj(null);
+    }
   };
 
   const urlEncodedData = () => {
