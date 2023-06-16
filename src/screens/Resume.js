@@ -52,29 +52,26 @@ const Resume = ({ navigation, route }) => {
     } catch (err) {
       console.log(err);
     }
-  }, [navigation]);
+  }, []);
 
-  const startAuth = useCallback(
-    async (fromSplash) => {
-      const result = await authenticateAsync({
-        promptMessage: 'Log in with fingerprint or faceid',
-        cancelLabel: 'Abort',
-      });
+  const startAuth = useCallback(async (fromSplash) => {
+    const result = await authenticateAsync({
+      promptMessage: 'Log in with fingerprint or faceid',
+      cancelLabel: 'Abort',
+    });
 
-      if (result.success) {
-        if (version || workingVersion) {
-          navigation.goBack();
-        } else if (fromSplash) {
-          navigation.navigate('Main');
-        } else {
-          navigation.goBack();
-        }
-        dispatch(toggleWebViewVisible(true));
-        await AsyncStorage.setItem('isLoggedIn', 'true');
+    if (result.success) {
+      if (version || workingVersion) {
+        navigation.goBack();
+      } else if (fromSplash) {
+        navigation.navigate('Main');
+      } else {
+        navigation.goBack();
       }
-    },
-    [fromSplash]
-  );
+      dispatch(toggleWebViewVisible(true));
+      await AsyncStorage.setItem('isLoggedIn', 'true');
+    }
+  }, []);
 
   const startLogin = async () => {
     const refresh_token = await SecureStore.getItemAsync('refreshToken');
