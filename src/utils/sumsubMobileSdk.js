@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import SNSMobileSDK from '@sumsub/react-native-mobilesdk-module';
 import axios from 'axios';
 
@@ -30,8 +31,13 @@ export default async () => {
       onLog: (event) => {
         console.log('onLog: [Idensic] ' + event.message);
       },
-      onEvent: (event) => {
-        console.log('onEvent: ' + JSON.stringify(event));
+      onEvent: async (event) => {
+        if (event?.payload?.eventName === 'msdk:init') {
+          await AsyncStorage.setItem('webViewVisible', 'true');
+        }
+        if (event?.payload?.eventName === 'msdk:dismiss') {
+          await AsyncStorage.removeItem('webViewVisible');
+        }
       },
     })
     .withDebug(true)

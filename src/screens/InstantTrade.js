@@ -26,6 +26,7 @@ import {
 } from '../redux/trade/actions';
 import useNotifications from './useNotifications';
 import { setWalletTab } from '../redux/wallet/actions';
+import { toggleChooseCardModal } from '../redux/modals/actions';
 
 export default function InstantTrade() {
   useNotifications();
@@ -53,7 +54,10 @@ export default function InstantTrade() {
       const timer = setTimeout(() => {
         setShowRefreshControl(true);
       }, 1000);
-      return () => clearTimeout(timer);
+      return () => {
+        dispatch(toggleChooseCardModal(false));
+        clearTimeout(timer);
+      };
     }, [tabRoute])
   );
 
