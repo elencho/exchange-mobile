@@ -28,8 +28,11 @@ export default async (err) => {
       }
     }
     if (status === 401) {
-      const response = await refreshToken(err.config);
-      return response;
+      const token = await SecureStore.getItemAsync('refreshToken');
+      if (token) {
+        const response = await refreshToken(err.config);
+        return response;
+      }
     }
 
     if (status === 400 && data.error === 'invalid_grant') {
