@@ -3,6 +3,7 @@ import SNSMobileSDK from '@sumsub/react-native-mobilesdk-module';
 import axios from 'axios';
 
 import { VERIFICATION_TOKEN } from '../constants/api';
+import { IS_ANDROID, IS_IOS } from '../constants/system';
 import { sumsubVerificationToken } from '../utils/userProfileUtils';
 
 export default async () => {
@@ -19,23 +20,25 @@ export default async () => {
     .withBaseUrl('https://api.sumsub.com')
     .withHandlers({
       // Optional callbacks you can use to get notified of the corresponding events
-      onStatusChanged: (event) => {
-        console.log(
-          'onStatusChanged: [' +
-            event.prevStatus +
-            '] => [' +
-            event.newStatus +
-            ']'
-        );
-      },
-      onLog: (event) => {
-        console.log('onLog: [Idensic] ' + event.message);
-      },
-      onEvent: async (event) => {
-        if (event?.payload?.eventName === 'msdk:init') {
+      onStatusChanged: async (event) => {
+        if (
+          IS_ANDROID &&
+          event?.prevStatus === 'Ready' &&
+          event?.newStatus === 'Initial'
+        ) {
           await AsyncStorage.setItem('webViewVisible', 'true');
         }
-        if (event?.payload?.eventName === 'msdk:dismiss') {
+      },
+      onLog: async (event) => {
+        if (IS_ANDROID && event?.message === 'msdk:dismiss') {
+          await AsyncStorage.removeItem('webViewVisible');
+        }
+      },
+      onEvent: async (event) => {
+        if (IS_IOS && event?.payload?.eventName === 'msdk:init') {
+          await AsyncStorage.setItem('webViewVisible', 'true');
+        }
+        if (IS_IOS && event?.payload?.eventName === 'msdk:dismiss') {
           await AsyncStorage.removeItem('webViewVisible');
         }
       },
