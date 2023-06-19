@@ -23,7 +23,7 @@ import Language from '../../assets/images/User_profile/Language.svg';
 import { errorHappenedHere } from '../../utils/appUtils';
 import { toggleEmailSubscription } from '../../redux/profile/actions';
 import {
-  toggleCompanyInfoModal,
+  openCompanyInfoModal,
   toggleLanguageModal,
   togglePhoneNumberModal,
 } from '../../redux/modals/actions';
@@ -53,7 +53,7 @@ export default function Personal({ loading }) {
   const edit = () => {
     if (smsAuth) {
       dispatch(
-        toggleCompanyInfoModal(
+        openCompanyInfoModal(
           'go web phone header',
           'go web phone description',
           'go web phone link',
@@ -70,7 +70,7 @@ export default function Personal({ loading }) {
     if (eligibleToVerify) launchSumsubSdk();
     else
       dispatch(
-        toggleCompanyInfoModal(
+        openCompanyInfoModal(
           'go web personal header',
           'go web personal description',
           'go web personal link',

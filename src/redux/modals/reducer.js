@@ -210,14 +210,19 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         languageModalVisible,
       };
-    case 'TOGGLE_COMPANY_INFO_MODAL':
+    case 'OPEN_COMPANY_INFO_MODAL':
       return {
         ...state,
-        companyInfoModalVisible: !state.companyInfoModalVisible,
+        companyInfoModalVisible: true,
         companyInfoModalHeader,
         companyInfoModalDescription,
         companyInfoModalLink,
         companyInfoModalButton,
+      };
+    case 'CLOSE_COMPANY_INFO_MODAL':
+      return {
+        ...state,
+        companyInfoModalVisible: false,
       };
     case 'TOGGLE_IDENTITY_MODAL':
       return {

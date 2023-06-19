@@ -15,7 +15,8 @@ export const actionTypes = {
   PASSWORD_MODAL: 'PASSWORD_MODAL',
   PHONE_NUMBER_MODAL: 'PHONE_NUMBER_MODAL',
   TOGGLE_LANGUAGE_MODAL: 'TOGGLE_LANGUAGE_MODAL',
-  TOGGLE_COMPANY_INFO_MODAL: 'TOGGLE_COMPANY_INFO_MODAL',
+  OPEN_COMPANY_INFO_MODAL: 'OPEN_COMPANY_INFO_MODAL',
+  CLOSE_COMPANY_INFO_MODAL: 'CLOSE_COMPANY_INFO_MODAL',
   GOOGLE_AUTH_MODAL: 'GOOGLE_AUTH_MODAL',
   COUNTRIES_MODAL: 'COUNTRIES_MODAL',
   SMS_AUTH_MODAL: 'SMS_AUTH_MODAL',
@@ -128,13 +129,13 @@ export const toggleGoogleOtpModal = (googleOtpModalVisible) => ({
   type: actionTypes.GOOGLE_OTP_MODAL,
   googleOtpModalVisible,
 });
-export const toggleCompanyInfoModal = (
+export const openCompanyInfoModal = (
   companyInfoModalHeader,
   companyInfoModalDescription,
   companyInfoModalLink,
   companyInfoModalButton
 ) => ({
-  type: actionTypes.TOGGLE_COMPANY_INFO_MODAL,
+  type: actionTypes.OPEN_COMPANY_INFO_MODAL,
   companyInfoModalHeader,
   companyInfoModalDescription,
   companyInfoModalLink,
