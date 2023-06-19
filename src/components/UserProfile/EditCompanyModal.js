@@ -25,7 +25,7 @@ export default function EditCompanyModal() {
     companyInfoModalButton,
   } = useSelector((state) => state.modals);
 
-  const hide = () => dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
+  const hide = () => dispatch({ type: 'CLOSE_COMPANY_INFO_MODAL' });
   const goToWeb = () => {
     Linking.openURL('https://cryptal.com');
     hide();

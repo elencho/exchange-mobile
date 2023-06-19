@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import PurpleText from '../PurpleText';
-import { toggleCompanyInfoModal } from '../../redux/modals/actions';
+import { openCompanyInfoModal } from '../../redux/modals/actions';
 
 export default function CompanyInformation() {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ export default function CompanyInformation() {
   const openModal = () => {
     dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
     dispatch(
-      toggleCompanyInfoModal(
+      openCompanyInfoModal(
         'go web company header',
         'go web company description',
         'go web company link',
