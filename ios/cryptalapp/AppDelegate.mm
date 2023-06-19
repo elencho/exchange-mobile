@@ -93,6 +93,11 @@
      @"FCMToken" object:nil userInfo:dataDict];
 }
 
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+// to delete the badge
+   [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+}
+
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
