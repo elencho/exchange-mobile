@@ -31,6 +31,8 @@ export default async () => {
       },
       onLog: async (event) => {
         if (IS_ANDROID && event?.message === 'msdk:dismiss') {
+          const sleep = (m) => new Promise((r) => setTimeout(r, m));
+          await sleep(3000);
           await AsyncStorage.removeItem('webViewVisible');
         }
       },
