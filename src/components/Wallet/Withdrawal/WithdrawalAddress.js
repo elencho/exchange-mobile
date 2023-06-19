@@ -58,7 +58,7 @@ function WithdrawalAddress({ error, right }) {
     );
   };
 
-  const address = useCallback(() => {
+  const address = () => {
     if (hasWhitelist) {
       if (hasOnThisNetwork) {
         return <AddressDropdown />;
@@ -93,7 +93,7 @@ function WithdrawalAddress({ error, right }) {
         />
       );
     }
-  }, [hasWhitelist]);
+  };
 
   const AddressDropdown = () => (
     <Pressable
