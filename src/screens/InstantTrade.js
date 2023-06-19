@@ -28,7 +28,7 @@ import useNotifications from './useNotifications';
 import { setWalletTab } from '../redux/wallet/actions';
 
 export default function InstantTrade() {
-  useNotifications();
+  // useNotifications();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
