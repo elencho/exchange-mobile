@@ -121,7 +121,7 @@ export default function Deposit({ refreshControl }) {
 
       const tagTransComponent = (
         <Trans
-          i18nKey="needs tag for deposit {{currency}} params[currency]"
+          i18nKey="needs tag for deposit {{currency}} params{currency}"
           values={{ currency: code }}
           components={{
             light: <AppText style={{ color: '#FFFBF3' }} />,
