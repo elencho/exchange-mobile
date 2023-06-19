@@ -58,9 +58,12 @@ function TransactionHistory({ navigation, route }) {
       dispatch(chooseCurrency('Show All Currency'));
       dispatch(setAbbr(null));
       dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-      if (!route?.params?.isFromTransactions) dispatch(clearFilters());
     }, [navigation])
   );
+
+  useEffect(() => {
+    if (!route?.params?.isFromTransactions) dispatch(clearFilters());
+  }, [navigation]);
 
   const onRefresh = () => {
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
