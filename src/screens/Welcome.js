@@ -123,7 +123,7 @@ export default function Welcome({ navigation }) {
       const latestVersion = await storeData;
       const updateNeeded = await VersionCheck.needUpdate({
         currentVersion: currentVersion,
-        latestVersion: latestVersion,
+        latestVersion: '1.2.0',
       });
 
       if (updateNeeded && updateNeeded.isNeeded) {
