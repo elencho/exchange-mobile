@@ -70,6 +70,7 @@ export default function WhitelistActionsModal() {
       case 'Copy Address':
         return <CopyWhite />;
       default:
+        <View />;
         break;
     }
   };
