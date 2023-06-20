@@ -170,12 +170,14 @@ const BuySellModal = () => {
       }
     }
     if (type === 'fiat' && validateScale(replacedAmount, baseScale)) {
+      let fiatAmount = (replacedAmount * rate).toFixed(quoteScale);
+
       if (text && !baseValidation?.test(text) && focusedInput === 'fiat') {
         return;
       }
-      if (parts.length === 2) {
-        let fiatAmount = (replacedAmount * rate).toFixed(quoteScale);
-        // getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
+      if (parts.length === 2 && baseScale == 0) {
+        setTrade(fiatAmount, parts[0].substr(0, 14));
+      } else if (parts.length === 2) {
         setTrade(
           fiatAmount,
           replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0
