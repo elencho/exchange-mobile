@@ -14,6 +14,7 @@ import BankFeesModal from '../../InstantTrade/BankFeesModal';
 import colors from '../../../constants/colors';
 import { IS_ANDROID } from '../../../constants/system';
 import { ICONS_URL_PNG } from '../../../constants/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import CheckFull from '../../../assets/images/Check_Full.svg';
 import CheckRed from '../../../assets/images/Check_Red.svg';
@@ -92,11 +93,12 @@ export default function AddCardModal() {
     }
   };
 
-  const onNavigationStateChange = (state) => {
+  const onNavigationStateChange = async (state) => {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+      await AsyncStorage.removeItem('webViewVisible');
       setStatusObj({ success: ending, visible: true });
       dispatch(cardsSagaAction());
       hide();

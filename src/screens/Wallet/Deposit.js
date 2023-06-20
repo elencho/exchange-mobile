@@ -33,6 +33,7 @@ import {
 } from '../../redux/wallet/actions';
 import { setStatusModalInfo } from '../../redux/modals/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Deposit({ refreshControl }) {
   const dispatch = useDispatch();
@@ -92,7 +93,8 @@ export default function Deposit({ refreshControl }) {
     return 'METHOD';
   };
 
-  const clear = () => {
+  const clear = async () => {
+    await AsyncStorage.removeItem('webViewVisible');
     dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
     dispatch(setDepositProvider(null));
     dispatch(setCard(null));
