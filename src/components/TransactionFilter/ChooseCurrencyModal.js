@@ -34,7 +34,10 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 
   const [filteredData, setFiletredData] = useState(balance?.balances);
 
-  useEffect(() => filter(''), [chooseCurrencyModalVisible]);
+  useEffect(() => {
+    filter('');
+    dispatch(fetchCurrencies());
+  }, [chooseCurrencyModalVisible]);
 
   const filter = (text) => {
     const filteredArray = balance?.balances.filter(
