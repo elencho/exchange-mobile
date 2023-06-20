@@ -18,6 +18,7 @@ import FiatModal from './FiatModal';
 import GeneralError from '../GeneralError';
 import AppWebView from '../AppWebView';
 import WithKeyboard from '../WithKeyboard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../constants/colors';
 import { toggleBuySellModal } from '../../redux/modals/actions';
@@ -209,11 +210,12 @@ const BuySellModal = () => {
     return hasEcommerce;
   };
 
-  const onNavigationStateChange = (state) => {
+  const onNavigationStateChange = async (state) => {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+      await AsyncStorage.removeItem('webViewVisible');
       dispatch({ type: 'BALANCE_SAGA' });
       dispatch(saveTrades([]));
       dispatch(setTradeOffset(0));
