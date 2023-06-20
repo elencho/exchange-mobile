@@ -18,10 +18,18 @@ import { useFocusEffect } from '@react-navigation/native';
 import { logoutUtil } from '../utils/userProfileUtils';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { toggleWebViewVisible } from '../redux/modals/actions';
+import {
+  toggleGoogleOtpModal,
+  toggleWebViewVisible,
+} from '../redux/modals/actions';
+import { IS_ANDROID } from '../constants/system';
 
 const Resume = ({ navigation, route }) => {
   const state = useSelector((state) => state?.profile, shallowEqual);
+  const withdrawalConfirmModalVisible = useSelector(
+    (state) => state?.modals?.withdrawalConfirmModalVisible,
+    shallowEqual
+  );
   const { fromSplash, version, workingVersion } = route?.params;
   const dispatch = useDispatch();
 
@@ -67,6 +75,9 @@ const Resume = ({ navigation, route }) => {
         navigation.navigate('Main');
       } else {
         navigation.goBack();
+      }
+      if (IS_ANDROID && withdrawalConfirmModalVisible) {
+        dispatch(toggleGoogleOtpModal(false));
       }
       dispatch(toggleWebViewVisible(true));
       await AsyncStorage.setItem('isLoggedIn', 'true');
