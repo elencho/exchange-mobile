@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   currenciesConstant: [],
   currentTransaction: {},
   currency: 'Show All Currency',
+  activeTab: 'Transfer',
 
   loading: false,
 
@@ -41,6 +42,7 @@ export default (state = INITIAL_STATE, action) => {
     currenciesConstant,
     tabNavigationRef,
     totalTransactions,
+    activeTab,
   } = action;
   switch (action.type) {
     case 'SET_TAB_NAVIGATION_REF':
@@ -122,6 +124,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         tabRoute,
+      };
+    case actionTypes.SET_ACTIVE_TAB:
+      return {
+        ...state,
+        activeTab,
       };
     case 'SET_STACK_NAVIGATION_ROUTE':
       return {

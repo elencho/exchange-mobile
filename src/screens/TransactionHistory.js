@@ -28,6 +28,7 @@ import {
 } from '../redux/transactions/actions';
 import colors from '../constants/colors';
 import CustomRefreshContol from '../components/CustomRefreshContol';
+import TabSwitcher from '../components/TransactionHistory/widgets/TabSwitcher';
 
 function TransactionHistory({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -107,10 +108,13 @@ function TransactionHistory({ navigation, route }) {
 
       <Headline title="Transaction History" />
 
-      <View style={styles.filter}>
+      {/* This filter needs to be modified */}
+      {/* Components used here need to be deleted */}
+      {/* <View style={styles.filter}>
         <FilterRow array={types} />
         <FilterIcon onPress={() => navigation.navigate('TransactionFilter')} />
-      </View>
+      </View> */}
+      <TabSwitcher />
 
       {loading ? (
         <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
