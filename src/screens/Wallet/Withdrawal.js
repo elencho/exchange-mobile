@@ -88,7 +88,7 @@ export default function Withdrawal({ refreshControl }) {
     dispatch(setFee(null));
     if (
       (isEcommerce && card && depositProvider) ||
-      (!isFiat && Object.keys(currentBalanceObj.withdrawalMethods).length > 0)
+      (!isFiat && currentBalanceObj?.withdrawalMethods?.WALLET)
     ) {
       dispatch(fetchFee('withdrawal'));
     }
