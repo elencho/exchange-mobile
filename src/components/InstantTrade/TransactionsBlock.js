@@ -64,12 +64,12 @@ const TransactionsBlock = ({ loading }) => {
     trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
   } = state;
 
-  const toggleShowHide = () => {
-    dispatch(setTradeOffset(0));
-    dispatch(hideOtherPairsAction(!hideOtherPairs));
-    dispatch(saveTrades([]));
-    dispatch(fetchTrades());
-  };
+  // const toggleShowHide = () => {
+  //   dispatch(setTradeOffset(0));
+  //   dispatch(hideOtherPairsAction(!hideOtherPairs));
+  //   dispatch(saveTrades([]));
+  //   dispatch(fetchTrades());
+  // };
 
   const handleScrollEnd = () => {
     if (trades.length === totalTrades) {
@@ -104,10 +104,10 @@ const TransactionsBlock = ({ loading }) => {
 
   return (
     <View style={styles.container}>
-      <TopRow
+      {/* <TopRow
         text={hideOtherPairs ? 'Show' : 'Hide'}
         onPress={toggleShowHide}
-      />
+      /> */}
 
       {loading && !moreTradesLoading ? (
         <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
@@ -140,8 +140,8 @@ const TransactionsBlock = ({ loading }) => {
 export default memo(TransactionsBlock);
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    padding: 25,
+    padding: 5,
+    marginTop: 20,
   },
   empty: {
     height: 280,

@@ -77,7 +77,6 @@ export default function InstantTrade() {
         ) : (
           <TradeBlock />
         )}
-        <TransactionsBlock loading={tradesLoading || userProfileLoading} />
       </ScrollView>
 
       <InfoModal />

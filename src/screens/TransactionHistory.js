@@ -30,6 +30,7 @@ import colors from '../constants/colors';
 import CustomRefreshContol from '../components/CustomRefreshContol';
 import TabSwitcher from '../components/TransactionHistory/widgets/TabSwitcher';
 import SearchAndFilter from '../components/TransactionHistory/widgets/SearchAndFilter';
+import TransactionsBlock from '../components/InstantTrade/TransactionsBlock';
 
 function TransactionHistory({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -43,6 +44,7 @@ function TransactionHistory({ navigation, route }) {
       totalTransactions,
       code: currencyCode,
       currency,
+      activeTab,
     },
     trade: { moreTradesLoading },
   } = state;
@@ -120,7 +122,7 @@ function TransactionHistory({ navigation, route }) {
 
       {loading ? (
         <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
-      ) : (
+      ) : activeTab === 'Transfer' ? (
         <FlatList
           style={styles.transactions}
           contentContainerStyle={{ flexGrow: 1 }}
@@ -143,7 +145,11 @@ function TransactionHistory({ navigation, route }) {
             )
           }
         />
+      ) : (
+        <TransactionsBlock />
       )}
+
+      {/* <TransactionsBlock loading={tradesLoading || userProfileLoading} /> */}
 
       {isFocused && <TransactionModal transactions />}
     </Background>
