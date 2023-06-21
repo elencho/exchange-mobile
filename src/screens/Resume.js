@@ -71,13 +71,15 @@ const Resume = ({ navigation, route }) => {
     if (result.success) {
       if (version || workingVersion) {
         navigation.goBack();
-      } else if (fromSplash === true) {
+      } else if (fromSplash) {
         navigation.navigate('Main');
       } else {
         navigation.goBack();
       }
       if (IS_ANDROID && withdrawalConfirmModalVisible) {
         dispatch(toggleGoogleOtpModal(false));
+        dispatch(toggleEmailAuthModal(false));
+        dispatch(toggleSmsAuthModal(false));
       }
       dispatch(toggleWebViewVisible(true));
       await AsyncStorage.setItem('isLoggedIn', 'true');
