@@ -136,38 +136,36 @@ function Withdrawal({ refreshControl }) {
       return iban?.trim();
   }, [saveTemplate, withdrawalBank]);
 
-  const withdraw =
-    (() => {
-      const length = Object.keys(currentWhitelistObj)?.length;
-      const tag = () => {
-        const tagCondition =
-          currentBalanceObj?.infos[network]?.transactionRecipientType ===
-          'ADDRESS_AND_TAG';
-        if (tagCondition)
-          return currentWhitelistObj?.tag?.trim() || memoTag?.trim();
-        return true;
-      };
+  const withdraw = () => {
+    const length = Object.keys(currentWhitelistObj)?.length;
+    const tag = () => {
+      const tagCondition =
+        currentBalanceObj?.infos[network]?.transactionRecipientType ===
+        'ADDRESS_AND_TAG';
+      if (tagCondition)
+        return currentWhitelistObj?.tag?.trim() || memoTag?.trim();
+      return true;
+    };
 
-      let condition;
-      if (isEcommerce) {
-        condition =
-          !validateAmount(withdrawalAmount) || !card || !depositProvider;
-      } else if (isFiat) {
-        condition = !validateAmount(withdrawalAmount) || !notEmpty();
-      } else {
-        condition = !validateAmount(withdrawalAmount) || !length || !tag();
-      }
+    let condition;
+    if (isEcommerce) {
+      condition =
+        !validateAmount(withdrawalAmount) || !card || !depositProvider;
+    } else if (isFiat) {
+      condition = !validateAmount(withdrawalAmount) || !notEmpty();
+    } else {
+      condition = !validateAmount(withdrawalAmount) || !length || !tag();
+    }
 
-      if (condition) {
-        setError(true);
-      } else {
-        dispatch({
-          type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
-          withdrawalConfirmModalVisible: true,
-        });
-      }
-    },
-    [validateAmount]);
+    if (condition) {
+      setError(true);
+    } else {
+      dispatch({
+        type: 'TOGGLE_WITHDRAWAL_CONFIRM_MODAL',
+        withdrawalConfirmModalVisible: true,
+      });
+    }
+  };
 
   const saveTemplateCheck = useCallback(() => {
     return (

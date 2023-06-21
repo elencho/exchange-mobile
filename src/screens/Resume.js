@@ -37,6 +37,7 @@ const Resume = ({ navigation, route }) => {
 
   const { userInfo } = state;
   const [bioType, setBioType] = useState(null);
+  const resumed = route?.key === 'Resume-uniqueKey';
 
   useFocusEffect(
     useCallback(() => {
@@ -71,7 +72,7 @@ const Resume = ({ navigation, route }) => {
     });
 
     if (result.success) {
-      if (version || workingVersion) {
+      if (version || workingVersion || resumed) {
         navigation.goBack();
       } else if (fromSplash) {
         navigation.navigate('Main');
