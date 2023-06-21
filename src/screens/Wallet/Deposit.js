@@ -93,8 +93,7 @@ export default function Deposit({ refreshControl }) {
     return 'METHOD';
   };
 
-  const clear = async () => {
-    await AsyncStorage.removeItem('webViewVisible');
+  const clear = () => {
     dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
     dispatch(setDepositProvider(null));
     dispatch(setCard(null));
@@ -102,14 +101,15 @@ export default function Deposit({ refreshControl }) {
     dispatch({ type: 'BALANCE_SAGA' });
   };
 
-  const onNavigationStateChange = (state) => {
+  const onNavigationStateChange = async (state) => {
     const urlArray = state.url.split('=');
     const alternateUrlArray = state.url.split('/');
     const ending = urlArray[urlArray.length - 1];
     const alternateEnding = alternateUrlArray[alternateUrlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
-      clear();
       dispatch(setStatusModalInfo({ success: ending, visible: true }));
+      clear();
+      await AsyncStorage.removeItem('webViewVisible');
     }
   };
 

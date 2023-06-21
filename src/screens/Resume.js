@@ -19,7 +19,9 @@ import { logoutUtil } from '../utils/userProfileUtils';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
+  toggleEmailAuthModal,
   toggleGoogleOtpModal,
+  toggleSmsAuthModal,
   toggleWebViewVisible,
 } from '../redux/modals/actions';
 import { IS_ANDROID } from '../constants/system';
