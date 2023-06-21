@@ -27,7 +27,7 @@ export default function CodeInput({ cellCount = 6, value, setValue }) {
   };
 
   return (
-    <>
+    <View>
       <View>
         <GeneralError
           style={styles.error}
@@ -56,7 +56,7 @@ export default function CodeInput({ cellCount = 6, value, setValue }) {
           </AppText>
         )}
       />
-    </>
+    </View>
   );
 }
 
