@@ -9,8 +9,6 @@ const TabSwitcher = () => {
   const dispatch = useDispatch();
   const activeTab = useSelector((state) => state.transactions.activeTab);
 
-  console.log('activeTab', activeTab);
-
   const tabTextStyle = (tabName) => {
     return {
       color: activeTab === tabName ? colors.PRIMARY_TEXT : '#969CBF',

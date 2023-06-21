@@ -90,9 +90,9 @@ export const setTabRouteName = (tabRoute) => ({
   type: actionTypes.SET_TAB_ROUTE_NAME,
   tabRoute,
 });
-export const setActiveTab = (tabName) => ({
+export const setActiveTab = (activeTab) => ({
   type: actionTypes.SET_ACTIVE_TAB,
-  tabName,
+  activeTab,
 });
 
 // FOR SAGAS

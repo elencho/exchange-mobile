@@ -29,6 +29,7 @@ import {
 import colors from '../constants/colors';
 import CustomRefreshContol from '../components/CustomRefreshContol';
 import TabSwitcher from '../components/TransactionHistory/widgets/TabSwitcher';
+import SearchAndFilter from '../components/TransactionHistory/widgets/SearchAndFilter';
 
 function TransactionHistory({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -107,6 +108,8 @@ function TransactionHistory({ navigation, route }) {
       <TopRow clear={() => dispatch(clearFilters())} />
 
       <Headline title="Transaction History" />
+      <TabSwitcher />
+      <SearchAndFilter navigation={navigation} />
 
       {/* This filter needs to be modified */}
       {/* Components used here need to be deleted */}
@@ -114,7 +117,6 @@ function TransactionHistory({ navigation, route }) {
         <FilterRow array={types} />
         <FilterIcon onPress={() => navigation.navigate('TransactionFilter')} />
       </View> */}
-      <TabSwitcher />
 
       {loading ? (
         <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
