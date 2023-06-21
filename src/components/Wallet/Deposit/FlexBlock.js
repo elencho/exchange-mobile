@@ -25,13 +25,13 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
 
   const text = () => {
     if (reason === 'no address') {
-      return 'Reason: No Addresses';
+      return 'description no addresses';
     } else if (reason === 'OTP_RESET') {
-      return `${type} Reason: OTP_RESET`;
+      return `description ${type} OTP_RESET `;
     } else if (reason === 'SUPPORT') {
-      return `${type} Reason: Support`;
+      return `description ${type} support`;
     } else if (reason === 'METHOD') {
-      return `does not have ${type} method`;
+      return `description does not have ${type} method`;
     } else {
       return null;
     }
@@ -47,11 +47,15 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
 
   const headline = () => {
     if (reason === 'no address') {
-      return 'Deposit Address';
+      return 'title no addresses';
+    } else if (reason === 'OTP_RESET') {
+      return `title ${type} OTP_RESET `;
     } else if (reason === 'SUPPORT') {
-      return 'Deposit Address';
+      return `title ${type} support`;
+    } else if (reason === 'METHOD') {
+      return `title does not have ${type} method`;
     } else {
-      return 'Unavailable';
+      return null;
     }
   };
 
@@ -103,5 +107,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+    paddingHorizontal: 10,
   },
 });
