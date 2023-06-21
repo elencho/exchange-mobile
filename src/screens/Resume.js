@@ -78,6 +78,8 @@ const Resume = ({ navigation, route }) => {
       }
       if (IS_ANDROID && withdrawalConfirmModalVisible) {
         dispatch(toggleGoogleOtpModal(false));
+        dispatch(toggleEmailAuthModal(false));
+        dispatch(toggleSmsAuthModal(false));
       }
       dispatch(toggleWebViewVisible(true));
       await AsyncStorage.setItem('isLoggedIn', 'true');
