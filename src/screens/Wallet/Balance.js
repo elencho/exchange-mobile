@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,7 +21,7 @@ import {
 import CustomRefreshContol from '../../components/CustomRefreshContol';
 import { IS_ANDROID } from '../../constants/system';
 
-export default function Balance({ navigation }) {
+function Balance({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -91,6 +91,7 @@ export default function Balance({ navigation }) {
     </Background>
   );
 }
+export default memo(Balance);
 
 const styles = StyleSheet.create({
   arrow: {
