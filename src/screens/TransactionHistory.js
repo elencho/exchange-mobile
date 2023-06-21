@@ -31,6 +31,7 @@ import CustomRefreshContol from '../components/CustomRefreshContol';
 import TabSwitcher from '../components/TransactionHistory/widgets/TabSwitcher';
 import SearchAndFilter from '../components/TransactionHistory/widgets/SearchAndFilter';
 import TransactionsBlock from '../components/InstantTrade/TransactionsBlock';
+import Transaction from '../components/TransactionHistory/Transaction';
 
 function TransactionHistory({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -73,21 +74,17 @@ function TransactionHistory({ navigation, route }) {
       ? transactions
       : transactions.filter((t) => t.currency == currencyCode);
 
-  const dates = transactionsCurrencyFiltered?.map((tr) => {
-    const date = new Date(tr.timestamp);
-    return `${date.getDate()} ${
-      monthsShort[date.getMonth()]
-    }, ${date.getFullYear()}`;
-  });
+  // const dates = transactionsCurrencyFiltered?.map((tr) => {
+  //   const date = new Date(tr.timestamp);
+  //   return `${date.getDate()} ${
+  //     monthsShort[date.getMonth()]
+  //   }, ${date.getFullYear()}`;
+  // });
 
-  const uniqueDates = [...new Set(dates)];
+  // const uniqueDates = [...new Set(dates)];
 
-  const renderDate = ({ item }) => (
-    <TransactionDate
-      date={item}
-      transactions={transactionsCurrencyFiltered}
-      loading={loading}
-    />
+  const renderTransaction = ({ item }) => (
+    <Transaction isTransfer transactionData={item} loading={loading} />
   );
   const listEmptyContainer = (
     <View style={styles.empty}>
@@ -126,9 +123,9 @@ function TransactionHistory({ navigation, route }) {
         <FlatList
           style={styles.transactions}
           contentContainerStyle={{ flexGrow: 1 }}
-          data={uniqueDates}
-          renderItem={renderDate}
-          keyExtractor={(item) => item}
+          data={transactionsCurrencyFiltered}
+          renderItem={renderTransaction}
+          keyExtractor={(item, index) => item.transactionId + index}
           onEndReached={handleScrollEnd}
           onEndReachedThreshold={0.5}
           showsVerticalScrollIndicator={false}
@@ -137,13 +134,13 @@ function TransactionHistory({ navigation, route }) {
           refreshControl={
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }
-          ListFooterComponent={() =>
-            moreTradesLoading && uniqueDates.length > 0 ? (
-              <TransactionSkeleton length={[0, 1, 2]} />
-            ) : (
-              <View />
-            )
-          }
+          // ListFooterComponent={() =>
+          //   moreTradesLoading && uniqueDates.length > 0 ? (
+          //     <TransactionSkeleton length={[0, 1, 2]} />
+          //   ) : (
+          //     <View />
+          //   )
+          // }
         />
       ) : (
         <TransactionsBlock />

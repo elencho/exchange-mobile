@@ -24,6 +24,8 @@ export default function TransactionDetails() {
     },
   } = state;
 
+  console.log('method', method);
+
   const LeftText = ({ text }) => (
     <View style={styles.leftTextContainer}>
       <AppText style={styles.leftText}>{text}</AppText>

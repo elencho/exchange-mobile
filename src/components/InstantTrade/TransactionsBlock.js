@@ -7,7 +7,7 @@ import { t } from 'i18next';
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
-import Trade from './Trade';
+// import Trade from './Trade';
 import List from '../../assets/images/List.svg';
 
 import colors from '../../constants/colors';
@@ -21,6 +21,7 @@ import {
 } from '../../redux/trade/actions';
 import { reachScrollEnd } from '../../redux/transactions/actions';
 import { IS_IOS } from '../../constants/system';
+import Transaction from '../TransactionHistory/Transaction';
 
 export const TopRow = ({ text, onPress }) => {
   return (
@@ -85,9 +86,7 @@ const TransactionsBlock = ({ loading }) => {
     dispatch(fetchTrades());
   };
 
-  const renderTrade = ({ item }) => (
-    <Trade trade={item} key={item.creationTime} />
-  );
+  const renderTrade = ({ item }) => <Transaction transactionData={item} />;
   const footer = memo(() =>
     moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />
   );
