@@ -71,7 +71,8 @@ function WithdrawalAddress({ error, right }) {
               onChangeText={setAddress}
               value={w.address}
               error={error && !w?.address}
-              right={right ? right : null}
+              // right={right ? right : null}
+              disabled
             />
             <AppText subtext style={styles.addWhitelist}>
               {t('Do Not Have Address')}{' '}
