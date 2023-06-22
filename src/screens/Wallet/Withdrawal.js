@@ -80,7 +80,9 @@ function Withdrawal({ refreshControl }) {
       if (m.WIRE) dispatch(setNetwork(m.WIRE[0].provider));
     }
 
-    setHasMethod(!!Object.keys(m).length);
+    setHasMethod(
+      isFiat ? !!Object.keys(m).length : !!Object.keys(m).includes('WALLET')
+    );
   }, [code]);
 
   useEffect(() => {

@@ -62,7 +62,9 @@ export default function Deposit({ refreshControl }) {
       if (m?.WIRE) dispatch(setNetwork(m?.WIRE[0]?.provider));
     }
 
-    setHasMethod(!!Object.keys(m).includes('WALLET'));
+    setHasMethod(
+      isFiat ? !!Object.keys(m).length : !!Object.keys(m).includes('WALLET')
+    );
 
     return () => {
       dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
