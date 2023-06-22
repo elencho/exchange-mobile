@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,7 +8,6 @@ import ModalWithSearch from '../ModalWithSearch';
 import {
   currencyAction,
   fetchCurrencies,
-  filterCurrencies,
 } from '../../redux/transactions/actions';
 import { toggleCurrencyModal } from '../../redux/modals/actions';
 import {
@@ -20,7 +19,7 @@ import {
 } from '../../redux/wallet/actions';
 import { setCurrentBalanceObj } from '../../redux/trade/actions';
 
-function ChooseCurrencyModal({ wallet = false }) {
+function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
@@ -33,23 +32,32 @@ function ChooseCurrencyModal({ wallet = false }) {
     wallet: { walletTab },
   } = state;
 
-  let walletCurrencies = currencies;
+  const [filteredData, setFiletredData] = useState(balance?.balances);
 
   useEffect(() => {
-    if (wallet && walletCurrencies[0]?.name === 'Show All Currency') {
-      walletCurrencies.shift();
-    }
-  }, [currencies]);
+    filter('');
+    dispatch(fetchCurrencies());
+  }, [chooseCurrencyModalVisible]);
 
   const filter = (text) => {
-    const filteredArray = currenciesConstant.filter(
+    const filteredArray = balance?.balances.filter(
       (c) =>
-        c.name.toLowerCase().includes(text.toLowerCase()) ||
-        c.code.toLowerCase().includes(text.toLowerCase())
+        c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
+        c.currencyName.toLowerCase().includes(text.toLowerCase())
     );
-    dispatch(filterCurrencies(filteredArray));
+    setFiletredData(
+      isForTransactions
+        ? [
+            {
+              name: 'Show All Currency',
+              currencyName: 'Show All Currency',
+              currencyCode: '',
+            },
+            ...filteredArray,
+          ]
+        : filteredArray
+    );
   };
-
   const hide = () => dispatch(toggleCurrencyModal(false));
   const onModalHide = () => dispatch(fetchCurrencies());
 
@@ -94,17 +102,19 @@ function ChooseCurrencyModal({ wallet = false }) {
       const currency = name === 'Show All Currency' ? null : currencyCode;
       dispatch(currencyAction(name, currenciesConstant, currency));
     }
-
+    dispatch({ type: 'GET_WHITELIST_ACTION' });
     hide();
   };
 
   const children = (
     <ModalWithSearch
-      array={walletCurrencies}
+      array={filteredData}
       choose={choose}
       filter={filter}
       currentItem={currency}
       title="Choose Currency"
+      isForTransactions={isForTransactions}
+      wallet={wallet}
     />
   );
 
@@ -114,7 +124,7 @@ function ChooseCurrencyModal({ wallet = false }) {
       hide={hide}
       children={children}
       onModalHide={onModalHide}
-      custom
+      fullScreen
     />
   );
 }

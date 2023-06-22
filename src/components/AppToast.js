@@ -9,8 +9,8 @@ import AppText from './AppText';
 const Texts = ({ toastObj }) => (
   <View style={styles.texts}>
     {toastObj?.header ? (
-      <AppText medium style={styles.white}>
-        {toastObj?.header}
+      <AppText body medium style={styles.white}>
+        Error
       </AppText>
     ) : null}
     {toastObj?.body ? (

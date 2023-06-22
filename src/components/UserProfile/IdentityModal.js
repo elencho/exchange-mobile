@@ -32,7 +32,7 @@ export default function IdentityModal() {
     <View style={{ flexDirection: 'row', marginBottom: isLast ? 0 : 10 }}>
       <Dot color="#969CBF" style={{ marginTop: 7 }} />
       <AppText style={{ color: '#969CBF' }}>
-        verification text key {text}
+        {`verification text key ${text}`}
       </AppText>
     </View>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   StyleSheet,
   View,
@@ -14,10 +14,10 @@ import AppInput from '../AppInput';
 import AppText from '../AppText';
 import CountriesModal from '../UserProfile/CountriesModal';
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import { setRegistrationInputs } from '../../redux/profile/actions';
 import { toggleCountriesModal } from '../../redux/modals/actions';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
+import Arrow from '../../assets/images/Arrow';
 
 export default function RegistrationInputs({ validations, error }) {
   const dispatch = useDispatch();
@@ -91,6 +91,7 @@ export default function RegistrationInputs({ validations, error }) {
         label="Enter E-mail"
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
+        autoCapitalize={'none'}
         onChangeText={(text) => handleInputs(text, 'email')}
         error={error && (!i.email || !v.isEmail)}
         errorText={errorText('Email')}
@@ -98,6 +99,7 @@ export default function RegistrationInputs({ validations, error }) {
       <AppInput
         value={i.passwordNew}
         label="Enter Password"
+        autoCapitalize={'none'}
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'pass')}
@@ -122,6 +124,7 @@ export default function RegistrationInputs({ validations, error }) {
       <AppInput
         value={i.passwordConfirm}
         label="Repeat Password"
+        autoCapitalize={'none'}
         labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'confirm')}
@@ -145,8 +148,7 @@ export default function RegistrationInputs({ validations, error }) {
               Code
             </AppText>
           )}
-
-          <Image source={images.Arrow} />
+          <Arrow />
           <View style={styles.line} />
         </Pressable>
 
@@ -184,6 +186,7 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     borderRadius: 10,
+    resizeMode: 'stretch',
   },
   input: {
     marginTop: 22,
@@ -218,7 +221,9 @@ const styles = StyleSheet.create({
   validations: {
     color: colors.SECONDARY_TEXT,
     fontSize: 11,
+    lineHeight: 15,
     textAlign: 'justify',
+    lineHeight: 15,
     marginTop: 8,
   },
   white: {

@@ -59,9 +59,11 @@ import {
   setReceiverBank,
   setWithdrawalAmount,
   setWithdrawalBank,
+  setIntermediateBank,
   setWithdrawalNote,
   setWithdrawalRestriction,
   withdrawalTemplatesAction,
+  setIsAddressGenerating,
 } from '../wallet/actions';
 import {
   addWhitelistParams,
@@ -169,15 +171,19 @@ function* cryptoAddressesSaga(action) {
 }
 
 function* generateCryptoAddressSaga(action) {
+  yield put(setIsAddressGenerating(true));
   const { code, network } = action;
   const cryptoAddress = yield call(generateCryptoAddress, code, network);
-  if (cryptoAddress) yield put(saveCryptoAddress(cryptoAddress));
+  if (cryptoAddress) {
+    yield put(saveCryptoAddress(cryptoAddress));
+  }
+  yield put(setIsAddressGenerating(false));
 }
 
 function* goToBalanceSaga(action) {
   const { name, code, navigation } = action;
   yield put(setAbbr(code));
-  yield put(chooseCurrency(name));
+  yield put(chooseCurrency(code));
   yield call(() => navigation?.navigate('Balance'));
 }
 
@@ -348,6 +354,7 @@ function* clearWithdrawalInputsSaga() {
     yield put(chooseTemplate({}));
     yield put(setIban(''));
     yield put(setWithdrawalBank({}));
+    yield put(setIntermediateBank({}));
     yield put(saveTemplateAction(false));
     yield put(setNewTemplateName(''));
     yield put(setReceiverBank({}));
@@ -360,7 +367,7 @@ function* clearWithdrawalInputsSaga() {
     yield put(setCard(null));
   }
 
-  if (network) yield put(fetchFee('withdrawal'));
+  if (network && !ecommerce) yield put(fetchFee('withdrawal'));
 }
 
 function* maxWithdrawalSaga() {

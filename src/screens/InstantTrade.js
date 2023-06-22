@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 
 import CustomRefreshContol from '../components/CustomRefreshContol';
 import Background from '../components/Background';
@@ -23,17 +24,23 @@ import {
   setTradeOffset,
   setTradeType,
 } from '../redux/trade/actions';
+import useNotifications from './useNotifications';
+import { setWalletTab } from '../redux/wallet/actions';
+import { toggleChooseCardModal } from '../redux/modals/actions';
 
 export default function InstantTrade() {
+  // useNotifications();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     trade: { tradesLoading, offersLoading },
     transactions: { tabRoute },
+    profile: { userProfileLoading },
   } = state;
 
   const loading = tradesLoading && offersLoading;
   const onRefresh = () => {
+    dispatch(setWalletTab('Deposit'));
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
     dispatch(setTradeOffset(0));
     dispatch(fetchTrades());
@@ -41,13 +48,18 @@ export default function InstantTrade() {
 
   const [showRefreshControl, setShowRefreshControl] = useState(false);
 
-  useEffect(() => {
-    tabRoute === 'Trade' && onRefresh();
-    const timer = setTimeout(() => {
-      setShowRefreshControl(true);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [tabRoute]);
+  useFocusEffect(
+    useCallback(() => {
+      tabRoute === 'Trade' && onRefresh();
+      const timer = setTimeout(() => {
+        setShowRefreshControl(true);
+      }, 1000);
+      return () => {
+        dispatch(toggleChooseCardModal(false));
+        clearTimeout(timer);
+      };
+    }, [tabRoute])
+  );
 
   return (
     <Background>
@@ -71,8 +83,12 @@ export default function InstantTrade() {
           ) : null
         }
       >
-        {offersLoading ? <TradeBlockSkeleton /> : <TradeBlock />}
-        <TransactionsBlock loading={tradesLoading} />
+        {offersLoading || userProfileLoading ? (
+          <TradeBlockSkeleton />
+        ) : (
+          <TradeBlock />
+        )}
+        <TransactionsBlock loading={tradesLoading || userProfileLoading} />
       </ScrollView>
 
       <InfoModal />

@@ -18,19 +18,20 @@ import {
   togglePersonalInfoModal,
 } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import CountriesModal from './CountriesModal';
 import { saveUserInfo, saveUserInfoSaga } from '../../redux/profile/actions';
 import GeneralError from '../GeneralError';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
 import { errorHappenedHere } from '../../utils/appUtils';
+import Arrow from '../../assets/images/Arrow';
+import InputErrorMsg from '../InputErrorMsg';
 
 export default function PersonalInfoModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     modals: { personalInfoModalVisible },
-    profile: { userInfo, countriesConstant },
+    profile: { userInfo, countriesConstant, isProfileUpdating },
   } = state;
 
   const [countryDrop, setCountryDrop] = useState(false);
@@ -54,6 +55,7 @@ export default function PersonalInfoModal() {
   const citizenshipBorder = {
     borderColor: error && !citizenship ? '#F45E8C' : '#42475D',
   };
+  const alphabeticRegex = (text) => /^[a-zA-Z]+$/.test(text?.trim());
 
   useEffect(() => {
     error && setError(false);
@@ -67,16 +69,20 @@ export default function PersonalInfoModal() {
       setUserInfoVariable(null);
     }
   });
-
   const hide = () => {
     dispatch(saveUserInfo(userInfoVariable));
     dispatch(togglePersonalInfoModal(false));
   };
   const handleSave = () => {
     const condition = canEditInfo
-      ? !country || !city?.trim() || !postalCode?.trim() || !address?.trim()
+      ? !country ||
+        !city?.trim() ||
+        !alphabeticRegex(city) ||
+        !postalCode?.trim() ||
+        !address?.trim()
       : !country ||
         !city?.trim() ||
+        !alphabeticRegex(city) ||
         !postalCode?.trim() ||
         !address?.trim() ||
         !firstName?.trim() ||
@@ -85,9 +91,7 @@ export default function PersonalInfoModal() {
 
     if (error || condition) {
       setError(true);
-    } else {
-      dispatch(saveUserInfoSaga());
-    }
+    } else dispatch(saveUserInfoSaga());
   };
 
   const handleCountries = (countryDrop, citizenshipDrop) => {
@@ -140,8 +144,13 @@ export default function PersonalInfoModal() {
               }
               label="First Name"
               value={firstName}
-              error={error && !firstName?.trim()}
+              error={
+                error && (!alphabeticRegex(firstName) || !firstName?.trim())
+              }
             />
+            {error && firstName?.trim() && !alphabeticRegex(firstName) && (
+              <InputErrorMsg message="Only English letters allowed" />
+            )}
             <AppInput
               style={styles.inputContainer}
               onChangeText={(lastName) =>
@@ -149,8 +158,11 @@ export default function PersonalInfoModal() {
               }
               label="Last Name"
               value={lastName}
-              error={error && !lastName?.trim()}
+              error={error && (!alphabeticRegex(lastName) || !lastName?.trim())}
             />
+            {error && lastName?.trim() && !alphabeticRegex(lastName) && (
+              <InputErrorMsg message="Only English letters allowed" />
+            )}
           </>
         )}
 
@@ -174,7 +186,7 @@ export default function PersonalInfoModal() {
             <AppText medium style={styles.dropdownText}>
               {citizenshipText(citizenship)}
             </AppText>
-            <Image source={images.Arrow} />
+            <Arrow />
           </Pressable>
         )}
 
@@ -187,7 +199,6 @@ export default function PersonalInfoModal() {
               Country
             </AppText>
           </View>
-
           <Image
             source={{
               uri: `${COUNTRIES_URL_PNG}/${countryCode}.png`,
@@ -197,29 +208,28 @@ export default function PersonalInfoModal() {
           <AppText medium style={styles.dropdownText}>
             {country}
           </AppText>
-          <Image source={images.Arrow} />
+          <Arrow />
         </Pressable>
 
-        <View style={styles.row}>
-          <AppInput
-            style={[styles.inputContainer, styles.rowInputs]}
-            onChangeText={(city) =>
-              dispatch(saveUserInfo({ ...userInfo, city }))
-            }
-            label="City"
-            value={city}
-            error={error && !city?.trim()}
-          />
-          <AppInput
-            style={[styles.inputContainer, styles.rowInputs]}
-            onChangeText={(postalCode) =>
-              dispatch(saveUserInfo({ ...userInfo, postalCode }))
-            }
-            label="Postal Code"
-            value={postalCode}
-            error={error && !postalCode?.trim()}
-          />
-        </View>
+        <AppInput
+          style={styles.inputContainer}
+          onChangeText={(city) => dispatch(saveUserInfo({ ...userInfo, city }))}
+          label="City"
+          value={city}
+          error={error && (!alphabeticRegex(city) || !city?.trim())}
+        />
+        {error && !alphabeticRegex(city) && city?.trim() && (
+          <InputErrorMsg message="Only English letters allowed" />
+        )}
+        <AppInput
+          style={styles.inputContainer}
+          onChangeText={(postalCode) =>
+            dispatch(saveUserInfo({ ...userInfo, postalCode }))
+          }
+          label="Postal Code"
+          value={postalCode}
+          error={error && !postalCode?.trim()}
+        />
 
         <AppInput
           style={styles.inputContainer}
@@ -232,7 +242,12 @@ export default function PersonalInfoModal() {
         />
       </TouchableOpacity>
 
-      <AppButton onPress={handleSave} style={styles.button} text="Save" />
+      <AppButton
+        onPress={handleSave}
+        loading={isProfileUpdating}
+        style={styles.button}
+        text="Save"
+      />
 
       <CountriesModal
         citizenshipDrop={citizenshipDrop}

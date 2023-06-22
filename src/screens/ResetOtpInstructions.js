@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Image,
-  ImageBackground,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
 import * as SecureStore from 'expo-secure-store';
@@ -16,10 +10,12 @@ import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 
 import Logo from '../assets/images/Logo';
+import Back from '../assets/images/Back';
 import TwoFaInput from '../components/TwoFaInput';
 import WithKeyboard from '../components/WithKeyboard';
 import images from '../constants/images';
 import colors from '../constants/colors';
+import { startLoginAction } from '../redux/profile/actions';
 
 export default function ResetOtpInstructions({ navigation, route }) {
   const dispatch = useDispatch();
@@ -34,7 +30,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
   const [value, setValue] = useState('');
   const [seconds, setSeconds] = useState(30);
 
-  const goBack = () => navigation.goBack();
+  const goBack = () => dispatch(startLoginAction(navigation));
   const openSupport = () => Linking.openURL(url);
 
   useEffect(() => {
@@ -90,10 +86,10 @@ export default function ResetOtpInstructions({ navigation, route }) {
   };
 
   return (
-    <ImageBackground source={images.Background} style={styles.container}>
+    <View style={styles.container}>
       <WithKeyboard padding flexGrow>
         <TouchableOpacity style={styles.back} onPress={goBack}>
-          <Image source={images.Back} />
+          <Back />
           <PurpleText text="Go Back" style={styles.backText} />
         </TouchableOpacity>
 
@@ -132,7 +128,9 @@ export default function ResetOtpInstructions({ navigation, route }) {
         {ex === 'OTP_RESET_INSTRUCTIONS' ? (
           <View style={styles.bottom}>
             <AppText style={[styles.secondary, { marginHorizontal: '15%' }]}>
-              Note: After OTP reset, withdrawals will not be available for{' '}
+              <AppText>
+                Note: After OTP reset, withdrawals will not be available for
+              </AppText>{' '}
               <AppText medium style={{ color: '#8D92AD' }}>
                 48 hours
               </AppText>
@@ -147,7 +145,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
           </View>
         )}
       </WithKeyboard>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -171,6 +169,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   logo: {
     width: 47,

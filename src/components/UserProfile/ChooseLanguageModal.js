@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
+import images from '../../constants/images';
+
 import { toggleLanguageModal } from '../../redux/modals/actions';
 import { fetchUserInfo, setLanguage } from '../../redux/profile/actions';
 import { switchLanguage } from '../../utils/i18n';
@@ -50,7 +52,10 @@ export default function ChooseLanguageModal() {
             style={[styles.button, background(l)]}
             onPress={() => chooseLanguage(l)}
           >
-            <Image source={{ uri: uri(l) }} style={styles.flag} />
+            <Image
+              source={l === 'en' ? { uri: uri(l) } : images.GEO}
+              style={styles.flag}
+            />
             <AppText style={styles.text}>{text(l)}</AppText>
           </Pressable>
           {i < a.length - 1 && <View style={styles.margin} />}
@@ -66,6 +71,7 @@ export default function ChooseLanguageModal() {
       bottom
       title="Choose Language"
       children={children}
+      position="130%"
     />
   );
 }

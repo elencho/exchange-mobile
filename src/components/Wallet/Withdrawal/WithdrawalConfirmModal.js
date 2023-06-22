@@ -88,6 +88,9 @@ export default function WithdrawalConfirmModal() {
 
   const children = (
     <View style={styles.flex}>
+      <SmsEmailAuthModal type="SMS" withdrawal={withdrawalType()} />
+      <SmsEmailAuthModal type="Email" withdrawal={withdrawalType()} />
+      <GoogleOtpModal withdrawal={withdrawalType()} />
       <View style={styles.flex}>
         {networkInfo() && (
           <AppInfoBlock
@@ -150,10 +153,6 @@ export default function WithdrawalConfirmModal() {
         style={styles.cancel}
         onPress={hide}
       />
-
-      <SmsEmailAuthModal type="SMS" withdrawal={withdrawalType()} />
-      <SmsEmailAuthModal type="Email" withdrawal={withdrawalType()} />
-      <GoogleOtpModal withdrawal={withdrawalType()} />
     </View>
   );
 

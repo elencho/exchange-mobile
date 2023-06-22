@@ -1,14 +1,8 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  FlatList,
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View, FlatList } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import * as SecureStore from 'expo-secure-store';
 import { useFocusEffect } from '@react-navigation/native';
+import * as SecureStore from 'expo-secure-store';
 
 import AppText from '../components/AppText';
 import Background from '../components/Background';
@@ -17,6 +11,8 @@ import Headline from '../components/TransactionHistory/Headline';
 import Personal from '../components/UserProfile/Personal';
 import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecuritySwitcher';
 import Security from '../components/UserProfile/Security';
+import Back from '../assets/images/Back';
+import Logout from '../assets/images/User_profile/Logout';
 
 import {
   fetchUserInfo,
@@ -24,15 +20,16 @@ import {
 } from '../redux/profile/actions';
 import { clearFilters } from '../redux/transactions/actions';
 
-import images from '../constants/images';
 import colors from '../constants/colors';
-import { logoutUtil } from '../utils/userProfileUtils';
 import CustomRefreshContol from '../components/CustomRefreshContol';
+import { checkIsCompatable } from '../utils/biometricsAuth';
+import { logoutUtil } from '../utils/userProfileUtils';
 
 function UserProfile({ navigation, route }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const [showRefreshControl, setShowRefreshControl] = useState(false);
+  const [bioAvailable, setBioAvailable] = useState(false);
 
   const {
     profile: { Personal_Security, userInfo, userProfileLoading },
@@ -40,6 +37,7 @@ function UserProfile({ navigation, route }) {
 
   useEffect(() => {
     dispatch(fetchUserInfo(route.params?.fromRegistration));
+    checkCompitable();
     const timer = setTimeout(() => {
       setShowRefreshControl(true);
     }, 1000);
@@ -52,21 +50,30 @@ function UserProfile({ navigation, route }) {
     }, [])
   );
 
+  const checkCompitable = async () => {
+    const compitable = await checkIsCompatable();
+    setBioAvailable(compitable);
+  };
+
   const logout = async () => {
     const refresh_token = await SecureStore.getItemAsync('refreshToken');
     const status = await logoutUtil(refresh_token);
-    // if (status === 204) {
-    await SecureStore.deleteItemAsync('accessToken');
-    await SecureStore.deleteItemAsync('refreshToken');
-    navigation.navigate('Welcome');
+    if (status === 204) {
+      await SecureStore.deleteItemAsync('accessToken');
+      await SecureStore.deleteItemAsync('refreshToken');
+      navigation.navigate('Welcome');
 
-    dispatch({ type: 'LOGOUT' });
-    // }
+      dispatch({ type: 'LOGOUT' });
+    }
   };
-  const onRefresh = () => dispatch(fetchUserInfo());
+
+  const onRefresh = () => {
+    checkCompitable();
+    dispatch(fetchUserInfo());
+  };
   const back = () => {
     clear();
-    navigation.navigate('Main');
+    navigation.navigate('Main', { screen: route.params?.sourceScreenName });
   };
 
   const clear = () => {
@@ -86,20 +93,21 @@ function UserProfile({ navigation, route }) {
         <Personal loading={userProfileLoading} />
       )}
       {Personal_Security === 'Security' && (
-        <Security loading={userProfileLoading} />
+        <Security loading={userProfileLoading} bioAvailable={bioAvailable} />
       )}
     </>
   );
+
   return (
     <Background>
       <View style={styles.topRow}>
         <TouchableOpacity onPress={back} style={styles.back}>
-          <Image source={images.Back} style={styles.arrow} />
+          <Back style={styles.arrow} />
           <PurpleText text="Back" style={styles.purpleText} />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={logout}>
-          <Image source={images.Logout} />
+          <Logout />
         </TouchableOpacity>
       </View>
 

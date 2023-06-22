@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { FlatList, StyleSheet, View, Platform } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useEffect, memo } from 'react';
+import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'i18next';
 
@@ -20,8 +20,7 @@ import {
   setTradeOffset,
 } from '../../redux/trade/actions';
 import { reachScrollEnd } from '../../redux/transactions/actions';
-
-const IS_IOS = Platform.OS === 'ios';
+import { IS_IOS } from '../../constants/system';
 
 export const TopRow = ({ text, onPress }) => {
   return (
@@ -30,10 +29,14 @@ export const TopRow = ({ text, onPress }) => {
         Transactions
       </AppText>
 
-      <View style={styles.right}>
-        <AppText subtext body style={styles.subText}>
-          <Purple text={t(text)} onPress={onPress} /> {t('Other Pairs')}
-        </AppText>
+      <View style={{ flex: 1 }}>
+        <View style={styles.right}>
+          <Purple text={t(text)} onPress={onPress} />
+          <AppText subtext body style={styles.subText}>
+            {' '}
+            {t('Other Pairs')}
+          </AppText>
+        </View>
       </View>
     </View>
   );
@@ -41,13 +44,7 @@ export const TopRow = ({ text, onPress }) => {
 
 const Purple = ({ text, onPress }) => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={{
-        position: 'relative',
-        top: 2,
-      }}
-    >
+    <TouchableOpacity onPress={onPress}>
       <PurpleText onPress={onPress} text={text} />
     </TouchableOpacity>
   );
@@ -88,18 +85,12 @@ const TransactionsBlock = ({ loading }) => {
     dispatch(fetchTrades());
   };
 
-  const onScroll = (event) => {
-    const offsetY = event.nativeEvent.contentOffset.y;
-    if (offsetY === 0) {
-      onRefresh();
-    }
-  };
-
   const renderTrade = ({ item }) => (
     <Trade trade={item} key={item.creationTime} />
   );
-  const footer = () =>
-    moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />;
+  const footer = memo(() =>
+    moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />
+  );
 
   const listEmptyContainer = () =>
     !loading && (
@@ -136,8 +127,7 @@ const TransactionsBlock = ({ loading }) => {
           onEndReachedThreshold={1}
           nestedScrollEnabled
           initialNumToRender={5}
-          ListFooterComponent={footer}
-          onScroll={onScroll}
+          ListFooterComponent={trades.length > 0 && footer}
           ListEmptyComponent={listEmptyContainer}
           refreshControl={
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
@@ -147,7 +137,7 @@ const TransactionsBlock = ({ loading }) => {
     </View>
   );
 };
-export default TransactionsBlock;
+export default memo(TransactionsBlock);
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
@@ -162,8 +152,8 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
   },
   right: {
-    flex: 1,
-    alignItems: 'flex-end',
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
   },
   subText: {
     color: colors.SECONDARY_TEXT,

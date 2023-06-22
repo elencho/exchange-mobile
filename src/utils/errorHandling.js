@@ -9,7 +9,6 @@ import SplashScreen from 'react-native-splash-screen';
 
 export default async (err) => {
   const state = store.getState();
-
   if (err.response) {
     const {
       response: { status, data },
@@ -19,7 +18,7 @@ export default async (err) => {
     const header = data.errorKey;
     const body = !data?.transParams
       ? data?.errorMessage
-      : `${data?.errorMessage} params[${params?.join()}]`;
+      : `${data?.errorMessage} params{${params?.join()}}`;
 
     if (status > 401) {
       if (!state.modals.isToast) {
@@ -29,8 +28,11 @@ export default async (err) => {
       }
     }
     if (status === 401) {
-      const response = await refreshToken(err.config);
-      return response;
+      const token = await SecureStore.getItemAsync('refreshToken');
+      if (token) {
+        const response = await refreshToken(err.config);
+        return response;
+      }
     }
 
     if (status === 400 && data.error === 'invalid_grant') {
@@ -38,7 +40,6 @@ export default async (err) => {
       await SecureStore.deleteItemAsync('refreshToken');
       navigationRef.navigate('Welcome');
       store.dispatch({ type: 'LOGOUT' });
-      SplashScreen.hide();
     }
   }
 };

@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import AppText from '../components/AppText';
@@ -15,9 +8,9 @@ import AppButton from '../components/AppButton';
 import WithKeyboard from '../components/WithKeyboard';
 import PurpleText from '../components/PurpleText';
 import Strong_Password from '../assets/images/User_profile/Strong_Password';
+import Back from '../assets/images/Back';
 
 import colors from '../constants/colors';
-import images from '../constants/images';
 import { startLoginAction } from '../redux/profile/actions';
 
 export default function SetNewPassword({ navigation }) {
@@ -50,10 +43,14 @@ export default function SetNewPassword({ navigation }) {
   };
 
   return (
-    <ImageBackground source={images.Background} style={styles.container}>
+    <View style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={goToLogin}>
-        <Image source={images.Back} />
-        <PurpleText text="Back to Log In" style={styles.backText} />
+        <Back />
+        <PurpleText
+          numberOfLines={1}
+          text="Back to Log In"
+          style={styles.backText}
+        />
       </TouchableOpacity>
 
       <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
@@ -74,6 +71,7 @@ export default function SetNewPassword({ navigation }) {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           style={styles.input}
           label="Enter New Password"
+          autoCapitalize={'none'}
           onChangeText={(t) => setPass(t)}
           value={pass}
           secureTextEntry
@@ -82,13 +80,15 @@ export default function SetNewPassword({ navigation }) {
 
         <View>
           <Text style={styles.validations}>
-            <Text style={!passLength && pass && red}>
-              8 or more characters,{' '}
-            </Text>
-            <Text style={!hasUpperAndLower && pass && red}>
-              Upper & lowercase letters,{' '}
-            </Text>
-            <Text style={!hasNumber && pass && red}>At least one number, </Text>
+            <AppText style={!passLength && pass && red}>
+              8 or more characters,
+            </AppText>{' '}
+            <AppText style={!hasUpperAndLower && pass && red}>
+              Upper & lowercase letters,
+            </AppText>{' '}
+            <AppText style={!hasNumber && pass && red}>
+              At least one number,
+            </AppText>
           </Text>
         </View>
 
@@ -96,6 +96,7 @@ export default function SetNewPassword({ navigation }) {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           style={styles.input}
           label="Confirm New Password"
+          autoCapitalize={'none'}
           onChangeText={(t) => setConfirmPass(t)}
           value={confirmPass}
           secureTextEntry
@@ -104,7 +105,7 @@ export default function SetNewPassword({ navigation }) {
 
         <AppButton text="Save" style={styles.button} onPress={setNewPassword} />
       </WithKeyboard>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -119,6 +120,7 @@ const styles = StyleSheet.create({
   backText: {
     marginBottom: 2,
     marginLeft: 10,
+    flex: 1,
   },
   button: {
     width: '100%',
@@ -126,7 +128,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: '12%',
+    paddingHorizontal: '8%',
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   input: {
     width: '100%',
@@ -150,6 +153,7 @@ const styles = StyleSheet.create({
   validations: {
     color: colors.SECONDARY_TEXT,
     fontSize: 11,
-    textAlign: 'justify',
+    lineHeight: 15,
   },
 });
+//

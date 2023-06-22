@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Trans, useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import { MaterialIndicator } from 'react-native-indicators';
 
 import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown';
@@ -33,12 +33,11 @@ import {
 } from '../../redux/wallet/actions';
 import { setStatusModalInfo } from '../../redux/modals/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Deposit({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-
-  const { t } = useTranslation();
 
   const [hasRestriction, setHasRestriction] = useState(false);
   const [hasMethod, setHasMethod] = useState(false);
@@ -46,7 +45,7 @@ export default function Deposit({ refreshControl }) {
   const {
     transactions: { code, loading },
     trade: { currentBalanceObj, depositProvider, card, cardsLoading },
-    wallet: { cryptoAddress, depositRestriction, network },
+    wallet: { cryptoAddress, depositRestriction, network, isAddressGenerating },
     modals: { webViewObj },
   } = state;
 
@@ -55,15 +54,17 @@ export default function Deposit({ refreshControl }) {
   const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
-    const m = currentBalanceObj.depositMethods;
-    if (m.ECOMMERCE) {
+    const m = currentBalanceObj?.depositMethods;
+    if (m?.ECOMMERCE) {
       dispatch(setNetwork('ECOMMERCE'));
     } else {
-      if (m.WALLET) dispatch(setNetwork(m.WALLET[0].provider));
-      if (m.WIRE) dispatch(setNetwork(m.WIRE[0].provider));
+      if (m?.WALLET) dispatch(setNetwork(m?.WALLET[0]?.provider));
+      if (m?.WIRE) dispatch(setNetwork(m?.WIRE[0]?.provider));
     }
 
-    setHasMethod(!!Object.keys(m).length);
+    setHasMethod(
+      isFiat ? !!Object.keys(m).length : !!Object.keys(m).includes('WALLET')
+    );
 
     return () => {
       dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
@@ -102,14 +103,15 @@ export default function Deposit({ refreshControl }) {
     dispatch({ type: 'BALANCE_SAGA' });
   };
 
-  const onNavigationStateChange = (state) => {
+  const onNavigationStateChange = async (state) => {
     const urlArray = state.url.split('=');
     const alternateUrlArray = state.url.split('/');
     const ending = urlArray[urlArray.length - 1];
     const alternateEnding = alternateUrlArray[alternateUrlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
-      clear();
       dispatch(setStatusModalInfo({ success: ending, visible: true }));
+      clear();
+      await AsyncStorage.removeItem('webViewVisible');
     }
   };
 
@@ -121,9 +123,9 @@ export default function Deposit({ refreshControl }) {
       const walletInfo = infoObj?.walletInfo;
       const needsTag = infoObj?.transactionRecipientType === 'ADDRESS_AND_TAG';
 
-      const transComponent = (
+      const tagTransComponent = (
         <Trans
-          i18nKey="needs tag for deposit {{currency}} params[currency]"
+          i18nKey="needs tag for deposit {{currency}} params{currency}"
           values={{ currency: code }}
           components={{
             light: <AppText style={{ color: '#FFFBF3' }} />,
@@ -131,20 +133,38 @@ export default function Deposit({ refreshControl }) {
           }}
         />
       );
+      const minConfirmsTransComponent = (
+        <Trans
+          i18nKey="{{minConfirmsForDeposit}} params{minConfirmsForDeposit}"
+          values={{ minConfirmsForDeposit }}
+          components={{
+            light: <AppText style={{ color: '#FFFBF3' }} />,
+            gold: <AppText style={{ color: '#F2DFB4' }} />,
+          }}
+        />
+      );
+      const walletInfoTransComponent = (
+        <Trans
+          i18nKey={walletInfo}
+          components={{
+            light: <AppText style={{ color: '#FFFBF3' }} />,
+            gold: <AppText style={{ color: '#F2DFB4' }} />,
+          }}
+        />
+      );
 
-      let array = [
-        t(`{{minConfirmsForDeposit}} params[minConfirmsForDeposit]`, {
-          minConfirmsForDeposit,
-        }),
-      ];
-      if (walletInfo) array.push(t(walletInfo));
-      if (needsTag) array.push(transComponent);
+      let array = [minConfirmsTransComponent];
+      if (walletInfo) array.push(walletInfoTransComponent);
+      if (needsTag) array.push(tagTransComponent);
       return array;
     }
   };
 
   return cardsLoading || loading ? (
-    <MaterialIndicator color="#6582FD" animationDuration={3000} />
+    <MaterialIndicator
+      color={colors.SECONDARY_PURPLE}
+      animationDuration={3000}
+    />
   ) : (
     <WithKeyboard flexGrow padding refreshControl={refreshControl}>
       <View style={styles.block}>
@@ -163,7 +183,7 @@ export default function Deposit({ refreshControl }) {
                   !hasRestriction &&
                   hasMethod &&
                   isCrypto && <AddressBlock />}
-                {hasMethod && content() && (
+                {hasMethod && cryptoAddress?.address && content() && (
                   <AppInfoBlock content={content()} warning />
                 )}
               </>
@@ -189,7 +209,12 @@ export default function Deposit({ refreshControl }) {
       {!cryptoAddress?.address && !isFiat && !hasRestriction && hasMethod ? (
         <View style={styles.flex}>
           <BulletsBlock />
-          <AppButton text="Generate Address" onPress={generate} />
+          <AppButton
+            text="Generate Address"
+            style={styles.button}
+            loading={isAddressGenerating}
+            onPress={generate}
+          />
         </View>
       ) : null}
 
@@ -233,4 +258,5 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     marginTop: 10,
   },
+  button: { backgroundColor: colors.PRIMARY_PURPLE },
 });

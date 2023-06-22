@@ -1,12 +1,12 @@
-import React from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import React, { memo } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import AppText from './AppText';
 import ShowAll from '../assets/images/ShowAll';
 import colors from '../constants/colors';
+import FastImage from 'react-native-fast-image';
 
-export default function ModalSearchItem({
+const ModalSearchItem = ({
   name,
   code,
   onPress,
@@ -16,7 +16,10 @@ export default function ModalSearchItem({
   phoneCode,
   countryDrop,
   citizenshipDrop,
-}) {
+  total,
+  canShowCode,
+  isForTransactions,
+}) => {
   const backgroundCond = () => {
     if (name === currentItem || code === currentItem) {
       return styles.background;
@@ -25,11 +28,12 @@ export default function ModalSearchItem({
   const codeText = phoneCountry ? phoneCode : code;
   const text =
     phoneCountry || countryDrop || citizenshipDrop ? (
-      <>
-        <AppText medium style={styles.primary}>
+      <View style={styles.codeWrapper}>
+        <AppText body medium style={styles.primary}>
           ({codeText})
         </AppText>
         <AppText
+          body
           medium
           numberOfLines={1}
           style={[styles.secondary, { flex: 1 }]}
@@ -37,29 +41,54 @@ export default function ModalSearchItem({
           {' '}
           {name}
         </AppText>
-      </>
+      </View>
     ) : (
-      <>
-        <AppText medium style={styles.primary}>
-          {name}
+      <View style={styles.row}>
+        <AppText body medium style={styles.primary}>
+          {isForTransactions ? name.split('(')[0] : name}
         </AppText>
-        <AppText medium style={styles.secondary}>
-          {code ? ` (${code})` : null}
+
+        <AppText body medium style={styles.secondary}>
+          {!!canShowCode && ` (${code})`}
         </AppText>
-      </>
+      </View>
     );
+
+  const shouldShowText =
+    !!total &&
+    !isForTransactions &&
+    !phoneCountry &&
+    !countryDrop &&
+    !citizenshipDrop;
+
+  const altText = shouldShowText && (
+    <AppText body medium style={styles.secondary}>
+      {total}
+    </AppText>
+  );
 
   return (
     <Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
       {code ? (
-        <FastImage style={styles.image} source={{ uri }} />
+        <FastImage
+          style={styles.image}
+          resizeMode="contain"
+          source={{
+            uri,
+            priority: FastImage.priority.normal,
+          }}
+        />
       ) : (
         <ShowAll style={{ marginRight: 20 }} />
       )}
-      {text}
+      <View>
+        {text}
+        {altText}
+      </View>
     </Pressable>
   );
-}
+};
+export default memo(ModalSearchItem);
 
 const styles = StyleSheet.create({
   background: { backgroundColor: 'rgba(101, 130, 253, 0.1 )' },
@@ -68,9 +97,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 5,
     borderRadius: 5,
-    paddingVertical: 8,
-    paddingHorizontal: 18,
-    marginHorizontal: 22,
+    padding: 10,
   },
   image: {
     marginRight: 20,
@@ -79,4 +106,9 @@ const styles = StyleSheet.create({
   },
   primary: { color: colors.PRIMARY_TEXT },
   secondary: { color: colors.SECONDARY_TEXT },
+  codeWrapper: {
+    flexDirection: 'row',
+    width: 250,
+  },
+  row: { flexDirection: 'row' },
 });

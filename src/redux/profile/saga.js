@@ -1,5 +1,5 @@
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects';
-import { asyncPkceChallenge } from 'react-native-pkce-challenge';
+import pkceChallenge from 'react-native-pkce-challenge';
 import * as SecureStore from 'expo-secure-store';
 import jwt_decode from 'jwt-decode';
 
@@ -22,6 +22,9 @@ import {
   fetchUserInfo,
   toggleUserInfoLoading,
   switchPersonalSecurity,
+  setIsProfileUpdating,
+  setCredentials,
+  setRegistrationInputs,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -56,7 +59,6 @@ import {
 import launchSumsubSdk from '../../utils/sumsubMobileSdk';
 import {
   toggleEmailAuthModal,
-  toggleEmailVerificationModal,
   toggleGoogleAuthModal,
   toggleGoogleOtpModal,
   togglePersonalInfoModal,
@@ -69,31 +71,33 @@ import { resetWalletState } from '../wallet/actions';
 
 //  START LOGIN
 function* startLoginSaga(action) {
+  const pkceInfo = pkceChallenge();
   const { navigation } = action;
+  if (pkceInfo) {
+    yield put(savePkceInfo(pkceInfo));
+    const loginStartInfo = yield call(loginStart, pkceInfo?.codeChallenge);
 
-  const pkceInfo = yield call(async () => await asyncPkceChallenge());
-  yield put(savePkceInfo(pkceInfo));
-
-  const loginStartInfo = yield call(loginStart, pkceInfo?.codeChallenge);
-
-  yield put(saveLoginStartInfo(loginStartInfo));
-  if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
-    navigation.navigate('Login');
+    yield put(saveLoginStartInfo(loginStartInfo));
+    if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
+      navigation.navigate('Login');
+    }
   }
 }
 
 //  START REGISTRATION
 function* startRegistrationSaga(action) {
+  yield put(setRegistrationInputs({}));
+  const pkceInfo = pkceChallenge();
   const { navigation } = action;
+  if (pkceInfo) {
+    yield put(savePkceInfo(pkceInfo));
 
-  const pkceInfo = yield call(async () => await asyncPkceChallenge());
-  yield put(savePkceInfo(pkceInfo));
+    const registrationStartInfo = yield call(registrationStart);
+    yield put(saveRegistrationStartInfo(registrationStartInfo));
 
-  const registrationStartInfo = yield call(registrationStart);
-  yield put(saveRegistrationStartInfo(registrationStartInfo));
-
-  if (registrationStartInfo?.execution === 'REGISTRATION_START') {
-    navigation.navigate('Registration');
+    if (registrationStartInfo?.execution === 'REGISTRATION_START') {
+      navigation.navigate('Registration');
+    }
   }
 }
 
@@ -101,6 +105,7 @@ function* startRegistrationSaga(action) {
 function* registrationFormSaga(action) {
   const params = yield select(registrationParams);
   const state = yield select((state) => state.profile);
+  const { navigation } = action;
   const { registrationStartInfo } = state;
   yield put(toggleUserInfoLoading(true));
 
@@ -110,7 +115,7 @@ function* registrationFormSaga(action) {
     registrationStartInfo?.callbackUrl
   );
   if (data?.execution === 'EMAIL_VERIFICATION_OTP') {
-    yield put(toggleEmailVerificationModal(true));
+    navigation.push('EmailVerification');
     yield put(saveVerificationInfo(data));
   }
   yield put(
@@ -143,14 +148,9 @@ function* verifyAccountSaga(action) {
       type: 'CODE_TO_TOKEN_SAGA',
       code: verified.code,
       codeVerifier,
+      fromRegistration: true,
+      navigation,
     });
-
-    yield put(toggleEmailVerificationModal(false));
-    yield delay(600);
-    yield call(() => {
-      navigation.replace('UserProfile', { fromRegistration: true });
-    });
-    yield put(toggleLoading(false));
   } else {
     yield put(saveVerificationInfo(verified));
   }
@@ -158,8 +158,8 @@ function* verifyAccountSaga(action) {
 }
 
 function* codeToTokenSaga(action) {
-  const { code, codeVerifier, navigation, fromResetOtp } = action;
-
+  const { code, codeVerifier, navigation, fromResetOtp, fromRegistration } =
+    action;
   const data = yield call(codeToToken, code, codeVerifier);
 
   if (data) {
@@ -168,9 +168,16 @@ function* codeToTokenSaga(action) {
       await SecureStore.setItemAsync('refreshToken', data?.refresh_token);
     });
     yield put({ type: 'OTP_SAGA', token: data?.access_token });
-    if (navigation) {
+    if (navigation && !fromRegistration) {
       const screenName = fromResetOtp ? 'UserProfile' : 'Main';
       yield call(() => navigation.replace(screenName));
+    }
+    if (fromRegistration) {
+      yield delay(600);
+      yield call(() => {
+        navigation.replace('UserProfile', { fromRegistration: true });
+      });
+      yield put(toggleLoading(false));
     }
     if (fromResetOtp) yield put(switchPersonalSecurity('Security'));
   } else {
@@ -194,7 +201,6 @@ function* usernameAndPasswordSaga(action) {
     loginStartInfo?.callbackUrl
   );
   yield put(saveUserAndPassInfo(userAndPassInfo));
-
   if (userAndPassInfo?.execution === 'LOGIN_OTP') {
     navigation.navigate('Login2Fa');
   }
@@ -228,6 +234,8 @@ function* otpForLoginSaga(action) {
     pkceInfo: { codeVerifier },
     forgotPassMode,
   } = profile;
+  yield delay(500);
+  yield put(toggleUserInfoLoading(true));
 
   const loginData = yield call(loginOtp, otp, userAndPassInfo.callbackUrl);
   yield put(
@@ -254,6 +262,8 @@ function* otpForLoginSaga(action) {
       navigation.navigate('SetNewPassword');
     }
   }
+  yield delay(2000);
+  yield put(toggleUserInfoLoading(false));
 }
 
 // FORGOT PASSWORD
@@ -357,16 +367,19 @@ function* fetchUserInfoSaga(action) {
 
 //  UPDATE USER INFO
 function* saveUserInfoSaga() {
+  yield put(setIsProfileUpdating(true));
   const userData = yield select(getUserData);
   const data = yield call(updateUserData, userData);
   if (data?.status >= 200 && data?.status < 300) {
     yield put(fetchUserInfo());
     yield put(togglePersonalInfoModal(false));
   }
+  yield put(setIsProfileUpdating(false));
 }
 
 //  UPDATE PASSWORD
 function* updatePasswordSaga(action) {
+  yield put(setIsProfileUpdating(true));
   const { curentPassword, newPassword, repeatPassword, hide } = action;
   const data = yield call(
     updatePassword,
@@ -377,10 +390,12 @@ function* updatePasswordSaga(action) {
   if (data?.status >= 200 && data?.status < 300) {
     yield call(hide);
   }
+  yield put(setIsProfileUpdating(false));
 }
 
 //  UPDATE PHONE NUMBER
 function* updatePhoneNumberSaga(action) {
+  yield put(setIsProfileUpdating(true));
   const { phoneNumber, phoneCountry, setUserInfoVariable } = action;
   const data = yield call(updatePhoneNumber, phoneNumber, phoneCountry);
   if (data?.status >= 200 && data?.status < 300) {
@@ -388,6 +403,7 @@ function* updatePhoneNumberSaga(action) {
     yield put(fetchUserInfo());
     yield put(togglePhoneNumberModal(false));
   }
+  yield put(setIsProfileUpdating(false));
 }
 
 //  TOGGLE SUBSCRIPTION
@@ -477,10 +493,13 @@ function* activateGoogleSaga(action) {
 // OTP SAGA
 function* otpSaga(action) {
   const { token } = action;
-  const otpType = jwt_decode(token)?.otpType;
-  yield put(setEmailAuth(otpType === 'EMAIL'));
-  yield put(setGoogleAuth(otpType === 'TOTP'));
-  yield put(setSmsAuth(otpType === 'SMS'));
+
+  if (token) {
+    const otpType = jwt_decode(token)?.otpType;
+    yield put(setEmailAuth(otpType === 'EMAIL'));
+    yield put(setGoogleAuth(otpType === 'TOTP'));
+    yield put(setSmsAuth(otpType === 'SMS'));
+  }
 }
 
 // RESET OTP
@@ -535,6 +554,8 @@ function* resendSaga(action) {
 
 function* logoutSaga() {
   yield put(resetTradesState());
+  yield put(saveUserInfo({}));
+  yield put(setCredentials({}));
   yield put(resetTransactionsState());
   yield put(resetWalletState());
 }

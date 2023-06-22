@@ -35,9 +35,8 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
 
       if (code === b.currencyCode) {
         dispatch(setCurrentBalanceObj(b));
-        ////
         if (b.type === 'CRYPTO') {
-          network = hasMethod && b.depositMethods.WALLET[0].provider;
+          network = hasMethod && b?.depositMethods?.WALLET?.[0]?.provider;
           dispatch(cryptoAddressesAction(name, code, navigation, network));
         }
         if (b.type === 'FIAT') {
@@ -66,7 +65,7 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
           {available} {code}
         </AppText>
         <AppText body style={styles.secondary}>
-          Total: {total} = {usdBitcoin()} {usdBtcSwitch}
+          Total: {total} ≈ {usdBitcoin()} {usdBtcSwitch}
         </AppText>
       </View>
     </Pressable>

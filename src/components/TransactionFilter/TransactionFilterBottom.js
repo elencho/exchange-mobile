@@ -1,46 +1,33 @@
 import React, { useState } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { showResultsAction } from '../../redux/transactions/actions';
 import { generateFile } from '../../utils/walletUtils';
 import PurpleText from '../PurpleText';
-import images from '../../constants/images';
-import { GENERATE_TRANSACTIONS_FILE } from '../../constants/api';
-import queryString from 'query-string';
-import { reportTypes } from '../../constants/filters';
-import { MaterialIndicator } from 'react-native-indicators';
 
-function TransactionFilterBottom() {
-  const navigation = useNavigation();
+import { MaterialIndicator } from 'react-native-indicators';
+import Download from '../../assets/images/Download';
+
+function TransactionFilterBottom({ navigation }) {
   const dispatch = useDispatch();
 
-  //TODO: Refactor
   const [loading, setLoading] = useState(false);
-  const { currency, code, method, typeFilter, fromDateTime, toDateTime } =
-    useSelector((state) => state.transactions);
-
-  const transactionReportTypes = typeFilter === null ? reportTypes : typeFilter;
 
   const linkMain =
     'https://exchange.cryptal.com/exchange/api/v1/private/report/transactions/user';
 
-  const queryParams = {
-    transactionReportTypes: typeFilter,
-    fromDateTime,
-    toDateTime,
-  };
-  Object.keys(queryParams).forEach(
-    (key) => queryParams[key] === null && delete queryParams[key]
-  );
-  const queryStringParams = queryString.stringify(queryParams);
-
   const showResults = () => {
     dispatch(showResultsAction(navigation));
+    navigation.navigate('Main', {
+      screen: 'Transactions',
+      params: { isFromTransactions: true },
+    });
   };
+
   const downloadFile = () => {
     generateFile(linkMain, setLoading, 'transactions', 'xlsx');
   };
@@ -62,8 +49,7 @@ function TransactionFilterBottom() {
           />
         ) : (
           <Pressable style={styles.download} onPress={downloadFile}>
-            <Image source={images.Download} />
-
+            <Download />
             <PurpleText style={styles.purple} text="Download" />
           </Pressable>
         )}
@@ -77,6 +63,7 @@ export default TransactionFilterBottom;
 const styles = StyleSheet.create({
   purple: {
     fontSize: 14,
+    lineHeight: 18,
     marginVertical: 30,
     marginHorizontal: 5,
   },
@@ -98,6 +85,7 @@ const styles = StyleSheet.create({
   },
   white: {
     fontSize: 14,
+    lineHeight: 18,
     color: colors.PRIMARY_TEXT,
   },
 });

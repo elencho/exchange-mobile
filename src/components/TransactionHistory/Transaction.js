@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import AppText from '../AppText';
@@ -9,7 +9,10 @@ import WithdrawalIcon from '../../assets/images/Withdrawal.svg';
 import colors from '../../constants/colors';
 import { transactionDetailsSaga } from '../../redux/transactions/actions';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
-import images from '../../constants/images';
+
+import Pending from '../../assets/images/Pending.svg';
+import Success from '../../assets/images/Success.svg';
+import Failed from '../../assets/images/Failed.svg';
 
 export default function Transaction({ transaction, date, time }) {
   const dispatch = useDispatch();
@@ -36,9 +39,9 @@ export default function Transaction({ transaction, date, time }) {
   };
 
   const statusIcon = () => {
-    if (status === 'PENDING') return images.Pending;
-    if (status === 'SUCCESS') return images.Success;
-    if (status === 'FAILED') return images.Failed;
+    if (status === 'PENDING') return <Pending style={styles.dot} />;
+    if (status === 'SUCCESS') return <Success style={styles.dot} />;
+    if (status === 'FAILED') return <Failed style={styles.dot} />;
   };
 
   return (
@@ -46,7 +49,7 @@ export default function Transaction({ transaction, date, time }) {
       {image()}
 
       <View style={styles.middle}>
-        <AppText medium style={styles.type}>
+        <AppText medium style={styles.type} body>
           {type}
         </AppText>
         {transactionInfo ? (
@@ -57,16 +60,15 @@ export default function Transaction({ transaction, date, time }) {
       </View>
 
       <View style={styles.right}>
-        <View style={styles.statusRow}>
-          <AppText style={[styles.status, { marginRight: 5 }]}>
-            {status}
-          </AppText>
-          <Image source={statusIcon()} style={styles.dot} />
-        </View>
-
         <AppText medium style={styles.currency}>
           {amount} {currency}
         </AppText>
+        <View style={styles.statusRow}>
+          <AppText subtext style={styles.status}>
+            {status}
+          </AppText>
+          {statusIcon()}
+        </View>
       </View>
     </Pressable>
   );
@@ -88,19 +90,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-end',
   },
-  statusRow: { flexDirection: 'row', alignItems: 'center' },
+  statusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 5 },
 
   // Texts
-  address: { fontSize: 12, color: colors.SECONDARY_TEXT },
+  address: { fontSize: 12, lineHeight: 16, color: colors.SECONDARY_TEXT },
   status: {
     fontSize: 12,
+    lineHeight: 16,
     color: colors.SECONDARY_TEXT,
-    marginBottom: 5,
+    marginRight: 5,
   },
   type: {
     fontSize: 14,
+    lineHeight: 18,
     color: colors.PRIMARY_TEXT,
     marginBottom: 5,
   },
-  currency: { fontSize: 14, color: colors.PRIMARY_TEXT },
+  currency: { fontSize: 14, lineHeight: 18, color: colors.PRIMARY_TEXT },
 });

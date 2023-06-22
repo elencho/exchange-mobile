@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
@@ -19,7 +19,7 @@ export default function FiatModal() {
   const state = useSelector((state) => state);
 
   const {
-    trade: { fiat, fiatsArray, depositProviders },
+    trade: { fiat, depositProviders, offers },
     modals: { fiatModalVisible },
   } = state;
 
@@ -43,24 +43,26 @@ export default function FiatModal() {
     hide();
   };
 
-  const children = fiatsArray.map((f, i, a) => (
+  const fiatsFromOffers = Object.keys(offers ?? {});
+
+  const children = fiatsFromOffers?.map((code, index, list) => (
     <Pressable
-      key={f.code}
+      key={code}
       style={[
         styles.row,
-        f.code === fiat && { backgroundColor: 'rgba(101, 130, 253, 0.16)' },
-        { marginBottom: i < a.length - 1 ? 5 : -10 },
+        code === fiat && { backgroundColor: 'rgba(101, 130, 253, 0.16)' },
+        { marginBottom: index < list.length - 1 ? 5 : -10 },
       ]}
-      onPress={() => choose(f.code)}
+      onPress={() => choose(code)}
     >
       <Image
         source={{
-          uri: `${COINS_URL_PNG}/${f.code.toLowerCase()}.png`,
+          uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png`,
         }}
         style={styles.icon}
       />
       <AppText body style={styles.text}>
-        {f.code}
+        {code}
       </AppText>
     </Pressable>
   ));

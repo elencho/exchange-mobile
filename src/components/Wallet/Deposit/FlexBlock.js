@@ -11,6 +11,9 @@ import AppText from '../../AppText';
 import PurpleText from '../../PurpleText';
 import Headline from '../../TransactionHistory/Headline';
 
+import List from '../../../assets/images/List.svg';
+import WarningWhite from '../../../assets/images/Wallet/Warning_White.svg';
+
 export default function FlexBlock({ reason, restrictedUntil, type }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -22,13 +25,13 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
 
   const text = () => {
     if (reason === 'no address') {
-      return 'Reason: No Addresses';
+      return 'description no addresses';
     } else if (reason === 'OTP_RESET') {
-      return `${type} Reason: OTP_RESET`;
+      return `description ${type} OTP_RESET `;
     } else if (reason === 'SUPPORT') {
-      return `${type} Reason: Support`;
+      return `description ${type} support`;
     } else if (reason === 'METHOD') {
-      return `Doesn't have ${type} method`;
+      return `description does not have ${type} method`;
     } else {
       return null;
     }
@@ -36,17 +39,23 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
 
   const image = () => {
     if (reason === 'no address') {
-      return images.Address_List;
+      return <List />;
     } else {
-      return images.Warning_White;
+      return <WarningWhite />;
     }
   };
 
   const headline = () => {
     if (reason === 'no address') {
-      return 'Deposit Address';
+      return 'title no addresses';
+    } else if (reason === 'OTP_RESET') {
+      return `title ${type} OTP_RESET `;
+    } else if (reason === 'SUPPORT') {
+      return `title ${type} support`;
+    } else if (reason === 'METHOD') {
+      return `title does not have ${type} method`;
     } else {
-      return 'Unavailable';
+      return null;
     }
   };
 
@@ -68,7 +77,7 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
 
   return (
     <View style={styles.flexBlock}>
-      <Image source={image()} />
+      {image()}
       <Headline title={headline()} />
       <AppText body style={styles.description}>
         {text()}
@@ -98,5 +107,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
+    paddingHorizontal: 10,
   },
 });

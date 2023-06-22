@@ -9,13 +9,14 @@ const baneta_realuri = { login: 'ibanet@cryptx.com', password: 'Malina125$' };
 const kervala = { login: 'gkerva@cryptal.com', password: 'TestGexCryptal7' };
 const sali = { login: 'bukhiashvilisalome@gmail.com', password: 'Salome1996' };
 const saliSatesto = {
-  login: 'salibukhiashvili@mailinator.com',
+  login: 'salo131@mailinator.com',
   password: 'Salome1996',
 };
 
 const INITIAL_STATE = {
   timerVisible: false,
   userProfileLoading: false,
+  isProfileUpdating: false,
 
   // Login
   pkceInfo: {},
@@ -34,11 +35,11 @@ const INITIAL_STATE = {
   registrationInputs: {
     // firstName: 'dd',
     // lastName: 'dd',
-    // email: 'aa1720@mailinator.com',
+    // email: 'aa1761@mailinator.com',
     // passwordNew: '11111!Aa',
     // passwordConfirm: '11111!Aa',
     // phoneCountry: 'GEO',
-    // phoneNumber: '995567720',
+    // phoneNumber: '995567761',
     // promoCode: '',
     // referralCode: '',
     // acceptTerms: 'on',
@@ -86,12 +87,18 @@ export default (state = INITIAL_STATE, action) => {
     otpChangeToken,
     totpSecretObj,
     timerVisible,
+    isProfileUpdating,
   } = action;
   switch (action.type) {
     case actionTypes.TOGGLE_USER_PROFILE_LOADING:
       return {
         ...state,
         userProfileLoading,
+      };
+    case actionTypes.TOGGLE_IS_PROFILE_UPDATING:
+      return {
+        ...state,
+        isProfileUpdating,
       };
     case actionTypes.SAVE_PKCE_INFO:
       return {

@@ -1,7 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import {
+  useNavigation,
+  useFocusEffect,
+  useIsFocused,
+} from '@react-navigation/native';
 
 import Background from '../components/Background';
 import FilterIcon from '../components/TransactionHistory/FilterIcon';
@@ -25,28 +29,52 @@ import {
 import colors from '../constants/colors';
 import CustomRefreshContol from '../components/CustomRefreshContol';
 
-function TransactionHistory() {
-  const navigation = useNavigation();
-
+function TransactionHistory({ navigation, route }) {
+  const isFocused = useIsFocused();
   const dispatch = useDispatch();
+
   const state = useSelector((state) => state);
   const {
-    transactions: { transactions, loading, totalTransactions },
+    transactions: {
+      transactions,
+      loading,
+      totalTransactions,
+      code: currencyCode,
+      currency,
+    },
     trade: { moreTradesLoading },
   } = state;
 
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(chooseCurrency(currency));
+      dispatch(setAbbr(currencyCode));
+      dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+    }, [currency])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(chooseCurrency('Show All Currency'));
+      dispatch(setAbbr(null));
+      dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+    }, [navigation])
+  );
+
   useEffect(() => {
-    dispatch(chooseCurrency('Show All Currency'));
-    dispatch(setAbbr(null));
-    dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-    return () => dispatch(clearFilters());
-  }, []);
+    if (!route?.params?.isFromTransactions) dispatch(clearFilters());
+  }, [navigation]);
 
   const onRefresh = () => {
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
   };
 
-  const dates = transactions?.map((tr) => {
+  const transactionsCurrencyFiltered =
+    currency === 'Show All Currency'
+      ? transactions
+      : transactions.filter((t) => t.currency == currencyCode);
+
+  const dates = transactionsCurrencyFiltered?.map((tr) => {
     const date = new Date(tr.timestamp);
     return `${date.getDate()} ${
       monthsShort[date.getMonth()]
@@ -58,7 +86,7 @@ function TransactionHistory() {
   const renderDate = ({ item }) => (
     <TransactionDate
       date={item}
-      transactions={transactions}
+      transactions={transactionsCurrencyFiltered}
       loading={loading}
     />
   );
@@ -107,7 +135,7 @@ function TransactionHistory() {
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }
           ListFooterComponent={() =>
-            moreTradesLoading ? (
+            moreTradesLoading && uniqueDates.length > 0 ? (
               <TransactionSkeleton length={[0, 1, 2]} />
             ) : (
               <View />
@@ -116,7 +144,7 @@ function TransactionHistory() {
         />
       )}
 
-      <TransactionModal transactions />
+      {isFocused && <TransactionModal transactions />}
     </Background>
   );
 }

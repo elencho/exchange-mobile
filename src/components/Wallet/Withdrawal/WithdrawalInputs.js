@@ -9,6 +9,8 @@ import CardSection from '../../InstantTrade/CardSection';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import Fee from '../Fee';
+import QrScanner from '../../QrScanner';
+import QrScannerToggler from './widgets/QrScannerToggler';
 
 import colors from '../../../constants/colors';
 import { fetchFee } from '../../../redux/trade/actions';
@@ -16,8 +18,9 @@ import {
   setMemoTag,
   setWithdrawalAmount,
   setWithdrawalNote,
+  chooseWhitelist,
 } from '../../../redux/wallet/actions';
-import { validateScale } from '../../../utils/formUtils';
+import { handleAmountInput } from '../../../utils/formUtils';
 import { validateAmount } from '../../../utils/appUtils';
 
 export default function WithdrawalInputs({
@@ -55,51 +58,33 @@ export default function WithdrawalInputs({
   const isEcommerce = network === 'ECOMMERCE';
 
   const inputValidation = new RegExp(
-    `^[0-9]{1,13}(\.|\\.[0-9]{1,${cur?.withdrawalScale}})?$`
+    `^[0-9]{1,13}(\.|\\.[0-9]{0,${cur?.withdrawalScale}})?$`
   );
 
   const setAmount = (amount) => {
     const condition =
       depositProvider ||
       cur?.type === 'CRYPTO' ||
+      cur?.type === 'FIAT' ||
       currentTemplate?.templateName;
     dispatch(setWithdrawalAmount(amount ? amount : 0));
     if (condition) dispatch(fetchFee('withdrawal'));
   };
 
-  const getMaxLength = (replacedAmount) => {
-    const factoredDigit = Math.trunc(replacedAmount);
-    const factoredDigitLengthi = parseFloat(factoredDigit.toString().length);
-    const maxLengthDecimal =
-      factoredDigitLengthi + parseFloat(cur?.withdrawalScale) + 1;
-    setMaxLength(maxLengthDecimal);
-  };
-
   const handleAmount = (text) => {
-    const replacedAmount = text?.trim().replace(',', '.');
-
-    if (!inputValidation.test(replacedAmount) && replacedAmount) {
-      //return dispatch(setWithdrawalAmount(''));
-      return;
-    }
-
-    if (!validateScale(replacedAmount, cur?.withdrawalScale)) {
-      return;
-    }
-
-    const parts = replacedAmount.split('.');
-    if (parts.length === 2) {
-      getMaxLength(replacedAmount);
-      setAmount(replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0);
-    } else {
-      setMaxLength(14);
-      setAmount(replacedAmount ? parts[0].substr(0, 13) : 0);
-    }
+    handleAmountInput(
+      text,
+      inputValidation,
+      cur?.withdrawalScale,
+      setMaxLength,
+      setAmount
+    );
   };
 
   const setNote = (note) => dispatch(setWithdrawalNote(note));
   const handleMemotag = (memo) => dispatch(setMemoTag(memo));
   const handleMax = () => dispatch({ type: 'MAX_WITHDRAWAL_SAGA' });
+  const setQrAddress = (address) => dispatch(chooseWhitelist({ address }));
 
   const disabled = () => {
     let disabled;
@@ -137,7 +122,9 @@ export default function WithdrawalInputs({
   return (
     <>
       <View style={styles.block}>
-        {!hasRestriction && !isFiat && <WithdrawalAddress error={error} />}
+        {!hasRestriction && !isFiat && (
+          <WithdrawalAddress right={<QrScannerToggler />} error={error} />
+        )}
 
         {needsTag() && !whitelist?.length && (
           <AppInput
@@ -149,6 +136,8 @@ export default function WithdrawalInputs({
             error={error && !memoTag?.trim()}
           />
         )}
+
+        <QrScanner setAddress={setQrAddress} />
         {isEcommerce ? (
           <>
             <View style={{ marginTop: -20, marginBottom: -22 }}>

@@ -26,19 +26,21 @@ export default function TradeDetails() {
     const date = new Date(timestamp);
     return `${date.getDate()} ${
       monthsShort[date.getMonth()]
-    }, ${date.getFullYear()} / ${date.toLocaleTimeString()}`;
+    }, ${date.getFullYear()} / ${date.toLocaleTimeString('en-US', {
+      hour12: false,
+    })}`;
   };
 
   const LeftText = ({ text }) => (
     <View style={styles.leftTextContainer}>
-      <AppText style={styles.leftText}>{text} :</AppText>
+      <AppText style={styles.leftText}>{`${text} :`}</AppText>
     </View>
   );
 
   const RightText = ({ text }) => (
     <View style={styles.rightTextContainer}>
       {typeof text === 'string' ? (
-        <AppText medium style={styles.rightText}>
+        <AppText medium numberOfLines={1} style={styles.rightText}>
           {text}
         </AppText>
       ) : (
@@ -63,18 +65,17 @@ export default function TradeDetails() {
   return (
     <View style={styles.container}>
       <View>
-        {['Amount', 'Price', 'Create Date', 'End Date', 'Status'].map((e) => (
-          <LeftText key={e} text={e} />
-        ))}
+        {['Amount', 'Price', 'Total', 'Create Date', 'End Date', 'Status'].map(
+          (e) => (
+            <LeftText key={e} text={e} />
+          )
+        )}
       </View>
 
       <View style={styles.right}>
         <RightText
           text={
             <>
-              <AppText medium style={{ color: '#C0C5E0' }}>
-                {cumulativeCost} {quoteCurrency}
-              </AppText>
               <AppText medium style={{ color: colors.PRIMARY_TEXT }}>
                 {size} {baseCurrency}
               </AppText>
@@ -82,6 +83,7 @@ export default function TradeDetails() {
           }
         />
         <RightText text={`${price} ${quoteCurrency}`} />
+        <RightText text={`${cumulativeCost} ${quoteCurrency}`} />
         <RightText text={date(creationTime)} />
         <RightText text={date(lastChangeTime)} />
 
@@ -117,9 +119,11 @@ const styles = StyleSheet.create({
   },
   rightText: {
     color: colors.PRIMARY_TEXT,
+    width: '100%',
   },
   status: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });

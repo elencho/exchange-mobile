@@ -7,6 +7,7 @@ import colors from '../../constants/colors';
 import {
   setDepositProvider,
   switchBalanceCard,
+  setCard,
 } from '../../redux/trade/actions';
 
 export default function BalanceCardSwitcher() {
@@ -16,6 +17,7 @@ export default function BalanceCardSwitcher() {
   const handleFilter = (filter) => {
     dispatch(switchBalanceCard(filter));
     dispatch(setDepositProvider(null));
+    dispatch(setCard(null));
   };
 
   const stylesCond = (f) => {
@@ -38,6 +40,7 @@ export default function BalanceCardSwitcher() {
     const isActive = f === Balance_Card;
     return (
       <AppText
+        body
         medium={isActive}
         style={{ color: isActive ? colors.SECONDARY_PURPLE : '#C0C5E0' }}
       >
@@ -83,6 +86,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 15,
+    lineHeight: 19,
     color: colors.SECONDARY_TEXT,
   },
 });

@@ -12,10 +12,10 @@ axios.interceptors.request.use(async (config) => {
   const dictionaryReq = requestName === 'fetchTranslations';
   const token = await SecureStore.getItemAsync('accessToken');
   if (token && !dictionaryReq) config.headers.Authorization = `Bearer ${token}`;
-
   const isToast = toast === false ? false : true;
 
   store.dispatch({ type: 'SET_IS_TOAST', isToast });
+
   requestName && store.dispatch({ type: 'SET_REQUEST_NAME', requestName });
 
   delete config.headers.toast;

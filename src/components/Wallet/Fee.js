@@ -1,18 +1,24 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { t } from 'i18next';
 
 import AppText from '../AppText';
-import images from '../../constants/images';
 import colors from '../../constants/colors';
+
+import FeeIcon from '../../assets/images/Wallet/Fee';
 
 export default function Fee() {
   const state = useSelector((state) => state);
   const {
-    trade: { fee, currentTrade, fiat },
+    trade: { fee, currentTrade, fiat, currentBalanceObj },
     transactions: { code, tabRoute },
-    wallet: { depositAmount, withdrawalAmount },
+    wallet: {
+      depositAmount,
+      withdrawalAmount,
+      withdrawalBank,
+      currentTemplate,
+    },
   } = state;
 
   const notEmpty = () => {
@@ -33,13 +39,24 @@ export default function Fee() {
       } = fee;
 
       const feeCond = !notEmpty() || fixedValue || fixedValue === 0;
-      feeText = feeCond ? null : `Fee : ${fee?.totalFee ?? '0'} ${currency} | `;
+      feeText = feeCond ? null : (
+        <>
+          <AppText small style={styles.feeText}>
+            Fee :
+          </AppText>
+          <AppText small style={styles.feeText}>
+            {` ${fee?.totalFee ?? '0'} ${currency} | `}
+          </AppText>
+        </>
+      );
     }
     return (
-      <AppText small style={styles.feeText}>
-        {feeText}
-        {totalText}
-      </AppText>
+      <View style={styles.row}>
+        <AppText small style={styles.feeText}>
+          {feeText}
+          {totalText}
+        </AppText>
+      </View>
     );
   };
 
@@ -74,18 +91,21 @@ export default function Fee() {
       }
 
       return (
-        <AppText small style={styles.feeText}>
-          {subMethod ? subMethod : 'Fixed : '}
-          {value() ?? `0 ${currency}`}
-        </AppText>
+        <View style={styles.container}>
+          <AppText small style={styles.feeText}>
+            {subMethod ? subMethod : 'Fixed :'}
+          </AppText>
+          <AppText small style={styles.feeText}>
+            {value() ? ` ${value()}` : ` 0 ${currency}`}
+          </AppText>
+        </View>
       );
     }
   };
 
   return (
     <View style={styles.fee}>
-      <Image source={images.Fee} />
-
+      <FeeIcon />
       <View style={styles.flex}>
         <UpperLine />
         <LowerLine />
@@ -95,6 +115,7 @@ export default function Fee() {
 }
 
 const styles = StyleSheet.create({
+  container: { flexDirection: 'row' },
   fee: {
     marginBottom: 50,
     alignItems: 'center',
@@ -109,5 +130,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     marginLeft: 12,
+  },
+  row: {
+    flexDirection: 'row',
   },
 });

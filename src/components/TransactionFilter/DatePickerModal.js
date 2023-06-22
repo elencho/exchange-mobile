@@ -7,14 +7,12 @@ import AppModal from '../AppModal';
 import CalendarHeader from './CalendarHeader';
 import CalendarDay from './CalendarDay';
 import AppText from '../AppText';
-import { setFromTime, setToTime } from '../../redux/transactions/actions';
 import { toggleDatePicker } from '../../redux/modals/actions';
 import { months } from '../../constants/months';
-import { IS_ANDROID, IS_IOS } from '../../constants/system';
 import colors from '../../constants/colors';
 
 const theme = {
-  calendarBackground: colors.SECONDARY_BACKGROUND,
+  calendarBackground: colors.PRIMARY_BACKGROUND,
 };
 
 export default function DatePickerModal({ from, to }) {
@@ -30,44 +28,21 @@ export default function DatePickerModal({ from, to }) {
     if (to) return datePickerVisible.to;
   };
 
-  const handleChange = (timestamp) => {
-    if (from) {
-      dispatch(setFromTime(timestamp - 3600000 * 4));
-    }
-    if (to) {
-      dispatch(setToTime(timestamp + 3600000 * 20 - 1));
-    }
-  };
-
-  const dateMark = (timestamp, fromDate, toDate) => {
-    if (from) {
-      return (
-        fromDate.getDate() === timestamp.getDate() &&
-        fromDate.getFullYear() === timestamp.getFullYear() &&
-        fromDate.getMonth() === timestamp.getMonth()
-      );
-    }
-    if (to) {
-      return (
-        toDate.getDate() === timestamp.getDate() &&
-        toDate.getFullYear() === timestamp.getFullYear() &&
-        toDate.getMonth() === timestamp.getMonth()
-      );
-    }
-  };
-
   const dateSubtext = () => {
     if (from) {
       return (
         <View style={styles.subtextContainer}>
           {fromDateTime && (
-            <AppText style={styles.subtext} body>
-              From Date Selected{'  '}
+            <View style={styles.row}>
+              <AppText style={styles.subtext} body>
+                From Date Selected
+              </AppText>
               <AppText medium body style={styles.date}>
+                {'  '}
                 {new Date(fromDateTime).getDate()}{' '}
                 {months[new Date(fromDateTime).getMonth()]}
               </AppText>
-            </AppText>
+            </View>
           )}
         </View>
       );
@@ -76,13 +51,16 @@ export default function DatePickerModal({ from, to }) {
       return (
         <View style={styles.subtextContainer}>
           {toDateTime && (
-            <AppText style={styles.subtext} body>
-              To Date Selected{'  '}
+            <View style={styles.row}>
+              <AppText style={styles.subtext} body>
+                To Date Selected
+              </AppText>
               <AppText medium body style={styles.date}>
+                {'  '}
                 {new Date(toDateTime).getDate()}{' '}
                 {months[new Date(toDateTime).getMonth()]}
               </AppText>
-            </AppText>
+            </View>
           )}
         </View>
       );
@@ -91,59 +69,11 @@ export default function DatePickerModal({ from, to }) {
 
   const hide = () => dispatch(toggleDatePicker({ from: false, to: false }));
 
-  const minMaxDate = () => {
-    if (fromDateTime && to) {
-      const date = new Date(fromDateTime).toLocaleDateString().split('/');
-      var day, month, year;
-      if (IS_IOS) {
-        day = date[1] < 10 ? date[1] : date[1];
-        month = date[0] < 10 ? date[0] : date[0];
-        year = date[2];
-        return `${year}-${day}-${month}`;
-      }
-
-      if (IS_ANDROID) {
-        day = date[1] < 10 ? date[1] : date[1];
-        month = date[0] < 10 ? date[0] : date[0];
-        year = `20${date[2]}`;
-        return `${year}-${month}-${day}`;
-      }
-    }
-
-    if (toDateTime && from) {
-      const date = new Date(toDateTime).toLocaleDateString().split('/');
-      var day, month, year;
-      if (IS_IOS) {
-        day = date[1] < 10 ? date[1] : date[1];
-        month = date[0] < 10 ? date[0] : date[0];
-        year = date[2];
-        return `${year}-${day}-${month}`;
-      }
-
-      if (IS_ANDROID) {
-        day = date[1] < 10 ? date[1] : date[1];
-        month = date[0] < 10 ? date[0] : date[0];
-        year = `20${date[2]}`;
-        return `${year}-${month}-${day}`;
-      }
-    }
-  };
-
-  const todayDisabled = () => {
-    const now = Date.now();
-    const condition =
-      (to && now < parseInt(fromDateTime)) ||
-      (from && parseInt(toDateTime) < now);
-    return !!condition;
-  };
-
   const children = (
     <Calendar
       style={styles.container}
       theme={theme}
       context={{ date: '' }}
-      minDate={to && minMaxDate()}
-      maxDate={from && minMaxDate()}
       customHeader={({ month, addMonth }) => (
         <CalendarHeader
           month={month}
@@ -152,18 +82,19 @@ export default function DatePickerModal({ from, to }) {
         />
       )}
       dayComponent={(state) => (
-        <CalendarDay
-          state={state}
-          handleChange={handleChange}
-          dateMark={dateMark}
-          todayDisabled={todayDisabled}
-        />
+        <CalendarDay state={state} from={from} to={to} />
       )}
     />
   );
 
   return (
-    <AppModal children={children} bottom visible={visible()} hide={hide} />
+    <AppModal
+      children={children}
+      bottom
+      visible={visible()}
+      hide={hide}
+      position="80%"
+    />
   );
 }
 
@@ -187,6 +118,10 @@ const styles = StyleSheet.create({
   subtext: {
     color: colors.SECONDARY_TEXT,
     textAlign: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   text: { color: colors.PRIMARY_TEXT },
 });

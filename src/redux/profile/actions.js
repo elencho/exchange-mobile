@@ -50,6 +50,7 @@ export const actionTypes = {
   ACTIVATE_GOOGLE_OTP: 'ACTIVATE_GOOGLE_OTP',
 
   TOGGLE_USER_PROFILE_LOADING: 'TOGGLE_USER_PROFILE_LOADING',
+  TOGGLE_IS_PROFILE_UPDATING: 'TOGGLE_IS_PROFILE_UPDATING',
 };
 
 // Login
@@ -109,6 +110,10 @@ export const setLanguage = (language) => ({
   type: actionTypes.SET_LANGUAGE,
   language,
 });
+export const setIsProfileUpdating = (isProfileUpdating) => ({
+  type: actionTypes.TOGGLE_IS_PROFILE_UPDATING,
+  isProfileUpdating,
+});
 
 // SECURITY
 export const setGoogleAuth = (googleAuth) => ({
@@ -145,8 +150,9 @@ export const startRegistrationAction = (navigation) => ({
   type: actionTypes.START_REGISTRATION_ACTION,
   navigation,
 });
-export const registrationFormAction = () => ({
+export const registrationFormAction = (navigation) => ({
   type: actionTypes.REGISTRATION_FORM_ACTION,
+  navigation,
 });
 export const usernameAndPasswordAction = (navigation) => ({
   type: actionTypes.USERNAME_AND_PASSWORD_ACTION,

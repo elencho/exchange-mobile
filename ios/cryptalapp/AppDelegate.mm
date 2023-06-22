@@ -1,75 +1,51 @@
 #import "AppDelegate.h"
+#import <Firebase.h>
 
-#import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
-#import <React/RCTRootView.h>
 #import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
 #import <React/RCTConvert.h>
-
-#import <React/RCTAppSetupUtils.h>
 
 #import <AppCenterReactNative.h>
 #import <AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes.h>
 #import <CodePush/CodePush.h>
 
-#if RCT_NEW_ARCH_ENABLED
-#import <React/CoreModulesPlugins.h>
-#import <React/RCTCxxBridgeDelegate.h>
-#import <React/RCTFabricSurfaceHostingProxyRootView.h>
-#import <React/RCTSurfacePresenter.h>
-#import <React/RCTSurfacePresenterBridgeAdapter.h>
-#import <ReactCommon/RCTTurboModuleManager.h>
-
-#import <react/config/ReactNativeConfig.h>
-
-static NSString *const kRNConcurrentRoot = @"concurrentRoot";
-
-@interface AppDelegate () <RCTCxxBridgeDelegate, RCTTurboModuleManagerDelegate> {
-  RCTTurboModuleManager *_turboModuleManager;
-  RCTSurfacePresenterBridgeAdapter *_bridgeAdapter;
-  std::shared_ptr<const facebook::react::ReactNativeConfig> _reactNativeConfig;
-  facebook::react::ContextContainer::Shared _contextContainer;
-}
-@end
+#ifdef FB_SONARKIT_ENABLED
+#import <FlipperKit/FlipperClient.h>
+#import <FlipperPerformancePlugin.h>
 #endif
+
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  RCTAppSetupPrepareApp(application);
+  [FIRApp configure];
+  [[UIApplication sharedApplication] registerForRemoteNotifications];
 
-  RCTBridge *bridge = [self.reactDelegate createBridgeWithDelegate:self launchOptions:launchOptions];
 
-#if RCT_NEW_ARCH_ENABLED
-  _contextContainer = std::make_shared<facebook::react::ContextContainer const>();
-  _reactNativeConfig = std::make_shared<facebook::react::EmptyReactNativeConfig const>();
-  _contextContainer->insert("ReactNativeConfig", _reactNativeConfig);
-  _bridgeAdapter = [[RCTSurfacePresenterBridgeAdapter alloc] initWithBridge:bridge contextContainer:_contextContainer];
-  bridge.surfacePresenter = _bridgeAdapter.surfacePresenter;
+#ifdef FB_SONARKIT_ENABLED
+  FlipperClient *client = [FlipperClient sharedClient];
+  [client addPlugin:[FlipperPerformancePlugin new]];
 #endif
-
-  NSDictionary *initProps = [self prepareInitialProps];
-  UIView *rootView = [self.reactDelegate createRootViewWithBridge:bridge moduleName:@"main" initialProperties:initProps];
-
-  rootView.backgroundColor = [UIColor whiteColor];
-  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [self.reactDelegate createRootViewController];
-  rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
-  [self.window makeKeyAndVisible];
-
-  [super application:application didFinishLaunchingWithOptions:launchOptions];
+  
+  self.moduleName = @"main";
+	  // You can add your custom initial props in the dictionary below.
+	  // They will be passed down to the ViewController used by React Native.
+	self.initialProps = @{};
 
   [AppCenterReactNative register];
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
   
-  [RNSplashScreen show];  // here
+    // here
     // or
-    //[RNSplashScreen showSplash:@"LaunchScreen" inRootView:rootView];
+  //[RNSplashScreen showSplash:@"LaunchScreen" inRootView:rootView];
+  [super application:application didFinishLaunchingWithOptions:launchOptions];
+  [RNSplashScreen show];
+
+  
   return YES;
 }
 
@@ -78,25 +54,14 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   // If you'd like to export some custom RCTBridgeModules, add them here!
   return @[];
 }
-
 /// This method controls whether the `concurrentRoot`feature of React18 is turned on or off.
 ///
 /// @see: https://reactjs.org/blog/2022/03/29/react-v18.html
 /// @note: This requires to be rendering on Fabric (i.e. on the New Architecture).
-/// @return: `true` if the `concurrentRoot` feture is enabled. Otherwise, it returns `false`.
-- (BOOL)concurrentRootEnabled
+/// @return: `true` if the `concurrentRoot` feature is enabled. Otherwise, it returns `false`.
+- (BOOL)concurrentRootEnable
 {
-  // Switch this bool to turn on and off the concurrent root
-  return true;
-}
-
-- (NSDictionary *)prepareInitialProps
-{
-  NSMutableDictionary *initProps = [NSMutableDictionary new];
-#if RCT_NEW_ARCH_ENABLED
-  initProps[kRNConcurrentRoot] = @([self concurrentRootEnabled]);
-#endif
-  return initProps;
+   return true;
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
@@ -104,7 +69,7 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
 #if DEBUG
   return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
 #else
-  return [CodePush bundleURL];
+  return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
 
@@ -119,61 +84,46 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   return [super application:application continueUserActivity:userActivity restorationHandler:restorationHandler] || result;
 }
 
+//test
+- (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
+    NSLog(@"FCM registration token: %@", fcmToken);
+    // Notify about received token.
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObject:fcmToken forKey:@"token"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:
+     @"FCMToken" object:nil userInfo:dataDict];
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
+// to delete the badge
+   [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+}
+
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-  return [super application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+  // return [super application:application didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    NSString *str = [NSString stringWithFormat:@"Device Token=%@",deviceToken];
+    NSLog(@"This is device token%@", deviceToken);
+    //NSString *deviceTokenString = [deviceToken description];
+    [FIRMessaging messaging].APNSToken = deviceToken;
 }
 
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
+  #if DEBUG
+  return;
+#else
   return [super application:application didFailToRegisterForRemoteNotificationsWithError:error];
+#endif
+  
 }
 
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-  return [super application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+   return [super application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
 }
 
-#if RCT_NEW_ARCH_ENABLED
-
-#pragma mark - RCTCxxBridgeDelegate
-
-- (std::unique_ptr<facebook::react::JSExecutorFactory>)jsExecutorFactoryForBridge:(RCTBridge *)bridge
-{
-  _turboModuleManager = [[RCTTurboModuleManager alloc] initWithBridge:bridge
-                                                             delegate:self
-                                                            jsInvoker:bridge.jsCallInvoker];
-  return RCTAppSetupDefaultJsExecutorFactory(bridge, _turboModuleManager);
-}
-
-#pragma mark RCTTurboModuleManagerDelegate
-
-- (Class)getModuleClassFromName:(const char *)name
-{
-  return RCTCoreModulesClassProvider(name);
-}
-
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
-                                                      jsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker
-{
-  return nullptr;
-}
-
-- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
-                                                     initParams:
-                                                         (const facebook::react::ObjCTurboModule::InitParams &)params
-{
-  return nullptr;
-}
-
-- (id<RCTTurboModule>)getModuleInstanceFromClass:(Class)moduleClass
-{
-  return RCTAppSetupDefaultModuleFromClass(moduleClass);
-}
-
-#endif
 
 @end

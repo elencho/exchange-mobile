@@ -6,10 +6,12 @@ export const actionTypes = {
   SET_DEPOSIT_RESTRICTION: 'SET_DEPOSIT_RESTRICTION',
   SET_WITHDRAWAL_RESTRICTION: 'SET_WITHDRAWAL_RESTRICTION',
   SET_USD_BTC: 'SET_USD_BTC',
+  SET_SHOULD_REFRESH: 'SET_SHOULD_REFRESH',
 
   // DEPOSIT
   SAVE_WIRE_DEPOSIT_INFO: 'SAVE_WIRE_DEPOSIT_INFO',
   SAVE_CRYPTO_ADDRESS: 'SAVE_CRYPTO_ADDRESS',
+  SET_IS_ADDRESS_GENERATING: 'SET_IS_ADDRESS_GENERATING',
 
   // Withdrawal
   SET_WITHDRAWAL_AMOUNT: 'SET_WITHDRAWAL_AMOUNT',
@@ -77,6 +79,10 @@ export const setWithdrawalRestriction = (withdrawalRestriction) => ({
   type: actionTypes.SET_WITHDRAWAL_RESTRICTION,
   withdrawalRestriction,
 });
+export const setShouldRefreshOnScroll = (shouldRefreshOnScroll) => ({
+  type: actionTypes.SET_SHOULD_REFRESH,
+  shouldRefreshOnScroll,
+});
 
 // DEPOSIT
 export const saveWireDepositInfo = (wireDepositInfo) => ({
@@ -86,6 +92,10 @@ export const saveWireDepositInfo = (wireDepositInfo) => ({
 export const saveCryptoAddress = (cryptoAddress) => ({
   type: actionTypes.SAVE_CRYPTO_ADDRESS,
   cryptoAddress,
+});
+export const setIsAddressGenerating = (isAddressGenerating) => ({
+  type: actionTypes.SET_IS_ADDRESS_GENERATING,
+  isAddressGenerating,
 });
 
 //WITHDRAWAL

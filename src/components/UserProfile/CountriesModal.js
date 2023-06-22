@@ -18,6 +18,7 @@ export default function CountriesModal({
   phoneCountry = false,
   registration = false,
   reset,
+  title = 'Choose Country',
 }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -88,7 +89,7 @@ export default function CountriesModal({
       choose={choose}
       filter={filter}
       currentItem={currentItem()}
-      title="Choose Country"
+      title={title}
       phoneCountry={phoneCountry}
       countryDrop={countryDrop}
       citizenshipDrop={citizenshipDrop}
@@ -99,8 +100,9 @@ export default function CountriesModal({
     <AppModal
       visible={countriesModalVisible}
       hide={hide}
+      onModalHide={hide}
       children={children}
-      custom
+      fullScreen
     />
   );
 }

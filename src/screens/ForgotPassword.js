@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Image,
-  ImageBackground,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
 
@@ -16,9 +10,9 @@ import PurpleText from '../components/PurpleText';
 import WithKeyboard from '../components/WithKeyboard';
 import Strong_Password from '../assets/images/User_profile/Strong_Password';
 import GeneralError from '../components/GeneralError';
+import Back from '../assets/images/Back';
 
 import colors from '../constants/colors';
-import images from '../constants/images';
 import { startLoginAction } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
 
@@ -122,10 +116,14 @@ export default function ForgotPassword({ navigation }) {
     error && f.username?.trim() && !mailValid ? 'Enter Valid Email' : null;
 
   return (
-    <ImageBackground source={images.Background} style={styles.container}>
+    <View style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={goToLogin}>
-        <Image source={images.Back} />
-        <PurpleText text="Back to Log In" style={styles.backText} />
+        <Back />
+        <PurpleText
+          numberOfLines={1}
+          text="Back to Log In"
+          style={styles.backText}
+        />
       </TouchableOpacity>
 
       <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
@@ -147,6 +145,7 @@ export default function ForgotPassword({ navigation }) {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           style={styles.input}
           label="Enter Email"
+          autoCapitalize={'none'}
           onChangeText={saveUsername}
           value={f.username}
           right={<Right />}
@@ -157,6 +156,7 @@ export default function ForgotPassword({ navigation }) {
           labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           style={styles.input}
           label="Enter Code"
+          autoCapitalize={'none'}
           onChangeText={saveCode}
           value={f.code}
           error={!f.code?.trim() && error}
@@ -164,7 +164,7 @@ export default function ForgotPassword({ navigation }) {
 
         <AppButton text="Next" style={styles.button} onPress={next} />
       </WithKeyboard>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
   backText: {
     marginBottom: 2,
     marginLeft: 10,
+    flex: 1,
   },
   button: {
     width: '100%',
@@ -186,7 +187,8 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: '12%',
+    paddingHorizontal: '8%',
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   input: {
     width: '100%',

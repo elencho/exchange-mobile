@@ -75,8 +75,13 @@ export const fetchTranslations = async () => {
   return data?.data;
 };
 
-export const checkReadiness = async (version) => {
-  const data = await axios.get(READINESS_URL, { params: { version } });
+export const checkReadiness = async (version, os) => {
+  const config = {
+    params: { version, os },
+  };
+  const uninterceptedAxiosInstance = axios.create();
+  const data = await uninterceptedAxiosInstance.get(READINESS_URL, config);
+
   return data?.data;
 };
 

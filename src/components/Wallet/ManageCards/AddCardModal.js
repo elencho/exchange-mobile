@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Linking, Pressable, StyleSheet, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'i18next';
 
@@ -11,8 +11,14 @@ import AppInfoBlock from '../../AppInfoBlock';
 import PurpleText from '../../PurpleText';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import BankFeesModal from '../../InstantTrade/BankFeesModal';
-import images from '../../../constants/images';
 import colors from '../../../constants/colors';
+import { IS_ANDROID } from '../../../constants/system';
+import { ICONS_URL_PNG } from '../../../constants/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import CheckFull from '../../../assets/images/Check_Full.svg';
+import CheckRed from '../../../assets/images/Check_Red.svg';
+import CheckEmpty from '../../../assets/images/Check_Empty.svg';
 import {
   setStatusModalInfo,
   toggleAddCardModal,
@@ -22,11 +28,18 @@ import {
 import { addCard } from '../../../utils/walletUtils';
 import { cardsSagaAction } from '../../../redux/trade/actions';
 
+import Arrow from '../../../assets/images/Arrow';
+
 export default function AddCardModal() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    modals: { addCardModalVisible, statusModalInfo, webViewObj },
+    modals: {
+      addCardModalVisible,
+      statusModalInfo,
+      webViewObj,
+      webViewVisible,
+    },
     trade: { depositProvider, depositProviders },
     transactions: { code },
   } = state;
@@ -45,12 +58,22 @@ export default function AddCardModal() {
 
   const hide = () => dispatch(toggleAddCardModal(false));
 
-  const image = () =>
-    !saveCardAgreeTerms && error
-      ? images.Check_Red
-      : saveCardAgreeTerms
-      ? images.Check_Full
-      : images.Check_Empty;
+  const image = () => {
+    let result;
+    switch (true) {
+      case !saveCardAgreeTerms && error:
+        result = <CheckRed />;
+        break;
+      case saveCardAgreeTerms:
+        result = <CheckFull />;
+        break;
+      default:
+        result = <CheckEmpty />;
+        break;
+    }
+    return result;
+  };
+
   const toggle = () => setSaveCardAgreeTerms(!saveCardAgreeTerms);
   const showBanks = () => dispatch(toggleChooseBankModal(true));
   const showFees = () => dispatch(toggleBankFeesModal(true));
@@ -70,11 +93,12 @@ export default function AddCardModal() {
     }
   };
 
-  const onNavigationStateChange = (state) => {
+  const onNavigationStateChange = async (state) => {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+      await AsyncStorage.removeItem('webViewVisible');
       setStatusObj({ success: ending, visible: true });
       dispatch(cardsSagaAction());
       hide();
@@ -82,14 +106,27 @@ export default function AddCardModal() {
   };
 
   const handleHide = () => {
-    if (statusObj) dispatch(setStatusModalInfo(statusObj));
-    setSaveCardAgreeTerms(false);
-    setStatusObj(null);
+    if (webViewVisible) {
+      if (statusObj) dispatch(setStatusModalInfo(statusObj));
+      setSaveCardAgreeTerms(false);
+      setStatusObj(null);
+    }
   };
 
   const urlEncodedData = () => {
     const data = new URLSearchParams(webViewObj?.data);
     return data.toString();
+  };
+
+  const displayName = () => {
+    let displayName = 'Payment Service Provider';
+
+    depositProviders?.forEach((provider) => {
+      if (depositProvider === provider.provider)
+        displayName = provider.displayName;
+    });
+
+    return displayName;
   };
 
   const goToTerms = () =>
@@ -106,6 +143,10 @@ export default function AddCardModal() {
   const borderColor = !depositProvider && error ? '#F45E8C' : '#525A86';
   const termsColor = !saveCardAgreeTerms && error ? '#F45E8C' : '#525A86';
 
+  useEffect(() => {
+    if (statusObj && IS_ANDROID) dispatch(setStatusModalInfo(statusObj));
+  }, [statusObj]);
+
   const children = (
     <>
       {/* {!multipleBanks() ? ( */}
@@ -114,10 +155,16 @@ export default function AddCardModal() {
           style={[styles.dropdown, { borderColor }]}
           onPress={showBanks}
         >
+          {depositProvider && (
+            <Image
+              source={{ uri: `${ICONS_URL_PNG}/${depositProvider}.png` }}
+              style={styles.imageSmall}
+            />
+          )}
           <AppText style={[styles.text, { color }]} medium={depositProvider}>
-            {depositProvider ? depositProvider : 'Payment Service Provider'}
+            {displayName()}
           </AppText>
-          <Image source={images['Arrow']} />
+          <Arrow />
         </Pressable>
 
         {/* <AppText subtext style={styles.subText}>
@@ -136,7 +183,7 @@ export default function AddCardModal() {
       {depositProvider === 'BOG' && (
         <View style={styles.row}>
           <Pressable style={styles.image} onPress={toggle}>
-            <Image source={image()} style={{ marginRight: 10 }} />
+            {image()}
           </Pressable>
           <AppText style={[styles.grey, { color: termsColor }]}>
             {t('Save Card & Agree')}{' '}
@@ -224,5 +271,11 @@ const styles = StyleSheet.create({
   text: {
     color: colors.PRIMARY_TEXT,
     flex: 1,
+  },
+  imageSmall: {
+    width: 24,
+    height: 20,
+    resizeMode: 'contain',
+    marginRight: 15,
   },
 });

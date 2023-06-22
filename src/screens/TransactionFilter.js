@@ -1,5 +1,11 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppText from '../components/AppText';
@@ -15,10 +21,12 @@ import PurpleText from '../components/PurpleText';
 
 import { clearFilters } from '../redux/transactions/actions';
 import { toggleCurrencyModal } from '../redux/modals/actions';
-import images from '../constants/images';
 import colors from '../constants/colors';
 import { types, methods } from '../constants/filters';
 import { COINS_URL_PNG } from '../constants/api';
+
+import Arrow from '../assets/images/Arrow.svg';
+import Clear from '../assets/images/Clear.svg';
 
 export default function TransactionFilter({ navigation }) {
   const dispatch = useDispatch();
@@ -30,7 +38,7 @@ export default function TransactionFilter({ navigation }) {
 
   const close = () => {
     clear();
-    navigation.goBack();
+    navigation.navigate('Main', { screen: 'Transactions' });
   };
 
   const clear = () => {
@@ -41,18 +49,24 @@ export default function TransactionFilter({ navigation }) {
   const clearCond =
     code || typeFilter || fromDateTime || toDateTime || method[0] !== 'All';
 
+  const seperateCurrencyName = (currency) => currency.split('(')[0];
+
   return (
     <Background>
-      <TouchableOpacity style={styles.closeContainer} onPress={close}>
-        <Close />
-      </TouchableOpacity>
-
-      <Headline title="Transaction Filter" />
-
-      <AppText style={styles.text}>Choose Type:</AppText>
+      <View style={styles.closeContainer}>
+        <Headline title="Transaction Filter" />
+        <TouchableOpacity onPress={close} hitSlop={50}>
+          <Close />
+        </TouchableOpacity>
+      </View>
+      <AppText body style={styles.text}>
+        Choose Type:
+      </AppText>
       <FilterRow array={types} />
 
-      <AppText style={styles.text}>Choose Methods:</AppText>
+      <AppText body style={styles.text}>
+        Choose Methods:
+      </AppText>
       <FilterRow array={methods} multiselect />
 
       <Pressable style={styles.dropdown} onPress={openModal}>
@@ -62,10 +76,10 @@ export default function TransactionFilter({ navigation }) {
             style={styles.coin}
           />
         )}
-        <AppText medium style={styles.bigText}>
-          {currency || 'Show All Currencies'}
+        <AppText body medium style={styles.bigText}>
+          {seperateCurrencyName(currency) || 'Show All Currencies'}
         </AppText>
-        <Image source={images.Arrow} />
+        <Arrow />
       </Pressable>
 
       <DatePicker from />
@@ -73,13 +87,13 @@ export default function TransactionFilter({ navigation }) {
 
       {clearCond && (
         <TouchableOpacity style={styles.clear} onPress={clear}>
-          <Image source={images.Clear} />
+          <Clear />
           <PurpleText style={styles.purple} text="Clear Filters" />
         </TouchableOpacity>
       )}
 
-      <TransactionFilterBottom />
-      <ChooseCurrencyModal />
+      <TransactionFilterBottom navigation={navigation} />
+      <ChooseCurrencyModal isForTransactions />
 
       <DatePickerModal from />
       <DatePickerModal to />
@@ -100,13 +114,14 @@ const styles = StyleSheet.create({
   },
   purple: {
     fontSize: 15,
+    lineHeight: 19,
     marginHorizontal: 5,
   },
   closeContainer: {
-    position: 'absolute',
-    top: 10,
-    right: 20,
-    padding: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 5,
+    justifyContent: 'space-between',
   },
   dropdown: {
     paddingHorizontal: 20,
@@ -119,6 +134,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 13,
+    lineHeight: 17,
     color: colors.PRIMARY_TEXT,
     marginVertical: 15,
   },

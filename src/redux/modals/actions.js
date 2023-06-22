@@ -10,21 +10,24 @@ export const actionTypes = {
   BANK_FEES_MODAL: 'BANK_FEES_MODAL',
   FIAT_MODAL_VISIBLE: 'FIAT_MODAL_VISIBLE',
   CRYPTO_MODAL_VISIBLE: 'CRYPTO_MODAL_VISIBLE',
-
+  RESET_STATE: 'RESET_STATE',
   PERONAL_INFO_MODAL: 'PERONAL_INFO_MODAL',
   PASSWORD_MODAL: 'PASSWORD_MODAL',
   PHONE_NUMBER_MODAL: 'PHONE_NUMBER_MODAL',
   TOGGLE_LANGUAGE_MODAL: 'TOGGLE_LANGUAGE_MODAL',
+  OPEN_COMPANY_INFO_MODAL: 'OPEN_COMPANY_INFO_MODAL',
+  CLOSE_COMPANY_INFO_MODAL: 'CLOSE_COMPANY_INFO_MODAL',
   GOOGLE_AUTH_MODAL: 'GOOGLE_AUTH_MODAL',
   COUNTRIES_MODAL: 'COUNTRIES_MODAL',
   SMS_AUTH_MODAL: 'SMS_AUTH_MODAL',
   EMAIL_AUTH_MODAL: 'EMAIL_AUTH_MODAL',
   GOOGLE_OTP_MODAL: 'GOOGLE_OTP_MODAL',
-  EMAIL_VERIFICATION_MODAL: 'EMAIL_VERIFICATION_MODAL',
+  WEB_VIEW_VISIBLE: 'WEB_VIEW_VISIBLE',
 
   CHOOSE_NETWORK_MODAL: 'CHOOSE_NETWORK_MODAL',
   GENERATE_REQUEST_MODAL: 'GENERATE_REQUEST_MODAL',
   QR_ADDRESS_MODAL: 'QR_ADDRESS_MODAL',
+  QR_SCANNER_MODAL: 'QR_SCANNER_MODAL',
   CHOOSE_ADDRESS_MODAL: 'CHOOSE_ADDRESS_MODAL',
   WHITELIST_ACTIONS_MODAL: 'WHITELIST_ACTIONS_MODAL',
   ADD_WHITELIST_MODAL: 'ADD_WHITELIST_MODAL',
@@ -34,6 +37,7 @@ export const actionTypes = {
   TOGGLE_ADD_CARD_MODAL: 'TOGGLE_ADD_CARD_MODAL',
   SET_STATUS_MODAL_INFO: 'SET_STATUS_MODAL_INFO',
   DELETE_MODAL_INFO: 'DELETE_MODAL_INFO',
+  GRANT_CAMERA_PERMISSION: 'GRANT_CAMERA_PERMISSION',
 
   SET_APP_TOAST: 'SET_APP_TOAST',
   SET_TOAST_OBJ: 'SET_TOAST_OBJ',
@@ -66,6 +70,10 @@ export const toggleFiatModal = (fiatModalVisible) => ({
 export const toggleInfoModal = (infoVisible) => ({
   type: actionTypes.INSTANT_TRADE_INFO,
   infoVisible,
+});
+export const toggleWebViewVisible = (webViewVisible) => ({
+  type: actionTypes.WEB_VIEW_VISIBLE,
+  webViewVisible,
 });
 export const toggleChooseCardModal = (chooseCardModalVisible) => ({
   type: actionTypes.CHOOSE_CARD_MODAL,
@@ -121,11 +129,17 @@ export const toggleGoogleOtpModal = (googleOtpModalVisible) => ({
   type: actionTypes.GOOGLE_OTP_MODAL,
   googleOtpModalVisible,
 });
-export const toggleEmailVerificationModal = (
-  emailVerificationModalVisible
+export const openCompanyInfoModal = (
+  companyInfoModalHeader,
+  companyInfoModalDescription,
+  companyInfoModalLink,
+  companyInfoModalButton
 ) => ({
-  type: actionTypes.EMAIL_VERIFICATION_MODAL,
-  emailVerificationModalVisible,
+  type: actionTypes.OPEN_COMPANY_INFO_MODAL,
+  companyInfoModalHeader,
+  companyInfoModalDescription,
+  companyInfoModalLink,
+  companyInfoModalButton,
 });
 
 // WALLET
@@ -140,6 +154,10 @@ export const toggleGenerateRequestModal = (generateRequestModalVisible) => ({
 export const toggleQrAddressModal = (qrAddressModalVisible) => ({
   type: actionTypes.QR_ADDRESS_MODAL,
   qrAddressModalVisible,
+});
+export const toggleQrScannerModal = (qrScannerModalVisible) => ({
+  type: actionTypes.QR_SCANNER_MODAL,
+  qrScannerModalVisible,
 });
 export const toggleChooseAddressModal = (chooseAddressModalVisible) => ({
   type: actionTypes.CHOOSE_ADDRESS_MODAL,
@@ -185,4 +203,8 @@ export const setAppToast = (appToastObj) => ({
 export const setToastObj = (toastObj) => ({
   type: actionTypes.SET_TOAST_OBJ,
   toastObj,
+});
+export const grantCameraPermission = (hasCameraPermission) => ({
+  type: actionTypes.GRANT_CAMERA_PERMISSION,
+  hasCameraPermission,
 });

@@ -1,8 +1,9 @@
 import React, { memo, useEffect } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import images from '../constants/images';
+import GeneralErrorIcon from '../assets/images/User_profile/General_Error.svg';
+
 import AppText from './AppText';
 
 function GeneralError({ style, show = true }) {
@@ -15,9 +16,11 @@ function GeneralError({ style, show = true }) {
   const profile = useSelector((state) => state.profile);
 
   useEffect(() => {
-    if (generalError) {
-      dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
-    }
+    return () => {
+      if (generalError) {
+        dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
+      }
+    };
   }, [modals, trade, transactions, wallet, profile]);
 
   const params =
@@ -25,13 +28,13 @@ function GeneralError({ style, show = true }) {
   const message = generalError?.errorMessage;
   const errorMessage = !params
     ? message
-    : `${message} params[${params.join()}]`;
+    : `${message} params{${params.join()}}`;
 
   return (
     <>
       {generalError && show ? (
         <View style={[styles.container, style]}>
-          <Image source={images.General_Error} />
+          <GeneralErrorIcon />
           <AppText subtext style={styles.red}>
             {errorMessage}
           </AppText>

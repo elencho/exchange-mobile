@@ -57,10 +57,7 @@ export default function ManageCards({ refreshControl }) {
             {cards?.map((c) => (
               <Card key={c.id} card={c} />
             ))}
-            {/* Code below for testing purposes only */}
-            {/* {[1, 2, 3, 4, 5, 6, 7].map((c) => (
-              <Card key={c} />
-            ))} */}
+
             <DeleteModal type="card" />
           </ScrollView>
 

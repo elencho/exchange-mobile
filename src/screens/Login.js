@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, ImageBackground, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
 
 import AppButton from '../components/AppButton';
@@ -13,7 +13,6 @@ import PurpleText from '../components/PurpleText';
 import Logo from '../assets/images/Logo.svg';
 
 import colors from '../constants/colors';
-import images from '../constants/images';
 import {
   setCredentials,
   startRegistrationAction,
@@ -21,9 +20,11 @@ import {
 } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
 
-export default function Login({ navigation }) {
+export default function Login() {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
+
   const {
     profile: { credentials, userProfileLoading },
   } = state;
@@ -48,10 +49,14 @@ export default function Login({ navigation }) {
     }, [])
   );
 
-  const typePassword = (t) =>
-    dispatch(setCredentials({ ...credentials, password: t }));
-  const typeLogin = (t) =>
-    dispatch(setCredentials({ ...credentials, login: t }));
+  const typePassword = useCallback(
+    (t) => dispatch(setCredentials({ ...credentials, password: t })),
+    [credentials]
+  );
+  const typeLogin = useCallback(
+    (t) => dispatch(setCredentials({ ...credentials, login: t })),
+    [credentials]
+  );
 
   const handleLogin = () => {
     if (!login || !password || !validate) {
@@ -69,7 +74,7 @@ export default function Login({ navigation }) {
     error && login?.trim() && !validate ? 'Enter Valid Email' : null;
 
   return (
-    <ImageBackground source={images.Background} style={{ flex: 1 }}>
+    <View style={styles.background}>
       <WithKeyboard padding flexGrow contentContainerStyle={styles.container}>
         <Logo style={styles.logo} />
         <View>
@@ -83,18 +88,20 @@ export default function Login({ navigation }) {
         </View>
 
         <AppInput
-          placeholder={t('Enter Email')}
           style={styles.email}
           onChangeText={typeLogin}
           value={login}
           error={error && (!login || !validate)}
           errorText={errorText()}
+          autoCapitalize={'none'}
+          label={'Enter Email'}
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         />
         <AppInput
           secureTextEntry
-          placeholder={t('Enter Password')}
           onChangeText={typePassword}
           value={password}
+          autoCapitalize={'none'}
           style={styles.password}
           error={error && !password}
           right={
@@ -104,6 +111,8 @@ export default function Login({ navigation }) {
               onPress={forgotPassword}
             />
           }
+          label={'Enter Password'}
+          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         />
 
         <AppButton
@@ -120,7 +129,7 @@ export default function Login({ navigation }) {
           </AppText>
         </View>
       </WithKeyboard>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -130,10 +139,14 @@ const styles = StyleSheet.create({
     marginTop: 84,
     marginBottom: 40,
   },
+  background: {
+    backgroundColor: colors.SECONDARY_BACKGROUND,
+    flex: 1,
+  },
   container: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: '20%',
+    paddingHorizontal: '8%',
   },
   email: {
     marginBottom: 22,

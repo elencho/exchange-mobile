@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Linking, StyleSheet } from 'react-native';
 
 import Background from '../components/Background';
@@ -9,8 +9,13 @@ import AppButton from '../components/AppButton';
 
 import VersionCheck from 'react-native-version-check';
 import { packageName, APP_ID } from '../constants/system';
+import SplashScreen from 'react-native-splash-screen';
 
 export default function UpdateAvailable() {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   const update = async () => {
     const options = { packageName: packageName, appID: APP_ID };
 
@@ -27,9 +32,7 @@ export default function UpdateAvailable() {
       <AppText header style={styles.header}>
         Update Available
       </AppText>
-      <AppText style={styles.secondary}>
-        We recommended you to update app to have better experience
-      </AppText>
+      <AppText style={styles.secondary}>Update Available descr</AppText>
 
       <AppButton text="Update" style={styles.button} onPress={update} />
     </Background>
@@ -49,7 +52,7 @@ const styles = StyleSheet.create({
   },
   header: {
     color: colors.PRIMARY_TEXT,
-    marginTop: 5,
+    marginTop: 20,
     marginBottom: 12,
   },
   secondary: {

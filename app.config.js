@@ -16,6 +16,7 @@ export default {
       process.env.DEV === 'true'
         ? 'http://test-core-matching.cryptx.loc/exchange/api/v1/mobile'
         : 'https://exchange.cryptal.com/exchange/api/v1/mobile',
+
     authRedirectUrl:
       process.env.DEV === 'true'
         ? 'http://test-core-matching.cryptx.loc'

@@ -15,9 +15,12 @@ import { toggleWireBanksModal } from '../../../redux/modals/actions';
 import AppText from '../../AppText';
 import WireBanksModal from './WireBanksModal';
 import { ICONS_URL_PNG } from '../../../constants/api';
-import { copyToClipboard } from '../../../utils/copyToClipboard';
+import useCopyToClipboard from '../../../utils/copyToClipboard';
 
+import Arrow from '../../../assets/images/Arrow';
+import CopyIcon from '../../../assets/images/Copy.svg';
 const InfoRow = ({ title, text }) => {
+  const { copyToClipboard } = useCopyToClipboard();
   const copy = () => copyToClipboard(text);
 
   return (
@@ -27,7 +30,7 @@ const InfoRow = ({ title, text }) => {
       </AppText>
       <View style={styles.row}>
         <AppText style={styles.text}>{text}</AppText>
-        <Image source={images.White_Copy} />
+        <CopyIcon />
       </View>
     </TouchableOpacity>
   );
@@ -41,6 +44,7 @@ export default function BankInfo() {
     wallet: { wireDepositInfo, wireDepositProvider },
     profile: { language },
   } = state;
+  const numberOfProviders = wireDepositInfo[language]?.length;
 
   useEffect(() => {
     const obj = wireDepositInfo[language]?.find((o) => {
@@ -83,6 +87,14 @@ export default function BankInfo() {
     { title: 'SWIFT Code', text: info.intSwift },
     { title: 'Address', text: info.intAddress },
   ];
+  const bankDisplayName =
+    wireDepositProvider === 'TBC'
+      ? 'TBC Bank'
+      : wireDepositProvider === 'BOG'
+      ? 'Bank of Georgia'
+      : wireDepositProvider === 'SEPA'
+      ? 'Clear Junction Limited'
+      : wireDepositProvider;
 
   return (
     <>
@@ -90,31 +102,34 @@ export default function BankInfo() {
         Bank Info
       </AppText>
 
-      <Pressable style={styles.dropdown} onPress={handleBanks}>
-        <View style={styles.subtext}>
-          <AppText subtext style={styles.secondary}>
-            Payment Service Provider
+      {numberOfProviders === 1 ? (
+        <InfoRow title="Payment Service Provider" text={bankDisplayName} />
+      ) : (
+        <Pressable style={styles.dropdown} onPress={handleBanks}>
+          <View style={styles.subtext}>
+            <AppText subtext style={styles.secondary}>
+              Payment Service Provider
+            </AppText>
+          </View>
+          <Image
+            source={{ uri: `${ICONS_URL_PNG}/${wireDepositProvider}.png` }}
+            style={styles.image}
+          />
+          <AppText medium style={styles.dropdownText}>
+            {bankDisplayName ?? 'Choose Bank'}
           </AppText>
-        </View>
-
-        <Image
-          source={{ uri: `${ICONS_URL_PNG}/${wireDepositProvider}.png` }}
-          style={styles.image}
-        />
-        <AppText medium style={styles.dropdownText}>
-          {wireDepositProvider ?? 'Choose Bank'}
-        </AppText>
-        <View style={styles.line} />
-        <Image source={images.Arrow} />
-      </Pressable>
+          <View style={styles.line} />
+          <Arrow />
+        </Pressable>
+      )}
 
       <>
         {infoArray.map((i) => (
           <InfoRow title={i.title} text={i.text} key={i.title} />
         ))}
-        <Text style={styles.light}>
+        <AppText subtext style={styles.light}>
           This identifier is mandatory when transferring funds
-        </Text>
+        </AppText>
       </>
 
       {/* <View style={styles.marginVertical} /> */}
@@ -175,6 +190,7 @@ const styles = StyleSheet.create({
     color: '#F2DFB4',
     fontFamily: 'Ubuntu_Regular',
     fontSize: 11,
+    lineHeight: 15,
   },
   marginVertical: {
     marginVertical: 20,

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Image,
-  ImageBackground,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -19,6 +17,7 @@ import WithKeyboard from '../components/WithKeyboard';
 import SmsAuth from '../assets/images/User_profile/Sms_Auth.svg';
 import EmailLoginAuth from '../assets/images/User_profile/EmailLoginAuth.svg';
 import TotpAuth from '../assets/images/User_profile/Totp_Auth.svg';
+import Back from '../assets/images/Back';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
@@ -99,12 +98,16 @@ export default function Login2Fa({ navigation }) {
   };
 
   return (
-    <ImageBackground source={images.Background} style={styles.container}>
+    <View style={styles.container}>
       <WithKeyboard padding flexGrow>
         <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
           <TouchableOpacity style={styles.back} onPress={goBack}>
-            <Image source={images.Back} />
-            <PurpleText text="Back to Log In" style={styles.backText} />
+            <Back />
+            <PurpleText
+              numberOfLines={1}
+              text="Back to Log In"
+              style={styles.backText}
+            />
           </TouchableOpacity>
           <View style={styles.middle}>
             {image()}
@@ -144,7 +147,7 @@ export default function Login2Fa({ navigation }) {
           </View>
         </Pressable>
       </WithKeyboard>
-    </ImageBackground>
+    </View>
   );
 }
 
@@ -160,6 +163,7 @@ const styles = StyleSheet.create({
   backText: {
     marginBottom: 2,
     marginLeft: 10,
+    flex: 1,
   },
   bottom: {
     alignItems: 'center',
@@ -168,6 +172,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   middle: {
     flex: 1,

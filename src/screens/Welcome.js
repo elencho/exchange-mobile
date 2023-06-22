@@ -1,37 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import * as SecureStore from 'expo-secure-store';
+import React, { useCallback } from 'react';
+
 import {
   StyleSheet,
-  ImageBackground,
+  View,
   TouchableWithoutFeedback,
   Keyboard,
-  ActivityIndicator,
+  BackHandler,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
-import DeviceInfo from 'react-native-device-info';
-import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
-import images from '../constants/images';
 import Logo from '../assets/images/Logo.svg';
 import {
-  fetchCountries,
-  saveUserInfo,
-  setLanguage,
   startLoginAction,
   startRegistrationAction,
 } from '../redux/profile/actions';
-import { addResources, switchLanguage } from '../utils/i18n';
 import GeneralError from '../components/GeneralError';
-import {
-  checkReadiness,
-  errorHappenedHere,
-  fetchTranslations,
-} from '../utils/appUtils';
+import { errorHappenedHere } from '../utils/appUtils';
+
+import SplashScreen from 'react-native-splash-screen';
+import VersionCheck from 'react-native-version-check';
+import * as SecureStore from 'expo-secure-store';
+import DeviceInfo from 'react-native-device-info';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import jwt_decode from 'jwt-decode';
+
 import {
   getCountryName,
   APP_ID,
@@ -39,14 +36,80 @@ import {
   currentVersion,
 } from '../constants/system';
 
-import SplashScreen from 'react-native-splash-screen';
-
-import VersionCheck from 'react-native-version-check';
+import { fetchCountries, setLanguage } from '../redux/profile/actions';
+import { checkReadiness, fetchTranslations } from '../utils/appUtils';
+import { addResources, switchLanguage } from '../utils/i18n';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
 
-  const checkVersion = async () => {
+  useFocusEffect(
+    useCallback(() => {
+      startApp();
+    }, [])
+  );
+
+  const startApp = async () => {
+    dispatch({ type: 'RESET_STATE' });
+    await AsyncStorage.removeItem('webViewVisible');
+
+    const workingVersion = await isWorkingVersion();
+    const updateNeeded = await checkVersion();
+
+    await SecureStore.getItemAsync('accessToken').then((t) => {
+      if (t) {
+        const email = jwt_decode(t)?.email;
+        getBiometricEnabled(email, updateNeeded, workingVersion);
+      } else {
+        if (updateNeeded) {
+          navigation.navigate('UpdateAvailable');
+        } else if (workingVersion) {
+          navigation.navigate('Maintanance');
+        } else if (!updateNeeded && !workingVersion) {
+          navigation.navigate('Welcome');
+        }
+      }
+    });
+
+    await changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
+    await fetchData();
+
+    SplashScreen.hide();
+  };
+
+  const getBiometricEnabled = async (email, updateNeeded, workingVersion) => {
+    const enabled = await AsyncStorage.getItem('BiometricEnabled');
+    const user = email;
+    const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
+    const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
+
+    let parsedUsers = JSON.parse(enabled);
+    const userIndex = parsedUsers?.find(
+      (u) => u?.user === user && u?.enabled === true
+    );
+    if (workingVersion) {
+      navigation.navigate('Maintanance');
+    }
+
+    if (updateNeeded) {
+      navigation.navigate('UpdateAvailable');
+    }
+
+    if (userIndex && timeDifference >= 30000) {
+      navigation.navigate('Resume', {
+        fromSplash: true,
+        version: updateNeeded,
+        workingVersion: workingVersion,
+      });
+    } else if (!updateNeeded && !workingVersion) {
+      navigation.navigate('Main');
+    }
+  };
+
+  BackHandler.addEventListener('hardwareBackPress', () => true);
+
+  const checkVersion = useCallback(async () => {
     try {
       const countryName = await getCountryName;
 
@@ -64,49 +127,35 @@ export default function Welcome({ navigation }) {
       });
 
       if (updateNeeded && updateNeeded.isNeeded) {
-        navigation.navigate('UpdateAvailable');
-        SplashScreen.hide();
+        return true;
+      } else {
+        return false;
       }
     } catch (error) {
       console.log(error);
     }
-  };
+  });
 
   const isWorkingVersion = async () => {
     const version = DeviceInfo.getVersion();
-
-    const { status } = await checkReadiness(version);
+    const { status } = await checkReadiness(version, Platform.OS);
     if (status === 'DOWN') {
-      navigation.navigate('Maintanance');
+      return true;
+    } else {
       return false;
-    } else return true;
-  };
-
-  useFocusEffect(() => {
-    checkVersion();
-    if (isWorkingVersion()) {
-      SecureStore.getItemAsync('accessToken').then((t) => {
-        if (t) navigation.navigate('Main');
-      });
     }
-    dispatch(saveUserInfo({}));
-  });
-
-  useEffect(() => {
-    changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
-    fetchData();
-  }, []);
+  };
 
   const fetchData = async () => {
     await fetchTranslations()
       .then((res) => {
         const languages = Object.keys(res);
         for (let i = 0; i < languages.length; i++) {
-          addResources(
-            languages[i],
-            'translation',
-            res[languages[i]].translation
-          );
+          const translations = res[languages[i]].translation;
+          Object.keys(translations).forEach((key) => {
+            if (translations[key] === null) translations[key] = '';
+          });
+          addResources(languages[i], 'translation', translations);
         }
         SecureStore.getItemAsync('language')
           .then((l) => {
@@ -117,7 +166,14 @@ export default function Welcome({ navigation }) {
       })
       .catch((err) => console.log(err));
     await dispatch(fetchCountries());
-    SplashScreen.hide();
+  };
+  const onStateChange = (state) => {
+    dispatch({
+      type: 'SET_STACK_NAVIGATION_ROUTE',
+      stackRoute: state.routes[state.routes.length - 1].name,
+    });
+    if (generalError)
+      dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   };
 
   const startLogin = () => {
@@ -131,24 +187,23 @@ export default function Welcome({ navigation }) {
       onPress={Keyboard.dismiss}
       accessible={false}
     >
-      <ImageBackground source={images.Background} style={styles.container}>
-        <>
-          <Logo style={styles.logo} />
-          <AppText header style={styles.primary}>
-            Welcome to Cryptal
-          </AppText>
+      <View style={styles.container}>
+        <Logo style={styles.logo} />
+        <AppText header style={styles.primary}>
+          Welcome to Cryptal
+        </AppText>
+        <AppText body style={styles.subtext}>
+          Secure and Simple · Your Gateway to the Global Crypto Universe
+        </AppText>
 
-          {/* <AppText style={styles.secondary}>{auth}</AppText> */}
+        <GeneralError
+          style={styles.error}
+          show={errorHappenedHere('Welcome')}
+        />
 
-          <GeneralError
-            style={styles.error}
-            show={errorHappenedHere('Welcome')}
-          />
-
-          <AppButton text="Login" style={styles.button} onPress={startLogin} />
-          <PurpleText text="Registration" onPress={startRegistration} />
-        </>
-      </ImageBackground>
+        <AppButton text="Login" style={styles.button} onPress={startLogin} />
+        <PurpleText text="Registration" onPress={startRegistration} />
+      </View>
     </TouchableWithoutFeedback>
   );
 }
@@ -163,7 +218,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: '20%',
+    paddingHorizontal: '12%',
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   error: {
     marginTop: 20,
@@ -182,6 +238,11 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
     marginTop: 30,
     marginBottom: 12,
+    textAlign: 'center',
+  },
+  subtext: {
+    color: colors.SECONDARY_TEXT,
+    marginTop: 12,
     textAlign: 'center',
   },
   secondary: {

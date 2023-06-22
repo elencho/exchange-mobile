@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../../AppModal';

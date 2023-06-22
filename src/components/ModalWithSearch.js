@@ -1,5 +1,7 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { useSelector } from 'react-redux';
 
 import AppText from './AppText';
 import AppInput from './AppInput';
@@ -22,7 +24,11 @@ export default function ModalWithSearch({
   phoneCountry,
   countryDrop,
   citizenshipDrop,
+  tradeType,
+  isForTransactions,
+  wallet,
 }) {
+  const usdBtcSwitch = useSelector((state) => state.wallet.usdBtcSwitch);
   const handlePress = (name, code) => {
     crypto ? choose(code) : choose(name, code);
   };
@@ -33,24 +39,47 @@ export default function ModalWithSearch({
       : `${COUNTRIES_URL_PNG}/${code}.png`;
   };
 
-  const searchItem = ({ item }) => (
-    <ModalSearchItem
-      name={item.name}
-      code={item.code}
-      key={item.code}
-      phoneCode={item.phoneCode}
-      currentItem={currentItem}
-      onPress={() => handlePress(item.name, item.code)}
-      uri={uri(item.code)}
-      phoneCountry={phoneCountry}
-      countryDrop={countryDrop}
-      citizenshipDrop={citizenshipDrop}
-    />
-  );
+  const searchItem = ({ item }) => {
+    const name =
+      item?.name ||
+      item?.pair?.baseCurrencyName ||
+      (isForTransactions && `${item.currencyName} (${item.currencyCode})`) ||
+      `${item?.available} ${item?.currencyCode}`;
 
+    const code = item?.code || item?.pair?.baseCurrency || item?.currencyCode;
+    const totalPrice = tradeType === 'Buy' ? item?.buyPrice : item?.sellPrice;
+    const currency = item?.pair?.quoteCurrency;
+    const isInstantTrade = item?.pair?.baseCurrency.length > 0;
+
+    const totalTradePrice =
+      item?.pair?.baseCurrencyName && `${totalPrice} ${currency}`;
+    const totalAvailablePrice =
+      item?.valueUSD && usdBtcSwitch === 'USD'
+        ? `Total: ${item?.total} ≈ ${item?.valueUSD} USD`
+        : `Total: ${item?.total} ≈ ${item?.valueBTC} BTC`;
+
+    return (
+      <ModalSearchItem
+        name={name}
+        code={code}
+        phoneCode={item?.phoneCode}
+        currentItem={currentItem}
+        canShowCode={
+          (!wallet && !!item?.currencyCode?.length) || isInstantTrade
+        }
+        onPress={() => handlePress(name, code)}
+        uri={uri(code)}
+        phoneCountry={phoneCountry}
+        countryDrop={countryDrop}
+        citizenshipDrop={citizenshipDrop}
+        total={totalTradePrice || totalAvailablePrice}
+        isForTransactions={isForTransactions}
+      />
+    );
+  };
   return (
     <View style={styles.container}>
-      <ModalTop />
+      {/* <ModalTop /> */}
 
       <View style={styles.block}>
         <AppText header style={styles.headline}>
@@ -63,16 +92,21 @@ export default function ModalWithSearch({
           onChangeText={filter}
           right={<Search />}
           activeRight={<SearchActive />}
-          style={{ marginVertical: 20, marginHorizontal: 39 }}
+          style={styles.searchInput}
         />
 
-        <WithKeyboard padding flexGrow>
-          <FlatList
+        <WithKeyboard padding flexGrow modal>
+          <FlashList
             data={array}
             renderItem={searchItem}
-            keyExtractor={(item) => item.code}
+            keyExtractor={(item, index) =>
+              item?.code + index ||
+              item?.pair?.baseCurrency + index ||
+              item?.currencyCode + index
+            }
             scrollEventThrottle={1000}
             initialNumToRender={25}
+            estimatedItemSize={50}
           />
         </WithKeyboard>
       </View>
@@ -83,16 +117,19 @@ export default function ModalWithSearch({
 const styles = StyleSheet.create({
   block: {
     flex: 1,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingTop: 40,
-    paddingBottom: 20,
   },
   container: {
     flex: 1,
+    width: '100%',
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   headline: {
     color: colors.PRIMARY_TEXT,
     marginBottom: -10,
-    marginHorizontal: 40,
+    marginHorizontal: 10,
+  },
+  searchInput: {
+    marginVertical: 20,
+    marginHorizontal: 10,
   },
 });

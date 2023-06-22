@@ -12,12 +12,14 @@ import CardSection from '../../InstantTrade/CardSection';
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal';
 import ChooseCardModal from '../../InstantTrade/ChooseCardModal';
 import BankInfo from './BankInfo';
-import { validateScale } from '../../../utils/formUtils';
+import { handleAmountInput } from '../../../utils/formUtils';
 import { fetchFee } from '../../../redux/trade/actions';
 import StatusModal from '../StatusModal';
 import Fee from '../Fee';
 import { validateAmount } from '../../../utils/appUtils';
 import { GENERATE_WIRE_PDF } from '../../../constants/api';
+
+import Generate from '../../../assets/images/Wallet/Generate.svg';
 
 export default function FiatBlock() {
   const dispatch = useDispatch();
@@ -78,35 +80,14 @@ export default function FiatBlock() {
     }
   };
 
-  const getMaxLength = (replacedAmount) => {
-    const factoredDigit = Math.trunc(replacedAmount);
-    const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-    setMaxLength(factoredDigitLength + parseFloat(depositScale) + 1);
-  };
-
-  const handleAmount = (text) => {
-    const replacedAmount = text?.trim().replace(',', '.');
-    if (!inputValidation.test(replacedAmount) && replacedAmount) {
-      // return dispatch({
-      //   type: 'SET_DEPOSIT_AMOUNT',
-      //   depositAmount: '',
-      // });
-      return;
-    }
-
-    if (!validateScale(replacedAmount, depositScale)) {
-      return;
-    }
-
-    const parts = replacedAmount.split('.');
-    if (parts.length === 2) {
-      getMaxLength(replacedAmount);
-      setAmount(replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0);
-    } else {
-      setMaxLength(14);
-      setAmount(replacedAmount ? parts[0].substr(0, 13) : 0);
-    }
-  };
+  const handleAmount = (text) =>
+    handleAmountInput(
+      text,
+      inputValidation,
+      depositScale,
+      setMaxLength,
+      setAmount
+    );
 
   const deposit = async () => {
     if (!card || !depositProvider || !validateAmount(depositAmount)) {
@@ -184,7 +165,7 @@ export default function FiatBlock() {
         <AppButton
           text="Generate PDF"
           onPress={generatePdf}
-          left={loading ? null : <Image source={images.Generate} />}
+          left={loading ? null : <Generate />}
           style={styles.button}
           loading={loading}
         />

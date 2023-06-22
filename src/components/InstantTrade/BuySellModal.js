@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'i18next';
@@ -18,6 +18,7 @@ import FiatModal from './FiatModal';
 import GeneralError from '../GeneralError';
 import AppWebView from '../AppWebView';
 import WithKeyboard from '../WithKeyboard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../constants/colors';
 import { toggleBuySellModal } from '../../redux/modals/actions';
@@ -36,7 +37,7 @@ import {
   switchBalanceCard,
 } from '../../redux/trade/actions';
 
-export default function BuySellModal() {
+const BuySellModal = () => {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -52,14 +53,14 @@ export default function BuySellModal() {
       currentTrade,
       depositProvider,
       card,
+      isTradesButtonLoading,
     },
   } = state;
 
   const [error, setError] = useState(false);
 
   //TODO: refactor
-  // const [maxLengthBase, setMaxLengthBase] = useState(13);
-  // const [maxLengthQuote, setMaxLengthQuote] = useState(13);
+  const [maxLength, setMaxLength] = useState(13);
   const [focusedInput, setFocusedInput] = useState(null);
   useEffect(() => {
     error && setError(false);
@@ -128,18 +129,6 @@ export default function BuySellModal() {
     } else dispatch(submitTrade());
   };
 
-  //TODO: remove if not used
-  // const getMaxLength = (value, scale, setFunction) => {
-  //
-  //   const factoredDigit = Math.trunc(value);
-  //   const factoredDigitLength = parseFloat(factoredDigit.toString().length);
-  //   if (scale == 0) {
-  //     setFunction(14);
-  //   } else {
-  //     setFunction(factoredDigitLength + parseFloat(scale) + 1);
-  //   }
-  // };
-
   const setTrade = (price, size) => {
     dispatch(setCurrentTrade({ price, size }));
     card && dispatch(fetchFee());
@@ -156,6 +145,10 @@ export default function BuySellModal() {
     }
 
     const parts = replacedAmount?.split('.');
+    const startsWithZeroNoDecimal =
+      replacedAmount[1] &&
+      replacedAmount[0] === '0' &&
+      replacedAmount[1] !== '.';
     if (type === 'crypto' && validateScale(replacedAmount, quoteScale)) {
       if (text && !quoteValidation?.test(text) && focusedInput === 'crypto') {
         return;
@@ -168,6 +161,8 @@ export default function BuySellModal() {
           replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0,
           cryptoAmount
         );
+      } else if (startsWithZeroNoDecimal) {
+        setMaxLength(2);
       } else {
         let cryptoAmount = (parts[0].substr(0, 13) / rate).toFixed(baseScale);
         // setMaxLengthQuote(14);
@@ -176,16 +171,20 @@ export default function BuySellModal() {
       }
     }
     if (type === 'fiat' && validateScale(replacedAmount, baseScale)) {
+      let fiatAmount = (replacedAmount * rate).toFixed(quoteScale);
+
       if (text && !baseValidation?.test(text) && focusedInput === 'fiat') {
         return;
       }
-      if (parts.length === 2) {
-        let fiatAmount = (replacedAmount * rate).toFixed(quoteScale);
-        // getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
+      if (parts.length === 2 && baseScale == 0) {
+        setTrade(fiatAmount, parts[0].substr(0, 14));
+      } else if (parts.length === 2) {
         setTrade(
           fiatAmount,
           replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0
         );
+      } else if (startsWithZeroNoDecimal) {
+        setMaxLength(2);
       } else {
         let fiatAmount = (parts[0].substr(0, 13) * rate).toFixed(quoteScale);
         // setMaxLengthBase(14);
@@ -213,11 +212,12 @@ export default function BuySellModal() {
     return hasEcommerce;
   };
 
-  const onNavigationStateChange = (state) => {
+  const onNavigationStateChange = async (state) => {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+      await AsyncStorage.removeItem('webViewVisible');
       dispatch({ type: 'BALANCE_SAGA' });
       dispatch(saveTrades([]));
       dispatch(setTradeOffset(0));
@@ -251,18 +251,26 @@ export default function BuySellModal() {
             keyboardType="decimal-pad"
             value={price ? price.trim() : ''}
             onFocus={() => setFocusedInput('fiat')}
-            //maxLength={maxLengthQuote}
-            right={<AppText style={styles.code}>{fiat}</AppText>}
+            // maxLength={maxLength}
+            right={
+              <AppText body style={styles.code}>
+                {fiat}
+              </AppText>
+            }
             error={error && !validateAmount(price)}
           />
           <View style={styles.margin} />
           <AppInput
             onChangeText={(t) => handleChangeText(t, 'fiat')}
             keyboardType="decimal-pad"
-            //maxLength={maxLengthBase}
+            // maxLength={maxLength}
             onFocus={() => setFocusedInput('crypto')}
             value={size ? size.trim() : ''}
-            right={<AppText style={styles.code}>{crypto}</AppText>}
+            right={
+              <AppText body style={styles.code}>
+                {crypto}
+              </AppText>
+            }
             style={{ marginBottom: 10 }}
             error={error && !validateAmount(size)}
           />
@@ -281,6 +289,7 @@ export default function BuySellModal() {
           onPress={handleSubmit}
           backgroundColor={tradeType === 'Buy' ? '#0CCBB5' : '#F83974'}
           text={tradeType}
+          loading={isTradesButtonLoading}
           style={{ marginBottom: 20 }}
         />
       </View>
@@ -302,7 +311,8 @@ export default function BuySellModal() {
       onModalHide={onDismiss}
     />
   );
-}
+};
+export default memo(BuySellModal);
 
 const styles = StyleSheet.create({
   balance: {

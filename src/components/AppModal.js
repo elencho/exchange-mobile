@@ -11,6 +11,7 @@ import AppToast from './AppToast';
 import Background from './Background';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
 import Headline from './TransactionHistory/Headline';
+import { useSelector } from 'react-redux';
 
 function AppModal({
   children,
@@ -22,7 +23,10 @@ function AppModal({
   custom,
   onModalHide,
   onDismiss,
+  modalStyle,
 }) {
+  const webViewVisible = useSelector((state) => state?.modals?.webViewVisible);
+
   // const deviceHeight =
   //   Platform.OS === 'ios'
   //     ? Dimensions.get('window').height
@@ -37,50 +41,55 @@ function AppModal({
   // };
 
   return (
-    <Modal
-      isVisible={visible}
-      onBackdropPress={hide}
-      onSwipeComplete={hide}
-      swipeDirection="down"
-      propagateSwipe={true}
-      style={styles.modal}
-      animationOutTiming={500}
-      backdropTransitionInTiming={300}
-      onModalHide={onModalHide}
-      hideModalContentWhileAnimating
-      useNativeDriver
-      useNativeDriverForBackdrop
-      onDismiss={onDismiss}
-      // coverScreen={false}
-    >
-      <RootSiblingParent>
-        {bottom && (
-          <KeyboardAvoidingView
-            behavior={Platform.select({ android: undefined, ios: 'padding' })}
-            keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
-          >
-            <ModalTop />
-            <View style={styles.bottom}>
-              {title && (
-                <AppText header style={styles.header}>
-                  {title}
-                </AppText>
-              )}
+    webViewVisible && (
+      <Modal
+        isVisible={visible}
+        onBackdropPress={hide}
+        onSwipeComplete={hide}
+        swipeDirection="down"
+        propagateSwipe={true}
+        style={[styles.modal, modalStyle]}
+        animationOutTiming={500}
+        backdropTransitionInTiming={300}
+        onModalHide={onModalHide}
+        hideModalContentWhileAnimating
+        useNativeDriver
+        useNativeDriverForBackdrop
+        onDismiss={onDismiss}
+        // coverScreen={false}
+      >
+        <RootSiblingParent>
+          {bottom && (
+            <KeyboardAvoidingView
+              behavior={Platform.select({ android: undefined, ios: 'padding' })}
+              keyboardVerticalOffset={Platform.select({
+                ios: 50,
+                android: 500,
+              })}
+            >
+              <ModalTop bottom={bottom} />
+              <View style={styles.bottom}>
+                {title && (
+                  <AppText header style={styles.header}>
+                    {title}
+                  </AppText>
+                )}
+                {children}
+              </View>
+            </KeyboardAvoidingView>
+          )}
+          {fullScreen && (
+            <Background modal>
+              <CloseModalIcon onPress={hide} />
+              {title && <Headline title={title} />}
               {children}
-            </View>
-          </KeyboardAvoidingView>
-        )}
-        {fullScreen && (
-          <Background modal>
-            <CloseModalIcon onPress={hide} />
-            {title && <Headline title={title} />}
-            {children}
-          </Background>
-        )}
-        {custom && children}
-      </RootSiblingParent>
-      <AppToast />
-    </Modal>
+            </Background>
+          )}
+          {custom && children}
+        </RootSiblingParent>
+        <AppToast />
+      </Modal>
+    )
   );
 }
 export default memo(AppModal);
@@ -88,7 +97,7 @@ export default memo(AppModal);
 const styles = StyleSheet.create({
   bottom: {
     padding: 35,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: -3,
   },
   header: {

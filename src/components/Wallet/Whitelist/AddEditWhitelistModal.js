@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppModal from '../../AppModal';
 import AppButton from '../../AppButton';
 import AppInput from '../../AppInput';
+import QrScanner from '../../QrScanner';
+import QrScannerToggler from '../Withdrawal/widgets/QrScannerToggler';
 import WithKeyboard from '../../WithKeyboard';
 import ChooseNetworkDropdown from '../../Wallet/Deposit/ChooseNetworkDropdown';
 import ChooseNetworkModal from '../../Wallet/Deposit/ChooseNetworkModal';
@@ -151,6 +153,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
           onChangeText={(address) =>
             dispatch(setNewWhitelist({ ...newWhitelist, address }))
           }
+          right={add && <QrScannerToggler />}
           value={add ? newWhitelist.address : currentWhitelistObj.address}
           label="Destination Address"
           editable={add ? true : false}
@@ -180,15 +183,21 @@ export default function AddEditWhitelistModal({ add, edit }) {
       <SmsEmailAuthModal type="SMS" whitelist />
       <SmsEmailAuthModal type="Email" whitelist />
       <GoogleOtpModal whitelist />
+      <QrScanner
+        setAddress={(address) =>
+          dispatch(setNewWhitelist({ ...newWhitelist, address }))
+        }
+      />
     </WithKeyboard>
   );
+  const isVisible = add ? addWhitelistModalVisble : editWhitelistModalVisble;
 
   return (
     <AppModal
       children={children}
       hide={hide}
       fullScreen
-      visible={add ? addWhitelistModalVisble : editWhitelistModalVisble}
+      visible={isVisible}
       title={`${add ? 'Add' : 'Edit'} Whitelist`}
       onModalHide={clearInputs}
     />

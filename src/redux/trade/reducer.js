@@ -27,6 +27,7 @@ const INITIAL_STATE = {
 
   totalTrades: null,
   tradesLoading: false,
+  isTradesButtonLoading: false,
   moreTradesLoading: false,
   offersLoading: false,
 
@@ -43,6 +44,7 @@ export default (state = INITIAL_STATE, action) => {
     trades,
     currentBalanceObj,
     offers,
+    isTradesButtonLoading,
     tradesLoading,
     offersLoading,
     offset,
@@ -170,6 +172,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         tradesLoading,
+      };
+    case actionTypes.SET_TRADES_BUTTON_LOADING:
+      return {
+        ...state,
+        isTradesButtonLoading,
       };
     case actionTypes.SET_OFFERS_LOADING:
       return {

@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { memo, useEffect } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../../components/Background';
 import Headline from '../../components/TransactionHistory/Headline';
 import PurpleText from '../../components/PurpleText';
-import images from '../../constants/images';
+import Back from '../../assets/images/Back.svg';
 import WalletSwitcher from '../../components/Wallet/WalletSwitcher';
 import Deposit from './Deposit';
 import Withdrawal from './Withdrawal';
@@ -14,48 +14,60 @@ import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkMod
 import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
 import { setCard, setDepositProvider } from '../../redux/trade/actions';
-import { setWalletTab } from '../../redux/wallet/actions';
+import {
+  setShouldRefreshOnScroll,
+  setWalletTab,
+} from '../../redux/wallet/actions';
 import CustomRefreshContol from '../../components/CustomRefreshContol';
+import { IS_ANDROID } from '../../constants/system';
 
-export default function Balance({ navigation }) {
+function Balance({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { walletTab, network },
+    wallet: { walletTab, network, shouldRefreshOnScroll },
     trade: { cardsLoading },
     transactions: { tabNavigationRef, loading },
   } = state;
 
   const onRefresh = () => {
-    dispatch(setCard(null));
-    dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
-    walletTab !== 'Whitelist' && dispatch({ type: 'CLEAN_WALLET_INPUTS' });
-    if (network !== 'SWIFT') {
-      dispatch(setDepositProvider(null));
+    if (shouldRefreshOnScroll || IS_ANDROID) {
+      dispatch(setCard(null));
+      dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+      walletTab !== 'Whitelist' && dispatch({ type: 'CLEAN_WALLET_INPUTS' });
+      if (network !== 'SWIFT') {
+        dispatch(setDepositProvider(null));
+      }
+      dispatch(setShouldRefreshOnScroll(false));
     }
   };
 
+  useEffect(() => {
+    dispatch(setShouldRefreshOnScroll(true));
+  }, [walletTab]);
+
   const back = () => {
     dispatch(setWalletTab('Deposit'));
-    tabNavigationRef.navigate('Wallet');
-    navigation.navigate('Main');
+    navigation.navigate('Main', { screen: 'Wallet' });
   };
 
   useEffect(() => {
     onRefresh();
     return () => dispatch(setCard(null));
-  }, [walletTab, network]);
+  }, [walletTab, network, shouldRefreshOnScroll]);
 
-  const refreshControl = (
-    <CustomRefreshContol onRefresh={onRefresh} refreshing={loading} />
-  );
+  const refreshControl = () => {
+    const props = { onRefresh, refreshing: loading || cardsLoading };
+
+    return <CustomRefreshContol {...props} />;
+  };
 
   const disabled = loading || cardsLoading;
 
   return (
     <Background>
       <TouchableOpacity onPress={back} style={styles.back} disabled={disabled}>
-        <Image source={images.Back} style={styles.arrow} />
+        <Back tyle={styles.arrow} />
         <PurpleText text="Back to Wallet" style={styles.purpleText} />
       </TouchableOpacity>
 
@@ -63,15 +75,15 @@ export default function Balance({ navigation }) {
 
       <WalletSwitcher />
 
-      {walletTab === 'Deposit' && <Deposit refreshControl={refreshControl} />}
+      {walletTab === 'Deposit' && <Deposit refreshControl={refreshControl()} />}
       {walletTab === 'Withdrawal' && (
-        <Withdrawal refreshControl={refreshControl} />
+        <Withdrawal refreshControl={refreshControl()} />
       )}
       {walletTab === 'Whitelist' && (
-        <Whitelist refreshControl={refreshControl} />
+        <Whitelist refreshControl={refreshControl()} />
       )}
       {walletTab === 'Manage Cards' && (
-        <ManageCards refreshControl={refreshControl} />
+        <ManageCards refreshControl={refreshControl()} />
       )}
 
       <ChooseCurrencyModal wallet />
@@ -79,6 +91,7 @@ export default function Balance({ navigation }) {
     </Background>
   );
 }
+export default memo(Balance);
 
 const styles = StyleSheet.create({
   arrow: {

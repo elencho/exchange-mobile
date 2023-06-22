@@ -14,6 +14,12 @@
           "savePhotosPermission": "Allow cryptal-app to save photos.",
           "isAccessMediaLocationEnabled": "true"
         }
+      ],
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+        }
       ]
     ],
     "ios": {

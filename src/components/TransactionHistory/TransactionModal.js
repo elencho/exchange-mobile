@@ -13,9 +13,10 @@ import TradeDetails from '../InstantTrade/TradeDetails';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
 import colors from '../../constants/colors';
 import { COINS_URL_PNG } from '../../constants/api';
-import { copyToClipboard } from '../../utils/copyToClipboard';
+import useCopyToClipboard from '../../utils/copyToClipboard';
 
 function TransactionModal({ transactions, trades }) {
+  const { copyToClipboard } = useCopyToClipboard();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
   },
   buy_sell: {
     height: 20,
-    width: 45,
+    paddingHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 28,

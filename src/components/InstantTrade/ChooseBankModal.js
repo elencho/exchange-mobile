@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
@@ -59,6 +59,7 @@ export default function ChooseBankModal() {
     return array()?.map((b, i, a) => (
       <View key={i}>
         <Pressable
+          key={b.displayName}
           style={[
             styles.row,
             b.provider === depositProvider && {

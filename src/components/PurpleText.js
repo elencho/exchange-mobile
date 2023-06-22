@@ -1,29 +1,38 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import AppText from './AppText';
 import colors from '../constants/colors';
-//TIP: using react-native-gesture-handler btn to handle press onScroll
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useTranslation } from 'react-i18next';
 
-export default function PurpleText({
-  text,
-  style,
-  onPress,
-  subtext = false,
-  ...rest
-}) {
+function PurpleText({ text, style, onPress, subtext = false, ...rest }) {
+  const { t } = useTranslation();
+
+  const purpleText = () => {
+    if (typeof children === 'string') {
+      if (text.includes('{{') && text.includes('}}')) {
+        return t(text, generalError?.transParams);
+      }
+      return t(text);
+    } else {
+      return text;
+    }
+  };
+
   return (
-    // <TouchableOpacity >
     <AppText
       medium
       subtext={subtext}
       onPress={onPress}
-      style={[{ color: colors.SECONDARY_PURPLE, fontSize: 30 }, style]}
+      style={[
+        { color: colors.SECONDARY_PURPLE, fontSize: 30, lineHeight: 34 },
+        style,
+      ]}
       disabled={!onPress}
       {...rest}
     >
-      {text}
+      {purpleText()}
     </AppText>
-    // </TouchableOpacity>
   );
 }
+
+export default memo(PurpleText);

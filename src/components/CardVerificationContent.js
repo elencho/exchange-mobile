@@ -1,23 +1,23 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { t } from 'i18next';
+import { Trans } from 'react-i18next';
 
 import AppButton from './AppButton';
 import AppText from './AppText';
 import Background from './Background';
 import PurpleText from './PurpleText';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
-import images from '../constants/images';
 import sumsubHtmlPattern from '../constants/sumsubHtml.js';
 import { cardVerificationToken } from '../utils/userProfileUtils';
+import CardName from '../assets/images/User_profile/Card_name';
+import CardDigit from '../assets/images/User_profile/Card_Digits';
 
 export default function CardVerificationContent({ step = 0, cardId }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-
-  const image = step === 1 ? images.Card_Name : images.Card_Digits;
 
   const goToStepOne = () => navigation.goBack();
   const goToStepTwo = () =>
@@ -49,16 +49,20 @@ export default function CardVerificationContent({ step = 0, cardId }) {
         <View style={[styles.row, { marginBottom: 14 }]}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            {t('Bank card should have holder')}{' '}
-            <AppText medium>name & last name</AppText>
+            <Trans
+              i18nKey="Bank card should have holder name"
+              components={{ b: <AppText medium body /> }}
+            />
           </AppText>
         </View>
 
         <View style={styles.row}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            {t('Card holder must match')}{' '}
-            <AppText medium>account holder</AppText>
+            <Trans
+              i18nKey="Card holder must match account holder"
+              components={{ b: <AppText medium body /> }}
+            />
           </AppText>
         </View>
       </>
@@ -67,16 +71,20 @@ export default function CardVerificationContent({ step = 0, cardId }) {
         <View style={[styles.row, { marginBottom: 14 }]}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            {t('Only')} <AppText medium>first 6 & last 4 digits</AppText>{' '}
-            {t('are required for a verification')}
+            <Trans
+              i18nKey="Only first 6 & last 4 digits"
+              components={{ b: <AppText medium body /> }}
+            />
           </AppText>
         </View>
 
         <View style={styles.row}>
           <View style={styles.bullet} />
           <AppText style={styles.bulletText}>
-            {t('Recommended to')} <AppText medium>hide other digits</AppText>{' '}
-            {t('using a sticky note or a piece of paper')}
+            <Trans
+              i18nKey="Recommended to hide other digits"
+              components={{ b: <AppText medium body /> }}
+            />
           </AppText>
         </View>
       </>
@@ -102,8 +110,11 @@ export default function CardVerificationContent({ step = 0, cardId }) {
     <Background>
       <CloseModalIcon onPress={close} />
 
-      <Image source={image} style={styles.image} />
-
+      {step === 1 ? (
+        <CardName style={styles.image} />
+      ) : (
+        <CardDigit style={styles.image} />
+      )}
       <Text style={styles.title}>{t("Let's Get You Verified")}</Text>
       <AppText subtext style={styles.secondary}>
         Bank card should suit following demands
@@ -169,6 +180,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#CCD9DD',
     fontSize: 18,
+    lineHeight: 22,
     fontFamily: 'Ubuntu_Medium',
     marginTop: 42,
     marginBottom: 8,

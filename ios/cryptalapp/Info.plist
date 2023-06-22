@@ -2,10 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+    </array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Cryptal&#x2007;Exchange</string>
+	<string>Cryptal Exchange</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -17,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.2</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -47,6 +51,13 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
+			<key>New Exception Domain</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
 			<key>localhost</key>
 			<dict>
 				<key>NSExceptionAllowsInsecureHTTPLoads</key>
@@ -54,10 +65,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>LSApplicationQueriesSchemes</key>
-    <array>
-    <string>itms-apps</string>
-    </array>
 	<key>NSCameraUsageDescription</key>
 	<string>Allow $(PRODUCT_NAME) to use Camera</string>
 	<key>NSFaceIDUsageDescription</key>
@@ -70,6 +77,12 @@
 	<string>Allow $(PRODUCT_NAME) to save photos</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow $(PRODUCT_NAME) to access your photos</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>SplashScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>

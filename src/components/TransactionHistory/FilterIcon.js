@@ -1,12 +1,11 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { getParams } from '../../redux/transactions/selectors';
-import images from '../../constants/images';
-
+import Filter from '../../assets/images/Filter';
 export default function FilterIcon({ onPress }) {
   const params = useSelector(getParams);
   const { type, currency, fromDateTime, toDateTime, methods } = params;
@@ -17,9 +16,11 @@ export default function FilterIcon({ onPress }) {
 
   return (
     <Pressable onPress={onPress} style={styles.container}>
-      <Image source={images.Filter} style={styles.icon} />
+      <Filter style={styles.icon} />
       {filters.length ? (
-        <AppText style={styles.text}>{filters.length}</AppText>
+        <View style={styles.dotOutline}>
+          <View style={styles.dot} />
+        </View>
       ) : null}
     </Pressable>
   );
@@ -30,19 +31,30 @@ const styles = StyleSheet.create({
     height: 35,
     minWidth: 35,
     borderRadius: 30,
-    backgroundColor: colors.PRIMARY_PURPLE,
+    backgroundColor: colors.SECONDARY_PURPLE,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
-    paddingHorizontal: 15,
   },
   icon: {
     width: 13,
     height: 13,
   },
-  text: {
-    fontSize: 15,
-    color: colors.PRIMARY_TEXT,
-    marginLeft: 5,
+  dot: {
+    width: 6,
+    height: 6,
+    borderRadius: 30,
+    backgroundColor: colors.SECONDARY_PURPLE,
+  },
+  dotOutline: {
+    width: 12,
+    height: 12,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
+    borderRadius: 30,
+    position: 'absolute',
+    top: -1,
+    right: -1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

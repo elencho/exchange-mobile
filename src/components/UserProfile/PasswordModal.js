@@ -1,11 +1,5 @@
 import React, { useEffect, useReducer, useState } from 'react';
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppButton from '../AppButton';
@@ -18,8 +12,10 @@ import GeneralError from '../GeneralError';
 import { togglePasswordModal } from '../../redux/modals/actions';
 import { updatePassword } from '../../redux/profile/actions';
 import colors from '../../constants/colors';
-import images from '../../constants/images';
 import { errorHappenedHere } from '../../utils/appUtils';
+
+import ShowIcon from '../../assets/images/User_profile/Show';
+import HideIcon from '../../assets/images/User_profile/Hide';
 
 export default function PasswordModal() {
   const array = [
@@ -33,6 +29,7 @@ export default function PasswordModal() {
   const state = useSelector((state) => state);
   const {
     modals: { passwordModalVisible },
+    profile: { isProfileUpdating },
   } = state;
 
   const [error, setError] = useState(false);
@@ -161,7 +158,7 @@ export default function PasswordModal() {
 
   const hideIcon = (
     <Pressable onPress={toggle}>
-      <Image source={secure ? images.Show : images.Hide} />
+      {secure ? <ShowIcon /> : <HideIcon />}
     </Pressable>
   );
 
@@ -177,6 +174,7 @@ export default function PasswordModal() {
           <AppInput
             style={styles.inputContainer}
             label="Current Password"
+            autoCapitalize={'none'}
             secureTextEntry={secure}
             onChangeText={(text) => handleCurrentPass(text)}
             value={curentPassword}
@@ -185,6 +183,7 @@ export default function PasswordModal() {
           <AppInput
             style={styles.inputContainer}
             label="New Password"
+            autoCapitalize={'none'}
             secureTextEntry={secure}
             onChangeText={(text) => handleNewPass(text)}
             value={newPassword}
@@ -194,6 +193,7 @@ export default function PasswordModal() {
           <AppInput
             style={styles.inputContainer}
             label="Repeat Password"
+            autoCapitalize={'none'}
             secureTextEntry={secure}
             onChangeText={(text) => handleRepeatPass(text)}
             value={repeatPassword}
@@ -210,7 +210,12 @@ export default function PasswordModal() {
           ))}
         </TouchableOpacity>
 
-        <AppButton onPress={handleSave} style={styles.button} text="Save" />
+        <AppButton
+          onPress={handleSave}
+          style={styles.button}
+          loading={isProfileUpdating}
+          text="Save"
+        />
       </WithKeyboard>
     );
   };

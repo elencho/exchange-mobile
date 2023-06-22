@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { t } from 'i18next';
@@ -10,9 +10,10 @@ import PurpleText from '../components/PurpleText';
 import CheckMarks from '../components/Registration/CheckMarks';
 import PersonalCompanySwitcher from '../components/Registration/PersonalCompanySwitcher';
 import RegistrationInputs from '../components/Registration/RegistrationInputs';
-import EmailVerificationModal from '../components/Registration/EmailVerificationModal';
+import EmailVerification from './EmailVerification';
 import WithKeyboard from '../components/WithKeyboard';
 import Logo from '../assets/images/Logo.svg';
+import Back from '../assets/images/Back.svg';
 import GeneralError from '../components/GeneralError';
 
 import {
@@ -29,17 +30,7 @@ export default function Registration({ navigation }) {
   const state = useSelector((state) => state.profile);
   const { registrationInputs, userProfileLoading } = state;
 
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        dispatch(setRegistrationInputs({}));
-        dispatch(switchPersonalCompany('Personal'));
-      };
-    }, [])
-  );
-
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     error && setError(false);
@@ -89,20 +80,31 @@ export default function Registration({ navigation }) {
     phoneCountry &&
     o.terms;
 
-  const handleRegistration = async () => {
-    await setLoading(true);
+  const handleRegistration = () => {
     if (!enabled) {
       setError(true);
-      setLoading(false);
     } else {
-      await dispatch(registrationFormAction());
-      setLoading(false);
+      dispatch(registrationFormAction(navigation));
     }
   };
-  const signIn = () => dispatch(startLoginAction(navigation));
+  const goToSignIn = () => {
+    dispatch(startLoginAction(navigation));
+    setTimeout(() => {
+      dispatch(setRegistrationInputs({}));
+      dispatch(switchPersonalCompany('Personal'));
+    }, 1000);
+  };
 
   return (
     <WithKeyboard scrollUp padding style={styles.scrollview}>
+      <Pressable style={styles.back} onPress={goToSignIn}>
+        <Back />
+        <PurpleText
+          numberOfLines={1}
+          text="Back to Log In"
+          style={styles.backText}
+        />
+      </Pressable>
       <View style={styles.container}>
         <Logo style={styles.logo} />
         <AppText header style={styles.header}>
@@ -127,10 +129,8 @@ export default function Registration({ navigation }) {
 
         <AppText style={styles.subtext}>
           {t('Have an Account?')}{' '}
-          <PurpleText text={t('Sign In')} onPress={signIn} />
+          <PurpleText text={t('Sign In')} onPress={goToSignIn} />
         </AppText>
-
-        <EmailVerificationModal />
       </View>
     </WithKeyboard>
   );
@@ -138,7 +138,8 @@ export default function Registration({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 45,
+    paddingVertical: 45,
+    paddingHorizontal: '8%',
   },
   scrollview: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
@@ -166,5 +167,18 @@ const styles = StyleSheet.create({
     color: colors.SECONDARY_TEXT,
     marginTop: 40,
     alignSelf: 'center',
+  },
+  back: {
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    marginLeft: 24,
+    marginTop: 28,
+    width: '33%',
+  },
+  backText: {
+    marginBottom: 2,
+    marginLeft: 10,
+    flex: 1,
   },
 });

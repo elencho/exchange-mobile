@@ -12,6 +12,8 @@ export default function AppText({
   subtext,
   calendarDay,
   small,
+  onPress,
+  isForCodeInput,
   ...props
 }) {
   const generalError = useSelector((state) => state.errors.generalError);
@@ -41,6 +43,30 @@ export default function AppText({
     }
   };
 
+  const heightCond = () => {
+    if (header) {
+      return 24;
+    }
+    if (calendarDay) {
+      return 20;
+    }
+    if (body) {
+      return 18;
+    }
+    if (subtext) {
+      return 16;
+    }
+    if (small) {
+      return 15;
+    }
+    if (!medium) {
+      return 18;
+    }
+    if (medium && !body && !header && !calendarDay) {
+      return 18;
+    }
+  };
+
   const { t } = useTranslation();
 
   const text = () => {
@@ -55,11 +81,24 @@ export default function AppText({
   };
 
   return (
-    <Text
-      style={[style, { fontFamily: fontCond(), fontSize: sizeCond() }]}
-      {...props}
-    >
-      {text()}
-    </Text>
+    <>
+      {text() !== '' && (
+        <Text
+          accessibilityRole={onPress ? 'button' : 'text'}
+          style={[
+            style,
+            {
+              fontFamily: fontCond(),
+              fontSize: sizeCond(),
+              lineHeight: heightCond(),
+            },
+          ]}
+          onPress={onPress}
+          {...props}
+        >
+          {text()}
+        </Text>
+      )}
+    </>
   );
 }
