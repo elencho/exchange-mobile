@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import React, { useState, memo, useCallback } from 'react';
 import TouchID from '../assets/images/TouchID-Purple';
 import FaceID from '../assets/images/Face_ID-pruple';
@@ -25,6 +25,7 @@ import {
   toggleWebViewVisible,
 } from '../redux/modals/actions';
 import { IS_ANDROID } from '../constants/system';
+import { t } from 'i18next';
 
 const Resume = ({ navigation, route }) => {
   const state = useSelector((state) => state?.profile, shallowEqual);
@@ -86,6 +87,8 @@ const Resume = ({ navigation, route }) => {
       }
       dispatch(toggleWebViewVisible(true));
       await AsyncStorage.setItem('isLoggedIn', 'true');
+    } else if (result?.error === 'passcode_not_set') {
+      startLogin();
     }
   }, []);
 
