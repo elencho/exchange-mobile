@@ -87,7 +87,10 @@ const Resume = ({ navigation, route }) => {
       }
       dispatch(toggleWebViewVisible(true));
       await AsyncStorage.setItem('isLoggedIn', 'true');
-    } else if (result?.error === 'passcode_not_set') {
+    } else if (
+      result?.error === 'passcode_not_set' ||
+      result?.error === 'not_enrolled'
+    ) {
       startLogin();
     }
   }, []);
