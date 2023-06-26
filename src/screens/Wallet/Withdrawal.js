@@ -139,7 +139,7 @@ function Withdrawal({ refreshControl }) {
       );
     if (withdrawalBank?.bankName || currentTemplate?.templateName)
       return iban?.trim();
-  }, [saveTemplate, withdrawalBank]);
+  }, [saveTemplate, withdrawalBank, currentTemplate, receiverBankInputs]);
 
   const withdraw = () => {
     const length = Object.keys(currentWhitelistObj)?.length;

@@ -91,7 +91,7 @@ export default function WithdrawalInputs({
     if (isEcommerce) {
       disabled = !card || !depositProvider;
     } else if (isFiat) {
-      disabled = !notEmpty();
+      disabled = notEmpty();
     }
 
     return disabled;
