@@ -97,7 +97,7 @@ function UserProfile({ navigation, route }) {
       )}
     </>
   );
-
+  console.log('Personal_Security', Personal_Security);
   return (
     <Background>
       <View style={styles.topRow}>
