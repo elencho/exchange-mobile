@@ -139,7 +139,7 @@ function Withdrawal({ refreshControl }) {
       );
     if (withdrawalBank?.bankName || currentTemplate?.templateName)
       return iban?.trim();
-  }, [saveTemplate, withdrawalBank]);
+  }, [saveTemplate, withdrawalBank, currentTemplate, receiverBankInputs]);
 
   const withdraw = () => {
     const length = Object.keys(currentWhitelistObj)?.length;
@@ -177,7 +177,7 @@ function Withdrawal({ refreshControl }) {
       currentTemplate.templateName === 'New Template' &&
       Object.keys(withdrawalBank).length
     );
-  }, [currentTemplate]);
+  }, [currentTemplate, withdrawalBank]);
 
   const reason = () => {
     if (withdrawalRestriction.reason) {
