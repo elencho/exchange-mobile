@@ -65,9 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   container: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingHorizontal: 24,
-    paddingVertical: 36,
+    padding: 10,
     marginBottom: 10,
   },
   smallBoxMiddle: {

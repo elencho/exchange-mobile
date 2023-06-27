@@ -139,7 +139,7 @@ const TransactionsBlock = ({ loading }) => {
 export default memo(TransactionsBlock);
 const styles = StyleSheet.create({
   container: {
-    padding: 5,
+    paddingHorizontal: 5,
     marginTop: 20,
   },
   empty: {

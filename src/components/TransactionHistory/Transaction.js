@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, Image } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import AppText from '../AppText';
@@ -9,6 +9,7 @@ import WithdrawalIcon from '../../assets/images/Withdrawal.svg';
 import colors from '../../constants/colors';
 import { transactionDetailsSaga } from '../../redux/transactions/actions';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
+import { COINS_URL_PNG } from '../../constants/api';
 
 import Pending from '../../assets/images/Pending.svg';
 import Success from '../../assets/images/Success.svg';
@@ -54,8 +55,28 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
     `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
 
   const image = () => {
-    if (type === 'DEPOSIT') return <DepositlIcon />;
-    if (type === 'WITHDRAWAL') return <WithdrawalIcon />;
+    if (isTransfer) {
+      if (type === 'DEPOSIT') return <DepositlIcon />;
+      if (type === 'WITHDRAWAL') return <WithdrawalIcon />;
+    } else {
+      return (
+        <View style={styles.currencyIcons}>
+          <Image
+            style={styles.icon}
+            source={{
+              uri: `${COINS_URL_PNG}/${baseCurrency.toLowerCase()}.png`,
+            }}
+          />
+
+          <Image
+            style={styles.upperIcon}
+            source={{
+              uri: `${COINS_URL_PNG}/${quoteCurrency.toLowerCase()}.png`,
+            }}
+          />
+        </View>
+      );
+    }
   };
 
   const statusIcon =
@@ -93,7 +114,11 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
         {image()}
 
         <View style={styles.middle}>
-          <AppText medium style={styles.primaryText} body>
+          <AppText
+            medium
+            style={[styles.primaryText, !isTransfer && { marginLeft: 15 }]}
+            body
+          >
             {title}
           </AppText>
           {/* ToDo */}
@@ -178,5 +203,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 10,
     alignItems: 'center',
+  },
+  //icons
+  currencyIcons: { flexDirection: 'row' },
+  icon: {
+    width: 30,
+    height: 30,
+  },
+  upperIcon: {
+    width: 30,
+    height: 30,
+    position: 'absolute',
+    left: 15,
   },
 });

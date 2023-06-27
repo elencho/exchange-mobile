@@ -74,18 +74,10 @@ function TransactionHistory({ navigation, route }) {
       ? transactions
       : transactions.filter((t) => t.currency == currencyCode);
 
-  // const dates = transactionsCurrencyFiltered?.map((tr) => {
-  //   const date = new Date(tr.timestamp);
-  //   return `${date.getDate()} ${
-  //     monthsShort[date.getMonth()]
-  //   }, ${date.getFullYear()}`;
-  // });
-
-  // const uniqueDates = [...new Set(dates)];
-
   const renderTransaction = ({ item }) => (
     <Transaction isTransfer transactionData={item} loading={loading} />
   );
+
   const listEmptyContainer = (
     <View style={styles.empty}>
       <List />
@@ -167,6 +159,7 @@ const styles = StyleSheet.create({
   transactions: {
     flex: 1,
     marginTop: 20,
+    paddingHorizontal: 5,
   },
   filter: {
     flexDirection: 'row',
