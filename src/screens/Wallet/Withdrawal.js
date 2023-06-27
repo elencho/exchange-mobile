@@ -177,7 +177,7 @@ function Withdrawal({ refreshControl }) {
       currentTemplate.templateName === 'New Template' &&
       Object.keys(withdrawalBank).length
     );
-  }, [currentTemplate]);
+  }, [currentTemplate, withdrawalBank]);
 
   const reason = () => {
     if (withdrawalRestriction.reason) {
