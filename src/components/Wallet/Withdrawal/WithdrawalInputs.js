@@ -90,13 +90,12 @@ export default function WithdrawalInputs({
     let disabled;
     if (isEcommerce) {
       disabled = !card || !depositProvider;
-    } else if (isFiat) {
-      disabled = notEmpty();
     }
 
     return disabled;
   };
 
+  const maxStyle = disabled() ? { opacity: 0.5 } : '';
   const Max = () => (
     <TouchableOpacity
       onPress={handleMax}
@@ -104,7 +103,7 @@ export default function WithdrawalInputs({
       style={styles.row}
     >
       <View style={styles.line} />
-      <PurpleText text="Max" />
+      <PurpleText text="Max" style={maxStyle} />
     </TouchableOpacity>
   );
 
