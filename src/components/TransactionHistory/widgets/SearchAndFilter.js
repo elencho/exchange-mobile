@@ -21,12 +21,10 @@ const SearchAndFilter = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Pressable style={styles.dropdown} onPress={openModal}>
-        {
-          <Image
-            source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
-            style={styles.coin}
-          />
-        }
+        <Image
+          source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
+          style={styles.coin}
+        />
         <AppText body medium style={styles.dropdownText}>
           {seperateCurrencyName(currency) || 'Choose coin'}
         </AppText>
@@ -62,5 +60,10 @@ const styles = StyleSheet.create({
   dropdownText: {
     color: colors.PRIMARY_TEXT,
     flex: 1,
+  },
+  coin: {
+    width: 24,
+    height: 24,
+    marginRight: 12,
   },
 });

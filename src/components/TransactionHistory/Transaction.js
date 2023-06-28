@@ -34,6 +34,7 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
     timestamp,
     cumulativeCost,
     size,
+    action,
   } = transactionData;
 
   let date = new Date(isTransfer ? timestamp : creationTime);
@@ -105,6 +106,8 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
     ? shortenDestination(recipient)
     : `${size} ${baseCurrency}`;
 
+  console.log('transactionData', transactionData);
+
   return (
     <Pressable onPress={showModal} style={styles.container}>
       <View style={styles.topRow}>
@@ -120,12 +123,20 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
           </AppText>
           {method ? (
             <AppText style={styles.secondaryText}>{method}</AppText>
+          ) : action ? (
+            <AppText
+              style={[styles.secondaryText, !isTransfer && { marginLeft: 15 }]}
+            >
+              {action === 'BID'
+                ? 'BUY - Instant Trade'
+                : 'SELL - Instant Trade'}
+            </AppText>
           ) : null}
         </View>
 
         <View style={styles.right}>
           <AppText medium style={styles.secondaryText}>
-            {`${date}/${time}`}
+            {`${date} /${time}`}
           </AppText>
           <View style={styles.statusRow}>
             <AppText subtext style={styles.status}>

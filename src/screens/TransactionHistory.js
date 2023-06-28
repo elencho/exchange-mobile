@@ -74,6 +74,8 @@ function TransactionHistory({ navigation, route }) {
       ? transactions
       : transactions.filter((t) => t.currency == currencyCode);
 
+  console.log('transactionsCurrencyFiltered', currencyCode);
+
   const renderTransaction = ({ item }) => (
     <Transaction isTransfer transactionData={item} loading={loading} />
   );

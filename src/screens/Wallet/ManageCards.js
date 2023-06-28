@@ -92,10 +92,9 @@ export default function ManageCards({ refreshControl }) {
 
 const styles = StyleSheet.create({
   block: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
     marginBottom: 12,
     paddingVertical: 22,
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
   },
   button: {
     borderWidth: 1,
@@ -117,14 +116,11 @@ const styles = StyleSheet.create({
     marginBottom: 45,
   },
   flex: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   scrollView: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingHorizontal: 28,
-    // paddingVertical: 20,
+    paddingHorizontal: 10,
   },
 });

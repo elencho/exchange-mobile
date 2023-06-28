@@ -63,6 +63,7 @@ const TransactionsBlock = ({ loading }) => {
   const state = useSelector((state) => state);
   const {
     trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
+    transactions: { code: currencyCode, currency },
   } = state;
 
   // const toggleShowHide = () => {
@@ -87,6 +88,15 @@ const TransactionsBlock = ({ loading }) => {
   };
 
   const renderTrade = ({ item }) => <Transaction transactionData={item} />;
+
+  const transactionData =
+    currency === 'Show All Currency'
+      ? trades
+      : trades.filter(
+          (t) =>
+            t.quoteCurrency === currencyCode || t.baseCurrency === currencyCode
+        );
+
   const footer = memo(() =>
     moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />
   );
@@ -103,11 +113,6 @@ const TransactionsBlock = ({ loading }) => {
 
   return (
     <View style={styles.container}>
-      {/* <TopRow
-        text={hideOtherPairs ? 'Show' : 'Hide'}
-        onPress={toggleShowHide}
-      /> */}
-
       {loading && !moreTradesLoading ? (
         <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
           {[1, 2, 3].map((i) => (
@@ -119,7 +124,7 @@ const TransactionsBlock = ({ loading }) => {
       ) : (
         <FlatList
           style={{ height: 280 }}
-          data={trades}
+          data={transactionData}
           renderItem={renderTrade}
           keyExtractor={(item) => item.creationTime}
           onEndReached={handleScrollEnd}
