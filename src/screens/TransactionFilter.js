@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    height: 45,
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
