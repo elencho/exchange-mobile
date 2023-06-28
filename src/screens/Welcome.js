@@ -114,10 +114,11 @@ export default function Welcome({}) {
       });
 
       const latestVersion = await storeData;
-      const updateNeeded = await VersionCheck.needUpdate({
-        currentVersion: currentVersion,
-        latestVersion: latestVersion,
-      });
+      const updateNeeded = false;
+      // await VersionCheck.needUpdate({
+      //   currentVersion: currentVersion,
+      //   latestVersion: latestVersion,
+      // });
 
       if (updateNeeded && updateNeeded.isNeeded) {
         navigation.navigate('UpdateAvailable');

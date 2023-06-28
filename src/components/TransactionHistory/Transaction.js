@@ -51,9 +51,6 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
     dispatch(toggleTransactionDetails(true));
   };
 
-  const getReducedAddress = (address) =>
-    `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-
   const image = () => {
     if (isTransfer) {
       if (type === 'DEPOSIT') return <DepositlIcon />;
@@ -100,7 +97,7 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
 
   const title = isTransfer ? type : `${baseCurrency}-${quoteCurrency}`;
   const amountText = isTransfer ? 'Amount' : 'To Amount';
-  const destinationText = isTransfer ? 'Destination' : 'From Amount';
+  const destinationText = isTransfer ? 'Identifier' : 'From Amount';
   const amountDisplay = isTransfer
     ? `${amount} ${currency}`
     : ` ${cumulativeCost} ${quoteCurrency}`;
@@ -121,11 +118,8 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
           >
             {title}
           </AppText>
-          {/* ToDo */}
-          {transactionInfo ? (
-            <AppText style={styles.secondaryText}>
-              {getReducedAddress(transactionInfo)}
-            </AppText>
+          {method ? (
+            <AppText style={styles.secondaryText}>{method}</AppText>
           ) : null}
         </View>
 
