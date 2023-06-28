@@ -27,7 +27,7 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
     if (reason === 'no address') {
       return 'description no addresses';
     } else if (reason === 'OTP_RESET') {
-      return `description ${type} OTP_RESET `;
+      return `description ${type} OTP_RESET`;
     } else if (reason === 'SUPPORT') {
       return `description ${type} support`;
     } else if (reason === 'METHOD') {
@@ -49,7 +49,7 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
     if (reason === 'no address') {
       return 'title no addresses';
     } else if (reason === 'OTP_RESET') {
-      return `title ${type} OTP_RESET `;
+      return `title ${type} OTP_RESET`;
     } else if (reason === 'SUPPORT') {
       return `title ${type} support`;
     } else if (reason === 'METHOD') {
