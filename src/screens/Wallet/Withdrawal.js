@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
 import { Trans } from 'react-i18next';
 
@@ -26,9 +26,9 @@ import { validateAmount } from '../../utils/appUtils';
 import AppText from '../../components/AppText';
 import { withdrawalTemplatesAction } from '../../redux/wallet/actions';
 
-export default function Withdrawal({ refreshControl }) {
+function Withdrawal({ refreshControl }) {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state);
+  const state = useSelector((state) => state, shallowEqual);
   const {
     trade: { currentBalanceObj, card, depositProvider, cardsLoading },
     transactions: { code, loading },
@@ -80,13 +80,18 @@ export default function Withdrawal({ refreshControl }) {
       if (m.WIRE) dispatch(setNetwork(m.WIRE[0].provider));
     }
 
-    setHasMethod(!!Object.keys(m).length);
+    setHasMethod(
+      isFiat ? !!Object.keys(m).length : !!Object.keys(m).includes('WALLET')
+    );
   }, [code]);
 
   useEffect(() => {
     dispatch({ type: 'CLEAN_WALLET_INPUTS' });
     dispatch(setFee(null));
-    if ((isEcommerce && card && depositProvider) || !isFiat) {
+    if (
+      (isEcommerce && card && depositProvider) ||
+      (!isFiat && currentBalanceObj?.withdrawalMethods?.WALLET)
+    ) {
       dispatch(fetchFee('withdrawal'));
     }
     if (
@@ -122,7 +127,8 @@ export default function Withdrawal({ refreshControl }) {
 
   const { swift } = receiverBank;
   const receiverBankInputs = [iban, swift];
-  const notEmpty = () => {
+
+  const notEmpty = useCallback(() => {
     if (saveTemplate) {
       return !!newTemplateName.trim();
     }
@@ -133,7 +139,7 @@ export default function Withdrawal({ refreshControl }) {
       );
     if (withdrawalBank?.bankName || currentTemplate?.templateName)
       return iban?.trim();
-  };
+  }, [saveTemplate, withdrawalBank, currentTemplate, receiverBankInputs]);
 
   const withdraw = () => {
     const length = Object.keys(currentWhitelistObj)?.length;
@@ -166,12 +172,12 @@ export default function Withdrawal({ refreshControl }) {
     }
   };
 
-  const saveTemplateCheck = () => {
+  const saveTemplateCheck = useCallback(() => {
     return (
       currentTemplate.templateName === 'New Template' &&
       Object.keys(withdrawalBank).length
     );
-  };
+  }, [currentTemplate, withdrawalBank]);
 
   const reason = () => {
     if (withdrawalRestriction.reason) {
@@ -179,7 +185,6 @@ export default function Withdrawal({ refreshControl }) {
     }
     return 'METHOD';
   };
-
   return (
     <>
       {cardsLoading || loading || whitelistLoading ? (
@@ -255,6 +260,7 @@ export default function Withdrawal({ refreshControl }) {
     </>
   );
 }
+export default memo(Withdrawal);
 
 const styles = StyleSheet.create({
   block: {

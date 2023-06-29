@@ -16,8 +16,10 @@ import Arrow from '../../../assets/images/Arrow';
 
 function WithdrawalAddress({ error, right }) {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state?.wallet);
-  const { hasWhitelist, currentWhitelistObj, whitelist, network } = state;
+  const state = useSelector((state) => state);
+  const {
+    wallet: { hasWhitelist, currentWhitelistObj, whitelist, network },
+  } = state;
 
   const hasOnThisNetwork = whitelist?.some((w) => w.provider === network);
   const w = currentWhitelistObj;
@@ -58,7 +60,7 @@ function WithdrawalAddress({ error, right }) {
     );
   };
 
-  const address = () => {
+  const address = useCallback(() => {
     if (hasWhitelist) {
       if (hasOnThisNetwork) {
         return <AddressDropdown />;
@@ -71,7 +73,8 @@ function WithdrawalAddress({ error, right }) {
               onChangeText={setAddress}
               value={w.address}
               error={error && !w?.address}
-              right={right ? right : null}
+              // right={right ? right : null}
+              disabled
             />
             <AppText subtext style={styles.addWhitelist}>
               {t('Do Not Have Address')}{' '}
@@ -93,7 +96,7 @@ function WithdrawalAddress({ error, right }) {
         />
       );
     }
-  };
+  }, [w]);
 
   const AddressDropdown = () => (
     <Pressable

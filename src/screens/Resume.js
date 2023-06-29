@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import React, { useState, memo, useCallback } from 'react';
 import TouchID from '../assets/images/TouchID-Purple';
 import FaceID from '../assets/images/Face_ID-pruple';
@@ -19,10 +19,13 @@ import { logoutUtil } from '../utils/userProfileUtils';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
+  toggleEmailAuthModal,
   toggleGoogleOtpModal,
+  toggleSmsAuthModal,
   toggleWebViewVisible,
 } from '../redux/modals/actions';
 import { IS_ANDROID } from '../constants/system';
+import { t } from 'i18next';
 
 const Resume = ({ navigation, route }) => {
   const state = useSelector((state) => state?.profile, shallowEqual);
@@ -35,6 +38,7 @@ const Resume = ({ navigation, route }) => {
 
   const { userInfo } = state;
   const [bioType, setBioType] = useState(null);
+  const resumed = route?.key === 'Resume-uniqueKey';
 
   useFocusEffect(
     useCallback(() => {
@@ -69,18 +73,25 @@ const Resume = ({ navigation, route }) => {
     });
 
     if (result.success) {
-      if (version || workingVersion) {
+      if (version || workingVersion || resumed) {
         navigation.goBack();
-      } else if (fromSplash === true) {
+      } else if (fromSplash) {
         navigation.navigate('Main');
       } else {
         navigation.goBack();
       }
       if (IS_ANDROID && withdrawalConfirmModalVisible) {
         dispatch(toggleGoogleOtpModal(false));
+        dispatch(toggleEmailAuthModal(false));
+        dispatch(toggleSmsAuthModal(false));
       }
       dispatch(toggleWebViewVisible(true));
       await AsyncStorage.setItem('isLoggedIn', 'true');
+    } else if (
+      result?.error === 'passcode_not_set' ||
+      result?.error === 'not_enrolled'
+    ) {
+      startLogin();
     }
   }, []);
 
