@@ -13,7 +13,10 @@ import AppText from '../components/AppText';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AppButton from '../components/AppButton';
 import PurpleText from '../components/PurpleText';
-import { fetchUserInfo } from '../redux/profile/actions';
+import {
+  fetchUserInfo,
+  switchPersonalSecurity,
+} from '../redux/profile/actions';
 import { useFocusEffect } from '@react-navigation/native';
 import { logoutUtil } from '../utils/userProfileUtils';
 import SplashScreen from 'react-native-splash-screen';
@@ -36,7 +39,7 @@ const Resume = ({ navigation, route }) => {
   const { fromSplash, version, workingVersion } = route?.params;
   const dispatch = useDispatch();
 
-  const { userInfo } = state;
+  const { userInfo, Personal_Security } = state;
   const [bioType, setBioType] = useState(null);
   const resumed = route?.key === 'Resume-uniqueKey';
 
@@ -66,6 +69,19 @@ const Resume = ({ navigation, route }) => {
     }
   }, []);
 
+  const startAuthActions = async () => {
+    if (IS_ANDROID && withdrawalConfirmModalVisible) {
+      dispatch(toggleGoogleOtpModal(false));
+      dispatch(toggleEmailAuthModal(false));
+      dispatch(toggleSmsAuthModal(false));
+    }
+    if (Personal_Security === 'Security') {
+      dispatch(switchPersonalSecurity('Security'));
+    }
+    dispatch(toggleWebViewVisible(true));
+    await AsyncStorage.setItem('isLoggedIn', 'true');
+  };
+
   const startAuth = useCallback(async (fromSplash) => {
     const result = await authenticateAsync({
       promptMessage: 'Log in with fingerprint or faceid',
@@ -80,13 +96,7 @@ const Resume = ({ navigation, route }) => {
       } else {
         navigation.goBack();
       }
-      if (IS_ANDROID && withdrawalConfirmModalVisible) {
-        dispatch(toggleGoogleOtpModal(false));
-        dispatch(toggleEmailAuthModal(false));
-        dispatch(toggleSmsAuthModal(false));
-      }
-      dispatch(toggleWebViewVisible(true));
-      await AsyncStorage.setItem('isLoggedIn', 'true');
+      startAuthActions();
     } else if (
       result?.error === 'passcode_not_set' ||
       result?.error === 'not_enrolled'

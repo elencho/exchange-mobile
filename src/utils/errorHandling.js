@@ -43,5 +43,9 @@ export default async (err) => {
       navigationRef.navigate('Welcome');
       store.dispatch({ type: 'LOGOUT' });
     }
+
+    if (status === 503) {
+      navigationRef.navigate('Maintanance');
+    }
   }
 };
