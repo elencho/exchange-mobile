@@ -29,7 +29,6 @@ import { setWalletTab } from '../redux/wallet/actions';
 import { toggleChooseCardModal } from '../redux/modals/actions';
 
 export default function InstantTrade() {
-  useNotifications();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {

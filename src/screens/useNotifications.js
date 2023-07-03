@@ -32,7 +32,8 @@ const useNotifications = () => {
           case EventType.DISMISSED:
             break;
           case EventType.PRESS:
-            Linking.openURL(detail.notification?.data?.redirectUrl);
+            if (detail.notification?.data?.redirectUrl)
+              Linking.openURL(detail.notification?.data?.redirectUrl);
             break;
           default:
             break;
@@ -49,10 +50,12 @@ const useNotifications = () => {
       const redirectUrl = remoteMessage?.data?.redirectUrl;
       if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
     });
+  }, []);
 
+  useEffect(() => {
     messaging()
       .getInitialNotification()
-      .then((remoteMessage) => {
+      .then(async (remoteMessage) => {
         if (remoteMessage) {
           const redirectUrl = remoteMessage?.data?.redirectUrl;
           if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
