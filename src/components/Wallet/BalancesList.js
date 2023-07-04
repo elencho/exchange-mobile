@@ -79,7 +79,7 @@ export default function BalancesList({
         placeholder="Search Coin"
         placeholderTextColor="rgba(105, 111, 142, 0.5)"
         onChangeText={type}
-        left={<Search style={styles.searchIcon} />}
+        right={<Search style={styles.searchIcon} />}
         value={value}
       />
 

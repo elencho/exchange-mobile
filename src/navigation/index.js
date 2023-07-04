@@ -25,6 +25,7 @@ import CardVerificationTwoScreen from '../screens/CardVerificationTwo';
 import Resume from '../screens/Resume';
 import Splash from '../screens/SplashScreen';
 import EmailVerification from '../screens/EmailVerification';
+import useNotifications from '../screens/useNotifications';
 
 const Stack = createNativeStackNavigator();
 export const navigationRef = createNavigationContainerRef();
@@ -53,6 +54,8 @@ export default function Navigator() {
     headerLeft: () => null,
     animation: 'slide_from_right',
   };
+
+  useNotifications();
 
   return (
     <NavigationContainer

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
@@ -16,8 +17,11 @@ export default function DatePicker({ to = false, from = false }) {
   const text = () => {
     const fromDate = new Date(fromDateTime);
     const toDate = new Date(toDateTime);
-    if (from && fromDateTime) return fromDate.toDateString();
-    if (to && toDateTime) return toDate.toDateString();
+    const formatDate = (date) =>
+      date.toDateString().split(' ').slice(1).join(' ');
+
+    if (from && fromDateTime) return formatDate(fromDate);
+    if (to && toDateTime) return formatDate(toDate);
     if (from && !fromDateTime) return 'From Date';
     if (to && !toDateTime) return 'To Date';
   };
@@ -45,7 +49,7 @@ export default function DatePicker({ to = false, from = false }) {
 const styles = StyleSheet.create({
   dropdown: {
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    height: 44,
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
