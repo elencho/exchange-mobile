@@ -16,10 +16,7 @@ export default function AppText({
   isForCodeInput,
   ...props
 }) {
-  const {
-    modals: { appToastObj },
-    errors: { generalError },
-  } = useSelector((state) => state);
+  const generalError = useSelector((state) => state.errors.generalError);
 
   const fontCond = () => {
     if (medium || header) {
@@ -75,10 +72,7 @@ export default function AppText({
   const text = () => {
     if (typeof children === 'string') {
       if (children.includes('{{') && children.includes('}}')) {
-        return t(
-          children,
-          generalError?.transParams || appToastObj?.transParams
-        );
+        return t(children, generalError?.transParams);
       }
       return t(children);
     } else {
