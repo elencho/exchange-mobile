@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useCallback, useState, useEffect } from 'react';
+import { ScrollView, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -27,6 +27,10 @@ import {
 import useNotifications from './useNotifications';
 import { setWalletTab } from '../redux/wallet/actions';
 import { toggleChooseCardModal } from '../redux/modals/actions';
+
+import messaging from '@react-native-firebase/messaging';
+import Copy from '../assets/images/Copy.svg';
+import * as Clipboard from 'expo-clipboard';
 
 export default function InstantTrade() {
   const dispatch = useDispatch();
@@ -60,8 +64,26 @@ export default function InstantTrade() {
     }, [tabRoute])
   );
 
+  //ToDo: delete
+  const [fcmToken, setFcmToken] = useState('');
+  const checkToken = async () => {
+    const token = await messaging().getToken();
+    if (token) {
+      setFcmToken(token);
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
   return (
     <Background>
+      <View>
+        <TouchableOpacity onPress={() => Clipboard.setStringAsync(fcmToken)}>
+          <Copy />
+        </TouchableOpacity>
+      </View>
       <TopRow clear={() => dispatch(setTradeType('Buy'))} />
 
       <View style={styles.headRow}>
