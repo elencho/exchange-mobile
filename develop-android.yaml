@@ -118,7 +118,7 @@ jobs:
                             echo "Warning: node_modules/jetifier/bin/jetify does not exist"
                             echo "         source code will not be upgraded to AndroidX"
                         fi
-                        
+
           failOnStderr: true
       - task: ShellScript@2
         displayName: Tag build
@@ -220,7 +220,7 @@ jobs:
           ArtifactName: mapping
       - task: AppCenterDistribute@3
         displayName: Create distribution
-        condition: 'and(succeeded(), ne(variables[''Build.Reason''], ''pullRequest''))'
+        condition: "and(succeeded(), ne(variables['Build.Reason'], 'pullRequest'))"
         inputs:
           serverEndpoint: 39f8d6c2-e0b4-4233-9c89-5ac7f5af0524
           appSlug: Cryptx/Exchange-android

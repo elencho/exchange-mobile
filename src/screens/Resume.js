@@ -86,8 +86,8 @@ const Resume = ({ navigation, route }) => {
   const startAuth = useCallback(async (fromSplash) => {
     if (IS_ANDROID) await cancelAuthenticate();
     const result = await authenticateAsync({
-      promptMessage: 'Log in with fingerprint or faceid',
-      cancelLabel: 'Abort',
+      promptMessage: t('Log in with fingerprint or faceid'),
+      cancelLabel: t('Abort'),
     });
 
     if (result?.success) {
