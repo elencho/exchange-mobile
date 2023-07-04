@@ -240,7 +240,7 @@ jobs:
           TargetPath: \\my\share\$(Build.DefinitionName)\$(Build.BuildNumber)
       - task: AppCenterDistribute@3
         displayName: Create distribution
-        condition: 'and(succeeded(), ne(variables[''Build.Reason''], ''pullRequest''))'
+        condition: "and(succeeded(), ne(variables['Build.Reason'], 'pullRequest'))"
         inputs:
           serverEndpoint: ee46b17a-dcc0-4717-954e-89213072a893
           appSlug: Cryptx/Exchange-iOS
