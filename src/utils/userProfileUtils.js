@@ -79,7 +79,9 @@ export const usernameAndPasswordForm = async (username, password, url) => {
       toast: false,
     },
     url,
-    data: `username=${encodeURIComponent(username)}&password=${password}`,
+    data: `username=${encodeURIComponent(
+      username
+    )}&password=${encodeURIComponent(password)}`,
   });
   if (data) return data.data;
 };
@@ -185,7 +187,9 @@ export const setNewPassword = async (url, newPass, confirmPass) => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     url,
-    data: `password-new=${newPass}&password-confirm=${confirmPass}`,
+    data: `password-new=${encodeURIComponent(
+      newPass
+    )}&password-confirm=${encodeURIComponent(confirmPass)}`,
   });
   if (data) return data.data;
 };
@@ -288,7 +292,11 @@ export const updatePassword = async (
       toast: false,
     },
     url: UPDATE_PASSWORD,
-    data: `password=${password}&passwordNew=${passwordNew}&passwordConfirm=${passwordConfirm}`,
+    data: `password=${encodeURIComponent(
+      password
+    )}&passwordNew=${encodeURIComponent(
+      passwordNew
+    )}&passwordConfirm=${encodeURIComponent(passwordConfirm)}`,
   });
   return data;
 };
