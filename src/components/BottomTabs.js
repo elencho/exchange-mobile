@@ -46,14 +46,10 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
 
         return (
           <Pressable key={route.key} style={styles.tab} onPress={navigate}>
-            <LinearGradient
-              colors={[colors.SECONDARY_BACKGROUND, colors.PRIMARY_BACKGROUND]}
-              style={styles.gradient}
-              locations={[0.3, 0.8]}
-            >
+            <View style={styles.gradient}>
               {focused ? active[route.name] : inactive[route.name]}
               {focused && <FocusIcon style={styles.focus} />}
-            </LinearGradient>
+            </View>
           </Pressable>
         );
       })}

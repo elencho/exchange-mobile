@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   },
   bulletsBlock: {
     marginTop: 30,
-    marginHorizontal: '16%',
+    marginHorizontal: 30,
   },
   bullet: {
     width: 4,
@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
     color: '#8F9EB5',
     textAlign: 'center',
     opacity: 0.6,
+    marginHorizontal: 30,
   },
   title: {
     color: '#CCD9DD',
