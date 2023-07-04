@@ -6,10 +6,28 @@ import { onNotifeeMessageReceived } from './src/screens/useNotifications';
 import notifee, { EventType } from '@notifee/react-native';
 
 import App from './App';
+import { Linking } from 'react-native';
 
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
   console.log('Message handled in the background!', remoteMessage);
 });
+
+messaging().onNotificationOpenedApp((remoteMessage) => {
+  console.log('onNotificationOpenedApp', remoteMessage);
+  const redirectUrl = remoteMessage?.data?.redirectUrl;
+  if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
+});
+
+messaging()
+  .getInitialNotification()
+  .then(async (remoteMessage) => {
+    console.log('onNotificationOpenedApp', remoteMessage);
+
+    if (remoteMessage) {
+      const redirectUrl = remoteMessage?.data?.redirectUrl;
+      if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
+    }
+  });
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);
 // It also ensures that whether you load the app in Expo Go or in a native build,

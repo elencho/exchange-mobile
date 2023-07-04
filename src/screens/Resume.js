@@ -7,6 +7,7 @@ import * as SecureStore from 'expo-secure-store';
 import {
   authenticateAsync,
   supportedAuthenticationTypesAsync,
+  cancelAuthenticate,
 } from 'expo-local-authentication';
 import colors from '../constants/colors';
 import AppText from '../components/AppText';
@@ -83,12 +84,13 @@ const Resume = ({ navigation, route }) => {
   };
 
   const startAuth = useCallback(async (fromSplash) => {
+    if (IS_ANDROID) await cancelAuthenticate();
     const result = await authenticateAsync({
       promptMessage: 'Log in with fingerprint or faceid',
       cancelLabel: 'Abort',
     });
 
-    if (result.success) {
+    if (result?.success) {
       if (version || workingVersion || resumed) {
         navigation.goBack();
       } else if (fromSplash) {
