@@ -1,30 +1,9 @@
 import messaging from '@react-native-firebase/messaging';
-import { PermissionsAndroid, Linking } from 'react-native';
+import { Linking } from 'react-native';
 import notifee, { EventType, AndroidImportance } from '@notifee/react-native';
 import { useEffect } from 'react';
-import { IS_ANDROID, IS_IOS } from '../constants/system';
 
 const useNotifications = () => {
-  const requestUserPermissionIOS = async () =>
-    await messaging().requestPermission();
-
-  const requestPermissionsAndroid = () =>
-    PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-    );
-
-  const checkToken = async () => {
-    const fcmToken = await messaging().getToken();
-    if (fcmToken) {
-      console.log('fcmToken', fcmToken);
-    }
-  };
-
-  useEffect(() => {
-    IS_ANDROID ? requestPermissionsAndroid() : requestUserPermissionIOS();
-    checkToken();
-  }, []);
-
   useEffect(() => {
     const unsubscribe = () => {
       return notifee.onForegroundEvent(({ type, detail }) => {
