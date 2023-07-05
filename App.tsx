@@ -65,6 +65,6 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     flex: 0,
-    backgroundColor: colors.PRIMARY_BACKGROUND,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
 });
