@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { PermissionsAndroid } from 'react-native';
 import { IS_ANDROID, IS_IOS } from '../constants/system';
+import messaging from '@react-native-firebase/messaging';
 
 const useNotificationPermissions = () => {
   const requestUserPermissionIOS = async () =>
