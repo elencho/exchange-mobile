@@ -1,18 +1,9 @@
 import messaging from '@react-native-firebase/messaging';
-import { PermissionsAndroid, Linking } from 'react-native';
+import { Linking } from 'react-native';
 import notifee, { EventType, AndroidImportance } from '@notifee/react-native';
 import { useEffect } from 'react';
-import { IS_ANDROID, IS_IOS } from '../constants/system';
 
 const useNotifications = () => {
-  const requestUserPermissionIOS = async () =>
-    await messaging().requestPermission();
-
-  const requestPermissionsAndroid = () =>
-    PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-    );
-
   const checkToken = async () => {
     const fcmToken = await messaging().getToken();
     if (fcmToken) {
@@ -21,7 +12,6 @@ const useNotifications = () => {
   };
 
   useEffect(() => {
-    IS_ANDROID ? requestPermissionsAndroid() : requestUserPermissionIOS();
     checkToken();
   }, []);
 
@@ -43,25 +33,6 @@ const useNotifications = () => {
 
     unsubscribe();
   }, []);
-
-  // useEffect(() => {
-  //   // Handle notification opening event
-  //   messaging().onNotificationOpenedApp((remoteMessage) => {
-  //     const redirectUrl = remoteMessage?.data?.redirectUrl;
-  //     if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   messaging()
-  //     .getInitialNotification()
-  //     .then(async (remoteMessage) => {
-  //       if (remoteMessage) {
-  //         const redirectUrl = remoteMessage?.data?.redirectUrl;
-  //         if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
-  //       }
-  //     });
-  // }, []);
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(onNotifeeMessageReceived);

@@ -13,7 +13,6 @@ messaging().setBackgroundMessageHandler(async (remoteMessage) => {
 });
 
 messaging().onNotificationOpenedApp((remoteMessage) => {
-  console.log('onNotificationOpenedApp', remoteMessage);
   const redirectUrl = remoteMessage?.data?.redirectUrl;
   if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
 });
@@ -21,8 +20,6 @@ messaging().onNotificationOpenedApp((remoteMessage) => {
 messaging()
   .getInitialNotification()
   .then(async (remoteMessage) => {
-    console.log('onNotificationOpenedApp', remoteMessage);
-
     if (remoteMessage) {
       const redirectUrl = remoteMessage?.data?.redirectUrl;
       if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
