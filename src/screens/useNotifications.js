@@ -4,6 +4,17 @@ import notifee, { EventType, AndroidImportance } from '@notifee/react-native';
 import { useEffect } from 'react';
 
 const useNotifications = () => {
+  const checkToken = async () => {
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      console.log('fcmToken', fcmToken);
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
   useEffect(() => {
     const unsubscribe = () => {
       return notifee.onForegroundEvent(({ type, detail }) => {
@@ -22,25 +33,6 @@ const useNotifications = () => {
 
     unsubscribe();
   }, []);
-
-  // useEffect(() => {
-  //   // Handle notification opening event
-  //   messaging().onNotificationOpenedApp((remoteMessage) => {
-  //     const redirectUrl = remoteMessage?.data?.redirectUrl;
-  //     if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
-  //   });
-  // }, []);
-
-  // useEffect(() => {
-  //   messaging()
-  //     .getInitialNotification()
-  //     .then(async (remoteMessage) => {
-  //       if (remoteMessage) {
-  //         const redirectUrl = remoteMessage?.data?.redirectUrl;
-  //         if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
-  //       }
-  //     });
-  // }, []);
 
   useEffect(() => {
     const unsubscribe = messaging().onMessage(onNotifeeMessageReceived);
