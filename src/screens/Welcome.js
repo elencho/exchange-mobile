@@ -44,6 +44,7 @@ import useNotificationsAndroid from './useNotificationsAndroid';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
+  useNotificationsAndroid();
 
   useFocusEffect(
     useCallback(() => {
@@ -52,7 +53,6 @@ export default function Welcome({ navigation }) {
   );
 
   const startApp = async () => {
-    useNotificationsAndroid();
     dispatch({ type: 'RESET_STATE' });
     await AsyncStorage.removeItem('webViewVisible');
 

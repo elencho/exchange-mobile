@@ -67,7 +67,7 @@ export const onNotifeeMessageReceived = async (message) => {
     },
     android: {
       channelId: channelId,
-      attachments: [{ url: message?.notification?.android?.imageUrl }],
+      attachments: [{ url: message?.notification?.android?.imageUrl ?? ' ' }],
       importance: AndroidImportance.HIGH,
       lightUpScreen: true,
       sound: 'default',
