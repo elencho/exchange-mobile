@@ -71,7 +71,6 @@ export const onNotifeeMessageReceived = async (message) => {
       importance: AndroidImportance.HIGH,
       lightUpScreen: true,
       sound: 'default',
-      timeoutAfter: 1000,
       pressAction: {
         id: 'default',
       },
