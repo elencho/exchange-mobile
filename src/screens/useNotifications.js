@@ -67,10 +67,13 @@ export const onNotifeeMessageReceived = async (message) => {
     },
     android: {
       channelId: channelId,
-      attachments: [{ url: message?.data?.fcm_options?.image }],
+      attachments: [{ url: message?.notification?.android?.imageUrl }],
       importance: AndroidImportance.HIGH,
       lightUpScreen: true,
       sound: 'default',
+      smallIcon: 'ic_small_icon',
+      largeIcon: message?.notification?.android?.imageUrl,
+      color: '#1F1F35',
       pressAction: {
         id: 'default',
       },

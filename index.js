@@ -8,8 +8,6 @@ import { Linking } from 'react-native';
 
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
   console.log('Message handled in the background!', remoteMessage);
-  const redirectUrl = remoteMessage?.data?.redirectUrl;
-  if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
 });
 
 messaging().onNotificationOpenedApp((remoteMessage) => {
