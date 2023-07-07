@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import {
   StyleSheet,
@@ -40,9 +40,11 @@ import { fetchCountries, setLanguage } from '../redux/profile/actions';
 import { checkReadiness, fetchTranslations } from '../utils/appUtils';
 import { addResources, switchLanguage } from '../utils/i18n';
 import { useFocusEffect } from '@react-navigation/native';
+import useNotificationsAndroid from './useNotificationsAndroid';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
+  useNotificationsAndroid();
 
   useFocusEffect(
     useCallback(() => {

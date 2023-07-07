@@ -2,4 +2,5 @@
   <color name="primary_dark">#161629</color>
   <color name="colorPrimary">#023c69</color>
   <color name="colorPrimaryDark">#161629</color>
+  <color name="notificationBackground">#1F1F35</color>
 </resources>

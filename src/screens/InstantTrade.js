@@ -31,8 +31,10 @@ import { toggleChooseCardModal } from '../redux/modals/actions';
 import messaging from '@react-native-firebase/messaging';
 import Copy from '../assets/images/Copy.svg';
 import * as Clipboard from 'expo-clipboard';
+import useNotificationPermissions from './useNotificationPermissions';
 
 export default function InstantTrade() {
+  useNotificationPermissions();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {

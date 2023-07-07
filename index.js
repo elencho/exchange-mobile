@@ -2,8 +2,6 @@ import 'react-native-gesture-handler';
 import { registerRootComponent } from 'expo';
 import 'react-native-reanimated';
 import messaging from '@react-native-firebase/messaging';
-import { onNotifeeMessageReceived } from './src/screens/useNotifications';
-import notifee, { EventType } from '@notifee/react-native';
 
 import App from './App';
 import { Linking } from 'react-native';
@@ -13,7 +11,6 @@ messaging().setBackgroundMessageHandler(async (remoteMessage) => {
 });
 
 messaging().onNotificationOpenedApp((remoteMessage) => {
-  console.log('onNotificationOpenedApp', remoteMessage);
   const redirectUrl = remoteMessage?.data?.redirectUrl;
   if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
 });
@@ -21,8 +18,6 @@ messaging().onNotificationOpenedApp((remoteMessage) => {
 messaging()
   .getInitialNotification()
   .then(async (remoteMessage) => {
-    console.log('onNotificationOpenedApp', remoteMessage);
-
     if (remoteMessage) {
       const redirectUrl = remoteMessage?.data?.redirectUrl;
       if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
