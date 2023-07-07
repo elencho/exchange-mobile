@@ -354,8 +354,7 @@ function* fetchUserInfoSaga(action) {
   const userInfo = yield call(fetchUserInfoUtil);
   if (userInfo) yield put(saveUserInfo(userInfo));
 
-  // shenaxulidan gaketeba
-  const token = yield call(refreshToken);
+  const token = SecureStore.getItemAsync('refreshToken');
   if (typeof token === 'string') {
     yield put({ type: 'OTP_SAGA', token });
   }
@@ -461,7 +460,7 @@ function* activateEmailSaga(action) {
     yield put(saveOtpChangeToken(null));
     yield put(setCurrentSecurityAction(null));
     yield put(toggleEmailAuthModal(false));
-    const token = yield call(refreshToken);
+    const token = SecureStore.getItemAsync('refreshToken');
     if (typeof token === 'string') {
       yield put({ type: 'OTP_SAGA', token });
     }
@@ -483,7 +482,7 @@ function* activateGoogleSaga(action) {
     yield put(saveOtpChangeToken(null));
     yield put(setCurrentSecurityAction(null));
     yield put(toggleGoogleAuthModal(false));
-    const token = yield call(refreshToken);
+    const token = SecureStore.getItemAsync('refreshToken');
     if (typeof token === 'string') {
       yield put({ type: 'OTP_SAGA', token });
     }
