@@ -31,7 +31,7 @@
     "@react-navigation/native-stack": "^6.9.12",
     "@reduxjs/toolkit": "^1.9.3",
     "@shopify/flash-list": "^1.4.2",
-    "@sumsub/react-native-mobilesdk-module": "^1.23.0",
+    "@sumsub/react-native-mobilesdk-module": "^1.25.0",
     "appcenter": "4.4.5",
     "appcenter-analytics": "4.4.5",
     "appcenter-crashes": "4.4.5",
