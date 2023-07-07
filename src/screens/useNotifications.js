@@ -72,7 +72,7 @@ export const onNotifeeMessageReceived = async (message) => {
       lightUpScreen: true,
       sound: 'default',
       smallIcon: 'ic_small_icon',
-      largeIcon: message?.notification?.android?.imageUrl,
+      largeIcon: message?.notification?.android?.imageUrl ?? ' ',
       color: '#1F1F35',
       pressAction: {
         id: 'default',

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import messaging from '@react-native-firebase/messaging';
+import { Linking } from 'react-native';
 
 const useNotificationsAndroid = () => {
   // Handle notification press when Android is killed
