@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { useState, memo, useCallback } from 'react';
 import TouchID from '../assets/images/TouchID-Purple';
 import FaceID from '../assets/images/Face_ID-pruple';
