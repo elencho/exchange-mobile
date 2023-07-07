@@ -354,6 +354,7 @@ function* fetchUserInfoSaga(action) {
   const userInfo = yield call(fetchUserInfoUtil);
   if (userInfo) yield put(saveUserInfo(userInfo));
 
+  // shenaxulidan gaketeba
   const token = yield call(refreshToken);
   if (typeof token === 'string') {
     yield put({ type: 'OTP_SAGA', token });

@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import { AppState } from 'react-native';
+import { Alert, AppState } from 'react-native';
 
 import { useDispatch } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
@@ -47,7 +47,13 @@ function MainScreen({ navigation }) {
       !isLoggedIn &&
       newState === 'active' &&
       timeDifference >= 30000;
-
+    Alert.alert(
+      'first',
+      !webViewVisible,
+      !isLoggedIn,
+      newState === 'active',
+      timeDifference
+    );
     if (bioVisible) {
       SecureStore.getItemAsync('accessToken')
         .then((t) => {
