@@ -24,9 +24,7 @@ export default async (err) => {
       if (!state.modals.isToast) {
         store.dispatch({ type: 'SAVE_GENERAL_ERROR', generalError });
       } else {
-        store.dispatch(
-          setAppToast({ header, body, transParams: data?.transParams })
-        );
+        store.dispatch(setAppToast({ header, body }));
       }
     }
     if (status === 401) {
