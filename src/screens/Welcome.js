@@ -6,7 +6,6 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   BackHandler,
-  Alert,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -98,12 +97,7 @@ export default function Welcome({ navigation }) {
     if (updateNeeded) {
       navigation.navigate('UpdateAvailable');
     }
-    Alert.alert(
-      `'userIndex',
-      ${userIndex},
-      'timeDifference >= 30000',
-      ${timeDifference >= 30000}`
-    );
+
     if (userIndex && timeDifference >= 30000) {
       navigation.navigate('Resume', {
         fromSplash: true,

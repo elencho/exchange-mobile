@@ -43,7 +43,6 @@ const Resume = ({ navigation, route }) => {
   const { userInfo, Personal_Security } = state;
   const [bioType, setBioType] = useState(null);
   const resumed = route?.key === 'Resume-uniqueKey';
-  Alert.alert(`'route', ${route.key}`);
 
   useFocusEffect(
     useCallback(() => {
