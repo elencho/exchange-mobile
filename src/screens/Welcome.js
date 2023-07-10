@@ -85,6 +85,7 @@ export default function Welcome({ navigation }) {
     const user = email;
     const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
     const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
+    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
 
     let parsedUsers = JSON.parse(enabled);
     const userIndex = parsedUsers?.find(
@@ -98,7 +99,7 @@ export default function Welcome({ navigation }) {
       navigation.navigate('UpdateAvailable');
     }
 
-    if (userIndex && timeDifference >= 30000) {
+    if (userIndex && timeDifference >= 30000 && !isLoggedIn) {
       navigation.navigate('Resume', {
         fromSplash: true,
         version: updateNeeded,
