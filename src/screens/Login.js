@@ -19,6 +19,7 @@ import {
   usernameAndPasswordAction,
 } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Login() {
   const navigation = useNavigation();
@@ -42,6 +43,7 @@ export default function Login() {
 
   useFocusEffect(
     useCallback(() => {
+      preventBio();
       return () =>
         setTimeout(() => {
           dispatch(setCredentials({}));
@@ -65,6 +67,8 @@ export default function Login() {
       dispatch(usernameAndPasswordAction(navigation));
     }
   };
+  const preventBio = async () => await AsyncStorage.removeItem('isOpenDate');
+
   const forgotPassword = () =>
     dispatch({ type: 'FORGOT_PASSWORD_SAGA', navigation });
 

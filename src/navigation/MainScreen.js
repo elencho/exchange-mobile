@@ -32,7 +32,9 @@ function MainScreen({ navigation }) {
 
   const handleAppStateChange = useCallback(async (newState) => {
     const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
-    const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
+    const timeDifference = lastTimeOpen
+      ? Date.now() - JSON.parse(lastTimeOpen)
+      : false;
     const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
     const webViewVisible = await AsyncStorage.getItem('webViewVisible');
 

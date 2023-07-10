@@ -24,6 +24,7 @@ import {
 } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
 import colors from '../constants/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Registration({ navigation }) {
   const dispatch = useDispatch();
@@ -31,6 +32,10 @@ export default function Registration({ navigation }) {
   const { registrationInputs, userProfileLoading } = state;
 
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    preventBio();
+  }, []);
 
   useEffect(() => {
     error && setError(false);
@@ -94,6 +99,8 @@ export default function Registration({ navigation }) {
       dispatch(switchPersonalCompany('Personal'));
     }, 1000);
   };
+
+  const preventBio = async () => await AsyncStorage.removeItem('isOpenDate');
 
   return (
     <WithKeyboard scrollUp padding style={styles.scrollview}>
