@@ -50,16 +50,6 @@ function MainScreen({ navigation }) {
       newState === 'active' &&
       timeDifference >= 30000;
 
-    console.log(
-      'webViewVisible',
-      !webViewVisible,
-      ' isLoggedIn',
-      !isLoggedIn,
-      "newState === 'active'",
-      newState === 'active',
-      timeDifference >= 30000,
-      'timeDifference >= 30000'
-    );
     if (bioVisible) {
       SecureStore.getItemAsync('accessToken')
         .then((t) => {
