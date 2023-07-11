@@ -354,7 +354,7 @@ function* fetchUserInfoSaga(action) {
   const userInfo = yield call(fetchUserInfoUtil);
   if (userInfo) yield put(saveUserInfo(userInfo));
 
-  const token = SecureStore.getItemAsync('accessToken');
+  const token = yield call(refreshToken);
 
   if (typeof token === 'string') {
     yield put({ type: 'OTP_SAGA', token });
@@ -461,7 +461,7 @@ function* activateEmailSaga(action) {
     yield put(saveOtpChangeToken(null));
     yield put(setCurrentSecurityAction(null));
     yield put(toggleEmailAuthModal(false));
-    const token = SecureStore.getItemAsync('accessToken');
+    const token = yield call(refreshToken);
     if (typeof token === 'string') {
       yield put({ type: 'OTP_SAGA', token });
     }
@@ -483,7 +483,7 @@ function* activateGoogleSaga(action) {
     yield put(saveOtpChangeToken(null));
     yield put(setCurrentSecurityAction(null));
     yield put(toggleGoogleAuthModal(false));
-    const token = SecureStore.getItemAsync('accessToken');
+    const token = yield call(refreshToken);
     if (typeof token === 'string') {
       yield put({ type: 'OTP_SAGA', token });
     }
