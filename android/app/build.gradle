@@ -135,11 +135,6 @@ android {
         debug {
             signingConfig signingConfigs.debug
         }
-        release {
-           debuggable true
-           minifyEnabled true
-           proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-       }
     }
 
     // applicationVariants are e.g. debug, release
