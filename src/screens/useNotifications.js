@@ -40,6 +40,13 @@ const useNotifications = () => {
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    notifee.getInitialNotification().then((res) => {
+      const redirectUrl = res?.notification?.data?.redirectUrl;
+      if (redirectUrl) Linking.openURL(redirectUrl);
+    });
+  }, []);
+
   return {};
 };
 
