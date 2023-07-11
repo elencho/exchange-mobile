@@ -71,8 +71,9 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
       if (result.success) {
         newUser?.push({ user: user, enabled: true, type: type });
         await AsyncStorage.setItem('BiometricEnabled', JSON.stringify(newUser))
-          .then(() => {
+          .then(async () => {
             setIsBioOn(true);
+            await AsyncStorage.setItem('isLoggedIn', 'true');
           })
           .catch(() => {
             console.log('‘There was an error saving the product’');
