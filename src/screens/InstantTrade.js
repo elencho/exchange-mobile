@@ -24,7 +24,6 @@ import {
   setTradeOffset,
   setTradeType,
 } from '../redux/trade/actions';
-import useNotifications from './useNotifications';
 import { setWalletTab } from '../redux/wallet/actions';
 import { toggleChooseCardModal } from '../redux/modals/actions';
 

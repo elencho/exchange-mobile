@@ -45,6 +45,11 @@ const useNotifications = () => {
       const redirectUrl = res?.notification?.data?.redirectUrl;
       if (redirectUrl) Linking.openURL(redirectUrl);
     });
+
+    notifee.onBackgroundEvent(async ({ type, detail }) => {
+      const redirectUrl = detail?.notification?.data?.redirectUrl;
+      if (redirectUrl) Linking.openURL(redirectUrl);
+    });
   }, []);
 
   return {};
