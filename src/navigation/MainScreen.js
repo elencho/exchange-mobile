@@ -39,9 +39,11 @@ function MainScreen({ navigation }) {
     const webViewVisible = await AsyncStorage.getItem('webViewVisible');
 
     if (newState !== 'active') {
+      if (isLoggedIn) {
+        const date = JSON.stringify(Date.now());
+        await AsyncStorage.setItem('isOpenDate', date);
+      }
       await AsyncStorage.removeItem('isLoggedIn');
-      const date = JSON.stringify(Date.now());
-      await AsyncStorage.setItem('isOpenDate', date);
     }
 
     const bioVisible =
