@@ -30,6 +30,7 @@ import {
 } from '../redux/modals/actions';
 import { IS_ANDROID } from '../constants/system';
 import { t } from 'i18next';
+import { Trans } from 'react-i18next';
 
 const Resume = ({ navigation, route }) => {
   const state = useSelector((state) => state?.profile, shallowEqual);
@@ -123,8 +124,12 @@ const Resume = ({ navigation, route }) => {
     <View style={styles.container}>
       {bioType === 'FACEID' ? <FaceID /> : <TouchID />}
       <AppText header style={styles.primary}>
-        Welcome Back, {userInfo?.firstName}!
+        <Trans
+          i18nKey="welcome back {{username}} params{username}"
+          values={{ username: userInfo?.firstName }}
+        />
       </AppText>
+
       <AppText calendarDay style={styles.second}>
         {bioType === 'FACEID'
           ? 'face id subtitle description'
