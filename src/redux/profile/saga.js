@@ -68,6 +68,7 @@ import {
 import { resetTradesState } from '../trade/actions';
 import { resetTransactionsState, toggleLoading } from '../transactions/actions';
 import { resetWalletState } from '../wallet/actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //  START LOGIN
 function* startLoginSaga(action) {
@@ -170,6 +171,12 @@ function* codeToTokenSaga(action) {
     yield put({ type: 'OTP_SAGA', token: data?.access_token });
     if (navigation && !fromRegistration) {
       const screenName = fromResetOtp ? 'UserProfile' : 'Main';
+
+      yield call(async () => {
+        screenName === 'Main' &&
+          (await AsyncStorage.setItem('isLoggedIn', 'true'));
+      });
+
       yield call(() => navigation.replace(screenName));
     }
     if (fromRegistration) {
