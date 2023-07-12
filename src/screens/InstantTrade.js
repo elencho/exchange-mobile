@@ -52,13 +52,10 @@ export default function InstantTrade() {
 
   return (
     <Background>
-      <TopRow clear={() => dispatch(setTradeType('Buy'))} />
-
-      <View style={styles.headRow}>
-        <Headline title="Instant Trade" />
-        <View style={{ marginRight: 5 }} />
-        <InfoMark inner="?" color={colors.SECONDARY_PURPLE} />
-      </View>
+      <TopRow
+        clear={() => dispatch(setTradeType('Buy'))}
+        headlineLogo={<InfoMark inner="?" color={colors.SECONDARY_PURPLE} />}
+      />
 
       <BuySellSwitch />
 

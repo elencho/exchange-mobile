@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import TotalBalanceSkeleton from './TotalBalanceSkeleton';
-import WalletIcon from '../../assets/images/Wallet/Wallet_Icon.svg';
 import colors from '../../constants/colors';
+import CurrencySwitch from './CurrencySwitch';
 
 export default function TotalBalance({ balanceLoading }) {
   const filter = useSelector((state) => state.wallet.usdBtcSwitch);
@@ -29,21 +29,25 @@ export default function TotalBalance({ balanceLoading }) {
 
   return !balanceLoading ? (
     <View style={styles.container}>
-      <WalletIcon />
+      <View style={styles.balanceContainer}>
+        <View style={styles.justify}>
+          <View style={styles.row}>
+            <AppText body style={styles.secondary}>
+              Total :
+            </AppText>
+            <AppText body style={styles.secondary}>
+              {secondary()}
+            </AppText>
+          </View>
 
-      <View style={styles.justify}>
-        <View style={styles.row}>
-          <AppText calendarDay style={styles.primary}>
-            Total :
-          </AppText>
-          <AppText calendarDay style={styles.primary}>
-            {primary()}
-          </AppText>
+          <View style={styles.row}>
+            <AppText header style={styles.primary}>
+              {primary()}
+            </AppText>
+          </View>
         </View>
-        <AppText body style={styles.secondary}>
-          {secondary()}
-        </AppText>
       </View>
+      <CurrencySwitch />
     </View>
   ) : (
     <TotalBalanceSkeleton />
@@ -53,20 +57,19 @@ export default function TotalBalance({ balanceLoading }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
-    padding: 25,
+  },
+  balanceContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 28,
   },
-  justify: {
-    justifyContent: 'space-between',
-    height: 40,
-    marginLeft: 20,
-  },
+
   primary: {
     color: colors.PRIMARY_TEXT,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
+    marginBottom: 5,
   },
   row: {
     flexDirection: 'row',

@@ -4,10 +4,10 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
-import Logo from '../../assets/images/Logo.svg';
 import AppText from '../AppText';
+import Headline from './Headline';
 
-function TopRow({ clear }) {
+function TopRow({ clear, headlineLogo }) {
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -27,9 +27,22 @@ function TopRow({ clear }) {
     clear && clear();
   };
 
+  const routeName =
+    route.name === 'Transactions'
+      ? 'Transaction History'
+      : route.name === 'Wallet'
+      ? 'My Wallet'
+      : route.name === 'Trade'
+      ? 'Instant Trade'
+      : '';
+
   return (
     <View style={styles.topRow}>
-      <Logo style={styles.logo} />
+      <View style={styles.flexRow}>
+        <Headline title={routeName} />
+        {headlineLogo ? headlineLogo : null}
+      </View>
+
       <Pressable style={styles.profile} onPress={navigate}>
         <AppText medium style={styles.text}>
           {initials()}
@@ -73,10 +86,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 20,
   },
   text: {
     color: colors.PRIMARY_TEXT,
     fontSize: 15,
     lineHeight: 19,
+  },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
 });

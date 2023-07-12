@@ -99,8 +99,6 @@ function TransactionHistory({ navigation, route }) {
   return (
     <Background>
       <TopRow clear={() => dispatch(clearFilters())} />
-
-      <Headline title="Transaction History" />
       <TabSwitcher />
       <SearchAndFilter navigation={navigation} />
 
