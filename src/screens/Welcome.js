@@ -84,7 +84,9 @@ export default function Welcome({ navigation }) {
     const enabled = await AsyncStorage.getItem('BiometricEnabled');
     const user = email;
     const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
-    const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
+    const timeDifference = lastTimeOpen
+      ? Date.now() - JSON.parse(lastTimeOpen)
+      : false;
     const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
 
     let parsedUsers = JSON.parse(enabled);

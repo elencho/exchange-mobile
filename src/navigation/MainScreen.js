@@ -37,12 +37,11 @@ function MainScreen({ navigation }) {
       : false;
     const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
     const webViewVisible = await AsyncStorage.getItem('webViewVisible');
+    const authVisible = await AsyncStorage.getItem('authVisible');
 
-    if (newState !== 'active') {
-      if (isLoggedIn) {
-        const date = JSON.stringify(Date.now());
-        await AsyncStorage.setItem('isOpenDate', date);
-      }
+    if (newState !== 'active' && !authVisible) {
+      const date = JSON.stringify(Date.now());
+      await AsyncStorage.setItem('isOpenDate', date);
       await AsyncStorage.removeItem('isLoggedIn');
     }
 

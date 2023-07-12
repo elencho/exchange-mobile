@@ -47,6 +47,7 @@ const Resume = ({ navigation, route }) => {
 
   useFocusEffect(
     useCallback(() => {
+      setAuthVisible();
       dispatch(toggleWebViewVisible(false));
       SplashScreen.hide();
       dispatch(fetchUserInfo());
@@ -71,6 +72,10 @@ const Resume = ({ navigation, route }) => {
     }
   }, []);
 
+  const setAuthVisible = async () => {
+    await AsyncStorage.setItem('authVisible', 'true');
+  };
+
   const startAuthActions = async () => {
     if (IS_ANDROID && withdrawalConfirmModalVisible) {
       dispatch(toggleGoogleOtpModal(false));
@@ -82,6 +87,8 @@ const Resume = ({ navigation, route }) => {
     }
     dispatch(toggleWebViewVisible(true));
     await AsyncStorage.setItem('isLoggedIn', 'true');
+    await AsyncStorage.removeItem('isOpenDate');
+    await AsyncStorage.removeItem('authVisible');
   };
 
   const startAuth = useCallback(async (fromSplash) => {
@@ -110,6 +117,7 @@ const Resume = ({ navigation, route }) => {
 
   const startLogin = async () => {
     const refresh_token = await SecureStore.getItemAsync('refreshToken');
+    await AsyncStorage.removeItem('authVisible');
     const status = await logoutUtil(refresh_token);
     if (status === 204) {
       await SecureStore.deleteItemAsync('accessToken');
