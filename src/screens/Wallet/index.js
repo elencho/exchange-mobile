@@ -24,8 +24,10 @@ export default function Wallet() {
       const timer = setTimeout(() => {
         setShowRefreshControl(true);
       }, 1000);
-      onRefresh();
-      return () => clearTimeout(timer);
+      return () => {
+        onRefresh();
+        clearTimeout(timer);
+      };
     }, [])
   );
 
