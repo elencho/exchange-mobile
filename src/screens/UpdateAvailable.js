@@ -10,6 +10,7 @@ import AppButton from '../components/AppButton';
 import VersionCheck from 'react-native-version-check';
 import { packageName, APP_ID } from '../constants/system';
 import SplashScreen from 'react-native-splash-screen';
+import FastImage from 'react-native-fast-image';
 
 export default function UpdateAvailable() {
   useEffect(() => {
@@ -27,7 +28,10 @@ export default function UpdateAvailable() {
 
   return (
     <Background style={styles.container}>
-      <Update />
+      <FastImage
+        style={{ height: 130, width: 180 }}
+        source={require('../assets/images/Update.png')}
+      />
 
       <AppText header style={styles.header}>
         Update Available
