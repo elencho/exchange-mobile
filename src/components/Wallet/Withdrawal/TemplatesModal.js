@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
@@ -56,9 +56,7 @@ export default function TemplatesModal() {
       {templates?.map((t) => (
         <View style={[styles.template, background(t)]} key={t.id}>
           <Pressable style={styles.flex} onPress={() => choose(t)}>
-            <AppText medium style={styles.white}>
-              {t.templateName}
-            </AppText>
+            <Text style={styles.white}>{t.templateName}</Text>
             <AppText subtext style={styles.subtext}>
               {t.iban}
             </AppText>
@@ -126,5 +124,8 @@ const styles = StyleSheet.create({
   },
   white: {
     color: colors.PRIMARY_TEXT,
+    fontFamily: 'Ubuntu_Medium',
+    fontSize: 14,
+    lineHeight: 18,
   },
 });
