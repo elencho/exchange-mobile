@@ -66,7 +66,7 @@ export default function EmailVerification() {
         /* Animate */
         <View>
           <AppText style={[styles.secondary, { marginBottom: 36 }]}>
-            {t('check your {{email}} after registration params[email]', {
+            {t('check your {{email}} after registration params{email}', {
               email: registrationInputs?.email,
             })}
           </AppText>

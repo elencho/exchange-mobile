@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'i18next';
@@ -14,14 +14,14 @@ import { chooseWhitelist, setWalletTab } from '../../../redux/wallet/actions';
 
 import Arrow from '../../../assets/images/Arrow';
 
-export default function WithdrawalAddress({ error, right }) {
+function WithdrawalAddress({ error, right }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     wallet: { hasWhitelist, currentWhitelistObj, whitelist, network },
   } = state;
 
-  const hasOnThisNetwork = whitelist.some((w) => w.provider === network);
+  const hasOnThisNetwork = whitelist?.some((w) => w.provider === network);
   const w = currentWhitelistObj;
   const color =
     error && !w?.address
@@ -60,7 +60,7 @@ export default function WithdrawalAddress({ error, right }) {
     );
   };
 
-  const address = () => {
+  const address = useCallback(() => {
     if (hasWhitelist) {
       if (hasOnThisNetwork) {
         return <AddressDropdown />;
@@ -73,7 +73,8 @@ export default function WithdrawalAddress({ error, right }) {
               onChangeText={setAddress}
               value={w.address}
               error={error && !w?.address}
-              right={right ? right : null}
+              // right={right ? right : null}
+              disabled
             />
             <AppText subtext style={styles.addWhitelist}>
               {t('Do Not Have Address')}{' '}
@@ -95,7 +96,7 @@ export default function WithdrawalAddress({ error, right }) {
         />
       );
     }
-  };
+  }, [w]);
 
   const AddressDropdown = () => (
     <Pressable
@@ -121,6 +122,8 @@ export default function WithdrawalAddress({ error, right }) {
     </>
   );
 }
+
+export default memo(WithdrawalAddress);
 
 const styles = StyleSheet.create({
   addWhitelist: {

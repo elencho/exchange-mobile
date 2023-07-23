@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import {
   StyleSheet,
@@ -20,7 +20,6 @@ import {
 } from '../redux/profile/actions';
 import GeneralError from '../components/GeneralError';
 import { errorHappenedHere } from '../utils/appUtils';
-import { useNavigation } from '@react-navigation/native';
 
 import SplashScreen from 'react-native-splash-screen';
 import VersionCheck from 'react-native-version-check';
@@ -41,12 +40,11 @@ import { fetchCountries, setLanguage } from '../redux/profile/actions';
 import { checkReadiness, fetchTranslations } from '../utils/appUtils';
 import { addResources, switchLanguage } from '../utils/i18n';
 import { useFocusEffect } from '@react-navigation/native';
-import useNotifications from './useNotifications';
+import useNotificationsAndroid from './useNotificationsAndroid';
 
-export default function Welcome({}) {
-  const navigation = useNavigation();
-  useNotifications();
+export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
+  useNotificationsAndroid();
 
   useFocusEffect(
     useCallback(() => {
@@ -55,6 +53,9 @@ export default function Welcome({}) {
   );
 
   const startApp = async () => {
+    dispatch({ type: 'RESET_STATE' });
+    await AsyncStorage.removeItem('webViewVisible');
+
     const workingVersion = await isWorkingVersion();
     const updateNeeded = await checkVersion();
 
@@ -63,7 +64,13 @@ export default function Welcome({}) {
         const email = jwt_decode(t)?.email;
         getBiometricEnabled(email, updateNeeded, workingVersion);
       } else {
-        navigation.navigate('Welcome');
+        if (updateNeeded) {
+          navigation.navigate('UpdateAvailable');
+        } else if (workingVersion) {
+          navigation.navigate('Maintanance');
+        } else if (!updateNeeded && !workingVersion) {
+          navigation.navigate('Welcome');
+        }
       }
     });
 
@@ -77,25 +84,30 @@ export default function Welcome({}) {
     const enabled = await AsyncStorage.getItem('BiometricEnabled');
     const user = email;
     const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
-    const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
+    const timeDifference = lastTimeOpen
+      ? Date.now() - JSON.parse(lastTimeOpen)
+      : false;
+    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
 
     let parsedUsers = JSON.parse(enabled);
     const userIndex = parsedUsers?.find(
       (u) => u?.user === user && u?.enabled === true
     );
-    if (updateNeeded) {
-      return navigation.navigate('UpdateAvailable');
-    }
     if (workingVersion) {
-      return navigation.navigate('Maintanance');
+      navigation.navigate('Maintanance');
     }
-    if (userIndex && timeDifference >= 30000) {
+
+    if (updateNeeded) {
+      navigation.navigate('UpdateAvailable');
+    }
+
+    if (userIndex && timeDifference >= 30000 && !isLoggedIn) {
       navigation.navigate('Resume', {
         fromSplash: true,
         version: updateNeeded,
         workingVersion: workingVersion,
       });
-    } else if (!updateNeeded || !workingVersion) {
+    } else if (!updateNeeded && !workingVersion) {
       navigation.navigate('Main');
     }
   };
@@ -114,14 +126,12 @@ export default function Welcome({}) {
       });
 
       const latestVersion = await storeData;
-      const updateNeeded = false;
-      // await VersionCheck.needUpdate({
-      //   currentVersion: currentVersion,
-      //   latestVersion: latestVersion,
-      // });
+      const updateNeeded = await VersionCheck.needUpdate({
+        currentVersion: currentVersion,
+        latestVersion: latestVersion,
+      });
 
       if (updateNeeded && updateNeeded.isNeeded) {
-        navigation.navigate('UpdateAvailable');
         return true;
       } else {
         return false;
@@ -135,8 +145,9 @@ export default function Welcome({}) {
     const version = DeviceInfo.getVersion();
     const { status } = await checkReadiness(version, Platform.OS);
     if (status === 'DOWN') {
-      navigation.navigate('Maintanance');
       return true;
+    } else {
+      return false;
     }
   };
 
@@ -145,11 +156,11 @@ export default function Welcome({}) {
       .then((res) => {
         const languages = Object.keys(res);
         for (let i = 0; i < languages.length; i++) {
-          addResources(
-            languages[i],
-            'translation',
-            res[languages[i]].translation
-          );
+          const translations = res[languages[i]].translation;
+          Object.keys(translations).forEach((key) => {
+            if (translations[key] === null) translations[key] = '';
+          });
+          addResources(languages[i], 'translation', translations);
         }
         SecureStore.getItemAsync('language')
           .then((l) => {

@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>364340779077-b5p23jeijmbs3vn6auo1anj6uk8c26sv.apps.googleusercontent.com</string>
+	<string>62721567513-gmlqne3v4a8pdm4hj4paeqa3qc0epd90.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.364340779077-b5p23jeijmbs3vn6auo1anj6uk8c26sv</string>
+	<string>com.googleusercontent.apps.62721567513-gmlqne3v4a8pdm4hj4paeqa3qc0epd90</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDEmu3808OH5jOcQG3yV_lOFMorhEkiZlo</string>
+	<string>AIzaSyARxIdOIClj_u2cDz5XwqWhanG4ZUHFew4</string>
 	<key>GCM_SENDER_ID</key>
-	<string>364340779077</string>
+	<string>62721567513</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.cryptal.exchange.mobile</string>
 	<key>PROJECT_ID</key>
-	<string>cryptal-4144c</string>
+	<string>cryptal-testing</string>
 	<key>STORAGE_BUCKET</key>
-	<string>cryptal-4144c.appspot.com</string>
+	<string>cryptal-testing.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:364340779077:ios:44a5529a6f3e172d23eb2c</string>
+	<string>1:62721567513:ios:cb650f600b8ff7b5263388</string>
 </dict>
 </plist>

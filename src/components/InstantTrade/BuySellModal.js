@@ -18,6 +18,7 @@ import FiatModal from './FiatModal';
 import GeneralError from '../GeneralError';
 import AppWebView from '../AppWebView';
 import WithKeyboard from '../WithKeyboard';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import colors from '../../constants/colors';
 import { toggleBuySellModal } from '../../redux/modals/actions';
@@ -170,12 +171,14 @@ const BuySellModal = () => {
       }
     }
     if (type === 'fiat' && validateScale(replacedAmount, baseScale)) {
+      let fiatAmount = (replacedAmount * rate).toFixed(quoteScale);
+
       if (text && !baseValidation?.test(text) && focusedInput === 'fiat') {
         return;
       }
-      if (parts.length === 2) {
-        let fiatAmount = (replacedAmount * rate).toFixed(quoteScale);
-        // getMaxLength(replacedAmount, baseScale, setMaxLengthBase);
+      if (parts.length === 2 && baseScale == 0) {
+        setTrade(fiatAmount, parts[0].substr(0, 14));
+      } else if (parts.length === 2) {
         setTrade(
           fiatAmount,
           replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0
@@ -209,11 +212,12 @@ const BuySellModal = () => {
     return hasEcommerce;
   };
 
-  const onNavigationStateChange = (state) => {
+  const onNavigationStateChange = async (state) => {
     const urlArray = state.url.split('=');
     const ending = urlArray[urlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
       dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
+      await AsyncStorage.removeItem('webViewVisible');
       dispatch({ type: 'BALANCE_SAGA' });
       dispatch(saveTrades([]));
       dispatch(setTradeOffset(0));

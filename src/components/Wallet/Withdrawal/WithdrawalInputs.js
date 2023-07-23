@@ -58,13 +58,14 @@ export default function WithdrawalInputs({
   const isEcommerce = network === 'ECOMMERCE';
 
   const inputValidation = new RegExp(
-    `^[0-9]{1,13}(\.|\\.[0-9]{1,${cur?.withdrawalScale}})?$`
+    `^[0-9]{1,13}(\.|\\.[0-9]{0,${cur?.withdrawalScale}})?$`
   );
 
   const setAmount = (amount) => {
     const condition =
       depositProvider ||
       cur?.type === 'CRYPTO' ||
+      cur?.type === 'FIAT' ||
       currentTemplate?.templateName;
     dispatch(setWithdrawalAmount(amount ? amount : 0));
     if (condition) dispatch(fetchFee('withdrawal'));
@@ -89,13 +90,12 @@ export default function WithdrawalInputs({
     let disabled;
     if (isEcommerce) {
       disabled = !card || !depositProvider;
-    } else if (isFiat) {
-      disabled = !notEmpty();
     }
 
     return disabled;
   };
 
+  const maxStyle = disabled() ? { opacity: 0.5 } : '';
   const Max = () => (
     <TouchableOpacity
       onPress={handleMax}
@@ -103,7 +103,7 @@ export default function WithdrawalInputs({
       style={styles.row}
     >
       <View style={styles.line} />
-      <PurpleText text="Max" />
+      <PurpleText text="Max" style={maxStyle} />
     </TouchableOpacity>
   );
 

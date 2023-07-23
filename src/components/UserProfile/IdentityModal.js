@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import AppModal from '../AppModal';
 import AppText from '../AppText';
@@ -9,6 +10,7 @@ import Identity from '../../assets/images/User_profile/Identity.svg';
 import colors from '../../constants/colors';
 
 export default function IdentityModal() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const identityModalVisible = useSelector(
     (state) => state.modals.identityModalVisible
@@ -28,14 +30,17 @@ export default function IdentityModal() {
     />
   );
 
-  const Bullet = ({ text, isLast }) => (
-    <View style={{ flexDirection: 'row', marginBottom: isLast ? 0 : 10 }}>
-      <Dot color="#969CBF" style={{ marginTop: 7 }} />
-      <AppText style={{ color: '#969CBF' }}>
-        {`verification text key ${text}`}
-      </AppText>
-    </View>
-  );
+  const Bullet = ({ text, isLast }) => {
+    const verificationText = `verification text key ${text}`;
+    return (
+      t(verificationText) !== '' && (
+        <View style={{ flexDirection: 'row', marginBottom: isLast ? 0 : 10 }}>
+          <Dot color="#969CBF" style={{ marginTop: 7 }} />
+          <AppText style={{ color: '#969CBF' }}>{verificationText}</AppText>
+        </View>
+      )
+    );
+  };
 
   const children = (
     <>

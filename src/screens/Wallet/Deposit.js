@@ -33,6 +33,7 @@ import {
 } from '../../redux/wallet/actions';
 import { setStatusModalInfo } from '../../redux/modals/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Deposit({ refreshControl }) {
   const dispatch = useDispatch();
@@ -53,15 +54,17 @@ export default function Deposit({ refreshControl }) {
   const isEcommerce = network === 'ECOMMERCE';
 
   useEffect(() => {
-    const m = currentBalanceObj.depositMethods;
-    if (m.ECOMMERCE) {
+    const m = currentBalanceObj?.depositMethods;
+    if (m?.ECOMMERCE) {
       dispatch(setNetwork('ECOMMERCE'));
     } else {
-      if (m.WALLET) dispatch(setNetwork(m.WALLET[0].provider));
-      if (m.WIRE) dispatch(setNetwork(m.WIRE[0].provider));
+      if (m?.WALLET) dispatch(setNetwork(m?.WALLET[0]?.provider));
+      if (m?.WIRE) dispatch(setNetwork(m?.WIRE[0]?.provider));
     }
 
-    setHasMethod(!!Object.keys(m).length);
+    setHasMethod(
+      isFiat ? !!Object.keys(m).length : !!Object.keys(m).includes('WALLET')
+    );
 
     return () => {
       dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 });
@@ -100,14 +103,15 @@ export default function Deposit({ refreshControl }) {
     dispatch({ type: 'BALANCE_SAGA' });
   };
 
-  const onNavigationStateChange = (state) => {
+  const onNavigationStateChange = async (state) => {
     const urlArray = state.url.split('=');
     const alternateUrlArray = state.url.split('/');
     const ending = urlArray[urlArray.length - 1];
     const alternateEnding = alternateUrlArray[alternateUrlArray.length - 1];
     if (ending === 'false' || ending === 'true') {
-      clear();
       dispatch(setStatusModalInfo({ success: ending, visible: true }));
+      clear();
+      await AsyncStorage.removeItem('webViewVisible');
     }
   };
 
@@ -121,7 +125,7 @@ export default function Deposit({ refreshControl }) {
 
       const tagTransComponent = (
         <Trans
-          i18nKey="needs tag for deposit {{currency}} params[currency]"
+          i18nKey="needs tag for deposit {{currency}} params{currency}"
           values={{ currency: code }}
           components={{
             light: <AppText style={{ color: '#FFFBF3' }} />,
@@ -131,7 +135,7 @@ export default function Deposit({ refreshControl }) {
       );
       const minConfirmsTransComponent = (
         <Trans
-          i18nKey="{{minConfirmsForDeposit}} params[minConfirmsForDeposit]"
+          i18nKey="{{minConfirmsForDeposit}} params{minConfirmsForDeposit}"
           values={{ minConfirmsForDeposit }}
           components={{
             light: <AppText style={{ color: '#FFFBF3' }} />,

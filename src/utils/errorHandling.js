@@ -18,18 +18,23 @@ export default async (err) => {
     const header = data.errorKey;
     const body = !data?.transParams
       ? data?.errorMessage
-      : `${data?.errorMessage} params[${params?.join()}]`;
+      : `${data?.errorMessage} params{${params?.join()}}`;
 
     if (status > 401) {
       if (!state.modals.isToast) {
         store.dispatch({ type: 'SAVE_GENERAL_ERROR', generalError });
       } else {
-        store.dispatch(setAppToast({ header, body }));
+        store.dispatch(
+          setAppToast({ header, body, transParams: data?.transParams })
+        );
       }
     }
     if (status === 401) {
-      const response = await refreshToken(err.config);
-      return response;
+      const token = await SecureStore.getItemAsync('refreshToken');
+      if (token) {
+        const response = await refreshToken(err.config);
+        return response;
+      }
     }
 
     if (status === 400 && data.error === 'invalid_grant') {
@@ -37,6 +42,10 @@ export default async (err) => {
       await SecureStore.deleteItemAsync('refreshToken');
       navigationRef.navigate('Welcome');
       store.dispatch({ type: 'LOGOUT' });
+    }
+
+    if (status === 503) {
+      navigationRef.navigate('Maintanance');
     }
   }
 };

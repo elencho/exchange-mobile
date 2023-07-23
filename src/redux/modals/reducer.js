@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   appToastObj: null,
   isToast: true,
   webViewObj: null,
-
+  webViewVisible: true,
   // Login
 
   // Transactions
@@ -30,6 +30,10 @@ const INITIAL_STATE = {
   languageModalVisible: false,
   countriesModalVisible: false,
   companyInfoModalVisible: false,
+  companyInfoModalHeader: '',
+  companyInfoModalDescription: '',
+  companyInfoModalLink: '',
+  companyInfoModalButton: '',
   identityModalVisible: false,
   // security
   googleAuthModalVisible: false,
@@ -63,6 +67,7 @@ export default (state = INITIAL_STATE, action) => {
     buySellModalVisible,
     transactionDetailsVisible,
     infoVisible,
+    webViewVisible,
     chooseCardModalVisible,
     qrAddressModalVisible,
     qrScannerModalVisible,
@@ -96,12 +101,21 @@ export default (state = INITIAL_STATE, action) => {
     webViewObj,
     isToast,
     hasCameraPermission,
+    companyInfoModalHeader,
+    companyInfoModalDescription,
+    companyInfoModalLink,
+    companyInfoModalButton,
   } = action;
   switch (action.type) {
     case actionTypes.SET_TOAST_OBJ:
       return {
         ...state,
         toastObj,
+      };
+    case actionTypes.WEB_VIEW_VISIBLE:
+      return {
+        ...state,
+        webViewVisible,
       };
     case actionTypes.SET_APP_TOAST:
       return {
@@ -133,6 +147,8 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         cryptoModalVisible,
       };
+    case actionTypes.RESET_STATE:
+      return INITIAL_STATE;
     case actionTypes.FIAT_MODAL_VISIBLE:
       return {
         ...state,
@@ -194,10 +210,19 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         languageModalVisible,
       };
-    case 'TOGGLE_COMPANY_INFO_MODAL':
+    case 'OPEN_COMPANY_INFO_MODAL':
       return {
         ...state,
-        companyInfoModalVisible: !state.companyInfoModalVisible,
+        companyInfoModalVisible: true,
+        companyInfoModalHeader,
+        companyInfoModalDescription,
+        companyInfoModalLink,
+        companyInfoModalButton,
+      };
+    case 'CLOSE_COMPANY_INFO_MODAL':
+      return {
+        ...state,
+        companyInfoModalVisible: false,
       };
     case 'TOGGLE_IDENTITY_MODAL':
       return {

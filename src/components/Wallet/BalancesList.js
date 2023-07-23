@@ -7,25 +7,21 @@ import Search from '../../assets/images/Search';
 import colors from '../../constants/colors';
 import AppInput from '../AppInput';
 import AppText from '../AppText';
-import CustomRefreshContol from '../CustomRefreshContol';
 import Currency from './Currency';
 import CurrencySkeleton from './CurrencySkeleton';
 
-export default function BalancesList({ balanceLoading }) {
+export default function BalancesList({
+  balanceLoading,
+  value,
+  showZeroBalances,
+  setShowZeroBalances,
+  setValue,
+}) {
   const dispatch = useDispatch();
   const balances = useSelector((state) => state.trade.balance.balances);
   const tabRoute = useSelector((state) => state.transactions.tabRoute);
-  const [showZeroBalances, setShowZeroBalances] = useState(true);
   const [nonZeroBalances, setNonZeroBalances] = useState([]);
   const [filteredBalances, setFilteredBalances] = useState([]);
-  const [value, setValue] = useState('');
-  const [showRefreshControl, setShowRefreshControl] = useState(false);
-
-  const onRefresh = () => {
-    setValue('');
-    setShowZeroBalances(true);
-    dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
-  };
 
   useFocusEffect(
     useCallback(() => {
@@ -35,14 +31,6 @@ export default function BalancesList({ balanceLoading }) {
       };
     }, [])
   );
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowRefreshControl(true);
-    }, 1000);
-    tabRoute === 'Wallet' && onRefresh();
-    return () => clearTimeout(timer);
-  }, [tabRoute]);
 
   useEffect(() => {
     if (balances) {
@@ -91,7 +79,7 @@ export default function BalancesList({ balanceLoading }) {
         placeholder="Search Coin"
         placeholderTextColor="rgba(105, 111, 142, 0.5)"
         onChangeText={type}
-        left={<Search style={styles.searchIcon} />}
+        right={<Search style={styles.searchIcon} />}
         value={value}
       />
 
@@ -108,14 +96,6 @@ export default function BalancesList({ balanceLoading }) {
         data={filteredBalances}
         renderItem={renderCurrency}
         keyExtractor={(item) => item.currencyCode}
-        refreshControl={
-          showRefreshControl ? (
-            <CustomRefreshContol
-              refreshing={balanceLoading}
-              onRefresh={onRefresh}
-            />
-          ) : null
-        }
       />
     </View>
   );

@@ -41,7 +41,7 @@ const AppInput = ({
   }, [focusAnim, isFocused, value]);
 
   let borderColor = error
-    ? '#F45E8C'
+    ? colors.ERROR_TEXT
     : isFocused
     ? colors.SECONDARY_PURPLE
     : '#42475D';
@@ -100,11 +100,14 @@ const AppInput = ({
               <AppText
                 body
                 style={{
-                  color: isFocused
-                    ? colors.PRIMARY_PURPLE
-                    : error
-                    ? '#F45E8C'
-                    : colors.SECONDARY_TEXT,
+                  color:
+                    isFocused && error
+                      ? colors.ERROR_TEXT
+                      : isFocused
+                      ? colors.PRIMARY_PURPLE
+                      : error
+                      ? colors.ERROR_TEXT
+                      : colors.SECONDARY_TEXT,
                   opacity: disabled ? 0.5 : 1,
                 }}
               >

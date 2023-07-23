@@ -24,8 +24,6 @@ import {
   VERIFY_PHONE_NUMBER,
 } from '../constants/api';
 
-import { navigationRef } from '../navigation';
-
 const authRedirectUrl = Constants.manifest.extra.authRedirectUrl;
 
 export const sumsubVerificationToken = async () => {
@@ -81,7 +79,9 @@ export const usernameAndPasswordForm = async (username, password, url) => {
       toast: false,
     },
     url,
-    data: `username=${encodeURIComponent(username)}&password=${password}`,
+    data: `username=${encodeURIComponent(
+      username
+    )}&password=${encodeURIComponent(password)}`,
   });
   if (data) return data.data;
 };
@@ -187,7 +187,9 @@ export const setNewPassword = async (url, newPass, confirmPass) => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     url,
-    data: `password-new=${newPass}&password-confirm=${confirmPass}`,
+    data: `password-new=${encodeURIComponent(
+      newPass
+    )}&password-confirm=${encodeURIComponent(confirmPass)}`,
   });
   if (data) return data.data;
 };
@@ -234,17 +236,6 @@ export const logoutUtil = async (refresh_token) => {
     data: `refresh_token=${refresh_token}&client_id=mobile-service-public`,
   });
   if (data) return data.status;
-};
-
-export const logout = async (dispatch) => {
-  const refresh_token = await SecureStore.getItemAsync('refreshToken');
-  const status = await logoutUtil(refresh_token);
-  if (status === 204) {
-    await SecureStore.deleteItemAsync('accessToken');
-    await SecureStore.deleteItemAsync('refreshToken');
-    navigationRef.navigate('Welcome');
-    dispatch({ type: 'LOGOUT' });
-  }
 };
 
 export const fetchCountries = async () => {
@@ -301,7 +292,11 @@ export const updatePassword = async (
       toast: false,
     },
     url: UPDATE_PASSWORD,
-    data: `password=${password}&passwordNew=${passwordNew}&passwordConfirm=${passwordConfirm}`,
+    data: `password=${encodeURIComponent(
+      password
+    )}&passwordNew=${encodeURIComponent(
+      passwordNew
+    )}&passwordConfirm=${encodeURIComponent(passwordConfirm)}`,
   });
   return data;
 };

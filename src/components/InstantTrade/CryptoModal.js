@@ -21,7 +21,7 @@ export default function CryptoModal() {
   } = state;
 
   const [filteredData, setFiletredData] = useState(offers?.[fiat]);
-  const arrayToPass = filteredData.length > 0 ? filteredData : offers?.[fiat];
+  const arrayToPass = filteredData?.length > 0 ? filteredData : offers?.[fiat];
 
   useEffect(() => {
     dispatch(instantTradeTabAction());
@@ -33,10 +33,14 @@ export default function CryptoModal() {
   }, [cryptoModalVisible]);
 
   const filter = (text) => {
-    const filteredArray = offers[fiat]?.filter(
+    const filteredArray = offers?.[fiat]?.filter(
       (c) =>
-        c?.pair?.baseCurrencyName.toLowerCase().includes(text.toLowerCase()) ||
-        c?.pair?.baseCurrency.toLowerCase().includes(text.toLowerCase())
+        (c?.pair?.baseCurrencyName &&
+          c?.pair?.baseCurrencyName
+            .toLowerCase()
+            .includes(text.toLowerCase())) ||
+        (c?.pair?.baseCurrency &&
+          c?.pair?.baseCurrency.toLowerCase().includes(text.toLowerCase()))
     );
     setFiletredData(filteredArray);
   };

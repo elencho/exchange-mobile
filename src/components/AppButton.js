@@ -7,7 +7,7 @@ import AppText from './AppText';
 
 export default function AppButton({
   text,
-  backgroundColor = colors.SECONDARY_PURPLE,
+  backgroundColor = colors.PRIMARY_PURPLE,
   left,
   right,
   style,
@@ -21,7 +21,9 @@ export default function AppButton({
       disabled={disabled}
       style={[
         styles.button,
-        { backgroundColor, opacity: disabled ? 0.5 : 1 },
+        {
+          backgroundColor: disabled ? colors.BUTTON_DISABLED : backgroundColor,
+        },
         style,
       ]}
       onPress={loading ? null : onPress}

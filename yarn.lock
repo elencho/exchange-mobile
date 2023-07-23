@@ -2077,10 +2077,10 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
-"@sumsub/react-native-mobilesdk-module@^1.23.0":
-  version "1.24.0"
-  resolved "https://registry.yarnpkg.com/@sumsub/react-native-mobilesdk-module/-/react-native-mobilesdk-module-1.24.0.tgz#b9875c23b28180384689032517a98c3bf4758bcf"
-  integrity sha512-4+gNdShsCMCToMpBxB2zycV/GNnbI0ta+LOWTfp6k1jaMQL5Srt7Ax5YwKpGa+uxtfsYbxCxrohBYIoUvJ/Hdg==
+"@sumsub/react-native-mobilesdk-module@^1.25.0":
+  version "1.25.0"
+  resolved "https://registry.yarnpkg.com/@sumsub/react-native-mobilesdk-module/-/react-native-mobilesdk-module-1.25.0.tgz#79ba16bb5cab866fb18387d018957dc2328d1615"
+  integrity sha512-rJKwtkatsKo4/D/L2tALXgx/yfpODh8HB6DkzZ4kn/sOAeUAGvxFGiwAI7zAuob+zW6kpYJf3ZT3GncYkShMkQ==
 
 "@svgr/babel-plugin-add-jsx-attribute@^6.5.1":
   version "6.5.1"

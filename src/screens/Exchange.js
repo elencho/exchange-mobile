@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, ImageBackground, Linking, Pressable } from 'react-native';
+import { StyleSheet, View, Linking, Pressable } from 'react-native';
 
 import Logo from '../assets/images/Logo';
 import Rocket from '../assets/images/Rocket';
@@ -11,7 +11,7 @@ const Exchange = () => {
   const handlePress = () => Linking.openURL('https://cryptal.com/ex');
 
   return (
-    <ImageBackground source={images.Stars} style={styles.background}>
+    <View style={styles.background}>
       <Logo />
       <Rocket style={styles.rocket} />
       <AppText header style={styles.mainText}>
@@ -25,7 +25,7 @@ const Exchange = () => {
           Exchange on WEB
         </AppText>
       </Pressable>
-    </ImageBackground>
+    </View>
   );
 };
 
