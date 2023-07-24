@@ -27,19 +27,27 @@ function TopRow({ clear, headlineLogo }) {
     clear && clear();
   };
 
-  const routeName =
-    route.name === 'Transactions'
-      ? 'Transaction History'
-      : route.name === 'Wallet'
-      ? 'My Wallet'
-      : route.name === 'Trade'
-      ? 'Instant Trade'
-      : '';
+  const getDisplayText = (routeName) => {
+    switch (routeName) {
+      case 'Transactions':
+        return 'Transaction History';
+      case 'Wallet':
+        return 'My Wallet';
+      case 'Trade':
+        return 'Instant Trade';
+      case 'Exchange':
+        return 'Exchange';
+      default:
+        return '';
+    }
+  };
+
+  const title = getDisplayText(route.name);
 
   return (
     <View style={styles.topRow}>
       <View style={styles.flexRow}>
-        <Headline title={routeName} />
+        <Headline title={title} />
         {headlineLogo ? headlineLogo : null}
       </View>
 
@@ -86,7 +94,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
   },
   text: {
     color: colors.PRIMARY_TEXT,

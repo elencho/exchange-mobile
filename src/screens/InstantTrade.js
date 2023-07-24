@@ -80,18 +80,10 @@ export default function InstantTrade() {
 
   return (
     <Background>
-      <View>
-        <TouchableOpacity onPress={() => Clipboard.setStringAsync(fcmToken)}>
-          <Copy />
-        </TouchableOpacity>
-      </View>
-      <TopRow clear={() => dispatch(setTradeType('Buy'))} />
-
-      <View style={styles.headRow}>
-        <Headline title="Instant Trade" />
-        <View style={{ marginRight: 5 }} />
-        <InfoMark inner="?" color={colors.SECONDARY_PURPLE} />
-      </View>
+      <TopRow
+        headlineLogo={<InfoMark inner="?" color={colors.SECONDARY_PURPLE} />}
+        clear={() => dispatch(setTradeType('Buy'))}
+      />
 
       <BuySellSwitch />
 
