@@ -5,20 +5,23 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Background from '../../components/Background';
 import TopRow from '../../components/TransactionHistory/TopRow';
-import CurrencySwitch from '../../components/Wallet/CurrencySwitch';
 import TotalBalance from '../../components/Wallet/TotalBalance';
 import BalancesList from '../../components/Wallet/BalancesList';
 import colors from '../../constants/colors';
 import CustomRefreshContol from '../../components/CustomRefreshContol';
 import { useFocusEffect } from '@react-navigation/native';
-import Headline from '../../components/TransactionHistory/Headline';
+import BalanceSearchBar from '../../components/Wallet/BalanceSearchBar';
 
 export default function Wallet() {
   const dispatch = useDispatch();
   const balanceLoading = useSelector((state) => state.trade.balanceLoading);
+  const balances = useSelector((state) => state.trade.balance.balances);
+
+  const [filteredBalances, setFilteredBalances] = useState([]);
   const [showRefreshControl, setShowRefreshControl] = useState(false);
   const [value, setValue] = useState('');
   const [showZeroBalances, setShowZeroBalances] = useState(true);
+  const [nonZeroBalances, setNonZeroBalances] = useState([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -28,22 +31,46 @@ export default function Wallet() {
       return () => {
         onRefresh();
         clearTimeout(timer);
+        setShowZeroBalances(true);
+        setValue('');
       };
     }, [])
   );
+
+  useEffect(() => {
+    if (balances) type(value);
+  }, [showZeroBalances]);
+
+  useEffect(() => {
+    if (balances) {
+      const nonZeroBalances = balances.filter((b) => b.total > 0);
+      setNonZeroBalances(nonZeroBalances);
+      setFilteredBalances(balances);
+    }
+  }, [balances]);
+
+  const type = (text) => {
+    setValue(text);
+    const array = showZeroBalances ? balances : nonZeroBalances;
+    const filteredArray = array.filter((c) => {
+      return (
+        c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
+        c.currencyName.toLowerCase().includes(text.toLowerCase())
+      );
+    });
+    setFilteredBalances(filteredArray);
+  };
 
   const onRefresh = () => {
     setValue('');
     setShowZeroBalances(true);
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
   };
+
   return (
     <Background>
       <TopRow />
-      <View style={styles.headRow}>
-        <Headline title="My Wallet" />
-        <CurrencySwitch />
-      </View>
+
       <ScrollView
         refreshControl={
           showRefreshControl ? (
@@ -54,14 +81,18 @@ export default function Wallet() {
           ) : null
         }
         showsVerticalScrollIndicator={false}
+        stickyHeaderIndices={[1]}
       >
         <TotalBalance balanceLoading={balanceLoading} />
-        <BalancesList
+        <BalanceSearchBar
+          type={type}
           setShowZeroBalances={setShowZeroBalances}
-          setValue={setValue}
           value={value}
           showZeroBalances={showZeroBalances}
+        />
+        <BalancesList
           balanceLoading={balanceLoading}
+          filteredBalances={filteredBalances}
         />
       </ScrollView>
     </Background>

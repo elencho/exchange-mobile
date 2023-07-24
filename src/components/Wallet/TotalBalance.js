@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import AppText from '../AppText';
 import TotalBalanceSkeleton from './TotalBalanceSkeleton';
 import colors from '../../constants/colors';
-import CurrencySwitch from './CurrencySwitch';
+import NewCurrencySwitch from './NewCurrencySwitch';
 
 export default function TotalBalance({ balanceLoading }) {
   const filter = useSelector((state) => state.wallet.usdBtcSwitch);
@@ -14,9 +14,7 @@ export default function TotalBalance({ balanceLoading }) {
   const primary = () => {
     if (balance) {
       const { totalValueBTC, totalValueUSD } = balance;
-      return filter === 'USD'
-        ? ` ${totalValueUSD} USD`
-        : ` ${totalValueBTC} BTC`;
+      return filter === 'USD' ? `${totalValueUSD} USD` : `${totalValueBTC} BTC`;
     }
   };
 
@@ -32,22 +30,18 @@ export default function TotalBalance({ balanceLoading }) {
       <View style={styles.balanceContainer}>
         <View style={styles.justify}>
           <View style={styles.row}>
-            <AppText body style={styles.secondary}>
-              Total :
-            </AppText>
-            <AppText body style={styles.secondary}>
-              {secondary()}
-            </AppText>
-          </View>
-
-          <View style={styles.row}>
             <AppText header style={styles.primary}>
               {primary()}
             </AppText>
           </View>
+          <View style={styles.row}>
+            <AppText body style={styles.secondary}>
+              {secondary()}
+            </AppText>
+          </View>
         </View>
       </View>
-      <CurrencySwitch />
+      <NewCurrencySwitch />
     </View>
   ) : (
     <TotalBalanceSkeleton />
@@ -57,11 +51,13 @@ export default function TotalBalance({ balanceLoading }) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.SECONDARY_BACKGROUND,
+    padding: 25,
+    borderRadius: 6,
   },
   balanceContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 28,
+    marginBottom: 14,
   },
 
   primary: {
@@ -70,6 +66,7 @@ const styles = StyleSheet.create({
   secondary: {
     color: colors.SECONDARY_TEXT,
     marginBottom: 5,
+    marginTop: 8,
   },
   row: {
     flexDirection: 'row',
