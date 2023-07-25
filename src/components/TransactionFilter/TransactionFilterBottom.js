@@ -39,7 +39,7 @@ function TransactionFilterBottom({ navigation }) {
           Show Result
         </AppText>
       </Pressable>
-      <View style={{ height: 80 }}>
+      {/* <View style={{ height: 80 }}>
         {loading ? (
           <MaterialIndicator
             color="#6582FD"
@@ -53,7 +53,7 @@ function TransactionFilterBottom({ navigation }) {
             <PurpleText style={styles.purple} text="Download" />
           </Pressable>
         )}
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -73,10 +73,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    position: 'absolute',
-    bottom: 0,
-    left: 15,
-    right: 15,
+    marginBottom: 28,
   },
   download: {
     flexDirection: 'row',

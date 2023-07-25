@@ -37,11 +37,12 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
   useEffect(() => filter(''), [chooseCurrencyModalVisible]);
 
   const filter = (text) => {
-    const filteredArray = balance?.balances.filter(
-      (c) =>
-        c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
-        c.currencyName.toLowerCase().includes(text.toLowerCase())
-    );
+    const filteredArray =
+      balance?.balances?.filter(
+        (c) =>
+          c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
+          c.currencyName.toLowerCase().includes(text.toLowerCase())
+      ) ?? [];
     setFiletredData(
       isForTransactions
         ? [

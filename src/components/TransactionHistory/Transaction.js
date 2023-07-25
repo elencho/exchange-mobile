@@ -17,7 +17,6 @@ import Failed from '../../assets/images/Failed.svg';
 import { monthsShort } from '../../constants/months';
 
 export default function Transaction({ transactionData, loading, isTransfer }) {
-  console.log({ transactionData, loading });
   const dispatch = useDispatch();
 
   const {
@@ -105,8 +104,6 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
   const destinationDisplay = isTransfer
     ? shortenDestination(recipient)
     : `${size} ${baseCurrency}`;
-
-  console.log('transactionData', transactionData);
 
   return (
     <Pressable onPress={showModal} style={styles.container}>

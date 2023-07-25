@@ -16,6 +16,8 @@ import {
   saveCurrencies,
   saveCurrenciesConstant,
   setCurrentTransaction,
+  setStatusFilter,
+  statusAction,
 } from '../transactions/actions';
 
 import {
@@ -135,31 +137,24 @@ function* typeSaga(action) {
   yield put({ type: 'REFRESH_TRANSACTIONS_ACTION' });
 }
 
-function* filterSaga(action) {
-  const { filter, multiselect } = action;
-  let method = yield select(getMethod);
+function* statusSaga(action) {
+  const { status } = action;
+  console.log('status', status);
 
+  yield put(saveTransactions([]));
+  yield put(setTransactionsOffset(0));
+  yield put(setStatusFilter(status));
+  yield put({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+}
+
+function* filterSaga(action) {
+  const { filter, filterType } = action;
+  let method = yield select(getMethod);
   method = method || [];
 
-  let newMultiFilter;
-  if (filter !== 'All') {
-    if (multiselect && !method.includes(filter)) {
-      newMultiFilter = [...method, filter].splice(
-        method.indexOf('All') + 1,
-        method.length + 1
-      );
-      yield put(setMethodFilter(newMultiFilter));
-    }
-    if (multiselect && method.includes(filter)) {
-      newMultiFilter = method.filter((f) => filter !== f);
-      yield put(setMethodFilter(newMultiFilter));
-    }
-  } else {
-    yield put(setMethodFilter(['All']));
-  }
-  if (!multiselect) {
-    yield put(typeAction(filter));
-  }
+  if (filterType === 'method') yield put(setMethodFilter(filter));
+  if (filterType === 'type') yield put(typeAction(filter));
+  if (filterType === 'status') yield put(statusAction(filter));
 }
 
 function* currencySaga(action) {
@@ -209,6 +204,7 @@ export default function* () {
   yield takeLatest(actionTypes.FETCH_TRANSACTIONS, fetchTransactionsSaga);
   yield takeLatest(actionTypes.FETCH_CURRENCIES, fetchCurrenciesSaga);
   yield takeLatest(actionTypes.TYPE_SAGA_ACTION, typeSaga);
+  yield takeLatest(actionTypes.STATUS_SAGA_ACTION, statusSaga);
   yield takeLatest(actionTypes.CURRENCY_SAGA_ACTION, currencySaga);
   yield takeLatest(actionTypes.SHOW_RESULTS, showResultsSaga);
   yield takeLatest(actionTypes.REACH_SCROLL_END, reachScrollEndSaga);

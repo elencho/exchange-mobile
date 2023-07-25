@@ -5,22 +5,30 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { filterAction } from '../../redux/transactions/actions';
+import Pending from '../../assets/images/Status_Pending';
+import Success from '../../assets/images/Status_Success';
+import Failed from '../../assets/images/Status_Failed';
 
-export default function FilterRow({ array = [''], multiselect = false }) {
+const statusIcons = {
+  SUCCESS: <Success />,
+  PENDING: <Pending />,
+  FAILED: <Failed />,
+};
+export default function FilterRow({ array = [''], filterType }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
 
-  const { typeFilter, method } = state;
+  const { typeFilter, method, status } = state;
 
-  const handleFilter = (filter) => dispatch(filterAction(filter, multiselect));
+  console.log('typeFilter', typeFilter);
+
+  const handleFilter = (filter) => {
+    dispatch(filterAction(filter, filterType));
+  };
   const filterConditional = (fil) => {
-    if (!multiselect) {
-      return typeFilter === fil || (fil === 'ALL' && !typeFilter);
-    } else if (method?.length > 0) {
-      return method?.includes(fil);
-    } else {
-      return dispatch(filterAction('All', true));
-    }
+    if (filterType === 'type') return fil === typeFilter;
+    if (filterType === 'method') return fil === method;
+    if (filterType === 'status') return fil === status;
   };
 
   const renderItem = ({ item }) => {
@@ -34,6 +42,7 @@ export default function FilterRow({ array = [''], multiselect = false }) {
         ]}
         onPress={() => handleFilter(item)}
       >
+        {filterType === 'status' && statusIcons[item]}
         <AppText
           style={[
             styles.text,
@@ -70,6 +79,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(31, 31, 53, 0.9)',
     marginRight: 6,
     justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 6,
   },
 
   text: {

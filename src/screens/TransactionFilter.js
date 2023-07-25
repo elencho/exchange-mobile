@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  ScrollView,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,19 +21,29 @@ import Close from '../assets/images/Close.svg';
 import PurpleText from '../components/PurpleText';
 
 import { clearFilters } from '../redux/transactions/actions';
-import { toggleCurrencyModal } from '../redux/modals/actions';
+import {
+  toggleCurrencyModal,
+  toggleMethodsModal,
+} from '../redux/modals/actions';
 import colors from '../constants/colors';
-import { types, methods } from '../constants/filters';
+import { types, statuses } from '../constants/filters';
 import { COINS_URL_PNG } from '../constants/api';
 
 import Arrow from '../assets/images/Arrow.svg';
-import Clear from '../assets/images/Clear.svg';
+import AppDropdown from '../components/AppDropdown';
+import ChooseMethodsModal from './ChooseMethodsModal';
 
 export default function TransactionFilter({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.transactions);
-  const { currency, code, method, typeFilter, fromDateTime, toDateTime } =
-    state;
+  const {
+    currency,
+    code,
+    method: selectedMethod,
+    typeFilter,
+    fromDateTime,
+    toDateTime,
+  } = state;
 
   const openModal = () => dispatch(toggleCurrencyModal(true));
 
@@ -46,10 +57,9 @@ export default function TransactionFilter({ navigation }) {
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
   };
 
-  const clearCond =
-    code || typeFilter || fromDateTime || toDateTime || method[0] !== 'All';
-
   const seperateCurrencyName = (currency) => currency.split('(')[0];
+
+  const handleMethodsDropdown = () => dispatch(toggleMethodsModal(true));
 
   return (
     <Background>
@@ -59,53 +69,61 @@ export default function TransactionFilter({ navigation }) {
           <Close />
         </TouchableOpacity>
       </View>
-      <AppText body style={styles.text}>
-        Choose Type:
-      </AppText>
-      <FilterRow array={types} />
-
-      <AppText body style={styles.text}>
-        Choose Methods:
-      </AppText>
-      <FilterRow array={methods} multiselect />
-
-      <Pressable style={styles.dropdown} onPress={openModal}>
-        {code && (
-          <Image
-            source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
-            style={styles.coin}
-          />
-        )}
-        <AppText body medium style={styles.bigText}>
-          {seperateCurrencyName(currency) || 'Show All Currencies'}
+      <ScrollView style={styles.container}>
+        <AppText body style={styles.text}>
+          Choose Type:
         </AppText>
-        <Arrow />
-      </Pressable>
+        <FilterRow array={types} filterType="type" />
 
-      <DatePicker from />
-      <DatePicker to />
+        <Pressable style={styles.dropdown} onPress={openModal}>
+          {code && (
+            <Image
+              source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
+              style={styles.coin}
+            />
+          )}
+          <AppText body medium style={styles.bigText}>
+            {seperateCurrencyName(currency) || 'Show All Currencies'}
+          </AppText>
+          <Arrow />
+        </Pressable>
 
-      {clearCond && (
-        <TouchableOpacity style={styles.clear} onPress={clear}>
-          <Clear />
-          <PurpleText style={styles.purple} text="Clear Filters" />
-        </TouchableOpacity>
-      )}
+        <DatePicker from />
+        <DatePicker to />
+
+        <AppDropdown
+          label="Choose Methods:"
+          handlePress={handleMethodsDropdown}
+          selectedText={selectedMethod}
+        />
+
+        <AppText body style={styles.text}>
+          Choose Status:
+        </AppText>
+        <FilterRow array={statuses} filterType="status" />
+      </ScrollView>
 
       <TransactionFilterBottom navigation={navigation} />
+      <TouchableOpacity style={styles.clear} onPress={clear}>
+        <PurpleText style={styles.purple} text="Clear Filters" />
+      </TouchableOpacity>
       <ChooseCurrencyModal isForTransactions />
 
       <DatePickerModal from />
       <DatePickerModal to />
+      <ChooseMethodsModal />
     </Background>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+    paddingBottom: 140,
+  },
   clear: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
+    justifyContent: 'center',
   },
   coin: {
     width: 24,

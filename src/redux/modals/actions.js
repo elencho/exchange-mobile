@@ -1,6 +1,7 @@
 export const actionTypes = {
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
   CHOOSE_CURRENCY_MODAL_VISIBLE: 'CHOOSE_CURRENCY_MODAL_VISIBLE',
+  CHOOSE_METHODS_MODAL_VISIBLE: 'CHOOSE_METHODS_MODAL_VISIBLE',
   TRANSACTION_DETAILS_MODAL: 'TRANSACTION_DETAILS_MODAL',
   BUY_SELL_MODAL_VISIBLE: 'BUY_SELL_MODAL_VISIBLE',
   INSTANT_TRADE_INFO: 'INSTANT_TRADE_INFO',
@@ -47,6 +48,10 @@ export const toggleDatePicker = (datePickerVisible) => ({
 export const toggleCurrencyModal = (chooseCurrencyModalVisible) => ({
   type: actionTypes.CHOOSE_CURRENCY_MODAL_VISIBLE,
   chooseCurrencyModalVisible,
+});
+export const toggleMethodsModal = (chooseMethodsModalVisible) => ({
+  type: actionTypes.CHOOSE_METHODS_MODAL_VISIBLE,
+  chooseMethodsModalVisible,
 });
 export const toggleTransactionDetails = (transactionDetailsVisible) => ({
   type: actionTypes.TRANSACTION_DETAILS_MODAL,

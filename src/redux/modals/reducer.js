@@ -12,6 +12,7 @@ const INITIAL_STATE = {
   datePickerVisible: { to: false, from: false },
   chooseCurrencyModalVisible: false,
   transactionDetailsVisible: false, // Both transactions and trades
+  chooseMethodsModalVisible: false,
 
   // Instant Trade
   buySellModalVisible: false,
@@ -62,6 +63,7 @@ export default (state = INITIAL_STATE, action) => {
     chooseCurrencyModalVisible,
     buySellModalVisible,
     transactionDetailsVisible,
+    chooseMethodsModalVisible,
     infoVisible,
     chooseCardModalVisible,
     qrAddressModalVisible,
@@ -117,6 +119,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         chooseCurrencyModalVisible,
+      };
+    case actionTypes.CHOOSE_METHODS_MODAL_VISIBLE:
+      return {
+        ...state,
+        chooseMethodsModalVisible,
       };
     case actionTypes.TRANSACTION_DETAILS_MODAL:
       return {
