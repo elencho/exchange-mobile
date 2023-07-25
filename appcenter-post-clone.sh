@@ -38,7 +38,7 @@ fi
 copy_firebase_config "$branch"
 
 # Display a message indicating which .env and Firebase configuration files are used
-cat $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-info.plist
+cat $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-Info.plist
 cat $APPCENTER_SOURCE_DIRECTORY/android/app/google-services.json
 printf "\nFirebase configuration files used: GoogleService-info.plist and google-service.json\n"
 
