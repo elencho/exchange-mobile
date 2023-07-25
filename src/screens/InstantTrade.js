@@ -80,11 +80,11 @@ export default function InstantTrade() {
 
   return (
     <Background>
-      <View>
+      {/* <View>
         <TouchableOpacity onPress={() => Clipboard.setStringAsync(fcmToken)}>
           <Copy />
         </TouchableOpacity>
-      </View>
+      </View> */}
       <TopRow clear={() => dispatch(setTradeType('Buy'))} />
 
       <View style={styles.headRow}>
