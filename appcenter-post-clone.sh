@@ -15,7 +15,7 @@ fi;
 
 # Function to copy the appropriate Firebase configuration files
 copy_firebase_config() {
-    if [ "$1" == "master" ]; 
+    if [ "$1" == "develop" ]; 
     then
         cp $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-info-prod.plist GoogleService-info.plist
         cp $APPCENTER_SOURCE_DIRECTORY/android/app/google-service-prod.json google-service.json
