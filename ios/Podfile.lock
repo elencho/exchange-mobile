@@ -53,6 +53,8 @@ PODS:
   - EXMediaLibrary (15.2.3):
     - ExpoModulesCore
     - React-Core
+  - EXNotifications (0.18.1):
+    - ExpoModulesCore
   - Expo (48.0.17):
     - ExpoModulesCore
   - ExpoBlur (12.2.2):
@@ -81,6 +83,9 @@ PODS:
     - ExpoModulesCore
     - React-Core
   - EXStructuredHeaders (3.1.1)
+  - EXTaskManager (11.1.1):
+    - ExpoModulesCore
+    - UMAppLoader
   - EXUpdates (0.16.4):
     - ASN1Decoder (~> 1.8)
     - EASClient
@@ -733,6 +738,7 @@ PODS:
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.6.0)
   - SSZipArchive (2.2.3)
+  - UMAppLoader (4.1.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -760,6 +766,7 @@ DEPENDENCIES:
   - EXJSONUtils (from `../node_modules/expo-json-utils/ios`)
   - EXManifests (from `../node_modules/expo-manifests/ios`)
   - EXMediaLibrary (from `../node_modules/expo-media-library/ios`)
+  - EXNotifications (from `../node_modules/expo-notifications/ios`)
   - Expo (from `../node_modules/expo`)
   - ExpoBlur (from `../node_modules/expo-blur/ios`)
   - ExpoClipboard (from `../node_modules/expo-clipboard/ios`)
@@ -773,6 +780,7 @@ DEPENDENCIES:
   - EXSharing (from `../node_modules/expo-sharing/ios`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - EXStructuredHeaders (from `../node_modules/expo-structured-headers/ios`)
+  - EXTaskManager (from `../node_modules/expo-task-manager/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
   - EXUpdatesInterface (from `../node_modules/expo-updates-interface/ios`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
@@ -858,6 +866,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -937,6 +946,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-manifests/ios"
   EXMediaLibrary:
     :path: "../node_modules/expo-media-library/ios"
+  EXNotifications:
+    :path: "../node_modules/expo-notifications/ios"
   Expo:
     :path: "../node_modules/expo"
   ExpoBlur:
@@ -963,6 +974,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-splash-screen/ios"
   EXStructuredHeaders:
     :path: "../node_modules/expo-structured-headers/ios"
+  EXTaskManager:
+    :path: "../node_modules/expo-task-manager/ios"
   EXUpdates:
     :path: "../node_modules/expo-updates/ios"
   EXUpdatesInterface:
@@ -1075,6 +1088,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  UMAppLoader:
+    :path: "../node_modules/unimodules-app-loader/ios"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1101,6 +1116,7 @@ SPEC CHECKSUMS:
   EXJSONUtils: 48b1e764ac35160e6f54d21ab60d7d9501f3e473
   EXManifests: 500666d48e8dd7ca5a482c9e729e4a7a6c34081b
   EXMediaLibrary: 587cd8aad27a6fc8d7c38b950bc75bc1845a7480
+  EXNotifications: dd628737af60fc8cc62dccebacd326b0fbbc0dcb
   Expo: d351b4546895fb99ae4e5a1bc39df770ab9dc7d1
   ExpoBlur: fac3c6318fdf409dd5740afd3313b2bd52a35bac
   ExpoClipboard: 9b87df0ad145e3aa841614fab6aea54b7a604850
@@ -1114,6 +1130,7 @@ SPEC CHECKSUMS:
   EXSharing: 09839ace249f61bfa13c50c6a28256c31d260355
   EXSplashScreen: 0e0a9ba0cf7553094e93213099bd7b42e6e237e9
   EXStructuredHeaders: b1a48d732562e2cc81f11771bcfd29534f5d9254
+  EXTaskManager: f8257faa4c20acfc3f31e21ab82a62544d70db85
   EXUpdates: 603c4dfec2ed9ef323dfbd9c59c946593d4d9a5c
   EXUpdatesInterface: dd699d1930e28639dcbd70a402caea98e86364ca
   FBLazyVector: 446e84642979fff0ba57f3c804c2228a473aeac2
@@ -1201,6 +1218,7 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
+  UMAppLoader: 71aae6c6782cf2aef2356bb97f84321600b4b25c
   Yoga: 79dd7410de6f8ad73a77c868d3d368843f0c93e0
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
