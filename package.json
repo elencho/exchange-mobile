@@ -71,6 +71,7 @@
     "react-native-camera": "^4.2.1",
     "react-native-check-version": "^1.0.20",
     "react-native-code-push": "^7.1.0",
+    "react-native-config": "^1.5.1",
     "react-native-confirmation-code-field": "^7.3.1",
     "react-native-device-info": "^10.4.0",
     "react-native-extra-dimensions-android": "^1.2.5",
