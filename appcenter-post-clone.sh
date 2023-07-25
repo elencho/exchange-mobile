@@ -17,10 +17,10 @@ fi;
 copy_firebase_config() {
     if [ "$1" == "develop" ]; 
     then
-        cp $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-info-prod.plist $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-info.plist
+        cp $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-Info-prod.plist $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-Info.plist
         cp $APPCENTER_SOURCE_DIRECTORY/android/app/google-services-prod.json $APPCENTER_SOURCE_DIRECTORY/android/app/google-services.json
     else
-        cp $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-info-dev.plist $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-info.plist
+        cp $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-Info-dev.plist $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-Info.plist
         cp $APPCENTER_SOURCE_DIRECTORY/android/app/google-services-dev.json $APPCENTER_SOURCE_DIRECTORY/android/app/google-services.json
     fi
 }
