@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "62721567513",
+    "project_id": "cryptal-testing",
+    "storage_bucket": "cryptal-testing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62721567513:android:11fd34aaf5861354263388",
+        "android_client_info": {
+          "package_name": "com.cryptal.exchange.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "62721567513-2m9pu9eugugmdl4vkl1ib5uaeptvqa3l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMp8_mVFsKNDEYEFyS5K919IvAECWeoS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "62721567513-2m9pu9eugugmdl4vkl1ib5uaeptvqa3l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
