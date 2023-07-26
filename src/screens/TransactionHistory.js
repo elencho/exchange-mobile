@@ -8,18 +8,12 @@ import {
 } from '@react-navigation/native';
 
 import Background from '../components/Background';
-import FilterIcon from '../components/TransactionHistory/FilterIcon';
-import FilterRow from '../components/TransactionHistory/FilterRow';
-import Headline from '../components/TransactionHistory/Headline';
 import AppText from '../components/AppText';
 import TopRow from '../components/TransactionHistory/TopRow';
-import TransactionDate from '../components/TransactionHistory/TransactionDate';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
 import TransactionSkeleton from '../components/TransactionHistory/TransactionSkeleton';
 import List from '../assets/images/List.svg';
 
-import { types } from '../constants/filters';
-import { monthsShort } from '../constants/months';
 import {
   chooseCurrency,
   clearFilters,
@@ -79,8 +73,6 @@ function TransactionHistory({ navigation, route }) {
       ? transactions
       : transactions.filter((t) => t.currency == currencyCode);
 
-  console.log('transactionsCurrencyFiltered', currencyCode);
-
   const renderTransaction = ({ item }) => (
     <Transaction isTransfer transactionData={item} loading={loading} />
   );
@@ -107,13 +99,6 @@ function TransactionHistory({ navigation, route }) {
       <TabSwitcher />
       <SearchAndFilter navigation={navigation} />
 
-      {/* This filter needs to be modified */}
-      {/* Components used here need to be deleted */}
-      {/* <View style={styles.filter}>
-        <FilterRow array={types} />
-        <FilterIcon onPress={() => navigation.navigate('TransactionFilter')} />
-      </View> */}
-
       {loading ? (
         <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
       ) : activeTab === 'Transfer' ? (
@@ -131,19 +116,10 @@ function TransactionHistory({ navigation, route }) {
           refreshControl={
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }
-          // ListFooterComponent={() =>
-          //   moreTradesLoading && uniqueDates.length > 0 ? (
-          //     <TransactionSkeleton length={[0, 1, 2]} />
-          //   ) : (
-          //     <View />
-          //   )
-          // }
         />
       ) : (
         <TransactionsBlock />
       )}
-
-      {/* <TransactionsBlock loading={tradesLoading || userProfileLoading} /> */}
 
       {isFocused && <TransactionModal transactions />}
     </Background>
