@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useCallback, useState, useEffect } from 'react';
+import { ScrollView, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 
 import CustomRefreshContol from '../components/CustomRefreshContol';
 import Background from '../components/Background';
@@ -23,8 +24,16 @@ import {
   setTradeOffset,
   setTradeType,
 } from '../redux/trade/actions';
+import { setWalletTab } from '../redux/wallet/actions';
+import { toggleChooseCardModal } from '../redux/modals/actions';
+
+import messaging from '@react-native-firebase/messaging';
+import Copy from '../assets/images/Copy.svg';
+import * as Clipboard from 'expo-clipboard';
+import useNotificationPermissions from './useNotificationPermissions';
 
 export default function InstantTrade() {
+  useNotificationPermissions();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
@@ -35,6 +44,7 @@ export default function InstantTrade() {
 
   const loading = tradesLoading && offersLoading;
   const onRefresh = () => {
+    dispatch(setWalletTab('Deposit'));
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
     dispatch(setTradeOffset(0));
     dispatch(fetchTrades());
@@ -42,19 +52,37 @@ export default function InstantTrade() {
 
   const [showRefreshControl, setShowRefreshControl] = useState(false);
 
+  useFocusEffect(
+    useCallback(() => {
+      tabRoute === 'Trade' && onRefresh();
+      const timer = setTimeout(() => {
+        setShowRefreshControl(true);
+      }, 1000);
+      return () => {
+        dispatch(toggleChooseCardModal(false));
+        clearTimeout(timer);
+      };
+    }, [tabRoute])
+  );
+
+  //ToDo: delete
+  const [fcmToken, setFcmToken] = useState('');
+  const checkToken = async () => {
+    const token = await messaging().getToken();
+    if (token) {
+      setFcmToken(token);
+    }
+  };
+
   useEffect(() => {
-    tabRoute === 'Trade' && onRefresh();
-    const timer = setTimeout(() => {
-      setShowRefreshControl(true);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [tabRoute]);
+    checkToken();
+  }, []);
 
   return (
     <Background>
       <TopRow
-        clear={() => dispatch(setTradeType('Buy'))}
         headlineLogo={<InfoMark inner="?" color={colors.SECONDARY_PURPLE} />}
+        clear={() => dispatch(setTradeType('Buy'))}
       />
 
       <BuySellSwitch />

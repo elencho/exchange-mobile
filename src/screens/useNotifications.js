@@ -1,18 +1,9 @@
 import messaging from '@react-native-firebase/messaging';
-import { PermissionsAndroid, Linking } from 'react-native';
+import { Linking } from 'react-native';
 import notifee, { EventType, AndroidImportance } from '@notifee/react-native';
 import { useEffect } from 'react';
-import { IS_ANDROID, IS_IOS } from '../constants/system';
 
 const useNotifications = () => {
-  const requestUserPermissionIOS = async () =>
-    await messaging().requestPermission();
-
-  const requestPermissionsAndroid = () =>
-    PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-    );
-
   const checkToken = async () => {
     const fcmToken = await messaging().getToken();
     if (fcmToken) {
@@ -21,7 +12,6 @@ const useNotifications = () => {
   };
 
   useEffect(() => {
-    IS_ANDROID ? requestPermissionsAndroid() : requestUserPermissionIOS();
     checkToken();
   }, []);
 
@@ -32,7 +22,8 @@ const useNotifications = () => {
           case EventType.DISMISSED:
             break;
           case EventType.PRESS:
-            Linking.openURL(detail.notification?.data?.redirectUrl);
+            if (detail.notification?.data?.redirectUrl)
+              Linking.openURL(detail.notification?.data?.redirectUrl);
             break;
           default:
             break;
@@ -44,26 +35,21 @@ const useNotifications = () => {
   }, []);
 
   useEffect(() => {
-    // Handle notification opening event
-    messaging().onNotificationOpenedApp((remoteMessage) => {
-      const redirectUrl = remoteMessage?.data?.redirectUrl;
-      if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
-    });
-
-    messaging()
-      .getInitialNotification()
-      .then((remoteMessage) => {
-        if (remoteMessage) {
-          const redirectUrl = remoteMessage?.data?.redirectUrl;
-          if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl);
-        }
-      });
-  }, []);
-
-  useEffect(() => {
     const unsubscribe = messaging().onMessage(onNotifeeMessageReceived);
 
     return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    notifee.getInitialNotification().then((res) => {
+      const redirectUrl = res?.notification?.data?.redirectUrl;
+      if (redirectUrl) Linking.openURL(redirectUrl);
+    });
+
+    notifee.onBackgroundEvent(async ({ type, detail }) => {
+      const redirectUrl = detail?.notification?.data?.redirectUrl;
+      if (redirectUrl) Linking.openURL(redirectUrl);
+    });
   }, []);
 
   return {};
@@ -85,15 +71,21 @@ export const onNotifeeMessageReceived = async (message) => {
     data: message.data,
     remote: true,
     ios: {
-      attachments: [{ url: message?.data?.fcm_options?.image }],
+      attachments: [
+        {
+          url: message?.data?.fcm_options?.image ?? ' ',
+        },
+      ],
     },
     android: {
       channelId: channelId,
-      attachments: [{ url: message?.data?.fcm_options?.image }],
+      attachments: [{ url: message?.notification?.android?.imageUrl ?? ' ' }],
       importance: AndroidImportance.HIGH,
       lightUpScreen: true,
       sound: 'default',
-      timeoutAfter: 1000,
+      smallIcon: 'ic_small_icon',
+      largeIcon: message?.notification?.android?.imageUrl ?? ' ',
+      color: '#1F1F35',
       pressAction: {
         id: 'default',
       },

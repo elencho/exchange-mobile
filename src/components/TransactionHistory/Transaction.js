@@ -11,9 +11,6 @@ import { transactionDetailsSaga } from '../../redux/transactions/actions';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
 import { COINS_URL_PNG } from '../../constants/api';
 
-import Pending from '../../assets/images/Pending.svg';
-import Success from '../../assets/images/Success.svg';
-import Failed from '../../assets/images/Failed.svg';
 import { monthsShort } from '../../constants/months';
 
 export default function Transaction({ transactionData, loading, isTransfer }) {

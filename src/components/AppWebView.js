@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Modal, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import WebView from 'react-native-webview';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Close from '../assets/images/Close.svg';
 import {
@@ -21,7 +22,8 @@ export default function AppWebView(props) {
   const dispatch = useDispatch();
   const webViewObj = useSelector((state) => state.modals.webViewObj);
 
-  const closeWebView = () => {
+  const closeWebView = async () => {
+    await AsyncStorage.removeItem('webViewVisible');
     dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' });
     if (verifyCards) {
       dispatch(cardsSagaAction());
@@ -50,10 +52,20 @@ export default function AppWebView(props) {
     }
   };
 
+  const handleOnShow = async () => {
+    await AsyncStorage.setItem('webViewVisible', `${!!webViewObj}`);
+  };
+
+  const handleOnRequestClose = async () => {
+    await AsyncStorage.removeItem('webViewVisible');
+  };
+
   return (
     <Modal
       presentationStyle="pageSheet"
       visible={!!webViewObj}
+      onShow={handleOnShow}
+      onRequestClose={handleOnRequestClose}
       animationType="slide"
     >
       <TouchableOpacity activeOpacity={0.99} style={styles.flex}>

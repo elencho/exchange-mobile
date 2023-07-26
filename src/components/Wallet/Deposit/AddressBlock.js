@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Copy from '../../../assets/images/Copy';
+import Copy from '../../../assets/images/CopyLarge';
 import QR from '../../../assets/images/QR';
 import AppText from '../../AppText';
 import AddressQrModal from './AddressQrModal';

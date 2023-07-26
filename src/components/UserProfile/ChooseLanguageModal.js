@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     marginHorizontal: -13,
     paddingHorizontal: 18,
     flexDirection: 'row',
+    borderRadius: 6,
   },
   flag: {
     height: 24,

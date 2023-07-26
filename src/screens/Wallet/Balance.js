@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -14,41 +14,50 @@ import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkMod
 import Whitelist from './Whitelist';
 import ManageCards from './ManageCards';
 import { setCard, setDepositProvider } from '../../redux/trade/actions';
-import { setWalletTab } from '../../redux/wallet/actions';
+import {
+  setShouldRefreshOnScroll,
+  setWalletTab,
+} from '../../redux/wallet/actions';
 import CustomRefreshContol from '../../components/CustomRefreshContol';
+import { IS_ANDROID } from '../../constants/system';
 
-export default function Balance({ navigation }) {
+function Balance({ navigation }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    wallet: { walletTab, network },
+    wallet: { walletTab, network, shouldRefreshOnScroll },
     trade: { cardsLoading },
     transactions: { tabNavigationRef, loading },
   } = state;
 
   const onRefresh = () => {
-    dispatch(setCard(null));
-    dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
-    walletTab !== 'Whitelist' && dispatch({ type: 'CLEAN_WALLET_INPUTS' });
-    if (network !== 'SWIFT') {
-      dispatch(setDepositProvider(null));
+    if (shouldRefreshOnScroll || IS_ANDROID) {
+      dispatch(setCard(null));
+      dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
+      walletTab !== 'Whitelist' && dispatch({ type: 'CLEAN_WALLET_INPUTS' });
+      if (network !== 'SWIFT') {
+        dispatch(setDepositProvider(null));
+      }
+      dispatch(setShouldRefreshOnScroll(false));
     }
   };
 
+  useEffect(() => {
+    dispatch(setShouldRefreshOnScroll(true));
+  }, [walletTab]);
+
   const back = () => {
     dispatch(setWalletTab('Deposit'));
-    tabNavigationRef.navigate('Wallet');
     navigation.navigate('Main', { screen: 'Wallet' });
   };
 
   useEffect(() => {
     onRefresh();
     return () => dispatch(setCard(null));
-  }, [walletTab, network]);
+  }, [walletTab, network, shouldRefreshOnScroll]);
 
-  const refreshControl = (isTransparent = false) => {
+  const refreshControl = () => {
     const props = { onRefresh, refreshing: loading || cardsLoading };
-    if (isTransparent) props.tintColor = 'transparent';
 
     return <CustomRefreshContol {...props} />;
   };
@@ -74,7 +83,7 @@ export default function Balance({ navigation }) {
         <Whitelist refreshControl={refreshControl()} />
       )}
       {walletTab === 'Manage Cards' && (
-        <ManageCards refreshControl={refreshControl(true)} />
+        <ManageCards refreshControl={refreshControl()} />
       )}
 
       <ChooseCurrencyModal wallet />
@@ -82,6 +91,7 @@ export default function Balance({ navigation }) {
     </Background>
   );
 }
+export default memo(Balance);
 
 const styles = StyleSheet.create({
   arrow: {

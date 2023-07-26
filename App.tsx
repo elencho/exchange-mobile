@@ -18,6 +18,7 @@ import colors from './src/constants/colors';
 import './src/utils/i18n';
 import './src/utils/interceptor';
 import { IS_IOS } from './src/constants/system';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 LogBox.ignoreLogs([
   // TODO: Remove when fixed
@@ -42,16 +43,18 @@ function App(): JSX.Element {
 
   return (
     <Provider store={store}>
-      <StatusBar
-        backgroundColor={colors.SECONDARY_BACKGROUND}
-        barStyle="light-content"
-      />
-      {IS_IOS && <SafeAreaView style={styles.statusBar} />}
-      <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-        <AppToast />
-        <Navigator />
-      </SafeAreaView>
-      {IS_IOS && <SafeAreaView style={styles.statusBar} />}
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar
+          backgroundColor={colors.SECONDARY_BACKGROUND}
+          barStyle="light-content"
+        />
+        {IS_IOS && <SafeAreaView style={styles.statusBar} />}
+        <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+          <AppToast />
+          <Navigator />
+        </SafeAreaView>
+        {IS_IOS && <SafeAreaView style={styles.statusBar} />}
+      </GestureHandlerRootView>
     </Provider>
   );
 }
@@ -65,6 +68,6 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     flex: 0,
-    backgroundColor: colors.PRIMARY_BACKGROUND,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
 });

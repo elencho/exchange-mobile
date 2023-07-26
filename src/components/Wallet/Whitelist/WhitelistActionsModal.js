@@ -51,10 +51,10 @@ export default function WhitelistActionsModal() {
         if (!googleAuth) sendOtp();
         break;
       case 'Copy Address':
-        copyToClipboard(currentWhitelistObj.address);
+        copyToClipboard(currentWhitelistObj?.address);
         break;
       case 'Copy Tag':
-        copyToClipboard(currentWhitelistObj.tag);
+        copyToClipboard(currentWhitelistObj?.tag);
         break;
       default:
         break;
@@ -70,13 +70,14 @@ export default function WhitelistActionsModal() {
       case 'Copy Address':
         return <CopyWhite />;
       default:
+        <View />;
         break;
     }
   };
 
   const tag = () => {
     if (whitelist[0]) {
-      return whitelist[0].tag;
+      return whitelist[0]?.tag;
     }
     return;
   };

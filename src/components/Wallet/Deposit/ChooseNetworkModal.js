@@ -30,6 +30,7 @@ export default function ChooseNetworkModal() {
   const crypto = currentBalanceObj?.type === 'CRYPTO';
   const deposit = walletTab === 'Deposit';
   const withdrawal = walletTab === 'Withdrawal';
+  const isWhitelist = walletTab === 'Whitelist';
 
   const hide = () => dispatch(toggleChooseNetworkModal(false));
   const handlePress = (n) => {
@@ -53,20 +54,15 @@ export default function ChooseNetworkModal() {
 
   useEffect(() => {
     let networksToDisplay = [];
-    const m = withdrawal ? 'withdrawalMethods' : 'depositMethods';
+    const m =
+      withdrawal || isWhitelist ? 'withdrawalMethods' : 'depositMethods';
     const n = currentBalanceObj[m];
 
-    if (n.WALLET) n.WALLET.forEach((n) => networksToDisplay.push(n));
-    if (n.WIRE) n.WIRE.forEach((n) => networksToDisplay.push(n));
+    if (n?.WALLET) n?.WALLET?.forEach((n) => networksToDisplay.push(n));
+    if (n?.WIRE) n?.WIRE?.forEach((n) => networksToDisplay.push(n));
     setNetworks(networksToDisplay);
     return () => setNetworks([]);
   }, [code, walletTab]);
-
-  const name = (n) => {
-    if (n === 'ERC20') return 'Ethereum Network';
-    if (n === 'BEP20') return 'Binance Smart Chain';
-    return null;
-  };
 
   const background = (m) => {
     if (m === network) {
@@ -96,14 +92,12 @@ export default function ChooseNetworkModal() {
           />
           <View style={styles.name}>
             <AppText medium body style={styles.primary}>
-              {name(n.provider) ?? n.provider}
+              {n?.displayName}
             </AppText>
 
-            {name(n.provider) ? (
-              <AppText subtext style={styles.secondary}>
-                {n.provider}
-              </AppText>
-            ) : null}
+            <AppText subtext style={styles.secondary}>
+              {n?.provider}
+            </AppText>
           </View>
         </Pressable>
       ))}

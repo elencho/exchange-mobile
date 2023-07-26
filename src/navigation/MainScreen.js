@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { AppState } from 'react-native';
 
 import { useDispatch } from 'react-redux';
@@ -13,11 +13,13 @@ import BottomTabs from '../components/BottomTabs';
 import { setTabRouteName } from '../redux/transactions/actions';
 import Wallet from '../screens/Wallet';
 import Exchange from '../screens/Exchange';
+import { useIsFocused } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 
-export default function MainScreen({ navigation }) {
+function MainScreen({ navigation }) {
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const [subscription, setSubscription] = useState();
 
@@ -28,17 +30,28 @@ export default function MainScreen({ navigation }) {
     };
   }, []);
 
-  const handleAppStateChange = async (newState) => {
+  const handleAppStateChange = useCallback(async (newState) => {
     const lastTimeOpen = await AsyncStorage.getItem('isOpenDate');
-    const timeDifference = Date.now() - JSON.parse(lastTimeOpen);
+    const timeDifference = lastTimeOpen
+      ? Date.now() - JSON.parse(lastTimeOpen)
+      : false;
     const isLoggedIn = await AsyncStorage.getItem('isLoggedIn');
+    const webViewVisible = await AsyncStorage.getItem('webViewVisible');
+    const authVisible = await AsyncStorage.getItem('authVisible');
 
-    if (newState !== 'active') {
-      await AsyncStorage.removeItem('isLoggedIn');
+    if (newState !== 'active' && !authVisible) {
       const date = JSON.stringify(Date.now());
       await AsyncStorage.setItem('isOpenDate', date);
+      await AsyncStorage.removeItem('isLoggedIn');
     }
-    if (!isLoggedIn && newState === 'active' && timeDifference >= 30000) {
+
+    const bioVisible =
+      !webViewVisible &&
+      !isLoggedIn &&
+      newState === 'active' &&
+      timeDifference >= 30000;
+
+    if (bioVisible) {
       SecureStore.getItemAsync('accessToken')
         .then((t) => {
           if (t) {
@@ -49,7 +62,7 @@ export default function MainScreen({ navigation }) {
         })
         .catch((err) => console.log(err));
     }
-  };
+  }, []);
 
   const onBeforeShow = async () => {
     setSubscription(AppState.addEventListener('change', handleAppStateChange));
@@ -59,24 +72,31 @@ export default function MainScreen({ navigation }) {
     subscription?.remove();
   };
 
-  const getBiometricEnabled = async (user) => {
-    const enabled = await AsyncStorage.getItem('BiometricEnabled');
-    if (enabled) {
-      let parsedUsers = await JSON.parse(enabled);
-      const userIndex = await parsedUsers?.find(
-        (u) => u?.user === user && u?.enabled === true
-      );
-      if (userIndex) {
-        navigation.navigate('Resume', {
-          fromSplash: false,
-          version: false,
-          isWorkingVersion: false,
-        });
-      } else {
-        return;
+  const getBiometricEnabled = useCallback(
+    async (user) => {
+      const enabled = await AsyncStorage.getItem('BiometricEnabled');
+      if (enabled) {
+        let parsedUsers = await JSON.parse(enabled);
+        const userIndex = await parsedUsers?.find(
+          (u) => u?.user === user && u?.enabled === true
+        );
+        if (userIndex && isFocused) {
+          navigation.navigate({
+            key: 'Resume-uniqueKey',
+            name: 'Resume',
+            params: {
+              fromSplash: false,
+              version: false,
+              isWorkingVersion: false,
+            },
+          });
+        } else {
+          return;
+        }
       }
-    }
-  };
+    },
+    [isFocused]
+  );
 
   const setTabRoute = (e) => {
     dispatch(setTabRouteName(e.route.name));
@@ -110,3 +130,4 @@ export default function MainScreen({ navigation }) {
     </Tab.Navigator>
   );
 }
+export default memo(MainScreen);

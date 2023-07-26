@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Pressable, StyleSheet, View, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import Exchange from '../assets/images/BottomTabs/Exchange.svg';
 import Trade from '../assets/images/BottomTabs/Trade.svg';
@@ -12,7 +11,6 @@ import TradeActive from '../assets/images/BottomTabs/Trade_Active.svg';
 import WalletActive from '../assets/images/BottomTabs/Wallet_Active.svg';
 import TransactionsActive from '../assets/images/BottomTabs/Transactions_Active.svg';
 import FocusIcon from '../assets/images/Focused';
-import colors from '../constants/colors';
 
 export default function BottomTabs({ navigation, descriptors, routes }) {
   const dispatch = useDispatch();
@@ -46,14 +44,10 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
 
         return (
           <Pressable key={route.key} style={styles.tab} onPress={navigate}>
-            <LinearGradient
-              colors={[colors.SECONDARY_BACKGROUND, colors.PRIMARY_BACKGROUND]}
-              style={styles.gradient}
-              locations={[0.3, 0.8]}
-            >
+            <View style={styles.gradient}>
               {focused ? active[route.name] : inactive[route.name]}
               {focused && <FocusIcon style={styles.focus} />}
-            </LinearGradient>
+            </View>
           </Pressable>
         );
       })}

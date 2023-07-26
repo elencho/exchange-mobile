@@ -7,7 +7,8 @@ const TotalBalanceSkeleton = () => {
   return (
     <View style={styles.wrapper}>
       <Skeleton width={156} height={12} style={{ marginBottom: 10 }} />
-      <Skeleton width={84} height={8} style={{}} />
+      <Skeleton width={84} height={8} />
+      <Skeleton width={84} height={12} style={{ marginTop: 50 }} />
     </View>
   );
 };
@@ -19,7 +20,8 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   wrapper: {
-    paddingVertical: 28,
+    padding: 25,
+
     backgroundColor: colors.SECONDARY_BACKGROUND,
   },
 });

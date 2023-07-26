@@ -39,7 +39,10 @@ export const handleAmountInput = (
   const startsWithZeroNoDecimal =
     replacedAmount[1] && replacedAmount[0] === '0' && replacedAmount[1] !== '.';
   const parts = replacedAmount.split('.');
-  if (parts.length === 2) {
+  if (parts.length === 2 && scale == 0) {
+    getMaxLength(replacedAmount);
+    setAmount(replacedAmount ? parts[0].substr(0, 14) : 0);
+  } else if (parts.length === 2) {
     getMaxLength(replacedAmount);
     setAmount(replacedAmount ? parts[0].substr(0, 14) + '.' + parts[1] : 0);
   } else if (startsWithZeroNoDecimal) {

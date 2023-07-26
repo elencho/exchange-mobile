@@ -12,18 +12,7 @@ import PersonalSecuritySkeleton from './PersonalSecuritySkeleton';
 import SecurityRow from './SecurityRow';
 import SmsEmailAuthModal from './SmsEmailAuthModal';
 
-export default function Security({ loading }) {
-  const [bioAvailable, setBioAvailable] = useState(false);
-
-  useEffect(() => {
-    checkCompitable();
-  }, []);
-
-  const checkCompitable = async () => {
-    const compitable = await checkIsCompatable();
-    setBioAvailable(compitable);
-  };
-
+export default function Security({ loading, bioAvailable }) {
   return !loading ? (
     <>
       <View style={styles.block}>
@@ -34,6 +23,7 @@ export default function Security({ loading }) {
         {['Google_Auth', 'E_mail_Auth', 'SMS_Auth'].map((r, i, a) => (
           <SecurityRow key={r} text={r} i={i} a={a} />
         ))}
+        <View style={styles.line} />
       </View>
 
       {/* <View style={styles.block}>
@@ -61,12 +51,17 @@ export default function Security({ loading }) {
 const styles = StyleSheet.create({
   block: {
     paddingHorizontal: 5,
-    paddingVertical: 15,
+
     backgroundColor: colors.PRIMARY_BACKGROUND,
-    marginBottom: 10,
   },
   margin: { marginBottom: 20, marginTop: 10 },
   secondary: {
     color: colors.SECONDARY_TEXT,
+  },
+  line: {
+    marginTop: 15,
+    height: 1,
+    flex: 1,
+    backgroundColor: colors.BUTTON_DISABLED,
   },
 });

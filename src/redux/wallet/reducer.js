@@ -10,6 +10,7 @@ const INITIAL_STATE = {
   hasMultipleMethods: false,
   depositRestriction: {},
   withdrawalRestriction: {},
+  shouldRefreshOnScroll: false,
 
   // Deposit
   wireDepositInfo: {},
@@ -77,6 +78,7 @@ export default (state = INITIAL_STATE, action) => {
     wireDepositProviders,
     wireDepositProvider,
     isAddressGenerating,
+    shouldRefreshOnScroll,
   } = action;
   switch (action.type) {
     case 'SET_CARD_VERIFICATION_STATUS':
@@ -223,6 +225,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         intermediateBank,
+      };
+    case actionTypes.SET_SHOULD_REFRESH:
+      return {
+        ...state,
+        shouldRefreshOnScroll,
       };
     case 'SAVE_WIRE_DEPOSIT_PROVIDERS':
       return {

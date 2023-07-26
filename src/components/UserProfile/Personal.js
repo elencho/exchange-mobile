@@ -23,6 +23,7 @@ import Language from '../../assets/images/User_profile/Language.svg';
 import { errorHappenedHere } from '../../utils/appUtils';
 import { toggleEmailSubscription } from '../../redux/profile/actions';
 import {
+  openCompanyInfoModal,
   toggleLanguageModal,
   togglePhoneNumberModal,
 } from '../../redux/modals/actions';
@@ -51,7 +52,14 @@ export default function Personal({ loading }) {
 
   const edit = () => {
     if (smsAuth) {
-      dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
+      dispatch(
+        openCompanyInfoModal(
+          'go web phone header',
+          'go web phone description',
+          'go web phone link',
+          'go web phone button'
+        )
+      );
     } else {
       dispatch(togglePhoneNumberModal(true));
     }
@@ -60,7 +68,15 @@ export default function Personal({ loading }) {
 
   const verify = () => {
     if (eligibleToVerify) launchSumsubSdk();
-    else dispatch({ type: 'TOGGLE_COMPANY_INFO_MODAL' });
+    else
+      dispatch(
+        openCompanyInfoModal(
+          'go web personal header',
+          'go web personal description',
+          'go web personal link',
+          'go web personal button'
+        )
+      );
   };
 
   const goToSupport = () =>
@@ -226,9 +242,10 @@ export default function Personal({ loading }) {
           </View>
         ))}
       </View>
-
+      <View style={styles.line} />
       <PersonalInformation />
       {corporate && <CompanyInformation />}
+      <View style={styles.line} />
       <DeleteAccount />
       <PersonalInfoModal />
       <PhoneNumberModal />
@@ -302,5 +319,11 @@ const styles = StyleSheet.create({
   upload: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  line: {
+    marginVertical: 15,
+    height: 1,
+    flex: 1,
+    backgroundColor: colors.BUTTON_DISABLED,
   },
 });

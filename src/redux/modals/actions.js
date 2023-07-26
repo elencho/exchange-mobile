@@ -11,16 +11,19 @@ export const actionTypes = {
   BANK_FEES_MODAL: 'BANK_FEES_MODAL',
   FIAT_MODAL_VISIBLE: 'FIAT_MODAL_VISIBLE',
   CRYPTO_MODAL_VISIBLE: 'CRYPTO_MODAL_VISIBLE',
-
+  RESET_STATE: 'RESET_STATE',
   PERONAL_INFO_MODAL: 'PERONAL_INFO_MODAL',
   PASSWORD_MODAL: 'PASSWORD_MODAL',
   PHONE_NUMBER_MODAL: 'PHONE_NUMBER_MODAL',
   TOGGLE_LANGUAGE_MODAL: 'TOGGLE_LANGUAGE_MODAL',
+  OPEN_COMPANY_INFO_MODAL: 'OPEN_COMPANY_INFO_MODAL',
+  CLOSE_COMPANY_INFO_MODAL: 'CLOSE_COMPANY_INFO_MODAL',
   GOOGLE_AUTH_MODAL: 'GOOGLE_AUTH_MODAL',
   COUNTRIES_MODAL: 'COUNTRIES_MODAL',
   SMS_AUTH_MODAL: 'SMS_AUTH_MODAL',
   EMAIL_AUTH_MODAL: 'EMAIL_AUTH_MODAL',
   GOOGLE_OTP_MODAL: 'GOOGLE_OTP_MODAL',
+  WEB_VIEW_VISIBLE: 'WEB_VIEW_VISIBLE',
 
   CHOOSE_NETWORK_MODAL: 'CHOOSE_NETWORK_MODAL',
   GENERATE_REQUEST_MODAL: 'GENERATE_REQUEST_MODAL',
@@ -72,6 +75,10 @@ export const toggleFiatModal = (fiatModalVisible) => ({
 export const toggleInfoModal = (infoVisible) => ({
   type: actionTypes.INSTANT_TRADE_INFO,
   infoVisible,
+});
+export const toggleWebViewVisible = (webViewVisible) => ({
+  type: actionTypes.WEB_VIEW_VISIBLE,
+  webViewVisible,
 });
 export const toggleChooseCardModal = (chooseCardModalVisible) => ({
   type: actionTypes.CHOOSE_CARD_MODAL,
@@ -126,6 +133,18 @@ export const toggleEmailAuthModal = (emailAuthModalVisible) => ({
 export const toggleGoogleOtpModal = (googleOtpModalVisible) => ({
   type: actionTypes.GOOGLE_OTP_MODAL,
   googleOtpModalVisible,
+});
+export const openCompanyInfoModal = (
+  companyInfoModalHeader,
+  companyInfoModalDescription,
+  companyInfoModalLink,
+  companyInfoModalButton
+) => ({
+  type: actionTypes.OPEN_COMPANY_INFO_MODAL,
+  companyInfoModalHeader,
+  companyInfoModalDescription,
+  companyInfoModalLink,
+  companyInfoModalButton,
 });
 
 // WALLET

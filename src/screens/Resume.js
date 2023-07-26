@@ -2,39 +2,61 @@ import { StyleSheet, View } from 'react-native';
 import React, { useState, memo, useCallback } from 'react';
 import TouchID from '../assets/images/TouchID-Purple';
 import FaceID from '../assets/images/Face_ID-pruple';
+import * as SecureStore from 'expo-secure-store';
 
 import {
   authenticateAsync,
   supportedAuthenticationTypesAsync,
+  cancelAuthenticate,
 } from 'expo-local-authentication';
 import colors from '../constants/colors';
 import AppText from '../components/AppText';
-import { useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import AppButton from '../components/AppButton';
 import PurpleText from '../components/PurpleText';
-import { fetchUserInfo } from '../redux/profile/actions';
+import {
+  fetchUserInfo,
+  switchPersonalSecurity,
+} from '../redux/profile/actions';
 import { useFocusEffect } from '@react-navigation/native';
-import { logout } from '../utils/userProfileUtils';
+import { logoutUtil } from '../utils/userProfileUtils';
 import SplashScreen from 'react-native-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+  toggleEmailAuthModal,
+  toggleGoogleOtpModal,
+  toggleSmsAuthModal,
+  toggleWebViewVisible,
+} from '../redux/modals/actions';
+import { IS_ANDROID } from '../constants/system';
+import { t } from 'i18next';
+import { Trans } from 'react-i18next';
 
 const Resume = ({ navigation, route }) => {
-  const state = useSelector((state) => state.profile);
+  const state = useSelector((state) => state?.profile, shallowEqual);
+  const withdrawalConfirmModalVisible = useSelector(
+    (state) => state?.modals?.withdrawalConfirmModalVisible,
+    shallowEqual
+  );
+  const { fromSplash, version, workingVersion } = route?.params;
   const dispatch = useDispatch();
 
-  const { userInfo } = state;
+  const { userInfo, Personal_Security } = state;
   const [bioType, setBioType] = useState(null);
+  const resumed = route?.key === 'Resume-uniqueKey';
 
   useFocusEffect(
     useCallback(() => {
+      setAuthVisible();
+      dispatch(toggleWebViewVisible(false));
       SplashScreen.hide();
       dispatch(fetchUserInfo());
       handleBiometricIcon();
-      startAuth();
-    }, [])
+      startAuth(fromSplash);
+    }, [fromSplash])
   );
 
-  const handleBiometricIcon = async () => {
+  const handleBiometricIcon = useCallback(async () => {
     try {
       await supportedAuthenticationTypesAsync()
         .then((data) => {
@@ -48,38 +70,74 @@ const Resume = ({ navigation, route }) => {
     } catch (err) {
       console.log(err);
     }
+  }, []);
+
+  const setAuthVisible = async () => {
+    await AsyncStorage.setItem('authVisible', 'true');
   };
 
-  const startAuth = async () => {
-    const { fromSplash, version, workingVersion } = route?.params;
+  const startAuthActions = async () => {
+    if (IS_ANDROID && withdrawalConfirmModalVisible) {
+      dispatch(toggleGoogleOtpModal(false));
+      dispatch(toggleEmailAuthModal(false));
+      dispatch(toggleSmsAuthModal(false));
+    }
+    if (Personal_Security === 'Security') {
+      dispatch(switchPersonalSecurity('Security'));
+    }
+    dispatch(toggleWebViewVisible(true));
+    await AsyncStorage.setItem('isLoggedIn', 'true');
+    await AsyncStorage.removeItem('isOpenDate');
+    await AsyncStorage.removeItem('authVisible');
+  };
 
+  const startAuth = useCallback(async (fromSplash) => {
+    if (IS_ANDROID) await cancelAuthenticate();
     const result = await authenticateAsync({
-      promptMessage: 'Log in with fingerprint or faceid',
-      cancelLabel: 'Abort',
+      promptMessage: t('Log in with fingerprint or faceid'),
+      cancelLabel: t('Abort'),
     });
 
-    if (result.success) {
-      if (version || workingVersion) {
+    if (result?.success) {
+      if (version || workingVersion || resumed) {
         navigation.goBack();
       } else if (fromSplash) {
         navigation.navigate('Main');
       } else {
         navigation.goBack();
       }
-      await AsyncStorage.setItem('isLoggedIn', 'true');
+      startAuthActions();
+    } else if (
+      result?.error === 'passcode_not_set' ||
+      result?.error === 'not_enrolled'
+    ) {
+      startLogin();
     }
-  };
+  }, []);
 
   const startLogin = async () => {
-    logout(dispatch);
+    const refresh_token = await SecureStore.getItemAsync('refreshToken');
+    await AsyncStorage.removeItem('authVisible');
+    const status = await logoutUtil(refresh_token);
+    if (status === 204) {
+      await SecureStore.deleteItemAsync('accessToken');
+      await SecureStore.deleteItemAsync('refreshToken');
+      navigation.navigate('Welcome');
+
+      dispatch({ type: 'LOGOUT' });
+    }
   };
 
   return (
     <View style={styles.container}>
       {bioType === 'FACEID' ? <FaceID /> : <TouchID />}
       <AppText header style={styles.primary}>
-        Welcome Back, {userInfo.firstName}!
+        <Trans
+          i18nKey="welcome back {{username}} params{username}"
+          values={{ username: userInfo?.firstName }}
+        />
       </AppText>
+
       <AppText calendarDay style={styles.second}>
         {bioType === 'FACEID'
           ? 'face id subtitle description'

@@ -16,7 +16,10 @@ export default function AppText({
   isForCodeInput,
   ...props
 }) {
-  const generalError = useSelector((state) => state.errors.generalError);
+  const {
+    modals: { appToastObj },
+    errors: { generalError },
+  } = useSelector((state) => state);
 
   const fontCond = () => {
     if (medium || header) {
@@ -72,7 +75,10 @@ export default function AppText({
   const text = () => {
     if (typeof children === 'string') {
       if (children.includes('{{') && children.includes('}}')) {
-        return t(children, generalError?.transParams);
+        return t(
+          children,
+          generalError?.transParams || appToastObj?.transParams
+        );
       }
       return t(children);
     } else {
@@ -81,20 +87,24 @@ export default function AppText({
   };
 
   return (
-    <Text
-      accessibilityRole={onPress ? 'button' : 'text'}
-      style={[
-        style,
-        {
-          fontFamily: fontCond(),
-          fontSize: sizeCond(),
-          lineHeight: heightCond(),
-        },
-      ]}
-      onPress={onPress}
-      {...props}
-    >
-      {text()}
-    </Text>
+    <>
+      {text() !== '' && (
+        <Text
+          accessibilityRole={onPress ? 'button' : 'text'}
+          style={[
+            style,
+            {
+              fontFamily: fontCond(),
+              fontSize: sizeCond(),
+              lineHeight: heightCond(),
+            },
+          ]}
+          onPress={onPress}
+          {...props}
+        >
+          {text()}
+        </Text>
+      )}
+    </>
   );
 }

@@ -34,7 +34,10 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 
   const [filteredData, setFiletredData] = useState(balance?.balances);
 
-  useEffect(() => filter(''), [chooseCurrencyModalVisible]);
+  useEffect(() => {
+    filter('');
+    dispatch(fetchCurrencies());
+  }, [chooseCurrencyModalVisible]);
 
   const filter = (text) => {
     const filteredArray =
@@ -100,7 +103,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
       const currency = name === 'Show All Currency' ? null : currencyCode;
       dispatch(currencyAction(name, currenciesConstant, currency));
     }
-
+    dispatch({ type: 'GET_WHITELIST_ACTION' });
     hide();
   };
 

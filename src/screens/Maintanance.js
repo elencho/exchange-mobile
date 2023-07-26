@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ImageBackground, Linking, StyleSheet, Text, View } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 
@@ -11,9 +11,14 @@ import PurpleText from '../components/PurpleText';
 import images from '../constants/images';
 import colors from '../constants/colors';
 import { checkReadiness } from '../utils/appUtils';
+import SplashScreen from 'react-native-splash-screen';
 
 export default function Maintanance({ navigation }) {
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
   const goToSupport = () =>
     Linking.openURL('https://support.cryptal.com/hc/en-us/requests/new');

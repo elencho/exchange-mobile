@@ -9,6 +9,7 @@ import {
   CODE_TO_TOKEN,
   COUNTRIES_URL,
   EMAIL_VERIFICATION,
+  GO_TO_EXCHANGE,
   LOGIN_START_URL,
   LOGOUT,
   OTP_CHANGE_TOKEN,
@@ -23,8 +24,6 @@ import {
   VERIFICATION_TOKEN,
   VERIFY_PHONE_NUMBER,
 } from '../constants/api';
-
-import { navigationRef } from '../navigation';
 
 const authRedirectUrl = Constants.manifest.extra.authRedirectUrl;
 
@@ -81,7 +80,9 @@ export const usernameAndPasswordForm = async (username, password, url) => {
       toast: false,
     },
     url,
-    data: `username=${encodeURIComponent(username)}&password=${password}`,
+    data: `username=${encodeURIComponent(
+      username
+    )}&password=${encodeURIComponent(password)}`,
   });
   if (data) return data.data;
 };
@@ -187,7 +188,9 @@ export const setNewPassword = async (url, newPass, confirmPass) => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     url,
-    data: `password-new=${newPass}&password-confirm=${confirmPass}`,
+    data: `password-new=${encodeURIComponent(
+      newPass
+    )}&password-confirm=${encodeURIComponent(confirmPass)}`,
   });
   if (data) return data.data;
 };
@@ -236,15 +239,16 @@ export const logoutUtil = async (refresh_token) => {
   if (data) return data.status;
 };
 
-export const logout = async (dispatch) => {
-  const refresh_token = await SecureStore.getItemAsync('refreshToken');
-  const status = await logoutUtil(refresh_token);
-  if (status === 204) {
-    await SecureStore.deleteItemAsync('accessToken');
-    await SecureStore.deleteItemAsync('refreshToken');
-    navigationRef.navigate('Welcome');
-    dispatch({ type: 'LOGOUT' });
-  }
+export const exchangeUtil = async (refresh_token) => {
+  const uninterceptedAxiosInstance = axios.create();
+
+  const data = await uninterceptedAxiosInstance({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: GO_TO_EXCHANGE,
+    data: `refreshToken=${refresh_token}`,
+  });
+  if (data) return data?.data;
 };
 
 export const fetchCountries = async () => {
@@ -301,7 +305,11 @@ export const updatePassword = async (
       toast: false,
     },
     url: UPDATE_PASSWORD,
-    data: `password=${password}&passwordNew=${passwordNew}&passwordConfirm=${passwordConfirm}`,
+    data: `password=${encodeURIComponent(
+      password
+    )}&passwordNew=${encodeURIComponent(
+      passwordNew
+    )}&passwordConfirm=${encodeURIComponent(passwordConfirm)}`,
   });
   return data;
 };

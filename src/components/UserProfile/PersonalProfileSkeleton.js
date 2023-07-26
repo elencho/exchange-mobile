@@ -95,6 +95,5 @@ const styles = StyleSheet.create({
     paddingRight: 24,
     paddingBottom: 30,
     marginBottom: 12,
-    paddingLeft: 12,
   },
 });

@@ -1,13 +1,11 @@
 import React, { useEffect, memo } from 'react';
 import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'i18next';
 
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
-// import Trade from './Trade';
 import List from '../../assets/images/List.svg';
 
 import colors from '../../constants/colors';
@@ -65,13 +63,6 @@ const TransactionsBlock = ({ loading }) => {
     trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
     transactions: { code: currencyCode, currency },
   } = state;
-
-  // const toggleShowHide = () => {
-  //   dispatch(setTradeOffset(0));
-  //   dispatch(hideOtherPairsAction(!hideOtherPairs));
-  //   dispatch(saveTrades([]));
-  //   dispatch(fetchTrades());
-  // };
 
   const handleScrollEnd = () => {
     if (trades.length === totalTrades) {
