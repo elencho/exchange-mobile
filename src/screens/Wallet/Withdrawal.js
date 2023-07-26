@@ -264,9 +264,8 @@ export default memo(Withdrawal);
 
 const styles = StyleSheet.create({
   block: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingVertical: 22,
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     marginBottom: 12,
   },
   button: {

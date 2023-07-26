@@ -85,16 +85,15 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   container: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingHorizontal: 24,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
+    paddingHorizontal: 5,
     paddingBottom: 30,
     marginBottom: 12,
   },
   containerSec: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     paddingRight: 24,
     paddingBottom: 30,
     marginBottom: 12,
-    paddingLeft: 12,
   },
 });

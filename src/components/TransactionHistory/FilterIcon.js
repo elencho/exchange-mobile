@@ -28,17 +28,16 @@ export default function FilterIcon({ onPress }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 35,
-    minWidth: 35,
-    borderRadius: 30,
-    backgroundColor: colors.SECONDARY_PURPLE,
+    height: 45,
+    width: 44,
+    backgroundColor: colors.BUTTON_DISABLED,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
+    marginTop: 11,
   },
   icon: {
-    width: 13,
-    height: 13,
+    width: 18,
+    height: 18,
   },
   dot: {
     width: 6,

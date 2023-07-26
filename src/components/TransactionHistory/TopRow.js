@@ -4,10 +4,10 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
-import Logo from '../../assets/images/Logo.svg';
 import AppText from '../AppText';
+import Headline from './Headline';
 
-function TopRow({ clear }) {
+function TopRow({ clear, headlineLogo }) {
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -27,9 +27,30 @@ function TopRow({ clear }) {
     clear && clear();
   };
 
+  const getDisplayText = (routeName) => {
+    switch (routeName) {
+      case 'Transactions':
+        return 'Transaction History';
+      case 'Wallet':
+        return 'My Wallet';
+      case 'Trade':
+        return 'Instant Trade';
+      case 'Exchange':
+        return 'Exchange';
+      default:
+        return '';
+    }
+  };
+
+  const title = getDisplayText(route.name);
+
   return (
     <View style={styles.topRow}>
-      <Logo style={styles.logo} />
+      <View style={styles.flexRow}>
+        <Headline title={title} />
+        {headlineLogo ? headlineLogo : null}
+      </View>
+
       <Pressable style={styles.profile} onPress={navigate}>
         <AppText medium style={styles.text}>
           {initials()}
@@ -73,10 +94,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    zIndex: 99,
   },
   text: {
     color: colors.PRIMARY_TEXT,
     fontSize: 15,
     lineHeight: 19,
+  },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
 });

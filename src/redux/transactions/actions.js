@@ -13,6 +13,7 @@ export const actionTypes = {
   INCREASE_OFFSET: 'INCREASE_OFFSET',
   SET_TAB_ROUTE_NAME: 'SET_TAB_ROUTE_NAME',
   SET_TOTAL_TRANSACTIONS: 'SET_TOTAL_TRANSACTIONS',
+  SET_ACTIVE_TAB: 'SET_ACTIVE_TAB',
   // PURE VISUALS
   TOGGLE_LOADING: 'TOGGLE_LOADING',
 
@@ -88,6 +89,10 @@ export const setTotalTransactions = (totalTransactions) => ({
 export const setTabRouteName = (tabRoute) => ({
   type: actionTypes.SET_TAB_ROUTE_NAME,
   tabRoute,
+});
+export const setActiveTab = (activeTab) => ({
+  type: actionTypes.SET_ACTIVE_TAB,
+  activeTab,
 });
 
 // FOR SAGAS

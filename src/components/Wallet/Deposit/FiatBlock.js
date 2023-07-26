@@ -178,9 +178,8 @@ export default function FiatBlock() {
 
 const styles = StyleSheet.create({
   block: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
     paddingVertical: 22,
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     marginBottom: 22,
   },
   button: {

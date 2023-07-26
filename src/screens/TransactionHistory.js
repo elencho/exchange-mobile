@@ -8,18 +8,12 @@ import {
 } from '@react-navigation/native';
 
 import Background from '../components/Background';
-import FilterIcon from '../components/TransactionHistory/FilterIcon';
-import FilterRow from '../components/TransactionHistory/FilterRow';
-import Headline from '../components/TransactionHistory/Headline';
 import AppText from '../components/AppText';
 import TopRow from '../components/TransactionHistory/TopRow';
-import TransactionDate from '../components/TransactionHistory/TransactionDate';
 import TransactionModal from '../components/TransactionHistory/TransactionModal';
 import TransactionSkeleton from '../components/TransactionHistory/TransactionSkeleton';
 import List from '../assets/images/List.svg';
 
-import { types } from '../constants/filters';
-import { monthsShort } from '../constants/months';
 import {
   chooseCurrency,
   clearFilters,
@@ -28,6 +22,10 @@ import {
 } from '../redux/transactions/actions';
 import colors from '../constants/colors';
 import CustomRefreshContol from '../components/CustomRefreshContol';
+import TabSwitcher from '../components/TransactionHistory/widgets/TabSwitcher';
+import SearchAndFilter from '../components/TransactionHistory/widgets/SearchAndFilter';
+import TransactionsBlock from '../components/InstantTrade/TransactionsBlock';
+import Transaction from '../components/TransactionHistory/Transaction';
 
 function TransactionHistory({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -41,6 +39,7 @@ function TransactionHistory({ navigation, route }) {
       totalTransactions,
       code: currencyCode,
       currency,
+      activeTab,
     },
     trade: { moreTradesLoading },
   } = state;
@@ -74,22 +73,10 @@ function TransactionHistory({ navigation, route }) {
       ? transactions
       : transactions.filter((t) => t.currency == currencyCode);
 
-  const dates = transactionsCurrencyFiltered?.map((tr) => {
-    const date = new Date(tr.timestamp);
-    return `${date.getDate()} ${
-      monthsShort[date.getMonth()]
-    }, ${date.getFullYear()}`;
-  });
-
-  const uniqueDates = [...new Set(dates)];
-
-  const renderDate = ({ item }) => (
-    <TransactionDate
-      date={item}
-      transactions={transactionsCurrencyFiltered}
-      loading={loading}
-    />
+  const renderTransaction = ({ item }) => (
+    <Transaction isTransfer transactionData={item} loading={loading} />
   );
+
   const listEmptyContainer = (
     <View style={styles.empty}>
       <List />
@@ -109,23 +96,18 @@ function TransactionHistory({ navigation, route }) {
   return (
     <Background>
       <TopRow clear={() => dispatch(clearFilters())} />
-
-      <Headline title="Transaction History" />
-
-      <View style={styles.filter}>
-        <FilterRow array={types} />
-        <FilterIcon onPress={() => navigation.navigate('TransactionFilter')} />
-      </View>
+      <TabSwitcher />
+      <SearchAndFilter navigation={navigation} />
 
       {loading ? (
         <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
-      ) : (
+      ) : activeTab === 'Transfer' ? (
         <FlatList
           style={styles.transactions}
           contentContainerStyle={{ flexGrow: 1 }}
-          data={uniqueDates}
-          renderItem={renderDate}
-          keyExtractor={(item) => item}
+          data={transactionsCurrencyFiltered}
+          renderItem={renderTransaction}
+          keyExtractor={(item, index) => item.transactionId + index}
           onEndReached={handleScrollEnd}
           onEndReachedThreshold={0.5}
           showsVerticalScrollIndicator={false}
@@ -134,14 +116,9 @@ function TransactionHistory({ navigation, route }) {
           refreshControl={
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }
-          ListFooterComponent={() =>
-            moreTradesLoading && uniqueDates.length > 0 ? (
-              <TransactionSkeleton length={[0, 1, 2]} />
-            ) : (
-              <View />
-            )
-          }
         />
+      ) : (
+        <TransactionsBlock />
       )}
 
       {isFocused && <TransactionModal transactions />}
@@ -163,6 +140,7 @@ const styles = StyleSheet.create({
   transactions: {
     flex: 1,
     marginTop: 20,
+    paddingHorizontal: 5,
   },
   filter: {
     flexDirection: 'row',

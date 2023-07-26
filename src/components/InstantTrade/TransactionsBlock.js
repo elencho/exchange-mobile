@@ -1,13 +1,11 @@
 import React, { useEffect, memo } from 'react';
 import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
-// import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import { t } from 'i18next';
 
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
 import OneTransactionSkeleton from '../TransactionHistory/OneTransactionSkeleton';
-import Trade from './Trade';
 import List from '../../assets/images/List.svg';
 
 import colors from '../../constants/colors';
@@ -21,6 +19,7 @@ import {
 } from '../../redux/trade/actions';
 import { reachScrollEnd } from '../../redux/transactions/actions';
 import { IS_IOS } from '../../constants/system';
+import Transaction from '../TransactionHistory/Transaction';
 
 export const TopRow = ({ text, onPress }) => {
   return (
@@ -62,14 +61,8 @@ const TransactionsBlock = ({ loading }) => {
   const state = useSelector((state) => state);
   const {
     trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
+    transactions: { code: currencyCode, currency },
   } = state;
-
-  const toggleShowHide = () => {
-    dispatch(setTradeOffset(0));
-    dispatch(hideOtherPairsAction(!hideOtherPairs));
-    dispatch(saveTrades([]));
-    dispatch(fetchTrades());
-  };
 
   const handleScrollEnd = () => {
     if (trades.length === totalTrades) {
@@ -85,9 +78,16 @@ const TransactionsBlock = ({ loading }) => {
     dispatch(fetchTrades());
   };
 
-  const renderTrade = ({ item }) => (
-    <Trade trade={item} key={item.creationTime} />
-  );
+  const renderTrade = ({ item }) => <Transaction transactionData={item} />;
+
+  const transactionData =
+    currency === 'Show All Currency'
+      ? trades
+      : trades.filter(
+          (t) =>
+            t.quoteCurrency === currencyCode || t.baseCurrency === currencyCode
+        );
+
   const footer = memo(() =>
     moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />
   );
@@ -104,11 +104,6 @@ const TransactionsBlock = ({ loading }) => {
 
   return (
     <View style={styles.container}>
-      <TopRow
-        text={hideOtherPairs ? 'Show' : 'Hide'}
-        onPress={toggleShowHide}
-      />
-
       {loading && !moreTradesLoading ? (
         <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
           {[1, 2, 3].map((i) => (
@@ -120,7 +115,7 @@ const TransactionsBlock = ({ loading }) => {
       ) : (
         <FlatList
           style={{ height: 280 }}
-          data={trades}
+          data={transactionData}
           renderItem={renderTrade}
           keyExtractor={(item) => item.creationTime}
           onEndReached={handleScrollEnd}
@@ -140,8 +135,9 @@ const TransactionsBlock = ({ loading }) => {
 export default memo(TransactionsBlock);
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    padding: 25,
+    paddingHorizontal: 5,
+    marginTop: 20,
+    flex: 1,
   },
   empty: {
     height: 280,

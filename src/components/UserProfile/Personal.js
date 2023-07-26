@@ -242,9 +242,10 @@ export default function Personal({ loading }) {
           </View>
         ))}
       </View>
-
+      <View style={styles.line} />
       <PersonalInformation />
       {corporate && <CompanyInformation />}
+      <View style={styles.line} />
       <DeleteAccount />
       <PersonalInfoModal />
       <PhoneNumberModal />
@@ -284,8 +285,8 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   block: {
-    padding: 25,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    padding: 5,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 10,
   },
   flex: {
@@ -318,5 +319,11 @@ const styles = StyleSheet.create({
   upload: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  line: {
+    marginVertical: 15,
+    height: 1,
+    flex: 1,
+    backgroundColor: colors.BUTTON_DISABLED,
   },
 });

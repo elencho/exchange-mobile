@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   container: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingHorizontal: 24,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
+    paddingHorizontal: 5,
     paddingBottom: 30,
     marginBottom: 12,
   },
