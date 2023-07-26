@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView, Keyboard } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,6 +11,7 @@ import colors from '../../constants/colors';
 import CustomRefreshContol from '../../components/CustomRefreshContol';
 import { useFocusEffect } from '@react-navigation/native';
 import BalanceSearchBar from '../../components/Wallet/BalanceSearchBar';
+import { useSharedValue } from 'react-native-reanimated';
 
 export default function Wallet() {
   const dispatch = useDispatch();
@@ -21,10 +22,12 @@ export default function Wallet() {
   const [showRefreshControl, setShowRefreshControl] = useState(false);
   const [value, setValue] = useState('');
   const [showZeroBalances, setShowZeroBalances] = useState(true);
+  const [pressed, setPressed] = useState(false);
   const [nonZeroBalances, setNonZeroBalances] = useState([]);
 
   useFocusEffect(
     useCallback(() => {
+      hideButtonsHandler();
       const timer = setTimeout(() => {
         setShowRefreshControl(true);
       }, 1000);
@@ -67,11 +70,29 @@ export default function Wallet() {
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
   };
 
+  const animatedValue = useSharedValue(1000);
+
+  const showButtonsHandler = () => {
+    animatedValue.value = 0;
+    setShowZeroBalances(true);
+  };
+  const hideButtonsHandler = () => {
+    type('');
+    animatedValue.value = 1000;
+  };
+
+  const onScroll = () => {
+    if (!value) {
+      hideButtonsHandler();
+      Keyboard.dismiss();
+    }
+  };
   return (
     <Background>
       <TopRow />
 
       <ScrollView
+        onScroll={onScroll}
         refreshControl={
           showRefreshControl ? (
             <CustomRefreshContol
@@ -85,15 +106,19 @@ export default function Wallet() {
       >
         <TotalBalance balanceLoading={balanceLoading} />
         <BalanceSearchBar
-          type={type}
+          animatedValue={animatedValue}
+          showButtonsHandler={showButtonsHandler}
+          hideButtonsHandler={hideButtonsHandler}
           setShowZeroBalances={setShowZeroBalances}
           value={value}
+          type={type}
           showZeroBalances={showZeroBalances}
         />
         <BalancesList
           balanceLoading={balanceLoading}
           filteredBalances={filteredBalances}
         />
+        <View style={styles.footer} />
       </ScrollView>
     </Background>
   );
@@ -105,5 +130,9 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     paddingHorizontal: 20,
     paddingBottom: 28,
+  },
+  footer: {
+    height: 200,
+    width: 100,
   },
 });

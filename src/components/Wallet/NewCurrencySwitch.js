@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { setUsdBtcSwitch } from '../../redux/wallet/actions';
+import Next from '../../assets/images/Next.svg';
 
 export default function NewCurrencySwitch() {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ export default function NewCurrencySwitch() {
         <AppText style={styles.filterText} body>
           {filter}
         </AppText>
+        <Next />
       </Pressable>
     </View>
   );
@@ -42,11 +44,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderColor: colors.SECONDARY_PURPLE,
     borderWidth: 1,
+    flexDirection: 'row',
   },
   row: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   filterText: {
     color: colors.SECONDARY_PURPLE,
+    paddingRight: 2,
   },
 });

@@ -17,17 +17,10 @@ const BalanceSearchBar = ({
   type,
   value,
   showZeroBalances,
+  animatedValue,
+  hideButtonsHandler,
+  showButtonsHandler,
 }) => {
-  const animatedValue = useSharedValue(1000);
-
-  const showButtonsHandler = () => {
-    animatedValue.value = 0;
-  };
-  const hideButtonsHandler = () => {
-    type('');
-    animatedValue.value = 1000;
-  };
-
   const inputStyle = useAnimatedStyle(() => {
     return {
       transform: [
@@ -41,7 +34,7 @@ const BalanceSearchBar = ({
   });
 
   const Right = () => (
-    <Pressable onPress={hideButtonsHandler} style={{ zIndex: 99 }}>
+    <Pressable hitSlop={50} onPress={hideButtonsHandler} style={{ zIndex: 99 }}>
       <Close />
     </Pressable>
   );
@@ -66,7 +59,7 @@ const BalanceSearchBar = ({
             Hide Zero Balances
           </AppText>
         </View>
-        <Pressable onPress={showButtonsHandler}>
+        <Pressable hitSlop={30} onPress={showButtonsHandler}>
           <Search style={styles.searchIcon} height={20} width={20} />
         </Pressable>
       </View>
@@ -100,6 +93,8 @@ const styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'row',
     flex: 1,
+    textAlign: 'center',
+    alignItems: 'center',
   },
   searchInput: {
     borderWidth: 1,

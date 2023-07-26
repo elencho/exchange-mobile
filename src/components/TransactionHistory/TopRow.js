@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    zIndex: 99,
   },
   text: {
     color: colors.PRIMARY_TEXT,
