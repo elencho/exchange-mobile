@@ -49,6 +49,8 @@ export const VERIFY_PHONE_NUMBER = `${auth}/auth/realms/GEX/GEX-resource/verifyP
 
 export const UPDATE_PHONE_NUMBER = `${auth}/auth/realms/GEX/GEX-resource/updatePhoneNumber`;
 
+export const GO_TO_EXCHANGE = `${auth}/auth/realms/GEX/GEX-resource/getLoginActionLink`;
+
 export const SEND_OTP = `${auth}/auth/realms/GEX/GEX-resource/sendOTP`;
 
 export const OTP_CHANGE_TOKEN = `${auth}/auth/realms/GEX/GEX-resource/getOTPChangeParams`;
