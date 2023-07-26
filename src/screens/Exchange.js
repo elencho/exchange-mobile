@@ -1,14 +1,20 @@
 import React from 'react';
 import { StyleSheet, View, Linking, Pressable } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 
 import Logo from '../assets/images/Logo';
 import Rocket from '../assets/images/Rocket';
 import AppText from '../components/AppText';
-import images from '../constants/images';
+
 import colors from '../constants/colors';
+import { exchangeUtil } from '../utils/userProfileUtils';
 
 const Exchange = () => {
-  const handlePress = () => Linking.openURL('https://cryptal.com/ex');
+  const handlePress = async () => {
+    const refresh_token = await SecureStore.getItemAsync('refreshToken');
+    const data = await exchangeUtil(refresh_token);
+    Linking.openURL(data?.redirectUri);
+  };
 
   return (
     <View style={styles.background}>
