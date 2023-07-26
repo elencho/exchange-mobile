@@ -1,17 +1,21 @@
 import React from 'react';
 import { StyleSheet, View, Linking, Pressable } from 'react-native';
+import * as SecureStore from 'expo-secure-store';
 
-import Logo from '../assets/images/Logo';
 import Rocket from '../assets/images/Rocket';
 import AppText from '../components/AppText';
 
 import colors from '../constants/colors';
 import TopRow from '../components/TransactionHistory/TopRow';
-import Headline from '../components/TransactionHistory/Headline';
 import Background from '../components/Background';
+import { exchangeUtil } from '../utils/userProfileUtils';
 
 const Exchange = () => {
-  const handlePress = () => Linking.openURL('https://cryptal.com/ex');
+  const handlePress = async () => {
+    const refresh_token = await SecureStore.getItemAsync('refreshToken');
+    const data = await exchangeUtil(refresh_token);
+    Linking.openURL(data?.redirectUri);
+  };
 
   return (
     <Background>
@@ -50,9 +54,7 @@ const styles = StyleSheet.create({
     color: '#838BB2',
     marginTop: 10,
   },
-  rocket: {
-    marginTop: 130,
-  },
+
   btn: {
     marginTop: 40,
   },
@@ -65,5 +67,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
   },
 });
