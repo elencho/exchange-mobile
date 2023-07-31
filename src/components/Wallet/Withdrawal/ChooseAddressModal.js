@@ -1,5 +1,11 @@
 import React, { memo, useMemo } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../../AppModal';
@@ -42,7 +48,10 @@ function ChooseAddressModal() {
 
   const children = useMemo(
     () => (
-      <>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.scrollView}
+      >
         {whitelist?.map((w) => (
           <View key={w.id}>
             {network === w.provider && (
@@ -51,12 +60,10 @@ function ChooseAddressModal() {
                 onPress={() => choose(w)}
               >
                 <View style={styles.flex}>
-                  <AppText medium style={styles.primary}>
-                    {w.name}
-                  </AppText>
-                  <AppText subtext style={styles.secondary} numberOfLines={1}>
+                  <Text style={styles.primary}>{w.name}</Text>
+                  <Text style={styles.secondary} numberOfLines={1}>
                     {addressFormat(w.address)}
-                  </AppText>
+                  </Text>
                 </View>
 
                 <View style={styles.right}>
@@ -73,7 +80,7 @@ function ChooseAddressModal() {
             )}
           </View>
         ))}
-      </>
+      </ScrollView>
     ),
     [whitelist, network]
   );
@@ -106,14 +113,19 @@ const styles = StyleSheet.create({
   },
   primary: {
     color: colors.PRIMARY_TEXT,
+    fontFamily: 'Ubuntu_Medium',
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
     marginTop: 5,
     lineHeight: 15,
+    fontSize: 12,
   },
   right: {
     alignItems: 'flex-end',
     justifyContent: 'space-between',
+  },
+  scrollView: {
+    maxHeight: 150,
   },
 });

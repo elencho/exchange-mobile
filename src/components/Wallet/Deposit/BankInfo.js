@@ -19,6 +19,7 @@ import useCopyToClipboard from '../../../utils/copyToClipboard';
 
 import Arrow from '../../../assets/images/Arrow';
 import CopyIcon from '../../../assets/images/Copy.svg';
+import AppDropdown from '../../AppDropdown';
 const InfoRow = ({ title, text }) => {
   const { copyToClipboard } = useCopyToClipboard();
   const copy = () => copyToClipboard(text);
@@ -105,22 +106,20 @@ export default function BankInfo() {
       {numberOfProviders === 1 ? (
         <InfoRow title="Payment Service Provider" text={bankDisplayName} />
       ) : (
-        <Pressable style={styles.dropdown} onPress={handleBanks}>
-          <View style={styles.subtext}>
-            <AppText subtext style={styles.secondary}>
-              Payment Service Provider
-            </AppText>
-          </View>
-          <Image
-            source={{ uri: `${ICONS_URL_PNG}/${wireDepositProvider}.png` }}
-            style={styles.image}
-          />
-          <AppText medium style={styles.dropdownText}>
-            {bankDisplayName ?? 'Choose Bank'}
-          </AppText>
-          <View style={styles.line} />
-          <Arrow />
-        </Pressable>
+        <AppDropdown
+          style={styles.dropdown}
+          label="Payment Service Provider"
+          withLabel
+          notClearable
+          handlePress={handleBanks}
+          icon={
+            <Image
+              source={{ uri: `${ICONS_URL_PNG}/${wireDepositProvider}.png` }}
+              style={styles.image}
+            />
+          }
+          selectedText={bankDisplayName ?? 'Choose Bank'}
+        />
       )}
 
       <>
@@ -162,13 +161,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
   },
   dropdown: {
-    borderWidth: 1,
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
     marginTop: 18,
-    borderColor: '#42475D',
-    paddingHorizontal: 15,
     marginBottom: 10,
   },
   image: {

@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     color: colors.SECONDARY_TEXT,
   },
   line: {
-    marginTop: 15,
+    marginVertical: 20,
     height: 1,
     flex: 1,
     backgroundColor: colors.BUTTON_DISABLED,
