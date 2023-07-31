@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   justify: {
     justifyContent: 'space-between',
     flex: 1,
-    height: 37,
+    // height: 37,
     marginLeft: 25,
   },
   row: {
@@ -321,7 +321,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   line: {
-    marginVertical: 15,
+    marginVertical: 20,
+    marginHorizontal: 4,
     height: 1,
     flex: 1,
     backgroundColor: colors.BUTTON_DISABLED,

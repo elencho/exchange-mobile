@@ -72,17 +72,19 @@ export default function TemplatesModal() {
         style={[styles.template, background({ templateName: 'New Template' })]}
       >
         <Pressable
-          style={styles.flex}
+          style={styles.addNew}
           onPress={() => choose({ templateName: 'New Template' })}
         >
-          <PurpleText text="Add New Bank" />
-          <AppText subtext style={styles.subtext}>
-            Other Provider
-          </AppText>
-        </Pressable>
+          <View>
+            <PurpleText text="Add New Bank" />
+            <AppText subtext style={styles.subtext}>
+              Other Provider
+            </AppText>
+          </View>
 
-        <Pressable style={styles.icon}>
-          <Add />
+          <View style={styles.icon}>
+            <Add />
+          </View>
         </Pressable>
       </View>
 
@@ -105,6 +107,13 @@ const styles = StyleSheet.create({
   flex: {
     flex: 1,
     height: 37,
+  },
+  addNew: {
+    flex: 1,
+    height: 37,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   icon: {
     width: 18,

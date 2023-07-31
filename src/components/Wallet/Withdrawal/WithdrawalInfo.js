@@ -140,7 +140,7 @@ export default function WithdrawalInfo({ error }) {
         label="Name"
         style={styles.name}
         value={`${userInfo.firstName} ${userInfo.lastName}`}
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         disabled
       />
 

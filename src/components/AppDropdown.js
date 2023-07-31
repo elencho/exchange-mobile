@@ -13,6 +13,8 @@ const AppDropdown = ({
   style,
   icon,
   activeLabel,
+  notClearable,
+  withLabel,
 }) => {
   return (
     <Pressable style={[styles.container, style]} onPress={handlePress}>
@@ -32,9 +34,22 @@ const AppDropdown = ({
           {label}
         </AppText>
       )}
+      {withLabel && (
+        <AppText
+          subtext
+          style={[
+            styles.withLabel,
+            {
+              backgroundColor: colors.PRIMARY_BACKGROUND,
+            },
+          ]}
+        >
+          {label}
+        </AppText>
+      )}
 
       <View>
-        {selectedText && selectedText !== activeLabel ? (
+        {selectedText && selectedText !== activeLabel && !notClearable ? (
           <Pressable style={styles.close} onPress={handleClear}>
             <Close width={9} height={9} />
           </Pressable>
@@ -61,7 +76,14 @@ const styles = StyleSheet.create({
   label: {
     color: colors.SECONDARY_TEXT,
   },
-  selectedText: { color: colors.PRIMARY_TEXT },
+  withLabel: {
+    color: colors.SECONDARY_TEXT,
+    position: 'absolute',
+    left: 8,
+    top: -9,
+    paddingHorizontal: 8,
+  },
+  selectedText: { color: colors.PRIMARY_TEXT, marginLeft: 8 },
   close: {
     width: 25,
     height: 25,

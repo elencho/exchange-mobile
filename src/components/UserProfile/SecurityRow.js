@@ -234,7 +234,11 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
           </View>
 
           {text === 'Strong_Password' ? (
-            <PurpleText text="Edit" onPress={handlePassword} />
+            <PurpleText
+              text="Edit"
+              onPress={handlePassword}
+              style={{ fontSize: 20 }}
+            />
           ) : (
             <AppSwitcher
               isOn={switchCond()}
@@ -261,7 +265,8 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     height: 68,
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    marginTop: 20,
   },
   white: {
     color: colors.PRIMARY_TEXT,

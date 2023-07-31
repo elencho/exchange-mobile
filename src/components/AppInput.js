@@ -21,7 +21,7 @@ const AppInput = ({
   error = false,
   errorText = null,
   isForModal,
-  labelBackgroundColor = colors.PRIMARY_BACKGROUND,
+  labelBackgroundColor = colors.SECONDARY_BACKGROUND,
   disabled,
   onChangeText = () => {},
   ...rest
@@ -74,6 +74,10 @@ const AppInput = ({
                 {
                   width: isPlaceholder ? '100%' : null,
                   backgroundColor: labelBackgroundColor,
+                  backgroundColor: focusAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['transparent', labelBackgroundColor],
+                  }),
                   transform: [
                     {
                       scale: focusAnim.interpolate({
