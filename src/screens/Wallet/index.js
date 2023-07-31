@@ -55,7 +55,7 @@ export default function Wallet() {
   const type = (text) => {
     setValue(text);
     const array = showZeroBalances ? balances : nonZeroBalances;
-    const filteredArray = array.filter((c) => {
+    const filteredArray = array?.filter((c) => {
       return (
         c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
         c.currencyName.toLowerCase().includes(text.toLowerCase())

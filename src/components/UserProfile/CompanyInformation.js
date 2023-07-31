@@ -104,8 +104,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   block: {
-    padding: 25,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    paddingVertical: 25,
+    paddingHorizontal: 5,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 10,
   },
   flex: {

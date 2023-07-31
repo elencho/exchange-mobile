@@ -8,6 +8,10 @@ import { filterAction } from '../../redux/transactions/actions';
 import Pending from '../../assets/images/Status_Pending';
 import Success from '../../assets/images/Status_Success';
 import Failed from '../../assets/images/Status_Failed';
+import {
+  setFiatCodesQuery,
+  setTradeActionQuery,
+} from '../../redux/trade/actions';
 
 const statusIcons = {
   SUCCESS: <Success />,
@@ -16,19 +20,46 @@ const statusIcons = {
 };
 export default function FilterRow({ array = [''], filterType }) {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.transactions);
+  const transactionsState = useSelector((state) => state.transactions);
+  const tradesState = useSelector((state) => state.trade);
 
-  const { typeFilter, method, status } = state;
+  const { typeFilter, method, status: transactionStatus } = transactionsState;
+  const {
+    offset,
+    limit,
+    fromDateTimeQuery,
+    toDateTimeQuery,
+    statusQuery,
+    actionQuery,
+    cryptoCodeQuery,
+    fiatCodesQuery,
+  } = tradesState;
 
-  console.log('typeFilter', typeFilter);
-
-  const handleFilter = (filter) => {
-    dispatch(filterAction(filter, filterType));
+  const handleFilter = (fil) => {
+    if (filterType === 'currency') {
+      if (fiatCodesQuery.includes(fil)) {
+        dispatch(
+          setFiatCodesQuery([...fiatCodesQuery].filter((item) => item !== fil))
+        );
+      } else {
+        dispatch(setFiatCodesQuery([...fiatCodesQuery, fil]));
+      }
+    } else if (filterType === 'tradeAction') {
+      if (actionQuery.includes(fil)) {
+        dispatch(
+          setTradeActionQuery([...actionQuery].filter((item) => item !== fil))
+        );
+      } else dispatch(setTradeActionQuery([...actionQuery, fil]));
+    } else {
+      dispatch(filterAction(fil, filterType));
+    }
   };
   const filterConditional = (fil) => {
     if (filterType === 'type') return fil === typeFilter;
     if (filterType === 'method') return fil === method;
-    if (filterType === 'status') return fil === status;
+    if (filterType === 'status') return fil === transactionStatus;
+    if (filterType === 'currency') return fiatCodesQuery.includes(fil);
+    if (filterType === 'tradeAction') return actionQuery?.includes(fil);
   };
 
   const renderItem = ({ item }) => {

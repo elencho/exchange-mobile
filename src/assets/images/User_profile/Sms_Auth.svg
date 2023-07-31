@@ -1,12 +1,17 @@
-<svg id="SMS" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36.14" height="40.83" viewBox="0 0 36.14 40.83">
-  <defs>
-    <clipPath id="clip-path">
-      <rect id="Rectangle_10714" data-name="Rectangle 10714" width="36.14" height="40.83" fill="#c0c5e0"/>
-    </clipPath>
-  </defs>
-  <g id="Group_71725" data-name="Group 71725" clip-path="url(#clip-path)">
-    <path id="Path_62461" data-name="Path 62461" d="M29.48,38.76c0,.91-.01,1.62-.02,2.07H0L.04,0H26.67V2.06H2.33a.5.5,0,0,0-.5.5V38.5a.5.5,0,0,0,.5.5H27.15a.5.5,0,0,0,.5-.5l.02-5.94h1.78Z" fill="#c0c5e0"/>
-    <path id="Path_62462" data-name="Path 62462" d="M36.08,8.28H17.26v14.9h4.78v3.54h1.03l5.69-3.52,7.38-.02c-.01-.96-.03-4.29-.06-14.9M34.57,21.6H28.68c-.13.08-.93.52-4.73,2.82l-.54.32V21.75H18.8l.04-11.93H34.59Z" fill="#c0c5e0"/>
-    <rect id="Rectangle_10713" data-name="Rectangle 10713" width="6.852" height="2" transform="translate(11.732 31.013)" fill="#c0c5e0"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="43.088" height="48.911" viewBox="0 0 43.088 48.911">
+  <g id="My_Phone_Number" data-name="My Phone Number" transform="translate(0.501 0.5)">
+    <g id="Group_42661" data-name="Group 42661" transform="translate(0 0)">
+      <g id="Group_42660" data-name="Group 42660" transform="translate(0)">
+        <path id="Path_8750" data-name="Path 8750" d="M62.7,3H31.049L31,50.911h34.88s.038-1.158.038-2.94l-.038-7.676H62.7l-.018,7.381H34.237V6.5H62.7Z" transform="translate(-30.996 -3)" fill="#696f8e" stroke="#1f1f35" stroke-width="1"/>
+      </g>
+    </g>
+    <g id="Group_42668" data-name="Group 42668" transform="translate(19.944 9.65)">
+      <g id="Group_42663" data-name="Group 42663" transform="translate(0 0)">
+        <g id="Group_42662" data-name="Group 42662" transform="translate(0 0)">
+          <path id="Path_8751" data-name="Path 8751" d="M225,129.194v17.87h5.476v4.063h1.7l6.521-4.041,8.749-.022s-.036-1.734-.075-17.87Zm19.831,15.267h-6.422s-.21.058-5.547,3.286v-3.116h-5.288l.041-12.867h17.248Z" transform="translate(-225 -129.194)" fill="#696f8e" stroke="#161629" stroke-width="0.4"/>
+        </g>
+      </g>
+    </g>
+    <line id="Line_155" data-name="Line 155" x2="3.86" transform="translate(16.084 37.451)" fill="none" stroke="#696f8e" stroke-width="2"/>
   </g>
 </svg>

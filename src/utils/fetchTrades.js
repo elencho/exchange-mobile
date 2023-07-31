@@ -10,8 +10,23 @@ import {
 } from '../constants/api';
 
 export const fetchTrades = async (params) => {
-  const data = await axios.get(TRADES_URL_PAGED, { params });
-  return data?.data;
+  console.log(
+    'params',
+    params,
+    encodeURIComponent(new URLSearchParams(params))
+  );
+
+  try {
+    const data = await axios.get(TRADES_URL_PAGED, {
+      params,
+    });
+    console.log(data);
+
+    return data;
+  } catch (err) {
+    console.error(err);
+    return {};
+  }
 };
 
 export const fetchOffers = async () => {

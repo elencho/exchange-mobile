@@ -10,7 +10,6 @@ import PurpleText from '../components/PurpleText';
 import WithKeyboard from '../components/WithKeyboard';
 import Strong_Password from '../assets/images/User_profile/Strong_Password';
 import GeneralError from '../components/GeneralError';
-import Back from '../assets/images/Back';
 
 import colors from '../constants/colors';
 import { startLoginAction } from '../redux/profile/actions';
@@ -118,7 +117,6 @@ export default function ForgotPassword({ navigation }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={goToLogin}>
-        <Back />
         <PurpleText
           numberOfLines={1}
           text="Back to Log In"

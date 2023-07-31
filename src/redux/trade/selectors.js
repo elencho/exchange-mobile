@@ -1,13 +1,53 @@
 export const getParams = (state) => {
   const {
-    trade: { crypto, fiat, offset, limit, hideOtherPairs },
+    trade: {
+      fiatCodesQuery,
+      offset,
+      limit,
+      statusQuery,
+      actionQuery,
+      fromDateTimeQuery,
+      toDateTimeQuery,
+      hideOtherPairs,
+      cryptoCodeQuery,
+    },
   } = state;
 
   return {
-    pairId: hideOtherPairs ? `${crypto}-${fiat}` : null,
-    offset,
+    // pairId: hideOtherPairs ? `${crypto}-${fiat}` : null,
+    offset: 0,
     limit,
+    status: statusQuery,
+    fromDateTime: fromDateTimeQuery,
+    toDateTime: toDateTimeQuery,
+    fiatCodes: fiatCodesQuery,
+    cryptoCode: cryptoCodeQuery,
+    action: actionQuery,
   };
+
+  // const params = new URLSearchParams();
+  // params.append('offset', offset);
+  // params.append('limit', limit);
+  // params.append('fromDateTime', fromDateTimeQuery);
+  // params.append('toDateTime', toDateTimeQuery);
+  // params.append('cryptoCode', cryptoCodeQuery);
+  // statusQuery.forEach((status) => params.append('status', status));
+  // fiatCodesQuery.forEach((fiat) => params.append('fiatCodes', fiat));
+  // actionQuery.forEach((action) => params.append('action', action));
+
+  // return  ;
+
+  // return {
+  //   // pairId: hideOtherPairs ? `${crypto}-${fiat}` : null,
+  //   offset: 0,
+  //   limit,
+  //   status: statusQuery,
+  //   fromDateTime: fromDateTimeQuery,
+  //   toDateTime: toDateTimeQuery,
+  //   fiatCodes: fiatCodesQuery,
+  //   cryptoCode: cryptoCodeQuery,
+  //   action: actionQuery,
+  // };
 };
 
 export const depositFeeParams = (state) => {

@@ -95,6 +95,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     zIndex: 99,
+    marginBottom: 28,
   },
   text: {
     color: colors.PRIMARY_TEXT,

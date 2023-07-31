@@ -8,7 +8,6 @@ import AppButton from '../components/AppButton';
 import WithKeyboard from '../components/WithKeyboard';
 import PurpleText from '../components/PurpleText';
 import Strong_Password from '../assets/images/User_profile/Strong_Password';
-import Back from '../assets/images/Back';
 
 import colors from '../constants/colors';
 import { startLoginAction } from '../redux/profile/actions';
@@ -45,7 +44,6 @@ export default function SetNewPassword({ navigation }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.back} onPress={goToLogin}>
-        <Back />
         <PurpleText
           numberOfLines={1}
           text="Back to Log In"

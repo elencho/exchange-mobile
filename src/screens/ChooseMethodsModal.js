@@ -18,8 +18,6 @@ const ChooseMethodsModal = () => {
   const hideModal = () => dispatch(toggleMethodsModal(false));
   const selectedStyle = { backgroundColor: 'rgba(101, 130, 253, 0.16)' };
 
-  console.log('selectedMethod', selectedMethod);
-
   const children = () => {
     return methods.map((i) => (
       <View key={i}>

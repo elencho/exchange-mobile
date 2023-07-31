@@ -96,10 +96,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   block: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 12,
     paddingVertical: 22,
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
   },
   description: {
     color: colors.SECONDARY_TEXT,
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 50,
@@ -127,10 +127,10 @@ const styles = StyleSheet.create({
     color: colors.SECONDARY_PURPLE,
   },
   scrollView: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   scrollContent: {
-    paddingHorizontal: 28,
+    paddingHorizontal: 10,
     paddingVertical: 20,
   },
 });

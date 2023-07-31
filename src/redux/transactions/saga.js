@@ -31,6 +31,8 @@ import {
   getOffset,
   getMethod,
   totalLoadedTransactions,
+  getType,
+  getStatus,
 } from './selectors';
 import {
   setCryptosArray,
@@ -139,7 +141,6 @@ function* typeSaga(action) {
 
 function* statusSaga(action) {
   const { status } = action;
-  console.log('status', status);
 
   yield put(saveTransactions([]));
   yield put(setTransactionsOffset(0));
@@ -149,12 +150,24 @@ function* statusSaga(action) {
 
 function* filterSaga(action) {
   const { filter, filterType } = action;
-  let method = yield select(getMethod);
-  method = method || [];
+  const method = yield select(getMethod);
+  const type = yield select(getType);
+  const status = yield select(getStatus);
 
-  if (filterType === 'method') yield put(setMethodFilter(filter));
-  if (filterType === 'type') yield put(typeAction(filter));
-  if (filterType === 'status') yield put(statusAction(filter));
+  if (filterType === 'method') {
+    method === filter
+      ? yield put(setMethodFilter(null))
+      : yield put(setMethodFilter(filter));
+  }
+  if (filterType === 'type')
+    type === filter
+      ? yield put(typeAction(null))
+      : yield put(typeAction(filter));
+
+  if (filterType === 'status')
+    status === filter
+      ? yield put(statusAction(null))
+      : yield put(statusAction(filter));
 }
 
 function* currencySaga(action) {

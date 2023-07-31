@@ -55,6 +55,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#42475D',
-    marginBottom: 15,
+    marginBottom: 24,
   },
 });

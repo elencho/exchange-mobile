@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   flexBlock: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,

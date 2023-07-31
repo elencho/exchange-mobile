@@ -93,11 +93,15 @@ function TransactionHistory({ navigation, route }) {
       dispatch(reachScrollEnd('transactions'));
     }
   };
+
   return (
     <Background>
       <TopRow clear={() => dispatch(clearFilters())} />
       <TabSwitcher />
-      <SearchAndFilter navigation={navigation} />
+      <SearchAndFilter
+        navigation={navigation}
+        isInstantTrade={activeTab === 'Instant trade'}
+      />
 
       {loading ? (
         <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />

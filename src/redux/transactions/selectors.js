@@ -57,5 +57,9 @@ export const getOffset = (state) => state.transactions.offset;
 
 export const getMethod = (state) => state.transactions.method;
 
+export const getType = (state) => state.transactions.typeFilter;
+
+export const getStatus = (state) => state.transactions.status;
+
 export const totalLoadedTransactions = (state) =>
   state.transactions.transactions.length;
