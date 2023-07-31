@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     borderWidth: 1,
-    height: 45,
+    height: 44,
     paddingHorizontal: 15,
     flexDirection: 'row',
     alignItems: 'center',

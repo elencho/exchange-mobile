@@ -11,8 +11,9 @@ import PurpleText from '../PurpleText';
 
 import { MaterialIndicator } from 'react-native-indicators';
 import Download from '../../assets/images/Download';
+import { fetchTrades } from '../../redux/trade/actions';
 
-function TransactionFilterBottom({ navigation }) {
+function TransactionFilterBottom({ navigation, isInstantTrade }) {
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
@@ -21,7 +22,9 @@ function TransactionFilterBottom({ navigation }) {
     'https://exchange.cryptal.com/exchange/api/v1/private/report/transactions/user';
 
   const showResults = () => {
-    dispatch(showResultsAction(navigation));
+    isInstantTrade
+      ? dispatch(fetchTrades())
+      : dispatch(showResultsAction(navigation));
     navigation.navigate('Main', {
       screen: 'Transactions',
       params: { isFromTransactions: true },
@@ -39,7 +42,7 @@ function TransactionFilterBottom({ navigation }) {
           Show Result
         </AppText>
       </Pressable>
-      <View style={{ height: 80 }}>
+      {/* <View style={{ height: 80 }}>
         {loading ? (
           <MaterialIndicator
             color="#6582FD"
@@ -53,7 +56,7 @@ function TransactionFilterBottom({ navigation }) {
             <PurpleText style={styles.purple} text="Download" />
           </Pressable>
         )}
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -73,10 +76,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    position: 'absolute',
-    bottom: 0,
-    left: 15,
-    right: 15,
+    marginBottom: 28,
   },
   download: {
     flexDirection: 'row',

@@ -21,6 +21,12 @@ export const actionTypes = {
   SET_CRYPTOS_ARRAY_CONSTANT: 'SET_CRYPTOS_ARRAY_CONSTANT',
   MORE_TRADES_LOADING: 'MORE_TRADES_LOADING',
   SET_TOTAL_TRADES: 'SET_TOTAL_TRADES',
+  SET_TRADE_ACTION_QUERY: 'SET_TRADE_ACTION_QUERY',
+  SET_CRYPTO_CODE_QUERY: 'SET_CRYPTO_CODE_QUERY',
+  SET_FIAT_CODES_QUERY: 'SET_FIAT_CODES_QUERY',
+  SET_STATUS_QUERY: 'SET_STATUS_QUERY',
+  SET_FROM_DATE_QUERY: 'SET_FROM_DATE_QUERY',
+  SET_TO_DATE_QUERY: 'SET_TO_DATE_QUERY',
 
   // PURE VISUALS
   TOGGLE_DATEPICKER: 'TOGGLE_DATEPICKER',
@@ -140,6 +146,30 @@ export const setCryptosArrayConstant = (cryptosArrayConstant) => ({
   type: actionTypes.SET_CRYPTOS_ARRAY_CONSTANT,
   cryptosArrayConstant,
 });
+export const setTradeActionQuery = (actionQuery) => ({
+  type: actionTypes.SET_TRADE_ACTION_QUERY,
+  actionQuery,
+});
+export const setCryptoCodeQuery = (cryptoCodeQuery) => ({
+  type: actionTypes.SET_CRYPTO_CODE_QUERY,
+  cryptoCodeQuery,
+});
+export const setFiatCodesQuery = (fiatCodesQuery) => ({
+  type: actionTypes.SET_FIAT_CODES_QUERY,
+  fiatCodesQuery,
+});
+export const setStatusQuery = (statusQuery) => ({
+  type: actionTypes.SET_STATUS_QUERY,
+  statusQuery,
+});
+export const setFromDateQuery = (fromDateTimeQuery) => ({
+  type: actionTypes.SET_FROM_DATE_QUERY,
+  fromDateTimeQuery,
+});
+export const setToDAteQuery = (toDateTimeQuery) => ({
+  type: actionTypes.SET_TO_DATE_QUERY,
+  toDateTimeQuery,
+});
 
 // FOR SAGAS
 export const fetchTrades = (isMoreLoading) => ({
@@ -170,4 +200,9 @@ export const submitTrade = () => ({
 
 export const resetTradesState = () => ({
   type: actionTypes.RESET_TRADES_STATE,
+});
+
+export const setTradeAction = (tradeAction) => ({
+  type: actionTypes.SET_TRADE_ACTION,
+  tradeAction,
 });

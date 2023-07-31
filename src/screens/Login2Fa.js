@@ -17,7 +17,6 @@ import WithKeyboard from '../components/WithKeyboard';
 import SmsAuth from '../assets/images/User_profile/Sms_Auth.svg';
 import EmailLoginAuth from '../assets/images/User_profile/EmailLoginAuth.svg';
 import TotpAuth from '../assets/images/User_profile/Totp_Auth.svg';
-import Back from '../assets/images/Back';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
@@ -102,7 +101,6 @@ export default function Login2Fa({ navigation }) {
       <WithKeyboard padding flexGrow>
         <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
           <TouchableOpacity style={styles.back} onPress={goBack}>
-            <Back />
             <PurpleText
               numberOfLines={1}
               text="Back to Log In"

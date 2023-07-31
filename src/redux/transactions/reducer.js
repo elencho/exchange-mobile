@@ -17,7 +17,8 @@ const INITIAL_STATE = {
   // Query Params
   code: null,
   limit: 25,
-  method: ['All'],
+  method: null,
+  status: null,
   offset: 0,
   fromDateTime: null,
   toDateTime: null,
@@ -31,6 +32,7 @@ export default (state = INITIAL_STATE, action) => {
     transactions,
     currentTransaction,
     typeFilter,
+    status,
     method,
     code,
     toDateTime,
@@ -95,6 +97,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         method,
       };
+    case actionTypes.SET_STATUS_FILTER:
+      return {
+        ...state,
+        status,
+      };
     case actionTypes.SET_FROM_TIME:
       return {
         ...state,
@@ -139,7 +146,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         typeFilter: null,
-        method: ['All'],
+        method: null,
+        status: null,
         currency: 'Show All Currency',
         code: null,
         fromDateTime: null,

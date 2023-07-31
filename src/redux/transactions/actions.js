@@ -7,6 +7,7 @@ export const actionTypes = {
   SET_CURRENT_TRANSACTION: 'SET_CURRENT_TRANSACTION',
   SET_TYPE_FILTER: 'SET_TYPE_FILTER',
   SET_METHOD_FILTER: 'SET_METHOD_FILTER',
+  SET_STATUS_FILTER: 'SET_STATUS_FILTER',
   SET_FROM_TIME: 'SET_FROM_TIME',
   SET_TO_TIME: 'SET_TO_TIME',
   CLEAR_FILTERS: 'CLEAR_FILTERS',
@@ -21,6 +22,7 @@ export const actionTypes = {
   FETCH_TRANSACTIONS: 'FETCH_TRANSACTIONS',
   FETCH_CURRENCIES: 'FETCH_CURRENCIES',
   TYPE_SAGA_ACTION: 'TYPE_SAGA_ACTION',
+  STATUS_SAGA_ACTION: 'STATUS_SAGA_ACTION',
   CURRENCY_SAGA_ACTION: 'CURRENCY_SAGA_ACTION',
   SET_ABBR: 'SET_ABBR',
   SHOW_RESULTS: 'SHOW_RESULTS',
@@ -62,6 +64,10 @@ export const setTypeFilter = (typeFilter) => ({
 export const setMethodFilter = (method) => ({
   type: actionTypes.SET_METHOD_FILTER,
   method,
+});
+export const setStatusFilter = (status) => ({
+  type: actionTypes.SET_STATUS_FILTER,
+  status,
 });
 export const setFromTime = (fromDateTime) => ({
   type: actionTypes.SET_FROM_TIME,
@@ -107,6 +113,10 @@ export const typeAction = (filter) => ({
   type: actionTypes.TYPE_SAGA_ACTION,
   filter,
 });
+export const statusAction = (status) => ({
+  type: actionTypes.STATUS_SAGA_ACTION,
+  status,
+});
 export const currencyAction = (name, currencyList, code) => ({
   type: actionTypes.CURRENCY_SAGA_ACTION,
   name,
@@ -129,10 +139,10 @@ export const reachScrollEnd = (transactionType) => ({
   type: actionTypes.REACH_SCROLL_END,
   transactionType,
 });
-export const filterAction = (filter, multiselect) => ({
+export const filterAction = (filter, filterType) => ({
   type: actionTypes.FILTER_SAGA_ACTION,
   filter,
-  multiselect,
+  filterType,
 });
 
 export const resetTransactionsState = () => ({

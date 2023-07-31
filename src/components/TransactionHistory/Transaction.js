@@ -102,8 +102,6 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
     ? shortenDestination(recipient)
     : `${size} ${baseCurrency}`;
 
-  console.log('transactionData', transactionData);
-
   return (
     <Pressable onPress={showModal} style={styles.container}>
       <View style={styles.topRow}>

@@ -150,7 +150,6 @@ export default function WithdrawalInputs({
             label="Enter Note"
             onChangeText={setNote}
             value={withdrawalNote}
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           />
         )}
         <AppInput
@@ -160,7 +159,6 @@ export default function WithdrawalInputs({
           style={{ marginTop, marginBottom: 8 }}
           keyboardType="numeric"
           maxLength={maxLength}
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           right={<Max />}
           editable={!!editable}
           error={error && !validateAmount(withdrawalAmount)}

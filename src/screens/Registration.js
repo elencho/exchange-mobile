@@ -13,7 +13,6 @@ import RegistrationInputs from '../components/Registration/RegistrationInputs';
 import EmailVerification from './EmailVerification';
 import WithKeyboard from '../components/WithKeyboard';
 import Logo from '../assets/images/Logo.svg';
-import Back from '../assets/images/Back.svg';
 import GeneralError from '../components/GeneralError';
 
 import {
@@ -105,7 +104,6 @@ export default function Registration({ navigation }) {
   return (
     <WithKeyboard scrollUp padding style={styles.scrollview}>
       <Pressable style={styles.back} onPress={goToSignIn}>
-        <Back />
         <PurpleText
           numberOfLines={1}
           text="Back to Log In"
@@ -176,12 +174,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   back: {
-    flexDirection: 'row',
-    alignItems: 'center',
-
-    marginLeft: 24,
     marginTop: 28,
-    width: '33%',
+    marginLeft: 15,
   },
   backText: {
     marginBottom: 2,
