@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     paddingBottom: 28,
   },
   footer: {
-    height: 200,
+    height: 30,
     width: 100,
   },
 });

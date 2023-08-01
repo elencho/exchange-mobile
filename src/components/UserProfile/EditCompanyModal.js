@@ -2,6 +2,7 @@ import React from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'i18next';
+import * as SecureStore from 'expo-secure-store';
 
 import AppModal from '../AppModal';
 import AppText from '../AppText';
@@ -10,6 +11,7 @@ import PurpleText from '../PurpleText';
 import colors from '../../constants/colors';
 
 import Browser from '../../assets/images/User_profile/Browser.svg';
+import { webProfileUtil } from '../../utils/userProfileUtils';
 
 export default function EditCompanyModal() {
   const dispatch = useDispatch();
@@ -26,8 +28,11 @@ export default function EditCompanyModal() {
   } = useSelector((state) => state.modals);
 
   const hide = () => dispatch({ type: 'CLOSE_COMPANY_INFO_MODAL' });
-  const goToWeb = () => {
-    Linking.openURL('https://cryptal.com');
+
+  const goToWeb = async () => {
+    const refresh_token = await SecureStore.getItemAsync('refreshToken');
+    const data = await webProfileUtil(refresh_token);
+    Linking.openURL(data?.redirectUri);
     hide();
   };
 
