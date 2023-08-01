@@ -23,8 +23,8 @@ import { saveUserInfo, saveUserInfoSaga } from '../../redux/profile/actions';
 import GeneralError from '../GeneralError';
 import { COUNTRIES_URL_PNG } from '../../constants/api';
 import { errorHappenedHere } from '../../utils/appUtils';
-import Arrow from '../../assets/images/Arrow';
 import InputErrorMsg from '../InputErrorMsg';
+import AppDropdown from '../AppDropdown';
 
 export default function PersonalInfoModal() {
   const dispatch = useDispatch();
@@ -49,12 +49,10 @@ export default function PersonalInfoModal() {
   const address = userInfo?.address;
   const citizenship = userInfo?.citizenship;
   const userStatus = userInfo?.userStatus;
-  const countriesBorder = {
-    borderColor: error && !country ? '#F45E8C' : '#42475D',
-  };
-  const citizenshipBorder = {
-    borderColor: error && !citizenship ? '#F45E8C' : '#42475D',
-  };
+
+  const citizenshipError = error && !citizenship;
+  const countryError = error && !country;
+
   const alphabeticRegex = (text) => /^[a-zA-Z]+$/.test(text?.trim());
 
   useEffect(() => {
@@ -147,6 +145,7 @@ export default function PersonalInfoModal() {
               error={
                 error && (!alphabeticRegex(firstName) || !firstName?.trim())
               }
+              labelBackgroundColor={colors.PRIMARY_BACKGROUND}
             />
             {error && firstName?.trim() && !alphabeticRegex(firstName) && (
               <InputErrorMsg message="Only English letters allowed" />
@@ -159,6 +158,7 @@ export default function PersonalInfoModal() {
               label="Last Name"
               value={lastName}
               error={error && (!alphabeticRegex(lastName) || !lastName?.trim())}
+              labelBackgroundColor={colors.PRIMARY_BACKGROUND}
             />
             {error && lastName?.trim() && !alphabeticRegex(lastName) && (
               <InputErrorMsg message="Only English letters allowed" />
@@ -167,49 +167,43 @@ export default function PersonalInfoModal() {
         )}
 
         {!canEditInfo && (
-          <Pressable
-            style={[styles.dropdown, citizenshipBorder]}
-            onPress={() => handleCountries(null, true)}
-          >
-            <View style={citizenshipLabel}>
-              <AppText body style={styles.secondary}>
-                Citizenship
-              </AppText>
-            </View>
+          <AppDropdown
+            withLabel
+            notClearable
+            handlePress={() => handleCountries(null, true)}
+            label="Citizenship"
+            error={citizenshipError}
+            style={styles.dropdown}
+            handleClear={handleReset}
+            icon={
+              <Image
+                source={{
+                  uri: `${COUNTRIES_URL_PNG}/${citizenship}.png`,
+                }}
+                style={styles.image}
+              />
+            }
+            selectedText={citizenshipText(citizenship)}
+          />
+        )}
 
+        <AppDropdown
+          notClearable
+          withLabel
+          handlePress={() => handleCountries(true)}
+          icon={
             <Image
               source={{
-                uri: `${COUNTRIES_URL_PNG}/${citizenship}.png`,
+                uri: `${COUNTRIES_URL_PNG}/${countryCode}.png`,
               }}
               style={styles.image}
             />
-            <AppText medium style={styles.dropdownText}>
-              {citizenshipText(citizenship)}
-            </AppText>
-            <Arrow />
-          </Pressable>
-        )}
-
-        <Pressable
-          style={[styles.dropdown, countriesBorder]}
-          onPress={() => handleCountries(true)}
-        >
-          <View style={countryLabel}>
-            <AppText body style={styles.secondary}>
-              Country
-            </AppText>
-          </View>
-          <Image
-            source={{
-              uri: `${COUNTRIES_URL_PNG}/${countryCode}.png`,
-            }}
-            style={styles.image}
-          />
-          <AppText medium style={styles.dropdownText}>
-            {country}
-          </AppText>
-          <Arrow />
-        </Pressable>
+          }
+          label="Country"
+          selectedText={country}
+          style={styles.dropdown}
+          error={countryError}
+        />
 
         <AppInput
           style={styles.inputContainer}
@@ -217,6 +211,7 @@ export default function PersonalInfoModal() {
           label="City"
           value={city}
           error={error && (!alphabeticRegex(city) || !city?.trim())}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         />
         {error && !alphabeticRegex(city) && city?.trim() && (
           <InputErrorMsg message="Only English letters allowed" />
@@ -229,6 +224,7 @@ export default function PersonalInfoModal() {
           label="Postal Code"
           value={postalCode}
           error={error && !postalCode?.trim()}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         />
 
         <AppInput
@@ -239,6 +235,7 @@ export default function PersonalInfoModal() {
           label="Address"
           value={address}
           error={error && !address?.trim()}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         />
       </TouchableOpacity>
 
@@ -278,13 +275,8 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
   },
   dropdown: {
-    borderWidth: 1,
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
     marginBottom: 20,
     marginTop: 10,
-    paddingHorizontal: 15,
   },
   error: {
     marginBottom: 15,
