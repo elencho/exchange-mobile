@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'center',
-    height: 50,
+    height: 60,
   },
   focus: {
     width: 5,
@@ -74,5 +74,6 @@ const styles = StyleSheet.create({
   },
   tab: {
     flex: 1,
+    justifyContent: 'center',
   },
 });
