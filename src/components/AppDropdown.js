@@ -15,13 +15,25 @@ const AppDropdown = ({
   activeLabel,
   notClearable,
   withLabel,
+  error,
 }) => {
   return (
-    <Pressable style={[styles.container, style]} onPress={handlePress}>
+    <Pressable
+      style={[
+        styles.container,
+        style,
+        error && { borderColor: colors.ERROR_TEXT },
+      ]}
+      onPress={handlePress}
+    >
       {selectedText ? (
         <View style={styles.row}>
           {icon}
-          <AppText medium body style={styles.selectedText}>
+          <AppText
+            medium
+            body
+            style={[styles.selectedText, error && { color: colors.ERROR_TEXT }]}
+          >
             {selectedText}
           </AppText>
         </View>
@@ -30,11 +42,15 @@ const AppDropdown = ({
           {activeLabel}
         </AppText>
       ) : (
-        <AppText medium body style={styles.label}>
+        <AppText
+          medium
+          body
+          style={[styles.label, error && { color: colors.ERROR_TEXT }]}
+        >
           {label}
         </AppText>
       )}
-      {withLabel && (
+      {withLabel && selectedText && (
         <AppText
           subtext
           style={[
@@ -66,7 +82,7 @@ export default AppDropdown;
 const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 22,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -79,7 +95,7 @@ const styles = StyleSheet.create({
   withLabel: {
     color: colors.SECONDARY_TEXT,
     position: 'absolute',
-    left: 8,
+    left: 10,
     top: -9,
     paddingHorizontal: 8,
   },

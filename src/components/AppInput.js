@@ -73,7 +73,6 @@ const AppInput = ({
                 styles.labelContainer,
                 {
                   width: isPlaceholder ? '100%' : null,
-                  backgroundColor: labelBackgroundColor,
                   backgroundColor: focusAnim.interpolate({
                     inputRange: [0, 1],
                     outputRange: ['transparent', labelBackgroundColor],
@@ -161,14 +160,14 @@ const styles = StyleSheet.create({
   inputContainer: {
     borderWidth: 1,
     height: 44,
-    paddingHorizontal: 15,
+    paddingHorizontal: 22,
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 11,
   },
   labelContainer: {
     position: 'absolute',
-    paddingHorizontal: 8,
+    paddingHorizontal: 14,
     height: 25,
     justifyContent: 'center',
   },
