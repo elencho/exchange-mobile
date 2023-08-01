@@ -251,6 +251,17 @@ export const exchangeUtil = async (refresh_token) => {
   if (data) return data?.data;
 };
 
+export const webProfileUtil = async (refresh_token) => {
+  const uninterceptedAxiosInstance = axios.create();
+
+  const data = await uninterceptedAxiosInstance({
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    url: GO_TO_EXCHANGE,
+    data: `refreshToken=${refresh_token}&redirectUri=https://cryptal.com/ex/profile`,
+  });
+  if (data) return data?.data;
+};
 export const fetchCountries = async () => {
   const data = await axios.get(COUNTRIES_URL);
   if (data) return data.data;
