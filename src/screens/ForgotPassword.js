@@ -140,7 +140,7 @@ export default function ForgotPassword({ navigation }) {
         <GeneralError show={errorHappenedHere('ForgotPassword')} />
 
         <AppInput
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           style={styles.input}
           label="Enter Email"
           autoCapitalize={'none'}
@@ -151,7 +151,7 @@ export default function ForgotPassword({ navigation }) {
           errorText={errorText()}
         />
         <AppInput
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           style={styles.input}
           label="Enter Code"
           autoCapitalize={'none'}
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: '8%',
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   input: {
     width: '100%',

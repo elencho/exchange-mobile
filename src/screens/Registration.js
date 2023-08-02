@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: '8%',
   },
   scrollview: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   error: {
     marginTop: 20,
