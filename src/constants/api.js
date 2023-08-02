@@ -25,7 +25,7 @@ export const COUNTRIES_URL = `${core}/public/countries`;
 
 export const TRADES_URL = `${core}/private/simpleTrade/trades`;
 
-export const TRADES_URL_PAGED = `${core}/private/simpleTrade/tradesPagedNew`;
+export const TRADES_URL_PAGED = `${core}/private/simpleTrade/fetchTrades`;
 
 export const OFFERS_URL = `${core}/private/simpleTrade/offers`;
 

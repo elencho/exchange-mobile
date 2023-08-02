@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 18,
+    paddingHorizontal: 30,
     marginHorizontal: -18,
     borderRadius: 5,
   },
@@ -126,6 +126,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   scrollView: {
-    maxHeight: 150,
+    maxHeight: 200,
   },
 });

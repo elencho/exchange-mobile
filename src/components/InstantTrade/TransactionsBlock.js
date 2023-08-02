@@ -20,6 +20,7 @@ import {
 import { reachScrollEnd } from '../../redux/transactions/actions';
 import { IS_IOS } from '../../constants/system';
 import Transaction from '../TransactionHistory/Transaction';
+import TransactionSkeleton from '../TransactionHistory/TransactionSkeleton';
 
 export const TopRow = ({ text, onPress }) => {
   return (
@@ -106,11 +107,7 @@ const TransactionsBlock = ({ loading }) => {
     <View style={styles.container}>
       {loading && !moreTradesLoading ? (
         <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
-          {[1, 2, 3].map((i) => (
-            <View key={i}>
-              <OneTransactionSkeleton />
-            </View>
-          ))}
+          <TransactionSkeleton length={[1, 2, 3, 4, 5]} />
         </View>
       ) : (
         <FlatList

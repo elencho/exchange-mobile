@@ -96,13 +96,15 @@ export default memo(AppModal);
 
 const styles = StyleSheet.create({
   bottom: {
-    padding: 35,
+    paddingTop: 40,
+    paddingHorizontal: 20,
     backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: -3,
   },
   header: {
     color: colors.PRIMARY_TEXT,
     marginBottom: 25,
+    marginLeft: 10,
   },
   modal: {
     marginHorizontal: 0,
