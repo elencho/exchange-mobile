@@ -115,11 +115,9 @@ export default function Personal({ loading }) {
               )}
             </View>
 
-            {unverified && (
-              <PurpleText text="Verify" subtext onPress={verify} />
-            )}
+            {unverified && <PurpleText text="Verify" onPress={verify} />}
             {pending && (
-              <PurpleText text="Go To Support" subtext onPress={goToSupport} />
+              <PurpleText text="Go To Support" onPress={goToSupport} />
             )}
           </View>
         );
@@ -130,12 +128,7 @@ export default function Personal({ loading }) {
               My Phone Number
             </AppText>
             <View style={styles.flex}>
-              <PurpleText
-                text="Edit"
-                style={styles.purple}
-                onPress={edit}
-                subtext
-              />
+              <PurpleText text="Edit" style={styles.purple} onPress={edit} />
             </View>
           </View>
         );
@@ -164,7 +157,6 @@ export default function Personal({ loading }) {
                 text="Edit"
                 style={styles.purple}
                 onPress={editLanguage}
-                subtext
               />
             </View>
           </View>
@@ -263,6 +255,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     marginRight: 8,
+    marginTop: 4,
   },
   circle: {
     borderWidth: 1,
@@ -293,7 +286,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   justify: {
-    justifyContent: 'space-between',
     flex: 1,
     // height: 37,
     marginLeft: 25,
@@ -303,9 +295,11 @@ const styles = StyleSheet.create({
   },
   purple: {
     alignSelf: 'flex-end',
+    fontSize: 20,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
+    marginTop: 4,
   },
   // switch: {
   //   transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
@@ -319,6 +313,7 @@ const styles = StyleSheet.create({
   upload: {
     flexDirection: 'row',
     alignItems: 'center',
+    textAlign: 'center',
   },
   line: {
     marginVertical: 20,

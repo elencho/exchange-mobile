@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 68,
     alignItems: 'flex-start',
-    marginTop: 20,
+    marginTop: 10,
   },
   white: {
     color: colors.PRIMARY_TEXT,

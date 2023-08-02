@@ -24,12 +24,7 @@ export default function PersonalInformation() {
           Personal Information
         </AppText>
         <View style={styles.flex}>
-          <PurpleText
-            text="Edit"
-            style={styles.purple}
-            onPress={edit}
-            subtext
-          />
+          <PurpleText text="Edit" style={styles.purple} onPress={edit} />
         </View>
       </View>
 
@@ -114,6 +109,7 @@ const styles = StyleSheet.create({
   },
   purple: {
     alignSelf: 'flex-end',
+    fontSize: 20,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

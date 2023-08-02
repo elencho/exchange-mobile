@@ -32,7 +32,10 @@ export default function CompanyInformation() {
         <PurpleText
           text="Edit"
           onPress={openModal}
-          style={{ transform: [{ scale: 0.9 }, { translateY: 2 }] }}
+          style={{
+            transform: [{ scale: 0.9 }, { translateY: 2 }],
+            fontSize: 20,
+          }}
         />
       </View>
 
