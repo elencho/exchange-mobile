@@ -71,7 +71,7 @@ export default function RegistrationInputs({ validations, error }) {
       <AppInput
         value={i.firstName}
         label="Enter Name"
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'name')}
         error={error && !v.nameCheck}
@@ -80,7 +80,7 @@ export default function RegistrationInputs({ validations, error }) {
       <AppInput
         value={i.lastName}
         label="Enter Last Name"
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'last name')}
         error={error && !v.lastNameCheck}
@@ -89,7 +89,7 @@ export default function RegistrationInputs({ validations, error }) {
       <AppInput
         value={i.email}
         label="Enter E-mail"
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         style={styles.input}
         autoCapitalize={'none'}
         onChangeText={(text) => handleInputs(text, 'email')}
@@ -100,7 +100,7 @@ export default function RegistrationInputs({ validations, error }) {
         value={i.passwordNew}
         label="Enter Password"
         autoCapitalize={'none'}
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'pass')}
         secureTextEntry
@@ -125,7 +125,7 @@ export default function RegistrationInputs({ validations, error }) {
         value={i.passwordConfirm}
         label="Repeat Password"
         autoCapitalize={'none'}
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'confirm')}
         secureTextEntry
@@ -166,14 +166,14 @@ export default function RegistrationInputs({ validations, error }) {
       <AppInput
         value={i.referralCode}
         label="Referral Code"
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'referal')}
       />
       <AppInput
         value={i.promoCode}
         label="Promo Code"
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         style={[styles.input, { marginTop: 12 }]}
         onChangeText={(text) => handleInputs(text, 'promoCode')}
       />

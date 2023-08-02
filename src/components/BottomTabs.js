@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     position: 'absolute',
-    bottom: 5,
+    bottom: 6,
   },
   gradient: {
     flex: 1,

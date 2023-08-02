@@ -99,7 +99,7 @@ export default function Login() {
           errorText={errorText()}
           autoCapitalize={'none'}
           label={'Enter Email'}
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         />
         <AppInput
           secureTextEntry
@@ -116,7 +116,7 @@ export default function Login() {
             />
           }
           label={'Enter Password'}
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         />
 
         <AppButton
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   background: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     flex: 1,
   },
   container: {
