@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Pressable, StyleSheet, View, Text } from 'react-native';
+import { Pressable, StyleSheet, View, Text, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
@@ -52,7 +52,7 @@ export default function TemplatesModal() {
   };
 
   const children = (
-    <>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
       {templates?.map((t) => (
         <View style={[styles.template, background(t)]} key={t.id}>
           <Pressable style={styles.flex} onPress={() => choose(t)}>
@@ -89,7 +89,7 @@ export default function TemplatesModal() {
       </View>
 
       <DeleteModal type="template" />
-    </>
+    </ScrollView>
   );
 
   return (
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   template: {
     height: 60,
     flexDirection: 'row',
-    paddingHorizontal: 18,
+    paddingHorizontal: 30,
     marginHorizontal: -18,
     borderRadius: 5,
     alignItems: 'center',
@@ -136,5 +136,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Ubuntu_Medium',
     fontSize: 14,
     lineHeight: 18,
+  },
+  scrollView: {
+    maxHeight: 150,
   },
 });

@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'i18next';
 
@@ -103,9 +103,9 @@ function WithdrawalAddress({ error, right }) {
       style={[styles.dropdown, { borderColor }]}
       onPress={chooseAddress}
     >
-      <AppText medium body style={{ color }}>
+      <Text medium body style={{ color }}>
         {w.name ? w.name : 'Choose Address'}
-      </AppText>
+      </Text>
 
       <View style={styles.arrow}>
         <Arrow />

@@ -18,7 +18,6 @@ import AppInfoBlock from '../../components/AppInfoBlock';
 import WithKeyboard from '../../components/WithKeyboard';
 import WithdrawalConfirmModal from '../../components/Wallet/Withdrawal/WithdrawalConfirmModal';
 
-import colors from '../../constants/colors';
 import { infos, warnings } from '../../constants/warningsAndInfos';
 import { setNetwork } from '../../redux/wallet/actions';
 import { fetchFee, setCard, setFee } from '../../redux/trade/actions';

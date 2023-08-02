@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   line: {
-    backgroundColor: '#373D5C',
     height: 1,
     marginVertical: 20,
     width: '100%',

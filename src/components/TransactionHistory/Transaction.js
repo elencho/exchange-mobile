@@ -10,6 +10,8 @@ import colors from '../../constants/colors';
 import { transactionDetailsSaga } from '../../redux/transactions/actions';
 import { toggleTransactionDetails } from '../../redux/modals/actions';
 import { COINS_URL_PNG } from '../../constants/api';
+import BuyIcon from '../../assets/images/Buy';
+import SellIcon from '../../assets/images/Sell';
 
 import { monthsShort } from '../../constants/months';
 
@@ -101,26 +103,28 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
   const destinationDisplay = isTransfer
     ? shortenDestination(recipient)
     : `${size} ${baseCurrency}`;
+  const typeColor = type === 'BUY' ? '#a4edd9' : '#f0abc0';
 
   return (
     <Pressable onPress={showModal} style={styles.container}>
       <View style={styles.topRow}>
-        {image()}
+        {isTransfer && image()}
 
-        <View style={styles.middle}>
-          <AppText
-            medium
-            style={[styles.primaryText, !isTransfer && { marginLeft: 15 }]}
-            body
-          >
+        <View style={[styles.middle, isTransfer && { marginLeft: 10 }]}>
+          <AppText medium style={styles.primaryText} body>
             {title}
           </AppText>
           {method ? (
-            <AppText style={styles.secondaryText}>{method}</AppText>
+            <View style={{ flexDirection: 'row' }}>
+              {!isTransfer && (
+                <View style={styles.typeIcon}>
+                  {type === 'SELL' ? <SellIcon /> : <BuyIcon />}
+                </View>
+              )}
+              <AppText style={styles.secondaryText}>{method}</AppText>
+            </View>
           ) : action ? (
-            <AppText
-              style={[styles.secondaryText, !isTransfer && { marginLeft: 15 }]}
-            >
+            <AppText style={[styles.secondaryText]}>
               {action === 'BID'
                 ? 'BUY - Instant Trade'
                 : 'SELL - Instant Trade'}
@@ -168,7 +172,6 @@ const styles = StyleSheet.create({
 
   middle: {
     justifyContent: 'space-between',
-    marginLeft: 10,
     flex: 1,
   },
   right: {
@@ -214,5 +217,11 @@ const styles = StyleSheet.create({
     height: 30,
     position: 'absolute',
     left: 15,
+  },
+  title: {
+    color: colors.PRIMARY_TEXT,
+  },
+  typeIcon: {
+    marginRight: 6,
   },
 });
