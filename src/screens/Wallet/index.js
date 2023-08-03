@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, ScrollView, Keyboard } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,6 +18,7 @@ export default function Wallet() {
   const balanceLoading = useSelector((state) => state.trade.balanceLoading);
   const balances = useSelector((state) => state.trade.balance.balances);
 
+  const inputRef = useRef();
   const [filteredBalances, setFilteredBalances] = useState([]);
   const [showRefreshControl, setShowRefreshControl] = useState(false);
   const [value, setValue] = useState('');
@@ -74,9 +75,11 @@ export default function Wallet() {
   const showButtonsHandler = () => {
     animatedValue.value = withTiming(100, { duration: 400 });
     setShowZeroBalances(true);
+    inputRef.current?.focus();
   };
   const hideButtonsHandler = () => {
     type('');
+    inputRef.current?.blur();
     animatedValue.value = withTiming(8, { duration: 400 });
   };
 
@@ -112,6 +115,7 @@ export default function Wallet() {
           value={value}
           type={type}
           showZeroBalances={showZeroBalances}
+          ref={inputRef}
         />
         <BalancesList
           balanceLoading={balanceLoading}

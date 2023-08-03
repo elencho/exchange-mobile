@@ -1,5 +1,5 @@
 import { StyleSheet, View, Pressable, TextInput } from 'react-native';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import Animated, {
   interpolate,
   interpolateColor,
@@ -12,77 +12,81 @@ import Close from '../../assets/images/Close';
 import Search from '../../assets/images/Search';
 import { IS_ANDROID } from '../../constants/system';
 
-const BalanceSearchBar = ({
-  setShowZeroBalances,
-  type,
-  value,
-  showZeroBalances,
-  animatedValue,
-  hideButtonsHandler,
-  showButtonsHandler,
-}) => {
-  const inputStyle = useAnimatedStyle(() => {
-    return {
-      width: `${animatedValue.value}%`,
-      borderWidth: 1,
-      borderColor: interpolateColor(
-        animatedValue.value,
-        [8, 100],
-        [colors.PRIMARY_BACKGROUND, colors.SECONDARY_PURPLE]
-      ),
-    };
-  });
+const BalanceSearchBar = forwardRef(
+  (
+    {
+      setShowZeroBalances,
+      type,
+      value,
+      showZeroBalances,
+      animatedValue,
+      hideButtonsHandler,
+      showButtonsHandler,
+    },
+    ref
+  ) => {
+    const inputStyle = useAnimatedStyle(() => {
+      return {
+        width: `${animatedValue.value}%`,
+        borderWidth: 1,
+        borderColor: interpolateColor(
+          animatedValue.value,
+          [8, 100],
+          [colors.PRIMARY_BACKGROUND, colors.SECONDARY_PURPLE]
+        ),
+      };
+    });
 
-  const closeBtn = useAnimatedStyle(() => {
-    return { opacity: interpolate(animatedValue.value, [8, 100], [0, 1]) };
-  });
+    const closeBtn = useAnimatedStyle(() => {
+      return { opacity: interpolate(animatedValue.value, [8, 100], [0, 1]) };
+    });
 
-  const Right = () => (
-    <Animated.View style={closeBtn}>
-      <Pressable
-        style={styles.searchIcon}
-        hitSlop={50}
-        onPress={hideButtonsHandler}
-      >
-        <Close />
-      </Pressable>
-    </Animated.View>
-  );
-  const toggleZeroBalances = () => setShowZeroBalances(!showZeroBalances);
-
-  const Left = () => (
-    <Pressable
-      hitSlop={50}
-      onPress={showButtonsHandler}
-      style={{ zIndex: 100 }}
-    >
-      <Search height={20} width={20} />
-    </Pressable>
-  );
-  return (
-    <View style={styles.container}>
-      <Animated.View style={[styles.input, inputStyle]}>
-        <Left />
-
-        <TextInput
-          style={styles.inputText}
-          value={value}
-          placeholder="Search Coin"
-          placeholderTextColor="rgba(105, 111, 142, 0.5)"
-          onChangeText={type}
-        />
-
-        <Right />
+    const Right = () => (
+      <Animated.View style={closeBtn}>
+        <Pressable
+          style={styles.searchIcon}
+          hitSlop={50}
+          onPress={hideButtonsHandler}
+        >
+          <Close />
+        </Pressable>
       </Animated.View>
-      <View style={styles.wrapper}>
-        <AppSwitcher onToggle={toggleZeroBalances} isOn={!showZeroBalances} />
-        <AppText body style={styles.secondary}>
-          Hide Zero Balances
-        </AppText>
+    );
+    const toggleZeroBalances = () => setShowZeroBalances(!showZeroBalances);
+
+    const Left = () => (
+      <Pressable
+        hitSlop={50}
+        onPress={showButtonsHandler}
+        style={{ zIndex: 100 }}
+      >
+        <Search height={20} width={20} />
+      </Pressable>
+    );
+    return (
+      <View style={styles.container}>
+        <Animated.View style={[styles.input, inputStyle]}>
+          <Left />
+
+          <TextInput
+            style={styles.inputText}
+            value={value}
+            ref={ref}
+            onChangeText={type}
+          />
+
+          <Right />
+        </Animated.View>
+        <View style={styles.wrapper}>
+          <AppSwitcher onToggle={toggleZeroBalances} isOn={!showZeroBalances} />
+          <AppText body style={styles.secondary}>
+            Hide Zero Balances
+          </AppText>
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  }
+);
 
 export default BalanceSearchBar;
 
