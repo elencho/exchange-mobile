@@ -45,7 +45,7 @@ function App(): JSX.Element {
     <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <StatusBar
-          backgroundColor={colors.SECONDARY_BACKGROUND}
+          backgroundColor={colors.PRIMARY_BACKGROUND}
           barStyle="light-content"
         />
         {IS_IOS && <SafeAreaView style={styles.statusBar} />}
@@ -68,6 +68,6 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     flex: 0,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
 });

@@ -66,7 +66,7 @@ export default function SetNewPassword({ navigation }) {
         </View>
 
         <AppInput
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           style={styles.input}
           label="Enter New Password"
           autoCapitalize={'none'}
@@ -91,7 +91,7 @@ export default function SetNewPassword({ navigation }) {
         </View>
 
         <AppInput
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           style={styles.input}
           label="Confirm New Password"
           autoCapitalize={'none'}
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: '8%',
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   input: {
     width: '100%',

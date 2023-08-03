@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { StyleSheet, View, ScrollView, Keyboard } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,18 +11,18 @@ import colors from '../../constants/colors';
 import CustomRefreshContol from '../../components/CustomRefreshContol';
 import { useFocusEffect } from '@react-navigation/native';
 import BalanceSearchBar from '../../components/Wallet/BalanceSearchBar';
-import { useSharedValue } from 'react-native-reanimated';
+import { useSharedValue, withTiming } from 'react-native-reanimated';
 
 export default function Wallet() {
   const dispatch = useDispatch();
   const balanceLoading = useSelector((state) => state.trade.balanceLoading);
   const balances = useSelector((state) => state.trade.balance.balances);
 
+  const inputRef = useRef();
   const [filteredBalances, setFilteredBalances] = useState([]);
   const [showRefreshControl, setShowRefreshControl] = useState(false);
   const [value, setValue] = useState('');
   const [showZeroBalances, setShowZeroBalances] = useState(true);
-  const [pressed, setPressed] = useState(false);
   const [nonZeroBalances, setNonZeroBalances] = useState([]);
 
   useFocusEffect(
@@ -70,15 +70,17 @@ export default function Wallet() {
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
   };
 
-  const animatedValue = useSharedValue(1000);
+  const animatedValue = useSharedValue(8);
 
   const showButtonsHandler = () => {
-    animatedValue.value = 0;
+    animatedValue.value = withTiming(100, { duration: 400 });
     setShowZeroBalances(true);
+    inputRef.current?.focus();
   };
   const hideButtonsHandler = () => {
     type('');
-    animatedValue.value = 1000;
+    inputRef.current?.blur();
+    animatedValue.value = withTiming(8, { duration: 400 });
   };
 
   const onScroll = () => {
@@ -113,6 +115,7 @@ export default function Wallet() {
           value={value}
           type={type}
           showZeroBalances={showZeroBalances}
+          ref={inputRef}
         />
         <BalancesList
           balanceLoading={balanceLoading}
