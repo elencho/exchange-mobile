@@ -73,6 +73,7 @@ const BalanceSearchBar = forwardRef(
             value={value}
             ref={ref}
             onChangeText={type}
+            selectionColor={'#FFFFFF'}
           />
 
           <Right />
@@ -93,7 +94,7 @@ export default BalanceSearchBar;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.PRIMARY_BACKGROUND,
-    marginVertical: 30,
+    marginVertical: 25,
     flex: 1,
     justifyContent: 'center',
   },
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     right: 0,
     width: '100%',
     height: 44,
-    paddingHorizontal: 22,
+    paddingHorizontal: 20,
     zIndex: 99,
     backgroundColor: colors.PRIMARY_BACKGROUND,
     flexDirection: 'row',
