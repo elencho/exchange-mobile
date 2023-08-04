@@ -1,5 +1,11 @@
 import React, { useCallback, useEffect, useState, useRef } from 'react';
-import { StyleSheet, View, ScrollView, Keyboard } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Keyboard,
+  KeyboardAvoidingView,
+} from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -92,37 +98,38 @@ export default function Wallet() {
   return (
     <Background>
       <TopRow />
-
-      <ScrollView
-        onScroll={onScroll}
-        refreshControl={
-          showRefreshControl ? (
-            <CustomRefreshContol
-              refreshing={balanceLoading}
-              onRefresh={onRefresh}
-            />
-          ) : null
-        }
-        showsVerticalScrollIndicator={false}
-        stickyHeaderIndices={[1]}
-      >
-        <TotalBalance balanceLoading={balanceLoading} />
-        <BalanceSearchBar
-          animatedValue={animatedValue}
-          showButtonsHandler={showButtonsHandler}
-          hideButtonsHandler={hideButtonsHandler}
-          setShowZeroBalances={setShowZeroBalances}
-          value={value}
-          type={type}
-          showZeroBalances={showZeroBalances}
-          ref={inputRef}
-        />
-        <BalancesList
-          balanceLoading={balanceLoading}
-          filteredBalances={filteredBalances}
-        />
-        <View style={styles.footer} />
-      </ScrollView>
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollView
+          onScroll={onScroll}
+          refreshControl={
+            showRefreshControl ? (
+              <CustomRefreshContol
+                refreshing={balanceLoading}
+                onRefresh={onRefresh}
+              />
+            ) : null
+          }
+          showsVerticalScrollIndicator={false}
+          stickyHeaderIndices={[1]}
+        >
+          <TotalBalance balanceLoading={balanceLoading} />
+          <BalanceSearchBar
+            animatedValue={animatedValue}
+            showButtonsHandler={showButtonsHandler}
+            hideButtonsHandler={hideButtonsHandler}
+            setShowZeroBalances={setShowZeroBalances}
+            value={value}
+            type={type}
+            showZeroBalances={showZeroBalances}
+            ref={inputRef}
+          />
+          <BalancesList
+            balanceLoading={balanceLoading}
+            filteredBalances={filteredBalances}
+          />
+          <View style={styles.footer} />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Background>
   );
 }
