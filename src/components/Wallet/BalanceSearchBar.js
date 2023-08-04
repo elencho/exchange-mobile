@@ -80,7 +80,7 @@ const BalanceSearchBar = forwardRef(
         </Animated.View>
         <View style={styles.wrapper}>
           <AppSwitcher onToggle={toggleZeroBalances} isOn={!showZeroBalances} />
-          <AppText body style={styles.secondary}>
+          <AppText calendarDay style={styles.secondary}>
             Hide Zero Balances
           </AppText>
         </View>
@@ -94,7 +94,7 @@ export default BalanceSearchBar;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.PRIMARY_BACKGROUND,
-    marginVertical: 25,
+    paddingVertical: 25,
     flex: 1,
     justifyContent: 'center',
   },

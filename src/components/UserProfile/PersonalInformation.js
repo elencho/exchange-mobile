@@ -46,10 +46,12 @@ export default function PersonalInformation() {
             {userInfo.firstName} {userInfo.lastName}
           </AppText>
           <AppText subtext style={styles.white}>
-            {userInfo.country}, {userInfo.city}
+            {(userInfo.country || userInfo.city) &&
+              `${userInfo.country}, ${userInfo.city}`}
           </AppText>
           <AppText subtext style={styles.white} numberOfLines={1}>
-            {userInfo.postalCode} / {userInfo.address}
+            {(userInfo.postalCode || userInfo.address) &&
+              `${userInfo.postalCode} / ${userInfo.address}`}
           </AppText>
         </View>
       </View>
