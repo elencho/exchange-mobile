@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, SafeAreaView, StyleSheet, View } from 'react-native';
 
 import Exchange from '../assets/images/BottomTabs/Exchange.svg';
 import Trade from '../assets/images/BottomTabs/Trade.svg';
@@ -11,6 +11,7 @@ import TradeActive from '../assets/images/BottomTabs/Trade_Active.svg';
 import WalletActive from '../assets/images/BottomTabs/Wallet_Active.svg';
 import TransactionsActive from '../assets/images/BottomTabs/Transactions_Active.svg';
 import FocusIcon from '../assets/images/Focused';
+import colors from '../constants/colors';
 
 export default function BottomTabs({ navigation, descriptors, routes }) {
   const dispatch = useDispatch();
@@ -37,21 +38,24 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
   };
 
   return (
-    <View style={styles.container}>
-      {routes.map((route) => {
-        const focused = descriptors[route.key].navigation.isFocused();
-        const navigate = () => navigation.navigate(route.name);
+    <>
+      <View style={styles.container}>
+        {routes.map((route) => {
+          const focused = descriptors[route.key].navigation.isFocused();
+          const navigate = () => navigation.navigate(route.name);
 
-        return (
-          <Pressable key={route.key} style={styles.tab} onPress={navigate}>
-            <View style={styles.gradient}>
-              {focused ? active[route.name] : inactive[route.name]}
-              {focused && <FocusIcon style={styles.focus} />}
-            </View>
-          </Pressable>
-        );
-      })}
-    </View>
+          return (
+            <Pressable key={route.key} style={styles.tab} onPress={navigate}>
+              <View style={styles.gradient}>
+                {focused ? active[route.name] : inactive[route.name]}
+                {focused && <FocusIcon style={styles.focus} />}
+              </View>
+            </Pressable>
+          );
+        })}
+      </View>
+      <SafeAreaView style={{ backgroundColor: colors.SECONDARY_BACKGROUND }} />
+    </>
   );
 }
 
@@ -60,7 +64,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     height: 60,
+    backgroundColor: 'red',
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
+
   focus: {
     width: 5,
     height: 5,

@@ -92,12 +92,12 @@ export default function AppText({
         <Text
           accessibilityRole={onPress ? 'button' : 'text'}
           style={[
-            style,
             {
               fontFamily: fontCond(),
               fontSize: sizeCond(),
               lineHeight: heightCond(),
             },
+            style,
           ]}
           onPress={onPress}
           {...props}

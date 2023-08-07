@@ -21,6 +21,7 @@ import TotpAuth from '../assets/images/User_profile/Totp_Auth.svg';
 import colors from '../constants/colors';
 import images from '../constants/images';
 import { startLoginAction } from '../redux/profile/actions';
+import Background from '../components/Background';
 
 export default function Login2Fa({ navigation }) {
   const dispatch = useDispatch();
@@ -97,7 +98,7 @@ export default function Login2Fa({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <Background>
       <WithKeyboard padding flexGrow>
         <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
           <TouchableOpacity style={styles.back} onPress={goBack}>
@@ -145,7 +146,7 @@ export default function Login2Fa({ navigation }) {
           </View>
         </Pressable>
       </WithKeyboard>
-    </View>
+    </Background>
   );
 }
 
