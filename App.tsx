@@ -45,15 +45,12 @@ function App(): JSX.Element {
     <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <StatusBar
-          backgroundColor={colors.PRIMARY_BACKGROUND}
+          backgroundColor="transparent"
+          translucent
           barStyle="light-content"
         />
-        {IS_IOS && <SafeAreaView style={styles.statusBar} />}
-        <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-          <AppToast />
-          <Navigator />
-        </SafeAreaView>
-        {IS_IOS && <SafeAreaView style={styles.statusBar} />}
+        <AppToast />
+        <Navigator />
       </GestureHandlerRootView>
     </Provider>
   );
