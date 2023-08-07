@@ -31,7 +31,7 @@ function PurpleText({
       subtext={subtext}
       onPress={onPress}
       style={[
-        { color: colors.SECONDARY_PURPLE, fontSize: 30, lineHeight: 34 },
+        { color: colors.SECONDARY_PURPLE },
         disabled && { color: colors.BUTTON_DISABLED },
         style,
       ]}

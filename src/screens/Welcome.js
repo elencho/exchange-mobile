@@ -6,6 +6,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   BackHandler,
+  ImageBackground,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -13,7 +14,7 @@ import AppButton from '../components/AppButton';
 import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 import colors from '../constants/colors';
-import Logo from '../assets/images/Logo.svg';
+import Logo from '../assets/images/LogoWhite.svg';
 import {
   startLoginAction,
   startRegistrationAction,
@@ -41,6 +42,7 @@ import { checkReadiness, fetchTranslations } from '../utils/appUtils';
 import { addResources, switchLanguage } from '../utils/i18n';
 import { useFocusEffect } from '@react-navigation/native';
 import useNotificationsAndroid from './useNotificationsAndroid';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 export default function Welcome({ navigation }) {
   const dispatch = useDispatch();
@@ -192,23 +194,34 @@ export default function Welcome({ navigation }) {
       onPress={Keyboard.dismiss}
       accessible={false}
     >
-      <View style={styles.container}>
-        <Logo style={styles.logo} />
-        <AppText header style={styles.primary}>
-          Welcome to Cryptal
-        </AppText>
-        <AppText body style={styles.subtext}>
-          Secure and Simple · Your Gateway to the Global Crypto Universe
-        </AppText>
+      <ImageBackground
+        style={styles.imageBackground}
+        resizeMode="cover"
+        source={require('../assets/images/WelcomeBackground.png')}
+      >
+        <View style={styles.container}>
+          <Logo style={styles.logo} />
+          <AppText header style={styles.primary}>
+            Welcome to Cryptal
+          </AppText>
+          <AppText body style={styles.subtext}>
+            Secure and Simple · Your Gateway to the Global Crypto Universe
+          </AppText>
 
-        <GeneralError
-          style={styles.error}
-          show={errorHappenedHere('Welcome')}
-        />
+          <GeneralError
+            style={styles.error}
+            show={errorHappenedHere('Welcome')}
+          />
 
-        <AppButton text="Login" style={styles.button} onPress={startLogin} />
-        <PurpleText text="Registration" onPress={startRegistration} />
-      </View>
+          <AppButton text="Login" style={styles.button} onPress={startLogin} />
+          <PurpleText
+            style={{ fontSize: 16 }}
+            text="Registration"
+            onPress={startRegistration}
+          />
+        </View>
+        <LanguageSwitcher />
+      </ImageBackground>
     </TouchableWithoutFeedback>
   );
 }
@@ -224,7 +237,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: '12%',
-    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   error: {
     marginTop: 20,
@@ -235,10 +247,7 @@ const styles = StyleSheet.create({
   loader: {
     flex: 1,
   },
-  logo: {
-    width: 48,
-    height: 54,
-  },
+
   primary: {
     color: colors.PRIMARY_TEXT,
     marginTop: 30,
@@ -253,5 +262,8 @@ const styles = StyleSheet.create({
   secondary: {
     color: colors.SECONDARY_TEXT,
     textAlign: 'center',
+  },
+  imageBackground: {
+    flex: 1,
   },
 });
