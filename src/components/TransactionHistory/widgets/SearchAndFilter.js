@@ -15,23 +15,26 @@ import {
   setTransactionSearch,
 } from '../../../redux/transactions/actions';
 import CryptoModal from '../../InstantTrade/CryptoModal';
+import CryptoModalTrade from '../../InstantTrade/CryptoModalTrade';
+import { fetchTrades, setCryptoCodeQuery } from '../../../redux/trade/actions';
 
 const SearchAndFilter = ({ navigation, isInstantTrade }) => {
   const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
-  const { code, currency } = useSelector((state) => state.transactions);
-  const { crypto } = useSelector((state) => state.trade);
+  const { cryptoCodeQuery } = useSelector((state) => state.trade);
 
   const openModal = () => dispatch(toggleCryptoModal(true));
   const seperateCurrencyName = (currency) => currency.split('(')[0];
-  const clearCurrencyDropdown = () =>
-    dispatch(currencyAction('Show All Currency', [], null));
+  const clearCurrencyDropdown = () => {
+    dispatch(setCryptoCodeQuery(''));
+    dispatch(fetchTrades());
+  };
 
   //debounce
   useEffect(() => {
     const getSearchedData = setTimeout(() => {
       dispatch(
-        setTransactionSearch(searchValue.length > 0 ? searchValue : null)
+        setTransactionSearch(searchValue?.length > 0 ? searchValue : null)
       );
     }, 1000);
 
@@ -45,13 +48,17 @@ const SearchAndFilter = ({ navigation, isInstantTrade }) => {
           handlePress={openModal}
           handleClear={clearCurrencyDropdown}
           style={styles.dropdown}
-          selectedText={seperateCurrencyName(crypto)}
+          selectedText={
+            cryptoCodeQuery?.length > 0
+              ? seperateCurrencyName(cryptoCodeQuery)
+              : 'Show All Currency'
+          }
           activeLabel="Show All Currency"
           icon={
-            crypto && (
+            cryptoCodeQuery && (
               <Image
                 source={{
-                  uri: `${COINS_URL_PNG}/${crypto?.toLowerCase()}.png`,
+                  uri: `${COINS_URL_PNG}/${cryptoCodeQuery?.toLowerCase()}.png`,
                 }}
                 style={styles.coin}
               />
@@ -76,7 +83,7 @@ const SearchAndFilter = ({ navigation, isInstantTrade }) => {
       />
       <DownloadIcon />
       <ChooseCurrencyModal isForTransactions />
-      <CryptoModal />
+      <CryptoModalTrade />
     </View>
   );
 };

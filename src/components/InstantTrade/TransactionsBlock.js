@@ -61,11 +61,15 @@ const TransactionsBlock = () => {
 
   const state = useSelector((state) => state);
   const {
-    trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
+    trade: {
+      trades,
+      hideOtherPairs,
+      totalTrades,
+      moreTradesLoading,
+      tradesLoading,
+    },
     transactions: { code: currencyCode, currency, loading },
   } = state;
-
-  console.log('loading', loading);
 
   const handleScrollEnd = () => {
     if (trades.length === totalTrades) {
@@ -107,7 +111,7 @@ const TransactionsBlock = () => {
 
   return (
     <View style={styles.container}>
-      {loading && !moreTradesLoading ? (
+      {tradesLoading && !moreTradesLoading ? (
         <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
           <TransactionSkeleton length={[1, 2, 3, 4, 5]} />
         </View>
@@ -120,6 +124,7 @@ const TransactionsBlock = () => {
           onEndReached={handleScrollEnd}
           onEndReachedThreshold={1}
           nestedScrollEnabled
+          showsVerticalScrollIndicator={false}
           initialNumToRender={5}
           ListFooterComponent={trades.length > 0 && footer}
           ListEmptyComponent={listEmptyContainer}
