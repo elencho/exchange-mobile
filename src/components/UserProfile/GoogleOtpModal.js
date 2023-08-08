@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   codeInput: {
-    marginTop: 35,
+    marginVertical: 35,
   },
   header: {
     color: colors.PRIMARY_TEXT,

@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
   bottom: {
     paddingTop: 40,
     paddingHorizontal: 20,
+    paddingBottom: 40,
     backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: -3,
   },
