@@ -15,6 +15,7 @@ export const actionTypes = {
   SET_TAB_ROUTE_NAME: 'SET_TAB_ROUTE_NAME',
   SET_TOTAL_TRANSACTIONS: 'SET_TOTAL_TRANSACTIONS',
   SET_ACTIVE_TAB: 'SET_ACTIVE_TAB',
+  SET_TX_ID_OR_RECIPIENT: 'SET_TX_ID_OR_RECIPIENT',
   // PURE VISUALS
   TOGGLE_LOADING: 'TOGGLE_LOADING',
 
@@ -99,6 +100,10 @@ export const setTabRouteName = (tabRoute) => ({
 export const setActiveTab = (activeTab) => ({
   type: actionTypes.SET_ACTIVE_TAB,
   activeTab,
+});
+export const setTransactionSearch = (txIdOrRecipient) => ({
+  type: actionTypes.SET_TX_ID_OR_RECIPIENT,
+  txIdOrRecipient,
 });
 
 // FOR SAGAS

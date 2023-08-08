@@ -50,7 +50,7 @@ const Purple = ({ text, onPress }) => {
   );
 };
 
-const TransactionsBlock = ({ loading }) => {
+const TransactionsBlock = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -62,8 +62,10 @@ const TransactionsBlock = ({ loading }) => {
   const state = useSelector((state) => state);
   const {
     trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
-    transactions: { code: currencyCode, currency },
+    transactions: { code: currencyCode, currency, loading },
   } = state;
+
+  console.log('loading', loading);
 
   const handleScrollEnd = () => {
     if (trades.length === totalTrades) {

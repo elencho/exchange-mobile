@@ -26,6 +26,7 @@ import {
   setMethodFilter,
 } from '../redux/transactions/actions';
 import {
+  toggleCryptoModal,
   toggleCurrencyModal,
   toggleMethodsModal,
 } from '../redux/modals/actions';
@@ -41,10 +42,12 @@ import { COINS_URL_PNG } from '../constants/api';
 import Arrow from '../assets/images/Arrow.svg';
 import AppDropdown from '../components/AppDropdown';
 import ChooseMethodsModal from './ChooseMethodsModal';
+import CryptoModal from '../components/InstantTrade/CryptoModal';
+import CryptoModalTrade from '../components/InstantTrade/CryptoModalTrade';
 
 export default function TransactionFilter({ navigation, route }) {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.transactions);
+  const state = useSelector((state) => state);
   const {
     currency,
     code,
@@ -53,12 +56,11 @@ export default function TransactionFilter({ navigation, route }) {
     fromDateTime,
     toDateTime,
     status,
-  } = state;
+  } = state.transactions;
+  const { fiatCodesQuery, statusQuery, crypto, actionQuery } = state.trade;
   const {
     params: { isInstantTrade },
   } = route;
-
-  const openModal = () => dispatch(toggleCurrencyModal(true));
 
   const close = () => {
     clear();
@@ -74,13 +76,25 @@ export default function TransactionFilter({ navigation, route }) {
 
   const seperateCurrencyName = (currency) => currency.split('(')[0];
 
+  const openModal = () => dispatch(toggleCryptoModal(true));
   const handleMethodsDropdown = () => dispatch(toggleMethodsModal(true));
   const clearMethodsDropdown = () => dispatch(setMethodFilter(null));
   const clearCurrencyDropdown = () =>
     dispatch(currencyAction('Show All Currency', [], null));
   const isFilteredAny = Boolean(
-    typeFilter || selectedMethod || status || fromDateTime || toDateTime || code
+    typeFilter ||
+      selectedMethod ||
+      status ||
+      fromDateTime ||
+      toDateTime ||
+      code ||
+      fiatCodesQuery.length > 0 ||
+      statusQuery.length > 0 ||
+      crypto ||
+      actionQuery.length > 0
   );
+
+  console.log('curr', currency);
 
   return (
     <Background>
@@ -108,13 +122,17 @@ export default function TransactionFilter({ navigation, route }) {
         )}
 
         <AppDropdown
-          selectedText={seperateCurrencyName(currency)}
+          selectedText={seperateCurrencyName(
+            crypto.length > 0 ? crypto : 'Show All Currency'
+          )}
           activeLabel="Show All Currency"
           handleClear={clearCurrencyDropdown}
           icon={
-            code && (
+            crypto && (
               <Image
-                source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
+                source={{
+                  uri: `${COINS_URL_PNG}/${crypto?.toLowerCase()}.png`,
+                }}
                 style={styles.coin}
               />
             )
@@ -147,7 +165,10 @@ export default function TransactionFilter({ navigation, route }) {
         <AppText body style={styles.text}>
           Choose Status:
         </AppText>
-        <FilterRow array={statuses} filterType="status" />
+        <FilterRow
+          array={statuses}
+          filterType={`status${isInstantTrade ? 'Trade' : 'Transaction'}`}
+        />
       </ScrollView>
 
       <TransactionFilterBottom
@@ -161,7 +182,7 @@ export default function TransactionFilter({ navigation, route }) {
           disabled={!isFilteredAny}
         />
       </TouchableOpacity>
-      <ChooseCurrencyModal isForTransactions />
+      <CryptoModal />
 
       <DatePickerModal from />
       <DatePickerModal to />

@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     top: -9,
     paddingHorizontal: 8,
   },
-  selectedText: { color: colors.PRIMARY_TEXT, marginLeft: 8 },
+  selectedText: { color: colors.PRIMARY_TEXT, marginLeft: 5 },
   close: {
     width: 25,
     height: 25,

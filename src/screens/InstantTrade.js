@@ -19,17 +19,11 @@ import FiatModal from '../components/InstantTrade/FiatModal';
 import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton';
 
 import colors from '../constants/colors';
-import {
-  fetchTrades,
-  setTradeOffset,
-  setTradeType,
-} from '../redux/trade/actions';
+import { setTradeOffset, setTradeType } from '../redux/trade/actions';
 import { setWalletTab } from '../redux/wallet/actions';
 import { toggleChooseCardModal } from '../redux/modals/actions';
 
 import messaging from '@react-native-firebase/messaging';
-import Copy from '../assets/images/Copy.svg';
-import * as Clipboard from 'expo-clipboard';
 import useNotificationPermissions from './useNotificationPermissions';
 
 export default function InstantTrade() {
@@ -47,7 +41,6 @@ export default function InstantTrade() {
     dispatch(setWalletTab('Deposit'));
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
     dispatch(setTradeOffset(0));
-    dispatch(fetchTrades());
   };
 
   const [showRefreshControl, setShowRefreshControl] = useState(false);

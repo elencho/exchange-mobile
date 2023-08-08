@@ -72,6 +72,21 @@ function* fetchTradesSaga({ isMoreLoading }) {
   yield put(setTradesLoading(false));
 }
 
+function* fetchTradesNew() {
+  yield put(setTradesLoading(true));
+
+  const params = yield select(getParams);
+
+  const newTrades = yield call(fetchTrades, params);
+  const newestTrades = newTrades?.data;
+
+  yield put(setTotalTrades(newTrades?.paging.pageCount));
+  yield put(saveTrades([...newestTrades]));
+
+  yield put(setMoreTradesLoading(false));
+  yield put(setTradesLoading(false));
+}
+
 function* pairObjectSaga(action) {
   const { offers } = action;
   let object;
@@ -272,7 +287,8 @@ function* refreshWalletAndTradesSaga() {
 }
 
 export default function* () {
-  yield takeLatest(actionTypes.FETCH_TRADES, fetchTradesSaga);
+  // yield takeLatest(actionTypes.FETCH_TRADES, fetchTradesSaga);
+  yield takeLatest(actionTypes.FETCH_TRADES, fetchTradesNew);
   yield takeLatest(actionTypes.INSTANT_TRADE_TAB_SAGA, instantTradeTabSaga);
   yield takeLatest(actionTypes.PAIR_OBJECT_SAGA, pairObjectSaga);
   yield takeLatest(actionTypes.DEPOSIT_PROVIDERS_SAGA, depositProvidersSaga);

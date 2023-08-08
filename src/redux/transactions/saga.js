@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, take, takeLatest } from 'redux-saga/effects';
 
 import {
   actionTypes,
@@ -44,6 +44,7 @@ import {
 import { fetchTrades } from '../trade/actions';
 
 function* fetchTransactionsSaga({ isMoreLoading }) {
+  yield put(toggleLoading(true));
   if (isMoreLoading) {
     yield put(setMoreTradesLoading(true));
   } else {
@@ -62,9 +63,10 @@ function* fetchTransactionsSaga({ isMoreLoading }) {
     yield put(setTotalTransactions(total));
   }
   if (newTransactions) {
-    yield put(saveTransactions([...transactions, ...newTransactions]));
+    yield put(saveTransactions([...newTransactions]));
   }
   yield put(setMoreTradesLoading(false));
+  yield put(toggleLoading(false));
 }
 
 function* refreshTransactionsSaga() {
@@ -215,6 +217,7 @@ function* clasifyCurrenciesSaga() {
 
 export default function* () {
   yield takeLatest(actionTypes.FETCH_TRANSACTIONS, fetchTransactionsSaga);
+  yield takeLatest(actionTypes.SET_TX_ID_OR_RECIPIENT, fetchTransactionsSaga);
   yield takeLatest(actionTypes.FETCH_CURRENCIES, fetchCurrenciesSaga);
   yield takeLatest(actionTypes.TYPE_SAGA_ACTION, typeSaga);
   yield takeLatest(actionTypes.STATUS_SAGA_ACTION, statusSaga);
