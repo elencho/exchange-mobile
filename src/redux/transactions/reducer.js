@@ -23,6 +23,7 @@ const INITIAL_STATE = {
   fromDateTime: null,
   toDateTime: null,
   typeFilter: null,
+  txIdOrRecipient: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -45,6 +46,7 @@ export default (state = INITIAL_STATE, action) => {
     tabNavigationRef,
     totalTransactions,
     activeTab,
+    txIdOrRecipient,
   } = action;
   switch (action.type) {
     case 'SET_TAB_NAVIGATION_REF':
@@ -136,6 +138,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activeTab,
+      };
+    case actionTypes.SET_TX_ID_OR_RECIPIENT:
+      return {
+        ...state,
+        txIdOrRecipient,
       };
     case 'SET_STACK_NAVIGATION_ROUTE':
       return {

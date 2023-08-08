@@ -2,30 +2,38 @@ import { StyleSheet, Pressable, View, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import FilterIcon from '../FilterIcon';
 import DownloadIcon from '../DownloadIcon';
-import CurrencyDropdowns from '../../InstantTrade/CurrencyDropdowns';
 import { useDispatch, useSelector } from 'react-redux';
 import { COINS_URL_PNG } from '../../../constants/api';
-import { toggleCurrencyModal } from '../../../redux/modals/actions';
+import { toggleCryptoModal } from '../../../redux/modals/actions';
 import colors from '../../../constants/colors';
 import ChooseCurrencyModal from '../../TransactionFilter/ChooseCurrencyModal';
 import AppDropdown from '../../AppDropdown';
 import AppInput from '../../AppInput';
 import Search from '../../../assets/images/Search';
-import { currencyAction } from '../../../redux/transactions/actions';
+import {
+  currencyAction,
+  setTransactionSearch,
+} from '../../../redux/transactions/actions';
+import CryptoModal from '../../InstantTrade/CryptoModal';
 
 const SearchAndFilter = ({ navigation, isInstantTrade }) => {
   const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
   const { code, currency } = useSelector((state) => state.transactions);
+  const { crypto } = useSelector((state) => state.trade);
 
-  const openModal = () => dispatch(toggleCurrencyModal(true));
+  const openModal = () => dispatch(toggleCryptoModal(true));
   const seperateCurrencyName = (currency) => currency.split('(')[0];
   const clearCurrencyDropdown = () =>
     dispatch(currencyAction('Show All Currency', [], null));
 
   //debounce
   useEffect(() => {
-    const getSearchedData = setTimeout(() => {}, 1500);
+    const getSearchedData = setTimeout(() => {
+      dispatch(
+        setTransactionSearch(searchValue.length > 0 ? searchValue : null)
+      );
+    }, 1000);
 
     return () => clearTimeout(getSearchedData);
   }, [searchValue]);
@@ -33,28 +41,31 @@ const SearchAndFilter = ({ navigation, isInstantTrade }) => {
   return (
     <View style={styles.container}>
       {isInstantTrade ? (
+        <AppDropdown
+          handlePress={openModal}
+          handleClear={clearCurrencyDropdown}
+          style={styles.dropdown}
+          selectedText={seperateCurrencyName(crypto)}
+          activeLabel="Show All Currency"
+          icon={
+            crypto && (
+              <Image
+                source={{
+                  uri: `${COINS_URL_PNG}/${crypto?.toLowerCase()}.png`,
+                }}
+                style={styles.coin}
+              />
+            )
+          }
+        />
+      ) : (
         <AppInput
           style={styles.searchInput}
           label="Search by TXID"
           right={<Search />}
           value={searchValue}
           onChangeText={(text) => setSearchValue(text)}
-        />
-      ) : (
-        <AppDropdown
-          handlePress={openModal}
-          handleClear={clearCurrencyDropdown}
-          style={styles.dropdown}
-          selectedText={seperateCurrencyName(currency)}
-          activeLabel="Show All Currency"
-          icon={
-            code && (
-              <Image
-                source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
-                style={styles.coin}
-              />
-            )
-          }
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         />
       )}
 
@@ -65,6 +76,7 @@ const SearchAndFilter = ({ navigation, isInstantTrade }) => {
       />
       <DownloadIcon />
       <ChooseCurrencyModal isForTransactions />
+      <CryptoModal />
     </View>
   );
 };
