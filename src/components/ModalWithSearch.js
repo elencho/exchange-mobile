@@ -35,7 +35,7 @@ export default function ModalWithSearch({
 
   const uri = (code) => {
     return title === 'Choose Currency'
-      ? `${COINS_URL_PNG}/${code.toLowerCase()}.png`
+      ? `${COINS_URL_PNG}/${code?.toLowerCase()}.png`
       : `${COUNTRIES_URL_PNG}/${code}.png`;
   };
 
@@ -56,6 +56,8 @@ export default function ModalWithSearch({
     const totalAvailablePrice =
       item?.valueUSD && usdBtcSwitch === 'USD'
         ? `Total: ${item?.total} ≈ ${item?.valueUSD} USD`
+        : !item?.valueUSD
+        ? ''
         : `Total: ${item?.total} ≈ ${item?.valueBTC} BTC`;
 
     return (

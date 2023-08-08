@@ -8,7 +8,6 @@ export const getParams = (state) => {
       actionQuery,
       hideOtherPairs,
       cryptoCodeQuery,
-      crypto,
     },
     transactions: { fromDateTime, toDateTime },
   } = state;
@@ -20,7 +19,7 @@ export const getParams = (state) => {
     fromTime: fromDateTime,
     toTime: toDateTime,
     fiatCodes: fiatCodesQuery,
-    cryptoCode: crypto,
+    cryptoCode: cryptoCodeQuery,
     actions: actionQuery,
   };
 };
