@@ -12,7 +12,10 @@ import {
   setNetwork,
   wireDepositAction,
 } from '../../../redux/wallet/actions';
-import { ICONS_URL_PNG } from '../../../constants/api';
+import Euro from '../../../assets/images/Euro.svg';
+import Card from '../../../assets/images/Card.svg';
+import Bank from '../../../assets/images/LocalBank.svg';
+import Arrow from '../../../assets/images/Arrow';
 
 export default function ChooseNetworkModal() {
   const dispatch = useDispatch();
@@ -70,9 +73,17 @@ export default function ChooseNetworkModal() {
     }
   };
 
-  const imageDimensions = fiat
-    ? { width: 60, height: 12 }
-    : { width: 18, height: 18 };
+  const renderIcon = (network) => {
+    if (network === 'ECOMMERCE') {
+      return <Card />;
+    }
+    if (network === 'SWIFT') {
+      return <Bank />;
+    }
+    if (network === 'SEPA') {
+      return <Euro />;
+    }
+  };
 
   const children = (
     <>
@@ -86,10 +97,7 @@ export default function ChooseNetworkModal() {
           key={n.provider}
           onPress={() => handlePress(n.provider)}
         >
-          <Image
-            source={{ uri: `${ICONS_URL_PNG}/${n.provider}.png` }}
-            style={[styles.image, imageDimensions]}
-          />
+          <View>{renderIcon(n.provider)}</View>
           <View style={styles.name}>
             <AppText medium body style={styles.primary}>
               {n?.displayName}
@@ -116,9 +124,6 @@ export default function ChooseNetworkModal() {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    resizeMode: 'contain',
-  },
   name: {
     marginLeft: 20,
     justifyContent: 'space-between',

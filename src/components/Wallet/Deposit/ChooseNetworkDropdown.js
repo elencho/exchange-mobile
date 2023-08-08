@@ -6,9 +6,10 @@ import AppText from '../../AppText';
 
 import colors from '../../../constants/colors';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
-import { ICONS_URL_PNG } from '../../../constants/api';
 import { setNetwork } from '../../../redux/wallet/actions';
-
+import Euro from '../../../assets/images/Euro.svg';
+import Card from '../../../assets/images/Card.svg';
+import Bank from '../../../assets/images/LocalBank.svg';
 import Arrow from '../../../assets/images/Arrow';
 
 export default function ChooseNetworkDropdown({
@@ -26,7 +27,7 @@ export default function ChooseNetworkDropdown({
   } = state;
 
   const cur = currentBalanceObj;
-  const uri = `${ICONS_URL_PNG}/${network}.png`;
+
   const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
   const fiat = cur?.type === 'FIAT';
 
@@ -62,8 +63,6 @@ export default function ChooseNetworkDropdown({
     return network;
   };
 
-  const backgroundColor =
-    colors[whitelist ? 'PRIMARY_BACKGROUND' : 'SECONDARY_BACKGROUND'];
   const dropdown = {
     opacity: disabled ? 0.5 : 1,
     borderColor: error && !network ? '#F45E8C' : '#42475D',
@@ -72,9 +71,17 @@ export default function ChooseNetworkDropdown({
     color: error && !network ? '#F45E8C' : colors.PRIMARY_TEXT,
   };
 
-  const imageDimensions = fiat
-    ? { width: 60, height: 12 }
-    : { width: 18, height: 18 };
+  const renderIcon = (network) => {
+    if (network === 'ECOMMERCE') {
+      return <Card />;
+    }
+    if (network === 'SWIFT') {
+      return <Bank />;
+    }
+    if (network === 'SEPA') {
+      return <Euro />;
+    }
+  };
 
   return (
     <>
@@ -88,15 +95,12 @@ export default function ChooseNetworkDropdown({
             >
               {network ? (
                 <>
-                  <View style={[styles.subtext, { backgroundColor }]}>
+                  <View style={[styles.subtext]}>
                     <AppText body style={styles.secondary}>
                       Choose Network
                     </AppText>
                   </View>
-                  <Image
-                    source={{ uri }}
-                    style={[styles.image, imageDimensions]}
-                  />
+                  <View style={styles.image}>{renderIcon(network)}</View>
                   <AppText medium style={[styles.dropdownText, dropdownText]}>
                     {networkName()}{' '}
                     <AppText style={styles.secondary}>({network})</AppText>
@@ -168,5 +172,6 @@ const styles = StyleSheet.create({
     left: -5,
     top: -8,
     paddingHorizontal: 8,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
 });

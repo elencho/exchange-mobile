@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 20 20">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_19253" data-name="Rectangle 19253" width="20" height="20" transform="translate(589 430)" fill="#fff"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect id="Rectangle_19252" data-name="Rectangle 19252" width="20" height="17.029" fill="#fff" stroke="#ccd9dd" stroke-width="0.1"/>
+    </clipPath>
+  </defs>
+  <g id="Local_bank" data-name="Local bank" transform="translate(-589 -430)" clip-path="url(#clip-path)">
+    <g id="Group_88423" data-name="Group 88423" transform="translate(589 431.198)">
+      <g id="Group_88422" data-name="Group 88422" transform="translate(0 0)" clip-path="url(#clip-path-2)">
+        <path id="Path_89465" data-name="Path 89465" d="M18.444,16.285v-2.2h-.017v-.041H16.07V11.4h-.745v2.64H10.277V6.471h5.048V8.606h.745V6.471h1.986c.066,0,0-3.144,0-3.144L9.963.017a.06.06,0,0,0-.083,0L1.787,3.326V6.471H3.74v7.571H1.415v.041H1.407v2.2H0v.745H20v-.745ZM4.485,6.471H9.532v7.571H4.485ZM2.532,5.734v-1.9L9.921.8l7.4,3.029c.017.712.025,1.415.025,1.9ZM17.7,16.285H2.151v-1.5H17.7Z" transform="translate(0 0)" fill="#fff" stroke="#ccd9dd" stroke-width="0.1"/>
+      </g>
+    </g>
+  </g>
+</svg>
