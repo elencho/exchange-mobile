@@ -42,7 +42,6 @@ import { COINS_URL_PNG } from '../constants/api';
 import Arrow from '../assets/images/Arrow.svg';
 import AppDropdown from '../components/AppDropdown';
 import ChooseMethodsModal from './ChooseMethodsModal';
-import CryptoModal from '../components/InstantTrade/CryptoModal';
 import CryptoModalTrade from '../components/InstantTrade/CryptoModalTrade';
 
 export default function TransactionFilter({ navigation, route }) {
@@ -57,7 +56,8 @@ export default function TransactionFilter({ navigation, route }) {
     toDateTime,
     status,
   } = state.transactions;
-  const { fiatCodesQuery, statusQuery, crypto, actionQuery } = state.trade;
+  const { fiatCodesQuery, statusQuery, cryptoCodeQuery, actionQuery } =
+    state.trade;
   const {
     params: { isInstantTrade },
   } = route;
@@ -90,11 +90,9 @@ export default function TransactionFilter({ navigation, route }) {
       code ||
       fiatCodesQuery.length > 0 ||
       statusQuery.length > 0 ||
-      crypto ||
+      cryptoCodeQuery ||
       actionQuery.length > 0
   );
-
-  console.log('curr', currency);
 
   return (
     <Background>
@@ -122,16 +120,18 @@ export default function TransactionFilter({ navigation, route }) {
         )}
 
         <AppDropdown
-          selectedText={seperateCurrencyName(
-            crypto.length > 0 ? crypto : 'Show All Currency'
-          )}
+          selectedText={
+            cryptoCodeQuery?.length > 0
+              ? seperateCurrencyName(cryptoCodeQuery)
+              : 'Show All Currency'
+          }
           activeLabel="Show All Currency"
           handleClear={clearCurrencyDropdown}
           icon={
-            crypto && (
+            cryptoCodeQuery && (
               <Image
                 source={{
-                  uri: `${COINS_URL_PNG}/${crypto?.toLowerCase()}.png`,
+                  uri: `${COINS_URL_PNG}/${cryptoCodeQuery?.toLowerCase()}.png`,
                 }}
                 style={styles.coin}
               />
@@ -182,7 +182,7 @@ export default function TransactionFilter({ navigation, route }) {
           disabled={!isFilteredAny}
         />
       </TouchableOpacity>
-      <CryptoModal />
+      <CryptoModalTrade />
 
       <DatePickerModal from />
       <DatePickerModal to />
