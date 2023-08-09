@@ -6,18 +6,38 @@ import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { getParams } from '../../redux/transactions/selectors';
 import Filter from '../../assets/images/Filter';
-export default function FilterIcon({ onPress }) {
-  const params = useSelector(getParams);
-  const { type, currency, fromDateTime, toDateTime, methods } = params;
+import { getParams as getParamsTrade } from '../../redux/trade/selectors';
+export default function FilterIcon({ onPress, isInstantTrade }) {
+  const paramsTransaction = useSelector(getParams);
+  const paramsTrade = useSelector(getParamsTrade);
+  const { type, currency, fromDateTime, toDateTime, methods } =
+    paramsTransaction;
+  const { actions, cryptoCode, fiatCodes, statuses } = paramsTrade;
 
   const filters = [type, methods, currency, fromDateTime, toDateTime].filter(
     (f) => f
   );
+  const filtersTrade = [
+    actions,
+    cryptoCode,
+    fiatCodes,
+    statuses,
+    fromDateTime,
+    toDateTime,
+  ].filter((f) => f);
+
+  const isFiltered = () => {
+    if (isInstantTrade) {
+      return filtersTrade.some((i) => i.length > 0 || i > 0);
+    } else {
+      return filters.length;
+    }
+  };
 
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <Filter style={styles.icon} />
-      {filters.length ? (
+      {isFiltered() ? (
         <View style={styles.dotOutline}>
           <View style={styles.dot} />
         </View>

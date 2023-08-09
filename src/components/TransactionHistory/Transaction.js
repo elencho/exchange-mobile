@@ -125,7 +125,7 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
             </View>
           ) : action ? (
             <AppText style={[styles.secondaryText]}>
-              {action === 'BID'
+              {action === 'ASK'
                 ? 'BUY - Instant Trade'
                 : 'SELL - Instant Trade'}
             </AppText>

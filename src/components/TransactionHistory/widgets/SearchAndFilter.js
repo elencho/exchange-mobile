@@ -77,6 +77,7 @@ const SearchAndFilter = ({ navigation, isInstantTrade }) => {
       )}
 
       <FilterIcon
+        isInstantTrade={isInstantTrade}
         onPress={() =>
           navigation.navigate('TransactionFilter', { isInstantTrade })
         }
