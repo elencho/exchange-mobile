@@ -43,6 +43,7 @@ import Arrow from '../assets/images/Arrow.svg';
 import AppDropdown from '../components/AppDropdown';
 import ChooseMethodsModal from './ChooseMethodsModal';
 import CryptoModalTrade from '../components/InstantTrade/CryptoModalTrade';
+import { clearFiltersTrade } from '../redux/trade/actions';
 
 export default function TransactionFilter({ navigation, route }) {
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ export default function TransactionFilter({ navigation, route }) {
 
   const clear = () => {
     if (isFilteredAny) {
+      dispatch(clearFiltersTrade());
       dispatch(clearFilters());
       dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
     }
