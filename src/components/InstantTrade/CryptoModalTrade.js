@@ -3,11 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AppModal from '../AppModal';
 import ModalWithSearch from '../ModalWithSearch';
-
-import {
-  fetchCurrencies,
-  filterCurrencies,
-} from '../../redux/transactions/actions';
 import { toggleCryptoModal } from '../../redux/modals/actions';
 import {
   fetchTrades,
