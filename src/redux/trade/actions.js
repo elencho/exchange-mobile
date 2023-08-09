@@ -42,6 +42,7 @@ export const actionTypes = {
   CARDS_SAGA: 'CARDS_SAGA',
   FETCH_FEE: 'FETCH_FEE',
   SUBMIT_TRADE: 'SUBMIT_TRADE',
+  CLEAR_FILTERS_TRADE: 'CLEAR_FILTERS_TRADE',
 
   RESET_TRADES_STATE: 'RESET_TRADES_STATE',
 };
@@ -169,6 +170,9 @@ export const setFromDateQuery = (fromDateTimeQuery) => ({
 export const setToDAteQuery = (toDateTimeQuery) => ({
   type: actionTypes.SET_TO_DATE_QUERY,
   toDateTimeQuery,
+});
+export const clearFiltersTrade = () => ({
+  type: actionTypes.CLEAR_FILTERS_TRADE,
 });
 
 // FOR SAGAS

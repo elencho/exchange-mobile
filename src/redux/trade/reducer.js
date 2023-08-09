@@ -254,6 +254,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         toDateTimeQuery,
       };
+    case actionTypes.CLEAR_FILTERS_TRADE:
+      return {
+        ...state,
+        fromDateTimeQuery: null,
+        toDateTimeQuery: null,
+        statusQuery: [],
+        actionQuery: [],
+        cryptoCodeQuery: '',
+        fiatCodesQuery: [],
+      };
     default:
       return state;
   }
