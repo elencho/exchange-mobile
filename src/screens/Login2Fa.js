@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
 
-    marginLeft: 24,
     marginTop: 28,
     alignSelf: 'flex-start',
   },

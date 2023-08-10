@@ -14,6 +14,8 @@ import { setTabRouteName } from '../redux/transactions/actions';
 import Wallet from '../screens/Wallet';
 import Exchange from '../screens/Exchange';
 import { useIsFocused } from '@react-navigation/native';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
+import colors from '../constants/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +27,7 @@ function MainScreen({ navigation }) {
 
   useEffect(() => {
     onBeforeShow();
+
     return () => {
       onClose();
     };
@@ -65,10 +68,13 @@ function MainScreen({ navigation }) {
   }, []);
 
   const onBeforeShow = async () => {
+    await changeNavigationBarColor(colors.SECONDARY_BACKGROUND, true);
     setSubscription(AppState.addEventListener('change', handleAppStateChange));
   };
 
   const onClose = async () => {
+    await changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true);
+
     subscription?.remove();
   };
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
 import * as SecureStore from 'expo-secure-store';
@@ -15,6 +15,7 @@ import WithKeyboard from '../components/WithKeyboard';
 import images from '../constants/images';
 import colors from '../constants/colors';
 import { startLoginAction } from '../redux/profile/actions';
+import Background from '../components/Background';
 
 export default function ResetOtpInstructions({ navigation, route }) {
   const dispatch = useDispatch();
@@ -85,7 +86,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
   };
 
   return (
-    <View style={styles.container}>
+    <Background>
       <WithKeyboard padding flexGrow>
         <TouchableOpacity style={styles.back} onPress={goBack}>
           <PurpleText text="Go Back" style={styles.backText} />
@@ -143,7 +144,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
           </View>
         )}
       </WithKeyboard>
-    </View>
+    </Background>
   );
 }
 
@@ -152,7 +153,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
 
-    marginLeft: 24,
     marginTop: 28,
     width: '33%',
   },

@@ -234,11 +234,7 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
           </View>
 
           {text === 'Strong_Password' ? (
-            <PurpleText
-              text="Edit"
-              onPress={handlePassword}
-              style={{ fontSize: 20 }}
-            />
+            <PurpleText text="Edit" onPress={handlePassword} />
           ) : (
             <AppSwitcher
               isOn={switchCond()}

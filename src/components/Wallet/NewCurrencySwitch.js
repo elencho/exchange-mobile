@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: colors.SECONDARY_PURPLE,
+    borderColor: '#38427E',
     borderWidth: 1,
     flexDirection: 'row',
   },
