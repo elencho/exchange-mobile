@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     height: 24,
-    top: 5,
+    top: 7,
   },
   flag: {
     height: 24,

@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.PRIMARY_BACKGROUND,
-    paddingVertical: 20,
     paddingHorizontal: 15,
   },
 });

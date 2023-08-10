@@ -111,7 +111,6 @@ const styles = StyleSheet.create({
   },
   purple: {
     alignSelf: 'flex-end',
-    fontSize: 20,
   },
   secondary: {
     color: colors.SECONDARY_TEXT,

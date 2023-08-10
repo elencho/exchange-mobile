@@ -53,6 +53,7 @@ export default function Navigator() {
     gestureEnabled: false,
     headerLeft: () => null,
     animation: 'slide_from_right',
+    navigationBarColor: '#161629',
   };
 
   useNotifications();
@@ -83,7 +84,7 @@ export default function Navigator() {
         <Stack.Screen name="Registration" component={RegistrationScreen} />
         <Stack.Screen name="EmailVerification" component={EmailVerification} />
         <Stack.Screen
-          options={{ animation: 'fade' }}
+          options={{ animation: 'fade', navigationBarColor: '#1F1F35' }}
           name="Main"
           component={MainScreen}
         />

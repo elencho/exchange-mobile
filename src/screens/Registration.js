@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Pressable } from 'react-native';
+import { StyleSheet, View, Pressable, SafeAreaView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { t } from 'i18next';
@@ -102,42 +102,44 @@ export default function Registration({ navigation }) {
   const preventBio = async () => await AsyncStorage.removeItem('isOpenDate');
 
   return (
-    <WithKeyboard scrollUp padding style={styles.scrollview}>
-      <Pressable style={styles.back} onPress={goToSignIn}>
-        <PurpleText
-          numberOfLines={1}
-          text="Back to Log In"
-          style={styles.backText}
-        />
-      </Pressable>
-      <View style={styles.container}>
-        <Logo style={styles.logo} />
-        <AppText header style={styles.header}>
-          Welcome to Cryptal
-        </AppText>
+    <SafeAreaView style={styles.safeArea}>
+      <WithKeyboard scrollUp padding style={styles.scrollview}>
+        <Pressable style={styles.back} onPress={goToSignIn}>
+          <PurpleText
+            numberOfLines={1}
+            text="Back to Log In"
+            style={styles.backText}
+          />
+        </Pressable>
+        <View style={styles.container}>
+          <Logo style={styles.logo} />
+          <AppText header style={styles.header}>
+            Welcome to Cryptal
+          </AppText>
 
-        <PersonalCompanySwitcher />
+          <PersonalCompanySwitcher />
 
-        <GeneralError
-          style={styles.error}
-          show={errorHappenedHere('Registration')}
-        />
+          <GeneralError
+            style={styles.error}
+            show={errorHappenedHere('Registration')}
+          />
 
-        <RegistrationInputs error={error} validations={o} />
-        <CheckMarks error={error} validations={o} />
+          <RegistrationInputs error={error} validations={o} />
+          <CheckMarks error={error} validations={o} />
 
-        <AppButton
-          text="Register"
-          onPress={handleRegistration}
-          loading={userProfileLoading}
-        />
+          <AppButton
+            text="Register"
+            onPress={handleRegistration}
+            loading={userProfileLoading}
+          />
 
-        <AppText style={styles.subtext}>
-          {t('Have an Account?')}{' '}
-          <PurpleText text={t('Sign In')} onPress={goToSignIn} />
-        </AppText>
-      </View>
-    </WithKeyboard>
+          <AppText style={styles.subtext}>
+            {t('Have an Account?')}{' '}
+            <PurpleText text={t('Sign In')} onPress={goToSignIn} />
+          </AppText>
+        </View>
+      </WithKeyboard>
+    </SafeAreaView>
   );
 }
 
@@ -180,6 +182,10 @@ const styles = StyleSheet.create({
   backText: {
     marginBottom: 2,
     marginLeft: 10,
+    flex: 1,
+  },
+  safeArea: {
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     flex: 1,
   },
 });

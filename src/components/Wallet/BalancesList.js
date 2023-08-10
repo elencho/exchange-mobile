@@ -27,6 +27,7 @@ export default function BalancesList({ balanceLoading, filteredBalances }) {
       <FlatList
         data={filteredBalances}
         renderItem={renderCurrency}
+        ListFooterComponent={() => <View style={{ height: 42 }} />}
         keyExtractor={(item) => item.currencyCode}
       />
     </View>
