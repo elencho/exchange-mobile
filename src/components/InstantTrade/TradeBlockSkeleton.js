@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   container: {
-    padding: 20,
     marginBottom: 10,
   },
   smallBoxMiddle: {
