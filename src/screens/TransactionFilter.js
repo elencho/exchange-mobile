@@ -204,6 +204,7 @@ const styles = StyleSheet.create({
   clear: {
     flexDirection: 'row',
     justifyContent: 'center',
+    marginBottom: 30,
   },
   coin: {
     width: 24,
