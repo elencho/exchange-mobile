@@ -11,6 +11,7 @@ import Euro from '../../../assets/images/Euro.svg';
 import Card from '../../../assets/images/Card.svg';
 import Bank from '../../../assets/images/LocalBank.svg';
 import Arrow from '../../../assets/images/Arrow';
+import { ICONS_URL_PNG } from '../../../constants/api';
 
 export default function ChooseNetworkDropdown({
   disabled = false,
@@ -25,6 +26,7 @@ export default function ChooseNetworkDropdown({
     transactions: { code },
     modals: { addWhitelistModalVisble },
   } = state;
+  const uri = `${ICONS_URL_PNG}/${network}.png`;
 
   const cur = currentBalanceObj;
 
@@ -35,7 +37,7 @@ export default function ChooseNetworkDropdown({
 
   useEffect(() => {
     cur?.depositMethods?.WALLET?.forEach((m) => {
-      if (m.provider === network) setIcon(m.iconName);
+      if (m?.provider === network) setIcon(m.iconName);
     });
   }, [network, code]);
 
