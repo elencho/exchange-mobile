@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     width: '47%',
     height: 45,
     paddingRight: 25,
+    paddingLeft: 20,
   },
 
   mainWrapper: {
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   container: {
-    padding: 10,
+    padding: 20,
     marginBottom: 10,
   },
   smallBoxMiddle: {
