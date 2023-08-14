@@ -24,7 +24,7 @@ const SecondPart = () => (
   <View style={styles.containerSec}>
     <View style={styles.wrapper}>
       <View style={styles.lastWrapper}>
-        <View style={styles.smallWrapper}>
+        <View style={{ marginLeft: 10 }}>
           <Skeleton
             width={122}
             height={12}

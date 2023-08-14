@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '47%',
     height: 45,
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
   },
   container: {
     flexDirection: 'row',
