@@ -33,7 +33,7 @@ const INITIAL_STATE = {
 
   // Query Params
   offset: 0,
-  limit: 5,
+  limit: 50,
   fromDateTimeQuery: null,
   toDateTimeQuery: null,
   statusQuery: [],

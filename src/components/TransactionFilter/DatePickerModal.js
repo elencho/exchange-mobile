@@ -15,13 +15,25 @@ const theme = {
   calendarBackground: colors.PRIMARY_BACKGROUND,
 };
 
-export default function DatePickerModal({ from, to }) {
+export default function DatePickerModal({ from, to, isInstantTrade }) {
   const dispatch = useDispatch();
   const datePickerVisible = useSelector(
     (state) => state.modals.datePickerVisible
   );
-  const fromDateTime = useSelector((state) => state.transactions.fromDateTime);
-  const toDateTime = useSelector((state) => state.transactions.toDateTime);
+  const fromDateTimeTransactions = useSelector(
+    (state) => state.transactions.fromDateTime
+  );
+  const toDateTimeTransactions = useSelector(
+    (state) => state.transactions.toDateTime
+  );
+  const fromDateTimeTrades = useSelector(
+    (state) => state.trade.fromDateTimeQuery
+  );
+  const toDateTimeTrades = useSelector((state) => state.trade.toDateTimeQuery);
+  const fromDateTime = isInstantTrade
+    ? fromDateTimeTrades
+    : fromDateTimeTransactions;
+  const toDateTime = isInstantTrade ? toDateTimeTrades : toDateTimeTransactions;
 
   const visible = () => {
     if (from) return datePickerVisible.from;
@@ -82,7 +94,12 @@ export default function DatePickerModal({ from, to }) {
         />
       )}
       dayComponent={(state) => (
-        <CalendarDay state={state} from={from} to={to} />
+        <CalendarDay
+          state={state}
+          from={from}
+          to={to}
+          isInstantTrade={isInstantTrade}
+        />
       )}
     />
   );

@@ -18,10 +18,11 @@ import CryptoModal from '../../InstantTrade/CryptoModal';
 import CryptoModalTrade from '../../InstantTrade/CryptoModalTrade';
 import { fetchTrades, setCryptoCodeQuery } from '../../../redux/trade/actions';
 
-const SearchAndFilter = ({ navigation, isInstantTrade }) => {
+const SearchAndFilter = ({ isInstantTrade, navigation }) => {
   const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
   const { cryptoCodeQuery } = useSelector((state) => state.trade);
+  const { cryptoCodeTransactions } = useSelector((state) => state.transactions);
 
   const openModal = () => dispatch(toggleCryptoModal(true));
   const seperateCurrencyName = (currency) => currency.split('(')[0];
@@ -41,6 +42,7 @@ const SearchAndFilter = ({ navigation, isInstantTrade }) => {
     return () => clearTimeout(getSearchedData);
   }, [searchValue]);
 
+  const cryptoCode = isInstantTrade ? cryptoCodeQuery : cryptoCodeTransactions;
   return (
     <View style={styles.container}>
       {isInstantTrade ? (
@@ -49,16 +51,16 @@ const SearchAndFilter = ({ navigation, isInstantTrade }) => {
           handleClear={clearCurrencyDropdown}
           style={styles.dropdown}
           selectedText={
-            cryptoCodeQuery?.length > 0
-              ? seperateCurrencyName(cryptoCodeQuery)
+            cryptoCode?.length > 0
+              ? seperateCurrencyName(cryptoCode)
               : 'Show All Currency'
           }
           activeLabel="Show All Currency"
           icon={
-            cryptoCodeQuery && (
+            cryptoCode && (
               <Image
                 source={{
-                  uri: `${COINS_URL_PNG}/${cryptoCodeQuery?.toLowerCase()}.png`,
+                  uri: `${COINS_URL_PNG}/${cryptoCode?.toLowerCase()}.png`,
                 }}
                 style={styles.coin}
               />
@@ -73,6 +75,9 @@ const SearchAndFilter = ({ navigation, isInstantTrade }) => {
           value={searchValue}
           onChangeText={(text) => setSearchValue(text)}
           labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+          handleClear={() => {
+            setSearchValue('');
+          }}
         />
       )}
 

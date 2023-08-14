@@ -9,11 +9,26 @@ import { toggleDatePicker } from '../../redux/modals/actions';
 import CalendarIcon from '../../assets/images/Calendar';
 import { setFromTime, setToTime } from '../../redux/transactions/actions';
 
-export default function DatePicker({ to = false, from = false }) {
+export default function DatePicker({
+  to = false,
+  from = false,
+  isInstantTrade,
+}) {
   const dispatch = useDispatch();
 
-  const state = useSelector((state) => state.transactions);
-  const { fromDateTime, toDateTime } = state;
+  const {
+    fromDateTime: fromDateTimeTransactions,
+    toDateTime: toDateTimeTransactions,
+  } = useSelector((state) => state.transactions);
+  const {
+    fromDateTimeQuery: fromDateTimeTrades,
+    toDateTimeQuery: toDateTimeTrades,
+  } = useSelector((state) => state.trade);
+
+  const fromDateTime = isInstantTrade
+    ? fromDateTimeTrades
+    : fromDateTimeTransactions;
+  const toDateTime = isInstantTrade ? toDateTimeTrades : toDateTimeTransactions;
 
   const text = () => {
     const fromDate = new Date(fromDateTime);

@@ -43,14 +43,14 @@ import Arrow from '../assets/images/Arrow.svg';
 import AppDropdown from '../components/AppDropdown';
 import ChooseMethodsModal from './ChooseMethodsModal';
 import CryptoModalTrade from '../components/InstantTrade/CryptoModalTrade';
-import { clearFiltersTrade } from '../redux/trade/actions';
+import { clearFiltersTrade, setCryptoCodeQuery } from '../redux/trade/actions';
 
 export default function TransactionFilter({ navigation, route }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
     currency,
-    code,
+    code: cryptoTransactions,
     method: selectedMethod,
     typeFilter,
     fromDateTime,
@@ -82,19 +82,22 @@ export default function TransactionFilter({ navigation, route }) {
   const handleMethodsDropdown = () => dispatch(toggleMethodsModal(true));
   const clearMethodsDropdown = () => dispatch(setMethodFilter(null));
   const clearCurrencyDropdown = () =>
-    dispatch(currencyAction('Show All Currency', [], null));
+    isInstantTrade
+      ? dispatch(setCryptoCodeQuery(''))
+      : dispatch(currencyAction('Show All Currency', [], null));
   const isFilteredAny = Boolean(
     typeFilter ||
       selectedMethod ||
       status ||
       fromDateTime ||
       toDateTime ||
-      code ||
+      cryptoTransactions ||
       fiatCodesQuery.length > 0 ||
       statusQuery.length > 0 ||
       cryptoCodeQuery ||
       actionQuery.length > 0
   );
+  const selectedCrypto = isInstantTrade ? cryptoCodeQuery : cryptoTransactions;
 
   return (
     <Background>
@@ -123,17 +126,17 @@ export default function TransactionFilter({ navigation, route }) {
 
         <AppDropdown
           selectedText={
-            cryptoCodeQuery?.length > 0
-              ? seperateCurrencyName(cryptoCodeQuery)
+            selectedCrypto?.length > 0
+              ? seperateCurrencyName(selectedCrypto)
               : 'Show All Currency'
           }
           activeLabel="Show All Currency"
           handleClear={clearCurrencyDropdown}
           icon={
-            cryptoCodeQuery && (
+            selectedCrypto && (
               <Image
                 source={{
-                  uri: `${COINS_URL_PNG}/${cryptoCodeQuery?.toLowerCase()}.png`,
+                  uri: `${COINS_URL_PNG}/${selectedCrypto?.toLowerCase()}.png`,
                 }}
                 style={styles.coin}
               />
@@ -152,8 +155,8 @@ export default function TransactionFilter({ navigation, route }) {
           </View>
         )}
 
-        <DatePicker from />
-        <DatePicker to />
+        <DatePicker from isInstantTrade={isInstantTrade} />
+        <DatePicker to isInstantTrade={isInstantTrade} />
 
         {!isInstantTrade && (
           <AppDropdown
@@ -186,8 +189,8 @@ export default function TransactionFilter({ navigation, route }) {
       </TouchableOpacity>
       <CryptoModalTrade />
 
-      <DatePickerModal from />
-      <DatePickerModal to />
+      <DatePickerModal isInstantTrade={isInstantTrade} from />
+      <DatePickerModal isInstantTrade={isInstantTrade} to />
       <ChooseMethodsModal />
     </Background>
   );

@@ -85,6 +85,10 @@ const TransactionsBlock = () => {
     dispatch(fetchTrades());
   };
 
+  useEffect(() => {
+    return () => onRefresh();
+  }, []);
+
   const renderTrade = ({ item }) => <Transaction transactionData={item} />;
 
   const transactionData =
@@ -120,9 +124,10 @@ const TransactionsBlock = () => {
           style={{ height: 280 }}
           data={transactionData}
           renderItem={renderTrade}
-          keyExtractor={(item) => item.creationTime}
+          keyExtractor={(item, idx) => item.creationTime + idx}
           onEndReached={handleScrollEnd}
           onEndReachedThreshold={1}
+          contentContainerStyle={{ flexGrow: 1 }}
           nestedScrollEnabled
           showsVerticalScrollIndicator={false}
           initialNumToRender={5}
@@ -144,9 +149,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   empty: {
-    height: 280,
     justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
   },
   header: {
     color: colors.PRIMARY_TEXT,

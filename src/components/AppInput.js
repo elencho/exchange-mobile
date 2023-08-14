@@ -6,10 +6,12 @@ import {
   Animated,
   Easing,
   TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import { IS_ANDROID } from '../constants/system';
 import AppText from '../components/AppText';
 import colors from '../constants/colors';
+import Close from '../assets/images/Close';
 
 const AppInput = ({
   label = '',
@@ -23,6 +25,7 @@ const AppInput = ({
   isForModal,
   labelBackgroundColor = colors.SECONDARY_BACKGROUND,
   disabled,
+  handleClear,
   onChangeText = () => {},
   ...rest
 }) => {
@@ -119,7 +122,18 @@ const AppInput = ({
             </Animated.View>
           </TouchableWithoutFeedback>
         ) : null}
-        {rightComponent && <View style={styles.icon}>{rightComponent}</View>}
+
+        {rightComponent && (
+          <View style={styles.icon}>
+            {handleClear && value.length > 0 ? (
+              <Pressable onPress={handleClear}>
+                <Close width={10} height={10} />
+              </Pressable>
+            ) : (
+              rightComponent
+            )}
+          </View>
+        )}
       </View>
       {errorText && (
         <AppText small style={styles.errorText}>

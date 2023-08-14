@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useNavigation,
@@ -19,6 +19,7 @@ import {
   clearFilters,
   reachScrollEnd,
   setAbbr,
+  setActiveTab,
 } from '../redux/transactions/actions';
 import colors from '../constants/colors';
 import CustomRefreshContol from '../components/CustomRefreshContol';
@@ -26,6 +27,8 @@ import TabSwitcher from '../components/TransactionHistory/widgets/TabSwitcher';
 import SearchAndFilter from '../components/TransactionHistory/widgets/SearchAndFilter';
 import TransactionsBlock from '../components/InstantTrade/TransactionsBlock';
 import Transaction from '../components/TransactionHistory/Transaction';
+import { clearFiltersTrade, saveTrades } from '../redux/trade/actions';
+import { fetchTrades } from '../utils/fetchTrades';
 
 function TransactionHistory({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -47,22 +50,34 @@ function TransactionHistory({ navigation, route }) {
   useFocusEffect(
     useCallback(() => {
       dispatch(chooseCurrency(currency));
-      dispatch(setAbbr(currencyCode));
+      // dispatch(setAbbr(currencyCode));
       dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+      Keyboard.dismiss();
     }, [currency])
   );
 
   useFocusEffect(
     useCallback(() => {
       dispatch(chooseCurrency('Show All Currency'));
-      dispatch(setAbbr(null));
+      // dispatch(setAbbr(null));
       dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+      Keyboard.dismiss();
     }, [navigation])
   );
 
   useEffect(() => {
     if (!route?.params?.isFromTransactions) dispatch(clearFilters());
   }, [navigation]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearFiltersTrade());
+      dispatch(clearFilters());
+      dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+      dispatch(setActiveTab('Transfer'));
+      Keyboard.dismiss();
+    };
+  }, []);
 
   const onRefresh = () => {
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
@@ -117,6 +132,7 @@ function TransactionHistory({ navigation, route }) {
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={1000}
           ListEmptyComponent={listEmptyContainer}
+          keyboardShouldPersistTaps="never"
           refreshControl={
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }
