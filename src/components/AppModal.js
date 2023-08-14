@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
   header: {
     color: colors.PRIMARY_TEXT,
     marginBottom: 25,
-    marginLeft: 10,
   },
   modal: {
     marginHorizontal: 0,

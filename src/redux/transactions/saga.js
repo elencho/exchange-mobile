@@ -52,6 +52,7 @@ function* fetchTransactionsSaga({ isMoreLoading }) {
   }
   const params = yield select(getParams);
   const transactions = yield select(getTransactions);
+
   const newTransactions = yield call(fetch, params);
   const total = yield call(totalAmount, params);
 
@@ -127,7 +128,7 @@ function* reachScrollEndSaga(action) {
     const offset = yield select((state) => state.trade.offset);
     const limit = yield select((state) => state.trade.limit);
 
-    yield put(setTradeOffset(offset + limit));
+    yield put(setTradeOffset(offset + 1));
     yield put(fetchTrades(true));
   }
 }

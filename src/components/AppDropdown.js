@@ -101,10 +101,11 @@ const styles = StyleSheet.create({
   },
   selectedText: { color: colors.PRIMARY_TEXT, marginLeft: 5 },
   close: {
-    width: 25,
-    height: 25,
+    width: 36,
+    height: 30,
     justifyContent: 'center',
-    alignItems: 'flex-end',
+    alignItems: 'center',
+    marginRight: -15,
   },
   row: {
     flexDirection: 'row',

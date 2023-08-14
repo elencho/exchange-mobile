@@ -21,8 +21,16 @@ export default function TransactionDetails() {
       type,
       totalAmount,
       providerDisplayName,
+      cumulativeCost,
+      quoteCurrency,
+      size,
+      baseCurrency,
+      price,
     },
+    activeTab,
   } = state;
+
+  const isInstantTrade = activeTab === 'Instant trade';
 
   const LeftText = ({ text }) => (
     <View style={styles.leftTextContainer}>
@@ -38,7 +46,27 @@ export default function TransactionDetails() {
     </View>
   );
 
-  const leftArray = [
+  const leftInstant = [
+    'Transaction type :',
+    'Date created :',
+    'End Date',
+    'From Amount',
+    'To amount',
+    'Market price :',
+    'Status :',
+  ];
+
+  const rightInstant = [
+    type,
+    `${date} / ${time}`,
+    `${date} / ${time}`,
+    `${cumulativeCost} ${quoteCurrency}`,
+    `${size} ${baseCurrency}`,
+    `${price} ${quoteCurrency}`,
+    status,
+  ];
+
+  const leftTransactions = [
     'Type :',
     'Network :',
     'Date / Time :',
@@ -48,16 +76,19 @@ export default function TransactionDetails() {
     'Status :',
     'Method :',
   ];
-  const rightArray = [
+  const rightTransactions = [
     type,
     providerDisplayName,
     `${date} / ${time}`,
-    `${amount} ${currency}`,
+    amount ? `${amount} ${currency}` : ` ${cumulativeCost} ${quoteCurrency}`,
     `${fee} ${currency}`,
     `${totalAmount} ${currency}`,
     status,
     method,
   ];
+
+  const leftArray = isInstantTrade ? leftInstant : leftTransactions;
+  const rightArray = isInstantTrade ? rightInstant : rightTransactions;
 
   return (
     <View style={styles.container}>
