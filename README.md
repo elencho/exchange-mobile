@@ -35,3 +35,5 @@ yarn
 - [Pull Requests](https://bitbucket.org/cryptx-dev/exchange-mobile/src/5c0f9fccfb42acb5a6f0a638cdc12a99aa2f99a9/docs/pull_request_template.md?at=feature%2Fdocs)
 - [GitFlow](https://bitbucket.org/cryptx-dev/exchange-mobile/src/5c0f9fccfb42acb5a6f0a638cdc12a99aa2f99a9/docs/git_flow.md?at=feature%2Fdocs)
 - [Code Style](https://bitbucket.org/cryptx-dev/exchange-mobile/src/5c0f9fccfb42acb5a6f0a638cdc12a99aa2f99a9/docs/code_style.md?at=feature%2Fdocs)
+
+-test

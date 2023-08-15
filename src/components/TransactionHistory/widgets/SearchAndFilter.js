@@ -2,69 +2,94 @@ import { StyleSheet, Pressable, View, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import FilterIcon from '../FilterIcon';
 import DownloadIcon from '../DownloadIcon';
-import CurrencyDropdowns from '../../InstantTrade/CurrencyDropdowns';
 import { useDispatch, useSelector } from 'react-redux';
 import { COINS_URL_PNG } from '../../../constants/api';
-import { toggleCurrencyModal } from '../../../redux/modals/actions';
+import { toggleCryptoModal } from '../../../redux/modals/actions';
 import colors from '../../../constants/colors';
 import ChooseCurrencyModal from '../../TransactionFilter/ChooseCurrencyModal';
 import AppDropdown from '../../AppDropdown';
 import AppInput from '../../AppInput';
 import Search from '../../../assets/images/Search';
-import { currencyAction } from '../../../redux/transactions/actions';
+import {
+  currencyAction,
+  setTransactionSearch,
+} from '../../../redux/transactions/actions';
+import CryptoModal from '../../InstantTrade/CryptoModal';
+import CryptoModalTrade from '../../InstantTrade/CryptoModalTrade';
+import { fetchTrades, setCryptoCodeQuery } from '../../../redux/trade/actions';
 
-const SearchAndFilter = ({ navigation, isInstantTrade }) => {
+const SearchAndFilter = ({ isInstantTrade, navigation }) => {
   const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
-  const { code, currency } = useSelector((state) => state.transactions);
+  const { cryptoCodeQuery } = useSelector((state) => state.trade);
+  const { cryptoCodeTransactions } = useSelector((state) => state.transactions);
 
-  const openModal = () => dispatch(toggleCurrencyModal(true));
+  const openModal = () => dispatch(toggleCryptoModal(true));
   const seperateCurrencyName = (currency) => currency.split('(')[0];
-  const clearCurrencyDropdown = () =>
-    dispatch(currencyAction('Show All Currency', [], null));
+  const clearCurrencyDropdown = () => {
+    dispatch(setCryptoCodeQuery(''));
+    dispatch(fetchTrades());
+  };
 
   //debounce
   useEffect(() => {
-    const getSearchedData = setTimeout(() => {}, 1500);
+    const getSearchedData = setTimeout(() => {
+      dispatch(
+        setTransactionSearch(searchValue?.length > 0 ? searchValue : null)
+      );
+    }, 1000);
 
     return () => clearTimeout(getSearchedData);
   }, [searchValue]);
 
+  const cryptoCode = isInstantTrade ? cryptoCodeQuery : cryptoCodeTransactions;
   return (
     <View style={styles.container}>
       {isInstantTrade ? (
+        <AppDropdown
+          handlePress={openModal}
+          handleClear={clearCurrencyDropdown}
+          style={styles.dropdown}
+          selectedText={
+            cryptoCode?.length > 0
+              ? seperateCurrencyName(cryptoCode)
+              : 'Show All Currency'
+          }
+          activeLabel="Show All Currency"
+          icon={
+            cryptoCode && (
+              <Image
+                source={{
+                  uri: `${COINS_URL_PNG}/${cryptoCode?.toLowerCase()}.png`,
+                }}
+                style={styles.coin}
+              />
+            )
+          }
+        />
+      ) : (
         <AppInput
           style={styles.searchInput}
           label="Search by TXID"
           right={<Search />}
           value={searchValue}
           onChangeText={(text) => setSearchValue(text)}
-        />
-      ) : (
-        <AppDropdown
-          handlePress={openModal}
-          handleClear={clearCurrencyDropdown}
-          style={styles.dropdown}
-          selectedText={seperateCurrencyName(currency)}
-          activeLabel="Show All Currency"
-          icon={
-            code && (
-              <Image
-                source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
-                style={styles.coin}
-              />
-            )
-          }
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+          handleClear={() => {
+            setSearchValue('');
+          }}
         />
       )}
 
       <FilterIcon
+        isInstantTrade={isInstantTrade}
         onPress={() =>
           navigation.navigate('TransactionFilter', { isInstantTrade })
         }
       />
       <DownloadIcon />
       <ChooseCurrencyModal isForTransactions />
+      <CryptoModalTrade />
     </View>
   );
 };

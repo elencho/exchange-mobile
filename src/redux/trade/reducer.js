@@ -33,7 +33,7 @@ const INITIAL_STATE = {
 
   // Query Params
   offset: 0,
-  limit: 5,
+  limit: 50,
   fromDateTimeQuery: null,
   toDateTimeQuery: null,
   statusQuery: [],
@@ -253,6 +253,16 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         toDateTimeQuery,
+      };
+    case actionTypes.CLEAR_FILTERS_TRADE:
+      return {
+        ...state,
+        fromDateTimeQuery: null,
+        toDateTimeQuery: null,
+        statusQuery: [],
+        actionQuery: [],
+        cryptoCodeQuery: '',
+        fiatCodesQuery: [],
       };
     default:
       return state;

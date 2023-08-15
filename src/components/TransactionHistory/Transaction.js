@@ -103,7 +103,6 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
   const destinationDisplay = isTransfer
     ? shortenDestination(recipient)
     : `${size} ${baseCurrency}`;
-  const typeColor = type === 'BUY' ? '#a4edd9' : '#f0abc0';
 
   return (
     <Pressable onPress={showModal} style={styles.container}>
@@ -114,22 +113,21 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
           <AppText medium style={styles.primaryText} body>
             {title}
           </AppText>
-          {method ? (
+          {!isTransfer && (
             <View style={{ flexDirection: 'row' }}>
-              {!isTransfer && (
-                <View style={styles.typeIcon}>
-                  {type === 'SELL' ? <SellIcon /> : <BuyIcon />}
-                </View>
+              {!isTransfer && action && (
+                <>
+                  <View style={styles.typeIcon}>
+                    {action === 'ASK' ? <BuyIcon /> : <SellIcon />}
+                  </View>
+                  <AppText style={[styles.secondaryText]}>
+                    Instant Trade
+                  </AppText>
+                </>
               )}
               <AppText style={styles.secondaryText}>{method}</AppText>
             </View>
-          ) : action ? (
-            <AppText style={[styles.secondaryText]}>
-              {action === 'BID'
-                ? 'BUY - Instant Trade'
-                : 'SELL - Instant Trade'}
-            </AppText>
-          ) : null}
+          )}
         </View>
 
         <View style={styles.right}>
@@ -181,7 +179,7 @@ const styles = StyleSheet.create({
   statusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 5 },
 
   // Texts
-  secondaryText: { fontSize: 12, lineHeight: 16, color: colors.SECONDARY_TEXT },
+  secondaryText: { fontSize: 14, lineHeight: 16, color: colors.SECONDARY_TEXT },
   status: {
     fontSize: 12,
     lineHeight: 16,

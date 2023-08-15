@@ -50,7 +50,7 @@ const Purple = ({ text, onPress }) => {
   );
 };
 
-const TransactionsBlock = ({ loading }) => {
+const TransactionsBlock = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -61,16 +61,22 @@ const TransactionsBlock = ({ loading }) => {
 
   const state = useSelector((state) => state);
   const {
-    trade: { trades, hideOtherPairs, totalTrades, moreTradesLoading },
-    transactions: { code: currencyCode, currency },
+    trade: {
+      trades,
+      hideOtherPairs,
+      totalTrades,
+      moreTradesLoading,
+      tradesLoading,
+    },
+    transactions: { code: currencyCode, currency, loading },
   } = state;
 
   const handleScrollEnd = () => {
-    if (trades.length === totalTrades) {
-      return;
-    } else if (trades.length <= totalTrades && !moreTradesLoading) {
-      dispatch(reachScrollEnd('trades'));
-    }
+    // if (trades.length === totalTrades) {
+    //   return;
+    // } else if (trades.length <= totalTrades && !moreTradesLoading) {
+    //   dispatch(reachScrollEnd('trades'));
+    // }
   };
 
   const onRefresh = () => {
@@ -78,6 +84,10 @@ const TransactionsBlock = ({ loading }) => {
     dispatch(saveTrades([]));
     dispatch(fetchTrades());
   };
+
+  useEffect(() => {
+    return () => onRefresh();
+  }, []);
 
   const renderTrade = ({ item }) => <Transaction transactionData={item} />;
 
@@ -105,7 +115,7 @@ const TransactionsBlock = ({ loading }) => {
 
   return (
     <View style={styles.container}>
-      {loading && !moreTradesLoading ? (
+      {tradesLoading && !moreTradesLoading ? (
         <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
           <TransactionSkeleton length={[1, 2, 3, 4, 5]} />
         </View>
@@ -114,10 +124,12 @@ const TransactionsBlock = ({ loading }) => {
           style={{ height: 280 }}
           data={transactionData}
           renderItem={renderTrade}
-          keyExtractor={(item) => item.creationTime}
+          keyExtractor={(item, idx) => item.creationTime + idx}
           onEndReached={handleScrollEnd}
           onEndReachedThreshold={1}
+          contentContainerStyle={{ flexGrow: 1 }}
           nestedScrollEnabled
+          showsVerticalScrollIndicator={false}
           initialNumToRender={5}
           ListFooterComponent={trades.length > 0 && footer}
           ListEmptyComponent={listEmptyContainer}
@@ -137,9 +149,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   empty: {
-    height: 280,
     justifyContent: 'center',
     alignItems: 'center',
+    flex: 1,
   },
   header: {
     color: colors.PRIMARY_TEXT,
