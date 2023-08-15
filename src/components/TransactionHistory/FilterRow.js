@@ -28,8 +28,8 @@ const statusMapping = {
   SUCCESS: ['COMPLETED'],
 };
 const tradeActionMapping = {
-  BUY: 'ASK',
-  SELL: 'BID',
+  BUY: 'BID',
+  SELL: 'ASK',
 };
 
 export default function FilterRow({ array = [''], filterType }) {

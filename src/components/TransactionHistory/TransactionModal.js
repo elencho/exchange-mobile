@@ -33,9 +33,12 @@ function TransactionModal({ transactions, trades }) {
         recipient,
       },
       currencies,
+      activeTab,
     },
     modals: { transactionDetailsVisible },
   } = state;
+
+  const isInstantTrade = activeTab === 'Instant trade';
 
   const handleTransactionUrl = () => {
     let pattern;
@@ -74,34 +77,36 @@ function TransactionModal({ transactions, trades }) {
     if (transactions) {
       return (
         <>
-          <View style={styles.top}>
-            <View style={styles.middle}>
-              <AppText medium style={styles.white}>
-                identifier (TXID):
-              </AppText>
-              <AppText style={[styles.address]} subtext>
-                {transactionInfo}
-              </AppText>
-            </View>
+          {!isInstantTrade && (
+            <View style={styles.top}>
+              <View style={styles.middle}>
+                <AppText medium style={styles.white}>
+                  identifier (TXID):
+                </AppText>
+                <AppText style={[styles.address]} subtext>
+                  {transactionInfo}
+                </AppText>
+              </View>
 
-            <View style={styles.vertical} />
+              <View style={styles.vertical} />
 
-            <View style={styles.row}>
-              <TouchableOpacity onPress={copyId}>
-                <Copy />
-              </TouchableOpacity>
-              {method === 'WALLET' && (
-                <TouchableOpacity
-                  onPress={handleTransactionUrl}
-                  style={{ marginLeft: 25 }}
-                >
-                  <Link />
+              <View style={styles.row}>
+                <TouchableOpacity onPress={copyId}>
+                  <Copy />
                 </TouchableOpacity>
-              )}
+                {method === 'WALLET' && (
+                  <TouchableOpacity
+                    onPress={handleTransactionUrl}
+                    style={{ marginLeft: 25 }}
+                  >
+                    <Link />
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
-          </View>
+          )}
 
-          <View style={styles.line} />
+          {!isInstantTrade && <View style={styles.line} />}
 
           <TransactionDetails />
 
@@ -246,6 +251,7 @@ const styles = StyleSheet.create({
   top: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginLeft: 8,
     // height: 37,
   },
   address: { color: '#C0C5E0', marginTop: 5 },

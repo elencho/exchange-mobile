@@ -14,15 +14,16 @@ import {
   currencyAction,
   setTransactionSearch,
 } from '../../../redux/transactions/actions';
-import CryptoModal from '../../InstantTrade/CryptoModal';
 import CryptoModalTrade from '../../InstantTrade/CryptoModalTrade';
 import { fetchTrades, setCryptoCodeQuery } from '../../../redux/trade/actions';
 
 const SearchAndFilter = ({ isInstantTrade, navigation }) => {
-  const [searchValue, setSearchValue] = useState('');
   const dispatch = useDispatch();
   const { cryptoCodeQuery } = useSelector((state) => state.trade);
-  const { cryptoCodeTransactions } = useSelector((state) => state.transactions);
+  const { cryptoCodeTransactions, txIdOrRecipient } = useSelector(
+    (state) => state.transactions
+  );
+  const [searchValue, setSearchValue] = useState('');
 
   const openModal = () => dispatch(toggleCryptoModal(true));
   const seperateCurrencyName = (currency) => currency.split('(')[0];
@@ -41,6 +42,10 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
 
     return () => clearTimeout(getSearchedData);
   }, [searchValue]);
+
+  useEffect(() => {
+    if (!txIdOrRecipient) setSearchValue('');
+  }, [txIdOrRecipient]);
 
   const cryptoCode = isInstantTrade ? cryptoCodeQuery : cryptoCodeTransactions;
   return (
