@@ -145,11 +145,11 @@ export default memo(TransactionsBlock);
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 5,
-    marginTop: 20,
+    marginTop: 30,
     flex: 1,
   },
   empty: {
-    justifyContent: 'center',
+    marginTop: '25%',
     alignItems: 'center',
     flex: 1,
   },

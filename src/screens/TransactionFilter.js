@@ -57,8 +57,14 @@ export default function TransactionFilter({ navigation, route }) {
     toDateTime,
     status,
   } = state.transactions;
-  const { fiatCodesQuery, statusQuery, cryptoCodeQuery, actionQuery } =
-    state.trade;
+  const {
+    fiatCodesQuery,
+    statusQuery,
+    cryptoCodeQuery,
+    actionQuery,
+    fromDateTimeQuery,
+    toDateTimeQuery,
+  } = state.trade;
   const {
     params: { isInstantTrade },
   } = route;
@@ -90,7 +96,9 @@ export default function TransactionFilter({ navigation, route }) {
       selectedMethod ||
       status ||
       fromDateTime ||
+      fromDateTimeQuery ||
       toDateTime ||
+      toDateTimeQuery ||
       cryptoTransactions ||
       fiatCodesQuery.length > 0 ||
       statusQuery.length > 0 ||

@@ -30,7 +30,10 @@ function ChooseAddressModal() {
 
   const background = (w) => {
     if (w.id === currentWhitelistObj.id) {
-      return { backgroundColor: 'rgba(101, 130, 253, 0.1)' };
+      return {
+        backgroundColor: 'rgba(101, 130, 253, 0.1)',
+        borderRadius: 5,
+      };
     }
   };
 
@@ -102,8 +105,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 30,
-    marginHorizontal: -18,
+    paddingHorizontal: 10,
     borderRadius: 5,
   },
 

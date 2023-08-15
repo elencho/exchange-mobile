@@ -44,9 +44,7 @@ export default TransactionSkeleton;
 
 const styles = StyleSheet.create({
   //
-  container: {
-    marginVertical: 20,
-  },
+  container: {},
   middle: {
     justifyContent: 'flex-end',
     marginLeft: 10,
