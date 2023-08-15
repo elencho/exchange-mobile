@@ -57,7 +57,6 @@ function TransactionHistory({ navigation, route }) {
   useFocusEffect(
     useCallback(() => {
       dispatch(chooseCurrency(currency));
-      clearAllFilters();
     }, [currency])
   );
 
@@ -70,9 +69,9 @@ function TransactionHistory({ navigation, route }) {
     }, [navigation])
   );
 
-  useEffect(() => {
-    if (!route?.params?.isFromTransactions) clearAllFilters();
-  }, [navigation]);
+  // useEffect(() => {
+  //   if (!route?.params?.isFromTransactions) clearAllFilters();
+  // }, [navigation]);
 
   useEffect(() => {
     return () => {
