@@ -29,14 +29,7 @@ export default function CompanyInformation() {
         <AppText medium style={styles.white}>
           Company Information
         </AppText>
-        <PurpleText
-          text="Edit"
-          onPress={openModal}
-          style={{
-            transform: [{ scale: 0.9 }, { translateY: 2 }],
-            fontSize: 20,
-          }}
-        />
+        <PurpleText text="Edit" onPress={openModal} />
       </View>
 
       <View style={[styles.row, { marginTop: 20 }]}>
