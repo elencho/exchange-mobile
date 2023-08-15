@@ -120,7 +120,9 @@ function TransactionHistory({ navigation, route }) {
       />
 
       {loading ? (
-        <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
+        <View style={{ marginTop: 30 }}>
+          <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
+        </View>
       ) : activeTab === 'Transfer' ? (
         <FlatList
           style={styles.transactions}
