@@ -103,11 +103,11 @@ function TransactionHistory({ navigation, route }) {
   );
 
   const handleScrollEnd = () => {
-    if (transactions.length === totalTransactions) {
-      return;
-    } else if (transactions.length <= totalTransactions && !moreTradesLoading) {
-      dispatch(reachScrollEnd('transactions'));
-    }
+    // if (transactions.length === totalTransactions) {
+    //   return;
+    // } else if (transactions.length <= totalTransactions && !moreTradesLoading) {
+    //   dispatch(reachScrollEnd('transactions'));
+    // }
   };
 
   return (
