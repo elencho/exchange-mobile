@@ -125,7 +125,7 @@ export default function PersonalInfoModal() {
   const citizenshipLabel = citizenship ? subtext : {};
 
   const children = (
-    <WithKeyboard padding flexGrow modal style={{ marginTop: -14 }}>
+    <WithKeyboard padding flexGrow modal>
       <TouchableOpacity activeOpacity={0.99} style={styles.flex}>
         <AppText style={styles.email}>{email}</AppText>
         <GeneralError

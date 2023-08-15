@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Pressable, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Pressable } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
 import { t } from 'i18next';
@@ -24,6 +24,7 @@ import {
 import { errorHappenedHere } from '../utils/appUtils';
 import colors from '../constants/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function Registration({ navigation }) {
   const dispatch = useDispatch();

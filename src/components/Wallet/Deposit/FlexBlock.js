@@ -39,9 +39,9 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
 
   const image = () => {
     if (reason === 'no address') {
-      return <List />;
+      return <List style={{ marginBottom: 20 }} />;
     } else {
-      return <WarningWhite />;
+      return <WarningWhite style={{ marginBottom: 20 }} />;
     }
   };
 
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
     marginBottom: 40,
+    marginTop: 10,
   },
   flexBlock: {
     backgroundColor: colors.PRIMARY_BACKGROUND,

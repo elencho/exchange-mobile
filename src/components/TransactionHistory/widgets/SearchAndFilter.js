@@ -24,7 +24,6 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
     (state) => state.transactions
   );
   const [searchValue, setSearchValue] = useState('');
-
   const openModal = () => dispatch(toggleCryptoModal(true));
   const seperateCurrencyName = (currency) => currency.split('(')[0];
   const clearCurrencyDropdown = () => {

@@ -7,7 +7,7 @@ import colors from '../../constants/colors';
 import AppText from '../AppText';
 import Headline from './Headline';
 
-function TopRow({ clear, headlineLogo }) {
+function TopRow({ clear, headlineLogo, style }) {
   const navigation = useNavigation();
   const route = useRoute();
 
@@ -16,7 +16,7 @@ function TopRow({ clear, headlineLogo }) {
 
   const initials = () => {
     if (firstName && lastName) {
-      return `${firstName[0]} ${lastName[0]}`;
+      return `${firstName[0].toUpperCase()} ${lastName[0].toUpperCase()}`;
     } else {
       return '';
     }
@@ -47,7 +47,7 @@ function TopRow({ clear, headlineLogo }) {
   return (
     <View style={styles.topRow}>
       <View style={styles.flexRow}>
-        <Headline title={title} />
+        <Headline title={title} style={style} />
         {headlineLogo ? headlineLogo : null}
       </View>
 
@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 99,
     paddingTop: 20,
+    paddingBottom: 28,
   },
   text: {
     color: colors.PRIMARY_TEXT,

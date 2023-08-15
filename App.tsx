@@ -1,11 +1,5 @@
 import React, { useCallback } from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  LogBox,
-  View,
-} from 'react-native';
+import { StyleSheet, StatusBar, LogBox, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
@@ -19,6 +13,7 @@ import './src/utils/i18n';
 import './src/utils/interceptor';
 import { IS_IOS } from './src/constants/system';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 LogBox.ignoreLogs([
   // TODO: Remove when fixed
@@ -45,12 +40,20 @@ function App(): JSX.Element {
     <Provider store={store}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <StatusBar
-          backgroundColor="transparent"
+          backgroundColor={'transparent'}
           translucent
           barStyle="light-content"
         />
-        <AppToast />
-        <Navigator />
+        {IS_IOS && <SafeAreaView style={styles.statusBar} />}
+        <SafeAreaView
+          style={styles.container}
+          onLayout={onLayoutRootView}
+          edges={['bottom']}
+        >
+          <AppToast />
+          <Navigator />
+        </SafeAreaView>
+        {IS_IOS && <SafeAreaView style={styles.statusBar} />}
       </GestureHandlerRootView>
     </Provider>
   );

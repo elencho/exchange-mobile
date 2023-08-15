@@ -170,6 +170,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     paddingHorizontal: 15,
+    marginTop: 28,
   },
   error: {
     marginBottom: 25,

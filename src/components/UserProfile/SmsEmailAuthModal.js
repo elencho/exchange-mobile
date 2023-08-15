@@ -97,7 +97,9 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
       );
     } else if (timerVisible) {
       return (
-        <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
+        <AppText style={{ color: colors.PRIMARY_TEXT }} body>
+          {seconds}
+        </AppText>
       );
     } else {
       return <PurpleText text="resend purple" onPress={resend} />;
@@ -109,7 +111,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
       <AppText style={styles.header} header>
         {`${type} Authentication`}
       </AppText>
-      <AppText style={styles.secondary} body>
+      <AppText style={styles.secondary} calendarDay>
         Enter One Time Password
       </AppText>
 
@@ -124,7 +126,10 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
       </View>
 
       <View style={styles.row}>
-        <AppText body style={[styles.secondary, { marginRight: 5 }]}>
+        <AppText
+          body
+          style={[{ marginRight: 5, color: colors.SECONDARY_TEXT }]}
+        >
           Didn't receive code?
         </AppText>
         {resendOrCountDown()}
@@ -163,7 +168,7 @@ const styles = StyleSheet.create({
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
-    fontSize: 24,
+    fontSize: 20,
     lineHeight: 28,
   },
 });

@@ -32,7 +32,7 @@ export default function GoogleOtpModal({ withdrawal, whitelist }) {
       <AppText style={styles.header} header>
         Google Authentication
       </AppText>
-      <AppText style={styles.secondary} body>
+      <AppText style={styles.secondary} calendarDay>
         Enter One Time Password
       </AppText>
 
@@ -72,7 +72,5 @@ const styles = StyleSheet.create({
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
-    fontSize: 24,
-    lineHeight: 28,
   },
 });

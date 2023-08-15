@@ -79,6 +79,16 @@ function TransactionHistory({ navigation, route }) {
     };
   }, []);
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearFiltersTrade());
+      dispatch(clearFilters());
+      dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+      dispatch(setActiveTab('Transfer'));
+      Keyboard.dismiss();
+    };
+  }, []);
+
   const onRefresh = () => {
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
   };
