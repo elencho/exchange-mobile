@@ -142,7 +142,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
         )}
 
         <AppInput
-          style={[styles.input, nameStyle]}
+          style={[styles.input, nameStyle, { marginTop: 22 }]}
           onChangeText={(name) => handleChange(name)}
           value={add ? newWhitelist.name : currentWhitelistObj.name}
           label="Enter Address Name"

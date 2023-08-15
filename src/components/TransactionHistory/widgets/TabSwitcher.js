@@ -47,10 +47,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 10,
-    marginTop: 28,
   },
   tab: {
-    backgroundColor: 'red',
     flex: 1,
     height: 38,
     borderRadius: 40,

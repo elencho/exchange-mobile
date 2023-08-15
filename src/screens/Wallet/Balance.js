@@ -95,17 +95,15 @@ const styles = StyleSheet.create({
   back: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
-    paddingVertical: 5,
+
     width: '45%',
+
+    paddingVertical: 30,
   },
   flexGrow: {
     flexGrow: 1,
   },
   flex: {
     flex: 1,
-  },
-  purpleText: {
-    marginTop: 2,
   },
 });

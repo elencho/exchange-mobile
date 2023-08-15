@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 45,
     paddingHorizontal: 15,
-    marginTop: 12,
+    marginTop: 22,
   },
   grey: {
     color: '#B7BFDB',

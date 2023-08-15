@@ -134,18 +134,16 @@ function UserProfile({ navigation, route }) {
 export default memo(UserProfile);
 
 const styles = StyleSheet.create({
-  back: {
-    marginTop: 5,
-  },
   secondary: {
     color: colors.SECONDARY_TEXT,
     marginBottom: 22,
-    marginTop: -14,
+    marginTop: 6,
   },
   topRow: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 25,
+    paddingTop: 20,
+    paddingBottom: 28,
   },
 });

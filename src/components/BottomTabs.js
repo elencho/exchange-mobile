@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     height: 60,
-    backgroundColor: 'red',
+
     backgroundColor: colors.SECONDARY_BACKGROUND,
   },
 

@@ -221,18 +221,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 5,
     justifyContent: 'space-between',
+    marginTop: 36,
   },
   marginBottom30: {
     marginBottom: 30,
   },
   marginBottom20: {
-    marginBottom: 20,
+    marginVertical: 20,
   },
   text: {
     fontSize: 13,
     lineHeight: 17,
     color: colors.PRIMARY_TEXT,
-    marginVertical: 12,
+    marginTop: 28,
+    marginBottom: 12,
     color: colors.SECONDARY_TEXT,
   },
   bigText: {
