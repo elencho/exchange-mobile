@@ -1,65 +1,65 @@
 export const getParams = (state) => {
-  const {
-    transactions: {
-      typeFilter,
-      method,
-      status,
-      code,
-      fromDateTime,
-      toDateTime,
-      offset,
-      limit,
-    },
-  } = state;
+	const {
+		transactions: {
+			typeFilter,
+			method,
+			status,
+			code,
+			fromDateTime,
+			toDateTime,
+			offset,
+			limit,
+		},
+	} = state
 
-  let methods;
-  switch (method) {
-    case 'All':
-      methods = null;
-      break;
-    case 'Ecommerce':
-      methods = 'ECOMMERCE';
-      break;
-    case 'Wire':
-      methods = 'WIRE';
-      break;
-    case 'Crypto Transaction':
-      methods = ['WALLET', 'WALLET_INTERNAL'];
-      break;
-    case 'Staking':
-      methods = 'STAKING';
-      break;
-    case 'B2C':
-      methods = 'B2C';
-      break;
-    case 'Transfer':
-      methods = 'TRANSFER';
-      break;
-    default:
-      break;
-  }
+	let methods
+	switch (method) {
+		case 'All':
+			methods = null
+			break
+		case 'Ecommerce':
+			methods = 'ECOMMERCE'
+			break
+		case 'Wire':
+			methods = 'WIRE'
+			break
+		case 'Crypto Transaction':
+			methods = ['WALLET', 'WALLET_INTERNAL']
+			break
+		case 'Staking':
+			methods = 'STAKING'
+			break
+		case 'B2C':
+			methods = 'B2C'
+			break
+		case 'Transfer':
+			methods = 'TRANSFER'
+			break
+		default:
+			break
+	}
 
-  return {
-    type: typeFilter,
-    methods,
-    status,
-    currency: code,
-    fromDateTime,
-    toDateTime,
-    offset,
-    limit,
-  };
-};
+	return {
+		type: typeFilter,
+		methods,
+		status,
+		currency: code,
+		fromDateTime,
+		toDateTime,
+		offset,
+		limit,
+	}
+}
 
-export const getTransactions = (state) => state.transactions.transactions;
+export const getTransactions = (state) => state.transactions.transactions
 
-export const getOffset = (state) => state.transactions.offset;
+export const getOffset = (state) => state.transactions.offset
 
-export const getMethod = (state) => state.transactions.method;
+export const getMethod = (state) => state.transactions.method
 
-export const getType = (state) => state.transactions.typeFilter;
+export const getType = (state) => state.transactions.typeFilter
 
-export const getStatus = (state) => state.transactions.status;
+export const getStatus = (state) => state.transactions.status
 
 export const totalLoadedTransactions = (state) =>
-  state.transactions.transactions.length;
+	state.transactions.transactions.length

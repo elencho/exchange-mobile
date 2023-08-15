@@ -1,20 +1,20 @@
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import React from 'react'
+import { StyleSheet } from 'react-native'
 
-import AppText from '../AppText';
-import colors from '../../constants/colors';
+import AppText from '../AppText'
+import colors from '../../constants/colors'
 
 export default function Headline({ title }) {
-  return (
-    <AppText header medium style={styles.text}>
-      {title}
-    </AppText>
-  );
+	return (
+		<AppText header medium style={styles.text}>
+			{title}
+		</AppText>
+	)
 }
 
 const styles = StyleSheet.create({
-  text: {
-    color: colors.PRIMARY_TEXT,
-    marginVertical: 20,
-  },
-});
+	text: {
+		color: colors.PRIMARY_TEXT,
+		marginVertical: 20,
+	},
+})

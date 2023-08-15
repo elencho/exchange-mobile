@@ -1,22 +1,22 @@
-import axios from 'axios';
+import axios from 'axios'
 
-import { CURRENCIES_URL, TRANSACTIONS_URL } from '../constants/api';
+import { CURRENCIES_URL, TRANSACTIONS_URL } from '../constants/api'
 
 export const fetchTransactions = async (params) => {
-  const data = await axios.get(TRANSACTIONS_URL, {
-    params,
-  });
-  if (data) return data.data.data;
-};
+	const data = await axios.get(TRANSACTIONS_URL, {
+		params,
+	})
+	if (data) return data.data.data
+}
 
 export const fetchCurrencies = async () => {
-  const data = await axios.get(CURRENCIES_URL);
-  if (data) return data.data;
-};
+	const data = await axios.get(CURRENCIES_URL)
+	if (data) return data.data
+}
 
 export const totalAmount = async (params) => {
-  const data = await axios.get(TRANSACTIONS_URL, {
-    params,
-  });
-  if (data) return data.data.paging.pageCount;
-};
+	const data = await axios.get(TRANSACTIONS_URL, {
+		params,
+	})
+	if (data) return data.data.paging.pageCount
+}
