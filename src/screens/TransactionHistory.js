@@ -28,7 +28,6 @@ import SearchAndFilter from '../components/TransactionHistory/widgets/SearchAndF
 import TransactionsBlock from '../components/InstantTrade/TransactionsBlock';
 import Transaction from '../components/TransactionHistory/Transaction';
 import { clearFiltersTrade, saveTrades } from '../redux/trade/actions';
-import { fetchTrades } from '../utils/fetchTrades';
 
 function TransactionHistory({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -47,12 +46,18 @@ function TransactionHistory({ navigation, route }) {
     trade: { moreTradesLoading },
   } = state;
 
+  const clearAllFilters = () => {
+    dispatch(clearFiltersTrade());
+    dispatch(clearFilters());
+    dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+    dispatch(setActiveTab('Transfer'));
+    Keyboard.dismiss();
+  };
+
   useFocusEffect(
     useCallback(() => {
       dispatch(chooseCurrency(currency));
-      // dispatch(setAbbr(currencyCode));
-      dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-      Keyboard.dismiss();
+      clearAllFilters();
     }, [currency])
   );
 
@@ -66,16 +71,12 @@ function TransactionHistory({ navigation, route }) {
   );
 
   useEffect(() => {
-    if (!route?.params?.isFromTransactions) dispatch(clearFilters());
+    if (!route?.params?.isFromTransactions) clearAllFilters();
   }, [navigation]);
 
   useEffect(() => {
     return () => {
-      dispatch(clearFiltersTrade());
-      dispatch(clearFilters());
-      dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-      dispatch(setActiveTab('Transfer'));
-      Keyboard.dismiss();
+      clearAllFilters();
     };
   }, []);
 
@@ -102,16 +103,16 @@ function TransactionHistory({ navigation, route }) {
   );
 
   const handleScrollEnd = () => {
-    if (transactions.length === totalTransactions) {
-      return;
-    } else if (transactions.length <= totalTransactions && !moreTradesLoading) {
-      dispatch(reachScrollEnd('transactions'));
-    }
+    // if (transactions.length === totalTransactions) {
+    //   return;
+    // } else if (transactions.length <= totalTransactions && !moreTradesLoading) {
+    //   dispatch(reachScrollEnd('transactions'));
+    // }
   };
 
   return (
     <Background>
-      <TopRow clear={() => dispatch(clearFilters())} />
+      <TopRow clear={clearAllFilters} />
       <TabSwitcher />
       <SearchAndFilter
         navigation={navigation}
@@ -151,7 +152,7 @@ export default TransactionHistory;
 const styles = StyleSheet.create({
   empty: {
     flex: 1,
-    justifyContent: 'center',
+    marginTop: '25%',
     alignItems: 'center',
   },
   loader: {
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
   },
   transactions: {
     flex: 1,
-    marginTop: 20,
+    marginTop: 30,
     paddingHorizontal: 5,
   },
   filter: {

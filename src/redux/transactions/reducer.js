@@ -159,6 +159,7 @@ export default (state = INITIAL_STATE, action) => {
         code: null,
         fromDateTime: null,
         toDateTime: null,
+        txIdOrRecipient: null,
       };
     case actionTypes.RESET_TRANSACTIONS_STATE:
       return {

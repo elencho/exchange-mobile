@@ -114,11 +114,11 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
             {title}
           </AppText>
           {!isTransfer && (
-            <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: 'row', marginTop: 7 }}>
               {!isTransfer && action && (
                 <>
                   <View style={styles.typeIcon}>
-                    {action === 'ASK' ? <BuyIcon /> : <SellIcon />}
+                    {action === 'ASK' ? <SellIcon /> : <BuyIcon />}
                   </View>
                   <AppText style={[styles.secondaryText]}>
                     Instant Trade
@@ -176,12 +176,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-end',
   },
-  statusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 5 },
+  statusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 9 },
 
   // Texts
   secondaryText: { fontSize: 14, lineHeight: 16, color: colors.SECONDARY_TEXT },
   status: {
-    fontSize: 12,
+    fontSize: 14,
     lineHeight: 16,
     color: colors.SECONDARY_TEXT,
     marginRight: 5,

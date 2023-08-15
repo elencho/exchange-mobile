@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
   leftTextContainer: {
     height: 30,
     justifyContent: 'center',
+    marginLeft: 8,
   },
   rightTextContainer: {
     height: 30,

@@ -70,7 +70,10 @@ function AppModal({
               <ModalTop bottom={bottom} />
               <View style={styles.bottom}>
                 {title && (
-                  <AppText header style={styles.header}>
+                  <AppText
+                    header
+                    style={[styles.header, bottom && { marginLeft: 8 }]}
+                  >
                     {title}
                   </AppText>
                 )}
