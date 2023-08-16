@@ -14,7 +14,7 @@ const FirstPart = () => (
         </View>
       </View>
       <View style={styles.secSmallWrapper}>
-        <Skeleton width={36} height={10} style={{ marginBottom: 8 }} />
+        <Skeleton width={36} height={10} style={{ marginBottom: 16 }} />
       </View>
     </View>
   </View>

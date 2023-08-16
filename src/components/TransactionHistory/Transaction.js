@@ -125,8 +125,10 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
                   </AppText>
                 </>
               )}
-              <AppText style={styles.secondaryText}>{method}</AppText>
             </View>
+          )}
+          {isTransfer && (
+            <AppText style={styles.secondaryText}>{method}</AppText>
           )}
         </View>
 

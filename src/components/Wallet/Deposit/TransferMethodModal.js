@@ -108,9 +108,9 @@ const styles = StyleSheet.create({
   pressable: {
     flexDirection: 'row',
     height: 44,
-    paddingHorizontal: 15,
+    paddingHorizontal: 13,
     marginVertical: 2,
-    marginHorizontal: -15,
+    marginHorizontal: -5,
     alignItems: 'center',
     borderRadius: 5,
   },

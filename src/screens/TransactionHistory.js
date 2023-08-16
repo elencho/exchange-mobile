@@ -131,7 +131,10 @@ function TransactionHistory({ navigation, route }) {
 
       {loading && !moreTradesLoading ? (
         <View style={{ marginTop: 30 }}>
-          <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
+          <TransactionSkeleton
+            length={[0, 1, 2, 3, 4, 5, 6]}
+            isInstantTrade={activeTab === 'Instant trade'}
+          />
         </View>
       ) : activeTab === 'Transfer' ? (
         <FlatList

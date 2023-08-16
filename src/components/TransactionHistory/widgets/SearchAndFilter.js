@@ -35,10 +35,10 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
   //debounce
   useEffect(() => {
     const getSearchedData = setTimeout(() => {
+      dispatch(showResultsAction(navigation));
       dispatch(
         setTransactionSearch(searchValue?.length > 0 ? searchValue : null)
       );
-      dispatch(showResultsAction(navigation));
     }, 1000);
 
     return () => clearTimeout(getSearchedData);

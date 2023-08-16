@@ -90,10 +90,10 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 15,
+    paddingHorizontal: 13,
     paddingVertical: 10,
     borderRadius: 5,
-    marginLeft: -15,
+    marginHorizontal: -5,
   },
   text: {
     color: colors.PRIMARY_TEXT,

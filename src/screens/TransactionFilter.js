@@ -76,8 +76,7 @@ export default function TransactionFilter({ navigation, route }) {
 
   const clear = () => {
     if (isFilteredAny) {
-      dispatch(clearFiltersTrade());
-      dispatch(clearFilters());
+      isInstantTrade ? dispatch(clearFiltersTrade()) : dispatch(clearFilters());
       dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
     }
   };
