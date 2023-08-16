@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -28,6 +28,7 @@ import SearchAndFilter from '../components/TransactionHistory/widgets/SearchAndF
 import TransactionsBlock from '../components/InstantTrade/TransactionsBlock';
 import Transaction from '../components/TransactionHistory/Transaction';
 import { clearFiltersTrade, saveTrades } from '../redux/trade/actions';
+import OneTransactionSkeleton from '../components/TransactionHistory/OneTransactionSkeleton';
 
 function TransactionHistory({ navigation, route }) {
   const isFocused = useIsFocused();
@@ -69,10 +70,6 @@ function TransactionHistory({ navigation, route }) {
     }, [navigation])
   );
 
-  // useEffect(() => {
-  //   if (!route?.params?.isFromTransactions) clearAllFilters();
-  // }, [navigation]);
-
   useEffect(() => {
     return () => {
       clearAllFilters();
@@ -112,12 +109,16 @@ function TransactionHistory({ navigation, route }) {
   );
 
   const handleScrollEnd = () => {
-    // if (transactions.length === totalTransactions) {
-    //   return;
-    // } else if (transactions.length <= totalTransactions && !moreTradesLoading) {
-    //   dispatch(reachScrollEnd('transactions'));
-    // }
+    if (transactions.length === totalTransactions) {
+      return;
+    } else if (transactions.length <= totalTransactions && !moreTradesLoading) {
+      dispatch(reachScrollEnd('transactions'));
+    }
   };
+
+  const footer = memo(() =>
+    moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />
+  );
 
   return (
     <Background>
@@ -128,7 +129,7 @@ function TransactionHistory({ navigation, route }) {
         isInstantTrade={activeTab === 'Instant trade'}
       />
 
-      {loading ? (
+      {loading && !moreTradesLoading ? (
         <View style={{ marginTop: 30 }}>
           <TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
         </View>
@@ -140,9 +141,11 @@ function TransactionHistory({ navigation, route }) {
           renderItem={renderTransaction}
           keyExtractor={(item, index) => item.transactionId + index}
           onEndReached={handleScrollEnd}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={1}
           showsVerticalScrollIndicator={false}
-          scrollEventThrottle={1000}
+          nestedScrollEnabled
+          initialNumToRender={5}
+          ListFooterComponent={transactions.length > 0 && footer}
           ListEmptyComponent={listEmptyContainer}
           keyboardShouldPersistTaps="never"
           refreshControl={
