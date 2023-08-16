@@ -14,7 +14,7 @@ export const getParams = (state) => {
 
   return {
     offset,
-    limit: 500,
+    limit: 10,
     statuses: statusQuery,
     fromTime: fromDateTimeQuery,
     toTime: toDateTimeQuery,

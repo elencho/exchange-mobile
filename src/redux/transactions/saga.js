@@ -44,11 +44,10 @@ import {
 import { fetchTrades } from '../trade/actions';
 
 function* fetchTransactionsSaga({ isMoreLoading }) {
-  yield put(toggleLoading(true));
   if (isMoreLoading) {
     yield put(setMoreTradesLoading(true));
   } else {
-    yield put(setMoreTradesLoading(false));
+    yield put(toggleLoading(true));
   }
   const params = yield select(getParams);
   const transactions = yield select(getTransactions);
@@ -64,7 +63,7 @@ function* fetchTransactionsSaga({ isMoreLoading }) {
     yield put(setTotalTransactions(total));
   }
   if (newTransactions) {
-    yield put(saveTransactions([...newTransactions]));
+    yield put(saveTransactions([...transactions, ...newTransactions]));
   }
   yield put(setMoreTradesLoading(false));
   yield put(toggleLoading(false));
