@@ -13,6 +13,7 @@ import Search from '../../../assets/images/Search';
 import {
   currencyAction,
   setTransactionSearch,
+  showResultsAction,
 } from '../../../redux/transactions/actions';
 import CryptoModalTrade from '../../InstantTrade/CryptoModalTrade';
 import { fetchTrades, setCryptoCodeQuery } from '../../../redux/trade/actions';
@@ -37,6 +38,7 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
       dispatch(
         setTransactionSearch(searchValue?.length > 0 ? searchValue : null)
       );
+      dispatch(showResultsAction(navigation));
     }, 1000);
 
     return () => clearTimeout(getSearchedData);

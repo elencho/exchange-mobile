@@ -7,6 +7,7 @@ import { toggleCryptoModal } from '../../redux/modals/actions';
 import {
   fetchTrades,
   instantTradeTabAction,
+  saveTrades,
   setCrypto,
   setCryptoCodeQuery,
 } from '../../redux/trade/actions';
@@ -60,6 +61,7 @@ export default function CryptoModalTrade() {
 
   const choose = (code) => {
     dispatch(isInstantTrade ? setCryptoCodeQuery(code) : setAbbr(code));
+    dispatch(saveTrades([]));
     dispatch(fetchTrades());
     hide();
   };

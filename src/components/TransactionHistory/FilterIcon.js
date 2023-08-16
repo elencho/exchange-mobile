@@ -7,16 +7,22 @@ import colors from '../../constants/colors';
 import { getParams } from '../../redux/transactions/selectors';
 import Filter from '../../assets/images/Filter';
 import { getParams as getParamsTrade } from '../../redux/trade/selectors';
+import { setStatusModalInfo } from '../../redux/modals/actions';
 export default function FilterIcon({ onPress, isInstantTrade }) {
   const paramsTransaction = useSelector(getParams);
   const paramsTrade = useSelector(getParamsTrade);
-  const { type, currency, fromDateTime, toDateTime, methods } =
+  const { type, currency, fromDateTime, toDateTime, methods, status } =
     paramsTransaction;
   const { actions, cryptoCode, fiatCodes, statuses } = paramsTrade;
 
-  const filters = [type, methods, currency, fromDateTime, toDateTime].filter(
-    (f) => f
-  );
+  const filters = [
+    type,
+    methods,
+    currency,
+    fromDateTime,
+    toDateTime,
+    status,
+  ].filter((f) => f);
   const filtersTrade = [
     actions,
     cryptoCode,
