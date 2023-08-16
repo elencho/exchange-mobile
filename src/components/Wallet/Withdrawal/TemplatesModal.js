@@ -122,8 +122,7 @@ const styles = StyleSheet.create({
   template: {
     height: 60,
     flexDirection: 'row',
-    paddingHorizontal: 30,
-    marginHorizontal: -18,
+    paddingHorizontal: 10,
     borderRadius: 5,
     alignItems: 'center',
   },
