@@ -2,16 +2,29 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Skeleton from '../Skeleton';
 
-const MainPart = () => (
+const MainPart = ({ isInstantTrade }) => (
   <View style={styles.container}>
     <View style={styles.top}>
       <View style={styles.topLeft}>
+        {!isInstantTrade && (
+          <Skeleton
+            width={36}
+            height={36}
+            style={{ borderRadius: 17, marginRight: 14 }}
+          />
+        )}
         <View style={{ gap: 10 }}>
           <Skeleton width={58} height={10} />
-          <Skeleton width={36} height={17} style={{ borderRadius: 22 }} />
+          {isInstantTrade ? (
+            <Skeleton width={36} height={17} style={{ borderRadius: 22 }} />
+          ) : (
+            <Skeleton width={84} height={8} style={{ marginTop: 3 }} />
+          )}
         </View>
         <View style={styles.middle}>
-          <Skeleton width={84} height={8} style={{ marginBottom: 4 }} />
+          {isInstantTrade && (
+            <Skeleton width={84} height={8} style={{ marginBottom: 4 }} />
+          )}
         </View>
         <View style={styles.right}>
           <Skeleton width={103} height={8} />
@@ -33,10 +46,10 @@ const MainPart = () => (
   </View>
 );
 
-const TransactionSkeleton = ({ length }) =>
+const TransactionSkeleton = ({ length, isInstantTrade }) =>
   length?.map((a, i) => (
     <View key={i}>
-      <MainPart />
+      <MainPart isInstantTrade={isInstantTrade} />
     </View>
   ));
 
