@@ -10,7 +10,7 @@ const FirstPart = () => (
       <Skeleton
         width={24}
         height={24}
-        style={{ borderRadius: 100, marginRight: 14 }}
+        style={{ borderRadius: 100, marginRight: 14, marginLeft: 8 }}
       />
       <Skeleton width={58} height={8} />
     </View>

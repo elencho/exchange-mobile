@@ -86,9 +86,10 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   close: {
-    width: 25,
-    height: 25,
+    width: 40,
+    height: 40,
     justifyContent: 'center',
-    alignItems: 'flex-end',
+    alignItems: 'center',
+    marginRight: -15,
   },
 });
