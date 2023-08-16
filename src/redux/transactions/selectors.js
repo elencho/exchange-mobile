@@ -48,7 +48,7 @@ export const getParams = (state) => {
     fromDateTime,
     toDateTime,
     offset,
-    limit: 100,
+    limit: 500,
     txIdOrRecipient,
   };
 };
