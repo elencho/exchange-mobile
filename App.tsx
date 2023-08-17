@@ -11,7 +11,7 @@ import images from './src/constants/images';
 import colors from './src/constants/colors';
 import './src/utils/i18n';
 import './src/utils/interceptor';
-import { IS_IOS } from './src/constants/system';
+import { IS_ANDROID } from './src/constants/system';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -44,16 +44,22 @@ function App(): JSX.Element {
           translucent
           barStyle="light-content"
         />
-        {IS_IOS && <SafeAreaView style={styles.statusBar} />}
-        <SafeAreaView
-          style={styles.container}
-          onLayout={onLayoutRootView}
-          edges={['bottom']}
-        >
-          <AppToast />
-          <Navigator />
-        </SafeAreaView>
-        {IS_IOS && <SafeAreaView style={styles.statusBar} />}
+
+        {(IS_ANDROID && (
+          <SafeAreaView
+            style={styles.container}
+            onLayout={onLayoutRootView}
+            edges={['bottom']}
+          >
+            <AppToast />
+            <Navigator />
+          </SafeAreaView>
+        )) || (
+          <>
+            <AppToast />
+            <Navigator />
+          </>
+        )}
       </GestureHandlerRootView>
     </Provider>
   );
