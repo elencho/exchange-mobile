@@ -56,8 +56,9 @@ const TransactionSkeleton = ({ length, isInstantTrade }) =>
 export default TransactionSkeleton;
 
 const styles = StyleSheet.create({
-  //
-  container: {},
+  container: {
+    marginTop: 22,
+  },
   middle: {
     justifyContent: 'flex-end',
     marginLeft: 10,

@@ -68,7 +68,7 @@ const TransactionsBlock = () => {
       moreTradesLoading,
       tradesLoading,
     },
-    transactions: { code: currencyCode, currency, loading },
+    transactions: { code: currencyCode, currency, loading, activeTab },
   } = state;
 
   const handleScrollEnd = () => {
@@ -117,7 +117,10 @@ const TransactionsBlock = () => {
     <View style={styles.container}>
       {tradesLoading && !moreTradesLoading ? (
         <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
-          <TransactionSkeleton length={[1, 2, 3, 4, 5]} />
+          <TransactionSkeleton
+            length={[1, 2, 3, 4, 5]}
+            isInstantTrade={activeTab === 'Instant trade'}
+          />
         </View>
       ) : (
         <FlatList
@@ -149,7 +152,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   empty: {
-    marginTop: '25%',
+    marginTop: '35%',
     alignItems: 'center',
     flex: 1,
   },
