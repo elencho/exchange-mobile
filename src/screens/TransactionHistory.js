@@ -130,7 +130,7 @@ function TransactionHistory({ navigation, route }) {
       />
 
       {loading && !moreTradesLoading ? (
-        <View style={{ marginTop: 30 }}>
+        <View style={{ marginTop: 20 }}>
           <TransactionSkeleton
             length={[0, 1, 2, 3, 4, 5, 6]}
             isInstantTrade={activeTab === 'Instant trade'}
@@ -169,7 +169,7 @@ export default TransactionHistory;
 const styles = StyleSheet.create({
   empty: {
     flex: 1,
-    marginTop: '25%',
+    marginTop: '35%',
     alignItems: 'center',
   },
   loader: {

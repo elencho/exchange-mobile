@@ -1,4 +1,4 @@
-import { StyleSheet, Pressable, View, Image } from 'react-native';
+import { StyleSheet, View, Image, Keyboard } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import FilterIcon from '../FilterIcon';
 import DownloadIcon from '../DownloadIcon';
@@ -89,9 +89,10 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
 
       <FilterIcon
         isInstantTrade={isInstantTrade}
-        onPress={() =>
-          navigation.navigate('TransactionFilter', { isInstantTrade })
-        }
+        onPress={() => {
+          navigation.navigate('TransactionFilter', { isInstantTrade });
+          Keyboard.dismiss();
+        }}
       />
       <DownloadIcon />
       <ChooseCurrencyModal isForTransactions />
