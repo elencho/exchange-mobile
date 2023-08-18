@@ -9,6 +9,7 @@ function Background({ children, style, modal }) {
     <>
       {IS_IOS && <SafeAreaView style={styles.safeArea} />}
       <View style={[styles.container, { ...style }]}>{children}</View>
+      {IS_IOS && <SafeAreaView style={styles.safeArea} />}
     </>
   );
 }
