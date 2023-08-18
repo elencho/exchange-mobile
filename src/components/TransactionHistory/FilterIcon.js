@@ -41,7 +41,13 @@ export default function FilterIcon({ onPress, isInstantTrade }) {
   };
 
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <Pressable
+      onPress={onPress}
+      style={[
+        styles.container,
+        isFiltered() && { backgroundColor: colors.PRIMARY_PURPLE },
+      ]}
+    >
       <Filter style={styles.icon} />
       {isFiltered() ? (
         <View style={styles.dotOutline}>
@@ -77,8 +83,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PRIMARY_BACKGROUND,
     borderRadius: 30,
     position: 'absolute',
-    top: -1,
-    right: -1,
+    top: -2,
+    right: -2,
     justifyContent: 'center',
     alignItems: 'center',
   },

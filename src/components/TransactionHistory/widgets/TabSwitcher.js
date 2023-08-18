@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 10,
+    marginTop: 10,
   },
   tab: {
     flex: 1,
