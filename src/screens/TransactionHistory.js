@@ -178,7 +178,6 @@ const styles = StyleSheet.create({
   transactions: {
     flex: 1,
     marginTop: 30,
-    paddingHorizontal: 5,
   },
   filter: {
     flexDirection: 'row',

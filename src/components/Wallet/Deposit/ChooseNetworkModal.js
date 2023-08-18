@@ -125,14 +125,13 @@ export default function ChooseNetworkModal() {
 
 const styles = StyleSheet.create({
   name: {
-    marginLeft: 20,
     justifyContent: 'space-between',
   },
   network: {
     flexDirection: 'row',
     height: 62,
     alignItems: 'center',
-    marginHorizontal: -15,
+    marginHorizontal: -5,
     paddingHorizontal: 15,
     borderRadius: 5,
   },

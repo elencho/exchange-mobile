@@ -49,7 +49,6 @@ export default function TransactionFilter({ navigation, route }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    currency,
     code: cryptoTransactions,
     method: selectedMethod,
     typeFilter,
@@ -76,6 +75,7 @@ export default function TransactionFilter({ navigation, route }) {
 
   const clear = () => {
     if (isFilteredAny) {
+      navigation.navigate('Main', { screen: 'Transactions' });
       isInstantTrade ? dispatch(clearFiltersTrade()) : dispatch(clearFilters());
       dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
     }
@@ -90,20 +90,27 @@ export default function TransactionFilter({ navigation, route }) {
     isInstantTrade
       ? dispatch(setCryptoCodeQuery(''))
       : dispatch(currencyAction('Show All Currency', [], null));
-  const isFilteredAny = Boolean(
-    typeFilter ||
-      selectedMethod ||
-      status ||
-      fromDateTime ||
-      fromDateTimeQuery ||
-      toDateTime ||
-      toDateTimeQuery ||
-      cryptoTransactions ||
-      fiatCodesQuery.length > 0 ||
-      statusQuery.length > 0 ||
+
+  const isFilteredTrades = Boolean(
+    fiatCodesQuery?.length > 0 ||
+      actionQuery?.length > 0 ||
+      statusQuery?.length > 0 ||
       cryptoCodeQuery ||
-      actionQuery.length > 0
+      fromDateTimeQuery ||
+      toDateTimeQuery
   );
+  const isFilteredTransactions = Boolean(
+    typeFilter ||
+      cryptoTransactions ||
+      fromDateTime ||
+      toDateTime ||
+      selectedMethod ||
+      status
+  );
+  const isFilteredAny = isInstantTrade
+    ? isFilteredTrades
+    : isFilteredTransactions;
+
   const selectedCrypto = isInstantTrade ? cryptoCodeQuery : cryptoTransactions;
 
   return (

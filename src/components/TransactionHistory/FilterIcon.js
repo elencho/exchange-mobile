@@ -4,46 +4,57 @@ import { useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import { getParams } from '../../redux/transactions/selectors';
 import Filter from '../../assets/images/Filter';
-import { getParams as getParamsTrade } from '../../redux/trade/selectors';
 import { setStatusModalInfo } from '../../redux/modals/actions';
 export default function FilterIcon({ onPress, isInstantTrade }) {
-  const paramsTransaction = useSelector(getParams);
-  const paramsTrade = useSelector(getParamsTrade);
-  const { type, currency, fromDateTime, toDateTime, methods, status } =
-    paramsTransaction;
-  const { actions, cryptoCode, fiatCodes, statuses } = paramsTrade;
-
-  const filters = [
-    type,
-    methods,
-    currency,
+  const { trade, transactions } = useSelector((state) => state);
+  const {
+    code: cryptoTransactions,
+    method: selectedMethod,
+    typeFilter,
     fromDateTime,
     toDateTime,
     status,
-  ].filter((f) => f);
-  const filtersTrade = [
-    actions,
-    cryptoCode,
-    fiatCodes,
-    statuses,
-    fromDateTime,
-    toDateTime,
-  ].filter((f) => f);
+  } = transactions;
+  const {
+    actionQuery,
+    cryptoCodeQuery,
+    fiatCodesQuery,
+    statusQuery,
+    fromDateTimeQuery,
+    toDateTimeQuery,
+  } = trade;
 
-  const isFiltered = () => {
-    if (isInstantTrade) {
-      return filtersTrade.some((i) => i.length > 0 || i > 0);
-    } else {
-      return filters.length;
-    }
-  };
+  const isFilteredTrades = Boolean(
+    fiatCodesQuery?.length > 0 ||
+      actionQuery?.length > 0 ||
+      statusQuery?.length > 0 ||
+      cryptoCodeQuery ||
+      fromDateTimeQuery ||
+      toDateTimeQuery
+  );
+  const isFilteredTransactions = Boolean(
+    typeFilter ||
+      cryptoTransactions ||
+      fromDateTime ||
+      toDateTime ||
+      selectedMethod ||
+      status
+  );
+  const isFilteredAny = isInstantTrade
+    ? isFilteredTrades
+    : isFilteredTransactions;
 
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <Pressable
+      onPress={onPress}
+      style={[
+        styles.container,
+        isFilteredAny && { backgroundColor: colors.PRIMARY_PURPLE },
+      ]}
+    >
       <Filter style={styles.icon} />
-      {isFiltered() ? (
+      {isFilteredAny ? (
         <View style={styles.dotOutline}>
           <View style={styles.dot} />
         </View>
@@ -77,8 +88,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PRIMARY_BACKGROUND,
     borderRadius: 30,
     position: 'absolute',
-    top: -1,
-    right: -1,
+    top: -2,
+    right: -2,
     justifyContent: 'center',
     alignItems: 'center',
   },
