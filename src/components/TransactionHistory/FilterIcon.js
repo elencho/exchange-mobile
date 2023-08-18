@@ -9,7 +9,7 @@ import { setStatusModalInfo } from '../../redux/modals/actions';
 export default function FilterIcon({ onPress, isInstantTrade }) {
   const { trade, transactions } = useSelector((state) => state);
   const {
-    code: cryptoTransactions,
+    cryptoFilter: cryptoTransactions,
     method: selectedMethod,
     typeFilter,
     fromDateTime,

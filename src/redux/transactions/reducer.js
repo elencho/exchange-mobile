@@ -11,11 +11,12 @@ const INITIAL_STATE = {
   currentTransaction: {},
   currency: 'Show All Currency',
   activeTab: 'Transfer',
+  code: null,
 
   loading: false,
 
   // Query Params
-  code: null,
+  cryptoFilter: null,
   limit: 25,
   method: null,
   status: null,
@@ -36,6 +37,7 @@ export default (state = INITIAL_STATE, action) => {
     status,
     method,
     code,
+    cryptoFilter,
     toDateTime,
     fromDateTime,
     loading,
@@ -78,6 +80,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         code,
+      };
+    case actionTypes.SET_CRYPTO_FILTER:
+      return {
+        ...state,
+        cryptoFilter,
       };
     case actionTypes.FILTER_CURRENCIES:
       return {
@@ -156,7 +163,7 @@ export default (state = INITIAL_STATE, action) => {
         method: null,
         status: null,
         currency: 'Show All Currency',
-        code: null,
+        crypto: null,
         fromDateTime: null,
         toDateTime: null,
         txIdOrRecipient: null,

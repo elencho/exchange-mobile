@@ -32,6 +32,7 @@ export const actionTypes = {
   TRANSACTION_DETAILS_SAGA: 'TRANSACTION_DETAILS_SAGA',
 
   RESET_TRANSACTIONS_STATE: 'RESET_TRANSACTIONS_STATE',
+  SET_CRYPTO_FILTER: 'SET_CRYPTO_FILTER',
 };
 
 export const saveTransactions = (transactions) => ({
@@ -104,6 +105,10 @@ export const setActiveTab = (activeTab) => ({
 export const setTransactionSearch = (txIdOrRecipient) => ({
   type: actionTypes.SET_TX_ID_OR_RECIPIENT,
   txIdOrRecipient,
+});
+export const setCryptoFilter = (cryptoFilter) => ({
+  type: actionTypes.SET_CRYPTO_FILTER,
+  cryptoFilter,
 });
 
 // FOR SAGAS
