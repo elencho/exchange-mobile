@@ -43,7 +43,7 @@ export const getParams = (state) => {
   return {
     type: typeFilter,
     methods,
-    status,
+    status: status?.length > 0 ? status : null,
     currency: code,
     fromDateTime,
     toDateTime,
