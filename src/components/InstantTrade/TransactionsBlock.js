@@ -136,6 +136,7 @@ const TransactionsBlock = () => {
           initialNumToRender={5}
           ListFooterComponent={trades.length > 0 && footer}
           ListEmptyComponent={listEmptyContainer}
+          decelerationRate={0.5}
           refreshControl={
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }

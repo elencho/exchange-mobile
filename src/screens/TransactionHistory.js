@@ -151,6 +151,7 @@ function TransactionHistory({ navigation, route }) {
           ListFooterComponent={transactions.length > 0 && footer}
           ListEmptyComponent={listEmptyContainer}
           keyboardShouldPersistTaps="never"
+          decelerationRate={0.5}
           refreshControl={
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }

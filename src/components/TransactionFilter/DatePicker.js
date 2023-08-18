@@ -8,6 +8,7 @@ import colors from '../../constants/colors';
 import { toggleDatePicker } from '../../redux/modals/actions';
 import CalendarIcon from '../../assets/images/Calendar';
 import { setFromTime, setToTime } from '../../redux/transactions/actions';
+import { setFromDateQuery, setToDAteQuery } from '../../redux/trade/actions';
 
 export default function DatePicker({
   to = false,
@@ -55,8 +56,14 @@ export default function DatePicker({
   };
 
   const handleClear = () => {
-    if (to) dispatch(setToTime(null));
-    if (from) dispatch(setFromTime(null));
+    if (to)
+      isInstantTrade
+        ? dispatch(setToDAteQuery(null))
+        : dispatch(setToTime(null));
+    if (from)
+      isInstantTrade
+        ? dispatch(setFromDateQuery(null))
+        : dispatch(setFromTime(null));
   };
   const shouldShowClear = to ? toDateTime : fromDateTime;
 

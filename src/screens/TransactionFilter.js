@@ -23,6 +23,7 @@ import PurpleText from '../components/PurpleText';
 import {
   clearFilters,
   currencyAction,
+  setCryptoFilter,
   setMethodFilter,
 } from '../redux/transactions/actions';
 import {
@@ -49,7 +50,7 @@ export default function TransactionFilter({ navigation, route }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
   const {
-    code: cryptoTransactions,
+    cryptoFilter: cryptoTransactions,
     method: selectedMethod,
     typeFilter,
     fromDateTime,
@@ -89,7 +90,7 @@ export default function TransactionFilter({ navigation, route }) {
   const clearCurrencyDropdown = () =>
     isInstantTrade
       ? dispatch(setCryptoCodeQuery(''))
-      : dispatch(currencyAction('Show All Currency', [], null));
+      : dispatch(setCryptoFilter(null));
 
   const isFilteredTrades = Boolean(
     fiatCodesQuery?.length > 0 ||
