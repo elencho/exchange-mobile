@@ -12,6 +12,7 @@ import Background from './Background';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
 import Headline from './TransactionHistory/Headline';
 import { useSelector } from 'react-redux';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 function AppModal({
   children,
@@ -61,7 +62,10 @@ function AppModal({
         <RootSiblingParent>
           {bottom && (
             <KeyboardAvoidingView
-              behavior={Platform.select({ android: undefined, ios: 'padding' })}
+              behavior={Platform.select({
+                android: undefined,
+                ios: 'padding',
+              })}
               keyboardVerticalOffset={Platform.select({
                 ios: 50,
                 android: 500,
@@ -110,12 +114,12 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   modal: {
-    marginHorizontal: 0,
-    marginTop: Platform.select({ ios: Constants.statusBarHeight, android: 0 }),
-    marginBottom: Platform.select({
-      ios: undefined,
-      android: 0,
-    }),
+    margin: 0,
+    // marginTop: Platform.select({ ios: Constants.statusBarHeight, android: 0 }),
+    // marginBottom: Platform.select({
+    //   ios: undefined,
+    //   android: 0,
+    // }),
     justifyContent: 'flex-end',
   },
 });
