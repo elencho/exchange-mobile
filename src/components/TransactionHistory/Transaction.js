@@ -101,7 +101,7 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
     ? `${amount} ${currency}`
     : ` ${cumulativeCost} ${quoteCurrency}`;
   const destinationDisplay = isTransfer
-    ? transactionInfo
+    ? shortenDestination(transactionInfo)
     : `${size} ${baseCurrency}`;
 
   return (

@@ -26,12 +26,6 @@ export default function Security({ loading, bioAvailable }) {
         <View style={styles.line} />
       </View>
 
-      {/* <View style={styles.block}>
-        {['Pin', 'Biometric'].map((r, i, a) => (
-          <SecurityRow key={r} text={r} i={i} a={a} />
-        ))}
-      </View> */}
-
       <View style={styles.block}>
         {bioAvailable && <SecurityRow text="Biometric" />}
         <SecurityRow text="Strong_Password" />
