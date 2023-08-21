@@ -118,7 +118,11 @@ export default function TransactionFilter({ navigation, route }) {
     <Background>
       <View style={styles.closeContainer}>
         <Headline title="Transaction Filter" />
-        <TouchableOpacity onPress={close} hitSlop={50}>
+        <TouchableOpacity
+          onPress={close}
+          hitSlop={50}
+          style={styles.closeButton}
+        >
           <Close />
         </TouchableOpacity>
       </View>
@@ -141,14 +145,13 @@ export default function TransactionFilter({ navigation, route }) {
 
         <AppDropdown
           selectedText={
-            selectedCrypto?.length > 0
-              ? seperateCurrencyName(selectedCrypto)
-              : 'Show All Currency'
+            selectedCrypto?.length > 0 && seperateCurrencyName(selectedCrypto)
           }
-          activeLabel="Show All Currency"
+          label="Choose Crypto"
           handleClear={clearCurrencyDropdown}
           icon={
-            selectedCrypto && (
+            selectedCrypto &&
+            selectedCrypto !== 'Show all currency' && (
               <Image
                 source={{
                   uri: `${COINS_URL_PNG}/${selectedCrypto?.toLowerCase()}.png`,
@@ -158,7 +161,7 @@ export default function TransactionFilter({ navigation, route }) {
             )
           }
           handlePress={openModal}
-          style={!isInstantTrade && { marginBottom: 24 }}
+          style={!isInstantTrade && { marginVertical: 18 }}
         />
 
         {isInstantTrade && (
@@ -219,7 +222,7 @@ const styles = StyleSheet.create({
   clear: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 30,
+    marginBottom: 44,
   },
   coin: {
     width: 24,
@@ -245,15 +248,17 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   text: {
-    fontSize: 13,
+    fontSize: 14,
     lineHeight: 17,
-    color: colors.PRIMARY_TEXT,
+    color: '#c0c5e0',
     marginTop: 28,
     marginBottom: 12,
-    color: colors.SECONDARY_TEXT,
   },
   bigText: {
     color: colors.PRIMARY_TEXT,
     flex: 1,
+  },
+  closeButton: {
+    marginTop: -35,
   },
 });

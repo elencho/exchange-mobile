@@ -17,12 +17,10 @@ export default function CryptoModalTrade() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
 
-  // Crypto dropdown unda gaavasworo da satitaod movargo instants da transactions
-
   const {
     modals: { cryptoModalVisible },
     trade: { cryptoCodeQuery, offers, fiat, tradeType },
-    transactions: { code: cryptoCodeTransactions, activeTab },
+    transactions: { cryptoFilter: cryptoCodeTransactions, activeTab },
   } = state;
 
   const isInstantTrade = activeTab === 'Instant trade';
@@ -30,7 +28,11 @@ export default function CryptoModalTrade() {
   const arrayToPass =
     filteredData?.length > 0
       ? [
-          { name: 'Show all currency', title: 'Show all currency', code: '' },
+          {
+            name: 'Show all currency',
+            title: 'Show all currency',
+            code: 'Show all currency',
+          },
           ...filteredData,
         ]
       : offers?.[fiat];

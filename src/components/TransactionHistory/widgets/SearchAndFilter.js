@@ -57,13 +57,12 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
           handleClear={clearCurrencyDropdown}
           style={styles.dropdown}
           selectedText={
-            cryptoCode?.length > 0
-              ? seperateCurrencyName(cryptoCode)
-              : 'Show All Currency'
+            cryptoCode?.length > 0 && seperateCurrencyName(cryptoCode)
           }
-          activeLabel="Show All Currency"
+          label="Choose Crypto"
           icon={
-            cryptoCode && (
+            cryptoCode &&
+            cryptoCode !== 'Show all currency' && (
               <Image
                 source={{
                   uri: `${COINS_URL_PNG}/${cryptoCode?.toLowerCase()}.png`,

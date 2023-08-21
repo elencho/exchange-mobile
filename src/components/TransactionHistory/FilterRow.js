@@ -98,6 +98,8 @@ export default function FilterRow({ array = [''], filterType }) {
     if (filterType === 'statusTransaction') return fil === transactionStatus;
   };
 
+  console.log('filterType', filterType);
+
   const renderItem = ({ item }) => {
     return (
       <Pressable
@@ -109,8 +111,10 @@ export default function FilterRow({ array = [''], filterType }) {
         ]}
         onPress={() => handleFilter(item)}
       >
-        {filterType === 'statusTrade' ||
-          (filterType === 'status' && statusIcons[item])}
+        {(filterType === 'statusTrade' ||
+          filterType === 'statusTransaction') && (
+          <View style={{ marginRight: 6 }}>{statusIcons[item]}</View>
+        )}
         <AppText
           style={[
             styles.text,
@@ -142,17 +146,17 @@ export default function FilterRow({ array = [''], filterType }) {
 const styles = StyleSheet.create({
   filterButton: {
     height: 34,
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
     borderRadius: 40,
     backgroundColor: 'rgba(31, 31, 53, 0.9)',
-    marginRight: 6,
+    marginRight: 10,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    gap: 6,
   },
 
   text: {
-    color: colors.SECONDARY_TEXT,
+    color: '#c0c5e0',
+    fontSize: 14,
   },
 });

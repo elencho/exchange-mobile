@@ -44,7 +44,7 @@ export const getParams = (state) => {
     type: typeFilter,
     methods,
     status: status?.length > 0 ? status : null,
-    currency: cryptoFilter,
+    currency: cryptoFilter === 'Show all currency' ? null : cryptoFilter,
     fromDateTime,
     toDateTime,
     offset,
