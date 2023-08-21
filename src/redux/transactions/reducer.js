@@ -163,7 +163,7 @@ export default (state = INITIAL_STATE, action) => {
         method: null,
         status: null,
         currency: 'Show All Currency',
-        crypto: null,
+        cryptoFilter: null,
         fromDateTime: null,
         toDateTime: null,
         txIdOrRecipient: null,

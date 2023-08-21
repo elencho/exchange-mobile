@@ -35,7 +35,9 @@ export default function DatePicker({
     const fromDate = new Date(fromDateTime);
     const toDate = new Date(toDateTime);
     const formatDate = (date) =>
-      date.toDateString().split(' ').slice(1).join(' ');
+      `${date.getDate()} ${
+        date.toDateString().split(' ')[1]
+      }, ${date.getFullYear()}`;
 
     if (from && fromDateTime) return formatDate(fromDate);
     if (to && toDateTime) return formatDate(toDate);
@@ -83,7 +85,7 @@ export default function DatePicker({
 
 const styles = StyleSheet.create({
   dropdown: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 22,
     height: 44,
     justifyContent: 'space-between',
     flexDirection: 'row',

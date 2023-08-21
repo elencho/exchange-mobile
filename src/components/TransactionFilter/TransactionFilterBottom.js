@@ -12,6 +12,7 @@ import PurpleText from '../PurpleText';
 import { MaterialIndicator } from 'react-native-indicators';
 import Download from '../../assets/images/Download';
 import { fetchTrades } from '../../redux/trade/actions';
+import { IS_ANDROID } from '../../constants/system';
 
 function TransactionFilterBottom({ navigation, isInstantTrade }) {
   const dispatch = useDispatch();
@@ -42,21 +43,6 @@ function TransactionFilterBottom({ navigation, isInstantTrade }) {
           Show Result
         </AppText>
       </Pressable>
-      {/* <View style={{ height: 80 }}>
-        {loading ? (
-          <MaterialIndicator
-            color="#6582FD"
-            size={25}
-            animationDuration={3000}
-            style={[{ marginVertical: 17, position: 'relative' }]}
-          />
-        ) : (
-          <Pressable style={styles.download} onPress={downloadFile}>
-            <Download />
-            <PurpleText style={styles.purple} text="Download" />
-          </Pressable>
-        )}
-      </View> */}
     </View>
   );
 }
@@ -76,7 +62,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    marginBottom: 28,
+    marginBottom: IS_ANDROID ? 18 : 28,
   },
   download: {
     flexDirection: 'row',
