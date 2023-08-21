@@ -67,7 +67,7 @@ function AppModal({
                 ios: 'padding',
               })}
               keyboardVerticalOffset={Platform.select({
-                ios: 50,
+                ios: 0,
                 android: 500,
               })}
             >
