@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
     marginTop: 27,
     marginBottom: 12,
+    textAlign: 'center',
   },
   row: {
     flexDirection: 'row',
