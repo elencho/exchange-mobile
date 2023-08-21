@@ -13,8 +13,8 @@ import AppText from 'components/AppText'
 import colors from 'constants/colors'
 import Logo from 'assets/images/LogoWhite.svg'
 import GeneralError from 'components/GeneralError'
-import LanguageSwitcher from 'components/LanguageSwitcher'
-import useInitApp from 'refactor/features/auth/welcome/hooks/use-init-app'
+import LanguageSwitcher from 'refactor/screens/welcome/components/language-switcher'
+import useInitApp from 'refactor/screens/welcome/hooks/use-init-app'
 import PurpleText from 'components/PurpleText'
 import { useDispatch } from 'react-redux'
 import {
@@ -22,6 +22,9 @@ import {
 	startRegistrationAction,
 } from 'redux/profile/actions'
 import { errorHappenedHere } from 'utils/appUtils'
+import { Button } from 'refactor/common/components/button'
+import { ButtonTextProps } from 'refactor/common/components/button/button-text'
+import { ButtonAddProps } from 'refactor/common/components/button/button-add'
 
 export default function Welcome(navigation: any) {
 	useNotificationsAndroid()
@@ -32,6 +35,12 @@ export default function Welcome(navigation: any) {
 	const startRegistration = () => dispatch(startRegistrationAction(navigation))
 
 	BackHandler.addEventListener('hardwareBackPress', () => true)
+
+	const obj: ButtonAddProps = {
+		text: '',
+		onPress: () => {},
+		subtext: false,
+	}
 
 	return (
 		<TouchableWithoutFeedback
@@ -50,17 +59,12 @@ export default function Welcome(navigation: any) {
 					<AppText body style={styles.subtext}>
 						Secure and Simple · Your Gateway to the Global Crypto Universe
 					</AppText>
-
 					<GeneralError
 						style={styles.error}
 						show={errorHappenedHere('Welcome')}
 					/>
-					<AppButton text="Login" style={styles.button} onPress={startLogin} />
-					<PurpleText
-						style={{ fontSize: 16 }}
-						text="Registration"
-						onPress={startRegistration}
-					/>
+					{/* <AppButton text="Login" style={styles.button} onPress={startLogin} /> */}
+					<Button variant="text" text="a" onPress={() => {}}></Button>
 				</View>
 				<LanguageSwitcher />
 			</ImageBackground>

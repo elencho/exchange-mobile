@@ -1,1 +1,5 @@
 declare module '@sumsub/react-native-mobilesdk-module'
+declare module '*.png'
+declare module '*.svg'
+declare module '*.jpeg'
+declare module '*.jpg'
