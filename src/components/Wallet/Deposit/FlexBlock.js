@@ -78,7 +78,10 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
   return (
     <View style={styles.flexBlock}>
       {image()}
-      <Headline title={headline()} />
+
+      <AppText header style={styles.headline}>
+        {headline()}
+      </AppText>
       <AppText body style={styles.description}>
         {text()}
       </AppText>
@@ -108,6 +111,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    paddingHorizontal: 10,
+  },
+  headline: {
+    color: colors.PRIMARY_TEXT,
+    textAlign: 'center',
+    fontSize: 18,
   },
 });

@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  header: { color: colors.PRIMARY_TEXT },
-  secondary: { color: colors.SECONDARY_TEXT },
+  header: { color: colors.PRIMARY_TEXT, fontSize: 19 },
+  secondary: { color: colors.SECONDARY_TEXT, fontSize: 13 },
   subtext: { color: '#C0C5E0', flex: 1 },
 });
