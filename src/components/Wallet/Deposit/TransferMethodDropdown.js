@@ -44,7 +44,7 @@ export default function TransferMethodDropdown() {
     >
       <View style={styles.image}>{renderIcon(network)}</View>
       <AppText medium style={styles.dropdownText}>
-        {network}
+        lock. {network}
       </AppText>
       {!oneMethod && <Arrow />}
     </Pressable>
