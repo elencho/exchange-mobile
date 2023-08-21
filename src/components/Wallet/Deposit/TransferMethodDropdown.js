@@ -11,6 +11,7 @@ import Arrow from '../../../assets/images/Arrow';
 import Euro from '../../../assets/images/Euro.svg';
 import Card from '../../../assets/images/Card.svg';
 import Bank from '../../../assets/images/LocalBank.svg';
+import AppDropdown from '../../AppDropdown';
 
 export default function TransferMethodDropdown() {
   const dispatch = useDispatch();
@@ -37,17 +38,14 @@ export default function TransferMethodDropdown() {
   };
 
   return (
-    <Pressable
-      style={[styles.dropdown, dropdownStyle]}
-      onPress={show}
+    <AppDropdown
+      style={styles.dropdown}
+      notClearable
       disabled={oneMethod}
-    >
-      <View style={styles.image}>{renderIcon(network)}</View>
-      <AppText medium style={styles.dropdownText}>
-        lock. {network}
-      </AppText>
-      {!oneMethod && <Arrow />}
-    </Pressable>
+      icon={renderIcon(network)}
+      selectedText={network}
+      handlePress={show}
+    />
   );
 }
 
@@ -58,12 +56,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
   },
   dropdown: {
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
     marginTop: 15,
-    borderColor: '#42475D',
-    paddingHorizontal: 15,
   },
   image: {
     marginLeft: 5,

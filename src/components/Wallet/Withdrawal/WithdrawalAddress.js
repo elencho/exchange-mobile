@@ -13,6 +13,7 @@ import { toggleChooseAddressModal } from '../../../redux/modals/actions';
 import { chooseWhitelist, setWalletTab } from '../../../redux/wallet/actions';
 
 import Arrow from '../../../assets/images/Arrow';
+import AppDropdown from '../../AppDropdown';
 
 function WithdrawalAddress({ error, right }) {
   const dispatch = useDispatch();
@@ -99,26 +100,34 @@ function WithdrawalAddress({ error, right }) {
   }, [w]);
 
   const AddressDropdown = () => (
-    <Pressable
-      style={[styles.dropdown, { borderColor }]}
-      onPress={chooseAddress}
-    >
-      <Text medium body style={{ color }}>
-        {w.name ? w.name : 'Choose Address'}
-      </Text>
+    <AppDropdown
+      notClearable
+      handlePress={chooseAddress}
+      selectedText={w.name && w.name}
+      label="Choose Address"
+      style={styles.dropdown}
+    />
+    // <Pressable
+    //   style={[styles.dropdown, { borderColor }]}
+    //   onPress={chooseAddress}
+    // >
+    //   <Text medium body style={{ color }}>
+    //     {w.name ? w.name : 'Choose Address'}
+    //   </Text>
 
-      <View style={styles.arrow}>
-        <Arrow />
-      </View>
+    //   <View style={styles.arrow}>
+    //     <Arrow />
+    //   </View>
 
-      <ChooseAddressModal />
-    </Pressable>
+    //   <ChooseAddressModal />
+    // </Pressable>
   );
 
   return (
     <>
       {address()}
       {w?.id && <AddressAndTag />}
+      <ChooseAddressModal />
     </>
   );
 }
@@ -150,11 +159,6 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   dropdown: {
-    borderWidth: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     marginBottom: 22,
   },
   flex: {

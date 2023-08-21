@@ -28,7 +28,7 @@ const AppDropdown = ({
     >
       {selectedText ? (
         <View style={styles.row}>
-          <View>{icon}</View>
+          <View style={styles.icon}>{icon}</View>
           <AppText
             medium
             body
@@ -110,5 +110,8 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  icon: {
+    marginRight: 10,
   },
 });

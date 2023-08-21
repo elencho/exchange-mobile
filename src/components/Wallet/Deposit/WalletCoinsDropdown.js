@@ -69,7 +69,6 @@ const styles = StyleSheet.create({
   image: {
     width: 24,
     height: 24,
-    marginRight: 8,
   },
   line: {
     width: 1,
