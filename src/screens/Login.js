@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
@@ -146,6 +146,8 @@ const styles = StyleSheet.create({
   background: {
     backgroundColor: colors.PRIMARY_BACKGROUND,
     flex: 1,
+    justifyContent: 'center',
+    paddingVertical: StatusBar.currentHeight + 20,
   },
   container: {
     alignItems: 'center',
