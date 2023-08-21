@@ -98,8 +98,6 @@ export default function FilterRow({ array = [''], filterType }) {
     if (filterType === 'statusTransaction') return fil === transactionStatus;
   };
 
-  console.log('filterType', filterType);
-
   const renderItem = ({ item }) => {
     return (
       <Pressable

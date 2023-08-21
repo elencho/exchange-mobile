@@ -28,7 +28,7 @@ const AppDropdown = ({
     >
       {selectedText ? (
         <View style={styles.row}>
-          {icon}
+          <View>{icon}</View>
           <AppText
             medium
             body

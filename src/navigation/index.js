@@ -26,7 +26,9 @@ import Resume from '../screens/Resume';
 import Splash from '../screens/SplashScreen';
 import EmailVerification from '../screens/EmailVerification';
 import useNotifications from '../screens/useNotifications';
+import { enableScreens } from 'react-native-screens';
 
+enableScreens(false);
 const Stack = createNativeStackNavigator();
 export const navigationRef = createNavigationContainerRef();
 
