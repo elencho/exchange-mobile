@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
   description: {
     color: colors.SECONDARY_TEXT,
     textAlign: 'center',
-    marginHorizontal: '20%',
     lineHeight: 20,
     marginTop: 18,
     marginBottom: 45,
