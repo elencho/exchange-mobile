@@ -126,6 +126,7 @@ export default function ChooseNetworkModal() {
 const styles = StyleSheet.create({
   name: {
     justifyContent: 'space-between',
+    marginLeft: 10,
   },
   network: {
     flexDirection: 'row',

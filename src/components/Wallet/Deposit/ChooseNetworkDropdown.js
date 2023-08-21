@@ -12,6 +12,7 @@ import Card from '../../../assets/images/Card.svg';
 import Bank from '../../../assets/images/LocalBank.svg';
 import Arrow from '../../../assets/images/Arrow';
 import { ICONS_URL_PNG } from '../../../constants/api';
+import AppDropdown from '../../AppDropdown';
 
 export default function ChooseNetworkDropdown({
   disabled = false,
@@ -90,32 +91,57 @@ export default function ChooseNetworkDropdown({
       {isAvailable() && (
         <>
           {hasMultipleNetworks ? (
-            <Pressable
-              style={[styles.dropdown, dropdown]}
-              onPress={handleDropdown}
-              disabled={disabled}
-            >
-              {network ? (
-                <>
-                  <View style={[styles.subtext]}>
-                    <AppText body style={styles.secondary}>
-                      Choose Network
+            <AppDropdown
+              notClearable
+              label="Choose Network"
+              withLabel
+              style={styles.dropdown}
+              icon={renderIcon(network)}
+              handlePress={handleDropdown}
+              selectedText={
+                network ? (
+                  <>
+                    <View style={[styles.subtext]}>
+                      <AppText body style={styles.secondary}>
+                        Choose Network
+                      </AppText>
+                    </View>
+                    <AppText medium>
+                      {networkName()}{' '}
+                      <AppText style={styles.secondary}>({network})</AppText>
                     </AppText>
-                  </View>
-                  <View style={styles.image}>{renderIcon(network)}</View>
-                  <AppText medium style={[styles.dropdownText, dropdownText]}>
-                    {networkName()}{' '}
-                    <AppText style={styles.secondary}>({network})</AppText>
-                  </AppText>
-                </>
-              ) : (
-                <AppText style={[styles.secondary, dropdownText, { flex: 1 }]}>
-                  Choose Network
-                </AppText>
-              )}
-              <Arrow />
-            </Pressable>
+                  </>
+                ) : (
+                  <AppText>Choose Network</AppText>
+                )
+              }
+            />
           ) : (
+            // <Pressable
+            //   style={[styles.dropdown, dropdown]}
+            //   onPress={handleDropdown}
+            //   disabled={disabled}
+            // >
+            //   {network ? (
+            //     <>
+            //       <View style={[styles.subtext]}>
+            //         <AppText body style={styles.secondary}>
+            //           Choose Network
+            //         </AppText>
+            //       </View>
+            //       <View style={styles.image}>{renderIcon(network)}</View>
+            //       <AppText medium style={[styles.dropdownText, dropdownText]}>
+            //         {networkName()}{' '}
+            //         <AppText style={styles.secondary}>({network})</AppText>
+            //       </AppText>
+            //     </>
+            //   ) : (
+            //     <AppText style={[styles.secondary, dropdownText, { flex: 1 }]}>
+            //       Choose Network
+            //     </AppText>
+            //   )}
+            //   <Arrow />
+            // </Pressable>
             <View style={styles.view}>
               {icon && (
                 <Image
@@ -149,12 +175,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   dropdown: {
-    borderWidth: 1,
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
+    // borderWidth: 1,
+    // height: 45,
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    // paddingHorizontal: 15,
     marginTop: 20,
-    paddingHorizontal: 15,
   },
   iconDimensions: {
     width: 18,

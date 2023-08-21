@@ -49,9 +49,9 @@ export default function TransactionDetails() {
   const leftInstant = [
     'Transaction type :',
     'Date created :',
-    'End Date',
-    'From Amount',
-    'To amount',
+    'End Date :',
+    'From Amount :',
+    'To amount :',
     'Market price :',
     'Status :',
   ];
