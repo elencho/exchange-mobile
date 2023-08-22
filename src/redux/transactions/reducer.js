@@ -14,6 +14,7 @@ const INITIAL_STATE = {
   code: null,
 
   loading: false,
+  previousTransactionsFilter: {},
 
   // Query Params
   cryptoFilter: null,
@@ -49,6 +50,7 @@ export default (state = INITIAL_STATE, action) => {
     totalTransactions,
     activeTab,
     txIdOrRecipient,
+    previousTransactionsFilter,
   } = action;
   switch (action.type) {
     case 'SET_TAB_NAVIGATION_REF':
@@ -167,6 +169,12 @@ export default (state = INITIAL_STATE, action) => {
         fromDateTime: null,
         toDateTime: null,
         txIdOrRecipient: null,
+      };
+    case actionTypes.SET_PREV_TRANSACTIONS_FILTER:
+      const prevState = JSON.parse(previousTransactionsFilter);
+      return {
+        ...state,
+        ...prevState,
       };
     case actionTypes.RESET_TRANSACTIONS_STATE:
       return {

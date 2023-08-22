@@ -117,7 +117,14 @@ function TransactionHistory({ navigation, route }) {
   };
 
   const footer = memo(() =>
-    moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />
+    moreTradesLoading && !loading ? (
+      <TransactionSkeleton
+        length={[0]}
+        isInstantTrade={activeTab === 'Instant trade'}
+      />
+    ) : (
+      <View />
+    )
   );
 
   return (
@@ -151,7 +158,7 @@ function TransactionHistory({ navigation, route }) {
           ListFooterComponent={transactions.length > 0 && footer}
           ListEmptyComponent={listEmptyContainer}
           keyboardShouldPersistTaps="never"
-          decelerationRate={0.5}
+          decelerationRate={0.1}
           refreshControl={
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }

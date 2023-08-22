@@ -26,16 +26,7 @@ export default function CryptoModalTrade() {
   const isInstantTrade = activeTab === 'Instant trade';
   const [filteredData, setFiletredData] = useState(offers?.[fiat]);
   const arrayToPass =
-    filteredData?.length > 0
-      ? [
-          {
-            name: 'Show all currency',
-            title: 'Show all currency',
-            code: 'Show all currency',
-          },
-          ...filteredData,
-        ]
-      : offers?.[fiat];
+    filteredData?.length > 0 ? [...filteredData] : offers?.[fiat];
 
   useEffect(() => {
     dispatch(instantTradeTabAction());
@@ -77,6 +68,7 @@ export default function CryptoModalTrade() {
       crypto
       tradeType={tradeType}
       title="Choose Currency"
+      isForTransactions
     />
   );
 

@@ -28,7 +28,7 @@ const AppDropdown = ({
     >
       {selectedText ? (
         <View style={styles.row}>
-          <View style={styles.icon}>{icon}</View>
+          {icon && <View style={styles.icon}>{icon}</View>}
           <AppText
             medium
             body
@@ -99,7 +99,9 @@ const styles = StyleSheet.create({
     top: -9,
     paddingHorizontal: 8,
   },
-  selectedText: { color: colors.PRIMARY_TEXT },
+  selectedText: {
+    color: colors.PRIMARY_TEXT,
+  },
   close: {
     width: 36,
     height: 30,

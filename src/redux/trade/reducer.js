@@ -30,6 +30,7 @@ const INITIAL_STATE = {
   isTradesButtonLoading: false,
   moreTradesLoading: false,
   offersLoading: false,
+  previousTradeFilter: {},
 
   // Query Params
   offset: 0,
@@ -78,6 +79,7 @@ export default (state = INITIAL_STATE, action) => {
     toDateTimeQuery,
     fiatCodesQuery,
     cryptoCodeQuery,
+    previousTradeFilter,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_TRADES:
@@ -254,6 +256,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         toDateTimeQuery,
       };
+    case actionTypes.SET_PREV_TRADE_FILTER:
+      const prevState = JSON.parse(previousTradeFilter);
+      return {
+        ...state,
+        ...prevState,
+      };
     case actionTypes.CLEAR_FILTERS_TRADE:
       return {
         ...state,
@@ -264,6 +272,7 @@ export default (state = INITIAL_STATE, action) => {
         cryptoCodeQuery: '',
         fiatCodesQuery: [],
       };
+
     default:
       return state;
   }

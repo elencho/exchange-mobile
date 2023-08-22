@@ -32,8 +32,8 @@ export default function AppText({
         if (medium || header) {
           return 'Ubuntu_Medium';
         }
-      case 'ka':
-        return 'HelveticaNeune';
+      // case 'ka':
+      //   return 'HelveticaNeune';
       default:
         return 'Ubuntu_Regular';
     }
@@ -105,7 +105,7 @@ export default function AppText({
               fontFamily: fontCond(),
               fontSize: sizeCond(),
             },
-            isMtavruli,
+            // isMtavruli,
             style,
           ]}
           onPress={onPress}

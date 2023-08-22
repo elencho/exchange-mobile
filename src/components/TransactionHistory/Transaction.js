@@ -90,7 +90,7 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
 
   const shortenDestination = (destination) => {
     return method === 'WALLET_INTERNAL' || method === 'WALLET'
-      ? destination.slice(0, 13) + '...' + destination.slice(-10)
+      ? destination?.slice(0, 13) + '...' + destination?.slice(-10)
       : destination;
   };
 

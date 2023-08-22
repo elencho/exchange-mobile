@@ -79,7 +79,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: 28,
+    marginTop: 42,
     marginBottom: 32,
+    rowGap: 10,
   },
 });
