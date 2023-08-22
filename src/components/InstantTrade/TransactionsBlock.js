@@ -100,7 +100,14 @@ const TransactionsBlock = () => {
         );
 
   const footer = memo(() =>
-    moreTradesLoading && !loading ? <OneTransactionSkeleton /> : <View />
+    moreTradesLoading && !loading ? (
+      <TransactionSkeleton
+        length={[1]}
+        isInstantTrade={activeTab === 'Instant trade'}
+      />
+    ) : (
+      <View />
+    )
   );
 
   const listEmptyContainer = () =>

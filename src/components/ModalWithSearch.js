@@ -81,8 +81,6 @@ export default function ModalWithSearch({
   };
   return (
     <View style={styles.container}>
-      {/* <ModalTop /> */}
-
       <View style={styles.block}>
         <AppText header style={styles.headline}>
           {title}

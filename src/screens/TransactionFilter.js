@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Image,
   Pressable,
@@ -25,6 +25,7 @@ import {
   currencyAction,
   setCryptoFilter,
   setMethodFilter,
+  setPreviousTransactionsFilter,
 } from '../redux/transactions/actions';
 import {
   toggleCryptoModal,
@@ -44,7 +45,12 @@ import Arrow from '../assets/images/Arrow.svg';
 import AppDropdown from '../components/AppDropdown';
 import ChooseMethodsModal from './ChooseMethodsModal';
 import CryptoModalTrade from '../components/InstantTrade/CryptoModalTrade';
-import { clearFiltersTrade, setCryptoCodeQuery } from '../redux/trade/actions';
+import {
+  clearFiltersTrade,
+  setCryptoCodeQuery,
+  setPreviousTradeFilter,
+} from '../redux/trade/actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TransactionFilter({ navigation, route }) {
   const dispatch = useDispatch();
@@ -69,8 +75,13 @@ export default function TransactionFilter({ navigation, route }) {
     params: { isInstantTrade },
   } = route;
 
-  const close = () => {
-    clear();
+  const close = async () => {
+    const prevFilter = isInstantTrade
+      ? await AsyncStorage.getItem('tradesFilter')
+      : await AsyncStorage.getItem('transactionsFilter');
+    isInstantTrade
+      ? dispatch(setPreviousTradeFilter(prevFilter))
+      : dispatch(setPreviousTransactionsFilter(prevFilter));
     navigation.navigate('Main', { screen: 'Transactions' });
   };
 
@@ -113,6 +124,34 @@ export default function TransactionFilter({ navigation, route }) {
     : isFilteredTransactions;
 
   const selectedCrypto = isInstantTrade ? cryptoCodeQuery : cryptoTransactions;
+
+  useEffect(() => {
+    const initialStateTrade = {
+      fiatCodesQuery,
+      statusQuery,
+      cryptoCodeQuery,
+      actionQuery,
+      fromDateTimeQuery,
+      toDateTimeQuery,
+    };
+    const initialStateTransactions = {
+      cryptoFilter: cryptoTransactions,
+      method: selectedMethod,
+      typeFilter,
+      fromDateTime,
+      toDateTime,
+      status,
+    };
+    isInstantTrade
+      ? AsyncStorage.setItem(
+          'tradesFilter',
+          JSON.stringify({ ...initialStateTrade })
+        )
+      : AsyncStorage.setItem(
+          'transactionsFilter',
+          JSON.stringify({ ...initialStateTransactions })
+        );
+  }, []);
 
   return (
     <Background>
@@ -227,7 +266,6 @@ const styles = StyleSheet.create({
   coin: {
     width: 24,
     height: 24,
-    marginRight: 12,
   },
   purple: {
     fontSize: 15,

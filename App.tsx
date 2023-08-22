@@ -24,6 +24,7 @@ function App(): JSX.Element {
   const [fontsLoaded] = useFonts({
     Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
     Ubuntu_Medium: require('./src/assets/fonts/Ubuntu_Medium.ttf'),
+    HelveticaNeue: require('./src/assets/fonts/HelveticaNeue.ttf'),
   });
 
   const [assets] = useAssets(Object.values(images));
