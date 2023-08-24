@@ -92,11 +92,9 @@ export default function RegistrationInputs({ validations, error }) {
       <Text style={styles.validations}>
         <Text style={error && !v.passLength && red}>
           {t('8 or more characters')}
-          {', '}
         </Text>
         <Text style={error && !v.hasUpperAndLower && red}>
           {t('Upper & lowercase letters')}
-          {', '}
         </Text>
         <Text style={error && !v.hasNumber && red}>
           {t('At least one number')}
