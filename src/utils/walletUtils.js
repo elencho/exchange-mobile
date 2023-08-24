@@ -34,37 +34,40 @@ export const generateFile = async (
   link,
   setLoading = () => {},
   fileName,
-  type
+  type,
+  reportParams
 ) => {
   try {
     setLoading(true);
     const token = await SecureStore.getItemAsync('accessToken');
     const bearer = `Bearer ${token}`;
     const linkForFile = link;
-    FileSystem.downloadAsync(
-      linkForFile,
-      FileSystem.documentDirectory + `${fileName}.${type}`,
-      {
-        headers: { Authorization: bearer },
-      }
-    )
-      .then(async (data) => {
-        const { uri } = data;
-        if (IS_IOS) {
-          await Sharing.shareAsync(uri);
-        }
+    downloadFile(linkForFile, bearer, fileName, type, reportParams);
 
-        if (IS_ANDROID) {
-          await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-          );
-          await PermissionsAndroid.request(
-            PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-          );
-          downloadFile(linkForFile, bearer, fileName, type);
-        }
-      })
-      .catch((err) => console.log(err));
+    // FileSystem.downloadAsync(
+    //   linkForFile,
+    //   FileSystem.documentDirectory + `${fileName}.${type}`,
+    //   {
+    //     headers: { Authorization: bearer },
+    //   }
+    // )
+    //   .then(async (data) => {
+    //     const { uri } = data;
+    //     if (IS_IOS) {
+    //       await Sharing.shareAsync(uri);
+    //     }
+
+    //     if (IS_ANDROID) {
+    //       await PermissionsAndroid.request(
+    //         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+    //       );
+    //       await PermissionsAndroid.request(
+    //         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
+    //       );
+    //       downloadFile(linkForFile, bearer, fileName, type);
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
     setTimeout(() => {
       setLoading(false);
     }, 500);
@@ -74,7 +77,7 @@ export const generateFile = async (
   }
 };
 
-const downloadFile = async (link, bearer, fileName, type) => {
+const downloadFile = async (link, bearer, fileName, type, reportParams) => {
   try {
     const location =
       RNFetchBlob.fs.dirs.DownloadDir +
@@ -96,19 +99,28 @@ const downloadFile = async (link, bearer, fileName, type) => {
       },
     });
 
-    RNFetchBlob.fetch('GET', link, {
-      Authorization: bearer,
-    })
+    RNFetchBlob.fetch(
+      'POST',
+      link,
+      {
+        Authorization: bearer,
+        'content-type': 'application/json',
+      },
+      JSON.stringify(reportParams)
+    )
       .then((res) => {
         let status = res.info().status;
         if (status == 200) {
           let base64Str = res.base64();
-          console.log(res);
 
           RNFetchBlob.fs
             .writeFile(location, base64Str, 'base64')
             .then(() => {
               android.actionViewIntent(location, mime);
+              if (IS_IOS) {
+                RNFetchBlob.fs.writeFile(location, res.data, 'base64');
+                RNFetchBlob.ios.previewDocument(location);
+              }
             })
             .catch((err) => console.log('createFile', err));
         }

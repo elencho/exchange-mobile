@@ -39,7 +39,7 @@ const INITIAL_STATE = {
   toDateTimeQuery: null,
   statusQuery: [],
   actionQuery: [],
-  cryptoCodeQuery: '',
+  cryptoCodeQuery: null,
   fiatCodesQuery: [],
 };
 
