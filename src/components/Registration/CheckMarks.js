@@ -5,7 +5,6 @@ import { t } from 'i18next';
 
 import AppText from '../AppText';
 import PurpleText from '../PurpleText';
-import images from '../../constants/images';
 import { setRegistrationInputs } from '../../redux/profile/actions';
 import CheckRed from '../../assets/images/Check_Red.svg';
 import CheckFull from '../../assets/images/Check_Full.svg';
@@ -64,17 +63,12 @@ export default function CheckMarks({ error, validations }) {
 
   return (
     <View style={styles.container}>
-      {['acceptTerms', 'updates'].map((c, i, a) => (
-        <View
-          style={[styles.row, { marginTop: i === a.length - 1 ? 20 : 0 }]}
-          key={c}
-        >
-          <Pressable style={styles.image} onPress={() => toggle(c)}>
-            {image(c)}
-          </Pressable>
-          {text(c)}
-        </View>
-      ))}
+      <View style={[styles.row, { marginTop: 20 }]}>
+        <Pressable style={styles.image} onPress={() => toggle('acceptTerms')}>
+          {image('acceptTerms')}
+        </Pressable>
+        {text('acceptTerms')}
+      </View>
     </View>
   );
 }
