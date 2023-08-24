@@ -1,22 +1,46 @@
 import { StyleSheet, Pressable } from 'react-native';
 import React, { useState } from 'react';
+import { MaterialIndicator } from 'react-native-indicators';
 import Download from '../../assets/images/Download';
-import { generateFile } from '../../utils/walletUtils';
+import { generateFile, getFile } from '../../utils/walletUtils';
 import colors from '../../constants/colors';
+import { useSelector } from 'react-redux';
 
 const DownloadIcon = () => {
+  const {
+    transactions: {
+      fromDateTime,
+      toDateTime,
+      cryptoFilter,
+      typeFilter,
+      activeTab,
+    },
+    trade: { fromDateTimeQuery, toDateTimeQuery, cryptoCodeQuery },
+  } = useSelector((state) => state);
+  const isTransfer = activeTab === 'Transfer';
   const [loading, setLoading] = useState(false);
 
+  const reportParams = {
+    currency: isTransfer ? cryptoFilter : cryptoCodeQuery,
+    fromTime: isTransfer ? fromDateTime : fromDateTimeQuery,
+    toTime: isTransfer ? toDateTime : toDateTimeQuery,
+    transactionReportTypes: isTransfer ? typeFilter : ['SIMPLE_TRADE'],
+  };
+
   const linkMain =
-    'https://exchange.cryptal.com/exchange/api/v1/private/report/transactions/user';
+    'https://exchange.cryptal.com/exchange/api/v1/mobile/private/report/fetchTransactions/user';
 
   const downloadFile = () => {
-    generateFile(linkMain, setLoading, 'transactions', 'xlsx');
+    generateFile(linkMain, setLoading, 'transactions', 'xlsx', reportParams);
   };
 
   return (
     <Pressable style={styles.container} onPress={downloadFile}>
-      <Download style={styles.icon} />
+      {loading ? (
+        <MaterialIndicator color="#FFFFFF" animationDuration={3000} size={20} />
+      ) : (
+        <Download style={styles.icon} />
+      )}
     </Pressable>
   );
 };
