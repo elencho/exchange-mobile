@@ -71,6 +71,7 @@ export default function Wallet() {
   };
 
   const onRefresh = () => {
+    hideButtonsHandler();
     setValue('');
     setShowZeroBalances(true);
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });

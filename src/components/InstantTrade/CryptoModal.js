@@ -46,7 +46,6 @@ export default function CryptoModal() {
   };
 
   const hide = () => dispatch(toggleCryptoModal(false));
-  const onModalHide = () => dispatch(instantTradeTabAction());
 
   const choose = (code) => {
     dispatch(setCrypto(code));
@@ -72,7 +71,6 @@ export default function CryptoModal() {
         visible={cryptoModalVisible}
         hide={hide}
         children={children}
-        onModalHide={onModalHide}
         fullScreen
       />
     )

@@ -104,8 +104,9 @@ export default function AppText({
             {
               fontFamily: fontCond(),
               fontSize: sizeCond(),
+              lineHeight: heightCond(),
             },
-            // isMtavruli,
+            isMtavruli,
             style,
           ]}
           onPress={onPress}
