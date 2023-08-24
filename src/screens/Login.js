@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
+import Constants from 'expo-constants';
 
 import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
@@ -147,7 +148,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PRIMARY_BACKGROUND,
     flex: 1,
     justifyContent: 'center',
-    paddingVertical: StatusBar.currentHeight + 20,
+    paddingVertical: Platform.select({
+      ios: Constants.statusBarHeight + 20,
+      android: StatusBar.currentHeight + 20,
+    }),
   },
   container: {
     alignItems: 'center',

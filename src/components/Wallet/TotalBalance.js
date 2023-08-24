@@ -25,26 +25,30 @@ export default function TotalBalance({ balanceLoading }) {
     }
   };
 
-  return !balanceLoading ? (
-    <View style={styles.container}>
-      <View style={styles.balanceContainer}>
-        <View style={styles.justify}>
-          <View style={styles.row}>
-            <AppText header style={styles.primary}>
-              {primary()}
-            </AppText>
+  return (
+    <View style={styles.wrapper}>
+      {!balanceLoading ? (
+        <View style={styles.container}>
+          <View style={styles.balanceContainer}>
+            <View style={styles.justify}>
+              <View style={styles.row}>
+                <AppText header style={styles.primary}>
+                  {primary()}
+                </AppText>
+              </View>
+              <View style={styles.row}>
+                <AppText body style={styles.secondary}>
+                  {secondary()}
+                </AppText>
+              </View>
+            </View>
           </View>
-          <View style={styles.row}>
-            <AppText body style={styles.secondary}>
-              {secondary()}
-            </AppText>
-          </View>
+          <NewCurrencySwitch />
         </View>
-      </View>
-      <NewCurrencySwitch />
+      ) : (
+        <TotalBalanceSkeleton />
+      )}
     </View>
-  ) : (
-    <TotalBalanceSkeleton />
   );
 }
 
@@ -70,5 +74,8 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+  },
+  wrapper: {
+    paddingBottom: 25,
   },
 });

@@ -76,7 +76,7 @@ export default LanguageSwitcher;
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
-    marginBottom: 40,
+    marginBottom: 45,
     borderWidth: 1,
     borderColor: colors.SECONDARY_TEXT,
     width: 140,

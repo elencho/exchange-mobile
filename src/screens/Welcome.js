@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   primary: {
     color: colors.PRIMARY_TEXT,
     marginTop: 30,
-    marginBottom: 12,
+    marginBottom: 11,
     textAlign: 'center',
   },
   subtext: {
