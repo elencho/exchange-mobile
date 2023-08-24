@@ -14,6 +14,7 @@ import Animated, {
 import colors from '../constants/colors';
 
 import Eng from '../assets/images/English.svg';
+import Geo from '../assets/images/Georgian.svg';
 import Arrow from '../assets/images/SwitcherArrow.svg';
 import images from '../constants/images';
 
@@ -23,11 +24,7 @@ const LanguageSwitcher = () => {
 
   const isGeo = defaltLanguage === 'ka';
   const chosenLanguageText = defaltLanguage === 'en' ? 'English' : 'ქართული';
-  const icon = isGeo ? (
-    <Image source={images.GEO} style={styles.flag} />
-  ) : (
-    <Eng />
-  );
+  const icon = isGeo ? <Geo /> : <Eng />;
   const liked = useSharedValue(0);
 
   const onPress = () => {
