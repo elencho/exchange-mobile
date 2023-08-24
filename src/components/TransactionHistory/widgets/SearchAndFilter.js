@@ -36,9 +36,7 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
   useEffect(() => {
     const getSearchedData = setTimeout(() => {
       dispatch(showResultsAction(navigation));
-      dispatch(
-        setTransactionSearch(searchValue?.length > 0 ? searchValue : null)
-      );
+      dispatch(setTransactionSearch(searchValue));
     }, 1000);
 
     return () => clearTimeout(getSearchedData);

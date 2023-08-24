@@ -41,15 +41,15 @@ export const getParams = (state) => {
   }
 
   return {
-    type: typeFilter,
+    type: typeFilter?.length === 1 ? typeFilter[0] : null,
     methods,
-    status: status?.length > 0 ? status : null,
-    currency: cryptoFilter === 'Show all currency' ? null : cryptoFilter,
-    fromDateTime,
-    toDateTime,
+    statuses: status,
+    currency: cryptoFilter?.length > 0 ? cryptoFilter : null,
+    fromTime: fromDateTime,
+    toTime: toDateTime,
     offset,
     limit: 10,
-    txIdOrRecipient,
+    txIdOrRecipient: txIdOrRecipient?.length > 0 ? txIdOrRecipient : null,
   };
 };
 

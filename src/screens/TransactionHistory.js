@@ -95,9 +95,16 @@ function TransactionHistory({ navigation, route }) {
       ? transactions
       : transactions.filter((t) => t.currency == currencyCode);
 
-  const renderTransaction = ({ item }) => (
-    <Transaction isTransfer transactionData={item} loading={loading} />
-  );
+  const renderTransaction = ({ item, index }) => {
+    return (
+      <Transaction
+        isTransfer
+        transactionData={item}
+        loading={loading}
+        isLast={index === transactionsCurrencyFiltered?.length - 1}
+      />
+    );
+  };
 
   const listEmptyContainer = (
     <View style={styles.empty}>

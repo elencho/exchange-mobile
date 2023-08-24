@@ -76,8 +76,8 @@ function TransactionModal({ transactions, trades }) {
   const children = () => {
     if (transactions) {
       return (
-        <>
-          {!isInstantTrade && (
+        <View style={styles.container}>
+          {!isInstantTrade && transactionInfo && (
             <View style={styles.top}>
               <View style={styles.middle}>
                 <AppText medium style={styles.white}>
@@ -106,7 +106,7 @@ function TransactionModal({ transactions, trades }) {
             </View>
           )}
 
-          {!isInstantTrade && <View style={styles.line} />}
+          {!isInstantTrade && transactionInfo && <View style={styles.line} />}
 
           <TransactionDetails />
 
@@ -116,7 +116,7 @@ function TransactionModal({ transactions, trades }) {
               <View style={styles.line} />
               <View style={styles.row}>
                 <View style={{ flex: 1, marginRight: 15 }}>
-                  <AppText medium style={[styles.white, {}]}>
+                  <AppText medium style={styles.white}>
                     Destination
                   </AppText>
                   <AppText subtext style={styles.address}>
@@ -141,12 +141,12 @@ function TransactionModal({ transactions, trades }) {
               </View>
             </>
           )}
-        </>
+        </View>
       );
     }
     if (trades) {
       return (
-        <>
+        <View style={styles.container}>
           <View style={[styles.top, { alignItems: 'flex-end' }]}>
             <View style={[styles.top, styles.icons]}>
               <Image
@@ -184,7 +184,7 @@ function TransactionModal({ transactions, trades }) {
           <View style={styles.line} />
 
           <TradeDetails />
-        </>
+        </View>
       );
     }
   };
@@ -203,6 +203,8 @@ function TransactionModal({ transactions, trades }) {
 export default memo(TransactionModal);
 
 const styles = StyleSheet.create({
+  container: { paddingLeft: 10 },
+
   block: {
     padding: 40,
     paddingTop: 20,
@@ -251,7 +253,6 @@ const styles = StyleSheet.create({
   top: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 8,
     // height: 37,
   },
   address: { color: '#C0C5E0', marginTop: 5 },

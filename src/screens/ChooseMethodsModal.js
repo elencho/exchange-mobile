@@ -6,7 +6,7 @@ import { toggleMethodsModal } from '../redux/modals/actions';
 import { methods } from '../constants/filters';
 import AppText from '../components/AppText';
 import colors from '../constants/colors';
-import { filterAction } from '../redux/transactions/actions';
+import { setMethodFilter } from '../redux/transactions/actions';
 
 const ChooseMethodsModal = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const ChooseMethodsModal = () => {
         <Pressable
           style={[styles.row, selectedMethod === i && selectedStyle]}
           onPress={() => {
-            dispatch(filterAction(i, 'method'));
+            dispatch(setMethodFilter([i]));
             hideModal();
           }}
         >

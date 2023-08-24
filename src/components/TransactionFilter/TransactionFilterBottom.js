@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showResultsAction } from '../../redux/transactions/actions';
 import { generateFile } from '../../utils/walletUtils';
 import PurpleText from '../PurpleText';
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    marginBottom: IS_ANDROID ? 18 : 28,
+    marginBottom: IS_ANDROID ? 8 : 28,
   },
   download: {
     flexDirection: 'row',
