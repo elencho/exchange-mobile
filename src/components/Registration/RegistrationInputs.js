@@ -24,7 +24,7 @@ export default function RegistrationInputs({ validations, error }) {
   const state = useSelector((state) => state);
 
   const {
-    profile: { registrationInputs, countriesConstant },
+    profile: { registrationInputs, countriesConstant, Personal_Company },
   } = state;
 
   const i = registrationInputs;
@@ -68,24 +68,6 @@ export default function RegistrationInputs({ validations, error }) {
 
   return (
     <>
-      <AppInput
-        value={i.firstName}
-        label="Enter Name"
-        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-        style={styles.input}
-        onChangeText={(text) => handleInputs(text, 'name')}
-        error={error && !v.nameCheck}
-        errorText={errorText('First Name')}
-      />
-      <AppInput
-        value={i.lastName}
-        label="Enter Last Name"
-        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-        style={styles.input}
-        onChangeText={(text) => handleInputs(text, 'last name')}
-        error={error && !v.lastNameCheck}
-        errorText={errorText('Last Name')}
-      />
       <AppInput
         value={i.email}
         label="Enter E-mail"
@@ -162,21 +144,24 @@ export default function RegistrationInputs({ validations, error }) {
         />
       </View>
       <CountriesModal phoneCountry registration />
-
-      <AppInput
-        value={i.referralCode}
-        label="Referral Code"
-        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-        style={styles.input}
-        onChangeText={(text) => handleInputs(text, 'referal')}
-      />
-      <AppInput
-        value={i.promoCode}
-        label="Promo Code"
-        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-        style={[styles.input, { marginTop: 12 }]}
-        onChangeText={(text) => handleInputs(text, 'promoCode')}
-      />
+      {Personal_Company === 'Personal' && (
+        <>
+          <AppInput
+            value={i.referralCode}
+            label="Referral Code"
+            labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+            style={styles.input}
+            onChangeText={(text) => handleInputs(text, 'referal')}
+          />
+          <AppInput
+            value={i.promoCode}
+            label="Promo Code"
+            labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+            style={[styles.input, { marginTop: 12 }]}
+            onChangeText={(text) => handleInputs(text, 'promoCode')}
+          />
+        </>
+      )}
     </>
   );
 }

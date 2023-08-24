@@ -96,40 +96,42 @@ export default function EmailVerification() {
   };
 
   return (
-    <WithKeyboard flexGrow padding modal>
-      <View style={styles.container}>
-        <View style={styles.top}>
-          <CloseModalIcon onPress={hide} />
-        </View>
+    <View style={{ flex: 1 }}>
+      <WithKeyboard flexGrow padding modal>
+        <View style={styles.container}>
+          <View style={styles.top}>
+            <CloseModalIcon onPress={hide} />
+          </View>
 
-        <View style={styles.middle}>
-          <EmailLoginAuth />
+          <View style={styles.middle}>
+            <EmailLoginAuth />
+
+            {/* Animate */}
+            <View>
+              <AppText header style={styles.primary}>
+                E-mail Has Been Sent
+              </AppText>
+            </View>
+            {checkMailText()}
+
+            <TwoFaInput
+              value={value}
+              setValue={setValue}
+              registration
+              indicatorStyle={{ top: '70%' }}
+            />
+          </View>
 
           {/* Animate */}
-          <View>
-            <AppText header style={styles.primary}>
-              E-mail Has Been Sent
+          <View style={styles.row}>
+            <AppText style={[styles.secondary, { marginRight: 5 }]}>
+              Didn't receive code?
             </AppText>
+            {resendOrCountDown()}
           </View>
-          {checkMailText()}
-
-          <TwoFaInput
-            value={value}
-            setValue={setValue}
-            registration
-            indicatorStyle={{ top: '70%' }}
-          />
         </View>
-
-        {/* Animate */}
-        <View style={styles.row}>
-          <AppText style={[styles.secondary, { marginRight: 5 }]}>
-            Didn't receive code?
-          </AppText>
-          {resendOrCountDown()}
-        </View>
-      </View>
-    </WithKeyboard>
+      </WithKeyboard>
+    </View>
   );
 }
 

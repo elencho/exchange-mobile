@@ -73,14 +73,10 @@ export default function Registration({ navigation }) {
   };
 
   const enabled =
-    o.nameCheck &&
-    o.lastNameCheck &&
     o.isEmail &&
     o.similarPasswords &&
     o.passwordCheck &&
     o.phoneNumberCheck &&
-    firstName &&
-    lastName &&
     phoneNumber &&
     phoneCountry &&
     o.terms;
