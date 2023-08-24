@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import {
-  filterAction,
   setStatusFilter,
+  setTypeFilter,
 } from '../../redux/transactions/actions';
 import Pending from '../../assets/images/Status_Pending';
 import Success from '../../assets/images/Status_Success';
@@ -80,25 +80,34 @@ export default function FilterRow({ array = [''], filterType }) {
         );
       } else dispatch(setStatusQuery([...statusQuery, ...statusMapping[fil]]));
     } else if (filterType === 'statusTransaction') {
-      transactionStatus === fil
-        ? dispatch(setStatusFilter(''))
-        : dispatch(setStatusFilter(fil));
-    } else {
-      dispatch(filterAction(fil, filterType));
+      if (transactionStatus?.includes(fil)) {
+        dispatch(
+          setStatusFilter(
+            [...transactionStatus].filter((item) => !fil.includes(item))
+          )
+        );
+      } else dispatch(setStatusFilter([...transactionStatus, fil]));
+    } else if (filterType === 'type') {
+      if (typeFilter.includes(fil)) {
+        dispatch(setTypeFilter([...typeFilter].filter((item) => item !== fil)));
+      } else {
+        dispatch(setTypeFilter([...typeFilter, fil]));
+      }
     }
   };
   const filterConditional = (fil) => {
-    if (filterType === 'type') return fil === typeFilter;
+    if (filterType === 'type') return typeFilter.includes(fil);
     if (filterType === 'method') return fil === method;
     if (filterType === 'statusTrade')
-      return statusQuery.includes(statusMapping[fil][0]);
+      return statusQuery?.includes(statusMapping[fil][0]);
     if (filterType === 'currency') return fiatCodesQuery.includes(fil);
     if (filterType === 'tradeAction')
       return actionQuery?.includes(tradeActionMapping[fil]);
-    if (filterType === 'statusTransaction') return fil === transactionStatus;
+    if (filterType === 'statusTransaction')
+      return transactionStatus?.includes(fil);
   };
 
-  const renderItem = ({ item }) => {
+  const RenderItem = ({ item }) => {
     return (
       <Pressable
         style={[
@@ -128,22 +137,23 @@ export default function FilterRow({ array = [''], filterType }) {
   };
 
   return (
-    <View>
-      <FlatList
-        data={array}
-        keyExtractor={(item) => item}
-        renderItem={renderItem}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        bounces={false}
-      />
+    <View style={styles.container}>
+      {array.map((item, idx) => (
+        <RenderItem item={item} key={`filterItem${idx}`} />
+      ))}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    rowGap: 12,
+  },
   filterButton: {
     height: 34,
+    minWidth: 78,
     paddingHorizontal: 20,
     borderRadius: 40,
     backgroundColor: 'rgba(31, 31, 53, 0.9)',

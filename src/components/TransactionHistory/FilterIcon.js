@@ -25,6 +25,15 @@ export default function FilterIcon({ onPress, isInstantTrade }) {
     toDateTimeQuery,
   } = trade;
 
+  console.log({
+    cryptoTransactions,
+    selectedMethod,
+    typeFilter,
+    fromDateTime,
+    toDateTime,
+    status,
+  });
+
   const isFilteredTrades = Boolean(
     fiatCodesQuery?.length > 0 ||
       actionQuery?.length > 0 ||
@@ -34,12 +43,12 @@ export default function FilterIcon({ onPress, isInstantTrade }) {
       toDateTimeQuery
   );
   const isFilteredTransactions = Boolean(
-    typeFilter ||
+    typeFilter?.length > 0 ||
       cryptoTransactions ||
       fromDateTime ||
       toDateTime ||
-      selectedMethod ||
-      status
+      selectedMethod?.length > 0 ||
+      status?.length > 0
   );
   const isFilteredAny = isInstantTrade
     ? isFilteredTrades

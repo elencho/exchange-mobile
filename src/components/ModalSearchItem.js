@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   image: {
-    marginRight: 20,
+    marginRight: 14,
     width: 36,
     height: 36,
   },

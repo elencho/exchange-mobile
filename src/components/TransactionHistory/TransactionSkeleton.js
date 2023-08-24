@@ -23,7 +23,11 @@ const MainPart = ({ isInstantTrade }) => (
         </View>
         <View style={styles.middle}>
           {isInstantTrade && (
-            <Skeleton width={84} height={8} style={{ marginBottom: 4 }} />
+            <Skeleton
+              width={84}
+              height={8}
+              style={{ marginBottom: 4, marginLeft: -16 }}
+            />
           )}
         </View>
         <View style={styles.right}>
@@ -78,7 +82,7 @@ const styles = StyleSheet.create({
   },
   bottomRight: { gap: 13, alignItems: 'flex-end' },
   bottom: {
-    marginTop: 30,
+    marginTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
