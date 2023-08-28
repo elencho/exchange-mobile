@@ -191,7 +191,6 @@ function Withdrawal({ refreshControl }) {
       ) : (
         <WithKeyboard flexGrow padding refreshControl={refreshControl}>
           <View style={styles.block}>
-            {/* <GeneralError style={{ marginBottom: 16 }} /> */}
             <WalletCoinsDropdown />
 
             {!hasRestriction && hasMethod && (
@@ -247,11 +246,7 @@ function Withdrawal({ refreshControl }) {
 
           {!hasRestriction &&
             hasMethod && ( // Button
-              <AppButton
-                text="Withdrawal"
-                onPress={withdraw}
-                style={styles.button}
-              />
+              <AppButton text="Withdrawal" onPress={withdraw} />
             )}
         </WithKeyboard>
       )}
@@ -264,10 +259,6 @@ export default memo(Withdrawal);
 const styles = StyleSheet.create({
   block: {
     paddingVertical: 22,
-    paddingHorizontal: 10,
     marginBottom: 12,
-  },
-  button: {
-    marginHorizontal: 15,
   },
 });

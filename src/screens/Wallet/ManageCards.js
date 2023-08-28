@@ -94,7 +94,6 @@ const styles = StyleSheet.create({
   block: {
     marginBottom: 12,
     paddingVertical: 22,
-    paddingHorizontal: 10,
   },
   button: {
     borderWidth: 1,
@@ -118,8 +117,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  scrollView: {
-    paddingHorizontal: 10,
   },
 });

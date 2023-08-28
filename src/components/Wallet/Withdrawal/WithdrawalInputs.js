@@ -164,9 +164,7 @@ export default function WithdrawalInputs({
         />
       </View>
 
-      <View style={{ marginHorizontal: 16 }}>
-        <Fee />
-      </View>
+      <Fee />
     </>
   );
 }
@@ -174,7 +172,6 @@ export default function WithdrawalInputs({
 const styles = StyleSheet.create({
   block: {
     paddingVertical: 22,
-    paddingHorizontal: 10,
     marginBottom: 22,
   },
   line: {

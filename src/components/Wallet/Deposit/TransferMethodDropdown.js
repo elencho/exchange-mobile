@@ -20,10 +20,10 @@ export default function TransferMethodDropdown() {
 
   const show = () => dispatch(toggleTransferMethodModal(true));
 
-  const oneMethod = methodsToDisplay?.length < 2;
+  const isOneMethod = methodsToDisplay?.length < 2;
   const dropdownStyle = {
-    backgroundColor: oneMethod ? 'rgba(149, 164, 247, 0.04)' : null,
-    borderWidth: oneMethod ? 0 : 1,
+    backgroundColor: isOneMethod ? 'rgba(149, 164, 247, 0.04)' : null,
+    borderWidth: isOneMethod ? 0 : 1,
   };
   const renderIcon = (network) => {
     if (network === 'ECOMMERCE') {
@@ -39,12 +39,13 @@ export default function TransferMethodDropdown() {
 
   return (
     <AppDropdown
-      style={styles.dropdown}
+      style={[styles.dropdown, dropdownStyle]}
       notClearable
-      disabled={oneMethod}
+      disabled={isOneMethod}
       icon={renderIcon(network)}
       selectedText={network}
       handlePress={show}
+      hideArrow={isOneMethod}
     />
   );
 }
