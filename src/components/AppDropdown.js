@@ -16,6 +16,8 @@ const AppDropdown = ({
   notClearable,
   withLabel,
   error,
+  disabled,
+  hideArrow,
 }) => {
   return (
     <Pressable
@@ -24,7 +26,7 @@ const AppDropdown = ({
         style,
         error && { borderColor: colors.ERROR_TEXT },
       ]}
-      onPress={handlePress}
+      onPress={!disabled ? handlePress : null}
     >
       {selectedText ? (
         <View style={styles.row}>
@@ -69,9 +71,9 @@ const AppDropdown = ({
           <Pressable style={styles.close} onPress={handleClear}>
             <Close width={9} height={9} />
           </Pressable>
-        ) : (
+        ) : !hideArrow ? (
           <Arrow />
-        )}
+        ) : null}
       </View>
     </Pressable>
   );

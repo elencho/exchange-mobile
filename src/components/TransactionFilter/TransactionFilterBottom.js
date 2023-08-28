@@ -6,21 +6,54 @@ import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { useDispatch, useSelector } from 'react-redux';
 import { showResultsAction } from '../../redux/transactions/actions';
-import { generateFile } from '../../utils/walletUtils';
-import PurpleText from '../PurpleText';
 
-import { MaterialIndicator } from 'react-native-indicators';
-import Download from '../../assets/images/Download';
 import { fetchTrades } from '../../redux/trade/actions';
 import { IS_ANDROID } from '../../constants/system';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import PurpleText from '../PurpleText';
 
 function TransactionFilterBottom({ navigation, isInstantTrade }) {
+  const {
+    transactions: {
+      cryptoFilter: cryptoTransactions,
+      method: selectedMethod,
+      typeFilter,
+      fromDateTime,
+      toDateTime,
+      status,
+      loading: transactionsLoading,
+    },
+    trade: {
+      fiatCodesQuery,
+      statusQuery,
+      cryptoCodeQuery,
+      actionQuery,
+      fromDateTimeQuery,
+      toDateTimeQuery,
+      tradesLoading,
+    },
+  } = useSelector((state) => state);
+
   const dispatch = useDispatch();
-
-  const [loading, setLoading] = useState(false);
-
-  const linkMain =
-    'https://exchange.cryptal.com/exchange/api/v1/private/report/transactions/user';
+  const isFilteredTrades = Boolean(
+    fiatCodesQuery?.length > 0 ||
+      actionQuery?.length > 0 ||
+      statusQuery?.length > 0 ||
+      cryptoCodeQuery ||
+      fromDateTimeQuery ||
+      toDateTimeQuery
+  );
+  const isFilteredTransactions = Boolean(
+    typeFilter?.length > 0 ||
+      cryptoTransactions ||
+      fromDateTime ||
+      toDateTime ||
+      selectedMethod?.length > 0 ||
+      status?.length > 0
+  );
+  const isFilteredAny = isInstantTrade
+    ? isFilteredTrades
+    : isFilteredTransactions;
 
   const showResults = () => {
     isInstantTrade
@@ -32,17 +65,31 @@ function TransactionFilterBottom({ navigation, isInstantTrade }) {
     });
   };
 
-  const downloadFile = () => {
-    generateFile(linkMain, setLoading, 'transactions', 'xlsx');
+  const clear = () => {
+    if (isFilteredAny) {
+      navigation.navigate('Main', { screen: 'Transactions' });
+      isInstantTrade ? dispatch(clearFiltersTrade()) : dispatch(clearFilters());
+      dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+    }
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      onLayout={(e) => console.log('eeww', e.nativeEvent.layout.height)}
+    >
       <Pressable style={styles.button} onPress={showResults}>
         <AppText medium style={styles.white}>
           Show Result
         </AppText>
       </Pressable>
+      <TouchableOpacity style={styles.clear} onPress={clear}>
+        <PurpleText
+          style={styles.purple}
+          text="Clear Filters"
+          disabled={!isFilteredAny}
+        />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -63,6 +110,7 @@ const styles = StyleSheet.create({
   },
   container: {
     marginBottom: IS_ANDROID ? 8 : 28,
+    marginTop: 50,
   },
   download: {
     flexDirection: 'row',
@@ -73,5 +121,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 18,
     color: colors.PRIMARY_TEXT,
+  },
+  clear: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // marginBottom: 30,
   },
 });

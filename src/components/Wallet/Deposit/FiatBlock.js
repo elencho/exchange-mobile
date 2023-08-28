@@ -156,9 +156,7 @@ export default function FiatBlock() {
         </>
       </View>
 
-      <View style={{ marginHorizontal: 16 }}>
-        <Fee />
-      </View>
+      <Fee />
 
       {network === 'SWIFT' || network === 'SEPA' ? (
         <AppButton
@@ -178,12 +176,10 @@ export default function FiatBlock() {
 const styles = StyleSheet.create({
   block: {
     paddingVertical: 22,
-    paddingHorizontal: 10,
     marginBottom: 22,
   },
   button: {
-    width: '90%',
-    alignSelf: 'center',
+    width: '100%',
   },
   dropdown: {
     borderColor: '#525A86',

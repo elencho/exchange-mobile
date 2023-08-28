@@ -99,7 +99,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 12,
     paddingVertical: 22,
-    paddingHorizontal: 10,
   },
   description: {
     color: colors.SECONDARY_TEXT,
@@ -130,7 +129,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   scrollContent: {
-    paddingHorizontal: 10,
     paddingVertical: 20,
   },
 });

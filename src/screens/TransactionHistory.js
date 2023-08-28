@@ -101,7 +101,11 @@ function TransactionHistory({ navigation, route }) {
         isTransfer
         transactionData={item}
         loading={loading}
-        isLast={index === transactionsCurrencyFiltered?.length - 1}
+        isLast={
+          loading &&
+          !moreTradesLoading &&
+          index === transactionsCurrencyFiltered?.length - 1
+        }
       />
     );
   };

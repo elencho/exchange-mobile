@@ -44,8 +44,6 @@ export default function Security({ loading, bioAvailable }) {
 
 const styles = StyleSheet.create({
   block: {
-    paddingHorizontal: 5,
-
     backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   margin: { marginBottom: 20, marginTop: 10 },

@@ -16,7 +16,11 @@ import {
   showResultsAction,
 } from '../../../redux/transactions/actions';
 import CryptoModalTrade from '../../InstantTrade/CryptoModalTrade';
-import { fetchTrades, setCryptoCodeQuery } from '../../../redux/trade/actions';
+import {
+  fetchTrades,
+  saveTrades,
+  setCryptoCodeQuery,
+} from '../../../redux/trade/actions';
 
 const SearchAndFilter = ({ isInstantTrade, navigation }) => {
   const dispatch = useDispatch();
@@ -29,6 +33,7 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
   const seperateCurrencyName = (currency) => currency.split('(')[0];
   const clearCurrencyDropdown = () => {
     dispatch(setCryptoCodeQuery(''));
+    dispatch(saveTrades([]));
     dispatch(fetchTrades());
   };
 
