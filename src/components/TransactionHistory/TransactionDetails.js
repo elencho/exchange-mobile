@@ -89,8 +89,12 @@ export default function TransactionDetails() {
     `${actionMapping[action]} - ${type}`,
     `${date} ${year} / ${time}`,
     `${date} ${year} / ${time}`,
-    `${size} ${baseCurrency}`,
-    `${cumulativeCost} ${quoteCurrency}`,
+    action === 'BID'
+      ? `${cumulativeCost} ${quoteCurrency}`
+      : `${size} ${baseCurrency}`,
+    action === 'BID'
+      ? `${size} ${baseCurrency}`
+      : `${cumulativeCost} ${quoteCurrency}`,
     `${price} ${quoteCurrency}`,
     <Status statusText={status} />,
   ];

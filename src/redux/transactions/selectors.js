@@ -13,36 +13,18 @@ export const getParams = (state) => {
     },
   } = state;
 
-  let methods;
-  switch (method) {
-    case 'All':
-      methods = null;
-      break;
-    case 'Ecommerce':
-      methods = 'ECOMMERCE';
-      break;
-    case 'Wire':
-      methods = 'WIRE';
-      break;
-    case 'Crypto Transaction':
-      methods = ['WALLET', 'WALLET_INTERNAL'];
-      break;
-    case 'Staking':
-      methods = 'STAKING';
-      break;
-    case 'B2C':
-      methods = 'B2C';
-      break;
-    case 'Transfer':
-      methods = 'TRANSFER';
-      break;
-    default:
-      break;
-  }
+  const methodsMapping = {
+    Ecommerce: ['ECOMMERCE'],
+    Wire: ['WIRE'],
+    'Crypto Transaction': ['WALLET', 'WALLET_INTERNAL'],
+    Staking: ['STAKING'],
+    B2C: ['B2C'],
+    Transfer: ['TRANSFER'],
+  };
 
   return {
     type: typeFilter?.length === 1 ? typeFilter[0] : null,
-    methods,
+    methods: methodsMapping[method],
     statuses: status,
     currency: cryptoFilter?.length > 0 ? cryptoFilter : null,
     fromTime: fromDateTime,

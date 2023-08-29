@@ -132,6 +132,7 @@ function TransactionHistory({ navigation, route }) {
       <TransactionSkeleton
         length={[0]}
         isInstantTrade={activeTab === 'Instant trade'}
+        isFooter
       />
     ) : (
       <View />

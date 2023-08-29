@@ -2,8 +2,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Skeleton from '../Skeleton';
 
-const MainPart = ({ isInstantTrade }) => (
-  <View style={styles.container}>
+const MainPart = ({ isInstantTrade, isFooter }) => (
+  <View style={[styles.container, isFooter && { marginTop: 0 }]}>
     <View style={styles.top}>
       <View style={styles.topLeft}>
         {!isInstantTrade && (
@@ -50,10 +50,10 @@ const MainPart = ({ isInstantTrade }) => (
   </View>
 );
 
-const TransactionSkeleton = ({ length, isInstantTrade }) =>
+const TransactionSkeleton = ({ length, isInstantTrade, isFooter }) =>
   length?.map((a, i) => (
     <View key={i}>
-      <MainPart isInstantTrade={isInstantTrade} />
+      <MainPart isInstantTrade={isInstantTrade} isFooter={isFooter} />
     </View>
   ));
 
