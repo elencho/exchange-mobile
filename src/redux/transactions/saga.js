@@ -72,16 +72,17 @@ function* fetchTransactionsSaga({ isMoreLoading }) {
 function* refreshTransactionsSaga() {
   yield put(toggleLoading(true));
 
-  // const total = yield call(totalAmount, params);
+  const params = yield select(getParams);
+
+  const total = yield call(totalAmount, params);
 
   const totalTransactions = yield select(
     (state) => state.transactions.totalTransactions
   );
 
-  // yield put(setTotalTransactions(total));
+  yield put(setTotalTransactions(total));
 
   yield put(setTransactionsOffset(0));
-  const params = yield select(getParams);
   const transactions = yield call(fetch, params);
 
   if (transactions) {
