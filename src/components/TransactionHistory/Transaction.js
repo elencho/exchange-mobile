@@ -15,7 +15,12 @@ import SellIcon from '../../assets/images/Sell';
 
 import { monthsShort } from '../../constants/months';
 
-export default function Transaction({ transactionData, loading, isTransfer }) {
+export default function Transaction({
+  transactionData,
+  loading,
+  isTransfer,
+  isLast,
+}) {
   const dispatch = useDispatch();
 
   const {
@@ -37,12 +42,14 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
 
   let date = new Date(isTransfer ? timestamp : creationTime);
   const time = date.toTimeString('en-US', { hour12: false }).split(' ')[0];
-  date = `${date.getDate()} ${monthsShort[date.getMonth()]}`;
+  year = date.getFullYear();
+  date = `${date.getDate()} ${monthsShort[date.getMonth()]} `;
 
   const currentTransaction = {
     ...transactionData,
     date,
     time,
+    year,
   };
 
   const showModal = () => {
@@ -101,11 +108,14 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
     ? `${amount} ${currency}`
     : ` ${cumulativeCost} ${quoteCurrency}`;
   const destinationDisplay = isTransfer
-    ? shortenDestination(transactionInfo)
+    ? shortenDestination(transactionInfo) || '-'
     : `${size} ${baseCurrency}`;
 
   return (
-    <Pressable onPress={showModal} style={styles.container}>
+    <Pressable
+      onPress={showModal}
+      style={[styles.container, isLast && { borderBottomWidth: 0 }]}
+    >
       <View style={styles.topRow}>
         {isTransfer && image()}
 

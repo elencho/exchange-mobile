@@ -123,7 +123,7 @@ const TransactionsBlock = () => {
   return (
     <View style={styles.container}>
       {tradesLoading && !moreTradesLoading ? (
-        <View style={{ marginTop: IS_IOS ? 0 : 20 }}>
+        <View style={{ marginTop: IS_IOS ? -10 : 20 }}>
           <TransactionSkeleton
             length={[1, 2, 3, 4, 5]}
             isInstantTrade={activeTab === 'Instant trade'}

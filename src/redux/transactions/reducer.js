@@ -19,13 +19,13 @@ const INITIAL_STATE = {
   // Query Params
   cryptoFilter: null,
   limit: 25,
-  method: null,
-  status: null,
+  method: [],
+  status: [],
   offset: 0,
   fromDateTime: null,
   toDateTime: null,
-  typeFilter: null,
-  txIdOrRecipient: null,
+  typeFilter: [],
+  txIdOrRecipient: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -161,9 +161,9 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.CLEAR_FILTERS:
       return {
         ...state,
-        typeFilter: null,
-        method: null,
-        status: null,
+        typeFilter: [],
+        method: [],
+        status: [],
         currency: 'Show All Currency',
         cryptoFilter: null,
         fromDateTime: null,

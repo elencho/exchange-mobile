@@ -62,6 +62,7 @@ export default function TransactionFilter({ navigation, route }) {
     fromDateTime,
     toDateTime,
     status,
+    loading: transactionsLoading,
   } = state.transactions;
   const {
     fiatCodesQuery,
@@ -70,6 +71,7 @@ export default function TransactionFilter({ navigation, route }) {
     actionQuery,
     fromDateTimeQuery,
     toDateTimeQuery,
+    tradesLoading,
   } = state.trade;
   const {
     params: { isInstantTrade },
@@ -97,7 +99,7 @@ export default function TransactionFilter({ navigation, route }) {
 
   const openModal = () => dispatch(toggleCryptoModal(true));
   const handleMethodsDropdown = () => dispatch(toggleMethodsModal(true));
-  const clearMethodsDropdown = () => dispatch(setMethodFilter(null));
+  const clearMethodsDropdown = () => dispatch(setMethodFilter([]));
   const clearCurrencyDropdown = () =>
     isInstantTrade
       ? dispatch(setCryptoCodeQuery(''))
@@ -220,11 +222,11 @@ export default function TransactionFilter({ navigation, route }) {
             label="Choose Methods:"
             handlePress={handleMethodsDropdown}
             handleClear={clearMethodsDropdown}
-            selectedText={selectedMethod}
+            selectedText={selectedMethod?.[0] ?? null}
           />
         )}
 
-        <AppText body style={styles.text}>
+        <AppText body style={[styles.text, styles.status]}>
           Choose Status:
         </AppText>
         <FilterRow
@@ -255,7 +257,8 @@ export default function TransactionFilter({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    marginBottom: 40,
+    marginTop: 10,
     paddingBottom: 140,
   },
   clear: {
@@ -292,11 +295,14 @@ const styles = StyleSheet.create({
     marginTop: 28,
     marginBottom: 12,
   },
+  status: {
+    marginTop: 20,
+  },
   bigText: {
     color: colors.PRIMARY_TEXT,
     flex: 1,
   },
   closeButton: {
-    marginTop: -35,
+    marginTop: -40,
   },
 });

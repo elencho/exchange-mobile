@@ -26,9 +26,16 @@ export default function TransactionDetails() {
       size,
       baseCurrency,
       price,
+      action,
+      year,
     },
     activeTab,
   } = state;
+
+  const actionMapping = {
+    BID: 'Buy',
+    ASK: 'Sell',
+  };
 
   const isInstantTrade = activeTab === 'Instant trade';
 
@@ -46,6 +53,28 @@ export default function TransactionDetails() {
     </View>
   );
 
+  const Status = ({ statusText }) => {
+    return (
+      <View style={styles.statusContainer}>
+        <View style={{ backgroundColor: statusIcon, width: 4, height: 4 }} />
+        <AppText style={styles.rightText}>{statusText}</AppText>
+      </View>
+    );
+  };
+
+  const statusIcon =
+    status === 'COMPLETED' || status === 'SUCCESS'
+      ? '#25D8D1'
+      : status === 'WAITING_DEPOSIT'
+      ? '#FADD90'
+      : status === 'FAILED'
+      ? '#BE1E3E'
+      : status === 'EXPIRED'
+      ? '#BE1E3E'
+      : status === 'PENDING'
+      ? '#FADD90'
+      : '#F83974';
+
   const leftInstant = [
     'Transaction type :',
     'Date created :',
@@ -57,13 +86,13 @@ export default function TransactionDetails() {
   ];
 
   const rightInstant = [
-    type,
-    `${date} / ${time}`,
-    `${date} / ${time}`,
-    `${cumulativeCost} ${quoteCurrency}`,
+    `${actionMapping[action]} - ${type}`,
+    `${date} ${year} / ${time}`,
+    `${date} ${year} / ${time}`,
     `${size} ${baseCurrency}`,
+    `${cumulativeCost} ${quoteCurrency}`,
     `${price} ${quoteCurrency}`,
-    status,
+    <Status statusText={status} />,
   ];
 
   const leftTransactions = [
@@ -79,11 +108,11 @@ export default function TransactionDetails() {
   const rightTransactions = [
     type,
     providerDisplayName,
-    `${date} / ${time}`,
+    `${date} ${year} / ${time}`,
     amount ? `${amount} ${currency}` : ` ${cumulativeCost} ${quoteCurrency}`,
     `${fee} ${currency}`,
     `${totalAmount} ${currency}`,
-    status,
+    <Status statusText={status} />,
     method,
   ];
 
@@ -122,7 +151,6 @@ const styles = StyleSheet.create({
   leftTextContainer: {
     height: 30,
     justifyContent: 'center',
-    marginLeft: 8,
   },
   rightTextContainer: {
     height: 30,
@@ -130,5 +158,10 @@ const styles = StyleSheet.create({
   },
   rightText: {
     color: colors.PRIMARY_TEXT,
+  },
+  statusContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
   },
 });
