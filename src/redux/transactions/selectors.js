@@ -22,33 +22,6 @@ export const getParams = (state) => {
     Transfer: ['TRANSFER'],
   };
 
-  // let methods;
-  // switch (method) {
-  //   case 'All':
-  //     methods = null;
-  //     break;
-  //   case 'Ecommerce':
-  //     methods = 'ECOMMERCE';
-  //     break;
-  //   case 'Wire':
-  //     methods = 'WIRE';
-  //     break;
-  //   case 'Crypto Transaction':
-  //     methods = ['WALLET', 'WALLET_INTERNAL'];
-  //     break;
-  //   case 'Staking':
-  //     methods = 'STAKING';
-  //     break;
-  //   case 'B2C':
-  //     methods = 'B2C';
-  //     break;
-  //   case 'Transfer':
-  //     methods = 'TRANSFER';
-  //     break;
-  //   default:
-  //     break;
-  // }
-
   return {
     type: typeFilter?.length === 1 ? typeFilter[0] : null,
     methods: methodsMapping[method],
