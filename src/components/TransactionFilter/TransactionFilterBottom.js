@@ -5,9 +5,12 @@ import { useNavigation } from '@react-navigation/native';
 import AppText from '../AppText';
 import colors from '../../constants/colors';
 import { useDispatch, useSelector } from 'react-redux';
-import { showResultsAction } from '../../redux/transactions/actions';
+import {
+  clearFilters,
+  showResultsAction,
+} from '../../redux/transactions/actions';
 
-import { fetchTrades } from '../../redux/trade/actions';
+import { clearFiltersTrade, fetchTrades } from '../../redux/trade/actions';
 import { IS_ANDROID } from '../../constants/system';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PurpleText from '../PurpleText';
@@ -74,10 +77,7 @@ function TransactionFilterBottom({ navigation, isInstantTrade }) {
   };
 
   return (
-    <View
-      style={styles.container}
-      onLayout={(e) => console.log('eeww', e.nativeEvent.layout.height)}
-    >
+    <View style={styles.container}>
       <Pressable style={styles.button} onPress={showResults}>
         <AppText medium style={styles.white}>
           Show Result
@@ -125,6 +125,5 @@ const styles = StyleSheet.create({
   clear: {
     flexDirection: 'row',
     justifyContent: 'center',
-    // marginBottom: 30,
   },
 });
