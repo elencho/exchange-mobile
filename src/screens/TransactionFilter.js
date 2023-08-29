@@ -61,16 +61,9 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
-const FILTER_BOTTOM_HEIGHT = 125;
-const HEADER_HEIGHT = 50;
 
 export default function TransactionFilter({ navigation, route }) {
   const [scrollHeight, setScrollHeight] = useState(null);
-  const [top, setTop] = useState(null);
-
-  useLayoutEffect(() => {
-    setTop(scrollHeight);
-  }, [scrollHeight]);
 
   const dispatch = useDispatch();
   const {
