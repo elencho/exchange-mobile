@@ -64,7 +64,6 @@ function TransactionHistory({ navigation, route }) {
   useFocusEffect(
     useCallback(() => {
       dispatch(chooseCurrency('Show All Currency'));
-      // dispatch(setAbbr(null));
       dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
       Keyboard.dismiss();
     }, [navigation])
@@ -102,7 +101,6 @@ function TransactionHistory({ navigation, route }) {
         transactionData={item}
         loading={loading}
         isLast={
-          loading &&
           !moreTradesLoading &&
           index === transactionsCurrencyFiltered?.length - 1
         }

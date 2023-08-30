@@ -27,6 +27,7 @@ import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
 import DatePicker from '../components/TransactionFilter/DatePicker';
 import Close from '../assets/images/Close.svg';
 import PurpleText from '../components/PurpleText';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
   clearFilters,
@@ -63,7 +64,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
 export default function TransactionFilter({ navigation, route }) {
-  const [scrollHeight, setScrollHeight] = useState(null);
+  const { top, bottom, right, left } = useSafeAreaInsets();
 
   const dispatch = useDispatch();
   const {
@@ -142,13 +143,6 @@ export default function TransactionFilter({ navigation, route }) {
 
   const numOfRender = useRef(0);
 
-  const setScrollHeightCallback = useCallback((e) => {
-    if (numOfRender.current === 0) {
-      setScrollHeight(e.nativeEvent.layout.height);
-      numOfRender.current++;
-    }
-  }, []);
-
   return (
     <Background>
       <View style={styles.closeContainer}>
@@ -161,97 +155,95 @@ export default function TransactionFilter({ navigation, route }) {
           <Close />
         </TouchableOpacity>
       </View>
-      <View style={{ flex: 1 }}>
-        <ScrollView
-          style={styles.container}
-          onLayout={(e) => {
-            setScrollHeightCallback(e);
-          }}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            flexGrow: 1,
+      <ScrollView
+        style={styles.container}
+        bounces={false}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'space-between',
+          minHeight: WINDOW_HEIGHT - bottom - top - 85,
+        }}
+      >
+        <View>
+          {isInstantTrade ? (
+            <View style={styles.marginBottom20}>
+              <AppText body style={styles.text}>
+                Choose currency / Pair
+              </AppText>
+              <FilterRow array={currencies} filterType="currency" />
+            </View>
+          ) : (
+            <View style={styles.type}>
+              <AppText body style={styles.text}>
+                Choose Type:
+              </AppText>
+              <FilterRow array={types} filterType="type" />
+            </View>
+          )}
+
+          <AppDropdown
+            selectedText={
+              selectedCrypto?.length > 0 && seperateCurrencyName(selectedCrypto)
+            }
+            label="Choose Crypto"
+            handleClear={clearCurrencyDropdown}
+            icon={
+              selectedCrypto &&
+              selectedCrypto !== 'Show all currency' && (
+                <Image
+                  source={{
+                    uri: `${COINS_URL_PNG}/${selectedCrypto?.toLowerCase()}.png`,
+                  }}
+                  style={styles.coin}
+                />
+              )
+            }
+            handlePress={openModal}
+            style={!isInstantTrade && { marginVertical: 24 }}
+          />
+
+          {isInstantTrade && (
+            <View style={styles.marginBottom30}>
+              <AppText body style={styles.text}>
+                Transaction Type:
+              </AppText>
+              <FilterRow array={transactionTypes} filterType="tradeAction" />
+            </View>
+          )}
+
+          <DatePicker from isInstantTrade={isInstantTrade} />
+          <DatePicker to isInstantTrade={isInstantTrade} />
+
+          {!isInstantTrade && (
+            <AppDropdown
+              label="Choose Methods:"
+              handlePress={handleMethodsDropdown}
+              handleClear={clearMethodsDropdown}
+              selectedText={selectedMethod?.[0] ?? null}
+            />
+          )}
+
+          <AppText body style={[styles.text, isInstantTrade && styles.status]}>
+            Choose Status:
+          </AppText>
+          <FilterRow
+            array={statuses}
+            filterType={`status${isInstantTrade ? 'Trade' : 'Transaction'}`}
+          />
+        </View>
+
+        <View
+          style={{
+            marginTop: 50,
           }}
         >
-          <View>
-            {isInstantTrade ? (
-              <View style={styles.marginBottom20}>
-                <AppText body style={styles.text}>
-                  Choose currency / Pair
-                </AppText>
-                <FilterRow array={currencies} filterType="currency" />
-              </View>
-            ) : (
-              <View style={styles.type}>
-                <AppText body style={styles.text}>
-                  Choose Type:
-                </AppText>
-                <FilterRow array={types} filterType="type" />
-              </View>
-            )}
-
-            <AppDropdown
-              selectedText={
-                selectedCrypto?.length > 0 &&
-                seperateCurrencyName(selectedCrypto)
-              }
-              label="Choose Crypto"
-              handleClear={clearCurrencyDropdown}
-              icon={
-                selectedCrypto &&
-                selectedCrypto !== 'Show all currency' && (
-                  <Image
-                    source={{
-                      uri: `${COINS_URL_PNG}/${selectedCrypto?.toLowerCase()}.png`,
-                    }}
-                    style={styles.coin}
-                  />
-                )
-              }
-              handlePress={openModal}
-              style={!isInstantTrade && { marginVertical: 24 }}
-            />
-
-            {isInstantTrade && (
-              <View style={styles.marginBottom30}>
-                <AppText body style={styles.text}>
-                  Transaction Type:
-                </AppText>
-                <FilterRow array={transactionTypes} filterType="tradeAction" />
-              </View>
-            )}
-
-            <DatePicker from isInstantTrade={isInstantTrade} />
-            <DatePicker to isInstantTrade={isInstantTrade} />
-
-            {!isInstantTrade && (
-              <AppDropdown
-                label="Choose Methods:"
-                handlePress={handleMethodsDropdown}
-                handleClear={clearMethodsDropdown}
-                selectedText={selectedMethod?.[0] ?? null}
-              />
-            )}
-
-            <AppText
-              body
-              style={[styles.text, isInstantTrade && styles.status]}
-            >
-              Choose Status:
-            </AppText>
-            <FilterRow
-              array={statuses}
-              filterType={`status${isInstantTrade ? 'Trade' : 'Transaction'}`}
-            />
-          </View>
-
-          <View style={{ marginTop: WINDOW_HEIGHT - scrollHeight - 30 }}>
-            <TransactionFilterBottom
-              navigation={navigation}
-              isInstantTrade={isInstantTrade}
-            />
-          </View>
-        </ScrollView>
-      </View>
+          <TransactionFilterBottom
+            navigation={navigation}
+            isInstantTrade={isInstantTrade}
+          />
+        </View>
+      </ScrollView>
 
       <CryptoModalTrade />
 
@@ -280,7 +272,6 @@ const styles = StyleSheet.create({
   closeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 5,
     justifyContent: 'space-between',
     marginTop: 36,
     backgroundColor: colors.PRIMARY_BACKGROUND,
