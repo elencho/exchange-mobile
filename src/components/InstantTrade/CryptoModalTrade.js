@@ -10,6 +10,7 @@ import {
   saveTrades,
   setCrypto,
   setCryptoCodeQuery,
+  setTradeOffset,
 } from '../../redux/trade/actions';
 import { setCryptoFilter } from '../../redux/transactions/actions';
 
@@ -54,6 +55,7 @@ export default function CryptoModalTrade() {
 
   const choose = (code) => {
     dispatch(isInstantTrade ? setCryptoCodeQuery(code) : setCryptoFilter(code));
+    if (isInstantTrade) dispatch(setTradeOffset(0));
     dispatch(saveTrades([]));
     dispatch(fetchTrades());
     hide();

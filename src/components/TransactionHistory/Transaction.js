@@ -106,9 +106,13 @@ export default function Transaction({
   const destinationText = isTransfer ? 'Identifier' : 'From Amount';
   const amountDisplay = isTransfer
     ? `${amount} ${currency}`
-    : ` ${cumulativeCost} ${quoteCurrency}`;
+    : action === 'BID'
+    ? `${size} ${baseCurrency}`
+    : `${cumulativeCost} ${quoteCurrency}`;
   const destinationDisplay = isTransfer
     ? shortenDestination(transactionInfo) || '-'
+    : action === 'BID'
+    ? `${cumulativeCost} ${quoteCurrency}`
     : `${size} ${baseCurrency}`;
 
   return (
@@ -188,7 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-end',
   },
-  statusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 9 },
+  statusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 12 },
 
   // Texts
   secondaryText: { fontSize: 14, lineHeight: 16, color: colors.SECONDARY_TEXT },

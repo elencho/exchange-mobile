@@ -89,7 +89,12 @@ const TransactionsBlock = () => {
     return () => onRefresh();
   }, []);
 
-  const renderTrade = ({ item }) => <Transaction transactionData={item} />;
+  const renderTrade = ({ item, index }) => (
+    <Transaction
+      transactionData={item}
+      isLast={!moreTradesLoading && index === transactionData.length - 1}
+    />
+  );
 
   const transactionData =
     currency === 'Show All Currency'
@@ -104,6 +109,7 @@ const TransactionsBlock = () => {
       <TransactionSkeleton
         length={[1]}
         isInstantTrade={activeTab === 'Instant trade'}
+        isFooter
       />
     ) : (
       <View />

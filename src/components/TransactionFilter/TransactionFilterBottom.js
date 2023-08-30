@@ -100,7 +100,8 @@ const styles = StyleSheet.create({
   purple: {
     fontSize: 14,
     lineHeight: 18,
-    marginVertical: 30,
+    marginTop: 30,
+    marginBottom: 44,
     marginHorizontal: 5,
   },
   button: {
@@ -109,8 +110,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    marginBottom: IS_ANDROID ? 8 : 28,
-    marginTop: 50,
+    //
   },
   download: {
     flexDirection: 'row',

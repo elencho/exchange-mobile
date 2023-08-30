@@ -83,6 +83,10 @@ const downloadFile = async (link, bearer, fileName, type, reportParams) => {
       RNFetchBlob.fs.dirs.DownloadDir +
       '/' +
       `${fileName}/${Math.random()}.${type}`;
+    const locationIOS =
+      RNFetchBlob.fs.dirs.CacheDir +
+      '/' +
+      `${fileName}/${Math.random()}.${type}`;
     const android = RNFetchBlob.android;
     const mime = `application/${type}`;
 
@@ -114,12 +118,14 @@ const downloadFile = async (link, bearer, fileName, type, reportParams) => {
           let base64Str = res.base64();
 
           RNFetchBlob.fs
-            .writeFile(location, base64Str, 'base64')
+            .writeFile(IS_ANDROID ? location : locationIOS, base64Str, 'base64')
             .then(() => {
-              android.actionViewIntent(location, mime);
+              if (IS_ANDROID) android.actionViewIntent(location, mime);
               if (IS_IOS) {
-                RNFetchBlob.fs.writeFile(location, res.data, 'base64');
-                RNFetchBlob.ios.previewDocument(location);
+                // RNFetchBlob.fs.writeFile(location, res.data, 'base64');
+                RNFetchBlob.ios.previewDocument(locationIOS);
+                // RNFetchBlob.ios.openDocument(locationIOS);
+                //
               }
             })
             .catch((err) => console.log('createFile', err));

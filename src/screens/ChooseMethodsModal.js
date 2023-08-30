@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: colors.PRIMARY_TEXT,
-    marginLeft: 15,
+    marginLeft: 26,
   },
 });
