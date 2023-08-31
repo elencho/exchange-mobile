@@ -122,10 +122,7 @@ const downloadFile = async (link, bearer, fileName, type, reportParams) => {
             .then(() => {
               if (IS_ANDROID) android.actionViewIntent(location, mime);
               if (IS_IOS) {
-                // RNFetchBlob.fs.writeFile(location, res.data, 'base64');
                 RNFetchBlob.ios.previewDocument(locationIOS);
-                // RNFetchBlob.ios.openDocument(locationIOS);
-                //
               }
             })
             .catch((err) => console.log('createFile', err));

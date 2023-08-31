@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   block: {
-    padding: 5,
+    paddingVertical: 5,
     backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 10,
   },

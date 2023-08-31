@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
   },
   block: {
     paddingVertical: 25,
-    paddingHorizontal: 5,
     backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 10,
   },

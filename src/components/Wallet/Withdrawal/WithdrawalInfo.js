@@ -251,7 +251,6 @@ const styles = StyleSheet.create({
   block: {
     backgroundColor: colors.PRIMARY_BACKGROUND,
     paddingVertical: 22,
-    paddingHorizontal: 10,
     marginBottom: 12,
   },
   dropdownText: {
