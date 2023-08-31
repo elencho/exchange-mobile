@@ -6,7 +6,7 @@ import GeneralErrorIcon from '../assets/images/User_profile/General_Error.svg'
 
 import AppText from './AppText'
 
-function GeneralError({ style, show = true }) {
+function GeneralError({ style = {}, show = true }) {
 	const dispatch = useDispatch()
 	const generalError = useSelector((state) => state.errors.generalError)
 	const modals = useSelector((state) => state.modals)

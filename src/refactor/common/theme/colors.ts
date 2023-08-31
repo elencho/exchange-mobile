@@ -3,9 +3,9 @@ export interface ColorTheme {
 	brandSecondary: string //SECONDARY_PURPLE
 
 	backgroundPrimary: string //PRIMARY_BACKGROUND
-	onPrimary: string //PRIMARY TEXT
+	textPrimary: string //PRIMARY TEXT
 	backgroundSecondary: string //SECONDARY_BACKGROUND
-	onSecondary: string //SECONDARY_TEXT
+	textSecondary: string //SECONDARY_TEXT
 
 	skeleton: string //SKELETON
 	border: string //BORDER
@@ -18,9 +18,9 @@ export const COLORS_DARK: ColorTheme = {
 	brandPrimary: '#4A6DFF',
 	brandSecondary: '#6582FD',
 	backgroundPrimary: '#161629',
-	onPrimary: '#FFFFFF',
+	textPrimary: '#FFFFFF',
 	backgroundSecondary: '#1F1F35',
-	onSecondary: '#696F8E',
+	textSecondary: '#696F8E',
 	skeleton: '#4B4B65',
 	border: '#42475D',
 	buttonDisabled: '#292943',

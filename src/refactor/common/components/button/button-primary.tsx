@@ -8,7 +8,7 @@ import { COLORS_DARK } from 'refactor/common/theme/colors'
 import { MaterialIndicator } from 'react-native-indicators'
 import { useTheme } from 'refactor/common/theme/use-theme'
 
-export type ButtonPrimaryProps = {
+export type PrimaryProps = {
 	variant: 'primary'
 	loading?: boolean
 	backgroundColor?: string
@@ -19,13 +19,13 @@ export type ButtonPrimaryProps = {
 export function PrimaryButton({
 	text,
 	onPress,
-	passedStyle,
+	style,
 	disabled = false,
 	loading = false,
 	backgroundColor,
 	leftComponent,
 	rightComponent,
-}: ButtonPrimaryProps) {
+}: PrimaryProps) {
 	const Styles = useTheme(createStyles)
 
 	return (
@@ -33,7 +33,7 @@ export function PrimaryButton({
 			disabled={disabled}
 			style={[
 				Styles.button,
-				passedStyle,
+				style,
 				{
 					backgroundColor: disabled
 						? COLORS_DARK.buttonDisabled
@@ -49,13 +49,7 @@ export function PrimaryButton({
 				<AppText
 					body
 					medium
-					style={[Styles.buttonText, leftComponent && { marginLeft: 9 }]}
-					header={undefined}
-					subtext={undefined}
-					calendarDay={undefined}
-					small={undefined}
-					onPress={undefined}
-					isForCodeInput={undefined}>
+					style={[Styles.buttonText, leftComponent && { marginLeft: 9 }]}>
 					{text}
 				</AppText>
 			)}
@@ -73,7 +67,7 @@ const createStyles = (theme: Theme) => {
 			flexDirection: 'row',
 		},
 		buttonText: {
-			color: theme.color.onPrimary,
+			color: theme.color.textPrimary,
 		},
 	})
 }

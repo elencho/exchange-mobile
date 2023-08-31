@@ -2,7 +2,7 @@ import AppText from 'components/AppText'
 import { CommonProps } from 'refactor/common/components/button'
 import { COLORS_DARK } from 'refactor/common/theme/colors'
 
-export type ButtonTextProps = {
+export type TextProps = {
 	variant: 'text'
 	subtext?: boolean
 } & CommonProps
@@ -10,10 +10,10 @@ export type ButtonTextProps = {
 export function TextButton({
 	text,
 	onPress,
-	passedStyle,
+	style,
 	disabled = false,
 	subtext,
-}: ButtonTextProps) {
+}: TextProps) {
 	return (
 		<AppText
 			medium
@@ -26,13 +26,8 @@ export function TextButton({
 						? COLORS_DARK.buttonDisabled
 						: COLORS_DARK.brandSecondary,
 				},
-				passedStyle,
-			]}
-			body={undefined}
-			header={undefined}
-			calendarDay={undefined}
-			small={undefined}
-			isForCodeInput={undefined}>
+				style,
+			]}>
 			{text}
 		</AppText>
 	)

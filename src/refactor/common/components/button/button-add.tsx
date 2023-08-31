@@ -1,11 +1,10 @@
 import { View } from 'react-native'
 import { CommonProps } from 'refactor/common/components/button'
 
-export type ButtonAddProps = {
-	variant: 'add'
+export type AddProps = {
 	a: string
 } & CommonProps
 
-export function AddButton({}: ButtonAddProps) {
+export function AddButton({}: AddProps) {
 	return <View></View> // TODO
 }

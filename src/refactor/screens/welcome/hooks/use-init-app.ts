@@ -62,7 +62,7 @@ export default function useInitApp(navigation: any) {
 	}
 
 	const getBiometricEnabled = async (
-		email: any,
+		email: string,
 		updateNeeded: boolean | undefined,
 		maintenanceInProgress: boolean
 	) => {

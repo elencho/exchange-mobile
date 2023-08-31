@@ -1,46 +1,44 @@
 import {
 	AddButton,
-	ButtonAddProps,
+	AddProps,
 } from 'refactor/common/components/button/button-add'
 import {
-	ButtonPrimaryProps,
 	PrimaryButton,
+	PrimaryProps,
 } from 'refactor/common/components/button/button-primary'
 import {
-	ButtonTextProps,
 	TextButton,
+	TextProps,
 } from 'refactor/common/components/button/button-text'
-import { Style } from 'refactor/common/components/types'
+import { Component, Style } from 'refactor/common/components/types'
 
 /*
  *  TODO: Remove AppButton.js, PurpleText.js
  *  TODO: Remove Dashed button in ManageCards.js, Whitelist.js
  */
 
-type ButtonVariant = 'primary' | 'text' | 'add'
+type Variant = 'primary' | 'text' | 'add'
+type Props = PrimaryProps | TextProps | AddProps
 
 export interface CommonProps {
-	variant: ButtonVariant
+	variant: Variant
 	text: string
 	onPress: () => any
 	disabled?: boolean
-	passedStyle?: Style
+	style?: Style
 }
 
-export type ButtonProps = CommonProps &
-	(ButtonPrimaryProps | ButtonTextProps | ButtonAddProps)
+export function Button(props: PrimaryProps): Component
+export function Button(props: TextProps): Component
+export function Button(props: AddProps): Component
 
-export function Button(props: ButtonPrimaryProps): JSX.Element
-export function Button(props: ButtonTextProps): JSX.Element
-export function Button(props: ButtonAddProps): JSX.Element
-
-export function Button(props: ButtonProps) {
+export function Button(props: Props) {
 	switch (props.variant) {
 		case 'text':
-			return TextButton(props as ButtonTextProps)
+			return TextButton(props as TextProps)
 		case 'primary':
-			return PrimaryButton(props as ButtonPrimaryProps)
+			return PrimaryButton(props as PrimaryProps)
 		case 'add':
-			return AddButton(props as ButtonAddProps)
+			return AddButton(props as AddProps)
 	}
 }

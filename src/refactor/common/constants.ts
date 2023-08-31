@@ -5,10 +5,7 @@ import usd from 'assets/images/Currencies/USD.png'
 import eth from 'assets/images/Currencies/ETH.png'
 import geo from 'assets/images/Flags/GEO.png'
 
-export enum Language {
-	ka = 'ka',
-	en = 'en',
-}
+export type Language = 'ka' | 'en'
 
 export const Images = {
 	background,

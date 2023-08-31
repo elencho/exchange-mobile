@@ -19,11 +19,11 @@ const AppInput = ({
 	style,
 	value,
 	error = false,
-	errorText = null,
+	errorText = string | undefined,
 	isForModal,
 	labelBackgroundColor = colors.SECONDARY_BACKGROUND,
 	disabled,
-	onChangeText = () => {},
+	onChangeText = (txt) => {},
 	...rest
 }) => {
 	const [isFocused, setIsFocused] = useState(false)
