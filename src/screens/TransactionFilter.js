@@ -103,7 +103,10 @@ export default function TransactionFilter({ navigation, route }) {
 
   const seperateCurrencyName = (currency) => currency.split('(')[0];
 
-  const openModal = () => dispatch(toggleCryptoModal(true));
+  const openModal = () =>
+    isInstantTrade
+      ? dispatch(toggleCryptoModal(true))
+      : dispatch(toggleCurrencyModal(true));
   const handleMethodsDropdown = () => dispatch(toggleMethodsModal(true));
   const clearMethodsDropdown = () => dispatch(setMethodFilter([]));
   const clearCurrencyDropdown = () =>
@@ -186,7 +189,7 @@ export default function TransactionFilter({ navigation, route }) {
             selectedText={
               selectedCrypto?.length > 0 && seperateCurrencyName(selectedCrypto)
             }
-            label="Choose Crypto"
+            label={isInstantTrade ? 'Choose Crypto' : 'Choose Currency'}
             handleClear={clearCurrencyDropdown}
             icon={
               selectedCrypto &&
@@ -246,6 +249,7 @@ export default function TransactionFilter({ navigation, route }) {
       </ScrollView>
 
       <CryptoModalTrade />
+      <ChooseCurrencyModal isForTransactions />
 
       <DatePickerModal isInstantTrade={isInstantTrade} from />
       <DatePickerModal isInstantTrade={isInstantTrade} to />

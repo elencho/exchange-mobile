@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 18,
     marginTop: 30,
-    marginBottom: 44,
+    marginBottom: IS_ANDROID ? 14 : 44,
     marginHorizontal: 5,
   },
   button: {
