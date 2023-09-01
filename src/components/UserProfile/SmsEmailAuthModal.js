@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
   header: {
     color: colors.PRIMARY_TEXT,
     marginBottom: 10,
+    textAlign: 'center',
   },
   indicator: {
     flex: 0,
