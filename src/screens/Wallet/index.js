@@ -82,11 +82,11 @@ export default function Wallet() {
   const showButtonsHandler = () => {
     animatedValue.value = withTiming(100, { duration: 400 });
     setShowZeroBalances(true);
-    inputRef.current?.focus();
+    // inputRef.current?.focus();
   };
   const hideButtonsHandler = () => {
     type('');
-    inputRef.current?.blur();
+    // inputRef.current?.blur();
     animatedValue.value = withTiming(8, { duration: 400 });
   };
 
