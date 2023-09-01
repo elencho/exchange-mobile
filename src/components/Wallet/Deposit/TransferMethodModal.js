@@ -86,7 +86,7 @@ export default function TransferMethodModal() {
         >
           {renderIcon(m.provider)}
           <AppText body style={styles.primary}>
-            lock. {m.provider}
+            {m.provider}
           </AppText>
         </Pressable>
       ))}
