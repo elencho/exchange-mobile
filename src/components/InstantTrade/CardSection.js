@@ -105,6 +105,7 @@ function CardSection({ error }) {
           selectedText={displayName()}
           notClearable
           label="Payment service provider"
+          withLabel
           icon={
             depositProvider && (
               <Image
