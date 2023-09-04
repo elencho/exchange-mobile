@@ -85,7 +85,7 @@ function ChooseAddressModal() {
         ))}
       </ScrollView>
     ),
-    [whitelist, network]
+    [whitelist, network, currentWhitelistObj]
   );
 
   return (

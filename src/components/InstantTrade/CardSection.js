@@ -126,6 +126,12 @@ function CardSection({ error }) {
             disabled={!cardsToDisplayInModal?.length}
             label="Choose Card"
             selectedText={card && card.cardNumber}
+            icon={
+              <Image
+                source={{ uri: `${ICONS_URL_PNG}/${card?.network}.png` }}
+                style={styles.image}
+              />
+            }
           />
           <AppText subtext style={styles.newCard}>
             {t(
