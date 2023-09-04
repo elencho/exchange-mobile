@@ -104,13 +104,13 @@ const downloadFile = async (link, bearer, fileName, type, reportParams) => {
     });
 
     RNFetchBlob.fetch(
-      'POST',
+      reportParams ? 'POST' : 'GET',
       link,
       {
         Authorization: bearer,
         'content-type': 'application/json',
       },
-      JSON.stringify(reportParams)
+      reportParams && JSON.stringify(reportParams)
     )
       .then((res) => {
         let status = res.info().status;

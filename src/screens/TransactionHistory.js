@@ -70,9 +70,7 @@ function TransactionHistory({ navigation, route }) {
   );
 
   useEffect(() => {
-    return () => {
-      clearAllFilters();
-    };
+    return () => clearAllFilters();
   }, []);
 
   useEffect(() => {
@@ -168,7 +166,7 @@ function TransactionHistory({ navigation, route }) {
           ListFooterComponent={transactions.length > 0 && footer}
           ListEmptyComponent={listEmptyContainer}
           keyboardShouldPersistTaps="never"
-          decelerationRate={0.1}
+          maxToRenderPerBatch={30}
           refreshControl={
             <CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
           }

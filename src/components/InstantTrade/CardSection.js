@@ -105,6 +105,7 @@ function CardSection({ error }) {
           selectedText={displayName()}
           notClearable
           label="Payment service provider"
+          withLabel
           icon={
             depositProvider && (
               <Image
@@ -125,6 +126,14 @@ function CardSection({ error }) {
             disabled={!cardsToDisplayInModal?.length}
             label="Choose Card"
             selectedText={card && card.cardNumber}
+            icon={
+              card && (
+                <Image
+                  source={{ uri: `${ICONS_URL_PNG}/${card?.network}.png` }}
+                  style={styles.image}
+                />
+              )
+            }
           />
           <AppText subtext style={styles.newCard}>
             {t(

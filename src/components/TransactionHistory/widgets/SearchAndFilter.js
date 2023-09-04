@@ -32,7 +32,7 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
   const openModal = () => dispatch(toggleCryptoModal(true));
   const seperateCurrencyName = (currency) => currency.split('(')[0];
   const clearCurrencyDropdown = () => {
-    dispatch(setCryptoCodeQuery(''));
+    dispatch(setCryptoCodeQuery(null));
     dispatch(saveTrades([]));
     dispatch(fetchTrades());
   };

@@ -70,7 +70,7 @@ function WithdrawalAddress({ error, right }) {
           <>
             <AppInput
               label="Destination Address"
-              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+              labelBackgroundColor={colors.PRIMARY_BACKGROUND}
               onChangeText={setAddress}
               value={w.address}
               error={error && !w?.address}
@@ -88,7 +88,7 @@ function WithdrawalAddress({ error, right }) {
       return (
         <AppInput
           label="Destination Address"
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           style={styles.mb22}
           onChangeText={setAddress}
           value={w.address}
@@ -105,6 +105,7 @@ function WithdrawalAddress({ error, right }) {
       handlePress={chooseAddress}
       selectedText={w.name && w.name}
       label="Choose Address"
+      withLabel
       style={styles.dropdown}
     />
     // <Pressable

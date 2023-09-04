@@ -107,7 +107,7 @@ export default function WithdrawalInputs({
     </TouchableOpacity>
   );
 
-  const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 20;
+  const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 14;
   const needsTag = () => {
     if (currentBalanceObj?.infos) {
       return (
@@ -150,6 +150,7 @@ export default function WithdrawalInputs({
             label="Enter Note"
             onChangeText={setNote}
             value={withdrawalNote}
+            labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           />
         )}
         <AppInput
@@ -161,6 +162,8 @@ export default function WithdrawalInputs({
           maxLength={maxLength}
           editable={!!editable}
           error={error && !validateAmount(withdrawalAmount)}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+          right={<Max />}
         />
       </View>
 
@@ -171,8 +174,7 @@ export default function WithdrawalInputs({
 
 const styles = StyleSheet.create({
   block: {
-    paddingVertical: 22,
-    marginBottom: 22,
+    paddingBottom: 22,
   },
   line: {
     width: 1,

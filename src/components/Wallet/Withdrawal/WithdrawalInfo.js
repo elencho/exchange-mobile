@@ -250,8 +250,8 @@ export default function WithdrawalInfo({ error }) {
 const styles = StyleSheet.create({
   block: {
     backgroundColor: colors.PRIMARY_BACKGROUND,
-    paddingVertical: 22,
-    marginBottom: 12,
+    paddingTop: 12,
+    marginBottom: 14,
   },
   dropdownText: {
     flex: 1,

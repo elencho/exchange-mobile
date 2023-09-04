@@ -41,6 +41,8 @@ export default function TransferMethodDropdown() {
     <AppDropdown
       style={[styles.dropdown, dropdownStyle]}
       notClearable
+      label="Choose provider"
+      withLabel
       disabled={isOneMethod}
       icon={renderIcon(network)}
       selectedText={network}
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
   },
   dropdown: {
-    marginTop: 15,
+    marginTop: 22,
   },
   image: {
     marginLeft: 5,

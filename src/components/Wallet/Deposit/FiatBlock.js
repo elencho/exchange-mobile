@@ -149,7 +149,7 @@ export default function FiatBlock() {
             keyboardType="numeric"
             maxLength={maxLength}
             label="Enter Amount"
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+            labelBackgroundColor={colors.PRIMARY_BACKGROUND}
             editable={!!editable}
             error={error && !validateAmount(depositAmount)}
           />
