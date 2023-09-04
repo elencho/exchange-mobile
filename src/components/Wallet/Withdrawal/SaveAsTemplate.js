@@ -11,6 +11,7 @@ import AppText from '../../AppText';
 
 import CheckFull from '../../../assets/images/Check_Full.svg';
 import CheckEmpty from '../../../assets/images/Check_Empty.svg';
+import colors from '../../../constants/colors';
 
 export default function SaveAsTemplate({ error }) {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ export default function SaveAsTemplate({ error }) {
           onChangeText={handleNewTemplate}
           style={styles.input}
           error={error && !newTemplateName?.trim()}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         />
       )}
     </>
@@ -53,7 +55,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   input: {
-    marginHorizontal: 15,
     marginBottom: 47,
   },
   row: {

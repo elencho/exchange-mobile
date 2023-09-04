@@ -21,6 +21,7 @@ import WithdrawalBanksModal from './WithdrawalBanksModal';
 import Arrow from '../../../assets/images/Arrow';
 import CountriesModal from '../../UserProfile/CountriesModal';
 import { COUNTRIES_URL_PNG } from '../../../constants/api';
+import AppDropdown from '../../AppDropdown';
 
 export default function WithdrawalInfo({ error }) {
   const dispatch = useDispatch();
@@ -189,21 +190,21 @@ export default function WithdrawalInfo({ error }) {
         Bank Info
       </AppText>
 
-      <Pressable style={[styles.dropdown, templateRed]} onPress={showTemplates}>
-        <AppText style={[styles.dropdownText, titleColor('template')]}>
-          {title}
-        </AppText>
-        <Arrow />
-      </Pressable>
+      <AppDropdown
+        handlePress={showTemplates}
+        selectedText={title}
+        style={styles.dropdown}
+        notClearable
+      />
 
       {currentTemplate.templateName === 'New Template' ? (
         <>
-          <Pressable style={[styles.dropdown, bankColor]} onPress={showBanks}>
-            <AppText style={[styles.dropdownText, titleColor('bank')]}>
-              {bankTitle}
-            </AppText>
-            <Arrow />
-          </Pressable>
+          <AppDropdown
+            selectedText={bankTitle}
+            handlePress={showBanks}
+            style={styles.dropdown}
+            notClearable
+          />
           <WithdrawalBanksModal />
         </>
       ) : null}
@@ -212,7 +213,7 @@ export default function WithdrawalInfo({ error }) {
         <AppInput
           label="Account Number / IBAN"
           style={styles.IBAN}
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           value={iban}
           onChangeText={handleIban}
           error={error && !iban?.trim()}
@@ -223,7 +224,7 @@ export default function WithdrawalInfo({ error }) {
         <>
           <AppInput
             label="SWIFT / BIC / Routing number"
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+            labelBackgroundColor={colors.PRIMARY_BACKGROUND}
             value={receiverBank.swift}
             onChangeText={(t) => handleBankInfo(t, 'bank swift code')}
             style={styles.marginTop}
@@ -232,7 +233,7 @@ export default function WithdrawalInfo({ error }) {
           {hasIntermediate && (
             <AppInput
               label="Intermediary bank SWIFT / BIC / Routing number"
-              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+              labelBackgroundColor={colors.PRIMARY_BACKGROUND}
               value={intermediateBank.swift}
               onChangeText={(t) => handleIntermediateBank(t)}
               style={styles.marginTop}
@@ -257,13 +258,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   dropdown: {
-    borderWidth: 1,
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
     marginTop: 22,
-    borderColor: '#42475D',
-    paddingHorizontal: 15,
   },
   IBAN: {
     marginTop: 22,
