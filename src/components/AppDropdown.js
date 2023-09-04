@@ -47,7 +47,11 @@ const AppDropdown = ({
         <AppText
           medium
           body
-          style={[styles.label, error && { color: colors.ERROR_TEXT }]}
+          style={[
+            styles.label,
+            error && { color: colors.ERROR_TEXT },
+            disabled && { color: 'rgba(105, 111, 142, 0.4)' },
+          ]}
         >
           {label}
         </AppText>

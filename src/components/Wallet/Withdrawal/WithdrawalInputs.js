@@ -107,7 +107,7 @@ export default function WithdrawalInputs({
     </TouchableOpacity>
   );
 
-  const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 20;
+  const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 14;
   const needsTag = () => {
     if (currentBalanceObj?.infos) {
       return (
@@ -163,7 +163,7 @@ export default function WithdrawalInputs({
           editable={!!editable}
           error={error && !validateAmount(withdrawalAmount)}
           labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-          // right={<Max />}
+          right={<Max />}
         />
       </View>
 

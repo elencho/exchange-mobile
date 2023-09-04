@@ -20,11 +20,14 @@ const DownloadIcon = () => {
   const isTransfer = activeTab === 'Transfer';
   const [loading, setLoading] = useState(false);
 
+  const typeFilterReport =
+    typeFilter.length === 0 ? ['DEPOSIT', 'WITHDRAWAL'] : typeFilter;
+
   const reportParams = {
     currency: isTransfer ? cryptoFilter : cryptoCodeQuery,
     fromTime: isTransfer ? fromDateTime : fromDateTimeQuery,
     toTime: isTransfer ? toDateTime : toDateTimeQuery,
-    transactionReportTypes: isTransfer ? typeFilter : ['SIMPLE_TRADE'],
+    transactionReportTypes: isTransfer ? typeFilterReport : ['SIMPLE_TRADE'],
   };
 
   const linkMain =
