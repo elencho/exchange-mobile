@@ -1,5 +1,11 @@
 import React, { memo } from 'react';
-import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Linking from 'expo-linking';
 
@@ -31,6 +37,7 @@ function TransactionModal({ transactions, trades }) {
         quoteCurrency,
         action,
         recipient,
+        tag,
       },
       currencies,
       activeTab,
@@ -64,6 +71,7 @@ function TransactionModal({ transactions, trades }) {
 
   const copyId = () => copyToClipboard(transactionInfo);
   const copyDestination = () => copyToClipboard(recipient);
+  const copyTag = () => copyToClipboard(tag);
 
   const hide = () => {
     dispatch(toggleTransactionDetails(false));
@@ -111,32 +119,57 @@ function TransactionModal({ transactions, trades }) {
           <TransactionDetails />
 
           {/* DESTINATION  */}
-          {(method === 'WALLET' || method === 'WALLET_INTERNAL') && (
+          {(method === 'WALLET' || method === 'WALLET_INTERNAL') &&
+            recipient && (
+              <>
+                <View style={styles.line} />
+                <View style={styles.row}>
+                  <View style={{ flex: 1, marginRight: 15 }}>
+                    <AppText medium style={styles.white}>
+                      Destination
+                    </AppText>
+                    <AppText subtext style={styles.address}>
+                      {recipient}
+                    </AppText>
+                  </View>
+
+                  <View style={styles.vertical} />
+                  <View style={styles.row}>
+                    <TouchableOpacity onPress={copyDestination}>
+                      <Copy />
+                    </TouchableOpacity>
+                    {(method === 'WALLET' || method === 'WALLET_INTERNAL') && (
+                      <TouchableOpacity
+                        onPress={handleAddressUrl}
+                        style={{ marginLeft: 25 }}
+                      >
+                        <Link />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+              </>
+            )}
+          {tag && (
             <>
-              <View style={styles.line} />
-              <View style={styles.row}>
+              <View style={[styles.row, { marginTop: 20 }]}>
                 <View style={{ flex: 1, marginRight: 15 }}>
                   <AppText medium style={styles.white}>
-                    Destination
+                    Memo/Tag
                   </AppText>
                   <AppText subtext style={styles.address}>
-                    {recipient}
+                    {tag}
                   </AppText>
                 </View>
 
                 <View style={styles.vertical} />
                 <View style={styles.row}>
-                  <TouchableOpacity onPress={copyDestination}>
+                  <TouchableOpacity onPress={copyTag}>
                     <Copy />
                   </TouchableOpacity>
-                  {(method === 'WALLET' || method === 'WALLET_INTERNAL') && (
-                    <TouchableOpacity
-                      onPress={handleAddressUrl}
-                      style={{ marginLeft: 25 }}
-                    >
-                      <Link />
-                    </TouchableOpacity>
-                  )}
+                  <Pressable style={{ marginLeft: 25, opacity: 0 }}>
+                    <Link />
+                  </Pressable>
                 </View>
               </View>
             </>

@@ -96,6 +96,7 @@ export default function Transaction({
       : '#F83974';
 
   const shortenDestination = (destination) => {
+    if (!destination) return null;
     return method === 'WALLET_INTERNAL' || method === 'WALLET'
       ? destination?.slice(0, 13) + '...' + destination?.slice(-10)
       : destination;
