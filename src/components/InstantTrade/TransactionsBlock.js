@@ -50,7 +50,7 @@ const Purple = ({ text, onPress }) => {
   );
 };
 
-const TransactionsBlock = () => {
+const TransactionsBlock = ({ isFirstRender }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -85,7 +85,9 @@ const TransactionsBlock = () => {
     dispatch(fetchTrades());
   };
 
+  console.log('isFirstRender', isFirstRender);
   useEffect(() => {
+    isFirstRender && onRefresh();
     return () => onRefresh();
   }, []);
 

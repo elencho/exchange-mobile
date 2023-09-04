@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useRef } from 'react';
 import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -82,6 +82,12 @@ function TransactionHistory({ navigation, route }) {
       Keyboard.dismiss();
     };
   }, []);
+
+  //Loader for Convert
+  const numOfRender = useRef(0);
+  useEffect(() => {
+    numOfRender.current++;
+  }, [activeTab]);
 
   const onRefresh = () => {
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
@@ -172,7 +178,7 @@ function TransactionHistory({ navigation, route }) {
           }
         />
       ) : (
-        <TransactionsBlock />
+        <TransactionsBlock isFirstRender={numOfRender.current === 1} />
       )}
 
       {isFocused && <TransactionModal transactions />}
