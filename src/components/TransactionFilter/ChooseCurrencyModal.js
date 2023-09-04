@@ -27,7 +27,13 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
   const state = useSelector((state) => state);
 
   const {
-    transactions: { currencies, currenciesConstant, cryptoFilter, code },
+    transactions: {
+      currencies,
+      currenciesConstant,
+      cryptoFilter,
+      currency,
+      code,
+    },
     modals: { chooseCurrencyModalVisible },
     trade: { balance, fiatsArray, currentBalanceObj },
     wallet: { walletTab },
@@ -107,7 +113,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
       array={filteredData}
       choose={choose}
       filter={filter}
-      currentItem={cryptoFilter}
+      currentItem={isForTransactions ? cryptoFilter : currency}
       title="Choose Currency"
       isForTransactions={isForTransactions}
       wallet={wallet}
