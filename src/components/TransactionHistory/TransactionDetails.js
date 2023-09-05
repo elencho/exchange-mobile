@@ -27,6 +27,7 @@ export default function TransactionDetails() {
       baseCurrency,
       price,
       action,
+      note,
       year,
     },
     activeTab,
@@ -108,6 +109,7 @@ export default function TransactionDetails() {
     'Total Amount :',
     'Status :',
     'Method :',
+    note ? 'Note :' : null,
   ];
   const rightTransactions = [
     type,
@@ -118,7 +120,10 @@ export default function TransactionDetails() {
     `${totalAmount} ${currency}`,
     <Status statusText={status} />,
     method,
+    note ? note : null,
   ];
+
+  console.log('note', note);
 
   const leftArray = isInstantTrade ? leftInstant : leftTransactions;
   const rightArray = isInstantTrade ? rightInstant : rightTransactions;
@@ -126,15 +131,15 @@ export default function TransactionDetails() {
   return (
     <View style={styles.container}>
       <View>
-        {leftArray.map((e) => (
-          <LeftText key={e} text={e} />
-        ))}
+        {leftArray.map((e) => {
+          if (e !== null) return <LeftText key={e} text={e} />;
+        })}
       </View>
 
       <View style={styles.right}>
-        {rightArray.map((e) => (
-          <RightText text={e} key={Math.random()} />
-        ))}
+        {rightArray.map((e) => {
+          if (e !== null) return <RightText text={e} key={Math.random()} />;
+        })}
       </View>
     </View>
   );
