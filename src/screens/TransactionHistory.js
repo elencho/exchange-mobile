@@ -20,6 +20,7 @@ import {
   reachScrollEnd,
   setAbbr,
   setActiveTab,
+  setTransactionsOffset,
 } from '../redux/transactions/actions';
 import colors from '../constants/colors';
 import CustomRefreshContol from '../components/CustomRefreshContol';
@@ -90,6 +91,7 @@ function TransactionHistory({ navigation, route }) {
   }, [activeTab]);
 
   const onRefresh = () => {
+    dispatch(setTransactionsOffset(0));
     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
   };
 
