@@ -33,6 +33,7 @@ export default function Wallet() {
 
   useFocusEffect(
     useCallback(() => {
+      onRefresh();
       hideButtonsHandler();
       const timer = setTimeout(() => {
         setShowRefreshControl(true);
