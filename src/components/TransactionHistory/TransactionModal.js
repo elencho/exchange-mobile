@@ -237,7 +237,6 @@ export default memo(TransactionModal);
 
 const styles = StyleSheet.create({
   container: { paddingLeft: 10 },
-
   block: {
     padding: 40,
     paddingTop: 20,

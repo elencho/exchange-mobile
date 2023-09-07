@@ -123,8 +123,6 @@ export default function TransactionDetails() {
     note ? note : null,
   ];
 
-  console.log('note', note);
-
   const leftArray = isInstantTrade ? leftInstant : leftTransactions;
   const rightArray = isInstantTrade ? rightInstant : rightTransactions;
 

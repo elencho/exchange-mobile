@@ -269,7 +269,7 @@ export default (state = INITIAL_STATE, action) => {
         toDateTimeQuery: null,
         statusQuery: [],
         actionQuery: [],
-        cryptoCodeQuery: '',
+        cryptoCodeQuery: null,
         fiatCodesQuery: [],
       };
 
