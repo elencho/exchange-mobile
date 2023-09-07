@@ -85,7 +85,6 @@ const TransactionsBlock = ({ isFirstRender }) => {
     dispatch(fetchTrades());
   };
 
-  console.log('isFirstRender', isFirstRender);
   useEffect(() => {
     isFirstRender && onRefresh();
     return () => onRefresh();

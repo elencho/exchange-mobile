@@ -104,7 +104,7 @@ export default memo(AppModal);
 const styles = StyleSheet.create({
   bottom: {
     paddingTop: 40,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingBottom: 40,
     backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: -3,

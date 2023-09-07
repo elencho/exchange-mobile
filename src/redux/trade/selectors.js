@@ -19,7 +19,8 @@ export const getParams = (state) => {
     fromTime: fromDateTimeQuery,
     toTime: toDateTimeQuery,
     fiatCodes: fiatCodesQuery,
-    cryptoCode: cryptoCodeQuery === 'Show all currency' ? '' : cryptoCodeQuery,
+    cryptoCode:
+      cryptoCodeQuery === 'Show all currency' ? null : cryptoCodeQuery,
     actions: actionQuery,
   };
 };
