@@ -91,7 +91,7 @@ function TransactionModal({ transactions, trades }) {
                 <AppText medium style={styles.white}>
                   identifier (TXID):
                 </AppText>
-                <AppText style={[styles.address]} subtext>
+                <AppText style={styles.address} subtext>
                   {transactionInfo}
                 </AppText>
               </View>
@@ -123,53 +123,58 @@ function TransactionModal({ transactions, trades }) {
             recipient && (
               <>
                 <View style={styles.line} />
-                <View style={styles.row}>
-                  <View style={{ flex: 1, marginRight: 15 }}>
-                    <AppText medium style={styles.white}>
-                      Destination
-                    </AppText>
-                    <AppText subtext style={styles.address}>
+                <View style={{ marginTop: 12 }}>
+                  <AppText medium style={styles.white}>
+                    Destination
+                  </AppText>
+
+                  <View style={styles.tagRow}>
+                    <AppText subtext style={[styles.address, { flex: 1 }]}>
                       {recipient}
                     </AppText>
-                  </View>
-
-                  <View style={styles.vertical} />
-                  <View style={styles.row}>
-                    <TouchableOpacity onPress={copyDestination}>
-                      <Copy />
-                    </TouchableOpacity>
-                    {(method === 'WALLET' || method === 'WALLET_INTERNAL') && (
-                      <TouchableOpacity
-                        onPress={handleAddressUrl}
-                        style={{ marginLeft: 25 }}
-                      >
-                        <Link />
-                      </TouchableOpacity>
-                    )}
+                    <View style={{ flexDirection: 'row' }}>
+                      <View style={styles.vertical} />
+                      <View style={styles.row}>
+                        <TouchableOpacity onPress={copyDestination}>
+                          <Copy />
+                        </TouchableOpacity>
+                        {(method === 'WALLET' ||
+                          method === 'WALLET_INTERNAL') && (
+                          <TouchableOpacity
+                            onPress={handleAddressUrl}
+                            style={{ marginLeft: 25 }}
+                          >
+                            <Link />
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    </View>
                   </View>
                 </View>
               </>
             )}
           {tag && (
             <>
-              <View style={[styles.row, { marginTop: 20 }]}>
-                <View style={{ flex: 1, marginRight: 15 }}>
-                  <AppText medium style={styles.white}>
-                    Memo/Tag
-                  </AppText>
-                  <AppText subtext style={styles.address}>
+              <View style={{ marginTop: 20 }}>
+                <AppText medium style={styles.white}>
+                  Memo/Tag
+                </AppText>
+
+                <View style={styles.tagRow}>
+                  <AppText subtext style={[styles.address, { flex: 1 }]}>
                     {tag}
                   </AppText>
-                </View>
-
-                <View style={styles.vertical} />
-                <View style={styles.row}>
-                  <TouchableOpacity onPress={copyTag}>
-                    <Copy />
-                  </TouchableOpacity>
-                  <Pressable style={{ marginLeft: 25, opacity: 0 }}>
-                    <Link />
-                  </Pressable>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.vertical} />
+                    <View style={styles.row}>
+                      <TouchableOpacity onPress={copyTag}>
+                        <Copy />
+                      </TouchableOpacity>
+                      <Pressable style={{ marginLeft: 25, opacity: 0 }}>
+                        <Link />
+                      </Pressable>
+                    </View>
+                  </View>
                 </View>
               </View>
             </>
@@ -276,7 +281,7 @@ const styles = StyleSheet.create({
   },
   vertical: {
     width: 0.5,
-    height: '100%',
+    height: 34,
     backgroundColor: '#32344C',
     marginRight: 15,
   },
@@ -287,7 +292,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // height: 37,
   },
-  address: { color: '#C0C5E0', marginTop: 5 },
+  tagRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  address: {
+    color: '#C0C5E0',
+    marginTop: 6,
+    marginRight: 15,
+  },
   instantTrade: { color: colors.SECONDARY_TEXT, marginTop: 3 },
   white: { color: colors.PRIMARY_TEXT },
 });

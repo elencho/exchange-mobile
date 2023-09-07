@@ -1,5 +1,5 @@
 import { StyleSheet, View, Image, Keyboard } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import FilterIcon from '../FilterIcon';
 import DownloadIcon from '../DownloadIcon';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import AppInput from '../../AppInput';
 import Search from '../../../assets/images/Search';
 import {
   currencyAction,
+  saveTransactions,
   setTransactionSearch,
   showResultsAction,
 } from '../../../redux/transactions/actions';
@@ -40,8 +41,9 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
   //debounce
   useEffect(() => {
     const getSearchedData = setTimeout(() => {
-      dispatch(showResultsAction(navigation));
+      dispatch(saveTransactions([]));
       dispatch(setTransactionSearch(searchValue));
+      dispatch(showResultsAction(navigation));
     }, 1000);
 
     return () => clearTimeout(getSearchedData);
