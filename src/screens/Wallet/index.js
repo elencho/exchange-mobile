@@ -31,10 +31,6 @@ export default function Wallet() {
   const [showZeroBalances, setShowZeroBalances] = useState(true);
   const [nonZeroBalances, setNonZeroBalances] = useState([]);
 
-  // useEffect(() => {
-  //   dispatch({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: true });
-  // }, [navigation]);
-
   useFocusEffect(
     useCallback(() => {
       dispatch({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: true });
