@@ -724,7 +724,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.24.0):
+  - RNScreens (3.20.0):
     - React-Core
     - React-RCTImage
   - RNSVG (13.8.0):
@@ -1173,7 +1173,7 @@ SPEC CHECKSUMS:
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-flipper: f5b2b27bfbbf64ffbf8d1e7030905e43a22144c1
   react-native-flipper-performance-plugin: 42ec5017abd26e7c5a1f527f2db92c14a90cabdb
-  react-native-mobilesdk-module: 9975226f35432d692157e0a29815fbb3dc8609c7
+  react-native-mobilesdk-module: 1ff7dbc9727c2f2cc5a887677c15eb15a8e4516b
   react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
   react-native-pkce-challenge: 160cda7bad5678866dc8d6106a4be3edca9411a0
   react-native-safe-area-context: b8979f5eda6ed5903d4dbc885be3846ea3daa753
@@ -1203,7 +1203,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 42ec7c28dd02d540ed6c9159c57a98ff016492dc
   RNNotifee: 05692d7bb42b6c718a3906aeb8431c48ff2e8097
   RNReanimated: b1220a0e5168745283ff5d53bfc7d2144b2cee1b
-  RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
+  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
@@ -1215,4 +1215,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a88d87c00fabe04465f7dd4fbb65e531cbfb7f6a
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1
