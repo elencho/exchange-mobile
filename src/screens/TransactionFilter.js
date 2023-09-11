@@ -111,7 +111,7 @@ export default function TransactionFilter({ navigation, route }) {
   const clearMethodsDropdown = () => dispatch(setMethodFilter([]));
   const clearCurrencyDropdown = () =>
     isInstantTrade
-      ? dispatch(setCryptoCodeQuery(''))
+      ? dispatch(setCryptoCodeQuery(null))
       : dispatch(setCryptoFilter(null));
 
   const selectedCrypto = isInstantTrade ? cryptoCodeQuery : cryptoTransactions;

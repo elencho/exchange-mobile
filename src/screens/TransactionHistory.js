@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useRef } from 'react';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -85,10 +85,17 @@ function TransactionHistory({ navigation, route }) {
   }, []);
 
   //Loader for Convert
+  const [isLoadingTransactions, setIsLoadingTransactions] = useState(true);
   const numOfRender = useRef(0);
   useEffect(() => {
     numOfRender.current++;
   }, [activeTab]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoadingTransactions(false);
+    }, 1000);
+  }, []);
 
   const onRefresh = () => {
     dispatch(setTransactionsOffset(0));
@@ -152,7 +159,7 @@ function TransactionHistory({ navigation, route }) {
         isInstantTrade={activeTab === 'Instant trade'}
       />
 
-      {loading ? (
+      {loading || isLoadingTransactions ? (
         <View style={{ marginTop: 20 }}>
           <TransactionSkeleton
             length={[0, 1, 2, 3, 4, 5, 6]}
