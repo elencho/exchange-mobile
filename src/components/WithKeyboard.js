@@ -23,6 +23,7 @@ export default function WithKeyboard({
   style = {},
   contentContainerStyle = {},
   refreshControl,
+  keyboardVerticalOffsetIOS = 50,
 }) {
   const dispatch = useDispatch();
   const scrollRef = useRef();
@@ -50,7 +51,10 @@ export default function WithKeyboard({
   return (
     <KeyboardAvoidingView
       behavior={Platform.select({ android: undefined, ios: 'padding' })}
-      keyboardVerticalOffset={Platform.select({ ios: 50, android: 500 })}
+      keyboardVerticalOffset={Platform.select({
+        ios: keyboardVerticalOffsetIOS,
+        android: 500,
+      })}
       style={styles.flex}
     >
       <ScrollView

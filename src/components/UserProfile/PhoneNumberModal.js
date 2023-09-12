@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     marginTop: 28,
   },
   error: {
-    marginBottom: 25,
+    // marginBottom: 25,
   },
   flex: {
     flex: 1,

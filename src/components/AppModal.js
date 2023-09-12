@@ -12,7 +12,7 @@ import Background from './Background';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
 import Headline from './TransactionHistory/Headline';
 import { useSelector } from 'react-redux';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { IS_IOS } from '../constants/system';
 
 function AppModal({
   children,
@@ -87,7 +87,10 @@ function AppModal({
           )}
           {fullScreen && (
             <Background modal>
-              <CloseModalIcon onPress={hide} />
+              <CloseModalIcon
+                onPress={hide}
+                style={IS_IOS && { marginTop: 5 }}
+              />
               {title && <Headline title={title} />}
               {children}
             </Background>

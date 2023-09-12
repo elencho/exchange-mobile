@@ -80,7 +80,12 @@ export default function Login() {
 
   return (
     <View style={styles.background}>
-      <WithKeyboard padding flexGrow contentContainerStyle={styles.container}>
+      <WithKeyboard
+        padding
+        flexGrow
+        contentContainerStyle={styles.container}
+        keyboardVerticalOffsetIOS={10}
+      >
         <Logo style={styles.logo} />
         <View>
           <AppText header style={styles.primary}>
@@ -148,7 +153,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PRIMARY_BACKGROUND,
     flex: 1,
     justifyContent: 'center',
-    paddingVertical: Platform.select({
+    paddingTop: Platform.select({
       ios: Constants.statusBarHeight + 10,
       android: StatusBar.currentHeight + 20,
     }),
