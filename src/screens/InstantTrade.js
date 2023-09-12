@@ -19,7 +19,11 @@ import FiatModal from '../components/InstantTrade/FiatModal';
 import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton';
 
 import colors from '../constants/colors';
-import { setTradeOffset, setTradeType } from '../redux/trade/actions';
+import {
+  setOffersLoading,
+  setTradeOffset,
+  setTradeType,
+} from '../redux/trade/actions';
 import { setWalletTab } from '../redux/wallet/actions';
 import { toggleChooseCardModal } from '../redux/modals/actions';
 
@@ -47,15 +51,19 @@ export default function InstantTrade() {
 
   useFocusEffect(
     useCallback(() => {
+      dispatch(setOffersLoading(true));
+
       tabRoute === 'Trade' && onRefresh();
       const timer = setTimeout(() => {
         setShowRefreshControl(true);
+        dispatch(setOffersLoading(false));
       }, 1000);
+
       return () => {
         dispatch(toggleChooseCardModal(false));
         clearTimeout(timer);
       };
-    }, [tabRoute])
+    }, [])
   );
 
   //ToDo: delete
