@@ -94,10 +94,11 @@ export default BalanceSearchBar;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.PRIMARY_BACKGROUND,
-    paddingBottom: 5,
+    paddingBottom: 10,
     alignItems: 'flex-start',
     flex: 1,
     justifyContent: 'center',
+    paddingTop: 10,
   },
   input: {
     position: 'absolute',

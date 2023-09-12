@@ -5,6 +5,7 @@ import {
   ScrollView,
   Keyboard,
   KeyboardAvoidingView,
+  Pressable,
 } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -92,7 +93,7 @@ export default function Wallet() {
     animatedValue.value = withTiming(8, { duration: 400 });
   };
 
-  const onScroll = () => {
+  const dismissSearch = () => {
     if (!value) {
       hideButtonsHandler();
       Keyboard.dismiss();
@@ -100,39 +101,42 @@ export default function Wallet() {
   };
   return (
     <Background>
-      <TopRow />
-      <KeyboardAvoidingView behavior="padding">
-        <ScrollView
-          onScroll={onScroll}
-          refreshControl={
-            showRefreshControl ? (
-              <CustomRefreshContol
-                refreshing={balanceLoading}
-                onRefresh={onRefresh}
+      <Pressable onPress={dismissSearch}>
+        <>
+          <TopRow />
+          <KeyboardAvoidingView behavior="padding">
+            <ScrollView
+              refreshControl={
+                showRefreshControl ? (
+                  <CustomRefreshContol
+                    refreshing={balanceLoading}
+                    onRefresh={onRefresh}
+                  />
+                ) : null
+              }
+              showsVerticalScrollIndicator={false}
+              stickyHeaderIndices={[1]}
+            >
+              <TotalBalance balanceLoading={balanceLoading} />
+              <BalanceSearchBar
+                animatedValue={animatedValue}
+                showButtonsHandler={showButtonsHandler}
+                hideButtonsHandler={hideButtonsHandler}
+                setShowZeroBalances={setShowZeroBalances}
+                value={value}
+                type={type}
+                showZeroBalances={showZeroBalances}
+                ref={inputRef}
               />
-            ) : null
-          }
-          showsVerticalScrollIndicator={false}
-          stickyHeaderIndices={[1]}
-        >
-          <TotalBalance balanceLoading={balanceLoading} />
-          <BalanceSearchBar
-            animatedValue={animatedValue}
-            showButtonsHandler={showButtonsHandler}
-            hideButtonsHandler={hideButtonsHandler}
-            setShowZeroBalances={setShowZeroBalances}
-            value={value}
-            type={type}
-            showZeroBalances={showZeroBalances}
-            ref={inputRef}
-          />
-          <BalancesList
-            balanceLoading={balanceLoading}
-            filteredBalances={filteredBalances}
-          />
-          <View style={styles.footer} />
-        </ScrollView>
-      </KeyboardAvoidingView>
+              <BalancesList
+                balanceLoading={balanceLoading}
+                filteredBalances={filteredBalances}
+              />
+              <View style={styles.footer} />
+            </ScrollView>
+          </KeyboardAvoidingView>
+        </>
+      </Pressable>
     </Background>
   );
 }
