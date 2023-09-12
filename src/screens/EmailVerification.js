@@ -13,6 +13,8 @@ import EmailLoginAuth from '../assets/images/User_profile/EmailLoginAuth.svg';
 
 import colors from '../constants/colors';
 import { t } from 'i18next';
+import Background from '../components/Background';
+import { startLoginAction } from '../redux/profile/actions';
 
 export default function EmailVerification() {
   const navigation = useNavigation();
@@ -48,6 +50,7 @@ export default function EmailVerification() {
   }, [seconds, timerVisible]);
 
   const hide = () => {
+    dispatch(startLoginAction(navigation));
     navigation.goBack();
   };
 
@@ -96,7 +99,7 @@ export default function EmailVerification() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <Background>
       <WithKeyboard flexGrow padding modal>
         <View style={styles.container}>
           <View style={styles.top}>
@@ -106,7 +109,6 @@ export default function EmailVerification() {
           <View style={styles.middle}>
             <EmailLoginAuth />
 
-            {/* Animate */}
             <View>
               <AppText header style={styles.primary}>
                 E-mail Has Been Sent
@@ -122,7 +124,6 @@ export default function EmailVerification() {
             />
           </View>
 
-          {/* Animate */}
           <View style={styles.row}>
             <AppText style={[styles.secondary, { marginRight: 5 }]}>
               Didn't receive code?
@@ -131,15 +132,14 @@ export default function EmailVerification() {
           </View>
         </View>
       </WithKeyboard>
-    </View>
+    </Background>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 45,
-    backgroundColor: colors.PRIMARY_BACKGROUND,
+    paddingBottom: 45,
   },
   middle: {
     flex: 1,
@@ -163,5 +163,6 @@ const styles = StyleSheet.create({
   },
   top: {
     alignItems: 'flex-end',
+    marginTop: 10,
   },
 });
