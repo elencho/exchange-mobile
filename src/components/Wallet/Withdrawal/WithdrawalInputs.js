@@ -154,7 +154,7 @@ export default function WithdrawalInputs({
         <AppInput
           onChangeText={handleAmount}
           value={withdrawalAmount}
-          label="Enter Amount iiiiiiii"
+          label="Enter Amount"
           style={{ marginTop, marginBottom: 8 }}
           keyboardType="numeric"
           maxLength={maxLength}

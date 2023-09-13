@@ -41,7 +41,7 @@ export default function CheckMarks({ error, validations }) {
       set({ getEmailUpdates: i.getEmailUpdates !== 'on' ? 'on' : 'off' });
   };
 
-  const textColor = { color: error && !v.terms ? '#F45E8C' : '#B7BFDB' };
+  const textColor = { color: error && !v.terms ? '#F45E8C' : '#c0c5e0' };
 
   const text = (type) => {
     const goToTerms = () =>

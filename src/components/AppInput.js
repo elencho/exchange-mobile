@@ -27,6 +27,7 @@ const AppInput = ({
   disabled,
   handleClear,
   onFocus,
+  isSearch,
   onChangeText = () => {},
   ...rest
 }) => {
@@ -67,7 +68,7 @@ const AppInput = ({
           placeholderTextColor={colors.SECONDARY_TEXT}
           onChangeText={(text) => onChangeText(text)}
           editable={!disabled}
-          // {...rest}
+          {...rest}
         />
 
         {label ? (
@@ -81,6 +82,13 @@ const AppInput = ({
                     inputRange: [0, 1],
                     outputRange: ['transparent', labelBackgroundColor],
                   }),
+                  opacity:
+                    isSearch &&
+                    focusAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [1, 0],
+                    }),
+
                   transform: [
                     {
                       scale: focusAnim.interpolate({

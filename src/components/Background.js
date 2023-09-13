@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.PRIMARY_BACKGROUND,
     paddingVertical: StatusBar.currentHeight,
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
   },
   safeArea: {
     backgroundColor: colors.PRIMARY_BACKGROUND,
