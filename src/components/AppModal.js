@@ -111,15 +111,11 @@ const styles = StyleSheet.create({
   },
   header: {
     color: colors.PRIMARY_TEXT,
-    marginBottom: 25,
+    marginBottom: 12,
   },
   modal: {
     margin: 0,
-    // marginTop: Platform.select({ ios: Constants.statusBarHeight, android: 0 }),
-    // marginBottom: Platform.select({
-    //   ios: undefined,
-    //   android: 0,
-    // }),
+
     justifyContent: 'flex-end',
   },
 });

@@ -167,7 +167,6 @@ const styles = StyleSheet.create({
   image: {
     width: 18,
     height: 18,
-    marginLeft: 5,
     resizeMode: 'contain',
   },
   infoRow: {

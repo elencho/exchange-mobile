@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     height: 62,
     alignItems: 'center',
     marginHorizontal: -5,
-    paddingHorizontal: 15,
+    paddingHorizontal: 6,
     borderRadius: 5,
   },
   primary: {

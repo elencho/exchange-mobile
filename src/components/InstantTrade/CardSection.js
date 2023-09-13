@@ -121,7 +121,7 @@ function CardSection({ error }) {
         <>
           <AppDropdown
             notClearable
-            style={styles.dropdown}
+            style={{ marginBottom: 8 }}
             handlePress={showCards}
             disabled={!cardsToDisplayInModal?.length}
             label="Choose Card"
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   container: {
-    marginVertical: 20,
+    marginVertical: 18,
   },
   newCard: {
     color: colors.SECONDARY_TEXT,

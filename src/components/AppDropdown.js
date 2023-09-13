@@ -14,7 +14,7 @@ const AppDropdown = ({
   icon,
   activeLabel,
   notClearable,
-  withLabel,
+  withLabel = false,
   error,
   disabled,
   hideArrow,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   withLabel: {
     color: colors.SECONDARY_TEXT,
     position: 'absolute',
-    left: 10,
+    left: 13,
     top: -9,
     paddingHorizontal: 8,
   },

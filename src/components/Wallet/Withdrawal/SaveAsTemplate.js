@@ -61,10 +61,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 30,
-    marginTop: -15,
   },
   text: {
     color: '#B7BFDB',
-    marginLeft: 13,
+    marginLeft: 14,
   },
 });

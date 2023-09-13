@@ -129,7 +129,7 @@ export default function FiatBlock() {
         </View>
       )}
 
-      <View style={styles.block}>
+      <View style={styles.mainBlock}>
         <>
           {network === 'ECOMMERCE' && (
             <>
@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
   },
+  mainBlock: { marginBottom: 24 },
   dropdown: {
     borderColor: '#525A86',
     borderWidth: 1,

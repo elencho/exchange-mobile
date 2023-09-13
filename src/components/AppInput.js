@@ -23,9 +23,10 @@ const AppInput = ({
   error = false,
   errorText = null,
   isForModal,
-  labelBackgroundColor = colors.SECONDARY_BACKGROUND,
+  labelBackgroundColor = colors.PRIMARY_BACKGROUND,
   disabled,
   handleClear,
+  onFocus,
   onChangeText = () => {},
   ...rest
 }) => {
@@ -61,12 +62,12 @@ const AppInput = ({
           style={[styles.input, disabled && styles.disabledInput]}
           ref={inputRef}
           onBlur={() => setIsFocused(false)}
-          onFocus={() => setIsFocused(true)}
+          onFocus={() => setIsFocused(true)?.bind(onFocus)}
           value={value}
           placeholderTextColor={colors.SECONDARY_TEXT}
           onChangeText={(text) => onChangeText(text)}
           editable={!disabled}
-          {...rest}
+          // {...rest}
         />
 
         {label ? (
@@ -105,6 +106,7 @@ const AppInput = ({
             >
               <AppText
                 body
+                numberOfLines={1}
                 style={{
                   color:
                     isFocused && error
@@ -126,7 +128,13 @@ const AppInput = ({
         {rightComponent && (
           <View style={styles.icon}>
             {handleClear && value.length > 0 ? (
-              <Pressable onPress={handleClear}>
+              <Pressable
+                style={{
+                  padding: 10,
+                  paddingRight: 2,
+                }}
+                onPress={handleClear}
+              >
                 <Close width={10} height={10} />
               </Pressable>
             ) : (
@@ -181,8 +189,9 @@ const styles = StyleSheet.create({
   },
   labelContainer: {
     position: 'absolute',
-    paddingHorizontal: 14,
+    paddingHorizontal: 12,
     height: 25,
+    overflow: 'visible',
     justifyContent: 'center',
   },
   icon: {
