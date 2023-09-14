@@ -27,6 +27,7 @@ const AppInput = ({
   disabled,
   handleClear,
   onFocus,
+  editable,
   isSearch,
   onChangeText = () => {},
   ...rest
@@ -54,6 +55,7 @@ const AppInput = ({
   const rightComponent = isFocused && activeRight ? activeRight : right;
   const isPlaceholder = !isFocused && !value && !right;
 
+  console.log('test', !disabled && editable);
   return (
     <View style={style}>
       <View style={[styles.inputContainer, { borderColor }]}>
@@ -67,7 +69,7 @@ const AppInput = ({
           value={value}
           placeholderTextColor={colors.SECONDARY_TEXT}
           onChangeText={(text) => onChangeText(text)}
-          editable={!disabled}
+          editable={!disabled && editable}
           {...rest}
         />
 
