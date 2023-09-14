@@ -11,9 +11,9 @@ import AppDropdown from '../../AppDropdown';
 import AppInput from '../../AppInput';
 import Search from '../../../assets/images/Search';
 import {
-  currencyAction,
   saveTransactions,
   setTransactionSearch,
+  setTransactionsOffset,
   showResultsAction,
 } from '../../../redux/transactions/actions';
 import CryptoModalTrade from '../../InstantTrade/CryptoModalTrade';
@@ -41,6 +41,7 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
   //debounce
   useEffect(() => {
     const getSearchedData = setTimeout(() => {
+      dispatch(setTransactionsOffset(0));
       dispatch(saveTransactions([]));
       dispatch(setTransactionSearch(searchValue));
       dispatch(showResultsAction(navigation));

@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 18,
     marginTop: 30,
-    marginBottom: IS_ANDROID ? 14 : 44,
+    marginBottom: IS_ANDROID ? 14 : null,
     marginHorizontal: 5,
   },
   button: {
@@ -109,9 +109,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     alignItems: 'center',
   },
-  container: {
-    //
-  },
+  container: {},
   download: {
     flexDirection: 'row',
     justifyContent: 'center',
