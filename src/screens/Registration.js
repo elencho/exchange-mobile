@@ -100,7 +100,12 @@ export default function Registration({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <WithKeyboard scrollUp padding style={styles.scrollview}>
+      <WithKeyboard
+        scrollUp
+        padding
+        style={styles.scrollview}
+        keyboardVerticalOffsetIOS={10}
+      >
         <Pressable style={styles.back} onPress={goToSignIn}>
           <PurpleText
             numberOfLines={1}

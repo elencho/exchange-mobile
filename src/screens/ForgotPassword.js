@@ -15,6 +15,7 @@ import colors from '../constants/colors';
 import { startLoginAction } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Background from '../components/Background';
 
 export default function ForgotPassword({ navigation }) {
   const dispatch = useDispatch();
@@ -116,58 +117,54 @@ export default function ForgotPassword({ navigation }) {
     error && f.username?.trim() && !mailValid ? 'Enter Valid Email' : null;
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: colors.PRIMARY_BACKGROUND }}
-    >
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.back} onPress={goToLogin}>
-          <PurpleText
-            numberOfLines={1}
-            text="Back to Log In"
-            style={styles.backText}
-          />
-        </TouchableOpacity>
+    <Background>
+      <TouchableOpacity style={styles.back} onPress={goToLogin}>
+        <PurpleText
+          numberOfLines={1}
+          text="Back to Log In"
+          style={styles.backText}
+        />
+      </TouchableOpacity>
 
-        <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
-          <Strong_Password width={38} height={46} />
+      <WithKeyboard flexGrow padding contentContainerStyle={styles.middle}>
+        <Strong_Password width={38} height={46} />
 
-          <View style={{ alignItems: 'center' }}>
-            <AppText header style={styles.primary}>
-              Forgot Your Password?
-            </AppText>
-            <AppText style={styles.secondary}>
-              Enter the code you will receive on your e-mail to recover the
-              password
-            </AppText>
-          </View>
+        <View style={{ alignItems: 'center' }}>
+          <AppText header style={styles.primary}>
+            Forgot Your Password?
+          </AppText>
+          <AppText style={styles.secondary}>
+            Enter the code you will receive on your e-mail to recover the
+            password
+          </AppText>
+        </View>
 
-          <GeneralError show={errorHappenedHere('ForgotPassword')} />
+        <GeneralError show={errorHappenedHere('ForgotPassword')} />
 
-          <AppInput
-            labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-            style={styles.input}
-            label="Enter Email"
-            autoCapitalize={'none'}
-            onChangeText={saveUsername}
-            value={f.username}
-            right={<Right />}
-            error={!mailValid && error}
-            errorText={errorText()}
-          />
-          <AppInput
-            labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-            style={styles.input}
-            label="Enter Code"
-            autoCapitalize={'none'}
-            onChangeText={saveCode}
-            value={f.code}
-            error={!f.code?.trim() && error}
-          />
+        <AppInput
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+          style={styles.input}
+          label="Enter Email"
+          autoCapitalize={'none'}
+          onChangeText={saveUsername}
+          value={f.username}
+          right={<Right />}
+          error={!mailValid && error}
+          errorText={errorText()}
+        />
+        <AppInput
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+          style={styles.input}
+          label="Enter Code"
+          autoCapitalize={'none'}
+          onChangeText={saveCode}
+          value={f.code}
+          error={!f.code?.trim() && error}
+        />
 
-          <AppButton text="Next" style={styles.button} onPress={next} />
-        </WithKeyboard>
-      </View>
-    </SafeAreaView>
+        <AppButton text="Next" style={styles.button} onPress={next} />
+      </WithKeyboard>
+    </Background>
   );
 }
 
@@ -175,7 +172,6 @@ const styles = StyleSheet.create({
   back: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: -20,
     marginTop: 28,
     alignSelf: 'flex-start',
   },
@@ -188,11 +184,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 84,
   },
-  container: {
-    flex: 1,
-    paddingHorizontal: '8%',
-    backgroundColor: colors.PRIMARY_BACKGROUND,
-  },
+
   input: {
     width: '100%',
     marginVertical: 6,

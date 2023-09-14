@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
-    marginTop: 22,
+    marginTop: 12,
   },
   leftText: {
     color: colors.SECONDARY_TEXT,

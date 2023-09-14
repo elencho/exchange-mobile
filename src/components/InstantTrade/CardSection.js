@@ -157,10 +157,10 @@ export default CardSection;
 
 const styles = StyleSheet.create({
   dropdown: {
-    marginBottom: 25,
+    marginBottom: 30,
   },
   container: {
-    marginVertical: 18,
+    marginVertical: 30,
   },
   newCard: {
     color: colors.SECONDARY_TEXT,

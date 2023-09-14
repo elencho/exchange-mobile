@@ -81,5 +81,6 @@ const styles = StyleSheet.create({
   secondary: {
     color: colors.SECONDARY_TEXT,
     marginTop: 8,
+    marginBottom: 5,
   },
 });

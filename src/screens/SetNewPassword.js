@@ -11,6 +11,7 @@ import Strong_Password from '../assets/images/User_profile/Strong_Password';
 
 import colors from '../constants/colors';
 import { startLoginAction } from '../redux/profile/actions';
+import Background from '../components/Background';
 
 export default function SetNewPassword({ navigation }) {
   const dispatch = useDispatch();
@@ -42,7 +43,7 @@ export default function SetNewPassword({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <Background>
       <TouchableOpacity style={styles.back} onPress={goToLogin}>
         <PurpleText
           numberOfLines={1}
@@ -103,7 +104,7 @@ export default function SetNewPassword({ navigation }) {
 
         <AppButton text="Save" style={styles.button} onPress={setNewPassword} />
       </WithKeyboard>
-    </View>
+    </Background>
   );
 }
 
@@ -111,7 +112,6 @@ const styles = StyleSheet.create({
   back: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: -20,
     marginTop: 28,
     alignSelf: 'flex-start',
   },
@@ -124,11 +124,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 84,
   },
-  container: {
-    flex: 1,
-    paddingHorizontal: '8%',
-    backgroundColor: colors.PRIMARY_BACKGROUND,
-  },
+
   input: {
     width: '100%',
     marginVertical: 6,

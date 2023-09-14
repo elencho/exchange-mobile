@@ -40,7 +40,6 @@ function AppModal({
   //   dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   //   hide();
   // };
-
   return (
     webViewVisible && (
       <Modal
@@ -89,7 +88,7 @@ function AppModal({
             <Background modal>
               <CloseModalIcon
                 onPress={hide}
-                style={IS_IOS && { marginTop: 5 }}
+                style={IS_IOS && { marginTop: 36 - Constants.statusBarHeight }}
               />
               {title && <Headline title={title} />}
               {children}
