@@ -40,7 +40,6 @@ function AppModal({
   //   dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   //   hide();
   // };
-  console.log(36 - Constants.statusBarHeight);
   return (
     webViewVisible && (
       <Modal
