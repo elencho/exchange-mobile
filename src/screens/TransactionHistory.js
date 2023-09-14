@@ -160,7 +160,7 @@ function TransactionHistory({ navigation, route }) {
       />
 
       {loading || isLoadingTransactions ? (
-        <View style={{ marginTop: 20 }}>
+        <View style={{ marginTop: 10 }}>
           <TransactionSkeleton
             length={[0, 1, 2, 3, 4, 5, 6]}
             isInstantTrade={activeTab === 'Instant trade'}

@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mainWrapper: {
-    marginTop: 30,
+    marginBottom: 30,
   },
   container: {
     backgroundColor: colors.PRIMARY_BACKGROUND,

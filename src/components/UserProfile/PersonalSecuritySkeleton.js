@@ -53,8 +53,8 @@ const PersonalSecuritySkeleton = () => (
   <>
     <View style={styles.container}>
       <AppText style={styles.text}>
-        Please note: It is necessary one of the authentication method to be
-        switched on
+        2FA is specific type of multi-factor authentication that strengthens
+        access security
       </AppText>
 
       {[1, 2, 3].map((n, i) => (

@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 19,
+    marginTop: 30,
   },
   icon: {
     width: 24,
