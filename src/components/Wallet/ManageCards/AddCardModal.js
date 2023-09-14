@@ -28,7 +28,7 @@ import {
 import { addCard } from '../../../utils/walletUtils';
 import { cardsSagaAction } from '../../../redux/trade/actions';
 
-import Arrow from '../../../assets/images/Arrow';
+import AppDropdown from '../../AppDropdown';
 
 export default function AddCardModal() {
   const dispatch = useDispatch();
@@ -119,7 +119,7 @@ export default function AddCardModal() {
   };
 
   const displayName = () => {
-    let displayName = 'Payment Service Provider';
+    let displayName = null;
 
     depositProviders?.forEach((provider) => {
       if (depositProvider === provider.provider)
@@ -134,14 +134,7 @@ export default function AddCardModal() {
       'https://support.cryptal.com/hc/en-us/articles/4402770737682-Privacy-Policy'
     );
 
-  const color =
-    !depositProvider && error
-      ? '#F45E8C'
-      : depositProvider
-      ? colors.PRIMARY_TEXT
-      : colors.SECONDARY_TEXT;
-  const borderColor = !depositProvider && error ? '#F45E8C' : '#525A86';
-  const termsColor = !saveCardAgreeTerms && error ? '#F45E8C' : '#525A86';
+  const termsColor = !saveCardAgreeTerms && error ? '#F45E8C' : '#c0c5e0';
 
   useEffect(() => {
     if (statusObj && IS_ANDROID) dispatch(setStatusModalInfo(statusObj));
@@ -151,21 +144,22 @@ export default function AddCardModal() {
     <>
       {/* {!multipleBanks() ? ( */}
       <>
-        <Pressable
-          style={[styles.dropdown, { borderColor }]}
-          onPress={showBanks}
-        >
-          {depositProvider && (
-            <Image
-              source={{ uri: `${ICONS_URL_PNG}/${depositProvider}.png` }}
-              style={styles.imageSmall}
-            />
-          )}
-          <AppText style={[styles.text, { color }]} medium={depositProvider}>
-            {displayName()}
-          </AppText>
-          <Arrow />
-        </Pressable>
+        <AppDropdown
+          handlePress={showBanks}
+          style={styles.dropdown}
+          selectedText={displayName()}
+          label="Payment Service Provider"
+          withLabel
+          notClearable
+          icon={
+            depositProvider && (
+              <Image
+                source={{ uri: `${ICONS_URL_PNG}/${depositProvider}.png` }}
+                style={styles.imageSmall}
+              />
+            )
+          }
+        />
 
         {/* <AppText subtext style={styles.subText}>
           100 ₾-500 ₾ Visa / MC Card 4% Amex 6 %{' '}
@@ -240,17 +234,13 @@ const styles = StyleSheet.create({
     right: 15,
   },
   dropdown: {
-    borderWidth: 1,
-    alignItems: 'center',
-    flexDirection: 'row',
-    height: 45,
-    paddingHorizontal: 15,
     marginTop: 22,
   },
   grey: {
     color: '#B7BFDB',
     lineHeight: 18,
     textAlign: 'justify',
+    marginLeft: 15,
   },
   image: {
     width: 40,
@@ -276,6 +266,5 @@ const styles = StyleSheet.create({
     width: 24,
     height: 20,
     resizeMode: 'contain',
-    marginRight: 15,
   },
 });

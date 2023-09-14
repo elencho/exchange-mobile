@@ -110,6 +110,8 @@ export default function PhoneNumberModal() {
             handlePress={handleCountries}
             selectedText={phoneCountry()}
             notClearable
+            withLabel
+            label="Choose code"
             style={[styles.dropdown, { borderColor }]}
             icon={
               <Image

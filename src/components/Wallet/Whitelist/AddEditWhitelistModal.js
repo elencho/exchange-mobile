@@ -119,6 +119,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
   };
   const nameStyle = {
     borderColor: error && !currentWhitelistObj?.name && '#F45E8C',
+    marginTop: 32,
   };
   const nameError = add
     ? !newWhitelist?.name?.trim()
@@ -136,13 +137,18 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
         {hasMultipleNetworks && (
           <View style={styles.input}>
-            <ChooseNetworkDropdown disabled={!!edit} whitelist error={error} />
+            <ChooseNetworkDropdown
+              disabled={!!edit}
+              whitelist
+              error={error}
+              style={{ marginTop: 32 }}
+            />
             <ChooseNetworkModal />
           </View>
         )}
 
         <AppInput
-          style={[styles.input, nameStyle, { marginTop: 22 }]}
+          style={[styles.input, nameStyle]}
           onChangeText={(name) => handleChange(name)}
           value={add ? newWhitelist.name : currentWhitelistObj.name}
           label="Enter Address Name"

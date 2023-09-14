@@ -18,6 +18,7 @@ export default function ChooseNetworkDropdown({
   disabled = false,
   whitelist,
   error,
+  style,
 }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -95,24 +96,15 @@ export default function ChooseNetworkDropdown({
               notClearable
               label="Choose Network"
               withLabel
-              style={styles.dropdown}
+              style={[styles.dropdown, style]}
               icon={renderIcon(network)}
               handlePress={handleDropdown}
               selectedText={
-                network ? (
-                  <>
-                    <View style={[styles.subtext]}>
-                      <AppText body style={styles.secondary}>
-                        Choose Network
-                      </AppText>
-                    </View>
-                    <AppText medium>
-                      {networkName()}{' '}
-                      <AppText style={styles.secondary}>({network})</AppText>
-                    </AppText>
-                  </>
-                ) : (
-                  <AppText>Choose Network</AppText>
+                network && (
+                  <AppText medium>
+                    {networkName()}{' '}
+                    <AppText style={styles.secondary}>({network})</AppText>
+                  </AppText>
                 )
               }
             />
@@ -147,14 +139,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     backgroundColor: 'rgba(149, 164, 247, 0.04)',
-    paddingHorizontal: 15,
+    paddingHorizontal: 22,
   },
   dropdown: {
-    // borderWidth: 1,
-    // height: 45,
-    // flexDirection: 'row',
-    // alignItems: 'center',
-    // paddingHorizontal: 15,
     marginTop: 20,
   },
   iconDimensions: {

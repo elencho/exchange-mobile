@@ -48,7 +48,7 @@ export default function FiatBlock() {
     error && setError(false);
   }, [card, depositAmount, depositProvider, network]);
 
-  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
+  const editable = network !== 'ECOMMERCE' ? true : !!depositProvider && !!card;
   const inputValidation = new RegExp(
     `^[0-9]{1,13}(\.|\\.[0-9]{1,${depositScale}})?$`
   );
@@ -104,15 +104,6 @@ export default function FiatBlock() {
     }
   };
 
-  const right = (
-    <View style={styles.row}>
-      <View style={styles.line} />
-      <AppText subtext style={styles.subtext}>
-        {code}
-      </AppText>
-    </View>
-  );
-
   const marginTop = () => {
     if (network === 'ECOMMERCE') {
       return !depositProvider ? -35 : 0;
@@ -129,7 +120,7 @@ export default function FiatBlock() {
         </View>
       )}
 
-      <View style={styles.block}>
+      <View style={styles.mainBlock}>
         <>
           {network === 'ECOMMERCE' && (
             <>
@@ -150,7 +141,7 @@ export default function FiatBlock() {
             maxLength={maxLength}
             label="Enter Amount"
             labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-            editable={!!editable}
+            editable={editable}
             error={error && !validateAmount(depositAmount)}
           />
         </>
@@ -181,6 +172,7 @@ const styles = StyleSheet.create({
   button: {
     width: '100%',
   },
+  mainBlock: { marginBottom: 24 },
   dropdown: {
     borderColor: '#525A86',
     borderWidth: 1,

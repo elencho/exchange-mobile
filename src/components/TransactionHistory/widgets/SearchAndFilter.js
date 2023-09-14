@@ -83,6 +83,7 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
           label="Search by TXID"
           right={<Search />}
           value={searchValue}
+          isSearch
           onChangeText={(text) => setSearchValue(text)}
           labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           handleClear={() => {

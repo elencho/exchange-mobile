@@ -14,7 +14,7 @@ const AppDropdown = ({
   icon,
   activeLabel,
   notClearable,
-  withLabel,
+  withLabel = false,
   error,
   disabled,
   hideArrow,
@@ -57,15 +57,7 @@ const AppDropdown = ({
         </AppText>
       )}
       {withLabel && selectedText && (
-        <AppText
-          subtext
-          style={[
-            styles.withLabel,
-            {
-              backgroundColor: colors.PRIMARY_BACKGROUND,
-            },
-          ]}
-        >
+        <AppText subtext style={styles.withLabel}>
           {label}
         </AppText>
       )}
@@ -101,9 +93,10 @@ const styles = StyleSheet.create({
   withLabel: {
     color: colors.SECONDARY_TEXT,
     position: 'absolute',
-    left: 10,
+    left: 13,
     top: -9,
     paddingHorizontal: 8,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   selectedText: {
     color: colors.PRIMARY_TEXT,

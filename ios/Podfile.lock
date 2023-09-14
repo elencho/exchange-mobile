@@ -724,7 +724,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.20.0):
+  - RNScreens (3.24.0):
     - React-Core
     - React-RCTImage
   - RNSVG (13.8.0):
@@ -1142,11 +1142,11 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: cbdee19bdd4e7f05472a66ce290f1b729ba3cb86
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
+  glog: 791fe035093b84822da7f0870421a25839ca7870
   GoogleAppMeasurement: fe17c92a32207dd5cdd4e8d742767f2da74857f6
   GoogleDataTransport: f0308f5905a745f94fb91fea9c6cbaf3831cb1bd
   GoogleUtilities: c63691989bf362ba0505507da00eeb326192e83e
-  hermes-engine: a1f157c49ea579c28b0296bda8530e980c45bdb3
+  hermes-engine: 5d86dc4303697a1251c830f0ee45e6e9f33877d4
   IdensicMobileSDK: 25977d57b373dbd83e0be4c5f0a5345e56c1e7b9
   JWT: ef71dfb03e1f842081e64dc42eef0e164f35d251
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
@@ -1154,7 +1154,7 @@ SPEC CHECKSUMS:
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
-  RCT-Folly: 424b8c9a7a0b9ab2886ffe9c3b041ef628fd4fb1
+  RCT-Folly: 85766c3226c7ec638f05ad7cb3cf6a268d6c4241
   RCTRequired: 5a024fdf458fa8c0d82fc262e76f982d4dcdecdd
   RCTTypeSafety: b6c253064466411c6810b45f66bc1e43ce0c54ba
   React: 715292db5bd46989419445a5547954b25d2090f0
@@ -1173,7 +1173,7 @@ SPEC CHECKSUMS:
   react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-flipper: f5b2b27bfbbf64ffbf8d1e7030905e43a22144c1
   react-native-flipper-performance-plugin: 42ec5017abd26e7c5a1f527f2db92c14a90cabdb
-  react-native-mobilesdk-module: 1ff7dbc9727c2f2cc5a887677c15eb15a8e4516b
+  react-native-mobilesdk-module: 9975226f35432d692157e0a29815fbb3dc8609c7
   react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
   react-native-pkce-challenge: 160cda7bad5678866dc8d6106a4be3edca9411a0
   react-native-safe-area-context: b8979f5eda6ed5903d4dbc885be3846ea3daa753
@@ -1203,7 +1203,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 42ec7c28dd02d540ed6c9159c57a98ff016492dc
   RNNotifee: 05692d7bb42b6c718a3906aeb8431c48ff2e8097
   RNReanimated: b1220a0e5168745283ff5d53bfc7d2144b2cee1b
-  RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
+  RNScreens: b21dc57dfa2b710c30ec600786a3fc223b1b92e7
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
@@ -1215,4 +1215,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a88d87c00fabe04465f7dd4fbb65e531cbfb7f6a
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.12.0

@@ -79,13 +79,12 @@ export default function ReadyTrades() {
 
 const styles = StyleSheet.create({
   block: {
-    borderWidth: 0.5,
-    borderColor: 'rgba(101, 130, 253, 0.3)',
     height: 80,
     width: '47%',
     marginBottom: '6%',
     justifyContent: 'center',
     paddingHorizontal: 20,
+    backgroundColor: colors.SECONDARY_BACKGROUND,
   },
   container: {
     flexDirection: 'row',

@@ -130,7 +130,6 @@ export default function WithdrawalInputs({
             label="Address tag"
             onChangeText={handleMemotag}
             value={memoTag}
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             style={{ marginBottom: 22 }}
             error={error && !memoTag?.trim()}
           />
@@ -150,7 +149,6 @@ export default function WithdrawalInputs({
             label="Enter Note"
             onChangeText={setNote}
             value={withdrawalNote}
-            labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           />
         )}
         <AppInput
@@ -162,7 +160,6 @@ export default function WithdrawalInputs({
           maxLength={maxLength}
           editable={!!editable}
           error={error && !validateAmount(withdrawalAmount)}
-          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           right={<Max />}
         />
       </View>

@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#42475D',
+    borderColor: colors.SECONDARY_TEXT,
     color: colors.PRIMARY_TEXT,
     marginHorizontal: 5,
     justifyContent: 'center',

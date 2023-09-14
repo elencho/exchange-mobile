@@ -41,8 +41,8 @@ export default function TransferMethodDropdown() {
     <AppDropdown
       style={[styles.dropdown, dropdownStyle]}
       notClearable
-      label="Choose provider"
-      withLabel
+      label={isOneMethod ? null : 'Choose provider'}
+      withLabel={!isOneMethod}
       disabled={isOneMethod}
       icon={renderIcon(network)}
       selectedText={network}
