@@ -261,7 +261,7 @@ export default function TransactionFilter({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
-    marginTop: -32,
+    marginTop: -34,
     paddingBottom: 140,
   },
   coin: {
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 17,
     color: '#c0c5e0',
-    marginTop: 30,
+    marginTop: 28,
     marginBottom: 12,
   },
   status: {

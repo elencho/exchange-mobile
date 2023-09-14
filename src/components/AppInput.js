@@ -55,7 +55,6 @@ const AppInput = ({
   const rightComponent = isFocused && activeRight ? activeRight : right;
   const isPlaceholder = !isFocused && !value && !right;
 
-  console.log('test', !disabled && editable);
   return (
     <View style={style}>
       <View style={[styles.inputContainer, { borderColor }]}>
