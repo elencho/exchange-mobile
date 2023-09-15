@@ -31,8 +31,7 @@ export default function Maintanance({ navigation }) {
     try {
       setLoading(true);
 
-      const version = '2.534.0';
-      // const version = DeviceInfo.getVersion();
+      const version = DeviceInfo.getVersion();
       const { status } = await checkReadiness(version);
 
       if (status === 'UP') {

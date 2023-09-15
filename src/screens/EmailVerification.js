@@ -14,9 +14,12 @@ import EmailLoginAuth from '../assets/images/User_profile/EmailLoginAuth.svg';
 import colors from '../constants/colors';
 import { t } from 'i18next';
 import Background from '../components/Background';
-import { startLoginAction } from '../redux/profile/actions';
+import {
+  startLoginAction,
+  startRegistrationAction,
+} from '../redux/profile/actions';
 
-export default function EmailVerification() {
+export default function EmailVerification({ route }) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -50,8 +53,13 @@ export default function EmailVerification() {
   }, [seconds, timerVisible]);
 
   const hide = () => {
-    dispatch(startLoginAction(navigation));
-    navigation.goBack();
+    if (route.params.fromScreen === 'login') {
+      dispatch(startLoginAction(navigation));
+    } else if (route.params.fromScreen === 'registration') {
+      dispatch(startRegistrationAction(navigation));
+    } else {
+      navigation.goBack();
+    }
   };
 
   const resend = () => {
