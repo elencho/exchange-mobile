@@ -82,6 +82,9 @@ function* startLoginSaga(action) {
     if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
       navigation.navigate('Login');
     }
+    if (loginStartInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
+      navigation.push('EmailVerification', { fromScreen: 'login' });
+    }
   }
 }
 
@@ -98,6 +101,9 @@ function* startRegistrationSaga(action) {
 
     if (registrationStartInfo?.execution === 'REGISTRATION_START') {
       navigation.navigate('Registration');
+    }
+    if (registrationStartInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
+      navigation.push('EmailVerification', { fromScreen: 'registration' });
     }
   }
 }
@@ -116,7 +122,7 @@ function* registrationFormSaga(action) {
     registrationStartInfo?.callbackUrl
   );
   if (data?.execution === 'EMAIL_VERIFICATION_OTP') {
-    navigation.push('EmailVerification');
+    navigation.push('EmailVerification', { fromScreen: 'registration' });
     yield put(saveVerificationInfo(data));
   }
   yield put(
@@ -210,6 +216,9 @@ function* usernameAndPasswordSaga(action) {
   yield put(saveUserAndPassInfo(userAndPassInfo));
   if (userAndPassInfo?.execution === 'LOGIN_OTP') {
     navigation.navigate('Login2Fa');
+  }
+  if (userAndPassInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
+    navigation.push('EmailVerification', { fromScreen: 'login' });
   }
   yield put(
     saveLoginStartInfo({
