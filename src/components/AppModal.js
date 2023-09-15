@@ -86,10 +86,7 @@ function AppModal({
           )}
           {fullScreen && (
             <Background modal>
-              <CloseModalIcon
-                onPress={hide}
-                style={IS_IOS && { marginTop: 36 - Constants.statusBarHeight }}
-              />
+              <CloseModalIcon onPress={hide} />
               {title && <Headline title={title} />}
               {children}
             </Background>
