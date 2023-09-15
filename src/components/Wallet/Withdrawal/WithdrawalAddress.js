@@ -61,10 +61,20 @@ function WithdrawalAddress({ error, right }) {
     );
   };
 
-  const address = useCallback(() => {
+  const address = () => {
     if (hasWhitelist) {
       if (hasOnThisNetwork) {
-        return <AddressDropdown />;
+        return (
+          <AppDropdown
+            notClearable
+            handlePress={chooseAddress}
+            selectedText={w.name && w.name}
+            label="Choose Address"
+            withLabel
+            style={styles.dropdown}
+            error={error && !w?.address}
+          />
+        );
       } else {
         return (
           <>
@@ -96,32 +106,7 @@ function WithdrawalAddress({ error, right }) {
         />
       );
     }
-  }, [w]);
-
-  const AddressDropdown = () => (
-    <AppDropdown
-      notClearable
-      handlePress={chooseAddress}
-      selectedText={w.name && w.name}
-      label="Choose Address"
-      withLabel
-      style={styles.dropdown}
-    />
-    // <Pressable
-    //   style={[styles.dropdown, { borderColor }]}
-    //   onPress={chooseAddress}
-    // >
-    //   <Text medium body style={{ color }}>
-    //     {w.name ? w.name : 'Choose Address'}
-    //   </Text>
-
-    //   <View style={styles.arrow}>
-    //     <Arrow />
-    //   </View>
-
-    //   <ChooseAddressModal />
-    // </Pressable>
-  );
+  };
 
   return (
     <>
