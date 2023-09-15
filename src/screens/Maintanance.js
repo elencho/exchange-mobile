@@ -28,13 +28,20 @@ export default function Maintanance({ navigation }) {
   );
 
   const refresh = async () => {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const version = DeviceInfo.getVersion();
-    const { status } = await checkReadiness(version);
+      const version = '2.534.0';
+      // const version = DeviceInfo.getVersion();
+      const { status } = await checkReadiness(version);
 
-    if (status !== 'DOWN') navigation.navigate('Welcome');
-    setLoading(false);
+      if (status === 'UP') {
+        navigation.navigate('Welcome');
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   return (

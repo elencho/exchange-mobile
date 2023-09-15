@@ -144,12 +144,17 @@ export default function Welcome({ navigation }) {
   });
 
   const isWorkingVersion = async () => {
-    const version = DeviceInfo.getVersion();
-    const { status } = await checkReadiness(version, Platform.OS);
-    if (status !== 'UP') {
+    try {
+      const version = '2.534.0';
+      // const version = DeviceInfo.getVersion();
+      const { status } = await checkReadiness(version, Platform.OS);
+      if (status !== 'UP') {
+        return true;
+      } else {
+        return false;
+      }
+    } catch {
       return true;
-    } else {
-      return false;
     }
   };
 
