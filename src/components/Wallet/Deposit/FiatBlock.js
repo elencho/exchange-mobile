@@ -142,6 +142,7 @@ export default function FiatBlock() {
             label="Enter Amount"
             labelBackgroundColor={colors.PRIMARY_BACKGROUND}
             editable={editable}
+            disabled={!editable}
             error={error && !validateAmount(depositAmount)}
           />
         </>

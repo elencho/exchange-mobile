@@ -188,6 +188,7 @@ export default function WithdrawalInfo({ error }) {
         withLabel
         style={styles.dropdown}
         notClearable
+        error={error && !isTemplate}
       />
 
       {currentTemplate.templateName === 'New Template' ? (
@@ -199,6 +200,7 @@ export default function WithdrawalInfo({ error }) {
             handlePress={showBanks}
             style={styles.dropdown}
             notClearable
+            error={error && !isBank}
           />
           <WithdrawalBanksModal />
         </>
