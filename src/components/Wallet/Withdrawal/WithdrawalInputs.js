@@ -159,6 +159,7 @@ export default function WithdrawalInputs({
           keyboardType="numeric"
           maxLength={maxLength}
           editable={!!editable}
+          disabled={!editable}
           error={error && !validateAmount(withdrawalAmount)}
           right={<Max />}
         />

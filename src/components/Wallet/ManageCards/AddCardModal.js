@@ -151,6 +151,7 @@ export default function AddCardModal() {
           label="Payment Service Provider"
           withLabel
           notClearable
+          error={!depositProvider && error}
           icon={
             depositProvider && (
               <Image

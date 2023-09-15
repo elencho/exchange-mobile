@@ -99,6 +99,7 @@ export default function ChooseNetworkDropdown({
               style={[styles.dropdown, style]}
               icon={renderIcon(network)}
               handlePress={handleDropdown}
+              error={error && !network}
               selectedText={
                 network && (
                   <AppText medium>
