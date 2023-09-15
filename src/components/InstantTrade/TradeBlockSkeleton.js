@@ -64,9 +64,11 @@ const styles = StyleSheet.create({
   mainWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: 10,
   },
   container: {
-    marginBottom: 10,
+    // marginBottom: 10,
+    marginTop: 30,
   },
   smallBoxMiddle: {
     backgroundColor: 'rgba(63, 66, 91, 0.18)',
@@ -80,7 +82,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginTop: 42,
-    marginBottom: 32,
+    marginBottom: 18,
     rowGap: 10,
   },
 });

@@ -119,7 +119,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
   };
   const nameStyle = {
     borderColor: error && !currentWhitelistObj?.name && '#F45E8C',
-    marginTop: 32,
+    // marginTop: 32,
   };
   const nameError = add
     ? !newWhitelist?.name?.trim()
@@ -129,7 +129,10 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
   const children = (
     <WithKeyboard padding flexGrow modal>
-      <TouchableOpacity activeOpacity={0.99} style={{ flex: 1 }}>
+      <TouchableOpacity
+        activeOpacity={0.99}
+        style={{ flex: 1, paddingTop: 22 }}
+      >
         <GeneralError
           style={styles.error}
           show={errorHappenedHere('AddEditWhitelistModal')}
@@ -141,7 +144,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
               disabled={!!edit}
               whitelist
               error={error}
-              style={{ marginTop: 32 }}
+              // style={{ marginTop: 32 }}
             />
             <ChooseNetworkModal />
           </View>

@@ -65,7 +65,10 @@ export default function ReadyTrades() {
           {secondary(item)}
         </Pressable>
       ))}
-      <Pressable style={styles.block} onPress={handleTrade}>
+      <Pressable
+        style={[styles.block, { marginBottom: 28 }]}
+        onPress={handleTrade}
+      >
         <AppText medium style={styles.primary}>
           Custom
         </AppText>
