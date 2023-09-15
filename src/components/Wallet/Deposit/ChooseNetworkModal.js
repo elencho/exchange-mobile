@@ -15,7 +15,6 @@ import {
 import Euro from '../../../assets/images/Euro.svg';
 import Card from '../../../assets/images/Card.svg';
 import Bank from '../../../assets/images/LocalBank.svg';
-import Arrow from '../../../assets/images/Arrow';
 
 export default function ChooseNetworkModal() {
   const dispatch = useDispatch();
@@ -133,7 +132,7 @@ const styles = StyleSheet.create({
     height: 62,
     alignItems: 'center',
     marginHorizontal: -5,
-    paddingHorizontal: 6,
+    paddingHorizontal: 15,
     borderRadius: 5,
   },
   primary: {

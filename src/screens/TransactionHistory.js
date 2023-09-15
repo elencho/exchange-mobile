@@ -31,7 +31,7 @@ import Transaction from '../components/TransactionHistory/Transaction';
 import { clearFiltersTrade, saveTrades } from '../redux/trade/actions';
 import OneTransactionSkeleton from '../components/TransactionHistory/OneTransactionSkeleton';
 
-function TransactionHistory({ navigation, route }) {
+function TransactionHistory({ navigation }) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
@@ -62,13 +62,19 @@ function TransactionHistory({ navigation, route }) {
     }, [currency])
   );
 
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(chooseCurrency('Show All Currency'));
-      dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-      Keyboard.dismiss();
-    }, [navigation])
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     dispatch(chooseCurrency('Show All Currency'));
+  //     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+  //     Keyboard.dismiss();
+  //   }, [navigation])
+  // );
+
+  useEffect(() => {
+    dispatch(chooseCurrency('Show All Currency'));
+    dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+    Keyboard.dismiss();
+  }, [navigation]);
 
   useEffect(() => {
     return () => clearAllFilters();

@@ -85,7 +85,7 @@ export default function WhitelistActionsModal() {
   const array = ['Edit Whitelist', 'Delete Whitelist', 'Copy Address'];
 
   const children = (
-    <View style={{ marginBottom: -15 }}>
+    <View style={{ marginBottom: -15, paddingHorizontal: 13 }}>
       {array.map((a) => (
         <Pressable
           style={styles.pressable}
