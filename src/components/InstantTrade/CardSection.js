@@ -106,6 +106,7 @@ function CardSection({ error }) {
           notClearable
           label="Payment service provider"
           withLabel
+          error={!depositProvider && error}
           icon={
             depositProvider && (
               <Image
@@ -125,7 +126,9 @@ function CardSection({ error }) {
             handlePress={showCards}
             disabled={!cardsToDisplayInModal?.length}
             label="Choose Card"
+            withLabel
             selectedText={card && card.cardNumber}
+            error={!card && error}
             icon={
               card && (
                 <Image
