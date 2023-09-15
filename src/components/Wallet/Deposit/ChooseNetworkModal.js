@@ -102,9 +102,9 @@ export default function ChooseNetworkModal() {
               {n?.displayName}
             </AppText>
 
-            <AppText subtext style={styles.secondary}>
+            {/* <AppText subtext style={styles.secondary}>
               {n?.provider}
-            </AppText>
+            </AppText> */}
           </View>
         </Pressable>
       ))}

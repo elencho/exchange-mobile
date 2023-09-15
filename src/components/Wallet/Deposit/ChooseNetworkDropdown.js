@@ -101,12 +101,7 @@ export default function ChooseNetworkDropdown({
               handlePress={handleDropdown}
               error={error && !network}
               selectedText={
-                network && (
-                  <AppText medium>
-                    {networkName()}{' '}
-                    <AppText style={styles.secondary}>({network})</AppText>
-                  </AppText>
-                )
+                network && <AppText medium>{networkName()}</AppText>
               }
             />
           ) : (
