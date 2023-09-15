@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
 
 import colors from '../../constants/colors';
 
@@ -27,7 +27,9 @@ export default function BalancesList({ balanceLoading, filteredBalances }) {
       <FlatList
         data={filteredBalances}
         renderItem={renderCurrency}
-        ListFooterComponent={() => <View style={{ height: 42 }} />}
+        ListFooterComponent={() => (
+          <View style={{ height: 85 + StatusBar.currentHeight }} />
+        )}
         keyExtractor={(item) => item.currencyCode}
       />
     </View>
@@ -38,6 +40,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.PRIMARY_BACKGROUND,
     flex: 1,
-    paddingTop: 10,
+    paddingTop: 18,
   },
 });
