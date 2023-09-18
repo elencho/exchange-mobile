@@ -18,6 +18,7 @@ const AppDropdown = ({
   error,
   disabled,
   hideArrow,
+  noTranslate,
 }) => {
   return (
     <Pressable
@@ -34,6 +35,7 @@ const AppDropdown = ({
           <AppText
             medium
             body
+            noTranslate={noTranslate}
             style={[styles.selectedText, error && { color: colors.ERROR_TEXT }]}
           >
             {selectedText}
