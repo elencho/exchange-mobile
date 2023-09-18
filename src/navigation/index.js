@@ -81,7 +81,7 @@ export default function Navigator() {
           name="UpdateAvailable"
           component={UpdateAvailableScreen}
         />
-        {/* <Stack.Screen name="Maintanance" component={MaintananceScreen} /> */}
+        <Stack.Screen name="Maintanance" component={MaintananceScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Registration" component={RegistrationScreen} />
         <Stack.Screen name="EmailVerification" component={EmailVerification} />
