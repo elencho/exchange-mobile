@@ -10,7 +10,11 @@ import {
   showResultsAction,
 } from '../../redux/transactions/actions';
 
-import { clearFiltersTrade, fetchTrades } from '../../redux/trade/actions';
+import {
+  clearFiltersTrade,
+  fetchTrades,
+  saveTrades,
+} from '../../redux/trade/actions';
 import { IS_ANDROID } from '../../constants/system';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import PurpleText from '../PurpleText';
@@ -58,9 +62,14 @@ function TransactionFilterBottom({ navigation, isInstantTrade }) {
     ? isFilteredTrades
     : isFilteredTransactions;
 
+  const fetchTradesAction = () => {
+    dispatch(saveTrades([]));
+    dispatch(fetchTrades());
+  };
+
   const showResults = () => {
     isInstantTrade
-      ? dispatch(fetchTrades())
+      ? fetchTradesAction()
       : dispatch(showResultsAction(navigation));
     navigation.navigate('Main', {
       screen: 'Transactions',

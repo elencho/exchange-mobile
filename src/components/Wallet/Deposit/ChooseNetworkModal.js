@@ -73,7 +73,6 @@ export default function ChooseNetworkModal() {
   };
 
   const renderIcon = (network) => {
-    console.log(network);
     if (network === 'ECOMMERCE') {
       return <Card />;
     }
