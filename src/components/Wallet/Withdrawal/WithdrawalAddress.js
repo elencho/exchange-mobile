@@ -73,6 +73,7 @@ function WithdrawalAddress({ error, right }) {
             withLabel
             style={styles.dropdown}
             error={error && !w?.address}
+            noTranslate
           />
         );
       } else {

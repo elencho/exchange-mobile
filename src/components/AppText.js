@@ -14,6 +14,7 @@ export default function AppText({
   small,
   onPress,
   isForCodeInput,
+  noTranslate,
   ...props
 }) {
   const {
@@ -82,6 +83,7 @@ export default function AppText({
   };
 
   const text = () => {
+    if (noTranslate) return children;
     if (typeof children === 'string') {
       if (children.includes('{{') && children.includes('}}')) {
         return t(

@@ -73,6 +73,7 @@ export default function ChooseNetworkModal() {
   };
 
   const renderIcon = (network) => {
+    console.log(network);
     if (network === 'ECOMMERCE') {
       return <Card />;
     }
@@ -82,6 +83,7 @@ export default function ChooseNetworkModal() {
     if (network === 'SEPA') {
       return <Euro />;
     }
+    return null;
   };
 
   const children = (
@@ -97,7 +99,9 @@ export default function ChooseNetworkModal() {
           onPress={() => handlePress(n.provider)}
         >
           <View>{renderIcon(n.provider)}</View>
-          <View style={styles.name}>
+          <View
+            style={[styles.name, !renderIcon(n.provider) && { marginLeft: 0 }]}
+          >
             <AppText medium body style={styles.primary}>
               {n?.displayName}
             </AppText>
