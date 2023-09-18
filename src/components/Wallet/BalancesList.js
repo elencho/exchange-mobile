@@ -1,10 +1,16 @@
 import React from 'react';
-import { FlatList, StatusBar, StyleSheet, View } from 'react-native';
+import { FlatList, Platform, StatusBar, StyleSheet, View } from 'react-native';
 
 import colors from '../../constants/colors';
+import Constants from 'expo-constants';
 
 import Currency from './Currency';
 import CurrencySkeleton from './CurrencySkeleton';
+
+const height = Platform.select({
+  ios: Constants.statusBarHeight + 100,
+  android: 85 + StatusBar.currentHeight,
+});
 
 export default function BalancesList({ balanceLoading, filteredBalances }) {
   const renderCurrency = ({ item }) =>
@@ -27,9 +33,7 @@ export default function BalancesList({ balanceLoading, filteredBalances }) {
       <FlatList
         data={filteredBalances}
         renderItem={renderCurrency}
-        ListFooterComponent={() => (
-          <View style={{ height: 85 + StatusBar.currentHeight }} />
-        )}
+        ListFooterComponent={() => <View style={{ height: height }} />}
         keyExtractor={(item) => item.currencyCode}
       />
     </View>
