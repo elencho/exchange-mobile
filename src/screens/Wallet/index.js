@@ -47,7 +47,7 @@ export default function Wallet() {
         setShowZeroBalances(true);
         setValue('');
         Keyboard.dismiss();
-        scrollViewRef.current.scrollTo({ x: 0, y: 3, animated: true });
+        scrollViewRef.current?.scrollTo({ x: 0, y: 3, animated: true });
       };
     }, [])
   );
