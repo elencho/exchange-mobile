@@ -1,5 +1,5 @@
-import { ColorTheme, COLORS_DARK } from 'refactor/common/theme/colors'
-import { FONTS_DEFAULT, FontTheme } from 'refactor/common/theme/fonts'
+import { ColorTheme, COLORS_DARK } from '@theme/colors'
+import { FontTheme, FONTS_DEFAULT } from '@theme/fonts'
 
 export interface Theme {
 	id: string

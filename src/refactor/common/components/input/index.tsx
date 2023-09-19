@@ -1,0 +1,193 @@
+import AppText from 'components/AppText'
+import colors from 'constants/colors'
+import { IS_ANDROID } from 'constants/system'
+import React, { ReactNode, memo, useEffect, useRef, useState } from 'react'
+import { TextInputProps } from 'react-native'
+import {
+	TextInput,
+	StyleSheet,
+	View,
+	Animated,
+	Easing,
+	TouchableWithoutFeedback,
+} from 'react-native'
+import Text from 'refactor/common/components/text'
+import { Theme } from 'refactor/setup/theme'
+import { useTheme } from 'refactor/setup/theme/index.context'
+
+type Props = TextInputProps & {
+	label?: string
+	labelBackgroundColor?: string
+	disabled?: boolean
+	error?: string
+	rightComponent?: ReactNode
+	onFocusRightComponent?: ReactNode
+}
+
+const AppInput = (props: Props) => {
+	const {
+		value,
+		label,
+		onChangeText,
+		error = '',
+		disabled = false,
+		style,
+		labelBackgroundColor,
+		rightComponent,
+		onFocusRightComponent,
+	} = props
+	const [isFocused, setIsFocused] = useState(false)
+	const inputRef = useRef(null)
+
+	const { theme, styles } = useTheme(_style)
+	const focusAnim = useRef(new Animated.Value(0)).current
+
+	useEffect(() => {
+		Animated.timing(focusAnim, {
+			toValue: isFocused || value ? 1 : 0,
+			duration: 150,
+			easing: Easing.bezier(0.4, 0, 0.2, 1),
+			useNativeDriver: false,
+		}).start()
+	}, [focusAnim, isFocused, value])
+
+	const borderColor = error
+		? theme.color.error
+		: isFocused
+		? theme.color.brandSecondary
+		: '#42475D'
+
+	const rightChild =
+		isFocused && onFocusRightComponent ? onFocusRightComponent : rightComponent
+
+	const isPlaceholder = !isFocused && !value && !rightComponent
+
+	const labelColor =
+		isFocused && error
+			? theme.color.error
+			: isFocused
+			? theme.color.brandPrimary
+			: error
+			? theme.color.error
+			: theme.color.textSecondary
+
+	const labelAnimation = {
+		width: isPlaceholder ? '100%' : '0%',
+		backgroundColor: focusAnim.interpolate({
+			inputRange: [0, 1],
+			outputRange: [
+				'transparent',
+				labelBackgroundColor ?? theme.color.backgroundSecondary,
+			],
+		}),
+		transform: [
+			{
+				scale: focusAnim.interpolate({
+					inputRange: [0, 1],
+					outputRange: [1, 0.75],
+				}),
+			},
+			{
+				translateY: focusAnim.interpolate({
+					inputRange: [0, 1],
+					outputRange: [0, -31],
+				}),
+			},
+			{
+				translateX: focusAnim.interpolate({
+					inputRange: [0, 1],
+					outputRange: [10, 0],
+				}),
+			},
+		],
+	}
+
+	return (
+		<View style={style}>
+			<View style={[styles.inputContainer, { borderColor }]}>
+				<TextInput
+					style={[styles.input, disabled && styles.disabledInput]}
+					ref={inputRef}
+					onBlur={() => setIsFocused(false)}
+					onFocus={() => setIsFocused(true)}
+					value={value}
+					placeholderTextColor={colors.SECONDARY_TEXT}
+					onChangeText={(text) => onChangeText?.(text)}
+					editable={!disabled}
+					{...props}
+				/>
+
+				{label ? (
+					<TouchableWithoutFeedback onPress={() => inputRef.current?.focus()}>
+						<Animated.View style={[styles.labelContainer, labelAnimation]}>
+							<Text
+								variant="l"
+								style={{
+									color: labelColor,
+									opacity: disabled ? 0.5 : 1,
+								}}>
+								{label}
+							</Text>
+						</Animated.View>
+					</TouchableWithoutFeedback>
+				) : null}
+				{rightChild && <View style={styles.icon}>{rightChild}</View>}
+			</View>
+			{error && (
+				<Text variant="s" style={styles.errorText}>
+					{error}
+				</Text>
+			)}
+		</View>
+	)
+}
+
+const _style = (theme: Theme) =>
+	StyleSheet.create({
+		errorText: {
+			color: '#F45E8C',
+			marginTop: 8,
+		},
+		input: {
+			fontFamily: theme.font.medium,
+			fontSize: 14,
+			lineHeight: IS_ANDROID ? 18 : null,
+			flex: 1,
+			color: theme.color.textPrimary,
+			height: '100%',
+			marginRight: 10,
+		},
+		disabledInput: { color: theme.color.textSecondary },
+		Gesinput: {
+			fontFamily: theme.font.medium,
+			fontSize: 14,
+			lineHeight: 18,
+			flex: 1,
+			paddingLeft: 22,
+			color: theme.color.textPrimary,
+			height: '100%',
+			marginRight: 10,
+			position: 'absolute',
+			width: 250,
+		},
+		inputContainer: {
+			borderWidth: 1,
+			height: 44,
+			paddingHorizontal: 22,
+			flexDirection: 'row',
+			alignItems: 'center',
+			marginTop: 11,
+		},
+		labelContainer: {
+			position: 'absolute',
+			paddingHorizontal: 14,
+			height: 25,
+			justifyContent: 'center',
+		},
+		icon: {
+			alignItems: 'flex-end',
+			zIndex: -1,
+		},
+	})
+
+export default memo(AppInput)

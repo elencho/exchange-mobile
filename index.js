@@ -1,10 +1,10 @@
-import 'react-native-gesture-handler'
-import { registerRootComponent } from 'expo'
-import 'react-native-reanimated'
 import messaging from '@react-native-firebase/messaging'
+import { registerRootComponent } from 'expo'
+import { Linking } from 'react-native'
+import 'react-native-gesture-handler'
+import 'react-native-reanimated'
 
 import App from './App'
-import { Linking } from 'react-native'
 
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
 	console.log('Message handled in the background!', remoteMessage)

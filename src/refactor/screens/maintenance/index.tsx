@@ -8,10 +8,10 @@ import { checkReadiness } from 'utils/appUtils'
 import Logo from 'assets/images/Logo.svg'
 import Gear from 'assets/images/Gear.svg'
 import { Button } from 'refactor/common/components/button'
-import { COLORS_DARK } from 'refactor/common/theme/colors'
+import { COLORS_DARK } from 'refactor/setup/theme/colors'
 import AppText from 'components/AppText'
-import { Theme } from 'refactor/common/theme'
-import { useTheme } from 'refactor/common/theme/index.context'
+import { Theme } from 'refactor/setup/theme'
+import { useTheme } from 'refactor/setup/theme/index.context'
 import Text from 'refactor/common/components/text'
 
 export default function Maintanance(navigation: any) {

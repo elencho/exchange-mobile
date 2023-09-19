@@ -1,3 +1,4 @@
+import { StyleProp, ViewStyle } from 'react-native'
 import {
 	AddButton,
 	AddProps,
@@ -10,7 +11,7 @@ import {
 	TextButton,
 	TextProps,
 } from 'refactor/common/components/button/button-text'
-import { Component, Style } from 'refactor/common/components/types'
+import { Component } from 'refactor/common/components/types'
 
 /*
  *  TODO: Remove AppButton.js, PurpleText.js
@@ -25,7 +26,7 @@ export interface CommonProps {
 	text: string
 	onPress: () => any
 	disabled?: boolean
-	style?: Style
+	style?: StyleProp<any>
 }
 
 export function Button(props: PrimaryProps): Component

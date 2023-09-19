@@ -1,7 +1,7 @@
-import messaging from '@react-native-firebase/messaging'
-import { Linking } from 'react-native'
 import notifee, { EventType, AndroidImportance } from '@notifee/react-native'
+import messaging from '@react-native-firebase/messaging'
 import { useEffect } from 'react'
+import { Linking } from 'react-native'
 
 const useNotifications = () => {
 	const checkToken = async () => {

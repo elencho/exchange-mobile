@@ -1,18 +1,17 @@
+import { FlashList } from '@shopify/flash-list'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { FlashList } from '@shopify/flash-list'
 import { useSelector } from 'react-redux'
 
-import AppText from './AppText'
-import AppInput from './AppInput'
-import WithKeyboard from './WithKeyboard'
-import ModalTop from './ModalTop'
-import ModalSearchItem from './ModalSearchItem'
 import Search from '../assets/images/Search'
 import SearchActive from '../assets/images/Search_Active'
-
-import colors from '../constants/colors'
 import { COINS_URL_PNG, COUNTRIES_URL_PNG } from '../constants/api'
+import colors from '../constants/colors'
+import AppInput from './AppInput'
+import AppText from './AppText'
+import ModalSearchItem from './ModalSearchItem'
+import ModalTop from './ModalTop'
+import WithKeyboard from './WithKeyboard'
 
 export default function ModalWithSearch({
 	array,
@@ -91,6 +90,7 @@ export default function ModalWithSearch({
 					placeholderTextColor="rgba(105, 111, 142, 0.5)"
 					onChangeText={filter}
 					right={<Search />}
+					// TODO: REMOVE activeRight
 					activeRight={<SearchActive />}
 					style={styles.searchInput}
 				/>

@@ -1,7 +1,8 @@
-import { FontTheme } from 'refactor/common/theme/fonts'
-import { useTheme } from 'refactor/common/theme/index.context'
+import { FontTheme } from 'refactor/setup/theme/fonts'
+import { useTheme } from 'refactor/setup/theme/index.context'
 import { Text as NativeText, TextProps, TextStyle } from 'react-native'
 import useTranslate from 'refactor/common/components/text/use-translate'
+import { memo } from 'react'
 
 type Variant = 's' | 'm' | 'l' | 'title' | 'headline'
 
@@ -11,9 +12,9 @@ type Props = TextProps & {
 
 const Text: React.FC<Props> = (props) => {
 	const { variant, children, onPress, style } = props
+	const text = useTranslate(children)
 
 	const { theme } = useTheme()
-	const text = useTranslate(children)
 
 	return (
 		<>
@@ -44,4 +45,4 @@ const Text: React.FC<Props> = (props) => {
 	}
 }
 
-export default Text
+export default memo(Text)

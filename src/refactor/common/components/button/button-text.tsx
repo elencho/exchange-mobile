@@ -1,10 +1,9 @@
-import AppText from 'components/AppText'
 import { CommonProps } from 'refactor/common/components/button'
-import { COLORS_DARK } from 'refactor/common/theme/colors'
+import Text from 'refactor/common/components/text'
+import { useTheme } from 'refactor/setup/theme/index.context'
 
 export type TextProps = {
 	variant: 'text'
-	subtext?: boolean
 } & CommonProps
 
 export function TextButton({
@@ -12,23 +11,23 @@ export function TextButton({
 	onPress,
 	style,
 	disabled = false,
-	subtext,
 }: TextProps) {
+	const { theme } = useTheme()
+
 	return (
-		<AppText
-			medium
-			subtext={subtext}
+		<Text
+			variant="m"
 			disabled={disabled}
 			onPress={onPress}
 			style={[
 				{
 					color: disabled
-						? COLORS_DARK.buttonDisabled
-						: COLORS_DARK.brandSecondary,
+						? theme.color.buttonDisabled
+						: theme.color.brandSecondary,
 				},
 				style,
 			]}>
 			{text}
-		</AppText>
+		</Text>
 	)
 }

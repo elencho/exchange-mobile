@@ -10,9 +10,9 @@ import Animated from 'react-native-reanimated'
 import Eng from 'assets/images/English.svg'
 import Arrow from 'assets/images/SwitcherArrow.svg'
 import { Images, Language } from 'refactor/common/constants'
-import { Theme } from 'refactor/common/theme'
+import { Theme } from 'refactor/setup/theme'
 import useAnimation from 'refactor/screens/welcome/components/language-switcher/animation'
-import { useTheme } from 'refactor/common/theme/index.context'
+import { useTheme } from 'refactor/setup/theme/index.context'
 import Text from 'refactor/common/components/text'
 
 export default function LanguageSwitcher() {

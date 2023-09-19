@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import Portfolio from '../../assets/images/Portfolio.svg'
 import User from '../../assets/images/User.svg'
-import { COLORS_DARK } from 'refactor/common/theme/colors'
+import { COLORS_DARK } from 'refactor/setup/theme/colors'
 import { Button } from 'refactor/common/components/button'
 import { switchPersonalCompany } from 'redux/profile/actions'
 

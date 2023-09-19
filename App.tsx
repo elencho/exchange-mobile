@@ -1,25 +1,24 @@
+import { useAssets } from 'expo-asset'
+import { useFonts } from 'expo-font'
 import React from 'react'
 import { StatusBar, LogBox, View } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Provider } from 'react-redux'
-import { useFonts } from 'expo-font'
-import { useAssets } from 'expo-asset'
 
 import AppToast from './src/components/AppToast'
+import images from './src/constants/images'
 import Navigator from './src/navigation'
 import store from './src/redux/store'
-import images from './src/constants/images'
-import './src/utils/i18n'
+import { CryptalThemeProvider } from './src/refactor/setup/theme'
+import { THEME_DARK } from './src/refactor/setup/theme/variants'
 import './src/utils/interceptor'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { CryptalThemeProvider } from './src/refactor/common/theme/index.context'
-import { THEME_DARK } from './src/refactor/common/theme'
 
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed
 	'VirtualizedLists should never be nested',
 ])
 
-export const App = React.memo(() => {
+const App = React.memo(() => {
 	const [fontsLoaded] = useFonts({
 		Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
 		Ubuntu_Medium: require('./src/assets/fonts/Ubuntu_Medium.ttf'),
@@ -47,3 +46,5 @@ export const App = React.memo(() => {
 		</CryptalThemeProvider>
 	)
 })
+
+export default App

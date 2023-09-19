@@ -7,9 +7,10 @@ import {
 	Easing,
 	TouchableWithoutFeedback,
 } from 'react-native'
-import { IS_ANDROID } from '../constants/system'
+
 import AppText from '../components/AppText'
 import colors from '../constants/colors'
+import { IS_ANDROID } from '../constants/system'
 
 const AppInput = ({
 	label = '',
@@ -19,7 +20,7 @@ const AppInput = ({
 	style,
 	value,
 	error = false,
-	errorText = string | undefined,
+	errorText,
 	isForModal,
 	labelBackgroundColor = colors.SECONDARY_BACKGROUND,
 	disabled,

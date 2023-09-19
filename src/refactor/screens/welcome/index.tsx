@@ -22,8 +22,8 @@ import { errorHappenedHere } from 'utils/appUtils'
 import { Button } from 'refactor/common/components/button'
 import { Navigation } from 'refactor/setup/nav/types'
 import Text from 'refactor/common/components/text'
-import { useTheme } from 'refactor/common/theme/index.context'
-import { Theme } from 'refactor/common/theme'
+import { useTheme } from 'refactor/setup/theme/index.context'
+import { Theme } from 'refactor/setup/theme'
 
 export default function Welcome(navigation: Navigation) {
 	const dispatch = useDispatch()

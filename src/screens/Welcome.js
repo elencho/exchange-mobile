@@ -1,5 +1,8 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useFocusEffect } from '@react-navigation/native'
+import * as SecureStore from 'expo-secure-store'
+import jwt_decode from 'jwt-decode'
 import React, { useCallback, useEffect } from 'react'
-
 import {
 	StyleSheet,
 	View,
@@ -8,41 +11,34 @@ import {
 	BackHandler,
 	ImageBackground,
 } from 'react-native'
-import { useDispatch } from 'react-redux'
-
-import AppButton from '../components/AppButton'
-import AppText from '../components/AppText'
-import PurpleText from '../components/PurpleText'
-import colors from '../constants/colors'
-import Logo from '../assets/images/LogoWhite.svg'
-import {
-	startLoginAction,
-	startRegistrationAction,
-} from '../redux/profile/actions'
-import GeneralError from '../components/GeneralError'
-import { errorHappenedHere } from '../utils/appUtils'
-
-import SplashScreen from 'react-native-splash-screen'
-import VersionCheck from 'react-native-version-check'
-import * as SecureStore from 'expo-secure-store'
 import DeviceInfo from 'react-native-device-info'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import jwt_decode from 'jwt-decode'
+import SplashScreen from 'react-native-splash-screen'
+import VersionCheck from 'react-native-version-check'
+import { useDispatch } from 'react-redux'
 
+import Logo from '../assets/images/LogoWhite.svg'
+import AppButton from '../components/AppButton'
+import AppText from '../components/AppText'
+import GeneralError from '../components/GeneralError'
+import LanguageSwitcher from '../components/LanguageSwitcher'
+import PurpleText from '../components/PurpleText'
+import colors from '../constants/colors'
 import {
 	getCountryName,
 	APP_ID,
 	packageName,
 	currentVersion,
 } from '../constants/system'
-
+import {
+	startLoginAction,
+	startRegistrationAction,
+} from '../redux/profile/actions'
 import { fetchCountries, setLanguage } from '../redux/profile/actions'
+import { errorHappenedHere } from '../utils/appUtils'
 import { checkReadiness, fetchTranslations } from '../utils/appUtils'
 import { addResources, switchLanguage } from '../utils/i18n'
-import { useFocusEffect } from '@react-navigation/native'
 import useNotificationsAndroid from './useNotificationsAndroid'
-import LanguageSwitcher from '../components/LanguageSwitcher'
 
 export default function Welcome({ navigation }) {
 	const dispatch = useDispatch()

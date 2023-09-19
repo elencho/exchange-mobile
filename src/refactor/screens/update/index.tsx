@@ -5,13 +5,13 @@ import VersionCheck from 'react-native-version-check'
 import SplashScreen from 'react-native-splash-screen'
 import FastImage from 'react-native-fast-image'
 import { APP_ID, packageName } from 'constants/system'
-import { COLORS_DARK } from 'refactor/common/theme/colors'
+import { COLORS_DARK } from 'refactor/setup/theme/colors'
 import { Button } from 'refactor/common/components/button'
 import AppText from 'components/AppText'
 import Background from 'components/Background'
 import Text from 'refactor/common/components/text'
-import { useTheme } from 'refactor/common/theme/index.context'
-import { Theme } from 'refactor/common/theme'
+import { useTheme } from 'refactor/setup/theme/index.context'
+import { Theme } from 'refactor/setup/theme'
 
 export default function UpdateAvailable() {
 	const { styles } = useTheme(_styles)

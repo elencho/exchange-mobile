@@ -1,31 +1,31 @@
-import React from 'react'
 import {
 	NavigationContainer,
 	createNavigationContainerRef,
 } from '@react-navigation/native'
-import { BackHandler } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import React from 'react'
+import { BackHandler } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import WelcomeScreen from '../screens/Welcome'
-import UpdateAvailableScreen from '../screens/UpdateAvailable'
-import MaintananceScreen from '../screens/Maintanance'
-import LoginScreen from '../screens/Login'
-import RegistrationScreen from '../screens/Registration'
-import MainScreen from './MainScreen'
-import TransactionFilter from '../screens/TransactionFilter'
-import UserProfileScreen from '../screens/UserProfile'
-import BalanceScreen from '../screens/Wallet/Balance'
-import Login2FaScreen from '../screens/Login2Fa'
-import ResetOtpInstructionsScreen from '../screens/ResetOtpInstructions'
-import ForgotPasswordScreen from '../screens/ForgotPassword'
-import SetNewPasswordScreen from '../screens/SetNewPassword'
 import CardVerificationOneScreen from '../screens/CardVerificationOne'
 import CardVerificationTwoScreen from '../screens/CardVerificationTwo'
-import Resume from '../screens/Resume'
-import Splash from '../screens/SplashScreen'
 import EmailVerification from '../screens/EmailVerification'
+import ForgotPasswordScreen from '../screens/ForgotPassword'
+import LoginScreen from '../screens/Login'
+import Login2FaScreen from '../screens/Login2Fa'
+import MaintananceScreen from '../screens/Maintanance'
+import RegistrationScreen from '../screens/Registration'
+import ResetOtpInstructionsScreen from '../screens/ResetOtpInstructions'
+import Resume from '../screens/Resume'
+import SetNewPasswordScreen from '../screens/SetNewPassword'
+import Splash from '../screens/SplashScreen'
+import TransactionFilter from '../screens/TransactionFilter'
+import UpdateAvailableScreen from '../screens/UpdateAvailable'
+import UserProfileScreen from '../screens/UserProfile'
+import BalanceScreen from '../screens/Wallet/Balance'
+import WelcomeScreen from '../screens/Welcome'
 import useNotifications from '../screens/useNotifications'
+import MainScreen from './MainScreen'
 
 const Stack = createNativeStackNavigator()
 export const navigationRef = createNavigationContainerRef()
@@ -62,15 +62,7 @@ export default function Navigator() {
 			onStateChange={onStateChange}
 			ref={navigationRef}
 			theme={{ colors: { background: 'transparent' } }}>
-			<Stack.Navigator
-				// initialRouteName={'SplashScreen'}
-				screenOptions={screenOptions}>
-				{/* TODO:remove */}
-				{/* <Stack.Screen
-          options={{ animation: 'fade' }}
-          name="SplashScreen"
-          component={Splash}
-        /> */}
+			<Stack.Navigator screenOptions={screenOptions}>
 				<Stack.Screen name="Welcome" component={WelcomeScreen} />
 				<Stack.Screen
 					name="UpdateAvailable"

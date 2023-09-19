@@ -1,12 +1,11 @@
-import AppText from 'components/AppText'
 import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import { CommonProps } from 'refactor/common/components/button'
 import { Component } from 'refactor/common/components/types'
-import { Theme } from 'refactor/common/theme'
-import { COLORS_DARK } from 'refactor/common/theme/colors'
+import { Theme } from 'refactor/setup/theme'
 import { MaterialIndicator } from 'react-native-indicators'
-import { useTheme } from 'refactor/common/theme/use-theme'
+import Text from 'refactor/common/components/text'
+import { useTheme } from 'refactor/setup/theme/index.context'
 
 export type PrimaryProps = {
 	variant: 'primary'
@@ -26,19 +25,18 @@ export function PrimaryButton({
 	leftComponent,
 	rightComponent,
 }: PrimaryProps) {
-	const Styles = useTheme(createStyles)
+	const { styles, theme } = useTheme(_styles)
 
 	return (
 		<Pressable
 			disabled={disabled}
 			style={[
-				Styles.button,
+				styles.button,
 				style,
 				{
 					backgroundColor: disabled
-						? COLORS_DARK.buttonDisabled
+						? theme.color.buttonDisabled
 						: backgroundColor,
-					//TODO: Fix theme access
 				},
 			]}
 			onPress={loading ? null : onPress}>
@@ -46,19 +44,18 @@ export function PrimaryButton({
 			{loading ? (
 				<MaterialIndicator color="#FFFFFF" animationDuration={3000} size={20} />
 			) : (
-				<AppText
-					body
-					medium
-					style={[Styles.buttonText, leftComponent && { marginLeft: 9 }]}>
+				<Text
+					variant="l"
+					style={[styles.buttonText, leftComponent && { marginLeft: 9 }]}>
 					{text}
-				</AppText>
+				</Text>
 			)}
 			{rightComponent}
 		</Pressable>
 	)
 }
 
-const createStyles = (theme: Theme) => {
+const _styles = (theme: Theme) => {
 	return StyleSheet.create({
 		button: {
 			height: 45,

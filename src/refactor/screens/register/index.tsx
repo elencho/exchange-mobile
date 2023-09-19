@@ -4,7 +4,7 @@ import { t } from 'i18next'
 import AppText from 'components/AppText'
 import GeneralError from 'components/GeneralError'
 import PersonalCompanySwitcher from 'components/Registration/PersonalCompanySwitcher' //TODO: Reimport
-import { COLORS_DARK } from 'refactor/common/theme/colors'
+import { COLORS_DARK } from 'refactor/setup/theme/colors'
 import useRegister from 'refactor/screens/register/use-register'
 import { errorHappenedHere } from 'utils/appUtils'
 import RegistrationInputs from 'components/Registration/RegistrationInputs'

@@ -1,7 +1,10 @@
 {
 	"extends": "@tsconfig/react-native/tsconfig.json",
 	"compilerOptions": {
-		"baseUrl": "src"
-	},
-	"include": ["src"]
+		"baseUrl": ".",
+		"paths": {
+			"@app/*": ["src/*"],
+			"@theme/*": ["src/refactor/setup/theme/*"]
+		}
+	}
 }

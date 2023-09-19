@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet } from 'react-native/Libraries/StyleSheet/StyleSheet'
-import { Styles } from 'refactor/common/components/types'
-import { THEME_DARK, Theme } from 'refactor/common/theme'
+
+import { Theme, THEME_DARK } from '@theme/variants'
 
 interface Props {
 	initial: Theme
@@ -47,7 +47,9 @@ export const CryptalThemeProvider = React.memo<Props>((props) => {
 	)
 })
 
-export const useTheme = (createStyles?: (theme: Theme) => Styles) => {
+export const useTheme = (
+	createStyles?: (theme: Theme) => StyleSheet.NamedStyles<any>
+) => {
 	const data = React.useContext(ThemeContext)
 	return {
 		theme: data.theme,

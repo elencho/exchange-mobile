@@ -12,7 +12,7 @@ import AppText from 'components/AppText'
 import GeneralError from 'components/GeneralError'
 import WithKeyboard from 'components/WithKeyboard'
 import { errorHappenedHere } from 'utils/appUtils'
-import { COLORS_DARK } from 'refactor/common/theme/colors'
+import { COLORS_DARK } from 'refactor/setup/theme/colors'
 import { Button } from 'refactor/common/components/button'
 import useLogin from 'refactor/screens/login/use-login'
 

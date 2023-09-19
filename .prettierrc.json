@@ -5,5 +5,7 @@
 	"arrowParens": "always",
 	"semi": false,
 	"bracketSameLine": true,
-	"useTabs": true
+	"useTabs": true,
+	"importOrder": ["^@theme/(.*)$", "^@app/(.*)$", "^[./]"],
+	"importOrderSeparation": true
 }
