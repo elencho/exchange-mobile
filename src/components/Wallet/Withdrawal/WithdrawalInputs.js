@@ -122,8 +122,6 @@ export default function WithdrawalInputs({
   return (
     <>
       <View style={styles.block}>
-        <AppDropdown />
-
         {!hasRestriction && !isFiat && (
           <WithdrawalAddress right={<QrScannerToggler />} error={error} />
         )}
