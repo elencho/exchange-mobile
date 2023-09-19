@@ -79,6 +79,7 @@
     "react-native-flipper": "^0.184.0",
     "react-native-gesture-handler": "2.10.1",
     "react-native-indicators": "^0.17.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-modal": "^13.0.1",
     "react-native-navigation-bar-color": "^2.0.2",

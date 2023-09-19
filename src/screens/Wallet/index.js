@@ -26,6 +26,7 @@ export default function Wallet() {
   const balances = useSelector((state) => state.trade.balance.balances);
 
   const inputRef = useRef();
+  const scrollViewRef = useRef();
   const [filteredBalances, setFilteredBalances] = useState([]);
   const [showRefreshControl, setShowRefreshControl] = useState(false);
   const [value, setValue] = useState('');
@@ -45,6 +46,8 @@ export default function Wallet() {
         clearTimeout(timer);
         setShowZeroBalances(true);
         setValue('');
+        Keyboard.dismiss();
+        scrollViewRef.current.scrollTo({ x: 0, y: 3, animated: true });
       };
     }, [])
   );
@@ -114,6 +117,7 @@ export default function Wallet() {
                   />
                 ) : null
               }
+              ref={scrollViewRef}
               showsVerticalScrollIndicator={false}
               stickyHeaderIndices={[1]}
             >

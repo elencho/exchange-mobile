@@ -1,81 +1,41 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useKeyboard } from '@react-native-community/hooks';
-import { useFocusEffect } from '@react-navigation/native';
 import { setShouldRefreshOnScroll } from '../redux/wallet/actions';
 import { IS_IOS } from '../constants/system';
-
-const windowHeight = Dimensions.get('window').height;
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function WithKeyboard({
   children,
   modal,
-  scrollUp,
-  padding,
-  flexGrow,
-  style = {},
   contentContainerStyle = {},
   refreshControl,
   keyboardVerticalOffsetIOS = 50,
 }) {
   const dispatch = useDispatch();
-  const scrollRef = useRef();
   const keyboard = useKeyboard();
+
   const visible = keyboard?.keyboardShown;
-  const height = keyboard?.keyboardHeight;
-  const android = Platform.OS === 'android';
+  const height = -keyboard.keyboardHeight + keyboardVerticalOffsetIOS;
 
-  useFocusEffect(
-    useCallback(() => {
-      return () => {
-        if (scrollUp)
-          setTimeout(() => {
-            scrollRef?.current?.scrollTo({ x: 0, y: 0, animated: true });
-          }, 1000);
-      };
-    }, [])
-  );
-
-  const contentStyle = {
-    paddingBottom: android && padding && visible ? height : 0,
-    flexGrow: flexGrow ? 1 : null,
+  const onScrollEndDrag = (e) => {
+    if (IS_IOS && e.nativeEvent?.contentOffset?.y < -90)
+      dispatch(setShouldRefreshOnScroll(true));
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.select({ android: undefined, ios: 'padding' })}
-      keyboardVerticalOffset={Platform.select({
-        ios: keyboardVerticalOffsetIOS,
-        android: 500,
-      })}
-      style={styles.flex}
+    <KeyboardAwareScrollView
+      scrollEnabled
+      enableOnAndroid
+      refreshControl={refreshControl}
+      enableAutomaticScroll
+      enableResetScrollToCoords
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={[{ flexGrow: 1 }, contentContainerStyle]}
+      onScrollEndDrag={onScrollEndDrag}
+      style={visible && modal ? { marginBottom: height } : { marginBottom: 0 }}
     >
-      <ScrollView
-        style={[styles.flex, style]}
-        contentContainerStyle={[contentStyle, contentContainerStyle]}
-        showsVerticalScrollIndicator={false}
-        refreshControl={refreshControl}
-        ref={scrollRef}
-        onScrollEndDrag={(e) => {
-          if (IS_IOS && e.nativeEvent?.contentOffset?.y < -90)
-            dispatch(setShouldRefreshOnScroll(true));
-        }}
-      >
-        {children}
-      </ScrollView>
-    </KeyboardAvoidingView>
+      {children}
+    </KeyboardAwareScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
-});

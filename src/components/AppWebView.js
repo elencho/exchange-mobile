@@ -1,5 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, Modal, StyleSheet, View } from 'react-native';
+import {
+  TouchableOpacity,
+  Modal,
+  StyleSheet,
+  View,
+  StatusBar,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import WebView from 'react-native-webview';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -69,6 +75,11 @@ export default function AppWebView(props) {
       onRequestClose={handleOnRequestClose}
       animationType="slide"
     >
+      <StatusBar
+        backgroundColor={'transparent'}
+        translucent
+        barStyle="dark-content"
+      />
       <TouchableOpacity activeOpacity={0.99} style={styles.flex}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.close} onPress={closeWebView}>
