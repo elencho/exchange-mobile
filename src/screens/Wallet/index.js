@@ -45,6 +45,7 @@ export default function Wallet() {
         clearTimeout(timer);
         setShowZeroBalances(true);
         setValue('');
+        Keyboard.dismiss();
       };
     }, [])
   );

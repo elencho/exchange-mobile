@@ -81,43 +81,39 @@ export default function ModalWithSearch({
   };
   return (
     <View style={styles.container}>
-      <View style={styles.block}>
-        <AppText header style={styles.headline}>
-          {title}
-        </AppText>
+      <AppText header style={styles.headline}>
+        {title}
+      </AppText>
 
-        <AppInput
-          placeholder={title.replace('Choose', 'Search')}
-          placeholderTextColor="rgba(105, 111, 142, 0.5)"
-          onChangeText={filter}
-          right={<Search />}
-          activeRight={<SearchActive />}
-          style={styles.searchInput}
+      <AppInput
+        placeholder={title.replace('Choose', 'Search')}
+        placeholderTextColor="rgba(105, 111, 142, 0.5)"
+        onChangeText={filter}
+        right={<Search />}
+        activeRight={<SearchActive />}
+        style={styles.searchInput}
+      />
+
+      <WithKeyboard padding flexGrow modal>
+        <FlashList
+          data={array}
+          renderItem={searchItem}
+          keyExtractor={(item, index) =>
+            item?.code + index ||
+            item?.pair?.baseCurrency + index ||
+            item?.currencyCode + index
+          }
+          scrollEventThrottle={1000}
+          initialNumToRender={25}
+          estimatedItemSize={50}
+          contentContainerStyle={{ flexGrow: 1 }}
         />
-
-        <WithKeyboard padding flexGrow modal>
-          <FlashList
-            data={array}
-            renderItem={searchItem}
-            keyExtractor={(item, index) =>
-              item?.code + index ||
-              item?.pair?.baseCurrency + index ||
-              item?.currencyCode + index
-            }
-            scrollEventThrottle={1000}
-            initialNumToRender={25}
-            estimatedItemSize={50}
-          />
-        </WithKeyboard>
-      </View>
+      </WithKeyboard>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  block: {
-    flex: 1,
-  },
   container: {
     flex: 1,
     width: '100%',
