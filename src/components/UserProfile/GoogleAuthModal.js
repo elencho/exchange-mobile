@@ -121,7 +121,7 @@ export default function GoogleAuthModal() {
       </View>
 
       <AppInput
-        placeholder="Enter Key"
+        label="Enter Key"
         right={right}
         onChangeText={handleKey}
         value={key}
