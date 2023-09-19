@@ -49,7 +49,7 @@ export default function Maintanance({ navigation }) {
       source={images.Stars}
       style={styles.background}
     >
-      <Logo />
+      <Logo style={{ marginTop: 15 }} />
 
       <Margin margin={80} />
       <Gear />
