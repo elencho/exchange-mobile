@@ -125,6 +125,7 @@ export default function EmailVerification({ route }) {
             {checkMailText()}
 
             <TwoFaInput
+              navigation={navigation}
               value={value}
               setValue={setValue}
               registration
