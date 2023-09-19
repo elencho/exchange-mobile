@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   dropdown: {
-    marginBottom: 22,
+    marginBottom: 12,
   },
   flex: {
     flexDirection: 'row',

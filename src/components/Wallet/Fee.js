@@ -105,7 +105,7 @@ export default function Fee() {
 
   return (
     <View style={styles.fee}>
-      <FeeIcon width={42} height={32} />
+      <FeeIcon width={32} height={32} />
       <View style={styles.flex}>
         <UpperLine />
         <LowerLine />

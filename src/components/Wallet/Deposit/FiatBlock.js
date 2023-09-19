@@ -106,7 +106,7 @@ export default function FiatBlock() {
 
   const marginTop = () => {
     if (network === 'ECOMMERCE') {
-      return !depositProvider ? -35 : 0;
+      return !depositProvider ? -35 : -12;
     } else {
       return -10;
     }
