@@ -56,8 +56,10 @@ export default function TemplatesModal() {
       {templates?.map((t) => (
         <View style={[styles.template, background(t)]} key={t.id}>
           <Pressable style={styles.flex} onPress={() => choose(t)}>
-            <Text style={styles.white}>{t.templateName}</Text>
-            <AppText subtext style={styles.subtext}>
+            <Text numberOfLines={1} style={styles.white}>
+              {t.templateName}
+            </Text>
+            <AppText numberOfLines={1} subtext style={styles.subtext}>
               {t.iban}
             </AppText>
           </Pressable>
@@ -125,6 +127,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
     alignItems: 'center',
+    gap: 6,
   },
   subtext: {
     color: colors.SECONDARY_TEXT,

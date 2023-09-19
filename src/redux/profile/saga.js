@@ -175,7 +175,6 @@ function* codeToTokenSaga(action) {
       await SecureStore.setItemAsync('accessToken', data?.access_token);
       await SecureStore.setItemAsync('refreshToken', data?.refresh_token);
     });
-    yield put(fetchUserInfo());
     yield put({ type: 'OTP_SAGA', token: data?.access_token });
     if (navigation && !fromRegistration) {
       const screenName = fromResetOtp ? 'UserProfile' : 'Main';
