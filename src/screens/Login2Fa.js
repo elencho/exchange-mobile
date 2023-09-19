@@ -123,6 +123,7 @@ export default function Login2Fa({ navigation }) {
 
             <View style={styles.twoFaInput}>
               <TwoFaInput
+                navigation={navigation}
                 cellCount={cellCount}
                 value={value}
                 setValue={setValue}

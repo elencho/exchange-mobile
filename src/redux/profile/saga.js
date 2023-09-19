@@ -84,6 +84,7 @@ function* startLoginSaga(action) {
     }
     if (loginStartInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
       navigation.push('EmailVerification', { fromScreen: 'login' });
+      yield put(saveVerificationInfo(loginStartInfo));
     }
   }
 }
@@ -220,6 +221,7 @@ function* usernameAndPasswordSaga(action) {
   }
   if (userAndPassInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
     navigation.push('EmailVerification', { fromScreen: 'login' });
+    yield put(saveVerificationInfo(userAndPassInfo));
   }
   yield put(
     saveLoginStartInfo({

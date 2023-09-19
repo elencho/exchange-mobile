@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 
 import CodeInput from '../components/CodeInput';
 import {
@@ -29,9 +28,9 @@ export default function TwoFaInput({
   fromResetOtp,
   registration,
   indicatorStyle,
+  navigation,
 }) {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
   const state = useSelector((state) => state);
 
   const {
@@ -49,8 +48,9 @@ export default function TwoFaInput({
 
   useEffect(() => {
     if (value.length === cellCount) {
-      if (registration)
+      if (registration) {
         dispatch({ type: 'VERIFY_ACCOUNT', otp: value, navigation });
+      }
 
       if (withdrawal === 'crypto') dispatch(cryptoWithdrawalAction(value)); // value = OTP
       if (withdrawal === 'wire') dispatch(wireWithdrawalAction(value)); // value = OTP

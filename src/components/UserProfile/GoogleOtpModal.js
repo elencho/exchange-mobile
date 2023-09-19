@@ -8,9 +8,12 @@ import { setEmailAuth } from '../../redux/profile/actions';
 import AppModal from '../AppModal';
 import AppText from '../AppText';
 import TwoFaInput from '../TwoFaInput';
+import { useNavigation } from '@react-navigation/native';
 
 export default function GoogleOtpModal({ withdrawal, whitelist }) {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const state = useSelector((state) => state);
   const {
     modals: { googleOtpModalVisible },
@@ -38,6 +41,7 @@ export default function GoogleOtpModal({ withdrawal, whitelist }) {
 
       <View style={styles.codeInput}>
         <TwoFaInput
+          navigation={navigation}
           withdrawal={withdrawal}
           whitelist={whitelist}
           value={value}
