@@ -18,9 +18,11 @@ import {
   setGoogleAuth,
   setSmsAuth,
 } from '../../redux/profile/actions';
+import { useNavigation } from '@react-navigation/native';
 
 export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const state = useSelector((state) => state);
   const {
     modals: { smsAuthModalVisible, emailAuthModalVisible },
@@ -117,6 +119,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
 
       <View style={styles.codeInput}>
         <TwoFaInput
+          navigation={navigation}
           withdrawal={withdrawal}
           whitelist={whitelist}
           value={value}

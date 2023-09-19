@@ -114,6 +114,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
                 Enter the code you received on the email
               </AppText>
               <TwoFaInput
+                navigation={navigation}
                 value={value}
                 setValue={setValue}
                 login
