@@ -51,23 +51,25 @@ export default function ChooseNetworkDropdown({
   };
 
   const networkName = () => {
-    if (network === 'MAINNET') {
-      return cur[m].WALLET[0].displayName;
-    }
     const currentNetwork = currentBalanceObj.withdrawalMethods.WALLET.filter(
       (item) => item.provider === network
     );
     return (
-      <>
-        <AppText medium body>
-          {currentNetwork[0].displayName}
-        </AppText>
-        <AppText body style={styles.ticker}>
-          {`  (${network})`}
-        </AppText>
-      </>
+      <AppText medium body>
+        {currentNetwork[0].displayName}
+      </AppText>
     );
   };
+
+  const NetworkWithTicker = () => (
+    <AppText medium style={[styles.dropdownText, dropdownText]}>
+      {networkName()}
+      {'  '}
+      <AppText style={styles.secondary}>
+        ({network === 'MAINNET' ? code : network})
+      </AppText>
+    </AppText>
+  );
 
   const dropdownText = {
     color: error && !network ? '#F45E8C' : colors.PRIMARY_TEXT,
@@ -98,19 +100,11 @@ export default function ChooseNetworkDropdown({
               icon={renderIcon(network)}
               handlePress={handleDropdown}
               error={error && !network}
-              selectedText={
-                network && <AppText medium>{networkName()}</AppText>
-              }
+              selectedText={network && <NetworkWithTicker />}
             />
           ) : (
             <View style={styles.view}>
-              <AppText medium style={[styles.dropdownText, dropdownText]}>
-                {networkName()}
-                {'  '}
-                <AppText style={styles.secondary}>
-                  ({network === 'MAINNET' ? code : network})
-                </AppText>
-              </AppText>
+              <NetworkWithTicker />
             </View>
           )}
         </>
@@ -123,6 +117,7 @@ const styles = StyleSheet.create({
   dropdownText: {
     flex: 1,
     marginRight: 12,
+    gap: 6,
   },
   view: {
     height: 45,
