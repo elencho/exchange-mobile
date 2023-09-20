@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   StatusBar,
+  Platform,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import WebView from 'react-native-webview';
@@ -107,14 +108,14 @@ export default function AppWebView(props) {
 
 const styles = StyleSheet.create({
   close: {
-    position: 'absolute',
-    bottom: 10,
-    right: 22,
-    padding: 10,
+    alignSelf: 'flex-end',
+    marginRight: 25,
+    marginTop: Platform.select({ ios: 20, android: 10 }),
   },
   flex: { flex: 1 },
   header: {
     backgroundColor: 'white',
     height: 66,
+    paddingTop: 20,
   },
 });
