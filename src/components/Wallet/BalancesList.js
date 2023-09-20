@@ -31,6 +31,7 @@ export default function BalancesList({ balanceLoading, filteredBalances }) {
   return (
     <View style={styles.container}>
       <FlatList
+        nestedScrollEnabled
         data={filteredBalances}
         renderItem={renderCurrency}
         ListFooterComponent={() => <View style={{ height: height }} />}
