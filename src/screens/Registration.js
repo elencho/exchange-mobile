@@ -1,20 +1,20 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { StyleSheet, View, Pressable } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
 import { t } from 'i18next'
-
+import React, { useCallback, useEffect, useState } from 'react'
+import { StyleSheet, View, Pressable } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useDispatch, useSelector } from 'react-redux'
+import Logo from '../assets/images/Logo.svg'
 import AppButton from '../components/AppButton'
 import AppText from '../components/AppText'
+import GeneralError from '../components/GeneralError'
 import PurpleText from '../components/PurpleText'
 import CheckMarks from '../components/Registration/CheckMarks'
 import PersonalCompanySwitcher from '../components/Registration/PersonalCompanySwitcher'
 import RegistrationInputs from '../components/Registration/RegistrationInputs'
-import EmailVerification from './EmailVerification'
 import WithKeyboard from '../components/WithKeyboard'
-import Logo from '../assets/images/Logo.svg'
-import GeneralError from '../components/GeneralError'
-
+import colors from '../constants/colors'
 import {
 	registrationFormAction,
 	setRegistrationInputs,
@@ -22,8 +22,7 @@ import {
 	switchPersonalCompany,
 } from '../redux/profile/actions'
 import { errorHappenedHere } from '../utils/appUtils'
-import colors from '../constants/colors'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import EmailVerification from './EmailVerification'
 
 export default function Registration({ navigation }) {
 	const dispatch = useDispatch()
@@ -72,14 +71,10 @@ export default function Registration({ navigation }) {
 	}
 
 	const enabled =
-		o.nameCheck &&
-		o.lastNameCheck &&
 		o.isEmail &&
 		o.similarPasswords &&
 		o.passwordCheck &&
 		o.phoneNumberCheck &&
-		firstName &&
-		lastName &&
 		phoneNumber &&
 		phoneCountry &&
 		o.terms
@@ -102,42 +97,48 @@ export default function Registration({ navigation }) {
 	const preventBio = async () => await AsyncStorage.removeItem('isOpenDate')
 
 	return (
-		<WithKeyboard scrollUp padding style={styles.scrollview}>
-			<Pressable style={styles.back} onPress={goToSignIn}>
-				<PurpleText
-					numberOfLines={1}
-					text="Back to Log In"
-					style={styles.backText}
-				/>
-			</Pressable>
-			<View style={styles.container}>
-				<Logo style={styles.logo} />
-				<AppText header style={styles.header}>
-					Welcome to Cryptal
-				</AppText>
+		<SafeAreaView style={styles.safeArea}>
+			<WithKeyboard
+				scrollUp
+				padding
+				style={styles.scrollview}
+				keyboardVerticalOffsetIOS={10}>
+				<Pressable style={styles.back} onPress={goToSignIn}>
+					<PurpleText
+						numberOfLines={1}
+						text="Back to Log In"
+						style={styles.backText}
+					/>
+				</Pressable>
+				<View style={styles.container}>
+					<Logo style={styles.logo} />
+					<AppText header style={styles.header}>
+						Welcome to Cryptal
+					</AppText>
 
-				<PersonalCompanySwitcher />
+					<PersonalCompanySwitcher />
 
-				<GeneralError
-					style={styles.error}
-					show={errorHappenedHere('Registration')}
-				/>
+					<GeneralError
+						style={styles.error}
+						show={errorHappenedHere('Registration')}
+					/>
 
-				<RegistrationInputs error={error} validations={o} />
-				<CheckMarks error={error} validations={o} />
+					<RegistrationInputs error={error} validations={o} />
+					<CheckMarks error={error} validations={o} />
 
-				<AppButton
-					text="Register"
-					onPress={handleRegistration}
-					loading={userProfileLoading}
-				/>
+					<AppButton
+						text="Register"
+						onPress={handleRegistration}
+						loading={userProfileLoading}
+					/>
 
-				<AppText style={styles.subtext}>
-					{t('Have an Account?')}{' '}
-					<PurpleText text={t('Sign In')} onPress={goToSignIn} />
-				</AppText>
-			</View>
-		</WithKeyboard>
+					<AppText style={styles.subtext}>
+						{t('Have an Account?')}{' '}
+						<PurpleText text={t('Sign In')} onPress={goToSignIn} />
+					</AppText>
+				</View>
+			</WithKeyboard>
+		</SafeAreaView>
 	)
 }
 
@@ -180,6 +181,10 @@ const styles = StyleSheet.create({
 	backText: {
 		marginBottom: 2,
 		marginLeft: 10,
+		flex: 1,
+	},
+	safeArea: {
+		backgroundColor: colors.PRIMARY_BACKGROUND,
 		flex: 1,
 	},
 })

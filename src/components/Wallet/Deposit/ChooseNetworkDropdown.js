@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../../AppText'
-
+import Arrow from '../../../assets/images/Arrow'
+import Card from '../../../assets/images/Card.svg'
+import Euro from '../../../assets/images/Euro.svg'
+import Bank from '../../../assets/images/LocalBank.svg'
+import { ICONS_URL_PNG } from '../../../constants/api'
 import colors from '../../../constants/colors'
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions'
 import { setNetwork } from '../../../redux/wallet/actions'
-import Euro from '../../../assets/images/Euro.svg'
-import Card from '../../../assets/images/Card.svg'
-import Bank from '../../../assets/images/LocalBank.svg'
-import Arrow from '../../../assets/images/Arrow'
+import AppDropdown from '../../AppDropdown'
+import AppText from '../../AppText'
 
 export default function ChooseNetworkDropdown({
 	disabled = false,
 	whitelist,
 	error,
+	style,
 }) {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
@@ -25,19 +26,12 @@ export default function ChooseNetworkDropdown({
 		transactions: { code },
 		modals: { addWhitelistModalVisble },
 	} = state
+	// const uri = `${ICONS_URL_PNG}/${network}.png`;
+	// const fiat = cur?.type === 'FIAT';
 
 	const cur = currentBalanceObj
 
 	const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods'
-	const fiat = cur?.type === 'FIAT'
-
-	const [icon, setIcon] = useState(null)
-
-	useEffect(() => {
-		cur?.depositMethods?.WALLET?.forEach((m) => {
-			if (m.provider === network) setIcon(m.iconName)
-		})
-	}, [network, code])
 
 	useEffect(() => {
 		if (addWhitelistModalVisble && hasMultipleNetworks) {
@@ -55,18 +49,26 @@ export default function ChooseNetworkDropdown({
 	}
 
 	const networkName = () => {
-		if (network === 'ERC20') return 'Ethereum Network'
-		if (network === 'BEP20') return 'Binance Smart Chain'
-		if (network === 'MAINNET') {
-			return cur[m].WALLET[0].displayName
-		}
-		return network
+		const currentNetwork = currentBalanceObj?.withdrawalMethods?.WALLET?.filter(
+			(item) => item.provider === network
+		)
+		return (
+			<AppText medium body>
+				{currentNetwork?.[0].displayName}
+			</AppText>
+		)
 	}
 
-	const dropdown = {
-		opacity: disabled ? 0.5 : 1,
-		borderColor: error && !network ? '#F45E8C' : '#42475D',
-	}
+	const NetworkWithTicker = () => (
+		<AppText medium style={[styles.dropdownText, dropdownText]}>
+			{networkName()}
+			{'  '}
+			<AppText style={styles.secondary}>
+				({network === 'MAINNET' ? code : network})
+			</AppText>
+		</AppText>
+	)
+
 	const dropdownText = {
 		color: error && !network ? '#F45E8C' : colors.PRIMARY_TEXT,
 	}
@@ -88,42 +90,19 @@ export default function ChooseNetworkDropdown({
 			{isAvailable() && (
 				<>
 					{hasMultipleNetworks ? (
-						<Pressable
-							style={[styles.dropdown, dropdown]}
-							onPress={handleDropdown}
-							disabled={disabled}>
-							{network ? (
-								<>
-									<View style={[styles.subtext]}>
-										<AppText body style={styles.secondary}>
-											Choose Network
-										</AppText>
-									</View>
-									<View style={styles.image}>{renderIcon(network)}</View>
-									<AppText medium style={[styles.dropdownText, dropdownText]}>
-										{networkName()}{' '}
-										<AppText style={styles.secondary}>({network})</AppText>
-									</AppText>
-								</>
-							) : (
-								<AppText style={[styles.secondary, dropdownText, { flex: 1 }]}>
-									Choose Network
-								</AppText>
-							)}
-							<Arrow />
-						</Pressable>
+						<AppDropdown
+							notClearable
+							label="Choose Network"
+							withLabel
+							style={[styles.dropdown, style]}
+							icon={renderIcon(network)}
+							handlePress={handleDropdown}
+							error={error && !network}
+							selectedText={network && <NetworkWithTicker />}
+						/>
 					) : (
 						<View style={styles.view}>
-							{icon && (
-								<Image
-									source={{ uri }}
-									style={[styles.image, styles.iconDimensions]}
-								/>
-							)}
-							<AppText medium style={[styles.dropdownText, dropdownText]}>
-								{networkName()}{' '}
-								<AppText style={styles.secondary}>({network})</AppText>
-							</AppText>
+							<NetworkWithTicker />
 						</View>
 					)}
 				</>
@@ -136,6 +115,7 @@ const styles = StyleSheet.create({
 	dropdownText: {
 		flex: 1,
 		marginRight: 12,
+		gap: 6,
 	},
 	view: {
 		height: 45,
@@ -143,15 +123,10 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 20,
 		backgroundColor: 'rgba(149, 164, 247, 0.04)',
-		paddingHorizontal: 15,
+		paddingHorizontal: 22,
 	},
 	dropdown: {
-		borderWidth: 1,
-		height: 45,
-		flexDirection: 'row',
-		alignItems: 'center',
 		marginTop: 20,
-		paddingHorizontal: 15,
 	},
 	iconDimensions: {
 		width: 18,
@@ -165,6 +140,8 @@ const styles = StyleSheet.create({
 	secondary: {
 		color: colors.SECONDARY_TEXT,
 	},
+	ticker: { marginLeft: 6, color: colors.SECONDARY_TEXT },
+
 	subtext: {
 		transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
 		position: 'absolute',

@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import { MaterialIndicator } from 'react-native-indicators'
-
-import AppInput from '../AppInput'
-import AppModal from '../AppModal'
-import AppText from '../AppText'
-import PurpleText from '../PurpleText'
-import GeneralError from '../GeneralError'
+import { useDispatch, useSelector } from 'react-redux'
 import Copy from '../../assets/images/Copy.svg'
-
+import AppStoreIcon from '../../assets/images/User_profile/Appstore.svg'
+import PlayStoreIcon from '../../assets/images/User_profile/Playstore.svg'
 import colors from '../../constants/colors'
+import { IS_IOS } from '../../constants/system'
 import { toggleGoogleAuthModal } from '../../redux/modals/actions'
 import { activateGoogleOtp, setGoogleAuth } from '../../redux/profile/actions'
 import { errorHappenedHere } from '../../utils/appUtils'
-import { IS_IOS } from '../../constants/system'
 import useCopyToClipboard from '../../utils/copyToClipboard'
-
-import AppStoreIcon from '../../assets/images/User_profile/Appstore.svg'
-import PlayStoreIcon from '../../assets/images/User_profile/Playstore.svg'
+import AppInput from '../AppInput'
+import AppModal from '../AppModal'
+import AppText from '../AppText'
+import GeneralError from '../GeneralError'
+import PurpleText from '../PurpleText'
 
 export default function GoogleAuthModal() {
 	const { copyToClipboard } = useCopyToClipboard()
@@ -66,6 +63,8 @@ export default function GoogleAuthModal() {
 
 	const handleCopy = () => copyToClipboard(totpSecretObj?.totpSecretEncoded)
 
+	const isKeyEmpty = key?.length === 0
+
 	const right = (
 		<View style={styles.row}>
 			<View style={styles.smallLine} />
@@ -77,7 +76,11 @@ export default function GoogleAuthModal() {
 					style={{ flex: 0 }}
 				/>
 			) : (
-				<PurpleText text="Enable" onPress={enable} />
+				<PurpleText
+					text="Enable"
+					style={isKeyEmpty && { color: colors.SECONDARY_TEXT }}
+					onPress={isKeyEmpty ? null : enable}
+				/>
 			)}
 		</View>
 	)
@@ -115,7 +118,7 @@ export default function GoogleAuthModal() {
 			</View>
 
 			<AppInput
-				placeholder="Enter Key"
+				label="Enter Key"
 				right={right}
 				onChangeText={handleKey}
 				value={key}
@@ -167,7 +170,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		height: '100%',
 	},
-	header: { color: colors.PRIMARY_TEXT },
-	secondary: { color: colors.SECONDARY_TEXT },
+	header: { color: colors.PRIMARY_TEXT, fontSize: 19 },
+	secondary: { color: colors.SECONDARY_TEXT, fontSize: 13 },
 	subtext: { color: '#C0C5E0', flex: 1 },
 })

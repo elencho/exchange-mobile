@@ -1,11 +1,10 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../AppText'
 import colors from '../../constants/colors'
-import PurpleText from '../PurpleText'
 import { openCompanyInfoModal } from '../../redux/modals/actions'
+import AppText from '../AppText'
+import PurpleText from '../PurpleText'
 
 export default function CompanyInformation() {
 	const dispatch = useDispatch()
@@ -29,14 +28,7 @@ export default function CompanyInformation() {
 				<AppText medium style={styles.white}>
 					Company Information
 				</AppText>
-				<PurpleText
-					text="Edit"
-					onPress={openModal}
-					style={{
-						transform: [{ scale: 0.9 }, { translateY: 2 }],
-						fontSize: 20,
-					}}
-				/>
+				<PurpleText text="Edit" onPress={openModal} />
 			</View>
 
 			<View style={[styles.row, { marginTop: 20 }]}>
@@ -107,7 +99,6 @@ const styles = StyleSheet.create({
 	},
 	block: {
 		paddingVertical: 25,
-		paddingHorizontal: 5,
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 		marginBottom: 10,
 	},

@@ -1,11 +1,10 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../AppText'
+import Next from '../../assets/images/Next.svg'
 import colors from '../../constants/colors'
 import { setUsdBtcSwitch } from '../../redux/wallet/actions'
-import Next from '../../assets/images/Next.svg'
+import AppText from '../AppText'
 
 export default function NewCurrencySwitch() {
 	const dispatch = useDispatch()
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
 		borderRadius: 13,
 		justifyContent: 'center',
 		alignItems: 'center',
-		borderColor: colors.SECONDARY_PURPLE,
+		borderColor: '#38427E',
 		borderWidth: 1,
 		flexDirection: 'row',
 	},

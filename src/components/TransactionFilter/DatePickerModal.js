@@ -1,27 +1,38 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import { Calendar } from 'react-native-calendars'
-
-import AppModal from '../AppModal'
-import CalendarHeader from './CalendarHeader'
-import CalendarDay from './CalendarDay'
-import AppText from '../AppText'
-import { toggleDatePicker } from '../../redux/modals/actions'
-import { months } from '../../constants/months'
+import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../constants/colors'
+import { months } from '../../constants/months'
+import { toggleDatePicker } from '../../redux/modals/actions'
+import AppModal from '../AppModal'
+import AppText from '../AppText'
+import CalendarDay from './CalendarDay'
+import CalendarHeader from './CalendarHeader'
 
 const theme = {
 	calendarBackground: colors.PRIMARY_BACKGROUND,
 }
 
-export default function DatePickerModal({ from, to }) {
+export default function DatePickerModal({ from, to, isInstantTrade }) {
 	const dispatch = useDispatch()
 	const datePickerVisible = useSelector(
 		(state) => state.modals.datePickerVisible
 	)
-	const fromDateTime = useSelector((state) => state.transactions.fromDateTime)
-	const toDateTime = useSelector((state) => state.transactions.toDateTime)
+	const fromDateTimeTransactions = useSelector(
+		(state) => state.transactions.fromDateTime
+	)
+	const toDateTimeTransactions = useSelector(
+		(state) => state.transactions.toDateTime
+	)
+	const fromDateTimeTrades = useSelector(
+		(state) => state.trade.fromDateTimeQuery
+	)
+	const toDateTimeTrades = useSelector((state) => state.trade.toDateTimeQuery)
+	const fromDateTime = isInstantTrade
+		? fromDateTimeTrades
+		: fromDateTimeTransactions
+	const toDateTime = isInstantTrade ? toDateTimeTrades : toDateTimeTransactions
 
 	const visible = () => {
 		if (from) return datePickerVisible.from
@@ -82,7 +93,12 @@ export default function DatePickerModal({ from, to }) {
 				/>
 			)}
 			dayComponent={(state) => (
-				<CalendarDay state={state} from={from} to={to} />
+				<CalendarDay
+					state={state}
+					from={from}
+					to={to}
+					isInstantTrade={isInstantTrade}
+				/>
 			)}
 		/>
 	)

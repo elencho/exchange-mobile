@@ -1,33 +1,31 @@
 import React, { useEffect } from 'react'
 import { Linking, Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../AppText'
-import PurpleText from '../PurpleText'
-import ChooseLanguageModal from './ChooseLanguageModal'
-import CompanyInformation from './CompanyInformation'
-import PersonalInfoModal from './PersonalInfoModal'
-import PersonalInformation from './PersonalInformation'
-import PhoneNumberModal from './PhoneNumberModal'
-import launchSumsubSdk from '../../utils/sumsubMobileSdk'
-import EditCompanyModal from './EditCompanyModal'
-import IdentityModal from './IdentityModal'
-import AppSwitcher from '../AppSwitcher'
-import PersonalProfileSkeleton from './PersonalProfileSkeleton'
-import DeleteAccount from './DeleteAccount'
 import Identity from '../../assets/images/User_profile/Identity.svg'
-import Phone from '../../assets/images/User_profile/Phone.svg'
-import Notifications from '../../assets/images/User_profile/Notifications.svg'
 import Language from '../../assets/images/User_profile/Language.svg'
-
-import { errorHappenedHere } from '../../utils/appUtils'
-import { toggleEmailSubscription } from '../../redux/profile/actions'
+import Notifications from '../../assets/images/User_profile/Notifications.svg'
+import Phone from '../../assets/images/User_profile/Phone.svg'
+import colors from '../../constants/colors'
 import {
 	openCompanyInfoModal,
 	toggleLanguageModal,
 	togglePhoneNumberModal,
 } from '../../redux/modals/actions'
-import colors from '../../constants/colors'
+import { toggleEmailSubscription } from '../../redux/profile/actions'
+import { errorHappenedHere } from '../../utils/appUtils'
+import launchSumsubSdk from '../../utils/sumsubMobileSdk'
+import AppSwitcher from '../AppSwitcher'
+import AppText from '../AppText'
+import PurpleText from '../PurpleText'
+import ChooseLanguageModal from './ChooseLanguageModal'
+import CompanyInformation from './CompanyInformation'
+import DeleteAccount from './DeleteAccount'
+import EditCompanyModal from './EditCompanyModal'
+import IdentityModal from './IdentityModal'
+import PersonalInfoModal from './PersonalInfoModal'
+import PersonalInformation from './PersonalInformation'
+import PersonalProfileSkeleton from './PersonalProfileSkeleton'
+import PhoneNumberModal from './PhoneNumberModal'
 
 export default function Personal({ loading }) {
 	const dispatch = useDispatch()
@@ -275,7 +273,7 @@ const styles = StyleSheet.create({
 		marginLeft: 15,
 	},
 	block: {
-		padding: 5,
+		paddingVertical: 5,
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 		marginBottom: 10,
 	},
@@ -292,7 +290,6 @@ const styles = StyleSheet.create({
 	},
 	purple: {
 		alignSelf: 'flex-end',
-		fontSize: 20,
 	},
 	secondary: {
 		color: colors.SECONDARY_TEXT,

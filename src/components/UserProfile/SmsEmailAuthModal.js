@@ -1,13 +1,8 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import { MaterialIndicator } from 'react-native-indicators'
-
-import AppModal from '../AppModal'
-import AppText from '../AppText'
-import TwoFaInput from '../TwoFaInput'
-import PurpleText from '../PurpleText'
-
+import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../constants/colors'
 import {
 	toggleEmailAuthModal,
@@ -18,9 +13,14 @@ import {
 	setGoogleAuth,
 	setSmsAuth,
 } from '../../redux/profile/actions'
+import AppModal from '../AppModal'
+import AppText from '../AppText'
+import PurpleText from '../PurpleText'
+import TwoFaInput from '../TwoFaInput'
 
 export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
 	const dispatch = useDispatch()
+	const navigation = useNavigation()
 	const state = useSelector((state) => state)
 	const {
 		modals: { smsAuthModalVisible, emailAuthModalVisible },
@@ -96,7 +96,11 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
 				/>
 			)
 		} else if (timerVisible) {
-			return <AppText style={{ color: colors.PRIMARY_TEXT }}>{seconds}</AppText>
+			return (
+				<AppText style={{ color: colors.PRIMARY_TEXT }} body>
+					{seconds}
+				</AppText>
+			)
 		} else {
 			return <PurpleText text="resend purple" onPress={resend} />
 		}
@@ -107,12 +111,13 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
 			<AppText style={styles.header} header>
 				{`${type} Authentication`}
 			</AppText>
-			<AppText style={styles.secondary} body>
+			<AppText style={styles.secondary} calendarDay>
 				Enter One Time Password
 			</AppText>
 
 			<View style={styles.codeInput}>
 				<TwoFaInput
+					navigation={navigation}
 					withdrawal={withdrawal}
 					whitelist={whitelist}
 					value={value}
@@ -122,7 +127,9 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
 			</View>
 
 			<View style={styles.row}>
-				<AppText body style={[styles.secondary, { marginRight: 5 }]}>
+				<AppText
+					body
+					style={[{ marginRight: 5, color: colors.SECONDARY_TEXT }]}>
 					Didn't receive code?
 				</AppText>
 				{resendOrCountDown()}
@@ -151,6 +158,7 @@ const styles = StyleSheet.create({
 	header: {
 		color: colors.PRIMARY_TEXT,
 		marginBottom: 10,
+		textAlign: 'center',
 	},
 	indicator: {
 		flex: 0,
@@ -161,7 +169,7 @@ const styles = StyleSheet.create({
 	},
 	secondary: {
 		color: colors.SECONDARY_TEXT,
-		fontSize: 24,
+		fontSize: 20,
 		lineHeight: 28,
 	},
 })

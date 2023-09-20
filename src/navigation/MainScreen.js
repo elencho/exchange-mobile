@@ -5,8 +5,10 @@ import * as SecureStore from 'expo-secure-store'
 import jwt_decode from 'jwt-decode'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { AppState } from 'react-native'
+import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch } from 'react-redux'
 import BottomTabs from '../components/BottomTabs'
+import colors from '../constants/colors'
 import { setTabRouteName } from '../redux/transactions/actions'
 import Exchange from '../screens/Exchange'
 import InstantTrade from '../screens/InstantTrade'
@@ -23,6 +25,7 @@ function MainScreen({ navigation }) {
 
 	useEffect(() => {
 		onBeforeShow()
+
 		return () => {
 			onClose()
 		}
@@ -63,10 +66,13 @@ function MainScreen({ navigation }) {
 	}, [])
 
 	const onBeforeShow = async () => {
+		await changeNavigationBarColor(colors.SECONDARY_BACKGROUND, true)
 		setSubscription(AppState.addEventListener('change', handleAppStateChange))
 	}
 
 	const onClose = async () => {
+		await changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true)
+
 		subscription?.remove()
 	}
 

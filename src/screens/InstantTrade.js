@@ -1,35 +1,30 @@
+import messaging from '@react-native-firebase/messaging'
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useState, useEffect } from 'react'
 import { ScrollView, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { useFocusEffect } from '@react-navigation/native'
-
-import CustomRefreshContol from '../components/CustomRefreshContol'
 import Background from '../components/Background'
+import CustomRefreshContol from '../components/CustomRefreshContol'
+import BuySellModal from '../components/InstantTrade/BuySellModal'
 import BuySellSwitch from '../components/InstantTrade/BuySellSwitch'
+import CryptoModal from '../components/InstantTrade/CryptoModal'
+import FiatModal from '../components/InstantTrade/FiatModal'
 import InfoMark from '../components/InstantTrade/InfoMark'
+import InfoModal from '../components/InstantTrade/InfoModal'
 import TradeBlock from '../components/InstantTrade/TradeBlock'
+import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton'
 import TransactionsBlock from '../components/InstantTrade/TransactionsBlock'
 import Headline from '../components/TransactionHistory/Headline'
 import TopRow from '../components/TransactionHistory/TopRow'
-import BuySellModal from '../components/InstantTrade/BuySellModal'
-import InfoModal from '../components/InstantTrade/InfoModal'
 import TransactionModal from '../components/TransactionHistory/TransactionModal'
-import CryptoModal from '../components/InstantTrade/CryptoModal'
-import FiatModal from '../components/InstantTrade/FiatModal'
-import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton'
-
 import colors from '../constants/colors'
+import { toggleChooseCardModal } from '../redux/modals/actions'
 import {
-	fetchTrades,
+	setOffersLoading,
 	setTradeOffset,
 	setTradeType,
 } from '../redux/trade/actions'
 import { setWalletTab } from '../redux/wallet/actions'
-import { toggleChooseCardModal } from '../redux/modals/actions'
-
-import messaging from '@react-native-firebase/messaging'
-import Copy from '../assets/images/Copy.svg'
-import * as Clipboard from 'expo-clipboard'
 import useNotificationPermissions from './useNotificationPermissions'
 
 export default function InstantTrade() {
@@ -47,22 +42,25 @@ export default function InstantTrade() {
 		dispatch(setWalletTab('Deposit'))
 		dispatch({ type: 'REFRESH_WALLET_AND_TRADES' })
 		dispatch(setTradeOffset(0))
-		dispatch(fetchTrades())
 	}
 
 	const [showRefreshControl, setShowRefreshControl] = useState(false)
 
 	useFocusEffect(
 		useCallback(() => {
+			dispatch(setOffersLoading(true))
+
 			tabRoute === 'Trade' && onRefresh()
 			const timer = setTimeout(() => {
 				setShowRefreshControl(true)
+				dispatch(setOffersLoading(false))
 			}, 1000)
+
 			return () => {
 				dispatch(toggleChooseCardModal(false))
 				clearTimeout(timer)
 			}
-		}, [tabRoute])
+		}, [])
 	)
 
 	//ToDo: delete

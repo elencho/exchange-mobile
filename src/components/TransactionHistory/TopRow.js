@@ -1,22 +1,27 @@
-import React from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { useSelector } from 'react-redux'
-
+import React, { useEffect } from 'react'
+import { Pressable, StyleSheet, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../constants/colors'
+import { fetchUserInfo } from '../../redux/profile/actions'
 import AppText from '../AppText'
 import Headline from './Headline'
 
-function TopRow({ clear, headlineLogo }) {
+function TopRow({ clear, headlineLogo, style }) {
 	const navigation = useNavigation()
 	const route = useRoute()
+	const dispatch = useDispatch()
 
 	const userInfo = useSelector((state) => state.profile.userInfo)
 	const { firstName, lastName } = userInfo
 
+	useEffect(() => {
+		if (!firstName) dispatch(fetchUserInfo())
+	}, [])
+
 	const initials = () => {
 		if (firstName && lastName) {
-			return `${firstName[0]} ${lastName[0]}`
+			return `${firstName[0].toUpperCase()} ${lastName[0].toUpperCase()}`
 		} else {
 			return ''
 		}
@@ -47,7 +52,7 @@ function TopRow({ clear, headlineLogo }) {
 	return (
 		<View style={styles.topRow}>
 			<View style={styles.flexRow}>
-				<Headline title={title} />
+				<Headline title={title} style={style} />
 				{headlineLogo ? headlineLogo : null}
 			</View>
 
@@ -95,7 +100,8 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'center',
 		zIndex: 99,
-		marginBottom: 28,
+		paddingTop: 20,
+		paddingBottom: 28,
 	},
 	text: {
 		color: colors.PRIMARY_TEXT,

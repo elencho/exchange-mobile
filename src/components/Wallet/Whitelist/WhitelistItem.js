@@ -1,13 +1,11 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-
-import AppText from '../../AppText'
+import Menu from '../../../assets/images/Wallet/Menu.svg'
 import colors from '../../../constants/colors'
 import { toggleWhitelistActionsModal } from '../../../redux/modals/actions'
 import { chooseWhitelist, setNetwork } from '../../../redux/wallet/actions'
-
-import Menu from '../../../assets/images/Wallet/Menu.svg'
+import AppText from '../../AppText'
 
 export default function WhitelistItem({ whitelistItem }) {
 	const { name, address, tag, provider } = whitelistItem
@@ -61,7 +59,7 @@ const styles = StyleSheet.create({
 	menu: {
 		width: 30,
 		height: 30,
-		alignItems: 'center',
+		alignItems: 'flex-end',
 		justifyContent: 'center',
 	},
 	primary: {

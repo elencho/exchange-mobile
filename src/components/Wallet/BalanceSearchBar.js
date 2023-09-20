@@ -1,16 +1,16 @@
-import { StyleSheet, View, Pressable, TextInput } from 'react-native'
 import React, { forwardRef } from 'react'
+import { StyleSheet, View, Pressable, TextInput } from 'react-native'
 import Animated, {
 	interpolate,
 	interpolateColor,
 	useAnimatedStyle,
 } from 'react-native-reanimated'
-import AppSwitcher from '../AppSwitcher'
-import AppText from '../AppText'
-import colors from '../../constants/colors'
 import Close from '../../assets/images/Close'
 import Search from '../../assets/images/Search'
+import colors from '../../constants/colors'
 import { IS_ANDROID } from '../../constants/system'
+import AppSwitcher from '../AppSwitcher'
+import AppText from '../AppText'
 
 const BalanceSearchBar = forwardRef(
 	(
@@ -92,9 +92,11 @@ export default BalanceSearchBar
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: colors.PRIMARY_BACKGROUND,
-		paddingVertical: 25,
+		paddingBottom: 10,
+		alignItems: 'flex-start',
 		flex: 1,
 		justifyContent: 'center',
+		paddingTop: 10,
 	},
 	input: {
 		position: 'absolute',

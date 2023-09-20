@@ -1,7 +1,6 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
 import colors from '../../constants/colors'
 import { toggleBuySellModal } from '../../redux/modals/actions'
 import { setCurrentTrade } from '../../redux/trade/actions'
@@ -64,7 +63,9 @@ export default function ReadyTrades() {
 					{secondary(item)}
 				</Pressable>
 			))}
-			<Pressable style={styles.block} onPress={handleTrade}>
+			<Pressable
+				style={[styles.block, { marginBottom: 28 }]}
+				onPress={handleTrade}>
 				<AppText medium style={styles.primary}>
 					Custom
 				</AppText>
@@ -78,13 +79,12 @@ export default function ReadyTrades() {
 
 const styles = StyleSheet.create({
 	block: {
-		borderWidth: 0.5,
-		borderColor: 'rgba(101, 130, 253, 0.3)',
 		height: 80,
 		width: '47%',
 		marginBottom: '6%',
 		justifyContent: 'center',
 		paddingHorizontal: 20,
+		backgroundColor: colors.SECONDARY_BACKGROUND,
 	},
 	container: {
 		flexDirection: 'row',

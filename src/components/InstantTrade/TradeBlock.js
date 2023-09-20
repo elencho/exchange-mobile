@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
-
 import colors from '../../constants/colors'
 import AppText from '../AppText'
 import CurrencyDropdowns from './CurrencyDropdowns'
@@ -40,7 +39,6 @@ export default function TradeBlock() {
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 10,
 		marginBottom: 10,
 	},
 	price: {

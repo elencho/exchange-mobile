@@ -1,16 +1,15 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
+import CheckEmpty from '../../../assets/images/Check_Empty.svg'
+import CheckFull from '../../../assets/images/Check_Full.svg'
+import colors from '../../../constants/colors'
 import {
 	saveTemplateAction,
 	setNewTemplateName,
 } from '../../../redux/wallet/actions'
 import AppInput from '../../AppInput'
 import AppText from '../../AppText'
-
-import CheckFull from '../../../assets/images/Check_Full.svg'
-import CheckEmpty from '../../../assets/images/Check_Empty.svg'
 
 export default function SaveAsTemplate({ error }) {
 	const dispatch = useDispatch()
@@ -39,6 +38,7 @@ export default function SaveAsTemplate({ error }) {
 					onChangeText={handleNewTemplate}
 					style={styles.input}
 					error={error && !newTemplateName?.trim()}
+					labelBackgroundColor={colors.PRIMARY_BACKGROUND}
 				/>
 			)}
 		</>
@@ -53,18 +53,15 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	input: {
-		marginHorizontal: 15,
 		marginBottom: 47,
 	},
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
 		height: 30,
-		marginLeft: 10,
-		marginTop: -15,
 	},
 	text: {
 		color: '#B7BFDB',
-		marginLeft: 13,
+		marginLeft: 14,
 	},
 })

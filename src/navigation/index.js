@@ -5,6 +5,7 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import { BackHandler } from 'react-native'
+import { enableScreens } from 'react-native-screens'
 import { useDispatch, useSelector } from 'react-redux'
 import CardVerificationOneScreen from '../screens/CardVerificationOne'
 import CardVerificationTwoScreen from '../screens/CardVerificationTwo'
@@ -17,7 +18,6 @@ import RegistrationScreen from '../screens/Registration'
 import ResetOtpInstructionsScreen from '../screens/ResetOtpInstructions'
 import Resume from '../screens/Resume'
 import SetNewPasswordScreen from '../screens/SetNewPassword'
-import Splash from '../screens/SplashScreen'
 import TransactionFilter from '../screens/TransactionFilter'
 import UpdateAvailableScreen from '../screens/UpdateAvailable'
 import UserProfileScreen from '../screens/UserProfile'
@@ -26,6 +26,7 @@ import WelcomeScreen from '../screens/Welcome'
 import useNotifications from '../screens/useNotifications'
 import MainScreen from './MainScreen'
 
+enableScreens(false)
 const Stack = createNativeStackNavigator()
 export const navigationRef = createNavigationContainerRef()
 
@@ -52,6 +53,7 @@ export default function Navigator() {
 		gestureEnabled: false,
 		headerLeft: () => null,
 		animation: 'slide_from_right',
+		navigationBarColor: '#161629',
 	}
 
 	useNotifications()
@@ -61,7 +63,15 @@ export default function Navigator() {
 			onStateChange={onStateChange}
 			ref={navigationRef}
 			theme={{ colors: { background: 'transparent' } }}>
-			<Stack.Navigator screenOptions={screenOptions}>
+			<Stack.Navigator
+				// initialRouteName={'SplashScreen'}
+				screenOptions={screenOptions}>
+				{/* TODO:remove */}
+				{/* <Stack.Screen
+          options={{ animation: 'fade' }}
+          name="SplashScreen"
+          component={Splash}
+        /> */}
 				<Stack.Screen name="Welcome" component={WelcomeScreen} />
 				<Stack.Screen
 					name="UpdateAvailable"
@@ -72,7 +82,7 @@ export default function Navigator() {
 				<Stack.Screen name="Registration" component={RegistrationScreen} />
 				<Stack.Screen name="EmailVerification" component={EmailVerification} />
 				<Stack.Screen
-					options={{ animation: 'fade' }}
+					options={{ animation: 'fade', navigationBarColor: '#1F1F35' }}
 					name="Main"
 					component={MainScreen}
 				/>

@@ -1,31 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleCryptoModal } from '../../redux/modals/actions'
-import { instantTradeTabAction, setCrypto } from '../../redux/trade/actions'
 import {
-	fetchCurrencies,
-	filterCurrencies,
-} from '../../redux/transactions/actions'
+	fetchTrades,
+	instantTradeTabAction,
+	saveTrades,
+	setCrypto,
+	setCryptoCodeQuery,
+	setTradeOffset,
+} from '../../redux/trade/actions'
+import { setCryptoFilter } from '../../redux/transactions/actions'
 import AppModal from '../AppModal'
 import ModalWithSearch from '../ModalWithSearch'
 
-export default function CryptoModal() {
+export default function CryptoModalTrade() {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 
 	const {
 		modals: { cryptoModalVisible },
-		trade: { crypto, offers, fiat, tradeType },
+		trade: { cryptoCodeQuery, offers, fiat, tradeType },
+		transactions: { cryptoFilter: cryptoCodeTransactions, activeTab },
 	} = state
 
+	const isInstantTrade = activeTab === 'Instant trade'
 	const [filteredData, setFiletredData] = useState(offers?.[fiat])
-	const arrayToPass = filteredData?.length > 0 ? filteredData : offers?.[fiat]
+	const arrayToPass =
+		filteredData?.length > 0 ? [...filteredData] : offers?.[fiat]
 
 	useEffect(() => {
 		dispatch(instantTradeTabAction())
 		offers && setFiletredData(offers[fiat])
 	}, [])
-
 	useEffect(() => {
 		filter('')
 	}, [cryptoModalVisible])
@@ -44,22 +50,26 @@ export default function CryptoModal() {
 	}
 
 	const hide = () => dispatch(toggleCryptoModal(false))
+	const onModalHide = () => dispatch(instantTradeTabAction())
 
 	const choose = (code) => {
-		dispatch(setCrypto(code))
-		dispatch(filterCurrencies(filteredData))
-		dispatch(instantTradeTabAction())
+		dispatch(isInstantTrade ? setCryptoCodeQuery(code) : setCryptoFilter(code))
+		if (isInstantTrade) dispatch(setTradeOffset(0))
+		dispatch(saveTrades([]))
+		dispatch(fetchTrades())
 		hide()
 	}
+
 	const children = (
 		<ModalWithSearch
 			array={arrayToPass}
 			choose={choose}
 			filter={filter}
-			currentItem={crypto}
+			currentItem={isInstantTrade ? cryptoCodeQuery : cryptoCodeTransactions}
 			crypto
 			tradeType={tradeType}
 			title="Choose Currency"
+			isForTransactions
 		/>
 	)
 
@@ -69,6 +79,7 @@ export default function CryptoModal() {
 				visible={cryptoModalVisible}
 				hide={hide}
 				children={children}
+				onModalHide={onModalHide}
 				fullScreen
 			/>
 		)

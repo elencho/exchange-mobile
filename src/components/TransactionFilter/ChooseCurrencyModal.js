@@ -1,15 +1,13 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
-
-import AppModal from '../AppModal'
-import ModalWithSearch from '../ModalWithSearch'
-
+import { toggleCurrencyModal } from '../../redux/modals/actions'
+import { setCurrentBalanceObj } from '../../redux/trade/actions'
 import {
 	currencyAction,
 	fetchCurrencies,
+	setCryptoFilter,
 } from '../../redux/transactions/actions'
-import { toggleCurrencyModal } from '../../redux/modals/actions'
 import {
 	cryptoAddressesAction,
 	saveCryptoAddress,
@@ -17,7 +15,8 @@ import {
 	setWalletTab,
 	wireDepositAction,
 } from '../../redux/wallet/actions'
-import { setCurrentBalanceObj } from '../../redux/trade/actions'
+import AppModal from '../AppModal'
+import ModalWithSearch from '../ModalWithSearch'
 
 function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 	const navigation = useNavigation()
@@ -26,7 +25,13 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 	const state = useSelector((state) => state)
 
 	const {
-		transactions: { currencies, currenciesConstant, currency, code },
+		transactions: {
+			currencies,
+			currenciesConstant,
+			cryptoFilter,
+			currency,
+			code,
+		},
 		modals: { chooseCurrencyModalVisible },
 		trade: { balance, fiatsArray, currentBalanceObj },
 		wallet: { walletTab },
@@ -46,18 +51,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 					c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
 					c.currencyName.toLowerCase().includes(text.toLowerCase())
 			) ?? []
-		setFiletredData(
-			isForTransactions
-				? [
-						{
-							name: 'Show All Currency',
-							currencyName: 'Show All Currency',
-							currencyCode: '',
-						},
-						...filteredArray,
-				  ]
-				: filteredArray
-		)
+		setFiletredData(filteredArray)
 	}
 	const hide = () => dispatch(toggleCurrencyModal(false))
 	const onModalHide = () => dispatch(fetchCurrencies())
@@ -65,6 +59,12 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 	const fiats = fiatsArray.map((f) => f.code)
 
 	const choose = (name, currencyCode) => {
+		if (isForTransactions) {
+			dispatch(setCryptoFilter(currencyCode))
+			hide()
+			return
+		}
+
 		if (code === currencyCode) {
 			hide()
 			return
@@ -98,8 +98,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 				dispatch(setWalletTab('Deposit'))
 			}
 		} else {
-			const currency = name === 'Show All Currency' ? null : currencyCode
-			dispatch(currencyAction(name, currenciesConstant, currency))
+			dispatch(currencyAction(name, currenciesConstant, currencyCode))
 		}
 		dispatch({ type: 'GET_WHITELIST_ACTION' })
 		hide()
@@ -110,7 +109,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 			array={filteredData}
 			choose={choose}
 			filter={filter}
-			currentItem={currency}
+			currentItem={isForTransactions ? cryptoFilter : currency}
 			title="Choose Currency"
 			isForTransactions={isForTransactions}
 			wallet={wallet}

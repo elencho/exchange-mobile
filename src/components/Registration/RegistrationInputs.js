@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import React, { useCallback } from 'react'
 import {
 	StyleSheet,
@@ -8,23 +9,21 @@ import {
 	Text,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { t } from 'i18next'
-
+import Arrow from '../../assets/images/Arrow'
+import { COUNTRIES_URL_PNG } from '../../constants/api'
+import colors from '../../constants/colors'
+import { toggleCountriesModal } from '../../redux/modals/actions'
+import { setRegistrationInputs } from '../../redux/profile/actions'
 import AppInput from '../AppInput'
 import AppText from '../AppText'
 import CountriesModal from '../UserProfile/CountriesModal'
-import colors from '../../constants/colors'
-import { setRegistrationInputs } from '../../redux/profile/actions'
-import { toggleCountriesModal } from '../../redux/modals/actions'
-import { COUNTRIES_URL_PNG } from '../../constants/api'
-import Arrow from '../../assets/images/Arrow'
 
 export default function RegistrationInputs({ validations, error }) {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 
 	const {
-		profile: { registrationInputs, countriesConstant },
+		profile: { registrationInputs, countriesConstant, Personal_Company },
 	} = state
 
 	const i = registrationInputs
@@ -69,24 +68,6 @@ export default function RegistrationInputs({ validations, error }) {
 	return (
 		<>
 			<AppInput
-				value={i.firstName}
-				label="Enter Name"
-				labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-				style={styles.input}
-				onChangeText={(text) => handleInputs(text, 'name')}
-				error={error && !v.nameCheck}
-				errorText={errorText('First Name')}
-			/>
-			<AppInput
-				value={i.lastName}
-				label="Enter Last Name"
-				labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-				style={styles.input}
-				onChangeText={(text) => handleInputs(text, 'last name')}
-				error={error && !v.lastNameCheck}
-				errorText={errorText('Last Name')}
-			/>
-			<AppInput
 				value={i.email}
 				label="Enter E-mail"
 				labelBackgroundColor={colors.PRIMARY_BACKGROUND}
@@ -110,11 +91,9 @@ export default function RegistrationInputs({ validations, error }) {
 			<Text style={styles.validations}>
 				<Text style={error && !v.passLength && red}>
 					{t('8 or more characters')}
-					{', '}
 				</Text>
 				<Text style={error && !v.hasUpperAndLower && red}>
 					{t('Upper & lowercase letters')}
-					{', '}
 				</Text>
 				<Text style={error && !v.hasNumber && red}>
 					{t('At least one number')}
@@ -162,21 +141,24 @@ export default function RegistrationInputs({ validations, error }) {
 				/>
 			</View>
 			<CountriesModal phoneCountry registration />
-
-			<AppInput
-				value={i.referralCode}
-				label="Referral Code"
-				labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-				style={styles.input}
-				onChangeText={(text) => handleInputs(text, 'referal')}
-			/>
-			<AppInput
-				value={i.promoCode}
-				label="Promo Code"
-				labelBackgroundColor={colors.PRIMARY_BACKGROUND}
-				style={[styles.input, { marginTop: 12 }]}
-				onChangeText={(text) => handleInputs(text, 'promoCode')}
-			/>
+			{Personal_Company === 'Personal' && (
+				<>
+					<AppInput
+						value={i.referralCode}
+						label="Referral Code"
+						labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+						style={styles.input}
+						onChangeText={(text) => handleInputs(text, 'referal')}
+					/>
+					<AppInput
+						value={i.promoCode}
+						label="Promo Code"
+						labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+						style={[styles.input, { marginTop: 12 }]}
+						onChangeText={(text) => handleInputs(text, 'promoCode')}
+					/>
+				</>
+			)}
 		</>
 	)
 }

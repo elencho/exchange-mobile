@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../AppText'
 import colors from '../../constants/colors'
-
 import { setTradeType } from '../../redux/trade/actions'
+import AppText from '../AppText'
 
 export default function BuySellSwitch() {
 	const dispatch = useDispatch()
@@ -58,7 +56,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		alignItems: 'center',
-		paddingBottom: 20,
+		// paddingBottom: 20,
 		gap: 10,
+		marginTop: 10,
 	},
 })

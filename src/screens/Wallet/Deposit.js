@@ -1,26 +1,26 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import { Trans } from 'react-i18next'
+import { StyleSheet, View } from 'react-native'
 import { MaterialIndicator } from 'react-native-indicators'
-
-import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown'
-import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown'
-import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock'
-import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown'
-import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal'
+import { useDispatch, useSelector } from 'react-redux'
 import AppButton from '../../components/AppButton'
-import FiatBlock from '../../components/Wallet/Deposit/FiatBlock'
-import FlexBlock from '../../components/Wallet/Deposit/FlexBlock'
+import AppInfoBlock from '../../components/AppInfoBlock'
+import AppText from '../../components/AppText'
 import AppWebView from '../../components/AppWebView'
 import GeneralError from '../../components/GeneralError'
 import AddressBlock from '../../components/Wallet/Deposit/AddressBlock'
-import AppInfoBlock from '../../components/AppInfoBlock'
+import BulletsBlock from '../../components/Wallet/Deposit/BulletsBlock'
+import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown'
+import FiatBlock from '../../components/Wallet/Deposit/FiatBlock'
+import FlexBlock from '../../components/Wallet/Deposit/FlexBlock'
+import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown'
+import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal'
+import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown'
 import WithKeyboard from '../../components/WithKeyboard'
-import AppText from '../../components/AppText'
-
-import { infos, warnings } from '../../constants/warningsAndInfos'
 import colors from '../../constants/colors'
+import { infos, warnings } from '../../constants/warningsAndInfos'
+import { setStatusModalInfo } from '../../redux/modals/actions'
 import {
 	fetchFee,
 	setCard,
@@ -31,9 +31,7 @@ import {
 	generateCryptoAddressAction,
 	setNetwork,
 } from '../../redux/wallet/actions'
-import { setStatusModalInfo } from '../../redux/modals/actions'
 import { errorHappenedHere } from '../../utils/appUtils'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Deposit({ refreshControl }) {
 	const dispatch = useDispatch()
@@ -238,8 +236,7 @@ export default function Deposit({ refreshControl }) {
 
 const styles = StyleSheet.create({
 	block: {
-		paddingVertical: 22,
-		paddingHorizontal: 10,
+		paddingVertical: 6,
 		marginBottom: 12,
 	},
 	error: {

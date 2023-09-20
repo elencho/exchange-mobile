@@ -1,17 +1,19 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import {
+	isEnrolledAsync,
+	authenticateAsync,
+	supportedAuthenticationTypesAsync,
+} from 'expo-local-authentication'
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
-import AppText from '../AppText'
-import AppSwitcher from '../AppSwitcher'
-import PurpleText from '../PurpleText'
-import Google_Auth from '../../assets/images/User_profile/Totp_Auth'
-import E_mail_Auth from '../../assets/images/User_profile/Email_Auth'
 import FaceID from '../../assets/images/Face_ID'
 import TouchID from '../../assets/images/Touch_ID'
+import E_mail_Auth from '../../assets/images/User_profile/Email_Auth'
 import SMS_Auth from '../../assets/images/User_profile/Sms_Auth'
 import Strong_Password from '../../assets/images/User_profile/Strong_Password'
+import Google_Auth from '../../assets/images/User_profile/Totp_Auth'
+import colors from '../../constants/colors'
 import {
 	toggleEmailAuthModal,
 	toggleGoogleOtpModal,
@@ -24,12 +26,9 @@ import {
 	setGoogleAuth,
 } from '../../redux/profile/actions'
 import { sendOtp } from '../../utils/userProfileUtils'
-import colors from '../../constants/colors'
-import {
-	isEnrolledAsync,
-	authenticateAsync,
-	supportedAuthenticationTypesAsync,
-} from 'expo-local-authentication'
+import AppSwitcher from '../AppSwitcher'
+import AppText from '../AppText'
+import PurpleText from '../PurpleText'
 
 export default function SecurityRow({ text, i = 0, a = [] }) {
 	const dispatch = useDispatch()
@@ -234,11 +233,7 @@ export default function SecurityRow({ text, i = 0, a = [] }) {
 					</View>
 
 					{text === 'Strong_Password' ? (
-						<PurpleText
-							text="Edit"
-							onPress={handlePassword}
-							style={{ fontSize: 20 }}
-						/>
+						<PurpleText text="Edit" onPress={handlePassword} />
 					) : (
 						<AppSwitcher
 							isOn={switchCond()}

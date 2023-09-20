@@ -6,8 +6,9 @@ import {
 	Animated,
 	Easing,
 	TouchableWithoutFeedback,
+	Pressable,
 } from 'react-native'
-
+import Close from '../assets/images/Close'
 import AppText from '../components/AppText'
 import colors from '../constants/colors'
 import { IS_ANDROID } from '../constants/system'
@@ -20,11 +21,15 @@ const AppInput = ({
 	style,
 	value,
 	error = false,
-	errorText,
+	errorText = null,
 	isForModal,
-	labelBackgroundColor = colors.SECONDARY_BACKGROUND,
+	labelBackgroundColor = colors.PRIMARY_BACKGROUND,
 	disabled,
-	onChangeText = (txt) => {},
+	handleClear,
+	onFocus,
+	editable,
+	isSearch,
+	onChangeText = () => {},
 	...rest
 }) => {
 	const [isFocused, setIsFocused] = useState(false)
@@ -59,11 +64,11 @@ const AppInput = ({
 					style={[styles.input, disabled && styles.disabledInput]}
 					ref={inputRef}
 					onBlur={() => setIsFocused(false)}
-					onFocus={() => setIsFocused(true)}
+					onFocus={() => setIsFocused(true)?.bind(onFocus)}
 					value={value}
 					placeholderTextColor={colors.SECONDARY_TEXT}
 					onChangeText={(text) => onChangeText(text)}
-					editable={!disabled}
+					editable={!disabled && editable}
 					{...rest}
 				/>
 
@@ -78,6 +83,13 @@ const AppInput = ({
 										inputRange: [0, 1],
 										outputRange: ['transparent', labelBackgroundColor],
 									}),
+									opacity:
+										isSearch &&
+										focusAnim.interpolate({
+											inputRange: [0, 1],
+											outputRange: [1, 0],
+										}),
+
 									transform: [
 										{
 											scale: focusAnim.interpolate({
@@ -102,6 +114,7 @@ const AppInput = ({
 							]}>
 							<AppText
 								body
+								numberOfLines={1}
 								style={{
 									color:
 										isFocused && error
@@ -118,7 +131,23 @@ const AppInput = ({
 						</Animated.View>
 					</TouchableWithoutFeedback>
 				) : null}
-				{rightComponent && <View style={styles.icon}>{rightComponent}</View>}
+
+				{rightComponent && (
+					<View style={styles.icon}>
+						{handleClear && value.length > 0 ? (
+							<Pressable
+								style={{
+									padding: 10,
+									paddingRight: 2,
+								}}
+								onPress={handleClear}>
+								<Close width={10} height={10} />
+							</Pressable>
+						) : (
+							rightComponent
+						)}
+					</View>
+				)}
 			</View>
 			{errorText && (
 				<AppText small style={styles.errorText}>
@@ -166,8 +195,9 @@ const styles = StyleSheet.create({
 	},
 	labelContainer: {
 		position: 'absolute',
-		paddingHorizontal: 14,
+		paddingHorizontal: 12,
 		height: 25,
+		overflow: 'visible',
 		justifyContent: 'center',
 	},
 	icon: {

@@ -42,8 +42,10 @@ export const actionTypes = {
 	CARDS_SAGA: 'CARDS_SAGA',
 	FETCH_FEE: 'FETCH_FEE',
 	SUBMIT_TRADE: 'SUBMIT_TRADE',
+	CLEAR_FILTERS_TRADE: 'CLEAR_FILTERS_TRADE',
 
 	RESET_TRADES_STATE: 'RESET_TRADES_STATE',
+	SET_PREV_TRADE_FILTER: 'SET_PREV_TRADE_FILTER',
 }
 
 export const saveTrades = (trades) => ({
@@ -170,6 +172,9 @@ export const setToDAteQuery = (toDateTimeQuery) => ({
 	type: actionTypes.SET_TO_DATE_QUERY,
 	toDateTimeQuery,
 })
+export const clearFiltersTrade = () => ({
+	type: actionTypes.CLEAR_FILTERS_TRADE,
+})
 
 // FOR SAGAS
 export const fetchTrades = (isMoreLoading) => ({
@@ -205,4 +210,8 @@ export const resetTradesState = () => ({
 export const setTradeAction = (tradeAction) => ({
 	type: actionTypes.SET_TRADE_ACTION,
 	tradeAction,
+})
+export const setPreviousTradeFilter = (previousTradeFilter) => ({
+	type: actionTypes.SET_PREV_TRADE_FILTER,
+	previousTradeFilter,
 })

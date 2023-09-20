@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import { MaterialIndicator } from 'react-native-indicators'
-
+import { useSelector } from 'react-redux'
 import colors from '../constants/colors'
 import AppText from './AppText'
 
@@ -16,6 +16,10 @@ export default function AppButton({
 	onPress,
 	...rest
 }) {
+	const {
+		profile: { language },
+	} = useSelector((state) => state)
+	const isMtavruli = language === 'ka' && { textTransform: 'uppercase' }
 	return (
 		<Pressable
 			disabled={disabled}
@@ -35,7 +39,7 @@ export default function AppButton({
 				<AppText
 					body
 					medium
-					style={[styles.buttonText, left && { marginLeft: 9 }]}>
+					style={[styles.buttonText, left && { marginLeft: 9 }, isMtavruli]}>
 					{text}
 				</AppText>
 			)}

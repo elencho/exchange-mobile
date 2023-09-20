@@ -7,24 +7,23 @@ import {
 	View,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../AppModal'
-import AppText from '../AppText'
-import AppInput from '../AppInput'
-import AppButton from '../AppButton'
-import WithKeyboard from '../WithKeyboard'
+import { COUNTRIES_URL_PNG } from '../../constants/api'
+import colors from '../../constants/colors'
 import {
 	toggleCountriesModal,
 	togglePersonalInfoModal,
 } from '../../redux/modals/actions'
-import colors from '../../constants/colors'
-import CountriesModal from './CountriesModal'
 import { saveUserInfo, saveUserInfoSaga } from '../../redux/profile/actions'
-import GeneralError from '../GeneralError'
-import { COUNTRIES_URL_PNG } from '../../constants/api'
 import { errorHappenedHere } from '../../utils/appUtils'
-import InputErrorMsg from '../InputErrorMsg'
+import AppButton from '../AppButton'
 import AppDropdown from '../AppDropdown'
+import AppInput from '../AppInput'
+import AppModal from '../AppModal'
+import AppText from '../AppText'
+import GeneralError from '../GeneralError'
+import InputErrorMsg from '../InputErrorMsg'
+import WithKeyboard from '../WithKeyboard'
+import CountriesModal from './CountriesModal'
 
 export default function PersonalInfoModal() {
 	const dispatch = useDispatch()
@@ -125,7 +124,7 @@ export default function PersonalInfoModal() {
 	const citizenshipLabel = citizenship ? subtext : {}
 
 	const children = (
-		<WithKeyboard padding flexGrow modal style={{ marginTop: -14 }}>
+		<WithKeyboard padding flexGrow modal>
 			<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
 				<AppText style={styles.email}>{email}</AppText>
 				<GeneralError

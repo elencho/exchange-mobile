@@ -1,12 +1,11 @@
 import React from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../../AppModal'
-import { toggleChooseBankModal } from '../../../redux/modals/actions'
-import AppText from '../../AppText'
 import colors from '../../../constants/colors'
+import { toggleChooseBankModal } from '../../../redux/modals/actions'
 import { setWithdrawalBank } from '../../../redux/wallet/actions'
+import AppModal from '../../AppModal'
+import AppText from '../../AppText'
 
 export default function WithdrawalBanksModal() {
 	const dispatch = useDispatch()
@@ -58,10 +57,11 @@ const styles = StyleSheet.create({
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingHorizontal: 15,
-		height: 50,
+		paddingHorizontal: 13,
+		paddingVertical: 10,
 		borderRadius: 5,
-		marginLeft: -15,
+		marginHorizontal: -5,
+		height: 50,
 	},
 	text: {
 		color: colors.PRIMARY_TEXT,

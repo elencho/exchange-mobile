@@ -1,29 +1,27 @@
 import React, { useEffect, useState, memo, useCallback } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { MaterialIndicator } from 'react-native-indicators'
 import { Trans } from 'react-i18next'
-
-import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown'
+import { StyleSheet, View } from 'react-native'
+import { MaterialIndicator } from 'react-native-indicators'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import AppButton from '../../components/AppButton'
-import WithdrawalInputs from '../../components/Wallet/Withdrawal/WithdrawalInputs'
+import AppInfoBlock from '../../components/AppInfoBlock'
+import AppText from '../../components/AppText'
+import GeneralError from '../../components/GeneralError'
+import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown'
 import FlexBlock from '../../components/Wallet/Deposit/FlexBlock'
 import TransferMethodDropdown from '../../components/Wallet/Deposit/TransferMethodDropdown'
 import TransferMethodModal from '../../components/Wallet/Deposit/TransferMethodModal'
-import WithdrawalInfo from '../../components/Wallet/Withdrawal/WithdrawalInfo'
+import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown'
 import SaveAsTemplate from '../../components/Wallet/Withdrawal/SaveAsTemplate'
-import ChooseNetworkDropdown from '../../components/Wallet/Deposit/ChooseNetworkDropdown'
-import GeneralError from '../../components/GeneralError'
-import AppInfoBlock from '../../components/AppInfoBlock'
-import WithKeyboard from '../../components/WithKeyboard'
 import WithdrawalConfirmModal from '../../components/Wallet/Withdrawal/WithdrawalConfirmModal'
-
+import WithdrawalInfo from '../../components/Wallet/Withdrawal/WithdrawalInfo'
+import WithdrawalInputs from '../../components/Wallet/Withdrawal/WithdrawalInputs'
+import WithKeyboard from '../../components/WithKeyboard'
 import { infos, warnings } from '../../constants/warningsAndInfos'
-import { setNetwork } from '../../redux/wallet/actions'
 import { fetchFee, setCard, setFee } from '../../redux/trade/actions'
-import { validateAmount } from '../../utils/appUtils'
-import AppText from '../../components/AppText'
+import { setNetwork } from '../../redux/wallet/actions'
 import { withdrawalTemplatesAction } from '../../redux/wallet/actions'
+import { validateAmount } from '../../utils/appUtils'
 
 function Withdrawal({ refreshControl }) {
 	const dispatch = useDispatch()
@@ -190,7 +188,6 @@ function Withdrawal({ refreshControl }) {
 			) : (
 				<WithKeyboard flexGrow padding refreshControl={refreshControl}>
 					<View style={styles.block}>
-						{/* <GeneralError style={{ marginBottom: 16 }} /> */}
 						<WalletCoinsDropdown />
 
 						{!hasRestriction && hasMethod && (
@@ -247,9 +244,9 @@ function Withdrawal({ refreshControl }) {
 					{!hasRestriction &&
 						hasMethod && ( // Button
 							<AppButton
+								style={styles.button}
 								text="Withdrawal"
 								onPress={withdraw}
-								style={styles.button}
 							/>
 						)}
 				</WithKeyboard>
@@ -262,11 +259,8 @@ export default memo(Withdrawal)
 
 const styles = StyleSheet.create({
 	block: {
-		paddingVertical: 22,
-		paddingHorizontal: 10,
-		marginBottom: 12,
+		paddingTop: 10,
+		paddingBottom: 18,
 	},
-	button: {
-		marginHorizontal: 15,
-	},
+	// button: { marginBottom: 46 },
 })

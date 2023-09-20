@@ -1,5 +1,17 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects'
-
+import { call, put, select, take, takeLatest } from 'redux-saga/effects'
+import {
+	fetchTransactions as fetch,
+	fetchCurrencies as currenciesApi,
+	totalAmount,
+} from '../../utils/fetchTransactions'
+import {
+	setCryptosArray,
+	setCryptosArrayConstant,
+	setFiatsArray,
+	setMoreTradesLoading,
+	setTradeOffset,
+} from '../trade/actions'
+import { fetchTrades } from '../trade/actions'
 import {
 	actionTypes,
 	saveTransactions,
@@ -19,12 +31,6 @@ import {
 	setStatusFilter,
 	statusAction,
 } from '../transactions/actions'
-
-import {
-	fetchTransactions as fetch,
-	fetchCurrencies as currenciesApi,
-	totalAmount,
-} from '../../utils/fetchTransactions'
 import {
 	getParams,
 	getTransactions,
@@ -34,23 +40,16 @@ import {
 	getType,
 	getStatus,
 } from './selectors'
-import {
-	setCryptosArray,
-	setCryptosArrayConstant,
-	setFiatsArray,
-	setMoreTradesLoading,
-	setTradeOffset,
-} from '../trade/actions'
-import { fetchTrades } from '../trade/actions'
 
 function* fetchTransactionsSaga({ isMoreLoading }) {
 	if (isMoreLoading) {
 		yield put(setMoreTradesLoading(true))
 	} else {
-		yield put(setMoreTradesLoading(false))
+		yield put(toggleLoading(true))
 	}
 	const params = yield select(getParams)
 	const transactions = yield select(getTransactions)
+
 	const newTransactions = yield call(fetch, params)
 	const total = yield call(totalAmount, params)
 
@@ -65,10 +64,13 @@ function* fetchTransactionsSaga({ isMoreLoading }) {
 		yield put(saveTransactions([...transactions, ...newTransactions]))
 	}
 	yield put(setMoreTradesLoading(false))
+	yield put(toggleLoading(false))
 }
 
 function* refreshTransactionsSaga() {
 	yield put(toggleLoading(true))
+
+	const params = yield select(getParams)
 
 	const total = yield call(totalAmount, params)
 
@@ -79,7 +81,6 @@ function* refreshTransactionsSaga() {
 	yield put(setTotalTransactions(total))
 
 	yield put(setTransactionsOffset(0))
-	const params = yield select(getParams)
 	const transactions = yield call(fetch, params)
 
 	if (transactions) {
@@ -125,50 +126,50 @@ function* reachScrollEndSaga(action) {
 		const offset = yield select((state) => state.trade.offset)
 		const limit = yield select((state) => state.trade.limit)
 
-		yield put(setTradeOffset(offset + limit))
+		yield put(setTradeOffset(offset + 1))
 		yield put(fetchTrades(true))
 	}
 }
 
-function* typeSaga(action) {
-	const { filter } = action
+// function* typeSaga(action) {
+//   const { filter } = action;
 
-	yield put(saveTransactions([]))
-	yield put(setTransactionsOffset(0))
-	yield put(setTypeFilter(filter === 'ALL' ? null : filter))
-	yield put({ type: 'REFRESH_TRANSACTIONS_ACTION' })
-}
+//   yield put(saveTransactions([]));
+//   yield put(setTransactionsOffset(0));
+//   yield put(setTypeFilter(filter === 'ALL' ? null : filter));
+//   yield put({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+// }
 
-function* statusSaga(action) {
-	const { status } = action
+// function* statusSaga(action) {
+//   const { status } = action;
 
-	yield put(saveTransactions([]))
-	yield put(setTransactionsOffset(0))
-	yield put(setStatusFilter(status))
-	yield put({ type: 'REFRESH_TRANSACTIONS_ACTION' })
-}
+//   yield put(saveTransactions([]));
+//   yield put(setTransactionsOffset(0));
+//   yield put(setStatusFilter(status));
+//   yield put({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+// }
 
-function* filterSaga(action) {
-	const { filter, filterType } = action
-	const method = yield select(getMethod)
-	const type = yield select(getType)
-	const status = yield select(getStatus)
+// function* filterSaga(action) {
+//   const { filter, filterType } = action;
+//   const method = yield select(getMethod);
+//   const type = yield select(getType);
+//   const status = yield select(getStatus);
 
-	if (filterType === 'method') {
-		method === filter
-			? yield put(setMethodFilter(null))
-			: yield put(setMethodFilter(filter))
-	}
-	if (filterType === 'type')
-		type === filter
-			? yield put(typeAction(null))
-			: yield put(typeAction(filter))
+//   if (filterType === 'method') {
+//     method === filter
+//       ? yield put(setMethodFilter(null))
+//       : yield put(setMethodFilter(filter));
+//   }
+//   if (filterType === 'type')
+//     type === filter
+//       ? yield put(typeAction(null))
+//       : yield put(typeAction(filter));
 
-	if (filterType === 'status')
-		status === filter
-			? yield put(statusAction(null))
-			: yield put(statusAction(filter))
-}
+//   if (filterType === 'status')
+//     status === filter
+//       ? yield put(statusAction(null))
+//       : yield put(statusAction(filter));
+// }
 
 function* currencySaga(action) {
 	const { name, currencyList, code } = action
@@ -215,13 +216,14 @@ function* clasifyCurrenciesSaga() {
 
 export default function* () {
 	yield takeLatest(actionTypes.FETCH_TRANSACTIONS, fetchTransactionsSaga)
+	yield takeLatest(actionTypes.SET_TX_ID_OR_RECIPIENT, fetchTransactionsSaga)
 	yield takeLatest(actionTypes.FETCH_CURRENCIES, fetchCurrenciesSaga)
-	yield takeLatest(actionTypes.TYPE_SAGA_ACTION, typeSaga)
-	yield takeLatest(actionTypes.STATUS_SAGA_ACTION, statusSaga)
+	// yield takeLatest(actionTypes.TYPE_SAGA_ACTION, typeSaga);
+	// yield takeLatest(actionTypes.STATUS_SAGA_ACTION, statusSaga);
 	yield takeLatest(actionTypes.CURRENCY_SAGA_ACTION, currencySaga)
 	yield takeLatest(actionTypes.SHOW_RESULTS, showResultsSaga)
 	yield takeLatest(actionTypes.REACH_SCROLL_END, reachScrollEndSaga)
-	yield takeLatest(actionTypes.FILTER_SAGA_ACTION, filterSaga)
+	// yield takeLatest(actionTypes.FILTER_SAGA_ACTION, filterSaga);
 	yield takeLatest('CLASIFY_CURRENCIES', clasifyCurrenciesSaga)
 	yield takeLatest('REFRESH_TRANSACTIONS_ACTION', refreshTransactionsSaga)
 	yield takeLatest(actionTypes.TRANSACTION_DETAILS_SAGA, transactionDetailsSaga)

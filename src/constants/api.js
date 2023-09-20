@@ -17,7 +17,7 @@ export const CODE_TO_TOKEN = `${auth}/auth/realms/GEX/protocol/openid-connect/to
 
 export const LOGOUT = `${auth}/auth/realms/GEX/protocol/openid-connect/logout`
 
-export const TRANSACTIONS_URL = `${core}/private/account/transactions`
+export const TRANSACTIONS_URL = `${core}/private/account/fetchTransactions`
 
 export const CURRENCIES_URL = `${core}/public/currencies`
 

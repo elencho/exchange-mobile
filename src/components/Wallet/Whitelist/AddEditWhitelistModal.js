@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../../AppModal'
-import AppButton from '../../AppButton'
-import AppInput from '../../AppInput'
-import QrScanner from '../../QrScanner'
-import QrScannerToggler from '../Withdrawal/widgets/QrScannerToggler'
-import WithKeyboard from '../../WithKeyboard'
-import ChooseNetworkDropdown from '../../Wallet/Deposit/ChooseNetworkDropdown'
-import ChooseNetworkModal from '../../Wallet/Deposit/ChooseNetworkModal'
 import {
 	toggleAddWhitelistModal,
 	toggleEditWhitelistModal,
@@ -22,11 +13,19 @@ import {
 	editWhitelistAction,
 	setNewWhitelist,
 } from '../../../redux/wallet/actions'
-import { sendOtp } from '../../../utils/userProfileUtils'
-import GeneralError from '../../GeneralError'
-import SmsEmailAuthModal from '../../UserProfile/SmsEmailAuthModal'
-import GoogleOtpModal from '../../UserProfile/GoogleOtpModal'
 import { errorHappenedHere } from '../../../utils/appUtils'
+import { sendOtp } from '../../../utils/userProfileUtils'
+import AppButton from '../../AppButton'
+import AppInput from '../../AppInput'
+import AppModal from '../../AppModal'
+import GeneralError from '../../GeneralError'
+import QrScanner from '../../QrScanner'
+import GoogleOtpModal from '../../UserProfile/GoogleOtpModal'
+import SmsEmailAuthModal from '../../UserProfile/SmsEmailAuthModal'
+import ChooseNetworkDropdown from '../../Wallet/Deposit/ChooseNetworkDropdown'
+import ChooseNetworkModal from '../../Wallet/Deposit/ChooseNetworkModal'
+import WithKeyboard from '../../WithKeyboard'
+import QrScannerToggler from '../Withdrawal/widgets/QrScannerToggler'
 
 export default function AddEditWhitelistModal({ add, edit }) {
 	const dispatch = useDispatch()
@@ -119,6 +118,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 	}
 	const nameStyle = {
 		borderColor: error && !currentWhitelistObj?.name && '#F45E8C',
+		// marginTop: 32,
 	}
 	const nameError = add
 		? !newWhitelist?.name?.trim()
@@ -128,7 +128,9 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
 	const children = (
 		<WithKeyboard padding flexGrow modal>
-			<TouchableOpacity activeOpacity={0.99} style={{ flex: 1 }}>
+			<TouchableOpacity
+				activeOpacity={0.99}
+				style={{ flex: 1, paddingTop: 22 }}>
 				<GeneralError
 					style={styles.error}
 					show={errorHappenedHere('AddEditWhitelistModal')}
@@ -136,7 +138,12 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
 				{hasMultipleNetworks && (
 					<View style={styles.input}>
-						<ChooseNetworkDropdown disabled={!!edit} whitelist error={error} />
+						<ChooseNetworkDropdown
+							disabled={!!edit}
+							whitelist
+							error={error}
+							// style={{ marginTop: 32 }}
+						/>
 						<ChooseNetworkModal />
 					</View>
 				)}

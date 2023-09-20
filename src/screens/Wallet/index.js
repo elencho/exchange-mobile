@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useEffect, useState, useRef } from 'react'
 import {
 	StyleSheet,
@@ -5,19 +6,17 @@ import {
 	ScrollView,
 	Keyboard,
 	KeyboardAvoidingView,
+	Pressable,
 } from 'react-native'
-
-import { useDispatch, useSelector } from 'react-redux'
-
-import Background from '../../components/Background'
-import TopRow from '../../components/TransactionHistory/TopRow'
-import TotalBalance from '../../components/Wallet/TotalBalance'
-import BalancesList from '../../components/Wallet/BalancesList'
-import colors from '../../constants/colors'
-import CustomRefreshContol from '../../components/CustomRefreshContol'
-import { useFocusEffect } from '@react-navigation/native'
-import BalanceSearchBar from '../../components/Wallet/BalanceSearchBar'
 import { useSharedValue, withTiming } from 'react-native-reanimated'
+import { useDispatch, useSelector } from 'react-redux'
+import Background from '../../components/Background'
+import CustomRefreshContol from '../../components/CustomRefreshContol'
+import TopRow from '../../components/TransactionHistory/TopRow'
+import BalanceSearchBar from '../../components/Wallet/BalanceSearchBar'
+import BalancesList from '../../components/Wallet/BalancesList'
+import TotalBalance from '../../components/Wallet/TotalBalance'
+import colors from '../../constants/colors'
 
 export default function Wallet() {
 	const dispatch = useDispatch()
@@ -25,6 +24,7 @@ export default function Wallet() {
 	const balances = useSelector((state) => state.trade.balance.balances)
 
 	const inputRef = useRef()
+	const scrollViewRef = useRef()
 	const [filteredBalances, setFilteredBalances] = useState([])
 	const [showRefreshControl, setShowRefreshControl] = useState(false)
 	const [value, setValue] = useState('')
@@ -33,15 +33,19 @@ export default function Wallet() {
 
 	useFocusEffect(
 		useCallback(() => {
+			dispatch({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: true })
+			scrollViewRef.current.scrollTo({ x: 0, y: 3, animated: true })
 			hideButtonsHandler()
 			const timer = setTimeout(() => {
 				setShowRefreshControl(true)
+				dispatch({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: false })
 			}, 1000)
 			return () => {
 				onRefresh()
 				clearTimeout(timer)
 				setShowZeroBalances(true)
 				setValue('')
+				Keyboard.dismiss()
 			}
 		}, [])
 	)
@@ -71,6 +75,7 @@ export default function Wallet() {
 	}
 
 	const onRefresh = () => {
+		hideButtonsHandler()
 		setValue('')
 		setShowZeroBalances(true)
 		dispatch({ type: 'REFRESH_WALLET_AND_TRADES' })
@@ -81,15 +86,15 @@ export default function Wallet() {
 	const showButtonsHandler = () => {
 		animatedValue.value = withTiming(100, { duration: 400 })
 		setShowZeroBalances(true)
-		inputRef.current?.focus()
+		// inputRef.current?.focus();
 	}
 	const hideButtonsHandler = () => {
 		type('')
-		inputRef.current?.blur()
+		// inputRef.current?.blur();
 		animatedValue.value = withTiming(8, { duration: 400 })
 	}
 
-	const onScroll = () => {
+	const dismissSearch = () => {
 		if (!value) {
 			hideButtonsHandler()
 			Keyboard.dismiss()
@@ -97,38 +102,43 @@ export default function Wallet() {
 	}
 	return (
 		<Background>
-			<TopRow />
-			<KeyboardAvoidingView behavior="padding">
-				<ScrollView
-					onScroll={onScroll}
-					refreshControl={
-						showRefreshControl ? (
-							<CustomRefreshContol
-								refreshing={balanceLoading}
-								onRefresh={onRefresh}
+			<Pressable onPress={dismissSearch}>
+				<>
+					<TopRow />
+					<KeyboardAvoidingView behavior="padding">
+						<ScrollView
+							nestedScrollEnabled
+							refreshControl={
+								showRefreshControl ? (
+									<CustomRefreshContol
+										refreshing={balanceLoading}
+										onRefresh={onRefresh}
+									/>
+								) : null
+							}
+							ref={scrollViewRef}
+							showsVerticalScrollIndicator={false}
+							stickyHeaderIndices={[1]}>
+							<TotalBalance balanceLoading={balanceLoading} />
+							<BalanceSearchBar
+								animatedValue={animatedValue}
+								showButtonsHandler={showButtonsHandler}
+								hideButtonsHandler={hideButtonsHandler}
+								setShowZeroBalances={setShowZeroBalances}
+								value={value}
+								type={type}
+								showZeroBalances={showZeroBalances}
+								ref={inputRef}
 							/>
-						) : null
-					}
-					showsVerticalScrollIndicator={false}
-					stickyHeaderIndices={[1]}>
-					<TotalBalance balanceLoading={balanceLoading} />
-					<BalanceSearchBar
-						animatedValue={animatedValue}
-						showButtonsHandler={showButtonsHandler}
-						hideButtonsHandler={hideButtonsHandler}
-						setShowZeroBalances={setShowZeroBalances}
-						value={value}
-						type={type}
-						showZeroBalances={showZeroBalances}
-						ref={inputRef}
-					/>
-					<BalancesList
-						balanceLoading={balanceLoading}
-						filteredBalances={filteredBalances}
-					/>
-					<View style={styles.footer} />
-				</ScrollView>
-			</KeyboardAvoidingView>
+							<BalancesList
+								balanceLoading={balanceLoading}
+								filteredBalances={filteredBalances}
+							/>
+							<View style={styles.footer} />
+						</ScrollView>
+					</KeyboardAvoidingView>
+				</>
+			</Pressable>
 		</Background>
 	)
 }
@@ -141,7 +151,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 28,
 	},
 	footer: {
-		height: 30,
+		height: 50,
 		width: 100,
 	},
 })

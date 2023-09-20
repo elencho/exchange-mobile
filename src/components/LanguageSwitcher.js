@@ -1,9 +1,5 @@
-import { Image, Pressable, StyleSheet } from 'react-native'
 import React from 'react'
-import AppText from './AppText'
-import { useDispatch, useSelector } from 'react-redux'
-import { setLanguage } from '../redux/profile/actions'
-import { switchLanguage } from '../utils/i18n'
+import { Image, Pressable, StyleSheet } from 'react-native'
 import Animated, {
 	Extrapolate,
 	interpolate,
@@ -11,11 +7,15 @@ import Animated, {
 	useSharedValue,
 	withSpring,
 } from 'react-native-reanimated'
-import colors from '../constants/colors'
-
+import { useDispatch, useSelector } from 'react-redux'
 import Eng from '../assets/images/English.svg'
+import Geo from '../assets/images/Georgian.svg'
 import Arrow from '../assets/images/SwitcherArrow.svg'
+import colors from '../constants/colors'
 import images from '../constants/images'
+import { setLanguage } from '../redux/profile/actions'
+import { switchLanguage } from '../utils/i18n'
+import AppText from './AppText'
 
 const LanguageSwitcher = () => {
 	const defaltLanguage = useSelector((state) => state.profile.language)
@@ -23,11 +23,7 @@ const LanguageSwitcher = () => {
 
 	const isGeo = defaltLanguage === 'ka'
 	const chosenLanguageText = defaltLanguage === 'en' ? 'English' : 'ქართული'
-	const icon = isGeo ? (
-		<Image source={images.GEO} style={styles.flag} />
-	) : (
-		<Eng />
-	)
+	const icon = isGeo ? <Geo /> : <Eng />
 	const liked = useSharedValue(0)
 
 	const onPress = () => {
@@ -76,7 +72,7 @@ export default LanguageSwitcher
 const styles = StyleSheet.create({
 	container: {
 		alignSelf: 'center',
-		marginBottom: 40,
+		marginBottom: 45,
 		borderWidth: 1,
 		borderColor: colors.SECONDARY_TEXT,
 		width: 140,
@@ -89,6 +85,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 5,
 		textAlign: 'center',
 		width: 70,
+		fontSize: 13,
 	},
 	row: {
 		flexDirection: 'row',
@@ -97,7 +94,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 
 		height: 24,
-		top: 5,
+		top: 7,
 	},
 	flag: {
 		height: 24,

@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
 import { Pressable, StyleSheet, View, Image } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../AppModal'
-import AppText from '../AppText'
 import { ICONS_URL_PNG } from '../../constants/api'
 import colors from '../../constants/colors'
 import { toggleChooseBankModal } from '../../redux/modals/actions'
 import { setCard, setDepositProvider } from '../../redux/trade/actions'
+import AppModal from '../AppModal'
+import AppText from '../AppText'
 
 export default function ChooseBankModal() {
 	const dispatch = useDispatch()
@@ -103,10 +102,10 @@ const styles = StyleSheet.create({
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingHorizontal: 15,
+		paddingHorizontal: 13,
 		paddingVertical: 10,
 		borderRadius: 5,
-		marginLeft: -15,
+		marginHorizontal: -5,
 	},
 	text: {
 		color: colors.PRIMARY_TEXT,

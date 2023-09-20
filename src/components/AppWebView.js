@@ -1,9 +1,15 @@
-import React from 'react'
-import { TouchableOpacity, Modal, StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import WebView from 'react-native-webview'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import React from 'react'
+import {
+	TouchableOpacity,
+	Modal,
+	StyleSheet,
+	View,
+	StatusBar,
+	Platform,
+} from 'react-native'
+import WebView from 'react-native-webview'
+import { useDispatch, useSelector } from 'react-redux'
 import Close from '../assets/images/Close.svg'
 import { toggleAddCardModal, toggleBuySellModal } from '../redux/modals/actions'
 import {
@@ -59,11 +65,17 @@ export default function AppWebView(props) {
 
 	return (
 		<Modal
-			presentationStyle="pageSheet"
+			statusBarTranslucent={true}
+			presentationStyle="fade"
 			visible={!!webViewObj}
 			onShow={handleOnShow}
 			onRequestClose={handleOnRequestClose}
 			animationType="slide">
+			<StatusBar
+				backgroundColor={'transparent'}
+				translucent
+				barStyle="dark-content"
+			/>
 			<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
 				<View style={styles.header}>
 					<TouchableOpacity style={styles.close} onPress={closeWebView}>
@@ -91,14 +103,14 @@ export default function AppWebView(props) {
 
 const styles = StyleSheet.create({
 	close: {
-		position: 'absolute',
-		bottom: 10,
-		right: 22,
-		padding: 10,
+		alignSelf: 'flex-end',
+		marginRight: 25,
+		marginTop: Platform.select({ ios: 20, android: 10 }),
 	},
 	flex: { flex: 1 },
 	header: {
 		backgroundColor: 'white',
 		height: 66,
+		paddingTop: 20,
 	},
 })

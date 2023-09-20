@@ -1,15 +1,13 @@
+import { t } from 'i18next'
 import React from 'react'
 import { StyleSheet, View, Pressable, Image, Linking } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { t } from 'i18next'
-
+import CheckEmpty from '../../assets/images/Check_Empty.svg'
+import CheckFull from '../../assets/images/Check_Full.svg'
+import CheckRed from '../../assets/images/Check_Red.svg'
+import { setRegistrationInputs } from '../../redux/profile/actions'
 import AppText from '../AppText'
 import PurpleText from '../PurpleText'
-import images from '../../constants/images'
-import { setRegistrationInputs } from '../../redux/profile/actions'
-import CheckRed from '../../assets/images/Check_Red.svg'
-import CheckFull from '../../assets/images/Check_Full.svg'
-import CheckEmpty from '../../assets/images/Check_Empty.svg'
 
 export default function CheckMarks({ error, validations }) {
 	const dispatch = useDispatch()
@@ -42,7 +40,7 @@ export default function CheckMarks({ error, validations }) {
 			set({ getEmailUpdates: i.getEmailUpdates !== 'on' ? 'on' : 'off' })
 	}
 
-	const textColor = { color: error && !v.terms ? '#F45E8C' : '#B7BFDB' }
+	const textColor = { color: error && !v.terms ? '#F45E8C' : '#c0c5e0' }
 
 	const text = (type) => {
 		const goToTerms = () =>
@@ -64,16 +62,12 @@ export default function CheckMarks({ error, validations }) {
 
 	return (
 		<View style={styles.container}>
-			{['acceptTerms', 'updates'].map((c, i, a) => (
-				<View
-					style={[styles.row, { marginTop: i === a.length - 1 ? 20 : 0 }]}
-					key={c}>
-					<Pressable style={styles.image} onPress={() => toggle(c)}>
-						{image(c)}
-					</Pressable>
-					{text(c)}
-				</View>
-			))}
+			<View style={[styles.row, { marginTop: 20 }]}>
+				<Pressable style={styles.image} onPress={() => toggle('acceptTerms')}>
+					{image('acceptTerms')}
+				</Pressable>
+				{text('acceptTerms')}
+			</View>
 		</View>
 	)
 }

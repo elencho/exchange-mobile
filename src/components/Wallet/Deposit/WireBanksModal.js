@@ -1,12 +1,11 @@
 import React from 'react'
 import { Pressable, StyleSheet, View, Image } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
+import { ICONS_URL_PNG } from '../../../constants/api'
+import colors from '../../../constants/colors'
+import { toggleWireBanksModal } from '../../../redux/modals/actions'
 import AppModal from '../../AppModal'
 import AppText from '../../AppText'
-import colors from '../../../constants/colors'
-import { ICONS_URL_PNG } from '../../../constants/api'
-import { toggleWireBanksModal } from '../../../redux/modals/actions'
 
 export default function WireBanksModal({ setInfo }) {
 	const dispatch = useDispatch()
@@ -91,10 +90,10 @@ const styles = StyleSheet.create({
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		paddingHorizontal: 15,
+		paddingHorizontal: 10,
 		paddingVertical: 10,
 		borderRadius: 5,
-		marginLeft: -15,
+		marginHorizontal: -5,
 	},
 	text: {
 		color: colors.PRIMARY_TEXT,

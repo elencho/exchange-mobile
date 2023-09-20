@@ -1,34 +1,31 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
 import { Linking, Pressable, StyleSheet, View, Image } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { t } from 'i18next'
-
-import AppModal from '../../AppModal'
-import AppText from '../../AppText'
-import AppButton from '../../AppButton'
-import AppWebView from '../../AppWebView'
-import AppInfoBlock from '../../AppInfoBlock'
-import PurpleText from '../../PurpleText'
-import ChooseBankModal from '../../InstantTrade/ChooseBankModal'
-import BankFeesModal from '../../InstantTrade/BankFeesModal'
-import colors from '../../../constants/colors'
-import { IS_ANDROID } from '../../../constants/system'
-import { ICONS_URL_PNG } from '../../../constants/api'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import CheckEmpty from '../../../assets/images/Check_Empty.svg'
 import CheckFull from '../../../assets/images/Check_Full.svg'
 import CheckRed from '../../../assets/images/Check_Red.svg'
-import CheckEmpty from '../../../assets/images/Check_Empty.svg'
+import { ICONS_URL_PNG } from '../../../constants/api'
+import colors from '../../../constants/colors'
+import { IS_ANDROID } from '../../../constants/system'
 import {
 	setStatusModalInfo,
 	toggleAddCardModal,
 	toggleBankFeesModal,
 	toggleChooseBankModal,
 } from '../../../redux/modals/actions'
-import { addCard } from '../../../utils/walletUtils'
 import { cardsSagaAction } from '../../../redux/trade/actions'
-
-import Arrow from '../../../assets/images/Arrow'
+import { addCard } from '../../../utils/walletUtils'
+import AppButton from '../../AppButton'
+import AppDropdown from '../../AppDropdown'
+import AppInfoBlock from '../../AppInfoBlock'
+import AppModal from '../../AppModal'
+import AppText from '../../AppText'
+import AppWebView from '../../AppWebView'
+import BankFeesModal from '../../InstantTrade/BankFeesModal'
+import ChooseBankModal from '../../InstantTrade/ChooseBankModal'
+import PurpleText from '../../PurpleText'
 
 export default function AddCardModal() {
 	const dispatch = useDispatch()
@@ -119,7 +116,7 @@ export default function AddCardModal() {
 	}
 
 	const displayName = () => {
-		let displayName = 'Payment Service Provider'
+		let displayName = null
 
 		depositProviders?.forEach((provider) => {
 			if (depositProvider === provider.provider)
@@ -134,14 +131,7 @@ export default function AddCardModal() {
 			'https://support.cryptal.com/hc/en-us/articles/4402770737682-Privacy-Policy'
 		)
 
-	const color =
-		!depositProvider && error
-			? '#F45E8C'
-			: depositProvider
-			? colors.PRIMARY_TEXT
-			: colors.SECONDARY_TEXT
-	const borderColor = !depositProvider && error ? '#F45E8C' : '#525A86'
-	const termsColor = !saveCardAgreeTerms && error ? '#F45E8C' : '#525A86'
+	const termsColor = !saveCardAgreeTerms && error ? '#F45E8C' : '#c0c5e0'
 
 	useEffect(() => {
 		if (statusObj && IS_ANDROID) dispatch(setStatusModalInfo(statusObj))
@@ -151,20 +141,23 @@ export default function AddCardModal() {
 		<>
 			{/* {!multipleBanks() ? ( */}
 			<>
-				<Pressable
-					style={[styles.dropdown, { borderColor }]}
-					onPress={showBanks}>
-					{depositProvider && (
-						<Image
-							source={{ uri: `${ICONS_URL_PNG}/${depositProvider}.png` }}
-							style={styles.imageSmall}
-						/>
-					)}
-					<AppText style={[styles.text, { color }]} medium={depositProvider}>
-						{displayName()}
-					</AppText>
-					<Arrow />
-				</Pressable>
+				<AppDropdown
+					handlePress={showBanks}
+					style={styles.dropdown}
+					selectedText={displayName()}
+					label="Payment Service Provider"
+					withLabel
+					notClearable
+					error={!depositProvider && error}
+					icon={
+						depositProvider && (
+							<Image
+								source={{ uri: `${ICONS_URL_PNG}/${depositProvider}.png` }}
+								style={styles.imageSmall}
+							/>
+						)
+					}
+				/>
 
 				{/* <AppText subtext style={styles.subText}>
           100 ₾-500 ₾ Visa / MC Card 4% Amex 6 %{' '}
@@ -239,17 +232,13 @@ const styles = StyleSheet.create({
 		right: 15,
 	},
 	dropdown: {
-		borderWidth: 1,
-		alignItems: 'center',
-		flexDirection: 'row',
-		height: 45,
-		paddingHorizontal: 15,
-		marginTop: 12,
+		marginTop: 22,
 	},
 	grey: {
 		color: '#B7BFDB',
 		lineHeight: 18,
 		textAlign: 'justify',
+		marginLeft: 15,
 	},
 	image: {
 		width: 40,
@@ -275,6 +264,5 @@ const styles = StyleSheet.create({
 		width: 24,
 		height: 20,
 		resizeMode: 'contain',
-		marginRight: 15,
 	},
 })

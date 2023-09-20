@@ -1,8 +1,10 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../../AppModal'
+import CopyWhite from '../../../assets/images/Wallet/CopyWhite.svg'
+import DeleteWhite from '../../../assets/images/Wallet/DeleteWhite.svg'
+import Edit from '../../../assets/images/Wallet/Edit.svg'
+import colors from '../../../constants/colors'
 import {
 	toggleEditWhitelistModal,
 	toggleEmailAuthModal,
@@ -10,14 +12,10 @@ import {
 	toggleSmsAuthModal,
 	toggleWhitelistActionsModal,
 } from '../../../redux/modals/actions'
-import AppText from '../../AppText'
-import colors from '../../../constants/colors'
-import { sendOtp } from '../../../utils/userProfileUtils'
 import useCopyToClipboard from '../../../utils/copyToClipboard'
-
-import DeleteWhite from '../../../assets/images/Wallet/DeleteWhite.svg'
-import CopyWhite from '../../../assets/images/Wallet/CopyWhite.svg'
-import Edit from '../../../assets/images/Wallet/Edit.svg'
+import { sendOtp } from '../../../utils/userProfileUtils'
+import AppModal from '../../AppModal'
+import AppText from '../../AppText'
 
 export default function WhitelistActionsModal() {
 	const { copyToClipboard } = useCopyToClipboard()
@@ -85,7 +83,7 @@ export default function WhitelistActionsModal() {
 	const array = ['Edit Whitelist', 'Delete Whitelist', 'Copy Address']
 
 	const children = (
-		<View style={{ marginBottom: -15 }}>
+		<View style={{ marginBottom: -15, paddingHorizontal: 13 }}>
 			{array.map((a) => (
 				<Pressable
 					style={styles.pressable}

@@ -1,20 +1,30 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../AppText'
 import colors from '../../constants/colors'
-import { setFromTime, setToTime } from '../../redux/transactions/actions'
 import { toggleDatePicker } from '../../redux/modals/actions'
+import { setFromDateQuery, setToDAteQuery } from '../../redux/trade/actions'
+import { setFromTime, setToTime } from '../../redux/transactions/actions'
+import AppText from '../AppText'
 
-export default function CalendarDay({ state, from, to }) {
+export default function CalendarDay({ state, from, to, isInstantTrade }) {
 	const {
 		date: { day, month, year, timestamp },
 	} = state
 
 	const dispatch = useDispatch()
-	const fromDateTime = useSelector((state) => state.transactions.fromDateTime)
-	const toDateTime = useSelector((state) => state.transactions.toDateTime)
+	const {
+		fromDateTime: fromDateTimeTransactions,
+		toDateTime: toDateTimeTransactions,
+	} = useSelector((state) => state.transactions)
+	const {
+		fromDateTimeQuery: fromDateTimeTrades,
+		toDateTimeQuery: toDateTimeTrades,
+	} = useSelector((state) => state.trade)
+	const fromDateTime = isInstantTrade
+		? fromDateTimeTrades
+		: fromDateTimeTransactions
+	const toDateTime = isInstantTrade ? toDateTimeTrades : toDateTimeTransactions
 
 	const disabled = () => {
 		const now = Date.now()
@@ -86,11 +96,15 @@ export default function CalendarDay({ state, from, to }) {
 	}
 
 	const handleChange = (timestamp) => {
+		const fromValue = timestamp - 3600000 * 4
+		const toValue = timestamp + 3600000 * 20 - 1
 		if (from) {
-			dispatch(setFromTime(timestamp - 3600000 * 4))
+			dispatch(
+				isInstantTrade ? setFromDateQuery(fromValue) : setFromTime(fromValue)
+			)
 		}
 		if (to) {
-			dispatch(setToTime(timestamp + 3600000 * 20 - 1))
+			dispatch(isInstantTrade ? setToDAteQuery(toValue) : setToTime(toValue))
 		}
 	}
 

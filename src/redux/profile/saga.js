@@ -1,32 +1,9 @@
-import { call, delay, put, select, takeLatest } from 'redux-saga/effects'
-import pkceChallenge from 'react-native-pkce-challenge'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import * as SecureStore from 'expo-secure-store'
 import jwt_decode from 'jwt-decode'
-
-import {
-	actionTypes,
-	saveCountries,
-	saveCountriesConstant,
-	saveUserInfo,
-	saveOtpChangeToken,
-	setCurrentSecurityAction,
-	setSmsAuth,
-	setGoogleAuth,
-	setEmailAuth,
-	saveTotpSecretObj,
-	savePkceInfo,
-	saveLoginStartInfo,
-	saveUserAndPassInfo,
-	saveRegistrationStartInfo,
-	saveVerificationInfo,
-	fetchUserInfo,
-	toggleUserInfoLoading,
-	switchPersonalSecurity,
-	setIsProfileUpdating,
-	setCredentials,
-	setRegistrationInputs,
-} from './actions'
-import { getUserData, registrationParams } from './selectors'
+import pkceChallenge from 'react-native-pkce-challenge'
+import { call, delay, put, select, takeLatest } from 'redux-saga/effects'
+import launchSumsubSdk from '../../utils/sumsubMobileSdk'
 import {
 	activateEmailOtp,
 	activateGoogleOtp,
@@ -56,7 +33,6 @@ import {
 	verifyAccount,
 	verifyPhoneNumber,
 } from '../../utils/userProfileUtils'
-import launchSumsubSdk from '../../utils/sumsubMobileSdk'
 import {
 	toggleEmailAuthModal,
 	toggleGoogleAuthModal,
@@ -68,7 +44,30 @@ import {
 import { resetTradesState } from '../trade/actions'
 import { resetTransactionsState, toggleLoading } from '../transactions/actions'
 import { resetWalletState } from '../wallet/actions'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import {
+	actionTypes,
+	saveCountries,
+	saveCountriesConstant,
+	saveUserInfo,
+	saveOtpChangeToken,
+	setCurrentSecurityAction,
+	setSmsAuth,
+	setGoogleAuth,
+	setEmailAuth,
+	saveTotpSecretObj,
+	savePkceInfo,
+	saveLoginStartInfo,
+	saveUserAndPassInfo,
+	saveRegistrationStartInfo,
+	saveVerificationInfo,
+	fetchUserInfo,
+	toggleUserInfoLoading,
+	switchPersonalSecurity,
+	setIsProfileUpdating,
+	setCredentials,
+	setRegistrationInputs,
+} from './actions'
+import { getUserData, registrationParams } from './selectors'
 
 //  START LOGIN
 function* startLoginSaga(action) {
@@ -81,6 +80,10 @@ function* startLoginSaga(action) {
 		yield put(saveLoginStartInfo(loginStartInfo))
 		if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
 			navigation.navigate('Login')
+		}
+		if (loginStartInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
+			navigation.push('EmailVerification', { fromScreen: 'login' })
+			yield put(saveVerificationInfo(loginStartInfo))
 		}
 	}
 }
@@ -99,6 +102,9 @@ function* startRegistrationSaga(action) {
 		if (registrationStartInfo?.execution === 'REGISTRATION_START') {
 			navigation.navigate('Registration')
 		}
+		if (registrationStartInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
+			navigation.push('EmailVerification', { fromScreen: 'registration' })
+		}
 	}
 }
 
@@ -116,7 +122,7 @@ function* registrationFormSaga(action) {
 		registrationStartInfo?.callbackUrl
 	)
 	if (data?.execution === 'EMAIL_VERIFICATION_OTP') {
-		navigation.push('EmailVerification')
+		navigation.push('EmailVerification', { fromScreen: 'registration' })
 		yield put(saveVerificationInfo(data))
 	}
 	yield put(
@@ -206,6 +212,10 @@ function* usernameAndPasswordSaga(action) {
 	yield put(saveUserAndPassInfo(userAndPassInfo))
 	if (userAndPassInfo?.execution === 'LOGIN_OTP') {
 		navigation.navigate('Login2Fa')
+	}
+	if (userAndPassInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
+		navigation.push('EmailVerification', { fromScreen: 'login' })
+		yield put(saveVerificationInfo(userAndPassInfo))
 	}
 	yield put(
 		saveLoginStartInfo({

@@ -1,21 +1,23 @@
 import React from 'react'
 import { Pressable, StyleSheet, View, Image } from 'react-native'
 import { useDispatch } from 'react-redux'
-
-import AppText from '../AppText'
-import DepositlIcon from '../../assets/images/Deposit.svg'
-import WithdrawalIcon from '../../assets/images/Withdrawal.svg'
-
-import colors from '../../constants/colors'
-import { transactionDetailsSaga } from '../../redux/transactions/actions'
-import { toggleTransactionDetails } from '../../redux/modals/actions'
-import { COINS_URL_PNG } from '../../constants/api'
 import BuyIcon from '../../assets/images/Buy'
+import DepositlIcon from '../../assets/images/Deposit.svg'
 import SellIcon from '../../assets/images/Sell'
-
+import WithdrawalIcon from '../../assets/images/Withdrawal.svg'
+import { COINS_URL_PNG } from '../../constants/api'
+import colors from '../../constants/colors'
 import { monthsShort } from '../../constants/months'
+import { toggleTransactionDetails } from '../../redux/modals/actions'
+import { transactionDetailsSaga } from '../../redux/transactions/actions'
+import AppText from '../AppText'
 
-export default function Transaction({ transactionData, loading, isTransfer }) {
+export default function Transaction({
+	transactionData,
+	loading,
+	isTransfer,
+	isLast,
+}) {
 	const dispatch = useDispatch()
 
 	const {
@@ -37,12 +39,14 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
 
 	let date = new Date(isTransfer ? timestamp : creationTime)
 	const time = date.toTimeString('en-US', { hour12: false }).split(' ')[0]
-	date = `${date.getDate()} ${monthsShort[date.getMonth()]}`
+	year = date.getFullYear()
+	date = `${date.getDate()} ${monthsShort[date.getMonth()]} `
 
 	const currentTransaction = {
 		...transactionData,
 		date,
 		time,
+		year,
 	}
 
 	const showModal = () => {
@@ -89,8 +93,9 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
 			: '#F83974'
 
 	const shortenDestination = (destination) => {
+		if (!destination) return null
 		return method === 'WALLET_INTERNAL' || method === 'WALLET'
-			? destination.slice(0, 13) + '...' + destination.slice(-10)
+			? destination?.slice(0, 13) + '...' + destination?.slice(-10)
 			: destination
 	}
 
@@ -99,14 +104,19 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
 	const destinationText = isTransfer ? 'Identifier' : 'From Amount'
 	const amountDisplay = isTransfer
 		? `${amount} ${currency}`
-		: ` ${cumulativeCost} ${quoteCurrency}`
+		: action === 'BID'
+		? `${size} ${baseCurrency}`
+		: `${cumulativeCost} ${quoteCurrency}`
 	const destinationDisplay = isTransfer
-		? shortenDestination(recipient)
+		? shortenDestination(transactionInfo) || '-'
+		: action === 'BID'
+		? `${cumulativeCost} ${quoteCurrency}`
 		: `${size} ${baseCurrency}`
-	const typeColor = type === 'BUY' ? '#a4edd9' : '#f0abc0'
 
 	return (
-		<Pressable onPress={showModal} style={styles.container}>
+		<Pressable
+			onPress={showModal}
+			style={[styles.container, isLast && { borderBottomWidth: 0 }]}>
 			<View style={styles.topRow}>
 				{isTransfer && image()}
 
@@ -114,22 +124,23 @@ export default function Transaction({ transactionData, loading, isTransfer }) {
 					<AppText medium style={styles.primaryText} body>
 						{title}
 					</AppText>
-					{method ? (
-						<View style={{ flexDirection: 'row' }}>
-							{!isTransfer && (
-								<View style={styles.typeIcon}>
-									{type === 'SELL' ? <SellIcon /> : <BuyIcon />}
-								</View>
+					{!isTransfer && (
+						<View style={{ flexDirection: 'row', marginTop: 7 }}>
+							{!isTransfer && action && (
+								<>
+									<View style={styles.typeIcon}>
+										{action === 'ASK' ? <SellIcon /> : <BuyIcon />}
+									</View>
+									<AppText style={[styles.secondaryText]}>
+										Instant Trade
+									</AppText>
+								</>
 							)}
-							<AppText style={styles.secondaryText}>{method}</AppText>
 						</View>
-					) : action ? (
-						<AppText style={[styles.secondaryText]}>
-							{action === 'BID'
-								? 'BUY - Instant Trade'
-								: 'SELL - Instant Trade'}
-						</AppText>
-					) : null}
+					)}
+					{isTransfer && (
+						<AppText style={styles.secondaryText}>{method}</AppText>
+					)}
 				</View>
 
 				<View style={styles.right}>
@@ -178,12 +189,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'flex-end',
 	},
-	statusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 5 },
+	statusRow: { flexDirection: 'row', alignItems: 'center', marginTop: 12 },
 
 	// Texts
-	secondaryText: { fontSize: 12, lineHeight: 16, color: colors.SECONDARY_TEXT },
+	secondaryText: { fontSize: 14, lineHeight: 16, color: colors.SECONDARY_TEXT },
 	status: {
-		fontSize: 12,
+		fontSize: 14,
 		lineHeight: 16,
 		color: colors.SECONDARY_TEXT,
 		marginRight: 5,

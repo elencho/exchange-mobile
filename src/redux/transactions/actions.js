@@ -15,6 +15,7 @@ export const actionTypes = {
 	SET_TAB_ROUTE_NAME: 'SET_TAB_ROUTE_NAME',
 	SET_TOTAL_TRANSACTIONS: 'SET_TOTAL_TRANSACTIONS',
 	SET_ACTIVE_TAB: 'SET_ACTIVE_TAB',
+	SET_TX_ID_OR_RECIPIENT: 'SET_TX_ID_OR_RECIPIENT',
 	// PURE VISUALS
 	TOGGLE_LOADING: 'TOGGLE_LOADING',
 
@@ -31,6 +32,8 @@ export const actionTypes = {
 	TRANSACTION_DETAILS_SAGA: 'TRANSACTION_DETAILS_SAGA',
 
 	RESET_TRANSACTIONS_STATE: 'RESET_TRANSACTIONS_STATE',
+	SET_CRYPTO_FILTER: 'SET_CRYPTO_FILTER',
+	SET_PREV_TRANSACTIONS_FILTER: 'SET_PREV_TRANSACTIONS_FILTER',
 }
 
 export const saveTransactions = (transactions) => ({
@@ -99,6 +102,18 @@ export const setTabRouteName = (tabRoute) => ({
 export const setActiveTab = (activeTab) => ({
 	type: actionTypes.SET_ACTIVE_TAB,
 	activeTab,
+})
+export const setTransactionSearch = (txIdOrRecipient) => ({
+	type: actionTypes.SET_TX_ID_OR_RECIPIENT,
+	txIdOrRecipient,
+})
+export const setCryptoFilter = (cryptoFilter) => ({
+	type: actionTypes.SET_CRYPTO_FILTER,
+	cryptoFilter,
+})
+export const setPreviousTransactionsFilter = (previousTransactionsFilter) => ({
+	type: actionTypes.SET_PREV_TRANSACTIONS_FILTER,
+	previousTransactionsFilter,
 })
 
 // FOR SAGAS

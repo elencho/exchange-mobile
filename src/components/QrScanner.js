@@ -1,16 +1,14 @@
-import { useEffect } from 'react'
-import { StyleSheet, View, Alert, Pressable, Dimensions } from 'react-native'
-import AppModal from './AppModal'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-	grantCameraPermission,
-	toggleQrScannerModal,
-} from '../redux/modals/actions'
 import { BarCodeScanner } from 'expo-barcode-scanner'
+import Constants from 'expo-constants'
+import { useEffect } from 'react'
+import { StyleSheet, View, Pressable, Dimensions, Platform } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 import Close from '../assets/images/Close.svg'
-import AppText from './AppText'
-import { IS_IOS } from '../constants/system'
 import colors from '../constants/colors'
+import { IS_IOS } from '../constants/system'
+import { toggleQrScannerModal } from '../redux/modals/actions'
+import AppModal from './AppModal'
+import AppText from './AppText'
 
 const WINDOW_WIDTH = Dimensions.get('window').width
 
@@ -81,7 +79,11 @@ const styles = StyleSheet.create({
 	},
 	btn: {
 		alignSelf: 'flex-end',
-		margin: 20,
+		marginRight: 25,
+		marginTop: Platform.select({
+			ios: Constants.statusBarHeight + 10,
+			android: 20,
+		}),
 	},
 	text: {
 		color: '#969CBF',

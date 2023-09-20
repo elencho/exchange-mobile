@@ -1,20 +1,18 @@
 import React, { useRef } from 'react'
 import { ScrollView, StyleSheet, View, Pressable } from 'react-native'
+import { MaterialIndicator } from 'react-native-indicators'
 import { useDispatch, useSelector } from 'react-redux'
-
+import CardIcon from '../../assets/images/Wallet/CardIcon'
 import AppText from '../../components/AppText'
 import AppWebView from '../../components/AppWebView'
 import PurpleText from '../../components/PurpleText'
 import WalletCoinsDropdown from '../../components/Wallet/Deposit/WalletCoinsDropdown'
 import AddCardModal from '../../components/Wallet/ManageCards/AddCardModal'
 import Card from '../../components/Wallet/ManageCards/Card'
-import StatusModal from '../../components/Wallet/StatusModal'
 import DeleteModal from '../../components/Wallet/ManageCards/DeleteModal'
-import CardIcon from '../../assets/images/Wallet/CardIcon'
-
+import StatusModal from '../../components/Wallet/StatusModal'
 import colors from '../../constants/colors'
 import { toggleAddCardModal } from '../../redux/modals/actions'
-import { MaterialIndicator } from 'react-native-indicators'
 
 export default function ManageCards({ refreshControl }) {
 	const dispatch = useDispatch()
@@ -33,10 +31,8 @@ export default function ManageCards({ refreshControl }) {
 	}
 
 	return (
-		<View style={{ flex: 1 }}>
-			<View style={styles.block}>
-				<WalletCoinsDropdown />
-			</View>
+		<View style={{ flex: 1, paddingTop: 18, paddingTop: 10 }}>
+			<WalletCoinsDropdown />
 
 			{cardsLoading && (
 				<MaterialIndicator color="#6582FD" animationDuration={3000} />
@@ -93,7 +89,6 @@ const styles = StyleSheet.create({
 	block: {
 		marginBottom: 12,
 		paddingVertical: 22,
-		paddingHorizontal: 10,
 	},
 	button: {
 		borderWidth: 1,
@@ -101,15 +96,15 @@ const styles = StyleSheet.create({
 		borderStyle: 'dashed',
 		height: 45,
 		borderColor: colors.SECONDARY_PURPLE,
-		marginTop: 30,
+		marginTop: 10,
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row',
+		marginBottom: 30,
 	},
 	description: {
 		color: colors.SECONDARY_TEXT,
 		textAlign: 'center',
-		marginHorizontal: '20%',
 		lineHeight: 20,
 		marginTop: 18,
 		marginBottom: 45,
@@ -118,8 +113,5 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-	},
-	scrollView: {
-		paddingHorizontal: 10,
 	},
 })

@@ -1,5 +1,4 @@
 import axios from 'axios'
-
 import {
 	OFFERS_URL,
 	TRADES_URL,
@@ -10,7 +9,7 @@ import {
 } from '../constants/api'
 
 export const fetchTrades = async (params) => {
-	const data = await axios.get(TRADES_URL_PAGED, { params })
+	const data = await axios.post(TRADES_URL_PAGED, params)
 	return data?.data
 }
 

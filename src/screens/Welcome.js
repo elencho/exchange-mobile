@@ -141,12 +141,16 @@ export default function Welcome({ navigation }) {
 	})
 
 	const isWorkingVersion = async () => {
-		const version = DeviceInfo.getVersion()
-		const { status } = await checkReadiness(version, Platform.OS)
-		if (status === 'DOWN') {
+		try {
+			const version = DeviceInfo.getVersion()
+			const { status } = await checkReadiness(version, Platform.OS)
+			if (status !== 'UP') {
+				return true
+			} else {
+				return false
+			}
+		} catch {
 			return true
-		} else {
-			return false
 		}
 	}
 
@@ -202,18 +206,23 @@ export default function Welcome({ navigation }) {
 					<AppText body style={styles.subtext}>
 						Secure and Simple · Your Gateway to the Global Crypto Universe
 					</AppText>
+					<View style={styles.paddingHorizontal}>
+						<GeneralError
+							style={styles.error}
+							show={errorHappenedHere('Welcome')}
+						/>
 
-					<GeneralError
-						style={styles.error}
-						show={errorHappenedHere('Welcome')}
-					/>
-
-					<AppButton text="Login" style={styles.button} onPress={startLogin} />
-					<PurpleText
-						style={{ fontSize: 16 }}
-						text="Registration"
-						onPress={startRegistration}
-					/>
+						<AppButton
+							text="Login"
+							style={styles.button}
+							onPress={startLogin}
+						/>
+						<PurpleText
+							style={{ fontSize: 16 }}
+							text="Registration"
+							onPress={startRegistration}
+						/>
+					</View>
 				</View>
 				<LanguageSwitcher />
 			</ImageBackground>
@@ -229,9 +238,8 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
-		alignItems: 'center',
+
 		justifyContent: 'center',
-		paddingHorizontal: '12%',
 	},
 	error: {
 		marginTop: 20,
@@ -246,12 +254,12 @@ const styles = StyleSheet.create({
 	primary: {
 		color: colors.PRIMARY_TEXT,
 		marginTop: 30,
-		marginBottom: 12,
+		marginBottom: 11,
 		textAlign: 'center',
+		width: '100%',
 	},
 	subtext: {
 		color: colors.SECONDARY_TEXT,
-		marginTop: 12,
 		textAlign: 'center',
 	},
 	secondary: {
@@ -260,5 +268,13 @@ const styles = StyleSheet.create({
 	},
 	imageBackground: {
 		flex: 1,
+	},
+	paddingHorizontal: {
+		paddingHorizontal: '12%',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	logo: {
+		alignSelf: 'center',
 	},
 })

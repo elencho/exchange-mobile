@@ -1,9 +1,9 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import AppText from '../../AppText'
-import colors from '../../../constants/colors'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import colors from '../../../constants/colors'
 import { setActiveTab } from '../../../redux/transactions/actions'
+import AppText from '../../AppText'
 
 const TabSwitcher = () => {
 	const dispatch = useDispatch()
@@ -46,9 +46,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		gap: 10,
+		marginTop: 10,
 	},
 	tab: {
-		backgroundColor: 'red',
 		flex: 1,
 		height: 38,
 		borderRadius: 40,

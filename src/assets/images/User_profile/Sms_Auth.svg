@@ -1,17 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="43.088" height="48.911" viewBox="0 0 43.088 48.911">
-  <g id="My_Phone_Number" data-name="My Phone Number" transform="translate(0.501 0.5)">
-    <g id="Group_42661" data-name="Group 42661" transform="translate(0 0)">
-      <g id="Group_42660" data-name="Group 42660" transform="translate(0)">
-        <path id="Path_8750" data-name="Path 8750" d="M62.7,3H31.049L31,50.911h34.88s.038-1.158.038-2.94l-.038-7.676H62.7l-.018,7.381H34.237V6.5H62.7Z" transform="translate(-30.996 -3)" fill="#696f8e" stroke="#1f1f35" stroke-width="1"/>
-      </g>
-    </g>
-    <g id="Group_42668" data-name="Group 42668" transform="translate(19.944 9.65)">
-      <g id="Group_42663" data-name="Group 42663" transform="translate(0 0)">
-        <g id="Group_42662" data-name="Group 42662" transform="translate(0 0)">
-          <path id="Path_8751" data-name="Path 8751" d="M225,129.194v17.87h5.476v4.063h1.7l6.521-4.041,8.749-.022s-.036-1.734-.075-17.87Zm19.831,15.267h-6.422s-.21.058-5.547,3.286v-3.116h-5.288l.041-12.867h17.248Z" transform="translate(-225 -129.194)" fill="#696f8e" stroke="#161629" stroke-width="0.4"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="44" viewBox="0 0 42 44">
+    <defs>
+        <clipPath id="fcgc21hzza">
+            <path data-name="Rectangle 10755" style="fill:#696f8e" d="M0 0h42v44H0z"/>
+        </clipPath>
+    </defs>
+    <g data-name="Group 71775" style="clip-path:url(#fcgc21hzza)">
+        <g data-name="Group 71774">
+            <g data-name="Group 71773" style="clip-path:url(#fcgc21hzza)">
+                <path data-name="Path 62487" d="M29.75 31.81h-1.77l-.01 5.73H5.17V4.85h22.11V2.83H3.38l-.04 36.53h26.42c.01-.38.02-1.06.02-1.94z" style="fill:#696f8e"/>
+                <path data-name="Path 62488" d="M35.68 10.17H18.7v13.49h4.25v3.16h1.06l5.07-3.14 6.66-.02c-.01-.69-.04-3.48-.06-13.49M34.1 22.04h-5.14c-.14.08-.85.47-4.26 2.53l-.3.18v-2.58h-4.1l.03-10.4h13.8z" style="fill:#696f8e"/>
+                <path data-name="Rectangle 10753" transform="translate(15.496 30.581)" style="fill:#696f8e" d="M0 0h3v2H0z"/>
+            </g>
         </g>
-      </g>
     </g>
-    <line id="Line_155" data-name="Line 155" x2="3.86" transform="translate(16.084 37.451)" fill="none" stroke="#696f8e" stroke-width="2"/>
-  </g>
 </svg>

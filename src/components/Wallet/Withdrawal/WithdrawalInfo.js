@@ -1,7 +1,8 @@
 import React from 'react'
 import { Pressable, StyleSheet, View, Image } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
+import Arrow from '../../../assets/images/Arrow'
+import { COUNTRIES_URL_PNG } from '../../../constants/api'
 import colors from '../../../constants/colors'
 import {
 	toggleChooseBankModal,
@@ -16,11 +17,9 @@ import {
 } from '../../../redux/wallet/actions'
 import AppInput from '../../AppInput'
 import AppText from '../../AppText'
+import CountriesModal from '../../UserProfile/CountriesModal'
 import TemplatesModal from './TemplatesModal'
 import WithdrawalBanksModal from './WithdrawalBanksModal'
-import Arrow from '../../../assets/images/Arrow'
-import CountriesModal from '../../UserProfile/CountriesModal'
-import { COUNTRIES_URL_PNG } from '../../../constants/api'
 
 export default function WithdrawalInfo({ error }) {
 	const dispatch = useDispatch()

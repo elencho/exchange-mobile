@@ -1,11 +1,10 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
-
-import AppText from '../AppText'
-import TotalBalanceSkeleton from './TotalBalanceSkeleton'
 import colors from '../../constants/colors'
+import AppText from '../AppText'
 import NewCurrencySwitch from './NewCurrencySwitch'
+import TotalBalanceSkeleton from './TotalBalanceSkeleton'
 
 export default function TotalBalance({ balanceLoading }) {
 	const filter = useSelector((state) => state.wallet.usdBtcSwitch)
@@ -25,26 +24,30 @@ export default function TotalBalance({ balanceLoading }) {
 		}
 	}
 
-	return !balanceLoading ? (
-		<View style={styles.container}>
-			<View style={styles.balanceContainer}>
-				<View style={styles.justify}>
-					<View style={styles.row}>
-						<AppText header style={styles.primary}>
-							{primary()}
-						</AppText>
+	return (
+		<View style={styles.wrapper}>
+			{!balanceLoading ? (
+				<View style={styles.container}>
+					<View style={styles.balanceContainer}>
+						<View style={styles.justify}>
+							<View style={styles.row}>
+								<AppText header style={styles.primary}>
+									{primary()}
+								</AppText>
+							</View>
+							<View style={styles.row}>
+								<AppText body style={styles.secondary}>
+									{secondary()}
+								</AppText>
+							</View>
+						</View>
 					</View>
-					<View style={styles.row}>
-						<AppText body style={styles.secondary}>
-							{secondary()}
-						</AppText>
-					</View>
+					<NewCurrencySwitch />
 				</View>
-			</View>
-			<NewCurrencySwitch />
+			) : (
+				<TotalBalanceSkeleton />
+			)}
 		</View>
-	) : (
-		<TotalBalanceSkeleton />
 	)
 }
 
@@ -70,5 +73,8 @@ const styles = StyleSheet.create({
 	},
 	row: {
 		flexDirection: 'row',
+	},
+	wrapper: {
+		paddingBottom: 25,
 	},
 })

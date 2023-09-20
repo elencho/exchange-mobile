@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
-
 import colors from '../../constants/colors'
 import { checkIsCompatable } from '../../utils/biometricsAuth'
-
 import AppText from '../AppText'
 import GoogleAuthModal from './GoogleAuthModal'
 import GoogleOtpModal from './GoogleOtpModal'
@@ -26,12 +24,6 @@ export default function Security({ loading, bioAvailable }) {
 				<View style={styles.line} />
 			</View>
 
-			{/* <View style={styles.block}>
-        {['Pin', 'Biometric'].map((r, i, a) => (
-          <SecurityRow key={r} text={r} i={i} a={a} />
-        ))}
-      </View> */}
-
 			<View style={styles.block}>
 				{bioAvailable && <SecurityRow text="Biometric" />}
 				<SecurityRow text="Strong_Password" />
@@ -50,8 +42,6 @@ export default function Security({ loading, bioAvailable }) {
 
 const styles = StyleSheet.create({
 	block: {
-		paddingHorizontal: 5,
-
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 	},
 	margin: { marginBottom: 20, marginTop: 10 },

@@ -1,12 +1,12 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import AppModal from '../components/AppModal'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleMethodsModal } from '../redux/modals/actions'
-import { methods } from '../constants/filters'
+import AppModal from '../components/AppModal'
 import AppText from '../components/AppText'
 import colors from '../constants/colors'
-import { filterAction } from '../redux/transactions/actions'
+import { methods } from '../constants/filters'
+import { toggleMethodsModal } from '../redux/modals/actions'
+import { setMethodFilter } from '../redux/transactions/actions'
 
 const ChooseMethodsModal = () => {
 	const dispatch = useDispatch()
@@ -24,7 +24,7 @@ const ChooseMethodsModal = () => {
 				<Pressable
 					style={[styles.row, selectedMethod === i && selectedStyle]}
 					onPress={() => {
-						dispatch(filterAction(i, 'method'))
+						dispatch(setMethodFilter([i]))
 						hideModal()
 					}}>
 					<AppText calendarDay style={styles.text}>
@@ -58,6 +58,6 @@ const styles = StyleSheet.create({
 	},
 	text: {
 		color: colors.PRIMARY_TEXT,
-		marginLeft: 15,
+		marginLeft: 26,
 	},
 })

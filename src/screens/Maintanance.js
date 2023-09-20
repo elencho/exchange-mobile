@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { ImageBackground, Linking, StyleSheet, Text, View } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
-
-import Logo from '../assets/images/Logo'
-import Gear from '../assets/images/Gear'
-import AppText from '../components/AppText'
-import AppButton from '../components/AppButton'
-import PurpleText from '../components/PurpleText'
-
-import images from '../constants/images'
-import colors from '../constants/colors'
-import { checkReadiness } from '../utils/appUtils'
 import SplashScreen from 'react-native-splash-screen'
+import Gear from '../assets/images/Gear'
+import Logo from '../assets/images/Logo'
+import AppButton from '../components/AppButton'
+import AppText from '../components/AppText'
+import PurpleText from '../components/PurpleText'
+import colors from '../constants/colors'
+import images from '../constants/images'
+import { checkReadiness } from '../utils/appUtils'
 
 export default function Maintanance({ navigation }) {
 	const [loading, setLoading] = useState(false)
@@ -26,13 +24,19 @@ export default function Maintanance({ navigation }) {
 	const Margin = ({ margin }) => <View style={{ marginVertical: margin / 2 }} />
 
 	const refresh = async () => {
-		setLoading(true)
+		try {
+			setLoading(true)
 
-		const version = DeviceInfo.getVersion()
-		const { status } = await checkReadiness(version)
+			const version = DeviceInfo.getVersion()
+			const { status } = await checkReadiness(version)
 
-		if (status !== 'DOWN') navigation.navigate('Welcome')
-		setLoading(false)
+			if (status === 'UP') {
+				navigation.navigate('Welcome')
+			}
+			setLoading(false)
+		} catch (error) {
+			setLoading(false)
+		}
 	}
 
 	return (
@@ -40,7 +44,7 @@ export default function Maintanance({ navigation }) {
 			resizeMode="contain"
 			source={images.Stars}
 			style={styles.background}>
-			<Logo />
+			<Logo style={{ marginTop: 15 }} />
 
 			<Margin margin={80} />
 			<Gear />

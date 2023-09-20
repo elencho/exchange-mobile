@@ -1,23 +1,20 @@
+import { useFocusEffect } from '@react-navigation/native'
+import * as SecureStore from 'expo-secure-store'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View, FlatList } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { useFocusEffect } from '@react-navigation/native'
-import * as SecureStore from 'expo-secure-store'
-
+import Logout from '../assets/images/User_profile/Logout'
 import AppText from '../components/AppText'
 import Background from '../components/Background'
+import CustomRefreshContol from '../components/CustomRefreshContol'
 import PurpleText from '../components/PurpleText'
 import Headline from '../components/TransactionHistory/Headline'
 import Personal from '../components/UserProfile/Personal'
 import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecuritySwitcher'
 import Security from '../components/UserProfile/Security'
-import Logout from '../assets/images/User_profile/Logout'
-
+import colors from '../constants/colors'
 import { fetchUserInfo, switchPersonalSecurity } from '../redux/profile/actions'
 import { clearFilters } from '../redux/transactions/actions'
-
-import colors from '../constants/colors'
-import CustomRefreshContol from '../components/CustomRefreshContol'
 import { checkIsCompatable } from '../utils/biometricsAuth'
 import { logoutUtil } from '../utils/userProfileUtils'
 
@@ -131,17 +128,16 @@ function UserProfile({ navigation, route }) {
 export default memo(UserProfile)
 
 const styles = StyleSheet.create({
-	back: {
-		marginTop: 5,
-	},
 	secondary: {
 		color: colors.SECONDARY_TEXT,
 		marginBottom: 22,
-		marginTop: -14,
+		marginTop: 6,
 	},
 	topRow: {
 		alignItems: 'center',
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		paddingTop: 20,
+		paddingBottom: 28,
 	},
 })

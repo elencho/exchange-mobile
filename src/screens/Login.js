@@ -1,17 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import Constants from 'expo-constants'
 import { t } from 'i18next'
-
+import React, { useCallback, useEffect, useState } from 'react'
+import { Platform, StatusBar, StyleSheet, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import Logo from '../assets/images/Logo.svg'
 import AppButton from '../components/AppButton'
 import AppInput from '../components/AppInput'
 import AppText from '../components/AppText'
-import WithKeyboard from '../components/WithKeyboard'
 import GeneralError from '../components/GeneralError'
 import PurpleText from '../components/PurpleText'
-import Logo from '../assets/images/Logo.svg'
-
+import WithKeyboard from '../components/WithKeyboard'
 import colors from '../constants/colors'
 import {
 	setCredentials,
@@ -19,7 +19,6 @@ import {
 	usernameAndPasswordAction,
 } from '../redux/profile/actions'
 import { errorHappenedHere } from '../utils/appUtils'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function Login() {
 	const navigation = useNavigation()
@@ -79,7 +78,11 @@ export default function Login() {
 
 	return (
 		<View style={styles.background}>
-			<WithKeyboard padding flexGrow contentContainerStyle={styles.container}>
+			<WithKeyboard
+				padding
+				flexGrow
+				contentContainerStyle={styles.container}
+				keyboardVerticalOffsetIOS={10}>
 				<Logo style={styles.logo} />
 				<View>
 					<AppText header style={styles.primary}>
@@ -146,6 +149,11 @@ const styles = StyleSheet.create({
 	background: {
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 		flex: 1,
+		justifyContent: 'center',
+		paddingTop: Platform.select({
+			ios: Constants.statusBarHeight + 10,
+			android: StatusBar.currentHeight + 20,
+		}),
 	},
 	container: {
 		alignItems: 'center',

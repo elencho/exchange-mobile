@@ -1,21 +1,21 @@
+import { useNavigation } from '@react-navigation/native'
+import { t } from 'i18next'
 import React, { useEffect } from 'react'
 import { Pressable, StyleSheet, View, Image } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
-import { t } from 'i18next'
-import Fee from '../Wallet/Fee'
-import AppText from '../AppText'
-import PurpleText from '../PurpleText'
-
-import colors from '../../constants/colors'
+import Arrow from '../../assets/images/Arrow.svg'
 import { ICONS_URL_PNG } from '../../constants/api'
+import colors from '../../constants/colors'
 import {
 	toggleChooseCardModal,
 	toggleChooseBankModal,
 	toggleBankFeesModal,
 } from '../../redux/modals/actions'
 import { setCard } from '../../redux/trade/actions'
-import Arrow from '../../assets/images/Arrow.svg'
+import AppDropdown from '../AppDropdown'
+import AppText from '../AppText'
+import PurpleText from '../PurpleText'
+import Fee from '../Wallet/Fee'
 
 function CardSection({ error }) {
 	const navigation = useNavigation()
@@ -74,22 +74,6 @@ function CardSection({ error }) {
 			balances,
 		})
 
-	const color =
-		!depositProvider && error
-			? '#F45E8C'
-			: depositProvider
-			? colors.PRIMARY_TEXT
-			: colors.SECONDARY_TEXT
-	const cardTextColor =
-		!card && error
-			? '#F45E8C'
-			: card
-			? colors.PRIMARY_TEXT
-			: colors.SECONDARY_TEXT
-	const opacity = cardsToDisplayInModal?.length ? 1 : 0.5
-	const bankBorder = !depositProvider && error ? '#F45E8C' : '#525A86'
-	const cardBorder = !card && error ? '#F45E8C' : '#525A86'
-
 	const displayName = () => {
 		let displayName = 'Payment Service Provider'
 		const m =
@@ -108,59 +92,50 @@ function CardSection({ error }) {
 			currentBalanceObj[m]?.ECOMMERCE?.forEach((d) => {
 				if (depositProvider === d.provider) displayName = d.displayName
 			})
-		return displayName
+		return depositProvider ? displayName : null
 	}
 
 	return (
 		<View style={styles.container}>
 			{multipleBanks() && (
-				<Pressable
-					style={[
-						styles.dropdown,
-						{ marginBottom: 25, borderColor: bankBorder },
-					]}
-					onPress={showBanks}>
-					{depositProvider && (
-						<Image
-							source={{ uri: `${ICONS_URL_PNG}/${depositProvider}.png` }}
-							style={styles.image}
-						/>
-					)}
-					<AppText
-						body
-						style={[styles.text, { color }]}
-						medium={depositProvider}>
-						{displayName()}
-					</AppText>
-					<Arrow />
-				</Pressable>
-
-				/* {trade && depositProvider && (
-            <AppText subtext style={styles.subText}>
-              0 ₾-100 ₾ Visa / MC Card 5% Amex 7 %{' '}
-              <PurpleText text=" More Fees" onPress={showFees} />
-            </AppText>
-          )} */
+				<AppDropdown
+					style={styles.dropdown}
+					handlePress={showBanks}
+					selectedText={displayName()}
+					notClearable
+					label="Payment service provider"
+					withLabel
+					error={!depositProvider && error}
+					icon={
+						depositProvider && (
+							<Image
+								style={styles.image}
+								source={{ uri: `${ICONS_URL_PNG}/${depositProvider}.png` }}
+							/>
+						)
+					}
+				/>
 			)}
 
 			{depositProvider && (
 				<>
-					<Pressable
-						style={[
-							styles.dropdown,
-							{ opacity, marginBottom: 10, borderColor: cardBorder },
-						]}
-						onPress={showCards}
-						disabled={!cardsToDisplayInModal?.length}>
-						<AppText
-							body
-							style={[styles.text, { color: cardTextColor }]}
-							medium={card ? card.cardNumber : false}>
-							{card ? card.cardNumber : 'Choose Card'}
-						</AppText>
-						<Arrow />
-					</Pressable>
-
+					<AppDropdown
+						notClearable
+						handlePress={showCards}
+						disabled={!cardsToDisplayInModal?.length}
+						label="Choose Card"
+						withLabel
+						selectedText={card && card.cardNumber}
+						error={!card && error}
+						icon={
+							card && (
+								<Image
+									source={{ uri: `${ICONS_URL_PNG}/${card?.network}.png` }}
+									style={styles.image}
+								/>
+							)
+						}
+					/>
 					<AppText subtext style={styles.newCard}>
 						{t(
 							!cardsToDisplayInModal?.length
@@ -183,17 +158,14 @@ export default CardSection
 
 const styles = StyleSheet.create({
 	dropdown: {
-		borderWidth: 1,
-		alignItems: 'center',
-		flexDirection: 'row',
-		height: 45,
-		paddingHorizontal: 15,
+		marginBottom: 22,
 	},
 	container: {
-		marginVertical: 20,
+		marginVertical: 30,
 	},
 	newCard: {
 		color: colors.SECONDARY_TEXT,
+		marginTop: 8,
 	},
 	subText: {
 		color: colors.SECONDARY_TEXT,
@@ -205,9 +177,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	image: {
-		width: 24,
+		width: 20,
 		height: 20,
 		resizeMode: 'contain',
-		marginRight: 15,
 	},
 })

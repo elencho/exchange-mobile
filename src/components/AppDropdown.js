@@ -1,9 +1,9 @@
-import { StyleSheet, Pressable, View } from 'react-native'
 import React from 'react'
-import AppText from './AppText'
+import { StyleSheet, Pressable, View } from 'react-native'
 import Arrow from '../assets/images/Arrow'
-import colors from '../constants/colors'
 import Close from '../assets/images/Close'
+import colors from '../constants/colors'
+import AppText from './AppText'
 
 const AppDropdown = ({
 	label,
@@ -14,8 +14,11 @@ const AppDropdown = ({
 	icon,
 	activeLabel,
 	notClearable,
-	withLabel,
+	withLabel = false,
 	error,
+	disabled,
+	hideArrow,
+	noTranslate,
 }) => {
 	return (
 		<Pressable
@@ -24,17 +27,16 @@ const AppDropdown = ({
 				style,
 				error && { borderColor: colors.ERROR_TEXT },
 			]}
-			onPress={handlePress}>
+			onPress={!disabled ? handlePress : null}>
 			{selectedText ? (
 				<View style={styles.row}>
-					{icon}
+					{icon && <View style={styles.icon}>{icon}</View>}
 					<AppText
 						medium
 						body
-						style={[
-							styles.selectedText,
-							error && { color: colors.ERROR_TEXT },
-						]}>
+						noTranslate={noTranslate}
+						style={[styles.selectedText, error && { color: colors.ERROR_TEXT }]}
+						numberOfLines={1}>
 						{selectedText}
 					</AppText>
 				</View>
@@ -46,19 +48,16 @@ const AppDropdown = ({
 				<AppText
 					medium
 					body
-					style={[styles.label, error && { color: colors.ERROR_TEXT }]}>
+					style={[
+						styles.label,
+						error && { color: colors.ERROR_TEXT },
+						disabled && { color: 'rgba(105, 111, 142, 0.4)' },
+					]}>
 					{label}
 				</AppText>
 			)}
 			{withLabel && selectedText && (
-				<AppText
-					subtext
-					style={[
-						styles.withLabel,
-						{
-							backgroundColor: colors.PRIMARY_BACKGROUND,
-						},
-					]}>
+				<AppText subtext style={styles.withLabel}>
 					{label}
 				</AppText>
 			)}
@@ -68,9 +67,9 @@ const AppDropdown = ({
 					<Pressable style={styles.close} onPress={handleClear}>
 						<Close width={9} height={9} />
 					</Pressable>
-				) : (
+				) : !hideArrow ? (
 					<Arrow />
-				)}
+				) : null}
 			</View>
 		</Pressable>
 	)
@@ -94,19 +93,28 @@ const styles = StyleSheet.create({
 	withLabel: {
 		color: colors.SECONDARY_TEXT,
 		position: 'absolute',
-		left: 10,
+		left: 13,
 		top: -9,
 		paddingHorizontal: 8,
+		backgroundColor: colors.PRIMARY_BACKGROUND,
 	},
-	selectedText: { color: colors.PRIMARY_TEXT, marginLeft: 8 },
+	selectedText: {
+		color: colors.PRIMARY_TEXT,
+		flex: 0,
+		marginRight: 6,
+	},
 	close: {
-		width: 25,
-		height: 25,
+		width: 36,
+		height: 30,
 		justifyContent: 'center',
-		alignItems: 'flex-end',
+		alignItems: 'center',
+		marginRight: -15,
 	},
 	row: {
 		flexDirection: 'row',
 		alignItems: 'center',
+	},
+	icon: {
+		marginRight: 10,
 	},
 })

@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppInput from '../../AppInput'
-import PurpleText from '../../PurpleText'
-import WithdrawalAddress from './WithdrawalAddress'
-import CardSection from '../../InstantTrade/CardSection'
-import ChooseBankModal from '../../InstantTrade/ChooseBankModal'
-import ChooseCardModal from '../../InstantTrade/ChooseCardModal'
-import Fee from '../Fee'
-import QrScanner from '../../QrScanner'
-import QrScannerToggler from './widgets/QrScannerToggler'
-
 import colors from '../../../constants/colors'
 import { fetchFee } from '../../../redux/trade/actions'
 import {
@@ -20,8 +9,18 @@ import {
 	setWithdrawalNote,
 	chooseWhitelist,
 } from '../../../redux/wallet/actions'
-import { handleAmountInput } from '../../../utils/formUtils'
 import { validateAmount } from '../../../utils/appUtils'
+import { handleAmountInput } from '../../../utils/formUtils'
+import AppDropdown from '../../AppDropdown'
+import AppInput from '../../AppInput'
+import CardSection from '../../InstantTrade/CardSection'
+import ChooseBankModal from '../../InstantTrade/ChooseBankModal'
+import ChooseCardModal from '../../InstantTrade/ChooseCardModal'
+import PurpleText from '../../PurpleText'
+import QrScanner from '../../QrScanner'
+import Fee from '../Fee'
+import WithdrawalAddress from './WithdrawalAddress'
+import QrScannerToggler from './widgets/QrScannerToggler'
 
 export default function WithdrawalInputs({
 	isFiat,
@@ -106,7 +105,7 @@ export default function WithdrawalInputs({
 		</TouchableOpacity>
 	)
 
-	const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 20
+	const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 14
 	const needsTag = () => {
 		if (currentBalanceObj?.infos) {
 			return (
@@ -129,7 +128,6 @@ export default function WithdrawalInputs({
 						label="Address tag"
 						onChangeText={handleMemotag}
 						value={memoTag}
-						labelBackgroundColor={colors.SECONDARY_BACKGROUND}
 						style={{ marginBottom: 22 }}
 						error={error && !memoTag?.trim()}
 					/>
@@ -158,24 +156,21 @@ export default function WithdrawalInputs({
 					style={{ marginTop, marginBottom: 8 }}
 					keyboardType="numeric"
 					maxLength={maxLength}
-					right={<Max />}
 					editable={!!editable}
+					disabled={!editable}
 					error={error && !validateAmount(withdrawalAmount)}
+					right={<Max />}
 				/>
 			</View>
 
-			<View style={{ marginHorizontal: 16 }}>
-				<Fee />
-			</View>
+			<Fee />
 		</>
 	)
 }
 
 const styles = StyleSheet.create({
 	block: {
-		paddingVertical: 22,
-		paddingHorizontal: 10,
-		marginBottom: 22,
+		paddingBottom: 22,
 	},
 	line: {
 		width: 1,

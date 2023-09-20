@@ -1,20 +1,23 @@
+import { useNavigation } from '@react-navigation/native'
+import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, ImageBackground } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
 import { MaterialIndicator } from 'react-native-indicators'
-
+import { useDispatch, useSelector } from 'react-redux'
+import EmailLoginAuth from '../assets/images/User_profile/EmailLoginAuth.svg'
 import AppText from '../components/AppText'
+import Background from '../components/Background'
 import CloseModalIcon from '../components/InstantTrade/CloseModalIcon'
 import PurpleText from '../components/PurpleText'
 import TwoFaInput from '../components/TwoFaInput'
 import WithKeyboard from '../components/WithKeyboard'
-import EmailLoginAuth from '../assets/images/User_profile/EmailLoginAuth.svg'
-
 import colors from '../constants/colors'
-import { t } from 'i18next'
+import {
+	startLoginAction,
+	startRegistrationAction,
+} from '../redux/profile/actions'
 
-export default function EmailVerification() {
+export default function EmailVerification({ route }) {
 	const navigation = useNavigation()
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
@@ -48,7 +51,13 @@ export default function EmailVerification() {
 	}, [seconds, timerVisible])
 
 	const hide = () => {
-		navigation.goBack()
+		if (route.params.fromScreen === 'login') {
+			dispatch(startLoginAction(navigation))
+		} else if (route.params.fromScreen === 'registration') {
+			dispatch(startRegistrationAction(navigation))
+		} else {
+			navigation.goBack()
+		}
 	}
 
 	const resend = () => {
@@ -94,48 +103,48 @@ export default function EmailVerification() {
 	}
 
 	return (
-		<WithKeyboard flexGrow padding modal>
-			<View style={styles.container}>
-				<View style={styles.top}>
-					<CloseModalIcon onPress={hide} />
-				</View>
-
-				<View style={styles.middle}>
-					<EmailLoginAuth />
-
-					{/* Animate */}
-					<View>
-						<AppText header style={styles.primary}>
-							E-mail Has Been Sent
-						</AppText>
+		<Background>
+			<WithKeyboard flexGrow padding modal>
+				<View style={styles.container}>
+					<View style={styles.top}>
+						<CloseModalIcon onPress={hide} />
 					</View>
-					{checkMailText()}
 
-					<TwoFaInput
-						value={value}
-						setValue={setValue}
-						registration
-						indicatorStyle={{ top: '70%' }}
-					/>
-				</View>
+					<View style={styles.middle}>
+						<EmailLoginAuth />
 
-				{/* Animate */}
-				<View style={styles.row}>
-					<AppText style={[styles.secondary, { marginRight: 5 }]}>
-						Didn't receive code?
-					</AppText>
-					{resendOrCountDown()}
+						<View>
+							<AppText header style={styles.primary}>
+								E-mail Has Been Sent
+							</AppText>
+						</View>
+						{checkMailText()}
+
+						<TwoFaInput
+							navigation={navigation}
+							value={value}
+							setValue={setValue}
+							registration
+							indicatorStyle={{ top: '70%' }}
+						/>
+					</View>
+
+					<View style={styles.row}>
+						<AppText style={[styles.secondary, { marginRight: 5 }]}>
+							Didn't receive code?
+						</AppText>
+						{resendOrCountDown()}
+					</View>
 				</View>
-			</View>
-		</WithKeyboard>
+			</WithKeyboard>
+		</Background>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 45,
-		backgroundColor: colors.PRIMARY_BACKGROUND,
+		paddingBottom: 45,
 	},
 	middle: {
 		flex: 1,
@@ -159,5 +168,6 @@ const styles = StyleSheet.create({
 	},
 	top: {
 		alignItems: 'flex-end',
+		marginTop: 10,
 	},
 })

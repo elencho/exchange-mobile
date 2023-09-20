@@ -1,12 +1,10 @@
+import { t } from 'i18next'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
-import { t } from 'i18next'
-
-import AppText from '../AppText'
-import colors from '../../constants/colors'
-
 import FeeIcon from '../../assets/images/Wallet/Fee'
+import colors from '../../constants/colors'
+import AppText from '../AppText'
 
 export default function Fee() {
 	const state = useSelector((state) => state)
@@ -105,7 +103,7 @@ export default function Fee() {
 
 	return (
 		<View style={styles.fee}>
-			<FeeIcon />
+			<FeeIcon width={32} height={32} />
 			<View style={styles.flex}>
 				<UpperLine />
 				<LowerLine />
@@ -117,7 +115,7 @@ export default function Fee() {
 const styles = StyleSheet.create({
 	container: { flexDirection: 'row' },
 	fee: {
-		marginBottom: 50,
+		marginBottom: 26,
 		alignItems: 'center',
 		flexDirection: 'row',
 	},

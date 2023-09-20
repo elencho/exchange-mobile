@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppInput from '../AppInput'
-import AppModal from '../AppModal'
-import AppButton from '../AppButton'
-import GeneralError from '../GeneralError'
-import CountriesModal from './CountriesModal'
-import WithKeyboard from '../WithKeyboard'
-
+import { COUNTRIES_URL_PNG } from '../../constants/api'
 import colors from '../../constants/colors'
 import {
 	toggleCountriesModal,
 	togglePhoneNumberModal,
 } from '../../redux/modals/actions'
-import { COUNTRIES_URL_PNG } from '../../constants/api'
 import { saveUserInfo, updatePhoneNumber } from '../../redux/profile/actions'
 import { errorHappenedHere } from '../../utils/appUtils'
+import AppButton from '../AppButton'
 import AppDropdown from '../AppDropdown'
+import AppInput from '../AppInput'
+import AppModal from '../AppModal'
+import GeneralError from '../GeneralError'
+import WithKeyboard from '../WithKeyboard'
+import CountriesModal from './CountriesModal'
 
 export default function PhoneNumberModal() {
 	const dispatch = useDispatch()
@@ -110,6 +108,8 @@ export default function PhoneNumberModal() {
 						handlePress={handleCountries}
 						selectedText={phoneCountry()}
 						notClearable
+						withLabel
+						label="Choose code"
 						style={[styles.dropdown, { borderColor }]}
 						icon={
 							<Image
@@ -170,9 +170,10 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginBottom: 20,
 		paddingHorizontal: 15,
+		marginTop: 28,
 	},
 	error: {
-		marginBottom: 25,
+		// marginBottom: 25,
 	},
 	flex: {
 		flex: 1,

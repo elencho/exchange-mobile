@@ -1,29 +1,10 @@
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { t } from 'i18next'
 import React, { useEffect, useState, memo } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { t } from 'i18next'
-
-import AppModal from '../AppModal'
-import AppText from '../AppText'
-import AppButton from '../AppButton'
-import AppInput from '../AppInput'
-import CurrencyDropdowns from './CurrencyDropdowns'
-import BalanceCardSwitcher from './BalanceCardSwitcher'
-import CardSection from './CardSection'
-import ChooseCardModal from './ChooseCardModal'
-import ChooseBankModal from './ChooseBankModal'
-import BankFeesModal from './BankFeesModal'
-import CryptoModal from './CryptoModal'
-import FiatModal from './FiatModal'
-import GeneralError from '../GeneralError'
-import AppWebView from '../AppWebView'
-import WithKeyboard from '../WithKeyboard'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import colors from '../../constants/colors'
 import { toggleBuySellModal } from '../../redux/modals/actions'
-import { validateScale } from '../../utils/formUtils'
-import { errorHappenedHere, validateAmount } from '../../utils/appUtils'
 import {
 	fetchFee,
 	fetchTrades,
@@ -36,6 +17,23 @@ import {
 	submitTrade,
 	switchBalanceCard,
 } from '../../redux/trade/actions'
+import { errorHappenedHere, validateAmount } from '../../utils/appUtils'
+import { validateScale } from '../../utils/formUtils'
+import AppButton from '../AppButton'
+import AppInput from '../AppInput'
+import AppModal from '../AppModal'
+import AppText from '../AppText'
+import AppWebView from '../AppWebView'
+import GeneralError from '../GeneralError'
+import WithKeyboard from '../WithKeyboard'
+import BalanceCardSwitcher from './BalanceCardSwitcher'
+import BankFeesModal from './BankFeesModal'
+import CardSection from './CardSection'
+import ChooseBankModal from './ChooseBankModal'
+import ChooseCardModal from './ChooseCardModal'
+import CryptoModal from './CryptoModal'
+import CurrencyDropdowns from './CurrencyDropdowns'
+import FiatModal from './FiatModal'
 
 const BuySellModal = () => {
 	const dispatch = useDispatch()
@@ -256,9 +254,9 @@ const BuySellModal = () => {
 								{fiat}
 							</AppText>
 						}
+						style={{ marginTop: 20 }}
 						error={error && !validateAmount(price)}
 					/>
-					<View style={styles.margin} />
 					<AppInput
 						onChangeText={(t) => handleChangeText(t, 'fiat')}
 						keyboardType="decimal-pad"
@@ -270,7 +268,7 @@ const BuySellModal = () => {
 								{crypto}
 							</AppText>
 						}
-						style={{ marginBottom: 10 }}
+						style={{ marginTop: 20 }}
 						error={error && !validateAmount(size)}
 					/>
 
@@ -324,15 +322,12 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 	},
 	dropdowns: {
-		marginVertical: 20,
+		// marginVertical: 20,
 	},
 	error: {
 		marginTop: 16,
 	},
 	flex: {
 		flex: 1,
-	},
-	margin: {
-		marginVertical: 10,
 	},
 })

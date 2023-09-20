@@ -1,3 +1,4 @@
+import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
 import {
 	StyleSheet,
@@ -6,22 +7,19 @@ import {
 	Pressable,
 	Keyboard,
 } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import { MaterialIndicator } from 'react-native-indicators'
-import { t } from 'i18next'
-
+import { useDispatch, useSelector } from 'react-redux'
+import EmailLoginAuth from '../assets/images/User_profile/EmailLoginAuth.svg'
+import SmsAuth from '../assets/images/User_profile/Sms_Auth.svg'
+import TotpAuth from '../assets/images/User_profile/Totp_Auth.svg'
 import AppText from '../components/AppText'
+import Background from '../components/Background'
 import PurpleText from '../components/PurpleText'
 import TwoFaInput from '../components/TwoFaInput'
 import WithKeyboard from '../components/WithKeyboard'
-import SmsAuth from '../assets/images/User_profile/Sms_Auth.svg'
-import EmailLoginAuth from '../assets/images/User_profile/EmailLoginAuth.svg'
-import TotpAuth from '../assets/images/User_profile/Totp_Auth.svg'
-
 import colors from '../constants/colors'
 import images from '../constants/images'
 import { startLoginAction } from '../redux/profile/actions'
-import Background from '../components/Background'
 
 export default function Login2Fa({ navigation }) {
 	const dispatch = useDispatch()
@@ -121,6 +119,7 @@ export default function Login2Fa({ navigation }) {
 
 						<View style={styles.twoFaInput}>
 							<TwoFaInput
+								navigation={navigation}
 								cellCount={cellCount}
 								value={value}
 								setValue={setValue}
@@ -153,7 +152,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 
-		marginLeft: 24,
 		marginTop: 28,
 		alignSelf: 'flex-start',
 	},

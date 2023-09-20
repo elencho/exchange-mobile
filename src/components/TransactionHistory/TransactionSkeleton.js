@@ -2,16 +2,33 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import Skeleton from '../Skeleton'
 
-const MainPart = () => (
-	<View style={styles.container}>
+const MainPart = ({ isInstantTrade, isFooter }) => (
+	<View style={[styles.container, isFooter && { marginTop: 0 }]}>
 		<View style={styles.top}>
 			<View style={styles.topLeft}>
+				{!isInstantTrade && (
+					<Skeleton
+						width={36}
+						height={36}
+						style={{ borderRadius: 17, marginRight: 14 }}
+					/>
+				)}
 				<View style={{ gap: 10 }}>
 					<Skeleton width={58} height={10} />
-					<Skeleton width={36} height={17} style={{ borderRadius: 22 }} />
+					{isInstantTrade ? (
+						<Skeleton width={36} height={17} style={{ borderRadius: 22 }} />
+					) : (
+						<Skeleton width={84} height={8} style={{ marginTop: 3 }} />
+					)}
 				</View>
 				<View style={styles.middle}>
-					<Skeleton width={84} height={8} style={{ marginBottom: 4 }} />
+					{isInstantTrade && (
+						<Skeleton
+							width={84}
+							height={8}
+							style={{ marginBottom: 4, marginLeft: -16 }}
+						/>
+					)}
 				</View>
 				<View style={styles.right}>
 					<Skeleton width={103} height={8} />
@@ -33,19 +50,18 @@ const MainPart = () => (
 	</View>
 )
 
-const TransactionSkeleton = ({ length }) =>
+const TransactionSkeleton = ({ length, isInstantTrade, isFooter }) =>
 	length?.map((a, i) => (
 		<View key={i}>
-			<MainPart />
+			<MainPart isInstantTrade={isInstantTrade} isFooter={isFooter} />
 		</View>
 	))
 
 export default TransactionSkeleton
 
 const styles = StyleSheet.create({
-	//
 	container: {
-		marginVertical: 20,
+		marginTop: 22,
 	},
 	middle: {
 		justifyContent: 'flex-end',
@@ -66,7 +82,7 @@ const styles = StyleSheet.create({
 	},
 	bottomRight: { gap: 13, alignItems: 'flex-end' },
 	bottom: {
-		marginTop: 30,
+		marginTop: 25,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 	},

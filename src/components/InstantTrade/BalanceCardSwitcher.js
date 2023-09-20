@@ -1,14 +1,13 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../AppText'
 import colors from '../../constants/colors'
 import {
 	setDepositProvider,
 	switchBalanceCard,
 	setCard,
 } from '../../redux/trade/actions'
+import AppText from '../AppText'
 
 export default function BalanceCardSwitcher() {
 	const dispatch = useDispatch()
@@ -80,7 +79,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		marginTop: 20,
+		marginTop: 26,
 	},
 	text: {
 		fontSize: 15,

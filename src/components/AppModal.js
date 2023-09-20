@@ -1,17 +1,17 @@
-import React, { memo } from 'react'
-import Modal from 'react-native-modal'
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import Constants from 'expo-constants'
+import React, { memo } from 'react'
+import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
+import Modal from 'react-native-modal'
 import { RootSiblingParent } from 'react-native-root-siblings'
-
-import ModalTop from './ModalTop'
+import { useSelector } from 'react-redux'
 import colors from '../constants/colors'
+import { IS_IOS } from '../constants/system'
 import AppText from './AppText'
 import AppToast from './AppToast'
 import Background from './Background'
 import CloseModalIcon from './InstantTrade/CloseModalIcon'
+import ModalTop from './ModalTop'
 import Headline from './TransactionHistory/Headline'
-import { useSelector } from 'react-redux'
 
 function AppModal({
 	children,
@@ -39,7 +39,6 @@ function AppModal({
 	//   dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
 	//   hide();
 	// };
-
 	return (
 		webViewVisible && (
 			<Modal
@@ -61,15 +60,20 @@ function AppModal({
 				<RootSiblingParent>
 					{bottom && (
 						<KeyboardAvoidingView
-							behavior={Platform.select({ android: undefined, ios: 'padding' })}
+							behavior={Platform.select({
+								android: undefined,
+								ios: 'padding',
+							})}
 							keyboardVerticalOffset={Platform.select({
-								ios: 50,
+								ios: 0,
 								android: 500,
 							})}>
 							<ModalTop bottom={bottom} />
 							<View style={styles.bottom}>
 								{title && (
-									<AppText header style={styles.header}>
+									<AppText
+										header
+										style={[styles.header, bottom && { marginLeft: 8 }]}>
 										{title}
 									</AppText>
 								)}
@@ -96,22 +100,18 @@ export default memo(AppModal)
 const styles = StyleSheet.create({
 	bottom: {
 		paddingTop: 40,
-		paddingHorizontal: 20,
+		paddingHorizontal: 10,
+		paddingBottom: 40,
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 		marginBottom: -3,
 	},
 	header: {
 		color: colors.PRIMARY_TEXT,
-		marginBottom: 25,
-		marginLeft: 10,
+		marginBottom: 12,
 	},
 	modal: {
-		marginHorizontal: 0,
-		marginTop: Platform.select({ ios: Constants.statusBarHeight, android: 0 }),
-		marginBottom: Platform.select({
-			ios: undefined,
-			android: 0,
-		}),
+		margin: 0,
+
 		justifyContent: 'flex-end',
 	},
 })

@@ -1,10 +1,14 @@
+import Constants from 'expo-constants'
 import React from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
-
+import { FlatList, Platform, StatusBar, StyleSheet, View } from 'react-native'
 import colors from '../../constants/colors'
-
 import Currency from './Currency'
 import CurrencySkeleton from './CurrencySkeleton'
+
+const height = Platform.select({
+	ios: Constants.statusBarHeight + 100,
+	android: 85 + StatusBar.currentHeight,
+})
 
 export default function BalancesList({ balanceLoading, filteredBalances }) {
 	const renderCurrency = ({ item }) =>
@@ -25,8 +29,10 @@ export default function BalancesList({ balanceLoading, filteredBalances }) {
 	return (
 		<View style={styles.container}>
 			<FlatList
+				nestedScrollEnabled
 				data={filteredBalances}
 				renderItem={renderCurrency}
+				ListFooterComponent={() => <View style={{ height: height }} />}
 				keyExtractor={(item) => item.currencyCode}
 			/>
 		</View>
@@ -37,6 +43,6 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 		flex: 1,
-		paddingTop: 10,
+		paddingTop: 18,
 	},
 })

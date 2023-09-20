@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
 import { Pressable, SafeAreaView, StyleSheet, View } from 'react-native'
-
+import { useDispatch } from 'react-redux'
 import Exchange from '../assets/images/BottomTabs/Exchange.svg'
-import Trade from '../assets/images/BottomTabs/Trade.svg'
-import Wallet from '../assets/images/BottomTabs/Wallet.svg'
-import Transactions from '../assets/images/BottomTabs/Transactions.svg'
 import ExchangeActive from '../assets/images/BottomTabs/Exchange_Active.svg'
+import Trade from '../assets/images/BottomTabs/Trade.svg'
 import TradeActive from '../assets/images/BottomTabs/Trade_Active.svg'
-import WalletActive from '../assets/images/BottomTabs/Wallet_Active.svg'
+import Transactions from '../assets/images/BottomTabs/Transactions.svg'
 import TransactionsActive from '../assets/images/BottomTabs/Transactions_Active.svg'
+import Wallet from '../assets/images/BottomTabs/Wallet.svg'
+import WalletActive from '../assets/images/BottomTabs/Wallet_Active.svg'
 import FocusIcon from '../assets/images/Focused'
 import colors from '../constants/colors'
 
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		height: 60,
-		backgroundColor: 'red',
+
 		backgroundColor: colors.SECONDARY_BACKGROUND,
 	},
 

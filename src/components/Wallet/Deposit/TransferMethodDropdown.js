@@ -1,16 +1,15 @@
 import React from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../../AppText'
-import colors from '../../../constants/colors'
-import { ICONS_URL_PNG } from '../../../constants/api'
-import { toggleTransferMethodModal } from '../../../redux/modals/actions'
-
 import Arrow from '../../../assets/images/Arrow'
-import Euro from '../../../assets/images/Euro.svg'
 import Card from '../../../assets/images/Card.svg'
+import Euro from '../../../assets/images/Euro.svg'
 import Bank from '../../../assets/images/LocalBank.svg'
+import { ICONS_URL_PNG } from '../../../constants/api'
+import colors from '../../../constants/colors'
+import { toggleTransferMethodModal } from '../../../redux/modals/actions'
+import AppDropdown from '../../AppDropdown'
+import AppText from '../../AppText'
 
 export default function TransferMethodDropdown() {
 	const dispatch = useDispatch()
@@ -19,10 +18,10 @@ export default function TransferMethodDropdown() {
 
 	const show = () => dispatch(toggleTransferMethodModal(true))
 
-	const oneMethod = methodsToDisplay?.length < 2
+	const isOneMethod = methodsToDisplay?.length < 2
 	const dropdownStyle = {
-		backgroundColor: oneMethod ? 'rgba(149, 164, 247, 0.04)' : null,
-		borderWidth: oneMethod ? 0 : 1,
+		backgroundColor: isOneMethod ? 'rgba(149, 164, 247, 0.04)' : null,
+		borderWidth: isOneMethod ? 0 : 1,
 	}
 	const renderIcon = (network) => {
 		if (network === 'ECOMMERCE') {
@@ -37,16 +36,17 @@ export default function TransferMethodDropdown() {
 	}
 
 	return (
-		<Pressable
+		<AppDropdown
 			style={[styles.dropdown, dropdownStyle]}
-			onPress={show}
-			disabled={oneMethod}>
-			<View style={styles.image}>{renderIcon(network)}</View>
-			<AppText medium style={styles.dropdownText}>
-				{network}
-			</AppText>
-			{!oneMethod && <Arrow />}
-		</Pressable>
+			notClearable
+			label={isOneMethod ? null : 'Choose provider'}
+			withLabel={!isOneMethod}
+			disabled={isOneMethod}
+			icon={renderIcon(network)}
+			selectedText={network}
+			handlePress={show}
+			hideArrow={isOneMethod}
+		/>
 	)
 }
 
@@ -57,12 +57,7 @@ const styles = StyleSheet.create({
 		color: colors.PRIMARY_TEXT,
 	},
 	dropdown: {
-		height: 45,
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginTop: 15,
-		borderColor: '#42475D',
-		paddingHorizontal: 15,
+		marginTop: 22,
 	},
 	image: {
 		marginLeft: 5,

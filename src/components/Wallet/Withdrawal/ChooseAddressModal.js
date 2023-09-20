@@ -7,12 +7,11 @@ import {
 	View,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../../AppModal'
-import AppText from '../../AppText'
 import colors from '../../../constants/colors'
 import { toggleChooseAddressModal } from '../../../redux/modals/actions'
 import { chooseWhitelist } from '../../../redux/wallet/actions'
+import AppModal from '../../AppModal'
+import AppText from '../../AppText'
 
 function ChooseAddressModal() {
 	const dispatch = useDispatch()
@@ -30,7 +29,10 @@ function ChooseAddressModal() {
 
 	const background = (w) => {
 		if (w.id === currentWhitelistObj.id) {
-			return { backgroundColor: 'rgba(101, 130, 253, 0.1)' }
+			return {
+				backgroundColor: 'rgba(101, 130, 253, 0.1)',
+				borderRadius: 5,
+			}
 		}
 	}
 
@@ -80,7 +82,7 @@ function ChooseAddressModal() {
 				))}
 			</ScrollView>
 		),
-		[whitelist, network]
+		[whitelist, network, currentWhitelistObj]
 	)
 
 	return (
@@ -100,8 +102,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 14,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		paddingHorizontal: 30,
-		marginHorizontal: -18,
+		paddingHorizontal: 10,
 		borderRadius: 5,
 	},
 

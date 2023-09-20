@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react'
 import { Pressable, StyleSheet, Image } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../../AppModal'
-import AppText from '../../AppText'
-
+import Card from '../../../assets/images/Card.svg'
+import Euro from '../../../assets/images/Euro.svg'
+import Bank from '../../../assets/images/LocalBank.svg'
 import colors from '../../../constants/colors'
 import { toggleTransferMethodModal } from '../../../redux/modals/actions'
 import { setNetwork } from '../../../redux/wallet/actions'
-import Euro from '../../../assets/images/Euro.svg'
-import Card from '../../../assets/images/Card.svg'
-import Bank from '../../../assets/images/LocalBank.svg'
+import AppModal from '../../AppModal'
+import AppText from '../../AppText'
 
 export default function TransferMethodModal() {
 	const dispatch = useDispatch()
@@ -85,7 +83,7 @@ export default function TransferMethodModal() {
 					onPress={() => handlePress(m.provider)}>
 					{renderIcon(m.provider)}
 					<AppText body style={styles.primary}>
-						{m.displayName}
+						{m.provider}
 					</AppText>
 				</Pressable>
 			))}
@@ -107,9 +105,9 @@ const styles = StyleSheet.create({
 	pressable: {
 		flexDirection: 'row',
 		height: 44,
-		paddingHorizontal: 15,
+		paddingHorizontal: 13,
 		marginVertical: 2,
-		marginHorizontal: -15,
+		marginHorizontal: -5,
 		alignItems: 'center',
 		borderRadius: 5,
 	},

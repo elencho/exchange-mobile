@@ -1,23 +1,59 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
-
-import AppText from '../AppText'
-import colors from '../../constants/colors'
-import { getParams } from '../../redux/transactions/selectors'
 import Filter from '../../assets/images/Filter'
-export default function FilterIcon({ onPress }) {
-	const params = useSelector(getParams)
-	const { type, currency, fromDateTime, toDateTime, methods } = params
+import colors from '../../constants/colors'
+import { setStatusModalInfo } from '../../redux/modals/actions'
+import AppText from '../AppText'
 
-	const filters = [type, methods, currency, fromDateTime, toDateTime].filter(
-		(f) => f
+export default function FilterIcon({ onPress, isInstantTrade }) {
+	const { trade, transactions } = useSelector((state) => state)
+	const {
+		cryptoFilter: cryptoTransactions,
+		method: selectedMethod,
+		typeFilter,
+		fromDateTime,
+		toDateTime,
+		status,
+	} = transactions
+	const {
+		actionQuery,
+		cryptoCodeQuery,
+		fiatCodesQuery,
+		statusQuery,
+		fromDateTimeQuery,
+		toDateTimeQuery,
+	} = trade
+
+	const isFilteredTrades = Boolean(
+		fiatCodesQuery?.length > 0 ||
+			actionQuery?.length > 0 ||
+			statusQuery?.length > 0 ||
+			cryptoCodeQuery ||
+			fromDateTimeQuery ||
+			toDateTimeQuery
 	)
+	const isFilteredTransactions = Boolean(
+		typeFilter?.length > 0 ||
+			cryptoTransactions ||
+			fromDateTime ||
+			toDateTime ||
+			selectedMethod?.length > 0 ||
+			status?.length > 0
+	)
+	const isFilteredAny = isInstantTrade
+		? isFilteredTrades
+		: isFilteredTransactions
 
 	return (
-		<Pressable onPress={onPress} style={styles.container}>
+		<Pressable
+			onPress={onPress}
+			style={[
+				styles.container,
+				isFilteredAny && { backgroundColor: colors.PRIMARY_PURPLE },
+			]}>
 			<Filter style={styles.icon} />
-			{filters.length ? (
+			{isFilteredAny ? (
 				<View style={styles.dotOutline}>
 					<View style={styles.dot} />
 				</View>
@@ -51,8 +87,8 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 		borderRadius: 30,
 		position: 'absolute',
-		top: -1,
-		right: -1,
+		top: -2,
+		right: -2,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},

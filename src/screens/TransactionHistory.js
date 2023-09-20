@@ -1,33 +1,35 @@
-import React, { useCallback, useEffect } from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import {
 	useNavigation,
 	useFocusEffect,
 	useIsFocused,
 } from '@react-navigation/native'
-
-import Background from '../components/Background'
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { FlatList, Keyboard, StyleSheet, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import List from '../assets/images/List.svg'
 import AppText from '../components/AppText'
+import Background from '../components/Background'
+import CustomRefreshContol from '../components/CustomRefreshContol'
+import TransactionsBlock from '../components/InstantTrade/TransactionsBlock'
+import OneTransactionSkeleton from '../components/TransactionHistory/OneTransactionSkeleton'
 import TopRow from '../components/TransactionHistory/TopRow'
+import Transaction from '../components/TransactionHistory/Transaction'
 import TransactionModal from '../components/TransactionHistory/TransactionModal'
 import TransactionSkeleton from '../components/TransactionHistory/TransactionSkeleton'
-import List from '../assets/images/List.svg'
-
+import SearchAndFilter from '../components/TransactionHistory/widgets/SearchAndFilter'
+import TabSwitcher from '../components/TransactionHistory/widgets/TabSwitcher'
+import colors from '../constants/colors'
+import { clearFiltersTrade, saveTrades } from '../redux/trade/actions'
 import {
 	chooseCurrency,
 	clearFilters,
 	reachScrollEnd,
 	setAbbr,
+	setActiveTab,
+	setTransactionsOffset,
 } from '../redux/transactions/actions'
-import colors from '../constants/colors'
-import CustomRefreshContol from '../components/CustomRefreshContol'
-import TabSwitcher from '../components/TransactionHistory/widgets/TabSwitcher'
-import SearchAndFilter from '../components/TransactionHistory/widgets/SearchAndFilter'
-import TransactionsBlock from '../components/InstantTrade/TransactionsBlock'
-import Transaction from '../components/TransactionHistory/Transaction'
 
-function TransactionHistory({ navigation, route }) {
+function TransactionHistory({ navigation }) {
 	const isFocused = useIsFocused()
 	const dispatch = useDispatch()
 
@@ -44,27 +46,63 @@ function TransactionHistory({ navigation, route }) {
 		trade: { moreTradesLoading },
 	} = state
 
+	const clearAllFilters = () => {
+		dispatch(clearFiltersTrade())
+		dispatch(clearFilters())
+		dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' })
+		dispatch(setActiveTab('Transfer'))
+		Keyboard.dismiss()
+	}
+
 	useFocusEffect(
 		useCallback(() => {
 			dispatch(chooseCurrency(currency))
-			dispatch(setAbbr(currencyCode))
-			dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' })
 		}, [currency])
 	)
 
-	useFocusEffect(
-		useCallback(() => {
-			dispatch(chooseCurrency('Show All Currency'))
-			dispatch(setAbbr(null))
-			dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' })
-		}, [navigation])
-	)
+	// useFocusEffect(
+	//   useCallback(() => {
+	//     dispatch(chooseCurrency('Show All Currency'));
+	//     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
+	//     Keyboard.dismiss();
+	//   }, [navigation])
+	// );
 
 	useEffect(() => {
-		if (!route?.params?.isFromTransactions) dispatch(clearFilters())
+		dispatch(chooseCurrency('Show All Currency'))
+		dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' })
+		Keyboard.dismiss()
 	}, [navigation])
 
+	useEffect(() => {
+		return () => clearAllFilters()
+	}, [])
+
+	useEffect(() => {
+		return () => {
+			dispatch(clearFiltersTrade())
+			dispatch(clearFilters())
+			dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' })
+			dispatch(setActiveTab('Transfer'))
+			Keyboard.dismiss()
+		}
+	}, [])
+
+	//Loader for Convert
+	const [isLoadingTransactions, setIsLoadingTransactions] = useState(true)
+	const numOfRender = useRef(0)
+	useEffect(() => {
+		numOfRender.current++
+	}, [activeTab])
+
+	useEffect(() => {
+		setTimeout(() => {
+			setIsLoadingTransactions(false)
+		}, 1000)
+	}, [])
+
 	const onRefresh = () => {
+		dispatch(setTransactionsOffset(0))
 		dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' })
 	}
 
@@ -73,9 +111,19 @@ function TransactionHistory({ navigation, route }) {
 			? transactions
 			: transactions.filter((t) => t.currency == currencyCode)
 
-	const renderTransaction = ({ item }) => (
-		<Transaction isTransfer transactionData={item} loading={loading} />
-	)
+	const renderTransaction = ({ item, index }) => {
+		return (
+			<Transaction
+				isTransfer
+				transactionData={item}
+				loading={loading}
+				isLast={
+					!moreTradesLoading &&
+					index === transactionsCurrencyFiltered?.length - 1
+				}
+			/>
+		)
+	}
 
 	const listEmptyContainer = (
 		<View style={styles.empty}>
@@ -94,17 +142,34 @@ function TransactionHistory({ navigation, route }) {
 		}
 	}
 
+	const footer = memo(() =>
+		moreTradesLoading && !loading ? (
+			<TransactionSkeleton
+				length={[0]}
+				isInstantTrade={activeTab === 'Instant trade'}
+				isFooter
+			/>
+		) : (
+			<View />
+		)
+	)
+
 	return (
 		<Background>
-			<TopRow clear={() => dispatch(clearFilters())} />
+			<TopRow clear={clearAllFilters} />
 			<TabSwitcher />
 			<SearchAndFilter
 				navigation={navigation}
 				isInstantTrade={activeTab === 'Instant trade'}
 			/>
 
-			{loading ? (
-				<TransactionSkeleton length={[0, 1, 2, 3, 4, 5, 6]} />
+			{loading || isLoadingTransactions ? (
+				<View style={{ marginTop: 10 }}>
+					<TransactionSkeleton
+						length={[0, 1, 2, 3, 4, 5, 6]}
+						isInstantTrade={activeTab === 'Instant trade'}
+					/>
+				</View>
 			) : activeTab === 'Transfer' ? (
 				<FlatList
 					style={styles.transactions}
@@ -113,16 +178,20 @@ function TransactionHistory({ navigation, route }) {
 					renderItem={renderTransaction}
 					keyExtractor={(item, index) => item.transactionId + index}
 					onEndReached={handleScrollEnd}
-					onEndReachedThreshold={0.5}
+					onEndReachedThreshold={1}
 					showsVerticalScrollIndicator={false}
-					scrollEventThrottle={1000}
+					nestedScrollEnabled
+					initialNumToRender={5}
+					ListFooterComponent={transactions.length > 0 && footer}
 					ListEmptyComponent={listEmptyContainer}
+					keyboardShouldPersistTaps="never"
+					maxToRenderPerBatch={30}
 					refreshControl={
 						<CustomRefreshContol refreshing={loading} onRefresh={onRefresh} />
 					}
 				/>
 			) : (
-				<TransactionsBlock />
+				<TransactionsBlock isFirstRender={numOfRender.current === 1} />
 			)}
 
 			{isFocused && <TransactionModal transactions />}
@@ -135,7 +204,7 @@ export default TransactionHistory
 const styles = StyleSheet.create({
 	empty: {
 		flex: 1,
-		justifyContent: 'center',
+		marginTop: '35%',
 		alignItems: 'center',
 	},
 	loader: {
@@ -143,8 +212,7 @@ const styles = StyleSheet.create({
 	},
 	transactions: {
 		flex: 1,
-		marginTop: 20,
-		paddingHorizontal: 5,
+		marginTop: 30,
 	},
 	filter: {
 		flexDirection: 'row',

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import { MaterialIndicator } from 'react-native-indicators'
-
-import AppText from '../components/AppText'
-import AppInput from '../components/AppInput'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useDispatch, useSelector } from 'react-redux'
+import Strong_Password from '../assets/images/User_profile/Strong_Password'
 import AppButton from '../components/AppButton'
+import AppInput from '../components/AppInput'
+import AppText from '../components/AppText'
+import Background from '../components/Background'
+import GeneralError from '../components/GeneralError'
 import PurpleText from '../components/PurpleText'
 import WithKeyboard from '../components/WithKeyboard'
-import Strong_Password from '../assets/images/User_profile/Strong_Password'
-import GeneralError from '../components/GeneralError'
-
 import colors from '../constants/colors'
 import { startLoginAction } from '../redux/profile/actions'
 import { errorHappenedHere } from '../utils/appUtils'
@@ -113,7 +113,7 @@ export default function ForgotPassword({ navigation }) {
 		error && f.username?.trim() && !mailValid ? 'Enter Valid Email' : null
 
 	return (
-		<View style={styles.container}>
+		<Background>
 			<TouchableOpacity style={styles.back} onPress={goToLogin}>
 				<PurpleText
 					numberOfLines={1}
@@ -160,7 +160,7 @@ export default function ForgotPassword({ navigation }) {
 
 				<AppButton text="Next" style={styles.button} onPress={next} />
 			</WithKeyboard>
-		</View>
+		</Background>
 	)
 }
 
@@ -168,7 +168,6 @@ const styles = StyleSheet.create({
 	back: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginLeft: -20,
 		marginTop: 28,
 		alignSelf: 'flex-start',
 	},
@@ -181,11 +180,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		marginTop: 84,
 	},
-	container: {
-		flex: 1,
-		paddingHorizontal: '8%',
-		backgroundColor: colors.PRIMARY_BACKGROUND,
-	},
+
 	input: {
 		width: '100%',
 		marginVertical: 6,

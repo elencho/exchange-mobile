@@ -1,23 +1,21 @@
 import React from 'react'
+import { Trans } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { Trans } from 'react-i18next'
-
-import AppButton from '../../AppButton'
-import AppModal from '../../AppModal'
-import AppText from '../../AppText'
-import PurpleText from '../../PurpleText'
-import GoogleOtpModal from '../../UserProfile/GoogleOtpModal'
-import AppInfoBlock from '../../AppInfoBlock'
-import SmsEmailAuthModal from '../../UserProfile/SmsEmailAuthModal'
-
+import colors from '../../../constants/colors'
 import {
 	toggleEmailAuthModal,
 	toggleGoogleOtpModal,
 	toggleSmsAuthModal,
 } from '../../../redux/modals/actions'
 import { sendOtp } from '../../../utils/userProfileUtils'
-import colors from '../../../constants/colors'
+import AppButton from '../../AppButton'
+import AppInfoBlock from '../../AppInfoBlock'
+import AppModal from '../../AppModal'
+import AppText from '../../AppText'
+import PurpleText from '../../PurpleText'
+import GoogleOtpModal from '../../UserProfile/GoogleOtpModal'
+import SmsEmailAuthModal from '../../UserProfile/SmsEmailAuthModal'
 
 export default function WithdrawalConfirmModal() {
 	const dispatch = useDispatch()
@@ -175,6 +173,7 @@ const styles = StyleSheet.create({
 	},
 	flex: {
 		flex: 1,
+		marginTop: 12,
 	},
 	leftText: {
 		color: colors.SECONDARY_TEXT,

@@ -2,7 +2,6 @@ import { FlashList } from '@shopify/flash-list'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
-
 import Search from '../assets/images/Search'
 import SearchActive from '../assets/images/Search_Active'
 import { COINS_URL_PNG, COUNTRIES_URL_PNG } from '../constants/api'
@@ -34,7 +33,7 @@ export default function ModalWithSearch({
 
 	const uri = (code) => {
 		return title === 'Choose Currency'
-			? `${COINS_URL_PNG}/${code.toLowerCase()}.png`
+			? `${COINS_URL_PNG}/${code?.toLowerCase()}.png`
 			: `${COUNTRIES_URL_PNG}/${code}.png`
 	}
 
@@ -55,6 +54,8 @@ export default function ModalWithSearch({
 		const totalAvailablePrice =
 			item?.valueUSD && usdBtcSwitch === 'USD'
 				? `Total: ${item?.total} ≈ ${item?.valueUSD} USD`
+				: !item?.valueUSD
+				? ''
 				: `Total: ${item?.total} ≈ ${item?.valueBTC} BTC`
 
 		return (
@@ -78,46 +79,39 @@ export default function ModalWithSearch({
 	}
 	return (
 		<View style={styles.container}>
-			{/* <ModalTop /> */}
+			<AppText header style={styles.headline}>
+				{title}
+			</AppText>
 
-			<View style={styles.block}>
-				<AppText header style={styles.headline}>
-					{title}
-				</AppText>
+			<AppInput
+				placeholder={title.replace('Choose', 'Search')}
+				placeholderTextColor="rgba(105, 111, 142, 0.5)"
+				onChangeText={filter}
+				right={<Search />}
+				activeRight={<SearchActive />}
+				style={styles.searchInput}
+			/>
 
-				<AppInput
-					placeholder={title.replace('Choose', 'Search')}
-					placeholderTextColor="rgba(105, 111, 142, 0.5)"
-					onChangeText={filter}
-					right={<Search />}
-					// TODO: REMOVE activeRight
-					activeRight={<SearchActive />}
-					style={styles.searchInput}
+			<WithKeyboard padding flexGrow modal>
+				<FlashList
+					data={array}
+					renderItem={searchItem}
+					keyExtractor={(item, index) =>
+						item?.code + index ||
+						item?.pair?.baseCurrency + index ||
+						item?.currencyCode + index
+					}
+					scrollEventThrottle={1000}
+					initialNumToRender={25}
+					estimatedItemSize={50}
+					contentContainerStyle={{ flexGrow: 1 }}
 				/>
-
-				<WithKeyboard padding flexGrow modal>
-					<FlashList
-						data={array}
-						renderItem={searchItem}
-						keyExtractor={(item, index) =>
-							item?.code + index ||
-							item?.pair?.baseCurrency + index ||
-							item?.currencyCode + index
-						}
-						scrollEventThrottle={1000}
-						initialNumToRender={25}
-						estimatedItemSize={50}
-					/>
-				</WithKeyboard>
-			</View>
+			</WithKeyboard>
 		</View>
 	)
 }
 
 const styles = StyleSheet.create({
-	block: {
-		flex: 1,
-	},
 	container: {
 		flex: 1,
 		width: '100%',

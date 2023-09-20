@@ -1,4 +1,11 @@
-import React from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import React, {
+	useCallback,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from 'react'
 import {
 	Image,
 	Pressable,
@@ -6,29 +13,25 @@ import {
 	TouchableOpacity,
 	View,
 	ScrollView,
+	Dimensions,
 } from 'react-native'
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
-
+import Arrow from '../assets/images/Arrow.svg'
+import Close from '../assets/images/Close.svg'
+import AppDropdown from '../components/AppDropdown'
 import AppText from '../components/AppText'
 import Background from '../components/Background'
+import CryptoModalTrade from '../components/InstantTrade/CryptoModalTrade'
+import PurpleText from '../components/PurpleText'
 import ChooseCurrencyModal from '../components/TransactionFilter/ChooseCurrencyModal'
+import DatePicker from '../components/TransactionFilter/DatePicker'
+import DatePickerModal from '../components/TransactionFilter/DatePickerModal'
 import TransactionFilterBottom from '../components/TransactionFilter/TransactionFilterBottom'
 import FilterRow from '../components/TransactionHistory/FilterRow'
 import Headline from '../components/TransactionHistory/Headline'
-import DatePickerModal from '../components/TransactionFilter/DatePickerModal'
-import DatePicker from '../components/TransactionFilter/DatePicker'
-import Close from '../assets/images/Close.svg'
-import PurpleText from '../components/PurpleText'
-
-import {
-	clearFilters,
-	currencyAction,
-	setMethodFilter,
-} from '../redux/transactions/actions'
-import {
-	toggleCurrencyModal,
-	toggleMethodsModal,
-} from '../redux/modals/actions'
+import { COINS_URL_PNG } from '../constants/api'
 import colors from '../constants/colors'
 import {
 	types,
@@ -36,135 +39,214 @@ import {
 	currencies,
 	transactionTypes,
 } from '../constants/filters'
-import { COINS_URL_PNG } from '../constants/api'
-
-import Arrow from '../assets/images/Arrow.svg'
-import AppDropdown from '../components/AppDropdown'
+import {
+	toggleCryptoModal,
+	toggleCurrencyModal,
+	toggleMethodsModal,
+} from '../redux/modals/actions'
+import {
+	clearFiltersTrade,
+	setCryptoCodeQuery,
+	setPreviousTradeFilter,
+} from '../redux/trade/actions'
+import {
+	clearFilters,
+	currencyAction,
+	setCryptoFilter,
+	setMethodFilter,
+	setPreviousTransactionsFilter,
+} from '../redux/transactions/actions'
 import ChooseMethodsModal from './ChooseMethodsModal'
 
+const WINDOW_HEIGHT = Dimensions.get('window').height
+
 export default function TransactionFilter({ navigation, route }) {
+	const { top, bottom, right, left } = useSafeAreaInsets()
+
 	const dispatch = useDispatch()
-	const state = useSelector((state) => state.transactions)
 	const {
-		currency,
-		code,
-		method: selectedMethod,
-		typeFilter,
-		fromDateTime,
-		toDateTime,
-		status,
-	} = state
+		transactions: {
+			cryptoFilter: cryptoTransactions,
+			method: selectedMethod,
+			typeFilter,
+			fromDateTime,
+			toDateTime,
+			status,
+			loading: transactionsLoading,
+		},
+		trade: {
+			fiatCodesQuery,
+			statusQuery,
+			cryptoCodeQuery,
+			actionQuery,
+			fromDateTimeQuery,
+			toDateTimeQuery,
+			tradesLoading,
+		},
+	} = useSelector((state) => state)
 	const {
 		params: { isInstantTrade },
 	} = route
 
-	const openModal = () => dispatch(toggleCurrencyModal(true))
-
-	const close = () => {
-		clear()
+	const close = async () => {
+		const prevFilter = isInstantTrade
+			? await AsyncStorage.getItem('tradesFilter')
+			: await AsyncStorage.getItem('transactionsFilter')
+		isInstantTrade
+			? dispatch(setPreviousTradeFilter(prevFilter))
+			: dispatch(setPreviousTransactionsFilter(prevFilter))
 		navigation.navigate('Main', { screen: 'Transactions' })
-	}
-
-	const clear = () => {
-		if (isFilteredAny) {
-			dispatch(clearFilters())
-			dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' })
-		}
 	}
 
 	const seperateCurrencyName = (currency) => currency.split('(')[0]
 
+	const openModal = () =>
+		isInstantTrade
+			? dispatch(toggleCryptoModal(true))
+			: dispatch(toggleCurrencyModal(true))
 	const handleMethodsDropdown = () => dispatch(toggleMethodsModal(true))
-	const clearMethodsDropdown = () => dispatch(setMethodFilter(null))
+	const clearMethodsDropdown = () => dispatch(setMethodFilter([]))
 	const clearCurrencyDropdown = () =>
-		dispatch(currencyAction('Show All Currency', [], null))
-	const isFilteredAny = Boolean(
-		typeFilter || selectedMethod || status || fromDateTime || toDateTime || code
-	)
+		isInstantTrade
+			? dispatch(setCryptoCodeQuery(null))
+			: dispatch(setCryptoFilter(null))
+
+	const selectedCrypto = isInstantTrade ? cryptoCodeQuery : cryptoTransactions
+
+	useEffect(() => {
+		const initialStateTrade = {
+			fiatCodesQuery,
+			statusQuery,
+			cryptoCodeQuery,
+			actionQuery,
+			fromDateTimeQuery,
+			toDateTimeQuery,
+		}
+		const initialStateTransactions = {
+			cryptoFilter: cryptoTransactions,
+			method: selectedMethod,
+			typeFilter,
+			fromDateTime,
+			toDateTime,
+			status,
+		}
+		isInstantTrade
+			? AsyncStorage.setItem(
+					'tradesFilter',
+					JSON.stringify({ ...initialStateTrade })
+			  )
+			: AsyncStorage.setItem(
+					'transactionsFilter',
+					JSON.stringify({ ...initialStateTransactions })
+			  )
+	}, [])
+
+	const numOfRender = useRef(0)
 
 	return (
 		<Background>
 			<View style={styles.closeContainer}>
 				<Headline title="Transaction Filter" />
-				<TouchableOpacity onPress={close} hitSlop={50}>
+				<TouchableOpacity
+					onPress={close}
+					hitSlop={50}
+					style={styles.closeButton}>
 					<Close />
 				</TouchableOpacity>
 			</View>
-			<ScrollView style={styles.container}>
-				{isInstantTrade ? (
-					<View style={styles.marginBottom20}>
-						<AppText body style={styles.text}>
-							Choose currency / Pair
-						</AppText>
-						<FilterRow array={currencies} filterType="currency" />
-					</View>
-				) : (
-					<View style={styles.marginBottom20}>
-						<AppText body style={styles.text}>
-							Choose Type:
-						</AppText>
-						<FilterRow array={types} filterType="type" />
-					</View>
-				)}
+			<ScrollView
+				style={styles.container}
+				bounces={false}
+				showsVerticalScrollIndicator={false}
+				contentContainerStyle={{
+					flexGrow: 1,
+					justifyContent: 'space-between',
+					minHeight: WINDOW_HEIGHT - bottom - top - 85,
+				}}>
+				<View>
+					{isInstantTrade ? (
+						<View style={styles.marginBottom20}>
+							<AppText body style={styles.text}>
+								Choose currency / Pair
+							</AppText>
+							<FilterRow array={currencies} filterType="currency" />
+						</View>
+					) : (
+						<View style={styles.type}>
+							<AppText body style={styles.text}>
+								Choose Type:
+							</AppText>
+							<FilterRow array={types} filterType="type" />
+						</View>
+					)}
 
-				<AppDropdown
-					selectedText={seperateCurrencyName(currency)}
-					activeLabel="Show All Currency"
-					handleClear={clearCurrencyDropdown}
-					icon={
-						code && (
-							<Image
-								source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
-								style={styles.coin}
-							/>
-						)
-					}
-					handlePress={openModal}
-					style={!isInstantTrade && { marginBottom: 24 }}
-				/>
-
-				{isInstantTrade && (
-					<View style={styles.marginBottom30}>
-						<AppText body style={styles.text}>
-							Transaction Type:
-						</AppText>
-						<FilterRow array={transactionTypes} filterType="tradeAction" />
-					</View>
-				)}
-
-				<DatePicker from />
-				<DatePicker to />
-
-				{!isInstantTrade && (
 					<AppDropdown
-						label="Choose Methods:"
-						handlePress={handleMethodsDropdown}
-						handleClear={clearMethodsDropdown}
-						selectedText={selectedMethod}
+						selectedText={
+							selectedCrypto?.length > 0 && seperateCurrencyName(selectedCrypto)
+						}
+						label={isInstantTrade ? 'Choose Crypto' : 'Choose Currency'}
+						handleClear={clearCurrencyDropdown}
+						icon={
+							selectedCrypto &&
+							selectedCrypto !== 'Show all currency' && (
+								<Image
+									source={{
+										uri: `${COINS_URL_PNG}/${selectedCrypto?.toLowerCase()}.png`,
+									}}
+									style={styles.coin}
+								/>
+							)
+						}
+						handlePress={openModal}
+						style={!isInstantTrade && { marginVertical: 24 }}
 					/>
-				)}
 
-				<AppText body style={styles.text}>
-					Choose Status:
-				</AppText>
-				<FilterRow array={statuses} filterType="status" />
+					{isInstantTrade && (
+						<View style={styles.marginBottom30}>
+							<AppText body style={styles.text}>
+								Transaction Type:
+							</AppText>
+							<FilterRow array={transactionTypes} filterType="tradeAction" />
+						</View>
+					)}
+
+					<DatePicker from isInstantTrade={isInstantTrade} />
+					<DatePicker to isInstantTrade={isInstantTrade} />
+
+					{!isInstantTrade && (
+						<AppDropdown
+							label="Choose Methods:"
+							handlePress={handleMethodsDropdown}
+							handleClear={clearMethodsDropdown}
+							selectedText={selectedMethod?.[0] ?? null}
+						/>
+					)}
+
+					<AppText body style={[styles.text, isInstantTrade && styles.status]}>
+						Choose Status:
+					</AppText>
+					<FilterRow
+						array={statuses}
+						filterType={`status${isInstantTrade ? 'Trade' : 'Transaction'}`}
+					/>
+				</View>
+
+				<View
+					style={{
+						marginTop: 50,
+					}}>
+					<TransactionFilterBottom
+						navigation={navigation}
+						isInstantTrade={isInstantTrade}
+					/>
+				</View>
 			</ScrollView>
 
-			<TransactionFilterBottom
-				navigation={navigation}
-				isInstantTrade={isInstantTrade}
-			/>
-			<TouchableOpacity style={styles.clear} onPress={clear}>
-				<PurpleText
-					style={styles.purple}
-					text="Clear Filters"
-					disabled={!isFilteredAny}
-				/>
-			</TouchableOpacity>
+			<CryptoModalTrade />
 			<ChooseCurrencyModal isForTransactions />
 
-			<DatePickerModal from />
-			<DatePickerModal to />
+			<DatePickerModal isInstantTrade={isInstantTrade} from />
+			<DatePickerModal isInstantTrade={isInstantTrade} to />
 			<ChooseMethodsModal />
 		</Background>
 	)
@@ -172,17 +254,13 @@ export default function TransactionFilter({ navigation, route }) {
 
 const styles = StyleSheet.create({
 	container: {
-		marginBottom: 20,
+		marginBottom: 10,
+		marginTop: -34,
 		paddingBottom: 140,
-	},
-	clear: {
-		flexDirection: 'row',
-		justifyContent: 'center',
 	},
 	coin: {
 		width: 24,
 		height: 24,
-		marginRight: 12,
 	},
 	purple: {
 		fontSize: 15,
@@ -192,24 +270,34 @@ const styles = StyleSheet.create({
 	closeContainer: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginRight: 5,
 		justifyContent: 'space-between',
+		marginTop: 36,
+		backgroundColor: colors.PRIMARY_BACKGROUND,
+		zIndex: 10,
+		paddingBottom: 10,
 	},
 	marginBottom30: {
 		marginBottom: 30,
 	},
 	marginBottom20: {
-		marginBottom: 20,
+		marginVertical: 20,
 	},
 	text: {
-		fontSize: 13,
+		fontSize: 14,
 		lineHeight: 17,
-		color: colors.PRIMARY_TEXT,
-		marginVertical: 12,
-		color: colors.SECONDARY_TEXT,
+		color: '#c0c5e0',
+		marginTop: 28,
+		marginBottom: 12,
+	},
+	status: {
+		marginTop: 6,
 	},
 	bigText: {
 		color: colors.PRIMARY_TEXT,
 		flex: 1,
 	},
+	closeButton: {
+		marginTop: -40,
+	},
+	type: { marginTop: 20, marginBottom: 6 },
 })

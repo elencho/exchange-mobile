@@ -1,14 +1,12 @@
 import React from 'react'
 import { Image, Pressable, StyleSheet, View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../../AppText'
-import colors from '../../../constants/colors'
-import { COINS_URL_PNG } from '../../../constants/api'
-import { toggleCurrencyModal } from '../../../redux/modals/actions'
-
 import Arrow from '../../../assets/images/Arrow'
+import { COINS_URL_PNG } from '../../../constants/api'
+import colors from '../../../constants/colors'
+import { toggleCurrencyModal } from '../../../redux/modals/actions'
 import AppDropdown from '../../AppDropdown'
+import AppText from '../../AppText'
 
 export default function WalletCoinsDropdown() {
 	const dispatch = useDispatch()
@@ -81,5 +79,6 @@ const styles = StyleSheet.create({
 	secondary: {
 		color: colors.SECONDARY_TEXT,
 		marginTop: 8,
+		marginBottom: 5,
 	},
 })

@@ -1,24 +1,23 @@
 import React, { memo, useEffect } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
 import Background from '../../components/Background'
-import Headline from '../../components/TransactionHistory/Headline'
+import CustomRefreshContol from '../../components/CustomRefreshContol'
 import PurpleText from '../../components/PurpleText'
-import WalletSwitcher from '../../components/Wallet/WalletSwitcher'
-import Deposit from './Deposit'
-import Withdrawal from './Withdrawal'
 import ChooseCurrencyModal from '../../components/TransactionFilter/ChooseCurrencyModal'
+import Headline from '../../components/TransactionHistory/Headline'
 import ChooseNetworkModal from '../../components/Wallet/Deposit/ChooseNetworkModal'
-import Whitelist from './Whitelist'
-import ManageCards from './ManageCards'
+import WalletSwitcher from '../../components/Wallet/WalletSwitcher'
+import { IS_ANDROID } from '../../constants/system'
 import { setCard, setDepositProvider } from '../../redux/trade/actions'
 import {
 	setShouldRefreshOnScroll,
 	setWalletTab,
 } from '../../redux/wallet/actions'
-import CustomRefreshContol from '../../components/CustomRefreshContol'
-import { IS_ANDROID } from '../../constants/system'
+import Deposit from './Deposit'
+import ManageCards from './ManageCards'
+import Whitelist from './Whitelist'
+import Withdrawal from './Withdrawal'
 
 function Balance({ navigation }) {
 	const dispatch = useDispatch()
@@ -95,17 +94,15 @@ const styles = StyleSheet.create({
 	back: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginBottom: 10,
-		paddingVertical: 5,
+
 		width: '45%',
+
+		paddingVertical: 30,
 	},
 	flexGrow: {
 		flexGrow: 1,
 	},
 	flex: {
 		flex: 1,
-	},
-	purpleText: {
-		marginTop: 2,
 	},
 })

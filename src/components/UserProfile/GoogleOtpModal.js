@@ -1,7 +1,7 @@
+import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
 import colors from '../../constants/colors'
 import { toggleGoogleOtpModal } from '../../redux/modals/actions'
 import { setEmailAuth } from '../../redux/profile/actions'
@@ -11,6 +11,8 @@ import TwoFaInput from '../TwoFaInput'
 
 export default function GoogleOtpModal({ withdrawal, whitelist }) {
 	const dispatch = useDispatch()
+	const navigation = useNavigation()
+
 	const state = useSelector((state) => state)
 	const {
 		modals: { googleOtpModalVisible },
@@ -32,12 +34,13 @@ export default function GoogleOtpModal({ withdrawal, whitelist }) {
 			<AppText style={styles.header} header>
 				Google Authentication
 			</AppText>
-			<AppText style={styles.secondary} body>
+			<AppText style={styles.secondary} calendarDay>
 				Enter One Time Password
 			</AppText>
 
 			<View style={styles.codeInput}>
 				<TwoFaInput
+					navigation={navigation}
 					withdrawal={withdrawal}
 					whitelist={whitelist}
 					value={value}
@@ -64,7 +67,7 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 	},
 	codeInput: {
-		marginTop: 35,
+		marginVertical: 35,
 	},
 	header: {
 		color: colors.PRIMARY_TEXT,
@@ -72,7 +75,5 @@ const styles = StyleSheet.create({
 	},
 	secondary: {
 		color: colors.SECONDARY_TEXT,
-		fontSize: 24,
-		lineHeight: 28,
 	},
 })

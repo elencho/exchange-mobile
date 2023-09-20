@@ -7,11 +7,10 @@ import {
 	useClearByFocusCell,
 } from 'react-native-confirmation-code-field'
 import { useDispatch } from 'react-redux'
-
-import AppText from './AppText'
 import colors from '../constants/colors'
-import GeneralError from './GeneralError'
 import { errorHappenedHere } from '../utils/appUtils'
+import AppText from './AppText'
+import GeneralError from './GeneralError'
 
 export default function CodeInput({ cellCount = 6, value, setValue }) {
 	const dispatch = useDispatch()
@@ -65,7 +64,7 @@ const styles = StyleSheet.create({
 		height: 45,
 		borderRadius: 5,
 		borderWidth: 1,
-		borderColor: '#42475D',
+		borderColor: colors.SECONDARY_TEXT,
 		color: colors.PRIMARY_TEXT,
 		marginHorizontal: 5,
 		justifyContent: 'center',

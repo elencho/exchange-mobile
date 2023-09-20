@@ -1,21 +1,18 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppButton from '../AppButton'
-import AppModal from '../AppModal'
-import AppInput from '../AppInput'
-import AppText from '../AppText'
-import WithKeyboard from '../WithKeyboard'
-import GeneralError from '../GeneralError'
-
+import HideIcon from '../../assets/images/User_profile/Hide'
+import ShowIcon from '../../assets/images/User_profile/Show'
+import colors from '../../constants/colors'
 import { togglePasswordModal } from '../../redux/modals/actions'
 import { updatePassword } from '../../redux/profile/actions'
-import colors from '../../constants/colors'
 import { errorHappenedHere } from '../../utils/appUtils'
-
-import ShowIcon from '../../assets/images/User_profile/Show'
-import HideIcon from '../../assets/images/User_profile/Hide'
+import AppButton from '../AppButton'
+import AppInput from '../AppInput'
+import AppModal from '../AppModal'
+import AppText from '../AppText'
+import GeneralError from '../GeneralError'
+import WithKeyboard from '../WithKeyboard'
 
 export default function PasswordModal() {
 	const array = [
@@ -171,7 +168,7 @@ export default function PasswordModal() {
 					/>
 
 					<AppInput
-						style={styles.inputContainer}
+						style={[styles.inputContainer, { marginTop: 18 }]}
 						label="Current Password"
 						autoCapitalize={'none'}
 						secureTextEntry={secure}
@@ -241,7 +238,7 @@ const styles = StyleSheet.create({
 		marginRight: 15,
 	},
 	error: {
-		marginBottom: 15,
+		marginTop: 10,
 	},
 	inputContainer: {
 		marginBottom: 20,

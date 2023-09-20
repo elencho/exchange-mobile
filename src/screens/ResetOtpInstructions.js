@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import { MaterialIndicator } from 'react-native-indicators'
-import * as SecureStore from 'expo-secure-store'
 import * as Linking from 'expo-linking'
+import * as SecureStore from 'expo-secure-store'
 import { t } from 'i18next'
-
-import AppText from '../components/AppText'
-import PurpleText from '../components/PurpleText'
-
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, TouchableOpacity, View, SafeAreaView } from 'react-native'
+import { MaterialIndicator } from 'react-native-indicators'
+import { useDispatch, useSelector } from 'react-redux'
 import Logo from '../assets/images/Logo'
+import AppText from '../components/AppText'
+import Background from '../components/Background'
+import PurpleText from '../components/PurpleText'
 import TwoFaInput from '../components/TwoFaInput'
 import WithKeyboard from '../components/WithKeyboard'
-import images from '../constants/images'
 import colors from '../constants/colors'
+import images from '../constants/images'
 import { startLoginAction } from '../redux/profile/actions'
 
 export default function ResetOtpInstructions({ navigation, route }) {
@@ -83,7 +82,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
 	}
 
 	return (
-		<View style={styles.container}>
+		<Background>
 			<WithKeyboard padding flexGrow>
 				<TouchableOpacity style={styles.back} onPress={goBack}>
 					<PurpleText text="Go Back" style={styles.backText} />
@@ -111,6 +110,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
 								Enter the code you received on the email
 							</AppText>
 							<TwoFaInput
+								navigation={navigation}
 								value={value}
 								setValue={setValue}
 								login
@@ -141,7 +141,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
 					</View>
 				)}
 			</WithKeyboard>
-		</View>
+		</Background>
 	)
 }
 
@@ -150,7 +150,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 
-		marginLeft: 24,
 		marginTop: 28,
 		width: '33%',
 	},
@@ -181,6 +180,7 @@ const styles = StyleSheet.create({
 		color: colors.PRIMARY_TEXT,
 		marginTop: 27,
 		marginBottom: 12,
+		textAlign: 'center',
 	},
 	row: {
 		flexDirection: 'row',

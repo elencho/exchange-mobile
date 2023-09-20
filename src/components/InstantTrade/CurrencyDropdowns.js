@@ -1,12 +1,11 @@
 import React from 'react'
 import { StyleSheet, Image, View, Pressable } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../AppText'
+import { COINS_URL_PNG } from '../../constants/api'
 import colors from '../../constants/colors'
 import { toggleCryptoModal, toggleFiatModal } from '../../redux/modals/actions'
-import { COINS_URL_PNG } from '../../constants/api'
-import Arrow from '../../assets/images/Arrow'
+import AppDropdown from '../AppDropdown'
+import AppText from '../AppText'
 
 export default function CurrencyDropdowns({ style }) {
 	const dispatch = useDispatch()
@@ -21,16 +20,19 @@ export default function CurrencyDropdowns({ style }) {
 	return (
 		<View style={[styles.container, style]}>
 			{[crypto, fiat].map((c) => (
-				<Pressable style={styles.block} key={c} onPress={() => open(c)}>
-					<Image
-						style={styles.icon}
-						source={{ uri: `${COINS_URL_PNG}/${c.toLowerCase()}.png` }}
-					/>
-					<AppText body style={styles.text}>
-						{c}
-					</AppText>
-					<Arrow />
-				</Pressable>
+				<AppDropdown
+					style={{ flex: 1 }}
+					key={c}
+					handlePress={() => open(c)}
+					selectedText={c}
+					notClearable
+					icon={
+						<Image
+							style={styles.icon}
+							source={{ uri: `${COINS_URL_PNG}/${c.toLowerCase()}.png` }}
+						/>
+					}
+				/>
 			))}
 		</View>
 	)
@@ -44,11 +46,13 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		width: '47%',
 		height: 45,
-		paddingHorizontal: 15,
+		paddingHorizontal: 20,
 	},
 	container: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+		gap: 19,
+		marginTop: 30,
 	},
 	icon: {
 		width: 24,

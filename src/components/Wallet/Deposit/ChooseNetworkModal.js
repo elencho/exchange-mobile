@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../../AppModal'
-import { toggleChooseNetworkModal } from '../../../redux/modals/actions'
-import AppText from '../../AppText'
+import Card from '../../../assets/images/Card.svg'
+import Euro from '../../../assets/images/Euro.svg'
+import Bank from '../../../assets/images/LocalBank.svg'
 import colors from '../../../constants/colors'
+import { toggleChooseNetworkModal } from '../../../redux/modals/actions'
 import {
 	cryptoAddressesAction,
 	getWhitelistAction,
 	setNetwork,
 	wireDepositAction,
 } from '../../../redux/wallet/actions'
-import Euro from '../../../assets/images/Euro.svg'
-import Card from '../../../assets/images/Card.svg'
-import Bank from '../../../assets/images/LocalBank.svg'
-import Arrow from '../../../assets/images/Arrow'
+import AppModal from '../../AppModal'
+import AppText from '../../AppText'
 
 export default function ChooseNetworkModal() {
 	const dispatch = useDispatch()
@@ -82,6 +80,7 @@ export default function ChooseNetworkModal() {
 		if (network === 'SEPA') {
 			return <Euro />
 		}
+		return null
 	}
 
 	const children = (
@@ -96,13 +95,14 @@ export default function ChooseNetworkModal() {
 					key={n.provider}
 					onPress={() => handlePress(n.provider)}>
 					<View>{renderIcon(n.provider)}</View>
-					<View style={styles.name}>
+					<View
+						style={[styles.name, !renderIcon(n.provider) && { marginLeft: 0 }]}>
 						<AppText medium body style={styles.primary}>
 							{n?.displayName}
 						</AppText>
 
-						<AppText subtext style={styles.secondary}>
-							{n?.provider}
+						<AppText body style={styles.secondary}>
+							{`(${n?.provider})`}
 						</AppText>
 					</View>
 				</Pressable>
@@ -123,14 +123,17 @@ export default function ChooseNetworkModal() {
 
 const styles = StyleSheet.create({
 	name: {
-		marginLeft: 20,
 		justifyContent: 'space-between',
+		alignItems: 'center',
+		gap: 6,
+		flexDirection: 'row',
+		marginLeft: 10,
 	},
 	network: {
 		flexDirection: 'row',
-		height: 62,
+		height: 50,
 		alignItems: 'center',
-		marginHorizontal: -15,
+		marginHorizontal: -5,
 		paddingHorizontal: 15,
 		borderRadius: 5,
 	},

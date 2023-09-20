@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../AppText'
 import colors from '../../constants/colors'
-import { setNetwork, setWalletTab } from '../../redux/wallet/actions'
 import { setCard } from '../../redux/trade/actions'
+import { setNetwork, setWalletTab } from '../../redux/wallet/actions'
+import AppText from '../AppText'
 
 export default function WalletSwitcher() {
 	const dispatch = useDispatch()
@@ -91,6 +90,6 @@ const styles = StyleSheet.create({
 	row: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		marginBottom: 22,
+		marginVertical: 22,
 	},
 })

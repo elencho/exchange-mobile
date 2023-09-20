@@ -1,11 +1,10 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../AppText'
-import PurpleText from '../PurpleText'
 import colors from '../../constants/colors'
 import { togglePersonalInfoModal } from '../../redux/modals/actions'
+import AppText from '../AppText'
+import PurpleText from '../PurpleText'
 
 export default function PersonalInformation() {
 	const dispatch = useDispatch()
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
 		marginLeft: 15,
 	},
 	block: {
-		padding: 5,
+		paddingVertical: 5,
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 		marginBottom: 10,
 	},
@@ -111,7 +110,6 @@ const styles = StyleSheet.create({
 	},
 	purple: {
 		alignSelf: 'flex-end',
-		fontSize: 20,
 	},
 	secondary: {
 		color: colors.SECONDARY_TEXT,

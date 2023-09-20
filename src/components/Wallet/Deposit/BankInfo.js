@@ -8,18 +8,17 @@ import {
 	View,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
+import Arrow from '../../../assets/images/Arrow'
+import CopyIcon from '../../../assets/images/Copy.svg'
+import { ICONS_URL_PNG } from '../../../constants/api'
 import colors from '../../../constants/colors'
 import images from '../../../constants/images'
 import { toggleWireBanksModal } from '../../../redux/modals/actions'
+import useCopyToClipboard from '../../../utils/copyToClipboard'
+import AppDropdown from '../../AppDropdown'
 import AppText from '../../AppText'
 import WireBanksModal from './WireBanksModal'
-import { ICONS_URL_PNG } from '../../../constants/api'
-import useCopyToClipboard from '../../../utils/copyToClipboard'
 
-import Arrow from '../../../assets/images/Arrow'
-import CopyIcon from '../../../assets/images/Copy.svg'
-import AppDropdown from '../../AppDropdown'
 const InfoRow = ({ title, text }) => {
 	const { copyToClipboard } = useCopyToClipboard()
 	const copy = () => copyToClipboard(text)
@@ -166,7 +165,6 @@ const styles = StyleSheet.create({
 	image: {
 		width: 18,
 		height: 18,
-		marginLeft: 5,
 		resizeMode: 'contain',
 	},
 	infoRow: {

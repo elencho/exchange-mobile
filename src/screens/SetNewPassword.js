@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-
-import AppText from '../components/AppText'
-import AppInput from '../components/AppInput'
-import AppButton from '../components/AppButton'
-import WithKeyboard from '../components/WithKeyboard'
-import PurpleText from '../components/PurpleText'
 import Strong_Password from '../assets/images/User_profile/Strong_Password'
-
+import AppButton from '../components/AppButton'
+import AppInput from '../components/AppInput'
+import AppText from '../components/AppText'
+import Background from '../components/Background'
+import PurpleText from '../components/PurpleText'
+import WithKeyboard from '../components/WithKeyboard'
 import colors from '../constants/colors'
 import { startLoginAction } from '../redux/profile/actions'
 
@@ -42,7 +41,7 @@ export default function SetNewPassword({ navigation }) {
 	}
 
 	return (
-		<View style={styles.container}>
+		<Background>
 			<TouchableOpacity style={styles.back} onPress={goToLogin}>
 				<PurpleText
 					numberOfLines={1}
@@ -103,7 +102,7 @@ export default function SetNewPassword({ navigation }) {
 
 				<AppButton text="Save" style={styles.button} onPress={setNewPassword} />
 			</WithKeyboard>
-		</View>
+		</Background>
 	)
 }
 
@@ -111,7 +110,6 @@ const styles = StyleSheet.create({
 	back: {
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginLeft: -20,
 		marginTop: 28,
 		alignSelf: 'flex-start',
 	},
@@ -124,11 +122,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		marginTop: 84,
 	},
-	container: {
-		flex: 1,
-		paddingHorizontal: '8%',
-		backgroundColor: colors.PRIMARY_BACKGROUND,
-	},
+
 	input: {
 		width: '100%',
 		marginVertical: 6,

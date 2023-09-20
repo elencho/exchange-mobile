@@ -1,6 +1,5 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-
 import AppText from './AppText'
 
 export default function AppInfoBlock({
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
 	},
 	info: {
 		paddingVertical: 15,
-		paddingHorizontal: 18,
+		paddingHorizontal: 26,
 		marginTop: 16,
 	},
 	infoText: {

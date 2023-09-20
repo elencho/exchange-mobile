@@ -1,10 +1,9 @@
 import React, { memo } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
-
-import AppText from './AppText'
+import FastImage from 'react-native-fast-image'
 import ShowAll from '../assets/images/ShowAll'
 import colors from '../constants/colors'
-import FastImage from 'react-native-fast-image'
+import AppText from './AppText'
 
 const ModalSearchItem = ({
 	name,
@@ -68,7 +67,7 @@ const ModalSearchItem = ({
 
 	return (
 		<Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
-			{code ? (
+			{code !== 'Show all currency' ? (
 				<FastImage
 					style={styles.image}
 					resizeMode="contain"
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
 		padding: 10,
 	},
 	image: {
-		marginRight: 20,
+		marginRight: 14,
 		width: 36,
 		height: 36,
 	},
