@@ -1,12 +1,12 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { switchPersonalCompany } from 'redux/profile/actions'
+import { Button } from 'refactor/common/components/button'
+import { COLORS_DARK } from 'refactor/setup/theme/colors'
 
 import Portfolio from '../../assets/images/Portfolio.svg'
 import User from '../../assets/images/User.svg'
-import { COLORS_DARK } from 'refactor/setup/theme/colors'
-import { Button } from 'refactor/common/components/button'
-import { switchPersonalCompany } from 'redux/profile/actions'
 
 type UserType = 'Personal' | 'Company'
 

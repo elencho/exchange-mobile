@@ -1,3 +1,3 @@
 import React from 'react'
 
-export type Component = React.JSX.Element
+export type Element = React.JSX.Element

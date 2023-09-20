@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import { CommonProps } from 'refactor/common/components/button'
+import { CommonProps } from '@components/button'
 
 export type AddProps = {
 	a?: string

@@ -1,19 +1,17 @@
-import React, { memo, useCallback, useEffect, useState } from 'react'
-import { AppState } from 'react-native'
-
-import { useDispatch } from 'react-redux'
-import * as SecureStore from 'expo-secure-store'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { useIsFocused } from '@react-navigation/native'
+import * as SecureStore from 'expo-secure-store'
 import jwt_decode from 'jwt-decode'
-
-import TransactionHistory from '../screens/TransactionHistory'
-import InstantTrade from '../screens/InstantTrade'
+import React, { memo, useCallback, useEffect, useState } from 'react'
+import { AppState } from 'react-native'
+import { useDispatch } from 'react-redux'
 import BottomTabs from '../components/BottomTabs'
 import { setTabRouteName } from '../redux/transactions/actions'
-import Wallet from '../screens/Wallet'
 import Exchange from '../screens/Exchange'
-import { useIsFocused } from '@react-navigation/native'
+import InstantTrade from '../screens/InstantTrade'
+import TransactionHistory from '../screens/TransactionHistory'
+import Wallet from '../screens/Wallet'
 
 const Tab = createBottomTabNavigator()
 

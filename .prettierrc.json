@@ -6,6 +6,11 @@
 	"semi": false,
 	"bracketSameLine": true,
 	"useTabs": true,
-	"importOrder": ["^@theme/(.*)$", "^@app/(.*)$", "^[./]"],
-	"importOrderSeparation": true
+	"importOrder": [
+		"^@assets/(.*)$",
+		"^@theme/(.*)$",
+		"^@components/(.*)$",
+		"^@app/(.*)$",
+		"^[./]"
+	]
 }

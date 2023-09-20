@@ -1,17 +1,16 @@
-import React, { useEffect } from 'react'
-import { Linking, StyleSheet, ViewStyle } from 'react-native'
-
-import VersionCheck from 'react-native-version-check'
-import SplashScreen from 'react-native-splash-screen'
-import FastImage from 'react-native-fast-image'
-import { APP_ID, packageName } from 'constants/system'
-import { COLORS_DARK } from 'refactor/setup/theme/colors'
-import { Button } from 'refactor/common/components/button'
 import AppText from 'components/AppText'
 import Background from 'components/Background'
+import { APP_ID, packageName } from 'constants/system'
+import React, { useEffect } from 'react'
+import { Linking, StyleSheet, ViewStyle } from 'react-native'
+import FastImage from 'react-native-fast-image'
+import SplashScreen from 'react-native-splash-screen'
+import VersionCheck from 'react-native-version-check'
+import { Button } from 'refactor/common/components/button'
 import Text from 'refactor/common/components/text'
-import { useTheme } from 'refactor/setup/theme/index.context'
 import { Theme } from 'refactor/setup/theme'
+import { COLORS_DARK } from 'refactor/setup/theme/colors'
+import { useTheme } from 'refactor/setup/theme/index.context'
 
 export default function UpdateAvailable() {
 	const { styles } = useTheme(_styles)

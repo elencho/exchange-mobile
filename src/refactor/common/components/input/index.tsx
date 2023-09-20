@@ -1,6 +1,3 @@
-import AppText from 'components/AppText'
-import colors from 'constants/colors'
-import { IS_ANDROID } from 'constants/system'
 import React, { ReactNode, memo, useEffect, useRef, useState } from 'react'
 import { TextInputProps } from 'react-native'
 import {
@@ -11,9 +8,10 @@ import {
 	Easing,
 	TouchableWithoutFeedback,
 } from 'react-native'
-import Text from 'refactor/common/components/text'
-import { Theme } from 'refactor/setup/theme'
-import { useTheme } from 'refactor/setup/theme/index.context'
+import { useTheme, Theme } from '@theme/index'
+import AppText from '@components/text/index'
+import colors from '@app/constants/colors'
+import { IS_ANDROID } from '@app/constants/system'
 
 type Props = TextInputProps & {
 	label?: string
@@ -120,23 +118,23 @@ const AppInput = (props: Props) => {
 				{label ? (
 					<TouchableWithoutFeedback onPress={() => inputRef.current?.focus()}>
 						<Animated.View style={[styles.labelContainer, labelAnimation]}>
-							<Text
+							<AppText
 								variant="l"
 								style={{
 									color: labelColor,
 									opacity: disabled ? 0.5 : 1,
 								}}>
 								{label}
-							</Text>
+							</AppText>
 						</Animated.View>
 					</TouchableWithoutFeedback>
 				) : null}
 				{rightChild && <View style={styles.icon}>{rightChild}</View>}
 			</View>
 			{error && (
-				<Text variant="s" style={styles.errorText}>
+				<AppText variant="s" style={styles.errorText}>
 					{error}
-				</Text>
+				</AppText>
 			)}
 		</View>
 	)

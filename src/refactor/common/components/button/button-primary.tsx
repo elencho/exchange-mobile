@@ -1,18 +1,17 @@
 import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
-import { CommonProps } from 'refactor/common/components/button'
-import { Component } from 'refactor/common/components/types'
-import { Theme } from 'refactor/setup/theme'
 import { MaterialIndicator } from 'react-native-indicators'
-import Text from 'refactor/common/components/text'
-import { useTheme } from 'refactor/setup/theme/index.context'
+import { useTheme, Theme } from '@theme/index'
+import { CommonProps } from '@components/button'
+import AppText from '@components/text'
+import { Element } from '@components/types'
 
 export type PrimaryProps = {
 	variant: 'primary'
 	loading?: boolean
 	backgroundColor?: string
-	leftComponent?: Component
-	rightComponent?: Component
+	leftComponent?: Element
+	rightComponent?: Element
 } & CommonProps
 
 export function PrimaryButton({
@@ -44,11 +43,11 @@ export function PrimaryButton({
 			{loading ? (
 				<MaterialIndicator color="#FFFFFF" animationDuration={3000} size={20} />
 			) : (
-				<Text
+				<AppText
 					variant="l"
 					style={[styles.buttonText, leftComponent && { marginLeft: 9 }]}>
 					{text}
-				</Text>
+				</AppText>
 			)}
 			{rightComponent}
 		</Pressable>

@@ -1,17 +1,8 @@
-import { StyleProp, ViewStyle } from 'react-native'
-import {
-	AddButton,
-	AddProps,
-} from 'refactor/common/components/button/button-add'
-import {
-	PrimaryButton,
-	PrimaryProps,
-} from 'refactor/common/components/button/button-primary'
-import {
-	TextButton,
-	TextProps,
-} from 'refactor/common/components/button/button-text'
-import { Component } from 'refactor/common/components/types'
+import { StyleProp } from 'react-native'
+import { AddProps, AddButton } from '@components/button/button-add'
+import { PrimaryProps, PrimaryButton } from '@components/button/button-primary'
+import { TextProps, TextButton } from '@components/button/button-text'
+import { Element } from '@components/types'
 
 /*
  *  TODO: Remove AppButton.js, PurpleText.js
@@ -29,11 +20,11 @@ export interface CommonProps {
 	style?: StyleProp<any>
 }
 
-export function Button(props: PrimaryProps): Component
-export function Button(props: TextProps): Component
-export function Button(props: AddProps): Component
+export function AppButton(props: PrimaryProps): Element
+export function AppButton(props: TextProps): Element
+export function AppButton(props: AddProps): Element
 
-export function Button(props: Props) {
+export function AppButton(props: Props) {
 	switch (props.variant) {
 		case 'text':
 			return TextButton(props as TextProps)

@@ -1,17 +1,18 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { t } from 'i18next'
+import Logo from 'assets/images/Logo.svg'
 import AppText from 'components/AppText'
 import GeneralError from 'components/GeneralError'
-import PersonalCompanySwitcher from 'components/Registration/PersonalCompanySwitcher' //TODO: Reimport
-import { COLORS_DARK } from 'refactor/setup/theme/colors'
-import useRegister from 'refactor/screens/register/use-register'
-import { errorHappenedHere } from 'utils/appUtils'
-import RegistrationInputs from 'components/Registration/RegistrationInputs'
 import CheckMarks from 'components/Registration/CheckMarks'
+import PersonalCompanySwitcher from 'components/Registration/PersonalCompanySwitcher'
+import RegistrationInputs from 'components/Registration/RegistrationInputs'
 import WithKeyboard from 'components/WithKeyboard'
+import { t } from 'i18next'
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
 import { Button } from 'refactor/common/components/button'
-import Logo from 'assets/images/Logo.svg'
+import useRegister from 'refactor/screens/register/use-register'
+//TODO: Reimport
+import { COLORS_DARK } from 'refactor/setup/theme/colors'
+import { errorHappenedHere } from 'utils/appUtils'
 
 export default function Register() {
 	const {

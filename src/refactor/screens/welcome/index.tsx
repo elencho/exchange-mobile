@@ -1,3 +1,4 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import {
 	StyleSheet,
 	View,
@@ -6,31 +7,28 @@ import {
 	BackHandler,
 	ImageBackground,
 } from 'react-native'
-import useNotificationsAndroid from 'screens/useNotificationsAndroid'
-
-import colors from 'constants/colors'
-import Logo from 'assets/images/LogoWhite.svg'
-import GeneralError from 'components/GeneralError'
-import LanguageSwitcher from 'refactor/screens/welcome/components/language-switcher'
-import useInitApp from 'refactor/screens/welcome/hooks/use-init-app'
 import { useDispatch } from 'react-redux'
+import Logo from '@assets/images/Logo.svg'
+import { useTheme, Theme } from '@theme/index'
+import { AppButton } from '@components/button'
+import AppText from '@components/text'
+import GeneralError from '@app/components/GeneralError'
+import LanguageSwitcher from '@app/components/LanguageSwitcher'
 import {
 	startLoginAction,
 	startRegistrationAction,
-} from 'redux/profile/actions'
-import { errorHappenedHere } from 'utils/appUtils'
-import { Button } from 'refactor/common/components/button'
-import { Navigation } from 'refactor/setup/nav/types'
-import Text from 'refactor/common/components/text'
-import { useTheme } from 'refactor/setup/theme/index.context'
-import { Theme } from 'refactor/setup/theme'
+} from '@app/redux/profile/actions'
+import { ScreenProps } from '@app/refactor/setup/nav/types'
+import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
+import { errorHappenedHere } from '@app/utils/appUtils'
 
-export default function Welcome(navigation: Navigation) {
+interface Props extends NativeStackScreenProps<ScreenProps, 'Welcome'> {}
+
+export default function Welcome({ navigation }: Props) {
 	const dispatch = useDispatch()
 	const { styles } = useTheme(_style)
 
 	useNotificationsAndroid()
-	useInitApp(navigation)
 
 	BackHandler.addEventListener('hardwareBackPress', () => true)
 
@@ -45,24 +43,24 @@ export default function Welcome(navigation: Navigation) {
 			<ImageBackground
 				style={styles.imageBackground}
 				resizeMode="cover"
-				source={require('../assets/images/WelcomeBackground.png')}>
+				source={require('@assets/images/WelcomeBackground.png')}>
 				<View style={styles.container}>
 					<Logo />
-					<Text variant="headline">Welcome to Cryptal</Text>
-					<Text variant="l" style={styles.subtext}>
+					<AppText variant="headline">Welcome to Cryptal</AppText>
+					<AppText variant="l" style={styles.subtext}>
 						Secure and Simple · Your Gateway to the Global Crypto Universe
-					</Text>
+					</AppText>
 					<GeneralError
 						style={styles.error}
 						show={errorHappenedHere('Welcome')}
 					/>
-					<Button
+					<AppButton
 						variant="primary"
 						text="Login"
 						onPress={startLogin}
 						style={styles.button}
 					/>
-					<Button
+					<AppButton
 						variant="primary"
 						text="Registration"
 						onPress={startRegistration}

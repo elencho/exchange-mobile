@@ -6,7 +6,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import { BackHandler } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
 import CardVerificationOneScreen from '../screens/CardVerificationOne'
 import CardVerificationTwoScreen from '../screens/CardVerificationTwo'
 import EmailVerification from '../screens/EmailVerification'

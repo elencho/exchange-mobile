@@ -18,8 +18,10 @@ module.exports = function (api) {
 						'.json',
 					],
 					alias: {
-						'@app': './src',
+						'@assets': './src/assets',
 						'@theme': './src/refactor/setup/theme',
+						'@components': './src/refactor/common/components',
+						'@app': './src',
 					},
 				},
 			],

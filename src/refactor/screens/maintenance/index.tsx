@@ -1,18 +1,17 @@
+import Gear from 'assets/images/Gear.svg'
+import Logo from 'assets/images/Logo.svg'
+import AppText from 'components/AppText'
 import React, { useState, useEffect } from 'react'
 import { ImageBackground, Linking, StyleSheet, View } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
-
 import SplashScreen from 'react-native-splash-screen'
-import { Images } from 'refactor/common/constants'
-import { checkReadiness } from 'utils/appUtils'
-import Logo from 'assets/images/Logo.svg'
-import Gear from 'assets/images/Gear.svg'
 import { Button } from 'refactor/common/components/button'
-import { COLORS_DARK } from 'refactor/setup/theme/colors'
-import AppText from 'components/AppText'
-import { Theme } from 'refactor/setup/theme'
-import { useTheme } from 'refactor/setup/theme/index.context'
 import Text from 'refactor/common/components/text'
+import { Images } from 'refactor/common/constants'
+import { Theme } from 'refactor/setup/theme'
+import { COLORS_DARK } from 'refactor/setup/theme/colors'
+import { useTheme } from 'refactor/setup/theme/index.context'
+import { checkReadiness } from 'utils/appUtils'
 
 export default function Maintanance(navigation: any) {
 	const { styles } = useTheme(_styles)

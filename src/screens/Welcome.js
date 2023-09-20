@@ -16,7 +16,6 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import SplashScreen from 'react-native-splash-screen'
 import VersionCheck from 'react-native-version-check'
 import { useDispatch } from 'react-redux'
-
 import Logo from '../assets/images/LogoWhite.svg'
 import AppButton from '../components/AppButton'
 import AppText from '../components/AppText'
@@ -91,6 +90,8 @@ export default function Welcome({ navigation }) {
 		const userIndex = parsedUsers?.find(
 			(u) => u?.user === user && u?.enabled === true
 		)
+		console.log('PARSED')
+		console.log(parsedUsers)
 		if (workingVersion) {
 			navigation.navigate('Maintanance')
 		}

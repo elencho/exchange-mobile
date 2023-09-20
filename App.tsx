@@ -4,10 +4,9 @@ import React from 'react'
 import { StatusBar, LogBox, View } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Provider } from 'react-redux'
-
+import AppNavigator from '@app/refactor/setup/nav/index'
 import AppToast from './src/components/AppToast'
 import images from './src/constants/images'
-import Navigator from './src/navigation'
 import store from './src/redux/store'
 import { CryptalThemeProvider } from './src/refactor/setup/theme'
 import { THEME_DARK } from './src/refactor/setup/theme/variants'
@@ -40,7 +39,7 @@ const App = React.memo(() => {
 						barStyle="light-content"
 					/>
 					<AppToast />
-					<Navigator />
+					<AppNavigator />
 				</GestureHandlerRootView>
 			</Provider>
 		</CryptalThemeProvider>

@@ -1,6 +1,6 @@
-import { CommonProps } from 'refactor/common/components/button'
-import Text from 'refactor/common/components/text'
-import { useTheme } from 'refactor/setup/theme/index.context'
+import { useTheme } from '@theme/index'
+import { CommonProps } from '@components/button'
+import AppText from '@components/text'
 
 export type TextProps = {
 	variant: 'text'
@@ -15,7 +15,7 @@ export function TextButton({
 	const { theme } = useTheme()
 
 	return (
-		<Text
+		<AppText
 			variant="m"
 			disabled={disabled}
 			onPress={onPress}
@@ -28,6 +28,6 @@ export function TextButton({
 				style,
 			]}>
 			{text}
-		</Text>
+		</AppText>
 	)
 }

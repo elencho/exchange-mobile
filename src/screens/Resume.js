@@ -1,33 +1,32 @@
-import { StyleSheet, View } from 'react-native'
-import React, { useState, memo, useCallback } from 'react'
-import TouchID from '../assets/images/TouchID-Purple'
-import FaceID from '../assets/images/Face_ID-pruple'
-import * as SecureStore from 'expo-secure-store'
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useFocusEffect } from '@react-navigation/native'
 import {
 	authenticateAsync,
 	supportedAuthenticationTypesAsync,
 	cancelAuthenticate,
 } from 'expo-local-authentication'
-import colors from '../constants/colors'
-import AppText from '../components/AppText'
-import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import AppButton from '../components/AppButton'
-import PurpleText from '../components/PurpleText'
-import { fetchUserInfo, switchPersonalSecurity } from '../redux/profile/actions'
-import { useFocusEffect } from '@react-navigation/native'
-import { logoutUtil } from '../utils/userProfileUtils'
+import * as SecureStore from 'expo-secure-store'
+import { t } from 'i18next'
+import React, { useState, memo, useCallback } from 'react'
+import { Trans } from 'react-i18next'
+import { StyleSheet, View } from 'react-native'
 import SplashScreen from 'react-native-splash-screen'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import FaceID from '../assets/images/Face_ID-pruple'
+import TouchID from '../assets/images/TouchID-Purple'
+import AppButton from '../components/AppButton'
+import AppText from '../components/AppText'
+import PurpleText from '../components/PurpleText'
+import colors from '../constants/colors'
+import { IS_ANDROID } from '../constants/system'
 import {
 	toggleEmailAuthModal,
 	toggleGoogleOtpModal,
 	toggleSmsAuthModal,
 	toggleWebViewVisible,
 } from '../redux/modals/actions'
-import { IS_ANDROID } from '../constants/system'
-import { t } from 'i18next'
-import { Trans } from 'react-i18next'
+import { fetchUserInfo, switchPersonalSecurity } from '../redux/profile/actions'
+import { logoutUtil } from '../utils/userProfileUtils'
 
 const Resume = ({ navigation, route }) => {
 	const state = useSelector((state) => state?.profile, shallowEqual)

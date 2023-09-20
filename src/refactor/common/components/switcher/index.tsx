@@ -1,6 +1,6 @@
 import React from 'react'
-import { useTheme } from 'refactor/setup/theme/index.context'
 import ToggleSwitch, { ToggleSwitchProps } from 'toggle-switch-react-native'
+import { useTheme } from '@theme/index'
 
 const AppSwitcher: React.FC<ToggleSwitchProps> = (props) => {
 	const { isOn, disabled } = props

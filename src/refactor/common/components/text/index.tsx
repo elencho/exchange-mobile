@@ -1,8 +1,8 @@
-import { FontTheme } from 'refactor/setup/theme/fonts'
-import { useTheme } from 'refactor/setup/theme/index.context'
-import { Text as NativeText, TextProps, TextStyle } from 'react-native'
-import useTranslate from 'refactor/common/components/text/use-translate'
 import { memo } from 'react'
+import { Text, TextProps, TextStyle } from 'react-native'
+import { FontTheme } from '@theme/fonts'
+import { useTheme } from '@theme/index'
+import useTranslate from '@app/refactor/common/components/text/use-translate'
 
 type Variant = 's' | 'm' | 'l' | 'title' | 'headline'
 
@@ -10,7 +10,7 @@ type Props = TextProps & {
 	variant?: Variant
 }
 
-const Text: React.FC<Props> = (props) => {
+const AppText: React.FC<Props> = (props) => {
 	const { variant, children, onPress, style } = props
 	const text = useTranslate(children)
 
@@ -19,12 +19,12 @@ const Text: React.FC<Props> = (props) => {
 	return (
 		<>
 			{text !== '' && (
-				<NativeText
+				<Text
 					accessibilityRole={onPress ? 'button' : 'text'}
 					style={[textStyle(variant, theme.font), style]}
 					{...props}>
 					{text}
-				</NativeText>
+				</Text>
 			)}
 		</>
 	)
@@ -45,4 +45,4 @@ const Text: React.FC<Props> = (props) => {
 	}
 }
 
-export default memo(Text)
+export default AppText

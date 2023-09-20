@@ -3,8 +3,10 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"@app/*": ["src/*"],
-			"@theme/*": ["src/refactor/setup/theme/*"]
+			"@assets/*": ["src/assets/*"],
+			"@theme/*": ["src/refactor/setup/theme/*"],
+			"@components/*": ["src/refactor/common/components/*"],
+			"@app/*": ["src/*"]
 		}
 	}
 }

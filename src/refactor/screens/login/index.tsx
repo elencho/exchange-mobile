@@ -1,20 +1,18 @@
-import React, { useCallback } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { useDispatch } from 'react-redux'
 import { useFocusEffect } from '@react-navigation/native'
-import { t } from 'i18next'
-
 import Logo from 'assets/images/Logo.svg'
-
-import { setCredentials } from 'redux/profile/actions'
 import AppInput from 'components/AppInput'
 import AppText from 'components/AppText'
 import GeneralError from 'components/GeneralError'
 import WithKeyboard from 'components/WithKeyboard'
-import { errorHappenedHere } from 'utils/appUtils'
-import { COLORS_DARK } from 'refactor/setup/theme/colors'
+import { t } from 'i18next'
+import React, { useCallback } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { useDispatch } from 'react-redux'
+import { setCredentials } from 'redux/profile/actions'
 import { Button } from 'refactor/common/components/button'
 import useLogin from 'refactor/screens/login/use-login'
+import { COLORS_DARK } from 'refactor/setup/theme/colors'
+import { errorHappenedHere } from 'utils/appUtils'
 
 export default function Login() {
 	const {

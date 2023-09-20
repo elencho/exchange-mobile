@@ -1,7 +1,14 @@
 import React from 'react'
 import { StyleSheet } from 'react-native/Libraries/StyleSheet/StyleSheet'
+import { ColorTheme } from '@theme/colors'
+import { FontTheme } from '@theme/fonts'
+import { THEME_DARK } from '@theme/variants'
 
-import { Theme, THEME_DARK } from '@theme/variants'
+export interface Theme {
+	id: string
+	color: ColorTheme
+	font: FontTheme
+}
 
 interface Props {
 	initial: Theme

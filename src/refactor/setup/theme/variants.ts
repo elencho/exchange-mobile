@@ -1,11 +1,6 @@
-import { ColorTheme, COLORS_DARK } from '@theme/colors'
-import { FontTheme, FONTS_DEFAULT } from '@theme/fonts'
-
-export interface Theme {
-	id: string
-	color: ColorTheme
-	font: FontTheme
-}
+import { COLORS_DARK } from '@theme/colors'
+import { FONTS_DEFAULT } from '@theme/fonts'
+import { Theme } from '@theme/index'
 
 export const THEME_DARK: Theme = {
 	id: 'id_theme_dark',
