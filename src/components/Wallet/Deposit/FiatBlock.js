@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
+    marginBottom: 46,
   },
   mainBlock: { marginBottom: 24 },
   dropdown: {
