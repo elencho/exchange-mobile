@@ -36,6 +36,7 @@ export default function Wallet() {
   useFocusEffect(
     useCallback(() => {
       dispatch({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: true });
+      scrollViewRef.current.scrollTo({ x: 0, y: 3, animated: true });
       hideButtonsHandler();
       const timer = setTimeout(() => {
         setShowRefreshControl(true);
@@ -47,7 +48,6 @@ export default function Wallet() {
         setShowZeroBalances(true);
         setValue('');
         Keyboard.dismiss();
-        scrollViewRef.current.scrollTo({ x: 0, y: 3, animated: true });
       };
     }, [])
   );
@@ -109,6 +109,7 @@ export default function Wallet() {
           <TopRow />
           <KeyboardAvoidingView behavior="padding">
             <ScrollView
+              nestedScrollEnabled
               refreshControl={
                 showRefreshControl ? (
                   <CustomRefreshContol
