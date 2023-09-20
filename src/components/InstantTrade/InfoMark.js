@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { useDispatch } from 'react-redux'
-
 import { toggleInfoModal } from '../../redux/modals/actions'
 import AppText from '../AppText'
 

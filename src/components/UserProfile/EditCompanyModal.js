@@ -1,17 +1,15 @@
+import * as SecureStore from 'expo-secure-store'
+import { t } from 'i18next'
 import React from 'react'
 import { Linking, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { t } from 'i18next'
-import * as SecureStore from 'expo-secure-store'
-
+import Browser from '../../assets/images/User_profile/Browser.svg'
+import colors from '../../constants/colors'
+import { webProfileUtil } from '../../utils/userProfileUtils'
+import AppButton from '../AppButton'
 import AppModal from '../AppModal'
 import AppText from '../AppText'
-import AppButton from '../AppButton'
 import PurpleText from '../PurpleText'
-import colors from '../../constants/colors'
-
-import Browser from '../../assets/images/User_profile/Browser.svg'
-import { webProfileUtil } from '../../utils/userProfileUtils'
 
 export default function EditCompanyModal() {
 	const dispatch = useDispatch()

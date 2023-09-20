@@ -1,9 +1,7 @@
 import React, { memo, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
 import GeneralErrorIcon from '../assets/images/User_profile/General_Error.svg'
-
 import AppText from './AppText'
 
 function GeneralError({ style = {}, show = true }) {

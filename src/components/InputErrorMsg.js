@@ -1,8 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-
-import AppText from './AppText'
 import colors from '../constants/colors'
+import AppText from './AppText'
 
 const InputErrorMsg = ({ message = '' }) => {
 	return (

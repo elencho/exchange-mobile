@@ -1,13 +1,11 @@
+import * as SecureStore from 'expo-secure-store'
 import React from 'react'
 import { StyleSheet, View, Linking, Pressable } from 'react-native'
-import * as SecureStore from 'expo-secure-store'
-
 import Rocket from '../assets/images/Rocket'
 import AppText from '../components/AppText'
-
-import colors from '../constants/colors'
-import TopRow from '../components/TransactionHistory/TopRow'
 import Background from '../components/Background'
+import TopRow from '../components/TransactionHistory/TopRow'
+import colors from '../constants/colors'
 import { exchangeUtil } from '../utils/userProfileUtils'
 
 const Exchange = () => {

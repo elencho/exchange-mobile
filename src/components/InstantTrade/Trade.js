@@ -1,13 +1,12 @@
+import { t } from 'i18next'
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-import { t } from 'i18next'
-
-import AppText from '../AppText'
 import colors from '../../constants/colors'
-import { toggleTransactionDetails } from '../../redux/modals/actions'
 import { monthsShort } from '../../constants/months'
+import { toggleTransactionDetails } from '../../redux/modals/actions'
 import { transactionDetailsSaga } from '../../redux/transactions/actions'
+import AppText from '../AppText'
 
 export default function Trade({ trade }) {
 	const {

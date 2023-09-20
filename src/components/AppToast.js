@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Animated, Easing, Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { setAppToast } from '../redux/modals/actions'
-
 import AppAnimatedCircle from './AppAnimatedCircle'
 import AppText from './AppText'
 

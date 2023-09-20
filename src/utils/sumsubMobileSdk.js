@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import SNSMobileSDK from '@sumsub/react-native-mobilesdk-module'
 import axios from 'axios'
-
 import { VERIFICATION_TOKEN } from '../constants/api'
 import { IS_ANDROID, IS_IOS } from '../constants/system'
 import { sumsubVerificationToken } from '../utils/userProfileUtils'

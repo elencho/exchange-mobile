@@ -1,10 +1,9 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppText from '../AppText'
 import colors from '../../constants/colors'
 import { setUsdBtcSwitch } from '../../redux/wallet/actions'
+import AppText from '../AppText'
 
 export default function CurrencySwitch() {
 	const dispatch = useDispatch()

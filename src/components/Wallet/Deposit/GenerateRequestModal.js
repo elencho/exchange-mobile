@@ -1,14 +1,13 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import { toggleGenerateRequestModal } from '../../../redux/modals/actions'
 import colors from '../../../constants/colors'
-import InfoMark from '../../InstantTrade/InfoMark'
-import Headline from '../../TransactionHistory/Headline'
-import PurpleText from '../../PurpleText'
-import AppText from '../../AppText'
+import { toggleGenerateRequestModal } from '../../../redux/modals/actions'
 import AppModal from '../../AppModal'
+import AppText from '../../AppText'
+import InfoMark from '../../InstantTrade/InfoMark'
+import PurpleText from '../../PurpleText'
+import Headline from '../../TransactionHistory/Headline'
 
 export default function GenerateRequestModal() {
 	const dispatch = useDispatch()

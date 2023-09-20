@@ -1,6 +1,5 @@
 import axios from 'axios'
 import * as SecureStore from 'expo-secure-store'
-
 import store from '../redux/store'
 import handleError from './errorHandling'
 

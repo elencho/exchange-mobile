@@ -1,7 +1,6 @@
 import axios from 'axios'
 import Constants from 'expo-constants'
 import * as SecureStore from 'expo-secure-store'
-
 import {
 	ACTIVATE_EMAIL_OTP,
 	ACTIVATE_GOOGLE_OTP,

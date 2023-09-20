@@ -1,5 +1,4 @@
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects'
-
 import {
 	addWhitelistAddress,
 	cardWithdrawal,

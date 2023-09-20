@@ -1,8 +1,8 @@
+import * as Clipboard from 'expo-clipboard'
+import { useTranslation } from 'react-i18next'
 import { ToastAndroid } from 'react-native'
 import Toast from 'react-native-root-toast'
-import * as Clipboard from 'expo-clipboard'
 import { IS_IOS } from '../constants/system'
-import { useTranslation } from 'react-i18next'
 
 const useCopyToClipboard = () => {
 	const { t } = useTranslation()

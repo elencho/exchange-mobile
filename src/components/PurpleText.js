@@ -1,8 +1,7 @@
 import React, { memo } from 'react'
-
-import AppText from './AppText'
-import colors from '../constants/colors'
 import { useTranslation } from 'react-i18next'
+import colors from '../constants/colors'
+import AppText from './AppText'
 
 function PurpleText({
 	text,

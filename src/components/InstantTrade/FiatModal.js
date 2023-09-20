@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
 import { Pressable, StyleSheet, Image } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import colors from '../../constants/colors'
 import { COINS_URL_PNG } from '../../constants/api'
+import colors from '../../constants/colors'
 import { toggleFiatModal } from '../../redux/modals/actions'
 import {
 	instantTradeTabAction,

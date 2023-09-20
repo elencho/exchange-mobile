@@ -1,14 +1,12 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../AppModal'
-import AppText from '../AppText'
-import colors from '../../constants/colors'
-import { setStatusModalInfo } from '../../redux/modals/actions'
-
 import StatusError from '../../assets/images/Wallet/ErrorStatus.svg'
 import StatusSuccess from '../../assets/images/Wallet/SuccessStatus.svg'
+import colors from '../../constants/colors'
+import { setStatusModalInfo } from '../../redux/modals/actions'
+import AppModal from '../AppModal'
+import AppText from '../AppText'
 
 export default function StatusModal({ deposit, cards }) {
 	const dispatch = useDispatch()

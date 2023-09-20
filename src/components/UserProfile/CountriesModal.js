@@ -1,9 +1,5 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../AppModal'
-import ModalWithSearch from '../ModalWithSearch'
-
 import { toggleCountriesModal } from '../../redux/modals/actions'
 import {
 	fetchCountries,
@@ -11,6 +7,8 @@ import {
 	saveUserInfo,
 	setRegistrationInputs,
 } from '../../redux/profile/actions'
+import AppModal from '../AppModal'
+import ModalWithSearch from '../ModalWithSearch'
 
 export default function CountriesModal({
 	countryDrop = false,

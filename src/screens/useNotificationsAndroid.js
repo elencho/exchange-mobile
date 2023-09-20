@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
 import messaging from '@react-native-firebase/messaging'
+import { useEffect } from 'react'
 import { Linking } from 'react-native'
 
 const useNotificationsAndroid = () => {

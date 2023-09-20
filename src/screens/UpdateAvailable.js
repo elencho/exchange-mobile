@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react'
 import { Linking, StyleSheet } from 'react-native'
-
-import Background from '../components/Background'
-import Update from '../assets/images/Update'
-import AppText from '../components/AppText'
-import colors from '../constants/colors'
-import AppButton from '../components/AppButton'
-
-import VersionCheck from 'react-native-version-check'
-import { packageName, APP_ID } from '../constants/system'
-import SplashScreen from 'react-native-splash-screen'
 import FastImage from 'react-native-fast-image'
+import SplashScreen from 'react-native-splash-screen'
+import VersionCheck from 'react-native-version-check'
+import Update from '../assets/images/Update'
+import AppButton from '../components/AppButton'
+import AppText from '../components/AppText'
+import Background from '../components/Background'
+import colors from '../constants/colors'
+import { packageName, APP_ID } from '../constants/system'
 
 export default function UpdateAvailable() {
 	useEffect(() => {

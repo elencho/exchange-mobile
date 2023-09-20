@@ -1,14 +1,12 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../../AppModal'
-import QrCode from '../../QrCode'
-import AppText from '../../AppText'
 import Copy from '../../../assets/images/Copy'
-
 import { toggleQrAddressModal } from '../../../redux/modals/actions'
 import useCopyToClipboard from '../../../utils/copyToClipboard'
+import AppModal from '../../AppModal'
+import AppText from '../../AppText'
+import QrCode from '../../QrCode'
 
 export default function AddressQrModal() {
 	const { copyToClipboard } = useCopyToClipboard()

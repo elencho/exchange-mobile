@@ -1,10 +1,9 @@
 import React, { memo } from 'react'
 import { StyleSheet, View } from 'react-native'
-
-import AppText from '../AppText'
-import Transaction from './Transaction'
 import colors from '../../constants/colors'
 import { monthsShort } from '../../constants/months'
+import AppText from '../AppText'
+import Transaction from './Transaction'
 
 function TransactionDate({ date, transactions }) {
 	const isDate = () => {

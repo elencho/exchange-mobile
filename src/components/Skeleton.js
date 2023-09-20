@@ -1,6 +1,6 @@
+import { LinearGradient } from 'expo-linear-gradient'
 import React, { useRef, useEffect } from 'react'
 import { View, Animated } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import colors from '../constants/colors'
 
 const Skeleton = ({ width, height, style }) => {

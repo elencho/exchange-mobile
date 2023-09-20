@@ -1,5 +1,5 @@
-import { RefreshControl } from 'react-native'
 import React from 'react'
+import { RefreshControl } from 'react-native'
 
 const CustomRefreshContol = ({ ...rest }) => {
 	return (

@@ -1,16 +1,14 @@
 import React from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../AppModal'
-import AppText from '../AppText'
+import { COUNTRIES_URL_PNG } from '../../constants/api'
 import colors from '../../constants/colors'
 import images from '../../constants/images'
-
 import { toggleLanguageModal } from '../../redux/modals/actions'
 import { fetchUserInfo, setLanguage } from '../../redux/profile/actions'
 import { switchLanguage } from '../../utils/i18n'
-import { COUNTRIES_URL_PNG } from '../../constants/api'
+import AppModal from '../AppModal'
+import AppText from '../AppText'
 
 export default function ChooseLanguageModal() {
 	const dispatch = useDispatch()

@@ -1,21 +1,19 @@
+import { useNavigation } from '@react-navigation/native'
+import { t } from 'i18next'
 import React from 'react'
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useDispatch } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
-import { t } from 'i18next'
-
-import AppText from '../../AppText'
-import PurpleText from '../../PurpleText'
-import colors from '../../../constants/colors'
-import images from '../../../constants/images'
-import { ICONS_URL_PNG } from '../../../constants/api'
-import { setDeleteModalInfo } from '../../../redux/modals/actions'
-
-import CardVerified from '../../../assets/images/Wallet/Verified.svg'
 import CardError from '../../../assets/images/Wallet/Card_Error'
 import CardExpired from '../../../assets/images/Wallet/Card_Expired'
-import CardInfo from '../../../assets/images/Wallet/Info'
 import Delete from '../../../assets/images/Wallet/Delete.svg'
+import CardInfo from '../../../assets/images/Wallet/Info'
+import CardVerified from '../../../assets/images/Wallet/Verified.svg'
+import { ICONS_URL_PNG } from '../../../constants/api'
+import colors from '../../../constants/colors'
+import images from '../../../constants/images'
+import { setDeleteModalInfo } from '../../../redux/modals/actions'
+import AppText from '../../AppText'
+import PurpleText from '../../PurpleText'
 
 export default function Card({ card }) {
 	const dispatch = useDispatch()

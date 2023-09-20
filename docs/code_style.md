@@ -193,11 +193,11 @@ Avoid export defaults, prefer named exports instead. This has the following adva
 Do
 
 ```js
-// export
-export function UserProfile() {}
-
 // import
 import { UserProfile } from './UserProfile'
+
+// export
+export function UserProfile() {}
 ```
 
 Don't

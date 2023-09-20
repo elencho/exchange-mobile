@@ -1,12 +1,10 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
 import Portfolio from '../../assets/images/Portfolio.svg'
 import User from '../../assets/images/User.svg'
-
-import { switchPersonalCompany } from '../../redux/profile/actions'
 import colors from '../../constants/colors'
+import { switchPersonalCompany } from '../../redux/profile/actions'
 import AppButton from '../AppButton'
 
 export default function PersonalCompanySwitcher() {

@@ -1,12 +1,10 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
-
-import AppText from '../AppText'
-import { months } from '../../constants/months'
-import colors from '../../constants/colors'
-
 import Left from '../../assets/images/Left'
 import Right from '../../assets/images/Right'
+import colors from '../../constants/colors'
+import { months } from '../../constants/months'
+import AppText from '../AppText'
 
 export default function CalendarHeader({ addMonth, month, dateSubtext }) {
 	const date = new Date(month)

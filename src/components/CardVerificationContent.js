@@ -1,19 +1,18 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { useDispatch } from 'react-redux'
 import { t } from 'i18next'
+import React from 'react'
 import { Trans } from 'react-i18next'
-
+import { StyleSheet, Text, View } from 'react-native'
+import { useDispatch } from 'react-redux'
+import CardDigit from '../assets/images/User_profile/Card_Digits'
+import CardName from '../assets/images/User_profile/Card_name'
+import sumsubHtmlPattern from '../constants/sumsubHtml.js'
+import { cardVerificationToken } from '../utils/userProfileUtils'
 import AppButton from './AppButton'
 import AppText from './AppText'
 import Background from './Background'
-import PurpleText from './PurpleText'
 import CloseModalIcon from './InstantTrade/CloseModalIcon'
-import sumsubHtmlPattern from '../constants/sumsubHtml.js'
-import { cardVerificationToken } from '../utils/userProfileUtils'
-import CardName from '../assets/images/User_profile/Card_name'
-import CardDigit from '../assets/images/User_profile/Card_Digits'
+import PurpleText from './PurpleText'
 
 export default function CardVerificationContent({ step = 0, cardId }) {
 	const navigation = useNavigation()

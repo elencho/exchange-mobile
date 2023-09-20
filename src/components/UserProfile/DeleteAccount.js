@@ -1,9 +1,9 @@
-import { Linking, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { Trans } from 'react-i18next'
+import { Linking, Pressable, StyleSheet, Text, View } from 'react-native'
 import Deactivate from '../../assets/images/Deactivate.svg'
 import colors from '../../constants/colors'
 import AppText from '../AppText'
-import { Trans } from 'react-i18next'
 
 const DEACTIVATE_LINK =
 	'https://support.cryptal.com/hc/en-us/articles/360020438540-How-do-I-delete-my-Cryptal-Account-'

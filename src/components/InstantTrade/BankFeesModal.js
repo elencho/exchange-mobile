@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../AppModal'
-import AppText from '../AppText'
-import colors from '../../constants/colors'
-import { toggleBankFeesModal } from '../../redux/modals/actions'
-import FeeModalRow from './FeeModalRow'
+import Amex from '../../assets/images/Amex'
 import Mastercard from '../../assets/images/MC_Card'
 import Visa from '../../assets/images/Visa'
-import Amex from '../../assets/images/Amex'
+import colors from '../../constants/colors'
+import { toggleBankFeesModal } from '../../redux/modals/actions'
+import AppModal from '../AppModal'
+import AppText from '../AppText'
+import FeeModalRow from './FeeModalRow'
 
 export default function BankFeesModal() {
 	const dispatch = useDispatch()

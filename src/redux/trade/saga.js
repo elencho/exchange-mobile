@@ -1,5 +1,22 @@
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects'
-
+import {
+	fetchTrades,
+	fetchOffers,
+	submitTrade,
+	fetchBalance,
+	fetchCards,
+	fetchFees,
+} from '../../utils/fetchTrades'
+import { toggleBuySellModal } from '../modals/actions'
+import { fetchUserInfo } from '../profile/actions'
+import { toggleLoading } from '../transactions/actions'
+import {
+	cryptoAddressesAction,
+	getWhitelistAction,
+	setWalletTab,
+	wireDepositAction,
+	withdrawalTemplatesAction,
+} from '../wallet/actions'
 import {
 	actionTypes,
 	saveOffers,
@@ -34,24 +51,6 @@ import {
 	depositFeeParams,
 	withdrawalFeeParams,
 } from './selectors'
-import {
-	fetchTrades,
-	fetchOffers,
-	submitTrade,
-	fetchBalance,
-	fetchCards,
-	fetchFees,
-} from '../../utils/fetchTrades'
-import { toggleBuySellModal } from '../modals/actions'
-import {
-	cryptoAddressesAction,
-	getWhitelistAction,
-	setWalletTab,
-	wireDepositAction,
-	withdrawalTemplatesAction,
-} from '../wallet/actions'
-import { toggleLoading } from '../transactions/actions'
-import { fetchUserInfo } from '../profile/actions'
 
 function* fetchTradesSaga({ isMoreLoading }) {
 	if (isMoreLoading) {

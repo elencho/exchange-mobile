@@ -1,13 +1,11 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { StyleSheet, View } from 'react-native'
 import { useTranslation } from 'react-i18next'
-
+import { StyleSheet, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import Identity from '../../assets/images/User_profile/Identity.svg'
+import colors from '../../constants/colors'
 import AppModal from '../AppModal'
 import AppText from '../AppText'
-import Identity from '../../assets/images/User_profile/Identity.svg'
-
-import colors from '../../constants/colors'
 
 export default function IdentityModal() {
 	const { t } = useTranslation()

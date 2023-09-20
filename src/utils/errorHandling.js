@@ -1,11 +1,9 @@
 import * as SecureStore from 'expo-secure-store'
-
-import store from '../redux/store'
-import { navigationRef } from '../navigation'
-import { refreshToken } from './userProfileUtils'
-import { setAppToast } from '../redux/modals/actions'
-
 import SplashScreen from 'react-native-splash-screen'
+import { navigationRef } from '../navigation'
+import { setAppToast } from '../redux/modals/actions'
+import store from '../redux/store'
+import { refreshToken } from './userProfileUtils'
 
 export default async (err) => {
 	const state = store.getState()

@@ -2,11 +2,10 @@ import React from 'react'
 import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
-
+import colors from '../../constants/colors'
+import { toggleInfoModal } from '../../redux/modals/actions'
 import AppModal from '../AppModal'
 import AppText from '../AppText'
-import { toggleInfoModal } from '../../redux/modals/actions'
-import colors from '../../constants/colors'
 
 export default function InfoModal() {
 	const dispatch = useDispatch()

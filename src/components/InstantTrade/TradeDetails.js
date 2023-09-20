@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
-
 import colors from '../../constants/colors'
 import { monthsShort } from '../../constants/months'
 import AppText from '../AppText'

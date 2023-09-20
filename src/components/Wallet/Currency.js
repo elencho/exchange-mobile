@@ -1,10 +1,9 @@
+import { useNavigation } from '@react-navigation/native'
 import React from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import colors from '../../constants/colors'
 import { COINS_URL_PNG } from '../../constants/api'
+import colors from '../../constants/colors'
 import { setCurrentBalanceObj } from '../../redux/trade/actions'
 import {
 	cryptoAddressesAction,

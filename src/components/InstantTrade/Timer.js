@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import ProgressBar from 'react-native-animated-progress'
 import { useTranslation } from 'react-i18next'
-
-import AppText from '../AppText'
-import { instantTradeTabAction } from '../../redux/trade/actions'
+import ProgressBar from 'react-native-animated-progress'
+import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../constants/colors'
+import { instantTradeTabAction } from '../../redux/trade/actions'
+import AppText from '../AppText'
 
 export default function Timer() {
 	const dispatch = useDispatch()

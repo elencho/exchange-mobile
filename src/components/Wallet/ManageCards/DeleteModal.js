@@ -1,20 +1,18 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-
-import AppModal from '../../AppModal'
-import AppText from '../../AppText'
-import AppButton from '../../AppButton'
-import PurpleText from '../../PurpleText'
-import GeneralError from '../../GeneralError'
-
-import { setDeleteModalInfo } from '../../../redux/modals/actions'
-import { deleteCard } from '../../../utils/walletUtils'
-import { saveCards } from '../../../redux/trade/actions'
+import DeleteCard from '../../../assets/images/Wallet/Delete_Card.svg'
 import colors from '../../../constants/colors'
+import { setDeleteModalInfo } from '../../../redux/modals/actions'
+import { saveCards } from '../../../redux/trade/actions'
 import { deleteTemplatesAction } from '../../../redux/wallet/actions'
 import { errorHappenedHere } from '../../../utils/appUtils'
-import DeleteCard from '../../../assets/images/Wallet/Delete_Card.svg'
+import { deleteCard } from '../../../utils/walletUtils'
+import AppButton from '../../AppButton'
+import AppModal from '../../AppModal'
+import AppText from '../../AppText'
+import GeneralError from '../../GeneralError'
+import PurpleText from '../../PurpleText'
 
 export default function DeleteModal({ type }) {
 	const dispatch = useDispatch()
