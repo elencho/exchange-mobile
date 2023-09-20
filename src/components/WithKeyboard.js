@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useKeyboard } from '@react-native-community/hooks';
 import { setShouldRefreshOnScroll } from '../redux/wallet/actions';
-import { IS_IOS } from '../constants/system';
+import { IS_ANDROID, IS_IOS } from '../constants/system';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function WithKeyboard({
@@ -33,7 +33,11 @@ export default function WithKeyboard({
       showsVerticalScrollIndicator={false}
       contentContainerStyle={[{ flexGrow: 1 }, contentContainerStyle]}
       onScrollEndDrag={onScrollEndDrag}
-      style={visible && modal ? { marginBottom: height } : { marginBottom: 0 }}
+      style={
+        visible && modal && IS_ANDROID
+          ? { marginBottom: height }
+          : { marginBottom: 0 }
+      }
     >
       {children}
     </KeyboardAwareScrollView>
