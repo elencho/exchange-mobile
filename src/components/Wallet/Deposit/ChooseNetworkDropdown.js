@@ -65,14 +65,19 @@ export default function ChooseNetworkDropdown({
     <AppText medium style={[styles.dropdownText, dropdownText]}>
       {networkName()}
       {'  '}
-      <AppText style={styles.secondary}>
+      <AppText
+        style={[
+          styles.secondary,
+          disabled && { color: 'rgba(105, 111, 142, 0.4)' },
+        ]}
+      >
         ({network === 'MAINNET' ? code : network})
       </AppText>
     </AppText>
   );
 
   const dropdownText = {
-    color: error && !network ? '#F45E8C' : colors.PRIMARY_TEXT,
+    color: disabled ? colors.TEXT_DISABLED : colors.PRIMARY_TEXT,
   };
 
   const renderIcon = (network) => {
@@ -96,6 +101,7 @@ export default function ChooseNetworkDropdown({
               notClearable
               label="Choose Network"
               withLabel
+              disabled={disabled}
               style={[styles.dropdown, style]}
               icon={renderIcon(network)}
               handlePress={handleDropdown}
@@ -103,7 +109,7 @@ export default function ChooseNetworkDropdown({
               selectedText={network && <NetworkWithTicker />}
             />
           ) : (
-            <View style={styles.view}>
+            <View style={styles.singleMethod}>
               <NetworkWithTicker />
             </View>
           )}
@@ -118,8 +124,9 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 12,
     gap: 6,
+    color: colors.PRIMARY_TEXT,
   },
-  view: {
+  singleMethod: {
     height: 45,
     flexDirection: 'row',
     alignItems: 'center',

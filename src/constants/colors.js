@@ -10,4 +10,5 @@ export default {
   BORDER: '#42475D',
   BUTTON_DISABLED: '#292943',
   ERROR_TEXT: '#F45E8C',
+  TEXT_DISABLED: 'rgba(105, 111, 142, 0.4)',
 };

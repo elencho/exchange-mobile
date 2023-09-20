@@ -36,7 +36,11 @@ const AppDropdown = ({
             medium
             body
             noTranslate={noTranslate}
-            style={[styles.selectedText, error && { color: colors.ERROR_TEXT }]}
+            style={[
+              styles.selectedText,
+              error && { color: colors.ERROR_TEXT },
+              disabled && { color: colors.TEXT_DISABLED },
+            ]}
             numberOfLines={1}
           >
             {selectedText}
@@ -53,7 +57,7 @@ const AppDropdown = ({
           style={[
             styles.label,
             error && { color: colors.ERROR_TEXT },
-            disabled && { color: 'rgba(105, 111, 142, 0.4)' },
+            disabled && { color: colors.TEXT_DISABLED },
           ]}
         >
           {label}
