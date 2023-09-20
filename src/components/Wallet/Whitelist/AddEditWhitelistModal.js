@@ -113,10 +113,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
     opacity: add ? 1 : 0.5,
     borderColor: error && !currentWhitelistObj?.tag && '#F45E8C',
   };
-  const addressStyle = {
-    opacity: add ? 1 : 0.5,
-    borderColor: error && !currentWhitelistObj?.address && '#F45E8C',
-  };
+
   const nameStyle = {
     borderColor: error && !currentWhitelistObj?.name && '#F45E8C',
     // marginTop: 32,
@@ -158,7 +155,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
           error={error && nameError}
         />
         <AppInput
-          style={[styles.input, addressStyle]}
+          style={styles.input}
           onChangeText={(address) =>
             dispatch(setNewWhitelist({ ...newWhitelist, address }))
           }
@@ -167,6 +164,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
           label="Destination Address"
           editable={add ? true : false}
           focusable={add ? true : false}
+          disabled={!!edit}
           error={error && addressError}
         />
         {tag() && (
