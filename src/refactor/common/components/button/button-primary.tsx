@@ -31,12 +31,14 @@ export function PrimaryButton({
 			disabled={disabled}
 			style={[
 				styles.button,
-				style,
 				{
 					backgroundColor: disabled
 						? theme.color.buttonDisabled
-						: backgroundColor,
+						: backgroundColor
+						? backgroundColor
+						: theme.color.brandPrimary,
 				},
+				style,
 			]}
 			onPress={loading ? null : onPress}>
 			{leftComponent}

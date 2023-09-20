@@ -1,8 +1,8 @@
-import { memo } from 'react'
+import { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Text, TextProps, TextStyle } from 'react-native'
 import { FontTheme } from '@theme/fonts'
 import { useTheme } from '@theme/index'
-import useTranslate from '@app/refactor/common/components/text/use-translate'
 
 type Variant = 's' | 'm' | 'l' | 'title' | 'headline'
 
@@ -12,17 +12,22 @@ type Props = TextProps & {
 
 const AppText: React.FC<Props> = (props) => {
 	const { variant, children, onPress, style } = props
-	const text = useTranslate(children)
-
 	const { theme } = useTheme()
+
+	const translate = (textNode: ReactNode) => {
+		const { t } = useTranslation()
+		if (typeof textNode === 'string') return t(textNode)
+		return textNode
+	}
+	const text = translate(children)
 
 	return (
 		<>
 			{text !== '' && (
 				<Text
+					{...props}
 					accessibilityRole={onPress ? 'button' : 'text'}
-					style={[textStyle(variant, theme.font), style]}
-					{...props}>
+					style={[textStyle(variant, theme.font), style]}>
 					{text}
 				</Text>
 			)}

@@ -3,7 +3,6 @@ import { registerRootComponent } from 'expo'
 import { Linking } from 'react-native'
 import 'react-native-gesture-handler'
 import 'react-native-reanimated'
-
 import App from './App'
 
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {

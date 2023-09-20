@@ -45,27 +45,31 @@ export default function Welcome({ navigation }: Props) {
 				resizeMode="cover"
 				source={require('@assets/images/WelcomeBackground.png')}>
 				<View style={styles.container}>
-					<Logo />
-					<AppText variant="headline">Welcome to Cryptal</AppText>
+					<Logo style={styles.logo} />
+					<AppText variant="headline" style={styles.primary}>
+						Welcome to Cryptal
+					</AppText>
 					<AppText variant="l" style={styles.subtext}>
 						Secure and Simple · Your Gateway to the Global Crypto Universe
 					</AppText>
-					<GeneralError
-						style={styles.error}
-						show={errorHappenedHere('Welcome')}
-					/>
-					<AppButton
-						variant="primary"
-						text="Login"
-						onPress={startLogin}
-						style={styles.button}
-					/>
-					<AppButton
-						variant="primary"
-						text="Registration"
-						onPress={startRegistration}
-						style={{ fontSize: 16 }}
-					/>
+					<View style={styles.paddingHorizontal}>
+						<GeneralError
+							style={styles.error}
+							show={errorHappenedHere('Welcome')}
+						/>
+						<AppButton
+							variant="primary"
+							text="Login"
+							onPress={startLogin}
+							style={styles.button}
+						/>
+						<AppButton
+							variant="text"
+							text="Registration"
+							onPress={startRegistration}
+							style={{ fontSize: 16 }}
+						/>
+					</View>
 				</View>
 				<LanguageSwitcher />
 			</ImageBackground>
@@ -82,9 +86,7 @@ const _style = (theme: Theme) =>
 		},
 		container: {
 			flex: 1,
-			alignItems: 'center',
 			justifyContent: 'center',
-			paddingHorizontal: '12%',
 		},
 		error: {
 			marginTop: 20,
@@ -98,12 +100,12 @@ const _style = (theme: Theme) =>
 		primary: {
 			color: theme.color.textPrimary,
 			marginTop: 30,
-			marginBottom: 12,
+			marginBottom: 11,
 			textAlign: 'center',
+			width: '100%',
 		},
 		subtext: {
 			color: theme.color.textSecondary,
-			marginTop: 12,
 			textAlign: 'center',
 		},
 		secondary: {
@@ -112,5 +114,13 @@ const _style = (theme: Theme) =>
 		},
 		imageBackground: {
 			flex: 1,
+		},
+		paddingHorizontal: {
+			paddingHorizontal: '12%',
+			alignItems: 'center',
+			justifyContent: 'center',
+		},
+		logo: {
+			alignSelf: 'center',
 		},
 	})
