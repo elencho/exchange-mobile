@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { ImageBackground, Linking, StyleSheet, Text, View } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
-import SplashScreen from 'react-native-splash-screen'
 import Gear from '../assets/images/Gear'
 import Logo from '../assets/images/Logo'
 import AppButton from '../components/AppButton'
@@ -13,10 +12,6 @@ import { checkReadiness } from '../utils/appUtils'
 
 export default function Maintanance({ navigation }) {
 	const [loading, setLoading] = useState(false)
-
-	useEffect(() => {
-		SplashScreen.hide()
-	}, [])
 
 	const goToSupport = () =>
 		Linking.openURL('https://support.cryptal.com/hc/en-us/requests/new')

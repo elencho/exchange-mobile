@@ -10,7 +10,6 @@ import { t } from 'i18next'
 import React, { useState, memo, useCallback } from 'react'
 import { Trans } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
-import SplashScreen from 'react-native-splash-screen'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import FaceID from '../assets/images/Face_ID-pruple'
 import TouchID from '../assets/images/TouchID-Purple'
@@ -45,7 +44,6 @@ const Resume = ({ navigation, route }) => {
 		useCallback(() => {
 			setAuthVisible()
 			dispatch(toggleWebViewVisible(false))
-			SplashScreen.hide()
 			dispatch(fetchUserInfo())
 			handleBiometricIcon()
 			startAuth(fromSplash)

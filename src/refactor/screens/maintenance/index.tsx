@@ -4,7 +4,6 @@ import AppText from 'components/AppText'
 import React, { useState, useEffect } from 'react'
 import { ImageBackground, Linking, StyleSheet, View } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
-import SplashScreen from 'react-native-splash-screen'
 import { Button } from 'refactor/common/components/button'
 import Text from 'refactor/common/components/text'
 import { Images } from 'refactor/common/constants'
@@ -16,10 +15,6 @@ import { checkReadiness } from 'utils/appUtils'
 export default function Maintanance(navigation: any) {
 	const { styles } = useTheme(_styles)
 	const [loading, setLoading] = useState(false)
-
-	useEffect(() => {
-		SplashScreen.hide()
-	}, [])
 
 	const goToSupport = () =>
 		Linking.openURL('https://support.cryptal.com/hc/en-us/requests/new')

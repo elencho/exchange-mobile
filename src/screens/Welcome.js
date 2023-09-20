@@ -13,7 +13,6 @@ import {
 } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
-import SplashScreen from 'react-native-splash-screen'
 import VersionCheck from 'react-native-version-check'
 import { useDispatch } from 'react-redux'
 import Logo from '../assets/images/LogoWhite.svg'
@@ -73,8 +72,6 @@ export default function Welcome({ navigation }) {
 
 		await changeNavigationBarColor(colors.PRIMARY_BACKGROUND, true)
 		await fetchData()
-
-		SplashScreen.hide()
 	}
 
 	const getBiometricEnabled = async (email, updateNeeded, workingVersion) => {

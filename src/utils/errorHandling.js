@@ -1,5 +1,4 @@
 import * as SecureStore from 'expo-secure-store'
-import SplashScreen from 'react-native-splash-screen'
 import { navigationRef } from '../navigation'
 import { setAppToast } from '../redux/modals/actions'
 import store from '../redux/store'

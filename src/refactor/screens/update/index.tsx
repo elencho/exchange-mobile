@@ -4,7 +4,6 @@ import { APP_ID, packageName } from 'constants/system'
 import React, { useEffect } from 'react'
 import { Linking, StyleSheet, ViewStyle } from 'react-native'
 import FastImage from 'react-native-fast-image'
-import SplashScreen from 'react-native-splash-screen'
 import VersionCheck from 'react-native-version-check'
 import { Button } from 'refactor/common/components/button'
 import Text from 'refactor/common/components/text'
@@ -14,10 +13,6 @@ import { useTheme } from 'refactor/setup/theme/index.context'
 
 export default function UpdateAvailable() {
 	const { styles } = useTheme(_styles)
-
-	useEffect(() => {
-		SplashScreen.hide()
-	}, [])
 
 	const update = async () => {
 		const storeUrl = await VersionCheck.getStoreUrl({

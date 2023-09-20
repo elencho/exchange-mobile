@@ -78,10 +78,6 @@ PODS:
     - ExpoModulesCore
   - EXSharing (11.2.2):
     - ExpoModulesCore
-  - EXSplashScreen (0.22.0):
-    - ExpoModulesCore
-    - RCT-Folly (= 2021.07.22.00)
-    - React-Core
   - EXStructuredHeaders (3.3.0)
   - EXUpdates (0.18.13):
     - ASN1Decoder (~> 1.8)
@@ -584,8 +580,6 @@ PODS:
     - React-Core
   - react-native-safe-area-context (4.7.2):
     - React-Core
-  - react-native-splash-screen (3.3.0):
-    - React-Core
   - react-native-version-check (3.4.7):
     - React-Core
   - react-native-webview (12.4.0):
@@ -779,7 +773,6 @@ DEPENDENCIES:
   - ExpoWebBrowser (from `../node_modules/expo-web-browser/ios`)
   - EXSecureStore (from `../node_modules/expo-secure-store/ios`)
   - EXSharing (from `../node_modules/expo-sharing/ios`)
-  - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - EXStructuredHeaders (from `../node_modules/expo-structured-headers/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
   - EXUpdatesInterface (from `../node_modules/expo-updates-interface/ios`)
@@ -839,7 +832,6 @@ DEPENDENCIES:
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-pkce-challenge (from `../node_modules/react-native-pkce-challenge`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
-  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-version-check (from `../node_modules/react-native-version-check`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -969,8 +961,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-secure-store/ios"
   EXSharing:
     :path: "../node_modules/expo-sharing/ios"
-  EXSplashScreen:
-    :path: "../node_modules/expo-splash-screen/ios"
   EXStructuredHeaders:
     :path: "../node_modules/expo-structured-headers/ios"
   EXUpdates:
@@ -1031,8 +1021,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pkce-challenge"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
-  react-native-splash-screen:
-    :path: "../node_modules/react-native-splash-screen"
   react-native-version-check:
     :path: "../node_modules/react-native-version-check"
   react-native-webview:
@@ -1124,7 +1112,6 @@ SPEC CHECKSUMS:
   ExpoWebBrowser: 033d34c478d9986da2f1679729041423837626e0
   EXSecureStore: e8923258361cc406d0401af380f12bd05b2b720f
   EXSharing: 09839ace249f61bfa13c50c6a28256c31d260355
-  EXSplashScreen: 5ed09ea490155ef603d007d9f194c9e04a4b7980
   EXStructuredHeaders: 324cc3130571d2696357fafd8be7fd9a0b5fdf6e
   EXUpdates: 84247b49ea4dde3c6ce5b33c8fc9ac5a2757b73f
   EXUpdatesInterface: 82ed48d417cdcd376c12ca1c2ce390d35500bed6
@@ -1183,7 +1170,6 @@ SPEC CHECKSUMS:
   react-native-pager-view: 54bed894cecebe28cede54c01038d9d1e122de43
   react-native-pkce-challenge: 160cda7bad5678866dc8d6106a4be3edca9411a0
   react-native-safe-area-context: 7aa8e6d9d0f3100a820efb1a98af68aa747f9284
-  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-version-check: 6cd36aad4e30b8e3216747e3b4ddeb09e0647af8
   react-native-webview: 65f1143983cfeaedf02fd25b2621d3f4a37075de
   React-perflogger: 0bb0522a12e058f6eb69d888bc16f40c16c4b907
