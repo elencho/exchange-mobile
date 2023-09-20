@@ -86,7 +86,7 @@ function TransactionFilterBottom({ navigation, isInstantTrade }) {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <Pressable style={styles.button} onPress={showResults}>
         <AppText medium style={styles.white}>
           Show Result
@@ -118,7 +118,6 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     alignItems: 'center',
   },
-  container: {},
   download: {
     flexDirection: 'row',
     justifyContent: 'center',
