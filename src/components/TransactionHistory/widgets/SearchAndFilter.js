@@ -81,7 +81,7 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
       ) : (
         <AppInput
           style={styles.searchInput}
-          label="Search by TXID"
+          placeholder="Search by TXID"
           right={<Search />}
           value={searchValue}
           isSearch

@@ -105,9 +105,9 @@ export default function ChooseNetworkModal() {
               {n?.displayName}
             </AppText>
 
-            {/* <AppText subtext style={styles.secondary}>
-              {n?.provider}
-            </AppText> */}
+            <AppText body style={styles.secondary}>
+              {`(${n?.provider})`}
+            </AppText>
           </View>
         </Pressable>
       ))}
@@ -128,11 +128,14 @@ export default function ChooseNetworkModal() {
 const styles = StyleSheet.create({
   name: {
     justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 6,
+    flexDirection: 'row',
     marginLeft: 10,
   },
   network: {
     flexDirection: 'row',
-    height: 62,
+    height: 50,
     alignItems: 'center',
     marginHorizontal: -5,
     paddingHorizontal: 15,

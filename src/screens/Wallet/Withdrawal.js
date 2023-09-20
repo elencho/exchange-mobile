@@ -246,7 +246,11 @@ function Withdrawal({ refreshControl }) {
 
           {!hasRestriction &&
             hasMethod && ( // Button
-              <AppButton text="Withdrawal" onPress={withdraw} />
+              <AppButton
+                style={styles.button}
+                text="Withdrawal"
+                onPress={withdraw}
+              />
             )}
         </WithKeyboard>
       )}
@@ -261,4 +265,5 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 18,
   },
+  // button: { marginBottom: 46 },
 });

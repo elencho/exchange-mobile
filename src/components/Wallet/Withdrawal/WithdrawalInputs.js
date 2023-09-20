@@ -22,6 +22,7 @@ import {
 } from '../../../redux/wallet/actions';
 import { handleAmountInput } from '../../../utils/formUtils';
 import { validateAmount } from '../../../utils/appUtils';
+import AppDropdown from '../../AppDropdown';
 
 export default function WithdrawalInputs({
   isFiat,

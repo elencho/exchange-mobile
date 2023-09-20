@@ -37,6 +37,7 @@ const AppDropdown = ({
             body
             noTranslate={noTranslate}
             style={[styles.selectedText, error && { color: colors.ERROR_TEXT }]}
+            numberOfLines={1}
           >
             {selectedText}
           </AppText>
@@ -102,6 +103,8 @@ const styles = StyleSheet.create({
   },
   selectedText: {
     color: colors.PRIMARY_TEXT,
+    flex: 0,
+    marginRight: 6,
   },
   close: {
     width: 36,

@@ -28,20 +28,12 @@ export default function ChooseNetworkDropdown({
     transactions: { code },
     modals: { addWhitelistModalVisble },
   } = state;
-  const uri = `${ICONS_URL_PNG}/${network}.png`;
+  // const uri = `${ICONS_URL_PNG}/${network}.png`;
+  // const fiat = cur?.type === 'FIAT';
 
   const cur = currentBalanceObj;
 
   const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
-  const fiat = cur?.type === 'FIAT';
-
-  const [icon, setIcon] = useState(null);
-
-  useEffect(() => {
-    cur?.depositMethods?.WALLET?.forEach((m) => {
-      if (m?.provider === network) setIcon(m.iconName);
-    });
-  }, [network, code]);
 
   useEffect(() => {
     if (addWhitelistModalVisble && hasMultipleNetworks) {
@@ -59,18 +51,26 @@ export default function ChooseNetworkDropdown({
   };
 
   const networkName = () => {
-    if (network === 'ERC20') return 'Ethereum Network';
-    if (network === 'BEP20') return 'Binance Smart Chain';
-    if (network === 'MAINNET') {
-      return cur[m].WALLET[0].displayName;
-    }
-    return network;
+    const currentNetwork = currentBalanceObj?.withdrawalMethods?.WALLET?.filter(
+      (item) => item.provider === network
+    );
+    return (
+      <AppText medium body>
+        {currentNetwork?.[0].displayName}
+      </AppText>
+    );
   };
 
-  const dropdown = {
-    opacity: disabled ? 0.5 : 1,
-    borderColor: error && !network ? '#F45E8C' : '#42475D',
-  };
+  const NetworkWithTicker = () => (
+    <AppText medium style={[styles.dropdownText, dropdownText]}>
+      {networkName()}
+      {'  '}
+      <AppText style={styles.secondary}>
+        ({network === 'MAINNET' ? code : network})
+      </AppText>
+    </AppText>
+  );
+
   const dropdownText = {
     color: error && !network ? '#F45E8C' : colors.PRIMARY_TEXT,
   };
@@ -100,22 +100,11 @@ export default function ChooseNetworkDropdown({
               icon={renderIcon(network)}
               handlePress={handleDropdown}
               error={error && !network}
-              selectedText={
-                network && <AppText medium>{networkName()}</AppText>
-              }
+              selectedText={network && <NetworkWithTicker />}
             />
           ) : (
             <View style={styles.view}>
-              {icon && (
-                <Image
-                  source={{ uri }}
-                  style={[styles.image, styles.iconDimensions]}
-                />
-              )}
-              <AppText medium style={[styles.dropdownText, dropdownText]}>
-                {networkName()}{' '}
-                <AppText style={styles.secondary}>({network})</AppText>
-              </AppText>
+              <NetworkWithTicker />
             </View>
           )}
         </>
@@ -128,6 +117,7 @@ const styles = StyleSheet.create({
   dropdownText: {
     flex: 1,
     marginRight: 12,
+    gap: 6,
   },
   view: {
     height: 45,
@@ -152,6 +142,8 @@ const styles = StyleSheet.create({
   secondary: {
     color: colors.SECONDARY_TEXT,
   },
+  ticker: { marginLeft: 6, color: colors.SECONDARY_TEXT },
+
   subtext: {
     transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
     position: 'absolute',

@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../constants/colors';
 import AppText from '../AppText';
 import Headline from './Headline';
+import { fetchUserInfo } from '../../redux/profile/actions';
 
 function TopRow({ clear, headlineLogo, style }) {
   const navigation = useNavigation();
   const route = useRoute();
+  const dispatch = useDispatch();
 
   const userInfo = useSelector((state) => state.profile.userInfo);
   const { firstName, lastName } = userInfo;
+
+  useEffect(() => {
+    if (!firstName) dispatch(fetchUserInfo());
+  }, []);
 
   const initials = () => {
     if (firstName && lastName) {
