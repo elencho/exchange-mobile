@@ -38,17 +38,26 @@ export default function TransferMethodDropdown() {
   };
 
   return (
-    <AppDropdown
-      style={[styles.dropdown, dropdownStyle]}
-      notClearable
-      label={isOneMethod ? null : 'Choose provider'}
-      withLabel={!isOneMethod}
-      disabled={isOneMethod}
-      icon={renderIcon(network)}
-      selectedText={network}
-      handlePress={show}
-      hideArrow={isOneMethod}
-    />
+    <>
+      {!isOneMethod ? (
+        <AppDropdown
+          style={[styles.dropdown, dropdownStyle]}
+          notClearable
+          label={isOneMethod ? null : 'Choose provider'}
+          withLabel={!isOneMethod}
+          // disabled={isOneMethod}
+          icon={renderIcon(network)}
+          selectedText={network}
+          handlePress={show}
+          hideArrow={isOneMethod}
+        />
+      ) : (
+        <View style={styles.singleMethod}>
+          {renderIcon(network)}
+          <AppText style={styles.singleText}>{network}</AppText>
+        </View>
+      )}
+    </>
   );
 }
 
@@ -63,5 +72,17 @@ const styles = StyleSheet.create({
   },
   image: {
     marginLeft: 5,
+  },
+  singleMethod: {
+    height: 45,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20,
+    backgroundColor: 'rgba(149, 164, 247, 0.04)',
+    paddingHorizontal: 22,
+  },
+  singleText: {
+    color: colors.PRIMARY_TEXT,
+    marginLeft: 8,
   },
 });

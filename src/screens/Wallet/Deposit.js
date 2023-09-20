@@ -176,7 +176,7 @@ export default function Deposit({ refreshControl }) {
 
         {!hasRestriction && hasMethod && (
           <>
-            {!isFiat || code === 'EUR' ? (
+            {!isFiat ? (
               <>
                 <ChooseNetworkDropdown />
                 {cryptoAddress?.address &&
