@@ -86,6 +86,7 @@ function WithdrawalAddress({ error, right }) {
               value={w.address}
               error={error && !w?.address}
               disabled
+              style={{ marginTop: -8 }}
             />
             <AppText subtext style={styles.addWhitelist}>
               {t('Do Not Have Address')}{' '}

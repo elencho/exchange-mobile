@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     height: 45,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 12,
     paddingHorizontal: 15,
     marginTop: 28,
   },

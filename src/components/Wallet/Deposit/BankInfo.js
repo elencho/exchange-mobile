@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
   },
   dropdown: {
-    marginTop: 18,
+    marginTop: 12,
     marginBottom: 10,
   },
   image: {
