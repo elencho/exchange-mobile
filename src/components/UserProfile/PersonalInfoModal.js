@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
   },
   dropdown: {
-    marginBottom: 20,
+    marginBottom: 12,
     marginTop: 10,
   },
   error: {
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   inputContainer: {
-    marginBottom: 20,
+    marginBottom: 12,
   },
   row: {
     flexDirection: 'row',

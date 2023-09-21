@@ -159,7 +159,7 @@ export default function WithdrawalInfo({ error }) {
           />
 
           <AppInput
-            style={styles.inputContainer}
+            style={styles.marginTop}
             onChangeText={(t) => handleUserInfo(t, 'city')}
             label="City"
             value={userInfo.city}
@@ -169,7 +169,7 @@ export default function WithdrawalInfo({ error }) {
           <AppInput
             label="Address"
             onChangeText={(t) => handleUserInfo(t, 'address')}
-            style={styles.address}
+            style={[styles.address, styles.marginTop]}
             value={userInfo.address}
             error={error && !userInfo?.address?.trim()}
           />
@@ -209,7 +209,7 @@ export default function WithdrawalInfo({ error }) {
       {showIban() ? (
         <AppInput
           label="Account Number / IBAN"
-          style={styles.IBAN}
+          style={styles.marginTop}
           value={iban}
           onChangeText={handleIban}
           error={error && !iban?.trim()}
@@ -255,12 +255,6 @@ const styles = StyleSheet.create({
   dropdown: {
     marginTop: 22,
   },
-  IBAN: {
-    marginTop: 22,
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -269,10 +263,10 @@ const styles = StyleSheet.create({
     width: '47%',
   },
   marginTop: {
-    marginTop: 22,
+    marginTop: 12,
   },
   name: {
-    marginBottom: 30,
+    marginBottom: 22,
     marginTop: 18,
   },
   address: {
@@ -282,9 +276,7 @@ const styles = StyleSheet.create({
     color: '#B7BFDB',
     marginLeft: 3,
   },
-  languageSelector: {
-    marginBottom: 20,
-  },
+
   countryInfo: {
     flexDirection: 'row',
   },

@@ -109,11 +109,6 @@ export default function AddEditWhitelistModal({ add, edit }) {
     if (edit) dispatch(chooseWhitelist({ ...currentWhitelistObj, name }));
   };
 
-  const tagStyle = {
-    opacity: add ? 1 : 0.5,
-    borderColor: error && !currentWhitelistObj?.tag && '#F45E8C',
-  };
-
   const nameStyle = {
     borderColor: error && !currentWhitelistObj?.name && '#F45E8C',
     // marginTop: 32,
@@ -128,7 +123,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
     <WithKeyboard padding flexGrow modal>
       <TouchableOpacity
         activeOpacity={0.99}
-        style={{ flex: 1, paddingTop: 22 }}
+        style={{ flex: 1, paddingTop: 16 }}
       >
         <GeneralError
           style={styles.error}
@@ -169,7 +164,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
         />
         {tag() && (
           <AppInput
-            style={[styles.input, tagStyle]}
+            style={styles.input}
             onChangeText={(tag) =>
               dispatch(setNewWhitelist({ ...newWhitelist, tag }))
             }
@@ -177,6 +172,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
             label="Address Tag"
             editable={add ? true : false}
             focusable={add ? true : false}
+            disabled={!!edit}
             error={error && tagError}
           />
         )}
@@ -213,7 +209,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
 const styles = StyleSheet.create({
   error: {
-    marginBottom: 10,
+    marginBottom: 28,
   },
   input: {
     marginBottom: 16,

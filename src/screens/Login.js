@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: '8%',
   },
   email: {
-    marginBottom: 22,
+    marginBottom: 12,
     width: '100%',
   },
   height42: {

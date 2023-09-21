@@ -167,7 +167,7 @@ export default function FiatBlock() {
 
 const styles = StyleSheet.create({
   block: {
-    paddingVertical: 22,
+    paddingBottom: 22,
     marginBottom: 22,
   },
   button: {

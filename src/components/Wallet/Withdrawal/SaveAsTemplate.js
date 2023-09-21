@@ -49,8 +49,6 @@ export default function SaveAsTemplate({ error }) {
 
 const styles = StyleSheet.create({
   image: {
-    width: 40,
-    height: 40,
     justifyContent: 'center',
     alignItems: 'center',
   },
