@@ -57,7 +57,7 @@ const AppDropdown = ({
           style={[
             styles.label,
             error && { color: colors.ERROR_TEXT },
-            disabled && { color: colors.TEXT_DISABLED },
+            disabled && { color: colors.TEXT_DISABLED, opacity: 0.6 },
           ]}
         >
           {label}

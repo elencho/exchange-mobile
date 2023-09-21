@@ -125,7 +125,7 @@ const AppInput = ({
                       : error
                       ? colors.ERROR_TEXT
                       : colors.SECONDARY_TEXT,
-                  opacity: disabled ? 0.5 : 1,
+                  opacity: disabled ? 0.6 : 1,
                 }}
               >
                 {label}
