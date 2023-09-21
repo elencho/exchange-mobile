@@ -108,7 +108,7 @@ export default function EmailVerification({ route }) {
 
   return (
     <Background>
-      <WithKeyboard flexGrow padding modal>
+      <WithKeyboard flexGrow padding>
         <View style={styles.container}>
           <View style={styles.top}>
             <CloseModalIcon onPress={hide} />
