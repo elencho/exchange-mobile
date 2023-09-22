@@ -36,6 +36,7 @@ export const actionTypes = {
   REGISTRATION_FORM_ACTION: 'REGISTRATION_FORM_ACTION',
   USERNAME_AND_PASSWORD_ACTION: 'USERNAME_AND_PASSWORD_ACTION',
   OTP_FOR_LOGIN_ACTION: 'OTP_FOR_LOGIN_ACTION',
+  SAVE_FORGOT_PASS_INFO: 'SAVE_FORGOT_PASS_INFO',
 
   FETCH_COUNTRIES_SAGA: 'FETCH_COUNTRIES_SAGA',
   FETCH_USER_INFO_SAGA: 'FETCH_USER_INFO_SAGA',
@@ -204,6 +205,11 @@ export const updatePhoneNumber = (
   phoneNumber,
   phoneCountry,
   setUserInfoVariable,
+});
+
+export const saveForgotPassInfo = (forgotPassInfo) => ({
+  type: actionTypes.SAVE_FORGOT_PASS_INFO,
+  forgotPassInfo,
 });
 
 // 2FA SAGAS

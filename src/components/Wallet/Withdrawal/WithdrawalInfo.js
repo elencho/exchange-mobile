@@ -156,6 +156,7 @@ export default function WithdrawalInfo({ error }) {
             label="Recipient country"
             withLabel
             notClearable
+            error={error && !userInfo?.country}
           />
 
           <AppInput

@@ -123,7 +123,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
     <WithKeyboard padding flexGrow modal>
       <TouchableOpacity
         activeOpacity={0.99}
-        style={{ flex: 1, paddingTop: 16 }}
+        style={{ flex: 1, paddingTop: 14 }}
       >
         <GeneralError
           style={styles.error}
@@ -209,7 +209,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
 const styles = StyleSheet.create({
   error: {
-    marginBottom: 28,
+    marginBottom: 10,
   },
   input: {
     marginBottom: 16,

@@ -149,7 +149,9 @@ export default function TransactionFilter({ navigation, route }) {
   return (
     <Background>
       <View style={styles.closeContainer}>
-        <Headline title="Transaction Filter" />
+        <Headline
+          title={isInstantTrade ? 'Convert Filter' : 'Transaction Filter'}
+        />
         <TouchableOpacity
           onPress={close}
           hitSlop={50}

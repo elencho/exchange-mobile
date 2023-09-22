@@ -135,7 +135,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         userAndPassInfo,
       };
-    case 'SAVE_FORGOT_PASS_INFO':
+    case actionTypes.SAVE_FORGOT_PASS_INFO:
       return {
         ...state,
         forgotPassInfo,
