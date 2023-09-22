@@ -51,7 +51,7 @@ export default function ChooseNetworkDropdown({
   };
 
   const networkName = () => {
-    const currentNetwork = currentBalanceObj?.withdrawalMethods?.WALLET?.filter(
+    const currentNetwork = currentBalanceObj?.[m]?.WALLET?.filter(
       (item) => item.provider === network
     );
     return (

@@ -29,7 +29,13 @@ function Withdrawal({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state, shallowEqual);
   const {
-    trade: { currentBalanceObj, card, depositProvider, cardsLoading },
+    trade: {
+      currentBalanceObj,
+      card,
+      depositProvider,
+      cardsLoading,
+      balanceLoading,
+    },
     transactions: { code, loading },
     profile: { userInfo },
     wallet: {
@@ -186,7 +192,7 @@ function Withdrawal({ refreshControl }) {
   };
   return (
     <>
-      {cardsLoading || loading || whitelistLoading ? (
+      {cardsLoading || loading || whitelistLoading || balanceLoading ? (
         <MaterialIndicator color="#6582FD" animationDuration={3000} />
       ) : (
         <WithKeyboard flexGrow padding refreshControl={refreshControl}>
