@@ -25,6 +25,7 @@ import {
   setIsProfileUpdating,
   setCredentials,
   setRegistrationInputs,
+  saveForgotPassInfo,
 } from './actions';
 import { getUserData, registrationParams } from './selectors';
 import {
@@ -79,6 +80,8 @@ function* startLoginSaga(action) {
     const loginStartInfo = yield call(loginStart, pkceInfo?.codeChallenge);
 
     yield put(saveLoginStartInfo(loginStartInfo));
+    yield put(saveForgotPassInfo({}));
+
     if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
       navigation.navigate('Login');
     }
@@ -151,6 +154,7 @@ function* verifyAccountSaga(action) {
     verificationInfo?.callbackUrl,
     otp
   );
+
   if (verified?.code) {
     yield put({
       type: 'CODE_TO_TOKEN_SAGA',
@@ -159,6 +163,9 @@ function* verifyAccountSaga(action) {
       fromRegistration: true,
       navigation,
     });
+  }
+  if (verified?.execution === 'UPDATE_PASSWORD') {
+    navigation.navigate('SetNewPassword');
   } else {
     yield put(saveVerificationInfo(verified));
   }
@@ -279,6 +286,10 @@ function* otpForLoginSaga(action) {
     if (loginData?.execution === 'UPDATE_PASSWORD') {
       navigation.navigate('SetNewPassword');
     }
+    if (userAndPassInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
+      navigation.push('EmailVerification', { fromScreen: 'login' });
+      yield put(saveVerificationInfo(userAndPassInfo));
+    }
   }
   yield delay(2000);
   yield put(toggleUserInfoLoading(false));
@@ -331,6 +342,13 @@ function* forgotPassEnterCodeSaga(action) {
     yield put(saveUserAndPassInfo(data));
     yield put({ type: 'TOGGLE_FORGOT_PASS_MODE', forgotPassMode: true });
     navigation.replace('Login2Fa', { type: 'forgotPassword' });
+  }
+  if (data?.execution === 'UPDATE_PASSWORD') {
+    navigation.navigate('SetNewPassword');
+  }
+  if (data?.execution === 'EMAIL_VERIFICATION_OTP') {
+    navigation.push('EmailVerification', { fromScreen: 'login' });
+    yield put(saveVerificationInfo(data));
   }
   yield put({
     type: 'SAVE_FORGOT_PASS_INFO',

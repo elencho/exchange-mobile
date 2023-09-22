@@ -163,6 +163,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   mb22: {
-    marginBottom: 22,
+    marginBottom: 12,
   },
 });
