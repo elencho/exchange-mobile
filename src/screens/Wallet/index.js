@@ -35,15 +35,12 @@ export default function Wallet() {
 
   useFocusEffect(
     useCallback(() => {
-      // dispatch({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: true });
       dispatch({ type: 'BALANCE_SAGA' });
-
       dispatch({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: true });
       scrollViewRef.current.scrollTo({ x: 0, y: 3, animated: true });
       hideButtonsHandler();
       const timer = setTimeout(() => {
         setShowRefreshControl(true);
-        // dispatch({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: false });
       }, 1000);
       return () => {
         onRefresh();
@@ -54,8 +51,6 @@ export default function Wallet() {
       };
     }, [])
   );
-
-  console.log('balanceLoading', balanceLoading);
 
   useEffect(() => {
     if (balances) type(value);
