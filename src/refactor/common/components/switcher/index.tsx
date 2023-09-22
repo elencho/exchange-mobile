@@ -18,6 +18,7 @@ const AppSwitcher: React.FC<ToggleSwitchProps> = (props) => {
 
 	return (
 		<ToggleSwitch
+			{...props}
 			circleColor={circleColor()}
 			onColor={onColor}
 			offColor={offColor}
@@ -25,7 +26,6 @@ const AppSwitcher: React.FC<ToggleSwitchProps> = (props) => {
 			trackOnStyle={{ width: 35, height: 20 }}
 			thumbOnStyle={{ transform: [{ translateX: 10 }] }}
 			thumbOffStyle={{ transform: [{ translateX: 0 }] }}
-			{...props}
 		/>
 	)
 }

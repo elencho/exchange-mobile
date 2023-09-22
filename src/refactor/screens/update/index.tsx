@@ -1,15 +1,12 @@
-import AppText from 'components/AppText'
-import Background from 'components/Background'
-import { APP_ID, packageName } from 'constants/system'
-import React, { useEffect } from 'react'
-import { Linking, StyleSheet, ViewStyle } from 'react-native'
+import React from 'react'
+import { Linking, StyleSheet } from 'react-native'
 import FastImage from 'react-native-fast-image'
 import VersionCheck from 'react-native-version-check'
-import { Button } from 'refactor/common/components/button'
-import Text from 'refactor/common/components/text'
-import { Theme } from 'refactor/setup/theme'
-import { COLORS_DARK } from 'refactor/setup/theme/colors'
-import { useTheme } from 'refactor/setup/theme/index.context'
+import { Theme, useTheme } from '@theme/index'
+import AppBackground from '@components/background'
+import { AppButton } from '@components/button'
+import AppText from '@components/text'
+import { packageName, APP_ID } from '@app/constants/system'
 
 export default function UpdateAvailable() {
 	const { styles } = useTheme(_styles)
@@ -25,25 +22,25 @@ export default function UpdateAvailable() {
 	}
 
 	return (
-		<Background style={styles.container}>
+		<AppBackground style={styles.container}>
 			<FastImage
 				style={{
 					height: 130,
 					width: 180,
 				}}
-				source={require('../assets/images/Update.png')}
+				source={require('@assets/images/Update.png')}
 			/>
-			<Text variant="headline" style={styles.header}>
+			<AppText variant="headline" style={styles.header}>
 				Update Available
-			</Text>
-			<Text style={styles.secondary}>Update Available descr</Text>
-			<Button
+			</AppText>
+			<AppText style={styles.secondary}>Update Available descr</AppText>
+			<AppButton
 				variant="primary"
 				text="Update"
 				onPress={update}
 				style={styles.button}
 			/>
-		</Background>
+		</AppBackground>
 	)
 }
 

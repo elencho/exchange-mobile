@@ -1,18 +1,17 @@
-import Eng from 'assets/images/English.svg'
-import Arrow from 'assets/images/SwitcherArrow.svg'
-import AppText from 'components/AppText'
 import React from 'react'
-import { Image, ImageStyle, Pressable, StyleSheet } from 'react-native'
+import { Pressable, StyleSheet, Text } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { RootStateOrAny } from 'react-redux'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLanguage } from 'redux/profile/actions'
-import Text from 'refactor/common/components/text'
-import { Images, Language } from 'refactor/common/constants'
-import useAnimation from 'refactor/screens/welcome/components/language-switcher/animation'
-import { Theme } from 'refactor/setup/theme'
-import { useTheme } from 'refactor/setup/theme/index.context'
-import { switchLanguage } from 'utils/i18n'
+import Eng from '@assets/images/English.svg'
+import Geo from '@assets/images/Georgian.svg'
+import Arrow from '@assets/images/SwitcherArrow.svg'
+import { useTheme, Theme } from '@theme/index'
+import AppText from '@components/text/index'
+import { setLanguage } from '@app/redux/profile/actions'
+import { Language } from '@app/refactor/common/constants'
+import useAnimation from '@app/refactor/screens/welcome/components/language-switcher/animation'
+import { switchLanguage } from '@app/utils/i18n'
 
 export default function LanguageSwitcher() {
 	const dispatch = useDispatch()
@@ -30,24 +29,23 @@ export default function LanguageSwitcher() {
 		switchLanguage(newLanguage)
 	}
 
-	const defaultLanguageFlag =
-		defaultLanguage === 'ka' ? (
-			<Image source={Images.geo} style={styles.flag as ImageStyle} /> // TODO
-		) : (
-			<Eng />
-		)
-	const defaultLanguageText = defaultLanguage === 'en' ? 'English' : 'ქართული'
+	const flagIcon = defaultLanguage === 'ka' ? <Geo /> : <Eng />
+	const curLanguageText = defaultLanguage === 'en' ? 'English' : 'ქართული'
 
 	return (
 		<Pressable style={styles.container} onPress={onPress}>
 			<Animated.View style={[outlineStyle, styles.row]}>
-				{defaultLanguageFlag}
-				<Text style={styles.text}>{defaultLanguageText}</Text>
+				{flagIcon}
+				<AppText variant="l" style={styles.text}>
+					{curLanguageText}
+				</AppText>
 				<Arrow />
 			</Animated.View>
 			<Animated.View style={[fillStyle, styles.row]}>
-				{defaultLanguageFlag}
-				<Text style={styles.text}>{defaultLanguageText}</Text>
+				{flagIcon}
+				<AppText variant="l" style={styles.text}>
+					{curLanguageText}
+				</AppText>
 				<Arrow />
 			</Animated.View>
 		</Pressable>
@@ -79,10 +77,6 @@ const _styles = (theme: Theme) => {
 			alignItems: 'center',
 			height: 24,
 			top: 5,
-		},
-		flag: {
-			height: 24,
-			width: 24,
 		},
 	})
 }

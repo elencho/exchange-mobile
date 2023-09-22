@@ -2,14 +2,15 @@ import {
 	NavigationContainer,
 	createNavigationContainerRef,
 	DefaultTheme,
-	useRoute,
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 import { BackHandler } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import MainScreen from '@app/navigation/MainScreen'
+import Maintenance from '@app/refactor/screens/maintenance'
 import Splash from '@app/refactor/screens/splash/index'
+import UpdateAvailable from '@app/refactor/screens/update'
 import Welcome from '@app/refactor/screens/welcome'
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
@@ -17,16 +18,13 @@ import EmailVerification from '@app/screens/EmailVerification'
 import ForgotPasswordScreen from '@app/screens/ForgotPassword'
 import LoginScreen from '@app/screens/Login'
 import Login2FaScreen from '@app/screens/Login2Fa'
-import MaintananceScreen from '@app/screens/Maintanance'
 import RegistrationScreen from '@app/screens/Registration'
 import ResetOtpInstructionsScreen from '@app/screens/ResetOtpInstructions'
 import Resume from '@app/screens/Resume'
 import SetNewPasswordScreen from '@app/screens/SetNewPassword'
 import TransactionFilter from '@app/screens/TransactionFilter'
-import UpdateAvailableScreen from '@app/screens/UpdateAvailable'
 import UserProfileScreen from '@app/screens/UserProfile'
 import BalanceScreen from '@app/screens/Wallet/Balance'
-//import Welcome from '@app/screens/Welcome'
 import useNotifications from '@app/screens/useNotifications'
 import { ScreenProps } from './types'
 
@@ -78,12 +76,12 @@ export default function AppNavigator() {
 				/>
 				<Stack.Screen
 					name="UpdateAvailable"
-					component={UpdateAvailableScreen}
+					component={UpdateAvailable}
 					options={{ animation: 'fade' }}
 				/>
 				<Stack.Screen
 					name="Maintenance"
-					component={MaintananceScreen}
+					component={Maintenance}
 					options={{ animation: 'fade' }}
 				/>
 				<Stack.Screen name="Login" component={LoginScreen} />

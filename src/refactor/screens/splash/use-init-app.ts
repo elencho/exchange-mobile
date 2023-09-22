@@ -63,7 +63,6 @@ export default function useInitApp(
 		maintenanceInProgress: boolean,
 		userHasToken: boolean
 	) => {
-		console.log('nav time')
 		if (maintenanceInProgress) {
 			navigation.navigate('Maintenance')
 		} else if (updateNeeded) {
@@ -72,7 +71,7 @@ export default function useInitApp(
 			if (userHasToken) {
 				navigation.navigate('Main')
 			} else {
-				navigation.navigate('Welcome')
+				navigation.navigate('UpdateAvailable') //TODO: Change to Welcome
 			}
 		}
 	}
@@ -94,7 +93,6 @@ export default function useInitApp(
 		const userIndex = parsedUsers?.find(
 			(u) => u?.user === user && u?.enabled === true
 		)
-		console.log(parsedUsers)
 
 		if (userIndex && timeDifference >= 30000 && !isLoggedIn) {
 			// TODO: Should not navigate after this
@@ -157,9 +155,6 @@ export default function useInitApp(
 					.then((l) => {
 						switchLanguage(l ? l : 'en')
 						dispatch(setLanguage(l ? l : 'en'))
-
-						console.log('lex done')
-
 						navigate(updateNeeded, maintenanceInProgress, userHasToken)
 					})
 					.catch((err) => console.log(err))

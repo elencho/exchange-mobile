@@ -1,18 +1,15 @@
-import Gear from 'assets/images/Gear.svg'
-import Logo from 'assets/images/Logo.svg'
-import AppText from 'components/AppText'
-import React, { useState, useEffect } from 'react'
-import { ImageBackground, Linking, StyleSheet, View } from 'react-native'
+import React, { useState } from 'react'
+import { ImageBackground, Linking, StyleSheet, Text, View } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
-import { Button } from 'refactor/common/components/button'
-import Text from 'refactor/common/components/text'
-import { Images } from 'refactor/common/constants'
-import { Theme } from 'refactor/setup/theme'
-import { COLORS_DARK } from 'refactor/setup/theme/colors'
-import { useTheme } from 'refactor/setup/theme/index.context'
-import { checkReadiness } from 'utils/appUtils'
+import Gear from '@assets/images/Gear.svg'
+import Logo from '@assets/images/Logo.svg'
+import { Theme, useTheme } from '@theme/index'
+import { AppButton } from '@components/button'
+import AppText from '@components/text'
+import { Images } from '@app/refactor/common/constants'
+import { checkReadiness } from '@app/utils/appUtils'
 
-export default function Maintanance(navigation: any) {
+export default function Maintenance(navigation: any) {
 	const { styles } = useTheme(_styles)
 	const [loading, setLoading] = useState(false)
 
@@ -35,19 +32,19 @@ export default function Maintanance(navigation: any) {
 			resizeMode="contain"
 			source={Images.stars}
 			style={styles.background}>
-			<Logo />
+			<Logo style={{ marginTop: 15 }} />
 			<Margin margin={80} />
 			<Gear />
-			<Text style={styles.header}>Hey there!</Text>
-			<Text style={styles.secondary}>
+			<AppText style={styles.header}>Hey there!</AppText>
+			<AppText style={styles.secondary}>
 				We've been hard at work bringing new improvements to the platform. Soon
 				the platform will be fully operational.
-			</Text>
+			</AppText>
 			<Margin margin={22} />
-			<Text style={styles.secondary}>
+			<AppText style={styles.secondary}>
 				Thanks for your patience and understanding.
-			</Text>
-			<Button
+			</AppText>
+			<AppButton
 				variant="primary"
 				text="Refresh"
 				loading={loading}
@@ -55,14 +52,19 @@ export default function Maintanance(navigation: any) {
 				style={styles.button}
 			/>
 			<View style={styles.footer}>
-				<Text style={styles.supportText}>
+				<AppText style={styles.supportText}>
 					Need Help? Contact
-					<Button variant="text" text="Support" onPress={goToSupport} />
-				</Text>
+					<AppButton
+						variant="text"
+						text="Support"
+						style={styles.support}
+						onPress={goToSupport}
+					/>
+				</AppText>
 				<Margin margin={14} />
-				<Text style={styles.contactText}>
+				<AppText style={styles.contactText}>
 					+995 322 053 253 | Support@cryptal.com
-				</Text>
+				</AppText>
 			</View>
 		</ImageBackground>
 	)
@@ -96,7 +98,7 @@ const _styles = (theme: Theme) =>
 		},
 		header: {
 			color: theme.color.textPrimary,
-			fontFamily: 'Ubuntu_Medium',
+			fontFamily: theme.font.medium,
 			fontSize: 24,
 			marginTop: 22,
 			marginBottom: 15,
@@ -107,5 +109,9 @@ const _styles = (theme: Theme) =>
 			textAlign: 'center',
 			marginHorizontal: 30,
 			lineHeight: 21,
+		},
+		support: {
+			padding: 4,
+			margin: 4,
 		},
 	})
