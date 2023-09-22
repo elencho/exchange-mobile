@@ -53,18 +53,25 @@ export default function ChooseNetworkModal() {
     }
     hide();
   };
-
   useEffect(() => {
-    let networksToDisplay = [];
-    const m = withdrawal ? 'withdrawalMethods' : 'depositMethods';
-    const n = currentBalanceObj[m];
+    const getNetworksToDisplay = () => {
+      let networksToDisplay = [];
+      const m = withdrawal ? 'withdrawalMethods' : 'depositMethods';
+      const n = currentBalanceObj[m];
 
-    if (n?.WALLET)
-      currentBalanceObj?.supportedProviders?.WALLET?.forEach((n) =>
-        networksToDisplay.push(n)
-      );
-    if (n?.WIRE) n?.WIRE?.forEach((n) => networksToDisplay.push(n));
-    setNetworks(networksToDisplay);
+      if (isWhitelist) {
+        currentBalanceObj?.supportedProviders?.WALLET?.forEach((n) =>
+          networksToDisplay.push(n)
+        );
+        setNetworks(networksToDisplay);
+        return;
+      }
+      if (n?.WALLET) n?.WALLET?.forEach((n) => networksToDisplay.push(n));
+      if (n?.WIRE) n?.WIRE?.forEach((n) => networksToDisplay.push(n));
+      setNetworks(networksToDisplay);
+    };
+
+    getNetworksToDisplay();
     return () => setNetworks([]);
   }, [code, walletTab]);
 
