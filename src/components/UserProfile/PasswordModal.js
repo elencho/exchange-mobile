@@ -172,7 +172,7 @@ export default function PasswordModal() {
           />
 
           <AppInput
-            style={styles.inputContainer}
+            style={[styles.inputContainer, { marginTop: 18 }]}
             label="Current Password"
             autoCapitalize={'none'}
             secureTextEntry={secure}
@@ -242,10 +242,10 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   error: {
-    marginBottom: 15,
+    marginTop: 10,
   },
   inputContainer: {
-    marginBottom: 20,
+    marginBottom: 12,
   },
   opacity: {
     opacity: 1,

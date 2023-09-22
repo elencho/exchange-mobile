@@ -34,17 +34,18 @@ export default function Whitelist({ refreshControl }) {
         <View style={{ flex: 1 }}>
           <View style={styles.block}>
             <WalletCoinsDropdown />
-            <AppText subtext style={styles.secondary}>
-              Add address for easy withdrawal, Some description here about
-              whitelist
-            </AppText>
+            {hasWhitelist && (
+              <AppText subtext style={styles.secondary}>
+                Add address for easy withdrawal, Some description here about
+                whitelist
+              </AppText>
+            )}
           </View>
 
           {hasWhitelist ? (
             <>
               <ScrollView
                 style={styles.scrollView}
-                contentContainerStyle={styles.scrollContent}
                 refreshControl={refreshControl}
               >
                 {whitelist?.map((w) => (
@@ -96,10 +97,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   block: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 12,
-    paddingVertical: 22,
-    paddingHorizontal: 16,
+    paddingTop: 22,
   },
   description: {
     color: colors.SECONDARY_TEXT,
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   flex: {
     flex: 1,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 50,
@@ -119,18 +119,17 @@ const styles = StyleSheet.create({
     marginBottom: 18,
   },
   secondary: {
-    color: colors.SECONDARY_TEXT,
+    color: '#969CBF',
     marginTop: 15,
-    lineHeight: 20,
+    lineHeight: 18,
+    paddingHorizontal: 26,
+    paddingVertical: 14,
+    backgroundColor: 'rgba(149, 164, 247, 0.1)',
   },
   secondaryPurple: {
     color: colors.SECONDARY_PURPLE,
   },
   scrollView: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-  },
-  scrollContent: {
-    paddingHorizontal: 28,
-    paddingVertical: 20,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
 });

@@ -10,7 +10,7 @@ const FirstPart = () => (
       <Skeleton
         width={24}
         height={24}
-        style={{ borderRadius: 100, marginRight: 14 }}
+        style={{ borderRadius: 100, marginRight: 14, marginLeft: 8 }}
       />
       <Skeleton width={58} height={8} />
     </View>
@@ -58,17 +58,17 @@ const styles = StyleSheet.create({
     width: '47%',
     height: 45,
     paddingRight: 25,
+    paddingLeft: 20,
   },
 
   mainWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: 10,
   },
   container: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingHorizontal: 24,
-    paddingVertical: 36,
-    marginBottom: 10,
+    // marginBottom: 10,
+    marginTop: 30,
   },
   smallBoxMiddle: {
     backgroundColor: 'rgba(63, 66, 91, 0.18)',
@@ -81,7 +81,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginTop: 28,
-    marginBottom: 32,
+    marginTop: 42,
+    marginBottom: 18,
+    rowGap: 10,
   },
 });

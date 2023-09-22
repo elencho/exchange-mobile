@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   info: {
     paddingVertical: 15,
-    paddingHorizontal: 18,
+    paddingHorizontal: 26,
     marginTop: 16,
   },
   infoText: {

@@ -1,11 +1,5 @@
 import React, { useCallback } from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-  StatusBar,
-  LogBox,
-  View,
-} from 'react-native';
+import { StyleSheet, StatusBar, LogBox, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { useFonts } from 'expo-font';
 import { useAssets } from 'expo-asset';
@@ -17,7 +11,9 @@ import images from './src/constants/images';
 import colors from './src/constants/colors';
 import './src/utils/i18n';
 import './src/utils/interceptor';
-import { IS_IOS } from './src/constants/system';
+import { IS_ANDROID } from './src/constants/system';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 LogBox.ignoreLogs([
   // TODO: Remove when fixed
@@ -28,6 +24,7 @@ function App(): JSX.Element {
   const [fontsLoaded] = useFonts({
     Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
     Ubuntu_Medium: require('./src/assets/fonts/Ubuntu_Medium.ttf'),
+    HelveticaNeue: require('./src/assets/fonts/HelveticaNeue.ttf'),
   });
 
   const [assets] = useAssets(Object.values(images));
@@ -42,16 +39,29 @@ function App(): JSX.Element {
 
   return (
     <Provider store={store}>
-      <StatusBar
-        backgroundColor={colors.SECONDARY_BACKGROUND}
-        barStyle="light-content"
-      />
-      {IS_IOS && <SafeAreaView style={styles.statusBar} />}
-      <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
-        <AppToast />
-        <Navigator />
-      </SafeAreaView>
-      {IS_IOS && <SafeAreaView style={styles.statusBar} />}
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar
+          backgroundColor={'transparent'}
+          translucent
+          barStyle="light-content"
+        />
+
+        {(IS_ANDROID && (
+          <SafeAreaView
+            style={styles.container}
+            onLayout={onLayoutRootView}
+            edges={['bottom']}
+          >
+            <AppToast />
+            <Navigator />
+          </SafeAreaView>
+        )) || (
+          <>
+            <AppToast />
+            <Navigator />
+          </>
+        )}
+      </GestureHandlerRootView>
     </Provider>
   );
 }
@@ -65,6 +75,6 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     flex: 0,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
 });

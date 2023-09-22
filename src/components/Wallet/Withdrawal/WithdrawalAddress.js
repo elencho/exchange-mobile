@@ -1,5 +1,5 @@
 import React, { memo, useCallback } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { t } from 'i18next';
 
@@ -13,6 +13,7 @@ import { toggleChooseAddressModal } from '../../../redux/modals/actions';
 import { chooseWhitelist, setWalletTab } from '../../../redux/wallet/actions';
 
 import Arrow from '../../../assets/images/Arrow';
+import AppDropdown from '../../AppDropdown';
 
 function WithdrawalAddress({ error, right }) {
   const dispatch = useDispatch();
@@ -60,21 +61,32 @@ function WithdrawalAddress({ error, right }) {
     );
   };
 
-  const address = useCallback(() => {
+  const address = () => {
     if (hasWhitelist) {
       if (hasOnThisNetwork) {
-        return <AddressDropdown />;
+        return (
+          <AppDropdown
+            notClearable
+            handlePress={chooseAddress}
+            selectedText={w.name && w.name}
+            label="Choose Address"
+            withLabel
+            style={styles.dropdown}
+            error={error && !w?.address}
+            noTranslate
+          />
+        );
       } else {
         return (
           <>
             <AppInput
               label="Destination Address"
-              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+              labelBackgroundColor={colors.PRIMARY_BACKGROUND}
               onChangeText={setAddress}
               value={w.address}
               error={error && !w?.address}
-              // right={right ? right : null}
               disabled
+              style={{ marginTop: -8 }}
             />
             <AppText subtext style={styles.addWhitelist}>
               {t('Do Not Have Address')}{' '}
@@ -87,7 +99,7 @@ function WithdrawalAddress({ error, right }) {
       return (
         <AppInput
           label="Destination Address"
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           style={styles.mb22}
           onChangeText={setAddress}
           value={w.address}
@@ -96,29 +108,13 @@ function WithdrawalAddress({ error, right }) {
         />
       );
     }
-  }, [w]);
-
-  const AddressDropdown = () => (
-    <Pressable
-      style={[styles.dropdown, { borderColor }]}
-      onPress={chooseAddress}
-    >
-      <AppText medium body style={{ color }}>
-        {w.name ? w.name : 'Choose Address'}
-      </AppText>
-
-      <View style={styles.arrow}>
-        <Arrow />
-      </View>
-
-      <ChooseAddressModal />
-    </Pressable>
-  );
+  };
 
   return (
     <>
       {address()}
       {w?.id && <AddressAndTag />}
+      <ChooseAddressModal />
     </>
   );
 }
@@ -150,12 +146,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   dropdown: {
-    borderWidth: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 15,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 22,
+    marginBottom: 12,
   },
   flex: {
     flexDirection: 'row',
@@ -172,6 +163,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   mb22: {
-    marginBottom: 22,
+    marginBottom: 12,
   },
 });

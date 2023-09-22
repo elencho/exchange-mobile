@@ -10,17 +10,22 @@ const INITIAL_STATE = {
   currenciesConstant: [],
   currentTransaction: {},
   currency: 'Show All Currency',
+  activeTab: 'Transfer',
+  code: null,
 
   loading: false,
+  previousTransactionsFilter: {},
 
   // Query Params
-  code: null,
+  cryptoFilter: null,
   limit: 25,
-  method: ['All'],
+  method: [],
+  status: [],
   offset: 0,
   fromDateTime: null,
   toDateTime: null,
-  typeFilter: null,
+  typeFilter: [],
+  txIdOrRecipient: '',
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -30,8 +35,10 @@ export default (state = INITIAL_STATE, action) => {
     transactions,
     currentTransaction,
     typeFilter,
+    status,
     method,
     code,
+    cryptoFilter,
     toDateTime,
     fromDateTime,
     loading,
@@ -41,6 +48,9 @@ export default (state = INITIAL_STATE, action) => {
     currenciesConstant,
     tabNavigationRef,
     totalTransactions,
+    activeTab,
+    txIdOrRecipient,
+    previousTransactionsFilter,
   } = action;
   switch (action.type) {
     case 'SET_TAB_NAVIGATION_REF':
@@ -73,6 +83,11 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         code,
       };
+    case actionTypes.SET_CRYPTO_FILTER:
+      return {
+        ...state,
+        cryptoFilter,
+      };
     case actionTypes.FILTER_CURRENCIES:
       return {
         ...state,
@@ -92,6 +107,11 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         method,
+      };
+    case actionTypes.SET_STATUS_FILTER:
+      return {
+        ...state,
+        status,
       };
     case actionTypes.SET_FROM_TIME:
       return {
@@ -123,6 +143,16 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         tabRoute,
       };
+    case actionTypes.SET_ACTIVE_TAB:
+      return {
+        ...state,
+        activeTab,
+      };
+    case actionTypes.SET_TX_ID_OR_RECIPIENT:
+      return {
+        ...state,
+        txIdOrRecipient,
+      };
     case 'SET_STACK_NAVIGATION_ROUTE':
       return {
         ...state,
@@ -131,12 +161,20 @@ export default (state = INITIAL_STATE, action) => {
     case actionTypes.CLEAR_FILTERS:
       return {
         ...state,
-        typeFilter: null,
-        method: ['All'],
+        typeFilter: [],
+        method: [],
+        status: [],
         currency: 'Show All Currency',
-        code: null,
+        cryptoFilter: null,
         fromDateTime: null,
         toDateTime: null,
+        txIdOrRecipient: null,
+      };
+    case actionTypes.SET_PREV_TRANSACTIONS_FILTER:
+      const prevState = JSON.parse(previousTransactionsFilter);
+      return {
+        ...state,
+        ...prevState,
       };
     case actionTypes.RESET_TRANSACTIONS_STATE:
       return {

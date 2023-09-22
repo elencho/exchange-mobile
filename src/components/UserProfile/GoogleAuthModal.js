@@ -66,6 +66,8 @@ export default function GoogleAuthModal() {
 
   const handleCopy = () => copyToClipboard(totpSecretObj?.totpSecretEncoded);
 
+  const isKeyEmpty = key?.length === 0;
+
   const right = (
     <View style={styles.row}>
       <View style={styles.smallLine} />
@@ -77,7 +79,11 @@ export default function GoogleAuthModal() {
           style={{ flex: 0 }}
         />
       ) : (
-        <PurpleText text="Enable" onPress={enable} />
+        <PurpleText
+          text="Enable"
+          style={isKeyEmpty && { color: colors.SECONDARY_TEXT }}
+          onPress={isKeyEmpty ? null : enable}
+        />
       )}
     </View>
   );
@@ -115,7 +121,7 @@ export default function GoogleAuthModal() {
       </View>
 
       <AppInput
-        placeholder="Enter Key"
+        label="Enter Key"
         right={right}
         onChangeText={handleKey}
         value={key}
@@ -167,7 +173,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  header: { color: colors.PRIMARY_TEXT },
-  secondary: { color: colors.SECONDARY_TEXT },
+  header: { color: colors.PRIMARY_TEXT, fontSize: 19 },
+  secondary: { color: colors.SECONDARY_TEXT, fontSize: 13 },
   subtext: { color: '#C0C5E0', flex: 1 },
 });

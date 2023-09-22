@@ -6,9 +6,11 @@ import AppModal from '../../AppModal';
 import AppText from '../../AppText';
 
 import colors from '../../../constants/colors';
-import { ICONS_URL_PNG } from '../../../constants/api';
 import { toggleTransferMethodModal } from '../../../redux/modals/actions';
 import { setNetwork } from '../../../redux/wallet/actions';
+import Euro from '../../../assets/images/Euro.svg';
+import Card from '../../../assets/images/Card.svg';
+import Bank from '../../../assets/images/LocalBank.svg';
 
 export default function TransferMethodModal() {
   const dispatch = useDispatch();
@@ -63,11 +65,17 @@ export default function TransferMethodModal() {
     }
   };
 
-  const source = (network) =>
-    network === 'ECOMMERCE'
-      ? { uri: `${ICONS_URL_PNG}/visa-or-mc.png` }
-      : { uri: `${ICONS_URL_PNG}/${network}.png` };
-
+  const renderIcon = (network) => {
+    if (network === 'ECOMMERCE') {
+      return <Card />;
+    }
+    if (network === 'SWIFT') {
+      return <Bank />;
+    }
+    if (network === 'SEPA') {
+      return <Euro />;
+    }
+  };
   const children = (
     <>
       {methodsToDisplay.map((m) => (
@@ -76,9 +84,9 @@ export default function TransferMethodModal() {
           key={m.displayName}
           onPress={() => handlePress(m.provider)}
         >
-          <Image source={source(m.provider)} style={styles.image} />
+          {renderIcon(m.provider)}
           <AppText body style={styles.primary}>
-            {m.displayName}
+            {m.provider}
           </AppText>
         </Pressable>
       ))}
@@ -100,9 +108,9 @@ const styles = StyleSheet.create({
   pressable: {
     flexDirection: 'row',
     height: 44,
-    paddingHorizontal: 15,
+    paddingHorizontal: 13,
     marginVertical: 2,
-    marginHorizontal: -15,
+    marginHorizontal: -5,
     alignItems: 'center',
     borderRadius: 5,
   },

@@ -11,7 +11,6 @@ import Headline from '../components/TransactionHistory/Headline';
 import Personal from '../components/UserProfile/Personal';
 import PersonalSecuritySwitcher from '../components/UserProfile/PersonalSecuritySwitcher';
 import Security from '../components/UserProfile/Security';
-import Back from '../assets/images/Back';
 import Logout from '../assets/images/User_profile/Logout';
 
 import {
@@ -102,8 +101,7 @@ function UserProfile({ navigation, route }) {
     <Background>
       <View style={styles.topRow}>
         <TouchableOpacity onPress={back} style={styles.back}>
-          <Back style={styles.arrow} />
-          <PurpleText text="Back" style={styles.purpleText} />
+          <PurpleText text="Back to Home" />
         </TouchableOpacity>
 
         <TouchableOpacity onPress={logout}>
@@ -136,27 +134,16 @@ function UserProfile({ navigation, route }) {
 export default memo(UserProfile);
 
 const styles = StyleSheet.create({
-  arrow: {
-    marginTop: 2,
-  },
-  back: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 5,
-    marginLeft: -5,
-    marginTop: 5,
-  },
-  purpleText: {
-    marginHorizontal: 10,
-  },
   secondary: {
     color: colors.SECONDARY_TEXT,
     marginBottom: 22,
-    marginTop: -14,
+    marginTop: 6,
   },
   topRow: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingTop: 20,
+    paddingBottom: 28,
   },
 });

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50.689" height="56.914" viewBox="0 0 50.689 56.914">
+    <defs>
+        <clipPath id="rngy2ptuua">
+            <path data-name="Rectangle 19390" transform="translate(102 88)" style="fill:none" d="M0 0h50.689v56.914H0z"/>
+        </clipPath>
+    </defs>
+    <g data-name="Cryptal Watermark" transform="translate(-102 -88)" style="clip-path:url(#rngy2ptuua)">
+        <path data-name="Path 89575" d="M2-14 26.9-1.55v32.014L2 18.014z" transform="translate(100 114.45)" style="opacity:.92;fill:#fff"/>
+        <path data-name="Path 89576" d="M2 9.92v24.011l22.1-10.854z" transform="translate(128.075 110.983)" style="opacity:.451;fill:#fff"/>
+        <path data-name="Path 89577" d="M10.678 10.678 34.682 0l-8.827 25.855L0 34.682z" transform="rotate(45 -24.27 190.242)" style="fill:#fff"/>
+    </g>
+</svg>

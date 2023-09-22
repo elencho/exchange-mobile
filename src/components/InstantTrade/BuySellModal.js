@@ -257,9 +257,9 @@ const BuySellModal = () => {
                 {fiat}
               </AppText>
             }
+            style={{ marginTop: 12 }}
             error={error && !validateAmount(price)}
           />
-          <View style={styles.margin} />
           <AppInput
             onChangeText={(t) => handleChangeText(t, 'fiat')}
             keyboardType="decimal-pad"
@@ -271,7 +271,7 @@ const BuySellModal = () => {
                 {crypto}
               </AppText>
             }
-            style={{ marginBottom: 10 }}
+            style={{ marginTop: 12 }}
             error={error && !validateAmount(size)}
           />
 
@@ -325,15 +325,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   dropdowns: {
-    marginVertical: 20,
+    // marginVertical: 20,
   },
   error: {
     marginTop: 16,
   },
   flex: {
     flex: 1,
-  },
-  margin: {
-    marginVertical: 10,
   },
 });

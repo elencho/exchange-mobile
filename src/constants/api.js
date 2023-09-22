@@ -17,7 +17,7 @@ export const CODE_TO_TOKEN = `${auth}/auth/realms/GEX/protocol/openid-connect/to
 
 export const LOGOUT = `${auth}/auth/realms/GEX/protocol/openid-connect/logout`;
 
-export const TRANSACTIONS_URL = `${core}/private/account/transactions`;
+export const TRANSACTIONS_URL = `${core}/private/account/fetchTransactions`;
 
 export const CURRENCIES_URL = `${core}/public/currencies`;
 
@@ -25,7 +25,7 @@ export const COUNTRIES_URL = `${core}/public/countries`;
 
 export const TRADES_URL = `${core}/private/simpleTrade/trades`;
 
-export const TRADES_URL_PAGED = `${core}/private/simpleTrade/tradesPaged`;
+export const TRADES_URL_PAGED = `${core}/private/simpleTrade/fetchTrades`;
 
 export const OFFERS_URL = `${core}/private/simpleTrade/offers`;
 
@@ -48,6 +48,8 @@ export const UPDATE_PASSWORD = `${auth}/auth/realms/GEX/GEX-resource/updatePassw
 export const VERIFY_PHONE_NUMBER = `${auth}/auth/realms/GEX/GEX-resource/verifyPhoneNumber`;
 
 export const UPDATE_PHONE_NUMBER = `${auth}/auth/realms/GEX/GEX-resource/updatePhoneNumber`;
+
+export const GO_TO_EXCHANGE = `${auth}/auth/realms/GEX/GEX-resource/getLoginActionLink`;
 
 export const SEND_OTP = `${auth}/auth/realms/GEX/GEX-resource/sendOTP`;
 

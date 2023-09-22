@@ -17,11 +17,11 @@ import WithKeyboard from '../components/WithKeyboard';
 import SmsAuth from '../assets/images/User_profile/Sms_Auth.svg';
 import EmailLoginAuth from '../assets/images/User_profile/EmailLoginAuth.svg';
 import TotpAuth from '../assets/images/User_profile/Totp_Auth.svg';
-import Back from '../assets/images/Back';
 
 import colors from '../constants/colors';
 import images from '../constants/images';
 import { startLoginAction } from '../redux/profile/actions';
+import Background from '../components/Background';
 
 export default function Login2Fa({ navigation }) {
   const dispatch = useDispatch();
@@ -98,11 +98,10 @@ export default function Login2Fa({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
+    <Background>
       <WithKeyboard padding flexGrow>
         <Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
           <TouchableOpacity style={styles.back} onPress={goBack}>
-            <Back />
             <PurpleText
               numberOfLines={1}
               text="Back to Log In"
@@ -124,6 +123,7 @@ export default function Login2Fa({ navigation }) {
 
             <View style={styles.twoFaInput}>
               <TwoFaInput
+                navigation={navigation}
                 cellCount={cellCount}
                 value={value}
                 setValue={setValue}
@@ -147,7 +147,7 @@ export default function Login2Fa({ navigation }) {
           </View>
         </Pressable>
       </WithKeyboard>
-    </View>
+    </Background>
   );
 }
 
@@ -156,7 +156,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
 
-    marginLeft: 24,
     marginTop: 28,
     alignSelf: 'flex-start',
   },
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   middle: {
     flex: 1,

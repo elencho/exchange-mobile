@@ -3,42 +3,35 @@ export const getParams = (state) => {
     transactions: {
       typeFilter,
       method,
-      code,
+      status,
+      cryptoFilter,
       fromDateTime,
       toDateTime,
       offset,
       limit,
+      txIdOrRecipient,
     },
   } = state;
 
-  let methods = [];
-  method.forEach((m) => {
-    switch (m) {
-      case 'All':
-        methods = null;
-        break;
-      case 'Credit Card':
-        methods.push('ECOMMERCE');
-        break;
-      case 'Wire':
-        methods.push('WIRE');
-        break;
-      case 'Crypto':
-        methods.push('WALLET');
-        break;
-      default:
-        break;
-    }
-  });
+  const methodsMapping = {
+    Ecommerce: ['ECOMMERCE'],
+    Wire: ['WIRE'],
+    'Crypto Transaction': ['WALLET', 'WALLET_INTERNAL'],
+    Staking: ['STAKING'],
+    B2C: ['B2C'],
+    Transfer: ['TRANSFER'],
+  };
 
   return {
-    type: typeFilter,
-    methods,
-    currency: code,
-    fromDateTime,
-    toDateTime,
+    type: typeFilter?.length === 1 ? typeFilter[0] : null,
+    methods: methodsMapping[method],
+    statuses: status,
+    currency: cryptoFilter?.length > 0 ? cryptoFilter : null,
+    fromTime: fromDateTime,
+    toTime: toDateTime,
     offset,
-    limit,
+    limit: 10,
+    txIdOrRecipient: txIdOrRecipient?.length > 0 ? txIdOrRecipient : null,
   };
 };
 
@@ -47,6 +40,10 @@ export const getTransactions = (state) => state.transactions.transactions;
 export const getOffset = (state) => state.transactions.offset;
 
 export const getMethod = (state) => state.transactions.method;
+
+export const getType = (state) => state.transactions.typeFilter;
+
+export const getStatus = (state) => state.transactions.status;
 
 export const totalLoadedTransactions = (state) =>
   state.transactions.transactions.length;

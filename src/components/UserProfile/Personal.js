@@ -115,11 +115,9 @@ export default function Personal({ loading }) {
               )}
             </View>
 
-            {unverified && (
-              <PurpleText text="Verify" subtext onPress={verify} />
-            )}
+            {unverified && <PurpleText text="Verify" onPress={verify} />}
             {pending && (
-              <PurpleText text="Go To Support" subtext onPress={goToSupport} />
+              <PurpleText text="Go To Support" onPress={goToSupport} />
             )}
           </View>
         );
@@ -130,12 +128,7 @@ export default function Personal({ loading }) {
               My Phone Number
             </AppText>
             <View style={styles.flex}>
-              <PurpleText
-                text="Edit"
-                style={styles.purple}
-                onPress={edit}
-                subtext
-              />
+              <PurpleText text="Edit" style={styles.purple} onPress={edit} />
             </View>
           </View>
         );
@@ -164,7 +157,6 @@ export default function Personal({ loading }) {
                 text="Edit"
                 style={styles.purple}
                 onPress={editLanguage}
-                subtext
               />
             </View>
           </View>
@@ -242,9 +234,10 @@ export default function Personal({ loading }) {
           </View>
         ))}
       </View>
-
+      <View style={styles.line} />
       <PersonalInformation />
       {corporate && <CompanyInformation />}
+      <View style={styles.line} />
       <DeleteAccount />
       <PersonalInfoModal />
       <PhoneNumberModal />
@@ -262,6 +255,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 4,
     marginRight: 8,
+    marginTop: 4,
   },
   circle: {
     borderWidth: 1,
@@ -284,17 +278,16 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   block: {
-    padding: 25,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    paddingVertical: 5,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 10,
   },
   flex: {
     flex: 1,
   },
   justify: {
-    justifyContent: 'space-between',
     flex: 1,
-    height: 37,
+    // height: 37,
     marginLeft: 25,
   },
   row: {
@@ -305,6 +298,7 @@ const styles = StyleSheet.create({
   },
   secondary: {
     color: colors.SECONDARY_TEXT,
+    marginTop: 4,
   },
   // switch: {
   //   transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
@@ -318,5 +312,13 @@ const styles = StyleSheet.create({
   upload: {
     flexDirection: 'row',
     alignItems: 'center',
+    textAlign: 'center',
+  },
+  line: {
+    marginVertical: 20,
+    marginHorizontal: 4,
+    height: 1,
+    flex: 1,
+    backgroundColor: colors.BUTTON_DISABLED,
   },
 });

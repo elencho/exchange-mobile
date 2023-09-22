@@ -18,7 +18,6 @@ import AppInfoBlock from '../../components/AppInfoBlock';
 import WithKeyboard from '../../components/WithKeyboard';
 import WithdrawalConfirmModal from '../../components/Wallet/Withdrawal/WithdrawalConfirmModal';
 
-import colors from '../../constants/colors';
 import { infos, warnings } from '../../constants/warningsAndInfos';
 import { setNetwork } from '../../redux/wallet/actions';
 import { fetchFee, setCard, setFee } from '../../redux/trade/actions';
@@ -30,7 +29,13 @@ function Withdrawal({ refreshControl }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state, shallowEqual);
   const {
-    trade: { currentBalanceObj, card, depositProvider, cardsLoading },
+    trade: {
+      currentBalanceObj,
+      card,
+      depositProvider,
+      cardsLoading,
+      balanceLoading,
+    },
     transactions: { code, loading },
     profile: { userInfo },
     wallet: {
@@ -187,12 +192,11 @@ function Withdrawal({ refreshControl }) {
   };
   return (
     <>
-      {cardsLoading || loading || whitelistLoading ? (
+      {cardsLoading || loading || whitelistLoading || balanceLoading ? (
         <MaterialIndicator color="#6582FD" animationDuration={3000} />
       ) : (
         <WithKeyboard flexGrow padding refreshControl={refreshControl}>
           <View style={styles.block}>
-            {/* <GeneralError style={{ marginBottom: 16 }} /> */}
             <WalletCoinsDropdown />
 
             {!hasRestriction && hasMethod && (
@@ -249,9 +253,9 @@ function Withdrawal({ refreshControl }) {
           {!hasRestriction &&
             hasMethod && ( // Button
               <AppButton
+                style={styles.button}
                 text="Withdrawal"
                 onPress={withdraw}
-                style={styles.button}
               />
             )}
         </WithKeyboard>
@@ -264,12 +268,8 @@ export default memo(Withdrawal);
 
 const styles = StyleSheet.create({
   block: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingVertical: 22,
-    paddingHorizontal: 16,
-    marginBottom: 12,
+    paddingTop: 10,
+    paddingBottom: 18,
   },
-  button: {
-    marginHorizontal: 15,
-  },
+  // button: { marginBottom: 46 },
 });

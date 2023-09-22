@@ -29,11 +29,7 @@ export default function CompanyInformation() {
         <AppText medium style={styles.white}>
           Company Information
         </AppText>
-        <PurpleText
-          text="Edit"
-          onPress={openModal}
-          style={{ transform: [{ scale: 0.9 }, { translateY: 2 }] }}
-        />
+        <PurpleText text="Edit" onPress={openModal} />
       </View>
 
       <View style={[styles.row, { marginTop: 20 }]}>
@@ -104,15 +100,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   block: {
-    padding: 25,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    paddingVertical: 25,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 10,
   },
   flex: {
     flex: 1,
   },
   line: {
-    backgroundColor: '#373D5C',
     height: 1,
     marginVertical: 20,
     width: '100%',

@@ -20,7 +20,7 @@ import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton';
 
 import colors from '../constants/colors';
 import {
-  fetchTrades,
+  setOffersLoading,
   setTradeOffset,
   setTradeType,
 } from '../redux/trade/actions';
@@ -28,8 +28,6 @@ import { setWalletTab } from '../redux/wallet/actions';
 import { toggleChooseCardModal } from '../redux/modals/actions';
 
 import messaging from '@react-native-firebase/messaging';
-import Copy from '../assets/images/Copy.svg';
-import * as Clipboard from 'expo-clipboard';
 import useNotificationPermissions from './useNotificationPermissions';
 
 export default function InstantTrade() {
@@ -47,22 +45,25 @@ export default function InstantTrade() {
     dispatch(setWalletTab('Deposit'));
     dispatch({ type: 'REFRESH_WALLET_AND_TRADES' });
     dispatch(setTradeOffset(0));
-    dispatch(fetchTrades());
   };
 
   const [showRefreshControl, setShowRefreshControl] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
+      dispatch(setOffersLoading(true));
+
       tabRoute === 'Trade' && onRefresh();
       const timer = setTimeout(() => {
         setShowRefreshControl(true);
+        dispatch(setOffersLoading(false));
       }, 1000);
+
       return () => {
         dispatch(toggleChooseCardModal(false));
         clearTimeout(timer);
       };
-    }, [tabRoute])
+    }, [])
   );
 
   //ToDo: delete
@@ -80,18 +81,10 @@ export default function InstantTrade() {
 
   return (
     <Background>
-      {/* <View>
-        <TouchableOpacity onPress={() => Clipboard.setStringAsync(fcmToken)}>
-          <Copy />
-        </TouchableOpacity>
-      </View> */}
-      <TopRow clear={() => dispatch(setTradeType('Buy'))} />
-
-      <View style={styles.headRow}>
-        <Headline title="Instant Trade" />
-        <View style={{ marginRight: 5 }} />
-        <InfoMark inner="?" color={colors.SECONDARY_PURPLE} />
-      </View>
+      <TopRow
+        headlineLogo={<InfoMark inner="?" color={colors.SECONDARY_PURPLE} />}
+        clear={() => dispatch(setTradeType('Buy'))}
+      />
 
       <BuySellSwitch />
 
@@ -110,7 +103,6 @@ export default function InstantTrade() {
         ) : (
           <TradeBlock />
         )}
-        <TransactionsBlock loading={tradesLoading || userProfileLoading} />
       </ScrollView>
 
       <InfoModal />

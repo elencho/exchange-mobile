@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AppInput from '../AppInput';
 import AppModal from '../AppModal';
 import AppButton from '../AppButton';
-import AppText from '../AppText';
 import GeneralError from '../GeneralError';
 import CountriesModal from './CountriesModal';
 import WithKeyboard from '../WithKeyboard';
@@ -18,7 +17,7 @@ import {
 import { COUNTRIES_URL_PNG } from '../../constants/api';
 import { saveUserInfo, updatePhoneNumber } from '../../redux/profile/actions';
 import { errorHappenedHere } from '../../utils/appUtils';
-import Arrow from '../../assets/images/Arrow';
+import AppDropdown from '../AppDropdown';
 
 export default function PhoneNumberModal() {
   const dispatch = useDispatch();
@@ -107,21 +106,22 @@ export default function PhoneNumberModal() {
             show={errorHappenedHere('PhoneNumberModal')}
           />
 
-          <Pressable
+          <AppDropdown
+            handlePress={handleCountries}
+            selectedText={phoneCountry()}
+            notClearable
+            withLabel
+            label="Choose code"
             style={[styles.dropdown, { borderColor }]}
-            onPress={() => handleCountries()}
-          >
-            <Image
-              source={{
-                uri: `${COUNTRIES_URL_PNG}/${country}.png`,
-              }}
-              style={styles.image}
-            />
-            <AppText medium style={[styles.dropdownText, { color }]}>
-              {phoneCountry()}
-            </AppText>
-            <Arrow />
-          </Pressable>
+            icon={
+              <Image
+                source={{
+                  uri: `${COUNTRIES_URL_PNG}/${country}.png`,
+                }}
+                style={styles.image}
+              />
+            }
+          />
 
           <AppInput
             style={styles.inputContainer}
@@ -170,11 +170,12 @@ const styles = StyleSheet.create({
     height: 45,
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 12,
     paddingHorizontal: 15,
+    marginTop: 28,
   },
   error: {
-    marginBottom: 25,
+    // marginBottom: 25,
   },
   flex: {
     flex: 1,

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, SafeAreaView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialIndicator } from 'react-native-indicators';
 import * as SecureStore from 'expo-secure-store';
@@ -10,12 +10,12 @@ import AppText from '../components/AppText';
 import PurpleText from '../components/PurpleText';
 
 import Logo from '../assets/images/Logo';
-import Back from '../assets/images/Back';
 import TwoFaInput from '../components/TwoFaInput';
 import WithKeyboard from '../components/WithKeyboard';
 import images from '../constants/images';
 import colors from '../constants/colors';
 import { startLoginAction } from '../redux/profile/actions';
+import Background from '../components/Background';
 
 export default function ResetOtpInstructions({ navigation, route }) {
   const dispatch = useDispatch();
@@ -86,10 +86,9 @@ export default function ResetOtpInstructions({ navigation, route }) {
   };
 
   return (
-    <View style={styles.container}>
+    <Background>
       <WithKeyboard padding flexGrow>
         <TouchableOpacity style={styles.back} onPress={goBack}>
-          <Back />
           <PurpleText text="Go Back" style={styles.backText} />
         </TouchableOpacity>
 
@@ -115,6 +114,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
                 Enter the code you received on the email
               </AppText>
               <TwoFaInput
+                navigation={navigation}
                 value={value}
                 setValue={setValue}
                 login
@@ -145,7 +145,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
           </View>
         )}
       </WithKeyboard>
-    </View>
+    </Background>
   );
 }
 
@@ -154,7 +154,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
 
-    marginLeft: 24,
     marginTop: 28,
     width: '33%',
   },
@@ -169,7 +168,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   logo: {
     width: 47,
@@ -185,6 +184,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_TEXT,
     marginTop: 27,
     marginBottom: 12,
+    textAlign: 'center',
   },
   row: {
     flexDirection: 'row',

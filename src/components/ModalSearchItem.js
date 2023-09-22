@@ -69,7 +69,7 @@ const ModalSearchItem = ({
 
   return (
     <Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
-      {code ? (
+      {code !== 'Show all currency' ? (
         <FastImage
           style={styles.image}
           resizeMode="contain"
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   image: {
-    marginRight: 20,
+    marginRight: 14,
     width: 36,
     height: 36,
   },

@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   menu: {
     width: 30,
     height: 30,
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'center',
   },
   primary: {

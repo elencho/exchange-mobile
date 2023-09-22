@@ -8,6 +8,7 @@ import ModalWithSearch from '../ModalWithSearch';
 import {
   currencyAction,
   fetchCurrencies,
+  setCryptoFilter,
 } from '../../redux/transactions/actions';
 import { toggleCurrencyModal } from '../../redux/modals/actions';
 import {
@@ -26,7 +27,13 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
   const state = useSelector((state) => state);
 
   const {
-    transactions: { currencies, currenciesConstant, currency, code },
+    transactions: {
+      currencies,
+      currenciesConstant,
+      cryptoFilter,
+      currency,
+      code,
+    },
     modals: { chooseCurrencyModalVisible },
     trade: { balance, fiatsArray, currentBalanceObj },
     wallet: { walletTab },
@@ -40,23 +47,13 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
   }, [chooseCurrencyModalVisible]);
 
   const filter = (text) => {
-    const filteredArray = balance?.balances.filter(
-      (c) =>
-        c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
-        c.currencyName.toLowerCase().includes(text.toLowerCase())
-    );
-    setFiletredData(
-      isForTransactions
-        ? [
-            {
-              name: 'Show All Currency',
-              currencyName: 'Show All Currency',
-              currencyCode: '',
-            },
-            ...filteredArray,
-          ]
-        : filteredArray
-    );
+    const filteredArray =
+      balance?.balances?.filter(
+        (c) =>
+          c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
+          c.currencyName.toLowerCase().includes(text.toLowerCase())
+      ) ?? [];
+    setFiletredData(filteredArray);
   };
   const hide = () => dispatch(toggleCurrencyModal(false));
   const onModalHide = () => dispatch(fetchCurrencies());
@@ -64,6 +61,12 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
   const fiats = fiatsArray.map((f) => f.code);
 
   const choose = (name, currencyCode) => {
+    if (isForTransactions) {
+      dispatch(setCryptoFilter(currencyCode));
+      hide();
+      return;
+    }
+
     if (code === currencyCode) {
       hide();
       return;
@@ -99,8 +102,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
         dispatch(setWalletTab('Deposit'));
       }
     } else {
-      const currency = name === 'Show All Currency' ? null : currencyCode;
-      dispatch(currencyAction(name, currenciesConstant, currency));
+      dispatch(currencyAction(name, currenciesConstant, currencyCode));
     }
     dispatch({ type: 'GET_WHITELIST_ACTION' });
     hide();
@@ -111,7 +113,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
       array={filteredData}
       choose={choose}
       filter={filter}
-      currentItem={currency}
+      currentItem={isForTransactions ? cryptoFilter : currency}
       title="Choose Currency"
       isForTransactions={isForTransactions}
       wallet={wallet}

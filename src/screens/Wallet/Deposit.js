@@ -176,7 +176,7 @@ export default function Deposit({ refreshControl }) {
 
         {!hasRestriction && hasMethod && (
           <>
-            {!isFiat || code === 'EUR' ? (
+            {!isFiat ? (
               <>
                 <ChooseNetworkDropdown />
                 {cryptoAddress?.address &&
@@ -238,9 +238,7 @@ export default function Deposit({ refreshControl }) {
 
 const styles = StyleSheet.create({
   block: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingVertical: 22,
-    paddingHorizontal: 16,
+    paddingVertical: 6,
     marginBottom: 12,
   },
   error: {

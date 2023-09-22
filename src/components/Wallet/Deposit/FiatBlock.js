@@ -48,7 +48,7 @@ export default function FiatBlock() {
     error && setError(false);
   }, [card, depositAmount, depositProvider, network]);
 
-  const editable = network !== 'ECOMMERCE' ? true : depositProvider && card;
+  const editable = network !== 'ECOMMERCE' ? true : !!depositProvider && !!card;
   const inputValidation = new RegExp(
     `^[0-9]{1,13}(\.|\\.[0-9]{1,${depositScale}})?$`
   );
@@ -104,18 +104,9 @@ export default function FiatBlock() {
     }
   };
 
-  const right = (
-    <View style={styles.row}>
-      <View style={styles.line} />
-      <AppText subtext style={styles.subtext}>
-        {code}
-      </AppText>
-    </View>
-  );
-
   const marginTop = () => {
     if (network === 'ECOMMERCE') {
-      return !depositProvider ? -35 : 0;
+      return !depositProvider ? -35 : -12;
     } else {
       return -10;
     }
@@ -129,7 +120,7 @@ export default function FiatBlock() {
         </View>
       )}
 
-      <View style={styles.block}>
+      <View style={styles.mainBlock}>
         <>
           {network === 'ECOMMERCE' && (
             <>
@@ -149,17 +140,15 @@ export default function FiatBlock() {
             keyboardType="numeric"
             maxLength={maxLength}
             label="Enter Amount"
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-            right={right}
-            editable={!!editable}
+            labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+            editable={editable}
+            disabled={!editable}
             error={error && !validateAmount(depositAmount)}
           />
         </>
       </View>
 
-      <View style={{ marginHorizontal: 16 }}>
-        <Fee />
-      </View>
+      <Fee />
 
       {network === 'SWIFT' || network === 'SEPA' ? (
         <AppButton
@@ -178,15 +167,14 @@ export default function FiatBlock() {
 
 const styles = StyleSheet.create({
   block: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingVertical: 22,
-    paddingHorizontal: 16,
+    paddingBottom: 22,
     marginBottom: 22,
   },
   button: {
-    width: '90%',
-    alignSelf: 'center',
+    width: '100%',
+    marginBottom: 46,
   },
+  mainBlock: { marginBottom: 24 },
   dropdown: {
     borderColor: '#525A86',
     borderWidth: 1,

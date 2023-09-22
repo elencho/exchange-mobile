@@ -109,16 +109,9 @@ export default function AddEditWhitelistModal({ add, edit }) {
     if (edit) dispatch(chooseWhitelist({ ...currentWhitelistObj, name }));
   };
 
-  const tagStyle = {
-    opacity: add ? 1 : 0.5,
-    borderColor: error && !currentWhitelistObj?.tag && '#F45E8C',
-  };
-  const addressStyle = {
-    opacity: add ? 1 : 0.5,
-    borderColor: error && !currentWhitelistObj?.address && '#F45E8C',
-  };
   const nameStyle = {
     borderColor: error && !currentWhitelistObj?.name && '#F45E8C',
+    // marginTop: 32,
   };
   const nameError = add
     ? !newWhitelist?.name?.trim()
@@ -128,7 +121,10 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
   const children = (
     <WithKeyboard padding flexGrow modal>
-      <TouchableOpacity activeOpacity={0.99} style={{ flex: 1 }}>
+      <TouchableOpacity
+        activeOpacity={0.99}
+        style={{ flex: 1, paddingTop: 14 }}
+      >
         <GeneralError
           style={styles.error}
           show={errorHappenedHere('AddEditWhitelistModal')}
@@ -136,7 +132,12 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
         {hasMultipleNetworks && (
           <View style={styles.input}>
-            <ChooseNetworkDropdown disabled={!!edit} whitelist error={error} />
+            <ChooseNetworkDropdown
+              disabled={!!edit}
+              whitelist
+              error={error}
+              // style={{ marginTop: 32 }}
+            />
             <ChooseNetworkModal />
           </View>
         )}
@@ -149,7 +150,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
           error={error && nameError}
         />
         <AppInput
-          style={[styles.input, addressStyle]}
+          style={styles.input}
           onChangeText={(address) =>
             dispatch(setNewWhitelist({ ...newWhitelist, address }))
           }
@@ -158,11 +159,12 @@ export default function AddEditWhitelistModal({ add, edit }) {
           label="Destination Address"
           editable={add ? true : false}
           focusable={add ? true : false}
+          disabled={!!edit}
           error={error && addressError}
         />
         {tag() && (
           <AppInput
-            style={[styles.input, tagStyle]}
+            style={styles.input}
             onChangeText={(tag) =>
               dispatch(setNewWhitelist({ ...newWhitelist, tag }))
             }
@@ -170,6 +172,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
             label="Address Tag"
             editable={add ? true : false}
             focusable={add ? true : false}
+            disabled={!!edit}
             error={error && tagError}
           />
         )}

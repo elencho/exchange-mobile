@@ -1,5 +1,11 @@
 import React, { memo } from 'react';
-import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Pressable,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Linking from 'expo-linking';
 
@@ -31,11 +37,15 @@ function TransactionModal({ transactions, trades }) {
         quoteCurrency,
         action,
         recipient,
+        tag,
       },
       currencies,
+      activeTab,
     },
     modals: { transactionDetailsVisible },
   } = state;
+
+  const isInstantTrade = activeTab === 'Instant trade';
 
   const handleTransactionUrl = () => {
     let pattern;
@@ -61,6 +71,7 @@ function TransactionModal({ transactions, trades }) {
 
   const copyId = () => copyToClipboard(transactionInfo);
   const copyDestination = () => copyToClipboard(recipient);
+  const copyTag = () => copyToClipboard(tag);
 
   const hide = () => {
     dispatch(toggleTransactionDetails(false));
@@ -73,75 +84,107 @@ function TransactionModal({ transactions, trades }) {
   const children = () => {
     if (transactions) {
       return (
-        <>
-          <View style={styles.top}>
-            <View style={styles.middle}>
-              <AppText medium style={styles.white}>
-                identifier (TXID):
-              </AppText>
-              <AppText style={[styles.address]} subtext>
-                {transactionInfo}
-              </AppText>
-            </View>
+        <View style={styles.container}>
+          {!isInstantTrade && transactionInfo && (
+            <View style={styles.top}>
+              <View style={styles.middle}>
+                <AppText medium style={styles.white}>
+                  identifier (TXID):
+                </AppText>
+                <AppText style={styles.address} subtext>
+                  {transactionInfo}
+                </AppText>
+              </View>
 
-            <View style={styles.vertical} />
+              <View style={styles.vertical} />
 
-            <View style={styles.row}>
-              <TouchableOpacity onPress={copyId}>
-                <Copy />
-              </TouchableOpacity>
-              {method === 'WALLET' && (
-                <TouchableOpacity
-                  onPress={handleTransactionUrl}
-                  style={{ marginLeft: 25 }}
-                >
-                  <Link />
+              <View style={styles.row}>
+                <TouchableOpacity onPress={copyId}>
+                  <Copy />
                 </TouchableOpacity>
-              )}
+                {method === 'WALLET' && (
+                  <TouchableOpacity
+                    onPress={handleTransactionUrl}
+                    style={{ marginLeft: 25 }}
+                  >
+                    <Link />
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
-          </View>
+          )}
 
-          <View style={styles.line} />
+          {!isInstantTrade && transactionInfo && <View style={styles.line} />}
 
           <TransactionDetails />
 
           {/* DESTINATION  */}
-          {(method === 'WALLET' || method === 'WALLET_INTERNAL') && (
-            <>
-              <View style={styles.line} />
-              <View style={styles.row}>
-                <View style={{ flex: 1, marginRight: 15 }}>
-                  <AppText medium style={[styles.white, {}]}>
+          {(method === 'WALLET' || method === 'WALLET_INTERNAL') &&
+            recipient && (
+              <>
+                <View style={styles.line} />
+                <View style={{ marginTop: 12 }}>
+                  <AppText medium style={styles.white}>
                     Destination
                   </AppText>
-                  <AppText subtext style={styles.address}>
-                    {recipient}
-                  </AppText>
-                </View>
 
-                <View style={styles.vertical} />
-                <View style={styles.row}>
-                  <TouchableOpacity onPress={copyDestination}>
-                    <Copy />
-                  </TouchableOpacity>
-                  {(method === 'WALLET' || method === 'WALLET_INTERNAL') && (
-                    <TouchableOpacity
-                      onPress={handleAddressUrl}
-                      style={{ marginLeft: 25 }}
-                    >
-                      <Link />
-                    </TouchableOpacity>
-                  )}
+                  <View style={styles.tagRow}>
+                    <AppText subtext style={[styles.address, { flex: 1 }]}>
+                      {recipient}
+                    </AppText>
+                    <View style={{ flexDirection: 'row' }}>
+                      <View style={styles.vertical} />
+                      <View style={styles.row}>
+                        <TouchableOpacity onPress={copyDestination}>
+                          <Copy />
+                        </TouchableOpacity>
+                        {(method === 'WALLET' ||
+                          method === 'WALLET_INTERNAL') && (
+                          <TouchableOpacity
+                            onPress={handleAddressUrl}
+                            style={{ marginLeft: 25 }}
+                          >
+                            <Link />
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              </>
+            )}
+          {tag && (
+            <>
+              <View style={{ marginTop: 20 }}>
+                <AppText medium style={styles.white}>
+                  Memo/Tag
+                </AppText>
+
+                <View style={styles.tagRow}>
+                  <AppText subtext style={[styles.address, { flex: 1 }]}>
+                    {tag}
+                  </AppText>
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={styles.vertical} />
+                    <View style={styles.row}>
+                      <TouchableOpacity onPress={copyTag}>
+                        <Copy />
+                      </TouchableOpacity>
+                      <Pressable style={{ marginLeft: 25, opacity: 0 }}>
+                        <Link />
+                      </Pressable>
+                    </View>
+                  </View>
                 </View>
               </View>
             </>
           )}
-        </>
+        </View>
       );
     }
     if (trades) {
       return (
-        <>
+        <View style={styles.container}>
           <View style={[styles.top, { alignItems: 'flex-end' }]}>
             <View style={[styles.top, styles.icons]}>
               <Image
@@ -179,7 +222,7 @@ function TransactionModal({ transactions, trades }) {
           <View style={styles.line} />
 
           <TradeDetails />
-        </>
+        </View>
       );
     }
   };
@@ -198,6 +241,7 @@ function TransactionModal({ transactions, trades }) {
 export default memo(TransactionModal);
 
 const styles = StyleSheet.create({
+  container: { paddingLeft: 10 },
   block: {
     padding: 40,
     paddingTop: 20,
@@ -237,7 +281,7 @@ const styles = StyleSheet.create({
   },
   vertical: {
     width: 0.5,
-    height: '100%',
+    height: 34,
     backgroundColor: '#32344C',
     marginRight: 15,
   },
@@ -248,7 +292,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // height: 37,
   },
-  address: { color: '#C0C5E0', marginTop: 5 },
+  tagRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  address: {
+    color: '#C0C5E0',
+    marginTop: 6,
+    marginRight: 15,
+  },
   instantTrade: { color: colors.SECONDARY_TEXT, marginTop: 3 },
   white: { color: colors.PRIMARY_TEXT },
 });

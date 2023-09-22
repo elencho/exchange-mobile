@@ -7,12 +7,15 @@ export const actionTypes = {
   SET_CURRENT_TRANSACTION: 'SET_CURRENT_TRANSACTION',
   SET_TYPE_FILTER: 'SET_TYPE_FILTER',
   SET_METHOD_FILTER: 'SET_METHOD_FILTER',
+  SET_STATUS_FILTER: 'SET_STATUS_FILTER',
   SET_FROM_TIME: 'SET_FROM_TIME',
   SET_TO_TIME: 'SET_TO_TIME',
   CLEAR_FILTERS: 'CLEAR_FILTERS',
   INCREASE_OFFSET: 'INCREASE_OFFSET',
   SET_TAB_ROUTE_NAME: 'SET_TAB_ROUTE_NAME',
   SET_TOTAL_TRANSACTIONS: 'SET_TOTAL_TRANSACTIONS',
+  SET_ACTIVE_TAB: 'SET_ACTIVE_TAB',
+  SET_TX_ID_OR_RECIPIENT: 'SET_TX_ID_OR_RECIPIENT',
   // PURE VISUALS
   TOGGLE_LOADING: 'TOGGLE_LOADING',
 
@@ -20,6 +23,7 @@ export const actionTypes = {
   FETCH_TRANSACTIONS: 'FETCH_TRANSACTIONS',
   FETCH_CURRENCIES: 'FETCH_CURRENCIES',
   TYPE_SAGA_ACTION: 'TYPE_SAGA_ACTION',
+  STATUS_SAGA_ACTION: 'STATUS_SAGA_ACTION',
   CURRENCY_SAGA_ACTION: 'CURRENCY_SAGA_ACTION',
   SET_ABBR: 'SET_ABBR',
   SHOW_RESULTS: 'SHOW_RESULTS',
@@ -28,6 +32,8 @@ export const actionTypes = {
   TRANSACTION_DETAILS_SAGA: 'TRANSACTION_DETAILS_SAGA',
 
   RESET_TRANSACTIONS_STATE: 'RESET_TRANSACTIONS_STATE',
+  SET_CRYPTO_FILTER: 'SET_CRYPTO_FILTER',
+  SET_PREV_TRANSACTIONS_FILTER: 'SET_PREV_TRANSACTIONS_FILTER',
 };
 
 export const saveTransactions = (transactions) => ({
@@ -62,6 +68,10 @@ export const setMethodFilter = (method) => ({
   type: actionTypes.SET_METHOD_FILTER,
   method,
 });
+export const setStatusFilter = (status) => ({
+  type: actionTypes.SET_STATUS_FILTER,
+  status,
+});
 export const setFromTime = (fromDateTime) => ({
   type: actionTypes.SET_FROM_TIME,
   fromDateTime,
@@ -89,6 +99,22 @@ export const setTabRouteName = (tabRoute) => ({
   type: actionTypes.SET_TAB_ROUTE_NAME,
   tabRoute,
 });
+export const setActiveTab = (activeTab) => ({
+  type: actionTypes.SET_ACTIVE_TAB,
+  activeTab,
+});
+export const setTransactionSearch = (txIdOrRecipient) => ({
+  type: actionTypes.SET_TX_ID_OR_RECIPIENT,
+  txIdOrRecipient,
+});
+export const setCryptoFilter = (cryptoFilter) => ({
+  type: actionTypes.SET_CRYPTO_FILTER,
+  cryptoFilter,
+});
+export const setPreviousTransactionsFilter = (previousTransactionsFilter) => ({
+  type: actionTypes.SET_PREV_TRANSACTIONS_FILTER,
+  previousTransactionsFilter,
+});
 
 // FOR SAGAS
 export const fetchTransactions = (isMoreLoading) => ({
@@ -101,6 +127,10 @@ export const fetchCurrencies = () => ({
 export const typeAction = (filter) => ({
   type: actionTypes.TYPE_SAGA_ACTION,
   filter,
+});
+export const statusAction = (status) => ({
+  type: actionTypes.STATUS_SAGA_ACTION,
+  status,
 });
 export const currencyAction = (name, currencyList, code) => ({
   type: actionTypes.CURRENCY_SAGA_ACTION,
@@ -124,10 +154,10 @@ export const reachScrollEnd = (transactionType) => ({
   type: actionTypes.REACH_SCROLL_END,
   transactionType,
 });
-export const filterAction = (filter, multiselect) => ({
+export const filterAction = (filter, filterType) => ({
   type: actionTypes.FILTER_SAGA_ACTION,
   filter,
-  multiselect,
+  filterType,
 });
 
 export const resetTransactionsState = () => ({

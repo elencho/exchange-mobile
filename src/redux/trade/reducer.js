@@ -6,9 +6,10 @@ const INITIAL_STATE = {
   pairObject: {},
   currentTrade: { price: '', size: '' },
   hideOtherPairs: false,
-
   fiat: 'GEL',
   crypto: 'BTC',
+  fiatsArray: [],
+
   tradeType: 'Buy',
   Balance_Card: 'balance',
   balanceLoading: false,
@@ -21,7 +22,6 @@ const INITIAL_STATE = {
   fee: null,
   depositProvider: null,
   depositProviders: null,
-  fiatsArray: [],
   cryptosArray: [],
   cryptosArrayConstant: [],
 
@@ -30,10 +30,17 @@ const INITIAL_STATE = {
   isTradesButtonLoading: false,
   moreTradesLoading: false,
   offersLoading: false,
+  previousTradeFilter: {},
 
   // Query Params
   offset: 0,
-  limit: 5,
+  limit: 50,
+  fromDateTimeQuery: null,
+  toDateTimeQuery: null,
+  statusQuery: [],
+  actionQuery: [],
+  cryptoCodeQuery: null,
+  fiatCodesQuery: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -66,6 +73,13 @@ export default (state = INITIAL_STATE, action) => {
     totalTrades,
     cryptosArrayConstant,
     moreTradesLoading,
+    actionQuery,
+    statusQuery,
+    fromDateTimeQuery,
+    toDateTimeQuery,
+    fiatCodesQuery,
+    cryptoCodeQuery,
+    previousTradeFilter,
   } = action;
   switch (action.type) {
     case actionTypes.SAVE_TRADES:
@@ -212,6 +226,53 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...INITIAL_STATE,
       };
+    case actionTypes.SET_TRADE_ACTION_QUERY:
+      return {
+        ...state,
+        actionQuery,
+      };
+    case actionTypes.SET_CRYPTO_CODE_QUERY:
+      return {
+        ...state,
+        cryptoCodeQuery,
+      };
+    case actionTypes.SET_FIAT_CODES_QUERY:
+      return {
+        ...state,
+        fiatCodesQuery,
+      };
+    case actionTypes.SET_STATUS_QUERY:
+      return {
+        ...state,
+        statusQuery,
+      };
+    case actionTypes.SET_FROM_DATE_QUERY:
+      return {
+        ...state,
+        fromDateTimeQuery,
+      };
+    case actionTypes.SET_TO_DATE_QUERY:
+      return {
+        ...state,
+        toDateTimeQuery,
+      };
+    case actionTypes.SET_PREV_TRADE_FILTER:
+      const prevState = JSON.parse(previousTradeFilter);
+      return {
+        ...state,
+        ...prevState,
+      };
+    case actionTypes.CLEAR_FILTERS_TRADE:
+      return {
+        ...state,
+        fromDateTimeQuery: null,
+        toDateTimeQuery: null,
+        statusQuery: [],
+        actionQuery: [],
+        cryptoCodeQuery: null,
+        fiatCodesQuery: [],
+      };
+
     default:
       return state;
   }

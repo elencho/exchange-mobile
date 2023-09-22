@@ -33,8 +33,8 @@ export default DeleteAccount;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingLeft: 24,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
+    paddingLeft: 5,
     paddingVertical: 14,
     flexDirection: 'row',
     alignItems: 'center',

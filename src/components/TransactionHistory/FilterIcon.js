@@ -4,20 +4,57 @@ import { useSelector } from 'react-redux';
 
 import AppText from '../AppText';
 import colors from '../../constants/colors';
-import { getParams } from '../../redux/transactions/selectors';
 import Filter from '../../assets/images/Filter';
-export default function FilterIcon({ onPress }) {
-  const params = useSelector(getParams);
-  const { type, currency, fromDateTime, toDateTime, methods } = params;
+import { setStatusModalInfo } from '../../redux/modals/actions';
+export default function FilterIcon({ onPress, isInstantTrade }) {
+  const { trade, transactions } = useSelector((state) => state);
+  const {
+    cryptoFilter: cryptoTransactions,
+    method: selectedMethod,
+    typeFilter,
+    fromDateTime,
+    toDateTime,
+    status,
+  } = transactions;
+  const {
+    actionQuery,
+    cryptoCodeQuery,
+    fiatCodesQuery,
+    statusQuery,
+    fromDateTimeQuery,
+    toDateTimeQuery,
+  } = trade;
 
-  const filters = [type, methods, currency, fromDateTime, toDateTime].filter(
-    (f) => f
+  const isFilteredTrades = Boolean(
+    fiatCodesQuery?.length > 0 ||
+      actionQuery?.length > 0 ||
+      statusQuery?.length > 0 ||
+      cryptoCodeQuery ||
+      fromDateTimeQuery ||
+      toDateTimeQuery
   );
+  const isFilteredTransactions = Boolean(
+    typeFilter?.length > 0 ||
+      cryptoTransactions ||
+      fromDateTime ||
+      toDateTime ||
+      selectedMethod?.length > 0 ||
+      status?.length > 0
+  );
+  const isFilteredAny = isInstantTrade
+    ? isFilteredTrades
+    : isFilteredTransactions;
 
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <Pressable
+      onPress={onPress}
+      style={[
+        styles.container,
+        isFilteredAny && { backgroundColor: colors.PRIMARY_PURPLE },
+      ]}
+    >
       <Filter style={styles.icon} />
-      {filters.length ? (
+      {isFilteredAny ? (
         <View style={styles.dotOutline}>
           <View style={styles.dot} />
         </View>
@@ -28,17 +65,16 @@ export default function FilterIcon({ onPress }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 35,
-    minWidth: 35,
-    borderRadius: 30,
-    backgroundColor: colors.SECONDARY_PURPLE,
+    height: 45,
+    width: 44,
+    backgroundColor: colors.BUTTON_DISABLED,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
+    marginTop: 11,
   },
   icon: {
-    width: 13,
-    height: 13,
+    width: 18,
+    height: 18,
   },
   dot: {
     width: 6,
@@ -52,8 +88,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.PRIMARY_BACKGROUND,
     borderRadius: 30,
     position: 'absolute',
-    top: -1,
-    right: -1,
+    top: -2,
+    right: -2,
     justifyContent: 'center',
     alignItems: 'center',
   },

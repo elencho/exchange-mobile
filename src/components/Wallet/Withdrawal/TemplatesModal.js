@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Pressable, StyleSheet, View, Text } from 'react-native';
+import { Pressable, StyleSheet, View, Text, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import colors from '../../../constants/colors';
@@ -52,12 +52,14 @@ export default function TemplatesModal() {
   };
 
   const children = (
-    <>
+    <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
       {templates?.map((t) => (
         <View style={[styles.template, background(t)]} key={t.id}>
           <Pressable style={styles.flex} onPress={() => choose(t)}>
-            <Text style={styles.white}>{t.templateName}</Text>
-            <AppText subtext style={styles.subtext}>
+            <Text numberOfLines={1} style={styles.white}>
+              {t.templateName}
+            </Text>
+            <AppText numberOfLines={1} subtext style={styles.subtext}>
               {t.iban}
             </AppText>
           </Pressable>
@@ -72,22 +74,24 @@ export default function TemplatesModal() {
         style={[styles.template, background({ templateName: 'New Template' })]}
       >
         <Pressable
-          style={styles.flex}
+          style={styles.addNew}
           onPress={() => choose({ templateName: 'New Template' })}
         >
-          <PurpleText text="Add New Bank" />
-          <AppText subtext style={styles.subtext}>
-            Other Provider
-          </AppText>
-        </Pressable>
+          <View>
+            <PurpleText text="Add New Bank" />
+            <AppText subtext style={styles.subtext}>
+              Other Provider
+            </AppText>
+          </View>
 
-        <Pressable style={styles.icon}>
-          <Add />
+          <View style={styles.icon}>
+            <Add />
+          </View>
         </Pressable>
       </View>
 
       <DeleteModal type="template" />
-    </>
+    </ScrollView>
   );
 
   return (
@@ -106,6 +110,13 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 37,
   },
+  addNew: {
+    flex: 1,
+    height: 37,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   icon: {
     width: 18,
     alignItems: 'center',
@@ -113,10 +124,10 @@ const styles = StyleSheet.create({
   template: {
     height: 60,
     flexDirection: 'row',
-    paddingHorizontal: 18,
-    marginHorizontal: -18,
+    paddingHorizontal: 10,
     borderRadius: 5,
     alignItems: 'center',
+    gap: 6,
   },
   subtext: {
     color: colors.SECONDARY_TEXT,
@@ -127,5 +138,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Ubuntu_Medium',
     fontSize: 14,
     lineHeight: 18,
+  },
+  scrollView: {
+    maxHeight: 150,
   },
 });

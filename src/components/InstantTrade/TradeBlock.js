@@ -40,8 +40,6 @@ export default function TradeBlock() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    padding: 25,
     marginBottom: 10,
   },
   price: {

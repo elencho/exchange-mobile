@@ -1,12 +1,16 @@
-<svg id="SMS" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36.14" height="40.83" viewBox="0 0 36.14 40.83">
-  <defs>
-    <clipPath id="clip-path">
-      <rect id="Rectangle_10714" data-name="Rectangle 10714" width="36.14" height="40.83" fill="#c0c5e0"/>
-    </clipPath>
-  </defs>
-  <g id="Group_71725" data-name="Group 71725" clip-path="url(#clip-path)">
-    <path id="Path_62461" data-name="Path 62461" d="M29.48,38.76c0,.91-.01,1.62-.02,2.07H0L.04,0H26.67V2.06H2.33a.5.5,0,0,0-.5.5V38.5a.5.5,0,0,0,.5.5H27.15a.5.5,0,0,0,.5-.5l.02-5.94h1.78Z" fill="#c0c5e0"/>
-    <path id="Path_62462" data-name="Path 62462" d="M36.08,8.28H17.26v14.9h4.78v3.54h1.03l5.69-3.52,7.38-.02c-.01-.96-.03-4.29-.06-14.9M34.57,21.6H28.68c-.13.08-.93.52-4.73,2.82l-.54.32V21.75H18.8l.04-11.93H34.59Z" fill="#c0c5e0"/>
-    <rect id="Rectangle_10713" data-name="Rectangle 10713" width="6.852" height="2" transform="translate(11.732 31.013)" fill="#c0c5e0"/>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="42" height="44" viewBox="0 0 42 44">
+    <defs>
+        <clipPath id="fcgc21hzza">
+            <path data-name="Rectangle 10755" style="fill:#696f8e" d="M0 0h42v44H0z"/>
+        </clipPath>
+    </defs>
+    <g data-name="Group 71775" style="clip-path:url(#fcgc21hzza)">
+        <g data-name="Group 71774">
+            <g data-name="Group 71773" style="clip-path:url(#fcgc21hzza)">
+                <path data-name="Path 62487" d="M29.75 31.81h-1.77l-.01 5.73H5.17V4.85h22.11V2.83H3.38l-.04 36.53h26.42c.01-.38.02-1.06.02-1.94z" style="fill:#696f8e"/>
+                <path data-name="Path 62488" d="M35.68 10.17H18.7v13.49h4.25v3.16h1.06l5.07-3.14 6.66-.02c-.01-.69-.04-3.48-.06-13.49M34.1 22.04h-5.14c-.14.08-.85.47-4.26 2.53l-.3.18v-2.58h-4.1l.03-10.4h13.8z" style="fill:#696f8e"/>
+                <path data-name="Rectangle 10753" transform="translate(15.496 30.581)" style="fill:#696f8e" d="M0 0h3v2H0z"/>
+            </g>
+        </g>
+    </g>
 </svg>

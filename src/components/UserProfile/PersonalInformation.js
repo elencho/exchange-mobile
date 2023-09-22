@@ -24,12 +24,7 @@ export default function PersonalInformation() {
           Personal Information
         </AppText>
         <View style={styles.flex}>
-          <PurpleText
-            text="Edit"
-            style={styles.purple}
-            onPress={edit}
-            subtext
-          />
+          <PurpleText text="Edit" style={styles.purple} onPress={edit} />
         </View>
       </View>
 
@@ -51,10 +46,12 @@ export default function PersonalInformation() {
             {userInfo.firstName} {userInfo.lastName}
           </AppText>
           <AppText subtext style={styles.white}>
-            {userInfo.country}, {userInfo.city}
+            {(userInfo.country || userInfo.city) &&
+              `${userInfo.country}, ${userInfo.city}`}
           </AppText>
           <AppText subtext style={styles.white} numberOfLines={1}>
-            {userInfo.postalCode} / {userInfo.address}
+            {(userInfo.postalCode || userInfo.address) &&
+              `${userInfo.postalCode} / ${userInfo.address}`}
           </AppText>
         </View>
       </View>
@@ -90,8 +87,8 @@ const styles = StyleSheet.create({
     marginLeft: 15,
   },
   block: {
-    padding: 25,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    paddingVertical: 5,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: 10,
   },
   flex: {

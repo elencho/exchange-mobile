@@ -12,6 +12,7 @@ import Background from './Background';
 import CloseModalIcon from './InstantTrade/CloseModalIcon';
 import Headline from './TransactionHistory/Headline';
 import { useSelector } from 'react-redux';
+import { IS_IOS } from '../constants/system';
 
 function AppModal({
   children,
@@ -39,7 +40,6 @@ function AppModal({
   //   dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
   //   hide();
   // };
-
   return (
     webViewVisible && (
       <Modal
@@ -61,16 +61,22 @@ function AppModal({
         <RootSiblingParent>
           {bottom && (
             <KeyboardAvoidingView
-              behavior={Platform.select({ android: undefined, ios: 'padding' })}
+              behavior={Platform.select({
+                android: undefined,
+                ios: 'padding',
+              })}
               keyboardVerticalOffset={Platform.select({
-                ios: 50,
+                ios: 0,
                 android: 500,
               })}
             >
               <ModalTop bottom={bottom} />
               <View style={styles.bottom}>
                 {title && (
-                  <AppText header style={styles.header}>
+                  <AppText
+                    header
+                    style={[styles.header, bottom && { marginLeft: 8 }]}
+                  >
                     {title}
                   </AppText>
                 )}
@@ -96,21 +102,19 @@ export default memo(AppModal);
 
 const styles = StyleSheet.create({
   bottom: {
-    padding: 35,
+    paddingTop: 40,
+    paddingHorizontal: 10,
+    paddingBottom: 40,
     backgroundColor: colors.PRIMARY_BACKGROUND,
     marginBottom: -3,
   },
   header: {
     color: colors.PRIMARY_TEXT,
-    marginBottom: 25,
+    marginBottom: 12,
   },
   modal: {
-    marginHorizontal: 0,
-    marginTop: Platform.select({ ios: Constants.statusBarHeight, android: 0 }),
-    marginBottom: Platform.select({
-      ios: undefined,
-      android: 0,
-    }),
+    margin: 0,
+
     justifyContent: 'flex-end',
   },
 });

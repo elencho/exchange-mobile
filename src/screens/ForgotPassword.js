@@ -10,11 +10,12 @@ import PurpleText from '../components/PurpleText';
 import WithKeyboard from '../components/WithKeyboard';
 import Strong_Password from '../assets/images/User_profile/Strong_Password';
 import GeneralError from '../components/GeneralError';
-import Back from '../assets/images/Back';
 
 import colors from '../constants/colors';
 import { startLoginAction } from '../redux/profile/actions';
 import { errorHappenedHere } from '../utils/appUtils';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Background from '../components/Background';
 
 export default function ForgotPassword({ navigation }) {
   const dispatch = useDispatch();
@@ -116,9 +117,8 @@ export default function ForgotPassword({ navigation }) {
     error && f.username?.trim() && !mailValid ? 'Enter Valid Email' : null;
 
   return (
-    <View style={styles.container}>
+    <Background>
       <TouchableOpacity style={styles.back} onPress={goToLogin}>
-        <Back />
         <PurpleText
           numberOfLines={1}
           text="Back to Log In"
@@ -142,7 +142,7 @@ export default function ForgotPassword({ navigation }) {
         <GeneralError show={errorHappenedHere('ForgotPassword')} />
 
         <AppInput
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           style={styles.input}
           label="Enter Email"
           autoCapitalize={'none'}
@@ -153,7 +153,7 @@ export default function ForgotPassword({ navigation }) {
           errorText={errorText()}
         />
         <AppInput
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
           style={styles.input}
           label="Enter Code"
           autoCapitalize={'none'}
@@ -164,7 +164,7 @@ export default function ForgotPassword({ navigation }) {
 
         <AppButton text="Next" style={styles.button} onPress={next} />
       </WithKeyboard>
-    </View>
+    </Background>
   );
 }
 
@@ -172,7 +172,6 @@ const styles = StyleSheet.create({
   back: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: -20,
     marginTop: 28,
     alignSelf: 'flex-start',
   },
@@ -185,11 +184,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 84,
   },
-  container: {
-    flex: 1,
-    paddingHorizontal: '8%',
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-  },
+
   input: {
     width: '100%',
     marginVertical: 6,

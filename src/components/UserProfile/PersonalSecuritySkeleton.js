@@ -2,20 +2,20 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import colors from '../../constants/colors';
 import Skeleton from '../Skeleton';
+import AppSwitcher from '../AppSwitcher';
+import AppText from '../AppText';
 
-const FirstPart = () => (
+const FirstPart = ({ hasSwitch }) => (
   <View style={styles.mainWrapper}>
     <View style={styles.wrapper}>
       <View style={styles.lastWrapper}>
         <Skeleton width={34} height={34} style={{ borderRadius: 100 }} />
         <View style={styles.smallWrapper}>
-          <Skeleton width={58} height={10} style={{ marginBottom: 8 }} />
+          <Skeleton width={58} height={10} style={{ marginBottom: 15 }} />
           <Skeleton width={120} height={8} />
         </View>
       </View>
-      <View style={styles.secSmallWrapper}>
-        <Skeleton width={36} height={10} style={{ marginBottom: 8 }} />
-      </View>
+      <View>{hasSwitch && <AppSwitcher disabled />}</View>
     </View>
   </View>
 );
@@ -52,20 +52,18 @@ const SecondPart = () => (
 const PersonalSecuritySkeleton = () => (
   <>
     <View style={styles.container}>
-      <Skeleton
-        width={295}
-        height={8}
-        style={{ marginBottom: 12, marginTop: 34 }}
-      />
-      <Skeleton width={140} height={8} />
+      <AppText style={styles.text}>
+        2FA is specific type of multi-factor authentication that strengthens
+        access security
+      </AppText>
 
-      {[1, 2].map((n, i) => (
+      {[1, 2, 3].map((n, i) => (
         <View key={i}>
-          <FirstPart />
+          <FirstPart hasSwitch />
         </View>
       ))}
-    </View>
-    <View style={styles.container}>
+      <View style={styles.line} />
+      <FirstPart hasSwitch />
       <FirstPart />
     </View>
   </>
@@ -91,12 +89,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   mainWrapper: {
-    marginTop: 30,
+    marginTop: 36,
   },
   container: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingHorizontal: 24,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
+    paddingHorizontal: 5,
     paddingBottom: 30,
     marginBottom: 12,
+  },
+  line: {
+    height: 2,
+    width: '100%',
+    backgroundColor: colors.SECONDARY_BACKGROUND,
+    marginTop: 25,
+  },
+  text: {
+    color: '#696F8E',
+    fontSize: 12,
   },
 });

@@ -1,12 +1,21 @@
-import React from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   Image,
   Pressable,
   StyleSheet,
   TouchableOpacity,
   View,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import AppText from '../components/AppText';
 import Background from '../components/Background';
@@ -18,99 +27,248 @@ import DatePickerModal from '../components/TransactionFilter/DatePickerModal';
 import DatePicker from '../components/TransactionFilter/DatePicker';
 import Close from '../assets/images/Close.svg';
 import PurpleText from '../components/PurpleText';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { clearFilters } from '../redux/transactions/actions';
-import { toggleCurrencyModal } from '../redux/modals/actions';
+import {
+  clearFilters,
+  currencyAction,
+  setCryptoFilter,
+  setMethodFilter,
+  setPreviousTransactionsFilter,
+} from '../redux/transactions/actions';
+import {
+  toggleCryptoModal,
+  toggleCurrencyModal,
+  toggleMethodsModal,
+} from '../redux/modals/actions';
 import colors from '../constants/colors';
-import { types, methods } from '../constants/filters';
+import {
+  types,
+  statuses,
+  currencies,
+  transactionTypes,
+} from '../constants/filters';
 import { COINS_URL_PNG } from '../constants/api';
 
 import Arrow from '../assets/images/Arrow.svg';
-import Clear from '../assets/images/Clear.svg';
+import AppDropdown from '../components/AppDropdown';
+import ChooseMethodsModal from './ChooseMethodsModal';
+import CryptoModalTrade from '../components/InstantTrade/CryptoModalTrade';
+import {
+  clearFiltersTrade,
+  setCryptoCodeQuery,
+  setPreviousTradeFilter,
+} from '../redux/trade/actions';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function TransactionFilter({ navigation }) {
+const WINDOW_HEIGHT = Dimensions.get('window').height;
+
+export default function TransactionFilter({ navigation, route }) {
+  const { top, bottom, right, left } = useSafeAreaInsets();
+
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.transactions);
-  const { currency, code, method, typeFilter, fromDateTime, toDateTime } =
-    state;
+  const {
+    transactions: {
+      cryptoFilter: cryptoTransactions,
+      method: selectedMethod,
+      typeFilter,
+      fromDateTime,
+      toDateTime,
+      status,
+      loading: transactionsLoading,
+    },
+    trade: {
+      fiatCodesQuery,
+      statusQuery,
+      cryptoCodeQuery,
+      actionQuery,
+      fromDateTimeQuery,
+      toDateTimeQuery,
+      tradesLoading,
+    },
+  } = useSelector((state) => state);
+  const {
+    params: { isInstantTrade },
+  } = route;
 
-  const openModal = () => dispatch(toggleCurrencyModal(true));
-
-  const close = () => {
-    clear();
+  const close = async () => {
+    const prevFilter = isInstantTrade
+      ? await AsyncStorage.getItem('tradesFilter')
+      : await AsyncStorage.getItem('transactionsFilter');
+    isInstantTrade
+      ? dispatch(setPreviousTradeFilter(prevFilter))
+      : dispatch(setPreviousTransactionsFilter(prevFilter));
     navigation.navigate('Main', { screen: 'Transactions' });
   };
 
-  const clear = () => {
-    dispatch(clearFilters());
-    dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-  };
-
-  const clearCond =
-    code || typeFilter || fromDateTime || toDateTime || method[0] !== 'All';
-
   const seperateCurrencyName = (currency) => currency.split('(')[0];
+
+  const openModal = () =>
+    isInstantTrade
+      ? dispatch(toggleCryptoModal(true))
+      : dispatch(toggleCurrencyModal(true));
+  const handleMethodsDropdown = () => dispatch(toggleMethodsModal(true));
+  const clearMethodsDropdown = () => dispatch(setMethodFilter([]));
+  const clearCurrencyDropdown = () =>
+    isInstantTrade
+      ? dispatch(setCryptoCodeQuery(null))
+      : dispatch(setCryptoFilter(null));
+
+  const selectedCrypto = isInstantTrade ? cryptoCodeQuery : cryptoTransactions;
+
+  useEffect(() => {
+    const initialStateTrade = {
+      fiatCodesQuery,
+      statusQuery,
+      cryptoCodeQuery,
+      actionQuery,
+      fromDateTimeQuery,
+      toDateTimeQuery,
+    };
+    const initialStateTransactions = {
+      cryptoFilter: cryptoTransactions,
+      method: selectedMethod,
+      typeFilter,
+      fromDateTime,
+      toDateTime,
+      status,
+    };
+    isInstantTrade
+      ? AsyncStorage.setItem(
+          'tradesFilter',
+          JSON.stringify({ ...initialStateTrade })
+        )
+      : AsyncStorage.setItem(
+          'transactionsFilter',
+          JSON.stringify({ ...initialStateTransactions })
+        );
+  }, []);
+
+  const numOfRender = useRef(0);
 
   return (
     <Background>
       <View style={styles.closeContainer}>
-        <Headline title="Transaction Filter" />
-        <TouchableOpacity onPress={close} hitSlop={50}>
+        <Headline
+          title={isInstantTrade ? 'Convert Filter' : 'Transaction Filter'}
+        />
+        <TouchableOpacity
+          onPress={close}
+          hitSlop={50}
+          style={styles.closeButton}
+        >
           <Close />
         </TouchableOpacity>
       </View>
-      <AppText body style={styles.text}>
-        Choose Type:
-      </AppText>
-      <FilterRow array={types} />
+      <ScrollView
+        style={styles.container}
+        bounces={false}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'space-between',
+          minHeight: WINDOW_HEIGHT - bottom - top - 85,
+        }}
+      >
+        <View>
+          {isInstantTrade ? (
+            <View style={styles.marginBottom20}>
+              <AppText body style={styles.text}>
+                Choose currency / Pair
+              </AppText>
+              <FilterRow array={currencies} filterType="currency" />
+            </View>
+          ) : (
+            <View style={styles.type}>
+              <AppText body style={styles.text}>
+                Choose Type:
+              </AppText>
+              <FilterRow array={types} filterType="type" />
+            </View>
+          )}
 
-      <AppText body style={styles.text}>
-        Choose Methods:
-      </AppText>
-      <FilterRow array={methods} multiselect />
-
-      <Pressable style={styles.dropdown} onPress={openModal}>
-        {code && (
-          <Image
-            source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
-            style={styles.coin}
+          <AppDropdown
+            selectedText={
+              selectedCrypto?.length > 0 && seperateCurrencyName(selectedCrypto)
+            }
+            label={isInstantTrade ? 'Choose Crypto' : 'Choose Currency'}
+            handleClear={clearCurrencyDropdown}
+            icon={
+              selectedCrypto &&
+              selectedCrypto !== 'Show all currency' && (
+                <Image
+                  source={{
+                    uri: `${COINS_URL_PNG}/${selectedCrypto?.toLowerCase()}.png`,
+                  }}
+                  style={styles.coin}
+                />
+              )
+            }
+            handlePress={openModal}
+            style={!isInstantTrade && { marginVertical: 24 }}
           />
-        )}
-        <AppText body medium style={styles.bigText}>
-          {seperateCurrencyName(currency) || 'Show All Currencies'}
-        </AppText>
-        <Arrow />
-      </Pressable>
 
-      <DatePicker from />
-      <DatePicker to />
+          {isInstantTrade && (
+            <View style={styles.marginBottom30}>
+              <AppText body style={styles.text}>
+                Transaction Type:
+              </AppText>
+              <FilterRow array={transactionTypes} filterType="tradeAction" />
+            </View>
+          )}
 
-      {clearCond && (
-        <TouchableOpacity style={styles.clear} onPress={clear}>
-          <Clear />
-          <PurpleText style={styles.purple} text="Clear Filters" />
-        </TouchableOpacity>
-      )}
+          <DatePicker from isInstantTrade={isInstantTrade} />
+          <DatePicker to isInstantTrade={isInstantTrade} />
 
-      <TransactionFilterBottom navigation={navigation} />
+          {!isInstantTrade && (
+            <AppDropdown
+              label="Choose Methods:"
+              handlePress={handleMethodsDropdown}
+              handleClear={clearMethodsDropdown}
+              selectedText={selectedMethod?.[0] ?? null}
+            />
+          )}
+
+          <AppText body style={[styles.text, isInstantTrade && styles.status]}>
+            Choose Status:
+          </AppText>
+          <FilterRow
+            array={statuses}
+            filterType={`status${isInstantTrade ? 'Trade' : 'Transaction'}`}
+          />
+        </View>
+
+        <View
+          style={{
+            marginTop: 50,
+          }}
+        >
+          <TransactionFilterBottom
+            navigation={navigation}
+            isInstantTrade={isInstantTrade}
+          />
+        </View>
+      </ScrollView>
+
+      <CryptoModalTrade />
       <ChooseCurrencyModal isForTransactions />
 
-      <DatePickerModal from />
-      <DatePickerModal to />
+      <DatePickerModal isInstantTrade={isInstantTrade} from />
+      <DatePickerModal isInstantTrade={isInstantTrade} to />
+      <ChooseMethodsModal />
     </Background>
   );
 }
 
 const styles = StyleSheet.create({
-  clear: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
+  container: {
+    marginBottom: 10,
+    marginTop: -34,
+    paddingBottom: 140,
   },
   coin: {
     width: 24,
     height: 24,
-    marginRight: 12,
   },
   purple: {
     fontSize: 15,
@@ -120,26 +278,34 @@ const styles = StyleSheet.create({
   closeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 5,
     justifyContent: 'space-between',
+    marginTop: 36,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
+    zIndex: 10,
+    paddingBottom: 10,
   },
-  dropdown: {
-    paddingHorizontal: 20,
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#42475D',
-    marginVertical: 25,
+  marginBottom30: {
+    marginBottom: 30,
+  },
+  marginBottom20: {
+    marginVertical: 20,
   },
   text: {
-    fontSize: 13,
+    fontSize: 14,
     lineHeight: 17,
-    color: colors.PRIMARY_TEXT,
-    marginVertical: 15,
+    color: '#c0c5e0',
+    marginTop: 28,
+    marginBottom: 12,
+  },
+  status: {
+    marginTop: 6,
   },
   bigText: {
     color: colors.PRIMARY_TEXT,
     flex: 1,
   },
+  closeButton: {
+    marginTop: -40,
+  },
+  type: { marginTop: 20, marginBottom: 6 },
 });

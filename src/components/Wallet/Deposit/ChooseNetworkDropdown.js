@@ -6,15 +6,19 @@ import AppText from '../../AppText';
 
 import colors from '../../../constants/colors';
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions';
-import { ICONS_URL_PNG } from '../../../constants/api';
 import { setNetwork } from '../../../redux/wallet/actions';
-
+import Euro from '../../../assets/images/Euro.svg';
+import Card from '../../../assets/images/Card.svg';
+import Bank from '../../../assets/images/LocalBank.svg';
 import Arrow from '../../../assets/images/Arrow';
+import { ICONS_URL_PNG } from '../../../constants/api';
+import AppDropdown from '../../AppDropdown';
 
 export default function ChooseNetworkDropdown({
   disabled = false,
   whitelist,
   error,
+  style,
 }) {
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
@@ -24,19 +28,12 @@ export default function ChooseNetworkDropdown({
     transactions: { code },
     modals: { addWhitelistModalVisble },
   } = state;
+  // const uri = `${ICONS_URL_PNG}/${network}.png`;
+  // const fiat = cur?.type === 'FIAT';
 
   const cur = currentBalanceObj;
-  const uri = `${ICONS_URL_PNG}/${network}.png`;
+
   const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods';
-  const fiat = cur?.type === 'FIAT';
-
-  const [icon, setIcon] = useState(null);
-
-  useEffect(() => {
-    cur?.depositMethods?.WALLET?.forEach((m) => {
-      if (m.provider === network) setIcon(m.iconName);
-    });
-  }, [network, code]);
 
   useEffect(() => {
     if (addWhitelistModalVisble && hasMultipleNetworks) {
@@ -54,73 +51,67 @@ export default function ChooseNetworkDropdown({
   };
 
   const networkName = () => {
-    if (network === 'ERC20') return 'Ethereum Network';
-    if (network === 'BEP20') return 'Binance Smart Chain';
-    if (network === 'MAINNET') {
-      return cur[m].WALLET[0].displayName;
-    }
-    return network;
+    const currentNetwork =
+      currentBalanceObj?.supportedProviders?.WALLET?.filter(
+        (item) => item.provider === network
+      );
+    return (
+      <AppText medium body>
+        {currentNetwork?.[0]?.displayName}
+      </AppText>
+    );
   };
 
-  const backgroundColor =
-    colors[whitelist ? 'PRIMARY_BACKGROUND' : 'SECONDARY_BACKGROUND'];
-  const dropdown = {
-    opacity: disabled ? 0.5 : 1,
-    borderColor: error && !network ? '#F45E8C' : '#42475D',
-  };
+  const NetworkWithTicker = () => (
+    <AppText medium style={[styles.dropdownText, dropdownText]}>
+      {networkName()}
+      {'  '}
+      <AppText
+        style={[
+          styles.secondary,
+          disabled && { color: 'rgba(105, 111, 142, 0.4)' },
+        ]}
+      >
+        ({network === 'MAINNET' ? code : network})
+      </AppText>
+    </AppText>
+  );
+
   const dropdownText = {
-    color: error && !network ? '#F45E8C' : colors.PRIMARY_TEXT,
+    color: disabled ? colors.TEXT_DISABLED : colors.PRIMARY_TEXT,
   };
 
-  const imageDimensions = fiat
-    ? { width: 60, height: 12 }
-    : { width: 18, height: 18 };
+  const renderIcon = (network) => {
+    if (network === 'ECOMMERCE') {
+      return <Card />;
+    }
+    if (network === 'SWIFT') {
+      return <Bank />;
+    }
+    if (network === 'SEPA') {
+      return <Euro />;
+    }
+  };
 
   return (
     <>
       {isAvailable() && (
         <>
           {hasMultipleNetworks ? (
-            <Pressable
-              style={[styles.dropdown, dropdown]}
-              onPress={handleDropdown}
+            <AppDropdown
+              notClearable
+              label="Choose Network"
+              withLabel
               disabled={disabled}
-            >
-              {network ? (
-                <>
-                  <View style={[styles.subtext, { backgroundColor }]}>
-                    <AppText body style={styles.secondary}>
-                      Choose Network
-                    </AppText>
-                  </View>
-                  <Image
-                    source={{ uri }}
-                    style={[styles.image, imageDimensions]}
-                  />
-                  <AppText medium style={[styles.dropdownText, dropdownText]}>
-                    {networkName()}{' '}
-                    <AppText style={styles.secondary}>({network})</AppText>
-                  </AppText>
-                </>
-              ) : (
-                <AppText style={[styles.secondary, dropdownText, { flex: 1 }]}>
-                  Choose Network
-                </AppText>
-              )}
-              <Arrow />
-            </Pressable>
+              style={[styles.dropdown, style]}
+              icon={renderIcon(network)}
+              handlePress={handleDropdown}
+              error={error && !network}
+              selectedText={network && <NetworkWithTicker />}
+            />
           ) : (
-            <View style={styles.view}>
-              {icon && (
-                <Image
-                  source={{ uri }}
-                  style={[styles.image, styles.iconDimensions]}
-                />
-              )}
-              <AppText medium style={[styles.dropdownText, dropdownText]}>
-                {networkName()}{' '}
-                <AppText style={styles.secondary}>({network})</AppText>
-              </AppText>
+            <View style={styles.singleMethod}>
+              <NetworkWithTicker />
             </View>
           )}
         </>
@@ -133,22 +124,19 @@ const styles = StyleSheet.create({
   dropdownText: {
     flex: 1,
     marginRight: 12,
+    gap: 6,
+    color: colors.PRIMARY_TEXT,
   },
-  view: {
+  singleMethod: {
     height: 45,
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 20,
     backgroundColor: 'rgba(149, 164, 247, 0.04)',
-    paddingHorizontal: 15,
+    paddingHorizontal: 22,
   },
   dropdown: {
-    borderWidth: 1,
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
     marginTop: 20,
-    paddingHorizontal: 15,
   },
   iconDimensions: {
     width: 18,
@@ -162,11 +150,14 @@ const styles = StyleSheet.create({
   secondary: {
     color: colors.SECONDARY_TEXT,
   },
+  ticker: { marginLeft: 6, color: colors.SECONDARY_TEXT },
+
   subtext: {
     transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
     position: 'absolute',
     left: -5,
     top: -8,
     paddingHorizontal: 8,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
 });

@@ -105,7 +105,7 @@ export default function Fee() {
 
   return (
     <View style={styles.fee}>
-      <FeeIcon />
+      <FeeIcon width={32} height={32} />
       <View style={styles.flex}>
         <UpperLine />
         <LowerLine />
@@ -117,7 +117,7 @@ export default function Fee() {
 const styles = StyleSheet.create({
   container: { flexDirection: 'row' },
   fee: {
-    marginBottom: 50,
+    marginBottom: 26,
     alignItems: 'center',
     flexDirection: 'row',
   },

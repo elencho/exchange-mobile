@@ -21,6 +21,7 @@ import WithdrawalBanksModal from './WithdrawalBanksModal';
 import Arrow from '../../../assets/images/Arrow';
 import CountriesModal from '../../UserProfile/CountriesModal';
 import { COUNTRIES_URL_PNG } from '../../../constants/api';
+import AppDropdown from '../../AppDropdown';
 
 export default function WithdrawalInfo({ error }) {
   const dispatch = useDispatch();
@@ -43,14 +44,9 @@ export default function WithdrawalInfo({ error }) {
   const showBanks = () => dispatch(toggleChooseBankModal(true));
   const openCountriesModal = () => dispatch(toggleCountriesModal(true));
   const isBank = !!Object.keys(withdrawalBank).length;
-  const bankTitle = isBank ? withdrawalBank.bankName : 'Choose bank';
   const isTemplate = !!Object.keys(currentTemplate).length;
   const isBankOther = withdrawalBank.bankName === 'Other';
   const hasIntermediate = network === 'SWIFT' && currency !== 'GEL';
-
-  const title = !isTemplate
-    ? 'Choose or Add Template'
-    : currentTemplate.templateName;
 
   const bankColor = error && !isBank && { borderColor: '#F45E8C' };
   const templateRed = error && !isTemplate && { borderColor: '#F45E8C' };
@@ -140,45 +136,42 @@ export default function WithdrawalInfo({ error }) {
         label="Name"
         style={styles.name}
         value={`${userInfo.firstName} ${userInfo.lastName}`}
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
         disabled
       />
 
       {isBankOther && (
         <>
-          <Pressable
+          <AppDropdown
+            handlePress={openCountriesModal}
             style={styles.languageSelector}
-            onPress={openCountriesModal}
-          >
-            <View style={styles.countryInfo}>
+            icon={
               <Image
                 source={{
                   uri: `${COUNTRIES_URL_PNG}/${userInfo.countryCode}.png`,
                 }}
                 style={styles.flag}
               />
-              <AppText style={styles.countryText} medium>
-                {userInfo.country}
-              </AppText>
-            </View>
-            <Arrow />
-          </Pressable>
+            }
+            selectedText={userInfo?.country}
+            label="Recipient country"
+            withLabel
+            notClearable
+            error={error && !userInfo?.country}
+          />
 
           <AppInput
-            style={styles.inputContainer}
+            style={styles.marginTop}
             onChangeText={(t) => handleUserInfo(t, 'city')}
             label="City"
             value={userInfo.city}
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             error={error && !userInfo?.city?.trim()}
           />
 
           <AppInput
             label="Address"
             onChangeText={(t) => handleUserInfo(t, 'address')}
-            style={styles.address}
+            style={[styles.address, styles.marginTop]}
             value={userInfo.address}
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             error={error && !userInfo?.address?.trim()}
           />
         </>
@@ -189,21 +182,27 @@ export default function WithdrawalInfo({ error }) {
         Bank Info
       </AppText>
 
-      <Pressable style={[styles.dropdown, templateRed]} onPress={showTemplates}>
-        <AppText style={[styles.dropdownText, titleColor('template')]}>
-          {title}
-        </AppText>
-        <Arrow />
-      </Pressable>
+      <AppDropdown
+        handlePress={showTemplates}
+        selectedText={currentTemplate?.templateName}
+        label="Choose or Add Template"
+        withLabel
+        style={styles.dropdown}
+        notClearable
+        error={error && !isTemplate}
+      />
 
       {currentTemplate.templateName === 'New Template' ? (
         <>
-          <Pressable style={[styles.dropdown, bankColor]} onPress={showBanks}>
-            <AppText style={[styles.dropdownText, titleColor('bank')]}>
-              {bankTitle}
-            </AppText>
-            <Arrow />
-          </Pressable>
+          <AppDropdown
+            selectedText={withdrawalBank?.bankName}
+            label="Choose Bank"
+            withLabel
+            handlePress={showBanks}
+            style={styles.dropdown}
+            notClearable
+            error={error && !isBank}
+          />
           <WithdrawalBanksModal />
         </>
       ) : null}
@@ -211,8 +210,7 @@ export default function WithdrawalInfo({ error }) {
       {showIban() ? (
         <AppInput
           label="Account Number / IBAN"
-          style={styles.IBAN}
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          style={styles.marginTop}
           value={iban}
           onChangeText={handleIban}
           error={error && !iban?.trim()}
@@ -223,7 +221,6 @@ export default function WithdrawalInfo({ error }) {
         <>
           <AppInput
             label="SWIFT / BIC / Routing number"
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             value={receiverBank.swift}
             onChangeText={(t) => handleBankInfo(t, 'bank swift code')}
             style={styles.marginTop}
@@ -232,7 +229,7 @@ export default function WithdrawalInfo({ error }) {
           {hasIntermediate && (
             <AppInput
               label="Intermediary bank SWIFT / BIC / Routing number"
-              labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+              labelBackgroundColor={colors.PRIMARY_BACKGROUND}
               value={intermediateBank.swift}
               onChangeText={(t) => handleIntermediateBank(t)}
               style={styles.marginTop}
@@ -249,28 +246,15 @@ export default function WithdrawalInfo({ error }) {
 
 const styles = StyleSheet.create({
   block: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingVertical: 22,
-    paddingHorizontal: 16,
-    marginBottom: 12,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
+    paddingTop: 12,
+    marginBottom: 14,
   },
   dropdownText: {
     flex: 1,
   },
   dropdown: {
-    borderWidth: 1,
-    height: 45,
-    flexDirection: 'row',
-    alignItems: 'center',
     marginTop: 22,
-    borderColor: '#42475D',
-    paddingHorizontal: 15,
-  },
-  IBAN: {
-    marginTop: 22,
-  },
-  inputContainer: {
-    marginBottom: 20,
   },
   row: {
     flexDirection: 'row',
@@ -280,10 +264,10 @@ const styles = StyleSheet.create({
     width: '47%',
   },
   marginTop: {
-    marginTop: 22,
+    marginTop: 12,
   },
   name: {
-    marginBottom: 30,
+    marginBottom: 22,
     marginTop: 18,
   },
   address: {
@@ -293,17 +277,7 @@ const styles = StyleSheet.create({
     color: '#B7BFDB',
     marginLeft: 3,
   },
-  languageSelector: {
-    borderWidth: 1,
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    borderColor: colors.BORDER,
-    marginBottom: 30,
-    height: 45,
-  },
+
   countryInfo: {
     flexDirection: 'row',
   },
@@ -314,7 +288,6 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
     borderRadius: 8,
-    marginRight: 20,
     resizeMode: 'stretch',
   },
 });

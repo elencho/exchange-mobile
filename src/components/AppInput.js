@@ -6,10 +6,12 @@ import {
   Animated,
   Easing,
   TouchableWithoutFeedback,
+  Pressable,
 } from 'react-native';
 import { IS_ANDROID } from '../constants/system';
 import AppText from '../components/AppText';
 import colors from '../constants/colors';
+import Close from '../assets/images/Close';
 
 const AppInput = ({
   label = '',
@@ -23,6 +25,10 @@ const AppInput = ({
   isForModal,
   labelBackgroundColor = colors.PRIMARY_BACKGROUND,
   disabled,
+  handleClear,
+  onFocus,
+  editable,
+  isSearch,
   onChangeText = () => {},
   ...rest
 }) => {
@@ -58,11 +64,11 @@ const AppInput = ({
           style={[styles.input, disabled && styles.disabledInput]}
           ref={inputRef}
           onBlur={() => setIsFocused(false)}
-          onFocus={() => setIsFocused(true)}
+          onFocus={() => setIsFocused(true)?.bind(onFocus)}
           value={value}
           placeholderTextColor={colors.SECONDARY_TEXT}
           onChangeText={(text) => onChangeText(text)}
-          editable={!disabled}
+          editable={!disabled && editable}
           {...rest}
         />
 
@@ -73,7 +79,17 @@ const AppInput = ({
                 styles.labelContainer,
                 {
                   width: isPlaceholder ? '100%' : null,
-                  backgroundColor: labelBackgroundColor,
+                  backgroundColor: focusAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ['transparent', labelBackgroundColor],
+                  }),
+                  opacity:
+                    isSearch &&
+                    focusAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [1, 0],
+                    }),
+
                   transform: [
                     {
                       scale: focusAnim.interpolate({
@@ -99,6 +115,7 @@ const AppInput = ({
             >
               <AppText
                 body
+                numberOfLines={1}
                 style={{
                   color:
                     isFocused && error
@@ -108,7 +125,7 @@ const AppInput = ({
                       : error
                       ? colors.ERROR_TEXT
                       : colors.SECONDARY_TEXT,
-                  opacity: disabled ? 0.5 : 1,
+                  opacity: disabled ? 0.6 : 1,
                 }}
               >
                 {label}
@@ -116,7 +133,24 @@ const AppInput = ({
             </Animated.View>
           </TouchableWithoutFeedback>
         ) : null}
-        {rightComponent && <View style={styles.icon}>{rightComponent}</View>}
+
+        {rightComponent && (
+          <View style={styles.icon}>
+            {handleClear && value.length > 0 ? (
+              <Pressable
+                style={{
+                  padding: 10,
+                  paddingRight: 2,
+                }}
+                onPress={handleClear}
+              >
+                <Close width={10} height={10} />
+              </Pressable>
+            ) : (
+              rightComponent
+            )}
+          </View>
+        )}
       </View>
       {errorText && (
         <AppText small style={styles.errorText}>
@@ -156,16 +190,17 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     borderWidth: 1,
-    height: 45,
-    paddingHorizontal: 15,
+    height: 44,
+    paddingHorizontal: 22,
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 11,
   },
   labelContainer: {
     position: 'absolute',
-    paddingHorizontal: 8,
+    paddingHorizontal: 12,
     height: 25,
+    overflow: 'visible',
     justifyContent: 'center',
   },
   icon: {

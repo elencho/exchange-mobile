@@ -23,13 +23,8 @@ export default function Security({ loading, bioAvailable }) {
         {['Google_Auth', 'E_mail_Auth', 'SMS_Auth'].map((r, i, a) => (
           <SecurityRow key={r} text={r} i={i} a={a} />
         ))}
+        <View style={styles.line} />
       </View>
-
-      {/* <View style={styles.block}>
-        {['Pin', 'Biometric'].map((r, i, a) => (
-          <SecurityRow key={r} text={r} i={i} a={a} />
-        ))}
-      </View> */}
 
       <View style={styles.block}>
         {bioAvailable && <SecurityRow text="Biometric" />}
@@ -49,13 +44,16 @@ export default function Security({ loading, bioAvailable }) {
 
 const styles = StyleSheet.create({
   block: {
-    paddingHorizontal: 25,
-    paddingVertical: 15,
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    marginBottom: 10,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
   },
   margin: { marginBottom: 20, marginTop: 10 },
   secondary: {
     color: colors.SECONDARY_TEXT,
+  },
+  line: {
+    marginBottom: 10,
+    height: 1,
+    flex: 1,
+    backgroundColor: colors.BUTTON_DISABLED,
   },
 });

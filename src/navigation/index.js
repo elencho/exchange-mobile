@@ -26,7 +26,9 @@ import Resume from '../screens/Resume';
 import Splash from '../screens/SplashScreen';
 import EmailVerification from '../screens/EmailVerification';
 import useNotifications from '../screens/useNotifications';
+import { enableScreens } from 'react-native-screens';
 
+enableScreens(false);
 const Stack = createNativeStackNavigator();
 export const navigationRef = createNavigationContainerRef();
 
@@ -53,6 +55,7 @@ export default function Navigator() {
     gestureEnabled: false,
     headerLeft: () => null,
     animation: 'slide_from_right',
+    navigationBarColor: '#161629',
   };
 
   useNotifications();
@@ -83,7 +86,7 @@ export default function Navigator() {
         <Stack.Screen name="Registration" component={RegistrationScreen} />
         <Stack.Screen name="EmailVerification" component={EmailVerification} />
         <Stack.Screen
-          options={{ animation: 'fade' }}
+          options={{ animation: 'fade', navigationBarColor: '#1F1F35' }}
           name="Main"
           component={MainScreen}
         />

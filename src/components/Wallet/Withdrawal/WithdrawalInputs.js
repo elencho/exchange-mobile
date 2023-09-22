@@ -22,6 +22,7 @@ import {
 } from '../../../redux/wallet/actions';
 import { handleAmountInput } from '../../../utils/formUtils';
 import { validateAmount } from '../../../utils/appUtils';
+import AppDropdown from '../../AppDropdown';
 
 export default function WithdrawalInputs({
   isFiat,
@@ -107,7 +108,7 @@ export default function WithdrawalInputs({
     </TouchableOpacity>
   );
 
-  const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 20;
+  const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 14;
   const needsTag = () => {
     if (currentBalanceObj?.infos) {
       return (
@@ -130,7 +131,6 @@ export default function WithdrawalInputs({
             label="Address tag"
             onChangeText={handleMemotag}
             value={memoTag}
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
             style={{ marginBottom: 22 }}
             error={error && !memoTag?.trim()}
           />
@@ -150,7 +150,6 @@ export default function WithdrawalInputs({
             label="Enter Note"
             onChangeText={setNote}
             value={withdrawalNote}
-            labelBackgroundColor={colors.SECONDARY_BACKGROUND}
           />
         )}
         <AppInput
@@ -160,26 +159,21 @@ export default function WithdrawalInputs({
           style={{ marginTop, marginBottom: 8 }}
           keyboardType="numeric"
           maxLength={maxLength}
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-          right={<Max />}
           editable={!!editable}
+          disabled={!editable}
           error={error && !validateAmount(withdrawalAmount)}
+          right={<Max />}
         />
       </View>
 
-      <View style={{ marginHorizontal: 16 }}>
-        <Fee />
-      </View>
+      <Fee />
     </>
   );
 }
 
 const styles = StyleSheet.create({
   block: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingVertical: 22,
-    paddingHorizontal: 16,
-    marginBottom: 22,
+    paddingBottom: 22,
   },
   line: {
     width: 1,

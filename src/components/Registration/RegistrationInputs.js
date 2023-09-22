@@ -24,7 +24,7 @@ export default function RegistrationInputs({ validations, error }) {
   const state = useSelector((state) => state);
 
   const {
-    profile: { registrationInputs, countriesConstant },
+    profile: { registrationInputs, countriesConstant, Personal_Company },
   } = state;
 
   const i = registrationInputs;
@@ -69,27 +69,9 @@ export default function RegistrationInputs({ validations, error }) {
   return (
     <>
       <AppInput
-        value={i.firstName}
-        label="Enter Name"
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-        style={styles.input}
-        onChangeText={(text) => handleInputs(text, 'name')}
-        error={error && !v.nameCheck}
-        errorText={errorText('First Name')}
-      />
-      <AppInput
-        value={i.lastName}
-        label="Enter Last Name"
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-        style={styles.input}
-        onChangeText={(text) => handleInputs(text, 'last name')}
-        error={error && !v.lastNameCheck}
-        errorText={errorText('Last Name')}
-      />
-      <AppInput
         value={i.email}
         label="Enter E-mail"
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         style={styles.input}
         autoCapitalize={'none'}
         onChangeText={(text) => handleInputs(text, 'email')}
@@ -100,7 +82,7 @@ export default function RegistrationInputs({ validations, error }) {
         value={i.passwordNew}
         label="Enter Password"
         autoCapitalize={'none'}
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'pass')}
         secureTextEntry
@@ -110,11 +92,9 @@ export default function RegistrationInputs({ validations, error }) {
       <Text style={styles.validations}>
         <Text style={error && !v.passLength && red}>
           {t('8 or more characters')}
-          {', '}
         </Text>
         <Text style={error && !v.hasUpperAndLower && red}>
           {t('Upper & lowercase letters')}
-          {', '}
         </Text>
         <Text style={error && !v.hasNumber && red}>
           {t('At least one number')}
@@ -125,7 +105,7 @@ export default function RegistrationInputs({ validations, error }) {
         value={i.passwordConfirm}
         label="Repeat Password"
         autoCapitalize={'none'}
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+        labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         style={styles.input}
         onChangeText={(text) => handleInputs(text, 'confirm')}
         secureTextEntry
@@ -162,21 +142,24 @@ export default function RegistrationInputs({ validations, error }) {
         />
       </View>
       <CountriesModal phoneCountry registration />
-
-      <AppInput
-        value={i.referralCode}
-        label="Referral Code"
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-        style={styles.input}
-        onChangeText={(text) => handleInputs(text, 'referal')}
-      />
-      <AppInput
-        value={i.promoCode}
-        label="Promo Code"
-        labelBackgroundColor={colors.SECONDARY_BACKGROUND}
-        style={[styles.input, { marginTop: 12 }]}
-        onChangeText={(text) => handleInputs(text, 'promoCode')}
-      />
+      {Personal_Company === 'Personal' && (
+        <>
+          <AppInput
+            value={i.referralCode}
+            label="Referral Code"
+            labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+            style={styles.input}
+            onChangeText={(text) => handleInputs(text, 'referal')}
+          />
+          <AppInput
+            value={i.promoCode}
+            label="Promo Code"
+            labelBackgroundColor={colors.PRIMARY_BACKGROUND}
+            style={[styles.input, { marginTop: 12 }]}
+            onChangeText={(text) => handleInputs(text, 'promoCode')}
+          />
+        </>
+      )}
     </>
   );
 }
@@ -189,7 +172,7 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
   },
   input: {
-    marginTop: 22,
+    marginTop: 12,
   },
   line: {
     width: 1,
@@ -209,7 +192,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 22,
-    marginBottom: -11,
     borderColor: '#42475D',
   },
   subtext: {

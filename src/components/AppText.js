@@ -14,18 +14,30 @@ export default function AppText({
   small,
   onPress,
   isForCodeInput,
+  noTranslate,
   ...props
 }) {
   const {
     modals: { appToastObj },
+    profile: { language },
     errors: { generalError },
   } = useSelector((state) => state);
+  const { t } = useTranslation();
+
+  const isMtavruli = language === 'ka' &&
+    header && { textTransform: 'uppercase' };
 
   const fontCond = () => {
-    if (medium || header) {
-      return 'Ubuntu_Medium';
+    switch (language) {
+      case 'en':
+        if (medium || header) {
+          return 'Ubuntu_Medium';
+        }
+      // case 'ka':
+      //   return 'HelveticaNeune';
+      default:
+        return 'Ubuntu_Regular';
     }
-    return 'Ubuntu_Regular';
   };
 
   const sizeCond = () => {
@@ -70,9 +82,8 @@ export default function AppText({
     }
   };
 
-  const { t } = useTranslation();
-
   const text = () => {
+    if (noTranslate) return children;
     if (typeof children === 'string') {
       if (children.includes('{{') && children.includes('}}')) {
         return t(
@@ -92,12 +103,13 @@ export default function AppText({
         <Text
           accessibilityRole={onPress ? 'button' : 'text'}
           style={[
-            style,
             {
               fontFamily: fontCond(),
               fontSize: sizeCond(),
               lineHeight: heightCond(),
             },
+            isMtavruli,
+            style,
           ]}
           onPress={onPress}
           {...props}

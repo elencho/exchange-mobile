@@ -23,7 +23,7 @@ public class MainActivity extends ReactActivity {
     // coloring the background, status bar, and navigation bar.
     // This is required for expo-splash-screen.
     setTheme(R.style.AppTheme);
-    SplashScreen.show(this);
+    SplashScreen.show(this, R.style.SplashScreenTheme, true);
     super.onCreate(null);
 
     try {

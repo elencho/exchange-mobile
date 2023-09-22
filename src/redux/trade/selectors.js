@@ -1,12 +1,27 @@
 export const getParams = (state) => {
   const {
-    trade: { crypto, fiat, offset, limit, hideOtherPairs },
+    trade: {
+      fiatCodesQuery,
+      offset,
+      limit,
+      statusQuery,
+      actionQuery,
+      cryptoCodeQuery,
+      fromDateTimeQuery,
+      toDateTimeQuery,
+    },
   } = state;
 
   return {
-    pairId: hideOtherPairs ? `${crypto}-${fiat}` : null,
     offset,
-    limit,
+    limit: 10,
+    statuses: statusQuery,
+    fromTime: fromDateTimeQuery,
+    toTime: toDateTimeQuery,
+    fiatCodes: fiatCodesQuery,
+    cryptoCode:
+      cryptoCodeQuery === 'Show all currency' ? null : cryptoCodeQuery,
+    actions: actionQuery,
   };
 };
 

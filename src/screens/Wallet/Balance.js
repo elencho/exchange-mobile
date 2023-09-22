@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import Background from '../../components/Background';
 import Headline from '../../components/TransactionHistory/Headline';
 import PurpleText from '../../components/PurpleText';
-import Back from '../../assets/images/Back.svg';
 import WalletSwitcher from '../../components/Wallet/WalletSwitcher';
 import Deposit from './Deposit';
 import Withdrawal from './Withdrawal';
@@ -67,7 +66,6 @@ function Balance({ navigation }) {
   return (
     <Background>
       <TouchableOpacity onPress={back} style={styles.back} disabled={disabled}>
-        <Back tyle={styles.arrow} />
         <PurpleText text="Back to Wallet" style={styles.purpleText} />
       </TouchableOpacity>
 
@@ -94,23 +92,18 @@ function Balance({ navigation }) {
 export default memo(Balance);
 
 const styles = StyleSheet.create({
-  arrow: {
-    marginTop: 2,
-  },
   back: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
-    paddingVertical: 5,
+
     width: '45%',
+
+    paddingVertical: 30,
   },
   flexGrow: {
     flexGrow: 1,
   },
   flex: {
     flex: 1,
-  },
-  purpleText: {
-    marginHorizontal: 10,
   },
 });

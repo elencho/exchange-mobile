@@ -8,6 +8,7 @@ import { COINS_URL_PNG } from '../../../constants/api';
 import { toggleCurrencyModal } from '../../../redux/modals/actions';
 
 import Arrow from '../../../assets/images/Arrow';
+import AppDropdown from '../../AppDropdown';
 
 export default function WalletCoinsDropdown() {
   const dispatch = useDispatch();
@@ -26,23 +27,17 @@ export default function WalletCoinsDropdown() {
 
   return (
     <>
-      <Pressable style={styles.container} onPress={handleDropdown}>
-        <Image
-          source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
-          style={styles.image}
-        />
-        <View style={styles.balance}>
-          <AppText body medium style={styles.primary}>
-            {available} {code}
-          </AppText>
-        </View>
-
-        <View style={styles.line} />
-
-        <View style={styles.arrow}>
-          <Arrow />
-        </View>
-      </Pressable>
+      <AppDropdown
+        handlePress={handleDropdown}
+        icon={
+          <Image
+            source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
+            style={styles.image}
+          />
+        }
+        selectedText={`${available} ${code}`}
+        notClearable
+      />
 
       <Text style={styles.secondary}>
         <AppText subtext>Total :</AppText>
@@ -86,5 +81,6 @@ const styles = StyleSheet.create({
   secondary: {
     color: colors.SECONDARY_TEXT,
     marginTop: 8,
+    marginBottom: 5,
   },
 });

@@ -33,10 +33,8 @@ export default function ManageCards({ refreshControl }) {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.block}>
-        <WalletCoinsDropdown />
-      </View>
+    <View style={{ flex: 1, paddingTop: 18, paddingTop: 10 }}>
+      <WalletCoinsDropdown />
 
       {cardsLoading && (
         <MaterialIndicator color="#6582FD" animationDuration={3000} />
@@ -92,10 +90,8 @@ export default function ManageCards({ refreshControl }) {
 
 const styles = StyleSheet.create({
   block: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
     marginBottom: 12,
     paddingVertical: 22,
-    paddingHorizontal: 16,
   },
   button: {
     borderWidth: 1,
@@ -103,28 +99,22 @@ const styles = StyleSheet.create({
     borderStyle: 'dashed',
     height: 45,
     borderColor: colors.SECONDARY_PURPLE,
-    marginTop: 30,
+    marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+    marginBottom: 30,
   },
   description: {
     color: colors.SECONDARY_TEXT,
     textAlign: 'center',
-    marginHorizontal: '20%',
     lineHeight: 20,
     marginTop: 18,
     marginBottom: 45,
   },
   flex: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  scrollView: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-    paddingHorizontal: 28,
-    // paddingVertical: 20,
   },
 });

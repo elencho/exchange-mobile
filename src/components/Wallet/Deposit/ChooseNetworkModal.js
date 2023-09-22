@@ -12,7 +12,9 @@ import {
   setNetwork,
   wireDepositAction,
 } from '../../../redux/wallet/actions';
-import { ICONS_URL_PNG } from '../../../constants/api';
+import Euro from '../../../assets/images/Euro.svg';
+import Card from '../../../assets/images/Card.svg';
+import Bank from '../../../assets/images/LocalBank.svg';
 
 export default function ChooseNetworkModal() {
   const dispatch = useDispatch();
@@ -51,16 +53,25 @@ export default function ChooseNetworkModal() {
     }
     hide();
   };
-
   useEffect(() => {
-    let networksToDisplay = [];
-    const m =
-      withdrawal || isWhitelist ? 'withdrawalMethods' : 'depositMethods';
-    const n = currentBalanceObj[m];
+    const getNetworksToDisplay = () => {
+      let networksToDisplay = [];
+      const m = withdrawal ? 'withdrawalMethods' : 'depositMethods';
+      const n = currentBalanceObj[m];
 
-    if (n?.WALLET) n?.WALLET?.forEach((n) => networksToDisplay.push(n));
-    if (n?.WIRE) n?.WIRE?.forEach((n) => networksToDisplay.push(n));
-    setNetworks(networksToDisplay);
+      if (isWhitelist) {
+        currentBalanceObj?.supportedProviders?.WALLET?.forEach((n) =>
+          networksToDisplay.push(n)
+        );
+        setNetworks(networksToDisplay);
+        return;
+      }
+      if (n?.WALLET) n?.WALLET?.forEach((n) => networksToDisplay.push(n));
+      if (n?.WIRE) n?.WIRE?.forEach((n) => networksToDisplay.push(n));
+      setNetworks(networksToDisplay);
+    };
+
+    getNetworksToDisplay();
     return () => setNetworks([]);
   }, [code, walletTab]);
 
@@ -70,9 +81,18 @@ export default function ChooseNetworkModal() {
     }
   };
 
-  const imageDimensions = fiat
-    ? { width: 60, height: 12 }
-    : { width: 18, height: 18 };
+  const renderIcon = (network) => {
+    if (network === 'ECOMMERCE') {
+      return <Card />;
+    }
+    if (network === 'SWIFT') {
+      return <Bank />;
+    }
+    if (network === 'SEPA') {
+      return <Euro />;
+    }
+    return null;
+  };
 
   const children = (
     <>
@@ -86,17 +106,16 @@ export default function ChooseNetworkModal() {
           key={n.provider}
           onPress={() => handlePress(n.provider)}
         >
-          <Image
-            source={{ uri: `${ICONS_URL_PNG}/${n.provider}.png` }}
-            style={[styles.image, imageDimensions]}
-          />
-          <View style={styles.name}>
+          <View>{renderIcon(n.provider)}</View>
+          <View
+            style={[styles.name, !renderIcon(n.provider) && { marginLeft: 0 }]}
+          >
             <AppText medium body style={styles.primary}>
               {n?.displayName}
             </AppText>
 
-            <AppText subtext style={styles.secondary}>
-              {n?.provider}
+            <AppText body style={styles.secondary}>
+              {`(${n?.provider})`}
             </AppText>
           </View>
         </Pressable>
@@ -116,18 +135,18 @@ export default function ChooseNetworkModal() {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    resizeMode: 'contain',
-  },
   name: {
-    marginLeft: 20,
     justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 6,
+    flexDirection: 'row',
+    marginLeft: 10,
   },
   network: {
     flexDirection: 'row',
-    height: 62,
+    height: 50,
     alignItems: 'center',
-    marginHorizontal: -15,
+    marginHorizontal: -5,
     paddingHorizontal: 15,
     borderRadius: 5,
   },

@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { t } from 'i18next';
+import Constants from 'expo-constants';
 
 import AppButton from '../components/AppButton';
 import AppInput from '../components/AppInput';
@@ -79,7 +80,12 @@ export default function Login() {
 
   return (
     <View style={styles.background}>
-      <WithKeyboard padding flexGrow contentContainerStyle={styles.container}>
+      <WithKeyboard
+        padding
+        flexGrow
+        contentContainerStyle={styles.container}
+        keyboardVerticalOffsetIOS={10}
+      >
         <Logo style={styles.logo} />
         <View>
           <AppText header style={styles.primary}>
@@ -99,7 +105,7 @@ export default function Login() {
           errorText={errorText()}
           autoCapitalize={'none'}
           label={'Enter Email'}
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         />
         <AppInput
           secureTextEntry
@@ -116,7 +122,7 @@ export default function Login() {
             />
           }
           label={'Enter Password'}
-          labelBackgroundColor={colors.SECONDARY_BACKGROUND}
+          labelBackgroundColor={colors.PRIMARY_BACKGROUND}
         />
 
         <AppButton
@@ -144,8 +150,13 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   background: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     flex: 1,
+    justifyContent: 'center',
+    paddingTop: Platform.select({
+      ios: Constants.statusBarHeight + 10,
+      android: StatusBar.currentHeight + 20,
+    }),
   },
   container: {
     alignItems: 'center',
@@ -153,7 +164,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: '8%',
   },
   email: {
-    marginBottom: 22,
+    marginBottom: 12,
     width: '100%',
   },
   height42: {

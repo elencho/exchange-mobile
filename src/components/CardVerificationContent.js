@@ -108,7 +108,7 @@ export default function CardVerificationContent({ step = 0, cardId }) {
 
   return (
     <Background>
-      <CloseModalIcon onPress={close} />
+      <CloseModalIcon style={{ marginTop: 20 }} onPress={close} />
 
       {step === 1 ? (
         <CardName style={styles.image} />

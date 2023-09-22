@@ -39,9 +39,9 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
 
   const image = () => {
     if (reason === 'no address') {
-      return <List />;
+      return <List style={{ marginBottom: 20 }} />;
     } else {
-      return <WarningWhite />;
+      return <WarningWhite style={{ marginBottom: 20 }} />;
     }
   };
 
@@ -78,7 +78,10 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
   return (
     <View style={styles.flexBlock}>
       {image()}
-      <Headline title={headline()} />
+
+      <AppText header style={styles.headline}>
+        {headline()}
+      </AppText>
       <AppText body style={styles.description}>
         {text()}
       </AppText>
@@ -101,12 +104,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 20,
     marginBottom: 40,
+    marginTop: 10,
   },
   flexBlock: {
-    backgroundColor: colors.SECONDARY_BACKGROUND,
+    backgroundColor: colors.PRIMARY_BACKGROUND,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
-    paddingHorizontal: 10,
+  },
+  headline: {
+    color: colors.PRIMARY_TEXT,
+    textAlign: 'center',
+    fontSize: 18,
   },
 });
