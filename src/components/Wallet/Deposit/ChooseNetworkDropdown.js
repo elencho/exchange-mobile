@@ -51,12 +51,13 @@ export default function ChooseNetworkDropdown({
   };
 
   const networkName = () => {
-    const currentNetwork = currentBalanceObj?.[m]?.WALLET?.filter(
-      (item) => item.provider === network
-    );
+    const currentNetwork =
+      currentBalanceObj?.supportedProviders?.WALLET?.filter(
+        (item) => item.provider === network
+      );
     return (
       <AppText medium body>
-        {currentNetwork?.[0].displayName}
+        {currentNetwork?.[0]?.displayName}
       </AppText>
     );
   };
