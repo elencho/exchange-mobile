@@ -83,7 +83,6 @@ export default function ForgotPassword({ navigation }: Props) {
 			<TouchableOpacity style={styles.back} onPress={goToLogin}>
 				<AppButton
 					variant="text"
-					//	numberOfLines={1}
 					text="Back to Log In"
 					style={styles.backText}
 					onPress={goToLogin}
@@ -112,7 +111,6 @@ export default function ForgotPassword({ navigation }: Props) {
 					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.input}
 					label="Enter Email"
-					autoCapitalize={'none'}
 					onChangeText={saveUsername}
 					value={forgotPassInfo.username}
 					rightComponent={<Right />}
@@ -122,7 +120,6 @@ export default function ForgotPassword({ navigation }: Props) {
 					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.input}
 					label="Enter Code"
-					autoCapitalize={'none'}
 					onChangeText={saveCode}
 					value={forgotPassInfo.code}
 					error={error ? forgotPassInfo.code?.trim() : ''}

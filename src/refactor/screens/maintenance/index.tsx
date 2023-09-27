@@ -24,7 +24,7 @@ export default function Maintenance(navigation: any) {
 	}
 
 	const Margin = (margin: { margin: number }) => (
-		<View style={{ marginVertical: margin.margin / 2 }} />
+		<View style={{ marginHorizontal: margin.margin / 2 }} />
 	)
 
 	return (
@@ -54,11 +54,12 @@ export default function Maintenance(navigation: any) {
 			<View style={styles.footer}>
 				<AppText style={styles.supportText}>
 					Need Help? Contact
+					<View style={{ width: 4 }} />
 					<AppButton
 						variant="text"
 						text="Support"
-						style={styles.support}
 						onPress={goToSupport}
+						style={styles.support}
 					/>
 				</AppText>
 				<Margin margin={14} />
@@ -111,7 +112,6 @@ const _styles = (theme: Theme) =>
 			lineHeight: 21,
 		},
 		support: {
-			padding: 4,
-			margin: 4,
+			marginLeft: 10,
 		},
 	})

@@ -1,4 +1,4 @@
-import { StyleProp } from 'react-native'
+import { StyleProp, TextStyle } from 'react-native'
 import { AddProps, AddButton } from '@components/button/button-add'
 import { PrimaryProps, PrimaryButton } from '@components/button/button-primary'
 import { TextProps, TextButton } from '@components/button/button-text'
@@ -17,7 +17,7 @@ export interface CommonProps {
 	text: string
 	onPress: () => any
 	disabled?: boolean
-	style?: StyleProp<any>
+	style?: StyleProp<TextStyle>
 }
 
 export function AppButton(props: PrimaryProps): Element

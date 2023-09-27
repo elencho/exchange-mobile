@@ -59,7 +59,7 @@ const useForgotPassword = (
 	const errorText = () =>
 		error && forgotPassInfo.username?.trim() && !mailValid
 			? 'Enter Valid Email'
-			: null
+			: ''
 
 	return {
 		goToLogin,

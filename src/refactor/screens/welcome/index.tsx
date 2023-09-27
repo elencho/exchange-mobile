@@ -13,11 +13,11 @@ import { useTheme, Theme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import GeneralError from '@app/components/GeneralError'
-import LanguageSwitcher from '@app/components/LanguageSwitcher'
 import {
 	startLoginAction,
 	startRegistrationAction,
 } from '@app/redux/profile/actions'
+import LanguageSwitcher from '@app/refactor/screens/welcome/components/language-switcher'
 import { Screens } from '@app/refactor/setup/nav/types'
 import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
 import { errorHappenedHere } from '@app/utils/appUtils'

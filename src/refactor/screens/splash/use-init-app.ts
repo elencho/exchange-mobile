@@ -71,7 +71,7 @@ export default function useInitApp(
 			if (userHasToken) {
 				navigation.navigate('Main')
 			} else {
-				navigation.navigate('ForgotPassword') //TODO: Change to Welcome
+				navigation.navigate('ForgotPassword') // TODO: Default-Welcome
 			}
 		}
 	}

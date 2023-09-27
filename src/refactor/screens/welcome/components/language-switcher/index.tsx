@@ -36,14 +36,12 @@ export default function LanguageSwitcher() {
 		<Pressable style={styles.container} onPress={onPress}>
 			<Animated.View style={[outlineStyle, styles.row]}>
 				{flagIcon}
-				<AppText variant="l" style={styles.text}>
-					{curLanguageText}
-				</AppText>
+				<AppText style={styles.text}>{curLanguageText}</AppText>
 				<Arrow />
 			</Animated.View>
 			<Animated.View style={[fillStyle, styles.row]}>
 				{flagIcon}
-				<AppText variant="l" style={styles.text}>
+				<AppText medium={true} style={styles.text}>
 					{curLanguageText}
 				</AppText>
 				<Arrow />

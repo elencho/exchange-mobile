@@ -72,8 +72,9 @@ const AppInput = (props: Props) => {
 			? theme.color.error
 			: theme.color.textSecondary
 
-	const labelAnimation = {
-		width: isPlaceholder ? '100%' : '0%',
+	// any cast needed for isPlaceholder: null
+	const labelAnimation: any = {
+		width: isPlaceholder ? '100%' : null,
 		backgroundColor: focusAnim.interpolate({
 			inputRange: [0, 1],
 			outputRange: [
@@ -116,6 +117,7 @@ const AppInput = (props: Props) => {
 					placeholderTextColor={colors.SECONDARY_TEXT}
 					onChangeText={(text) => onChangeText?.(text)}
 					editable={!disabled}
+					autoCapitalize="none"
 				/>
 
 				{label ? (
