@@ -1,13 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
-import navigation from 'navigation'
 import { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import navigation from '@app/navigation'
 import {
 	setCredentials,
 	usernameAndPasswordAction,
 	startRegistrationAction,
-} from 'redux/profile/actions'
+} from '@app/redux/profile/actions'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
@@ -17,7 +17,7 @@ export default function useLogin() {
 
 	const {
 		profile: { credentials, userProfileLoading },
-	} = state
+	}: any = state
 
 	const loginText: string = credentials.login
 	const passwordText: string = credentials.password

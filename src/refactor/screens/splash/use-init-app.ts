@@ -16,7 +16,7 @@ import {
 	currentVersion,
 } from '@app/constants/system'
 import { setLanguage } from '@app/redux/profile/actions'
-import { ScreenProps } from '@app/refactor/setup/nav/types'
+import { Screens } from '@app/refactor/setup/nav/types'
 import { checkReadiness, fetchTranslations } from '@app/utils/appUtils'
 import { addResources, switchLanguage } from '@app/utils/i18n'
 import { fetchCountries } from '@app/utils/userProfileUtils'
@@ -26,7 +26,7 @@ interface Token {
 }
 
 export default function useInitApp(
-	navigation: NativeStackNavigationProp<ScreenProps, 'Splash'>
+	navigation: NativeStackNavigationProp<Screens, 'Splash'>
 ) {
 	const { theme } = useTheme()
 	const dispatch = useDispatch()
@@ -71,7 +71,7 @@ export default function useInitApp(
 			if (userHasToken) {
 				navigation.navigate('Main')
 			} else {
-				navigation.navigate('UpdateAvailable') //TODO: Change to Welcome
+				navigation.navigate('ForgotPassword') //TODO: Change to Welcome
 			}
 		}
 	}

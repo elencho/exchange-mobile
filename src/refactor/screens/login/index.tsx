@@ -1,18 +1,16 @@
-import { useFocusEffect } from '@react-navigation/native'
-import Logo from 'assets/images/Logo.svg'
-import AppInput from 'components/AppInput'
-import AppText from 'components/AppText'
-import GeneralError from 'components/GeneralError'
-import WithKeyboard from 'components/WithKeyboard'
 import { t } from 'i18next'
-import React, { useCallback } from 'react'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useDispatch } from 'react-redux'
-import { setCredentials } from 'redux/profile/actions'
-import { Button } from 'refactor/common/components/button'
-import useLogin from 'refactor/screens/login/use-login'
-import { COLORS_DARK } from 'refactor/setup/theme/colors'
-import { errorHappenedHere } from 'utils/appUtils'
+import Logo from '@assets/images/Logo.svg'
+import { COLORS_DARK } from '@theme/colors'
+import { Theme, useTheme } from '@theme/index'
+import { AppButton } from '@components/button'
+import AppInput from '@components/input'
+import AppText from '@components/text'
+import GeneralError from '@app/components/GeneralError'
+import WithKeyboard from '@app/components/WithKeyboard'
+import useLogin from '@app/refactor/screens/login/use-login'
+import { errorHappenedHere } from '@app/utils/appUtils'
 
 export default function Login() {
 	const {
@@ -28,12 +26,17 @@ export default function Login() {
 		onForgotPasswordPressed,
 	} = useLogin()
 
+	const { theme, styles } = useTheme(_styles)
+
 	return (
 		<View style={styles.background}>
-			<WithKeyboard padding flexGrow contentContainerStyle={styles.container}>
+			<WithKeyboard
+				contentContainerStyle={styles.container}
+				modal={undefined}
+				refreshControl={undefined}>
 				<Logo style={styles.logo} />
 				<View>
-					<AppText header style={styles.primary}>
+					<AppText variant="headline" style={styles.primary}>
 						Welcome to Cryptal
 					</AppText>
 				</View>
@@ -45,31 +48,30 @@ export default function Login() {
 					style={styles.email}
 					onChangeText={onLoginChanged}
 					value={loginText}
-					error={loginError?.length != 0}
-					errorText={loginError}
+					error={loginError}
 					autoCapitalize="none"
 					label={'Enter Email'}
-					labelBackgroundColor={COLORS_DARK.backgroundPrimary}
+					labelBackgroundColor={theme.color.backgroundPrimary}
 				/>
 				<AppInput
-					secureTextEntry
+					secureTextEntry={true}
 					onChangeText={onPasswordChanged}
 					value={passwordText}
-					autoCapitalize={'none'}
+					autoCapitalize="none"
+					label={'Enter Password'}
+					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.password}
-					error={passwordError != false}
-					right={
-						<Button
+					error={passwordError}
+					rightComponent={
+						<AppButton
 							variant="text"
 							text="Forgot?"
 							onPress={onForgotPasswordPressed}
 							style={{ marginLeft: 10 }}
 						/>
 					}
-					label={'Enter Password'}
-					labelBackgroundColor={COLORS_DARK.backgroundPrimary}
 				/>
-				<Button
+				<AppButton
 					variant="primary"
 					text="Login"
 					onPress={onLoginPressed}
@@ -79,7 +81,7 @@ export default function Login() {
 				<View style={{ marginBottom: 20 }}>
 					<AppText style={styles.secondary}>
 						{t('New User?')}{' '}
-						<Button
+						<AppButton
 							variant="text"
 							text={t('Register')}
 							onPress={onRegisterPressed}
@@ -91,45 +93,46 @@ export default function Login() {
 	)
 }
 
-const styles = StyleSheet.create({
-	button: {
-		width: '100%',
-		marginTop: 84,
-		marginBottom: 40,
-	},
-	background: {
-		backgroundColor: COLORS_DARK.backgroundPrimary,
-		flex: 1,
-	},
-	container: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingHorizontal: '8%',
-	},
-	email: {
-		marginBottom: 22,
-		width: '100%',
-	},
-	height42: {
-		marginBottom: 14,
-		marginTop: 20,
-		width: '100%',
-	},
-	logo: {
-		width: 48,
-		height: 54,
-	},
-	password: {
-		width: '100%',
-	},
-	primary: {
-		color: COLORS_DARK.textPrimary,
-		marginTop: 30,
-		textAlign: 'center',
-	},
-	secondary: {
-		color: COLORS_DARK.textSecondary,
-		textAlign: 'center',
-		lineHeight: 21,
-	},
-})
+const _styles = (theme: Theme) =>
+	StyleSheet.create({
+		button: {
+			width: '100%',
+			marginTop: 84,
+			marginBottom: 40,
+		},
+		background: {
+			backgroundColor: theme.color.backgroundPrimary,
+			flex: 1,
+		},
+		container: {
+			alignItems: 'center',
+			justifyContent: 'center',
+			paddingHorizontal: '8%',
+		},
+		email: {
+			marginBottom: 22,
+			width: '100%',
+		},
+		height42: {
+			marginBottom: 14,
+			marginTop: 20,
+			width: '100%',
+		},
+		logo: {
+			width: 48,
+			height: 54,
+		},
+		password: {
+			width: '100%',
+		},
+		primary: {
+			color: theme.color.textPrimary,
+			marginTop: 30,
+			textAlign: 'center',
+		},
+		secondary: {
+			color: theme.color.textSecondary,
+			textAlign: 'center',
+			lineHeight: 21,
+		},
+	})

@@ -4,9 +4,9 @@ import { StyleSheet, View } from 'react-native'
 import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
 import useInitApp from '@app/refactor/screens/splash/use-init-app'
-import { ScreenProps } from '@app/refactor/setup/nav/types'
+import { Screens } from '@app/refactor/setup/nav/types'
 
-interface Props extends NativeStackScreenProps<ScreenProps, 'Splash'> {}
+interface Props extends NativeStackScreenProps<Screens, 'Splash'> {}
 
 const Splash = ({ navigation }: Props) => {
 	const { styles } = useTheme(_styles)

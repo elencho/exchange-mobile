@@ -1,7 +1,7 @@
-export type ScreenRoute = keyof ScreenProps
+export type ScreenRoute = keyof Screens
 
 // TODO: Add props
-export type ScreenProps = {
+export type Screens = {
 	Splash?: {}
 	Welcome?: {}
 	UpdateAvailable?: {}
@@ -21,7 +21,7 @@ export type ScreenProps = {
 	SetNewPassword?: {}
 	Resume: {
 		fromSplash: boolean
-		version?: boolean
 		maintenanceInProgress: boolean
+		version?: boolean
 	}
 }

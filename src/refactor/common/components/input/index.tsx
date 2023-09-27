@@ -1,5 +1,5 @@
 import React, { ReactNode, memo, useEffect, useRef, useState } from 'react'
-import { TextInputProps } from 'react-native'
+import { Pressable, TextInputProps } from 'react-native'
 import {
 	TextInput,
 	StyleSheet,
@@ -8,6 +8,7 @@ import {
 	Easing,
 	TouchableWithoutFeedback,
 } from 'react-native'
+import Close from '@assets/images/Close.svg'
 import { useTheme, Theme } from '@theme/index'
 import AppText from '@components/text/index'
 import colors from '@app/constants/colors'
@@ -17,9 +18,10 @@ type Props = TextInputProps & {
 	label?: string
 	labelBackgroundColor?: string
 	disabled?: boolean
-	error?: string
+	error: string | boolean | null | undefined
 	rightComponent?: ReactNode
 	onFocusRightComponent?: ReactNode
+	handleClear?: () => void
 }
 
 const AppInput = (props: Props) => {
@@ -33,6 +35,7 @@ const AppInput = (props: Props) => {
 		labelBackgroundColor,
 		rightComponent,
 		onFocusRightComponent,
+		handleClear,
 	} = props
 	const [isFocused, setIsFocused] = useState(false)
 	const inputRef = useRef(null)
@@ -75,7 +78,7 @@ const AppInput = (props: Props) => {
 			inputRange: [0, 1],
 			outputRange: [
 				'transparent',
-				labelBackgroundColor ?? theme.color.backgroundSecondary,
+				labelBackgroundColor ?? theme.color.backgroundPrimary,
 			],
 		}),
 		transform: [
@@ -104,6 +107,7 @@ const AppInput = (props: Props) => {
 		<View style={style}>
 			<View style={[styles.inputContainer, { borderColor }]}>
 				<TextInput
+					{...props}
 					style={[styles.input, disabled && styles.disabledInput]}
 					ref={inputRef}
 					onBlur={() => setIsFocused(false)}
@@ -112,7 +116,6 @@ const AppInput = (props: Props) => {
 					placeholderTextColor={colors.SECONDARY_TEXT}
 					onChangeText={(text) => onChangeText?.(text)}
 					editable={!disabled}
-					{...props}
 				/>
 
 				{label ? (
@@ -129,7 +132,22 @@ const AppInput = (props: Props) => {
 						</Animated.View>
 					</TouchableWithoutFeedback>
 				) : null}
-				{rightChild && <View style={styles.icon}>{rightChild}</View>}
+				{rightChild && (
+					<View style={styles.icon}>
+						{handleClear && value?.length ? (
+							<Pressable
+								style={{
+									padding: 10,
+									paddingRight: 2,
+								}}
+								onPress={handleClear}>
+								<Close width={10} height={10} />
+							</Pressable>
+						) : (
+							rightComponent
+						)}
+					</View>
+				)}
 			</View>
 			{error && (
 				<AppText variant="s" style={styles.errorText}>

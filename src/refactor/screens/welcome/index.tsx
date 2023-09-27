@@ -18,11 +18,11 @@ import {
 	startLoginAction,
 	startRegistrationAction,
 } from '@app/redux/profile/actions'
-import { ScreenProps } from '@app/refactor/setup/nav/types'
+import { Screens } from '@app/refactor/setup/nav/types'
 import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
 import { errorHappenedHere } from '@app/utils/appUtils'
 
-interface Props extends NativeStackScreenProps<ScreenProps, 'Welcome'> {}
+interface Props extends NativeStackScreenProps<Screens, 'Welcome'> {}
 
 export default function Welcome({ navigation }: Props) {
 	const dispatch = useDispatch()

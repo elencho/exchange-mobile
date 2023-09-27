@@ -8,15 +8,15 @@ import React from 'react'
 import { BackHandler } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import MainScreen from '@app/navigation/MainScreen'
+import Login from '@app/refactor/screens/login'
 import Maintenance from '@app/refactor/screens/maintenance'
+import ForgotPassword from '@app/refactor/screens/password_forgot/index'
 import Splash from '@app/refactor/screens/splash/index'
 import UpdateAvailable from '@app/refactor/screens/update'
 import Welcome from '@app/refactor/screens/welcome'
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
 import EmailVerification from '@app/screens/EmailVerification'
-import ForgotPasswordScreen from '@app/screens/ForgotPassword'
-import LoginScreen from '@app/screens/Login'
 import Login2FaScreen from '@app/screens/Login2Fa'
 import RegistrationScreen from '@app/screens/Registration'
 import ResetOtpInstructionsScreen from '@app/screens/ResetOtpInstructions'
@@ -26,9 +26,9 @@ import TransactionFilter from '@app/screens/TransactionFilter'
 import UserProfileScreen from '@app/screens/UserProfile'
 import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
-import { ScreenProps } from './types'
+import { Screens } from './types'
 
-const Stack = createNativeStackNavigator<ScreenProps>()
+const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef()
 
 export default function AppNavigator() {
@@ -67,7 +67,7 @@ export default function AppNavigator() {
 					headerLeft: () => null,
 					animation: 'slide_from_right',
 				}}
-				initialRouteName="Splash">
+				initialRouteName="Login">
 				<Stack.Screen name="Splash" component={Splash} />
 				<Stack.Screen
 					name="Welcome"
@@ -84,7 +84,9 @@ export default function AppNavigator() {
 					component={Maintenance}
 					options={{ animation: 'fade' }}
 				/>
-				<Stack.Screen name="Login" component={LoginScreen} />
+				<Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+				<Stack.Screen name="SetNewPassword" component={SetNewPasswordScreen} />
+				<Stack.Screen name="Login" component={Login} />
 				<Stack.Screen name="Registration" component={RegistrationScreen} />
 				<Stack.Screen name="EmailVerification" component={EmailVerification} />
 				<Stack.Screen
@@ -111,8 +113,6 @@ export default function AppNavigator() {
 					name="ResetOtpInstructions"
 					component={ResetOtpInstructionsScreen}
 				/>
-				<Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-				<Stack.Screen name="SetNewPassword" component={SetNewPasswordScreen} />
 				<Stack.Screen
 					name="Resume"
 					component={Resume}
