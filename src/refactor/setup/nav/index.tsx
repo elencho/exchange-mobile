@@ -10,14 +10,14 @@ import { useDispatch, useSelector } from 'react-redux'
 import MainScreen from '@app/navigation/MainScreen'
 import Login from '@app/refactor/screens/login'
 import Maintenance from '@app/refactor/screens/maintenance'
+import ForgotPassword from '@app/refactor/screens/password_forgot'
+import SetNewPassword from '@app/refactor/screens/password_set'
 import Splash from '@app/refactor/screens/splash/index'
 import UpdateAvailable from '@app/refactor/screens/update'
 import Welcome from '@app/refactor/screens/welcome'
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
 import EmailVerification from '@app/screens/EmailVerification'
-//import ForgotPassword from '@app/refactor/screens/password_forgot'
-import ForgotPassword from '@app/screens/ForgotPassword'
 import Login2FaScreen from '@app/screens/Login2Fa'
 import RegisterScreen from '@app/screens/Registration'
 import ResetOtpInstructionsScreen from '@app/screens/ResetOtpInstructions'
@@ -86,7 +86,7 @@ export default function AppNavigator() {
 					options={{ animation: 'fade' }}
 				/>
 				<Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-				<Stack.Screen name="SetNewPassword" component={SetNewPasswordScreen} />
+				<Stack.Screen name="SetNewPassword" component={SetNewPassword} />
 				<Stack.Screen name="Login" component={Login} />
 				<Stack.Screen name="Registration" component={RegisterScreen} />
 				<Stack.Screen name="EmailVerification" component={EmailVerification} />
