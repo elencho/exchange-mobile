@@ -1,8 +1,7 @@
 // src/redux/errorsSlice.ts
-
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { PkceInfo } from './authTypes'
 import { startLogin } from './authThunks'
+import { PkceInfo } from './authTypes'
 
 interface AuthState {
 	timerVisible: boolean

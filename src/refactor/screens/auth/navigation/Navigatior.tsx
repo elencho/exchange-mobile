@@ -1,13 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import Splash from '../splash'
-import { Routes } from './Routes'
-import Welcome from '../welcome'
-import UpdateAvailable from '../update'
-import Maintenance from '../maintenance'
+import React from 'react'
+import { StyleSheet, Text, View } from 'react-native'
 import Login from '../login'
+import Maintenance from '../maintenance'
 import Register from '../register'
+import Splash from '../splash'
+import UpdateAvailable from '../update'
+import Welcome from '../welcome'
+import { Routes } from './Routes'
 
 const Stack = createNativeStackNavigator()
 
