@@ -27,7 +27,7 @@ type Props = TextInputProps & {
 const AppInput = (props: Props) => {
 	const {
 		value,
-		label,
+		label = '',
 		onChangeText,
 		error = '',
 		disabled = false,
@@ -37,10 +37,10 @@ const AppInput = (props: Props) => {
 		onFocusRightComponent,
 		handleClear,
 	} = props
-	const [isFocused, setIsFocused] = useState(false)
-	const inputRef = useRef(null)
-
 	const { theme, styles } = useTheme(_style)
+
+	const [isFocused, setIsFocused] = useState(false)
+	const inputRef = useRef<TextInput>(null)
 	const focusAnim = useRef(new Animated.Value(0)).current
 
 	useEffect(() => {
@@ -58,10 +58,9 @@ const AppInput = (props: Props) => {
 		? theme.color.brandSecondary
 		: '#42475D'
 
+	const isPlaceholder = !isFocused && !value && !rightComponent
 	const rightChild =
 		isFocused && onFocusRightComponent ? onFocusRightComponent : rightComponent
-
-	const isPlaceholder = !isFocused && !value && !rightComponent
 
 	const labelColor =
 		isFocused && error
@@ -72,7 +71,6 @@ const AppInput = (props: Props) => {
 			? theme.color.error
 			: theme.color.textSecondary
 
-	// any cast needed for isPlaceholder: null
 	const labelAnimation: any = {
 		width: isPlaceholder ? '100%' : null,
 		backgroundColor: focusAnim.interpolate({
@@ -114,7 +112,7 @@ const AppInput = (props: Props) => {
 					onBlur={() => setIsFocused(false)}
 					onFocus={() => setIsFocused(true)}
 					value={value}
-					placeholderTextColor={colors.SECONDARY_TEXT}
+					placeholderTextColor={theme.color.textSecondary}
 					onChangeText={(text) => onChangeText?.(text)}
 					editable={!disabled}
 					autoCapitalize="none"
@@ -163,7 +161,7 @@ const AppInput = (props: Props) => {
 const _style = (theme: Theme) =>
 	StyleSheet.create({
 		errorText: {
-			color: '#F45E8C',
+			color: theme.color.error,
 			marginTop: 8,
 		},
 		input: {

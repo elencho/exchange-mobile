@@ -2,7 +2,6 @@ import { t } from 'i18next'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import Logo from '@assets/images/Logo.svg'
-import { COLORS_DARK } from '@theme/colors'
 import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppInput from '@components/input'
@@ -49,7 +48,6 @@ export default function Login() {
 					onChangeText={onLoginChanged}
 					value={loginText}
 					error={loginError}
-					autoCapitalize="none"
 					label={'Enter Email'}
 					labelBackgroundColor={theme.color.backgroundPrimary}
 				/>
@@ -57,7 +55,6 @@ export default function Login() {
 					secureTextEntry={true}
 					onChangeText={onPasswordChanged}
 					value={passwordText}
-					autoCapitalize="none"
 					label={'Enter Password'}
 					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.password}
@@ -83,7 +80,7 @@ export default function Login() {
 						{t('New User?')}{' '}
 						<AppButton
 							variant="text"
-							text={t('Register')}
+							text={'Register'}
 							onPress={onRegisterPressed}
 						/>
 					</AppText>
