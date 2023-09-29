@@ -11,7 +11,7 @@ import AppInput from '@components/input/index'
 import AppText from '@components/text'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
-import useForgotPassword from '@app/refactor/screens/password_forgot/use-forgot-password'
+import useForgotPassword from '@app/refactor/screens/auth/password_forgot/use-forgot-password'
 import { Screens } from '@app/refactor/setup/nav/types'
 import { errorHappenedHere } from '@app/utils/appUtils'
 

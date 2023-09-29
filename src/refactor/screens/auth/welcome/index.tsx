@@ -32,7 +32,7 @@ export default function Welcome({ navigation }: Props) {
 
 	BackHandler.addEventListener('hardwareBackPress', () => true)
 
-	const startLogin = () => dispatch(startLoginAction(navigation))
+	const startLogin = (): void => dispatch(startLogin())
 	const startRegistration = () => dispatch(startRegistrationAction(navigation))
 
 	return (

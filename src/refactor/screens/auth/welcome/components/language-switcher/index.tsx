@@ -10,7 +10,7 @@ import { useTheme, Theme } from '@theme/index'
 import AppText from '@components/text/index'
 import { setLanguage } from '@app/redux/profile/actions'
 import { Language } from '@app/refactor/common/constants'
-import useAnimation from '@app/refactor/screens/welcome/components/language-switcher/animation'
+import useAnimation from '@app/refactor/screens/auth/welcome/components/language-switcher/animation'
 import { switchLanguage } from '@app/utils/i18n'
 
 export default function LanguageSwitcher() {

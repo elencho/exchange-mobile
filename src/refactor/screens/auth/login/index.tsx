@@ -9,7 +9,7 @@ import AppInput from '@components/input'
 import AppText from '@components/text'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
-import useLogin from '@app/refactor/screens/login/use-login'
+import useLogin from '@app/refactor/screens/auth/login/use-login'
 import { errorHappenedHere } from '@app/utils/appUtils'
 
 export default function Login() {
