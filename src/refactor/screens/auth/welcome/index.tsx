@@ -8,7 +8,7 @@ import {
 	BackHandler,
 	ImageBackground,
 } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Logo from '@assets/images/Logo.svg'
 import { useTheme, Theme } from '@theme/index'
 import { AppButton } from '@components/button'
@@ -20,6 +20,7 @@ import {
 	startRegistrationAction,
 } from '@app/redux/profile/actions'
 import { startLogin } from '@app/refactor/redux/auth/authThunks'
+import { RootState } from '@app/refactor/redux/rootReducer'
 import { Screens } from '@app/refactor/setup/nav/types'
 import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
 import { errorHappenedHere } from '@app/utils/appUtils'
@@ -29,19 +30,17 @@ interface Props extends NativeStackScreenProps<Screens, 'Welcome'> {}
 export default function Welcome({ navigation }: Props) {
 	const dispatch = useDispatch()
 	const { styles } = useTheme(_style)
-
+	const state = useSelector((state: RootState) => state.authReducer)
 	useNotificationsAndroid()
 
 	// BackHandler.addEventListener('hardwareBackPress', () => true)
-
 	const startLoginNew = async (): Promise<void> => {
-		dispatch(startLogin()) // Dispatch the action directly, without await
-			// .then((resultAction) => {
-			// 	const originalPromiseResult = unwrapResult(resultAction)
-			// })
-			// .catch((error) => {
-			// 	console.log(error)
-			// })
+		await dispatch(startLogin())
+
+		console.log(state.loginStartInfo)
+		// if (data.execution === 'LOGIN_USERNAME_PASSWORD') {
+		// 	navigation.navigate('Login')
+		// }
 	}
 	const startRegistration = () => dispatch(startRegistrationAction(navigation))
 

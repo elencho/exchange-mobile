@@ -1,13 +1,12 @@
 // src/redux/errorsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { startLogin } from './authThunks'
-import { PkceInfo } from './authTypes'
 
 interface AuthState {
 	timerVisible: boolean
 	authLoading: boolean
 	pkceInfo: {} | PkceInfo
-	loginStartInfo: any
+	loginStartInfo: LoginStart | {}
 
 	// TODO: add other state values
 }

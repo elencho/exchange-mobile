@@ -5,6 +5,7 @@ import { StatusBar, LogBox, View, StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
+import store from '@app/refactor/redux/store'
 import AppNavigator from '@app/refactor/setup/nav/index'
 import AppToast from './src/components/AppToast'
 import images from './src/constants/images'
@@ -16,7 +17,6 @@ import {
 } from './src/refactor/setup/theme'
 import { THEME_DARK } from './src/refactor/setup/theme/variants'
 import './src/utils/interceptor'
-import store from '@app/refactor/redux/store'
 
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed

@@ -1,11 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import pkceChallenge from 'react-native-pkce-challenge'
-import { loginStart } from '@app/utils/userProfileUtils'
 import {
 	saveLoginStartInfo,
 	savePkceInfo,
 	saveVerificationInfo,
 } from '../profile/actions'
+import { loginStart } from './authApi'
 
 // function* startLoginSaga(action) {
 // 	const pkceInfo = pkceChallenge()
@@ -30,7 +30,7 @@ export const startLogin = createAsyncThunk(
 	async (_, { dispatch, getState }) => {
 		try {
 			const pkceInfo = pkceChallenge() // Replace with your pkceChallenge logic
-			const loginStartInfo = await loginStart(pkceInfo) // Replace with your loginStart logic
+			const loginStartInfo = await loginStart(pkceInfo?.codeChallenge) // Replace with your loginStart logic
 
 			// // Dispatch actions and handle navigation based on loginStartInfo
 			// dispatch(savePkceInfo(pkceInfo))
