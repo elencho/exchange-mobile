@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { unwrapResult } from '@reduxjs/toolkit'
 import {
 	StyleSheet,
 	View,
@@ -18,6 +19,7 @@ import {
 	startLoginAction,
 	startRegistrationAction,
 } from '@app/redux/profile/actions'
+import { startLogin } from '@app/refactor/redux/auth/authThunks'
 import { Screens } from '@app/refactor/setup/nav/types'
 import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
 import { errorHappenedHere } from '@app/utils/appUtils'
@@ -30,9 +32,17 @@ export default function Welcome({ navigation }: Props) {
 
 	useNotificationsAndroid()
 
-	BackHandler.addEventListener('hardwareBackPress', () => true)
+	// BackHandler.addEventListener('hardwareBackPress', () => true)
 
-	const startLogin = (): void => dispatch(startLogin())
+	const startLoginNew = async (): Promise<void> => {
+		dispatch(startLogin()) // Dispatch the action directly, without await
+			// .then((resultAction) => {
+			// 	const originalPromiseResult = unwrapResult(resultAction)
+			// })
+			// .catch((error) => {
+			// 	console.log(error)
+			// })
+	}
 	const startRegistration = () => dispatch(startRegistrationAction(navigation))
 
 	return (
@@ -60,7 +70,7 @@ export default function Welcome({ navigation }: Props) {
 						<AppButton
 							variant="primary"
 							text="Login"
-							onPress={startLogin}
+							onPress={startLoginNew}
 							style={styles.button}
 						/>
 						<AppButton

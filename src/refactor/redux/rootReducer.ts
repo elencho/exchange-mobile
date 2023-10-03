@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import authReducer from './auth/authSlice'
-import errorsReducer from './errors/errorsSlice'
+import errors from './errors/errorsSlice'
 import modals from './modals/reducer'
 import profile from './profile/reducer'
 import trade from './trade/reducer'
@@ -14,7 +14,7 @@ const reducers = {
 	modals,
 	profile,
 	wallet,
-	errorsReducer,
+	errors,
 }
 
 export const reducer = combineReducers(reducers)

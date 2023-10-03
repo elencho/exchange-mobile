@@ -9,7 +9,6 @@ import AppNavigator from '@app/refactor/setup/nav/index'
 import AppToast from './src/components/AppToast'
 import images from './src/constants/images'
 import { IS_ANDROID } from './src/constants/system'
-import store from './src/redux/store'
 import {
 	CryptalThemeProvider,
 	Theme,
@@ -17,6 +16,7 @@ import {
 } from './src/refactor/setup/theme'
 import { THEME_DARK } from './src/refactor/setup/theme/variants'
 import './src/utils/interceptor'
+import store from '@app/refactor/redux/store'
 
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed

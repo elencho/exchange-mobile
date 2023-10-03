@@ -3,7 +3,7 @@ import * as SecureStore from 'expo-secure-store'
 import jwt_decode from 'jwt-decode'
 import pkceChallenge from 'react-native-pkce-challenge'
 import { call, delay, put, select, takeLatest } from 'redux-saga/effects'
-import launchSumsubSdk from '../../utils/sumsubMobileSdk'
+import launchSumsubSdk from '@app/utils/sumsubMobileSdk'
 import {
 	activateEmailOtp,
 	activateGoogleOtp,

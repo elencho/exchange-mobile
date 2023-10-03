@@ -30,20 +30,20 @@ export const startLogin = createAsyncThunk(
 	async (_, { dispatch, getState }) => {
 		try {
 			const pkceInfo = pkceChallenge() // Replace with your pkceChallenge logic
-			const loginStartInfo = await loginStart(pkceInfo?.codeChallenge) // Replace with your loginStart logic
+			const loginStartInfo = await loginStart(pkceInfo) // Replace with your loginStart logic
 
-			// Dispatch actions and handle navigation based on loginStartInfo
-			dispatch(savePkceInfo(pkceInfo))
-			dispatch(saveLoginStartInfo(loginStartInfo))
+			// // Dispatch actions and handle navigation based on loginStartInfo
+			// dispatch(savePkceInfo(pkceInfo))
+			// dispatch(saveLoginStartInfo(loginStartInfo))
 
-			if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
-				// Navigation logic here
-			}
+			// if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
+			// 	// Navigation logic here
+			// }
 
-			if (loginStartInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
-				// Navigation logic here
-				dispatch(saveVerificationInfo(loginStartInfo))
-			}
+			// if (loginStartInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
+			// 	// Navigation logic here
+			// 	dispatch(saveVerificationInfo(loginStartInfo))
+			// }
 
 			// Return the result to be used as the action.payload
 			return loginStartInfo

@@ -32,28 +32,29 @@ const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef()
 
 export default function AppNavigator() {
-	const dispatch = useDispatch()
-	const state: any = useSelector((state) => state)
-	const {
-		errors: { generalError },
-	} = state
+	// const dispatch = useDispatch()
+	// const state: any = useSelector((state) => state)
+	// const {
+	// 	errors: { generalError },
+	// } = state
 
 	useNotifications()
 
-	BackHandler.addEventListener('hardwareBackPress', () => true)
+	// BackHandler.addEventListener('hardwareBackPress', () => true)
 
-	const onStateChange = (state: any) => {
-		dispatch({
-			type: 'SET_STACK_NAVIGATION_ROUTE',
-			stackRoute: state.routes[state.routes.length - 1].name,
-		})
-		if (generalError)
-			dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
-	}
+	// const onStateChange = (state: any) => {
+	// 	console.log('asd')
+	// 	dispatch({
+	// 		type: 'SET_STACK_NAVIGATION_ROUTE',
+	// 		stackRoute: state.routes[state.routes.length - 1].name,
+	// 	})
+	// 	if (generalError)
+	// 		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+	// }
 
 	return (
 		<NavigationContainer
-			onStateChange={onStateChange}
+			// onStateChange={onStateChange}
 			ref={navigationRef}
 			// TODO: Check theme
 			theme={{
@@ -67,7 +68,7 @@ export default function AppNavigator() {
 					headerLeft: () => null,
 					animation: 'slide_from_right',
 				}}
-				initialRouteName="Login">
+				initialRouteName="Welcome">
 				<Stack.Screen name="Splash" component={Splash} />
 				<Stack.Screen
 					name="Welcome"
