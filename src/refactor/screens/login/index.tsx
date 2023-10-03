@@ -1,5 +1,5 @@
 import { t } from 'i18next'
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
@@ -26,6 +26,8 @@ export default function Login() {
 	} = useLogin()
 
 	const { theme, styles } = useTheme(_styles)
+	const [email, setEmail] = useState('')
+	const [pass, setPass] = useState('')
 
 	return (
 		<View style={styles.background}>
@@ -45,16 +47,16 @@ export default function Login() {
 				</View>
 				<AppInput
 					style={styles.email}
-					onChangeText={onLoginChanged}
-					value={loginText}
+					onChangeText={setEmail}
+					value={email}
 					error={loginError}
 					label={'Enter Email'}
 					labelBackgroundColor={theme.color.backgroundPrimary}
 				/>
 				<AppInput
 					secureTextEntry={true}
-					onChangeText={onPasswordChanged}
-					value={passwordText}
+					onChangeText={setPass}
+					value={pass}
 					label={'Enter Password'}
 					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.password}

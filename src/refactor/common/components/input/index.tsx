@@ -11,7 +11,6 @@ import {
 import Close from '@assets/images/Close.svg'
 import { useTheme, Theme } from '@theme/index'
 import AppText from '@components/text/index'
-import colors from '@app/constants/colors'
 import { IS_ANDROID } from '@app/constants/system'
 
 type Props = TextInputProps & {
@@ -71,8 +70,8 @@ const AppInput = (props: Props) => {
 			? theme.color.error
 			: theme.color.textSecondary
 
-	const labelAnimation: any = {
-		width: isPlaceholder ? '100%' : null,
+	const labelAnimation = {
+		width: isPlaceholder ? '100%' : undefined,
 		backgroundColor: focusAnim.interpolate({
 			inputRange: [0, 1],
 			outputRange: [
