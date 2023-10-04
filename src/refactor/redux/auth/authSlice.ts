@@ -1,12 +1,14 @@
 // src/redux/errorsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { startLogin } from './authThunks'
+import { startLogin, usernameAndPaswordThunk } from './authThunks'
 
 interface AuthState {
 	timerVisible: boolean
 	authLoading: boolean
 	pkceInfo: {} | PkceInfo
 	loginStartInfo: LoginStart | {}
+	userAndPassInfo: {}
+	credentials: Credentials | {}
 
 	// TODO: add other state values
 }
@@ -16,8 +18,8 @@ const initialState: AuthState = {
 	authLoading: false,
 	pkceInfo: {},
 	loginStartInfo: {},
-	// credentials: {},
-	// userAndPassInfo: {},
+	credentials: {},
+	userAndPassInfo: {},
 	// forgotPassInfo: {
 	// 	username: '',
 	// 	code: '',
@@ -41,9 +43,16 @@ const initialState: AuthState = {
 }
 
 const authSlice = createSlice({
-	name: 'errors',
+	name: 'auth',
 	initialState,
-	reducers: {},
+	reducers: {
+		savePkceInfo: (state, action: PayloadAction<PkceInfo | {}>) => {
+			state.pkceInfo = action.payload
+		},
+		setCredentials: (state, action: PayloadAction<Credentials | {}>) => {
+			state.credentials = action.payload
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(startLogin.pending, (state) => {
@@ -56,8 +65,19 @@ const authSlice = createSlice({
 			.addCase(startLogin.rejected, (state) => {
 				state.authLoading = false
 			})
+
+			.addCase(usernameAndPaswordThunk.pending, (state) => {
+				state.authLoading = true
+			})
+			.addCase(usernameAndPaswordThunk.fulfilled, (state, action) => {
+				state.authLoading = false
+				state.userAndPassInfo = action.payload
+			})
+			.addCase(usernameAndPaswordThunk.rejected, (state) => {
+				state.authLoading = false
+			})
 	},
 })
 
-// export const { saveGeneralError, setRequestName } = authSlice.actions
+export const { savePkceInfo, setCredentials } = authSlice.actions
 export default authSlice.reducer

@@ -1,55 +1,62 @@
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import pkceChallenge from 'react-native-pkce-challenge'
-import {
-	saveLoginStartInfo,
-	savePkceInfo,
-	saveVerificationInfo,
-} from '../profile/actions'
-import { loginStart } from './authApi'
-
-// function* startLoginSaga(action) {
-// 	const pkceInfo = pkceChallenge()
-// 	const { navigation } = action
-// 	if (pkceInfo) {
-// 		yield put(savePkceInfo(pkceInfo))
-// 		const loginStartInfo = yield call(loginStart, pkceInfo?.codeChallenge)
-
-// 		yield put(saveLoginStartInfo(loginStartInfo))
-// 		if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
-// 			navigation.navigate('Login')
-// 		}
-// 		if (loginStartInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
-// 			navigation.push('EmailVerification', { fromScreen: 'login' })
-// 			yield put(saveVerificationInfo(loginStartInfo))
-// 		}
-// 	}
-// }
+import { Execution } from '@app/refactor/types/enums'
+import { RootState } from '../rootReducer'
+import { loginOtp, loginStart, usernameAndPasswordForm } from './authApi'
+import { savePkceInfo } from './authSlice'
 
 export const startLogin = createAsyncThunk(
-	'auth/startLogin',
-	async (_, { dispatch, getState }) => {
+	'startLogin',
+	async (navigation: NativeStackNavigationProp<any>, { dispatch }) => {
 		try {
-			const pkceInfo = pkceChallenge() // Replace with your pkceChallenge logic
-			const loginStartInfo = await loginStart(pkceInfo?.codeChallenge) // Replace with your loginStart logic
+			const pkceInfo = pkceChallenge()
+			const loginStartInfo = await loginStart(pkceInfo?.codeChallenge)
 
-			// // Dispatch actions and handle navigation based on loginStartInfo
-			// dispatch(savePkceInfo(pkceInfo))
-			// dispatch(saveLoginStartInfo(loginStartInfo))
+			dispatch(savePkceInfo(pkceInfo))
 
-			// if (loginStartInfo?.execution === 'LOGIN_USERNAME_PASSWORD') {
-			// 	// Navigation logic here
-			// }
+			if (loginStartInfo?.execution === Execution.LOGIN_USERNAME_PASSWORD) {
+				navigation.navigate('Login')
+			}
+			if (loginStartInfo?.execution === Execution.EMAIL_VERIFICATION_OTP) {
+				navigation.push('EmailVerification', { fromScreen: 'login' })
+			}
 
-			// if (loginStartInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
-			// 	// Navigation logic here
-			// 	dispatch(saveVerificationInfo(loginStartInfo))
-			// }
-
-			// Return the result to be used as the action.payload
 			return loginStartInfo
 		} catch (error) {
-			// Handle errors here
 			throw error
 		}
+	}
+)
+
+export const usernameAndPaswordThunk = createAsyncThunk(
+	'usernameAndPaswordThunk',
+	async (
+		navigation: NativeStackNavigationProp<any>,
+		{ dispatch, getState }
+	) => {
+		const state = getState() as RootState
+		const { credentials, loginStartInfo } = state.authReducer
+		const { login, password } = credentials
+		console.log({ login, password }, 'new', state)
+		const userAndPassInfo = await usernameAndPasswordForm(
+			login,
+			password,
+			loginStartInfo.callbackUrl
+		)
+		if (userAndPassInfo?.execution === 'LOGIN_OTP') {
+			navigation.navigate('Login2Fa')
+		}
+		if (userAndPassInfo?.execution === 'EMAIL_VERIFICATION_OTP') {
+			navigation.push('EmailVerification', { fromScreen: 'login' })
+		}
+		if (userAndPassInfo?.code) {
+			// const code = userAndPassInfo?.code
+			// const codeVerifier = yield select(
+			// 	(state) => state.profile.pkceInfo.codeVerifier
+			// )
+			// yield put({ type: 'CODE_TO_TOKEN_SAGA', code, codeVerifier, navigation })
+		}
+		return userAndPassInfo
 	}
 )

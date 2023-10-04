@@ -20,3 +20,36 @@ export const loginStart = async (code_challenge: string) => {
 	})
 	return data?.data
 }
+export const usernameAndPasswordForm = async (
+	username: string,
+	password: string,
+	url: string
+) => {
+	const data = await axios({
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			requestName: 'usernameAndPasswordForm',
+			toast: false,
+		},
+		url,
+		data: `username=${encodeURIComponent(
+			username
+		)}&password=${encodeURIComponent(password)}`,
+	})
+	if (data) return data.data
+}
+
+export const loginOtp = async (otp: string, url: string) => {
+	const data = await axios({
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			requestName: 'loginOtp',
+			toast: false,
+		},
+		url,
+		data: `otp=${otp}`,
+	})
+	if (data) return data.data
+}

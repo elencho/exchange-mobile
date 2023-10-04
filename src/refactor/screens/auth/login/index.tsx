@@ -14,8 +14,8 @@ import { errorHappenedHere } from '@app/utils/appUtils'
 
 export default function Login() {
 	const {
-		loginText,
-		passwordText,
+		login,
+		password,
 		loginError,
 		passwordError,
 		userProfileLoading,
@@ -47,7 +47,7 @@ export default function Login() {
 				<AppInput
 					style={styles.email}
 					onChangeText={onLoginChanged}
-					value={loginText}
+					value={login}
 					error={loginError}
 					autoCapitalize="none"
 					label={'Enter Email'}
@@ -56,7 +56,7 @@ export default function Login() {
 				<AppInput
 					secureTextEntry={true}
 					onChangeText={onPasswordChanged}
-					value={passwordText}
+					value={password}
 					autoCapitalize="none"
 					label={'Enter Password'}
 					labelBackgroundColor={theme.color.backgroundPrimary}

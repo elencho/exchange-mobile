@@ -33,14 +33,9 @@ export default function Welcome({ navigation }: Props) {
 	const state = useSelector((state: RootState) => state.authReducer)
 	useNotificationsAndroid()
 
-	// BackHandler.addEventListener('hardwareBackPress', () => true)
+	BackHandler.addEventListener('hardwareBackPress', () => true)
 	const startLoginNew = async (): Promise<void> => {
-		await dispatch(startLogin())
-
-		console.log(state.loginStartInfo)
-		// if (data.execution === 'LOGIN_USERNAME_PASSWORD') {
-		// 	navigation.navigate('Login')
-		// }
+		dispatch(startLogin(navigation))
 	}
 	const startRegistration = () => dispatch(startRegistrationAction(navigation))
 
