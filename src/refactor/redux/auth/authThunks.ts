@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import pkceChallenge from 'react-native-pkce-challenge'
 import { Execution } from '@app/refactor/types/enums'
 import { RootState } from '../rootReducer'
-import { loginOtp, loginStart, usernameAndPasswordForm } from './authApi'
+import { loginStart, usernameAndPasswordForm } from './authApi'
 import { savePkceInfo } from './authSlice'
 
 export const startLogin = createAsyncThunk(
@@ -38,7 +38,7 @@ export const usernameAndPaswordThunk = createAsyncThunk(
 		const state = getState() as RootState
 		const { credentials, loginStartInfo } = state.authReducer
 		const { login, password } = credentials
-		console.log({ login, password }, 'new', state)
+
 		const userAndPassInfo = await usernameAndPasswordForm(
 			login,
 			password,

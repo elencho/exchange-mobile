@@ -1,8 +1,8 @@
 interface LoginStart {
-	attributes: {}
+	attributes?: {}
 	callbackUrl: string
 	errors: string[]
-	execution: Execution
+	execution: Execution | ''
 	passwordResetUrl?: string
 }
 

@@ -6,9 +6,9 @@ interface AuthState {
 	timerVisible: boolean
 	authLoading: boolean
 	pkceInfo: {} | PkceInfo
-	loginStartInfo: LoginStart | {}
+	loginStartInfo: LoginStart
 	userAndPassInfo: {}
-	credentials: Credentials | {}
+	credentials: Credentials
 
 	// TODO: add other state values
 }
@@ -17,8 +17,16 @@ const initialState: AuthState = {
 	timerVisible: false,
 	authLoading: false,
 	pkceInfo: {},
-	loginStartInfo: {},
-	credentials: {},
+	loginStartInfo: {
+		attributes: undefined,
+		callbackUrl: '',
+		errors: [],
+		execution: '',
+	},
+	credentials: {
+		login: '',
+		password: '',
+	},
 	userAndPassInfo: {},
 	// forgotPassInfo: {
 	// 	username: '',
@@ -49,7 +57,7 @@ const authSlice = createSlice({
 		savePkceInfo: (state, action: PayloadAction<PkceInfo | {}>) => {
 			state.pkceInfo = action.payload
 		},
-		setCredentials: (state, action: PayloadAction<Credentials | {}>) => {
+		setCredentials: (state, action: PayloadAction<Credentials>) => {
 			state.credentials = action.payload
 		},
 	},
