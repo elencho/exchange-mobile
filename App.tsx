@@ -5,11 +5,11 @@ import { StatusBar, LogBox, View, StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
+import store from '@app/refactor/redux/store'
 import AppNavigator from '@app/refactor/setup/nav/index'
 import AppToast from './src/components/AppToast'
 import images from './src/constants/images'
 import { IS_ANDROID } from './src/constants/system'
-import store from './src/redux/store'
 import {
 	CryptalThemeProvider,
 	Theme,

@@ -3,7 +3,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
-import useInitApp from '@app/refactor/screens/splash/use-init-app'
+import useInitApp from '@app/refactor/screens/auth/splash/use-init-app'
 import { Screens } from '@app/refactor/setup/nav/types'
 
 interface Props extends NativeStackScreenProps<Screens, 'Splash'> {}

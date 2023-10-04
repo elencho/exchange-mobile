@@ -242,12 +242,11 @@ function* usernameAndPasswordSaga(action) {
 function* otpForLoginSaga(action) {
 	const { otp, navigation, fromResetOtp } = action
 	const profile = yield select((state) => state.profile)
-	const auth = yield select((state) => state.authReducer)
-	const { forgotPassMode } = profile
 	const {
 		userAndPassInfo,
 		pkceInfo: { codeVerifier },
-	} = auth
+		forgotPassMode,
+	} = profile
 	yield delay(500)
 	yield put(toggleUserInfoLoading(true))
 

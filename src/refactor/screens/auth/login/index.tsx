@@ -1,20 +1,21 @@
 import { t } from 'i18next'
-import React, { useState } from 'react'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import Logo from '@assets/images/Logo.svg'
+import { COLORS_DARK } from '@theme/colors'
 import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppInput from '@components/input'
 import AppText from '@components/text'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
-import useLogin from '@app/refactor/screens/login/use-login'
+import useLogin from '@app/refactor/screens/auth/login/use-login'
 import { errorHappenedHere } from '@app/utils/appUtils'
 
 export default function Login() {
 	const {
-		loginText,
-		passwordText,
+		login,
+		password,
 		loginError,
 		passwordError,
 		userProfileLoading,
@@ -26,8 +27,6 @@ export default function Login() {
 	} = useLogin()
 
 	const { theme, styles } = useTheme(_styles)
-	const [email, setEmail] = useState('')
-	const [pass, setPass] = useState('')
 
 	return (
 		<View style={styles.background}>
@@ -47,16 +46,18 @@ export default function Login() {
 				</View>
 				<AppInput
 					style={styles.email}
-					onChangeText={setEmail}
-					value={email}
+					onChangeText={onLoginChanged}
+					value={login}
 					error={loginError}
+					autoCapitalize="none"
 					label={'Enter Email'}
 					labelBackgroundColor={theme.color.backgroundPrimary}
 				/>
 				<AppInput
 					secureTextEntry={true}
-					onChangeText={setPass}
-					value={pass}
+					onChangeText={onPasswordChanged}
+					value={password}
+					autoCapitalize="none"
 					label={'Enter Password'}
 					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.password}
@@ -82,7 +83,7 @@ export default function Login() {
 						{t('New User?')}{' '}
 						<AppButton
 							variant="text"
-							text={'Register'}
+							text={t('Register')}
 							onPress={onRegisterPressed}
 						/>
 					</AppText>

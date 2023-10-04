@@ -1,4 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { unwrapResult } from '@reduxjs/toolkit'
 import {
 	StyleSheet,
 	View,
@@ -7,17 +8,19 @@ import {
 	BackHandler,
 	ImageBackground,
 } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Logo from '@assets/images/Logo.svg'
 import { useTheme, Theme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import GeneralError from '@app/components/GeneralError'
+import LanguageSwitcher from '@app/components/LanguageSwitcher'
 import {
 	startLoginAction,
 	startRegistrationAction,
 } from '@app/redux/profile/actions'
-import LanguageSwitcher from '@app/refactor/screens/welcome/components/language-switcher'
+import { startLogin } from '@app/refactor/redux/auth/authThunks'
+import { RootState } from '@app/refactor/redux/rootReducer'
 import { Screens } from '@app/refactor/setup/nav/types'
 import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
 import { errorHappenedHere } from '@app/utils/appUtils'
@@ -27,12 +30,13 @@ interface Props extends NativeStackScreenProps<Screens, 'Welcome'> {}
 export default function Welcome({ navigation }: Props) {
 	const dispatch = useDispatch()
 	const { styles } = useTheme(_style)
-
+	const state = useSelector((state: RootState) => state.authReducer)
 	useNotificationsAndroid()
 
 	BackHandler.addEventListener('hardwareBackPress', () => true)
-
-	const startLogin = () => dispatch(startLoginAction(navigation))
+	const startLoginNew = async (): Promise<void> => {
+		dispatch(startLogin(navigation))
+	}
 	const startRegistration = () => dispatch(startRegistrationAction(navigation))
 
 	return (
@@ -60,7 +64,7 @@ export default function Welcome({ navigation }: Props) {
 						<AppButton
 							variant="primary"
 							text="Login"
-							onPress={startLogin}
+							onPress={startLoginNew}
 							style={styles.button}
 						/>
 						<AppButton

@@ -8,18 +8,18 @@ import React from 'react'
 import { BackHandler } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import MainScreen from '@app/navigation/MainScreen'
-import Login from '@app/refactor/screens/login'
+import Login from '@app/refactor/screens/auth/login'
+import Login2Fa from '@app/refactor/screens/auth/login2fa/Login2Fa'
 //import Login from '@app/screens/Login'
-import Maintenance from '@app/refactor/screens/maintenance'
-import ForgotPassword from '@app/refactor/screens/password_forgot'
+import Maintenance from '@app/refactor/screens/auth/maintenance'
+import ForgotPassword from '@app/refactor/screens/auth/password_forgot'
+import Splash from '@app/refactor/screens/auth/splash/index'
+import UpdateAvailable from '@app/refactor/screens/auth/update'
+import Welcome from '@app/refactor/screens/auth/welcome'
 import SetNewPassword from '@app/refactor/screens/password_set'
-import Splash from '@app/refactor/screens/splash/index'
-import UpdateAvailable from '@app/refactor/screens/update'
-import Welcome from '@app/refactor/screens/welcome'
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
 import EmailVerification from '@app/screens/EmailVerification'
-import Login2FaScreen from '@app/screens/Login2Fa'
 import RegisterScreen from '@app/screens/Registration'
 import ResetOtpInstructionsScreen from '@app/screens/ResetOtpInstructions'
 import Resume from '@app/screens/Resume'
@@ -34,28 +34,29 @@ const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef()
 
 export default function AppNavigator() {
-	const dispatch = useDispatch()
-	const state: any = useSelector((state) => state)
-	const {
-		errors: { generalError },
-	} = state
+	// const dispatch = useDispatch()
+	// const state: any = useSelector((state) => state)
+	// const {
+	// 	errors: { generalError },
+	// } = state
 
 	useNotifications()
 
-	BackHandler.addEventListener('hardwareBackPress', () => true)
+	// BackHandler.addEventListener('hardwareBackPress', () => true)
 
-	const onStateChange = (state: any) => {
-		dispatch({
-			type: 'SET_STACK_NAVIGATION_ROUTE',
-			stackRoute: state.routes[state.routes.length - 1].name,
-		})
-		if (generalError)
-			dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
-	}
+	// const onStateChange = (state: any) => {
+	// 	console.log('asd')
+	// 	dispatch({
+	// 		type: 'SET_STACK_NAVIGATION_ROUTE',
+	// 		stackRoute: state.routes[state.routes.length - 1].name,
+	// 	})
+	// 	if (generalError)
+	// 		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+	// }
 
 	return (
 		<NavigationContainer
-			onStateChange={onStateChange}
+			// onStateChange={onStateChange}
 			ref={navigationRef}
 			// TODO: Check theme
 			theme={{
@@ -110,7 +111,7 @@ export default function AppNavigator() {
 					component={CardVerificationTwoScreen}
 				/>
 
-				<Stack.Screen name="Login2Fa" component={Login2FaScreen} />
+				<Stack.Screen name="Login2Fa" component={Login2Fa} />
 				<Stack.Screen
 					name="ResetOtpInstructions"
 					component={ResetOtpInstructionsScreen}
