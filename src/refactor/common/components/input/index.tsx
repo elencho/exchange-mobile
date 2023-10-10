@@ -11,13 +11,13 @@ import {
 import Close from '@assets/images/Close.svg'
 import { useTheme, Theme } from '@theme/index'
 import AppText from '@components/text/index'
-import { IS_ANDROID } from '@app/constants/system'
+import { System } from '@app/refactor/common/util'
 
 type Props = TextInputProps & {
 	label?: string
 	labelBackgroundColor?: string
 	disabled?: boolean
-	error: string | boolean | null | undefined
+	error?: string | boolean | null | undefined
 	rightComponent?: ReactNode
 	onFocusRightComponent?: ReactNode
 	handleClear?: () => void
@@ -166,7 +166,7 @@ const _style = (theme: Theme) =>
 		input: {
 			fontFamily: theme.font.medium,
 			fontSize: 14,
-			lineHeight: IS_ANDROID ? 18 : null,
+			lineHeight: System.isAndroid ? 18 : null,
 			flex: 1,
 			color: theme.color.textPrimary,
 			height: '100%',

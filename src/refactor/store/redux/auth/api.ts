@@ -35,7 +35,7 @@ export const checkReadiness = async () => {
 }
 
 export const loginStart = async (code_challenge: string) => {
-	const data = await axios.get<LoginStart>(LOGIN_START_URL, {
+	const data = await axios.get<LoginStartResponse>(LOGIN_START_URL, {
 		params: {
 			client_id: 'mobile-service-public',
 			redirect_uri: authRedirectUrl,
@@ -56,7 +56,7 @@ export const usernameAndPasswordForm = async (
 	password: string,
 	url: string
 ) => {
-	const data = await axios({
+	const data = await axios<LoginFormResponse>({
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
@@ -68,6 +68,7 @@ export const usernameAndPasswordForm = async (
 			username
 		)}&password=${encodeURIComponent(password)}`,
 	})
+	console.log(data.data)
 	if (data) return data.data
 }
 

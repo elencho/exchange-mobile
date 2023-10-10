@@ -1,4 +1,4 @@
-interface LoginStart {
+interface LoginStartResponse {
 	attributes?: {}
 	callbackUrl: string
 	errors: string[]
@@ -6,18 +6,12 @@ interface LoginStart {
 	passwordResetUrl?: string
 }
 
+interface LoginFormResponse {
+	execution: Execution | ''
+	code?: string
+}
+
 interface PkceInfo {
 	codeChallenge: string
 	codeVerifier: string
-}
-
-interface Credentials {
-	login: string
-	password: string
-}
-
-interface UsernameAndPasswordFormProps {
-	login: string
-	password: string
-	url: string
 }

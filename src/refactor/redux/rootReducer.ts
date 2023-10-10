@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import authReducer from '../store/redux/auth/slice'
+import auth from '../store/redux/auth/slice'
 import errors from './errors/errorsSlice'
 import modals from './modals/reducer'
 import profile from './profile/reducer'
@@ -8,7 +8,7 @@ import transactions from './transactions/reducer'
 import wallet from './wallet/reducer'
 
 const reducers = {
-	authReducer,
+	auth,
 	transactions,
 	trade,
 	modals,

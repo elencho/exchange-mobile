@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import {
 	StyleSheet,
 	View,
@@ -7,35 +6,21 @@ import {
 	BackHandler,
 	ImageBackground,
 } from 'react-native'
-import { useDispatch } from 'react-redux'
 import Logo from '@assets/images/Logo.svg'
 import { useTheme, Theme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
-import {
-	startLoginThunk,
-	startRegistrationThunk,
-} from '@store/redux/auth/thunks'
 import GeneralError from '@app/components/GeneralError'
 import LanguageSwitcher from '@app/components/LanguageSwitcher'
-import { startRegistrationAction } from '@app/redux/profile/actions'
-import { ScreenProp, Screens } from '@app/refactor/setup/nav/nav'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
 
-interface Props extends NativeStackScreenProps<Screens, 'Welcome'> {}
-
-export default function Welcome(props: ScreenProp<'Welcome'>) {
-	const dispatch = useDispatch()
+export default function Welcome({ navigation }: ScreenProp<'Welcome'>) {
 	const { styles } = useTheme(_style)
-
 	BackHandler.addEventListener('hardwareBackPress', () => true)
 
-	const startLoginNew = () => {
-		dispatch(startLoginThunk(props.navigation))
-	}
-	const startRegistration = () => {
-		dispatch(startRegistrationThunk(props.navigation))
-	}
+	const goToLogin = () => navigation.navigate('Login')
+	const goToRegistration = () => navigation.navigate('Registration')
 
 	return (
 		<TouchableWithoutFeedback
@@ -62,13 +47,13 @@ export default function Welcome(props: ScreenProp<'Welcome'>) {
 						<AppButton
 							variant="primary"
 							text="Login"
-							onPress={startLoginNew}
+							onPress={goToLogin}
 							style={styles.button}
 						/>
 						<AppButton
 							variant="text"
 							text="Registration"
-							onPress={startRegistration}
+							onPress={goToRegistration}
 							style={{ fontSize: 16 }}
 						/>
 					</View>

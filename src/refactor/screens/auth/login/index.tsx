@@ -1,32 +1,60 @@
 import { t } from 'i18next'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 import Logo from '@assets/images/Logo.svg'
-import { COLORS_DARK } from '@theme/colors'
 import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppInput from '@components/input'
 import AppText from '@components/text'
+import {
+	startLoginThunk,
+	usernameAndPaswordThunk,
+} from '@store/redux/auth/thunks'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
-import useLogin from '@app/refactor/screens/auth/login/use-login'
+import { startRegistrationAction } from '@app/refactor/redux/profile/actions'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
 
-export default function Login() {
-	const {
-		login,
-		password,
-		loginError,
-		passwordError,
-		userProfileLoading,
-		onLoginChanged,
-		onPasswordChanged,
-		onRegisterPressed,
-		onLoginPressed,
-		onForgotPasswordPressed,
-	} = useLogin()
+const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
+const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	const { theme, styles } = useTheme(_styles)
+	const dispatch = useDispatch()
+
+	const [mail, setMail] = useState('')
+	const [pass, setPass] = useState('')
+	const [error, setError] = useState(false)
+	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
+
+	const validMail = LOGIN_REGEX.test(mail)
+	const errorText = () =>
+		error && mail?.trim() && !validMail ? 'Enter Valid Email' : ''
+
+	useEffect(() => {
+		error && setError(false)
+	}, [mail, pass])
+
+	useEffect(() => {
+		dispatch(startLoginThunk(navigation))
+	}, [])
+
+	const onLoginPressed = () => {
+		if (!mail || !pass || !validMail) {
+			setError(true)
+		} else {
+			dispatch(usernameAndPaswordThunk({ mail, pass, navigation }))
+		}
+	}
+
+	const onRegisterPressed = () => navigation.navigate('Registration')
+
+	const onForgotPasswordPressed = () => {
+		// navigation.navigate('ForgotPassword')
+		// TODO: dispatch({ type: 'FORGOT_PASSWORD_SAGA', navigation: props.navigation })
+	}
 
 	return (
 		<View style={styles.background}>
@@ -46,22 +74,19 @@ export default function Login() {
 				</View>
 				<AppInput
 					style={styles.email}
-					onChangeText={onLoginChanged}
-					value={login}
-					error={loginError}
-					autoCapitalize="none"
+					onChangeText={setMail}
+					value={mail}
+					error={errorText()}
 					label={'Enter Email'}
 					labelBackgroundColor={theme.color.backgroundPrimary}
 				/>
 				<AppInput
 					secureTextEntry={true}
-					onChangeText={onPasswordChanged}
-					value={password}
-					autoCapitalize="none"
+					onChangeText={setPass}
+					value={pass}
 					label={'Enter Password'}
 					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.password}
-					error={passwordError}
 					rightComponent={
 						<AppButton
 							variant="text"
@@ -75,7 +100,7 @@ export default function Login() {
 					variant="primary"
 					text="Login"
 					onPress={onLoginPressed}
-					loading={userProfileLoading}
+					loading={authLoading}
 					style={styles.button}
 				/>
 				<View style={{ marginBottom: 20 }}>
@@ -136,3 +161,5 @@ const _styles = (theme: Theme) =>
 			lineHeight: 21,
 		},
 	})
+
+export default Login

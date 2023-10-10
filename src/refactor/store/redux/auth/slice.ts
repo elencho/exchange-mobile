@@ -10,9 +10,7 @@ interface AuthState {
 	timerVisible: boolean
 	authLoading: boolean
 	pkceInfo: {} | PkceInfo
-	loginStartInfo: LoginStart
-	userAndPassInfo: {}
-	credentials: Credentials
+	callbackUrlLogin: string
 
 	// TODO: add other state values
 }
@@ -21,17 +19,7 @@ const initialState: AuthState = {
 	timerVisible: false,
 	authLoading: false,
 	pkceInfo: {},
-	loginStartInfo: {
-		attributes: undefined,
-		callbackUrl: '',
-		errors: [],
-		execution: '',
-	},
-	credentials: {
-		login: '',
-		password: '',
-	},
-	userAndPassInfo: {},
+	callbackUrlLogin: '',
 	// forgotPassInfo: {
 	// 	username: '',
 	// 	code: '',
@@ -54,15 +42,12 @@ const initialState: AuthState = {
 	// verificationInfo: {},
 }
 
-const authSlice = createSlice({
+const auth = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
 		savePkceInfo: (state, action: PayloadAction<PkceInfo | {}>) => {
 			state.pkceInfo = action.payload
-		},
-		setCredentials: (state, action: PayloadAction<Credentials>) => {
-			state.credentials = action.payload
 		},
 		resetAuthState: (state) => {
 			state = initialState
@@ -81,7 +66,7 @@ const startLogin = (builder: ActionReducerMapBuilder<AuthState>) => {
 		})
 		.addCase(startLoginThunk.fulfilled, (state, action) => {
 			state.authLoading = false
-			state.loginStartInfo = action.payload
+			state.callbackUrlLogin = action.payload.callbackUrl
 		})
 		.addCase(startLoginThunk.rejected, (state) => {
 			state.authLoading = false
@@ -95,13 +80,11 @@ const usernameAndPassword = (builder: ActionReducerMapBuilder<AuthState>) => {
 		})
 		.addCase(usernameAndPaswordThunk.fulfilled, (state, action) => {
 			state.authLoading = false
-			state.userAndPassInfo = action.payload
 		})
 		.addCase(usernameAndPaswordThunk.rejected, (state) => {
 			state.authLoading = false
 		})
 }
 
-export const { savePkceInfo, setCredentials, resetAuthState } =
-	authSlice.actions
-export default authSlice.reducer
+export const { savePkceInfo, resetAuthState } = auth.actions
+export default auth.reducer
