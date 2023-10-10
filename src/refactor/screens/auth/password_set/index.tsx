@@ -11,7 +11,7 @@ import AppText from '@components/text'
 import WithKeyboard from '@app/components/WithKeyboard'
 import colors from '@app/constants/colors'
 import { startLoginAction } from '@app/redux/profile/actions'
-import { Screens } from '@app/refactor/setup/nav/types'
+import { Screens } from '@app/refactor/setup/nav/nav'
 
 interface Props extends NativeStackScreenProps<Screens, 'SetNewPassword'> {}
 

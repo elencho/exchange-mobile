@@ -1,6 +1,15 @@
-export type ScreenRoute = keyof Screens
+import { NativeStackScreenProps } from '@react-navigation/native-stack/lib/typescript/src/types'
 
-// TODO: Add props
+export type ScreenProp<R extends keyof Screens> = NativeStackScreenProps<
+	Screens,
+	R
+>
+export type NavProp<R extends keyof Screens> = NativeStackNavigationProp<
+	Screens,
+	R,
+	Screens[R]
+>
+
 export type Screens = {
 	Splash?: {}
 	Welcome?: {}

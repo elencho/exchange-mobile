@@ -6,8 +6,6 @@ interface LoginStart {
 	passwordResetUrl?: string
 }
 
-type Execution = 'LOGIN_USERNAME_PASSWORD' | 'EMAIL_VERIFICATION_OTP'
-
 interface PkceInfo {
 	codeChallenge: string
 	codeVerifier: string

@@ -12,7 +12,7 @@ import {
 	setRegistrationInputs,
 	switchPersonalCompany,
 } from '@app/redux/profile/actions'
-import { Screens } from '@app/refactor/setup/nav/types'
+import { Screens } from '@app/refactor/setup/nav/nav'
 
 export default function useRegister(
 	navigation: NativeStackNavigationProp<Screens, 'Registration'>

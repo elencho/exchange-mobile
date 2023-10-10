@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import authReducer from './auth/authSlice'
+import authReducer from '../store/redux/auth/slice'
 import errors from './errors/errorsSlice'
 import modals from './modals/reducer'
 import profile from './profile/reducer'

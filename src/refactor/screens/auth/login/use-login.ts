@@ -2,9 +2,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { startRegistrationAction } from '@app/redux/profile/actions'
-import { setCredentials } from '@app/refactor/redux/auth/authSlice'
-import { usernameAndPaswordThunk } from '@app/refactor/redux/auth/authThunks'
+import { usernameAndPaswordThunk } from '@store/redux/auth/thunks'
+import {
+	setCredentials,
+	startRegistrationAction,
+} from '@app/redux/profile/actions'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 

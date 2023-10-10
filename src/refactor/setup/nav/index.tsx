@@ -13,10 +13,10 @@ import Login2Fa from '@app/refactor/screens/auth/login2fa/Login2Fa'
 //import Login from '@app/screens/Login'
 import Maintenance from '@app/refactor/screens/auth/maintenance'
 import ForgotPassword from '@app/refactor/screens/auth/password_forgot'
+import SetNewPassword from '@app/refactor/screens/auth/password_set'
 import Splash from '@app/refactor/screens/auth/splash/index'
 import UpdateAvailable from '@app/refactor/screens/auth/update'
 import Welcome from '@app/refactor/screens/auth/welcome'
-import SetNewPassword from '@app/refactor/screens/password_set'
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
 import EmailVerification from '@app/screens/EmailVerification'
@@ -28,7 +28,7 @@ import TransactionFilter from '@app/screens/TransactionFilter'
 import UserProfileScreen from '@app/screens/UserProfile'
 import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
-import { Screens } from './types'
+import { Screens } from './nav'
 
 const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef()
@@ -42,8 +42,8 @@ export default function AppNavigator() {
 
 	useNotifications()
 
+	// TODO: this
 	// BackHandler.addEventListener('hardwareBackPress', () => true)
-
 	// const onStateChange = (state: any) => {
 	// 	console.log('asd')
 	// 	dispatch({
@@ -58,7 +58,6 @@ export default function AppNavigator() {
 		<NavigationContainer
 			// onStateChange={onStateChange}
 			ref={navigationRef}
-			// TODO: Check theme
 			theme={{
 				dark: true,
 				colors: { ...DefaultTheme.colors, background: 'transparent' },

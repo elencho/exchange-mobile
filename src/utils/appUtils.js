@@ -79,7 +79,7 @@ export const checkReadiness = async (version, os) => {
 	}
 	const uninterceptedAxiosInstance = axios.create()
 	const data = await uninterceptedAxiosInstance.get(READINESS_URL, config)
-
+	console.log(data)
 	return data?.data
 }
 

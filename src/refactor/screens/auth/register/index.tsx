@@ -12,7 +12,7 @@ import PersonalCompanySwitcher from '@app/components/Registration/PersonalCompan
 import RegistrationInputs from '@app/components/Registration/RegistrationInputs'
 import WithKeyboard from '@app/components/WithKeyboard'
 import useRegister from '@app/refactor/screens/register/use-register'
-import { Screens } from '@app/refactor/setup/nav/types'
+import { Screens } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}

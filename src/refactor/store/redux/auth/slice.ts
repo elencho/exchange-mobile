@@ -1,6 +1,10 @@
 // src/redux/errorsSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { startLogin, usernameAndPaswordThunk } from './authThunks'
+import {
+	ActionReducerMapBuilder,
+	createSlice,
+	PayloadAction,
+} from '@reduxjs/toolkit'
+import { startLoginThunk, usernameAndPaswordThunk } from './thunks'
 
 interface AuthState {
 	timerVisible: boolean
@@ -60,32 +64,44 @@ const authSlice = createSlice({
 		setCredentials: (state, action: PayloadAction<Credentials>) => {
 			state.credentials = action.payload
 		},
+		resetAuthState: (state) => {
+			state = initialState
+		},
 	},
 	extraReducers: (builder) => {
-		builder
-			.addCase(startLogin.pending, (state) => {
-				state.authLoading = true
-			})
-			.addCase(startLogin.fulfilled, (state, action) => {
-				state.authLoading = false
-				state.loginStartInfo = action.payload
-			})
-			.addCase(startLogin.rejected, (state) => {
-				state.authLoading = false
-			})
-
-			.addCase(usernameAndPaswordThunk.pending, (state) => {
-				state.authLoading = true
-			})
-			.addCase(usernameAndPaswordThunk.fulfilled, (state, action) => {
-				state.authLoading = false
-				state.userAndPassInfo = action.payload
-			})
-			.addCase(usernameAndPaswordThunk.rejected, (state) => {
-				state.authLoading = false
-			})
+		startLogin(builder)
+		usernameAndPassword(builder)
 	},
 })
 
-export const { savePkceInfo, setCredentials } = authSlice.actions
+const startLogin = (builder: ActionReducerMapBuilder<AuthState>) => {
+	builder
+		.addCase(startLoginThunk.pending, (state) => {
+			state.authLoading = true
+		})
+		.addCase(startLoginThunk.fulfilled, (state, action) => {
+			state.authLoading = false
+			state.loginStartInfo = action.payload
+		})
+		.addCase(startLoginThunk.rejected, (state) => {
+			state.authLoading = false
+		})
+}
+
+const usernameAndPassword = (builder: ActionReducerMapBuilder<AuthState>) => {
+	builder
+		.addCase(usernameAndPaswordThunk.pending, (state) => {
+			state.authLoading = true
+		})
+		.addCase(usernameAndPaswordThunk.fulfilled, (state, action) => {
+			state.authLoading = false
+			state.userAndPassInfo = action.payload
+		})
+		.addCase(usernameAndPaswordThunk.rejected, (state) => {
+			state.authLoading = false
+		})
+}
+
+export const { savePkceInfo, setCredentials, resetAuthState } =
+	authSlice.actions
 export default authSlice.reducer

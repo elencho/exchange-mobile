@@ -1,0 +1,3 @@
+interface RegistrationStart {
+	execution: Execution | ''
+}

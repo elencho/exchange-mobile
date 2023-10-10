@@ -1,0 +1,67 @@
+import { MMKV } from 'react-native-mmkv'
+
+type KVStorage = {
+	// Auth
+	webViewVisible: boolean
+	accessToken: string
+	bioEnabledEmails: string[]
+}
+type Key = keyof KVStorage
+
+interface Storage {
+	get<T extends Key>(key: T): KVStorage[T] | undefined
+	set<T extends Key>(key: T, value: KVStorage[T]): void
+	del<T extends Key>(key: T): void
+}
+
+const mmkv = new MMKV()
+const secureMmkv = new MMKV() // TODO: Encrypt
+
+const secureKeys: Key[] = ['accessToken']
+const cache = (key: Key) => (secureKeys.includes(key) ? secureMmkv : mmkv)
+
+const KVStorage: Storage = {
+	get(key) {
+		const value = cache(key).getString(key)
+		return value ? deserializers[key](value) : undefined
+	},
+	set(key, value) {
+		if (value) {
+			cache(key).set(key, serializers[key](value))
+		}
+	},
+	del(key) {
+		cache(key).delete(key)
+	},
+}
+
+export default KVStorage
+
+/**
+ *
+ *  Custom serialization
+ *
+ */
+
+const deserializeBoolean = (value: string) => value === 'true'
+const serializeBoolean = (value: boolean) => (value ? 'true' : 'false')
+
+const deserializeString = (value: string) => value
+const serializeString = (value: string) => value
+
+const deserializeObject = (value: string) => JSON.parse(value)
+const serializeObject = (value: any) => JSON.stringify(value)
+
+const deserializers: {
+	[key in Key]: (value: string) => KVStorage[key]
+} = {
+	webViewVisible: deserializeBoolean,
+	accessToken: deserializeString,
+	bioEnabledEmails: deserializeObject,
+}
+
+const serializers: { [key in Key]: (value: KVStorage[key]) => string } = {
+	webViewVisible: serializeBoolean,
+	accessToken: serializeString,
+	bioEnabledEmails: serializeObject,
+}

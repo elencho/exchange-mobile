@@ -2,7 +2,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { startLoginAction } from '@app/redux/profile/actions'
-import { Screens } from '@app/refactor/setup/nav/types'
+import { Screens } from '@app/refactor/setup/nav/nav'
 
 const useForgotPassword = (
 	forgotPassInfo: any,

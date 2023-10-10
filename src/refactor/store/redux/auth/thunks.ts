@@ -1,14 +1,19 @@
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import pkceChallenge from 'react-native-pkce-challenge'
+import {
+	saveRegistrationStartInfo,
+	setRegistrationInputs,
+} from '@app/refactor/redux/profile/actions'
+import { NavProp } from '@app/refactor/setup/nav/nav'
 import { Execution } from '@app/refactor/types/enums'
-import { RootState } from '../rootReducer'
-import { loginStart, usernameAndPasswordForm } from './authApi'
-import { savePkceInfo } from './authSlice'
+import { RootState } from '../../../redux/rootReducer'
+import { loginStart, registrationStart, usernameAndPasswordForm } from './api'
+import { savePkceInfo } from './slice'
 
-export const startLogin = createAsyncThunk(
+export const startLoginThunk = createAsyncThunk(
 	'startLogin',
-	async (navigation: NativeStackNavigationProp<any>, { dispatch }) => {
+	async (navigation: NavProp<'Welcome'>, { dispatch }) => {
 		try {
 			const pkceInfo = pkceChallenge()
 			const loginStartInfo = await loginStart(pkceInfo?.codeChallenge)
@@ -21,10 +26,31 @@ export const startLogin = createAsyncThunk(
 			if (loginStartInfo?.execution === Execution.EMAIL_VERIFICATION_OTP) {
 				navigation.push('EmailVerification', { fromScreen: 'login' })
 			}
-
+			// TODO?: saveVerificationInfo, saveLoginStartInfo
 			return loginStartInfo
 		} catch (error) {
 			throw error
+		}
+	}
+)
+
+export const startRegistrationThunk = createAsyncThunk(
+	'startRegistration',
+	async (navigation: NavProp<'Welcome'>, { dispatch }) => {
+		dispatch(setRegistrationInputs({}))
+		const pkceInfo = pkceChallenge()
+
+		if (pkceInfo) {
+			dispatch(savePkceInfo(pkceInfo))
+			const regInfo = await registrationStart()
+			dispatch(saveRegistrationStartInfo(regInfo))
+
+			if (regInfo?.execution === Execution.REGISTRATION_START) {
+				navigation.navigate('Registration')
+			}
+			if (regInfo?.execution === Execution.EMAIL_VERIFICATION_OTP) {
+				navigation.push('EmailVerification', { fromScreen: 'registration' })
+			}
 		}
 	}
 )

@@ -12,7 +12,7 @@ import AppText from '@components/text'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
 import useForgotPassword from '@app/refactor/screens/auth/password_forgot/use-forgot-password'
-import { Screens } from '@app/refactor/setup/nav/types'
+import { Screens } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
 
 interface Props extends NativeStackScreenProps<Screens, 'ForgotPassword'> {}

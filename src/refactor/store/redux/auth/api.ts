@@ -1,8 +1,38 @@
 import axios from 'axios'
 import Constants from 'expo-constants'
-import { LOGIN_START_URL } from '@app/constants/api'
+import { Platform } from 'react-native'
+import DeviceInfo from 'react-native-device-info'
+import {
+	DICTIONARY,
+	LOGIN_START_URL,
+	READINESS_URL,
+	REGISTRATION_START_URL,
+} from '@app/constants/api'
+import { AppReadiness, Dictionary } from '@app/refactor/types/auth/splash'
 
 const authRedirectUrl = Constants?.manifest?.extra?.authRedirectUrl
+
+export const fetchTranslations = async () => {
+	const data = await axios.get<Dictionary>(DICTIONARY, {
+		headers: { requestName: 'fetchTranslations' },
+	})
+	return data?.data
+}
+
+export const checkReadiness = async () => {
+	const config = {
+		params: {
+			version: DeviceInfo.getVersion(),
+			os: Platform.OS,
+		},
+	}
+	const uninterceptedAxiosInstance = axios.create()
+	const data = await uninterceptedAxiosInstance.get<AppReadiness>(
+		READINESS_URL,
+		config
+	)
+	return data?.data
+}
 
 export const loginStart = async (code_challenge: string) => {
 	const data = await axios.get<LoginStart>(LOGIN_START_URL, {
@@ -20,6 +50,7 @@ export const loginStart = async (code_challenge: string) => {
 	})
 	return data?.data
 }
+
 export const usernameAndPasswordForm = async (
 	username: string,
 	password: string,
@@ -52,4 +83,19 @@ export const loginOtp = async (otp: string, url: string) => {
 		data: `otp=${otp}`,
 	})
 	if (data) return data.data
+}
+
+export const registrationStart = async () => {
+	const data = await axios.get<RegistrationStart>(REGISTRATION_START_URL, {
+		params: {
+			client_id: 'mobile-service-public',
+			redirect_uri: authRedirectUrl,
+			response_mode: 'form_post',
+			response_type: 'code',
+			scope: 'openid',
+			display: 'mobile',
+		},
+		headers: { requestName: 'registrationStart', toast: false },
+	})
+	return data?.data
 }
