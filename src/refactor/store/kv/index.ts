@@ -4,7 +4,9 @@ import { Language } from '@app/refactor/common/constants'
 type KVStorage = {
 	// Auth
 	webViewVisible: boolean
+	isLoggedIn: boolean
 	accessToken: string
+	refreshToken: string
 	bioEnabledEmails: string[]
 	language: Language
 }
@@ -19,7 +21,7 @@ interface Storage {
 const mmkv = new MMKV()
 const secureMmkv = new MMKV() // TODO: Encrypt
 
-const secureKeys: Key[] = ['accessToken']
+const secureKeys: Key[] = ['accessToken', 'bioEnabledEmails']
 const cache = (key: Key) => (secureKeys.includes(key) ? secureMmkv : mmkv)
 
 const KVStorage: Storage = {
@@ -58,12 +60,18 @@ const deserializers: {
 	[key in Key]: (value: string) => KVStorage[key]
 } = {
 	webViewVisible: deserializeBoolean,
+	isLoggedIn: deserializeBoolean,
 	accessToken: deserializeString,
+	refreshToken: deserializeString,
 	bioEnabledEmails: deserializeObject,
+	language: (value: string) => (value === 'ka' ? 'ka' : 'en'),
 }
 
 const serializers: { [key in Key]: (value: KVStorage[key]) => string } = {
 	webViewVisible: serializeBoolean,
+	isLoggedIn: serializeBoolean,
 	accessToken: serializeString,
+	refreshToken: serializeString,
 	bioEnabledEmails: serializeObject,
+	language: serializeString,
 }

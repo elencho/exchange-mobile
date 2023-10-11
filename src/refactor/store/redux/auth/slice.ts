@@ -4,12 +4,16 @@ import {
 	createSlice,
 	PayloadAction,
 } from '@reduxjs/toolkit'
-import { startLoginThunk, usernameAndPaswordThunk } from './thunks'
+import {
+	resetOtpThunk,
+	startLoginThunk,
+	usernameAndPaswordThunk,
+} from './thunks'
 
 interface AuthState {
 	timerVisible: boolean
 	authLoading: boolean
-	pkceInfo: {} | PkceInfo
+	pkceInfo?: PkceInfo
 	callbackUrl: string
 	otpType: OTP
 
@@ -19,7 +23,6 @@ interface AuthState {
 const initialState: AuthState = {
 	timerVisible: false,
 	authLoading: false,
-	pkceInfo: {},
 	callbackUrl: '',
 	otpType: 'EMAIL',
 	// forgotPassInfo: {
@@ -48,7 +51,7 @@ const auth = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
-		savePkceInfo: (state, action: PayloadAction<PkceInfo | {}>) => {
+		savePkceInfo: (state, action: PayloadAction<PkceInfo>) => {
 			state.pkceInfo = action.payload
 		},
 		resetAuthState: (state) => {
@@ -58,6 +61,7 @@ const auth = createSlice({
 	extraReducers: (builder) => {
 		startLogin(builder)
 		usernameAndPassword(builder)
+		resetOtp(builder)
 	},
 })
 
@@ -82,8 +86,24 @@ const usernameAndPassword = (builder: ActionReducerMapBuilder<AuthState>) => {
 		})
 		.addCase(usernameAndPaswordThunk.fulfilled, (state, action) => {
 			state.authLoading = false
+			state.callbackUrl = action.payload.callbackUrl
+			state.otpType = action.payload.attributes.otpType
 		})
 		.addCase(usernameAndPaswordThunk.rejected, (state) => {
+			state.authLoading = false
+		})
+}
+
+const resetOtp = (builder: ActionReducerMapBuilder<AuthState>) => {
+	builder
+		.addCase(resetOtpThunk.pending, (state) => {
+			state.authLoading = true
+		})
+		.addCase(resetOtpThunk.fulfilled, (state, action) => {
+			state.authLoading = false
+			state.callbackUrl = action.payload.callbackUrl
+		})
+		.addCase(resetOtpThunk.rejected, (state) => {
 			state.authLoading = false
 		})
 }

@@ -11,6 +11,7 @@ interface LoginFormResponse {
 		otpType: OTP
 	}
 	execution: Execution | ''
+	callbackUrl: string
 }
 
 interface PkceInfo {

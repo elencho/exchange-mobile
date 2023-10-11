@@ -3,6 +3,7 @@ import Constants from 'expo-constants'
 import { Platform } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import {
+	CODE_TO_TOKEN,
 	DICTIONARY,
 	LOGIN_START_URL,
 	READINESS_URL,
@@ -71,6 +72,11 @@ export const usernameAndPasswordForm = async (
 	return data?.data
 }
 
+export const resendEmail = async (callbackUrl: string) => {
+	const data = await axios.get<ResendOtpResponse>(`${callbackUrl}&resend=true`)
+	return data?.data
+}
+
 export const resetOtp = async (callbackUrl: string) => {
 	const data = await axios<ResetOtpResponse>({
 		method: 'POST',
@@ -86,7 +92,7 @@ export const resetOtp = async (callbackUrl: string) => {
 }
 
 export const loginOtp = async (otp: string, url: string) => {
-	const data = await axios({
+	const data = await axios<OtpLoginResponse>({
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
@@ -96,7 +102,17 @@ export const loginOtp = async (otp: string, url: string) => {
 		url,
 		data: `otp=${otp}`,
 	})
-	if (data) return data.data
+	return data?.data
+}
+
+export const codeToToken = async (code: string, codeVerifier: string) => {
+	const data = await axios<CodeToTokenResponse>({
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		url: CODE_TO_TOKEN,
+		data: `grant_type=authorization_code&client_id=mobile-service-public&code=${code}&redirect_uri=${authRedirectUrl}&code_verifier=${codeVerifier}&code_challenge_method=S256`,
+	})
+	return data?.data
 }
 
 export const registrationStart = async () => {

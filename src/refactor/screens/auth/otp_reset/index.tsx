@@ -10,7 +10,7 @@ import AppBackground from '@components/background'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import KVStorage from '@store/kv'
-import { startLoginThunk } from '@store/redux/auth/thunks'
+import { resendOtpThunk, startLoginThunk } from '@store/redux/auth/thunks'
 import TwoFaInput from '@app/components/TwoFaInput'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
@@ -59,12 +59,7 @@ export const ResetOtpInstructions = (
 		}
 	}, [])
 
-	const resend = () => {}
-	// dispatch({
-	// 	type: 'RESEND_SAGA',
-	// 	login2Fa: true,
-	// 	url: callbackUrl,
-	// })
+	const resend = () => dispatch(resendOtpThunk('Login2Fa'))
 
 	const resendOrCountDown = () => {
 		if (false) {

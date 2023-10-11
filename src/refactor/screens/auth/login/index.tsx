@@ -37,8 +37,8 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	const { theme, styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
-	const [mail, setMail] = useState('ibanet@cryptx.com')
-	const [pass, setPass] = useState('Malina125$')
+	const [mail, setMail] = useState('remora.419@gmail.com')
+	const [pass, setPass] = useState('Derrickrose1$')
 	const [error, setError] = useState(false)
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
 

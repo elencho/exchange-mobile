@@ -12,6 +12,7 @@ import Login from '@app/refactor/screens/auth/login'
 import Login2Fa from '@app/refactor/screens/auth/login2fa'
 //import Login from '@app/screens/Login'
 import Maintenance from '@app/refactor/screens/auth/maintenance'
+import ResetOtpInstructions from '@app/refactor/screens/auth/otp_reset'
 import ForgotPassword from '@app/refactor/screens/auth/password_forgot'
 import SetNewPassword from '@app/refactor/screens/auth/password_set'
 import Splash from '@app/refactor/screens/auth/splash/index'
@@ -113,7 +114,7 @@ export default function AppNavigator() {
 				<Stack.Screen name="Login2Fa" component={Login2Fa} />
 				<Stack.Screen
 					name="ResetOtpInstructions"
-					component={ResetOtpInstructionsScreen}
+					component={ResetOtpInstructions}
 				/>
 				<Stack.Screen
 					name="Resume"

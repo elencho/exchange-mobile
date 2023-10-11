@@ -15,9 +15,13 @@ import TotpAuth from '@assets/images/User_profile/Totp_Auth.svg'
 import { Theme, useTheme } from '@theme/index'
 import AppBackground from '@components/background'
 import { AppButton } from '@components/button'
+import TwoFaInput from '@components/input_2fa'
 import AppText from '@components/text'
-import { resetOtpThunk, startLoginThunk } from '@store/redux/auth/thunks'
-import TwoFaInput from '@app/components/TwoFaInput'
+import {
+	resendOtpThunk,
+	resetOtpThunk,
+	startLoginThunk,
+} from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
@@ -69,13 +73,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 		}
 	}
 
-	// TODO: Resend
-	const resend = () => {}
-	// dispatch({
-	// 	type: 'RESEND_SAGA',
-	// 	login2Fa: true,
-	// 	url: callbackUrl,
-	// })
+	const resend = () => dispatch(resendOtpThunk('Login2Fa'))
 
 	const resendOrCountDown = () => {
 		if (false) {
@@ -122,16 +120,11 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 
 						<View style={styles.twoFaInput}>
 							<TwoFaInput
-								navigation={navigation}
-								cellCount={cellCount}
 								value={value}
 								setValue={setValue}
-								login
-								withdrawal={undefined}
-								whitelist={undefined}
-								fromResetOtp={undefined}
-								registration={undefined}
-								indicatorStyle={undefined}
+								cellCount={cellCount}
+								from="Login2Fa"
+								navigation={navigation}
 							/>
 						</View>
 					</View>

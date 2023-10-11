@@ -1,9 +1,9 @@
 import { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Text, TextProps, TextStyle } from 'react-native'
-import { useSelector } from 'react-redux'
 import { FontTheme } from '@theme/fonts'
 import { useTheme } from '@theme/index'
+import KVStorage from '@store/kv'
 
 type Variant = 's' | 'm' | 'l' | 'title' | 'headline'
 
@@ -16,10 +16,8 @@ type Props = TextProps & {
 const AppText: React.FC<Props> = (props) => {
 	const { variant, medium, noTranslate, children, onPress, style } = props
 	const { theme } = useTheme()
-	const {
-		profile: { language },
-	}: any = useSelector((state) => state)
 
+	const language = KVStorage.get('language')
 	const isMtavruli = language === 'ka' && variant == 'headline'
 
 	const translate = (textNode: ReactNode) => {

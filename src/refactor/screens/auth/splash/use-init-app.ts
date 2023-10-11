@@ -8,12 +8,13 @@ import { useDispatch } from 'react-redux'
 import { useTheme } from '@theme/index'
 import { checkReadiness, fetchTranslations } from '@store/redux/auth/api'
 import { resetAuthState } from '@store/redux/auth/slice'
+import { saveOtpThunk } from '@store/redux/auth/thunks'
 import { currentVersion } from '@app/constants/system'
 import { setLanguage } from '@app/redux/profile/actions'
 import { System } from '@app/refactor/common/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import KVStorage from '@app/refactor/store/kv'
-import { Token } from '@app/refactor/types/auth/splash'
+import { TokenEmail } from '@app/refactor/types/auth/splash'
 import { addResources, switchLanguage } from '@app/utils/i18n'
 import { fetchCountries } from '@app/utils/userProfileUtils'
 
@@ -49,9 +50,11 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			// ვამოწმებთ გვაქვს თუ არა ტოკენი, თუ არ გვაქვს ვისვრით ავტორიზაციაზე
 			if (!accessToken) {
 				navigation.navigate('Welcome')
+			} else {
+				dispatch(saveOtpThunk(accessToken))
 			}
 			// ვამოწმებთ სთორიზე არის თუ არა ახალი ვერსია
-			else if (await updateNeeded()) {
+			if (await updateNeeded()) {
 				navigation.navigate('UpdateAvailable')
 			}
 			// ვამოწმებთ ბექი ჩართულია თუ არა დამატებით გადავცემთ ვერსიას, აღნიშნულ ვერსიაზე უნდა მშაობდეს თუ არა აპლიკაცია
@@ -61,7 +64,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			}
 			// ვუხსნით აპლიკაციას
 			else {
-				navigation.navigate('Main')
+				navigation.navigate('Welcome') //TODO: Default Main
 			}
 		}
 	}
@@ -71,7 +74,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		const accessToken = KVStorage.get('accessToken')
 		if (!bioEnabledEmails || !accessToken) return false
 
-		const email = jwt_decode<Token>(accessToken)?.email
+		const email = jwt_decode<TokenEmail>(accessToken)?.email
 		return bioEnabledEmails.includes(email)
 	}
 

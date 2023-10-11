@@ -10,6 +10,8 @@ export type NavProp<R extends keyof Screens> = NativeStackNavigationProp<
 	Screens[R]
 >
 
+export type Route = keyof Screens
+
 export type Screens = {
 	Splash?: {}
 	Welcome?: {}
