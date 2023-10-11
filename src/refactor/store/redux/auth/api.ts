@@ -68,8 +68,21 @@ export const usernameAndPasswordForm = async (
 			username
 		)}&password=${encodeURIComponent(password)}`,
 	})
-	console.log(data.data)
-	if (data) return data.data
+	return data?.data
+}
+
+export const resetOtp = async (callbackUrl: string) => {
+	const data = await axios<ResetOtpResponse>({
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			requestName: 'resetOtp',
+			toast: false,
+		},
+		url: callbackUrl,
+		data: `resetOTP=true`,
+	})
+	return data?.data
 }
 
 export const loginOtp = async (otp: string, url: string) => {

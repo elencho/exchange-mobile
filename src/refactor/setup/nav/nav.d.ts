@@ -18,19 +18,21 @@ export type Screens = {
 	Login?: {}
 	Registration?: {}
 	EmailVerification?: {}
-	Main?: {}
-	TransactionFilter?: {}
-	UserProfile?: {}
-	Balance?: {}
-	CardVerificationOne?: {}
-	CardVerificationTwo?: {}
 	Login2Fa?: {}
-	ResetOtpInstructions?: {}
 	ForgotPassword?: {}
 	SetNewPassword?: {}
+	ResetOtpInstructions?: {
+		resetOtpType?: ResetOtp
+	}
+	Main?: {}
 	Resume: {
 		fromSplash: boolean
 		maintenanceInProgress: boolean
 		version?: boolean
 	}
+	TransactionFilter?: {}
+	UserProfile?: {}
+	Balance?: {}
+	CardVerificationOne?: {}
+	CardVerificationTwo?: {}
 }

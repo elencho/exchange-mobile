@@ -20,12 +20,25 @@ import { errorHappenedHere } from '@app/utils/appUtils'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
+const vaxo_realuri = {
+	login: 'Vakhtang.elisabedashvili@gmail.com',
+	password: '11111!Aa',
+}
+const vaxo_satesto = { login: 'metro21@mailinator.com', password: '11111!Aa' }
+const baneta_realuri = { login: 'ibanet@cryptx.com', password: 'Malina125$' }
+const kervala = { login: 'gkerva@cryptal.com', password: 'TestGexCryptal7' }
+const sali = { login: 'bukhiashvilisalome@gmail.com', password: 'Salome1996' }
+const saliSatesto = {
+	login: 'salo131@mailinator.com',
+	password: 'Salome1996',
+}
+
 const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	const { theme, styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
-	const [mail, setMail] = useState('')
-	const [pass, setPass] = useState('')
+	const [mail, setMail] = useState('ibanet@cryptx.com')
+	const [pass, setPass] = useState('Malina125$')
 	const [error, setError] = useState(false)
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
 

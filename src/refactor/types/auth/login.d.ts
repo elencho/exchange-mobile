@@ -7,8 +7,10 @@ interface LoginStartResponse {
 }
 
 interface LoginFormResponse {
+	attributes: {
+		otpType: OTP
+	}
 	execution: Execution | ''
-	code?: string
 }
 
 interface PkceInfo {

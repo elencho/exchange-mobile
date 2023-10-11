@@ -10,7 +10,8 @@ interface AuthState {
 	timerVisible: boolean
 	authLoading: boolean
 	pkceInfo: {} | PkceInfo
-	callbackUrlLogin: string
+	callbackUrl: string
+	otpType: OTP
 
 	// TODO: add other state values
 }
@@ -19,7 +20,8 @@ const initialState: AuthState = {
 	timerVisible: false,
 	authLoading: false,
 	pkceInfo: {},
-	callbackUrlLogin: '',
+	callbackUrl: '',
+	otpType: 'EMAIL',
 	// forgotPassInfo: {
 	// 	username: '',
 	// 	code: '',
@@ -66,7 +68,7 @@ const startLogin = (builder: ActionReducerMapBuilder<AuthState>) => {
 		})
 		.addCase(startLoginThunk.fulfilled, (state, action) => {
 			state.authLoading = false
-			state.callbackUrlLogin = action.payload.callbackUrl
+			state.callbackUrl = action.payload.callbackUrl
 		})
 		.addCase(startLoginThunk.rejected, (state) => {
 			state.authLoading = false

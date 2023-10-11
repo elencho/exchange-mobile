@@ -1,10 +1,12 @@
 import { MMKV } from 'react-native-mmkv'
+import { Language } from '@app/refactor/common/constants'
 
 type KVStorage = {
 	// Auth
 	webViewVisible: boolean
 	accessToken: string
 	bioEnabledEmails: string[]
+	language: Language
 }
 type Key = keyof KVStorage
 

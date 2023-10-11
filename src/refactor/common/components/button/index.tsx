@@ -15,7 +15,7 @@ type Props = PrimaryProps | TextProps | AddProps
 export interface CommonProps {
 	variant: Variant
 	text: string
-	onPress: () => any
+	onPress?: () => any
 	disabled?: boolean
 	style?: StyleProp<TextStyle>
 }

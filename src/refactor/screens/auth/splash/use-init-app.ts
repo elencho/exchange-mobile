@@ -34,7 +34,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		KVStorage.del('webViewVisible')
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
 
-		await fetchLexicon() // TODO: Where?
+		await fetchLexicon()
 		const accessToken = KVStorage.get('accessToken')
 
 		if (hasUnlock()) {
