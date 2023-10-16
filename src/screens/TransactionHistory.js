@@ -6,6 +6,8 @@ import {
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { FlatList, Keyboard, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { fetchTradesThunk } from '@app/refactor/redux/trade/tradeThunks'
+import { fetchTransactionsThunk } from '@app/refactor/redux/transactions/transactionThunks'
 import List from '../assets/images/List.svg'
 import AppText from '../components/AppText'
 import Background from '../components/Background'
@@ -33,6 +35,11 @@ function TransactionHistory({ navigation }) {
 	const isFocused = useIsFocused()
 	const dispatch = useDispatch()
 
+	useEffect(() => {
+		dispatch(fetchTransactionsThunk())
+		dispatch(fetchTradesThunk())
+	}, [])
+
 	const state = useSelector((state) => state)
 	const {
 		transactions: {
@@ -59,14 +66,6 @@ function TransactionHistory({ navigation }) {
 			dispatch(chooseCurrency(currency))
 		}, [currency])
 	)
-
-	// useFocusEffect(
-	//   useCallback(() => {
-	//     dispatch(chooseCurrency('Show All Currency'));
-	//     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-	//     Keyboard.dismiss();
-	//   }, [navigation])
-	// );
 
 	useEffect(() => {
 		dispatch(chooseCurrency('Show All Currency'))

@@ -31,7 +31,6 @@ export default function Login2Fa({ navigation }) {
 
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(30)
-	console.log(navigation)
 	useEffect(() => {
 		if (!seconds) {
 			dispatch({ type: 'TOGGLE_TIMER', timerVisible: false })

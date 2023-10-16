@@ -24,8 +24,8 @@ const initialState: AuthState = {
 		execution: '',
 	},
 	credentials: {
-		login: '',
-		password: '',
+		login: 'ibanet@cryptx.com',
+		password: 'Malina125$',
 	},
 	userAndPassInfo: {},
 	// forgotPassInfo: {

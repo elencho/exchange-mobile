@@ -104,7 +104,6 @@ export default function ModalWithSearch({
 					scrollEventThrottle={1000}
 					initialNumToRender={25}
 					estimatedItemSize={50}
-					contentContainerStyle={{ flexGrow: 1 }}
 				/>
 			</WithKeyboard>
 		</View>
