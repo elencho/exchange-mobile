@@ -34,6 +34,7 @@ interface TradeState {
 	isTradesButtonLoading: boolean
 	moreTradesLoading: boolean
 	offersLoading: boolean
+	selectedTradeDetails: {}
 
 	// Query Params
 	offset: number
@@ -85,6 +86,7 @@ const initialState: TradeState = {
 	isTradesButtonLoading: false,
 	moreTradesLoading: false,
 	offersLoading: false,
+	selectedTradeDetails: {},
 
 	...initialQueryParams,
 }
@@ -130,6 +132,10 @@ const tradeSlice = createSlice({
 		clearTradeFilters: (state) => {
 			return { ...state, ...initialQueryParams }
 		},
+
+		setSelectedTradeDetails: (state, action: PayloadAction<{}>) => {
+			state.selectedTradeDetails = action.payload
+		},
 	},
 	extraReducers: (builder) => {
 		builder
@@ -168,5 +174,33 @@ export const {
 	setFromDateQuery,
 	setToDateQuery,
 	clearTradeFilters,
+	setSelectedTradeDetails,
 } = tradeSlice.actions
 export default tradeSlice.reducer
+
+//Selectors
+export const selectTradeQueryParams = (state) => {
+	const {
+		fiatCodesQuery,
+		offset,
+		statusQuery,
+		actionQuery,
+		cryptoCodeQuery,
+		fromDateTimeQuery,
+		toDateTimeQuery,
+	} = state?.trades
+
+	const tradeQueryParams = {
+		offset,
+		limit: 10,
+		statuses: statusQuery,
+		fromTime: fromDateTimeQuery,
+		toTime: toDateTimeQuery,
+		fiatCodes: fiatCodesQuery,
+		cryptoCode:
+			cryptoCodeQuery === 'Show all currency' ? null : cryptoCodeQuery,
+		actions: actionQuery,
+	}
+
+	return tradeQueryParams
+}

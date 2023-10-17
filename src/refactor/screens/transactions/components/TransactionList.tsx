@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import CustomRefreshControl from '@components/refreshControll'
 import List from '@app/assets/images/List.svg'
 import AppText from '@app/components/AppText'
-import Transaction from '@app/components/TransactionHistory/Transaction'
 import TransactionSkeleton from '@app/components/TransactionHistory/TransactionSkeleton'
 import colors from '@app/constants/colors'
 import {
@@ -13,6 +12,7 @@ import {
 	reachScrollEndThunk,
 	refreshTransactionsThunk,
 } from '@app/refactor/redux/transactions/transactionThunks'
+import Transaction from '@app/refactor/screens/transactions/components/Transaction'
 import ListFooter from './ListFooter'
 
 const TransactionList = () => {

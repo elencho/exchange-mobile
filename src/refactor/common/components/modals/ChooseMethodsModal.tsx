@@ -22,7 +22,7 @@ const ChooseMethodsModal = () => {
 		return methods.map((i) => (
 			<View key={i}>
 				<Pressable
-					style={[styles.row, selectedMethod === i && selectedStyle]}
+					style={[styles.row, selectedMethod[0] === i && selectedStyle]}
 					onPress={() => {
 						dispatch(setMethodFilter([i]))
 						hideModal()
@@ -54,10 +54,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		paddingVertical: 10,
 		borderRadius: 5,
-		marginLeft: -15,
 	},
 	text: {
 		color: colors.PRIMARY_TEXT,
-		marginLeft: 26,
+		marginLeft: 11,
 	},
 })

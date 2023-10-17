@@ -68,7 +68,7 @@ export default function AppNavigator() {
 					headerLeft: () => null,
 					animation: 'slide_from_right',
 				}}
-				initialRouteName="Welcome">
+				initialRouteName="Splash">
 				<Stack.Screen name="Splash" component={Splash} />
 				<Stack.Screen
 					name="Welcome"

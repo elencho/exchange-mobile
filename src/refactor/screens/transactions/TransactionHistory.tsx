@@ -4,7 +4,6 @@ import { Keyboard } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Background from '@app/components/Background'
 import TopRow from '@app/components/TransactionHistory/TopRow'
-import TransactionModal from '@app/components/TransactionHistory/TransactionModal'
 import { clearFiltersTrade } from '@app/redux/trade/actions'
 import {
 	chooseCurrency,
@@ -13,6 +12,7 @@ import {
 } from '@app/redux/transactions/actions'
 import SearchAndFilter from '@app/refactor/screens/transactions/components/SearchAndFilter'
 import TabSwitcher from '@app/refactor/screens/transactions/components/TabSwitcher'
+import TransactionModal from '@app/refactor/screens/transactions/components/TransactionModal'
 import TradeList from './components/TradeList'
 import TransactionList from './components/TransactionList'
 

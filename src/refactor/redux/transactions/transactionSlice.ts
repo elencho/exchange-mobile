@@ -1,7 +1,5 @@
 // src/redux/errorsSlice.ts
-import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { useSelector } from 'react-redux'
-import { RootState } from '../rootReducer'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
 	fetchTransactionsThunk,
 	refreshTransactionsThunk,
@@ -21,6 +19,7 @@ interface TransactionState {
 	currency: string
 	activeTab: 'Transfer' | 'Convert'
 	code: null
+	selectedTransactionDetails: {}
 
 	transactionsLoading: boolean
 	moreTransactionsLoading: boolean
@@ -61,6 +60,7 @@ const initialState: TransactionState = {
 	currency: 'Show All Currency',
 	activeTab: 'Transfer',
 	code: null,
+	selectedTransactionDetails: {},
 
 	transactionsLoading: false,
 	moreTransactionsLoading: false,
@@ -115,6 +115,9 @@ const transactionSlice = createSlice({
 		clearTransactionFilters: (state) => {
 			return { ...state, ...initialQueryParams }
 		},
+		setSelectedTransactionDetails: (state, action: PayloadAction<{}>) => {
+			state.selectedTransactionDetails = action.payload
+		},
 	},
 	extraReducers: (builder) => {
 		builder
@@ -155,49 +158,43 @@ export const {
 	setToTime,
 	setTransactionsSearch,
 	clearTransactionFilters,
+	setSelectedTransactionDetails,
 } = transactionSlice.actions
 export default transactionSlice.reducer
 
 //Selectors
+const methodsMapping = {
+	Ecommerce: ['ECOMMERCE'],
+	Wire: ['WIRE'],
+	'Crypto Transaction': ['WALLET', 'WALLET_INTERNAL'],
+	Staking: ['STAKING'],
+	B2C: ['B2C'],
+	Transfer: ['TRANSFER'],
+}
 
-// const selectTransactionsState = (state) => state.transactions
+export const selectTransactionQueryParams = (state) => {
+	const {
+		typeFilter,
+		method,
+		status,
+		cryptoFilter,
+		fromDateTime,
+		toDateTime,
+		offset,
+		txIdOrRecipient,
+	} = state?.transactions
 
-// export const getTransactionsQueryParams = createSelector(
-// 	[selectTransactionsState],
-// 	(transactions) => {
-// 		const {
-// 			typeFilter,
-// 			method,
-// 			status,
-// 			cryptoFilter,
-// 			fromDateTime,
-// 			toDateTime,
-// 			offset,
-// 			limit,
-// 			txIdOrRecipient,
-// 		} = transactions
+	const queryParams: FetchTransactionsQuery = {
+		type: typeFilter?.length === 1 ? typeFilter[0] : null,
+		methods: methodsMapping[method],
+		statuses: status,
+		currency: cryptoFilter?.length > 0 ? cryptoFilter : null,
+		fromTime: fromDateTime,
+		toTime: toDateTime,
+		offset,
+		limit: 10,
+		txIdOrRecipient: txIdOrRecipient?.length > 0 ? txIdOrRecipient : null,
+	}
 
-// 		const methodsMapping = {
-// 			Ecommerce: ['ECOMMERCE'],
-// 			Wire: ['WIRE'],
-// 			'Crypto Transaction': ['WALLET', 'WALLET_INTERNAL'],
-// 			Staking: ['STAKING'],
-// 			B2C: ['B2C'],
-// 			Transfer: ['TRANSFER'],
-// 		}
-
-// 		const queryParams: FetchTransactionsQuery = {
-// 			type: typeFilter?.length === 1 ? typeFilter[0] : null,
-// 			methods: methodsMapping[method],
-// 			statuses: status,
-// 			currency: cryptoFilter?.length > 0 ? cryptoFilter : null,
-// 			fromTime: fromDateTime,
-// 			toTime: toDateTime,
-// 			offset,
-// 			limit: 10,
-// 			txIdOrRecipient: txIdOrRecipient?.length > 0 ? txIdOrRecipient : null,
-// 		}
-
-// 		return queryParams
-// 	}
-// )
+	return queryParams
+}

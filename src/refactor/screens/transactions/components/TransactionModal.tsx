@@ -8,16 +8,16 @@ import {
 	Pressable,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import Copy from '@app/assets/images/Copy.svg'
+import Link from '@app/assets/images/Link.svg'
+import AppModal from '@app/components/AppModal'
+import AppText from '@app/components/AppText'
+import TradeDetails from '@app/components/InstantTrade/TradeDetails'
+import { COINS_URL_PNG } from '@app/constants/api'
+import colors from '@app/constants/colors'
+import { toggleTransactionDetails } from '@app/redux/modals/actions'
 import TransactionDetails from '@app/refactor/screens/transactions/components/TransactionDetails'
-import Copy from '../../assets/images/Copy.svg'
-import Link from '../../assets/images/Link.svg'
-import { COINS_URL_PNG } from '../../constants/api'
-import colors from '../../constants/colors'
-import { toggleTransactionDetails } from '../../redux/modals/actions'
-import useCopyToClipboard from '../../utils/copyToClipboard'
-import AppModal from '../AppModal'
-import AppText from '../AppText'
-import TradeDetails from '../InstantTrade/TradeDetails'
+import useCopyToClipboard from '@app/utils/copyToClipboard'
 
 function TransactionModal({ transactions, trades }) {
 	const { copyToClipboard } = useCopyToClipboard()
@@ -26,7 +26,7 @@ function TransactionModal({ transactions, trades }) {
 
 	const {
 		transactions: {
-			currentTransaction: {
+			selectedTransactionDetails: {
 				currency,
 				provider,
 				method,

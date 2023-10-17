@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import List from '@assets/images/List.svg'
 import AppText from '@app/components/AppText'
 import CustomRefreshContol from '@app/components/CustomRefreshContol'
-import Transaction from '@app/components/TransactionHistory/Transaction'
 import TransactionSkeleton from '@app/components/TransactionHistory/TransactionSkeleton'
 import colors from '@app/constants/colors'
 import { IS_IOS } from '@app/constants/system'
@@ -13,6 +12,7 @@ import {
 	reachScrollEndThunk,
 	refreshTradesThunk,
 } from '@app/refactor/redux/trade/tradeThunks'
+import Transaction from '@app/refactor/screens/transactions/components/Transaction'
 import ListFooter from './ListFooter'
 
 const TradeList = () => {

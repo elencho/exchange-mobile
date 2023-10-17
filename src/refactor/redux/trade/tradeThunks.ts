@@ -1,33 +1,19 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { fetchTrades } from '@app/refactor/utils/tradeUtils'
-import { setTrades, setTotalTradesQty, setTradesOffset } from './tradeSlice'
+import {
+	setTrades,
+	setTotalTradesQty,
+	setTradesOffset,
+	selectTradeQueryParams,
+} from './tradeSlice'
 
 export const fetchTradesThunk = createAsyncThunk(
 	'fetchTrades',
 	async (_, { dispatch, getState }) => {
-		const {
-			fiatCodesQuery,
-			offset,
-			statusQuery,
-			actionQuery,
-			cryptoCodeQuery,
-			fromDateTimeQuery,
-			toDateTimeQuery,
-		} = getState().trades
-
-		const tradeQueryParams = {
-			offset,
-			limit: 10,
-			statuses: statusQuery,
-			fromTime: fromDateTimeQuery,
-			toTime: toDateTimeQuery,
-			fiatCodes: fiatCodesQuery,
-			cryptoCode:
-				cryptoCodeQuery === 'Show all currency' ? null : cryptoCodeQuery,
-			actions: actionQuery,
-		}
+		const state = getState()
 
 		try {
+			const tradeQueryParams = selectTradeQueryParams(state)
 			dispatch(setTradesOffset(0))
 			const tradesData = await fetchTrades(tradeQueryParams)
 			const newTrades = tradesData?.data
@@ -45,31 +31,11 @@ export const fetchTradesThunk = createAsyncThunk(
 export const refreshTradesThunk = createAsyncThunk(
 	'refreshTrades',
 	async (_, { dispatch, getState }) => {
-		const {
-			fiatCodesQuery,
-			offset,
-			statusQuery,
-			actionQuery,
-			cryptoCodeQuery,
-			fromDateTimeQuery,
-			toDateTimeQuery,
-			trades,
-		} = getState().trades
-
-		const tradeQueryParams = {
-			offset,
-			limit: 10,
-			statuses: statusQuery,
-			fromTime: fromDateTimeQuery,
-			toTime: toDateTimeQuery,
-			fiatCodes: fiatCodesQuery,
-			cryptoCode:
-				cryptoCodeQuery === 'Show all currency' ? null : cryptoCodeQuery,
-			actions: actionQuery,
-		}
+		const state = getState()
 
 		try {
 			console.log('refreshTrades')
+			const tradeQueryParams = selectTradeQueryParams(state)
 			const tradesData = await fetchTrades(tradeQueryParams)
 			const newTrades = tradesData?.data
 			dispatch(setTradesOffset(0))
@@ -83,33 +49,14 @@ export const refreshTradesThunk = createAsyncThunk(
 export const reachScrollEndThunk = createAsyncThunk(
 	'reachScrollEndThunk',
 	async (_, { dispatch, getState }) => {
-		//Todo: Outsource to selector
-		const {
-			fiatCodesQuery,
-			offset,
-			statusQuery,
-			actionQuery,
-			cryptoCodeQuery,
-			fromDateTimeQuery,
-			toDateTimeQuery,
-			trades,
-			totalTradesQty,
-		} = getState().trades
+		const state = getState()
 
-		const tradeQueryParams = {
-			offset,
-			limit: 10,
-			statuses: statusQuery,
-			fromTime: fromDateTimeQuery,
-			toTime: toDateTimeQuery,
-			fiatCodes: fiatCodesQuery,
-			cryptoCode:
-				cryptoCodeQuery === 'Show all currency' ? null : cryptoCodeQuery,
-			actions: actionQuery,
-		}
+		//Todo: Outsource to selector
+		const { offset, trades, totalTradesQty } = getState().trades
 
 		try {
 			console.log('reachScrollEnd trades')
+			const tradeQueryParams = selectTradeQueryParams(state)
 
 			if (trades.length < totalTradesQty) {
 				dispatch(setTradesOffset(offset + 1))
