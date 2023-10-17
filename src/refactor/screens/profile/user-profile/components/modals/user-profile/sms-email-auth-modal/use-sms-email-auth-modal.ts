@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
 	toggleEmailAuthModal,
 	toggleSmsAuthModal,
-} from '@app/refactor/redux/modals/actions'
+} from '@app/refactor/redux/modals/modalsSlice'
 import {
 	setEmailAuth,
 	setGoogleAuth,

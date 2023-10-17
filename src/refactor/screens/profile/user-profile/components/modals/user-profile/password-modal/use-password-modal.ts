@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer, useState } from 'react'
 import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { togglePasswordModal } from '@app/refactor/redux/modals/actions'
+import { togglePasswordModal } from '@app/refactor/redux/modals/modalsSlice'
 import { updatePassword } from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
 

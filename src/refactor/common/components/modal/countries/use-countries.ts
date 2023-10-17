@@ -1,10 +1,13 @@
-import { saveUserInfo, setRegistrationInputs } from '@app/redux/profile/actions'
-import { toggleCountriesModal } from '@app/refactor/redux/modals/actions'
-import { fetchCountries, saveCountries } from '@app/refactor/redux/profile/actions'
-import { RootState } from '@app/refactor/redux/rootReducer'
 import React, { useEffect } from 'react'
 import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { saveUserInfo, setRegistrationInputs } from '@app/redux/profile/actions'
+import { toggleCountriesModal } from '@app/refactor/redux/modals/modalsSlice'
+import {
+	fetchCountries,
+	saveCountries,
+} from '@app/refactor/redux/profile/actions'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface useCountriesProps {
 	reset?: () => void

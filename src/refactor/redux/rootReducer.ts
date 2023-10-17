@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import authReducer from './auth/authSlice'
 import errors from './errors/errorsSlice'
-import modals from './modals/reducer'
+import modals from './modals/modalsSlice'
 import profile from './profile/reducer'
 import trade from './trade/reducer'
 import transactions from './transactions/reducer'

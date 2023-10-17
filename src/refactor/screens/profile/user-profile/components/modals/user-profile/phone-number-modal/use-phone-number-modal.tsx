@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleCountriesModal, togglePhoneNumberModal } from '@app/refactor/redux/modals/actions'
+import {
+	toggleCountriesModal,
+	togglePhoneNumberModal,
+} from '@app/refactor/redux/modals/modalsSlice'
 import {
 	saveUserInfo,
 	updatePhoneNumber,
@@ -79,7 +82,7 @@ export const usePhoneNumberModal = () => {
 
 	const phoneCountry = () => {
 		let phoneCountry
-    // TODO: add country type
+		// TODO: add country type
 		countries?.forEach((c) => {
 			if (userInfo.country === c.code) {
 				phoneCountry = c.phoneCode
@@ -101,6 +104,6 @@ export const usePhoneNumberModal = () => {
 		handleSave,
 		handleCountries,
 		phoneCountry,
-    error
+		error,
 	}
 }

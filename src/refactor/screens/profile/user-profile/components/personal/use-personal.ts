@@ -5,7 +5,7 @@ import {
 	openCompanyInfoModal,
 	toggleLanguageModal,
 	togglePhoneNumberModal,
-} from '@app/refactor/redux/modals/actions'
+} from '@app/refactor/redux/modals/modalsSlice'
 import { toggleEmailSubscription } from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { UserStatus } from '@app/refactor/types/enums'

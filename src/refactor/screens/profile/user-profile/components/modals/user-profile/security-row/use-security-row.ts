@@ -12,7 +12,7 @@ import {
 	toggleGoogleOtpModal,
 	togglePasswordModal,
 	toggleSmsAuthModal,
-} from '@app/refactor/redux/modals/actions'
+} from '@app/refactor/redux/modals/modalsSlice'
 import {
 	setCurrentSecurityAction,
 	setEmailAuth,

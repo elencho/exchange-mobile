@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { togglePersonalInfoModal } from '@app/refactor/redux/modals/actions'
+import { togglePersonalInfoModal } from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
 const usePersonalInformation = () => {
