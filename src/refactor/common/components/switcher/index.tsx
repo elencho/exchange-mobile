@@ -29,3 +29,5 @@ const AppSwitcher: React.FC<ToggleSwitchProps> = (props) => {
 		/>
 	)
 }
+
+export default AppSwitcher

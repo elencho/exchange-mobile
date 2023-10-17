@@ -15,6 +15,7 @@ import ForgotPassword from '@app/refactor/screens/auth/password_forgot/index'
 import Splash from '@app/refactor/screens/auth/splash/index'
 import UpdateAvailable from '@app/refactor/screens/auth/update'
 import Welcome from '@app/refactor/screens/auth/welcome'
+import UserProfile from '@app/refactor/screens/profile/user-profile'
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
 import EmailVerification from '@app/screens/EmailVerification'
@@ -23,7 +24,6 @@ import ResetOtpInstructionsScreen from '@app/screens/ResetOtpInstructions'
 import Resume from '@app/screens/Resume'
 import SetNewPasswordScreen from '@app/screens/SetNewPassword'
 import TransactionFilter from '@app/screens/TransactionFilter'
-import UserProfileScreen from '@app/screens/UserProfile'
 import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
 import { Screens } from './types'
@@ -68,7 +68,7 @@ export default function AppNavigator() {
 					headerLeft: () => null,
 					animation: 'slide_from_right',
 				}}
-				initialRouteName="Welcome">
+				initialRouteName="Splash">
 				<Stack.Screen name="Splash" component={Splash} />
 				<Stack.Screen
 					name="Welcome"
@@ -97,7 +97,7 @@ export default function AppNavigator() {
 				/>
 
 				<Stack.Screen name="TransactionFilter" component={TransactionFilter} />
-				<Stack.Screen name="UserProfile" component={UserProfileScreen} />
+				<Stack.Screen name="UserProfile" component={UserProfile} />
 				<Stack.Screen name="Balance" component={BalanceScreen} />
 
 				<Stack.Screen

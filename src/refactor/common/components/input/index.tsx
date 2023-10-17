@@ -18,7 +18,7 @@ type Props = TextInputProps & {
 	label?: string
 	labelBackgroundColor?: string
 	disabled?: boolean
-	error: string | boolean | null | undefined
+	error?: string | boolean | null
 	rightComponent?: ReactNode
 	onFocusRightComponent?: ReactNode
 	handleClear?: () => void
