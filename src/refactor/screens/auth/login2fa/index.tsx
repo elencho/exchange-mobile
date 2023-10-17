@@ -1,3 +1,4 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
 import {
@@ -7,7 +8,6 @@ import {
 	Pressable,
 	Keyboard,
 } from 'react-native'
-import { MaterialIndicator } from 'react-native-indicators'
 import { useDispatch, useSelector } from 'react-redux'
 import EmailLoginAuth from '@assets/images/User_profile/EmailLoginAuth.svg'
 import SmsAuth from '@assets/images/User_profile/Sms_Auth.svg'
@@ -24,9 +24,11 @@ import {
 } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { ScreenProp } from '@app/refactor/setup/nav/nav'
+import { Screens } from '@app/refactor/setup/nav/nav'
 
-export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
+interface Props extends NativeStackScreenProps<Screens, 'Login2Fa'> {}
+
+export const Login2Fa = ({ navigation }: Props) => {
 	const dispatch = useDispatch()
 	const { theme, styles } = useTheme(_styles)
 
@@ -73,20 +75,10 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 		}
 	}
 
-	const resend = () => dispatch(resendOtpThunk('Login2Fa'))
+	const resend = () => dispatch(resendOtpThunk({ from: 'Login2Fa' }))
 
 	const resendOrCountDown = () => {
-		if (false) {
-			// TODO: transactions: { loading }
-			return (
-				<MaterialIndicator
-					color="#6582FD"
-					animationDuration={3000}
-					size={16}
-					style={{ flex: 0 }}
-				/>
-			)
-		} else if (timerVisible) {
+		if (timerVisible) {
 			return (
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)

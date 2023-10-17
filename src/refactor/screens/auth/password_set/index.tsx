@@ -8,8 +8,8 @@ import Background from '@components/background'
 import { AppButton } from '@components/button'
 import AppInput from '@components/input'
 import AppText from '@components/text'
+import { setNewPasswordOtpThunk } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
-import colors from '@app/constants/colors'
 import { startLoginAction } from '@app/redux/profile/actions'
 import { Screens } from '@app/refactor/setup/nav/nav'
 
@@ -42,7 +42,9 @@ export default function SetNewPassword({ navigation }: Props) {
 		if (pass !== confirmPass || !passValid) {
 			setError(true)
 		} else {
-			dispatch({ type: 'SET_NEW_PASS_SAGA', pass, confirmPass, navigation })
+			dispatch(
+				setNewPasswordOtpThunk({ newPass: pass, confirmPass, navigation })
+			)
 		}
 	}
 

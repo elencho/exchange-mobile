@@ -1,50 +1,34 @@
-// src/redux/errorsSlice.ts
 import {
 	ActionReducerMapBuilder,
 	createSlice,
 	PayloadAction,
 } from '@reduxjs/toolkit'
 import {
-	resetOtpThunk,
 	startLoginThunk,
 	usernameAndPaswordThunk,
-} from './thunks'
+	resetOtpThunk,
+	resetPasswordThunk,
+	resetPasswordOtpThunk,
+	resendOtpThunk,
+	otpForLoginThunk,
+	forgotPasswordStartThunk,
+} from '@store/redux/auth/thunks'
 
 interface AuthState {
 	timerVisible: boolean
 	authLoading: boolean
-	pkceInfo?: PkceInfo
 	callbackUrl: string
+	//passwordResetUrl: string
 	otpType: OTP
-
-	// TODO: add other state values
+	pkceInfo?: PkceInfo
 }
 
 const initialState: AuthState = {
 	timerVisible: false,
 	authLoading: false,
 	callbackUrl: '',
+	//passwordResetUrl: '',
 	otpType: 'EMAIL',
-	// forgotPassInfo: {
-	// 	username: '',
-	// 	code: '',
-	// },
-	// forgotPassMode: false,
-	// Personal_Company: 'Personal',
-	// registrationStartInfo: {},
-	// registrationInputs: {
-	// 	// firstName: 'dd',
-	// 	// lastName: 'dd',
-	// 	// email: 'aa1761@mailinator.com',
-	// 	// passwordNew: '11111!Aa',
-	// 	// passwordConfirm: '11111!Aa',
-	// 	// phoneCountry: 'GEO',
-	// 	// phoneNumber: '995567761',
-	// 	// promoCode: '',
-	// 	// referralCode: '',
-	// 	// acceptTerms: 'on',
-	// },
-	// verificationInfo: {},
 }
 
 const auth = createSlice({
@@ -55,6 +39,7 @@ const auth = createSlice({
 			state.pkceInfo = action.payload
 		},
 		resetAuthState: (state) => {
+			// TODO: should we really?
 			state = initialState
 		},
 	},
@@ -62,6 +47,34 @@ const auth = createSlice({
 		startLogin(builder)
 		usernameAndPassword(builder)
 		resetOtp(builder)
+
+		builder.addCase(forgotPasswordStartThunk.fulfilled, (state, action) => {
+			state.callbackUrl = action.payload.callbackUrl // TODO: password?
+		})
+		builder.addCase(resetPasswordThunk.fulfilled, (state, action) => {
+			state.timerVisible = true
+			state.callbackUrl = action.payload.callbackUrl // TODO: password?
+		})
+
+		builder.addCase(otpForLoginThunk.pending, (state, action) => {
+			state.authLoading = true
+		})
+		builder.addCase(otpForLoginThunk.fulfilled, (state, action) => {
+			state.authLoading = false
+			state.callbackUrl = action.payload.callbackUrl
+		})
+
+		builder.addCase(resendOtpThunk.pending, (state, action) => {
+			state.authLoading = true
+		})
+		builder.addCase(resendOtpThunk.fulfilled, (state, action) => {
+			state.callbackUrl = action.payload.callbackUrl
+			state.authLoading = false
+		})
+
+		builder.addCase(resetPasswordOtpThunk.fulfilled, (state, action) => {
+			state.callbackUrl = action.payload.callbackUrl
+		})
 	},
 })
 
@@ -73,6 +86,7 @@ const startLogin = (builder: ActionReducerMapBuilder<AuthState>) => {
 		.addCase(startLoginThunk.fulfilled, (state, action) => {
 			state.authLoading = false
 			state.callbackUrl = action.payload.callbackUrl
+			// state.passwordResetUrl = action.payload.passwordResetUrl
 		})
 		.addCase(startLoginThunk.rejected, (state) => {
 			state.authLoading = false
@@ -87,6 +101,7 @@ const usernameAndPassword = (builder: ActionReducerMapBuilder<AuthState>) => {
 		.addCase(usernameAndPaswordThunk.fulfilled, (state, action) => {
 			state.authLoading = false
 			state.callbackUrl = action.payload.callbackUrl
+			// state.passwordResetUrl = action.payload.passwordResetUrl
 			state.otpType = action.payload.attributes.otpType
 		})
 		.addCase(usernameAndPaswordThunk.rejected, (state) => {

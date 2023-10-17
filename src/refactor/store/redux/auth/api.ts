@@ -5,6 +5,7 @@ import DeviceInfo from 'react-native-device-info'
 import {
 	CODE_TO_TOKEN,
 	DICTIONARY,
+	FORGOT_PASSWORD_START_URL,
 	LOGIN_START_URL,
 	READINESS_URL,
 	REGISTRATION_START_URL,
@@ -111,6 +112,69 @@ export const codeToToken = async (code: string, codeVerifier: string) => {
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 		url: CODE_TO_TOKEN,
 		data: `grant_type=authorization_code&client_id=mobile-service-public&code=${code}&redirect_uri=${authRedirectUrl}&code_verifier=${codeVerifier}&code_challenge_method=S256`,
+	})
+	return data?.data
+}
+
+export const forgotPassword = async () => {
+	const data = await axios.get<ForgotPasswordStartResponse>(
+		FORGOT_PASSWORD_START_URL,
+		{
+			params: {
+				client_id: 'mobile-service-public',
+				display: 'mobile',
+			},
+		}
+	)
+	return data?.data
+}
+
+export const resetPassword = async (callbackUrl: string, mail: string) => {
+	const data = await axios<ResetPasswordResponse>({
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			requestName: 'forgotPasswordCode',
+			toast: false,
+		},
+		url: callbackUrl,
+		data: `username=${encodeURIComponent(mail)}&send=true`,
+	})
+	return data?.data
+}
+
+export const resetPasswordOtp = async (
+	callbackUrl: string,
+	mail: string,
+	otp: string
+) => {
+	const data = await axios<ResetPasswordOtpResponse>({
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			requestName: 'forgotPasswordEnterCode',
+			toast: false,
+		},
+		url: callbackUrl,
+		data: `username=${encodeURIComponent(mail)}&otp=${otp}`,
+	})
+	return data?.data
+}
+
+export const setNewPassword = async (
+	callbackUrl: string,
+	newPass: string,
+	confirmPass: string
+) => {
+	const data = await axios<SetNewPasswordResponse>({
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		},
+		url: callbackUrl,
+		data: `password-new=${encodeURIComponent(
+			newPass
+		)}&password-confirm=${encodeURIComponent(confirmPass)}`,
 	})
 	return data?.data
 }

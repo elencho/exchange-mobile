@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Text, TextProps, TextStyle } from 'react-native'
 import { FontTheme } from '@theme/fonts'
 import { useTheme } from '@theme/index'
-import KVStorage from '@store/kv'
+import KVStore from '@store/kv'
 
 type Variant = 's' | 'm' | 'l' | 'title' | 'headline'
 
@@ -17,7 +17,7 @@ const AppText: React.FC<Props> = (props) => {
 	const { variant, medium, noTranslate, children, onPress, style } = props
 	const { theme } = useTheme()
 
-	const language = KVStorage.get('language')
+	const language = KVStore.get('language')
 	const isMtavruli = language === 'ka' && variant == 'headline'
 
 	const translate = (textNode: ReactNode) => {

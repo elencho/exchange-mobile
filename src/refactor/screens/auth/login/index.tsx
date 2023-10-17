@@ -32,13 +32,15 @@ const saliSatesto = {
 	login: 'salo131@mailinator.com',
 	password: 'Salome1996',
 }
+const banetaSms = { mail: 'iraklibanetishvili@yahoo.com', pass: 'Salo125' }
+const testMail = { mail: 'remora.419@gmail.com', pass: 'Derrickrose1$' }
 
 const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	const { theme, styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
-	const [mail, setMail] = useState('remora.419@gmail.com')
-	const [pass, setPass] = useState('Derrickrose1$')
+	const [mail, setMail] = useState(testMail.mail) // TODO: ''
+	const [pass, setPass] = useState(testMail.pass) // TODO: ''
 	const [error, setError] = useState(false)
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
 
@@ -65,7 +67,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	const onRegisterPressed = () => navigation.navigate('Registration')
 
 	const onForgotPasswordPressed = () => {
-		// navigation.navigate('ForgotPassword')
+		navigation.navigate('ForgotPassword')
 		// TODO: dispatch({ type: 'FORGOT_PASSWORD_SAGA', navigation: props.navigation })
 	}
 

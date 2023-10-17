@@ -40,7 +40,7 @@ const TwoFaInput = ({
 	useEffect(() => {
 		if (value.length === cellCount) {
 			if (from === 'Login2Fa') {
-				dispatch(otpForLoginThunk(value, 'Login2Fa', navigation))
+				dispatch(otpForLoginThunk({ otp: value, from: 'Login2Fa', navigation }))
 			}
 		}
 	}, [value])

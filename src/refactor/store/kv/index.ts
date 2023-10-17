@@ -1,7 +1,7 @@
 import { MMKV } from 'react-native-mmkv'
 import { Language } from '@app/refactor/common/constants'
 
-type KVStorage = {
+interface Schema {
 	// Auth
 	webViewVisible: boolean
 	isLoggedIn: boolean
@@ -10,11 +10,11 @@ type KVStorage = {
 	bioEnabledEmails: string[]
 	language: Language
 }
-type Key = keyof KVStorage
+type Key = keyof Schema
 
-interface Storage {
-	get<T extends Key>(key: T): KVStorage[T] | undefined
-	set<T extends Key>(key: T, value: KVStorage[T]): void
+interface PersistentStore {
+	get<T extends Key>(key: T): Schema[T] | undefined
+	set<T extends Key>(key: T, value: Schema[T]): void
 	del<T extends Key>(key: T): void
 }
 
@@ -24,7 +24,7 @@ const secureMmkv = new MMKV() // TODO: Encrypt
 const secureKeys: Key[] = ['accessToken', 'bioEnabledEmails']
 const cache = (key: Key) => (secureKeys.includes(key) ? secureMmkv : mmkv)
 
-const KVStorage: Storage = {
+const KVStore: PersistentStore = {
 	get(key) {
 		const value = cache(key).getString(key)
 		return value ? deserializers[key](value) : undefined
@@ -39,7 +39,7 @@ const KVStorage: Storage = {
 	},
 }
 
-export default KVStorage
+export default KVStore
 
 /**
  *
@@ -57,7 +57,7 @@ const deserializeObject = (value: string) => JSON.parse(value)
 const serializeObject = (value: any) => JSON.stringify(value)
 
 const deserializers: {
-	[key in Key]: (value: string) => KVStorage[key]
+	[key in Key]: (value: string) => Schema[key]
 } = {
 	webViewVisible: deserializeBoolean,
 	isLoggedIn: deserializeBoolean,
@@ -67,7 +67,7 @@ const deserializers: {
 	language: (value: string) => (value === 'ka' ? 'ka' : 'en'),
 }
 
-const serializers: { [key in Key]: (value: KVStorage[key]) => string } = {
+const serializers: { [key in Key]: (value: Schema[key]) => string } = {
 	webViewVisible: serializeBoolean,
 	isLoggedIn: serializeBoolean,
 	accessToken: serializeString,

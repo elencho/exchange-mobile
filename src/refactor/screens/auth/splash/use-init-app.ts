@@ -8,12 +8,11 @@ import { useDispatch } from 'react-redux'
 import { useTheme } from '@theme/index'
 import { checkReadiness, fetchTranslations } from '@store/redux/auth/api'
 import { resetAuthState } from '@store/redux/auth/slice'
-import { saveOtpThunk } from '@store/redux/auth/thunks'
 import { currentVersion } from '@app/constants/system'
 import { setLanguage } from '@app/redux/profile/actions'
 import { System } from '@app/refactor/common/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import KVStorage from '@app/refactor/store/kv'
+import KVStore from '@app/refactor/store/kv'
 import { TokenEmail } from '@app/refactor/types/auth/splash'
 import { addResources, switchLanguage } from '@app/utils/i18n'
 import { fetchCountries } from '@app/utils/userProfileUtils'
@@ -29,17 +28,21 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	)
 
 	const startApp = async () => {
+		// TODO? dispatch(resetAuthState())
+		dispatch(resetAuthState())
 		dispatch({ type: 'RESET_STATE' }) // TODO: Remove
 
-		dispatch(resetAuthState())
-		KVStorage.del('webViewVisible')
+		KVStore.del('webViewVisible')
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
 
 		await fetchLexicon()
-		const accessToken = KVStorage.get('accessToken')
+		const accessToken = KVStore.get('accessToken')
+
+		//! For Testing
+		// navigation.navigate('SetNewPassword')
+		// return
 
 		if (hasUnlock()) {
-			// ვამოწმებთ გვაქვს თუ არა ტოკენი, თუ არ გვაქვს ვისვრით ავტორიზაციაზე
 			if (!accessToken) {
 				navigation.navigate('Welcome')
 			}
@@ -47,31 +50,21 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			// if userInfo 200 -> Welcome, else -> Resume
 			// Next: as below
 		} else {
-			// ვამოწმებთ გვაქვს თუ არა ტოკენი, თუ არ გვაქვს ვისვრით ავტორიზაციაზე
 			if (!accessToken) {
 				navigation.navigate('Welcome')
-			} else {
-				dispatch(saveOtpThunk(accessToken))
-			}
-			// ვამოწმებთ სთორიზე არის თუ არა ახალი ვერსია
-			if (await updateNeeded()) {
+			} else if (await updateNeeded()) {
 				navigation.navigate('UpdateAvailable')
-			}
-			// ვამოწმებთ ბექი ჩართულია თუ არა დამატებით გადავცემთ ვერსიას, აღნიშნულ ვერსიაზე უნდა მშაობდეს თუ არა აპლიკაცია
-			// (აქ ბაგი გვაქვს, არვჩეკავთ ყველაქეისს, წარამტების გარდა ნებისმიერ ერორზე უნდა გადავიდეთ ფარდაზე)
-			else if (await backIsDown()) {
+			} else if (await backIsDown()) {
 				navigation.navigate('Maintenance')
-			}
-			// ვუხსნით აპლიკაციას
-			else {
-				navigation.navigate('Welcome') //TODO: Default Main
+			} else {
+				navigation.navigate('Welcome') // Main
 			}
 		}
 	}
 
 	const hasUnlock = (): Boolean => {
-		const bioEnabledEmails = KVStorage.get('bioEnabledEmails')
-		const accessToken = KVStorage.get('accessToken')
+		const bioEnabledEmails = KVStore.get('bioEnabledEmails')
+		const accessToken = KVStore.get('accessToken')
 		if (!bioEnabledEmails || !accessToken) return false
 
 		const email = jwt_decode<TokenEmail>(accessToken)?.email

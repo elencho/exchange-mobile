@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import jwt_decode from 'jwt-decode'
 import pkceChallenge from 'react-native-pkce-challenge'
 import { delay } from 'redux-saga/effects'
-import KVStorage from '@store/kv'
+import KVStore from '@store/kv'
 import {
 	saveRegistrationStartInfo,
 	setRegistrationInputs,
@@ -20,6 +20,10 @@ import {
 	resendEmail,
 	resetOtp,
 	usernameAndPasswordForm,
+	forgotPassword,
+	resetPassword,
+	resetPasswordOtp,
+	setNewPassword,
 } from './api'
 import { savePkceInfo } from './slice'
 
@@ -100,38 +104,41 @@ export const resetOtpThunk = createAsyncThunk(
 
 type ResendFrom = 'Login2Fa' | 'EmailVerification' | 'TODO:SMS_EMAIL_MODAL'
 
-export const resendOtpThunk = (from: ResendFrom) =>
-	createAsyncThunk('resendOtp', async (_, { dispatch, getState }) => {
+export const resendOtpThunk = createAsyncThunk(
+	'resendOtp',
+	async ({ from }: { from: ResendFrom }, { dispatch, getState }) => {
 		const state = (getState() as RootState).auth
-		state.authLoading = true
 
-		//TODO: SmsEmail
+		//TODO: SmsEmail Modal
 		//TODO: Registration
 		const resendInfo = await resendEmail(state.callbackUrl)
-		state.callbackUrl = resendInfo.callbackUrl
+		return { callbackUrl: resendInfo.callbackUrl }
+	}
+)
 
-		state.authLoading = false
-	})()
-
-export const otpForLoginThunk = (
-	otp: string,
-	from: Route,
-	navigation: NativeStackNavigationProp<Screens, any>
-) =>
-	createAsyncThunk('otpForLogin', async (_, { dispatch, getState }) => {
+export const otpForLoginThunk = createAsyncThunk(
+	'otpForLogin',
+	async (
+		{
+			otp,
+			from,
+			navigation,
+		}: {
+			otp: string
+			from: Route
+			navigation: NativeStackNavigationProp<Screens, any>
+		},
+		{ dispatch, getState }
+	) => {
 		const state = (getState() as RootState).auth
 		const { callbackUrl, pkceInfo } = state
 
-		delay(500)
 		state.authLoading = true
 		const loginInfo = await loginOtp(otp, callbackUrl)
 
 		// TODO: profile->forgotPassMode
-		if (loginInfo.errors) {
-			// SAVE_FORGOT_PASS_INFO ?
-			if (loginInfo.execution === Execution.UPDATE_PASSWORD) {
-				navigation.navigate('SetNewPassword')
-			}
+		if (loginInfo.execution === Execution.UPDATE_PASSWORD) {
+			navigation.navigate('SetNewPassword')
 		} else {
 			dispatch(
 				codeToTokenThunk(
@@ -143,10 +150,9 @@ export const otpForLoginThunk = (
 			)
 		}
 
-		delay(2000)
-		state.authLoading = false
 		return loginInfo
-	})()
+	}
+)
 
 const codeToTokenThunk = (
 	code: string,
@@ -154,30 +160,112 @@ const codeToTokenThunk = (
 	from: Route,
 	navigation: NativeStackNavigationProp<Screens, any>
 ) =>
-	createAsyncThunk('codeToToken', async (_, { dispatch }) => {
+	createAsyncThunk('codeToToken', async (_, {}) => {
 		const tokenData = await codeToToken(code, codeVerifier || '')
+		KVStore.set('accessToken', tokenData.access_token)
+		KVStore.set('refreshToken', tokenData.refresh_token)
 
-		KVStorage.set('accessToken', tokenData.access_token)
-		KVStorage.set('refreshToken', tokenData.refresh_token)
+		const otpType = jwt_decode<TokenOtpType>(tokenData.access_token)?.otpType
 
-		dispatch(saveOtpThunk(tokenData.access_token))
-
-		// TODO: Go to userProfile sometimes?
-		KVStorage.set('isLoggedIn', true)
-		navigation.replace('Main')
+		if (navigation) {
+			KVStore.set('isLoggedIn', true)
+			if (from === 'Login2Fa') {
+				navigation.navigate('UserProfile')
+			} else {
+				navigation.navigate('Main')
+			}
+		}
 
 		// TODO: If from registration
-		// TODO: if (fromResetOtp) yield put(switchPersonalSecurity('Security'))
+		// TODO: if (from === 'Login2Fa') yield put(switchPersonalSecurity('Security'))
+
+		return { otpType }
 	})()
 
-export const saveOtpThunk = (token: string) =>
-	createAsyncThunk('saveOtp', async (_, { getState }) => {
-		const otpType = jwt_decode<TokenOtpType>(token)?.otpType
-		if (otpType) {
-			const state = (getState() as RootState).auth
-			state.otpType = otpType
+export const forgotPasswordStartThunk = createAsyncThunk(
+	'forgotPasswordStart',
+	async (
+		{ navigation }: { navigation: NativeStackNavigationProp<Screens, any> },
+		{ getState }
+	) => {
+		const state = (getState() as RootState).auth
+		const data = await forgotPassword()
+
+		if (data.execution === Execution.RESET_PASSWORD_WITH_CODE) {
+			navigation.navigate('ForgotPassword')
+		} else if (data.execution === Execution.LOGIN_OTP) {
+			navigation.navigate('Login2Fa')
 		}
-	})()
+
+		return { callbackUrl: data.callbackUrl }
+	}
+)
+
+export const resetPasswordThunk = createAsyncThunk(
+	'resetPassword',
+	async ({ mail }: { mail: string }, { getState }) => {
+		const { callbackUrl } = (getState() as RootState).auth
+
+		const data = await resetPassword(callbackUrl, mail)
+		const timerVisible =
+			data.execution == Execution.RESET_PASSWORD_WITH_CODE &&
+			data.errors.length == 0
+
+		return { timerVisible, callbackUrl: data.callbackUrl }
+	}
+)
+
+export const resetPasswordOtpThunk = createAsyncThunk(
+	'resetPasswordOtp',
+	async (
+		{
+			mail,
+			otp,
+			navigation,
+		}: {
+			mail: string
+			otp: string
+			navigation: NativeStackNavigationProp<Screens, any>
+		},
+		{ getState }
+	) => {
+		const state = (getState() as RootState).auth
+		const data = await resetPasswordOtp(state.callbackUrl, mail, otp)
+
+		if (data.execution === Execution.LOGIN_OTP) {
+			navigation.navigate('Login2Fa')
+		}
+		return { callbackUrl: data.callbackUrl }
+	}
+)
+
+export const setNewPasswordOtpThunk = createAsyncThunk(
+	'setNewPassword',
+	async (
+		{
+			newPass,
+			confirmPass,
+			navigation,
+		}: {
+			newPass: string
+			confirmPass: string
+			navigation: NativeStackNavigationProp<Screens, any>
+		},
+		{ dispatch, getState }
+	) => {
+		const { callbackUrl, pkceInfo } = (getState() as RootState).auth
+		const data = await setNewPassword(callbackUrl, newPass, confirmPass)
+
+		dispatch(
+			codeToTokenThunk(
+				data.code,
+				pkceInfo?.codeVerifier,
+				'SetNewPassword',
+				navigation
+			)
+		)
+	}
+)
 
 export const startRegistrationThunk = createAsyncThunk(
 	'startRegistration',

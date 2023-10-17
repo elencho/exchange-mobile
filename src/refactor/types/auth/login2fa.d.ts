@@ -20,6 +20,7 @@ interface ResendOtpResponse {
 }
 
 interface OtpLoginResponse {
+	callbackUrl: string
 	code: string
 	session_state: string
 	execution: Execution

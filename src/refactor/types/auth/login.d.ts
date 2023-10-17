@@ -1,17 +1,18 @@
 interface LoginStartResponse {
 	attributes?: {}
 	callbackUrl: string
+	passwordResetUrl: string
 	errors: string[]
-	execution: Execution | ''
-	passwordResetUrl?: string
+	execution: Execution
 }
 
 interface LoginFormResponse {
 	attributes: {
 		otpType: OTP
 	}
-	execution: Execution | ''
+	execution: Execution
 	callbackUrl: string
+	passwordResetUrl: string
 }
 
 interface PkceInfo {

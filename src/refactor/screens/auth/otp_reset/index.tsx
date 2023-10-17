@@ -9,7 +9,7 @@ import { Theme, useTheme } from '@theme/index'
 import AppBackground from '@components/background'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
-import KVStorage from '@store/kv'
+import KVStore from '@store/kv'
 import { resendOtpThunk, startLoginThunk } from '@store/redux/auth/thunks'
 import TwoFaInput from '@app/components/TwoFaInput'
 import WithKeyboard from '@app/components/WithKeyboard'
@@ -49,7 +49,7 @@ export const ResetOtpInstructions = (
 	useEffect(() => {
 		state.timerVisible = true
 
-		const language = KVStorage.get('language')
+		const language = KVStore.get('language')
 		setUrl(`https://support.cryptal.com/hc/${language}`)
 
 		return () => {
