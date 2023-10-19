@@ -21,6 +21,7 @@ module.exports = function (api) {
 						'@assets': './src/assets',
 						'@theme': './src/refactor/setup/theme',
 						'@components': './src/refactor/common/components',
+						'@store': './src/refactor/store',
 						'@app': './src',
 					},
 				},

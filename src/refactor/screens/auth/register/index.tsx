@@ -1,32 +1,46 @@
-import Logo from 'assets/images/Logo.svg'
-import AppText from 'components/AppText'
-import GeneralError from 'components/GeneralError'
-import CheckMarks from 'components/Registration/CheckMarks'
-import PersonalCompanySwitcher from 'components/Registration/PersonalCompanySwitcher'
-import RegistrationInputs from 'components/Registration/RegistrationInputs'
-import WithKeyboard from 'components/WithKeyboard'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { t } from 'i18next'
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
-import { Button } from 'refactor/common/components/button'
-import useRegister from 'refactor/screens/register/use-register'
-//TODO: Reimport
-import { COLORS_DARK } from 'refactor/setup/theme/colors'
-import { errorHappenedHere } from 'utils/appUtils'
+import React, { useState } from 'react'
+import { Alert, StyleSheet, View } from 'react-native'
+import { useSelector } from 'react-redux'
+import Logo from '@assets/images/Logo.svg'
+import { Theme, useTheme } from '@theme/index'
+import { AppButton } from '@components/button'
+import AppText from '@components/text'
+import GeneralError from '@app/components/GeneralError'
+import WithKeyboard from '@app/components/WithKeyboard'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import PersonalCompanySwitcher from '@app/refactor/screens/auth/register/components/personal_company_switcher'
+import RegisterInputs from '@app/refactor/screens/auth/register/components/register_inputs'
+import { Screens } from '@app/refactor/setup/nav/nav'
+import { errorHappenedHere } from '@app/utils/appUtils'
 
-export default function Register() {
-	const {
-		goToSignIn,
-		handleRegistration,
-		userProfileLoading,
-		error,
-		validations,
-	} = useRegister()
+interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
+
+export default function Register({ navigation }: Props) {
+	const { styles } = useTheme(_styles)
+
+	const [userType, setUserType] = useState<UserType>('Personal')
+	const [registerEnabled, setRegisterEnabled] = useState(true)
+
+	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
+
+	const goToSignIn = () => navigation.navigate('Login')
+	const onRegisterPressed = () => {
+		if (!registerEnabled) {
+			Alert.alert('register', 'disabled!')
+		} else {
+			Alert.alert('register', 'success')
+		}
+	}
 
 	return (
-		<WithKeyboard scrollUp padding style={styles.scrollview}>
+		<WithKeyboard
+			modal={undefined}
+			contentContainerStyle={styles.scrollview}
+			refreshControl={undefined}>
 			<View style={styles.back}>
-				<Button
+				<AppButton
 					variant="text"
 					text="Back to Log In"
 					onPress={goToSignIn}
@@ -35,74 +49,87 @@ export default function Register() {
 			</View>
 			<View style={styles.container}>
 				<Logo style={styles.logo} />
-				<AppText header style={styles.header}>
+				<AppText variant="headline" style={styles.header}>
 					Welcome to Cryptal
 				</AppText>
 
-				<PersonalCompanySwitcher />
+				<PersonalCompanySwitcher
+					chosenType={userType}
+					onUserTypeChanged={setUserType}
+				/>
 
 				<GeneralError
 					style={styles.error}
 					show={errorHappenedHere('Registration')}
 				/>
 
-				<RegistrationInputs error={error} validations={validations} />
-				<CheckMarks error={error} validations={validations} />
+				<RegisterInputs
+					userType={userType}
+					clearErrors={() => {
+						setRegisterEnabled(true)
+					}}
+					onRegisterPressed={(allInputsValid: boolean) => {
+						setRegisterEnabled(allInputsValid)
+					}}
+				/>
 
-				<Button
+				{/* <CheckMarks error={error} validations={validations} /> */}
+
+				<AppButton
 					variant="primary"
 					text="Register"
-					onPress={handleRegistration}
-					loading={userProfileLoading}
+					onPress={onRegisterPressed}
+					loading={authLoading}
 				/>
 				<AppText style={styles.subtext}>
 					{t('Have an Account?')}{' '}
-					<Button variant="text" text={t('Sign In')} onPress={goToSignIn} />
+					<AppButton variant="text" text={t('Sign In')} onPress={goToSignIn} />
 				</AppText>
 			</View>
 		</WithKeyboard>
 	)
 }
 
-const styles = StyleSheet.create({
-	container: {
-		paddingVertical: 45,
-		paddingHorizontal: '8%',
-	},
-	scrollview: {
-		backgroundColor: COLORS_DARK.backgroundPrimary,
-	},
-	error: {
-		marginTop: 20,
-		marginBottom: -15,
-	},
-	flex: {
-		flex: 1,
-	},
-	header: {
-		color: COLORS_DARK.textPrimary,
-		alignSelf: 'center',
-		marginTop: 30,
-		marginBottom: 40,
-		textAlign: 'center',
-	},
-	logo: {
-		width: 40,
-		height: 45,
-		alignSelf: 'center',
-	},
-	subtext: {
-		color: COLORS_DARK.textSecondary,
-		marginTop: 40,
-		alignSelf: 'center',
-	},
-	back: {
-		marginTop: 28,
-		marginLeft: 15,
-	},
-	backText: {
-		marginBottom: 2,
-		marginLeft: 10,
-		flex: 1,
-	},
-})
+const _styles = (theme: Theme) =>
+	StyleSheet.create({
+		container: {
+			paddingVertical: 45,
+			paddingHorizontal: '8%',
+		},
+		scrollview: {
+			backgroundColor: theme.color.backgroundPrimary,
+		},
+		error: {
+			marginTop: 20,
+			marginBottom: -15,
+		},
+		flex: {
+			flex: 1,
+		},
+		header: {
+			color: theme.color.textPrimary,
+			alignSelf: 'center',
+			marginTop: 30,
+			marginBottom: 40,
+			textAlign: 'center',
+		},
+		logo: {
+			width: 40,
+			height: 45,
+			alignSelf: 'center',
+		},
+		subtext: {
+			color: theme.color.textSecondary,
+			marginTop: 40,
+			alignSelf: 'center',
+		},
+		back: {
+			marginTop: 28,
+			marginLeft: 15,
+		},
+		backText: {
+			marginBottom: 2,
+			marginLeft: 10,
+			flex: 1,
+		},
+	})

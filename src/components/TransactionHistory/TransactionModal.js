@@ -8,6 +8,7 @@ import {
 	Pressable,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import TransactionDetails from '@app/refactor/screens/transactions/components/TransactionDetails'
 import Copy from '../../assets/images/Copy.svg'
 import Link from '../../assets/images/Link.svg'
 import { COINS_URL_PNG } from '../../constants/api'
@@ -17,7 +18,6 @@ import useCopyToClipboard from '../../utils/copyToClipboard'
 import AppModal from '../AppModal'
 import AppText from '../AppText'
 import TradeDetails from '../InstantTrade/TradeDetails'
-import TransactionDetails from './TransactionDetails'
 
 function TransactionModal({ transactions, trades }) {
 	const { copyToClipboard } = useCopyToClipboard()

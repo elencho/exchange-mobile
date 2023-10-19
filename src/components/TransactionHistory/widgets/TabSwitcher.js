@@ -1,8 +1,8 @@
 import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { setActiveTab } from '@app/refactor/redux/transactions/transactionSlice'
 import colors from '../../../constants/colors'
-import { setActiveTab } from '../../../redux/transactions/actions'
 import AppText from '../../AppText'
 
 const TabSwitcher = () => {

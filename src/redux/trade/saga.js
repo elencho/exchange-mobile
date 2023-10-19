@@ -9,7 +9,6 @@ import {
 } from '../../utils/fetchTrades'
 import { toggleBuySellModal } from '../modals/actions'
 import { fetchUserInfo } from '../profile/actions'
-import { toggleLoading } from '../transactions/actions'
 import {
 	cryptoAddressesAction,
 	getWhitelistAction,
@@ -52,24 +51,24 @@ import {
 	withdrawalFeeParams,
 } from './selectors'
 
-function* fetchTradesSaga({ isMoreLoading }) {
-	if (isMoreLoading) {
-		yield put(setMoreTradesLoading(true))
-	} else {
-		yield put(setTradesLoading(true))
-	}
-	const params = yield select(getParams)
-	const trades = yield select((state) => state.trade.trades)
+// function* fetchTradesSaga({ isMoreLoading }) {
+// 	if (isMoreLoading) {
+// 		yield put(setMoreTradesLoading(true))
+// 	} else {
+// 		yield put(setTradesLoading(true))
+// 	}
+// 	const params = yield select(getParams)
+// 	const trades = yield select((state) => state.trade.trades)
 
-	const newTrades = yield call(fetchTrades, params)
-	const newestTrades = newTrades?.data
-	if (newestTrades?.length > 0) {
-		yield put(setTotalTrades(newTrades?.paging.pageCount))
-		yield put(saveTrades([...trades, ...newestTrades]))
-	}
-	yield put(setMoreTradesLoading(false))
-	yield put(setTradesLoading(false))
-}
+// 	const newTrades = yield call(fetchTrades, params)
+// 	const newestTrades = newTrades?.data
+// 	if (newestTrades?.length > 0) {
+// 		yield put(setTotalTrades(newTrades?.paging.pageCount))
+// 		yield put(saveTrades([...trades, ...newestTrades]))
+// 	}
+// 	yield put(setMoreTradesLoading(false))
+// 	yield put(setTradesLoading(false))
+// }
 
 function* pairObjectSaga(action) {
 	const { offers } = action
@@ -271,7 +270,7 @@ function* refreshWalletAndTradesSaga() {
 }
 
 export default function* () {
-	yield takeLatest(actionTypes.FETCH_TRADES, fetchTradesSaga)
+	// yield takeLatest(actionTypes.FETCH_TRADES, fetchTradesSaga)
 	yield takeLatest(actionTypes.INSTANT_TRADE_TAB_SAGA, instantTradeTabSaga)
 	yield takeLatest(actionTypes.PAIR_OBJECT_SAGA, pairObjectSaga)
 	yield takeLatest(actionTypes.DEPOSIT_PROVIDERS_SAGA, depositProvidersSaga)

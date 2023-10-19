@@ -1,15 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import navigation from 'navigation'
+import {
+	NativeStackNavigationProp,
+	NativeStackScreenProps,
+} from '@react-navigation/native-stack'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import navigation from '@app/navigation'
 import {
 	registrationFormAction,
 	startLoginAction,
 	setRegistrationInputs,
 	switchPersonalCompany,
-} from 'redux/profile/actions'
+} from '@app/redux/profile/actions'
+import { Screens } from '@app/refactor/setup/nav/nav'
 
-export default function useRegister() {
+export default function useRegister(
+	navigation: NativeStackNavigationProp<Screens, 'Registration'>
+) {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state.profile)
 	const { registrationInputs, userProfileLoading } = state

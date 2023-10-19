@@ -11,14 +11,13 @@ import {
 import Close from '@assets/images/Close.svg'
 import { useTheme, Theme } from '@theme/index'
 import AppText from '@components/text/index'
-import colors from '@app/constants/colors'
-import { IS_ANDROID } from '@app/constants/system'
+import { System } from '@app/refactor/common/util'
 
 type Props = TextInputProps & {
 	label?: string
 	labelBackgroundColor?: string
 	disabled?: boolean
-	error?: string | boolean | null
+	error?: string | boolean | null | undefined
 	rightComponent?: ReactNode
 	onFocusRightComponent?: ReactNode
 	handleClear?: () => void
@@ -27,7 +26,7 @@ type Props = TextInputProps & {
 const AppInput = (props: Props) => {
 	const {
 		value,
-		label,
+		label = '',
 		onChangeText,
 		error = '',
 		disabled = false,
@@ -37,10 +36,10 @@ const AppInput = (props: Props) => {
 		onFocusRightComponent,
 		handleClear,
 	} = props
-	const [isFocused, setIsFocused] = useState(false)
-	const inputRef = useRef(null)
-
 	const { theme, styles } = useTheme(_style)
+
+	const [isFocused, setIsFocused] = useState(false)
+	const inputRef = useRef<TextInput>(null)
 	const focusAnim = useRef(new Animated.Value(0)).current
 
 	useEffect(() => {
@@ -58,10 +57,9 @@ const AppInput = (props: Props) => {
 		? theme.color.brandSecondary
 		: '#42475D'
 
+	const isPlaceholder = !isFocused && !value && !rightComponent
 	const rightChild =
 		isFocused && onFocusRightComponent ? onFocusRightComponent : rightComponent
-
-	const isPlaceholder = !isFocused && !value && !rightComponent
 
 	const labelColor =
 		isFocused && error
@@ -73,7 +71,7 @@ const AppInput = (props: Props) => {
 			: theme.color.textSecondary
 
 	const labelAnimation = {
-		width: isPlaceholder ? '100%' : '0%',
+		width: isPlaceholder ? '100%' : undefined,
 		backgroundColor: focusAnim.interpolate({
 			inputRange: [0, 1],
 			outputRange: [
@@ -113,9 +111,10 @@ const AppInput = (props: Props) => {
 					onBlur={() => setIsFocused(false)}
 					onFocus={() => setIsFocused(true)}
 					value={value}
-					placeholderTextColor={colors.SECONDARY_TEXT}
+					placeholderTextColor={theme.color.textSecondary}
 					onChangeText={(text) => onChangeText?.(text)}
 					editable={!disabled}
+					autoCapitalize="none"
 				/>
 
 				{label ? (
@@ -161,13 +160,13 @@ const AppInput = (props: Props) => {
 const _style = (theme: Theme) =>
 	StyleSheet.create({
 		errorText: {
-			color: '#F45E8C',
+			color: theme.color.error,
 			marginTop: 8,
 		},
 		input: {
 			fontFamily: theme.font.medium,
 			fontSize: 14,
-			lineHeight: IS_ANDROID ? 18 : null,
+			lineHeight: System.isAndroid ? 18 : null,
 			flex: 1,
 			color: theme.color.textPrimary,
 			height: '100%',

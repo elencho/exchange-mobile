@@ -5,28 +5,28 @@ import {
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import { BackHandler } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import MainScreen from '@app/navigation/MainScreen'
 import Login from '@app/refactor/screens/auth/login'
-import Login2Fa from '@app/refactor/screens/auth/login2fa/Login2Fa'
+import Login2Fa from '@app/refactor/screens/auth/login2fa'
 import Maintenance from '@app/refactor/screens/auth/maintenance'
-import ForgotPassword from '@app/refactor/screens/auth/password_forgot/index'
+import ResetOtpInstructions from '@app/refactor/screens/auth/otp_reset'
+import ForgotPassword from '@app/refactor/screens/auth/password_forgot'
+import SetNewPassword from '@app/refactor/screens/auth/password_set'
+import Register from '@app/refactor/screens/auth/register'
 import Splash from '@app/refactor/screens/auth/splash/index'
 import UpdateAvailable from '@app/refactor/screens/auth/update'
 import Welcome from '@app/refactor/screens/auth/welcome'
 import UserProfile from '@app/refactor/screens/profile/user-profile'
+import TransactionFilter from '@app/refactor/screens/transactions/TransactionFilter'
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
 import EmailVerification from '@app/screens/EmailVerification'
-import RegistrationScreen from '@app/screens/Registration'
-import ResetOtpInstructionsScreen from '@app/screens/ResetOtpInstructions'
 import Resume from '@app/screens/Resume'
 import SetNewPasswordScreen from '@app/screens/SetNewPassword'
-import TransactionFilter from '@app/screens/TransactionFilter'
+import UserProfileScreen from '@app/screens/UserProfile'
 import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
-import { Screens } from './types'
+import { Screens } from './nav'
 
 const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef()
@@ -40,8 +40,8 @@ export default function AppNavigator() {
 
 	useNotifications()
 
+	// TODO: this
 	// BackHandler.addEventListener('hardwareBackPress', () => true)
-
 	// const onStateChange = (state: any) => {
 	// 	console.log('asd')
 	// 	dispatch({
@@ -56,7 +56,6 @@ export default function AppNavigator() {
 		<NavigationContainer
 			// onStateChange={onStateChange}
 			ref={navigationRef}
-			// TODO: Check theme
 			theme={{
 				dark: true,
 				colors: { ...DefaultTheme.colors, background: 'transparent' },
@@ -86,9 +85,9 @@ export default function AppNavigator() {
 					options={{ animation: 'fade' }}
 				/>
 				<Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-				<Stack.Screen name="SetNewPassword" component={SetNewPasswordScreen} />
+				<Stack.Screen name="SetNewPassword" component={SetNewPassword} />
 				<Stack.Screen name="Login" component={Login} />
-				<Stack.Screen name="Registration" component={RegistrationScreen} />
+				<Stack.Screen name="Registration" component={Register} />
 				<Stack.Screen name="EmailVerification" component={EmailVerification} />
 				<Stack.Screen
 					name="Main"
@@ -112,7 +111,7 @@ export default function AppNavigator() {
 				<Stack.Screen name="Login2Fa" component={Login2Fa} />
 				<Stack.Screen
 					name="ResetOtpInstructions"
-					component={ResetOtpInstructionsScreen}
+					component={ResetOtpInstructions}
 				/>
 				<Stack.Screen
 					name="Resume"
