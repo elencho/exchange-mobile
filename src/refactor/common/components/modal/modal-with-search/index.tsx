@@ -6,10 +6,10 @@ import AppInput from '@components/input'
 import AppText from '@components/text'
 import Search from '@app/assets/images/Search.svg'
 import SearchActive from '@app/assets/images/Search_Active.svg'
+import WithKeyboard from '@app/components/WithKeyboard'
 import { TradeTypesEnum } from '@app/refactor/types/enums'
 import { ModalSearchItem } from '../modal-parts'
 import { useModalWithSearch } from './use-modal-with-search'
-import WithKeyboard from '@app/components/WithKeyboard'
 
 interface ModalWIthSearchProps {
 	array: any[]

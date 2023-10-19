@@ -4,8 +4,8 @@ import { StyleProp, StyleSheet, View } from 'react-native'
 import Identity from '@assets/images/User_profile/Identity.svg'
 import { Theme, useTheme } from '@theme/index'
 import AppModal from '@components/modal'
-import { useIdentityModal } from './use-identity-modal'
 import AppText from '@components/text'
+import { useIdentityModal } from './use-identity-modal'
 
 export default function IdentityModal() {
 	const { t } = useTranslation()

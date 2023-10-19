@@ -7,9 +7,9 @@ import AppDropdown from '@app/components/AppDropdown'
 import AppInput from '@app/components/AppInput'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
-import { usePhoneNumberModal } from './use-phone-number-modal'
 import { COUNTRIES_URL_PNG } from '@app/constants/api'
 import { errorHappenedHere } from '@app/utils/appUtils'
+import { usePhoneNumberModal } from './use-phone-number-modal'
 
 export default function PhoneNumberModal() {
 	const {

@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, StyleProp } from 'react-native'
 import { Theme, useTheme } from '@theme/index'
-
 import AppSwitcher from '@components/switcher'
 import Skeleton from '@app/components/Skeleton'
 

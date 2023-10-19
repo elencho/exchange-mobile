@@ -1,8 +1,8 @@
+import * as SecureStore from 'expo-secure-store'
 import React from 'react'
 import { View, Text, Linking } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import * as SecureStore from 'expo-secure-store'
 import { webProfileUtil } from '@app/utils/userProfileUtils'
 
 export const useEditCompany = () => {
@@ -23,7 +23,7 @@ export const useEditCompany = () => {
 
 	const goToWeb = async () => {
 		const refresh_token = await SecureStore.getItemAsync('refreshToken')
-        // TODO: fix utils
+		// TODO: fix utils
 		const data = await webProfileUtil(refresh_token)
 		Linking.openURL(data?.redirectUri)
 		hide()

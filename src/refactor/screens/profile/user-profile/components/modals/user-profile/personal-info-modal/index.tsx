@@ -12,8 +12,8 @@ import GeneralError from '@app/components/GeneralError'
 import InputErrorMsg from '@app/components/InputErrorMsg'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { COUNTRIES_URL_PNG } from '@app/constants/api'
-import usePersonalInfoModal from './use-personal-info-modal'
 import { saveUserInfo } from '@app/refactor/redux/profile/actions'
+import usePersonalInfoModal from './use-personal-info-modal'
 
 export default function PersonalInfoModal() {
 	const {

@@ -12,8 +12,6 @@ interface useCircleProps {
 	max: number
 }
 
-
-
 export const useCircle: React.FC<useCircleProps> = forwardRef((props, ref) => {
 	const { pressed, radius, strokeWidth, delay, duration, percentage, max } =
 		props

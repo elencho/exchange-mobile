@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '@app/refactor/redux/rootReducer'
 import { setPersonalSecurity } from '@app/refactor/redux/profile/profileSlice'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 const usePersonalSecuritySwitcher = () => {
 	const dispatch = useDispatch()

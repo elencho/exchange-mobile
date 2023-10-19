@@ -1,4 +1,3 @@
-import { IS_IOS } from '@app/constants/system'
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { MaterialIndicator } from 'react-native-indicators'
@@ -6,11 +5,12 @@ import Copy from '@assets/images/Copy.svg'
 import AppStoreIcon from '@assets/images/User_profile/Appstore.svg'
 import PlayStoreIcon from '@assets/images/User_profile/Playstore.svg'
 import { Theme, useTheme } from '@theme/index'
-import AppInput from '@components/input'
 import { AppButton } from '@components/button'
+import AppInput from '@components/input'
 import AppModal from '@components/modal'
 import AppText from '@components/text'
 import GeneralError from '@app/components/GeneralError'
+import { IS_IOS } from '@app/constants/system'
 import { errorHappenedHere } from '@app/utils/appUtils'
 import { useGoogleAuth } from './use-google-auth'
 
@@ -58,7 +58,7 @@ export default function GoogleAuthModal() {
 					<AppText variant="l" style={styles.header}>
 						Authentication
 					</AppText>
-					<AppText variant='m' style={styles.secondary}>
+					<AppText variant="m" style={styles.secondary}>
 						Download App on:
 					</AppText>
 				</View>

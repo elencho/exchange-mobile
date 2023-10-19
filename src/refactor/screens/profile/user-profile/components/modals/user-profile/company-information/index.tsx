@@ -40,7 +40,7 @@ export const CompanyInformation = () => {
 			</View>
 
 			{userInfo?.directors?.length ? <View style={styles.line} /> : null}
-            {/* TODO: add type */}
+			{/* TODO: add type */}
 			{userInfo?.directors?.map((d, i, a) => (
 				<View
 					style={[styles.director, i === a.length - 1 && { marginBottom: 0 }]}
