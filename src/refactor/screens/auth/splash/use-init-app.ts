@@ -1,33 +1,23 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useFocusEffect } from '@react-navigation/native'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import * as SecureStore from 'expo-secure-store'
 import jwt_decode from 'jwt-decode'
 import { useCallback } from 'react'
-import { Platform } from 'react-native'
-import DeviceInfo from 'react-native-device-info'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import VersionCheck from 'react-native-version-check'
 import { useDispatch } from 'react-redux'
 import { useTheme } from '@theme/index'
-import {
-	getCountryName,
-	packageName,
-	currentVersion,
-} from '@app/constants/system'
+import { checkReadiness, fetchTranslations } from '@store/redux/auth/api'
+import { resetAuthState } from '@store/redux/auth/slice'
+import { currentVersion } from '@app/constants/system'
 import { setLanguage } from '@app/redux/profile/actions'
-import { Screens } from '@app/refactor/setup/nav/types'
-import { checkReadiness, fetchTranslations } from '@app/utils/appUtils'
+import { System } from '@app/refactor/common/util'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
+import KVStore from '@app/refactor/store/kv'
+import { TokenEmail } from '@app/refactor/types/auth/splash'
 import { addResources, switchLanguage } from '@app/utils/i18n'
 import { fetchCountries } from '@app/utils/userProfileUtils'
 
-interface Token {
-	email: string
-}
-
-export default function useInitApp(
-	navigation: NativeStackNavigationProp<Screens, 'Splash'>
-) {
+export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const { theme } = useTheme()
 	const dispatch = useDispatch()
 
@@ -38,87 +28,61 @@ export default function useInitApp(
 	)
 
 	const startApp = async () => {
-		dispatch({ type: 'RESET_STATE' })
-		await AsyncStorage.removeItem('webViewVisible')
+		// TODO? dispatch(resetAuthState())
+		dispatch(resetAuthState())
+		dispatch({ type: 'RESET_STATE' }) // TODO: Remove
+
+		KVStore.del('webViewVisible')
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
 
-		const maintenanceInProgress = await checkStatus()
-		const updateNeeded = await checkUpdateNeeded()
-		let userHasToken = false
+		await fetchLexicon()
+		const accessToken = KVStore.get('accessToken')
 
-		await SecureStore.getItemAsync('accessToken').then((token) => {
-			userHasToken = token != null
-			if (token) {
-				const email = jwt_decode<Token>(token)?.email
-				getBiometricEnabled(email, updateNeeded, maintenanceInProgress)
+		// ! For Testing
+		navigation.navigate('Registration')
+		return
+
+		if (hasUnlock()) {
+			if (!accessToken) {
+				navigation.navigate('Welcome')
 			}
-		})
-
-		await fetchLexicon(updateNeeded, maintenanceInProgress, userHasToken)
-		// navigate(updateNeeded, maintenanceInProgress, userHasToken)
-	}
-
-	const navigate = (
-		updateNeeded: boolean,
-		maintenanceInProgress: boolean,
-		userHasToken: boolean
-	) => {
-		if (maintenanceInProgress) {
-			navigation.navigate('Maintenance')
-		} else if (updateNeeded) {
-			navigation.navigate('UpdateAvailable')
+			// TODO: შემდეგ ვიძახებთ user info-ს ავტორიზაციის შესამოწმებლად  თუ წარუმატებელი აღმოჩნდა ვისვრით ავტორიზაციაზე
+			// if userInfo 200 -> Welcome, else -> Resume
+			// Next: as below
 		} else {
-			if (userHasToken) {
-				navigation.navigate('Main')
+			if (!accessToken) {
+				navigation.navigate('Welcome')
+			} else if (await updateNeeded()) {
+				navigation.navigate('UpdateAvailable')
+			} else if (await backIsDown()) {
+				navigation.navigate('Maintenance')
 			} else {
-				navigation.navigate('ForgotPassword') //TODO: Change to Welcome
+				navigation.navigate('Main') // Main
 			}
 		}
 	}
 
-	const getBiometricEnabled = async (
-		email: string,
-		updateNeeded: boolean | undefined,
-		maintenanceInProgress: boolean
-	) => {
-		const user = email
-		const enabled = await AsyncStorage.getItem('BiometricEnabled')
-		const lastTimeOpen = await AsyncStorage.getItem('isOpenDate')
-		const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
-		const timeDifference = lastTimeOpen
-			? Date.now() - JSON.parse(lastTimeOpen)
-			: 0
+	const hasUnlock = (): Boolean => {
+		const bioEnabledEmails = KVStore.get('bioEnabledEmails')
+		const accessToken = KVStore.get('accessToken')
+		if (!bioEnabledEmails || !accessToken) return false
 
-		let parsedUsers = enabled ? JSON.parse(enabled) : ''
-		const userIndex = parsedUsers?.find(
-			(u) => u?.user === user && u?.enabled === true
-		)
-
-		if (userIndex && timeDifference >= 30000 && !isLoggedIn) {
-			// TODO: Should not navigate after this
-			navigation.navigate('Resume', {
-				fromSplash: true,
-				version: updateNeeded,
-				maintenanceInProgress: maintenanceInProgress,
-			})
-		}
+		const email = jwt_decode<TokenEmail>(accessToken)?.email
+		return bioEnabledEmails.includes(email)
 	}
 
-	const checkUpdateNeeded = useCallback(async () => {
+	const updateNeeded = useCallback(async () => {
 		try {
-			const countryName = await getCountryName
-			// TODO: Removed APP_ID, should work?
+			const countryName = await System.getCountryName
 			const latestVersion = await VersionCheck.getLatestVersion({
 				forceUpdate: true,
-				packageName: packageName,
+				packageName: System.packageName,
 				country: countryName.toLowerCase() || 'ge',
 			})
-
 			const versionInfo = await VersionCheck.needUpdate({
-				currentVersion: currentVersion,
-				latestVersion: latestVersion,
+				currentVersion,
+				latestVersion,
 			})
-
 			return versionInfo?.isNeeded
 		} catch (error) {
 			console.log(error)
@@ -126,21 +90,40 @@ export default function useInitApp(
 		}
 	}, [])
 
-	const checkStatus = async () => {
-		const version = DeviceInfo.getVersion()
-		const { status } = await checkReadiness(version, Platform.OS)
-		if (status === 'DOWN') {
-			return true
-		} else {
-			return false
-		}
+	const backIsDown = async () => {
+		const { status } = await checkReadiness()
+		return status === 'DOWN'
 	}
 
-	const fetchLexicon = async (
-		updateNeeded: boolean,
-		maintenanceInProgress: boolean,
-		userHasToken: boolean
-	) => {
+	// const getBiometricEnabled = async (
+	// 	email: string,
+	// 	updateNeeded: boolean | undefined,
+	// 	maintenanceInProgress: boolean
+	// ) => {
+	// 	const user = email
+	// 	const enabled = await AsyncStorage.getItem('BiometricEnabled')
+	// 	const lastTimeOpen = await AsyncStorage.getItem('isOpenDate')
+	// 	const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
+	// 	const timeDifference = lastTimeOpen
+	// 		? Date.now() - JSON.parse(lastTimeOpen)
+	// 		: 0
+
+	// 	let parsedUsers = enabled ? JSON.parse(enabled) : ''
+	// 	const userIndex = parsedUsers?.find(
+	// 		(u) => u?.user === user && u?.enabled === true
+	// 	)
+
+	// 	if (userIndex && timeDifference >= 30000 && !isLoggedIn) {
+	// 		// TODO: Should not navigate after this
+	// 		navigation.navigate('Resume', {
+	// 			fromSplash: true,
+	// 			version: updateNeeded,
+	// 			maintenanceInProgress: maintenanceInProgress,
+	// 		})
+	// 	}
+	// }
+
+	const fetchLexicon = async () => {
 		await fetchTranslations()
 			.then((res) => {
 				const languages = Object.keys(res)
@@ -155,12 +138,11 @@ export default function useInitApp(
 					.then((l) => {
 						switchLanguage(l ? l : 'en')
 						dispatch(setLanguage(l ? l : 'en'))
-						navigate(updateNeeded, maintenanceInProgress, userHasToken)
 					})
 					.catch((err) => console.log(err))
 			})
 			.catch((err) => console.log(err))
 
-		fetchCountries() //TODO: dispatch
+		fetchCountries() //TODO: needed?
 	}
 }

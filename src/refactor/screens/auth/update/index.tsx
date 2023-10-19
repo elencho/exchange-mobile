@@ -6,15 +6,15 @@ import { Theme, useTheme } from '@theme/index'
 import AppBackground from '@components/background'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
-import { packageName, APP_ID } from '@app/constants/system'
+import { System } from '@app/refactor/common/util'
 
 export default function UpdateAvailable() {
 	const { styles } = useTheme(_styles)
 
 	const update = async () => {
 		const storeUrl = await VersionCheck.getStoreUrl({
-			packageName,
-			appID: APP_ID,
+			packageName: System.packageName,
+			appID: System.appId,
 		})
 		Linking.canOpenURL(storeUrl).then((supported) => {
 			supported && Linking.openURL(storeUrl)

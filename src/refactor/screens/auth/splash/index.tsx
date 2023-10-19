@@ -1,16 +1,16 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
 import useInitApp from '@app/refactor/screens/auth/splash/use-init-app'
-import { Screens } from '@app/refactor/setup/nav/types'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
+import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
 
-interface Props extends NativeStackScreenProps<Screens, 'Splash'> {}
-
-const Splash = ({ navigation }: Props) => {
+const Splash = (props: ScreenProp<'Splash'>) => {
 	const { styles } = useTheme(_styles)
-	useInitApp(navigation)
+
+	useNotificationsAndroid()
+	useInitApp(props)
 
 	return (
 		<View style={styles.container}>

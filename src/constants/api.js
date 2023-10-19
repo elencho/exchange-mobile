@@ -15,6 +15,8 @@ export const EMAIL_VERIFY_REGISTER = `${auth}/auth/realms/GEX/login-actions/acti
 
 export const CODE_TO_TOKEN = `${auth}/auth/realms/GEX/protocol/openid-connect/token`
 
+export const FORGOT_PASSWORD_START_URL = `${auth}/auth/realms/GEX/login-actions/reset-credentials`
+
 export const LOGOUT = `${auth}/auth/realms/GEX/protocol/openid-connect/logout`
 
 export const TRANSACTIONS_URL = `${core}/private/account/fetchTransactions`
