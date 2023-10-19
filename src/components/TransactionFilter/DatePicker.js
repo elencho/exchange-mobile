@@ -1,12 +1,18 @@
 import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import {
+	setFromDateQuery,
+	setToDateQuery,
+} from '@app/refactor/redux/trade/tradeSlice'
+import {
+	setFromTime,
+	setToTime,
+} from '@app/refactor/redux/transactions/transactionSlice'
 import CalendarIcon from '../../assets/images/Calendar'
 import Close from '../../assets/images/Close'
 import colors from '../../constants/colors'
 import { toggleDatePicker } from '../../redux/modals/actions'
-import { setFromDateQuery, setToDAteQuery } from '../../redux/trade/actions'
-import { setFromTime, setToTime } from '../../redux/transactions/actions'
 import AppText from '../AppText'
 
 export default function DatePicker({
@@ -23,7 +29,7 @@ export default function DatePicker({
 	const {
 		fromDateTimeQuery: fromDateTimeTrades,
 		toDateTimeQuery: toDateTimeTrades,
-	} = useSelector((state) => state.trade)
+	} = useSelector((state) => state.trades)
 
 	const fromDateTime = isInstantTrade
 		? fromDateTimeTrades
@@ -58,7 +64,7 @@ export default function DatePicker({
 	const handleClear = () => {
 		if (to)
 			isInstantTrade
-				? dispatch(setToDAteQuery(null))
+				? dispatch(setToDateQuery(null))
 				: dispatch(setToTime(null))
 		if (from)
 			isInstantTrade

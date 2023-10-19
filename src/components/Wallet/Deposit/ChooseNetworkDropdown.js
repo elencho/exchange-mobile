@@ -54,7 +54,7 @@ export default function ChooseNetworkDropdown({
 		)
 		return (
 			<AppText medium body>
-				{currentNetwork?.[0].displayName}
+				{currentNetwork?.[0]?.displayName}
 			</AppText>
 		)
 	}

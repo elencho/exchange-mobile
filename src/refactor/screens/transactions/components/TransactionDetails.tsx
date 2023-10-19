@@ -1,14 +1,12 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
-import colors from '../../constants/colors'
-import AppText from '../AppText'
+import AppText from '@app/components/AppText'
+import colors from '@app/constants/colors'
 
 export default function TransactionDetails() {
-	const state = useSelector((state) => state.transactions)
-
 	const {
-		currentTransaction: {
+		selectedTransactionDetails: {
 			method,
 			amount,
 			fee,
@@ -29,7 +27,7 @@ export default function TransactionDetails() {
 			year,
 		},
 		activeTab,
-	} = state
+	} = useSelector((state) => state.transactions)
 
 	const actionMapping = {
 		BID: 'Buy',

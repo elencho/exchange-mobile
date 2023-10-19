@@ -9,9 +9,7 @@ import {
 } from '../../utils/fetchTrades'
 import { toggleBuySellModal } from '../modals/actions'
 import { fetchUserInfo } from '../profile/actions'
-import { toggleLoading } from '../transactions/actions'
 import {
-	cryptoAddressesAction,
 	getWhitelistAction,
 	setWalletTab,
 	wireDepositAction,
@@ -28,7 +26,6 @@ import {
 	fetchTrades as fetchTradesAction,
 	setBalance,
 	saveCards,
-	setDepositProvider,
 	setDepositProviders,
 	setFee,
 	pairObjectSagaAction,
@@ -40,12 +37,10 @@ import {
 	setTotalTrades,
 	setTradeOffset,
 	setMoreTradesLoading,
-	fetchFee,
 	setTradesButtonLoading,
 } from './actions'
 import {
 	getParams,
-	getTrades,
 	paramsForTrade,
 	getCardParams,
 	depositFeeParams,

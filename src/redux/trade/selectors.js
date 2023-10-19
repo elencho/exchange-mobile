@@ -3,7 +3,6 @@ export const getParams = (state) => {
 		trade: {
 			fiatCodesQuery,
 			offset,
-			limit,
 			statusQuery,
 			actionQuery,
 			cryptoCodeQuery,

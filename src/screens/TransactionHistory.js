@@ -6,6 +6,9 @@ import {
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 import { FlatList, Keyboard, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import { fetchTradesThunk } from '@app/refactor/redux/trade/tradeThunks'
+import { fetchTransactionsThunk } from '@app/refactor/redux/transactions/transactionThunks'
+import TransactionModal from '@app/refactor/screens/transactions/components/TransactionModal'
 import List from '../assets/images/List.svg'
 import AppText from '../components/AppText'
 import Background from '../components/Background'
@@ -14,7 +17,6 @@ import TransactionsBlock from '../components/InstantTrade/TransactionsBlock'
 import OneTransactionSkeleton from '../components/TransactionHistory/OneTransactionSkeleton'
 import TopRow from '../components/TransactionHistory/TopRow'
 import Transaction from '../components/TransactionHistory/Transaction'
-import TransactionModal from '../components/TransactionHistory/TransactionModal'
 import TransactionSkeleton from '../components/TransactionHistory/TransactionSkeleton'
 import SearchAndFilter from '../components/TransactionHistory/widgets/SearchAndFilter'
 import TabSwitcher from '../components/TransactionHistory/widgets/TabSwitcher'
@@ -32,6 +34,11 @@ import {
 function TransactionHistory({ navigation }) {
 	const isFocused = useIsFocused()
 	const dispatch = useDispatch()
+
+	useEffect(() => {
+		dispatch(fetchTransactionsThunk())
+		dispatch(fetchTradesThunk())
+	}, [])
 
 	const state = useSelector((state) => state)
 	const {
@@ -59,14 +66,6 @@ function TransactionHistory({ navigation }) {
 			dispatch(chooseCurrency(currency))
 		}, [currency])
 	)
-
-	// useFocusEffect(
-	//   useCallback(() => {
-	//     dispatch(chooseCurrency('Show All Currency'));
-	//     dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' });
-	//     Keyboard.dismiss();
-	//   }, [navigation])
-	// );
 
 	useEffect(() => {
 		dispatch(chooseCurrency('Show All Currency'))

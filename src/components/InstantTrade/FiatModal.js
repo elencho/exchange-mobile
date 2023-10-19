@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
 	icon: {
 		width: 30,
 		height: 30,
+		marginLeft: -6,
 	},
 	row: {
 		flexDirection: 'row',
@@ -87,7 +88,6 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingVertical: 10,
 		borderRadius: 5,
-		marginLeft: -15,
 	},
 	text: {
 		color: colors.PRIMARY_TEXT,
