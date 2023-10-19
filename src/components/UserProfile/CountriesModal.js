@@ -27,7 +27,7 @@ export default function CountriesModal({
 	} = state
 
 	useEffect(() => {
-		dispatch(fetchCountries())
+		dispatch(countries())
 	}, [])
 
 	const filter = (text) => {

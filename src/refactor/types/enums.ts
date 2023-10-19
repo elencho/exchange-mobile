@@ -21,3 +21,9 @@ export const enum TradeTypesEnum {
 	BUY = 'Buy',
 	SELL = 'Sell',
 }
+
+export const enum OTPTypes {
+	EMAIL = 'EMAIL',
+	TOTP = 'TOTP',
+	SMS = 'SMS',
+}

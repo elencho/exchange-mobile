@@ -2,14 +2,12 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import * as SecureStore from 'expo-secure-store'
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	fetchUserInfo,
-	switchPersonalSecurity,
-} from '@app/refactor/redux/profile/actions'
+import { setPersonalSecurity } from '@app/refactor/redux/profile/profileSlice'
+import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { clearFilters } from '@app/refactor/redux/transactions/actions'
 import { checkIsCompatable } from '@app/utils/biometricsAuth'
 import { logoutUtil } from '@app/utils/userProfileUtils'
-import { clearFilters } from '@app/refactor/redux/transactions/actions'
 
 export const useProfile = ({ route }) => {
 	const navigation = useNavigation()
@@ -22,7 +20,7 @@ export const useProfile = ({ route }) => {
 	const { Personal_Security, userInfo, userProfileLoading } = state
 
 	useEffect(() => {
-		dispatch(fetchUserInfo(route?.params?.fromRegistration))
+		dispatch(fetchUserInfoThunk(route?.params?.fromRegistration))
 		checkCompitable()
 		const timer = setTimeout(() => {
 			setShowRefreshControl(true)
@@ -32,7 +30,7 @@ export const useProfile = ({ route }) => {
 
 	useFocusEffect(
 		useCallback(() => {
-			return () => dispatch(switchPersonalSecurity('Personal'))
+			return () => dispatch(setPersonalSecurity('Personal'))
 		}, [])
 	)
 
@@ -41,6 +39,7 @@ export const useProfile = ({ route }) => {
 		setBioAvailable(compitable)
 	}
 
+	// TODO: use thunk logout
 	const logout = async () => {
 		const refresh_token = await SecureStore.getItemAsync('refreshToken')
 		const status = await logoutUtil(refresh_token)
@@ -55,11 +54,11 @@ export const useProfile = ({ route }) => {
 
 	const onRefresh = () => {
 		checkCompitable()
-		dispatch(fetchUserInfo())
+		dispatch(fetchUserInfoThunk())
 	}
 	const back = () => {
 		clear()
-		navigation.navigate('Main', { screen: route.params?.sourceScreenName })
+		navigation.goBack()
 	}
 
 	const clear = () => {

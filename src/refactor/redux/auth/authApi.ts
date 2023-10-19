@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Constants from 'expo-constants'
-import { LOGIN_START_URL } from '@app/constants/api'
+import { ACTIVATE_GOOGLE_OTP, LOGIN_START_URL } from '@app/constants/api'
 
 const authRedirectUrl = Constants?.manifest?.extra?.authRedirectUrl
 

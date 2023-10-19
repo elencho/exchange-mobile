@@ -13,6 +13,7 @@ import { Headline } from '@components/headline'
 import CustomRefreshContol from '@components/refresh-control'
 import AppText from '@components/text'
 import Logout from '@app/assets/images/User_profile/Logout.svg'
+import PersonalSecuritySwitcher from './components/modals/user-profile/personal-security-switcher'
 import { Personal } from './components/personal'
 import Security from './components/security'
 import { useProfile } from './use-profile'
@@ -61,7 +62,7 @@ export default function UserProfile({ route }) {
 			<Headline title="My Profile" />
 			<AppText style={styles.secondary}>{userInfo?.email}</AppText>
 
-			{/* <PersonalSecuritySwitcher /> */}
+			<PersonalSecuritySwitcher />
 			<FlatList
 				data={[0]}
 				renderItem={renderItem}

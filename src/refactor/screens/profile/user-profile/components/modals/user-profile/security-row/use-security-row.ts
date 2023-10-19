@@ -138,6 +138,5 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 		googleAuth,
 		isBioOn,
 		bioType,
-		images,
 	}
 }
