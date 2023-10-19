@@ -1,5 +1,6 @@
 // src/redux/errorsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from '../rootReducer'
 import { fetchTradesThunk, refreshTradesThunk } from './tradeThunks'
 
 // import { startLogin, usernameAndPaswordThunk } from './authThunks'
@@ -142,9 +143,8 @@ const tradeSlice = createSlice({
 			.addCase(fetchTradesThunk.pending, (state) => {
 				state.tradesLoading = true
 			})
-			.addCase(fetchTradesThunk.fulfilled, (state, action) => {
+			.addCase(fetchTradesThunk.fulfilled, (state) => {
 				state.tradesLoading = false
-				// state.trades = action.payload
 			})
 			.addCase(fetchTradesThunk.rejected, (state) => {
 				state.tradesLoading = false
@@ -152,9 +152,8 @@ const tradeSlice = createSlice({
 			.addCase(refreshTradesThunk.pending, (state) => {
 				state.tradesLoading = true
 			})
-			.addCase(refreshTradesThunk.fulfilled, (state, action) => {
+			.addCase(refreshTradesThunk.fulfilled, (state) => {
 				state.tradesLoading = false
-				// state.trades = action.payload
 			})
 			.addCase(refreshTradesThunk.rejected, (state) => {
 				state.tradesLoading = false
@@ -179,7 +178,7 @@ export const {
 export default tradeSlice.reducer
 
 //Selectors
-export const selectTradeQueryParams = (state) => {
+export const selectTradeQueryParams = (state: RootState) => {
 	const {
 		fiatCodesQuery,
 		offset,

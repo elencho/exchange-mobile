@@ -1,5 +1,5 @@
 import { useFocusEffect, useIsFocused } from '@react-navigation/native'
-import React, { useCallback, useEffect, useRef } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { Keyboard } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Background from '@app/components/Background'
@@ -58,12 +58,6 @@ function TransactionHistory({ navigation }) {
 		}
 	}, [])
 
-	//Loader for Convert
-	const numOfRender = useRef(0)
-	useEffect(() => {
-		numOfRender.current++
-	}, [activeTab])
-
 	return (
 		<Background>
 			<TopRow clear={clearAllFilters} />
@@ -73,11 +67,7 @@ function TransactionHistory({ navigation }) {
 				isInstantTrade={activeTab === 'Instant trade'}
 			/>
 
-			{activeTab === 'Transfer' ? (
-				<TransactionList />
-			) : (
-				<TradeList isFirstRender={numOfRender.current === 1} />
-			)}
+			{activeTab === 'Transfer' ? <TransactionList /> : <TradeList />}
 
 			{isFocused && <TransactionModal transactions />}
 		</Background>
@@ -85,27 +75,3 @@ function TransactionHistory({ navigation }) {
 }
 
 export default TransactionHistory
-
-// const styles = StyleSheet.create({
-// 	empty: {
-// 		flex: 1,
-// 		marginTop: '35%',
-// 		alignItems: 'center',
-// 	},
-// 	loader: {
-// 		flex: 1,
-// 	},
-// 	transactions: {
-// 		flex: 1,
-// 		marginTop: 30,
-// 	},
-// 	filter: {
-// 		flexDirection: 'row',
-// 		alignItems: 'center',
-// 		justifyContent: 'space-between',
-// 	},
-// 	subtext: {
-// 		color: colors.SECONDARY_TEXT,
-// 		marginTop: 17,
-// 	},
-// })

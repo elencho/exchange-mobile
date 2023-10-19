@@ -1,11 +1,10 @@
 // src/redux/errorsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from '../rootReducer'
 import {
 	fetchTransactionsThunk,
 	refreshTransactionsThunk,
 } from './transactionThunks'
-
-// import { startLogin, usernameAndPaswordThunk } from './authThunks'
 
 interface TransactionState {
 	tabRoute: null
@@ -124,9 +123,8 @@ const transactionSlice = createSlice({
 			.addCase(fetchTransactionsThunk.pending, (state) => {
 				state.transactionsLoading = true
 			})
-			.addCase(fetchTransactionsThunk.fulfilled, (state, action) => {
+			.addCase(fetchTransactionsThunk.fulfilled, (state) => {
 				state.transactionsLoading = false
-				// state.transactions = action.payload
 			})
 			.addCase(fetchTransactionsThunk.rejected, (state) => {
 				state.transactionsLoading = false
@@ -134,9 +132,8 @@ const transactionSlice = createSlice({
 			.addCase(refreshTransactionsThunk.pending, (state) => {
 				state.transactionsLoading = true
 			})
-			.addCase(refreshTransactionsThunk.fulfilled, (state, action) => {
+			.addCase(refreshTransactionsThunk.fulfilled, (state) => {
 				state.transactionsLoading = false
-				// state.transactions = action.payload
 			})
 			.addCase(refreshTransactionsThunk.rejected, (state) => {
 				state.transactionsLoading = false
@@ -172,7 +169,7 @@ const methodsMapping = {
 	Transfer: ['TRANSFER'],
 }
 
-export const selectTransactionQueryParams = (state) => {
+export const selectTransactionQueryParams = (state: RootState) => {
 	const {
 		typeFilter,
 		method,

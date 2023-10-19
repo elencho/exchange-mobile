@@ -16,7 +16,6 @@ import Transaction from '@app/refactor/screens/transactions/components/Transacti
 import ListFooter from './ListFooter'
 
 const TransactionList = () => {
-	const isFocused = useIsFocused()
 	const dispatch = useDispatch()
 	useEffect(() => {
 		dispatch(fetchTransactionsThunk())
@@ -27,8 +26,6 @@ const TransactionList = () => {
 			transactions,
 			transactionsLoading,
 			totalTransactionsQty,
-			code: currencyCode,
-			currency,
 			activeTab,
 		},
 	} = useSelector((state) => state)
@@ -60,18 +57,6 @@ const TransactionList = () => {
 			dispatch(reachScrollEndThunk())
 		}
 	}
-
-	const footer = memo(() =>
-		!transactionsLoading ? (
-			<TransactionSkeleton
-				length={[1]}
-				isInstantTrade={activeTab === 'Instant trade'}
-				isFooter
-			/>
-		) : (
-			<View />
-		)
-	)
 
 	return transactionsLoading ? (
 		<View style={{ marginTop: 10 }}>
