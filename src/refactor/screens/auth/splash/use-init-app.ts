@@ -38,9 +38,9 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		await fetchLexicon()
 		const accessToken = KVStore.get('accessToken')
 
-		//! For Testing
-		// navigation.navigate('SetNewPassword')
-		// return
+		// ! For Testing
+		navigation.navigate('Registration')
+		return
 
 		if (hasUnlock()) {
 			if (!accessToken) {
@@ -57,7 +57,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			} else if (await backIsDown()) {
 				navigation.navigate('Maintenance')
 			} else {
-				navigation.navigate('Welcome') // Main
+				navigation.navigate('Main') // Main
 			}
 		}
 	}

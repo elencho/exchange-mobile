@@ -12,6 +12,7 @@ import Maintenance from '@app/refactor/screens/auth/maintenance'
 import ResetOtpInstructions from '@app/refactor/screens/auth/otp_reset'
 import ForgotPassword from '@app/refactor/screens/auth/password_forgot'
 import SetNewPassword from '@app/refactor/screens/auth/password_set'
+import Register from '@app/refactor/screens/auth/register'
 import Splash from '@app/refactor/screens/auth/splash/index'
 import UpdateAvailable from '@app/refactor/screens/auth/update'
 import Welcome from '@app/refactor/screens/auth/welcome'
@@ -19,7 +20,6 @@ import TransactionFilter from '@app/refactor/screens/transactions/TransactionFil
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
 import EmailVerification from '@app/screens/EmailVerification'
-import RegisterScreen from '@app/screens/Registration'
 import Resume from '@app/screens/Resume'
 import UserProfileScreen from '@app/screens/UserProfile'
 import BalanceScreen from '@app/screens/Wallet/Balance'
@@ -85,7 +85,7 @@ export default function AppNavigator() {
 				<Stack.Screen name="ForgotPassword" component={ForgotPassword} />
 				<Stack.Screen name="SetNewPassword" component={SetNewPassword} />
 				<Stack.Screen name="Login" component={Login} />
-				<Stack.Screen name="Registration" component={RegisterScreen} />
+				<Stack.Screen name="Registration" component={Register} />
 				<Stack.Screen name="EmailVerification" component={EmailVerification} />
 				<Stack.Screen
 					name="Main"

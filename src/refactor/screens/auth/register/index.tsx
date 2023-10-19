@@ -1,17 +1,17 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { t } from 'i18next'
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React, { useState } from 'react'
+import { Alert, StyleSheet, View } from 'react-native'
+import { useSelector } from 'react-redux'
 import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import GeneralError from '@app/components/GeneralError'
-import CheckMarks from '@app/components/Registration/CheckMarks'
-import PersonalCompanySwitcher from '@app/components/Registration/PersonalCompanySwitcher'
-import RegistrationInputs from '@app/components/Registration/RegistrationInputs'
 import WithKeyboard from '@app/components/WithKeyboard'
-import useRegister from '@app/refactor/screens/register/use-register'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import PersonalCompanySwitcher from '@app/refactor/screens/auth/register/components/personal_company_switcher'
+import RegisterInputs from '@app/refactor/screens/auth/register/components/register_inputs'
 import { Screens } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
 
@@ -19,13 +19,20 @@ interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
 export default function Register({ navigation }: Props) {
 	const { styles } = useTheme(_styles)
-	const {
-		goToSignIn,
-		handleRegistration,
-		userProfileLoading,
-		error,
-		validations,
-	} = useRegister(navigation)
+
+	const [userType, setUserType] = useState<UserType>('Personal')
+	const [registerEnabled, setRegisterEnabled] = useState(true)
+
+	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
+
+	const goToSignIn = () => navigation.navigate('Login')
+	const onRegisterPressed = () => {
+		if (!registerEnabled) {
+			Alert.alert('register', 'disabled!')
+		} else {
+			Alert.alert('register', 'success')
+		}
+	}
 
 	return (
 		<WithKeyboard
@@ -46,21 +53,33 @@ export default function Register({ navigation }: Props) {
 					Welcome to Cryptal
 				</AppText>
 
-				<PersonalCompanySwitcher />
+				<PersonalCompanySwitcher
+					chosenType={userType}
+					onUserTypeChanged={setUserType}
+				/>
 
 				<GeneralError
 					style={styles.error}
 					show={errorHappenedHere('Registration')}
 				/>
 
-				<RegistrationInputs error={error} validations={validations} />
-				<CheckMarks error={error} validations={validations} />
+				<RegisterInputs
+					userType={userType}
+					clearErrors={() => {
+						setRegisterEnabled(true)
+					}}
+					onRegisterPressed={(allInputsValid: boolean) => {
+						setRegisterEnabled(allInputsValid)
+					}}
+				/>
+
+				{/* <CheckMarks error={error} validations={validations} /> */}
 
 				<AppButton
 					variant="primary"
-					text="Registerdsda"
-					onPress={handleRegistration}
-					loading={userProfileLoading}
+					text="Register"
+					onPress={onRegisterPressed}
+					loading={authLoading}
 				/>
 				<AppText style={styles.subtext}>
 					{t('Have an Account?')}{' '}
