@@ -2,7 +2,7 @@ import React, { forwardRef, useEffect, useRef } from 'react'
 import { View, Text, Animated, Easing } from 'react-native'
 import { Circle } from 'react-native-svg'
 
-interface useCircleProps {
+interface UseCircleProps {
 	pressed: boolean
 	radius: number
 	strokeWidth: string
@@ -12,7 +12,7 @@ interface useCircleProps {
 	max: number
 }
 
-export const useCircle: React.FC<useCircleProps> = forwardRef((props, ref) => {
+export const useCircle: React.FC<UseCircleProps> = forwardRef((props, ref) => {
 	const { pressed, radius, strokeWidth, delay, duration, percentage, max } =
 		props
 	const animated = useRef(new Animated.Value(0)).current

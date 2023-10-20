@@ -9,14 +9,14 @@ import {
 } from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
-interface useCountriesProps {
+interface UseCountriesProps {
 	reset?: () => void
 	citizenshipDrop?: boolean
 	phoneCountry?: boolean
 	registration?: boolean
 }
 
-export const useCountries = (props: useCountriesProps) => {
+export const useCountries = (props: UseCountriesProps) => {
 	const { reset } = props
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
