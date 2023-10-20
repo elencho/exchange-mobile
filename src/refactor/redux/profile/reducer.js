@@ -90,66 +90,6 @@ export default (state = INITIAL_STATE, action) => {
 		isProfileUpdating,
 	} = action
 	switch (action.type) {
-		case actionTypes.TOGGLE_USER_PROFILE_LOADING:
-			return {
-				...state,
-				userProfileLoading,
-			}
-		case actionTypes.TOGGLE_IS_PROFILE_UPDATING:
-			return {
-				...state,
-				isProfileUpdating,
-			}
-		case actionTypes.SAVE_PKCE_INFO:
-			return {
-				...state,
-				pkceInfo,
-			}
-		case actionTypes.SAVE_LOGIN_START_INFO:
-			return {
-				...state,
-				loginStartInfo,
-			}
-		case actionTypes.SAVE_REGISTRATION_START_INFO:
-			return {
-				...state,
-				registrationStartInfo,
-			}
-		case actionTypes.SAVE_VERIFICATION_INFO:
-			return {
-				...state,
-				verificationInfo,
-			}
-		case actionTypes.SET_CREDENTIALS:
-			return {
-				...state,
-				credentials,
-			}
-		case actionTypes.SET_REGISTRATION_INPUTS:
-			return {
-				...state,
-				registrationInputs,
-			}
-		case actionTypes.SAVE_USER_AND_PASS_INFO:
-			return {
-				...state,
-				userAndPassInfo,
-			}
-		case 'SAVE_FORGOT_PASS_INFO':
-			return {
-				...state,
-				forgotPassInfo,
-			}
-		case 'TOGGLE_TIMER':
-			return {
-				...state,
-				timerVisible,
-			}
-		case 'TOGGLE_FORGOT_PASS_MODE':
-			return {
-				...state,
-				forgotPassMode,
-			}
 		case actionTypes.SWITCH_PERSONAL_SECURITY:
 			return {
 				...state,

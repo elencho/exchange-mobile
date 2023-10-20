@@ -1,25 +1,25 @@
 import React, { useEffect } from 'react'
+import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleCountriesModal } from '../../redux/modals/actions'
+import { saveUserInfo, setRegistrationInputs } from '@app/redux/profile/actions'
+import { toggleCountriesModal } from '@app/refactor/redux/modals/modalsSlice'
 import {
 	fetchCountries,
 	saveCountries,
-	saveUserInfo,
-	setRegistrationInputs,
-} from '../../redux/profile/actions'
-import AppModal from '../AppModal'
-import ModalWithSearch from '../ModalWithSearch'
+} from '@app/refactor/redux/profile/actions'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
-export default function CountriesModal({
-	countryDrop = false,
-	citizenshipDrop = false,
-	phoneCountry = false,
-	registration = false,
-	reset,
-	title = 'Choose Country',
-}) {
+interface UseCountriesProps {
+	reset?: () => void
+	citizenshipDrop?: boolean
+	phoneCountry?: boolean
+	registration?: boolean
+}
+
+export const useCountries = (props: UseCountriesProps) => {
+	const { reset } = props
 	const dispatch = useDispatch()
-	const state = useSelector((state) => state)
+	const state = useSelector((state: RootState) => state)
 
 	const {
 		modals: { countriesModalVisible },
@@ -27,10 +27,10 @@ export default function CountriesModal({
 	} = state
 
 	useEffect(() => {
-		dispatch(countries())
+		dispatch(fetchCountries())
 	}, [])
 
-	const filter = (text) => {
+	const filter = (text: string) => {
 		const filteredArray = countriesConstant.filter((c) =>
 			c.name.toLowerCase().includes(text.toLowerCase())
 		)
@@ -43,15 +43,8 @@ export default function CountriesModal({
 		reset && reset()
 	}
 
-	const currentItem = () => {
-		if (countryDrop) return userInfo?.country
-		if (citizenshipDrop) return userInfo?.citizenship
-		if (registration) return registrationInputs?.phoneCountry
-		if (phoneCountry) return userInfo?.phoneCountry
-	}
-
-	const choose = (country) => {
-		const code = (country) => {
+	const choose = (country: string) => {
+		const code = (country: string) => {
 			let code
 			countriesConstant.forEach((c) => {
 				if (c.name === country) code = c.code
@@ -80,27 +73,14 @@ export default function CountriesModal({
 		}
 		hide()
 	}
-
-	const children = (
-		<ModalWithSearch
-			array={countries}
-			choose={choose}
-			filter={filter}
-			currentItem={currentItem()}
-			title={title}
-			phoneCountry={phoneCountry}
-			countryDrop={countryDrop}
-			citizenshipDrop={citizenshipDrop}
-		/>
-	)
-
-	return (
-		<AppModal
-			visible={countriesModalVisible}
-			hide={hide}
-			onModalHide={hide}
-			children={children}
-			fullScreen
-		/>
-	)
+	return {
+		filter,
+		countriesModalVisible,
+		countries,
+		countriesConstant,
+		userInfo,
+		registrationInputs,
+		hide,
+		choose,
+	}
 }
