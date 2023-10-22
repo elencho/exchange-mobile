@@ -254,7 +254,7 @@ const BuySellModal = () => {
 								{fiat}
 							</AppText>
 						}
-						style={{ marginTop: 20 }}
+						style={{ marginTop: 12 }}
 						error={error && !validateAmount(price)}
 					/>
 					<AppInput
@@ -268,7 +268,7 @@ const BuySellModal = () => {
 								{crypto}
 							</AppText>
 						}
-						style={{ marginTop: 20 }}
+						style={{ marginTop: 12 }}
 						error={error && !validateAmount(size)}
 					/>
 

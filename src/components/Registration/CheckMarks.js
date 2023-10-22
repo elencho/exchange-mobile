@@ -62,11 +62,11 @@ export default function CheckMarks({ error, validations }) {
 
 	return (
 		<View style={styles.container}>
-			<View style={[styles.row, { marginTop: 20 }]}>
+			<View style={styles.row}>
 				<Pressable style={styles.image} onPress={() => toggle('acceptTerms')}>
-					{/* {image('acceptTerms')} */}
+					{image('acceptTerms')}
 				</Pressable>
-				{/* {text('acceptTerms')} */}
+				{text('acceptTerms')}
 			</View>
 		</View>
 	)

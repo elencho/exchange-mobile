@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
 		resizeMode: 'stretch',
 	},
 	input: {
-		marginTop: 22,
+		marginTop: 12,
 	},
 	line: {
 		width: 1,
@@ -190,7 +190,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: 22,
-		marginBottom: -11,
 		borderColor: '#42475D',
 	},
 	subtext: {
