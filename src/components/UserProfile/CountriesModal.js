@@ -27,12 +27,12 @@ export default function CountriesModal({
 	} = state
 
 	useEffect(() => {
-		dispatch(countries())
+		dispatch(fetchCountries())
 	}, [])
 
 	const filter = (text) => {
 		const filteredArray = countriesConstant.filter((c) =>
-			c.name.toLowerCase().includes(text.toLowerCase())
+			c?.name.toLowerCase().includes(text.toLowerCase())
 		)
 		dispatch(saveCountries(filteredArray))
 	}

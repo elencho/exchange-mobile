@@ -31,9 +31,8 @@ export default function RegistrationInputs({ validations, error }) {
 	const set = (obj) => dispatch(setRegistrationInputs({ ...i, ...obj }))
 
 	const red = { color: '#F45E8C' }
-	const border = { borderColor: '#F45E8C' }
-	const phoneNumberStyle =
-		error && (!v.phoneNumberCheck || !i.phoneCountry) && border
+	// const border = { borderColor: '#F45E8C' }
+	const phoneNumberStyle = error && (!v.phoneNumberCheck || !i.phoneCountry)
 	const placeholderTextColor =
 		error && (!v.phoneNumberCheck || !i.phoneCountry)
 			? '#F45E8C'

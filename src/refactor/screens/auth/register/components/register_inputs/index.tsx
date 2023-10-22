@@ -52,10 +52,10 @@ const RegisterInputs = ({
 	].some((isValid) => !isValid)
 
 	useEffect(() => {
-		registerEnabled(true)
+		// registerEnabled(true)
 	}, [mail, pass, confirmPass, phone, referal, promo])
 
-	const border = { borderColor: '#F45E8C' }
+	// const border = { borderColor: '#F45E8C' }
 
 	// const phoneNumberStyle =
 	// 	error && (!v.phoneNumberCheck || !i.phoneCountry) && border

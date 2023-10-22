@@ -1,5 +1,6 @@
 import axios from 'axios'
 import * as SecureStore from 'expo-secure-store'
+import KVStore from '@store/kv'
 import {
 	ACTIVATE_EMAIL_OTP,
 	ACTIVATE_GOOGLE_OTP,
@@ -28,7 +29,7 @@ const refreshTokenService = async (refresh_token: string | null) => {
 }
 
 export const refreshToken = async (config?: any) => {
-	const refresh_token = await SecureStore.getItemAsync('refreshToken')
+	const refresh_token = await KVStore.get('refreshToken')
 	const data = await refreshTokenService(refresh_token)
 	if (data) {
 		if (data.access_token && data.refresh_token) {

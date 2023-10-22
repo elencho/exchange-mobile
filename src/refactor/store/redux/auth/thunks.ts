@@ -169,11 +169,14 @@ const codeToTokenThunk = (
 
 		if (navigation) {
 			KVStore.set('isLoggedIn', true)
-			if (from === 'Login2Fa') {
-				navigation.navigate('UserProfile')
-			} else {
-				navigation.navigate('Main')
-			}
+			// LOGIC IS NOT CORRECT
+
+			// if (from === 'Login2Fa') {
+			// 	navigation.navigate('UserProfile')
+			// } else {
+			// 	navigation.navigate('Main')
+			// }
+			navigation.navigate('Main')
 		}
 
 		// TODO: If from registration

@@ -39,8 +39,8 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	const { theme, styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
-	const [mail, setMail] = useState(testMail.mail) // TODO: ''
-	const [pass, setPass] = useState(testMail.pass) // TODO: ''
+	const [mail, setMail] = useState('')
+	const [pass, setPass] = useState('')
 	const [error, setError] = useState(false)
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
 

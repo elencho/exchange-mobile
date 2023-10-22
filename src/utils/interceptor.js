@@ -1,5 +1,6 @@
 import axios from 'axios'
 import * as SecureStore from 'expo-secure-store'
+import KVStore from '@store/kv'
 import store from '../redux/store'
 import handleError from './errorHandling'
 
@@ -9,7 +10,7 @@ axios.interceptors.request.use(async (config) => {
 	} = config
 
 	const dictionaryReq = requestName === 'fetchTranslations'
-	const token = await SecureStore.getItemAsync('accessToken')
+	const token = KVStore.get('accessToken')
 	if (token && !dictionaryReq) config.headers.Authorization = `Bearer ${token}`
 	const isToast = toast === false ? false : true
 
