@@ -1,46 +1,46 @@
 {
-  "project_info": {
-    "project_number": "768774628226",
-    "project_id": "cryptal-exchange---mobile",
-    "storage_bucket": "cryptal-exchange---mobile.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:768774628226:android:cc6dc86cc75d5bccd0259b",
-        "android_client_info": {
-          "package_name": "com.cryptal.exchange.mobile"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "768774628226-gqgc5duq1ei7hmgie3r5g5kdj554bgu4.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBQ7XVLM6hbLoGFylkwKnBBtNMG779Kukg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "768774628226-gqgc5duq1ei7hmgie3r5g5kdj554bgu4.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "768774628226-03vlb1p4eebq762due7qp4n03m5u90n4.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.cryptal.exchange.mobile"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
+	"project_info": {
+		"project_number": "768774628226",
+		"project_id": "cryptal-exchange---mobile",
+		"storage_bucket": "cryptal-exchange---mobile.appspot.com"
+	},
+	"client": [
+		{
+			"client_info": {
+				"mobilesdk_app_id": "1:768774628226:android:cc6dc86cc75d5bccd0259b",
+				"android_client_info": {
+					"package_name": "com.cryptal.exchange.mobile"
+				}
+			},
+			"oauth_client": [
+				{
+					"client_id": "768774628226-gqgc5duq1ei7hmgie3r5g5kdj554bgu4.apps.googleusercontent.com",
+					"client_type": 3
+				}
+			],
+			"api_key": [
+				{
+					"current_key": "AIzaSyBQ7XVLM6hbLoGFylkwKnBBtNMG779Kukg"
+				}
+			],
+			"services": {
+				"appinvite_service": {
+					"other_platform_oauth_client": [
+						{
+							"client_id": "768774628226-gqgc5duq1ei7hmgie3r5g5kdj554bgu4.apps.googleusercontent.com",
+							"client_type": 3
+						},
+						{
+							"client_id": "768774628226-03vlb1p4eebq762due7qp4n03m5u90n4.apps.googleusercontent.com",
+							"client_type": 2,
+							"ios_info": {
+								"bundle_id": "com.cryptal.exchange.mobile"
+							}
+						}
+					]
+				}
+			}
+		}
+	],
+	"configuration_version": "1"
 }

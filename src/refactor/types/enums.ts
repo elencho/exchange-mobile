@@ -1,0 +1,34 @@
+export const enum Execution {
+	LOGIN_USERNAME_PASSWORD = 'LOGIN_USERNAME_PASSWORD',
+	EMAIL_VERIFICATION_OTP = 'EMAIL_VERIFICATION_OTP',
+	REGISTRATION_START = 'REGISTRATION_START',
+	LOGIN_OTP = 'LOGIN_OTP',
+	OTP_RESET_INSTRUCTIONS = 'OTP_RESET_INSTRUCTIONS',
+	UPDATE_PASSWORD = 'UPDATE_PASSWORD',
+	RESET_PASSWORD_WITH_CODE = 'RESET_PASSWORD_WITH_CODE',
+}
+
+export const enum UserStatus {
+	VERIFIED = 'VERIFIED',
+	UNVERIFIED = 'UNVERIFIED',
+	PENDING = 'PENDING',
+	CORPORATE = 'CORPORATE',
+}
+
+export const enum PersonalFeatures {
+	IDENTITY = 'Identity',
+	PHONE = 'Phone',
+	NOTIFICATIONS = 'Notifications',
+	LANGUAGE = 'Language',
+}
+
+export const enum TradeTypesEnum {
+	BUY = 'Buy',
+	SELL = 'Sell',
+}
+
+export const enum OTPTypes {
+	EMAIL = 'EMAIL',
+	TOTP = 'TOTP',
+	SMS = 'SMS',
+}

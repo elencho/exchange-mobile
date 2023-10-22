@@ -2,7 +2,6 @@
 #import <Firebase.h>
 
 #import <React/RCTBundleURLProvider.h>
-#import "RNSplashScreen.h"
 #import <React/RCTLinkingManager.h>
 #import <React/RCTConvert.h>
 
@@ -38,12 +37,7 @@
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
   
-    // here
-    // or
-  //[RNSplashScreen showSplash:@"LaunchScreen" inRootView:rootView];
   [super application:application didFinishLaunchingWithOptions:launchOptions];
-  [RNSplashScreen show];
-
   
   return YES;
 }

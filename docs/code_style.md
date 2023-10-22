@@ -30,17 +30,17 @@ Do
 
 ```jsx
 const UserProfile = ({ name }) => {
-  return <>{name}</>;
-};
+	return <>{name}</>
+}
 ```
 
 Don't
 
 ```jsx
 const UserProfile = (props) => {
-  const { name } = props;
-  return <>{name}</>;
-};
+	const { name } = props
+	return <>{name}</>
+}
 ```
 
 ### 1.5. Only pass needed properties to helpers
@@ -51,19 +51,19 @@ Do
 
 ```tsx
 const UserProfile = (props) => {
-  const { id } = props;
-  const { name } = getUserName(id);
-  return <>{name}</>;
-};
+	const { id } = props
+	const { name } = getUserName(id)
+	return <>{name}</>
+}
 ```
 
 Don't
 
 ```tsx
 const UserProfile = (props) => {
-  const { name } = getUserName(props);
-  return <>{name}</>;
-};
+	const { name } = getUserName(props)
+	return <>{name}</>
+}
 ```
 
 ## 2. Naming
@@ -94,49 +94,49 @@ Folder names should use **`camelCase`** except the folders, which exports React-
 Do
 
 ```js
-const isVisible = true;
-const isPasswordCorrect = true;
-const isYellowColorScheme = true;
+const isVisible = true
+const isPasswordCorrect = true
+const isYellowColorScheme = true
 
-const canShareWebcam = true;
+const canShareWebcam = true
 
 // arrays
-const hasFruits = ['apple', 'banana'].length > 0;
+const hasFruits = ['apple', 'banana'].length > 0
 
 // functions
-const onClick = (event) => event.target.value;
+const onClick = (event) => event.target.value
 
 // hooks
 const useUserProfile = (user) => {
-  const [profile, userProfile] = useState();
+	const [profile, userProfile] = useState()
 
-  useEffect(() => {
-    // do something here…
-  }, [user.id]);
-  // …
-};
+	useEffect(() => {
+		// do something here…
+	}, [user.id])
+	// …
+}
 ```
 
 Don't
 
 ```tsx
-const visible = true;
-const isWrongPassword = true;
-const colorSchemeIsYellow = true;
+const visible = true
+const isWrongPassword = true
+const colorSchemeIsYellow = true
 
-const isWebcamSharingPossible = true;
+const isWebcamSharingPossible = true
 
 // arrays
-const containsFruits = ['apple', 'banana'].length > 0;
+const containsFruits = ['apple', 'banana'].length > 0
 
 // functions
-const click = (ev) => ev.target.value;
+const click = (ev) => ev.target.value
 
 // hooks
 const useUserProfile = (user) => {
-  const profile = user.profile; // <- actually no hook
-  // ...
-};
+	const profile = user.profile // <- actually no hook
+	// ...
+}
 ```
 
 ### 2.4. Constant names
@@ -148,17 +148,17 @@ The team needs to follow next unified way:
 Do
 
 ```js
-const DOMAIN = '…';
-const DRAWER_HEIGHT = '…';
-const LIST_LIMIT = '…';
+const DOMAIN = '…'
+const DRAWER_HEIGHT = '…'
+const LIST_LIMIT = '…'
 ```
 
 Don't
 
 ```js
-const Domain = '…';
-const Drawer_Height = '…';
-const list_limit = '…';
+const Domain = '…'
+const Drawer_Height = '…'
+const list_limit = '…'
 ```
 
 **`Those constants define main parameters and options for the whole application.`**
@@ -193,22 +193,22 @@ Avoid export defaults, prefer named exports instead. This has the following adva
 Do
 
 ```js
+// import
+import { UserProfile } from './UserProfile'
+
 // export
 export function UserProfile() {}
-
-// import
-import { UserProfile } from './UserProfile';
 ```
 
 Don't
 
 ```tsx
 // export
-const UserProfile = () => {};
-export default UserProfile;
+const UserProfile = () => {}
+export default UserProfile
 
 // import
-import UserProfile from './UserProfile';
+import UserProfile from './UserProfile'
 ```
 
 ### 3.2. Group exports
@@ -224,13 +224,13 @@ Wildcard exports (`export *`) should be used with caution, you might export stuf
 Do
 
 ```tsx
-export { UserProfile } from './UserProfile';
+export { UserProfile } from './UserProfile'
 ```
 
 Don't
 
 ```tsx
-export * from './UserProfile';
+export * from './UserProfile'
 ```
 
 ## 4. UI
