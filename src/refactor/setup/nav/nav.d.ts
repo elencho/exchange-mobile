@@ -19,7 +19,9 @@ export type Screens = {
 	Maintenance?: {}
 	Login?: {}
 	Registration?: {}
-	EmailVerification?: {}
+	EmailVerification?: {
+		from: Route
+	}
 	Login2Fa?: {}
 	ForgotPassword?: {}
 	SetNewPassword?: {}

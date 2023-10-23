@@ -12,22 +12,26 @@ import {
 	resendOtpThunk,
 	otpForLoginThunk,
 	forgotPasswordStartThunk,
+	startRegistrationThunk,
+	fetchCountriesThunk,
+	registrationFormThunk,
 } from '@store/redux/auth/thunks'
 
 interface AuthState {
 	timerVisible: boolean
 	authLoading: boolean
 	callbackUrl: string
-	//passwordResetUrl: string
 	otpType: OTP
+	countries: Country[]
+	phoneCountryCode?: string
 	pkceInfo?: PkceInfo
 }
 
 const initialState: AuthState = {
 	timerVisible: false,
 	authLoading: false,
+	countries: [],
 	callbackUrl: '',
-	//passwordResetUrl: '',
 	otpType: 'EMAIL',
 }
 
@@ -39,24 +43,30 @@ const auth = createSlice({
 			state.pkceInfo = action.payload
 		},
 		resetAuthState: (state) => {
-			// TODO: should we really?
-			state = initialState
+			state = {
+				...state,
+				timerVisible: false,
+				authLoading: false,
+			}
 		},
 	},
 	extraReducers: (builder) => {
 		startLogin(builder)
 		usernameAndPassword(builder)
 		resetOtp(builder)
+		registerStart(builder)
+		registerForm(builder)
+		countries(builder)
 
 		builder.addCase(forgotPasswordStartThunk.fulfilled, (state, action) => {
-			state.callbackUrl = action.payload.callbackUrl // TODO: password?
+			state.callbackUrl = action.payload.callbackUrl
 		})
 		builder.addCase(resetPasswordThunk.fulfilled, (state, action) => {
 			state.timerVisible = true
-			state.callbackUrl = action.payload.callbackUrl // TODO: password?
+			state.callbackUrl = action.payload.callbackUrl
 		})
 
-		builder.addCase(otpForLoginThunk.pending, (state, action) => {
+		builder.addCase(otpForLoginThunk.pending, (state) => {
 			state.authLoading = true
 		})
 		builder.addCase(otpForLoginThunk.fulfilled, (state, action) => {
@@ -64,7 +74,7 @@ const auth = createSlice({
 			state.callbackUrl = action.payload.callbackUrl
 		})
 
-		builder.addCase(resendOtpThunk.pending, (state, action) => {
+		builder.addCase(resendOtpThunk.pending, (state) => {
 			state.authLoading = true
 		})
 		builder.addCase(resendOtpThunk.fulfilled, (state, action) => {
@@ -86,7 +96,6 @@ const startLogin = (builder: ActionReducerMapBuilder<AuthState>) => {
 		.addCase(startLoginThunk.fulfilled, (state, action) => {
 			state.authLoading = false
 			state.callbackUrl = action.payload.callbackUrl
-			// state.passwordResetUrl = action.payload.passwordResetUrl
 		})
 		.addCase(startLoginThunk.rejected, (state) => {
 			state.authLoading = false
@@ -101,7 +110,6 @@ const usernameAndPassword = (builder: ActionReducerMapBuilder<AuthState>) => {
 		.addCase(usernameAndPaswordThunk.fulfilled, (state, action) => {
 			state.authLoading = false
 			state.callbackUrl = action.payload.callbackUrl
-			// state.passwordResetUrl = action.payload.passwordResetUrl
 			state.otpType = action.payload.attributes.otpType
 		})
 		.addCase(usernameAndPaswordThunk.rejected, (state) => {
@@ -121,6 +129,44 @@ const resetOtp = (builder: ActionReducerMapBuilder<AuthState>) => {
 		.addCase(resetOtpThunk.rejected, (state) => {
 			state.authLoading = false
 		})
+}
+
+const registerStart = (builder: ActionReducerMapBuilder<AuthState>) => {
+	builder
+		.addCase(startRegistrationThunk.pending, (state) => {
+			state.authLoading = true
+		})
+		.addCase(startRegistrationThunk.fulfilled, (state, action) => {
+			state.authLoading = false
+			state.callbackUrl = action.payload.callbackUrl
+			state.phoneCountryCode = action.payload.attributes.phoneCountry
+		})
+		.addCase(startRegistrationThunk.rejected, (state) => {
+			state.authLoading = false
+		})
+}
+
+const registerForm = (builder: ActionReducerMapBuilder<AuthState>) => {
+	builder
+		.addCase(registrationFormThunk.pending, (state) => {
+			state.authLoading = true
+		})
+		.addCase(registrationFormThunk.fulfilled, (state, action) => {
+			state.authLoading = false
+			state.callbackUrl = action.payload.callbackUrl
+		})
+		.addCase(registrationFormThunk.rejected, (state) => {
+			state.authLoading = false
+		})
+}
+
+const countries = (builder: ActionReducerMapBuilder<AuthState>) => {
+	builder.addCase(fetchCountriesThunk.fulfilled, (state, action) => {
+		const countries = action.payload
+		if (countries.length > 0) {
+			state.countries = countries
+		}
+	})
 }
 
 export const { savePkceInfo, resetAuthState } = auth.actions

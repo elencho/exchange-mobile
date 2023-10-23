@@ -24,6 +24,9 @@ import {
 	resetPassword,
 	resetPasswordOtp,
 	setNewPassword,
+	fetchCountries,
+	registrationForm,
+	verifyAccount,
 } from './api'
 import { savePkceInfo } from './slice'
 
@@ -39,7 +42,7 @@ export const startLoginThunk = createAsyncThunk(
 				navigation.navigate('Login')
 			}
 			if (loginStartInfo?.execution === Execution.EMAIL_VERIFICATION_OTP) {
-				navigation.push('EmailVerification', { fromScreen: 'login' })
+				navigation.push('EmailVerification', { from: 'Login' })
 			}
 
 			return loginStartInfo
@@ -269,21 +272,76 @@ export const setNewPasswordOtpThunk = createAsyncThunk(
 
 export const startRegistrationThunk = createAsyncThunk(
 	'startRegistration',
-	async (navigation: NavProp<'Welcome'>, { dispatch }) => {
-		dispatch(setRegistrationInputs({}))
-		const pkceInfo = pkceChallenge()
+	async (_, {}) => {
+		return await registrationStart()
+	}
+)
 
-		if (pkceInfo) {
-			dispatch(savePkceInfo(pkceInfo))
-			const regInfo = await registrationStart()
-			dispatch(saveRegistrationStartInfo(regInfo))
+export const verifyRegistrationThunk = createAsyncThunk(
+	'verifyRegistration',
+	async ({ otp }: { otp: string }, { getState }) => {
+		const { callbackUrl, pkceInfo } = (getState() as RootState).auth
 
-			if (regInfo?.execution === Execution.REGISTRATION_START) {
-				navigation.navigate('Registration')
-			}
-			if (regInfo?.execution === Execution.EMAIL_VERIFICATION_OTP) {
-				navigation.push('EmailVerification', { fromScreen: 'registration' })
-			}
+		const data = await verifyAccount(callbackUrl, otp)
+
+		//const verified = yield call(verifyAccount, verificationInfo?.callbackUrl, otp)
+		// if (verified?.code) {
+		// 	yield put({
+		// 		type: 'CODE_TO_TOKEN_SAGA',
+		// 		code: verified.code,
+		// 		codeVerifier,
+		// 		fromRegistration: true,
+		// 		navigation,
+		// 	})
+		// } else {
+		// 	yield put(saveVerificationInfo(verified))
+		// }
+		return data
+	}
+)
+
+type RegistrationFormProps = {
+	navigation: NavProp<'Register'>
+	clientType: UserType
+	email: string
+	passwordNew: string
+	passwordConfirm: string
+	phoneCountry: string
+	phoneNumber: string
+	referralCode: string
+	// TODO promo: string
+}
+export const registrationFormThunk = createAsyncThunk(
+	'registrationForm',
+	async (props: RegistrationFormProps, { getState }) => {
+		const { callbackUrl } = (getState() as RootState).auth
+
+		const data = await registrationForm(
+			callbackUrl,
+			props.clientType,
+			props.email,
+			props.passwordNew,
+			props.passwordConfirm,
+			props.phoneCountry,
+			props.phoneNumber,
+			props.referralCode
+		)
+		if (data?.execution === Execution.EMAIL_VERIFICATION_OTP) {
+			props.navigation.push('EmailVerification', { fromScreen: 'registration' })
+		}
+		return data
+	}
+)
+
+export const fetchCountriesThunk = createAsyncThunk(
+	'fetchCountries',
+	async (_, { getState }) => {
+		const { countries } = (getState() as RootState).auth
+		if (countries.length > 0) {
+			return []
+		} else {
+			const data = await fetchCountries()
+			return data
 		}
 	}
 )

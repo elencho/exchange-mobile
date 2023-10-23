@@ -11,7 +11,10 @@ import { MaterialIndicator } from 'react-native-indicators'
 import { useDispatch, useSelector } from 'react-redux'
 import { Theme, useTheme } from '@theme/index'
 import AppText from '@components/text'
-import { otpForLoginThunk } from '@store/redux/auth/thunks'
+import {
+	otpForLoginThunk,
+	verifyRegistrationThunk,
+} from '@store/redux/auth/thunks'
 import GeneralError from '@app/components/GeneralError'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Route, Screens } from '@app/refactor/setup/nav/nav'
@@ -41,6 +44,8 @@ const TwoFaInput = ({
 		if (value.length === cellCount) {
 			if (from === 'Login2Fa') {
 				dispatch(otpForLoginThunk({ otp: value, from: 'Login2Fa', navigation }))
+			} else if (from === 'Registration') {
+				dispatch(verifyRegistrationThunk({ otp: value }))
 			}
 		}
 	}, [value])

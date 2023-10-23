@@ -4,6 +4,7 @@ import { Platform } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import {
 	CODE_TO_TOKEN,
+	COUNTRIES_URL,
 	DICTIONARY,
 	FORGOT_PASSWORD_START_URL,
 	LOGIN_START_URL,
@@ -180,16 +181,70 @@ export const setNewPassword = async (
 }
 
 export const registrationStart = async () => {
-	const data = await axios.get<RegistrationStart>(REGISTRATION_START_URL, {
-		params: {
-			client_id: 'mobile-service-public',
-			redirect_uri: authRedirectUrl,
-			response_mode: 'form_post',
-			response_type: 'code',
-			scope: 'openid',
-			display: 'mobile',
+	const data = await axios.get<RegistrationStartResponse>(
+		REGISTRATION_START_URL,
+		{
+			params: {
+				client_id: 'mobile-service-public',
+				redirect_uri: authRedirectUrl,
+				response_mode: 'form_post',
+				response_type: 'code',
+				scope: 'openid',
+				display: 'mobile',
+			},
+			headers: { requestName: 'registrationStart', toast: false },
+		}
+	)
+	return data?.data
+}
+
+export const registrationForm = async (
+	callbackUrl: string,
+	clientType: UserType,
+	email: string,
+	passwordNew: string,
+	passwordConfirm: string,
+	phoneCountry: string,
+	phoneNumber: string,
+	referralCode: string
+) => {
+	const data = await axios<RegistrationFormResponse>({
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			requestName: 'registrationForm',
+			toast: false,
 		},
-		headers: { requestName: 'registrationStart', toast: false },
+		url: callbackUrl,
+		data: {
+			clientType,
+			email,
+			passwordNew,
+			passwordConfirm,
+			phoneCountry,
+			phoneNumber,
+			referralCode,
+		},
 	})
+	return data?.data
+}
+
+export const verifyAccount = async (callbackUrl: string, otp: string) => {
+	const data = await axios({
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			requestName: 'verifyAccount',
+			toast: false,
+		},
+		url: callbackUrl,
+		data: `otp=${otp}`,
+	})
+	console.log(data)
+	return data?.data
+}
+
+export const fetchCountries = async () => {
+	const data = await axios.get<CountriesResponse>(COUNTRIES_URL)
 	return data?.data
 }
