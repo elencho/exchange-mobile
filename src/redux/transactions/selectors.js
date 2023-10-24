@@ -35,15 +35,15 @@ export const getParams = (state) => {
 	}
 }
 
-export const getTransactions = (state) => state.transactions.transactions
+export const getTransactions = (state) => state.transactionsOld.transactions
 
-export const getOffset = (state) => state.transactions.offset
+export const getOffset = (state) => state.transactionsOld.offset
 
-export const getMethod = (state) => state.transactions.method
+export const getMethod = (state) => state.transactionsOld.method
 
-export const getType = (state) => state.transactions.typeFilter
+export const getType = (state) => state.transactionsOld.typeFilter
 
-export const getStatus = (state) => state.transactions.status
+export const getStatus = (state) => state.transactionsOld.status
 
 export const totalLoadedTransactions = (state) =>
-	state.transactions.transactions.length
+	state.transactionsOld.transactions.length

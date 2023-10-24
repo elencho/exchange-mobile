@@ -10,7 +10,7 @@ export const useGoogleOtp = () => {
 
 	const state = useSelector((state: RootState) => state)
 	const {
-		modals: { googleOtpModalVisible },
+		modalState: { googleOtpModalVisible },
 		profile: { currentSecurityAction },
 	} = state
 

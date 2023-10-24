@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AppModal from '@app/components/AppModal'
 import ModalWithSearch from '@app/components/ModalWithSearch'
-import { toggleCurrencyModal } from '@app/redux/modals/actions'
+import { toggleCurrencyModal } from '@app/refactor/redux/modals/modalsSlice'
 import { setCurrentBalanceObj } from '@app/redux/trade/actions'
 import {
 	currencyAction,
@@ -32,7 +32,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 			currency,
 			code,
 		},
-		modals: { chooseCurrencyModalVisible },
+		modalState: { chooseCurrencyModalVisible },
 		trade: { balance, fiatsArray, currentBalanceObj },
 		wallet: { walletTab },
 	} = state

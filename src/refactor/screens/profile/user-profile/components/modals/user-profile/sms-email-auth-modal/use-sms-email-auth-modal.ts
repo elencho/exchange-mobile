@@ -18,7 +18,7 @@ export const useSmsAuthEmailModal = ({ type }) => {
 
 	const state = useSelector((state: RootState) => state)
 	const {
-		modals: { smsAuthModalVisible, emailAuthModalVisible },
+		modalState: { smsAuthModalVisible, emailAuthModalVisible },
 		profile: { currentSecurityAction, timerVisible },
 	} = state
 

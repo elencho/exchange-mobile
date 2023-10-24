@@ -7,7 +7,7 @@ import AppText from '../../AppText'
 
 const TabSwitcher = () => {
 	const dispatch = useDispatch()
-	const activeTab = useSelector((state) => state.transactions.activeTab)
+	const activeTab = useSelector((state) => state.transactionsOld.activeTab)
 
 	const tabTextStyle = (tabName) => {
 		return {

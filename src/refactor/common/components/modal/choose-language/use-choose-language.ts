@@ -8,7 +8,7 @@ export const useChooseLanguage = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		modals: { languageModalVisible },
+		modalState: { languageModalVisible },
 		profile: { language },
 	} = state
 

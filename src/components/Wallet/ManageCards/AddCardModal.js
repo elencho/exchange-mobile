@@ -38,7 +38,7 @@ export default function AddCardModal() {
 			webViewVisible,
 		},
 		trade: { depositProvider, depositProviders },
-		transactions: { code },
+		transactionsOld: { code },
 	} = state
 
 	const [saveCardAgreeTerms, setSaveCardAgreeTerms] = useState(false)

@@ -24,7 +24,7 @@ export default function ChooseNetworkModal() {
 		modals: { chooseNetworkModalVisible },
 		wallet: { network, walletTab },
 		trade: { currentBalanceObj },
-		transactions: { code },
+		transactionsOld: { code },
 	} = state
 
 	const fiat = currentBalanceObj?.type === 'FIAT'

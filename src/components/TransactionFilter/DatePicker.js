@@ -25,7 +25,7 @@ export default function DatePicker({
 	const {
 		fromDateTime: fromDateTimeTransactions,
 		toDateTime: toDateTimeTransactions,
-	} = useSelector((state) => state.transactions)
+	} = useSelector((state) => state.transactionsOld)
 	const {
 		fromDateTimeQuery: fromDateTimeTrades,
 		toDateTimeQuery: toDateTimeTrades,

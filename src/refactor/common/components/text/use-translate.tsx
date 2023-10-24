@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 const translate = (textNode: ReactNode) => {
 	const { t } = useTranslation()
 	const {
-		modals: { appToastObj },
+		modalState: { appToastObj },
 		errors: { generalError },
 	}: any = useSelector((state) => state)
 

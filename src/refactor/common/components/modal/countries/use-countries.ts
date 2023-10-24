@@ -22,7 +22,7 @@ export const useCountries = (props: UseCountriesProps) => {
 	const state = useSelector((state: RootState) => state)
 
 	const {
-		modals: { countriesModalVisible },
+		modalState: { countriesModalVisible },
 		profile: { countries, countriesConstant, userInfo, registrationInputs },
 	} = state
 

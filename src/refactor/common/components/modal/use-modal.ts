@@ -5,7 +5,7 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 
 export const useModal = () => {
 	const webViewVisible = useSelector(
-		(state: RootState) => state?.modals?.webViewVisible
+		(state: RootState) => state?.modalState?.webViewVisible
 	)
 
 	return { webViewVisible }

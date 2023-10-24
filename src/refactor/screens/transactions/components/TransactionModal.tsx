@@ -40,7 +40,7 @@ function TransactionModal({ transactions, trades }) {
 			currencies,
 			activeTab,
 		},
-		modals: { transactionDetailsVisible },
+		modalState: { transactionDetailsVisible },
 	} = state
 
 	const isInstantTrade = activeTab === 'Instant trade'

@@ -141,7 +141,7 @@ function* balanceSaga() {
 		yield put(setBalance(balance))
 		yield put(depositProvidersSagaAction(balance?.balances))
 
-		const code = yield select((state) => state.transactions.code)
+		const code = yield select((state) => state.transactionsOld.code)
 		if (code) {
 			let obj
 			balance?.balances?.forEach((b) => {
@@ -190,8 +190,8 @@ function* addNewCardSaga(action) {
 		if (b.currencyCode === code) obj = b
 	})
 
-	const tab = yield select((state) => state.transactions.tabNavigationRef)
-	const tabRoute = yield select((state) => state.transactions.tabRoute)
+	const tab = yield select((state) => state.transactionsOld.tabNavigationRef)
+	const tabRoute = yield select((state) => state.transactionsOld.tabRoute)
 	if (tabRoute !== 'Wallet') yield call(() => tab.navigate('Wallet'))
 
 	yield put(setCurrentBalanceObj(obj))
@@ -210,7 +210,7 @@ function* refreshWalletAndTradesSaga() {
 		trade: { currentBalanceObj },
 		profile: { userInfo },
 		modals: { addWhitelistModalVisble, whitelistActionsModalVisible },
-		transactions: { stackRoute, tabRoute, currency, code },
+		transactionsOld: { stackRoute, tabRoute, currency, code },
 	} = state
 
 	const wallet = tabRoute === 'Wallet'

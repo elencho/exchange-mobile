@@ -7,7 +7,7 @@ import AppText from '../AppText'
 
 export default function TradeDetails() {
 	const currentTransaction = useSelector(
-		(state) => state.transactions.currentTransaction
+		(state) => state.transactionsOld.currentTransaction
 	)
 
 	const {

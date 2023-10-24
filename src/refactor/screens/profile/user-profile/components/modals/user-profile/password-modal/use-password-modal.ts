@@ -9,7 +9,7 @@ export const usePasswordModal = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		modals: { passwordModalVisible },
+		modalState: { passwordModalVisible },
 		profile: { isProfileUpdating },
 	} = state
 

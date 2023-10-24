@@ -31,7 +31,7 @@ function CardSection({ error }) {
 			cardsToDisplayInModal,
 			balance: { balances },
 		},
-		transactions: { tabRoute, code },
+		transactionsOld: { tabRoute, code },
 		wallet: { walletTab },
 	} = state
 

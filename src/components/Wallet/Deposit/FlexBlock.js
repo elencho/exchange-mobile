@@ -16,7 +16,7 @@ export default function FlexBlock({ reason, restrictedUntil, type }) {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 	const {
-		transactions: { code },
+		transactionsOld: { code },
 		trade: { currentBalanceObj },
 		wallet: { network },
 	} = state

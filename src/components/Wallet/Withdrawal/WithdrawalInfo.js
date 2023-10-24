@@ -35,7 +35,7 @@ export default function WithdrawalInfo({ error }) {
 			intermediateBank,
 			network,
 		},
-		transactions: { currency },
+		transactionsOld: { currency },
 	} = state
 
 	const showTemplates = () => dispatch(toggleTemplatesModal(true))

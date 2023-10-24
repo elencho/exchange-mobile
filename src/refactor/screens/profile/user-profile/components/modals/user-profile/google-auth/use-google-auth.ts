@@ -9,7 +9,7 @@ export const useGoogleAuth = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		modals: { googleAuthModalVisible },
+		modalState: { googleAuthModalVisible },
 		profile: { totpSecretObj },
 	} = state
 

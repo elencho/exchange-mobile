@@ -5,13 +5,13 @@ import AppModal from '@app/components/AppModal'
 import AppText from '@app/components/AppText'
 import colors from '@app/constants/colors'
 import { methods } from '@app/constants/filters'
-import { toggleMethodsModal } from '@app/redux/modals/actions'
+import { toggleMethodsModal } from '@app/refactor/redux/modals/modalsSlice'
 import { setMethodFilter } from '@app/refactor/redux/transactions/transactionSlice'
 
 const ChooseMethodsModal = () => {
 	const dispatch = useDispatch()
 	const chooseMethodsModalVisible = useSelector(
-		(state) => state.modals.chooseMethodsModalVisible
+		(state) => state.modalState.chooseMethodsModalVisible
 	)
 	const selectedMethod = useSelector((state) => state.transactions.method)
 

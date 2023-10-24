@@ -20,7 +20,7 @@ export default function ForgotPassword({ navigation }) {
 	const state = useSelector((state) => state)
 	const {
 		profile: { forgotPassInfo, timerVisible },
-		transactions: { loading },
+		transactionsOld: { loading },
 	} = state
 
 	const [seconds, setSeconds] = useState(30)

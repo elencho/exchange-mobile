@@ -41,7 +41,7 @@ export default function Deposit({ refreshControl }) {
 	const [hasMethod, setHasMethod] = useState(false)
 
 	const {
-		transactions: { code, loading },
+		transactionsOld: { code, loading },
 		trade: { currentBalanceObj, depositProvider, card, cardsLoading },
 		wallet: { cryptoAddress, depositRestriction, network, isAddressGenerating },
 		modals: { webViewObj },

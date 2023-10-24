@@ -16,7 +16,7 @@ export default function ChooseBankModal() {
 	const state = useSelector((state) => state)
 	const {
 		trade: { depositProvider, depositProviders, currentBalanceObj },
-		transactions: { tabRoute },
+		transactionsOld: { tabRoute },
 		wallet: { wireDepositProviders, walletTab, network },
 	} = state
 

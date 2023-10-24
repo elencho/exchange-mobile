@@ -31,7 +31,7 @@ import {
 	toggleCryptoModal,
 	toggleCurrencyModal,
 	toggleMethodsModal,
-} from '@app/redux/modals/actions'
+} from '@app/refactor/redux/modals/modalsSlice'
 import CryptoModalTrade from '@app/refactor/common/components/modals/CryptoModalTrade'
 import {
 	setPreviousTradeFilter,

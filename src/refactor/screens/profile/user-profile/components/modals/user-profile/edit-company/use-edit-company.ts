@@ -17,7 +17,7 @@ export const useEditCompany = () => {
 		companyInfoModalDescription,
 		companyInfoModalLink,
 		companyInfoModalButton,
-	} = useSelector((state: RootState) => state.modals)
+	} = useSelector((state: RootState) => state.modalState)
 
 	const hide = () => dispatch({ type: 'CLOSE_COMPANY_INFO_MODAL' })
 

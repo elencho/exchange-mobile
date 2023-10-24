@@ -6,7 +6,7 @@ export const useToast = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 	const {
-		modals: { appToastObj },
+		modalState: { appToastObj },
 	} = state
 	const [pressed, setPressed] = useState(false)
 

@@ -26,7 +26,7 @@ export default function WithdrawalConfirmModal() {
 		trade: { currentBalanceObj, fee, card },
 		profile: { googleAuth, emailAuth, smsAuth },
 		wallet: { network, withdrawalAmount, currentWhitelistObj, iban, memoTag },
-		transactions: { code },
+		transactionsOld: { code },
 	} = state
 
 	const type = currentBalanceObj?.type

@@ -33,7 +33,7 @@ export const depositFeeParams = (state) => {
 			card,
 			currentBalanceObj,
 		},
-		transactions: { code, tabRoute },
+		transactionsOld: { code, tabRoute },
 		wallet: { depositAmount, network },
 	} = state
 
@@ -66,7 +66,7 @@ export const depositFeeParams = (state) => {
 
 export const withdrawalFeeParams = (state) => {
 	const {
-		transactions: { code, tabRoute },
+		transactionsOld: { code, tabRoute },
 		trade: {
 			currentBalanceObj,
 			depositProvider,
@@ -110,7 +110,7 @@ export const withdrawalFeeParams = (state) => {
 export const getCardParams = (state) => {
 	const {
 		trade: { fiat },
-		transactions: { code, tabRoute },
+		transactionsOld: { code, tabRoute },
 		wallet: { walletTab },
 	} = state
 

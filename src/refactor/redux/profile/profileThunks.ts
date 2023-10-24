@@ -137,8 +137,8 @@ export const credentialsForEmailThunk = createAsyncThunk(
 	async (data: CredentialsForEmailData, { dispatch, getState }) => {
 		try {
 			const { OTP } = data
-			const sms = getState().modals.smsAuthModalVisible
-			const google = getState().modals.googleOtpModalVisible
+			const sms = getState().modalState.smsAuthModalVisible
+			const google = getState().modalState.googleOtpModalVisible
 
 			const response = await getOtpChangeToken(OTP, 'EMAIL')
 

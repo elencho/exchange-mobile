@@ -43,7 +43,17 @@ export const useProfile = ({ route }) => {
 	const logout = async () => {
 		const refresh_token = await SecureStore.getItemAsync('refreshToken')
 		const status = await logoutUtil(refresh_token)
-		if (status === 204) {
+
+		//TODO: Fix this
+		// if (status === 204
+		// 	) {
+		// 	await SecureStore.deleteItemAsync('accessToken')
+		// 	await SecureStore.deleteItemAsync('refreshToken')
+		// 	navigation.navigate('Welcome')
+
+		// 	dispatch({ type: 'LOGOUT' })
+		// }
+		if (true) {
 			await SecureStore.deleteItemAsync('accessToken')
 			await SecureStore.deleteItemAsync('refreshToken')
 			navigation.navigate('Welcome')

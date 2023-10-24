@@ -16,7 +16,7 @@ export default function CalendarDay({ state, from, to, isInstantTrade }) {
 	const {
 		fromDateTime: fromDateTimeTransactions,
 		toDateTime: toDateTimeTransactions,
-	} = useSelector((state) => state.transactions)
+	} = useSelector((state) => state.transactionsOld)
 	const {
 		fromDateTimeQuery: fromDateTimeTrades,
 		toDateTimeQuery: toDateTimeTrades,

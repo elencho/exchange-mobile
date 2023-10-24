@@ -9,7 +9,7 @@ const usePersonalInfoModal = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		modals: { personalInfoModalVisible },
+		modalState: { personalInfoModalVisible },
 		profile: { userInfo, countriesConstant, isProfileUpdating },
 	} = state
 

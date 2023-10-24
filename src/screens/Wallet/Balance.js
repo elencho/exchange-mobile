@@ -25,7 +25,7 @@ function Balance({ navigation }) {
 	const {
 		wallet: { walletTab, network, shouldRefreshOnScroll },
 		trade: { cardsLoading },
-		transactions: { tabNavigationRef, loading },
+		transactionsOld: { tabNavigationRef, loading },
 	} = state
 
 	const onRefresh = () => {

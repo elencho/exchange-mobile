@@ -15,7 +15,7 @@ export const usePhoneNumberModal = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		modals: { phoneNumberModalVisible },
+		modalState: { phoneNumberModalVisible },
 		profile: { userInfo, countries, timerVisible, isProfileUpdating },
 	} = state
 

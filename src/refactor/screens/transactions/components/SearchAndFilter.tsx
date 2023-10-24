@@ -8,7 +8,8 @@ import AppDropdown from '@app/components/AppDropdown'
 import AppInput from '@app/components/AppInput'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
-import { toggleCryptoModal } from '@app/redux/modals/actions'
+import { toggleCryptoModal } from '@app/refactor/redux/modals/modalsSlice'
+
 import {
 	setCryptoCodeQuery,
 	setTrades,

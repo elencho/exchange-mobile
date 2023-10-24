@@ -13,7 +13,7 @@ const ChooseMethodsModal = () => {
 	const chooseMethodsModalVisible = useSelector(
 		(state) => state.modals.chooseMethodsModalVisible
 	)
-	const selectedMethod = useSelector((state) => state.transactions.method)
+	const selectedMethod = useSelector((state) => state.transactionsOld.method)
 
 	const hideModal = () => dispatch(toggleMethodsModal(false))
 	const selectedStyle = { backgroundColor: 'rgba(101, 130, 253, 0.16)' }

@@ -24,7 +24,7 @@ export default function FiatBlock() {
 	const state = useSelector((state) => state)
 
 	const {
-		transactions: { code },
+		transactionsOld: { code },
 		trade: {
 			card,
 			depositProvider,

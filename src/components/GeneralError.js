@@ -9,7 +9,7 @@ function GeneralError({ style = {}, show = true }) {
 	const generalError = useSelector((state) => state.errors.generalError)
 	const modals = useSelector((state) => state.modals)
 	const trade = useSelector((state) => state.trade)
-	const transactions = useSelector((state) => state.transactions)
+	const transactions = useSelector((state) => state.transactionsOld)
 	const wallet = useSelector((state) => state.wallet)
 	const profile = useSelector((state) => state.profile)
 

@@ -20,7 +20,7 @@ export default function ResetOtpInstructions({ navigation, route }) {
 	const state = useSelector((state) => state)
 	const {
 		profile: { userAndPassInfo, timerVisible },
-		transactions: { loading },
+		transactionsOld: { loading },
 	} = state
 
 	const ex = route?.params?.execution
