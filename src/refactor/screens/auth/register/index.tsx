@@ -39,7 +39,7 @@ const Register = ({ navigation }: Props) => {
 
 	const [userType, setUserType] = useState<UserType>('Company')
 
-	const [mail, setMail] = useState('kapo@gmail.com')
+	const [mail, setMail] = useState('kapo1@gmail.com')
 	const [mailErr, setMailErr] = useState(false)
 
 	const [pass, setPass] = useState('Derrickrose1')
@@ -48,12 +48,15 @@ const Register = ({ navigation }: Props) => {
 	const [confirmPass, setConfirmPass] = useState('Derrickrose1')
 	const [confirmPassErr, setConfirmPassErr] = useState(false)
 
-	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(
-		undefined
-	)
+	const [chosenCountry, setChosenCountry] = useState<Country | undefined>({
+		banned: false,
+		phoneCode: '+995',
+		name: 'Georgia',
+		code: 'GEO',
+	})
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
-	const [phone, setPhone] = useState('1234')
+	const [phone, setPhone] = useState('558133313')
 	const [phoneErr, setPhoneErr] = useState(false)
 
 	const [termsSelected, setTermsSelected] = useState(true)
@@ -78,7 +81,7 @@ const Register = ({ navigation }: Props) => {
 	}
 
 	useEffect(() => {
-		dispatch(startRegistrationThunk())
+		dispatch(startRegistrationThunk({ navigation }))
 	}, [])
 
 	useEffect(() => {

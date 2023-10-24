@@ -272,8 +272,17 @@ export const setNewPasswordOtpThunk = createAsyncThunk(
 
 export const startRegistrationThunk = createAsyncThunk(
 	'startRegistration',
-	async (_, {}) => {
-		return await registrationStart()
+	async (
+		{ navigation }: { navigation: NativeStackNavigationProp<Screens, any> },
+		{}
+	) => {
+		const data = await registrationStart()
+
+		if (data?.execution === Execution.EMAIL_VERIFICATION_OTP) {
+			navigation.push('EmailVerification', { from: 'Registration' })
+		}
+
+		return data
 	}
 )
 

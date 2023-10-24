@@ -39,7 +39,8 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		const accessToken = KVStore.get('accessToken')
 
 		// ! For Testing
-		navigation.navigate('EmailVerification', { from: 'Registration' })
+		navigation.navigate('Registration')
+		//navigation.navigate('EmailVerification', { from: 'Registration' })
 		return
 
 		if (hasUnlock()) {

@@ -217,13 +217,14 @@ export const registrationForm = async (
 		},
 		url: callbackUrl,
 		data: {
-			clientType,
+			clientType: clientType === 'Personal' ? 'PHYSICAL' : 'CORPORATE',
 			email,
 			passwordNew,
 			passwordConfirm,
 			phoneCountry,
 			phoneNumber,
 			referralCode,
+			acceptTerms: 'on',
 		},
 	})
 	return data?.data
