@@ -9,11 +9,11 @@ import {
 	setFromTime,
 	setToTime,
 } from '@app/refactor/redux/transactions/transactionSlice'
-import CalendarIcon from '../../assets/images/Calendar'
-import Close from '../../assets/images/Close'
-import colors from '../../constants/colors'
+import CalendarIcon from '@app/assets/images/Calendar'
+import Close from '@app/assets/images/Close'
+import colors from '@app/constants/colors'
 import { toggleDatePicker } from '@app/refactor/redux/modals/modalsSlice'
-import AppText from '../AppText'
+import AppText from '@app/components/AppText'
 
 export default function DatePicker({
 	to = false,

@@ -78,7 +78,7 @@ const TradeList = () => {
 					contentContainerStyle={{ flexGrow: 1 }}
 					nestedScrollEnabled
 					showsVerticalScrollIndicator={false}
-					initialNumToRender={5}
+					initialNumToRender={10}
 					ListFooterComponent={
 						<ListFooter
 							isLoading={tradesLoading}
@@ -110,19 +110,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		flex: 1,
 	},
-	header: {
-		color: colors.PRIMARY_TEXT,
-	},
-	right: {
-		flexDirection: 'row',
-		alignSelf: 'flex-end',
-	},
 	subText: {
 		color: colors.SECONDARY_TEXT,
-	},
-	topRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		marginBottom: 10,
 	},
 })

@@ -15,9 +15,9 @@ import AppText from '@app/components/AppText'
 import TradeDetails from '@app/components/InstantTrade/TradeDetails'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
-import { toggleTransactionDetails } from '@app/redux/modals/actions'
 import TransactionDetails from '@app/refactor/screens/transactions/components/TransactionDetails'
 import useCopyToClipboard from '@app/utils/copyToClipboard'
+import { toggleTransactionDetails } from '@app/refactor/redux/modals/modalsSlice'
 
 function TransactionModal({ transactions, trades }) {
 	const { copyToClipboard } = useCopyToClipboard()

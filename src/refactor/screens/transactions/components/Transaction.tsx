@@ -9,8 +9,7 @@ import AppText from '@app/components/AppText'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
 import { monthsShort } from '@app/constants/months'
-import { toggleTransactionDetails } from '@app/redux/modals/actions'
-import { setSelectedTradeDetails } from '@app/refactor/redux/trade/tradeSlice'
+import { toggleTransactionDetails } from '@app/refactor/redux/modals/modalsSlice'
 import { setSelectedTransactionDetails } from '@app/refactor/redux/transactions/transactionSlice'
 
 export default function Transaction({

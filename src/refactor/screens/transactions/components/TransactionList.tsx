@@ -1,8 +1,8 @@
-import { useIsFocused } from '@react-navigation/native'
 import React, { memo, useEffect } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import CustomRefreshControl from '@components/refreshControll'
+import CustomRefreshContol from '@app/components/CustomRefreshContol'
+
 import List from '@app/assets/images/List.svg'
 import AppText from '@app/components/AppText'
 import TransactionSkeleton from '@app/components/TransactionHistory/TransactionSkeleton'
@@ -89,7 +89,7 @@ const TransactionList = () => {
 			keyboardShouldPersistTaps="never"
 			maxToRenderPerBatch={30}
 			refreshControl={
-				<CustomRefreshControl
+				<CustomRefreshContol
 					refreshing={transactionsLoading}
 					onRefresh={() => dispatch(refreshTransactionsThunk())}
 				/>
@@ -98,7 +98,7 @@ const TransactionList = () => {
 	)
 }
 
-export default TransactionList
+export default memo(TransactionList)
 
 const styles = StyleSheet.create({
 	transactions: {
