@@ -862,9 +862,7 @@ DEPENDENCIES:
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/SumSubstance/Specs.git:
-    - IdensicMobileSDK
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - AppCenter
     - AppCenterReactNativeShared
     - ASN1Decoder
@@ -901,6 +899,8 @@ SPEC REPOS:
     - SocketRocket
     - YogaKit
     - ZXingObjC
+  https://github.com/SumSubstance/Specs.git:
+    - IdensicMobileSDK
 
 EXTERNAL SOURCES:
   appcenter-analytics:
@@ -1204,6 +1204,6 @@ SPEC CHECKSUMS:
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: cf0ea570bc126d47dab172e9ff91fcd3d9378c54
+PODFILE CHECKSUM: 76ddf8fc328bd6a64a75275ba1ba5a1bdb76f0bf
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.13.0
