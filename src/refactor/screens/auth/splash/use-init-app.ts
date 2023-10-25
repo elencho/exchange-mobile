@@ -38,10 +38,10 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		await fetchLexicon()
 		const accessToken = KVStore.get('accessToken')
 
-		// ! For Testing
-		navigation.navigate('Registration')
-		//navigation.navigate('EmailVerification', { from: 'Registration' })
-		return
+		// // ! For Testing
+		// navigation.navigate('Registration')
+		// //navigation.navigate('EmailVerification', { from: 'Registration' })
+		// return
 
 		if (hasUnlock()) {
 			if (!accessToken) {

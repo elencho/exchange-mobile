@@ -89,17 +89,9 @@ const auth = createSlice({
 })
 
 const startLogin = (builder: ActionReducerMapBuilder<AuthState>) => {
-	builder
-		.addCase(startLoginThunk.pending, (state) => {
-			state.authLoading = true
-		})
-		.addCase(startLoginThunk.fulfilled, (state, action) => {
-			state.authLoading = false
-			state.callbackUrl = action.payload.callbackUrl
-		})
-		.addCase(startLoginThunk.rejected, (state) => {
-			state.authLoading = false
-		})
+	builder.addCase(startLoginThunk.fulfilled, (state, action) => {
+		state.callbackUrl = action.payload.callbackUrl
+	})
 }
 
 const usernameAndPassword = (builder: ActionReducerMapBuilder<AuthState>) => {

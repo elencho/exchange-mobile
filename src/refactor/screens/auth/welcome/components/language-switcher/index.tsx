@@ -8,6 +8,7 @@ import Geo from '@assets/images/Georgian.svg'
 import Arrow from '@assets/images/SwitcherArrow.svg'
 import { useTheme, Theme } from '@theme/index'
 import AppText from '@components/text/index'
+import KVStore from '@store/kv'
 import { setLanguage } from '@app/redux/profile/actions'
 import { Language } from '@app/refactor/common/constants'
 import useAnimation from '@app/refactor/screens/auth/welcome/components/language-switcher/animation'
@@ -18,14 +19,12 @@ export default function LanguageSwitcher() {
 	const { styles } = useTheme(_styles)
 	const { fillStyle, outlineStyle, toggleAnimation } = useAnimation()
 
-	const defaultLanguage: Language = useSelector(
-		(state: RootStateOrAny) => state.profile.language
-	)
+	const defaultLanguage = KVStore.get('language')
 
 	const onPress = () => {
 		toggleAnimation()
 		const newLanguage = defaultLanguage === 'ka' ? 'en' : 'ka'
-		dispatch(setLanguage(newLanguage))
+		dispatch(setLanguage(newLanguage)) //TODO: Remove
 		switchLanguage(newLanguage)
 	}
 

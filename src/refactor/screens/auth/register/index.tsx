@@ -62,7 +62,7 @@ const Register = ({ navigation }: Props) => {
 	const [termsSelected, setTermsSelected] = useState(true)
 	const [termsSelectedErr, setTermsSelectedErr] = useState(false)
 
-	const [referal, setReferal] = useState('')
+	const [referral, setReferral] = useState('')
 	const [promo, setPromo] = useState('')
 
 	const state = useSelector((state: RootState) => state.auth)
@@ -109,7 +109,7 @@ const Register = ({ navigation }: Props) => {
 					passwordConfirm: confirmPass,
 					phoneNumber: phone,
 					phoneCountry: chosenCountry?.code || '',
-					referralCode: referal,
+					referralCode: referral,
 				})
 			)
 		} else {
@@ -122,7 +122,6 @@ const Register = ({ navigation }: Props) => {
 	}
 
 	const onPhoneCodePressed = () => setCountryModalVisible(true)
-
 	const goToSignIn = () => navigation.navigate('Login')
 
 	return (
@@ -239,10 +238,10 @@ const Register = ({ navigation }: Props) => {
 					{userType === 'Personal' && (
 						<>
 							<AppInput
-								value={referal}
+								value={referral}
 								label="Referral Code"
 								style={styles.input}
-								onChangeText={setReferal}
+								onChangeText={setReferral}
 							/>
 							<AppInput
 								value={promo}

@@ -13,7 +13,6 @@ import {
 } from '@store/redux/auth/thunks'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
-import { startRegistrationAction } from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
@@ -39,13 +38,13 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	const { theme, styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
-	const [mail, setMail] = useState(testMail.mail) // TODO: ''
-	const [pass, setPass] = useState(testMail.pass) // TODO: ''
+	const [mail, setMail] = useState('')
+	const [pass, setPass] = useState('')
 	const [error, setError] = useState(false)
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
 
 	const validMail = LOGIN_REGEX.test(mail)
-	const errorText = () =>
+	const emailErrorText =
 		error && mail?.trim() && !validMail ? 'Enter Valid Email' : ''
 
 	useEffect(() => {
@@ -65,11 +64,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	}
 
 	const onRegisterPressed = () => navigation.navigate('Registration')
-
-	const onForgotPasswordPressed = () => {
-		navigation.navigate('ForgotPassword')
-		// TODO: dispatch({ type: 'FORGOT_PASSWORD_SAGA', navigation: props.navigation })
-	}
+	const onForgotPasswordPressed = () => navigation.navigate('ForgotPassword')
 
 	return (
 		<View style={styles.background}>
@@ -91,7 +86,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 					style={styles.email}
 					onChangeText={setMail}
 					value={mail}
-					error={errorText()}
+					error={emailErrorText}
 					label={'Enter Email'}
 					labelBackgroundColor={theme.color.backgroundPrimary}
 				/>
