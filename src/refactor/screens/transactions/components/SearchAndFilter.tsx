@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, Image, Keyboard } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import ChooseCurrencyModal from '@components/modals/ChooseCurrencyModal'
 import CryptoModalTrade from '@components/modals/CryptoModalTrade'
 import Search from '@app/assets/images/Search'
 import AppDropdown from '@app/components/AppDropdown'
@@ -102,7 +101,6 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
 				}}
 			/>
 			<DownloadIcon />
-			<ChooseCurrencyModal isForTransactions />
 			<CryptoModalTrade />
 		</View>
 	)
