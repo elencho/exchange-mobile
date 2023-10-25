@@ -1,6 +1,7 @@
 import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import { MaterialIndicator } from 'react-native-indicators'
+import { useSelector } from 'react-redux'
 import { useTheme, Theme } from '@theme/index'
 import { CommonProps } from '@components/button'
 import AppText from '@components/text'
@@ -26,6 +27,9 @@ export function PrimaryButton({
 	rightComponent,
 }: PrimaryProps) {
 	const { styles, theme } = useTheme(_styles)
+	const {
+		profile: { language },
+	}: any = useSelector((state) => state)
 
 	return (
 		<Pressable

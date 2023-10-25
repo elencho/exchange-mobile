@@ -54,7 +54,7 @@ function* fetchTransactionsSaga({ isMoreLoading }) {
 	const total = yield call(totalAmount, params)
 
 	const totalTransactions = yield select(
-		(state) => state.transactions.totalTransactions
+		(state) => state.transactionsOld.totalTransactions
 	)
 
 	if (!totalTransactions) {
@@ -73,10 +73,6 @@ function* refreshTransactionsSaga() {
 	const params = yield select(getParams)
 
 	const total = yield call(totalAmount, params)
-
-	const totalTransactions = yield select(
-		(state) => state.transactions.totalTransactions
-	)
 
 	yield put(setTotalTransactions(total))
 
@@ -113,7 +109,7 @@ function* reachScrollEndSaga(action) {
 		yield put(setTotalTransactions(total))
 
 		const totalTransactions = yield select(
-			(state) => state.transactions.totalTransactions
+			(state) => state.transactionsOld.totalTransactions
 		)
 
 		if (loadedTransactions < totalTransactions) {
@@ -150,7 +146,7 @@ function* transactionDetailsSaga(action) {
 }
 
 function* clasifyCurrenciesSaga() {
-	const transactions = yield select((state) => state.transactions)
+	const transactions = yield select((state) => state.transactionsOld)
 	const trade = yield select((state) => state.trade)
 	const { offers, fiat } = trade
 	const { currencies, tabRoute } = transactions

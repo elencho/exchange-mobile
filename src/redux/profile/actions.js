@@ -206,6 +206,11 @@ export const updatePhoneNumber = (
 	setUserInfoVariable,
 })
 
+export const saveForgotPassInfo = (forgotPassInfo) => ({
+	type: actionTypes.SAVE_FORGOT_PASS_INFO,
+	forgotPassInfo,
+})
+
 // 2FA SAGAS
 export const credentialsForEmail = (OTP) => ({
 	type: actionTypes.CREDENTIALS_FOR_EMAIL,

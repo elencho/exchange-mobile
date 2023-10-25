@@ -12,7 +12,7 @@ import {
 import CalendarIcon from '../../assets/images/Calendar'
 import Close from '../../assets/images/Close'
 import colors from '../../constants/colors'
-import { toggleDatePicker } from '../../redux/modals/actions'
+import { toggleDatePicker } from '@app/refactor/redux/modals/modalsSlice'
 import AppText from '../AppText'
 
 export default function DatePicker({

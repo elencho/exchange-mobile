@@ -241,11 +241,12 @@ export const verifyAccount = async (callbackUrl: string, otp: string) => {
 		url: callbackUrl,
 		data: `otp=${otp}`,
 	})
-	console.log(data)
 	return data?.data
 }
 
 export const fetchCountries = async () => {
-	const data = await axios.get<CountriesResponse>(COUNTRIES_URL)
+	const data = await axios.get<CountriesResponse>(COUNTRIES_URL, {
+		headers: { requestName: 'fetchCountries', toast: false },
+	})
 	return data?.data
 }

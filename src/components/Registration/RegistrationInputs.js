@@ -31,9 +31,8 @@ export default function RegistrationInputs({ validations, error }) {
 	const set = (obj) => dispatch(setRegistrationInputs({ ...i, ...obj }))
 
 	const red = { color: '#F45E8C' }
-	const border = { borderColor: '#F45E8C' }
-	const phoneNumberStyle =
-		error && (!v.phoneNumberCheck || !i.phoneCountry) && border
+	// const border = { borderColor: '#F45E8C' }
+	const phoneNumberStyle = error && (!v.phoneNumberCheck || !i.phoneCountry)
 	const placeholderTextColor =
 		error && (!v.phoneNumberCheck || !i.phoneCountry)
 			? '#F45E8C'
@@ -171,7 +170,7 @@ const styles = StyleSheet.create({
 		resizeMode: 'stretch',
 	},
 	input: {
-		marginTop: 22,
+		marginTop: 12,
 	},
 	line: {
 		width: 1,
@@ -191,7 +190,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		marginTop: 22,
-		marginBottom: -11,
 		borderColor: '#42475D',
 	},
 	subtext: {

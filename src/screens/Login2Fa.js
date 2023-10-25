@@ -26,7 +26,7 @@ export default function Login2Fa({ navigation }) {
 	const state = useSelector((state) => state)
 	const {
 		profile: { userAndPassInfo, timerVisible },
-		transactions: { loading },
+		transactionsOld: { loading },
 	} = state
 
 	const [value, setValue] = useState('')

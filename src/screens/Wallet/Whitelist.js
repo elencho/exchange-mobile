@@ -19,7 +19,7 @@ export default function Whitelist({ refreshControl }) {
 	const state = useSelector((state) => state)
 	const {
 		wallet: { whitelist, hasWhitelist, whitelistLoading },
-		transactions: { loading },
+		transactionsOld: { loading },
 	} = state
 
 	const showAddModal = () => dispatch(toggleAddWhitelistModal(true))

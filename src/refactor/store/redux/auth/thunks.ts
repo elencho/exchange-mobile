@@ -2,12 +2,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import jwt_decode from 'jwt-decode'
 import pkceChallenge from 'react-native-pkce-challenge'
-import { delay } from 'redux-saga/effects'
 import KVStore from '@store/kv'
-import {
-	saveRegistrationStartInfo,
-	setRegistrationInputs,
-} from '@app/refactor/redux/profile/actions'
 import { NavProp, Route, Screens } from '@app/refactor/setup/nav/nav'
 import { TokenOtpType } from '@app/refactor/types/auth/splash'
 import { Execution } from '@app/refactor/types/enums'
@@ -346,13 +341,8 @@ export const registrationFormThunk = createAsyncThunk(
 
 export const fetchCountriesThunk = createAsyncThunk(
 	'fetchCountries',
-	async (_, { getState }) => {
-		const { countries } = (getState() as RootState).auth
-		if (countries.length > 0) {
-			return []
-		} else {
-			const data = await fetchCountries()
-			return data
-		}
+	async (_, {}) => {
+		const data = await fetchCountries()
+		return data
 	}
 )

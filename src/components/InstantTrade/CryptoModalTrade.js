@@ -20,7 +20,7 @@ export default function CryptoModalTrade() {
 	const {
 		modals: { cryptoModalVisible },
 		trade: { cryptoCodeQuery, offers, fiat, tradeType },
-		transactions: { cryptoFilter: cryptoCodeTransactions, activeTab },
+		transactionsOld: { cryptoFilter: cryptoCodeTransactions, activeTab },
 	} = state
 
 	const isInstantTrade = activeTab === 'Instant trade'

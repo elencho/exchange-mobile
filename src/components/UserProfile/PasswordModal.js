@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
 		marginTop: 10,
 	},
 	inputContainer: {
-		marginBottom: 20,
+		marginBottom: 12,
 	},
 	opacity: {
 		opacity: 1,

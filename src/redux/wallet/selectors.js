@@ -1,6 +1,6 @@
 export const withdrawalParams = (state) => {
 	const {
-		transactions: { code },
+		transactionsOld: { code },
 		wallet: {
 			currentWhitelistObj,
 			withdrawalAmount,
@@ -22,7 +22,7 @@ export const withdrawalParams = (state) => {
 
 export const wireWithdrawalParams = (state) => {
 	const {
-		transactions: { code },
+		transactionsOld: { code },
 		wallet: {
 			withdrawalBank: { id },
 			network,
@@ -60,7 +60,7 @@ export const wireWithdrawalParams = (state) => {
 
 export const cardWithdrawalParams = (state) => {
 	const {
-		transactions: { code },
+		transactionsOld: { code },
 		trade: { card },
 		wallet: { withdrawalAmount },
 	} = state
@@ -75,7 +75,7 @@ export const cardWithdrawalParams = (state) => {
 
 export const maxWithdrawalParams = (state) => {
 	const {
-		transactions: { code },
+		transactionsOld: { code },
 		trade: { card, currentBalanceObj, depositProvider },
 		wallet: { network },
 	} = state
@@ -103,7 +103,7 @@ export const maxWithdrawalParams = (state) => {
 
 export const addWhitelistParams = (state) => {
 	const {
-		transactions: { code },
+		transactionsOld: { code },
 		wallet: {
 			newWhitelist: { name, address, tag },
 			network,

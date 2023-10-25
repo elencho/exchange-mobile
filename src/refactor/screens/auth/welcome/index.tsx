@@ -11,11 +11,11 @@ import { useTheme, Theme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import GeneralError from '@app/components/GeneralError'
-import LanguageSwitcher from '@app/components/LanguageSwitcher'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
+import LanguageSwitcher from '@app/refactor/screens/auth/welcome/components/language-switcher'
 
-export default function Welcome({ navigation }: ScreenProp<'Welcome'>) {
+const Welcome = ({ navigation }: ScreenProp<'Welcome'>) => {
 	const { styles } = useTheme(_style)
 	BackHandler.addEventListener('hardwareBackPress', () => true)
 
@@ -111,3 +111,5 @@ const _style = (theme: Theme) =>
 			alignSelf: 'center',
 		},
 	})
+
+export default Welcome

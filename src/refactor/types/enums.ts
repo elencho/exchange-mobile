@@ -7,3 +7,28 @@ export const enum Execution {
 	UPDATE_PASSWORD = 'UPDATE_PASSWORD',
 	RESET_PASSWORD_WITH_CODE = 'RESET_PASSWORD_WITH_CODE',
 }
+
+export const enum UserStatus {
+	VERIFIED = 'VERIFIED',
+	UNVERIFIED = 'UNVERIFIED',
+	PENDING = 'PENDING',
+	CORPORATE = 'CORPORATE',
+}
+
+export const enum PersonalFeatures {
+	IDENTITY = 'Identity',
+	PHONE = 'Phone',
+	NOTIFICATIONS = 'Notifications',
+	LANGUAGE = 'Language',
+}
+
+export const enum TradeTypesEnum {
+	BUY = 'Buy',
+	SELL = 'Sell',
+}
+
+export const enum OTPTypes {
+	EMAIL = 'EMAIL',
+	TOTP = 'TOTP',
+	SMS = 'SMS',
+}

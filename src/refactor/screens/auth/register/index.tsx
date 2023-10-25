@@ -37,29 +37,30 @@ const Register = ({ navigation }: Props) => {
 	const dispatch = useDispatch()
 	const { styles, theme } = useTheme(_styles)
 
-	const [userType, setUserType] = useState<UserType>('Company')
+	const [userType, setUserType] = useState<UserType>('Personal')
 
-	const [mail, setMail] = useState('kapo1@gmail.com')
+	const [mail, setMail] = useState('')
 	const [mailErr, setMailErr] = useState(false)
 
-	const [pass, setPass] = useState('Derrickrose1')
+	const [pass, setPass] = useState('')
 	const [passErr, setPassErr] = useState(false)
 
-	const [confirmPass, setConfirmPass] = useState('Derrickrose1')
+	const [confirmPass, setConfirmPass] = useState('')
 	const [confirmPassErr, setConfirmPassErr] = useState(false)
 
-	const [chosenCountry, setChosenCountry] = useState<Country | undefined>({
-		banned: false,
-		phoneCode: '+995',
-		name: 'Georgia',
-		code: 'GEO',
-	})
+	// Default: {
+	// 	banned: false,
+	// 	phoneCode: '+995',
+	// 	name: 'Georgia',
+	// 	code: 'GEO',
+	// }
+	const [chosenCountry, setChosenCountry] = useState<Country | undefined>()
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
-	const [phone, setPhone] = useState('558133313')
+	const [phone, setPhone] = useState('')
 	const [phoneErr, setPhoneErr] = useState(false)
 
-	const [termsSelected, setTermsSelected] = useState(true)
+	const [termsSelected, setTermsSelected] = useState(false)
 	const [termsSelectedErr, setTermsSelectedErr] = useState(false)
 
 	const [referral, setReferral] = useState('')
@@ -129,7 +130,10 @@ const Register = ({ navigation }: Props) => {
 			<WithKeyboard
 				keyboardVerticalOffsetIOS={10}
 				modal={undefined}
-				refreshControl={undefined}>
+				refreshControl={undefined}
+				scrollUp={undefined}
+				padding={undefined}
+				flexGrow={undefined}>
 				<AppButton
 					variant="text"
 					text="Back to Log In"

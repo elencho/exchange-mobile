@@ -154,10 +154,7 @@ const registerForm = (builder: ActionReducerMapBuilder<AuthState>) => {
 
 const countries = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(fetchCountriesThunk.fulfilled, (state, action) => {
-		const countries = action.payload
-		if (countries.length > 0) {
-			state.countries = countries
-		}
+		state.countries = action.payload
 	})
 }
 

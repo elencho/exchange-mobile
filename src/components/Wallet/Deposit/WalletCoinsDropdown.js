@@ -12,7 +12,7 @@ export default function WalletCoinsDropdown() {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 	const {
-		transactions: { code },
+		transactionsOld: { code },
 		wallet: { usdBtcSwitch },
 		trade: {
 			currentBalanceObj: { available, total, valueUSD, valueBTC },

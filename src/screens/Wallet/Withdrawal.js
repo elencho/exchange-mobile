@@ -28,7 +28,7 @@ function Withdrawal({ refreshControl }) {
 	const state = useSelector((state) => state, shallowEqual)
 	const {
 		trade: { currentBalanceObj, card, depositProvider, cardsLoading },
-		transactions: { code, loading },
+		transactionsOld: { code, loading },
 		profile: { userInfo },
 		wallet: {
 			withdrawalRestriction,

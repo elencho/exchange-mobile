@@ -23,7 +23,7 @@ export default function ChooseNetworkDropdown({
 	const {
 		wallet: { hasMultipleNetworks, network, walletTab },
 		trade: { currentBalanceObj },
-		transactions: { code },
+		transactionsOld: { code },
 		modals: { addWhitelistModalVisble },
 	} = state
 	// const uri = `${ICONS_URL_PNG}/${network}.png`;

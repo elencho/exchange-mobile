@@ -180,7 +180,7 @@ function* goToBalanceSaga(action) {
 function* getWhitelistSaga() {
 	yield put({ type: 'TOGGLE_WHITELIST_LOADING', whitelistLoading: true })
 
-	const currency = yield select((state) => state.transactions.code)
+	const currency = yield select((state) => state.transactionsOld.code)
 	const whitelist = yield call(fetchWhitelist, currency)
 	yield put(saveWhitelist(whitelist))
 	yield put(setHasWhitelist(whitelist?.length > 0))
@@ -241,7 +241,7 @@ function* deleteWhitelistSaga(action) {
 function* withdrawalTemplatesSaga() {
 	yield put(toggleLoading(true))
 
-	const currency = yield select((state) => state.transactions.code)
+	const currency = yield select((state) => state.transactionsOld.code)
 	const provider = yield select((state) => state.wallet.network)
 
 	if (provider !== 'ECOMMERCE' && provider) {

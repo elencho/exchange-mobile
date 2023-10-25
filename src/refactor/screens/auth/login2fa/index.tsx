@@ -25,6 +25,7 @@ import {
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Screens } from '@app/refactor/setup/nav/nav'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 interface Props extends NativeStackScreenProps<Screens, 'Login2Fa'> {}
 
@@ -88,8 +89,14 @@ export const Login2Fa = ({ navigation }: Props) => {
 	}
 
 	return (
-		<AppBackground>
-			<WithKeyboard modal={undefined} refreshControl={undefined}>
+		<SafeAreaView style={styles.safeArea}>
+			<WithKeyboard
+				contentContainerStyle={{ flex: 1 }}
+				modal={undefined}
+				refreshControl={undefined}
+				scrollUp={undefined}
+				padding={undefined}
+				flexGrow={undefined}>
 				<Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
 					<TouchableOpacity style={styles.back} onPress={goBack}>
 						<AppButton
@@ -100,7 +107,6 @@ export const Login2Fa = ({ navigation }: Props) => {
 					</TouchableOpacity>
 					<View style={styles.middle}>
 						{image()}
-
 						<View>
 							<AppText variant="headline" style={styles.primary}>
 								{t(`${otpType} authentication login`)}
@@ -136,16 +142,19 @@ export const Login2Fa = ({ navigation }: Props) => {
 					</View>
 				</Pressable>
 			</WithKeyboard>
-		</AppBackground>
+		</SafeAreaView>
 	)
 }
 
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
+		safeArea: {
+			backgroundColor: theme.color.backgroundPrimary,
+			flex: 1,
+		},
 		back: {
 			flexDirection: 'row',
 			alignItems: 'center',
-
 			marginTop: 28,
 			alignSelf: 'flex-start',
 		},
@@ -160,6 +169,8 @@ const _styles = (theme: Theme) =>
 			marginBottom: 44,
 		},
 		container: {
+			alignItems: 'center',
+			justifyContent: 'center',
 			flex: 1,
 			backgroundColor: theme.color.backgroundPrimary,
 		},

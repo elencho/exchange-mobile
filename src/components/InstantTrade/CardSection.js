@@ -31,7 +31,7 @@ function CardSection({ error }) {
 			cardsToDisplayInModal,
 			balance: { balances },
 		},
-		transactions: { tabRoute, code },
+		transactionsOld: { tabRoute, code },
 		wallet: { walletTab },
 	} = state
 
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
 		marginBottom: 22,
 	},
 	container: {
-		marginVertical: 30,
+		marginVertical: 22,
 	},
 	newCard: {
 		color: colors.SECONDARY_TEXT,

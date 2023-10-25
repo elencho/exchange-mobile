@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
 import {
 	Image,
@@ -17,7 +16,7 @@ import Close from '@app/assets/images/Close.svg'
 import AppDropdown from '@app/components/AppDropdown'
 import AppText from '@app/components/AppText'
 import Background from '@app/components/Background'
-import DatePicker from '@app/components/TransactionFilter/DatePicker'
+import DatePicker from '@app/refactor/screens/transactions/components/DatePicker'
 import Headline from '@app/components/TransactionHistory/Headline'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
@@ -31,7 +30,7 @@ import {
 	toggleCryptoModal,
 	toggleCurrencyModal,
 	toggleMethodsModal,
-} from '@app/redux/modals/actions'
+} from '@app/refactor/redux/modals/modalsSlice'
 import CryptoModalTrade from '@app/refactor/common/components/modals/CryptoModalTrade'
 import {
 	setPreviousTradeFilter,

@@ -13,7 +13,13 @@ import {
 	setToTime,
 } from '@app/refactor/redux/transactions/transactionSlice'
 
-export default function CalendarDay({ state, from, to, isInstantTrade }) {
+export default function CalendarDay({
+	state,
+	from,
+	to,
+	isInstantTrade,
+	hideModal,
+}) {
 	const {
 		date: { day, month, year, timestamp },
 	} = state
@@ -112,6 +118,7 @@ export default function CalendarDay({ state, from, to, isInstantTrade }) {
 		if (to) {
 			dispatch(isInstantTrade ? setToDateQuery(toValue) : setToTime(toValue))
 		}
+		hideModal()
 	}
 
 	const selectDate = () => {

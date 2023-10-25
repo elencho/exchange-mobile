@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AppModal from '@app/components/AppModal'
 import ModalWithSearch from '@app/components/ModalWithSearch'
-import { toggleCryptoModal } from '@app/redux/modals/actions'
-import { instantTradeTabAction } from '@app/redux/trade/actions'
+import { toggleCryptoModal } from '@app/refactor/redux/modals/modalsSlice'
 import {
 	setCryptoCodeQuery,
 	setTrades,
@@ -17,7 +16,7 @@ export default function CryptoModalTrade() {
 	const state = useSelector((state) => state)
 
 	const {
-		modals: { cryptoModalVisible },
+		modalState: { cryptoModalVisible },
 		trades: { cryptoCodeQuery },
 		trade: { offers, fiat, tradeType },
 		transactions: { cryptoFilter: cryptoCodeTransactions, activeTab },

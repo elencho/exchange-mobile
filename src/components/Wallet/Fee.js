@@ -10,7 +10,7 @@ export default function Fee() {
 	const state = useSelector((state) => state)
 	const {
 		trade: { fee, currentTrade, fiat, currentBalanceObj },
-		transactions: { code, tabRoute },
+		transactionsOld: { code, tabRoute },
 		wallet: {
 			depositAmount,
 			withdrawalAmount,

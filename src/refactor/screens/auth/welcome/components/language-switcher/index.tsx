@@ -1,8 +1,7 @@
-import React from 'react'
-import { Pressable, StyleSheet, Text } from 'react-native'
+import React, { useState } from 'react'
+import { Pressable, StyleSheet } from 'react-native'
 import Animated from 'react-native-reanimated'
-import { RootStateOrAny } from 'react-redux'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Eng from '@assets/images/English.svg'
 import Geo from '@assets/images/Georgian.svg'
 import Arrow from '@assets/images/SwitcherArrow.svg'
@@ -10,26 +9,26 @@ import { useTheme, Theme } from '@theme/index'
 import AppText from '@components/text/index'
 import KVStore from '@store/kv'
 import { setLanguage } from '@app/redux/profile/actions'
-import { Language } from '@app/refactor/common/constants'
 import useAnimation from '@app/refactor/screens/auth/welcome/components/language-switcher/animation'
 import { switchLanguage } from '@app/utils/i18n'
 
-export default function LanguageSwitcher() {
+const LanguageSwitcher = () => {
 	const dispatch = useDispatch()
 	const { styles } = useTheme(_styles)
 	const { fillStyle, outlineStyle, toggleAnimation } = useAnimation()
 
-	const defaultLanguage = KVStore.get('language')
+	const [lang, setLang] = useState(KVStore.get('language'))
 
 	const onPress = () => {
 		toggleAnimation()
-		const newLanguage = defaultLanguage === 'ka' ? 'en' : 'ka'
-		dispatch(setLanguage(newLanguage)) //TODO: Remove
-		switchLanguage(newLanguage)
+		const newLang = lang === 'ka' ? 'en' : 'ka'
+		setLang(newLang)
+		dispatch(setLanguage(newLang)) //TODO: Remove
+		switchLanguage(newLang)
 	}
 
-	const flagIcon = defaultLanguage === 'ka' ? <Geo /> : <Eng />
-	const curLanguageText = defaultLanguage === 'en' ? 'English' : 'ქართული'
+	const flagIcon = lang === 'ka' ? <Geo /> : <Eng />
+	const curLanguageText = lang === 'en' ? 'English' : 'ქართული'
 
 	return (
 		<Pressable style={styles.container} onPress={onPress}>
@@ -77,3 +76,5 @@ const _styles = (theme: Theme) => {
 		},
 	})
 }
+
+export default LanguageSwitcher

@@ -31,7 +31,7 @@ export default function InstantTrade() {
 	const state = useSelector((state) => state)
 	const {
 		trade: { tradesLoading, offersLoading },
-		transactions: { tabRoute },
+		transactionsOld: { tabRoute },
 		profile: { userProfileLoading },
 	} = state
 

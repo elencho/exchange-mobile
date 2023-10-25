@@ -20,10 +20,10 @@ export default function DatePickerModal({ from, to, isInstantTrade }) {
 		(state) => state.modals.datePickerVisible
 	)
 	const fromDateTimeTransactions = useSelector(
-		(state) => state.transactions.fromDateTime
+		(state) => state.transactionsOld.fromDateTime
 	)
 	const toDateTimeTransactions = useSelector(
-		(state) => state.transactions.toDateTime
+		(state) => state.transactionsOld.toDateTime
 	)
 	const fromDateTimeTrades = useSelector(
 		(state) => state.trade.fromDateTimeQuery

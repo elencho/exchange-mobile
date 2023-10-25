@@ -65,7 +65,7 @@ const TransactionsBlock = ({ isFirstRender }) => {
 			moreTradesLoading,
 			tradesLoading,
 		},
-		transactions: { code: currencyCode, currency, loading, activeTab },
+		transactionsOld: { code: currencyCode, currency, loading, activeTab },
 	} = state
 
 	const handleScrollEnd = () => {

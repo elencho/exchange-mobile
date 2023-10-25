@@ -27,7 +27,7 @@ export default function EmailVerification({ route }) {
 
 	const {
 		profile: { verificationInfo, registrationInputs, timerVisible },
-		transactions: { loading },
+		transactionsOld: { loading },
 	} = state
 
 	useEffect(() => {

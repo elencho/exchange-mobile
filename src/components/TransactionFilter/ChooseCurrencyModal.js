@@ -25,7 +25,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 	const state = useSelector((state) => state)
 
 	const {
-		transactions: {
+		transactionsOld: {
 			currencies,
 			currenciesConstant,
 			cryptoFilter,

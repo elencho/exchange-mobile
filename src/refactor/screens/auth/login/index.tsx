@@ -13,6 +13,7 @@ import {
 } from '@store/redux/auth/thunks'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
+import { startRegistrationAction } from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
@@ -44,7 +45,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
 
 	const validMail = LOGIN_REGEX.test(mail)
-	const emailErrorText =
+	const errorText = () =>
 		error && mail?.trim() && !validMail ? 'Enter Valid Email' : ''
 
 	useEffect(() => {
@@ -52,6 +53,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	}, [mail, pass])
 
 	useEffect(() => {
+		console.log('LOGIN!')
 		dispatch(startLoginThunk(navigation))
 	}, [])
 
@@ -71,7 +73,10 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 			<WithKeyboard
 				contentContainerStyle={styles.container}
 				modal={undefined}
-				refreshControl={undefined}>
+				refreshControl={undefined}
+				scrollUp={undefined}
+				padding={undefined}
+				flexGrow={undefined}>
 				<Logo style={styles.logo} />
 				<View>
 					<AppText variant="headline" style={styles.primary}>
@@ -86,7 +91,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 					style={styles.email}
 					onChangeText={setMail}
 					value={mail}
-					error={emailErrorText}
+					error={errorText()}
 					label={'Enter Email'}
 					labelBackgroundColor={theme.color.backgroundPrimary}
 				/>
@@ -140,6 +145,7 @@ const _styles = (theme: Theme) =>
 			flex: 1,
 		},
 		container: {
+			flex: 1,
 			alignItems: 'center',
 			justifyContent: 'center',
 			paddingHorizontal: '8%',

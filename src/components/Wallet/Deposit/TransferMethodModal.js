@@ -16,7 +16,7 @@ export default function TransferMethodModal() {
 
 	const {
 		modals: { transferMethodModalVisible },
-		transactions: { code },
+		transactionsOld: { code },
 		wallet: { network, methodsToDisplay, walletTab },
 		trade: {
 			balance: { balances },
