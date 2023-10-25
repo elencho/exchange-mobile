@@ -144,10 +144,10 @@ const _styles = (theme: Theme) =>
 			flex: 1,
 		},
 		container: {
-			flex: 1,
 			alignItems: 'center',
 			justifyContent: 'center',
 			paddingHorizontal: '8%',
+			paddingTop: '30%',
 		},
 		email: {
 			marginBottom: 22,

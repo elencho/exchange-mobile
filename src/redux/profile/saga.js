@@ -535,10 +535,10 @@ function* resetOtpSaga(action) {
 
 // RESEND SAGA
 function* resendSaga(action) {
-	const state = yield select((state) => state.profile)
+	const state = yield select((state) => state.auth)
 	const { url, emailVerification, smsEmailAuth, login2Fa, setOtpLoading } =
 		action
-	const { googleAuth } = state
+	const { otpType } = state
 
 	if (setOtpLoading) {
 		yield call(() => setOtpLoading(true))
@@ -551,7 +551,7 @@ function* resendSaga(action) {
 	}
 
 	// Little bottomsheet for sms/email otp
-	if (smsEmailAuth) yield call(googleAuth ? sendEmailOtp : sendOtp)
+	if (smsEmailAuth) yield call(otpType === 'TOTP' ? sendEmailOtp : sendOtp)
 
 	// Login 2FA
 	if (login2Fa) {

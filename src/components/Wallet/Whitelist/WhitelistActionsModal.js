@@ -24,7 +24,7 @@ export default function WhitelistActionsModal() {
 	const {
 		modals: { whitelistActionsModalVisible },
 		wallet: { currentWhitelistObj, whitelist },
-		profile: { googleAuth, emailAuth, smsAuth },
+		auth: { otpType },
 	} = state
 
 	const hide = () => {
@@ -42,11 +42,11 @@ export default function WhitelistActionsModal() {
 			case 'Delete Whitelist':
 				hide()
 				setTimeout(() => {
-					if (googleAuth) dispatch(toggleGoogleOtpModal(true))
-					if (emailAuth) dispatch(toggleEmailAuthModal(true))
-					if (smsAuth) dispatch(toggleSmsAuthModal(true))
+					if (otpType === 'TOTP') dispatch(toggleGoogleOtpModal(true))
+					if (otpType === 'EMAIL') dispatch(toggleEmailAuthModal(true))
+					if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
 				}, 1000)
-				if (!googleAuth) sendOtp()
+				if (otpType !== 'TOTP') sendOtp()
 				break
 			case 'Copy Address':
 				copyToClipboard(currentWhitelistObj?.address)
