@@ -53,7 +53,6 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	}, [mail, pass])
 
 	useEffect(() => {
-		console.log('LOGIN!')
 		dispatch(startLoginThunk(navigation))
 	}, [])
 

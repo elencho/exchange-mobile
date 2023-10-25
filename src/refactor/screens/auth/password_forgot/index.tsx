@@ -25,7 +25,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	const { styles, theme } = useTheme(_styles)
 	const dispatch = useDispatch()
 
-	const [mail, setMail] = useState('remora.419@gmail.com')
+	const [mail, setMail] = useState('')
 	const [code, setCode] = useState('')
 	const [error, setError] = useState(false)
 	const [seconds, setSeconds] = useState(COUNTDOWN)
