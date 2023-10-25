@@ -1,13 +1,14 @@
+import VersionCheck from 'react-native-version-check'
 import { useFocusEffect } from '@react-navigation/native'
 import * as SecureStore from 'expo-secure-store'
 import jwt_decode from 'jwt-decode'
 import { useCallback } from 'react'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
-import VersionCheck from 'react-native-version-check'
 import { useDispatch } from 'react-redux'
 import { useTheme } from '@theme/index'
 import { checkReadiness, fetchTranslations } from '@store/redux/auth/api'
 import { resetAuthState } from '@store/redux/auth/slice'
+import { fetchCountriesThunk } from '@store/redux/auth/thunks'
 import { currentVersion } from '@app/constants/system'
 import { setLanguage } from '@app/redux/profile/actions'
 import { System } from '@app/refactor/common/util'
@@ -15,7 +16,6 @@ import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import KVStore from '@app/refactor/store/kv'
 import { TokenEmail } from '@app/refactor/types/auth/splash'
 import { addResources, switchLanguage } from '@app/utils/i18n'
-import { fetchCountries } from '@app/utils/userProfileUtils'
 
 export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const { theme } = useTheme()
@@ -28,15 +28,19 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	)
 
 	const startApp = async () => {
-		// TODO? dispatch(resetAuthState())
 		dispatch(resetAuthState())
-		dispatch({ type: 'RESET_STATE' }) // TODO: Remove
+		dispatch(fetchCountriesThunk())
 
 		KVStore.del('webViewVisible')
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
 
 		await fetchLexicon()
 		const accessToken = KVStore.get('accessToken')
+
+		// // ! For Testing
+		// navigation.navigate('Login2Fa')
+		// //navigation.navigate('EmailVerification', { from: 'Registration' })
+		// return
 
 		if (hasUnlock()) {
 			if (!accessToken) {
@@ -138,7 +142,5 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 					.catch((err) => console.log(err))
 			})
 			.catch((err) => console.log(err))
-
-		fetchCountries() //TODO: needed?
 	}
 }

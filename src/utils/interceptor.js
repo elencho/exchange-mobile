@@ -10,8 +10,10 @@ axios.interceptors.request.use(async (config) => {
 	} = config
 
 	const dictionaryReq = requestName === 'fetchTranslations'
+	const countryReq = requestName === 'fetchCountries'
 	const token = KVStore.get('accessToken')
-	if (token && !dictionaryReq) config.headers.Authorization = `Bearer ${token}`
+	if (token && !dictionaryReq && !countryReq)
+		config.headers.Authorization = `Bearer ${token}`
 	const isToast = toast === false ? false : true
 
 	store.dispatch({ type: 'SET_IS_TOAST', isToast })

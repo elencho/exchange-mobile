@@ -1,15 +1,15 @@
+import { useKeyboard } from '@react-native-community/hooks'
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useRef } from 'react'
-import { useDispatch } from 'react-redux'
 import {
 	KeyboardAvoidingView,
 	Platform,
 	ScrollView,
 	StyleSheet,
 } from 'react-native'
-import { useKeyboard } from '@react-native-community/hooks'
-import { useFocusEffect } from '@react-navigation/native'
-import { setShouldRefreshOnScroll } from '../redux/wallet/actions'
+import { useDispatch } from 'react-redux'
 import { IS_IOS } from '../constants/system'
+import { setShouldRefreshOnScroll } from '../redux/wallet/actions'
 
 export default function WithKeyboard({
 	children,

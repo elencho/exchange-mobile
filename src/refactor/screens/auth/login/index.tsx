@@ -65,18 +65,17 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	}
 
 	const onRegisterPressed = () => navigation.navigate('Registration')
-
-	const onForgotPasswordPressed = () => {
-		navigation.navigate('ForgotPassword')
-		// TODO: dispatch({ type: 'FORGOT_PASSWORD_SAGA', navigation: props.navigation })
-	}
+	const onForgotPasswordPressed = () => navigation.navigate('ForgotPassword')
 
 	return (
 		<View style={styles.background}>
 			<WithKeyboard
 				contentContainerStyle={styles.container}
 				modal={undefined}
-				refreshControl={undefined}>
+				refreshControl={undefined}
+				scrollUp={undefined}
+				padding={undefined}
+				flexGrow={undefined}>
 				<Logo style={styles.logo} />
 				<View>
 					<AppText variant="headline" style={styles.primary}>
@@ -145,6 +144,7 @@ const _styles = (theme: Theme) =>
 			flex: 1,
 		},
 		container: {
+			flex: 1,
 			alignItems: 'center',
 			justifyContent: 'center',
 			paddingHorizontal: '8%',

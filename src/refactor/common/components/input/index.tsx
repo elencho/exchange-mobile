@@ -1,5 +1,10 @@
 import React, { ReactNode, memo, useEffect, useRef, useState } from 'react'
-import { Pressable, TextInputProps } from 'react-native'
+import {
+	NativeSyntheticEvent,
+	Pressable,
+	TextInputFocusEventData,
+	TextInputProps,
+} from 'react-native'
 import {
 	TextInput,
 	StyleSheet,
@@ -33,6 +38,7 @@ const AppInput = (props: Props) => {
 		style,
 		labelBackgroundColor,
 		rightComponent,
+		onFocus,
 		onFocusRightComponent,
 		handleClear,
 	} = props
@@ -109,7 +115,10 @@ const AppInput = (props: Props) => {
 					style={[styles.input, disabled && styles.disabledInput]}
 					ref={inputRef}
 					onBlur={() => setIsFocused(false)}
-					onFocus={() => setIsFocused(true)}
+					onFocus={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+						setIsFocused(true)
+						onFocus?.(e)
+					}}
 					value={value}
 					placeholderTextColor={theme.color.textSecondary}
 					onChangeText={(text) => onChangeText?.(text)}
@@ -148,7 +157,7 @@ const AppInput = (props: Props) => {
 					</View>
 				)}
 			</View>
-			{error && (
+			{error && error.toString() !== 'true' && (
 				<AppText variant="s" style={styles.errorText}>
 					{error}
 				</AppText>

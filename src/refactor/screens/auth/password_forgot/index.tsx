@@ -112,7 +112,10 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 			<WithKeyboard
 				contentContainerStyle={styles.middle}
 				modal={undefined}
-				refreshControl={undefined}>
+				refreshControl={undefined}
+				scrollUp={undefined}
+				padding={undefined}
+				flexGrow={undefined}>
 				<Strong_Password width={38} height={46} />
 
 				<View style={{ alignItems: 'center' }}>
