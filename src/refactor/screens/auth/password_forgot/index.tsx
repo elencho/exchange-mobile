@@ -3,7 +3,7 @@ import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Strong_Password from '@assets/images/User_profile/Strong_Password.svg'
 import { Theme, useTheme } from '@theme/index'
-import Background from '@components/background'
+import AppBackground from '@components/background'
 import { AppButton } from '@components/button'
 import AppInput from '@components/input/index'
 import AppText from '@components/text'
@@ -100,7 +100,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	}
 
 	return (
-		<Background>
+		<AppBackground>
 			<TouchableOpacity style={styles.back} onPress={goToLogin}>
 				<AppButton
 					variant="text"
@@ -153,7 +153,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 					onPress={onNextPressed}
 				/>
 			</WithKeyboard>
-		</Background>
+		</AppBackground>
 	)
 }
 

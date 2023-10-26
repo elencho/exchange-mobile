@@ -4,6 +4,9 @@ import { Text, TextProps, TextStyle } from 'react-native'
 import { FontTheme } from '@theme/fonts'
 import { useTheme } from '@theme/index'
 import KVStore from '@store/kv'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import { System } from '@app/refactor/common/util'
 
 type Variant = 's' | 'm' | 'l' | 'title' | 'headline'
 
@@ -17,8 +20,8 @@ const AppText: React.FC<Props> = (props) => {
 	const { variant, medium, noTranslate, children, onPress, style } = props
 	const { theme } = useTheme()
 
-	const language = KVStore.get('language')
-	const isMtavruli = language === 'ka' && variant == 'headline'
+	const language = useSelector((state: RootState) => state.common.language)
+	const isMtavruli = language === 'ka' && variant === 'headline'
 
 	const translate = (textNode: ReactNode) => {
 		const { t } = useTranslation()
@@ -49,10 +52,7 @@ const AppText: React.FC<Props> = (props) => {
 		medium: boolean = false,
 		font: FontTheme
 	): TextStyle {
-		let curFont =
-			medium || variant == 'headline' || variant == 'title'
-				? font.medium
-				: font.regular
+		let curFont = medium || variant == 'headline' ? font.medium : font.regular
 
 		switch (variant) {
 			case 's':
@@ -62,7 +62,11 @@ const AppText: React.FC<Props> = (props) => {
 			case 'l':
 				return { fontSize: 14, lineHeight: 18, fontFamily: curFont }
 			case 'title':
-				return { fontSize: 16, lineHeight: 20, fontFamily: curFont }
+				if (System.isAndroid)
+					return { fontSize: 14, lineHeight: 18, fontFamily: font.regular }
+				else {
+					return { fontSize: 16, lineHeight: 20, fontFamily: curFont }
+				}
 			case 'headline':
 				return { fontSize: 20, lineHeight: 24, fontFamily: curFont }
 		}

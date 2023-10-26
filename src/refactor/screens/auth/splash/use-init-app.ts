@@ -1,6 +1,5 @@
 import VersionCheck from 'react-native-version-check'
 import { useFocusEffect } from '@react-navigation/native'
-import * as SecureStore from 'expo-secure-store'
 import jwt_decode from 'jwt-decode'
 import { useCallback } from 'react'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
@@ -10,12 +9,11 @@ import { checkReadiness, fetchTranslations } from '@store/redux/auth/api'
 import { resetAuthState, setOtpType } from '@store/redux/auth/slice'
 import { fetchCountriesThunk } from '@store/redux/auth/thunks'
 import { currentVersion } from '@app/constants/system'
-import { setLanguage } from '@app/redux/profile/actions'
 import { System } from '@app/refactor/common/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import KVStore from '@app/refactor/store/kv'
 import { TokenEmail, TokenOtpType } from '@app/refactor/types/auth/splash'
-import { addResources, switchLanguage } from '@app/utils/i18n'
+import { i18n } from '@app/refactor/setup/i18n'
 
 export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const { theme } = useTheme()
@@ -35,12 +33,16 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
 
 		await fetchLexicon()
-		const accessToken = KVStore.get('accessToken')
 
-		// // ! For Testing
-		// navigation.navigate('Login2Fa')
-		// //navigation.navigate('EmailVerification', { from: 'Registration' })
-		// return
+		const accessToken = KVStore.get('accessToken')
+		if (accessToken) {
+			const otpType = jwt_decode<TokenOtpType>(accessToken)?.otpType
+			dispatch(setOtpType(otpType))
+		}
+
+		// ! For Testing
+		navigation.navigate('Login')
+		return
 
 		if (hasUnlock()) {
 			if (!accessToken) {
@@ -133,14 +135,9 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 					Object.keys(translations).forEach((key) => {
 						if (translations[key] === null) translations[key] = ''
 					})
-					addResources(languages[i], 'translation', translations)
+					i18n.addResources(languages[i], translations)
 				}
-				SecureStore.getItemAsync('language')
-					.then((l) => {
-						switchLanguage(l ? l : 'en')
-						dispatch(setLanguage(l ? l : 'en'))
-					})
-					.catch((err) => console.log(err))
+				i18n.switchLanguage(KVStore.get('language') || 'en')
 			})
 			.catch((err) => console.log(err))
 	}

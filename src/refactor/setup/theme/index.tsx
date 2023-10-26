@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native/Libraries/StyleSheet/StyleSheet'
 import { ColorTheme } from '@theme/colors'
 import { FontTheme } from '@theme/fonts'
 import { THEME_DARK } from '@theme/variants'
+import { ViewStyle } from 'react-native'
 
 export interface Theme {
 	id: string

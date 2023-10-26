@@ -10,6 +10,7 @@ export type NavProp<R extends keyof Screens> = NativeStackNavigationProp<
 	Screens[R]
 >
 
+export type Nav = NativeStackNavigationProp<Screens, any>
 export type Route = keyof Screens
 
 export type Screens = {

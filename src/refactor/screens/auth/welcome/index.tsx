@@ -6,7 +6,7 @@ import {
 	BackHandler,
 	ImageBackground,
 } from 'react-native'
-import Logo from '@assets/images/Logo.svg'
+import LogoWhite from '@assets/images/LogoWhite.svg'
 import { useTheme, Theme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
@@ -17,6 +17,7 @@ import LanguageSwitcher from '@app/refactor/screens/auth/welcome/components/lang
 
 const Welcome = ({ navigation }: ScreenProp<'Welcome'>) => {
 	const { styles } = useTheme(_style)
+
 	BackHandler.addEventListener('hardwareBackPress', () => true)
 
 	const goToLogin = () => navigation.navigate('Login')
@@ -32,7 +33,7 @@ const Welcome = ({ navigation }: ScreenProp<'Welcome'>) => {
 				resizeMode="cover"
 				source={require('@assets/images/WelcomeBackground.png')}>
 				<View style={styles.container}>
-					<Logo style={styles.logo} />
+					<LogoWhite style={styles.logo} />
 					<AppText variant="headline" style={styles.primary}>
 						Welcome to Cryptal
 					</AppText>
@@ -58,6 +59,7 @@ const Welcome = ({ navigation }: ScreenProp<'Welcome'>) => {
 						/>
 					</View>
 				</View>
+
 				<LanguageSwitcher />
 			</ImageBackground>
 		</TouchableWithoutFeedback>

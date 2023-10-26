@@ -57,7 +57,7 @@ export const usernameAndPaswordThunk = createAsyncThunk(
 		}: {
 			mail: string
 			pass: string
-			navigation: NavProp<'Login'>
+			navigation: NativeStackNavigationProp<Screens, any>
 		},
 		{ getState }
 	) => {
@@ -73,7 +73,7 @@ export const usernameAndPaswordThunk = createAsyncThunk(
 			navigation.navigate('Login2Fa')
 		}
 		if (userAndPassInfo?.execution === Execution.EMAIL_VERIFICATION_OTP) {
-			navigation.push('EmailVerification', { fromScreen: 'login' })
+			navigation.push('EmailVerification', { from: 'Login' })
 		}
 		return userAndPassInfo
 	}

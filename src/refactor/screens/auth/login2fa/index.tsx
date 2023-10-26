@@ -62,7 +62,9 @@ export const Login2Fa = ({ navigation }: Props) => {
 		}
 	}, [seconds, timerVisible])
 
-	const goBack = () => dispatch(startLoginThunk(navigation))
+	const goBack = () => {
+		dispatch(startLoginThunk(navigation))
+	}
 	const goToReset = () => dispatch(resetOtpThunk(navigation))
 
 	const image = () => {
@@ -89,14 +91,13 @@ export const Login2Fa = ({ navigation }: Props) => {
 	}
 
 	return (
-		<SafeAreaView style={styles.safeArea}>
+		<AppBackground>
 			<WithKeyboard
-				contentContainerStyle={{ flex: 1 }}
+				padding={true}
+				flexGrow={true}
 				modal={undefined}
 				refreshControl={undefined}
-				scrollUp={undefined}
-				padding={undefined}
-				flexGrow={undefined}>
+				scrollUp={undefined}>
 				<Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
 					<TouchableOpacity style={styles.back} onPress={goBack}>
 						<AppButton
@@ -142,16 +143,12 @@ export const Login2Fa = ({ navigation }: Props) => {
 					</View>
 				</Pressable>
 			</WithKeyboard>
-		</SafeAreaView>
+		</AppBackground>
 	)
 }
 
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
-		safeArea: {
-			backgroundColor: theme.color.backgroundPrimary,
-			flex: 1,
-		},
 		back: {
 			flexDirection: 'row',
 			alignItems: 'center',

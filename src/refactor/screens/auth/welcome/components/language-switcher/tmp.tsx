@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Pressable, StyleSheet } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useDispatch, useSelector } from 'react-redux'
 import Eng from '@assets/images/English.svg'
@@ -13,7 +13,6 @@ import { switchLanguage } from '@app/utils/i18n'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { setLanguage } from '@store/redux/common/slice'
 import { setLanguage as setLanguageOld } from '@app/redux/profile/actions'
-import { System } from '@app/refactor/common/util'
 
 const LanguageSwitcher = () => {
 	const dispatch = useDispatch()
@@ -32,24 +31,20 @@ const LanguageSwitcher = () => {
 	const flagIcon = language === 'ka' ? <Geo /> : <Eng />
 	const curLanguageText = language === 'en' ? 'English' : 'ქართული'
 
-	const arrowMargin = { marginTop: 0 }
-
 	return (
 		<Pressable style={styles.container} onPress={onPress}>
 			<Animated.View style={[outlineStyle, styles.row]}>
 				{flagIcon}
-				<AppText medium={true} style={styles.text}>
-					{curLanguageText}
-				</AppText>
-				<Arrow style={arrowMargin} />
+				<AppText style={styles.text}>{curLanguageText}</AppText>
+				<Arrow style={styles.arrow} />
 			</Animated.View>
-			<Animated.View style={[fillStyle, styles.row]}>
+			{/* <Animated.View style={[fillStyle, styles.row]}>
 				{flagIcon}
-				<AppText medium={true} style={styles.text}>
+				<AppText medium={true} style={styles.text} numberOfLines={1}>
 					{curLanguageText}
 				</AppText>
-				<Arrow style={arrowMargin} />
-			</Animated.View>
+				<Arrow style={styles.arrow} />
+			</Animated.View> */}
 		</Pressable>
 	)
 }
@@ -58,27 +53,26 @@ const _styles = (theme: Theme) => {
 	return StyleSheet.create({
 		container: {
 			alignSelf: 'center',
-			marginBottom: 140,
+			marginBottom: 140, //40
 			borderWidth: 1,
 			borderColor: theme.color.border,
-			width: 140,
-			height: 40,
+			height: 140, //40
+			paddingHorizontal: 30,
 			borderRadius: 50,
-			justifyContent: 'center',
+			justifyContent: 'flex-end',
+		},
+		row: {
+			backgroundColor: 'green',
+			flexDirection: 'row',
 			alignItems: 'center',
 		},
 		text: {
-			color: theme.color.textSecondary,
-			marginHorizontal: 8,
-			textAlign: 'justify',
+			color: 'white', //theme.color.textSecondary,
+			marginHorizontal: 5,
+			textAlign: 'center',
 		},
-		row: {
-			marginHorizontal: 10,
-			flexDirection: 'row',
-			position: 'absolute',
-			alignItems: 'center',
+		arrow: {
+			backgroundColor: 'yellow',
 		},
 	})
 }
-
-export default LanguageSwitcher

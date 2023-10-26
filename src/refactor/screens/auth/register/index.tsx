@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Arrow from '@assets/images/Arrow.svg'
 import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
+import AppBackground from '@components/background'
 import { AppButton } from '@components/button'
 import AppInput from '@components/input'
 import AppText from '@components/text'
@@ -114,9 +115,9 @@ const Register = ({ navigation }: Props) => {
 				})
 			)
 		} else {
-			setMailErr(!valid.email)
+			mail && setMailErr(!valid.email)
 			setPassErr(!valid.pass)
-			setConfirmPassErr(!(valid.confirmPass && confirmPass.length > 0))
+			confirmPass && setConfirmPassErr(!valid.confirmPass)
 			setPhoneErr(!valid.phone)
 			setTermsSelectedErr(!valid.terms)
 		}
@@ -129,10 +130,10 @@ const Register = ({ navigation }: Props) => {
 		<SafeAreaView style={styles.safeArea}>
 			<WithKeyboard
 				keyboardVerticalOffsetIOS={10}
+				scrollUp={true}
+				padding={true}
 				modal={undefined}
 				refreshControl={undefined}
-				scrollUp={undefined}
-				padding={undefined}
 				flexGrow={undefined}>
 				<AppButton
 					variant="text"
@@ -170,21 +171,27 @@ const Register = ({ navigation }: Props) => {
 						secureTextEntry={true}
 					/>
 					<Text style={styles.validations}>
-						<Text style={passErr && !passLength && styles.redText}>
-							{t('8 or more characters')}
-						</Text>
-						<Text style={passErr && !passHasUpperLower && styles.redText}>
-							{t('Upper & lowercase letters')}
-						</Text>
-						<Text style={passErr && !passHasNumber && styles.redText}>
-							{t('At least one number')}
-						</Text>
+						<AppText
+							variant="m"
+							style={passErr && !passLength && styles.redText}>
+							8 or more characters,
+						</AppText>{' '}
+						<AppText
+							variant="m"
+							style={passErr && !passHasUpperLower && styles.redText}>
+							Upper & lowercase letters,
+						</AppText>{' '}
+						<AppText
+							variant="m"
+							style={passErr && !passHasNumber && styles.redText}>
+							At least one number,
+						</AppText>
 					</Text>
 					<AppInput
 						value={confirmPass}
 						label="Repeat Password"
 						labelBackgroundColor={theme.color.backgroundPrimary}
-						style={styles.input}
+						style={[styles.input, { marginTop: 10 }]}
 						onChangeText={setConfirmPass}
 						error={confirmPassErr}
 						secureTextEntry={true}
@@ -223,13 +230,14 @@ const Register = ({ navigation }: Props) => {
 						</Pressable>
 						<TextInput
 							value={phone}
+							onChangeText={setPhone}
+							onFocus={() => setPhoneErr(false)}
 							placeholder="Phone Number"
 							placeholderTextColor={
 								phoneErr ? theme.color.error : theme.color.textSecondary
 							}
 							style={{ flex: 1, color: 'white' }}
 							keyboardType="numeric"
-							onChangeText={setPhone}
 						/>
 					</View>
 					{countryModalVisible && (
@@ -357,7 +365,6 @@ const _styles = (theme: Theme) =>
 			color: theme.color.textSecondary,
 			fontSize: 11,
 			lineHeight: 15,
-			textAlign: 'justify',
 			marginTop: 8,
 		},
 		white: {

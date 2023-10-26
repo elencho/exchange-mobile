@@ -1,12 +1,13 @@
 import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import { MaterialIndicator } from 'react-native-indicators'
-import { useSelector } from 'react-redux'
 import { useTheme, Theme } from '@theme/index'
 import { CommonProps } from '@components/button'
 import AppText from '@components/text'
 import { Element } from '@components/types'
 import KVStore from '@store/kv'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 export type PrimaryProps = {
 	variant: 'primary'
@@ -27,9 +28,7 @@ export function PrimaryButton({
 	rightComponent,
 }: PrimaryProps) {
 	const { styles, theme } = useTheme(_styles)
-	const {
-		profile: { language },
-	}: any = useSelector((state) => state)
+	const language = useSelector((state: RootState) => state.common.language)
 
 	return (
 		<Pressable
@@ -51,14 +50,12 @@ export function PrimaryButton({
 				<MaterialIndicator color="#FFFFFF" animationDuration={3000} size={20} />
 			) : (
 				<AppText
-					variant="l"
+					variant="title"
 					medium={true}
 					style={[
 						styles.buttonText,
 						leftComponent && { marginLeft: 9 },
-						KVStore.get('language') === 'ka'
-							? { textTransform: 'uppercase' }
-							: {},
+						language === 'ka' ? { textTransform: 'uppercase' } : {},
 					]}>
 					{text}
 				</AppText>
