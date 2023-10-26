@@ -3,38 +3,10 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../rootReducer'
 import { fetchTradesThunk, refreshTradesThunk } from './tradeThunks'
 
-// import { startLogin, usernameAndPaswordThunk } from './authThunks'
-
 interface TradeState {
 	trades: []
-	offers: { USD: []; GEL: [] }
-	pairObject: {}
-	currentTrade: { price: ''; size: '' }
-	hideOtherPairs: boolean
-	fiat: string
-	crypto: string
-	fiatsArray: []
-
-	tradeType: string
-	Balance_Card: string
-	balanceLoading: boolean
-	balance: {}
-	currentBalanceObj: {}
-	card: null
-	cards: []
-	cardsToDisplayInModal: []
-	// cardsLoading: boolean
-	fee: null
-	depositProvider: null
-	depositProviders: null
-	cryptosArray: []
-	cryptosArrayConstant: []
-
 	totalTradesQty: null | number
 	tradesLoading: boolean
-	isTradesButtonLoading: boolean
-	moreTradesLoading: boolean
-	offersLoading: boolean
 	selectedTradeDetails: {}
 
 	// Query Params
@@ -61,32 +33,8 @@ const initialQueryParams = {
 
 const initialState: TradeState = {
 	trades: [],
-	offers: { USD: [], GEL: [] },
-	pairObject: {},
-	currentTrade: { price: '', size: '' },
-	hideOtherPairs: false,
-	fiat: 'GEL',
-	crypto: 'BTC',
-	fiatsArray: [],
-
-	tradeType: 'Buy',
-	Balance_Card: 'balance',
-	balanceLoading: false,
-	balance: {},
-	currentBalanceObj: {},
-	card: null,
-	cards: [],
-	cardsToDisplayInModal: [],
-	fee: null,
-	depositProvider: null,
-	depositProviders: null,
-	cryptosArray: [],
-	cryptosArrayConstant: [],
 	totalTradesQty: null,
 	tradesLoading: false,
-	isTradesButtonLoading: false,
-	moreTradesLoading: false,
-	offersLoading: false,
 	selectedTradeDetails: {},
 
 	...initialQueryParams,

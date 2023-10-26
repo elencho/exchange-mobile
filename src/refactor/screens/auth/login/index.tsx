@@ -148,6 +148,7 @@ const _styles = (theme: Theme) =>
 			alignItems: 'center',
 			justifyContent: 'center',
 			paddingHorizontal: '8%',
+			paddingTop: '30%',
 		},
 		email: {
 			marginBottom: 22,

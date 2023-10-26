@@ -7,14 +7,14 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch } from 'react-redux'
 import { useTheme } from '@theme/index'
 import { checkReadiness, fetchTranslations } from '@store/redux/auth/api'
-import { resetAuthState } from '@store/redux/auth/slice'
+import { resetAuthState, setOtpType } from '@store/redux/auth/slice'
 import { fetchCountriesThunk } from '@store/redux/auth/thunks'
 import { currentVersion } from '@app/constants/system'
 import { setLanguage } from '@app/redux/profile/actions'
 import { System } from '@app/refactor/common/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import KVStore from '@app/refactor/store/kv'
-import { TokenEmail } from '@app/refactor/types/auth/splash'
+import { TokenEmail, TokenOtpType } from '@app/refactor/types/auth/splash'
 import { addResources, switchLanguage } from '@app/utils/i18n'
 
 export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
@@ -46,6 +46,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			if (!accessToken) {
 				navigation.navigate('Welcome')
 			}
+
 			// TODO: შემდეგ ვიძახებთ user info-ს ავტორიზაციის შესამოწმებლად  თუ წარუმატებელი აღმოჩნდა ვისვრით ავტორიზაციაზე
 			// if userInfo 200 -> Welcome, else -> Resume
 			// Next: as below
@@ -57,7 +58,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			} else if (await backIsDown()) {
 				navigation.navigate('Maintenance')
 			} else {
-				navigation.navigate('Main') // Main
+				navigation.navigate('Welcome') // Main
 			}
 		}
 	}

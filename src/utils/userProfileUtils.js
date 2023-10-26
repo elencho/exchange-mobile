@@ -220,6 +220,7 @@ export const refreshToken = async (config) => {
 	if (data) {
 		if (data.access_token && data.refresh_token) {
 			await SecureStore.setItemAsync('accessToken', data.access_token)
+			//TODO: update otpType in Auth store
 			await SecureStore.setItemAsync('refreshToken', data.refresh_token)
 			if (config) return axios.request(config)
 			return data.access_token

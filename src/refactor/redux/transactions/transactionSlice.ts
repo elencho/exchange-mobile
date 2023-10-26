@@ -7,21 +7,11 @@ import {
 } from './transactionThunks'
 
 interface TransactionState {
-	tabRoute: null
-	stackRoute: null
-	tabNavigationRef: {}
 	totalTransactionsQty: number | null
 	transactions: []
-	currencies: []
-	currenciesConstant: []
-	currentTransaction: {}
-	currency: string
 	activeTab: 'Transfer' | 'Convert'
-	code: null
-	selectedTransactionDetails: {}
-
 	transactionsLoading: boolean
-	moreTransactionsLoading: boolean
+	selectedTransactionDetails: {}
 
 	// Query Params
 	cryptoFilter: null | string
@@ -48,21 +38,11 @@ const initialQueryParams = {
 }
 
 const initialState: TransactionState = {
-	tabRoute: null,
-	stackRoute: null,
-	tabNavigationRef: {},
 	totalTransactionsQty: null,
 	transactions: [],
-	currencies: [],
-	currenciesConstant: [],
-	currentTransaction: {},
-	currency: 'Show All Currency',
 	activeTab: 'Transfer',
-	code: null,
 	selectedTransactionDetails: {},
-
 	transactionsLoading: false,
-	moreTransactionsLoading: false,
 
 	...initialQueryParams,
 }

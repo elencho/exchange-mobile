@@ -39,8 +39,8 @@ export default function AddEditWhitelistModal({ add, edit }) {
 			network,
 			hasMultipleNetworks,
 		},
-		profile: { googleAuth, emailAuth, smsAuth },
 		trade: { currentBalanceObj },
+		auth: { otpType },
 	} = state
 
 	const hide = () => {
@@ -90,10 +90,10 @@ export default function AddEditWhitelistModal({ add, edit }) {
 			setError(true)
 		} else {
 			if (add) {
-				if (googleAuth) dispatch(toggleGoogleOtpModal(true))
-				if (emailAuth) dispatch(toggleEmailAuthModal(true))
-				if (smsAuth) dispatch(toggleSmsAuthModal(true))
-				if (!googleAuth) sendOtp()
+				if (otpType === 'TOTP') dispatch(toggleGoogleOtpModal(true))
+				if (otpType === 'EMAIL') dispatch(toggleEmailAuthModal(true))
+				if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
+				if (otpType !== 'TOTP') sendOtp()
 			}
 			if (edit) {
 				dispatch(editWhitelistAction())

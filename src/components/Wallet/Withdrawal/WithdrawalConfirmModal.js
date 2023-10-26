@@ -24,9 +24,9 @@ export default function WithdrawalConfirmModal() {
 	const {
 		modals: { withdrawalConfirmModalVisible },
 		trade: { currentBalanceObj, fee, card },
-		profile: { googleAuth, emailAuth, smsAuth },
 		wallet: { network, withdrawalAmount, currentWhitelistObj, iban, memoTag },
 		transactionsOld: { code },
+		auth: { otpType },
 	} = state
 
 	const type = currentBalanceObj?.type
@@ -47,10 +47,10 @@ export default function WithdrawalConfirmModal() {
 	}
 
 	const confirm = () => {
-		if (googleAuth) dispatch(toggleGoogleOtpModal(true))
-		if (emailAuth) dispatch(toggleEmailAuthModal(true))
-		if (smsAuth) dispatch(toggleSmsAuthModal(true))
-		if (!googleAuth) sendOtp()
+		if (otpType === 'TOTP') dispatch(toggleGoogleOtpModal(true))
+		if (otpType === 'EMAIL') dispatch(toggleEmailAuthModal(true))
+		if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
+		if (otpType !== 'TOTP') sendOtp()
 	}
 
 	const networkName = () => {

@@ -49,6 +49,9 @@ const auth = createSlice({
 				authLoading: false,
 			}
 		},
+		setOtpType: (state, action: PayloadAction<OTP>) => {
+			state.otpType = action.payload
+		},
 	},
 	extraReducers: (builder) => {
 		startLogin(builder)
@@ -158,5 +161,5 @@ const countries = (builder: ActionReducerMapBuilder<AuthState>) => {
 	})
 }
 
-export const { savePkceInfo, resetAuthState } = auth.actions
+export const { savePkceInfo, resetAuthState, setOtpType } = auth.actions
 export default auth.reducer
