@@ -40,9 +40,9 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			dispatch(setOtpType(otpType))
 		}
 
-		// ! For Testing
-		navigation.navigate('Login')
-		return
+		// // ! For Testing
+		// navigation.navigate('Login')
+		// return
 
 		if (hasUnlock()) {
 			if (!accessToken) {
