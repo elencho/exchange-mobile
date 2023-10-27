@@ -52,15 +52,14 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 		dispatch(startLoginThunk(navigation))
 	}, [])
 
-	//TODO: Remove
-	// useEffect(() => {
-	// 	return navigation.addListener('focus', () => {
-	// 		setMail('')
-	// 		setPass('')
-	// 		setMailError(false)
-	// 		setPassError(false)
-	// 	})
-	// }, [navigation])
+	useEffect(() => {
+		return navigation.addListener('focus', () => {
+			setMail('')
+			setPass('')
+			setMailError(false)
+			setPassError(false)
+		})
+	}, [navigation])
 
 	const onLoginPressed = () => {
 		if (!pass.trim()) setPassError(true)
