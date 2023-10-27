@@ -1,15 +1,10 @@
 // src/redux/errorsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../rootReducer'
-import {
-	fetchTransactionsThunk,
-	refreshTransactionsThunk,
-} from './transactionThunks'
 
-interface TransactionState {
+export interface TransactionState {
 	totalTransactionsQty: number | null
 	transactions: []
-	activeTab: 'Transfer' | 'Convert'
 	transactionsLoading: boolean
 	selectedTransactionDetails: {}
 
@@ -40,7 +35,6 @@ const initialQueryParams = {
 const initialState: TransactionState = {
 	totalTransactionsQty: null,
 	transactions: [],
-	activeTab: 'Transfer',
 	selectedTransactionDetails: {},
 	transactionsLoading: false,
 
@@ -61,9 +55,7 @@ const transactionSlice = createSlice({
 		setTransactionsOffset: (state, action: PayloadAction<number>) => {
 			state.offset = action.payload
 		},
-		setActiveTab: (state, action: PayloadAction<'Transfer' | 'Convert'>) => {
-			state.activeTab = action.payload
-		},
+
 		setTypeFilter: (state, action: PayloadAction<string[]>) => {
 			state.typeFilter = action.payload
 		},
@@ -98,33 +90,12 @@ const transactionSlice = createSlice({
 			state.selectedTransactionDetails = action.payload
 		},
 	},
-	extraReducers: (builder) => {
-		builder
-			.addCase(fetchTransactionsThunk.pending, (state) => {
-				state.transactionsLoading = true
-			})
-			.addCase(fetchTransactionsThunk.fulfilled, (state) => {
-				state.transactionsLoading = false
-			})
-			.addCase(fetchTransactionsThunk.rejected, (state) => {
-				state.transactionsLoading = false
-			})
-			.addCase(refreshTransactionsThunk.pending, (state) => {
-				state.transactionsLoading = true
-			})
-			.addCase(refreshTransactionsThunk.fulfilled, (state) => {
-				state.transactionsLoading = false
-			})
-			.addCase(refreshTransactionsThunk.rejected, (state) => {
-				state.transactionsLoading = false
-			})
-	},
+	// extraReducers: (builder) => {},
 })
 
 export const {
 	setTransactions,
 	setTotalTransactionsQty,
-	setActiveTab,
 	setTransactionsOffset,
 	setStatusFilter,
 	setTypeFilter,
@@ -138,40 +109,3 @@ export const {
 	setSelectedTransactionDetails,
 } = transactionSlice.actions
 export default transactionSlice.reducer
-
-//Selectors
-const methodsMapping = {
-	Ecommerce: ['ECOMMERCE'],
-	Wire: ['WIRE'],
-	'Crypto Transaction': ['WALLET', 'WALLET_INTERNAL'],
-	Staking: ['STAKING'],
-	B2C: ['B2C'],
-	Transfer: ['TRANSFER'],
-}
-
-export const selectTransactionQueryParams = (state: RootState) => {
-	const {
-		typeFilter,
-		method,
-		status,
-		cryptoFilter,
-		fromDateTime,
-		toDateTime,
-		offset,
-		txIdOrRecipient,
-	} = state?.transactions
-
-	const queryParams: FetchTransactionsQuery = {
-		type: typeFilter?.length === 1 ? typeFilter[0] : null,
-		methods: methodsMapping[method],
-		statuses: status,
-		currency: cryptoFilter?.length > 0 ? cryptoFilter : null,
-		fromTime: fromDateTime,
-		toTime: toDateTime,
-		offset,
-		limit: 10,
-		txIdOrRecipient: txIdOrRecipient?.length > 0 ? txIdOrRecipient : null,
-	}
-
-	return queryParams
-}

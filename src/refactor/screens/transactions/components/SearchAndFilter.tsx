@@ -13,13 +13,10 @@ import {
 	setCryptoCodeQuery,
 	setTrades,
 } from '@app/refactor/redux/trade/tradeSlice'
-import { fetchTradesThunk } from '@app/refactor/redux/trade/tradeThunks'
 import {
-	setTransactions,
 	setTransactionsOffset,
 	setTransactionsSearch,
 } from '@app/refactor/redux/transactions/transactionSlice'
-import { fetchTransactionsThunk } from '@app/refactor/redux/transactions/transactionThunks'
 import DownloadIcon from '@app/refactor/screens/transactions/components/DownloadIcon'
 import FilterIcon from '@app/refactor/screens/transactions/components/FilterIcon'
 
@@ -35,16 +32,13 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
 	const clearCurrencyDropdown = () => {
 		dispatch(setCryptoCodeQuery(null))
 		dispatch(setTrades([]))
-		dispatch(fetchTradesThunk())
 	}
 
 	//debounce
 	useEffect(() => {
 		const getSearchedData = setTimeout(() => {
 			dispatch(setTransactionsOffset(0))
-			dispatch(setTransactions([]))
 			dispatch(setTransactionsSearch(searchValue))
-			dispatch(fetchTransactionsThunk())
 		}, 1000)
 
 		return () => clearTimeout(getSearchedData)
@@ -100,8 +94,8 @@ const SearchAndFilter = ({ isInstantTrade, navigation }) => {
 					Keyboard.dismiss()
 				}}
 			/>
-			<DownloadIcon />
-			<CryptoModalTrade />
+			<DownloadIcon isInstantTrade={isInstantTrade} />
+			<CryptoModalTrade isInstantTrade={isInstantTrade} />
 		</View>
 	)
 }

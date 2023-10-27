@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { Pressable, StyleSheet, View, Image } from 'react-native'
 import { useDispatch } from 'react-redux'
 import BuyIcon from '@app/assets/images/Buy'
@@ -12,12 +12,7 @@ import { monthsShort } from '@app/constants/months'
 import { toggleTransactionDetails } from '@app/refactor/redux/modals/modalsSlice'
 import { setSelectedTransactionDetails } from '@app/refactor/redux/transactions/transactionSlice'
 
-export default function Transaction({
-	transactionData,
-	loading,
-	isTransfer,
-	isLast,
-}) {
+function Transaction({ transactionData, loading, isTransfer, isLast }) {
 	const dispatch = useDispatch()
 
 	const {
@@ -169,6 +164,8 @@ export default function Transaction({
 		</Pressable>
 	)
 }
+
+export default memo(Transaction)
 
 const styles = StyleSheet.create({
 	container: {

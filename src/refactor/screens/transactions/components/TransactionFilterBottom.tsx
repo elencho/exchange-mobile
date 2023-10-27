@@ -5,10 +5,14 @@ import AppText from '@components/text'
 import PurpleText from '@app/components/PurpleText'
 import colors from '@app/constants/colors'
 import { IS_ANDROID } from '@app/constants/system'
-import { clearTradeFilters } from '@app/refactor/redux/trade/tradeSlice'
-import { fetchTradesThunk } from '@app/refactor/redux/trade/tradeThunks'
-import { clearTransactionFilters } from '@app/refactor/redux/transactions/transactionSlice'
-import { fetchTransactionsThunk } from '@app/refactor/redux/transactions/transactionThunks'
+import {
+	clearTradeFilters,
+	setTradesOffset,
+} from '@app/refactor/redux/trade/tradeSlice'
+import {
+	clearTransactionFilters,
+	setTransactionsOffset,
+} from '@app/refactor/redux/transactions/transactionSlice'
 
 function TransactionFilterBottom({ navigation, isInstantTrade }) {
 	const {
@@ -53,8 +57,8 @@ function TransactionFilterBottom({ navigation, isInstantTrade }) {
 
 	const showResults = () => {
 		isInstantTrade
-			? dispatch(fetchTradesThunk())
-			: dispatch(fetchTransactionsThunk())
+			? dispatch(setTradesOffset(0))
+			: dispatch(setTransactionsOffset(0))
 		navigation.navigate('Main', {
 			screen: 'Transactions',
 			params: { isFromTransactions: true },
@@ -63,12 +67,10 @@ function TransactionFilterBottom({ navigation, isInstantTrade }) {
 
 	const clearTradesAction = () => {
 		dispatch(clearTradeFilters())
-		dispatch(fetchTradesThunk())
 	}
 
 	const clearTransactionsAction = () => {
 		dispatch(clearTransactionFilters())
-		dispatch(fetchTransactionsThunk())
 	}
 
 	const clear = () => {

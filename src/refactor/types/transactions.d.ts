@@ -9,3 +9,5 @@ interface FetchTransactionsQuery {
 	offset: number
 	limit: number
 }
+
+type TabName = 'Transfer' | 'Instant trade'

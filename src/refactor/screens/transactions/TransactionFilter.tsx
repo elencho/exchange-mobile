@@ -217,7 +217,7 @@ export default function TransactionFilter({ navigation, route }) {
 				</View>
 			</ScrollView>
 
-			<CryptoModalTrade />
+			<CryptoModalTrade isInstantTrade={isInstantTrade} />
 			<ChooseCurrencyModal isForTransactions />
 
 			<DatePickerModal isInstantTrade={isInstantTrade} from />

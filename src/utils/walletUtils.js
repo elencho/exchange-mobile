@@ -21,6 +21,7 @@ import {
 	MAX_WITHDRAWAL,
 } from '../constants/api'
 import { IS_ANDROID, IS_IOS } from '../constants/system'
+import KVStore from '@store/kv'
 
 export const fetchWireDeposit = async (currency, provider) => {
 	const data = await axios.get(`${WIRE_DEPOSIT}/${currency}`, {
@@ -39,7 +40,7 @@ export const generateFile = async (
 ) => {
 	try {
 		setLoading(true)
-		const token = await SecureStore.getItemAsync('accessToken')
+		const token = KVStore.get('accessToken')
 		const bearer = `Bearer ${token}`
 		const linkForFile = link
 		downloadFile(linkForFile, bearer, fileName, type, reportParams)

@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from 'react'
+import React, { useEffect, memo, useCallback } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import List from '@assets/images/List.svg'
@@ -7,45 +7,55 @@ import CustomRefreshContol from '@app/components/CustomRefreshContol'
 import TransactionSkeleton from '@app/components/TransactionHistory/TransactionSkeleton'
 import colors from '@app/constants/colors'
 import { IS_IOS } from '@app/constants/system'
-import {
-	fetchTradesThunk,
-	reachScrollEndThunk,
-	refreshTradesThunk,
-} from '@app/refactor/redux/trade/tradeThunks'
 import Transaction from '@app/refactor/screens/transactions/components/Transaction'
 import ListFooter from './ListFooter'
+import useTrades from '../hooks/useTrades'
+import { useFocusEffect } from '@react-navigation/native'
 
-const TradeList = () => {
-	const dispatch = useDispatch()
-	useEffect(() => {
-		dispatch(fetchTradesThunk())
-	}, [])
+const TradeList = ({ isInstantTrade }) => {
+	const {
+		fetchTrades,
+		refreshTrades,
+		trades,
+		tradesLoading,
+		totalTradesQty,
+		reachScrollEnd,
+	} = useTrades()
 
 	const {
-		trades: {
-			trades: tradesData,
-			totalTradesQty,
-			moreTradesLoading,
-			tradesLoading,
-		},
-		transactions: { activeTab },
-	} = useSelector((state) => state)
+		fiatCodesQuery,
+		statusQuery,
+		actionQuery,
+		cryptoCodeQuery,
+		fromDateTimeQuery,
+		toDateTimeQuery,
+	} = useSelector((state: RootState) => state.trades)
+
+	useFocusEffect(
+		useCallback(() => {
+			fetchTrades()
+		}, [
+			fiatCodesQuery,
+			statusQuery,
+			actionQuery,
+			cryptoCodeQuery,
+			fromDateTimeQuery,
+			toDateTimeQuery,
+		])
+	)
 
 	const handleScrollEnd = () => {
-		if (tradesData.length === totalTradesQty) {
+		if (trades.length === totalTradesQty) {
 			return
-		} else if (tradesData.length <= totalTradesQty && !moreTradesLoading) {
-			dispatch(reachScrollEndThunk())
+		} else if (trades.length <= totalTradesQty) {
+			reachScrollEnd()
 		}
 	}
 
-	const onRefresh = () => dispatch(refreshTradesThunk())
+	const onRefresh = () => refreshTrades()
 
 	const renderTrade = ({ item, index }) => (
-		<Transaction
-			transactionData={item}
-			isLast={index === tradesData.length - 1}
-		/>
+		<Transaction transactionData={item} isLast={index === trades.length - 1} />
 	)
 
 	const listEmptyContainer = () =>
@@ -60,17 +70,17 @@ const TradeList = () => {
 
 	return (
 		<View style={styles.container}>
-			{tradesLoading && !moreTradesLoading ? (
+			{tradesLoading ? (
 				<View style={{ marginTop: IS_IOS ? -10 : 20 }}>
 					<TransactionSkeleton
 						length={[1, 2, 3, 4, 5]}
-						isInstantTrade={activeTab === 'Instant trade'}
+						isInstantTrade={isInstantTrade}
 					/>
 				</View>
 			) : (
 				<FlatList
 					style={{ height: 280 }}
-					data={tradesData}
+					data={trades}
 					renderItem={renderTrade}
 					keyExtractor={(item, idx) => item.creationTime + idx}
 					onEndReached={handleScrollEnd}
@@ -83,7 +93,8 @@ const TradeList = () => {
 						<ListFooter
 							isLoading={tradesLoading}
 							totalDataQty={totalTradesQty}
-							dataArray={tradesData}
+							dataArray={trades}
+							isInstantTrade={isInstantTrade}
 						/>
 					}
 					ListEmptyComponent={listEmptyContainer}

@@ -1,7 +1,6 @@
 // src/redux/errorsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../rootReducer'
-import { fetchTradesThunk, refreshTradesThunk } from './tradeThunks'
 
 interface TradeState {
 	trades: []
@@ -86,27 +85,7 @@ const tradeSlice = createSlice({
 			state.selectedTradeDetails = action.payload
 		},
 	},
-	extraReducers: (builder) => {
-		builder
-			.addCase(fetchTradesThunk.pending, (state) => {
-				state.tradesLoading = true
-			})
-			.addCase(fetchTradesThunk.fulfilled, (state) => {
-				state.tradesLoading = false
-			})
-			.addCase(fetchTradesThunk.rejected, (state) => {
-				state.tradesLoading = false
-			})
-			.addCase(refreshTradesThunk.pending, (state) => {
-				state.tradesLoading = true
-			})
-			.addCase(refreshTradesThunk.fulfilled, (state) => {
-				state.tradesLoading = false
-			})
-			.addCase(refreshTradesThunk.rejected, (state) => {
-				state.tradesLoading = false
-			})
-	},
+	// extraReducers: (builder) => {},
 })
 
 export const {
