@@ -6,7 +6,7 @@ export interface ProfileState {
 	// TODO: change any types
 	Personal_Security: string
 	userInfo: any
-	language: string
+	language: 'En' | 'Ka'
 	googleAuth: boolean
 	emailAuth: boolean
 	smsAuth: boolean
@@ -22,7 +22,7 @@ export interface ProfileState {
 const initialState: ProfileState = {
 	Personal_Security: 'Personal',
 	userInfo: {},
-	language: 'English',
+	language: 'En',
 	googleAuth: false,
 	emailAuth: false,
 	smsAuth: false,
@@ -45,7 +45,7 @@ const profileSlice = createSlice({
 		setUserInfo(state, action: PayloadAction<any>) {
 			state.userInfo = action.payload
 		},
-		setLanguage(state, action: PayloadAction<string>) {
+		setLanguage(state, action: PayloadAction<'En' | 'Ka'>) {
 			state.language = action.payload
 		},
 		setGoogleAuth(state, action: PayloadAction<boolean>) {

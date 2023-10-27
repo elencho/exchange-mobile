@@ -6,28 +6,27 @@ import Download from '@app/assets/images/Download'
 import colors from '@app/constants/colors'
 import { generateFile } from '@app/utils/walletUtils'
 
-const DownloadIcon = () => {
+interface Props {
+	isInstantTrade: boolean
+}
+
+const DownloadIcon: React.FC<Props> = ({ isInstantTrade }) => {
 	const {
-		transactions: {
-			fromDateTime,
-			toDateTime,
-			cryptoFilter,
-			typeFilter,
-			activeTab,
-		},
+		transactions: { fromDateTime, toDateTime, cryptoFilter, typeFilter },
 		trades: { fromDateTimeQuery, toDateTimeQuery, cryptoCodeQuery },
 	} = useSelector((state) => state)
-	const isTransfer = activeTab === 'Transfer'
 	const [loading, setLoading] = useState(false)
 
 	const typeFilterReport =
 		typeFilter.length === 0 ? ['DEPOSIT', 'WITHDRAWAL'] : typeFilter
 
 	const reportParams = {
-		currency: isTransfer ? cryptoFilter : cryptoCodeQuery,
-		fromTime: isTransfer ? fromDateTime : fromDateTimeQuery,
-		toTime: isTransfer ? toDateTime : toDateTimeQuery,
-		transactionReportTypes: isTransfer ? typeFilterReport : ['SIMPLE_TRADE'],
+		currency: isInstantTrade ? cryptoCodeQuery : cryptoFilter,
+		fromTime: isInstantTrade ? fromDateTimeQuery : fromDateTime,
+		toTime: isInstantTrade ? toDateTimeQuery : toDateTime,
+		transactionReportTypes: isInstantTrade
+			? ['SIMPLE_TRADE']
+			: typeFilterReport,
 	}
 
 	const linkMain =

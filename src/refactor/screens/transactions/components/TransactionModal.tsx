@@ -19,7 +19,7 @@ import TransactionDetails from '@app/refactor/screens/transactions/components/Tr
 import useCopyToClipboard from '@app/utils/copyToClipboard'
 import { toggleTransactionDetails } from '@app/refactor/redux/modals/modalsSlice'
 
-function TransactionModal({ transactions, trades }) {
+function TransactionModal({ transactions, trades, isInstantTrade }) {
 	const { copyToClipboard } = useCopyToClipboard()
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
@@ -38,12 +38,9 @@ function TransactionModal({ transactions, trades }) {
 				tag,
 			},
 			currencies,
-			activeTab,
 		},
 		modalState: { transactionDetailsVisible },
 	} = state
-
-	const isInstantTrade = activeTab === 'Instant trade'
 
 	const handleTransactionUrl = () => {
 		let pattern
@@ -113,7 +110,7 @@ function TransactionModal({ transactions, trades }) {
 
 					{!isInstantTrade && transactionInfo && <View style={styles.line} />}
 
-					<TransactionDetails />
+					<TransactionDetails isInstantTrade={isInstantTrade} />
 
 					{/* DESTINATION  */}
 					{(method === 'WALLET' || method === 'WALLET_INTERNAL') &&

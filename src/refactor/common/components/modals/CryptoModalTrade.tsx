@@ -5,24 +5,27 @@ import ModalWithSearch from '@app/components/ModalWithSearch'
 import { toggleCryptoModal } from '@app/refactor/redux/modals/modalsSlice'
 import {
 	setCryptoCodeQuery,
-	setTrades,
 	setTradesOffset,
 } from '@app/refactor/redux/trade/tradeSlice'
-import { fetchTradesThunk } from '@app/refactor/redux/trade/tradeThunks'
 import { setCryptoFilter } from '@app/refactor/redux/transactions/transactionSlice'
+import useTrades from '@app/refactor/screens/transactions/hooks/useTrades'
 
-export default function CryptoModalTrade() {
+interface Props {
+	isInstantTrade: boolean
+}
+
+export default function CryptoModalTrade({ isInstantTrade }: Props) {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
+	const { fetchTrades, setTrades } = useTrades()
 
 	const {
 		modalState: { cryptoModalVisible },
 		trades: { cryptoCodeQuery },
 		trade: { offers, fiat, tradeType },
-		transactions: { cryptoFilter: cryptoCodeTransactions, activeTab },
+		transactions: { cryptoFilter: cryptoCodeTransactions },
 	} = state
 
-	const isInstantTrade = activeTab === 'Instant trade'
 	const [filteredData, setFiletredData] = useState(offers?.[fiat])
 	const arrayToPass =
 		filteredData?.length > 0 ? [...filteredData] : offers?.[fiat]
@@ -49,14 +52,13 @@ export default function CryptoModalTrade() {
 	}
 
 	const hide = () => dispatch(toggleCryptoModal(false))
-	// const onModalHide = () => dispatch(instantTradeTabAction())
 	const onModalHide = () => {}
 
 	const choose = (code) => {
 		dispatch(isInstantTrade ? setCryptoCodeQuery(code) : setCryptoFilter(code))
 		if (isInstantTrade) dispatch(setTradesOffset(0))
-		dispatch(setTrades([]))
-		dispatch(fetchTradesThunk())
+		setTrades([])
+		fetchTrades()
 		hide()
 	}
 

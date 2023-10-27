@@ -1,27 +1,25 @@
-import React from 'react'
+import React, { SetStateAction } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import colors from '@app/constants/colors'
 import AppText from '@app/refactor/common/components/text/index'
-import { setActiveTab } from '@app/refactor/redux/transactions/transactionSlice'
 
-const TabSwitcher = () => {
-	const dispatch = useDispatch()
-	const activeTab = useSelector((state) => state.transactions.activeTab)
+interface Props {
+	activeTab: TabName
+	setActiveTab: SetStateAction<TabName>
+}
 
-	const tabTextStyle = (tabName) => {
+const TabSwitcher: React.FC<Props> = ({ activeTab, setActiveTab }) => {
+	const tabTextStyle = (tabName: TabName) => {
 		return {
 			color: activeTab === tabName ? colors.PRIMARY_TEXT : '#969CBF',
 		}
 	}
-	const tabColor = (tabName) => {
+	const tabColor = (tabName: TabName) => {
 		return {
 			backgroundColor:
 				activeTab === tabName ? colors.PRIMARY_PURPLE : colors.BUTTON_DISABLED,
 		}
 	}
-
-	const handleTabPress = (tabName) => dispatch(setActiveTab(tabName))
 
 	return (
 		<View style={styles.container}>
@@ -29,7 +27,7 @@ const TabSwitcher = () => {
 				<Pressable
 					key={tabName}
 					style={[styles.tab, tabColor(tabName)]}
-					onPress={() => handleTabPress(tabName)}>
+					onPress={() => setActiveTab(tabName)}>
 					<AppText medium style={tabTextStyle(tabName)}>
 						{tabName}
 					</AppText>

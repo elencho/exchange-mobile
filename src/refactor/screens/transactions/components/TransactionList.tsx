@@ -1,34 +1,51 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import CustomRefreshContol from '@app/components/CustomRefreshContol'
 
 import List from '@app/assets/images/List.svg'
 import AppText from '@app/components/AppText'
 import TransactionSkeleton from '@app/components/TransactionHistory/TransactionSkeleton'
 import colors from '@app/constants/colors'
-import {
-	fetchTransactionsThunk,
-	reachScrollEndThunk,
-	refreshTransactionsThunk,
-} from '@app/refactor/redux/transactions/transactionThunks'
 import Transaction from '@app/refactor/screens/transactions/components/Transaction'
 import ListFooter from './ListFooter'
+import useTransactions from '../hooks/useTransactions'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import { useFocusEffect } from '@react-navigation/native'
 
-const TransactionList = () => {
-	const dispatch = useDispatch()
-	useEffect(() => {
-		dispatch(fetchTransactionsThunk())
-	}, [])
+const TransactionList = ({ isInstantTrade }) => {
+	const {
+		fetchTransactions,
+		refreshTransactions,
+		transactions,
+		transactionsLoading,
+		totalTransactionsQty,
+		reachScrollEnd,
+	} = useTransactions()
 
 	const {
-		transactions: {
-			transactions,
-			transactionsLoading,
-			totalTransactionsQty,
-			activeTab,
-		},
-	} = useSelector((state) => state)
+		typeFilter,
+		method,
+		status,
+		cryptoFilter,
+		fromDateTime,
+		toDateTime,
+		txIdOrRecipient,
+	} = useSelector((state: RootState) => state.transactions)
+
+	useFocusEffect(
+		useCallback(() => {
+			fetchTransactions()
+		}, [
+			typeFilter,
+			method,
+			status,
+			cryptoFilter,
+			fromDateTime,
+			toDateTime,
+			txIdOrRecipient,
+		])
+	)
 
 	const renderTransaction = ({ item, index }) => {
 		return (
@@ -54,7 +71,7 @@ const TransactionList = () => {
 		if (transactions.length === totalTransactionsQty) {
 			return
 		} else if (transactions.length <= totalTransactionsQty) {
-			dispatch(reachScrollEndThunk())
+			reachScrollEnd()
 		}
 	}
 
@@ -62,7 +79,7 @@ const TransactionList = () => {
 		<View style={{ marginTop: 10 }}>
 			<TransactionSkeleton
 				length={[0, 1, 2, 3, 4, 5]}
-				isInstantTrade={activeTab === 'Instant trade'}
+				isInstantTrade={isInstantTrade}
 				isFooter={false}
 			/>
 		</View>
@@ -83,6 +100,7 @@ const TransactionList = () => {
 					isLoading={transactionsLoading}
 					dataArray={transactions}
 					totalDataQty={totalTransactionsQty}
+					isInstantTrade={isInstantTrade}
 				/>
 			}
 			ListEmptyComponent={listEmptyContainer}
@@ -91,7 +109,7 @@ const TransactionList = () => {
 			refreshControl={
 				<CustomRefreshContol
 					refreshing={transactionsLoading}
-					onRefresh={() => dispatch(refreshTransactionsThunk())}
+					onRefresh={() => refreshTransactions()}
 				/>
 			}
 		/>

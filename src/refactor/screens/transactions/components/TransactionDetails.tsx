@@ -4,7 +4,11 @@ import { useSelector } from 'react-redux'
 import AppText from '@app/components/AppText'
 import colors from '@app/constants/colors'
 
-export default function TransactionDetails() {
+interface Props {
+	isInstantTrade: boolean
+}
+
+export default function TransactionDetails({ isInstantTrade }: Props) {
 	const {
 		selectedTransactionDetails: {
 			method,
@@ -26,15 +30,12 @@ export default function TransactionDetails() {
 			note,
 			year,
 		},
-		activeTab,
 	} = useSelector((state) => state.transactions)
 
 	const actionMapping = {
 		BID: 'Buy',
 		ASK: 'Sell',
 	}
-
-	const isInstantTrade = activeTab === 'Instant trade'
 
 	const LeftText = ({ text }) => (
 		<View style={styles.leftTextContainer}>
