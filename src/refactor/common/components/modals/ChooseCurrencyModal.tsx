@@ -38,7 +38,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 	}, [chooseCurrencyModalVisible])
 
 	useEffect(() => {
-			fetchCurrencies().then((res) => setCurrencyList(res))
+		fetchCurrencies().then((res) => setCurrencyList(res))
 	}, [])
 
 	const filter = (text) => {

@@ -1,6 +1,6 @@
 import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { Platform, StatusBar, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
@@ -13,10 +13,10 @@ import {
 } from '@store/redux/auth/thunks'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
-import { startRegistrationAction } from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
+import Constants from 'expo-constants'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
@@ -36,30 +36,37 @@ const banetaSms = { mail: 'iraklibanetishvili@yahoo.com', pass: 'Salo125' }
 const testMail = { mail: 'remora.419@gmail.com', pass: 'Derrickrose1$' }
 
 const Login = ({ navigation }: ScreenProp<'Login'>) => {
-	const { theme, styles } = useTheme(_styles)
+	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
 	const [mail, setMail] = useState('')
+	const [mailError, setMailError] = useState<string | boolean>(false)
 	const [pass, setPass] = useState('')
-	const [error, setError] = useState(false)
+	const [passError, setPassError] = useState(false)
+
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
 
 	const validMail = LOGIN_REGEX.test(mail)
-	const errorText = () =>
-		error && mail?.trim() && !validMail ? 'Enter Valid Email' : ''
-
-	useEffect(() => {
-		error && setError(false)
-	}, [mail, pass])
 
 	useEffect(() => {
 		dispatch(startLoginThunk(navigation))
 	}, [])
 
+	useEffect(() => {
+		return navigation.addListener('focus', () => {
+			setMail('')
+			setPass('')
+			setMailError(false)
+			setPassError(false)
+		})
+	}, [navigation])
+
 	const onLoginPressed = () => {
-		if (!mail || !pass || !validMail) {
-			setError(true)
-		} else {
+		if (!pass.trim()) setPassError(true)
+		if (!mail.trim()) setMailError(true)
+		else if (!validMail) setMailError('Enter Valid Email')
+
+		if (mail.trim() && pass.trim() && validMail) {
 			dispatch(usernameAndPaswordThunk({ mail, pass, navigation }))
 		}
 	}
@@ -70,12 +77,13 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	return (
 		<View style={styles.background}>
 			<WithKeyboard
+				keyboardVerticalOffsetIOS={10}
 				contentContainerStyle={styles.container}
+				flexGrow={true}
+				padding={true}
 				modal={undefined}
 				refreshControl={undefined}
-				scrollUp={undefined}
-				padding={undefined}
-				flexGrow={undefined}>
+				scrollUp={false}>
 				<Logo style={styles.logo} />
 				<View>
 					<AppText variant="headline" style={styles.primary}>
@@ -88,19 +96,20 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 				</View>
 				<AppInput
 					style={styles.email}
-					onChangeText={setMail}
 					value={mail}
-					error={errorText()}
+					onChangeText={setMail}
+					onFocus={() => setMailError(false)}
+					error={mailError}
 					label={'Enter Email'}
-					labelBackgroundColor={theme.color.backgroundPrimary}
 				/>
 				<AppInput
 					secureTextEntry={true}
-					onChangeText={setPass}
 					value={pass}
-					label={'Enter Password'}
-					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.password}
+					onChangeText={setPass}
+					onFocus={() => setPassError(false)}
+					error={passError}
+					label={'Enter Password'}
 					rightComponent={
 						<AppButton
 							variant="text"
@@ -122,7 +131,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 						{t('New User?')}{' '}
 						<AppButton
 							variant="text"
-							text={t('Register')}
+							text="Register"
 							onPress={onRegisterPressed}
 						/>
 					</AppText>
@@ -142,12 +151,16 @@ const _styles = (theme: Theme) =>
 		background: {
 			backgroundColor: theme.color.backgroundPrimary,
 			flex: 1,
+			justifyContent: 'center',
+			paddingTop: Platform.select({
+				ios: Constants.statusBarHeight + 10,
+				android: (StatusBar.currentHeight || 0) + 20,
+			}),
 		},
 		container: {
 			alignItems: 'center',
 			justifyContent: 'center',
 			paddingHorizontal: '8%',
-			paddingTop: '30%',
 		},
 		email: {
 			marginBottom: 22,

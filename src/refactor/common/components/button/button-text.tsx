@@ -16,7 +16,7 @@ export function TextButton({
 
 	return (
 		<AppText
-			variant="l"
+			variant="title"
 			medium={true}
 			disabled={disabled}
 			onPress={onPress}

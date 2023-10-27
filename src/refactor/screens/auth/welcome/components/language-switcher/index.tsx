@@ -1,48 +1,50 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import Animated from 'react-native-reanimated'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Eng from '@assets/images/English.svg'
 import Geo from '@assets/images/Georgian.svg'
 import Arrow from '@assets/images/SwitcherArrow.svg'
 import { useTheme, Theme } from '@theme/index'
 import AppText from '@components/text/index'
-import KVStore from '@store/kv'
-import { setLanguage } from '@app/redux/profile/actions'
 import useAnimation from '@app/refactor/screens/auth/welcome/components/language-switcher/animation'
-import { switchLanguage } from '@app/utils/i18n'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import { setLanguage } from '@store/redux/common/slice'
 
 const LanguageSwitcher = () => {
 	const dispatch = useDispatch()
 	const { styles } = useTheme(_styles)
-	const { fillStyle, outlineStyle, toggleAnimation } = useAnimation()
 
-	const [lang, setLang] = useState(KVStore.get('language'))
+	const language = useSelector((state: RootState) => state.common.language)
+
+	const { fillStyle, outlineStyle, toggleAnimation } = useAnimation()
 
 	const onPress = () => {
 		toggleAnimation()
-		const newLang = lang === 'ka' ? 'en' : 'ka'
-		setLang(newLang)
-		dispatch(setLanguage(newLang)) //TODO: Remove
-		switchLanguage(newLang)
+		const newLanguage = language === 'ka' ? 'en' : 'ka'
+		dispatch(setLanguage(newLanguage))
 	}
 
-	const flagIcon = lang === 'ka' ? <Geo /> : <Eng />
-	const curLanguageText = lang === 'en' ? 'English' : 'ქართული'
+	const flagIcon = language === 'ka' ? <Geo /> : <Eng />
+	const curLanguageText = language === 'en' ? 'English' : 'ქართული'
+
+	const arrowMargin = { marginTop: 0 }
 
 	return (
 		<Pressable style={styles.container} onPress={onPress}>
 			<Animated.View style={[outlineStyle, styles.row]}>
 				{flagIcon}
-				<AppText style={styles.text}>{curLanguageText}</AppText>
-				<Arrow />
+				<AppText medium={true} style={styles.text}>
+					{curLanguageText}
+				</AppText>
+				<Arrow style={arrowMargin} />
 			</Animated.View>
 			<Animated.View style={[fillStyle, styles.row]}>
 				{flagIcon}
 				<AppText medium={true} style={styles.text}>
 					{curLanguageText}
 				</AppText>
-				<Arrow />
+				<Arrow style={arrowMargin} />
 			</Animated.View>
 		</Pressable>
 	)
@@ -57,22 +59,20 @@ const _styles = (theme: Theme) => {
 			borderColor: theme.color.border,
 			width: 140,
 			height: 40,
-			paddingHorizontal: 30,
 			borderRadius: 50,
+			justifyContent: 'center',
+			alignItems: 'center',
 		},
 		text: {
 			color: theme.color.textSecondary,
-			marginHorizontal: 5,
-			textAlign: 'center',
-			width: 70,
+			marginHorizontal: 8,
+			textAlign: 'justify',
 		},
 		row: {
+			marginHorizontal: 10,
 			flexDirection: 'row',
 			position: 'absolute',
-			left: 16,
 			alignItems: 'center',
-			height: 24,
-			top: 5,
 		},
 	})
 }

@@ -25,7 +25,8 @@ import {
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Screens } from '@app/refactor/setup/nav/nav'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { setTimer } from '@store/redux/auth/slice'
+import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 
 interface Props extends NativeStackScreenProps<Screens, 'Login2Fa'> {}
 
@@ -34,7 +35,7 @@ export const Login2Fa = ({ navigation }: Props) => {
 	const { theme, styles } = useTheme(_styles)
 
 	const [value, setValue] = useState('')
-	const [seconds, setSeconds] = useState(30)
+	const [seconds, setSeconds] = useState(0)
 
 	const state = useSelector((state: RootState) => state.auth)
 	const { timerVisible, otpType } = state
@@ -42,28 +43,36 @@ export const Login2Fa = ({ navigation }: Props) => {
 	const cellCount = otpType === 'SMS' ? 4 : 6
 
 	useEffect(() => {
-		state.timerVisible = true
+		dispatch(setTimer(true))
+
 		return () => {
+			dispatch(setTimer(false))
 			setValue('')
-			state.timerVisible = false
-			setSeconds(30)
+			setSeconds(0)
 		}
 	}, [])
 
 	useEffect(() => {
-		if (!seconds) {
-			state.timerVisible = false
-			setSeconds(30)
-		}
-		if (seconds && timerVisible) {
+		if (!timerVisible) return
+
+		if (seconds) {
 			setTimeout(() => {
 				setSeconds(seconds - 1)
 			}, 1000)
+		} else {
+			dispatch(setTimer(false))
 		}
-	}, [seconds, timerVisible])
+	}, [seconds])
+
+	useEffect(() => {
+		if (timerVisible) {
+			setSeconds(COUNTDOWN_SECONDS)
+		}
+	}, [timerVisible])
 
 	const goBack = () => dispatch(startLoginThunk(navigation))
 	const goToReset = () => dispatch(resetOtpThunk(navigation))
+	const resend = () => dispatch(resendOtpThunk({ from: 'Login2Fa' }))
 
 	const image = () => {
 		switch (otpType) {
@@ -76,8 +85,6 @@ export const Login2Fa = ({ navigation }: Props) => {
 		}
 	}
 
-	const resend = () => dispatch(resendOtpThunk({ from: 'Login2Fa' }))
-
 	const resendOrCountDown = () => {
 		if (timerVisible) {
 			return (
@@ -89,14 +96,13 @@ export const Login2Fa = ({ navigation }: Props) => {
 	}
 
 	return (
-		<SafeAreaView style={styles.safeArea}>
+		<AppBackground>
 			<WithKeyboard
-				contentContainerStyle={{ flex: 1 }}
+				padding={true}
+				flexGrow={true}
 				modal={undefined}
 				refreshControl={undefined}
-				scrollUp={undefined}
-				padding={undefined}
-				flexGrow={undefined}>
+				scrollUp={undefined}>
 				<Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
 					<TouchableOpacity style={styles.back} onPress={goBack}>
 						<AppButton
@@ -142,16 +148,12 @@ export const Login2Fa = ({ navigation }: Props) => {
 					</View>
 				</Pressable>
 			</WithKeyboard>
-		</SafeAreaView>
+		</AppBackground>
 	)
 }
 
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
-		safeArea: {
-			backgroundColor: theme.color.backgroundPrimary,
-			flex: 1,
-		},
 		back: {
 			flexDirection: 'row',
 			alignItems: 'center',

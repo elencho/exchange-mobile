@@ -7,6 +7,8 @@ import stars from '@assets/images/Stars.png'
 
 export type Language = 'ka' | 'en'
 
+export const COUNTDOWN_SECONDS = 30
+
 export const Images = {
 	background,
 	stars,

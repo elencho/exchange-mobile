@@ -7,7 +7,7 @@ import {
 	startLoginThunk,
 	usernameAndPaswordThunk,
 	resetOtpThunk,
-	resetPasswordThunk,
+	resetPasswordStartThunk,
 	resetPasswordOtpThunk,
 	resendOtpThunk,
 	otpForLoginThunk,
@@ -42,32 +42,22 @@ const auth = createSlice({
 		savePkceInfo: (state, action: PayloadAction<PkceInfo>) => {
 			state.pkceInfo = action.payload
 		},
-		resetAuthState: (state) => {
-			state = {
-				...state,
-				timerVisible: false,
-				authLoading: false,
-			}
+		setTimer: (state, action: PayloadAction<boolean>) => {
+			state.timerVisible = action.payload
 		},
 		setOtpType: (state, action: PayloadAction<OTP>) => {
 			state.otpType = action.payload
 		},
 	},
 	extraReducers: (builder) => {
-		startLogin(builder)
-		usernameAndPassword(builder)
+		login(builder)
+		forgotPass(builder)
+		login2fa(builder)
 		resetOtp(builder)
+
 		registerStart(builder)
 		registerForm(builder)
 		countries(builder)
-
-		builder.addCase(forgotPasswordStartThunk.fulfilled, (state, action) => {
-			state.callbackUrl = action.payload.callbackUrl
-		})
-		builder.addCase(resetPasswordThunk.fulfilled, (state, action) => {
-			state.timerVisible = true
-			state.callbackUrl = action.payload.callbackUrl
-		})
 
 		builder.addCase(otpForLoginThunk.pending, (state) => {
 			state.authLoading = true
@@ -76,28 +66,14 @@ const auth = createSlice({
 			state.authLoading = false
 			state.callbackUrl = action.payload.callbackUrl
 		})
-
-		builder.addCase(resendOtpThunk.pending, (state) => {
-			state.authLoading = true
-		})
-		builder.addCase(resendOtpThunk.fulfilled, (state, action) => {
-			state.callbackUrl = action.payload.callbackUrl
-			state.authLoading = false
-		})
-
-		builder.addCase(resetPasswordOtpThunk.fulfilled, (state, action) => {
-			state.callbackUrl = action.payload.callbackUrl
-		})
 	},
 })
 
-const startLogin = (builder: ActionReducerMapBuilder<AuthState>) => {
+const login = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(startLoginThunk.fulfilled, (state, action) => {
 		state.callbackUrl = action.payload.callbackUrl
 	})
-}
 
-const usernameAndPassword = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder
 		.addCase(usernameAndPaswordThunk.pending, (state) => {
 			state.authLoading = true
@@ -110,6 +86,50 @@ const usernameAndPassword = (builder: ActionReducerMapBuilder<AuthState>) => {
 		.addCase(usernameAndPaswordThunk.rejected, (state) => {
 			state.authLoading = false
 		})
+}
+
+const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
+	builder.addCase(forgotPasswordStartThunk.fulfilled, (state, action) => {
+		state.callbackUrl = action.payload.callbackUrl
+	})
+
+	builder.addCase(resetPasswordStartThunk.pending, (state) => {
+		state.authLoading = true
+	})
+	builder.addCase(resetPasswordStartThunk.fulfilled, (state, action) => {
+		state.authLoading = false
+		state.callbackUrl = action.payload.callbackUrl
+		state.timerVisible = action.payload.timerVisible
+	})
+	builder.addCase(resetPasswordStartThunk.rejected, (state) => {
+		state.authLoading = false
+	})
+
+	builder.addCase(resetPasswordOtpThunk.pending, (state) => {
+		state.authLoading = true
+	})
+	builder.addCase(resetPasswordOtpThunk.fulfilled, (state, action) => {
+		state.authLoading = false
+		state.callbackUrl = action.payload.callbackUrl
+	})
+	builder.addCase(resetPasswordOtpThunk.rejected, (state) => {
+		state.authLoading = false
+	})
+}
+
+const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
+	builder.addCase(resendOtpThunk.pending, (state) => {
+		state.authLoading = true
+	})
+	builder.addCase(resendOtpThunk.fulfilled, (state, action) => {
+		state.authLoading = false
+		state.callbackUrl = action.payload.callbackUrl
+		state.timerVisible = true
+	})
+	builder.addCase(resendOtpThunk.rejected, (state) => {
+		state.authLoading = false
+		state.timerVisible = true
+	})
 }
 
 const resetOtp = (builder: ActionReducerMapBuilder<AuthState>) => {
@@ -161,5 +181,5 @@ const countries = (builder: ActionReducerMapBuilder<AuthState>) => {
 	})
 }
 
-export const { savePkceInfo, resetAuthState, setOtpType } = auth.actions
+export const { savePkceInfo, setOtpType, setTimer } = auth.actions
 export default auth.reducer

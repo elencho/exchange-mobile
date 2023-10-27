@@ -47,7 +47,7 @@ export default function WithKeyboard({
 
 	return (
 		<KeyboardAvoidingView
-			behavior={Platform.select({ android: undefined, ios: 'padding' })}
+			behavior={Platform.select({ android: 'padding', ios: 'padding' })}
 			keyboardVerticalOffset={Platform.select({
 				ios: keyboardVerticalOffsetIOS,
 				android: 0,
