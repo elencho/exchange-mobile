@@ -115,9 +115,9 @@ const Register = ({ navigation }: Props) => {
 				})
 			)
 		} else {
-			mail && setMailErr(!valid.email)
+			setMailErr(!valid.email)
 			setPassErr(!valid.pass)
-			confirmPass && setConfirmPassErr(!valid.confirmPass)
+			setConfirmPassErr(!valid.confirmPass)
 			setPhoneErr(!valid.phone)
 			setTermsSelectedErr(!valid.terms)
 		}
@@ -160,7 +160,7 @@ const Register = ({ navigation }: Props) => {
 						style={styles.input}
 						onFocus={() => setMailErr(false)}
 						onChangeText={setMail}
-						error={mailErr && 'Enter Valid Email'}
+						error={mailErr && (mail ? 'Enter Valid Email' : true)}
 					/>
 					<AppInput
 						value={pass}

@@ -2,7 +2,6 @@ import * as Linking from 'expo-linking'
 import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { MaterialIndicator } from 'react-native-indicators'
 import { useDispatch, useSelector } from 'react-redux'
 import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
@@ -11,10 +10,11 @@ import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import KVStore from '@store/kv'
 import { resendOtpThunk, startLoginThunk } from '@store/redux/auth/thunks'
-import TwoFaInput from '@app/components/TwoFaInput'
+import TwoFaInput from '@components/input_2fa'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
+import { setTimer } from '@store/redux/auth/slice'
 
 export const ResetOtpInstructions = (
 	props: ScreenProp<'ResetOtpInstructions'>
@@ -25,7 +25,7 @@ export const ResetOtpInstructions = (
 	const resetOtpType = props.route.params?.resetOtpType
 
 	const state = useSelector((state: RootState) => state.auth)
-	const { callbackUrl, timerVisible } = state
+	const { timerVisible } = state
 
 	const [url, setUrl] = useState('')
 	const [value, setValue] = useState('')
@@ -36,7 +36,7 @@ export const ResetOtpInstructions = (
 
 	useEffect(() => {
 		if (!seconds) {
-			state.timerVisible = false
+			dispatch(setTimer(false))
 			setSeconds(30)
 		}
 		if (seconds && timerVisible) {
@@ -47,32 +47,22 @@ export const ResetOtpInstructions = (
 	}, [seconds, timerVisible])
 
 	useEffect(() => {
-		state.timerVisible = true
+		setTimer(true)
 
 		const language = KVStore.get('language')
 		setUrl(`https://support.cryptal.com/hc/${language}`)
 
 		return () => {
 			setValue('')
-			state.timerVisible = false
+			setTimer(false)
 			setSeconds(30)
 		}
 	}, [])
 
-	const resend = () => dispatch(resendOtpThunk('Login2Fa'))
+	const resend = () => dispatch(resendOtpThunk({ from: 'Login2Fa' }))
 
 	const resendOrCountDown = () => {
-		if (false) {
-			// TODO: transactions: { loading }
-			return (
-				<MaterialIndicator
-					color="#6582FD"
-					animationDuration={3000}
-					size={16}
-					style={{ flex: 0 }}
-				/>
-			)
-		} else if (timerVisible) {
+		if (timerVisible) {
 			return (
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)
@@ -83,7 +73,12 @@ export const ResetOtpInstructions = (
 
 	return (
 		<AppBackground>
-			<WithKeyboard modal={undefined} refreshControl={undefined}>
+			<WithKeyboard
+				padding={true}
+				flexGrow={true}
+				modal={undefined}
+				refreshControl={undefined}
+				scrollUp={undefined}>
 				<TouchableOpacity style={styles.back} onPress={goBack}>
 					<AppButton variant="text" text="Go Back" style={styles.backText} />
 				</TouchableOpacity>
@@ -114,12 +109,9 @@ export const ResetOtpInstructions = (
 								navigation={props.navigation}
 								value={value}
 								setValue={setValue}
-								login
-								fromResetOtp
+								cellCount={6}
+								from="ResetOtpInstructions"
 								indicatorStyle={{ top: '70%' }}
-								withdrawal={undefined}
-								whitelist={undefined}
-								registration={undefined}
 							/>
 						</View>
 					)}
@@ -154,7 +146,6 @@ const _styles = (theme: Theme) =>
 		back: {
 			flexDirection: 'row',
 			alignItems: 'center',
-
 			marginTop: 28,
 			width: '33%',
 		},

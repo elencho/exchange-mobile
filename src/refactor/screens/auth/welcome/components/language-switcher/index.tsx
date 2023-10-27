@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Pressable, StyleSheet } from 'react-native'
 import Animated from 'react-native-reanimated'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,13 +7,9 @@ import Geo from '@assets/images/Georgian.svg'
 import Arrow from '@assets/images/SwitcherArrow.svg'
 import { useTheme, Theme } from '@theme/index'
 import AppText from '@components/text/index'
-import KVStore from '@store/kv'
 import useAnimation from '@app/refactor/screens/auth/welcome/components/language-switcher/animation'
-import { switchLanguage } from '@app/utils/i18n'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { setLanguage } from '@store/redux/common/slice'
-import { setLanguage as setLanguageOld } from '@app/redux/profile/actions'
-import { System } from '@app/refactor/common/util'
 
 const LanguageSwitcher = () => {
 	const dispatch = useDispatch()
@@ -58,7 +54,7 @@ const _styles = (theme: Theme) => {
 	return StyleSheet.create({
 		container: {
 			alignSelf: 'center',
-			marginBottom: 140,
+			marginBottom: 40,
 			borderWidth: 1,
 			borderColor: theme.color.border,
 			width: 140,

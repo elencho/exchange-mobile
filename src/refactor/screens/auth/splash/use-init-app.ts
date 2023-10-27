@@ -6,7 +6,7 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch } from 'react-redux'
 import { useTheme } from '@theme/index'
 import { checkReadiness, fetchTranslations } from '@store/redux/auth/api'
-import { resetAuthState, setOtpType } from '@store/redux/auth/slice'
+import { setOtpType } from '@store/redux/auth/slice'
 import { fetchCountriesThunk } from '@store/redux/auth/thunks'
 import { currentVersion } from '@app/constants/system'
 import { System } from '@app/refactor/common/util'
@@ -26,7 +26,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	)
 
 	const startApp = async () => {
-		dispatch(resetAuthState())
+		// TODO: Reset state if needed
 		dispatch(fetchCountriesThunk())
 
 		KVStore.del('webViewVisible')
@@ -41,7 +41,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		}
 
 		// // ! For Testing
-		// navigation.navigate('Login')
+		// navigation.navigate('Welcome')
 		// return
 
 		if (hasUnlock()) {

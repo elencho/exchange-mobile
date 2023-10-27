@@ -79,24 +79,78 @@ export const usernameAndPaswordThunk = createAsyncThunk(
 	}
 )
 
+export const forgotPasswordStartThunk = createAsyncThunk(
+	'forgotPasswordStart',
+	async (
+		{ navigation }: { navigation: NativeStackNavigationProp<Screens, any> },
+		{}
+	) => {
+		const data = await forgotPassword()
+
+		if (data.execution === Execution.RESET_PASSWORD_WITH_CODE) {
+			navigation.navigate('ForgotPassword')
+		} else if (data.execution === Execution.LOGIN_OTP) {
+			navigation.navigate('Login2Fa')
+		}
+
+		return { callbackUrl: data.callbackUrl }
+	}
+)
+
+export const resetPasswordStartThunk = createAsyncThunk(
+	'resetPassword',
+	async ({ mail }: { mail: string }, { getState }) => {
+		const { callbackUrl } = (getState() as RootState).auth
+
+		const data = await resetPassword(callbackUrl, mail)
+		const timerVisible =
+			data.execution === Execution.RESET_PASSWORD_WITH_CODE &&
+			data.errors.length === 0
+
+		return { timerVisible, callbackUrl: data.callbackUrl }
+	}
+)
+
+export const resetPasswordOtpThunk = createAsyncThunk(
+	'resetPasswordOtp',
+	async (
+		{
+			mail,
+			otp,
+			navigation,
+		}: {
+			mail: string
+			otp: string
+			navigation: NativeStackNavigationProp<Screens, any>
+		},
+		{ getState }
+	) => {
+		const state = (getState() as RootState).auth
+		const data = await resetPasswordOtp(state.callbackUrl, mail, otp)
+
+		if (data.execution === Execution.LOGIN_OTP) {
+			navigation.navigate('Login2Fa')
+		}
+		return { callbackUrl: data.callbackUrl }
+	}
+)
+
 export const resetOtpThunk = createAsyncThunk(
 	'resetOtp',
 	async (navigation: NativeStackNavigationProp<Screens, any>, { getState }) => {
 		const state = (getState() as RootState).auth
 
-		const resetOtpInfo = await resetOtp(state.callbackUrl)
-		const resetType: ResetOtp | undefined = resetOtpInfo.attributes
-			.resetOTPInstructions
+		const data = await resetOtp(state.callbackUrl)
+		const resetType: ResetOtp | undefined = data.attributes.resetOTPInstructions
 			? 'Support'
-			: resetOtpInfo.attributes.resetOTP &&
-			  resetOtpInfo.attributes.otpType === 'EMAIL'
+			: data.attributes.resetOTP && data.attributes.otpType === 'EMAIL'
 			? 'Manual'
 			: undefined
 
 		navigation.replace('ResetOtpInstructions', {
 			resetOtpType: resetType,
 		})
-		return resetOtpInfo
+		return { callbackUrl: data.callbackUrl, otpType: data.attributes.otpType }
 	}
 )
 
@@ -104,7 +158,7 @@ type ResendFrom = 'Login2Fa' | 'EmailVerification' | 'TODO:SMS_EMAIL_MODAL'
 
 export const resendOtpThunk = createAsyncThunk(
 	'resendOtp',
-	async ({ from }: { from: ResendFrom }, { dispatch, getState }) => {
+	async ({ from }: { from: ResendFrom }, { getState }) => {
 		const state = (getState() as RootState).auth
 
 		//TODO: SmsEmail Modal
@@ -181,63 +235,6 @@ const codeToTokenThunk = (
 
 		return { otpType }
 	})()
-
-export const forgotPasswordStartThunk = createAsyncThunk(
-	'forgotPasswordStart',
-	async (
-		{ navigation }: { navigation: NativeStackNavigationProp<Screens, any> },
-		{ getState }
-	) => {
-		const state = (getState() as RootState).auth
-		const data = await forgotPassword()
-
-		if (data.execution === Execution.RESET_PASSWORD_WITH_CODE) {
-			navigation.navigate('ForgotPassword')
-		} else if (data.execution === Execution.LOGIN_OTP) {
-			navigation.navigate('Login2Fa')
-		}
-
-		return { callbackUrl: data.callbackUrl }
-	}
-)
-
-export const resetPasswordThunk = createAsyncThunk(
-	'resetPassword',
-	async ({ mail }: { mail: string }, { getState }) => {
-		const { callbackUrl } = (getState() as RootState).auth
-
-		const data = await resetPassword(callbackUrl, mail)
-		const timerVisible =
-			data.execution == Execution.RESET_PASSWORD_WITH_CODE &&
-			data.errors.length == 0
-
-		return { timerVisible, callbackUrl: data.callbackUrl }
-	}
-)
-
-export const resetPasswordOtpThunk = createAsyncThunk(
-	'resetPasswordOtp',
-	async (
-		{
-			mail,
-			otp,
-			navigation,
-		}: {
-			mail: string
-			otp: string
-			navigation: NativeStackNavigationProp<Screens, any>
-		},
-		{ getState }
-	) => {
-		const state = (getState() as RootState).auth
-		const data = await resetPasswordOtp(state.callbackUrl, mail, otp)
-
-		if (data.execution === Execution.LOGIN_OTP) {
-			navigation.navigate('Login2Fa')
-		}
-		return { callbackUrl: data.callbackUrl }
-	}
-)
 
 export const setNewPasswordOtpThunk = createAsyncThunk(
 	'setNewPassword',
