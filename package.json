@@ -116,7 +116,6 @@
 		"@tsconfig/react-native": "^2.0.3",
 		"@types/jest": "^29.4.4",
 		"@types/react": "^18.0.28",
-		"@types/react-native-indicators": "^0.16.4",
 		"@types/react-native-version-check": "^3.4.7",
 		"@types/react-test-renderer": "^18.0.0",
 		"husky": "^8.0.3",
