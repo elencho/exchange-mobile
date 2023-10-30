@@ -14,7 +14,7 @@ import {
 	setTransactionsOffset,
 } from '@app/refactor/redux/transactions/transactionSlice'
 
-function TransactionFilterBottom({ navigation, isInstantTrade }) {
+function TransactionFilterBottom({ handleClose, isInstantTrade }) {
 	const {
 		transactions: {
 			cryptoFilter: cryptoTransactions,
@@ -59,24 +59,15 @@ function TransactionFilterBottom({ navigation, isInstantTrade }) {
 		isInstantTrade
 			? dispatch(setTradesOffset(0))
 			: dispatch(setTransactionsOffset(0))
-		navigation.navigate('Main', {
-			screen: 'Transactions',
-			params: { isFromTransactions: true },
-		})
-	}
-
-	const clearTradesAction = () => {
-		dispatch(clearTradeFilters())
-	}
-
-	const clearTransactionsAction = () => {
-		dispatch(clearTransactionFilters())
+		handleClose()
 	}
 
 	const clear = () => {
 		if (isFilteredAny) {
-			navigation.navigate('Main', { screen: 'Transactions' })
-			isInstantTrade ? clearTradesAction() : clearTransactionsAction()
+			handleClose()
+			isInstantTrade
+				? dispatch(clearTradeFilters())
+				: dispatch(clearTransactionFilters())
 		}
 	}
 

@@ -44,6 +44,7 @@ interface ModalsSlice {
 	transferMethodModalVisible: boolean
 	templatesModalVisible: boolean
 	addCardModalVisible: boolean
+	transactionFiltersModalVisible: boolean
 	statusModalInfo: any | null
 	deleteModalInfo: Record<string, any>
 }
@@ -61,6 +62,7 @@ export const initialState: ModalsSlice = {
 	chooseCurrencyModalVisible: false,
 	transactionDetailsVisible: false, // Both transactions and trades
 	chooseMethodsModalVisible: false,
+	transactionFiltersModalVisible: false,
 
 	// Instant Trade
 	buySellModalVisible: false,

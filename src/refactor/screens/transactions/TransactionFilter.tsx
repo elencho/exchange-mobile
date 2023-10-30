@@ -43,15 +43,24 @@ import {
 } from '@app/refactor/redux/transactions/transactionSlice'
 import FilterRow from '@app/refactor/screens/transactions/components/FilterRow'
 import TransactionFilterBottom from './components/TransactionFilterBottom'
+import AppModal from '@app/components/AppModal'
 
 const WINDOW_HEIGHT = Dimensions.get('window').height
 
-export default function TransactionFilter({ navigation, route }) {
+interface Props {
+	isOpen: boolean
+	handleClose: () => void
+	isInstantTrade: boolean
+}
+
+export default function TransactionFilter({
+	isOpen,
+	handleClose,
+	isInstantTrade,
+}: Props) {
 	const dispatch = useDispatch()
 	const { top, bottom } = useSafeAreaInsets()
-	const {
-		params: { isInstantTrade },
-	} = route
+
 	const [prevFilterState, setPrevFilterState] = useState({})
 
 	const {
@@ -90,14 +99,17 @@ export default function TransactionFilter({ navigation, route }) {
 		status,
 	}
 
-	const close = async () => {
+	const savePrevFilters = async () => {
 		isInstantTrade
 			? dispatch(setPreviousTradeFilter(prevFilterState))
 			: dispatch(setPreviousTransactionsFilter(prevFilterState))
-		navigation.navigate('Main', { screen: 'Transactions' })
 	}
 
 	const seperateCurrencyName = (currency) => currency.split('(')[0]
+	const onClosePressed = () => {
+		savePrevFilters()
+		handleClose()
+	}
 
 	const openModal = () =>
 		isInstantTrade
@@ -113,22 +125,15 @@ export default function TransactionFilter({ navigation, route }) {
 	const selectedCrypto = isInstantTrade ? cryptoCodeQuery : cryptoTransactions
 
 	useEffect(() => {
+		console.log('isInstantTrade', isInstantTrade)
+
 		isInstantTrade
 			? setPrevFilterState(initialStateTrade)
 			: setPrevFilterState(initialStateTransactions)
-	}, [])
+	}, [isInstantTrade])
 
-	return (
-		<Background>
-			<View style={styles.closeContainer}>
-				<Headline title="Transaction Filter" />
-				<TouchableOpacity
-					onPress={close}
-					hitSlop={50}
-					style={styles.closeButton}>
-					<Close />
-				</TouchableOpacity>
-			</View>
+	const children = (
+		<>
 			<ScrollView
 				style={styles.container}
 				bounces={false}
@@ -211,7 +216,7 @@ export default function TransactionFilter({ navigation, route }) {
 						marginTop: 50,
 					}}>
 					<TransactionFilterBottom
-						navigation={navigation}
+						handleClose={handleClose}
 						isInstantTrade={isInstantTrade}
 					/>
 				</View>
@@ -223,7 +228,18 @@ export default function TransactionFilter({ navigation, route }) {
 			<DatePickerModal isInstantTrade={isInstantTrade} from />
 			<DatePickerModal isInstantTrade={isInstantTrade} to />
 			<ChooseMethodsModal />
-		</Background>
+		</>
+	)
+
+	return (
+		<AppModal
+			visible={isOpen}
+			title="Transaction Filter"
+			hide={onClosePressed}
+			children={children}
+			// onModalHide={savePrevFilters}
+			fullScreen
+		/>
 	)
 }
 
