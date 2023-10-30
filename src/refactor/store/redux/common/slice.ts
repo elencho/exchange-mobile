@@ -5,10 +5,12 @@ import KVStore from '@store/kv'
 
 interface CommonState {
 	language: Language
+	currencyList: string[]
 }
 
 const initialState: CommonState = {
 	language: KVStore.get('language') || 'en',
+	currencyList: [],
 }
 
 const common = createSlice({
@@ -20,8 +22,11 @@ const common = createSlice({
 			state.language = action.payload
 			KVStore.set('language', action.payload)
 		},
+		setCurrencyList(state, action: PayloadAction<string[]>) {
+			state.currencyList = action.payload
+		},
 	},
 })
 
-export const { setLanguage } = common.actions
+export const { setLanguage, setCurrencyList } = common.actions
 export default common.reducer
