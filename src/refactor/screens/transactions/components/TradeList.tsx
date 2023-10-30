@@ -55,7 +55,7 @@ const TradeList = ({ isInstantTrade }) => {
 	const onRefresh = () => refreshTrades()
 
 	const renderTrade = ({ item, index }) => (
-		<Transaction transactionData={item} isLast={index === trades.length - 1} />
+		<Transaction transactionData={item} isLast={index === totalTradesQty - 1} />
 	)
 
 	const listEmptyContainer = () =>

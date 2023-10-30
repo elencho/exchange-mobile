@@ -53,7 +53,7 @@ const TransactionList = ({ isInstantTrade }) => {
 				isTransfer
 				transactionData={item}
 				loading={transactionsLoading}
-				isLast={index === transactions?.length - 1}
+				isLast={index === totalTransactionsQty - 1}
 			/>
 		)
 	}
