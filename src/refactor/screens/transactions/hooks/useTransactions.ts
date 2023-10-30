@@ -67,7 +67,10 @@ const useTransactions = () => {
 		try {
 			console.log('refreshTransactions')
 			dispatch(setTransactionsOffset(0))
-			const transactionsData = await fetchTransactionsApi(queryParams)
+			const transactionsData = await fetchTransactionsApi({
+				...queryParams,
+				offset: 0,
+			})
 			const newTransactions = transactionsData?.data
 			setTransactions([...newTransactions])
 		} catch (error) {
