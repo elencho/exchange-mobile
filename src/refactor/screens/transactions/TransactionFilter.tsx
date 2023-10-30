@@ -125,8 +125,6 @@ export default function TransactionFilter({
 	const selectedCrypto = isInstantTrade ? cryptoCodeQuery : cryptoTransactions
 
 	useEffect(() => {
-		console.log('isInstantTrade', isInstantTrade)
-
 		isInstantTrade
 			? setPrevFilterState(initialStateTrade)
 			: setPrevFilterState(initialStateTransactions)
