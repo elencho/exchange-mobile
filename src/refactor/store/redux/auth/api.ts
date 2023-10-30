@@ -12,6 +12,9 @@ import {
 	REGISTRATION_START_URL,
 } from '@app/constants/api'
 import { AppReadiness, Dictionary } from '@app/refactor/types/auth/splash'
+import KVStore from '@store/kv'
+import store from '@app/redux/store'
+import { setAccessToken, setGeneralError } from '@store/redux/common/slice'
 
 const authRedirectUrl = Constants?.manifest?.extra?.authRedirectUrl
 
@@ -242,6 +245,29 @@ export const verifyAccount = async (callbackUrl: string, otp: string) => {
 		data: `otp=${otp}`,
 	})
 	return data?.data
+}
+
+export const refreshTokenAndRetryCall = async (config: any) => {
+	//TODO: Type
+	const refreshToken = KVStore.get('refreshToken')
+	const refreshData = await axios({
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		url: CODE_TO_TOKEN,
+		data: `grant_type=refresh_token&client_id=mobile-service-public&refresh_token=${refreshToken}`,
+	})
+
+	const data = refreshData.data
+
+	if (data) {
+		if (data.access_token && data.refresh_token) {
+			//TODO: update otpType in Auth store
+			KVStore.set('refreshToken', data.refresh_token)
+			store.dispatch(setAccessToken(data.access_token))
+			if (config) return axios.request(config)
+			return data.access_token
+		}
+	}
 }
 
 export const fetchCountries = async () => {

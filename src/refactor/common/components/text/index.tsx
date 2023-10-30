@@ -14,10 +14,19 @@ type Props = TextProps & {
 	variant?: Variant
 	medium?: boolean
 	noTranslate?: boolean
+	transParams?: TransParams
 }
 
 const AppText: React.FC<Props> = (props) => {
-	const { variant, medium, noTranslate, children, onPress, style } = props
+	const {
+		variant,
+		medium,
+		noTranslate,
+		children,
+		onPress,
+		transParams,
+		style,
+	} = props
 	const { theme } = useTheme()
 
 	const language = useSelector((state: RootState) => state.common.language)
@@ -25,8 +34,11 @@ const AppText: React.FC<Props> = (props) => {
 
 	const translate = (textNode: ReactNode) => {
 		const { t } = useTranslation()
-		if (typeof textNode === 'string' && !noTranslate) return t(textNode)
-		return textNode
+		if (typeof textNode !== 'string' || noTranslate) {
+			return textNode
+		}
+		if (transParams) return t(textNode, transParams)
+		else return t(textNode)
 	}
 	const text = translate(children)
 

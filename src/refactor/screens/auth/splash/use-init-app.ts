@@ -3,7 +3,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import jwt_decode from 'jwt-decode'
 import { useCallback } from 'react'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@theme/index'
 import { checkReadiness, fetchTranslations } from '@store/redux/auth/api'
 import { setOtpType } from '@store/redux/auth/slice'
@@ -12,12 +12,17 @@ import { currentVersion } from '@app/constants/system'
 import { System } from '@app/refactor/common/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import KVStore from '@app/refactor/store/kv'
-import { TokenEmail, TokenOtpType } from '@app/refactor/types/auth/splash'
 import { i18n } from '@app/refactor/setup/i18n'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import store from '@app/refactor/redux/store'
+import { TokenParams } from '@app/refactor/types/auth/splash'
 
 export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const { theme } = useTheme()
 	const dispatch = useDispatch()
+	const accessToken = useSelector(
+		(state: RootState) => state.common.accessToken
+	)
 
 	useFocusEffect(
 		useCallback(() => {
@@ -26,17 +31,14 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	)
 
 	const startApp = async () => {
-		// TODO: Reset state if needed
 		dispatch(fetchCountriesThunk())
-
 		KVStore.del('webViewVisible')
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
-
 		await fetchLexicon()
 
-		const accessToken = KVStore.get('accessToken')
+		const accessToken = store.getState().common.accessToken
 		if (accessToken) {
-			const otpType = jwt_decode<TokenOtpType>(accessToken)?.otpType
+			const otpType = jwt_decode<TokenParams>(accessToken)?.otpType
 			dispatch(setOtpType(otpType))
 		}
 
@@ -44,7 +46,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		// navigation.navigate('Welcome')
 		// return
 
-		if (hasUnlock()) {
+		if (hasUnlock(accessToken)) {
 			if (!accessToken) {
 				navigation.navigate('Welcome')
 			}
@@ -65,12 +67,11 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		}
 	}
 
-	const hasUnlock = (): Boolean => {
+	const hasUnlock = (accessToken: string | undefined): Boolean => {
 		const bioEnabledEmails = KVStore.get('bioEnabledEmails')
-		const accessToken = KVStore.get('accessToken')
 		if (!bioEnabledEmails || !accessToken) return false
 
-		const email = jwt_decode<TokenEmail>(accessToken)?.email
+		const email = jwt_decode<TokenParams>(accessToken)?.email
 		return bioEnabledEmails.includes(email)
 	}
 

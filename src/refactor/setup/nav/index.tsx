@@ -2,6 +2,7 @@ import {
 	NavigationContainer,
 	createNavigationContainerRef,
 	DefaultTheme,
+	NavigationState,
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
@@ -25,12 +26,14 @@ import Resume from '@app/screens/Resume'
 import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
 import { Screens } from './nav'
+import { useDispatch } from 'react-redux'
+import { setGeneralError } from '@store/redux/common/slice'
 
 const Stack = createNativeStackNavigator<Screens>()
-export const navigationRef = createNavigationContainerRef()
+export const navigationRef = createNavigationContainerRef<Screens>()
 
 export default function AppNavigator() {
-	// const dispatch = useDispatch()
+	const dispatch = useDispatch()
 	// const state: any = useSelector((state) => state)
 	// const {
 	// 	errors: { generalError },
@@ -50,9 +53,15 @@ export default function AppNavigator() {
 	// 		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
 	// }
 
+	// const onNavigationChanged = (state?: NavigationState) => {
+	// 	setTimeout(() => {
+	// 		dispatch(setGeneralError(undefined))
+	// 	}, 1000)
+	// }
+
 	return (
 		<NavigationContainer
-			// onStateChange={onStateChange}
+			//onStateChange={onNavigationChanged}
 			ref={navigationRef}
 			theme={{
 				dark: true,

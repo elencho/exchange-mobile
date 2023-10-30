@@ -1,8 +1,5 @@
-export interface TokenEmail {
+export interface TokenParams {
 	email: string
-}
-
-export interface TokenOtpType {
 	otpType: OTP
 }
 

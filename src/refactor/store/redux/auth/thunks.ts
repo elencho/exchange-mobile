@@ -4,7 +4,6 @@ import jwt_decode from 'jwt-decode'
 import pkceChallenge from 'react-native-pkce-challenge'
 import KVStore from '@store/kv'
 import { NavProp, Route, Screens } from '@app/refactor/setup/nav/nav'
-import { TokenOtpType } from '@app/refactor/types/auth/splash'
 import { Execution } from '@app/refactor/types/enums'
 import { RootState } from '../../../redux/rootReducer'
 import {
@@ -24,6 +23,8 @@ import {
 	verifyAccount,
 } from './api'
 import { savePkceInfo } from './slice'
+import { setAccessToken } from '@store/redux/common/slice'
+import { TokenParams } from '@app/refactor/types/auth/splash'
 
 export const startLoginThunk = createAsyncThunk(
 	'startLogin',
@@ -212,12 +213,12 @@ const codeToTokenThunk = (
 	from: Route,
 	navigation: NativeStackNavigationProp<Screens, any>
 ) =>
-	createAsyncThunk('codeToToken', async (_, {}) => {
+	createAsyncThunk('codeToToken', async (_, { dispatch }) => {
 		const tokenData = await codeToToken(code, codeVerifier || '')
-		KVStore.set('accessToken', tokenData.access_token)
+		dispatch(setAccessToken(tokenData.access_token))
 		KVStore.set('refreshToken', tokenData.refresh_token)
 
-		const otpType = jwt_decode<TokenOtpType>(tokenData.access_token)?.otpType
+		const otpType = jwt_decode<TokenParams>(tokenData.access_token)?.otpType
 
 		if (navigation) {
 			KVStore.set('isLoggedIn', true)
