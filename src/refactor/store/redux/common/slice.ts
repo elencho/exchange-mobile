@@ -5,7 +5,6 @@ import KVStore from '@store/kv'
 
 interface CommonState {
 	language: Language
-	accessToken?: string
 	generalError?: GeneralErrorData
 	lastRequestErrorToast: boolean
 	currencyList: string[]
@@ -26,9 +25,6 @@ const common = createSlice({
 			KVStore.set('language', action.payload)
 			i18n.switchLanguage(action.payload)
 		},
-		setAccessToken(state, action: PayloadAction<string | undefined>) {
-			state.accessToken = action.payload
-		},
 		setGeneralError(
 			state,
 			action: PayloadAction<GeneralErrorData | undefined>
@@ -44,11 +40,6 @@ const common = createSlice({
 	},
 })
 
-export const {
-	setLanguage,
-	setGeneralError,
-	setIsToast,
-	setAccessToken,
-	setCurrencyList,
-} = common.actions
+export const { setLanguage, setGeneralError, setIsToast, setCurrencyList } =
+	common.actions
 export default common.reducer

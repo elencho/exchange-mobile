@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import Arrow from '@assets/images/Arrow.svg'
 import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
-import AppBackground from '@components/background'
 import { AppButton } from '@components/button'
 import AppInput from '@components/input'
 import AppText from '@components/text'
@@ -22,7 +21,6 @@ import {
 	registrationFormThunk,
 	startRegistrationThunk,
 } from '@store/redux/auth/thunks'
-import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { COUNTRIES_URL_PNG } from '@app/constants/api'
 import CountriesModal from '@app/refactor/common/modals/countries'
@@ -30,7 +28,8 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import TermsCheck from '@app/refactor/screens/auth/register/components/check_terms'
 import PersonalCompanySwitcher from '@app/refactor/screens/auth/register/components/personal_company_switcher'
 import { Screens } from '@app/refactor/setup/nav/nav'
-import { errorHappenedHere } from '@app/utils/appUtils'
+import GeneralError from '@components/general_error'
+import useCleanGeneralError from '@components/general_error/use_clean_error'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -38,30 +37,30 @@ const Register = ({ navigation }: Props) => {
 	const dispatch = useDispatch()
 	const { styles, theme } = useTheme(_styles)
 
-	const [userType, setUserType] = useState<UserType>('Personal')
+	const [userType, setUserType] = useState<UserType>('Company')
 
-	const [mail, setMail] = useState('')
+	const [mail, setMail] = useState('remora.427@gmail.com')
 	const [mailErr, setMailErr] = useState(false)
 
-	const [pass, setPass] = useState('')
+	const [pass, setPass] = useState('Derrickrose1')
 	const [passErr, setPassErr] = useState(false)
 
-	const [confirmPass, setConfirmPass] = useState('')
+	const [confirmPass, setConfirmPass] = useState('Derrickrose1')
 	const [confirmPassErr, setConfirmPassErr] = useState(false)
 
-	// Default: {
-	// 	banned: false,
-	// 	phoneCode: '+995',
-	// 	name: 'Georgia',
-	// 	code: 'GEO',
-	// }
-	const [chosenCountry, setChosenCountry] = useState<Country | undefined>()
+	const x = {
+		banned: false,
+		phoneCode: '+995',
+		name: 'Georgia',
+		code: 'GEO',
+	}
+	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(x)
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
-	const [phone, setPhone] = useState('')
+	const [phone, setPhone] = useState('4324413154')
 	const [phoneErr, setPhoneErr] = useState(false)
 
-	const [termsSelected, setTermsSelected] = useState(false)
+	const [termsSelected, setTermsSelected] = useState(true)
 	const [termsSelectedErr, setTermsSelectedErr] = useState(false)
 
 	const [referral, setReferral] = useState('')
@@ -98,13 +97,14 @@ const Register = ({ navigation }: Props) => {
 		setTermsSelectedErr(false)
 	}, [termsSelected])
 
+	useCleanGeneralError()
+
 	const onRegisterPressed = () => {
 		const allInputsValid = Object.values(valid).every(Boolean)
 
 		if (allInputsValid) {
 			dispatch(
 				registrationFormThunk({
-					navigation,
 					clientType: userType,
 					email: mail,
 					passwordNew: pass,
@@ -150,10 +150,7 @@ const Register = ({ navigation }: Props) => {
 						chosenType={userType}
 						onUserTypeChanged={setUserType}
 					/>
-					<GeneralError
-						style={styles.error}
-						show={errorHappenedHere('Registration')}
-					/>
+					<GeneralError style={styles.error} />
 					<AppInput
 						value={mail}
 						label="Enter E-mail"

@@ -5,24 +5,23 @@ import { useCallback } from 'react'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@theme/index'
-import { checkReadiness, fetchTranslations } from '@store/redux/auth/api'
-import { setOtpType } from '@store/redux/auth/slice'
+import {
+	checkReadiness,
+	fetchTranslations,
+	getTokensOnInit,
+} from '@store/redux/auth/api'
 import { fetchCountriesThunk } from '@store/redux/auth/thunks'
 import { currentVersion } from '@app/constants/system'
 import { System } from '@app/refactor/common/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import KVStore from '@app/refactor/store/kv'
 import { i18n } from '@app/refactor/setup/i18n'
-import { RootState } from '@app/refactor/redux/rootReducer'
-import store from '@app/refactor/redux/store'
 import { TokenParams } from '@app/refactor/types/auth/splash'
+import { setTokens } from '@store/redux/auth/slice'
 
 export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const { theme } = useTheme()
 	const dispatch = useDispatch()
-	const accessToken = useSelector(
-		(state: RootState) => state.common.accessToken
-	)
 
 	useFocusEffect(
 		useCallback(() => {
@@ -36,11 +35,10 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
 		await fetchLexicon()
 
-		const accessToken = store.getState().common.accessToken
-		if (accessToken) {
-			const otpType = jwt_decode<TokenParams>(accessToken)?.otpType
-			dispatch(setOtpType(otpType))
-		}
+		const tokens = await getTokensOnInit()
+		const accessToken = tokens?.access_token
+		const refreshToken = tokens?.refresh_token
+		if (refreshToken && accessToken) setTokens({ refreshToken, accessToken })
 
 		// // ! For Testing
 		// navigation.navigate('Welcome')
@@ -50,7 +48,6 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			if (!accessToken) {
 				navigation.navigate('Welcome')
 			}
-
 			// TODO: შემდეგ ვიძახებთ user info-ს ავტორიზაციის შესამოწმებლად  თუ წარუმატებელი აღმოჩნდა ვისვრით ავტორიზაციაზე
 			// if userInfo 200 -> Welcome, else -> Resume
 			// Next: as below

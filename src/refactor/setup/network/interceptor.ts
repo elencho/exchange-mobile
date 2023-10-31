@@ -2,17 +2,16 @@ import axios from 'axios'
 import KVStore from '@store/kv'
 import store from '@app/refactor/redux/store'
 import {
-	setAccessToken,
 	setGeneralError,
 	setIsToast as setLastRequestToast,
 } from '@store/redux/common/slice'
 import { navigationRef } from '@app/refactor/setup/nav'
-import { refreshTokenAndRetryCall } from '@store/redux/auth/api'
+import { retryUnauthorizedCall } from '@store/redux/auth/api'
 
 axios.interceptors.request.use((request) => {
 	const hasToast: boolean | undefined = request.headers.toast
 	const requestName: string | undefined = request.headers.requestName
-	const accessToken = store.getState().common.accessToken
+	const accessToken = store.getState().auth.accessToken
 
 	const needsToken =
 		requestName !== 'fetchTranslations' && requestName !== 'fetchCountries'
@@ -71,15 +70,19 @@ const handleError = async (err: any) => {
 	if (status === 401) {
 		const refreshToken = KVStore.get('refreshToken')
 		if (refreshToken) {
-			const response = await refreshTokenAndRetryCall(err.config)
+			const response = await retryUnauthorizedCall(err.config)
 			return response
+		} else {
+			KVStore.del('refreshToken')
+			navigationRef.navigate('Welcome')
 		}
 	}
 
 	if (status === 400 && invalidGrant) {
-		KVStore.del('refreshToken')
-		store.dispatch(setAccessToken(undefined))
-		navigationRef.navigate('Welcome')
+		// TODO: What?
+		// KVStore.del('refreshToken')
+		// store.dispatch(setAccessToken(undefined))
+		// navigationRef.navigate('Welcome')
 		//TODO: store.dispatch({ type: 'LOGOUT' })
 	}
 

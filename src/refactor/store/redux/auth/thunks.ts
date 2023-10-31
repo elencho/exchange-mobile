@@ -22,9 +22,9 @@ import {
 	registrationForm,
 	verifyAccount,
 } from './api'
-import { savePkceInfo } from './slice'
-import { setAccessToken } from '@store/redux/common/slice'
+import { savePkceInfo, setTokens } from './slice'
 import { TokenParams } from '@app/refactor/types/auth/splash'
+import { navigationRef } from '@app/refactor/setup/nav'
 
 export const startLoginThunk = createAsyncThunk(
 	'startLogin',
@@ -164,6 +164,8 @@ export const resendOtpThunk = createAsyncThunk(
 
 		//TODO: SmsEmail Modal
 		//TODO: Registration
+		if (from === 'EmailVerification') {
+		}
 		const resendInfo = await resendEmail(state.callbackUrl)
 		return { callbackUrl: resendInfo.callbackUrl }
 	}
@@ -215,8 +217,12 @@ const codeToTokenThunk = (
 ) =>
 	createAsyncThunk('codeToToken', async (_, { dispatch }) => {
 		const tokenData = await codeToToken(code, codeVerifier || '')
-		dispatch(setAccessToken(tokenData.access_token))
-		KVStore.set('refreshToken', tokenData.refresh_token)
+		dispatch(
+			setTokens({
+				refreshToken: tokenData.refresh_token,
+				accessToken: tokenData.access_token,
+			})
+		)
 
 		const otpType = jwt_decode<TokenParams>(tokenData.access_token)?.otpType
 
@@ -305,7 +311,6 @@ export const verifyRegistrationThunk = createAsyncThunk(
 )
 
 type RegistrationFormProps = {
-	navigation: NavProp<'Register'>
 	clientType: UserType
 	email: string
 	passwordNew: string
@@ -331,7 +336,10 @@ export const registrationFormThunk = createAsyncThunk(
 			props.referralCode
 		)
 		if (data?.execution === Execution.EMAIL_VERIFICATION_OTP) {
-			props.navigation.push('EmailVerification', { fromScreen: 'registration' })
+			navigationRef.navigate('EmailVerification', {
+				from: 'Registration',
+				mail: props.email,
+			})
 		}
 		return data
 	}

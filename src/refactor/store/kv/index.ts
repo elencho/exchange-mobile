@@ -29,9 +29,7 @@ const KVStore: PersistentStore = {
 		return value ? deserializers[key](value) : undefined
 	},
 	set(key, value) {
-		if (value) {
-			cache(key).set(key, serializers[key](value))
-		}
+		value && cache(key).set(key, serializers[key](value))
 	},
 	del(key) {
 		cache(key).delete(key)

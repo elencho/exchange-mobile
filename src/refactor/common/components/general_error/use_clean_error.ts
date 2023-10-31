@@ -5,10 +5,10 @@ import { setGeneralError } from '@store/redux/common/slice'
 import { useEffect } from 'react'
 
 const useCleanGeneralError = (
-	navigation: NativeStackNavigationProp<Screens, Route>
+	navigation?: NativeStackNavigationProp<Screens, Route>
 ) => {
 	useEffect(() => {
-		return navigation.addListener('focus', () => {
+		return navigation?.addListener('focus', () => {
 			store.dispatch(setGeneralError(undefined))
 		})
 	}, [navigation])
