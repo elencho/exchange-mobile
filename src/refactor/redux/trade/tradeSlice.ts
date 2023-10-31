@@ -21,7 +21,7 @@ interface TradeState {
 
 const initialQueryParams = {
 	offset: 0,
-	limit: 50,
+	limit: 10,
 	fromDateTimeQuery: null,
 	toDateTimeQuery: null,
 	statusQuery: [],

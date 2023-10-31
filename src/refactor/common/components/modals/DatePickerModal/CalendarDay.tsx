@@ -12,6 +12,7 @@ import {
 	setFromTime,
 	setToTime,
 } from '@app/refactor/redux/transactions/transactionSlice'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 export default function CalendarDay({
 	state,
@@ -28,11 +29,11 @@ export default function CalendarDay({
 	const {
 		fromDateTime: fromDateTimeTransactions,
 		toDateTime: toDateTimeTransactions,
-	} = useSelector((state) => state.transactions)
+	} = useSelector((state: RootState) => state.transactions)
 	const {
 		fromDateTimeQuery: fromDateTimeTrades,
 		toDateTimeQuery: toDateTimeTrades,
-	} = useSelector((state) => state.trade)
+	} = useSelector((state: RootState) => state.trades)
 	const fromDateTime = isInstantTrade
 		? fromDateTimeTrades
 		: fromDateTimeTransactions

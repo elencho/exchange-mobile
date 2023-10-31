@@ -1,5 +1,4 @@
-import { Pressable, StyleSheet, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { Pressable, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import AppText from '@components/text'
 import PurpleText from '@app/components/PurpleText'
