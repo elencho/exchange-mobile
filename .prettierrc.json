@@ -5,6 +5,7 @@
 	"arrowParens": "always",
 	"semi": false,
 	"bracketSameLine": true,
+	"useTabs": true,
 	"importOrder": [
 		"^@assets/(.*)$",
 		"^@theme/(.*)$",
