@@ -11,6 +11,7 @@ import Transaction from '@app/refactor/screens/transactions/components/Transacti
 import ListFooter from './ListFooter'
 import useTrades from '../hooks/useTrades'
 import { useFocusEffect } from '@react-navigation/native'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 const TradeList = ({ isInstantTrade }) => {
 	const {
@@ -23,17 +24,20 @@ const TradeList = ({ isInstantTrade }) => {
 	} = useTrades()
 
 	const {
-		fiatCodesQuery,
-		statusQuery,
-		actionQuery,
-		cryptoCodeQuery,
-		fromDateTimeQuery,
-		toDateTimeQuery,
-	} = useSelector((state: RootState) => state.trades)
+		modalState: { transactionFiltersModalVisible },
+		trades: {
+			fiatCodesQuery,
+			statusQuery,
+			actionQuery,
+			cryptoCodeQuery,
+			fromDateTimeQuery,
+			toDateTimeQuery,
+		},
+	} = useSelector((state: RootState) => state)
 
 	useFocusEffect(
 		useCallback(() => {
-			fetchTrades()
+			!transactionFiltersModalVisible && fetchTrades()
 		}, [
 			fiatCodesQuery,
 			statusQuery,
@@ -41,6 +45,7 @@ const TradeList = ({ isInstantTrade }) => {
 			cryptoCodeQuery,
 			fromDateTimeQuery,
 			toDateTimeQuery,
+			transactionFiltersModalVisible,
 		])
 	)
 
