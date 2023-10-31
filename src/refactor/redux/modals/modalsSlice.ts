@@ -145,6 +145,9 @@ const modalsSlice = createSlice({
 		grantCameraPermission(state, action: PayloadAction<boolean>) {
 			state.hasCameraPermission = action.payload
 		},
+		toggleTransactionFiltersModal(state, action: PayloadAction<boolean>) {
+			state.transactionFiltersModalVisible = action.payload
+		},
 	},
 })
 
@@ -188,6 +191,7 @@ export const {
 	setAppToast,
 	setToastObj,
 	grantCameraPermission,
+	toggleTransactionFiltersModal,
 } = modalsSlice.actions
 
 export default modalsSlice.reducer

@@ -1,5 +1,5 @@
 import * as Linking from 'expo-linking'
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import {
 	Image,
 	StyleSheet,
@@ -18,11 +18,13 @@ import colors from '@app/constants/colors'
 import TransactionDetails from '@app/refactor/screens/transactions/components/TransactionDetails'
 import useCopyToClipboard from '@app/utils/copyToClipboard'
 import { toggleTransactionDetails } from '@app/refactor/redux/modals/modalsSlice'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import { setCurrencyList } from '@store/redux/common/slice'
+import { fetchCurrencies } from '@app/refactor/utils/transactionUtils'
 
 function TransactionModal({ transactions, trades, isInstantTrade }) {
 	const { copyToClipboard } = useCopyToClipboard()
 	const dispatch = useDispatch()
-	const state = useSelector((state) => state)
 
 	const {
 		transactions: {
@@ -37,14 +39,20 @@ function TransactionModal({ transactions, trades, isInstantTrade }) {
 				recipient,
 				tag,
 			},
-			currencies,
 		},
 		modalState: { transactionDetailsVisible },
-	} = state
+		common: { currencyList },
+	} = useSelector((state: RootState) => state)
+
+	useEffect(() => {
+		if (!currencyList.length) {
+			fetchCurrencies().then((res) => dispatch(setCurrencyList(res)))
+		}
+	}, [])
 
 	const handleTransactionUrl = () => {
 		let pattern
-		currencies.forEach((c) => {
+		currencyList.forEach((c) => {
 			if (c.code === currency) {
 				pattern =
 					c.providerToUrlPattern[provider].transactionUrlPattern.split('{')[0]
@@ -55,12 +63,13 @@ function TransactionModal({ transactions, trades, isInstantTrade }) {
 
 	const handleAddressUrl = () => {
 		let pattern
-		currencies.forEach((c) => {
+		currencyList.forEach((c) => {
 			if (c.code === currency) {
 				pattern =
 					c.providerToUrlPattern[provider].addressUrlPattern.split('{')[0]
 			}
 		})
+
 		Linking.openURL(pattern + recipient)
 	}
 

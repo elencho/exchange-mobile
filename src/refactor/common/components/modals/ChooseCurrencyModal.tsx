@@ -15,21 +15,20 @@ import {
 } from '@app/redux/wallet/actions'
 import { setCryptoFilter } from '@app/refactor/redux/transactions/transactionSlice'
 import { fetchCurrencies } from '@app/utils/fetchTransactions'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import { setCurrencyList } from '@store/redux/common/slice'
 
 function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
-	const [currencyList, setCurrencyList] = useState([])
-
 	const navigation = useNavigation()
-
 	const dispatch = useDispatch()
-	const state = useSelector((state) => state)
 
 	const {
 		transactions: { currenciesConstant, cryptoFilter, currency, code },
 		modalState: { chooseCurrencyModalVisible },
 		trade: { balance, fiatsArray, currentBalanceObj },
 		wallet: { walletTab },
-	} = state
+		common: { currencyList },
+	} = useSelector((state: RootState) => state)
 
 	const [filteredData, setFilteredData] = useState(currencyList)
 
@@ -38,7 +37,9 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 	}, [chooseCurrencyModalVisible])
 
 	useEffect(() => {
-		fetchCurrencies().then((res) => setCurrencyList(res))
+		if (!currencyList?.length) {
+			fetchCurrencies().then((res) => dispatch(setCurrencyList(res)))
+		}
 	}, [])
 
 	const filter = (text) => {
