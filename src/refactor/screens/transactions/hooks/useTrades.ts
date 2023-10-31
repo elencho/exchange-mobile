@@ -60,7 +60,7 @@ const useTrades = () => {
 		try {
 			console.log('refresh Trades')
 			dispatch(setTradesOffset(0))
-			const tradesData = await fetchTradesApi(queryParams)
+			const tradesData = await fetchTradesApi({ ...queryParams, offset: 0 })
 			const newTrades = tradesData?.data
 			setTrades([...newTrades])
 		} catch (error) {

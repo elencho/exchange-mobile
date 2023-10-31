@@ -65,7 +65,9 @@ export default function ModalWithSearch({
 				phoneCode={item?.phoneCode}
 				currentItem={currentItem}
 				canShowCode={
-					(!wallet && !!item?.currencyCode?.length) || isInstantTrade
+					(!wallet && !!item?.currencyCode?.length) ||
+					isInstantTrade ||
+					isForTransactions
 				}
 				onPress={() => handlePress(name, code)}
 				uri={uri(code)}
