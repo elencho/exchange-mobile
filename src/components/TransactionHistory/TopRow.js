@@ -12,7 +12,7 @@ function TopRow({ clear, headlineLogo, style }) {
 	const route = useRoute()
 	const dispatch = useDispatch()
 
-	const userInfo = useSelector((state) => state.profile.userInfo)
+	const userInfo = useSelector((state) => state.profileOld.userInfo)
 	const { firstName, lastName } = userInfo
 
 	useEffect(() => {

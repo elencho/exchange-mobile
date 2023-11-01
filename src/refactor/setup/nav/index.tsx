@@ -25,12 +25,13 @@ import Resume from '@app/screens/Resume'
 import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
 import { Screens } from './nav'
+import { useDispatch } from 'react-redux'
 
 const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef()
 
 export default function AppNavigator() {
-	// const dispatch = useDispatch()
+	const dispatch = useDispatch()
 	// const state: any = useSelector((state) => state)
 	// const {
 	// 	errors: { generalError },
@@ -40,19 +41,22 @@ export default function AppNavigator() {
 
 	// TODO: this
 	// BackHandler.addEventListener('hardwareBackPress', () => true)
-	// const onStateChange = (state: any) => {
-	// 	console.log('asd')
-	// 	dispatch({
-	// 		type: 'SET_STACK_NAVIGATION_ROUTE',
-	// 		stackRoute: state.routes[state.routes.length - 1].name,
-	// 	})
-	// 	if (generalError)
-	// 		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
-	// }
+
+	// TODO: This is needed for wallet screen to work, to identify which screen is active,
+	// We can remove this after refcatoring wallet screen
+	const onStateChange = (state: any) => {
+		dispatch({
+			type: 'SET_STACK_NAVIGATION_ROUTE',
+			stackRoute: state.routes[state.routes.length - 1].name,
+		})
+
+		// if (generalError)
+		// 	dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+	}
 
 	return (
 		<NavigationContainer
-			// onStateChange={onStateChange}
+			onStateChange={onStateChange}
 			ref={navigationRef}
 			theme={{
 				dark: true,

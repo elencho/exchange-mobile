@@ -31,7 +31,8 @@ export default function Personal({ loading }) {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 	const {
-		profile: { userInfo, language, smsAuth },
+		profile: { userInfo, smsAuth },
+		common: { language },
 		errors: { generalError },
 	} = state
 

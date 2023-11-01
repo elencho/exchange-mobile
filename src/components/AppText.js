@@ -19,7 +19,7 @@ export default function AppText({
 }) {
 	const {
 		modals: { appToastObj },
-		profile: { language },
+		common: { language },
 		errors: { generalError },
 	} = useSelector((state) => state)
 	const { t } = useTranslation()
