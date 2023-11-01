@@ -5,9 +5,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import ChooseCurrencyModal from '@app/refactor/common/components/modals/ChooseCurrencyModal'
 import DatePickerModal from '@app/refactor/common/components/modals/DatePickerModal/DatePickerModal'
 import ChooseMethodsModal from '@app/refactor/common/components/modals/ChooseMethodsModal'
-// import ChooseMethodsModal from '@components/modals/ChooseMethodsModal'
-// import DatePickerModal from '@components/modals/DatePickerModal/DatePickerModal'
-
 import AppDropdown from '@app/components/AppDropdown'
 import AppText from '@app/components/AppText'
 import DatePicker from '@app/refactor/screens/transactions/components/DatePicker'
@@ -38,6 +35,7 @@ import {
 import FilterRow from '@app/refactor/screens/transactions/components/FilterRow'
 import TransactionFilterBottom from './components/TransactionFilterBottom'
 import AppModal from '@app/components/AppModal'
+import { RootState } from '../../redux/rootReducer'
 
 const WINDOW_HEIGHT = Dimensions.get('window').height
 
@@ -74,7 +72,7 @@ export default function TransactionFilter({
 			fromDateTimeQuery,
 			toDateTimeQuery,
 		},
-	} = useSelector((state) => state)
+	} = useSelector((state: RootState) => state)
 
 	const initialStateTrade = {
 		fiatCodesQuery,
@@ -240,7 +238,7 @@ export default function TransactionFilter({
 const styles = StyleSheet.create({
 	container: {
 		marginBottom: 10,
-		marginTop: -34,
+		marginTop: -44,
 		paddingBottom: 140,
 	},
 	coin: {
