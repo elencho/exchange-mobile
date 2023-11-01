@@ -10,15 +10,13 @@ import AppText from '../AppText'
 
 export default function ChooseBankModal() {
 	const dispatch = useDispatch()
-	const chooseBankModalVisible = useSelector(
-		(state) => state.modals.chooseBankModalVisible
-	)
-	const state = useSelector((state) => state)
+
 	const {
 		trade: { depositProvider, depositProviders, currentBalanceObj },
 		transactionsOld: { tabRoute },
 		wallet: { wireDepositProviders, walletTab, network },
-	} = state
+		modals: { chooseBankModalVisible },
+	} = useSelector((state) => state)
 
 	useEffect(() => {
 		dispatch(setDepositProvider(null))

@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import {
-	Image,
-	StyleSheet,
-	TouchableOpacity,
-	View,
-	ScrollView,
-	Dimensions,
-} from 'react-native'
+import { Image, StyleSheet, View, ScrollView, Dimensions } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
-import ChooseCurrencyModal from '@components/modals/ChooseCurrencyModal'
-import ChooseMethodsModal from '@components/modals/ChooseMethodsModal'
-import DatePickerModal from '@components/modals/DatePickerModal/DatePickerModal'
-import Close from '@app/assets/images/Close.svg'
+import ChooseCurrencyModal from '@app/refactor/common/components/modals/ChooseCurrencyModal'
+import DatePickerModal from '@app/refactor/common/components/modals/DatePickerModal/DatePickerModal'
+import ChooseMethodsModal from '@app/refactor/common/components/modals/ChooseMethodsModal'
+// import ChooseMethodsModal from '@components/modals/ChooseMethodsModal'
+// import DatePickerModal from '@components/modals/DatePickerModal/DatePickerModal'
+
 import AppDropdown from '@app/components/AppDropdown'
 import AppText from '@app/components/AppText'
-import Background from '@app/components/Background'
 import DatePicker from '@app/refactor/screens/transactions/components/DatePicker'
 import Headline from '@app/components/TransactionHistory/Headline'
 import { COINS_URL_PNG } from '@app/constants/api'

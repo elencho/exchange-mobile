@@ -15,7 +15,7 @@ export default function ChooseLanguageModal() {
 	const state = useSelector((state) => state)
 	const {
 		modals: { languageModalVisible },
-		profile: { language },
+		common: { language },
 	} = state
 
 	const hide = () => dispatch(toggleLanguageModal(false))

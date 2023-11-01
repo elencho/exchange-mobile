@@ -17,7 +17,7 @@ export default function AppButton({
 	...rest
 }) {
 	const {
-		profile: { language },
+		common: { language },
 	} = useSelector((state) => state)
 	const isMtavruli = language === 'ka' && { textTransform: 'uppercase' }
 	return (
