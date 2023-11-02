@@ -61,7 +61,7 @@ const Register = ({ navigation }: Props) => {
 	const [promo, setPromo] = useState('')
 
 	const state = useSelector((state: RootState) => state.auth)
-	const { authLoading } = state
+	const { authLoading, phoneCountryCode, countries } = state
 
 	const passLength = pass?.length >= 8
 	const passHasUpperLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(pass)
@@ -90,6 +90,14 @@ const Register = ({ navigation }: Props) => {
 	useEffect(() => {
 		setTermsSelectedErr(false)
 	}, [termsSelected])
+
+	useEffect(() => {
+		if (!phoneCountryCode) return
+		const defaultCountry = countries.find(
+			(c: Country) => c.code === phoneCountryCode
+		)
+		setChosenCountry(defaultCountry)
+	}, [phoneCountryCode])
 
 	useCleanGeneralError()
 

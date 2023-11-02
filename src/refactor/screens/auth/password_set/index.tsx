@@ -10,7 +10,6 @@ import AppInput from '@components/input'
 import AppText from '@components/text'
 import { setNewPasswordOtpThunk } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
-import { startLoginAction } from '@app/redux/profile/actions'
 import { Screens } from '@app/refactor/setup/nav/nav'
 
 interface Props extends NativeStackScreenProps<Screens, 'SetNewPassword'> {}

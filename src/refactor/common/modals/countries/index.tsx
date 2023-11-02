@@ -28,7 +28,7 @@ const CountriesModal = ({
 	}, [])
 
 	const filter = (txt: string) => {
-		const filtered = countries?.filter((country) =>
+		const filtered = countries.filter((country) =>
 			country.name.toLowerCase().includes(txt.toLowerCase())
 		)
 		setFilteredCountries(filtered)

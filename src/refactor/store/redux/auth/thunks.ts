@@ -159,13 +159,8 @@ type ResendFrom = 'Login2Fa' | 'EmailVerification' | 'TODO:SMS_EMAIL_MODAL'
 
 export const resendOtpThunk = createAsyncThunk(
 	'resendOtp',
-	async ({ from }: { from: ResendFrom }, { getState }) => {
+	async ({ from }: { from?: ResendFrom }, { getState }) => {
 		const state = (getState() as RootState).auth
-
-		//TODO: SmsEmail Modal
-		//TODO: Registration
-		if (from === 'EmailVerification') {
-		}
 		const resendInfo = await resendEmail(state.callbackUrl)
 		return { callbackUrl: resendInfo.callbackUrl }
 	}
