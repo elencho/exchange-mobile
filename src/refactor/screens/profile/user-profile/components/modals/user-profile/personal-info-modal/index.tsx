@@ -31,6 +31,8 @@ export default function PersonalInfoModal() {
 		countryDrop,
 		personalInfoModalVisible,
 		hide,
+		countryModalVisible,
+		setCountryModalVisible,
 	} = usePersonalInfoModal()
 	const dispatch = useDispatch()
 
@@ -180,11 +182,14 @@ export default function PersonalInfoModal() {
 				text="Save"
 			/>
 
-			<CountriesModal
-				citizenshipDrop={citizenshipDrop}
-				countryDrop={countryDrop}
-				reset={handleReset}
-			/>
+			{countryModalVisible && (
+				<CountriesModal
+					citizenshipDrop={citizenshipDrop}
+					countryDrop={countryDrop}
+					reset={handleReset}
+					hide={() => setCountryModalVisible(false)}
+				/>
+			)}
 		</WithKeyboard>
 	)
 
