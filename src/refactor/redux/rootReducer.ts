@@ -5,6 +5,7 @@ import errors from './errors/errorsSlice'
 import modal from './modals/modalsSlice'
 import modals from '@app/redux/modals/reducer'
 import profile from './profile/profileSlice'
+import profileOld from './profile/reducer'
 import trade from './trade/reducer'
 import trades from './trade/tradeSlice'
 import transactions from './transactions/transactionSlice'
@@ -21,6 +22,7 @@ const reducers = {
 	modals,
 	modalState: modal,
 	profile,
+	profileOld,
 	wallet,
 	errors,
 }

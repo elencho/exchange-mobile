@@ -63,14 +63,23 @@ export default function ChooseNetworkDropdown({
 		<AppText medium style={[styles.dropdownText, dropdownText]}>
 			{networkName()}
 			{'  '}
-			<AppText style={styles.secondary}>
+			<AppText
+				style={[
+					styles.secondary,
+					disabled && { color: 'rgba(105, 111, 142, 0.4)' },
+				]}>
 				({network === 'MAINNET' ? code : network})
 			</AppText>
 		</AppText>
 	)
 
 	const dropdownText = {
-		color: error && !network ? '#F45E8C' : colors.PRIMARY_TEXT,
+		color:
+			error && !network
+				? '#F45E8C'
+				: disabled
+				? colors.SECONDARY_TEXT
+				: colors.PRIMARY_TEXT,
 	}
 
 	const renderIcon = (network) => {
@@ -99,6 +108,7 @@ export default function ChooseNetworkDropdown({
 							handlePress={handleDropdown}
 							error={error && !network}
 							selectedText={network && <NetworkWithTicker />}
+							disabled={disabled}
 						/>
 					) : (
 						<View style={styles.view}>

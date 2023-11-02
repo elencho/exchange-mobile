@@ -45,7 +45,7 @@ function AppModal({
 				isVisible={visible}
 				onBackdropPress={hide}
 				onSwipeComplete={hide}
-				swipeDirection="down"
+				// swipeDirection="down"
 				propagateSwipe={true}
 				style={[styles.modal, modalStyle]}
 				animationOutTiming={500}

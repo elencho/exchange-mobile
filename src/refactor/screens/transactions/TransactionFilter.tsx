@@ -1,21 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import {
-	Image,
-	StyleSheet,
-	TouchableOpacity,
-	View,
-	ScrollView,
-	Dimensions,
-} from 'react-native'
+import { Image, StyleSheet, View, ScrollView, Dimensions } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
-import ChooseCurrencyModal from '@components/modals/ChooseCurrencyModal'
-import ChooseMethodsModal from '@components/modals/ChooseMethodsModal'
-import DatePickerModal from '@components/modals/DatePickerModal/DatePickerModal'
-import Close from '@app/assets/images/Close.svg'
+import ChooseCurrencyModal from '@app/refactor/common/components/modals/ChooseCurrencyModal'
+import DatePickerModal from '@app/refactor/common/components/modals/DatePickerModal/DatePickerModal'
+import ChooseMethodsModal from '@app/refactor/common/components/modals/ChooseMethodsModal'
 import AppDropdown from '@app/components/AppDropdown'
 import AppText from '@app/components/AppText'
-import Background from '@app/components/Background'
 import DatePicker from '@app/refactor/screens/transactions/components/DatePicker'
 import Headline from '@app/components/TransactionHistory/Headline'
 import { COINS_URL_PNG } from '@app/constants/api'
@@ -44,6 +35,7 @@ import {
 import FilterRow from '@app/refactor/screens/transactions/components/FilterRow'
 import TransactionFilterBottom from './components/TransactionFilterBottom'
 import AppModal from '@app/components/AppModal'
+import { RootState } from '../../redux/rootReducer'
 
 const WINDOW_HEIGHT = Dimensions.get('window').height
 
@@ -80,7 +72,7 @@ export default function TransactionFilter({
 			fromDateTimeQuery,
 			toDateTimeQuery,
 		},
-	} = useSelector((state) => state)
+	} = useSelector((state: RootState) => state)
 
 	const initialStateTrade = {
 		fiatCodesQuery,
@@ -128,19 +120,21 @@ export default function TransactionFilter({
 		isInstantTrade
 			? setPrevFilterState(initialStateTrade)
 			: setPrevFilterState(initialStateTransactions)
-	}, [isInstantTrade])
+	}, [isInstantTrade, isOpen])
 
 	const children = (
 		<>
+			<View style={styles.headingContainer}>
+				<Headline title="Transaction Filter" />
+			</View>
 			<ScrollView
 				style={styles.container}
 				bounces={false}
 				showsVerticalScrollIndicator={false}
-				contentContainerStyle={{
-					flexGrow: 1,
-					justifyContent: 'space-between',
-					minHeight: WINDOW_HEIGHT - bottom - top - 85,
-				}}>
+				contentContainerStyle={[
+					styles.contentContainer,
+					{ minHeight: WINDOW_HEIGHT - bottom - top - 85 },
+				]}>
 				<View>
 					{isInstantTrade ? (
 						<View style={styles.marginBottom20}>
@@ -232,7 +226,7 @@ export default function TransactionFilter({
 	return (
 		<AppModal
 			visible={isOpen}
-			title="Transaction Filter"
+			title=""
 			hide={onClosePressed}
 			children={children}
 			// onModalHide={savePrevFilters}
@@ -244,7 +238,7 @@ export default function TransactionFilter({
 const styles = StyleSheet.create({
 	container: {
 		marginBottom: 10,
-		marginTop: -34,
+		marginTop: -44,
 		paddingBottom: 140,
 	},
 	coin: {
@@ -256,14 +250,10 @@ const styles = StyleSheet.create({
 		lineHeight: 19,
 		marginHorizontal: 5,
 	},
-	closeContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		marginTop: 36,
+	headingContainer: {
 		backgroundColor: colors.PRIMARY_BACKGROUND,
-		zIndex: 10,
 		paddingBottom: 10,
+		zIndex: 10,
 	},
 	marginBottom30: {
 		marginBottom: 30,
@@ -289,4 +279,11 @@ const styles = StyleSheet.create({
 		marginTop: -40,
 	},
 	type: { marginTop: 20, marginBottom: 6 },
+	heading: {
+		color: colors.PRIMARY_TEXT,
+	},
+	contentContainer: {
+		flexGrow: 1,
+		justifyContent: 'space-between',
+	},
 })

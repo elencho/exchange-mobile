@@ -15,7 +15,7 @@ export default function WireBanksModal({ setInfo }) {
 	const state = useSelector((state) => state)
 	const {
 		wallet: { wireDepositProviders, wireDepositProvider, wireDepositInfo },
-		profile: { language },
+		common: { language },
 	} = state
 
 	const hide = () => dispatch(toggleWireBanksModal(false))
