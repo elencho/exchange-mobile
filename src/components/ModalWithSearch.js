@@ -13,118 +13,118 @@ import ModalTop from './ModalTop'
 import WithKeyboard from './WithKeyboard'
 
 export default function ModalWithSearch({
-  array,
-  filter,
-  choose,
-  currentItem,
-  crypto = false,
-  title,
-  phoneCountry,
-  countryDrop,
-  citizenshipDrop,
-  tradeType,
-  isForTransactions,
-  wallet,
+	array,
+	filter,
+	choose,
+	currentItem,
+	crypto = false,
+	title,
+	phoneCountry,
+	countryDrop,
+	citizenshipDrop,
+	tradeType,
+	isForTransactions,
+	wallet,
 }) {
-  const usdBtcSwitch = useSelector((state) => state.wallet.usdBtcSwitch)
-  const handlePress = (name, code) => {
-    crypto ? choose(code) : choose(name, code)
-  }
+	const usdBtcSwitch = useSelector((state) => state.wallet.usdBtcSwitch)
+	const handlePress = (name, code) => {
+		crypto ? choose(code) : choose(name, code)
+	}
 
-  const uri = (code) => {
-    return title === 'Choose Currency'
-      ? `${COINS_URL_PNG}/${code?.toLowerCase()}.png`
-      : `${COUNTRIES_URL_PNG}/${code}.png`
-  }
+	const uri = (code) => {
+		return title === 'Choose Currency'
+			? `${COINS_URL_PNG}/${code?.toLowerCase()}.png`
+			: `${COUNTRIES_URL_PNG}/${code}.png`
+	}
 
-  const searchItem = ({ item }) => {
-    const name =
-      item?.name ||
-      item?.pair?.baseCurrencyName ||
-      (isForTransactions && `${item.currencyName} (${item.currencyCode})`) ||
-      `${item?.available} ${item?.currencyCode}`
+	const searchItem = ({ item }) => {
+		const name =
+			item?.name ||
+			item?.pair?.baseCurrencyName ||
+			(isForTransactions && `${item.currencyName} (${item.currencyCode})`) ||
+			`${item?.available} ${item?.currencyCode}`
 
-    const code = item?.code || item?.pair?.baseCurrency || item?.currencyCode
-    const totalPrice = tradeType === 'Buy' ? item?.buyPrice : item?.sellPrice
-    const currency = item?.pair?.quoteCurrency
-    const isInstantTrade = item?.pair?.baseCurrency.length > 0
+		const code = item?.code || item?.pair?.baseCurrency || item?.currencyCode
+		const totalPrice = tradeType === 'Buy' ? item?.buyPrice : item?.sellPrice
+		const currency = item?.pair?.quoteCurrency
+		const isInstantTrade = item?.pair?.baseCurrency.length > 0
 
-    const totalTradePrice =
-      item?.pair?.baseCurrencyName && `${totalPrice} ${currency}`
-    const totalAvailablePrice =
-      item?.valueUSD && usdBtcSwitch === 'USD'
-        ? `Total: ${item?.total} ≈ ${item?.valueUSD} USD`
-        : !item?.valueUSD
-        ? ''
-        : `Total: ${item?.total} ≈ ${item?.valueBTC} BTC`
+		const totalTradePrice =
+			item?.pair?.baseCurrencyName && `${totalPrice} ${currency}`
+		const totalAvailablePrice =
+			item?.valueUSD && usdBtcSwitch === 'USD'
+				? `Total: ${item?.total} ≈ ${item?.valueUSD} USD`
+				: !item?.valueUSD
+				? ''
+				: `Total: ${item?.total} ≈ ${item?.valueBTC} BTC`
 
-    return (
-      <ModalSearchItem
-        name={name}
-        code={code}
-        phoneCode={item?.phoneCode}
-        currentItem={currentItem}
-        canShowCode={
-          (!wallet && !!item?.currencyCode?.length) ||
-          isInstantTrade ||
-          isForTransactions
-        }
-        onPress={() => handlePress(name, code)}
-        uri={uri(code)}
-        phoneCountry={phoneCountry}
-        countryDrop={countryDrop}
-        citizenshipDrop={citizenshipDrop}
-        total={totalTradePrice || totalAvailablePrice}
-        isForTransactions={isForTransactions}
-      />
-    )
-  }
-  return (
-    <View style={styles.container}>
-      <AppText header style={styles.headline}>
-        {title}
-      </AppText>
+		return (
+			<ModalSearchItem
+				name={name}
+				code={code}
+				phoneCode={item?.phoneCode}
+				currentItem={currentItem}
+				canShowCode={
+					(!wallet && !!item?.currencyCode?.length) ||
+					isInstantTrade ||
+					isForTransactions
+				}
+				onPress={() => handlePress(name, code)}
+				uri={uri(code)}
+				phoneCountry={phoneCountry}
+				countryDrop={countryDrop}
+				citizenshipDrop={citizenshipDrop}
+				total={totalTradePrice || totalAvailablePrice}
+				isForTransactions={isForTransactions}
+			/>
+		)
+	}
+	return (
+		<View style={styles.container}>
+			<AppText header style={styles.headline}>
+				{title}
+			</AppText>
 
-      <AppInput
-        placeholder={title.replace('Choose', 'Search')}
-        placeholderTextColor="rgba(105, 111, 142, 0.5)"
-        onChangeText={filter}
-        right={<Search />}
-        activeRight={<SearchActive />}
-        style={styles.searchInput}
-      />
+			<AppInput
+				placeholder={title.replace('Choose', 'Search')}
+				placeholderTextColor="rgba(105, 111, 142, 0.5)"
+				onChangeText={filter}
+				right={<Search />}
+				activeRight={<SearchActive />}
+				style={styles.searchInput}
+			/>
 
-      <WithKeyboard padding flexGrow modal>
-        <FlashList
-          data={array}
-          renderItem={searchItem}
-          keyExtractor={(item, index) =>
-            item?.code + index ||
-            item?.pair?.baseCurrency + index ||
-            item?.currencyCode + index
-          }
-          scrollEventThrottle={1000}
-          initialNumToRender={25}
-          estimatedItemSize={50}
-        />
-      </WithKeyboard>
-    </View>
-  )
+			<WithKeyboard padding flexGrow modal>
+				<FlashList
+					data={array}
+					renderItem={searchItem}
+					keyExtractor={(item, index) =>
+						item?.code + index ||
+						item?.pair?.baseCurrency + index ||
+						item?.currencyCode + index
+					}
+					scrollEventThrottle={1000}
+					initialNumToRender={25}
+					estimatedItemSize={50}
+				/>
+			</WithKeyboard>
+		</View>
+	)
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    backgroundColor: colors.PRIMARY_BACKGROUND,
-  },
-  headline: {
-    color: colors.PRIMARY_TEXT,
-    marginBottom: -10,
-    marginHorizontal: 10,
-  },
-  searchInput: {
-    marginVertical: 20,
-    marginHorizontal: 10,
-  },
+	container: {
+		flex: 1,
+		width: '100%',
+		backgroundColor: colors.PRIMARY_BACKGROUND,
+	},
+	headline: {
+		color: colors.PRIMARY_TEXT,
+		marginBottom: -10,
+		marginHorizontal: 10,
+	},
+	searchInput: {
+		marginVertical: 20,
+		marginHorizontal: 10,
+	},
 })

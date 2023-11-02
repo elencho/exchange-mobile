@@ -1,6 +1,10 @@
 import { Language } from '@app/refactor/common/constants'
 import { i18n } from '@app/refactor/setup/i18n'
-import { ActionReducerMapBuilder, PayloadAction, createSlice } from '@reduxjs/toolkit'
+import {
+	ActionReducerMapBuilder,
+	PayloadAction,
+	createSlice,
+} from '@reduxjs/toolkit'
 import KVStore from '@store/kv'
 import { fetchCountriesThunk } from './thunks'
 
