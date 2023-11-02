@@ -27,7 +27,7 @@ export default function SetNewPassword({ navigation }: Props) {
 		error && setError(false)
 	}, [pass, confirmPass])
 
-	const goToLogin = () => dispatch(startLoginAction(navigation))
+	const goToLogin = () => navigation.navigate('Login')
 
 	const passLength = pass?.length >= 8
 	const hasNumber = /\d/.test(pass)
@@ -55,7 +55,7 @@ export default function SetNewPassword({ navigation }: Props) {
 					variant="text"
 					text="Back to Log In"
 					style={styles.backText}
-					onPress={() => {}}
+					onPress={goToLogin}
 				/>
 			</TouchableOpacity>
 
