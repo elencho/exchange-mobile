@@ -4,7 +4,6 @@ import { fetchUserInfoThunk } from './profileThunks'
 
 export interface ProfileState {
 	// TODO: change any types
-	Personal_Security: string
 	userInfo: any
 	language: 'En' | 'Ka'
 	googleAuth: boolean
@@ -13,14 +12,12 @@ export interface ProfileState {
 	currentSecurityAction: any
 	otpChangeToken: any
 	totpSecretObj: any
-	countries: any
 	countriesConstant: any
 	userProfileLoading: boolean
 	verificationInfo: any
 }
 
 const initialState: ProfileState = {
-	Personal_Security: 'Personal',
 	userInfo: {},
 	language: 'En',
 	googleAuth: false,
@@ -30,7 +27,6 @@ const initialState: ProfileState = {
 	otpChangeToken: null,
 	totpSecretObj: {},
 	userProfileLoading: false,
-	countries: [],
 	countriesConstant: [],
 	verificationInfo: {},
 }
@@ -39,9 +35,6 @@ const profileSlice = createSlice({
 	name: 'profile',
 	initialState,
 	reducers: {
-		setPersonalSecurity(state, action: PayloadAction<string>) {
-			state.Personal_Security = action.payload
-		},
 		setUserInfo(state, action: PayloadAction<any>) {
 			state.userInfo = action.payload
 		},
@@ -66,9 +59,7 @@ const profileSlice = createSlice({
 		setTotpSecretObj(state, action: PayloadAction<any>) {
 			state.totpSecretObj = action.payload
 		},
-		setCountries(state, action: PayloadAction<any>) {
-			state.countries = action.payload
-		},
+
 		setCountriesConstant(state, action: PayloadAction<any>) {
 			state.countriesConstant = action.payload
 		},
@@ -92,7 +83,6 @@ const profileSlice = createSlice({
 })
 
 export const {
-	setPersonalSecurity,
 	setUserInfo,
 	setLanguage,
 	setGoogleAuth,
@@ -101,7 +91,6 @@ export const {
 	setCurrentSecurityAction,
 	setOtpChangeToken,
 	setTotpSecretObj,
-	setCountries,
 	setCountriesConstant,
 	setVerificationInfo,
 } = profileSlice.actions

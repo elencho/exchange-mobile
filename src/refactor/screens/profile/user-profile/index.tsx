@@ -27,18 +27,19 @@ export default function UserProfile({ route }) {
 		clear,
 		onScroll,
 		showRefreshControl,
-		Personal_Security,
+		personalSecurity,
 		userInfo,
 		userProfileLoading,
 		bioAvailable,
+		setPersonalSecurity,
 	} = useProfile(route)
 
 	const renderItem = () => (
 		<>
-			{Personal_Security === 'Personal' && (
+			{personalSecurity === 'Personal' && (
 				<Personal loading={userProfileLoading} />
 			)}
-			{Personal_Security === 'Security' && (
+			{personalSecurity === 'Security' && (
 				<Security loading={userProfileLoading} bioAvailable={bioAvailable} />
 			)}
 		</>
@@ -62,7 +63,10 @@ export default function UserProfile({ route }) {
 			<Headline title="My Profile" />
 			<AppText style={styles.secondary}>{userInfo?.email}</AppText>
 
-			<PersonalSecuritySwitcher />
+			<PersonalSecuritySwitcher
+				value={personalSecurity}
+				switcher={setPersonalSecurity}
+			/>
 			<FlatList
 				data={[0]}
 				renderItem={renderItem}

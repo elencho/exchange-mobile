@@ -43,25 +43,11 @@ export const fetchUserInfoThunk = createAsyncThunk(
 	'profile/fetchUserInfo',
 	async (data: UserInfoData, { dispatch }) => {
 		try {
-			const { fromRegistration } = data
-
 			const userInfo = await fetchUserInfoUtil()
-
-			const token = await refreshToken()
-
-			if (typeof token === 'string') {
-				// Assuming you have an 'otpSaga' thunk for handling OTP
-				// Replace with your actual action
-				await dispatch({ type: 'profile/otpSaga', payload: { token } })
-			}
-
-			if (fromRegistration && userInfo?.verificationToolEnabled) {
-				// await launchSumsubSdk() // Assuming this is an asynchronous function
-			}
 
 			return userInfo
 		} catch (error) {
-			throw error
+			console.log(error)
 		}
 	}
 )

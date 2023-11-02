@@ -40,15 +40,15 @@ export default function PersonalInformation() {
 
 				<View style={[styles.column, styles.rightColumn]}>
 					<AppText variant="s" style={styles.white}>
-						{userInfo.firstName} {userInfo.lastName}
+						{userInfo?.firstName} {userInfo?.lastName}
 					</AppText>
 					<AppText variant="s" style={styles.white}>
-						{(userInfo.country || userInfo.city) &&
-							`${userInfo.country}, ${userInfo.city}`}
+						{(userInfo?.country || userInfo?.city) &&
+							`${userInfo?.country}, ${userInfo?.city}`}
 					</AppText>
 					<AppText variant="s" style={styles.white} numberOfLines={1}>
-						{(userInfo.postalCode || userInfo.address) &&
-							`${userInfo.postalCode} / ${userInfo.address}`}
+						{(userInfo?.postalCode || userInfo?.address) &&
+							`${userInfo?.postalCode} / ${userInfo?.address}`}
 					</AppText>
 				</View>
 			</View>
