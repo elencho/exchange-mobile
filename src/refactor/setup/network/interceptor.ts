@@ -2,8 +2,9 @@ import axios from 'axios'
 import KVStore from '@store/kv'
 import store from '@app/refactor/redux/store'
 import {
+	setAppToast,
 	setGeneralError,
-	setIsToast as setLastRequestToast,
+	setLastRequestUiErrorType,
 } from '@store/redux/common/slice'
 import { navigationRef } from '@app/refactor/setup/nav'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
@@ -19,7 +20,10 @@ axios.interceptors.request.use((request) => {
 	if (accessToken && needsToken) {
 		request.headers.Authorization = `Bearer ${accessToken}`
 	}
-	store.dispatch(setLastRequestToast(hasToast === true))
+	store.dispatch(
+		setLastRequestUiErrorType(hasToast ? 'AppToast' : 'GeneralError')
+	)
+
 	// TODO?: Save requestName
 
 	delete request.headers.toast
@@ -30,9 +34,10 @@ axios.interceptors.request.use((request) => {
 axios.interceptors.response.use(
 	// 200-299, we receive logical errors with 200
 	(response) => {
-		const errors: GeneralErrorData[] = response.data.errors || []
+		const errors: UiErrorData[] = response.data.errors || []
 		if (errors.length > 0) {
-			store.dispatch(setGeneralError(errors[0]))
+			console.log('dispatchin')
+			store.dispatch(setAppToast(errors[0])) //general_error
 		}
 		return response
 	},
@@ -48,22 +53,15 @@ const handleError = async (err: any) => {
 
 	const state = store.getState()
 
-	const invalidGrant = err.response.data.error === 'invalid_grant'
 	const status: number = err.response.status
-	const generalError: GeneralErrorData | undefined = err.response.data
-
-	const params =
-		generalError?.transParams && Object.keys(generalError?.transParams)
-	const header = generalError?.errorKey
-	const body = !generalError?.transParams
-		? generalError?.errorMessage
-		: `${generalError?.errorMessage} params{${params?.join()}}`
+	const uiError: UiErrorData | undefined = err.response.data
+	const invalidGrant = err.response.data.error === 'invalid_grant'
 
 	if (status > 401) {
-		if (state.common.lastRequestErrorToast) {
-			// TODO: AppToast
+		if (state.common.lastRequestUiError === 'AppToast') {
+			store.dispatch(setAppToast(uiError))
 		} else {
-			store.dispatch(setGeneralError(generalError))
+			store.dispatch(setGeneralError(uiError))
 		}
 	}
 

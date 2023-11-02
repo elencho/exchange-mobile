@@ -4,6 +4,17 @@ import Svg, { G, Circle } from 'react-native-svg'
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle)
 
+interface Props {
+	duration?: number
+	radius?: number
+	percentage?: number
+	strokeWidth?: number
+	delay?: number
+	max?: number
+	pressed?: boolean
+	color?: string
+}
+
 export default function AppAnimatedCircle({
 	percentage = 100,
 	radius = 40,
@@ -13,13 +24,13 @@ export default function AppAnimatedCircle({
 	delay = 0,
 	max = 100,
 	pressed = false,
-}) {
+}: Props) {
 	const animated = useRef(new Animated.Value(0)).current
-	const circleRef = useRef()
+	const circleRef = useRef<any>() //TODO: type
 	const circumference = 2 * Math.PI * radius
 	const halfCircle = radius + strokeWidth
 
-	const animation = (toValue: string) => {
+	const animation = (toValue: number) => {
 		return Animated.timing(animated, {
 			delay,
 			toValue,
@@ -32,16 +43,12 @@ export default function AppAnimatedCircle({
 	useEffect(() => {
 		if (!pressed) {
 			animation(percentage)
-			animated.addListener(
-				(v) => {
-					const maxPerc = (100 * v.value) / max
-					const strokeDashoffset =
-						circumference - (circumference * maxPerc) / 100
-					if (circleRef?.current)
-						circleRef.current.setNativeProps({ strokeDashoffset })
-				},
-				[max, percentage]
-			)
+			animated.addListener((v) => {
+				const maxPerc = (100 * v.value) / max
+				const strokeDashoffset = circumference - (circumference * maxPerc) / 100
+				if (circleRef?.current)
+					circleRef.current.setNativeProps({ strokeDashoffset })
+			})
 		} else {
 			animated.setValue(0)
 			animated.removeAllListeners()

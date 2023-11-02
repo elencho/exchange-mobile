@@ -71,7 +71,7 @@ export const usernameAndPasswordForm = async (
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
 			requestName: 'usernameAndPasswordForm',
-			toast: false,
+			toast: true,
 		},
 		url,
 		data: `username=${encodeURIComponent(
