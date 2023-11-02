@@ -36,8 +36,7 @@ axios.interceptors.response.use(
 	(response) => {
 		const errors: UiErrorData[] = response.data.errors || []
 		if (errors.length > 0) {
-			console.log('dispatchin')
-			store.dispatch(setAppToast(errors[0])) //general_error
+			store.dispatch(setGeneralError(errors[0]))
 		}
 		return response
 	},

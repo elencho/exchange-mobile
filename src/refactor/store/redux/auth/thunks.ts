@@ -98,7 +98,7 @@ export const forgotPasswordStartThunk = createAsyncThunk(
 	}
 )
 
-export const resetPasswordStartThunk = createAsyncThunk(
+export const resendPasswordCodeThunk = createAsyncThunk(
 	'resetPassword',
 	async ({ mail }: { mail: string }, { getState }) => {
 		const { callbackUrl } = (getState() as RootState).auth
@@ -112,7 +112,7 @@ export const resetPasswordStartThunk = createAsyncThunk(
 	}
 )
 
-export const resetPasswordOtpThunk = createAsyncThunk(
+export const resetPasswordConfirmCodeThunk = createAsyncThunk(
 	'resetPasswordOtp',
 	async (
 		{

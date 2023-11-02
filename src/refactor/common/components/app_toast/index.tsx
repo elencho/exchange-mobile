@@ -16,10 +16,6 @@ const AppToast = () => {
 
 	const errorBody = formatUiError(appToast)
 
-	useEffect(() => {
-		console.log('AppToast.index', appToast)
-	}, [appToast])
-
 	return (
 		<>
 			{appToast && (

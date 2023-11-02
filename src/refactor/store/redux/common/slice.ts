@@ -34,7 +34,6 @@ const common = createSlice({
 			state.generalErrorData = action.payload
 		},
 		setAppToast(state, action: PayloadAction<UiErrorData | undefined>) {
-			console.log('settin')
 			state.appToastData = action.payload
 		},
 		setLastRequestUiErrorType(state, action: PayloadAction<UiErrorType>) {

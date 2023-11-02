@@ -60,9 +60,12 @@ export default function SetNewPassword({ navigation }: Props) {
 			</TouchableOpacity>
 
 			<WithKeyboard
+				flexGrow={true}
+				padding={true}
 				contentContainerStyle={styles.middle}
 				modal={undefined}
-				refreshControl={undefined}>
+				refreshControl={undefined}
+				scrollUp={undefined}>
 				<Strong_Password
 					style={{ alignSelf: 'center', transform: [{ scaleY: 1.1 }] }}
 				/>

@@ -10,8 +10,8 @@ import {
 	startLoginThunk,
 	usernameAndPaswordThunk,
 	resetOtpThunk,
-	resetPasswordStartThunk,
-	resetPasswordOtpThunk,
+	resendPasswordCodeThunk,
+	resetPasswordConfirmCodeThunk,
 	resendOtpThunk,
 	otpForLoginThunk,
 	forgotPasswordStartThunk,
@@ -50,9 +50,6 @@ const auth = createSlice({
 		setTimer: (state, action: PayloadAction<boolean>) => {
 			state.timerVisible = action.payload
 		},
-		setOtpType: (state, action: PayloadAction<OTP>) => {
-			state.otpType = action.payload
-		},
 		setTokens(
 			state,
 			action: PayloadAction<{ refreshToken: string; accessToken: string }>
@@ -65,12 +62,11 @@ const auth = createSlice({
 	},
 	extraReducers: (builder) => {
 		login(builder)
+		register(builder)
 		forgotPass(builder)
 		login2fa(builder)
 		resetOtp(builder)
 
-		registerStart(builder)
-		registerForm(builder)
 		countries(builder)
 
 		builder.addCase(otpForLoginThunk.pending, (state) => {
@@ -79,6 +75,9 @@ const auth = createSlice({
 		builder.addCase(otpForLoginThunk.fulfilled, (state, action) => {
 			state.authLoading = false
 			state.callbackUrl = action.payload.callbackUrl
+		})
+		builder.addCase(otpForLoginThunk.rejected, (state) => {
+			state.authLoading = false
 		})
 	},
 })
@@ -106,27 +105,19 @@ const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(forgotPasswordStartThunk.fulfilled, (state, action) => {
 		state.callbackUrl = action.payload.callbackUrl
 	})
-
-	builder.addCase(resetPasswordStartThunk.pending, (state) => {
-		state.authLoading = true
-	})
-	builder.addCase(resetPasswordStartThunk.fulfilled, (state, action) => {
-		state.authLoading = false
+	builder.addCase(resendPasswordCodeThunk.fulfilled, (state, action) => {
 		state.callbackUrl = action.payload.callbackUrl
 		state.timerVisible = action.payload.timerVisible
 	})
-	builder.addCase(resetPasswordStartThunk.rejected, (state) => {
-		state.authLoading = false
-	})
 
-	builder.addCase(resetPasswordOtpThunk.pending, (state) => {
+	builder.addCase(resetPasswordConfirmCodeThunk.pending, (state) => {
 		state.authLoading = true
 	})
-	builder.addCase(resetPasswordOtpThunk.fulfilled, (state, action) => {
+	builder.addCase(resetPasswordConfirmCodeThunk.fulfilled, (state, action) => {
 		state.authLoading = false
 		state.callbackUrl = action.payload.callbackUrl
 	})
-	builder.addCase(resetPasswordOtpThunk.rejected, (state) => {
+	builder.addCase(resetPasswordConfirmCodeThunk.rejected, (state) => {
 		state.authLoading = false
 	})
 }
@@ -160,22 +151,12 @@ const resetOtp = (builder: ActionReducerMapBuilder<AuthState>) => {
 		})
 }
 
-const registerStart = (builder: ActionReducerMapBuilder<AuthState>) => {
-	builder
-		.addCase(startRegistrationThunk.pending, (state) => {
-			state.authLoading = true
-		})
-		.addCase(startRegistrationThunk.fulfilled, (state, action) => {
-			state.authLoading = false
-			state.callbackUrl = action.payload.callbackUrl
-			state.phoneCountryCode = action.payload.attributes.phoneCountry
-		})
-		.addCase(startRegistrationThunk.rejected, (state) => {
-			state.authLoading = false
-		})
-}
+const register = (builder: ActionReducerMapBuilder<AuthState>) => {
+	builder.addCase(startRegistrationThunk.fulfilled, (state, action) => {
+		state.callbackUrl = action.payload.callbackUrl
+		state.phoneCountryCode = action.payload.attributes.phoneCountry
+	})
 
-const registerForm = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder
 		.addCase(registrationFormThunk.pending, (state) => {
 			state.authLoading = true
@@ -195,5 +176,5 @@ const countries = (builder: ActionReducerMapBuilder<AuthState>) => {
 	})
 }
 
-export const { savePkceInfo, setOtpType, setTimer, setTokens } = auth.actions
+export const { savePkceInfo, setTimer, setTokens } = auth.actions
 export default auth.reducer

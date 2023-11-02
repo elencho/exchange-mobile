@@ -15,9 +15,8 @@ import GeneralError from '@components/general_error'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import { errorHappenedHere } from '@app/utils/appUtils'
 import Constants from 'expo-constants'
-import { setGeneralError, setUiError } from '@store/redux/common/slice'
+import { setGeneralError } from '@store/redux/common/slice'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 

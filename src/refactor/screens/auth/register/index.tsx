@@ -39,28 +39,22 @@ const Register = ({ navigation }: Props) => {
 
 	const [userType, setUserType] = useState<UserType>('Company')
 
-	const [mail, setMail] = useState('remora.427@gmail.com')
+	const [mail, setMail] = useState('')
 	const [mailErr, setMailErr] = useState(false)
 
-	const [pass, setPass] = useState('Derrickrose1')
+	const [pass, setPass] = useState('')
 	const [passErr, setPassErr] = useState(false)
 
-	const [confirmPass, setConfirmPass] = useState('Derrickrose1')
+	const [confirmPass, setConfirmPass] = useState('')
 	const [confirmPassErr, setConfirmPassErr] = useState(false)
 
-	const x = {
-		banned: false,
-		phoneCode: '+995',
-		name: 'Georgia',
-		code: 'GEO',
-	}
-	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(x)
+	const [chosenCountry, setChosenCountry] = useState<Country | undefined>()
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
-	const [phone, setPhone] = useState('4324413154')
+	const [phone, setPhone] = useState('')
 	const [phoneErr, setPhoneErr] = useState(false)
 
-	const [termsSelected, setTermsSelected] = useState(true)
+	const [termsSelected, setTermsSelected] = useState(false)
 	const [termsSelectedErr, setTermsSelectedErr] = useState(false)
 
 	const [referral, setReferral] = useState('')
