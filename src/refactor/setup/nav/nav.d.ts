@@ -22,6 +22,7 @@ export type Screens = {
 	Registration?: {}
 	EmailVerification?: {
 		from: Route
+		mail?: string
 	}
 	Login2Fa?: {}
 	ForgotPassword?: {}

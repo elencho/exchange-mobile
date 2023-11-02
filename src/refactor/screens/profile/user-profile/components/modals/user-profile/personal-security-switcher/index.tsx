@@ -2,14 +2,18 @@ import React from 'react'
 import { StyleSheet, View, Pressable } from 'react-native'
 import { Theme, useTheme } from '@theme/index'
 import AppText from '@components/text'
-import usePersonalSecuritySwitcher from './usePersonalSecuritySwitcher'
+import usePersonalSecuritySwitcher from './use-personal-security-switcher'
 
-export default function PersonalSecuritySwitcher() {
-	const { Personal_Security, handleSwitch } = usePersonalSecuritySwitcher()
+export default function PersonalSecuritySwitcher(props) {
+	const { value, switcher } = props
+	const { personalSecurity, handleSwitch } = usePersonalSecuritySwitcher(
+		value,
+		switcher
+	)
 	const { theme, styles } = useTheme(_styles)
 
 	const stylesCond = (p: string) => {
-		if (p === Personal_Security) {
+		if (p === personalSecurity) {
 			return styles.active
 		} else {
 			return styles.inactive
@@ -17,7 +21,7 @@ export default function PersonalSecuritySwitcher() {
 	}
 
 	const textCond = (f: string) => {
-		const isActive = f === Personal_Security
+		const isActive = f === personalSecurity
 		return (
 			<AppText
 				variant="m"

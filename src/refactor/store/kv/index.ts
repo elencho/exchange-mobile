@@ -3,9 +3,8 @@ import { Language } from '@app/refactor/common/constants'
 
 interface Schema {
 	// Auth
-	webViewVisible: boolean
-	isLoggedIn: boolean
-	accessToken: string
+	webViewVisible: boolean //TODO: Remove
+	isLoggedIn: boolean //TODO: Remove
 	refreshToken: string
 	bioEnabledEmails: string[]
 	language: Language
@@ -21,7 +20,7 @@ interface PersistentStore {
 const mmkv = new MMKV()
 const secureMmkv = new MMKV() // TODO: Encrypt
 
-const secureKeys: Key[] = ['accessToken', 'bioEnabledEmails']
+const secureKeys: Key[] = ['refreshToken', 'bioEnabledEmails']
 const cache = (key: Key) => (secureKeys.includes(key) ? secureMmkv : mmkv)
 
 const KVStore: PersistentStore = {
@@ -30,9 +29,7 @@ const KVStore: PersistentStore = {
 		return value ? deserializers[key](value) : undefined
 	},
 	set(key, value) {
-		if (value) {
-			cache(key).set(key, serializers[key](value))
-		}
+		value && cache(key).set(key, serializers[key](value))
 	},
 	del(key) {
 		cache(key).delete(key)
@@ -61,7 +58,6 @@ const deserializers: {
 } = {
 	webViewVisible: deserializeBoolean,
 	isLoggedIn: deserializeBoolean,
-	accessToken: deserializeString,
 	refreshToken: deserializeString,
 	bioEnabledEmails: deserializeObject,
 	language: (value: string) => (value === 'ka' ? 'ka' : 'en'),
@@ -70,7 +66,6 @@ const deserializers: {
 const serializers: { [key in Key]: (value: Schema[key]) => string } = {
 	webViewVisible: serializeBoolean,
 	isLoggedIn: serializeBoolean,
-	accessToken: serializeString,
 	refreshToken: serializeString,
 	bioEnabledEmails: serializeObject,
 	language: serializeString,

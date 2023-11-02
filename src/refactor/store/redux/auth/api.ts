@@ -11,7 +11,14 @@ import {
 	READINESS_URL,
 	REGISTRATION_START_URL,
 } from '@app/constants/api'
-import { AppReadiness, Dictionary } from '@app/refactor/types/auth/splash'
+import {
+	AppReadiness,
+	Dictionary,
+	RefreshTokenResponse,
+} from '@app/refactor/types/auth/splash'
+import KVStore from '@store/kv'
+import store from '@app/redux/store'
+import { setTokens } from '@store/redux/auth/slice'
 
 const authRedirectUrl = Constants?.manifest?.extra?.authRedirectUrl
 
@@ -242,6 +249,60 @@ export const verifyAccount = async (callbackUrl: string, otp: string) => {
 		data: `otp=${otp}`,
 	})
 	return data?.data
+}
+
+export const refreshTokenGetData = async (config: any, retryCall: boolean) => {
+	const refreshToken = KVStore.get('refreshToken')
+	const refreshData = await axios<RefreshTokenResponse>({
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		url: CODE_TO_TOKEN,
+		data: `grant_type=refresh_token&client_id=mobile-service-public&refresh_token=${refreshToken}`,
+	})
+
+	const data = refreshData.data
+	if (!(data && data.access_token && data.refresh_token))
+		return Promise.resolve(undefined)
+
+	store.dispatch(
+		setTokens({
+			refreshToken: data.refresh_token,
+			accessToken: data.access_token,
+		})
+	)
+	if (retryCall) axios.request(config)
+
+	return Promise.resolve(data.access_token)
+}
+
+export const retryUnauthorizedCall = async (config: any) => {
+	const data = await refreshTokenService()
+	if (!(data && data.access_token && data.refresh_token)) return undefined
+
+	store.dispatch(
+		setTokens({
+			refreshToken: data.refresh_token,
+			accessToken: data.access_token,
+		})
+	)
+	return axios.request(config)
+}
+
+export const getTokensOnInit = async () => {
+	const data = await refreshTokenService()
+	if (!(data && data.access_token && data.refresh_token)) return undefined
+	return data
+}
+
+const refreshTokenService = async () => {
+	const refreshToken = KVStore.get('refreshToken')
+	const refreshData = await axios<RefreshTokenResponse>({
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		url: CODE_TO_TOKEN,
+		data: `grant_type=refresh_token&client_id=mobile-service-public&refresh_token=${refreshToken}`,
+	})
+	return refreshData.data
 }
 
 export const fetchCountries = async () => {

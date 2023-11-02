@@ -13,11 +13,12 @@ import { resendOtpThunk } from '@store/redux/auth/thunks'
 import CloseModalIcon from '@app/components/InstantTrade/CloseModalIcon'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { Screens } from '@app/refactor/setup/nav/nav'
+import { ScreenProp, Screens } from '@app/refactor/setup/nav/nav'
 
-interface Props extends NativeStackScreenProps<Screens, 'EmailVerification'> {}
-
-const EmailVerification = (props: Props) => {
+const EmailVerification = ({
+	navigation,
+	route,
+}: ScreenProp<'EmailVerification'>) => {
 	const dispatch = useDispatch()
 	const { styles, theme } = useTheme(_styles)
 
@@ -53,19 +54,17 @@ const EmailVerification = (props: Props) => {
 	}, [seconds, timerVisible])
 
 	const checkMailText = () => {
-		return 'TODO:'
-		// if (verificationInfo?.attributes) {
-		// 	return (
-		// 		<View>
-		// 			<AppText style={[styles.secondary, { marginBottom: 36 }]}>
-		// 				{t('check your {{email}} after registration params{email}', {
-		// 					email: registrationInputs?.email,
-		// 				})}
-		// 			</AppText>
-		// 		</View>
-		// 	)
-		// }
-		return null
+		if (route.params?.mail) {
+			return (
+				<View>
+					<AppText style={[styles.secondary, { marginBottom: 36 }]}>
+						{t('check your {{email}} after registration params{email}', {
+							email: route.params.mail,
+						})}
+					</AppText>
+				</View>
+			)
+		}
 	}
 
 	const resend = () => dispatch(resendOtpThunk({ from: 'EmailVerification' }))
@@ -82,11 +81,16 @@ const EmailVerification = (props: Props) => {
 
 	return (
 		<AppBackground>
-			<WithKeyboard modal={undefined} refreshControl={undefined}>
+			<WithKeyboard
+				flexGrow={true}
+				padding={true}
+				modal={true}
+				refreshControl={undefined}
+				scrollUp={undefined}>
 				<View style={styles.container}>
 					<View style={styles.top}>
 						<CloseModalIcon
-							onPress={props.navigation.goBack()}
+							onPress={() => navigation.goBack()}
 							style={undefined}
 						/>
 					</View>
@@ -102,7 +106,7 @@ const EmailVerification = (props: Props) => {
 						{checkMailText()}
 
 						<TwoFaInput
-							navigation={props.navigation}
+							navigation={navigation}
 							value={value}
 							setValue={setValue}
 							cellCount={6}

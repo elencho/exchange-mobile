@@ -11,12 +11,13 @@ import {
 	startLoginThunk,
 	usernameAndPaswordThunk,
 } from '@store/redux/auth/thunks'
-import GeneralError from '@app/components/GeneralError'
+import GeneralError from '@components/general_error'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
 import Constants from 'expo-constants'
+import { setGeneralError } from '@store/redux/common/slice'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
@@ -58,6 +59,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 			setPass('')
 			setMailError(false)
 			setPassError(false)
+			dispatch(setGeneralError(undefined))
 		})
 	}, [navigation])
 
@@ -91,9 +93,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 					</AppText>
 				</View>
 
-				<View style={styles.height42}>
-					<GeneralError show={errorHappenedHere('Login')} />
-				</View>
+				<View style={styles.height42}>{<GeneralError />}</View>
 				<AppInput
 					style={styles.email}
 					value={mail}

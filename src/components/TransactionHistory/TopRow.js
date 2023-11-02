@@ -3,21 +3,22 @@ import React, { useEffect } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../constants/colors'
-import { fetchUserInfo } from '../../redux/profile/actions'
 import AppText from '../AppText'
 import Headline from './Headline'
+import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 
 function TopRow({ clear, headlineLogo, style }) {
 	const navigation = useNavigation()
 	const route = useRoute()
 	const dispatch = useDispatch()
 
-	const userInfo = useSelector((state) => state.profileOld.userInfo)
-	const { firstName, lastName } = userInfo
+	const userInfo = useSelector((state) => state?.profile?.userInfo)
+	const firstName = userInfo?.firstName
+	const lastName = userInfo?.lastName
 
 	useEffect(() => {
-		if (!firstName) dispatch(fetchUserInfo())
-	}, [])
+		if (!firstName) dispatch(fetchUserInfoThunk())
+	}, [firstName])
 
 	const initials = () => {
 		if (firstName && lastName) {

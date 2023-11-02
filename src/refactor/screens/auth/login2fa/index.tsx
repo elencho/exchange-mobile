@@ -44,6 +44,7 @@ export const Login2Fa = ({ navigation }: Props) => {
 
 	useEffect(() => {
 		dispatch(setTimer(true))
+		setSeconds(COUNTDOWN_SECONDS)
 
 		return () => {
 			dispatch(setTimer(false))

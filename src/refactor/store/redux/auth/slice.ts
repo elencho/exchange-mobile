@@ -1,3 +1,6 @@
+import { TokenParams } from '@app/refactor/types/auth/splash'
+import jwt_decode from 'jwt-decode'
+
 import {
 	ActionReducerMapBuilder,
 	createSlice,
@@ -13,16 +16,16 @@ import {
 	otpForLoginThunk,
 	forgotPasswordStartThunk,
 	startRegistrationThunk,
-	fetchCountriesThunk,
 	registrationFormThunk,
 } from '@store/redux/auth/thunks'
+import KVStore from '@store/kv'
 
 interface AuthState {
 	timerVisible: boolean
 	authLoading: boolean
 	callbackUrl: string
+	accessToken?: string
 	otpType: OTP
-	countries: Country[]
 	phoneCountryCode?: string
 	pkceInfo?: PkceInfo
 }
@@ -30,7 +33,6 @@ interface AuthState {
 const initialState: AuthState = {
 	timerVisible: false,
 	authLoading: false,
-	countries: [],
 	callbackUrl: '',
 	otpType: 'EMAIL',
 }
@@ -48,6 +50,16 @@ const auth = createSlice({
 		setOtpType: (state, action: PayloadAction<OTP>) => {
 			state.otpType = action.payload
 		},
+		setTokens(
+			state,
+			action: PayloadAction<{ refreshToken: string; accessToken: string }>
+		) {
+			KVStore.set('refreshToken', action.payload.refreshToken)
+			state.accessToken = action.payload.accessToken
+			state.otpType = jwt_decode<TokenParams>(
+				action.payload.accessToken
+			)?.otpType
+		},
 	},
 	extraReducers: (builder) => {
 		login(builder)
@@ -57,7 +69,6 @@ const auth = createSlice({
 
 		registerStart(builder)
 		registerForm(builder)
-		countries(builder)
 
 		builder.addCase(otpForLoginThunk.pending, (state) => {
 			state.authLoading = true
@@ -175,11 +186,5 @@ const registerForm = (builder: ActionReducerMapBuilder<AuthState>) => {
 		})
 }
 
-const countries = (builder: ActionReducerMapBuilder<AuthState>) => {
-	builder.addCase(fetchCountriesThunk.fulfilled, (state, action) => {
-		state.countries = action.payload
-	})
-}
-
-export const { savePkceInfo, setOtpType, setTimer } = auth.actions
+export const { savePkceInfo, setOtpType, setTimer, setTokens } = auth.actions
 export default auth.reducer

@@ -16,7 +16,7 @@ import {
 	useTheme,
 } from './src/refactor/setup/theme'
 import { THEME_DARK } from './src/refactor/setup/theme/variants'
-import './src/utils/interceptor'
+import '@app/refactor/setup/network/interceptor'
 
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed
