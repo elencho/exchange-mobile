@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { togglePersonalInfoModal } from '@app/redux/modals/actions'
 import { saveUserInfo } from '@app/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { togglePersonalInfoModal } from '@app/refactor/redux/modals/modalsSlice'
 
 const usePersonalInfoModal = () => {
 	const dispatch = useDispatch()
@@ -17,6 +17,15 @@ const usePersonalInfoModal = () => {
 	const [citizenshipDrop, setCitizenshipDrop] = useState(false)
 	const [userInfoVariable, setUserInfoVariable] = useState(null)
 	const [error, setError] = useState(false)
+
+	const x = {
+		banned: false,
+		phoneCode: '+995',
+		name: 'Georgia',
+		code: 'GEO',
+	}
+	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(x)
+	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
 	const alphabeticRegex = (text: string) => /^[a-zA-Z]+$/.test(text?.trim())
 
@@ -60,7 +69,7 @@ const usePersonalInfoModal = () => {
 
 	// TODO: FIX types
 	const handleCountries = (countryDrop, citizenshipDrop) => {
-		dispatch(toggleCountriesModal(true))
+		setCountryModalVisible(true)
 		if (countryDrop) setCountryDrop(true)
 		if (citizenshipDrop) setCitizenshipDrop(true)
 	}
@@ -97,6 +106,10 @@ const usePersonalInfoModal = () => {
 		countryDrop,
 		personalInfoModalVisible,
 		hide,
+		setChosenCountry,
+		chosenCountry,
+		countryModalVisible,
+		setCountryModalVisible,
 	}
 }
 

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Linking } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -14,8 +14,9 @@ export const usePersonal = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		profile: { userInfo, language, smsAuth },
+		profile: { userInfo, smsAuth },
 		errors: { generalError },
+		common: { language },
 	} = state
 
 	const verified = userInfo?.userStatus === UserStatus.VERIFIED
@@ -23,6 +24,15 @@ export const usePersonal = () => {
 	const pending = userInfo?.userStatus === UserStatus.PENDING
 	const corporate = userInfo?.userType === UserStatus.CORPORATE
 	const eligibleToVerify = userInfo?.verificationToolEnabled
+
+	const x = {
+		banned: false,
+		phoneCode: '+995',
+		name: 'Georgia',
+		code: 'GEO',
+	}
+	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(x)
+	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
 	const hideError = () =>
 		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
@@ -90,5 +100,9 @@ export const usePersonal = () => {
 		language,
 		smsAuth,
 		corporate,
+		setCountryModalVisible,
+		countryModalVisible,
+		setChosenCountry,
+		chosenCountry,
 	}
 }

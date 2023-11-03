@@ -23,6 +23,15 @@ export const usePhoneNumberModal = () => {
 	const [error, setError] = useState(false)
 	const [seconds, setSeconds] = useState(30)
 
+	const x = {
+		banned: false,
+		phoneCode: '+995',
+		name: 'Georgia',
+		code: 'GEO',
+	}
+	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(x)
+	const [countryModalVisible, setCountryModalVisible] = useState(false)
+
 	useEffect(() => {
 		if (!timerVisible) {
 			setSeconds(30)
@@ -78,7 +87,7 @@ export const usePhoneNumberModal = () => {
 		}
 	}
 
-	const handleCountries = () => dispatch(toggleCountriesModal(true))
+	const handleCountries = () => setCountryModalVisible(true)
 
 	const phoneCountry = () => {
 		let phoneCountry
@@ -105,5 +114,9 @@ export const usePhoneNumberModal = () => {
 		handleCountries,
 		phoneCountry,
 		error,
+		setChosenCountry,
+		chosenCountry,
+		countryModalVisible,
+		setCountryModalVisible,
 	}
 }
