@@ -17,6 +17,7 @@ import KVStore from '@app/refactor/store/kv'
 import { i18n } from '@app/refactor/setup/i18n'
 import { TokenParams } from '@app/refactor/types/auth/splash'
 import { setTokens } from '@store/redux/auth/slice'
+import { fetchCountriesThunk } from '@store/redux/common/thunks'
 
 export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const { theme } = useTheme()
@@ -31,6 +32,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const startApp = async () => {
 		KVStore.del('webViewVisible')
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
+		dispatch(fetchCountriesThunk())
 		await fetchLexicon()
 
 		const tokens = await getTokensOnInit()
