@@ -42,15 +42,18 @@ export default function AppNavigator() {
 
 	// TODO: this
 	// BackHandler.addEventListener('hardwareBackPress', () => true)
-	// const onStateChange = (state: any) => {
-	// 	console.log('asd')
-	// 	dispatch({
-	// 		type: 'SET_STACK_NAVIGATION_ROUTE',
-	// 		stackRoute: state.routes[state.routes.length - 1].name,
-	// 	})
-	// 	if (generalError)
-	// 		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
-	// }
+
+	// TODO: This is needed for wallet screen to work, to identify which screen is active,
+	// We can remove this after refcatoring wallet screen
+	const onStateChange = (state: any) => {
+		dispatch({
+			type: 'SET_STACK_NAVIGATION_ROUTE',
+			stackRoute: state.routes[state.routes.length - 1].name,
+		})
+
+		// if (generalError)
+		// 	dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+	}
 
 	// const onNavigationChanged = (state?: NavigationState) => {
 	// 	setTimeout(() => {
@@ -60,7 +63,7 @@ export default function AppNavigator() {
 
 	return (
 		<NavigationContainer
-			//onStateChange={onNavigationChanged}
+			onStateChange={onStateChange}
 			ref={navigationRef}
 			theme={{
 				dark: true,

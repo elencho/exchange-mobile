@@ -18,8 +18,9 @@ const CountriesModal = ({
 	from,
 	title = 'Choose Country',
 }: Props) => {
-	const state = useSelector((state: RootState) => state.auth)
-	const { countries, phoneCountryCode } = state
+	const { auth, common } = useSelector((state: RootState) => state)
+	const { phoneCountryCode } = auth
+	const { countries } = common
 
 	const [filteredCountries, setFilteredCountries] = useState<Country[]>([])
 

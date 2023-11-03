@@ -84,7 +84,7 @@ export const Personal = ({ loading }: PersonalProps) => {
 				return (
 					<IdentitySecond
 						userStatus={userStatus}
-						userInfoStatus={userInfo.userStatus}
+						userInfoStatus={userInfo?.userStatus}
 						styles={styles}
 					/>
 				)
@@ -92,7 +92,7 @@ export const Personal = ({ loading }: PersonalProps) => {
 			case PersonalFeatures.PHONE:
 				return (
 					<AppText variant="s" style={styles.secondary}>
-						{userInfo.phoneNumber}
+						{userInfo?.phoneNumber}
 					</AppText>
 				)
 

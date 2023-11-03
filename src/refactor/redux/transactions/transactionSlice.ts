@@ -22,7 +22,7 @@ export interface TransactionState {
 
 const initialQueryParams = {
 	cryptoFilter: null,
-	limit: 25,
+	limit: 10,
 	method: [],
 	status: [],
 	offset: 0,

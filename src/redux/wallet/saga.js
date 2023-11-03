@@ -99,7 +99,7 @@ function* wireDepositSaga(action) {
 	const { name, code, navigation } = action
 	if (navigation) yield put({ type: 'GO_TO_BALANCE', name, code, navigation })
 
-	const language = yield select((s) => s.profile.language)
+	const language = yield select((s) => s.common.language)
 	const currentBalanceObj = yield select((s) => s.trade.currentBalanceObj)
 	const network = yield select((s) => s.wallet.network)
 	const walletTab = yield select((s) => s.wallet.walletTab)

@@ -16,8 +16,8 @@ export const useProfile = ({ route }) => {
 
 	const [showRefreshControl, setShowRefreshControl] = useState(false)
 	const [bioAvailable, setBioAvailable] = useState(false)
-
-	const { Personal_Security, userInfo, userProfileLoading } = state
+	const [personalSecurity, setPersonalSecurity] = useState('Personal')
+	const { userInfo, userProfileLoading } = state
 
 	useEffect(() => {
 		dispatch(fetchUserInfoThunk(route?.params?.fromRegistration))
@@ -28,11 +28,11 @@ export const useProfile = ({ route }) => {
 		return () => clearTimeout(timer)
 	}, [])
 
-	useFocusEffect(
-		useCallback(() => {
-			return () => dispatch(setPersonalSecurity('Personal'))
-		}, [])
-	)
+	// useFocusEffect(
+	// 	useCallback(() => {
+	// 		return () => setPersonalSecurity('Personal')
+	// 	}, [])
+	// )
 
 	const checkCompitable = async () => {
 		const compitable = await checkIsCompatable()
@@ -90,9 +90,10 @@ export const useProfile = ({ route }) => {
 		clear,
 		onScroll,
 		showRefreshControl,
-		Personal_Security,
+		personalSecurity,
 		userInfo,
 		userProfileLoading,
 		bioAvailable,
+		setPersonalSecurity,
 	}
 }

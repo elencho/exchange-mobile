@@ -66,9 +66,9 @@ export default function SecurityRow(props: SecurityRowProps) {
 			case 'Google_Auth':
 				return 'Google Auth Description'
 			case 'E_mail_Auth':
-				return userInfo.email
+				return userInfo?.email
 			case 'SMS_Auth':
-				return userInfo.phoneNumber
+				return userInfo?.phoneNumber
 			case 'Pin':
 				return 'Changing password periodically'
 			case 'Biometric':

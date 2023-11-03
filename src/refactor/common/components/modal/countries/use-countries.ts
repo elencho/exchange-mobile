@@ -8,6 +8,7 @@ import {
 	saveCountries,
 } from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { fetchCountriesThunk } from '@store/redux/common/thunks'
 
 interface UseCountriesProps {
 	reset?: () => void
@@ -23,11 +24,12 @@ export const useCountries = (props: UseCountriesProps) => {
 
 	const {
 		modalState: { countriesModalVisible },
-		profile: { countries, countriesConstant, userInfo, registrationInputs },
+		profile: { countriesConstant, userInfo },
+		common: { countries },
 	} = state
 
 	useEffect(() => {
-		dispatch(fetchCountries())
+		dispatch(fetchCountriesThunk())
 	}, [])
 
 	const filter = (text: string) => {

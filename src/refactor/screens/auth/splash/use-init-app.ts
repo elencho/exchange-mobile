@@ -10,7 +10,6 @@ import {
 	fetchTranslations,
 	getTokensOnInit,
 } from '@store/redux/auth/api'
-import { fetchCountriesThunk } from '@store/redux/auth/thunks'
 import { currentVersion } from '@app/constants/system'
 import { System } from '@app/refactor/common/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
@@ -30,7 +29,6 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	)
 
 	const startApp = async () => {
-		dispatch(fetchCountriesThunk())
 		KVStore.del('webViewVisible')
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
 		await fetchLexicon()

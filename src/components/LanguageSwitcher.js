@@ -18,7 +18,7 @@ import { switchLanguage } from '../utils/i18n'
 import AppText from './AppText'
 
 const LanguageSwitcher = () => {
-	const defaltLanguage = useSelector((state) => state.profile.language)
+	const defaltLanguage = useSelector((state) => state.common.language)
 	const dispatch = useDispatch()
 
 	const isGeo = defaltLanguage === 'ka'

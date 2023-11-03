@@ -16,7 +16,6 @@ import {
 	otpForLoginThunk,
 	forgotPasswordStartThunk,
 	startRegistrationThunk,
-	fetchCountriesThunk,
 	registrationFormThunk,
 } from '@store/redux/auth/thunks'
 import KVStore from '@store/kv'
@@ -27,7 +26,6 @@ interface AuthState {
 	callbackUrl: string
 	accessToken?: string
 	otpType: OTP
-	countries: Country[]
 	phoneCountryCode?: string
 	pkceInfo?: PkceInfo
 }
@@ -35,7 +33,6 @@ interface AuthState {
 const initialState: AuthState = {
 	timerVisible: false,
 	authLoading: false,
-	countries: [],
 	callbackUrl: '',
 	otpType: 'EMAIL',
 }
@@ -66,8 +63,6 @@ const auth = createSlice({
 		forgotPass(builder)
 		login2fa(builder)
 		resetOtp(builder)
-
-		countries(builder)
 
 		builder.addCase(otpForLoginThunk.pending, (state) => {
 			state.authLoading = true
@@ -168,12 +163,6 @@ const register = (builder: ActionReducerMapBuilder<AuthState>) => {
 		.addCase(registrationFormThunk.rejected, (state) => {
 			state.authLoading = false
 		})
-}
-
-const countries = (builder: ActionReducerMapBuilder<AuthState>) => {
-	builder.addCase(fetchCountriesThunk.fulfilled, (state, action) => {
-		state.countries = action.payload
-	})
 }
 
 export const { savePkceInfo, setTimer, setTokens } = auth.actions

@@ -1,11 +1,17 @@
 import { Language } from '@app/refactor/common/constants'
 import { i18n } from '@app/refactor/setup/i18n'
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import {
+	ActionReducerMapBuilder,
+	PayloadAction,
+	createSlice,
+} from '@reduxjs/toolkit'
 import KVStore from '@store/kv'
+import { fetchCountriesThunk } from './thunks'
 
 interface CommonState {
 	language: Language
 	currencyList: string[]
+	countries: Country[]
 
 	// error
 	lastRequestUiError?: UiErrorType
@@ -16,6 +22,7 @@ interface CommonState {
 const initialState: CommonState = {
 	language: KVStore.get('language') || 'en',
 	currencyList: [],
+	countries: [],
 }
 
 const common = createSlice({
@@ -40,7 +47,16 @@ const common = createSlice({
 			state.lastRequestUiError = action.payload
 		},
 	},
+	extraReducers: (builder) => {
+		countries(builder)
+	},
 })
+
+const countries = (builder: ActionReducerMapBuilder<CommonState>) => {
+	builder.addCase(fetchCountriesThunk.fulfilled, (state, action) => {
+		state.countries = action.payload
+	})
+}
 
 export const {
 	setLanguage,
@@ -49,4 +65,5 @@ export const {
 	setLastRequestUiErrorType,
 	setCurrencyList,
 } = common.actions
+
 export default common.reducer

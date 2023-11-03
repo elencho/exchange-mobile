@@ -307,11 +307,3 @@ export const registrationFormThunk = createAsyncThunk(
 		return data
 	}
 )
-
-export const fetchCountriesThunk = createAsyncThunk(
-	'fetchCountries',
-	async (_, {}) => {
-		const data = await fetchCountries()
-		return data
-	}
-)

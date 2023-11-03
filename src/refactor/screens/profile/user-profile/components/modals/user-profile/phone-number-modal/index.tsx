@@ -2,7 +2,6 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AppButton } from '@components/button'
 import AppModal from '@components/modal'
-import { CountriesModal } from '@components/modal/countries'
 import AppDropdown from '@app/components/AppDropdown'
 import AppInput from '@app/components/AppInput'
 import GeneralError from '@app/components/GeneralError'
@@ -10,6 +9,7 @@ import WithKeyboard from '@app/components/WithKeyboard'
 import { COUNTRIES_URL_PNG } from '@app/constants/api'
 import { errorHappenedHere } from '@app/utils/appUtils'
 import { usePhoneNumberModal } from './use-phone-number-modal'
+import CountriesModal from '@app/refactor/common/modals/countries'
 
 export default function PhoneNumberModal() {
 	const {

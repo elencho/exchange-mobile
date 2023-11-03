@@ -26,7 +26,7 @@ export default function WithdrawalInfo({ error }) {
 	const state = useSelector((state) => state)
 
 	const {
-		profile: { userInfo },
+		profileOld: { userInfo },
 		wallet: {
 			currentTemplate,
 			withdrawalBank,
@@ -167,7 +167,6 @@ export default function WithdrawalInfo({ error }) {
 						onChangeText={(t) => handleUserInfo(t, 'city')}
 						label="City"
 						value={userInfo.city}
-						labelBackgroundColor={colors.SECONDARY_BACKGROUND}
 						error={error && !userInfo?.city?.trim()}
 					/>
 
@@ -176,7 +175,6 @@ export default function WithdrawalInfo({ error }) {
 						onChangeText={(t) => handleUserInfo(t, 'address')}
 						style={styles.address}
 						value={userInfo.address}
-						labelBackgroundColor={colors.SECONDARY_BACKGROUND}
 						error={error && !userInfo?.address?.trim()}
 					/>
 				</>
@@ -249,7 +247,6 @@ const styles = StyleSheet.create({
 	block: {
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 		paddingVertical: 22,
-		paddingHorizontal: 10,
 		marginBottom: 12,
 	},
 	dropdownText: {

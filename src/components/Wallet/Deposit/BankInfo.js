@@ -42,7 +42,7 @@ export default function BankInfo() {
 	const [info, setInfo] = useState({})
 	const {
 		wallet: { wireDepositInfo, wireDepositProvider },
-		profile: { language },
+		common: { language },
 	} = state
 	const numberOfProviders = wireDepositInfo[language]?.length
 

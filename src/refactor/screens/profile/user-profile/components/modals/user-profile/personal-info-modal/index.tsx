@@ -5,7 +5,6 @@ import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppInput from '@components/input'
 import AppModal from '@components/modal'
-import { CountriesModal } from '@components/modal/countries'
 import AppText from '@components/text'
 import AppDropdown from '@app/components/AppDropdown'
 import GeneralError from '@app/components/GeneralError'
@@ -14,6 +13,7 @@ import WithKeyboard from '@app/components/WithKeyboard'
 import { COUNTRIES_URL_PNG } from '@app/constants/api'
 import { saveUserInfo } from '@app/refactor/redux/profile/actions'
 import usePersonalInfoModal from './use-personal-info-modal'
+import CountriesModal from '@app/refactor/common/modals/countries'
 
 export default function PersonalInfoModal() {
 	const {

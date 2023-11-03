@@ -23,7 +23,7 @@ export default function CountriesModal({
 
 	const {
 		modals: { countriesModalVisible },
-		profile: { countries, countriesConstant, userInfo, registrationInputs },
+		profileOld: { countries, countriesConstant, userInfo, registrationInputs },
 	} = state
 
 	useEffect(() => {

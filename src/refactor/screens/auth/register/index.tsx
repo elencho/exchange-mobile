@@ -30,6 +30,7 @@ import PersonalCompanySwitcher from '@app/refactor/screens/auth/register/compone
 import { Screens } from '@app/refactor/setup/nav/nav'
 import GeneralError from '@components/general_error'
 import useCleanGeneralError from '@components/general_error/use_clean_error'
+import { useSSR } from 'react-i18next'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -60,8 +61,9 @@ const Register = ({ navigation }: Props) => {
 	const [referral, setReferral] = useState('')
 	const [promo, setPromo] = useState('')
 
-	const state = useSelector((state: RootState) => state.auth)
-	const { authLoading, phoneCountryCode, countries } = state
+	const authState = useSelector((state: RootState) => state.auth)
+	const { countries } = useSelector((state: RootState) => state.common)
+	const { authLoading, phoneCountryCode } = authState
 
 	const passLength = pass?.length >= 8
 	const passHasUpperLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(pass)

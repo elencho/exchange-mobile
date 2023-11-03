@@ -11,6 +11,7 @@ import Transaction from '@app/refactor/screens/transactions/components/Transacti
 import ListFooter from './ListFooter'
 import useTrades from '../hooks/useTrades'
 import { useFocusEffect } from '@react-navigation/native'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 const TradeList = ({ isInstantTrade }) => {
 	const {
@@ -23,17 +24,20 @@ const TradeList = ({ isInstantTrade }) => {
 	} = useTrades()
 
 	const {
-		fiatCodesQuery,
-		statusQuery,
-		actionQuery,
-		cryptoCodeQuery,
-		fromDateTimeQuery,
-		toDateTimeQuery,
-	} = useSelector((state: RootState) => state.trades)
+		modalState: { transactionFiltersModalVisible },
+		trades: {
+			fiatCodesQuery,
+			statusQuery,
+			actionQuery,
+			cryptoCodeQuery,
+			fromDateTimeQuery,
+			toDateTimeQuery,
+		},
+	} = useSelector((state: RootState) => state)
 
 	useFocusEffect(
 		useCallback(() => {
-			fetchTrades()
+			!transactionFiltersModalVisible && fetchTrades()
 		}, [
 			fiatCodesQuery,
 			statusQuery,
@@ -41,6 +45,7 @@ const TradeList = ({ isInstantTrade }) => {
 			cryptoCodeQuery,
 			fromDateTimeQuery,
 			toDateTimeQuery,
+			transactionFiltersModalVisible,
 		])
 	)
 
@@ -68,46 +73,39 @@ const TradeList = ({ isInstantTrade }) => {
 			</View>
 		)
 
-	return (
-		<View style={styles.container}>
-			{tradesLoading ? (
-				<View style={{ marginTop: IS_IOS ? -10 : 20 }}>
-					<TransactionSkeleton
-						length={[1, 2, 3, 4, 5]}
-						isInstantTrade={isInstantTrade}
-					/>
-				</View>
-			) : (
-				<FlatList
-					style={{ height: 280 }}
-					data={trades}
-					renderItem={renderTrade}
-					keyExtractor={(item, idx) => item.creationTime + idx}
-					onEndReached={handleScrollEnd}
-					onEndReachedThreshold={1}
-					contentContainerStyle={{ flexGrow: 1 }}
-					nestedScrollEnabled
-					showsVerticalScrollIndicator={false}
-					initialNumToRender={10}
-					ListFooterComponent={
-						<ListFooter
-							isLoading={tradesLoading}
-							totalDataQty={totalTradesQty}
-							dataArray={trades}
-							isInstantTrade={isInstantTrade}
-						/>
-					}
-					ListEmptyComponent={listEmptyContainer}
-					maxToRenderPerBatch={30}
-					refreshControl={
-						<CustomRefreshContol
-							refreshing={tradesLoading}
-							onRefresh={onRefresh}
-						/>
-					}
-				/>
-			)}
+	return tradesLoading ? (
+		<View style={{ marginTop: 10 }}>
+			<TransactionSkeleton
+				length={[1, 2, 3, 4, 5]}
+				isInstantTrade={isInstantTrade}
+			/>
 		</View>
+	) : (
+		<FlatList
+			style={styles.container}
+			data={trades}
+			renderItem={renderTrade}
+			keyExtractor={(item, idx) => item.creationTime + idx}
+			onEndReached={handleScrollEnd}
+			onEndReachedThreshold={1}
+			contentContainerStyle={{ flexGrow: 1 }}
+			nestedScrollEnabled
+			showsVerticalScrollIndicator={false}
+			initialNumToRender={10}
+			ListFooterComponent={
+				<ListFooter
+					isLoading={tradesLoading}
+					totalDataQty={totalTradesQty}
+					dataArray={trades}
+					isInstantTrade={isInstantTrade}
+				/>
+			}
+			ListEmptyComponent={listEmptyContainer}
+			maxToRenderPerBatch={30}
+			refreshControl={
+				<CustomRefreshContol refreshing={tradesLoading} onRefresh={onRefresh} />
+			}
+		/>
 	)
 }
 export default memo(TradeList)

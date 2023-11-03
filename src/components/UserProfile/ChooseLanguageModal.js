@@ -9,13 +9,14 @@ import { fetchUserInfo, setLanguage } from '../../redux/profile/actions'
 import { switchLanguage } from '../../utils/i18n'
 import AppModal from '../AppModal'
 import AppText from '../AppText'
+import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 
 export default function ChooseLanguageModal() {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 	const {
 		modals: { languageModalVisible },
-		profile: { language },
+		common: { language },
 	} = state
 
 	const hide = () => dispatch(toggleLanguageModal(false))
@@ -24,7 +25,7 @@ export default function ChooseLanguageModal() {
 		dispatch(setLanguage(l))
 		switchLanguage(l)
 		hide()
-		dispatch(fetchUserInfo())
+		dispatch(fetchUserInfoThunk())
 	}
 
 	const background = (l) => {
