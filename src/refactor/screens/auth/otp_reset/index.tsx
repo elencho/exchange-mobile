@@ -119,7 +119,7 @@ export const ResetOtpInstructions = (
 
 				{resetOtpType === 'Support' ? (
 					<View style={styles.bottom}>
-						<AppText style={[styles.secondary, { marginHorizontal: '15%' }]}>
+						<AppText style={[styles.secondary]}>
 							<AppText>
 								Note: After OTP reset, withdrawals will not be available for
 							</AppText>{' '}

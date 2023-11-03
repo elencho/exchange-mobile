@@ -45,7 +45,7 @@ const TwoFaInput = ({
 			if (from === 'Login2Fa') {
 				dispatch(otpForLoginThunk({ otp: value, from: 'Login2Fa', navigation }))
 			} else if (from === 'Registration') {
-				dispatch(verifyRegistrationThunk({ otp: value }))
+				dispatch(verifyRegistrationThunk({ otp: value, navigation }))
 			}
 		}
 	}, [value])

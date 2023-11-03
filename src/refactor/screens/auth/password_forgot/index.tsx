@@ -9,8 +9,8 @@ import AppInput from '@components/input/index'
 import AppText from '@components/text'
 import {
 	forgotPasswordStartThunk,
-	resetPasswordOtpThunk,
-	resetPasswordStartThunk,
+	resetPasswordConfirmCodeThunk as resetPasswordConfirmCodeThunk,
+	resendPasswordCodeThunk,
 } from '@store/redux/auth/thunks'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
@@ -33,7 +33,6 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	const [codeError, setCodeError] = useState(false)
 
 	const [seconds, setSeconds] = useState(0)
-	const [sent, setSent] = useState(false)
 
 	const { authLoading, timerVisible } = useSelector(
 		(state: RootState) => state.auth
@@ -50,11 +49,8 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	}, [])
 
 	useEffect(() => {
-		if (!timerVisible) return
-
 		if (seconds) {
 			setTimeout(() => {
-				setSent(true)
 				setSeconds(seconds - 1)
 			}, 1000)
 		} else {
@@ -70,15 +66,13 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 
 	const goToLogin = () => navigation.navigate('Login')
 
-	const onSendPressed = () => {
+	const onResendPressed = () => {
 		if (!mail.trim()) setMailError(true)
 		else if (!validMail) setMailError('Enter Valid Email')
 
 		if (mail.trim() && validMail) {
-			dispatch(resetPasswordStartThunk({ mail }))
-			if (sent) {
-				setSeconds(COUNTDOWN)
-			}
+			dispatch(resendPasswordCodeThunk({ mail }))
+			setSeconds(COUNTDOWN)
 		}
 	}
 
@@ -88,7 +82,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 		else if (!validMail) setMailError('Enter Valid Email')
 
 		if (mail.trim() && code.trim() && validMail) {
-			dispatch(resetPasswordOtpThunk({ mail, otp: code, navigation }))
+			dispatch(resetPasswordConfirmCodeThunk({ mail, otp: code, navigation }))
 		}
 	}
 
@@ -101,11 +95,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 			)
 		} else
 			return (
-				<AppButton
-					variant="text"
-					text={sent ? 'Resend' : 'Send'}
-					onPress={onSendPressed}
-				/>
+				<AppButton variant="text" text={'Send'} onPress={onResendPressed} />
 			)
 	}
 

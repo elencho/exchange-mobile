@@ -3,17 +3,17 @@ import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import GeneralErrorIcon from '@assets/images/User_profile/General_Error.svg'
 import AppText from '@components/text'
-import { setGeneralError } from '@store/redux/common/slice'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Theme, useTheme } from '@theme/index'
-import { formatGeneralError } from '@components/util'
+import { formatUiError } from '@components/util'
+import { setGeneralError } from '@store/redux/common/slice'
 
 function GeneralError({ style = {} }) {
 	const dispatch = useDispatch()
 	const { styles } = useTheme(_styles)
 
 	const generalError = useSelector(
-		(state: RootState) => state.common.generalError
+		(state: RootState) => state.common.generalErrorData
 	)
 
 	useEffect(() => {
@@ -33,7 +33,7 @@ function GeneralError({ style = {} }) {
 						variant="m"
 						transParams={generalError.transParams}
 						style={styles.red}>
-						{formatGeneralError(generalError)}
+						{formatUiError(generalError)}
 					</AppText>
 				</View>
 			) : null}

@@ -27,7 +27,6 @@ import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
 import { Screens } from './nav'
 import { useDispatch } from 'react-redux'
-import { setGeneralError } from '@store/redux/common/slice'
 
 const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef<Screens>()

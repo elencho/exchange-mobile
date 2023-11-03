@@ -15,7 +15,6 @@ import GeneralError from '@components/general_error'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import { errorHappenedHere } from '@app/utils/appUtils'
 import Constants from 'expo-constants'
 import { setGeneralError } from '@store/redux/common/slice'
 

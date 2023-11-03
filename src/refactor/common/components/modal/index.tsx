@@ -7,7 +7,7 @@ import Background from '@components/background'
 import CloseIcon from '@components/close-button'
 import { Headline } from '@components/headline'
 import AppText from '@components/text'
-import { AppToast } from '@components/toast'
+import AppToast from '@components/app_toast'
 import { ModalTop } from './modal-parts'
 import { useModal } from './use-modal'
 

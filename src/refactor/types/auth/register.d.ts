@@ -1,3 +1,5 @@
+type UserType = 'Personal' | 'Company'
+
 interface RegistrationStartResponse {
 	execution: Execution
 	callbackUrl: string
@@ -12,7 +14,10 @@ interface RegistrationFormResponse {
 	callbackUrl: string
 }
 
-type UserType = 'Personal' | 'Company'
+interface VerifyAccountResponse {
+	code: string
+	session_state: string
+}
 
 type CountriesResponse = Country[]
 

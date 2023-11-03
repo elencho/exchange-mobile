@@ -7,7 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
 import store from '@app/refactor/redux/store'
 import AppNavigator from '@app/refactor/setup/nav/index'
-import AppToast from './src/components/AppToast'
+import AppToast from '@components/app_toast'
 import images from './src/constants/images'
 import { IS_ANDROID } from './src/constants/system'
 import {
@@ -17,6 +17,7 @@ import {
 } from './src/refactor/setup/theme'
 import { THEME_DARK } from './src/refactor/setup/theme/variants'
 import '@app/refactor/setup/network/interceptor'
+import { System } from '@app/refactor/common/util'
 
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed
@@ -51,7 +52,7 @@ const App = React.memo(() => {
 						barStyle="light-content"
 					/>
 
-					{(IS_ANDROID && (
+					{System.isAndroid ? (
 						<SafeAreaView
 							style={styles.container}
 							onLayout={onLayoutRootView}
@@ -59,7 +60,7 @@ const App = React.memo(() => {
 							<AppToast />
 							<AppNavigator />
 						</SafeAreaView>
-					)) || (
+					) : (
 						<>
 							<AppToast />
 							<AppNavigator />

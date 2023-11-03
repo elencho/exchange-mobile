@@ -30,6 +30,7 @@ import PersonalCompanySwitcher from '@app/refactor/screens/auth/register/compone
 import { Screens } from '@app/refactor/setup/nav/nav'
 import GeneralError from '@components/general_error'
 import useCleanGeneralError from '@components/general_error/use_clean_error'
+import { useSSR } from 'react-i18next'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -37,37 +38,32 @@ const Register = ({ navigation }: Props) => {
 	const dispatch = useDispatch()
 	const { styles, theme } = useTheme(_styles)
 
-	const [userType, setUserType] = useState<UserType>('Company')
+	const [userType, setUserType] = useState<UserType>('Personal')
 
-	const [mail, setMail] = useState('remora.427@gmail.com')
+	const [mail, setMail] = useState('')
 	const [mailErr, setMailErr] = useState(false)
 
-	const [pass, setPass] = useState('Derrickrose1')
+	const [pass, setPass] = useState('')
 	const [passErr, setPassErr] = useState(false)
 
-	const [confirmPass, setConfirmPass] = useState('Derrickrose1')
+	const [confirmPass, setConfirmPass] = useState('')
 	const [confirmPassErr, setConfirmPassErr] = useState(false)
 
-	const x = {
-		banned: false,
-		phoneCode: '+995',
-		name: 'Georgia',
-		code: 'GEO',
-	}
-	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(x)
+	const [chosenCountry, setChosenCountry] = useState<Country | undefined>()
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
-	const [phone, setPhone] = useState('4324413154')
+	const [phone, setPhone] = useState('')
 	const [phoneErr, setPhoneErr] = useState(false)
 
-	const [termsSelected, setTermsSelected] = useState(true)
+	const [termsSelected, setTermsSelected] = useState(false)
 	const [termsSelectedErr, setTermsSelectedErr] = useState(false)
 
 	const [referral, setReferral] = useState('')
 	const [promo, setPromo] = useState('')
 
-	const state = useSelector((state: RootState) => state.auth)
-	const { authLoading } = state
+	const authState = useSelector((state: RootState) => state.auth)
+	const { countries } = useSelector((state: RootState) => state.common)
+	const { authLoading, phoneCountryCode } = authState
 
 	const passLength = pass?.length >= 8
 	const passHasUpperLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(pass)
@@ -96,6 +92,14 @@ const Register = ({ navigation }: Props) => {
 	useEffect(() => {
 		setTermsSelectedErr(false)
 	}, [termsSelected])
+
+	useEffect(() => {
+		if (!phoneCountryCode) return
+		const defaultCountry = countries.find(
+			(c: Country) => c.code === phoneCountryCode
+		)
+		setChosenCountry(defaultCountry)
+	}, [phoneCountryCode])
 
 	useCleanGeneralError()
 

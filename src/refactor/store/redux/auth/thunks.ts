@@ -98,7 +98,7 @@ export const forgotPasswordStartThunk = createAsyncThunk(
 	}
 )
 
-export const resetPasswordStartThunk = createAsyncThunk(
+export const resendPasswordCodeThunk = createAsyncThunk(
 	'resetPassword',
 	async ({ mail }: { mail: string }, { getState }) => {
 		const { callbackUrl } = (getState() as RootState).auth
@@ -112,7 +112,7 @@ export const resetPasswordStartThunk = createAsyncThunk(
 	}
 )
 
-export const resetPasswordOtpThunk = createAsyncThunk(
+export const resetPasswordConfirmCodeThunk = createAsyncThunk(
 	'resetPasswordOtp',
 	async (
 		{
@@ -159,13 +159,8 @@ type ResendFrom = 'Login2Fa' | 'EmailVerification' | 'TODO:SMS_EMAIL_MODAL'
 
 export const resendOtpThunk = createAsyncThunk(
 	'resendOtp',
-	async ({ from }: { from: ResendFrom }, { getState }) => {
+	async ({ from }: { from?: ResendFrom }, { getState }) => {
 		const state = (getState() as RootState).auth
-
-		//TODO: SmsEmail Modal
-		//TODO: Registration
-		if (from === 'EmailVerification') {
-		}
 		const resendInfo = await resendEmail(state.callbackUrl)
 		return { callbackUrl: resendInfo.callbackUrl }
 	}
@@ -186,23 +181,14 @@ export const otpForLoginThunk = createAsyncThunk(
 		{ dispatch, getState }
 	) => {
 		const state = (getState() as RootState).auth
-		const { callbackUrl, pkceInfo } = state
+		const { callbackUrl } = state
 
-		state.authLoading = true
 		const loginInfo = await loginOtp(otp, callbackUrl)
 
-		// TODO: profile->forgotPassMode
 		if (loginInfo.execution === Execution.UPDATE_PASSWORD) {
 			navigation.navigate('SetNewPassword')
 		} else {
-			dispatch(
-				codeToTokenThunk(
-					loginInfo.code,
-					pkceInfo?.codeVerifier,
-					from,
-					navigation
-				)
-			)
+			dispatch(codeToTokenThunk(loginInfo.code, from, navigation))
 		}
 
 		return loginInfo
@@ -211,12 +197,13 @@ export const otpForLoginThunk = createAsyncThunk(
 
 const codeToTokenThunk = (
 	code: string,
-	codeVerifier: string | undefined,
 	from: Route,
 	navigation: NativeStackNavigationProp<Screens, any>
 ) =>
-	createAsyncThunk('codeToToken', async (_, { dispatch }) => {
-		const tokenData = await codeToToken(code, codeVerifier || '')
+	createAsyncThunk('codeToToken', async (_, { dispatch, getState }) => {
+		const { pkceInfo } = (getState() as RootState).auth
+
+		const tokenData = await codeToToken(code, pkceInfo?.codeVerifier || '')
 		dispatch(
 			setTokens({
 				refreshToken: tokenData.refresh_token,
@@ -224,22 +211,11 @@ const codeToTokenThunk = (
 			})
 		)
 
+		console.log(navigation, tokenData)
+
 		const otpType = jwt_decode<TokenParams>(tokenData.access_token)?.otpType
-
-		if (navigation) {
-			KVStore.set('isLoggedIn', true)
-			navigation.navigate('Main')
-
-			// TODO? if (from === 'Login2Fa') {
-			// 	navigation.navigate('UserProfile')
-			// } else {
-			// 	navigation.navigate('Main')
-			// }
-		}
-
-		// TODO: If from registration
-		// TODO: if (from === 'Login2Fa') yield put(switchPersonalSecurity('Security'))
-
+		KVStore.set('isLoggedIn', true)
+		navigation.navigate('Main')
 		return { otpType }
 	})()
 
@@ -257,17 +233,10 @@ export const setNewPasswordOtpThunk = createAsyncThunk(
 		},
 		{ dispatch, getState }
 	) => {
-		const { callbackUrl, pkceInfo } = (getState() as RootState).auth
+		const { callbackUrl } = (getState() as RootState).auth
 		const data = await setNewPassword(callbackUrl, newPass, confirmPass)
 
-		dispatch(
-			codeToTokenThunk(
-				data.code,
-				pkceInfo?.codeVerifier,
-				'SetNewPassword',
-				navigation
-			)
-		)
+		dispatch(codeToTokenThunk(data.code, 'SetNewPassword', navigation))
 	}
 )
 
@@ -289,23 +258,17 @@ export const startRegistrationThunk = createAsyncThunk(
 
 export const verifyRegistrationThunk = createAsyncThunk(
 	'verifyRegistration',
-	async ({ otp }: { otp: string }, { getState }) => {
-		const { callbackUrl, pkceInfo } = (getState() as RootState).auth
+	async (
+		{
+			otp,
+			navigation,
+		}: { otp: string; navigation: NativeStackNavigationProp<Screens, any> },
+		{ dispatch, getState }
+	) => {
+		const { callbackUrl } = (getState() as RootState).auth
 
 		const data = await verifyAccount(callbackUrl, otp)
-
-		//const verified = yield call(verifyAccount, verificationInfo?.callbackUrl, otp)
-		// if (verified?.code) {
-		// 	yield put({
-		// 		type: 'CODE_TO_TOKEN_SAGA',
-		// 		code: verified.code,
-		// 		codeVerifier,
-		// 		fromRegistration: true,
-		// 		navigation,
-		// 	})
-		// } else {
-		// 	yield put(saveVerificationInfo(verified))
-		// }
+		dispatch(codeToTokenThunk(data.code, 'Registration', navigation))
 		return data
 	}
 )

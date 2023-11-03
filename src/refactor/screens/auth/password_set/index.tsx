@@ -10,7 +10,6 @@ import AppInput from '@components/input'
 import AppText from '@components/text'
 import { setNewPasswordOtpThunk } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
-import { startLoginAction } from '@app/redux/profile/actions'
 import { Screens } from '@app/refactor/setup/nav/nav'
 
 interface Props extends NativeStackScreenProps<Screens, 'SetNewPassword'> {}
@@ -27,7 +26,7 @@ export default function SetNewPassword({ navigation }: Props) {
 		error && setError(false)
 	}, [pass, confirmPass])
 
-	const goToLogin = () => dispatch(startLoginAction(navigation))
+	const goToLogin = () => navigation.navigate('Login')
 
 	const passLength = pass?.length >= 8
 	const hasNumber = /\d/.test(pass)
@@ -55,14 +54,17 @@ export default function SetNewPassword({ navigation }: Props) {
 					variant="text"
 					text="Back to Log In"
 					style={styles.backText}
-					onPress={() => {}}
+					onPress={goToLogin}
 				/>
 			</TouchableOpacity>
 
 			<WithKeyboard
+				flexGrow={true}
+				padding={true}
 				contentContainerStyle={styles.middle}
 				modal={undefined}
-				refreshControl={undefined}>
+				refreshControl={undefined}
+				scrollUp={undefined}>
 				<Strong_Password
 					style={{ alignSelf: 'center', transform: [{ scaleY: 1.1 }] }}
 				/>

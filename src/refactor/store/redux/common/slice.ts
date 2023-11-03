@@ -10,15 +10,17 @@ import { fetchCountriesThunk } from './thunks'
 
 interface CommonState {
 	language: Language
-	generalError?: GeneralErrorData
-	lastRequestErrorToast: boolean
 	currencyList: string[]
 	countries: Country[]
+
+	// error
+	lastRequestUiError?: UiErrorType
+	generalErrorData?: UiErrorData
+	appToastData?: UiErrorData
 }
 
 const initialState: CommonState = {
 	language: KVStore.get('language') || 'en',
-	lastRequestErrorToast: false,
 	currencyList: [],
 	countries: [],
 }
@@ -32,29 +34,36 @@ const common = createSlice({
 			KVStore.set('language', action.payload)
 			i18n.switchLanguage(action.payload)
 		},
-		setGeneralError(
-			state,
-			action: PayloadAction<GeneralErrorData | undefined>
-		) {
-			state.generalError = action.payload
-		},
-		setIsToast(state, action: PayloadAction<boolean>) {
-			state.lastRequestErrorToast = action.payload
-		},
 		setCurrencyList(state, action: PayloadAction<string[]>) {
 			state.currencyList = action.payload
+		},
+		setGeneralError(state, action: PayloadAction<UiErrorData | undefined>) {
+			state.generalErrorData = action.payload
+		},
+		setAppToast(state, action: PayloadAction<UiErrorData | undefined>) {
+			state.appToastData = action.payload
+		},
+		setLastRequestUiErrorType(state, action: PayloadAction<UiErrorType>) {
+			state.lastRequestUiError = action.payload
 		},
 	},
 	extraReducers: (builder) => {
 		countries(builder)
 	},
 })
+
 const countries = (builder: ActionReducerMapBuilder<CommonState>) => {
 	builder.addCase(fetchCountriesThunk.fulfilled, (state, action) => {
 		state.countries = action.payload
 	})
 }
 
-export const { setLanguage, setGeneralError, setIsToast, setCurrencyList } =
-	common.actions
+export const {
+	setLanguage,
+	setGeneralError,
+	setAppToast,
+	setLastRequestUiErrorType,
+	setCurrencyList,
+} = common.actions
+
 export default common.reducer

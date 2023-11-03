@@ -90,7 +90,7 @@ const EmailVerification = ({
 				<View style={styles.container}>
 					<View style={styles.top}>
 						<CloseModalIcon
-							onPress={() => navigation.goBack()}
+							onPress={() => navigation.navigate('Registration')}
 							style={undefined}
 						/>
 					</View>
