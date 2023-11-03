@@ -37,7 +37,7 @@ const Register = ({ navigation }: Props) => {
 	const dispatch = useDispatch()
 	const { styles, theme } = useTheme(_styles)
 
-	const [userType, setUserType] = useState<UserType>('Company')
+	const [userType, setUserType] = useState<UserType>('Personal')
 
 	const [mail, setMail] = useState('')
 	const [mailErr, setMailErr] = useState(false)

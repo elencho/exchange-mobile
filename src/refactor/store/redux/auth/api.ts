@@ -238,7 +238,7 @@ export const registrationForm = async (
 }
 
 export const verifyAccount = async (callbackUrl: string, otp: string) => {
-	const data = await axios({
+	const data = await axios<VerifyAccountResponse>({
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
