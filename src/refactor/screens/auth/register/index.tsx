@@ -129,6 +129,7 @@ const Register = ({ navigation }: Props) => {
 
 	const onPhoneCodePressed = () => setCountryModalVisible(true)
 	const goToSignIn = () => navigation.navigate('Login')
+	const goBack = () => navigation.goBack()
 
 	return (
 		<SafeAreaView style={styles.safeArea}>
@@ -142,7 +143,7 @@ const Register = ({ navigation }: Props) => {
 				<AppButton
 					variant="text"
 					text="Back to Log In"
-					onPress={goToSignIn}
+					onPress={goBack}
 					style={[styles.backText, styles.back]}
 				/>
 				<View style={styles.container}>

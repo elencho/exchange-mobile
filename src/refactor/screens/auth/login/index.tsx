@@ -72,7 +72,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 		}
 	}
 
-	const onRegisterPressed = () => navigation.navigate('Registration')
+	const onRegisterPressed = () => navigation.replace('Registration')
 	const onForgotPasswordPressed = () => navigation.navigate('ForgotPassword')
 
 	return (
