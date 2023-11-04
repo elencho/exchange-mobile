@@ -19,12 +19,10 @@ export default function SetNewPassword({ navigation }: Props) {
 	const { theme, styles } = useTheme(_styles)
 
 	const [pass, setPass] = useState('')
-	const [confirmPass, setConfirmPass] = useState('')
-	const [error, setError] = useState(false)
+	const [passError, setPassError] = useState(false)
 
-	useEffect(() => {
-		error && setError(false)
-	}, [pass, confirmPass])
+	const [confirmPass, setConfirmPass] = useState('')
+	const [confirmPassError, setConfirmPassError] = useState(false)
 
 	const goToLogin = () => navigation.navigate('Login')
 
@@ -33,13 +31,10 @@ export default function SetNewPassword({ navigation }: Props) {
 	const hasUpperAndLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(pass)
 	const passValid = passLength && hasNumber && hasUpperAndLower
 
-	const errorStyle = (valid: boolean) => {
-		return !valid && pass ? { color: theme.color.error } : {}
-	}
-
-	const setNewPassword = () => {
+	const onSavePressed = () => {
 		if (pass !== confirmPass || !passValid) {
-			setError(true)
+			setPassError(true)
+			setConfirmPassError(true)
 		} else {
 			dispatch(
 				setNewPasswordOtpThunk({ newPass: pass, confirmPass, navigation })
@@ -83,40 +78,49 @@ export default function SetNewPassword({ navigation }: Props) {
 					style={styles.input}
 					label="Enter New Password"
 					onChangeText={setPass}
+					onFocus={() => setPassError(false)}
 					value={pass}
-					secureTextEntry
-					error={error && (!passValid || !pass)}
+					secureTextEntry={true}
+					error={passError && (!passValid || !pass)}
 				/>
 
-				<View>
-					<Text style={styles.validations}>
-						<AppText variant="m" style={errorStyle(passLength)}>
-							8 or more characters,
-						</AppText>{' '}
-						<AppText variant="m" style={errorStyle(hasUpperAndLower)}>
-							Upper & lowercase letters,
-						</AppText>{' '}
-						<AppText variant="m" style={errorStyle(hasNumber)}>
-							At least one number,
-						</AppText>
-					</Text>
-				</View>
+				<Text style={styles.validations}>
+					<AppText
+						variant="m"
+						style={pass.length > 0 && !passLength && styles.redText}>
+						8 or more characters,
+					</AppText>{' '}
+					<AppText
+						variant="m"
+						style={pass.length > 0 && !hasUpperAndLower && styles.redText}>
+						Upper & lowercase letters,
+					</AppText>{' '}
+					<AppText
+						variant="m"
+						style={pass.length > 0 && !hasNumber && styles.redText}>
+						At least one number,
+					</AppText>
+				</Text>
 
 				<AppInput
 					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.input}
 					label="Confirm New Password"
-					onChangeText={setConfirmPass}
+					onChangeText={(txt: string) => {
+						setConfirmPass(txt)
+						if (txt === pass) setConfirmPassError(false)
+					}}
+					onFocus={() => setConfirmPassError(false)}
 					value={confirmPass}
-					secureTextEntry
-					error={error && pass !== confirmPass}
+					secureTextEntry={true}
+					error={confirmPassError}
 				/>
 
 				<AppButton
 					variant="primary"
 					text="Save"
 					style={styles.button}
-					onPress={setNewPassword}
+					onPress={onSavePressed}
 				/>
 			</WithKeyboard>
 		</Background>
@@ -140,7 +144,6 @@ const _styles = (theme: Theme) =>
 			width: '100%',
 			marginTop: 84,
 		},
-
 		input: {
 			width: '100%',
 			marginVertical: 6,
@@ -164,5 +167,9 @@ const _styles = (theme: Theme) =>
 			color: theme.color.textSecondary,
 			fontSize: 11,
 			lineHeight: 15,
+			marginTop: 8,
+		},
+		redText: {
+			color: theme.color.error,
 		},
 	})
