@@ -30,7 +30,6 @@ import PersonalCompanySwitcher from '@app/refactor/screens/auth/register/compone
 import { Screens } from '@app/refactor/setup/nav/nav'
 import GeneralError from '@components/general_error'
 import useCleanGeneralError from '@components/general_error/use_clean_error'
-import { useSSR } from 'react-i18next'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -72,7 +71,7 @@ const Register = ({ navigation }: Props) => {
 	const valid = {
 		email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(mail),
 		pass: passLength && passHasUpperLower && passHasNumber,
-		confirmPass: confirmPass === pass,
+		confirmPass: confirmPass && confirmPass === pass,
 		phone: /^[0-9]+$/.test(phone),
 		terms: termsSelected,
 	}
@@ -169,6 +168,7 @@ const Register = ({ navigation }: Props) => {
 						label="Enter Password"
 						style={styles.input}
 						onChangeText={setPass}
+						onFocus={() => setPassErr(false)}
 						error={passErr}
 						secureTextEntry={true}
 					/>
@@ -195,6 +195,7 @@ const Register = ({ navigation }: Props) => {
 						labelBackgroundColor={theme.color.backgroundPrimary}
 						style={[styles.input, { marginTop: 10 }]}
 						onChangeText={setConfirmPass}
+						onFocus={() => setConfirmPassErr(false)}
 						error={confirmPassErr}
 						secureTextEntry={true}
 					/>
