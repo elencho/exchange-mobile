@@ -53,9 +53,8 @@ const auth = createSlice({
 		) {
 			KVStore.set('refreshToken', action.payload.refreshToken)
 			state.accessToken = action.payload.accessToken
-			state.otpType = jwt_decode<TokenParams>(
-				action.payload.accessToken
-			)?.otpType
+			state.otpType = jwt_decode<TokenParams>(action.payload.accessToken)
+				?.otpType
 		},
 		clearTokens: (state) => {
 			KVStore.del('refreshToken')
