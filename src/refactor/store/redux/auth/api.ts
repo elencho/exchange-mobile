@@ -8,6 +8,7 @@ import {
 	DICTIONARY,
 	FORGOT_PASSWORD_START_URL,
 	LOGIN_START_URL,
+	LOGOUT,
 	READINESS_URL,
 	REGISTRATION_START_URL,
 } from '@app/constants/api'
@@ -310,4 +311,15 @@ export const fetchCountries = async () => {
 		headers: { requestName: 'fetchCountries', toast: false },
 	})
 	return data?.data
+}
+
+export const logout = async () => {
+	const refreshToken = KVStore.get('refreshToken')
+	const data = await axios({
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		url: LOGOUT,
+		data: `refresh_token=${refreshToken}&client_id=mobile-service-public`,
+	})
+	if (data) return data.status
 }

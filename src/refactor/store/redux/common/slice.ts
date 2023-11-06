@@ -17,12 +17,16 @@ interface CommonState {
 	lastRequestUiError?: UiErrorType
 	generalErrorData?: UiErrorData
 	appToastData?: UiErrorData
+
+	// biometric
+	isBiometricScreenOpened: boolean
 }
 
 const initialState: CommonState = {
 	language: KVStore.get('language') || 'en',
 	currencyList: [],
 	countries: [],
+	isBiometricScreenOpened: false,
 }
 
 const common = createSlice({
@@ -46,6 +50,9 @@ const common = createSlice({
 		setLastRequestUiErrorType(state, action: PayloadAction<UiErrorType>) {
 			state.lastRequestUiError = action.payload
 		},
+		setBiometricScreenOpened(state, action: PayloadAction<boolean>) {
+			state.isBiometricScreenOpened = action.payload
+		},
 	},
 	extraReducers: (builder) => {
 		countries(builder)
@@ -64,6 +71,7 @@ export const {
 	setAppToast,
 	setLastRequestUiErrorType,
 	setCurrencyList,
+	setBiometricScreenOpened,
 } = common.actions
 
 export default common.reducer

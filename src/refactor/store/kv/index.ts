@@ -2,12 +2,16 @@ import { MMKV } from 'react-native-mmkv'
 import { Language } from '@app/refactor/common/constants'
 
 interface Schema {
-	// Auth
-	webViewVisible: boolean //TODO: Remove
-	isLoggedIn: boolean //TODO: Remove
-	refreshToken: string
-	bioEnabledEmails: string[]
+	// Common
 	language: Language
+	webViewVisible: boolean
+	// Auth
+	refreshToken: string
+	// Biometric
+	isLoggedIn: boolean
+	bioEnabledEmails: string[]
+	lastOpenDateMillis: number
+	authVisible: boolean
 }
 type Key = keyof Schema
 
@@ -50,6 +54,9 @@ const serializeBoolean = (value: boolean) => (value ? 'true' : 'false')
 const deserializeString = (value: string) => value
 const serializeString = (value: string) => value
 
+const deserializeNumber = (value: string) => parseInt(value)
+const serializeNumber = (value: number) => JSON.stringify(value)
+
 const deserializeObject = (value: string) => JSON.parse(value)
 const serializeObject = (value: any) => JSON.stringify(value)
 
@@ -61,6 +68,8 @@ const deserializers: {
 	refreshToken: deserializeString,
 	bioEnabledEmails: deserializeObject,
 	language: (value: string) => (value === 'ka' ? 'ka' : 'en'),
+	lastOpenDateMillis: deserializeNumber,
+	authVisible: deserializeBoolean,
 }
 
 const serializers: { [key in Key]: (value: Schema[key]) => string } = {
@@ -69,4 +78,6 @@ const serializers: { [key in Key]: (value: Schema[key]) => string } = {
 	refreshToken: serializeString,
 	bioEnabledEmails: serializeObject,
 	language: serializeString,
+	lastOpenDateMillis: serializeNumber,
+	authVisible: serializeBoolean,
 }

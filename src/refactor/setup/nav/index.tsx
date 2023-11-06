@@ -22,11 +22,11 @@ import TransactionFilter from '@app/refactor/screens/transactions/TransactionFil
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
 import EmailVerification from '@app/refactor/screens/auth/email_verification'
-import Resume from '@app/screens/Resume'
 import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
 import { Screens } from './nav'
 import { useDispatch } from 'react-redux'
+import Resume from '@app/refactor/screens/auth/resume'
 
 const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef<Screens>()
@@ -39,9 +39,6 @@ export default function AppNavigator() {
 	// } = state
 
 	useNotifications()
-
-	// TODO: this
-	// BackHandler.addEventListener('hardwareBackPress', () => true)
 
 	// TODO: This is needed for wallet screen to work, to identify which screen is active,
 	// We can remove this after refcatoring wallet screen

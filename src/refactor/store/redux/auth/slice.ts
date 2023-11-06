@@ -53,8 +53,14 @@ const auth = createSlice({
 		) {
 			KVStore.set('refreshToken', action.payload.refreshToken)
 			state.accessToken = action.payload.accessToken
-			state.otpType = jwt_decode<TokenParams>(action.payload.accessToken)
-				?.otpType
+			state.otpType = jwt_decode<TokenParams>(
+				action.payload.accessToken
+			)?.otpType
+		},
+		clearTokens: (state) => {
+			KVStore.del('refreshToken')
+			state.accessToken = undefined
+			// TODO?: delete otpType
 		},
 	},
 	extraReducers: (builder) => {
@@ -165,5 +171,5 @@ const register = (builder: ActionReducerMapBuilder<AuthState>) => {
 		})
 }
 
-export const { savePkceInfo, setTimer, setTokens } = auth.actions
+export const { savePkceInfo, setTimer, setTokens, clearTokens } = auth.actions
 export default auth.reducer
