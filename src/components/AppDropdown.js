@@ -38,7 +38,7 @@ const AppDropdown = ({
 						style={[
 							styles.selectedText,
 							error && { color: colors.ERROR_TEXT },
-							disabled && { color: colors.TEXT_DISABLED },
+							disabled && { color: colors.SECONDARY_TEXT },
 						]}
 						numberOfLines={1}>
 						{selectedText}
@@ -55,7 +55,7 @@ const AppDropdown = ({
 					style={[
 						styles.label,
 						error && { color: colors.ERROR_TEXT },
-						disabled && { color: colors.TEXT_DISABLED, opacity: 0.6 },
+						disabled && { color: colors.SECONDARY_TEXT, opacity: 0.6 },
 					]}>
 					{label}
 				</AppText>
