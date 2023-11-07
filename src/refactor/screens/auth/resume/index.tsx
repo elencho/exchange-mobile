@@ -27,8 +27,8 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 	const dispatch = useDispatch()
 	const { styles } = useTheme(_styles)
 
-	const params = route.params
-	const fromSplash = params.from === 'Splash'
+	const { fromSplash, maintenanceInProgress, version } = route.params
+	const resumed = route?.key === 'Resume-uniqueKey'
 
 	const { userInfo } = useSelector((state: RootState) => state.profile)
 
@@ -49,7 +49,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 		}
 	}, [])
 
-	//TODO: Ask about this
+	// TODO: Ask about this
 	// const startAuthActions = async () => {
 	// 	if (IS_ANDROID && withdrawalConfirmModalVisible) {
 	// 		dispatch(toggleGoogleOtpModal(false))
@@ -91,7 +91,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 
 		if (authResult?.success) {
 			//TODO: Check all bad cases
-			if (fromSplash) {
+			if (fromSplash && !resumed && !maintenanceInProgress && !version) {
 				navigation.navigate('Main')
 			} else {
 				navigation.goBack()

@@ -59,7 +59,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			if (!accessToken) {
 				navigation.navigate('Welcome')
 			} else {
-				navigation.navigate('Welcome') // Main
+				navigation.navigate('Main') // Main
 			}
 		}
 	}
@@ -82,7 +82,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 
 		// TODO: && or ||
 		if (biometricDiffElapsed && !isLoggedIn) {
-			navigation.navigate('Resume', { from: 'Splash' })
+			navigation.navigate('Resume', { fromSplash: true })
 		} else {
 			navigation.navigate('Main')
 		}

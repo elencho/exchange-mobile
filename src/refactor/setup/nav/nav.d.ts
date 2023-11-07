@@ -32,7 +32,7 @@ export type Screens = {
 	}
 	Main?: {}
 	Resume: {
-		from: Route
+		fromSplash: boolean
 		maintenanceInProgress?: boolean
 		version?: boolean
 	}

@@ -6,7 +6,8 @@ import {
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import MainScreen from '@app/navigation/MainScreen'
+import Main from '@app/refactor/screens/auth/main'
+import Resume from '@app/refactor/screens/auth/resume'
 import Login from '@app/refactor/screens/auth/login'
 import Login2Fa from '@app/refactor/screens/auth/login2fa'
 import Maintenance from '@app/refactor/screens/auth/maintenance'
@@ -19,14 +20,13 @@ import UpdateAvailable from '@app/refactor/screens/auth/update'
 import Welcome from '@app/refactor/screens/auth/welcome'
 import UserProfile from '@app/refactor/screens/profile/user-profile'
 import TransactionFilter from '@app/refactor/screens/transactions/TransactionFilter'
+import EmailVerification from '@app/refactor/screens/auth/email_verification'
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
-import EmailVerification from '@app/refactor/screens/auth/email_verification'
 import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
 import { Screens } from './nav'
 import { useDispatch } from 'react-redux'
-import Resume from '@app/refactor/screens/auth/resume'
 
 const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef<Screens>()
@@ -97,7 +97,7 @@ export default function AppNavigator() {
 				<Stack.Screen name="EmailVerification" component={EmailVerification} />
 				<Stack.Screen
 					name="Main"
-					component={MainScreen}
+					component={Main}
 					options={{ animation: 'fade' }}
 				/>
 
