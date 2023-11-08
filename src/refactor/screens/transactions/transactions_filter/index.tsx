@@ -7,7 +7,6 @@ import DatePickerModal from '@app/refactor/common/components/modals/DatePickerMo
 import ChooseMethodsModal from '@app/refactor/common/components/modals/ChooseMethodsModal'
 import AppDropdown from '@app/components/AppDropdown'
 import AppText from '@app/components/AppText'
-import DatePicker from '@app/refactor/screens/transactions/components/DatePicker'
 import Headline from '@app/components/TransactionHistory/Headline'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
@@ -32,10 +31,13 @@ import {
 	setMethodFilter,
 	setPreviousTransactionsFilter,
 } from '@app/refactor/redux/transactions/transactionSlice'
-import FilterRow from '@app/refactor/screens/transactions/components/FilterRow'
-import TransactionFilterBottom from './components/TransactionFilterBottom'
 import AppModal from '@app/components/AppModal'
-import { RootState } from '../../redux/rootReducer'
+import { RootState } from '../../../redux/rootReducer'
+import {
+	TransactionFilterBottom,
+	FilterRow,
+	DatePicker,
+} from '@app/refactor/screens/transactions/components/FilterComponents'
 
 const WINDOW_HEIGHT = Dimensions.get('window').height
 

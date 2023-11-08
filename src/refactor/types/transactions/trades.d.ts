@@ -1,4 +1,4 @@
-interface fetchTradesQuery {
+interface FetchTradesRequest {
 	fiatCodes: string[]
 	cryptoCode: string | null
 	actions: string[]
@@ -7,4 +7,9 @@ interface fetchTradesQuery {
 	toTime: number | null
 	offset: number
 	limit: number
+}
+
+interface FetchTradesResponse {
+	trades: Trade[]
+	total: number
 }

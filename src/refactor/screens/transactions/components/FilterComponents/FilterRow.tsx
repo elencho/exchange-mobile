@@ -1,9 +1,9 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import Failed from '@assets/images/Status_Failed'
-import Pending from '@assets/images/Status_Pending'
-import Success from '@assets/images/Status_Success'
+import Failed from '@assets/images/Status_Failed.svg'
+import Pending from '@assets/images/Status_Pending.svg'
+import Success from '@assets/images/Status_Success.svg'
 import AppText from '@app/components/AppText'
 import colors from '@app/constants/colors'
 import {

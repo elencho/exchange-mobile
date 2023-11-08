@@ -4,14 +4,15 @@ import { Keyboard } from 'react-native'
 import { useDispatch } from 'react-redux'
 import Background from '@app/components/Background'
 import TopRow from '@app/components/TransactionHistory/TopRow'
-
-import SearchAndFilter from '@app/refactor/screens/transactions/components/SearchAndFilter'
-import TabSwitcher from '@app/refactor/screens/transactions/components/TabSwitcher'
-import TransactionModal from '@app/refactor/screens/transactions/components/TransactionModal'
-import TradeList from './components/TradeList'
-import TransactionList from './components/TransactionList'
 import { clearTransactionFilters } from '@app/refactor/redux/transactions/transactionSlice'
 import { clearTradeFilters } from '@app/refactor/redux/trade/tradeSlice'
+import {
+	TransactionList,
+	TradeList,
+	TabSwitcher,
+	SearchAndFilter,
+} from '@app/refactor/screens/transactions/components/ListComponents'
+import { TransactionModal } from '@app/refactor/screens/transactions/components/FilterComponents'
 
 function TransactionHistory({ navigation }) {
 	const isFocused = useIsFocused()

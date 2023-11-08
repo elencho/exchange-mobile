@@ -2,17 +2,20 @@ import React, { memo, useEffect } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import CustomRefreshContol from '@app/components/CustomRefreshContol'
-
 import List from '@app/assets/images/List.svg'
 import AppText from '@app/components/AppText'
 import TransactionSkeleton from '@app/components/TransactionHistory/TransactionSkeleton'
 import colors from '@app/constants/colors'
-import Transaction from '@app/refactor/screens/transactions/components/Transaction'
+import Transaction from '@app/refactor/screens/transactions/components/ListComponents/Transaction'
 import ListFooter from './ListFooter'
-import useTransactions from '../hooks/useTransactions'
+import { useTransactions } from '@app/refactor/screens/transactions/hooks'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
-const TransactionList = ({ isInstantTrade }) => {
+interface Props {
+	isInstantTrade: boolean
+}
+
+const TransactionList: React.FC<Props> = ({ isInstantTrade }) => {
 	const {
 		fetchTransactions,
 		refreshTransactions,

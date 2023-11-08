@@ -1,19 +1,22 @@
-import React, { useEffect, memo, useCallback } from 'react'
+import React, { memo, useCallback } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import List from '@assets/images/List.svg'
 import AppText from '@app/components/AppText'
 import CustomRefreshContol from '@app/components/CustomRefreshContol'
 import TransactionSkeleton from '@app/components/TransactionHistory/TransactionSkeleton'
 import colors from '@app/constants/colors'
-import { IS_IOS } from '@app/constants/system'
-import Transaction from '@app/refactor/screens/transactions/components/Transaction'
+import Transaction from '@app/refactor/screens/transactions/components/ListComponents/Transaction'
 import ListFooter from './ListFooter'
-import useTrades from '../hooks/useTrades'
+import { useTrades } from '@app/refactor/screens/transactions/hooks'
 import { useFocusEffect } from '@react-navigation/native'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
-const TradeList = ({ isInstantTrade }) => {
+interface Props {
+	isInstantTrade: boolean
+}
+
+const TradeList: React.FC<Props> = ({ isInstantTrade }) => {
 	const {
 		fetchTrades,
 		refreshTrades,

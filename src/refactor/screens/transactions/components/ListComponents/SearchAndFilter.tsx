@@ -20,9 +20,9 @@ import {
 	setTransactionsOffset,
 	setTransactionsSearch,
 } from '@app/refactor/redux/transactions/transactionSlice'
-import DownloadIcon from '@app/refactor/screens/transactions/components/DownloadIcon'
-import FilterIcon from '@app/refactor/screens/transactions/components/FilterIcon'
-import TransactionFilter from '../TransactionFilter'
+import DownloadIcon from '@app/refactor/screens/transactions/components/FilterComponents/DownloadIcon'
+import FilterIcon from '@app/refactor/screens/transactions/components/FilterComponents/FilterIcon'
+import TransactionFilter from '../../transactions_filter'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
 const SearchAndFilter = ({ isInstantTrade }) => {
