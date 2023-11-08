@@ -1,11 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {
-	ParamListBase,
-	RouteProp,
-	useIsFocused,
-} from '@react-navigation/native'
-import * as SecureStore from 'expo-secure-store'
+import { useIsFocused } from '@react-navigation/native'
 import jwt_decode from 'jwt-decode'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 import { AppState, NativeEventSubscription } from 'react-native'
@@ -23,7 +17,6 @@ import InstantTrade from '@app/screens/InstantTrade'
 import Wallet from '@app/screens/Wallet'
 import Exchange from '@app/screens/Exchange'
 import { setTabRouteName } from '@app/redux/transactions/actions'
-import { setTokens } from '@store/redux/auth/slice'
 
 const Tab = createBottomTabNavigator()
 
@@ -100,11 +93,12 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		<Tab.Navigator
 			screenListeners={{
 				state: (e) => {
-					console.log(e)
-					// TODO? dispatch(setTabRouteName(e.route.name))
+					// const tabs = e?.data?.state
+					// const tabName = tabs.routes[tabs.index].name
+					// dispatch(setTabRouteName(tabName))
 				},
 			}}
-			screenOptions={({ route }) => ({
+			screenOptions={({}) => ({
 				headerShown: false,
 				unmountOnBlur: true,
 				animationEnabled: true,

@@ -8,6 +8,7 @@ import {
 } from '@store/redux/common/slice'
 import { navigationRef } from '@app/refactor/setup/nav'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
+import { clearTokens } from '@store/redux/auth/slice'
 
 axios.interceptors.request.use((request) => {
 	const hasToast: boolean | undefined = request.headers.toast
@@ -69,18 +70,13 @@ const handleError = async (err: any) => {
 		if (refreshToken) {
 			const response = await retryUnauthorizedCall(err.config)
 			return response
-		} else {
-			KVStore.del('refreshToken')
-			navigationRef.navigate('Welcome')
 		}
 	}
 
 	if (status === 400 && invalidGrant) {
-		// TODO: What?
-		// KVStore.del('refreshToken')
-		// store.dispatch(setAccessToken(undefined))
-		// navigationRef.navigate('Welcome')
-		//TODO: store.dispatch({ type: 'LOGOUT' })
+		console.log('INVALID GRANTTTTTTTTTTT')
+		store.dispatch(clearTokens())
+		navigationRef.navigate('Welcome')
 	}
 
 	if (status === 503) {

@@ -309,16 +309,10 @@ export const registrationFormThunk = createAsyncThunk(
 	}
 )
 
-export const logoutThunk = createAsyncThunk(
-	'logout',
-	async (
-		{ navigation }: { navigation: NativeStackNavigationProp<Screens, any> },
-		{}
-	) => {
-		const httpStatus = await logout()
-		if (httpStatus === 204) {
-			clearTokens()
-			navigation.navigate('Welcome')
-		}
+export const logoutThunk = createAsyncThunk('logout', async ({}, {}) => {
+	const httpStatus = await logout()
+	if (httpStatus === 204) {
+		clearTokens()
+		navigationRef.navigate('Welcome')
 	}
-)
+})

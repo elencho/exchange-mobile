@@ -27,6 +27,7 @@ import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
 import { Screens } from './nav'
 import { useDispatch } from 'react-redux'
+import { setGeneralError } from '@store/redux/common/slice'
 
 const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef<Screens>()
@@ -40,27 +41,22 @@ export default function AppNavigator() {
 
 	useNotifications()
 
-	// TODO: This is needed for wallet screen to work, to identify which screen is active,
-	// We can remove this after refcatoring wallet screen
-	const onStateChange = (state: any) => {
+	const onNavigationChanged = (state?: NavigationState) => {
+		setTimeout(() => {
+			dispatch(setGeneralError(undefined))
+		}, 10)
+
+		// TODO: This is needed for wallet screen to work, to identify which screen is active,
+		// We can remove this after refcatoring wallet screen
 		dispatch({
 			type: 'SET_STACK_NAVIGATION_ROUTE',
-			stackRoute: state.routes[state.routes.length - 1].name,
+			stackRoute: state?.routes[state.routes.length - 1].name,
 		})
-
-		// if (generalError)
-		// 	dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
 	}
-
-	// const onNavigationChanged = (state?: NavigationState) => {
-	// 	setTimeout(() => {
-	// 		dispatch(setGeneralError(undefined))
-	// 	}, 1000)
-	// }
 
 	return (
 		<NavigationContainer
-			onStateChange={onStateChange}
+			onStateChange={onNavigationChanged}
 			ref={navigationRef}
 			theme={{
 				dark: true,

@@ -39,10 +39,12 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		const tokens = await getTokensOnInit()
 		const accessToken = tokens?.access_token
 		const refreshToken = tokens?.refresh_token
-		if (refreshToken && accessToken) setTokens({ refreshToken, accessToken })
+		if (refreshToken && accessToken) {
+			dispatch(setTokens({ refreshToken, accessToken }))
+		}
 
 		// // ! For Testing
-		// navigation.navigate('Welcome')
+		// navigation.navigate('EmailVerification')
 		// return
 
 		if (await updateNeeded()) {
@@ -59,7 +61,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			if (!accessToken) {
 				navigation.navigate('Welcome')
 			} else {
-				navigation.navigate('Main') // Main
+				navigation.navigate('Welcome') // Main
 			}
 		}
 	}

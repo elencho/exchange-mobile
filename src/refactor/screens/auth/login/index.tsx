@@ -97,7 +97,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 					style={styles.email}
 					value={mail}
 					onChangeText={setMail}
-					onFocus={() => setMailError(false)}
+					onFocusOrChange={() => setMailError(false)}
 					error={mailError}
 					label={'Enter Email'}
 				/>
@@ -106,7 +106,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 					value={pass}
 					style={styles.password}
 					onChangeText={setPass}
-					onFocus={() => setPassError(false)}
+					onFocusOrChange={() => setPassError(false)}
 					error={passError}
 					label={'Enter Password'}
 					rightComponent={

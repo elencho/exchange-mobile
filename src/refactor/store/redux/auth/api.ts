@@ -252,30 +252,6 @@ export const verifyAccount = async (callbackUrl: string, otp: string) => {
 	return data?.data
 }
 
-export const refreshTokenGetData = async (config: any, retryCall: boolean) => {
-	const refreshToken = KVStore.get('refreshToken')
-	const refreshData = await axios<RefreshTokenResponse>({
-		method: 'POST',
-		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-		url: CODE_TO_TOKEN,
-		data: `grant_type=refresh_token&client_id=mobile-service-public&refresh_token=${refreshToken}`,
-	})
-
-	const data = refreshData.data
-	if (!(data && data.access_token && data.refresh_token))
-		return Promise.resolve(undefined)
-
-	store.dispatch(
-		setTokens({
-			refreshToken: data.refresh_token,
-			accessToken: data.access_token,
-		})
-	)
-	if (retryCall) axios.request(config)
-
-	return Promise.resolve(data.access_token)
-}
-
 export const retryUnauthorizedCall = async (config: any) => {
 	const data = await refreshTokenService()
 	if (!(data && data.access_token && data.refresh_token)) return undefined
@@ -297,6 +273,7 @@ export const getTokensOnInit = async () => {
 
 const refreshTokenService = async () => {
 	const refreshToken = KVStore.get('refreshToken')
+	console.log('RefreshTokenCall:', refreshToken)
 	const refreshData = await axios<RefreshTokenResponse>({
 		method: 'POST',
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

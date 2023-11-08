@@ -35,7 +35,7 @@ export const Login2Fa = ({ navigation }: Props) => {
 	const { theme, styles } = useTheme(_styles)
 
 	const [value, setValue] = useState('')
-	const [seconds, setSeconds] = useState(0)
+	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
 
 	const state = useSelector((state: RootState) => state.auth)
 	const { timerVisible, otpType } = state
@@ -44,7 +44,6 @@ export const Login2Fa = ({ navigation }: Props) => {
 
 	useEffect(() => {
 		dispatch(setTimer(true))
-		setSeconds(COUNTDOWN_SECONDS)
 
 		return () => {
 			dispatch(setTimer(false))

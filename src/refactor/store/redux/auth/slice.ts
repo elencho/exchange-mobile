@@ -17,8 +17,10 @@ import {
 	forgotPasswordStartThunk,
 	startRegistrationThunk,
 	registrationFormThunk,
+	setNewPasswordOtpThunk,
 } from '@store/redux/auth/thunks'
 import KVStore from '@store/kv'
+import { act } from 'react-test-renderer'
 
 interface AuthState {
 	timerVisible: boolean
@@ -66,6 +68,7 @@ const auth = createSlice({
 		login(builder)
 		register(builder)
 		forgotPass(builder)
+		setPass(builder)
 		login2fa(builder)
 		resetOtp(builder)
 
@@ -118,6 +121,18 @@ const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 		state.callbackUrl = action.payload.callbackUrl
 	})
 	builder.addCase(resetPasswordConfirmCodeThunk.rejected, (state) => {
+		state.authLoading = false
+	})
+}
+
+const setPass = (builder: ActionReducerMapBuilder<AuthState>) => {
+	builder.addCase(setNewPasswordOtpThunk.pending, (state) => {
+		state.authLoading = true
+	})
+	builder.addCase(setNewPasswordOtpThunk.fulfilled, (state, action) => {
+		state.authLoading = false
+	})
+	builder.addCase(setNewPasswordOtpThunk.rejected, (state) => {
 		state.authLoading = false
 	})
 }

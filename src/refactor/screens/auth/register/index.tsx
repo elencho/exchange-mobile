@@ -159,7 +159,7 @@ const Register = ({ navigation }: Props) => {
 						value={mail}
 						label="Enter E-mail"
 						style={styles.input}
-						onFocus={() => setMailErr(false)}
+						onFocusOrChange={() => setMailErr(false)}
 						onChangeText={setMail}
 						error={mailErr && (mail ? 'Enter Valid Email' : true)}
 					/>
@@ -168,7 +168,7 @@ const Register = ({ navigation }: Props) => {
 						label="Enter Password"
 						style={styles.input}
 						onChangeText={setPass}
-						onFocus={() => setPassErr(false)}
+						onFocusOrChange={() => setPassErr(false)}
 						error={passErr}
 						secureTextEntry={true}
 					/>
@@ -195,7 +195,7 @@ const Register = ({ navigation }: Props) => {
 						labelBackgroundColor={theme.color.backgroundPrimary}
 						style={[styles.input, { marginTop: 10 }]}
 						onChangeText={setConfirmPass}
-						onFocus={() => setConfirmPassErr(false)}
+						onFocusOrChange={() => setConfirmPassErr(false)}
 						error={confirmPassErr}
 						secureTextEntry={true}
 					/>
@@ -233,7 +233,10 @@ const Register = ({ navigation }: Props) => {
 						</Pressable>
 						<TextInput
 							value={phone}
-							onChangeText={setPhone}
+							onChangeText={(txt: string) => {
+								setPhone(txt)
+								setPhoneErr(false)
+							}}
 							onFocus={() => setPhoneErr(false)}
 							placeholder="Phone Number"
 							placeholderTextColor={

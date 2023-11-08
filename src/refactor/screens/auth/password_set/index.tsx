@@ -1,7 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Strong_Password from '@assets/images/User_profile/Strong_Password.svg'
 import { Theme, useTheme } from '@theme/index'
 import Background from '@components/background'
@@ -11,6 +11,7 @@ import AppText from '@components/text'
 import { setNewPasswordOtpThunk } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { Screens } from '@app/refactor/setup/nav/nav'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface Props extends NativeStackScreenProps<Screens, 'SetNewPassword'> {}
 
@@ -23,6 +24,8 @@ export default function SetNewPassword({ navigation }: Props) {
 
 	const [confirmPass, setConfirmPass] = useState('')
 	const [confirmPassError, setConfirmPassError] = useState(false)
+
+	const { authLoading } = useSelector((state: RootState) => state.auth)
 
 	const goToLogin = () => navigation.navigate('Login')
 
@@ -78,7 +81,7 @@ export default function SetNewPassword({ navigation }: Props) {
 					style={styles.input}
 					label="Enter New Password"
 					onChangeText={setPass}
-					onFocus={() => setPassError(false)}
+					onFocusOrChange={() => setPassError(false)}
 					value={pass}
 					secureTextEntry={true}
 					error={passError && (!passValid || !pass)}
@@ -110,7 +113,7 @@ export default function SetNewPassword({ navigation }: Props) {
 						setConfirmPass(txt)
 						if (txt === pass) setConfirmPassError(false)
 					}}
-					onFocus={() => setConfirmPassError(false)}
+					onFocusOrChange={() => setConfirmPassError(false)}
 					value={confirmPass}
 					secureTextEntry={true}
 					error={confirmPassError}
@@ -121,6 +124,7 @@ export default function SetNewPassword({ navigation }: Props) {
 					text="Save"
 					style={styles.button}
 					onPress={onSavePressed}
+					loading={authLoading}
 				/>
 			</WithKeyboard>
 		</Background>
