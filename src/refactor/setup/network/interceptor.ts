@@ -16,7 +16,9 @@ axios.interceptors.request.use((request) => {
 	const accessToken = store.getState().auth.accessToken
 
 	const needsToken =
-		requestName !== 'fetchTranslations' && requestName !== 'fetchCountries'
+		requestName !== 'fetchTranslations' &&
+		requestName !== 'fetchCountries' &&
+		requestName !== 'refreshToken'
 
 	if (accessToken && needsToken) {
 		request.headers.Authorization = `Bearer ${accessToken}`
@@ -66,15 +68,19 @@ const handleError = async (err: any) => {
 	}
 
 	if (status === 401) {
-		const refreshToken = KVStore.get('refreshToken')
-		if (refreshToken) {
-			const response = await retryUnauthorizedCall(err.config)
+		const response = await retryUnauthorizedCall(
+			err.config,
+			KVStore.get('refreshToken')
+		)
+		if (response) {
 			return response
+		} else {
+			store.dispatch(clearTokens())
+			navigationRef.navigate('Welcome')
 		}
 	}
 
 	if (status === 400 && invalidGrant) {
-		console.log('INVALID GRANTTTTTTTTTTT')
 		store.dispatch(clearTokens())
 		navigationRef.navigate('Welcome')
 	}

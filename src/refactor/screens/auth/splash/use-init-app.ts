@@ -36,7 +36,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		dispatch(fetchCountriesThunk())
 		await fetchLexicon()
 
-		const tokens = await getTokensOnInit()
+		const tokens = await getTokensOnInit(KVStore.get('refreshToken'))
 		const accessToken = tokens?.access_token
 		const refreshToken = tokens?.refresh_token
 		if (refreshToken && accessToken) {
@@ -61,7 +61,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			if (!accessToken) {
 				navigation.navigate('Welcome')
 			} else {
-				navigation.navigate('Welcome') // Main
+				navigation.navigate('Main') // Main
 			}
 		}
 	}

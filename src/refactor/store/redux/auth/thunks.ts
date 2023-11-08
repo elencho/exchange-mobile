@@ -309,7 +309,7 @@ export const registrationFormThunk = createAsyncThunk(
 	}
 )
 
-export const logoutThunk = createAsyncThunk('logout', async ({}, {}) => {
+export const logoutThunk = createAsyncThunk('logout', async (_, {}) => {
 	const httpStatus = await logout()
 	if (httpStatus === 204) {
 		clearTokens()

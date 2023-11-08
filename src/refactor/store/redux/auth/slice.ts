@@ -20,7 +20,6 @@ import {
 	setNewPasswordOtpThunk,
 } from '@store/redux/auth/thunks'
 import KVStore from '@store/kv'
-import { act } from 'react-test-renderer'
 
 interface AuthState {
 	timerVisible: boolean

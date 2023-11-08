@@ -105,7 +105,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 
 	const standardLogin = () => {
 		KVStore.del('authVisible')
-		dispatch(logoutThunk({ navigation }))
+		dispatch(logoutThunk())
 	}
 
 	return (
