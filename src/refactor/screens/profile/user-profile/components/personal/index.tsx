@@ -43,6 +43,10 @@ export const Personal = ({ loading }: PersonalProps) => {
 		language,
 		corporate,
 		smsAuth,
+		setChosenCountry,
+		chosenCountry,
+		countryModalVisible,
+		setCountryModalVisible,
 	} = usePersonal()
 
 	const { styles } = useTheme(_styles)

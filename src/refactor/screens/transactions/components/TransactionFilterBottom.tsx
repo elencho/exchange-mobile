@@ -12,6 +12,7 @@ import {
 	clearTransactionFilters,
 	setTransactionsOffset,
 } from '@app/refactor/redux/transactions/transactionSlice'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 function TransactionFilterBottom({ handleClose, isInstantTrade }) {
 	const {
@@ -31,7 +32,7 @@ function TransactionFilterBottom({ handleClose, isInstantTrade }) {
 			fromDateTimeQuery,
 			toDateTimeQuery,
 		},
-	} = useSelector((state) => state)
+	} = useSelector((state: RootState) => state)
 
 	const dispatch = useDispatch()
 	const isFilteredTrades = Boolean(

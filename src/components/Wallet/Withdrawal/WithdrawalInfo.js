@@ -26,7 +26,7 @@ export default function WithdrawalInfo({ error }) {
 	const state = useSelector((state) => state)
 
 	const {
-		profileOld: { userInfo },
+		profile: { userInfo },
 		wallet: {
 			currentTemplate,
 			withdrawalBank,
@@ -208,7 +208,6 @@ export default function WithdrawalInfo({ error }) {
 				<AppInput
 					label="Account Number / IBAN"
 					style={styles.IBAN}
-					labelBackgroundColor={colors.SECONDARY_BACKGROUND}
 					value={iban}
 					onChangeText={handleIban}
 					error={error && !iban?.trim()}
@@ -219,7 +218,6 @@ export default function WithdrawalInfo({ error }) {
 				<>
 					<AppInput
 						label="SWIFT / BIC / Routing number"
-						labelBackgroundColor={colors.SECONDARY_BACKGROUND}
 						value={receiverBank.swift}
 						onChangeText={(t) => handleBankInfo(t, 'bank swift code')}
 						style={styles.marginTop}
@@ -228,7 +226,6 @@ export default function WithdrawalInfo({ error }) {
 					{hasIntermediate && (
 						<AppInput
 							label="Intermediary bank SWIFT / BIC / Routing number"
-							labelBackgroundColor={colors.SECONDARY_BACKGROUND}
 							value={intermediateBank.swift}
 							onChangeText={(t) => handleIntermediateBank(t)}
 							style={styles.marginTop}

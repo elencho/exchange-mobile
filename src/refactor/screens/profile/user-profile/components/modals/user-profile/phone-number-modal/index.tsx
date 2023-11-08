@@ -26,6 +26,10 @@ export default function PhoneNumberModal() {
 		handleCountries,
 		phoneCountry,
 		error,
+		setChosenCountry,
+		chosenCountry,
+		countryModalVisible,
+		setCountryModalVisible,
 	} = usePhoneNumberModal()
 	const number = userInfo?.phoneNumber
 	const country = userInfo?.phoneCountry
@@ -75,7 +79,13 @@ export default function PhoneNumberModal() {
 					loading={isProfileUpdating}
 				/>
 
-				<CountriesModal phoneCountry />
+				{countryModalVisible && (
+					<CountriesModal
+						onCountryChosen={setChosenCountry}
+						hide={() => setCountryModalVisible(false)}
+						from="UserProfile"
+					/>
+				)}
 			</WithKeyboard>
 		)
 	}

@@ -21,7 +21,7 @@ import {
 	MAX_WITHDRAWAL,
 } from '../constants/api'
 import { IS_ANDROID, IS_IOS } from '../constants/system'
-import KVStore from '@store/kv'
+import store from '@app/refactor/redux/store'
 
 export const fetchWireDeposit = async (currency, provider) => {
 	const data = await axios.get(`${WIRE_DEPOSIT}/${currency}`, {
@@ -39,8 +39,9 @@ export const generateFile = async (
 	reportParams
 ) => {
 	try {
+		const state = store?.getState()
 		setLoading(true)
-		const token = KVStore.get('accessToken')
+		const token = state?.auth?.accessToken
 		const bearer = `Bearer ${token}`
 		const linkForFile = link
 		downloadFile(linkForFile, bearer, fileName, type, reportParams)

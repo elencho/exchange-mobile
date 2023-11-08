@@ -253,6 +253,7 @@ const styles = StyleSheet.create({
 	headingContainer: {
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 		paddingBottom: 10,
+		marginTop: -5,
 		zIndex: 10,
 	},
 	marginBottom30: {

@@ -66,7 +66,7 @@ export default function AppWebView(props) {
 	return (
 		<Modal
 			statusBarTranslucent={true}
-			presentationStyle="fade"
+			// presentationStyle="fade"
 			visible={!!webViewObj}
 			onShow={handleOnShow}
 			onRequestClose={handleOnRequestClose}
