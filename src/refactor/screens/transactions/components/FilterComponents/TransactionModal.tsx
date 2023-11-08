@@ -22,7 +22,13 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { setCurrencyList } from '@store/redux/common/slice'
 import { fetchCurrencies } from '@app/refactor/utils/transactionUtils'
 
-function TransactionModal({ transactions, trades, isInstantTrade }) {
+interface Props {
+	trades?: boolean
+	transactions?: boolean
+	isInstantTrade: boolean
+}
+
+function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 	const { copyToClipboard } = useCopyToClipboard()
 	const dispatch = useDispatch()
 

@@ -6,7 +6,7 @@ import ChooseCurrencyModal from '@app/refactor/common/components/modals/ChooseCu
 import DatePickerModal from '@app/refactor/common/components/modals/DatePickerModal/DatePickerModal'
 import ChooseMethodsModal from '@app/refactor/common/components/modals/ChooseMethodsModal'
 import AppDropdown from '@app/components/AppDropdown'
-import AppText from '@app/components/AppText'
+import AppText from '@app/refactor/common/components/text'
 import Headline from '@app/components/TransactionHistory/Headline'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
@@ -99,7 +99,7 @@ export default function TransactionFilter({
 			: dispatch(setPreviousTransactionsFilter(prevFilterState))
 	}
 
-	const seperateCurrencyName = (currency) => currency.split('(')[0]
+	const seperateCurrencyName = (currency: string) => currency.split('(')[0]
 	const onClosePressed = () => {
 		savePrevFilters()
 		handleClose()
@@ -140,16 +140,12 @@ export default function TransactionFilter({
 				<View>
 					{isInstantTrade ? (
 						<View style={styles.marginBottom20}>
-							<AppText body style={styles.text}>
-								Choose currency / Pair
-							</AppText>
+							<AppText style={styles.text}>Choose currency / Pair</AppText>
 							<FilterRow array={currencies} filterType="currency" />
 						</View>
 					) : (
 						<View style={styles.type}>
-							<AppText body style={styles.text}>
-								Choose Type:
-							</AppText>
+							<AppText style={styles.text}>Choose Type:</AppText>
 							<FilterRow array={types} filterType="type" />
 						</View>
 					)}
@@ -177,9 +173,7 @@ export default function TransactionFilter({
 
 					{isInstantTrade && (
 						<View style={styles.marginBottom30}>
-							<AppText body style={styles.text}>
-								Transaction Type:
-							</AppText>
+							<AppText style={styles.text}>Transaction Type:</AppText>
 							<FilterRow array={transactionTypes} filterType="tradeAction" />
 						</View>
 					)}
@@ -196,7 +190,7 @@ export default function TransactionFilter({
 						/>
 					)}
 
-					<AppText body style={[styles.text, isInstantTrade && styles.status]}>
+					<AppText style={[styles.text, isInstantTrade && styles.status]}>
 						Choose Status:
 					</AppText>
 					<FilterRow

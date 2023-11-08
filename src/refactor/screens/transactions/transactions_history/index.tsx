@@ -2,7 +2,7 @@ import { useIsFocused } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { Keyboard } from 'react-native'
 import { useDispatch } from 'react-redux'
-import Background from '@app/components/Background'
+import Background from '@app/refactor/common/components/background'
 import TopRow from '@app/components/TransactionHistory/TopRow'
 import { clearTransactionFilters } from '@app/refactor/redux/transactions/transactionSlice'
 import { clearTradeFilters } from '@app/refactor/redux/trade/tradeSlice'
@@ -14,7 +14,7 @@ import {
 } from '@app/refactor/screens/transactions/components/ListComponents'
 import { TransactionModal } from '@app/refactor/screens/transactions/components/FilterComponents'
 
-function TransactionHistory({ navigation }) {
+function TransactionHistory() {
 	const isFocused = useIsFocused()
 	const dispatch = useDispatch()
 
@@ -38,10 +38,7 @@ function TransactionHistory({ navigation }) {
 		<Background>
 			<TopRow clear={clearAllFilters} />
 			<TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} />
-			<SearchAndFilter
-				navigation={navigation}
-				isInstantTrade={isInstantTrade}
-			/>
+			<SearchAndFilter isInstantTrade={isInstantTrade} />
 
 			{isInstantTrade ? (
 				<TradeList isInstantTrade={isInstantTrade} />

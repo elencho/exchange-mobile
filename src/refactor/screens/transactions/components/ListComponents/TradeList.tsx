@@ -2,7 +2,7 @@ import React, { memo, useCallback } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import List from '@assets/images/List.svg'
-import AppText from '@app/components/AppText'
+import AppText from '@app/refactor/common/components/text'
 import CustomRefreshContol from '@app/components/CustomRefreshContol'
 import TransactionSkeleton from '@app/components/TransactionHistory/TransactionSkeleton'
 import colors from '@app/constants/colors'
@@ -62,7 +62,7 @@ const TradeList: React.FC<Props> = ({ isInstantTrade }) => {
 
 	const onRefresh = () => refreshTrades()
 
-	const renderTrade = ({ item, index }) => (
+	const renderTrade = ({ item, index }: { item: Trade; index: number }) => (
 		<Transaction transactionData={item} isLast={index === totalTradesQty - 1} />
 	)
 
@@ -70,7 +70,7 @@ const TradeList: React.FC<Props> = ({ isInstantTrade }) => {
 		!tradesLoading && (
 			<View style={styles.empty}>
 				<List />
-				<AppText subtext style={[styles.subText, { marginTop: 17 }]}>
+				<AppText style={[styles.subText, { marginTop: 17 }]}>
 					Instant trade no transactions
 				</AppText>
 			</View>
@@ -88,7 +88,7 @@ const TradeList: React.FC<Props> = ({ isInstantTrade }) => {
 			style={styles.container}
 			data={trades}
 			renderItem={renderTrade}
-			keyExtractor={(item, idx) => item.creationTime + idx}
+			keyExtractor={(item, idx) => `${item.creationTime}${idx.toString()}`}
 			onEndReached={handleScrollEnd}
 			onEndReachedThreshold={1}
 			contentContainerStyle={{ flexGrow: 1 }}
@@ -103,7 +103,7 @@ const TradeList: React.FC<Props> = ({ isInstantTrade }) => {
 					isInstantTrade={isInstantTrade}
 				/>
 			}
-			ListEmptyComponent={listEmptyContainer}
+			ListEmptyComponent={() => <>{listEmptyContainer()}</>}
 			maxToRenderPerBatch={30}
 			refreshControl={
 				<CustomRefreshContol refreshing={tradesLoading} onRefresh={onRefresh} />

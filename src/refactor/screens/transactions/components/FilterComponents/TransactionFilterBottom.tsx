@@ -13,8 +13,14 @@ import {
 	setTransactionsOffset,
 } from '@app/refactor/redux/transactions/transactionSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { AppButton } from '@app/refactor/common/components/button'
 
-function TransactionFilterBottom({ handleClose, isInstantTrade }) {
+interface Props {
+	handleClose: () => void
+	isInstantTrade: boolean
+}
+
+function TransactionFilterBottom({ handleClose, isInstantTrade }: Props) {
 	const {
 		transactions: {
 			cryptoFilter: cryptoTransactions,
@@ -79,10 +85,11 @@ function TransactionFilterBottom({ handleClose, isInstantTrade }) {
 				</AppText>
 			</Pressable>
 			<TouchableOpacity style={styles.clear} onPress={clear}>
-				<PurpleText
-					style={styles.purple}
+				<AppButton
 					text="Clear Filters"
 					disabled={!isFilteredAny}
+					style={styles.purple}
+					variant="text"
 				/>
 			</TouchableOpacity>
 		</View>

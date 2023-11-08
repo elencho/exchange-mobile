@@ -3,9 +3,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../rootReducer'
 
 interface TradeState {
-	trades: []
-	totalTradesQty: null | number
-	tradesLoading: boolean
 	selectedTradeDetails: {}
 
 	// Query Params
@@ -13,8 +10,8 @@ interface TradeState {
 	limit: number
 	fromDateTimeQuery: number | null
 	toDateTimeQuery: number | null
-	statusQuery: string[]
-	actionQuery: string[]
+	statusQuery: StatusTrades[]
+	actionQuery: Actions[]
 	cryptoCodeQuery: null | string
 	fiatCodesQuery: string[]
 }
@@ -31,9 +28,6 @@ const initialQueryParams = {
 }
 
 const initialState: TradeState = {
-	trades: [],
-	totalTradesQty: null,
-	tradesLoading: false,
 	selectedTradeDetails: {},
 
 	...initialQueryParams,
@@ -43,19 +37,13 @@ const tradeSlice = createSlice({
 	name: 'trades',
 	initialState,
 	reducers: {
-		setTrades: (state, action: PayloadAction<[]>) => {
-			state.trades = action.payload
-		},
-		setTotalTradesQty: (state, action: PayloadAction<number>) => {
-			state.totalTradesQty = action.payload
-		},
 		setFiatCodesQuery: (state, action: PayloadAction<string[]>) => {
 			state.fiatCodesQuery = action.payload
 		},
-		setStatusQuery: (state, action: PayloadAction<string[]>) => {
+		setStatusQuery: (state, action: PayloadAction<StatusTrades[]>) => {
 			state.statusQuery = action.payload
 		},
-		setTradeActionQuery: (state, action: PayloadAction<string[]>) => {
+		setTradeActionQuery: (state, action: PayloadAction<Actions[]>) => {
 			state.actionQuery = action.payload
 		},
 		setTradesOffset: (state, action: PayloadAction<number>) => {
@@ -71,10 +59,10 @@ const tradeSlice = createSlice({
 		setCryptoCodeQuery: (state, action: PayloadAction<null | string>) => {
 			state.cryptoCodeQuery = action.payload
 		},
-		setFromDateQuery: (state, action: PayloadAction<number>) => {
+		setFromDateQuery: (state, action: PayloadAction<number | null>) => {
 			state.fromDateTimeQuery = action.payload
 		},
-		setToDateQuery: (state, action: PayloadAction<number>) => {
+		setToDateQuery: (state, action: PayloadAction<number | null>) => {
 			state.toDateTimeQuery = action.payload
 		},
 		clearTradeFilters: (state) => {
@@ -89,11 +77,9 @@ const tradeSlice = createSlice({
 })
 
 export const {
-	setTrades,
 	setFiatCodesQuery,
 	setStatusQuery,
 	setTradeActionQuery,
-	setTotalTradesQty,
 	setTradesOffset,
 	setPreviousTradeFilter,
 	setCryptoCodeQuery,

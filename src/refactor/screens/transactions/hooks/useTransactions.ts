@@ -1,19 +1,11 @@
+import { RootState } from '@app/refactor/redux/rootReducer'
 import { setTransactionsOffset } from '@app/refactor/redux/transactions/transactionSlice'
 import { fetchTransactions as fetchTransactionsApi } from '@app/refactor/utils/transactionUtils'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-const methodsMapping = {
-	Ecommerce: ['ECOMMERCE'],
-	Wire: ['WIRE'],
-	'Crypto Transaction': ['WALLET', 'WALLET_INTERNAL'],
-	Staking: ['STAKING'],
-	B2C: ['B2C'],
-	Transfer: ['TRANSFER'],
-}
-
 const useTransactions = () => {
-	const [transactions, setTransactions] = useState([])
+	const [transactions, setTransactions] = useState<Transaction[]>([])
 	const [transactionsLoading, setTransactionsLoading] = useState(false)
 	const [totalTransactionsQty, setTotalTransactionsQty] = useState(0)
 
@@ -29,11 +21,20 @@ const useTransactions = () => {
 		txIdOrRecipient,
 	} = useSelector((state: RootState) => state.transactions)
 
+	const methodsMapping: Record<string, string[]> = {
+		Ecommerce: ['ECOMMERCE'],
+		Wire: ['WIRE'],
+		'Crypto Transaction': ['WALLET', 'WALLET_INTERNAL'],
+		Staking: ['STAKING'],
+		B2C: ['B2C'],
+		Transfer: ['TRANSFER'],
+	}
+
 	const queryParams = {
 		type: typeFilter?.length === 1 ? typeFilter[0] : null,
 		methods: methodsMapping[method],
 		statuses: status,
-		currency: cryptoFilter?.length > 0 ? cryptoFilter : null,
+		currency: cryptoFilter && cryptoFilter.length > 0 ? cryptoFilter : null,
 		fromTime: fromDateTime,
 		toTime: toDateTime,
 		offset,

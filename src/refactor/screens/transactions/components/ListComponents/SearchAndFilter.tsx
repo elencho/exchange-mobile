@@ -5,6 +5,7 @@ import CryptoModalTrade from '@components/modals/CryptoModalTrade'
 import Search from '@assets/images/Search.svg'
 import AppDropdown from '@app/components/AppDropdown'
 import AppInput from '@app/components/AppInput'
+// import AppInput from '@app/refactor/common/components/input'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
 import {
@@ -12,10 +13,7 @@ import {
 	toggleTransactionFiltersModal,
 } from '@app/refactor/redux/modals/modalsSlice'
 
-import {
-	setCryptoCodeQuery,
-	setTrades,
-} from '@app/refactor/redux/trade/tradeSlice'
+import { setCryptoCodeQuery } from '@app/refactor/redux/trade/tradeSlice'
 import {
 	setTransactionsOffset,
 	setTransactionsSearch,
@@ -25,20 +23,23 @@ import FilterIcon from '@app/refactor/screens/transactions/components/FilterComp
 import TransactionFilter from '../../transactions_filter'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
-const SearchAndFilter = ({ isInstantTrade }) => {
+interface Props {
+	isInstantTrade: boolean
+}
+
+const SearchAndFilter: React.FC<Props> = ({ isInstantTrade }) => {
 	const dispatch = useDispatch()
 	const {
 		trades: { cryptoCodeQuery },
-		transactions: { cryptoCodeTransactions, txIdOrRecipient },
+		transactions: { cryptoFilter: cryptoCodeTransactions, txIdOrRecipient },
 		modalState: { transactionFiltersModalVisible },
 	} = useSelector((state: RootState) => state)
 
 	const [searchValue, setSearchValue] = useState('')
 	const openCryptoModal = () => dispatch(toggleCryptoModal(true))
-	const seperateCurrencyName = (currency) => currency.split('(')[0]
+	const seperateCurrencyName = (currency: string) => currency.split('(')[0]
 	const clearCurrencyDropdown = () => {
 		dispatch(setCryptoCodeQuery(null))
-		dispatch(setTrades([]))
 	}
 
 	//debounce

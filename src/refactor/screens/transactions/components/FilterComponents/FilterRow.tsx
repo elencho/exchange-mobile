@@ -15,6 +15,7 @@ import {
 	setStatusFilter,
 	setTypeFilter,
 } from '@app/refactor/redux/transactions/transactionSlice'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 const statusIcons = {
 	SUCCESS: <Success />,
@@ -33,8 +34,10 @@ const tradeActionMapping = {
 
 export default function FilterRow({ array = [''], filterType }) {
 	const dispatch = useDispatch()
-	const transactionsState = useSelector((state) => state.transactions)
-	const tradesState = useSelector((state) => state.trades)
+	const transactionsState = useSelector(
+		(state: RootState) => state.transactions
+	)
+	const tradesState = useSelector((state: RootState) => state.trades)
 
 	const { typeFilter, method, status: transactionStatus } = transactionsState
 	const { statusQuery, actionQuery, fiatCodesQuery } = tradesState

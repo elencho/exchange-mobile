@@ -1,8 +1,9 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
-import AppText from '@app/components/AppText'
+import AppText from '@app/refactor/common/components/text'
 import colors from '@app/constants/colors'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface Props {
 	isInstantTrade: boolean
@@ -30,7 +31,7 @@ export default function TransactionDetails({ isInstantTrade }: Props) {
 			note,
 			year,
 		},
-	} = useSelector((state) => state.transactions)
+	} = useSelector((state: RootState) => state.transactions)
 
 	const actionMapping = {
 		BID: 'Buy',
