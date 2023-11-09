@@ -110,6 +110,7 @@ const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(resendPasswordCodeThunk.fulfilled, (state, action) => {
 		state.callbackUrl = action.payload.callbackUrl
 		state.timerVisible = action.payload.timerVisible
+		state.otpType = action.payload.otpType
 	})
 
 	builder.addCase(resetPasswordConfirmCodeThunk.pending, (state) => {

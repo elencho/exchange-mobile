@@ -109,7 +109,11 @@ export const resendPasswordCodeThunk = createAsyncThunk(
 			data.execution === Execution.RESET_PASSWORD_WITH_CODE &&
 			data.errors.length === 0
 
-		return { timerVisible, callbackUrl: data.callbackUrl }
+		return {
+			timerVisible,
+			callbackUrl: data.callbackUrl,
+			otpType: data.attributes.otpType,
+		}
 	}
 )
 
@@ -211,8 +215,6 @@ const codeToTokenThunk = (
 				accessToken: tokenData.access_token,
 			})
 		)
-
-		console.log(navigation, tokenData)
 
 		const otpType = jwt_decode<TokenParams>(tokenData.access_token)?.otpType
 		KVStore.set('isLoggedIn', true)
