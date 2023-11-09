@@ -1,4 +1,4 @@
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import jwt_decode from 'jwt-decode'
 import pkceChallenge from 'react-native-pkce-challenge'
@@ -21,8 +21,9 @@ import {
 	fetchCountries,
 	registrationForm,
 	verifyAccount,
+	logout,
 } from './api'
-import { savePkceInfo, setTokens } from './slice'
+import { clearTokens, savePkceInfo, setTokens } from './slice'
 import { TokenParams } from '@app/refactor/types/auth/splash'
 import { navigationRef } from '@app/refactor/setup/nav'
 
@@ -108,7 +109,11 @@ export const resendPasswordCodeThunk = createAsyncThunk(
 			data.execution === Execution.RESET_PASSWORD_WITH_CODE &&
 			data.errors.length === 0
 
-		return { timerVisible, callbackUrl: data.callbackUrl }
+		return {
+			timerVisible,
+			callbackUrl: data.callbackUrl,
+			otpType: data.attributes.otpType,
+		}
 	}
 )
 
@@ -211,8 +216,6 @@ const codeToTokenThunk = (
 			})
 		)
 
-		console.log(navigation, tokenData)
-
 		const otpType = jwt_decode<TokenParams>(tokenData.access_token)?.otpType
 		KVStore.set('isLoggedIn', true)
 		navigation.navigate('Main')
@@ -307,3 +310,11 @@ export const registrationFormThunk = createAsyncThunk(
 		return data
 	}
 )
+
+export const logoutThunk = createAsyncThunk('logout', async (_, {}) => {
+	const httpStatus = await logout()
+	if (httpStatus === 204) {
+		clearTokens()
+		navigationRef.navigate('Welcome')
+	}
+})

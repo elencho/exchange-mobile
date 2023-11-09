@@ -1,11 +1,5 @@
-import React, { useMemo } from 'react'
-import {
-	FlatList,
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	View,
-} from 'react-native'
+import React from 'react'
+import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Theme, useTheme } from '@theme/index'
 import Background from '@components/background'
 import { AppButton } from '@components/button'

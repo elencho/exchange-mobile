@@ -1,0 +1,1 @@
+type BioType = 'FaceID' | 'TouchID'

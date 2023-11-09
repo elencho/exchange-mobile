@@ -33,7 +33,7 @@ export type Screens = {
 	Main?: {}
 	Resume: {
 		fromSplash: boolean
-		maintenanceInProgress: boolean
+		maintenanceInProgress?: boolean
 		version?: boolean
 	}
 	TransactionFilter?: {}

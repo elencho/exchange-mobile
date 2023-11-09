@@ -15,6 +15,7 @@ import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { setTimer } from '@store/redux/auth/slice'
+import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 
 export const ResetOtpInstructions = (
 	props: ScreenProp<'ResetOtpInstructions'>
@@ -29,7 +30,7 @@ export const ResetOtpInstructions = (
 
 	const [url, setUrl] = useState('')
 	const [value, setValue] = useState('')
-	const [seconds, setSeconds] = useState(30)
+	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
 
 	const goBack = () => dispatch(startLoginThunk(props.navigation))
 	const openSupport = () => Linking.openURL(url)
@@ -37,7 +38,7 @@ export const ResetOtpInstructions = (
 	useEffect(() => {
 		if (!seconds) {
 			dispatch(setTimer(false))
-			setSeconds(30)
+			setSeconds(COUNTDOWN_SECONDS)
 		}
 		if (seconds && timerVisible) {
 			setTimeout(() => {

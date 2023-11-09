@@ -18,6 +18,7 @@ import { i18n } from '@app/refactor/setup/i18n'
 import { TokenParams } from '@app/refactor/types/auth/splash'
 import { setTokens } from '@store/redux/auth/slice'
 import { fetchCountriesThunk } from '@store/redux/common/thunks'
+import { BIOMETRIC_DIFF_MILLIS } from '@app/refactor/common/constants'
 
 export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const { theme } = useTheme()
@@ -35,41 +36,58 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		dispatch(fetchCountriesThunk())
 		await fetchLexicon()
 
-		const tokens = await getTokensOnInit()
+		const tokens = await getTokensOnInit(KVStore.get('refreshToken'))
 		const accessToken = tokens?.access_token
 		const refreshToken = tokens?.refresh_token
-		if (refreshToken && accessToken) setTokens({ refreshToken, accessToken })
+		if (refreshToken && accessToken) {
+			dispatch(setTokens({ refreshToken, accessToken }))
+		}
 
 		// // ! For Testing
-		// navigation.navigate('Welcome')
+		// navigation.navigate('EmailVerification')
 		// return
 
-		if (hasUnlock(accessToken)) {
-			if (!accessToken) {
-				navigation.navigate('Welcome')
-			}
-			// TODO: შემდეგ ვიძახებთ user info-ს ავტორიზაციის შესამოწმებლად  თუ წარუმატებელი აღმოჩნდა ვისვრით ავტორიზაციაზე
-			// if userInfo 200 -> Welcome, else -> Resume
-			// Next: as below
+		if (await updateNeeded()) {
+			navigation.navigate('UpdateAvailable')
+			return
+		} else if (await backIsDown()) {
+			navigation.navigate('Maintenance')
+			return
+		}
+
+		if (hasBiometricEnabled(accessToken)) {
+			handleBiometric()
 		} else {
 			if (!accessToken) {
 				navigation.navigate('Welcome')
-			} else if (await updateNeeded()) {
-				navigation.navigate('UpdateAvailable')
-			} else if (await backIsDown()) {
-				navigation.navigate('Maintenance')
 			} else {
-				navigation.navigate('Welcome') // Main
+				navigation.navigate('Main') // Main
 			}
 		}
 	}
 
-	const hasUnlock = (accessToken: string | undefined): Boolean => {
+	const hasBiometricEnabled = (accessToken: string | undefined): Boolean => {
 		const bioEnabledEmails = KVStore.get('bioEnabledEmails')
 		if (!bioEnabledEmails || !accessToken) return false
 
 		const email = jwt_decode<TokenParams>(accessToken)?.email
 		return bioEnabledEmails.includes(email)
+	}
+
+	const handleBiometric = () => {
+		const isLoggedIn = KVStore.get('isLoggedIn')
+		const lateTimeOpenMillis = KVStore.get('lastOpenDateMillis')
+
+		const biometricDiffElapsed = lateTimeOpenMillis
+			? Date.now() - lateTimeOpenMillis >= BIOMETRIC_DIFF_MILLIS
+			: false
+
+		// TODO: && or ||
+		if (biometricDiffElapsed && !isLoggedIn) {
+			navigation.navigate('Resume', { fromSplash: true })
+		} else {
+			navigation.navigate('Main')
+		}
 	}
 
 	const updateNeeded = useCallback(async () => {
@@ -95,34 +113,6 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		const { status } = await checkReadiness()
 		return status === 'DOWN'
 	}
-
-	// const getBiometricEnabled = async (
-	// 	email: string,
-	// 	updateNeeded: boolean | undefined,
-	// 	maintenanceInProgress: boolean
-	// ) => {
-	// 	const user = email
-	// 	const enabled = await AsyncStorage.getItem('BiometricEnabled')
-	// 	const lastTimeOpen = await AsyncStorage.getItem('isOpenDate')
-	// 	const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
-	// 	const timeDifference = lastTimeOpen
-	// 		? Date.now() - JSON.parse(lastTimeOpen)
-	// 		: 0
-
-	// 	let parsedUsers = enabled ? JSON.parse(enabled) : ''
-	// 	const userIndex = parsedUsers?.find(
-	// 		(u) => u?.user === user && u?.enabled === true
-	// 	)
-
-	// 	if (userIndex && timeDifference >= 30000 && !isLoggedIn) {
-	// 		// TODO: Should not navigate after this
-	// 		navigation.navigate('Resume', {
-	// 			fromSplash: true,
-	// 			version: updateNeeded,
-	// 			maintenanceInProgress: maintenanceInProgress,
-	// 		})
-	// 	}
-	// }
 
 	const fetchLexicon = async () => {
 		await fetchTranslations()

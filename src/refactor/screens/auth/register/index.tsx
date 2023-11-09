@@ -30,7 +30,6 @@ import PersonalCompanySwitcher from '@app/refactor/screens/auth/register/compone
 import { Screens } from '@app/refactor/setup/nav/nav'
 import GeneralError from '@components/general_error'
 import useCleanGeneralError from '@components/general_error/use_clean_error'
-import { useSSR } from 'react-i18next'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -72,7 +71,7 @@ const Register = ({ navigation }: Props) => {
 	const valid = {
 		email: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(mail),
 		pass: passLength && passHasUpperLower && passHasNumber,
-		confirmPass: confirmPass === pass,
+		confirmPass: confirmPass && confirmPass === pass,
 		phone: /^[0-9]+$/.test(phone),
 		terms: termsSelected,
 	}
@@ -129,6 +128,7 @@ const Register = ({ navigation }: Props) => {
 
 	const onPhoneCodePressed = () => setCountryModalVisible(true)
 	const goToSignIn = () => navigation.navigate('Login')
+	const goBack = () => navigation.goBack()
 
 	return (
 		<SafeAreaView style={styles.safeArea}>
@@ -142,7 +142,7 @@ const Register = ({ navigation }: Props) => {
 				<AppButton
 					variant="text"
 					text="Back to Log In"
-					onPress={goToSignIn}
+					onPress={goBack}
 					style={[styles.backText, styles.back]}
 				/>
 				<View style={styles.container}>
@@ -159,7 +159,7 @@ const Register = ({ navigation }: Props) => {
 						value={mail}
 						label="Enter E-mail"
 						style={styles.input}
-						onFocus={() => setMailErr(false)}
+						onFocusOrChange={() => setMailErr(false)}
 						onChangeText={setMail}
 						error={mailErr && (mail ? 'Enter Valid Email' : true)}
 					/>
@@ -168,6 +168,7 @@ const Register = ({ navigation }: Props) => {
 						label="Enter Password"
 						style={styles.input}
 						onChangeText={setPass}
+						onFocusOrChange={() => setPassErr(false)}
 						error={passErr}
 						secureTextEntry={true}
 					/>
@@ -194,6 +195,7 @@ const Register = ({ navigation }: Props) => {
 						labelBackgroundColor={theme.color.backgroundPrimary}
 						style={[styles.input, { marginTop: 10 }]}
 						onChangeText={setConfirmPass}
+						onFocusOrChange={() => setConfirmPassErr(false)}
 						error={confirmPassErr}
 						secureTextEntry={true}
 					/>
@@ -231,7 +233,10 @@ const Register = ({ navigation }: Props) => {
 						</Pressable>
 						<TextInput
 							value={phone}
-							onChangeText={setPhone}
+							onChangeText={(txt: string) => {
+								setPhone(txt)
+								setPhoneErr(false)
+							}}
 							onFocus={() => setPhoneErr(false)}
 							placeholder="Phone Number"
 							placeholderTextColor={

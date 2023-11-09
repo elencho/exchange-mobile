@@ -26,6 +26,7 @@ type Props = TextInputProps & {
 	rightComponent?: ReactNode
 	onFocusRightComponent?: ReactNode
 	handleClear?: () => void
+	onFocusOrChange?: () => void
 }
 
 const AppInput = (props: Props) => {
@@ -40,6 +41,7 @@ const AppInput = (props: Props) => {
 		rightComponent,
 		onFocus,
 		onFocusRightComponent,
+		onFocusOrChange,
 		handleClear,
 	} = props
 	const { theme, styles } = useTheme(_style)
@@ -118,10 +120,14 @@ const AppInput = (props: Props) => {
 					onFocus={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
 						setIsFocused(true)
 						onFocus?.(e)
+						onFocusOrChange?.()
 					}}
 					value={value}
 					placeholderTextColor={theme.color.textSecondary}
-					onChangeText={(text) => onChangeText?.(text)}
+					onChangeText={(text) => {
+						onChangeText?.(text)
+						onFocusOrChange?.()
+					}}
 					editable={!disabled}
 					autoCapitalize="none"
 				/>
