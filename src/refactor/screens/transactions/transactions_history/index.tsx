@@ -14,11 +14,19 @@ import {
 } from '@app/refactor/screens/transactions/components/ListComponents'
 import { TransactionModal } from '@app/refactor/screens/transactions/components/FilterComponents'
 
+export interface FilterState {
+	isVisible: boolean
+	shouldFilter: boolean
+}
+
 function TransactionHistory() {
 	const isFocused = useIsFocused()
 	const dispatch = useDispatch()
 
-	const [isFilterVisible, setIsFilterVisible] = useState(false)
+	const [isFilterVisible, setIsFilterVisible] = useState<FilterState>({
+		isVisible: false,
+		shouldFilter: true,
+	})
 	const [activeTab, setActiveTab] = useState<TabName>('Transfer')
 	const isInstantTrade = activeTab === 'Instant trade'
 
@@ -38,7 +46,11 @@ function TransactionHistory() {
 	return (
 		<Background>
 			<TopRow clear={clearAllFilters} />
-			<TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} />
+			<TabSwitcher
+				activeTab={activeTab}
+				setActiveTab={setActiveTab}
+				setIsFilterVisible={setIsFilterVisible}
+			/>
 			<SearchAndFilter
 				isInstantTrade={isInstantTrade}
 				isFilterVisible={isFilterVisible}

@@ -18,11 +18,12 @@ import DownloadIcon from '@app/refactor/screens/transactions/components/FilterCo
 import FilterIcon from '@app/refactor/screens/transactions/components/FilterComponents/FilterIcon'
 import TransactionFilter from '../../transactions_filter'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { FilterState } from '../../transactions_history'
 
 interface Props {
 	isInstantTrade: boolean
-	isFilterVisible: boolean
-	setIsFilterVisible: Dispatch<SetStateAction<boolean>>
+	isFilterVisible: FilterState
+	setIsFilterVisible: Dispatch<SetStateAction<FilterState>>
 }
 
 const SearchAndFilter: React.FC<Props> = ({
@@ -106,15 +107,15 @@ const SearchAndFilter: React.FC<Props> = ({
 			<FilterIcon
 				isInstantTrade={isInstantTrade}
 				onPress={() => {
-					setIsFilterVisible(true)
+					setIsFilterVisible({ isVisible: true, shouldFilter: false })
 					Keyboard.dismiss()
 				}}
 			/>
 			<DownloadIcon isInstantTrade={isInstantTrade} />
 			<CryptoModalTrade isInstantTrade={isInstantTrade} />
 			<TransactionFilter
-				isOpen={isFilterVisible}
-				handleClose={() => setIsFilterVisible(false)}
+				isOpen={isFilterVisible.isVisible}
+				setIsFilterVisible={setIsFilterVisible}
 				isInstantTrade={isInstantTrade}
 			/>
 		</View>

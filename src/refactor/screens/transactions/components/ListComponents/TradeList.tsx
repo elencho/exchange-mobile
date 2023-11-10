@@ -11,10 +11,11 @@ import ListFooter from './ListFooter'
 import { useTrades } from '@app/refactor/screens/transactions/hooks'
 import { useFocusEffect } from '@react-navigation/native'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { FilterState } from '../../transactions_history'
 
 interface Props {
 	isInstantTrade: boolean
-	isFilterVisible: boolean
+	isFilterVisible: FilterState
 }
 
 const TradeList: React.FC<Props> = ({ isInstantTrade, isFilterVisible }) => {
@@ -40,7 +41,7 @@ const TradeList: React.FC<Props> = ({ isInstantTrade, isFilterVisible }) => {
 
 	useFocusEffect(
 		useCallback(() => {
-			!isFilterVisible && fetchTrades()
+			isFilterVisible.shouldFilter && fetchTrades()
 		}, [
 			fiatCodesQuery,
 			statusQuery,
@@ -48,7 +49,7 @@ const TradeList: React.FC<Props> = ({ isInstantTrade, isFilterVisible }) => {
 			cryptoCodeQuery,
 			fromDateTimeQuery,
 			toDateTimeQuery,
-			isFilterVisible,
+			isFilterVisible.isVisible,
 		])
 	)
 

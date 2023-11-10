@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { Image, StyleSheet, View, ScrollView, Dimensions } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
@@ -38,18 +38,19 @@ import {
 	FilterRow,
 	DatePicker,
 } from '@app/refactor/screens/transactions/components/FilterComponents'
+import { FilterState } from '../transactions_history'
 
 const WINDOW_HEIGHT = Dimensions.get('window').height
 
 interface Props {
 	isOpen: boolean
-	handleClose: () => void
 	isInstantTrade: boolean
+	setIsFilterVisible: Dispatch<SetStateAction<FilterState>>
 }
 
 export default function TransactionFilter({
 	isOpen,
-	handleClose,
+	setIsFilterVisible,
 	isInstantTrade,
 }: Props) {
 	const dispatch = useDispatch()
@@ -102,7 +103,7 @@ export default function TransactionFilter({
 	const seperateCurrencyName = (currency: string) => currency.split('(')[0]
 	const onClosePressed = () => {
 		savePrevFilters()
-		handleClose()
+		setIsFilterVisible({ isVisible: false, shouldFilter: false })
 	}
 
 	const openModal = () =>
@@ -221,7 +222,9 @@ export default function TransactionFilter({
 						marginTop: 50,
 					}}>
 					<TransactionFilterBottom
-						handleClose={handleClose}
+						handleClose={() => {
+							setIsFilterVisible({ isVisible: false, shouldFilter: true })
+						}}
 						isInstantTrade={isInstantTrade}
 					/>
 				</View>

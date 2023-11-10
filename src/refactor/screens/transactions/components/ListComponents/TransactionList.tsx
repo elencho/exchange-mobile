@@ -10,10 +10,11 @@ import Transaction from '@app/refactor/screens/transactions/components/ListCompo
 import ListFooter from './ListFooter'
 import { useTransactions } from '@app/refactor/screens/transactions/hooks'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { FilterState } from '../../transactions_history'
 
 interface Props {
 	isInstantTrade: boolean
-	isFilterVisible: boolean
+	isFilterVisible: FilterState
 }
 
 const TransactionList: React.FC<Props> = ({
@@ -42,7 +43,7 @@ const TransactionList: React.FC<Props> = ({
 	} = useSelector((state: RootState) => state)
 
 	useEffect(() => {
-		!isFilterVisible && fetchTransactions()
+		isFilterVisible.shouldFilter && fetchTransactions()
 	}, [
 		typeFilter,
 		method,
@@ -51,7 +52,7 @@ const TransactionList: React.FC<Props> = ({
 		fromDateTime,
 		toDateTime,
 		txIdOrRecipient,
-		isFilterVisible,
+		isFilterVisible.isVisible,
 	])
 
 	const renderTransaction = ({
