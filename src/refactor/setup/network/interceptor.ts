@@ -45,13 +45,12 @@ axios.interceptors.response.use(
 	},
 	// 400-599
 	(err) => {
-		handleError(err)
-		return err
+		return handleError(err)
 	}
 )
 
 const handleError = async (err: any) => {
-	if (!err.response) return
+	// if (!err.response) return
 
 	const state = store.getState()
 
@@ -88,4 +87,6 @@ const handleError = async (err: any) => {
 	if (status === 503) {
 		navigationRef.navigate('Maintenance')
 	}
+
+	return err
 }
