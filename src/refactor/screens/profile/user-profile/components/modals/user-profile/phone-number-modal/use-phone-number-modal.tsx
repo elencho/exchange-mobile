@@ -5,48 +5,28 @@ import {
 	toggleCountriesModal,
 	togglePhoneNumberModal,
 } from '@app/refactor/redux/modals/modalsSlice'
-import {
-	saveUserInfo,
-	updatePhoneNumber,
-} from '@app/refactor/redux/profile/actions'
+import { saveUserInfo } from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { updatePhoneNumber } from '@app/utils/userProfileUtils'
 
 export const usePhoneNumberModal = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
 		modalState: { phoneNumberModalVisible },
-		profile: { userInfo, countries, timerVisible, isProfileUpdating },
+		profile: { userInfo, userProfileLoading },
+		common: { countries },
 	} = state
 
-	const [userInfoVariable, setUserInfoVariable] = useState(null)
 	const [error, setError] = useState(false)
 	const [seconds, setSeconds] = useState(30)
-
+	const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber)
 	const x = {
-		banned: false,
-		phoneCode: '+995',
-		name: 'Georgia',
-		code: 'GEO',
+		name: userInfo?.phoneCountry,
+		code: userInfo?.phoneCountry,
 	}
-	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(x)
+	const [chosenCountry, setChosenCountry] = useState(x)
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
-
-	useEffect(() => {
-		if (!timerVisible) {
-			setSeconds(30)
-			return
-		}
-		if (!seconds) {
-			dispatch({ type: 'TOGGLE_TIMER', timerVisible: false })
-			setSeconds(30)
-		}
-		if (seconds && timerVisible) {
-			setTimeout(() => {
-				setSeconds(seconds - 1)
-			}, 1000)
-		}
-	}, [seconds, timerVisible])
 
 	useEffect(() => {
 		if (error) {
@@ -56,13 +36,11 @@ export const usePhoneNumberModal = () => {
 
 	useEffect(() => {
 		if (phoneNumberModalVisible) {
-			setUserInfoVariable(userInfo)
 			setSeconds(30)
 		}
 	}, [phoneNumberModalVisible])
 
 	const hide = () => {
-		dispatch(saveUserInfo(userInfoVariable))
 		dispatch(togglePhoneNumberModal(false))
 	}
 
@@ -70,20 +48,18 @@ export const usePhoneNumberModal = () => {
 		dispatch({ type: 'TOGGLE_TIMER', timerVisible: false })
 	}
 
-	const handlePhoneNumber = (phoneNumber: string) =>
-		dispatch(saveUserInfo({ ...userInfo, phoneNumber }))
+	const handlePhoneNumber = (phoneNumber: string) => setPhoneNumber(phoneNumber)
 
 	const handleSave = () => {
-		if (error || !userInfo.country || !(userInfo.number?.trim()?.length > 2)) {
+		if (
+			error ||
+			!userInfo?.country ||
+			!(userInfo?.phoneNumber?.trim()?.length > 2)
+		) {
 			setError(true)
 		} else {
-			dispatch(
-				updatePhoneNumber(
-					userInfo.number,
-					userInfo.country,
-					setUserInfoVariable
-				)
-			)
+			updatePhoneNumber(phoneNumber, chosenCountry.code)
+			hide()
 		}
 	}
 
@@ -91,9 +67,8 @@ export const usePhoneNumberModal = () => {
 
 	const phoneCountry = () => {
 		let phoneCountry
-		// TODO: add country type
-		countries?.forEach((c) => {
-			if (userInfo.country === c.code) {
+		countries?.forEach((c: Country) => {
+			if (userInfo?.country === c.code) {
 				phoneCountry = c.phoneCode
 			}
 		})
@@ -101,11 +76,8 @@ export const usePhoneNumberModal = () => {
 	}
 
 	return {
-		userInfoVariable,
 		userInfo,
 		countries,
-		timerVisible,
-		isProfileUpdating,
 		phoneNumberModalVisible,
 		hide,
 		onModalHide,
@@ -118,5 +90,6 @@ export const usePhoneNumberModal = () => {
 		chosenCountry,
 		countryModalVisible,
 		setCountryModalVisible,
+		phoneNumber,
 	}
 }

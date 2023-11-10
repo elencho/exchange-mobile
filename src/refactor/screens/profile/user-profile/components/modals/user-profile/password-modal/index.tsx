@@ -18,35 +18,32 @@ export default function PasswordModal() {
 		'At least one number',
 		'Upper & lowercase letters',
 	]
-	// TODO: fix logic without losing data
 	const { styles, theme } = useTheme(_styles)
 	const {
 		toggle,
-		handleCurrentPass,
-		handleNewPass,
-		handleRepeatPass,
 		handleSave,
 		hide,
-		isProfileUpdating,
-		initialState,
+		passwordState,
 		passwordModalVisible,
 		error,
 		newPassCond,
+		handleFieldChange,
+		userProfileLoading,
 	} = usePasswordModal()
 
 	const background = (i: number) => {
 		switch (i) {
 			case 0:
 				return {
-					backgroundColor: initialState.eightChars ? '#25D8D1' : '#F83974',
+					backgroundColor: passwordState.eightChars ? '#25D8D1' : '#F83974',
 				}
 			case 1:
 				return {
-					backgroundColor: initialState.hasNumber ? '#25D8D1' : '#F83974',
+					backgroundColor: passwordState.hasNumber ? '#25D8D1' : '#F83974',
 				}
 			case 2:
 				return {
-					backgroundColor: initialState.hasUpperAndLower
+					backgroundColor: passwordState.hasUpperAndLower
 						? '#25D8D1'
 						: '#F83974',
 				}
@@ -59,17 +56,19 @@ export default function PasswordModal() {
 		switch (i) {
 			case 0:
 				return {
-					color: initialState.eightChars
+					color: passwordState.eightChars
 						? theme.color.textSecondary
 						: '#969CBF',
 				}
 			case 1:
 				return {
-					color: initialState.hasNumber ? theme.color.textSecondary : '#969CBF',
+					color: passwordState.hasNumber
+						? theme.color.textSecondary
+						: '#969CBF',
 				}
 			case 2:
 				return {
-					color: initialState.hasUpperAndLower
+					color: passwordState.hasUpperAndLower
 						? theme.color.textSecondary
 						: '#969CBF',
 				}
@@ -80,7 +79,7 @@ export default function PasswordModal() {
 
 	const hideIcon = (
 		<Pressable onPress={toggle}>
-			{initialState.secure ? <ShowIcon /> : <HideIcon />}
+			{passwordState.secure ? <ShowIcon /> : <HideIcon />}
 		</Pressable>
 	)
 
@@ -97,18 +96,22 @@ export default function PasswordModal() {
 						style={[styles.inputContainer, { marginTop: 18 }]}
 						label="Current Password"
 						autoCapitalize={'none'}
-						secureTextEntry={initialState.secure}
-						onChangeText={(text: string) => handleCurrentPass(text)}
-						value={initialState.currentPassword}
-						error={error && !initialState.currentPassword}
+						secureTextEntry={passwordState.secure}
+						onChangeText={(text: string) =>
+							handleFieldChange('currentPassword', text)
+						}
+						value={passwordState.currentPassword}
+						error={error && !passwordState.currentPassword}
 					/>
 					<AppInput
 						style={styles.inputContainer}
 						label="New Password"
 						autoCapitalize={'none'}
-						secureTextEntry={initialState.secure}
-						onChangeText={(text: string) => handleNewPass(text)}
-						value={initialState.newPassword}
+						secureTextEntry={passwordState.secure}
+						onChangeText={(text: string) =>
+							handleFieldChange('newPassword', text)
+						}
+						value={passwordState.newPassword}
 						rightComponent={hideIcon}
 						error={error && !newPassCond}
 					/>
@@ -116,11 +119,14 @@ export default function PasswordModal() {
 						style={styles.inputContainer}
 						label="Repeat Password"
 						autoCapitalize={'none'}
-						secureTextEntry={initialState.secure}
-						onChangeText={(text: string) => handleRepeatPass(text)}
-						value={initialState.repeatPassword}
+						secureTextEntry={passwordState.secure}
+						onChangeText={(text: string) =>
+							handleFieldChange('repeatPassword', text)
+						}
+						value={passwordState.repeatPassword}
 						error={
-							error && initialState.newPassword !== initialState.repeatPassword
+							error &&
+							passwordState.newPassword !== passwordState.repeatPassword
 						}
 					/>
 
@@ -138,7 +144,7 @@ export default function PasswordModal() {
 					variant="primary"
 					onPress={handleSave}
 					style={styles.button}
-					loading={isProfileUpdating}
+					loading={userProfileLoading}
 					text="Save"
 				/>
 			</WithKeyboard>

@@ -25,5 +25,5 @@ interface Country {
 	code: string
 	name: string
 	phoneCode: string
-	banned: boolean
+	banned?: boolean
 }

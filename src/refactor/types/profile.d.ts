@@ -46,3 +46,39 @@ interface ResendThunkData {
 	login2Fa: boolean
 	setOtpLoading?: (value: boolean) => void
 }
+type File = {
+	documentType: string
+	fileName: string
+	id: string
+}
+
+type UserInfoType = {
+	address: string
+	citizenship: string
+	city: string
+	company: null
+	companyCode: null
+	companyCountry: null
+	country: string
+	countryCode: string
+	email: string
+	emailUpdates: false
+	files: File[]
+	firstName: string
+	guid: string
+	id: number
+	idnumber: string
+	inviteCode: string
+	inviteLink: string
+	lastName: string
+	notificationsEnabled: boolean
+	phoneCountry: string
+	phoneNumber: string
+	postalCode: string | null
+	referralCode: string
+	userStatus: string
+	userType: string
+	verificationToolEnabled: boolean
+	verificationToolStatus: string
+	walletProEnabled: boolean
+}

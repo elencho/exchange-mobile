@@ -26,6 +26,7 @@ import {
 	resendEmail,
 	sendOtp,
 	logoutUtil,
+	updateUserData,
 } from './profileApi'
 import {
 	setCurrentSecurityAction,
@@ -38,11 +39,24 @@ import {
 	setVerificationInfo,
 } from './profileSlice'
 
-// TODO: fix any types
 export const fetchUserInfoThunk = createAsyncThunk(
 	'profile/fetchUserInfo',
-	async (data: UserInfoData, { dispatch }) => {
+	async () => {
 		try {
+			const userInfo = await fetchUserInfoUtil()
+
+			return userInfo
+		} catch (error) {
+			console.log(error)
+		}
+	}
+)
+
+export const updateUserThunk = createAsyncThunk(
+	'profile/updateUser',
+	async (data: UserInfoType) => {
+		try {
+			await updateUserData(data)
 			const userInfo = await fetchUserInfoUtil()
 
 			return userInfo
@@ -54,12 +68,16 @@ export const fetchUserInfoThunk = createAsyncThunk(
 
 export const updatePasswordThunk = createAsyncThunk(
 	'profile/updatePassword',
-	async (data: UpdatePasswordData) => {
+	async ({
+		currentPassword,
+		newPassword,
+		repeatPassword,
+		hide,
+	}: UpdatePasswordData) => {
 		try {
-			const { currentPassword, newPassword, repeatPassword, hide } = data
 			const response = await updatePasswordUtil(
-				newPassword,
 				currentPassword,
+				newPassword,
 				repeatPassword
 			)
 			if (response?.status >= 200 && response?.status < 300) {
@@ -67,51 +85,24 @@ export const updatePasswordThunk = createAsyncThunk(
 			}
 			return response
 		} catch (error) {
-			throw error
-		}
-	}
-)
-
-export const updatePhoneNumberThunk = createAsyncThunk(
-	'profile/updatePhoneNumber',
-	async (data: UpdatePhoneNumberData, { dispatch }) => {
-		try {
-			const { phoneNumber, phoneCountry, setUserInfoVariable } = data
-
-			// dispatch(setIsProfileUpdating(true));
-
-			const response = await updatePhoneNumber(phoneNumber, phoneCountry)
-
-			if (response?.status >= 200 && response?.status < 300) {
-				setUserInfoVariable(null)
-				// TODO: add fetchUserInfo
-				//   await dispatch(fetchUserInfo());
-				dispatch(togglePhoneNumberModal(false))
-			}
-
-			return response
-		} catch (error) {
-			throw error
+			console.log(error)
 		}
 	}
 )
 
 export const toggleSubscriptionThunk = createAsyncThunk(
 	'profile/toggleSubscription',
-	async (data: ToggleSubscriptionData, { dispatch, getState }) => {
+	async ({ value }: ToggleSubscriptionData) => {
 		try {
-			const { value } = data
-			const userInfo = getState().profile.userInfo
-
-			dispatch(setUserInfo({ ...userInfo, emailUpdates: value }))
-
-			const response = value ? await subscribeMail() : await unsubscribeMail()
-
-			if (!(response?.status >= 200 && response?.status < 300)) {
-				dispatch(setUserInfo({ ...userInfo, emailUpdates: !value }))
+			if (value) {
+				unsubscribeMail()
+			} else {
+				subscribeMail()
 			}
 
-			return response
+			const userInfo = await fetchUserInfoUtil()
+
+			return userInfo
 		} catch (error) {
 			throw error
 		}

@@ -23,8 +23,11 @@ import { sendOtp } from '@app/utils/userProfileUtils'
 
 export const useSecurityRow = ({ text }: { text: string }) => {
 	const dispatch = useDispatch()
-	const state = useSelector((state: RootState) => state.profile)
-	const { userInfo, smsAuth, emailAuth, googleAuth } = state
+	const state = useSelector((state: RootState) => state)
+	const {
+		profile: { userInfo },
+		auth: { otpType },
+	} = state
 
 	const [bioType, setBioType] = useState<string | null>(null)
 	const [isBioOn, setIsBioOn] = useState(false)
@@ -105,15 +108,15 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 	const handleChange = () => {
 		switch (text) {
 			case 'Google_Auth':
-				if (emailAuth) dispatch(toggleEmailAuthModal(true))
-				if (smsAuth) dispatch(toggleSmsAuthModal(true))
+				if (otpType === 'EMAIL') dispatch(toggleEmailAuthModal(true))
+				if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
 				dispatch(setCurrentSecurityAction('google'))
 				dispatch(setGoogleAuth(true))
 				sendOtp()
 				break
 			case 'E_mail_Auth':
-				if (googleAuth) dispatch(toggleGoogleOtpModal(true))
-				if (smsAuth) {
+				if (otpType === 'TOTP') dispatch(toggleGoogleOtpModal(true))
+				if (otpType === 'SMS') {
 					dispatch(toggleSmsAuthModal(true))
 					sendOtp()
 				}
@@ -133,10 +136,8 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 		getBiometricEnabled,
 		handlePassword,
 		userInfo,
-		smsAuth,
-		emailAuth,
-		googleAuth,
 		isBioOn,
 		bioType,
+		otpType,
 	}
 }

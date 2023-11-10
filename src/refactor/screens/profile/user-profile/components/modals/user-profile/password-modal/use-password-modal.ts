@@ -2,20 +2,20 @@ import React, { useEffect, useReducer, useState } from 'react'
 import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { togglePasswordModal } from '@app/refactor/redux/modals/modalsSlice'
-import { updatePassword } from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { updatePasswordUtil } from '@app/refactor/redux/profile/profileApi'
+import { updatePasswordThunk } from '@app/refactor/redux/profile/profileThunks'
 
 export const usePasswordModal = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
 		modalState: { passwordModalVisible },
-		profile: { isProfileUpdating },
+		profile: { userProfileLoading },
 	} = state
 
 	const [error, setError] = useState(false)
-
-	const initialState = {
+	const [passwordState, setPasswordState] = useState({
 		secure: true,
 		eightChars: false,
 		hasNumber: false,
@@ -23,33 +23,7 @@ export const usePasswordModal = () => {
 		currentPassword: '',
 		newPassword: '',
 		repeatPassword: '',
-	}
-
-	const reducer = (state, action) => {
-		const { type, check, password } = action
-		switch (type) {
-			case 'checkEightChars':
-				return { ...state, eightChars: check }
-			case 'checkNumber':
-				return { ...state, hasNumber: check }
-			case 'checkUpperAndLower':
-				return { ...state, hasUpperAndLower: check }
-			case 'toggleSecure':
-				return { ...state, secure: !state.secure }
-			case 'currentPassword':
-				return { ...state, currentPassword: password }
-			case 'newPassword':
-				return { ...state, newPassword: password }
-			case 'repeatPassword':
-				return { ...state, repeatPassword: password }
-			case 'hide':
-				return initialState
-			default:
-				throw new Error()
-		}
-	}
-
-	const [passwordState, dispatchToReducer] = useReducer(reducer, initialState)
+	})
 
 	const {
 		eightChars,
@@ -68,10 +42,10 @@ export const usePasswordModal = () => {
 
 	const hide = () => {
 		dispatch(togglePasswordModal(false))
-		dispatchToReducer({ type: 'hide' })
 	}
 
 	const handleSave = () => {
+		console.log(currentPassword, newPassword, repeatPassword)
 		const condition =
 			error ||
 			!currentPassword ||
@@ -85,42 +59,66 @@ export const usePasswordModal = () => {
 			setError(true)
 		} else {
 			dispatch(
-				updatePassword(currentPassword, newPassword, repeatPassword, hide)
+				updatePasswordThunk({
+					currentPassword,
+					newPassword,
+					repeatPassword,
+					hide,
+				})
 			)
 		}
 	}
 
-	const toggle = () => dispatchToReducer({ type: 'toggleSecure' })
-
-	const handleCurrentPass = (password: string) =>
-		dispatchToReducer({ type: 'currentPassword', password })
-	const handleNewPass = (password: string) => {
-		validate(password)
-		dispatchToReducer({ type: 'newPassword', password })
-	}
-	const handleRepeatPass = (password: string) =>
-		dispatchToReducer({ type: 'repeatPassword', password })
+	const toggle = () =>
+		setPasswordState((prevState) => ({
+			...prevState,
+			secure: !secure,
+		}))
 
 	const validate = (pass: string) => {
-		dispatchToReducer({ type: 'checkEightChars', check: pass.length >= 8 })
-		dispatchToReducer({ type: 'checkNumber', check: /\d/.test(pass) })
-		dispatchToReducer({
-			type: 'checkUpperAndLower',
-			check: /^(?=.*[a-z])(?=.*[A-Z])\S+$/.test(pass),
-		})
+		if (pass.length >= 8) {
+			setPasswordState((prevState) => ({
+				...prevState,
+				eightChars: true,
+			}))
+		} else if (/\d/.test(pass)) {
+			setPasswordState((prevState) => ({
+				...prevState,
+				hasNumber: true,
+			}))
+		} else if (/^(?=.*[a-z])(?=.*[A-Z])\S+$/.test(pass)) {
+			setPasswordState((prevState) => ({
+				...prevState,
+				hasUpperAndLower: true,
+			}))
+		} else {
+			setPasswordState((prevState) => ({
+				...prevState,
+				hasUpperAndLower: false,
+				hasNumber: false,
+				eightChars: false,
+			}))
+		}
+	}
+	const handleFieldChange = (fieldName: string, value: string) => {
+		setPasswordState((prevState) => ({
+			...prevState,
+			[fieldName]: value,
+		}))
+		if (fieldName === 'newPassword') {
+			validate(value)
+		}
 	}
 
 	return {
 		toggle,
-		handleCurrentPass,
-		handleNewPass,
-		handleRepeatPass,
 		handleSave,
 		hide,
-		isProfileUpdating,
-		initialState,
+		passwordState,
 		passwordModalVisible,
 		error,
 		newPassCond,
+		handleFieldChange,
+		userProfileLoading,
 	}
 }

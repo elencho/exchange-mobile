@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native'
 import { Theme, useTheme } from '@theme/index'
 import AppModal from '@components/modal'
 import AppText from '@components/text'
-import TwoFaInput from '@app/components/TwoFaInput'
 import { useGoogleOtp } from './use-google-otp'
+import TwoFaInput from '@components/input_2fa'
 
 //TODO: FIX types
 export default function GoogleOtpModal({ withdrawal, whitelist }) {

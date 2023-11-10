@@ -4,25 +4,32 @@ import { useDispatch, useSelector } from 'react-redux'
 import { saveUserInfo } from '@app/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { togglePersonalInfoModal } from '@app/refactor/redux/modals/modalsSlice'
+import { updateUserThunk } from '@app/refactor/redux/profile/profileThunks'
 
 const usePersonalInfoModal = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
 		modalState: { personalInfoModalVisible },
-		profile: { userInfo, countriesConstant, isProfileUpdating },
+		profile: { userInfo },
+		common: { countries },
 	} = state
 
 	const [countryDrop, setCountryDrop] = useState(false)
-	const [citizenshipDrop, setCitizenshipDrop] = useState(false)
-	const [userInfoVariable, setUserInfoVariable] = useState(null)
 	const [error, setError] = useState(false)
-
+	const [localUserInfo, setLocalUserInfo] = useState({
+		firstName: userInfo?.firstName,
+		lastName: userInfo?.lastName,
+		email: userInfo?.email,
+		country: userInfo?.countryCode,
+		city: userInfo?.city,
+		postalCode: userInfo?.postalCode,
+		address: userInfo?.address,
+	})
 	const x = {
-		banned: false,
-		phoneCode: '+995',
-		name: 'Georgia',
-		code: 'GEO',
+		phoneCode: userInfo?.phoneCountry,
+		name: userInfo?.country,
+		code: userInfo?.countryCode,
 	}
 	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(x)
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
@@ -33,27 +40,18 @@ const usePersonalInfoModal = () => {
 		error && setError(false)
 	}, [userInfo, personalInfoModalVisible])
 
-	useEffect(() => {
-		if (personalInfoModalVisible && !userInfoVariable) {
-			setUserInfoVariable(userInfo)
-		}
-		if (!personalInfoModalVisible && userInfoVariable) {
-			setUserInfoVariable(null)
-		}
-	})
 	const hide = () => {
-		dispatch(saveUserInfo(userInfoVariable))
 		dispatch(togglePersonalInfoModal(false))
 	}
 	const handleSave = () => {
 		// TODO: refactor
 		const condition = canEditInfo
-			? !userInfo.country ||
-			  !userInfo.city?.trim() ||
-			  !alphabeticRegex(userInfo.citycity) ||
-			  !userInfo.postalCode?.trim() ||
-			  !userInfo.address?.trim()
-			: !userInfo.country ||
+			? !userInfo?.country ||
+			  !userInfo?.city?.trim() ||
+			  !alphabeticRegex(userInfo?.city) ||
+			  !userInfo?.postalCode?.trim() ||
+			  !userInfo?.address?.trim()
+			: !userInfo?.country ||
 			  !userInfo.city?.trim() ||
 			  !alphabeticRegex(userInfo.city) ||
 			  !userInfo.postalCode?.trim() ||
@@ -64,7 +62,7 @@ const usePersonalInfoModal = () => {
 
 		if (error || condition) {
 			setError(true)
-		} else dispatch(saveUserInfoSaga())
+		} else dispatch(updateUserThunk(localUserInfo))
 	}
 
 	// TODO: FIX types
@@ -74,13 +72,13 @@ const usePersonalInfoModal = () => {
 		if (citizenshipDrop) setCitizenshipDrop(true)
 	}
 
-	const handleReset = () => {
-		setCitizenshipDrop(false), setCountryDrop(false)
-	}
+	// const handleReset = () => {
+	// 	setCitizenshipDrop(false), setCountryDrop(false)
+	// }
 
 	const citizenshipText = (code: string) => {
 		let country
-		countriesConstant?.forEach((c) => {
+		countries?.forEach((c) => {
 			if (c.code === code) country = c.name
 		})
 		return country
@@ -91,18 +89,22 @@ const usePersonalInfoModal = () => {
 
 	const onChangeText = (firstName: string) =>
 		dispatch(saveUserInfo({ ...userInfo, firstName }))
+
+	const handleFieldChange = (fieldName: string, value: string) => {
+		setLocalUserInfo((prevState) => ({
+			...prevState,
+			[fieldName]: value,
+		}))
+	}
 	return {
 		onChangeText,
 		userInfo,
 		alphabeticRegex,
 		error,
-		handleReset,
 		handleCountries,
 		citizenshipText,
 		canEditInfo,
 		handleSave,
-		isProfileUpdating,
-		citizenshipDrop,
 		countryDrop,
 		personalInfoModalVisible,
 		hide,
@@ -110,6 +112,8 @@ const usePersonalInfoModal = () => {
 		chosenCountry,
 		countryModalVisible,
 		setCountryModalVisible,
+		handleFieldChange,
+		localUserInfo,
 	}
 }
 
