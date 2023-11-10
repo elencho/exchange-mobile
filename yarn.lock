@@ -1858,6 +1858,14 @@
   resolved "https://registry.npmjs.org/@react-native/polyfills/-/polyfills-2.0.0.tgz"
   integrity sha512-K0aGNn1TjalKj+65D7ycc1//H9roAQ51GJVk5ZJQFb2teECGmzd86bYDC0aYdbRf7gtovescq4Zt6FR0tgXiHQ==
 
+"@react-native/virtualized-lists@^0.72.4":
+  version "0.72.8"
+  resolved "https://registry.yarnpkg.com/@react-native/virtualized-lists/-/virtualized-lists-0.72.8.tgz#a2c6a91ea0f1d40eb5a122fb063daedb92ed1dc3"
+  integrity sha512-J3Q4Bkuo99k7mu+jPS9gSUSgq+lLRSI/+ahXNwV92XgJ/8UgOTxu2LPwhJnBk/sQKxq7E8WkZBnBiozukQMqrw==
+  dependencies:
+    invariant "^2.2.4"
+    nullthrows "^1.1.1"
+
 "@react-navigation/bottom-tabs@^6.5.7":
   version "6.5.7"
   resolved "https://registry.npmjs.org/@react-navigation/bottom-tabs/-/bottom-tabs-6.5.7.tgz"
@@ -2232,12 +2240,28 @@
   resolved "https://registry.npmjs.org/@types/qs/-/qs-6.9.7.tgz"
   integrity sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==
 
+"@types/react-native-indicators@^0.16.5":
+  version "0.16.5"
+  resolved "https://registry.yarnpkg.com/@types/react-native-indicators/-/react-native-indicators-0.16.5.tgz#b629da07e0cb12f3a77fb6a5094dfe00e7ec9ee7"
+  integrity sha512-sMptp+V+j+UaxI5pNn60purSdauYOYboJtHYpLBou2T/fP4tUfHBYLZrq1BiSoAm5wKHaJO6a6M7HpJh/IF+OA==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
 "@types/react-native-version-check@^3.4.7":
   version "3.4.7"
   resolved "https://registry.npmjs.org/@types/react-native-version-check/-/react-native-version-check-3.4.7.tgz"
   integrity sha512-PTcAfb2bLc/8zP2UD3MRr6rbXGFiemSMKRcYCE/v32PyQOysTRG7kf6/i4SGxy+9mvfSXDkOs7Y48MfTtSKRyg==
   dependencies:
     "@types/node-fetch" "*"
+
+"@types/react-native@*":
+  version "0.72.6"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.72.6.tgz#2c7a348ccb33637f482f36e4c6450d310805a290"
+  integrity sha512-5Tan0ejOjbYyrnRreRZ7ftcWbehQELoHevJQliAu0Rhqrsnall8dyodf/434jdDJuQEzLisBMg7ZkQNnghUXIw==
+  dependencies:
+    "@react-native/virtualized-lists" "^0.72.4"
+    "@types/react" "*"
 
 "@types/react-redux@^7.1.20":
   version "7.1.25"

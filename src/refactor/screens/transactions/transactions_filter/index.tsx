@@ -6,8 +6,7 @@ import ChooseCurrencyModal from '@app/refactor/common/components/modals/ChooseCu
 import DatePickerModal from '@app/refactor/common/components/modals/DatePickerModal/DatePickerModal'
 import ChooseMethodsModal from '@app/refactor/common/components/modals/ChooseMethodsModal'
 import AppDropdown from '@app/components/AppDropdown'
-import AppText from '@app/components/AppText'
-import DatePicker from '@app/refactor/screens/transactions/components/DatePicker'
+import AppText from '@app/refactor/common/components/text'
 import Headline from '@app/components/TransactionHistory/Headline'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
@@ -32,10 +31,13 @@ import {
 	setMethodFilter,
 	setPreviousTransactionsFilter,
 } from '@app/refactor/redux/transactions/transactionSlice'
-import FilterRow from '@app/refactor/screens/transactions/components/FilterRow'
-import TransactionFilterBottom from './components/TransactionFilterBottom'
 import AppModal from '@app/components/AppModal'
-import { RootState } from '../../redux/rootReducer'
+import { RootState } from '../../../redux/rootReducer'
+import {
+	TransactionFilterBottom,
+	FilterRow,
+	DatePicker,
+} from '@app/refactor/screens/transactions/components/FilterComponents'
 
 const WINDOW_HEIGHT = Dimensions.get('window').height
 
@@ -97,7 +99,7 @@ export default function TransactionFilter({
 			: dispatch(setPreviousTransactionsFilter(prevFilterState))
 	}
 
-	const seperateCurrencyName = (currency) => currency.split('(')[0]
+	const seperateCurrencyName = (currency: string) => currency.split('(')[0]
 	const onClosePressed = () => {
 		savePrevFilters()
 		handleClose()
@@ -108,7 +110,7 @@ export default function TransactionFilter({
 			? dispatch(toggleCryptoModal(true))
 			: dispatch(toggleCurrencyModal(true))
 	const handleMethodsDropdown = () => dispatch(toggleMethodsModal(true))
-	const clearMethodsDropdown = () => dispatch(setMethodFilter([]))
+	const clearMethodsDropdown = () => dispatch(setMethodFilter('None'))
 	const clearCurrencyDropdown = () =>
 		isInstantTrade
 			? dispatch(setCryptoCodeQuery(null))
@@ -121,6 +123,7 @@ export default function TransactionFilter({
 			? setPrevFilterState(initialStateTrade)
 			: setPrevFilterState(initialStateTransactions)
 	}, [isInstantTrade, isOpen])
+	console.log('selectedMethod', selectedMethod)
 
 	const children = (
 		<>
@@ -138,23 +141,21 @@ export default function TransactionFilter({
 				<View>
 					{isInstantTrade ? (
 						<View style={styles.marginBottom20}>
-							<AppText body style={styles.text}>
-								Choose currency / Pair
-							</AppText>
+							<AppText style={styles.text}>Choose currency / Pair</AppText>
 							<FilterRow array={currencies} filterType="currency" />
 						</View>
 					) : (
 						<View style={styles.type}>
-							<AppText body style={styles.text}>
-								Choose Type:
-							</AppText>
+							<AppText style={styles.text}>Choose Type:</AppText>
 							<FilterRow array={types} filterType="type" />
 						</View>
 					)}
 
 					<AppDropdown
 						selectedText={
-							selectedCrypto?.length > 0 && seperateCurrencyName(selectedCrypto)
+							selectedCrypto &&
+							selectedCrypto?.length > 0 &&
+							seperateCurrencyName(selectedCrypto)
 						}
 						label={isInstantTrade ? 'Choose Crypto' : 'Choose Currency'}
 						handleClear={clearCurrencyDropdown}
@@ -171,13 +172,17 @@ export default function TransactionFilter({
 						}
 						handlePress={openModal}
 						style={!isInstantTrade && { marginVertical: 24 }}
+						activeLabel={undefined}
+						notClearable={undefined}
+						error={undefined}
+						disabled={undefined}
+						hideArrow={undefined}
+						noTranslate={undefined}
 					/>
 
 					{isInstantTrade && (
 						<View style={styles.marginBottom30}>
-							<AppText body style={styles.text}>
-								Transaction Type:
-							</AppText>
+							<AppText style={styles.text}>Transaction Type:</AppText>
 							<FilterRow array={transactionTypes} filterType="tradeAction" />
 						</View>
 					)}
@@ -190,11 +195,19 @@ export default function TransactionFilter({
 							label="Choose Methods:"
 							handlePress={handleMethodsDropdown}
 							handleClear={clearMethodsDropdown}
-							selectedText={selectedMethod?.[0] ?? null}
+							selectedText={selectedMethod === 'None' ? null : selectedMethod}
+							style={undefined}
+							icon={undefined}
+							activeLabel={undefined}
+							notClearable={undefined}
+							error={undefined}
+							disabled={undefined}
+							hideArrow={undefined}
+							noTranslate={undefined}
 						/>
 					)}
 
-					<AppText body style={[styles.text, isInstantTrade && styles.status]}>
+					<AppText style={[styles.text, isInstantTrade && styles.status]}>
 						Choose Status:
 					</AppText>
 					<FilterRow
@@ -229,8 +242,12 @@ export default function TransactionFilter({
 			title=""
 			hide={onClosePressed}
 			children={children}
-			// onModalHide={savePrevFilters}
 			fullScreen
+			bottom={undefined}
+			custom={undefined}
+			onModalHide={undefined}
+			onDismiss={undefined}
+			modalStyle={undefined} // onModalHide={savePrevFilters}
 		/>
 	)
 }

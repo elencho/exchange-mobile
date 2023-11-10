@@ -2,17 +2,24 @@ import React, { memo, useEffect } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import CustomRefreshContol from '@app/components/CustomRefreshContol'
-
 import List from '@app/assets/images/List.svg'
-import AppText from '@app/components/AppText'
+import AppText from '@components/text'
 import TransactionSkeleton from '@app/components/TransactionHistory/TransactionSkeleton'
 import colors from '@app/constants/colors'
-import Transaction from '@app/refactor/screens/transactions/components/Transaction'
+import Transaction from '@app/refactor/screens/transactions/components/ListComponents/Transaction'
 import ListFooter from './ListFooter'
-import useTransactions from '../hooks/useTransactions'
+import { useTransactions } from '@app/refactor/screens/transactions/hooks'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
-const TransactionList = ({ isInstantTrade }) => {
+interface Props {
+	isInstantTrade: boolean
+	isFilterVisible: boolean
+}
+
+const TransactionList: React.FC<Props> = ({
+	isInstantTrade,
+	isFilterVisible,
+}) => {
 	const {
 		fetchTransactions,
 		refreshTransactions,
@@ -32,11 +39,10 @@ const TransactionList = ({ isInstantTrade }) => {
 			toDateTime,
 			txIdOrRecipient,
 		},
-		modalState: { transactionFiltersModalVisible },
 	} = useSelector((state: RootState) => state)
 
 	useEffect(() => {
-		!transactionFiltersModalVisible && fetchTransactions()
+		!isFilterVisible && fetchTransactions()
 	}, [
 		typeFilter,
 		method,
@@ -45,15 +51,20 @@ const TransactionList = ({ isInstantTrade }) => {
 		fromDateTime,
 		toDateTime,
 		txIdOrRecipient,
-		transactionFiltersModalVisible,
+		isFilterVisible,
 	])
 
-	const renderTransaction = ({ item, index }) => {
+	const renderTransaction = ({
+		item,
+		index,
+	}: {
+		item: Transaction
+		index: number
+	}) => {
 		return (
 			<Transaction
 				isTransfer
 				transactionData={item}
-				loading={transactionsLoading}
 				isLast={index === totalTransactionsQty - 1}
 			/>
 		)
@@ -62,7 +73,7 @@ const TransactionList = ({ isInstantTrade }) => {
 	const listEmptyContainer = (
 		<View style={styles.empty}>
 			<List />
-			<AppText subtext style={styles.subtext}>
+			<AppText style={styles.subtext}>
 				Transaction history no transactions
 			</AppText>
 		</View>
@@ -90,7 +101,7 @@ const TransactionList = ({ isInstantTrade }) => {
 			contentContainerStyle={{ flexGrow: 1 }}
 			data={transactions}
 			renderItem={renderTransaction}
-			keyExtractor={(item, index) => item.transactionId + index}
+			keyExtractor={(item) => item.id.toString()}
 			onEndReached={handleScrollEnd}
 			onEndReachedThreshold={1}
 			showsVerticalScrollIndicator={false}

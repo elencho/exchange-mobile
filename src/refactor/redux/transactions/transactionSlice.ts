@@ -1,18 +1,26 @@
 // src/redux/errorsSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../rootReducer'
 
 export interface TransactionState {
-	totalTransactionsQty: number | null
-	transactions: []
-	transactionsLoading: boolean
-	selectedTransactionDetails: {}
+	// selectedTransactionDetails: {
+	// 	currency?: string
+	// 	provider?: string
+	// 	method?: Method
+	// 	transactionInfo?: string
+	// 	baseCurrency?: string
+	// 	quoteCurrency?: string
+	// 	action?: string
+	// 	recipient?: string
+	// 	tag?: string
+	// }
+
+	selectedTransactionDetails: any
 
 	// Query Params
 	cryptoFilter: null | string
 	limit: number
-	method: []
-	status: string[]
+	method: string
+	status: Status[]
 	offset: number
 	fromDateTime: number | null
 	toDateTime: number | null
@@ -23,7 +31,7 @@ export interface TransactionState {
 const initialQueryParams = {
 	cryptoFilter: null,
 	limit: 10,
-	method: [],
+	method: 'None',
 	status: [],
 	offset: 0,
 	fromDateTime: null,
@@ -33,10 +41,7 @@ const initialQueryParams = {
 }
 
 const initialState: TransactionState = {
-	totalTransactionsQty: null,
-	transactions: [],
 	selectedTransactionDetails: {},
-	transactionsLoading: false,
 
 	...initialQueryParams,
 }
@@ -45,13 +50,6 @@ const transactionSlice = createSlice({
 	name: 'transactions',
 	initialState,
 	reducers: {
-		setTransactions: (state, action: PayloadAction<[]>) => {
-			state.transactions = action.payload
-		},
-
-		setTotalTransactionsQty: (state, action: PayloadAction<number>) => {
-			state.totalTransactionsQty = action.payload
-		},
 		setTransactionsOffset: (state, action: PayloadAction<number>) => {
 			state.offset = action.payload
 		},
@@ -59,13 +57,13 @@ const transactionSlice = createSlice({
 		setTypeFilter: (state, action: PayloadAction<string[]>) => {
 			state.typeFilter = action.payload
 		},
-		setStatusFilter: (state, action: PayloadAction<string[]>) => {
+		setStatusFilter: (state, action: PayloadAction<Status[]>) => {
 			state.status = action.payload
 		},
 		setCryptoFilter: (state, action: PayloadAction<null | string>) => {
 			state.cryptoFilter = action.payload
 		},
-		setMethodFilter: (state, action: PayloadAction<[]>) => {
+		setMethodFilter: (state, action: PayloadAction<string>) => {
 			state.method = action.payload
 		},
 		setPreviousTransactionsFilter: (state, action: PayloadAction<{}>) => {
@@ -74,10 +72,10 @@ const transactionSlice = createSlice({
 				...action.payload,
 			}
 		},
-		setFromTime: (state, action: PayloadAction<number>) => {
+		setFromTime: (state, action: PayloadAction<number | null>) => {
 			state.fromDateTime = action.payload
 		},
-		setToTime: (state, action: PayloadAction<number>) => {
+		setToTime: (state, action: PayloadAction<number | null>) => {
 			state.toDateTime = action.payload
 		},
 		setTransactionsSearch: (state, action: PayloadAction<string>) => {
@@ -94,8 +92,6 @@ const transactionSlice = createSlice({
 })
 
 export const {
-	setTransactions,
-	setTotalTransactionsQty,
 	setTransactionsOffset,
 	setStatusFilter,
 	setTypeFilter,

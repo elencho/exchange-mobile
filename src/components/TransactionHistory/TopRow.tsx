@@ -7,7 +7,13 @@ import AppText from '../AppText'
 import Headline from './Headline'
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 
-function TopRow({ clear, headlineLogo, style }) {
+interface Props {
+	clear?: () => void
+	headlineLogo?: React.ReactNode
+	style?: any
+}
+
+function TopRow({ clear, headlineLogo, style }: Props) {
 	const navigation = useNavigation()
 	const route = useRoute()
 	const dispatch = useDispatch()
