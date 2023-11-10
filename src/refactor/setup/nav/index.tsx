@@ -6,7 +6,8 @@ import {
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
-import MainScreen from '@app/navigation/MainScreen'
+import Main from '@app/refactor/screens/auth/main'
+import Resume from '@app/refactor/screens/auth/resume'
 import Login from '@app/refactor/screens/auth/login'
 import Login2Fa from '@app/refactor/screens/auth/login2fa'
 import Maintenance from '@app/refactor/screens/auth/maintenance'
@@ -18,15 +19,14 @@ import Splash from '@app/refactor/screens/auth/splash/index'
 import UpdateAvailable from '@app/refactor/screens/auth/update'
 import Welcome from '@app/refactor/screens/auth/welcome'
 import UserProfile from '@app/refactor/screens/profile/user-profile'
-import TransactionFilter from '@app/refactor/screens/transactions/transactions_filter'
+import EmailVerification from '@app/refactor/screens/auth/email_verification'
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
-import EmailVerification from '@app/refactor/screens/auth/email_verification'
-import Resume from '@app/screens/Resume'
 import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
 import { Screens } from './nav'
 import { useDispatch } from 'react-redux'
+import { setGeneralError } from '@store/redux/common/slice'
 
 const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef<Screens>()
@@ -40,30 +40,22 @@ export default function AppNavigator() {
 
 	useNotifications()
 
-	// TODO: this
-	// BackHandler.addEventListener('hardwareBackPress', () => true)
+	const onNavigationChanged = (state?: NavigationState) => {
+		setTimeout(() => {
+			dispatch(setGeneralError(undefined))
+		}, 10)
 
-	// TODO: This is needed for wallet screen to work, to identify which screen is active,
-	// We can remove this after refcatoring wallet screen
-	const onStateChange = (state: any) => {
+		// TODO: This is needed for wallet screen to work, to identify which screen is active,
+		// We can remove this after refcatoring wallet screen
 		dispatch({
 			type: 'SET_STACK_NAVIGATION_ROUTE',
-			stackRoute: state.routes[state.routes.length - 1].name,
+			stackRoute: state?.routes[state.routes.length - 1].name,
 		})
-
-		// if (generalError)
-		// 	dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
 	}
-
-	// const onNavigationChanged = (state?: NavigationState) => {
-	// 	setTimeout(() => {
-	// 		dispatch(setGeneralError(undefined))
-	// 	}, 1000)
-	// }
 
 	return (
 		<NavigationContainer
-			onStateChange={onStateChange}
+			onStateChange={onNavigationChanged}
 			ref={navigationRef}
 			theme={{
 				dark: true,
@@ -100,11 +92,10 @@ export default function AppNavigator() {
 				<Stack.Screen name="EmailVerification" component={EmailVerification} />
 				<Stack.Screen
 					name="Main"
-					component={MainScreen}
+					component={Main}
 					options={{ animation: 'fade' }}
 				/>
 
-				<Stack.Screen name="TransactionFilter" component={TransactionFilter} />
 				<Stack.Screen name="UserProfile" component={UserProfile} />
 				<Stack.Screen name="Balance" component={BalanceScreen} />
 

@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
@@ -14,6 +13,8 @@ import CloseModalIcon from '@app/components/InstantTrade/CloseModalIcon'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp, Screens } from '@app/refactor/setup/nav/nav'
+import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
+import { setTimer } from '@store/redux/auth/slice'
 
 const EmailVerification = ({
 	navigation,
@@ -23,35 +24,38 @@ const EmailVerification = ({
 	const { styles, theme } = useTheme(_styles)
 
 	const [value, setValue] = useState('')
-	const [seconds, setSeconds] = useState(30)
+	const [seconds, setSeconds] = useState(0)
 
 	const state = useSelector((state: RootState) => state.auth)
 	const { timerVisible } = state
 
 	useEffect(() => {
-		state.timerVisible = true
-	}, [])
+		dispatch(setTimer(true))
 
-	useEffect(() => {
-		state.timerVisible = true
 		return () => {
+			dispatch(setTimer(false))
 			setValue('')
-			state.timerVisible = false
-			setSeconds(30)
+			setSeconds(0)
 		}
 	}, [])
 
 	useEffect(() => {
-		if (!seconds) {
-			state.timerVisible = false
-			setSeconds(30)
-		}
-		if (seconds && timerVisible) {
+		if (!timerVisible) return
+
+		if (seconds) {
 			setTimeout(() => {
 				setSeconds(seconds - 1)
 			}, 1000)
+		} else {
+			dispatch(setTimer(false))
 		}
-	}, [seconds, timerVisible])
+	}, [seconds])
+
+	useEffect(() => {
+		if (timerVisible) {
+			setSeconds(COUNTDOWN_SECONDS)
+		}
+	}, [timerVisible])
 
 	const checkMailText = () => {
 		if (route.params?.mail) {
@@ -84,7 +88,7 @@ const EmailVerification = ({
 			<WithKeyboard
 				flexGrow={true}
 				padding={true}
-				modal={true}
+				modal={undefined}
 				refreshControl={undefined}
 				scrollUp={undefined}>
 				<View style={styles.container}>

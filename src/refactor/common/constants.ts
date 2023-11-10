@@ -9,6 +9,8 @@ export type Language = 'ka' | 'en'
 
 export const COUNTDOWN_SECONDS = 30
 
+export const BIOMETRIC_DIFF_MILLIS = 30 * 1000
+
 export const Images = {
 	background,
 	stars,

@@ -1,13 +1,11 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import * as SecureStore from 'expo-secure-store'
-import { useCallback, useEffect, useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setPersonalSecurity } from '@app/refactor/redux/profile/profileSlice'
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { clearFilters } from '@app/refactor/redux/transactions/actions'
 import { checkIsCompatable } from '@app/utils/biometricsAuth'
-import { logoutUtil } from '@app/utils/userProfileUtils'
+import { logoutThunk } from '@store/redux/auth/thunks'
 
 export const useProfile = ({ route }) => {
 	const navigation = useNavigation()
@@ -39,27 +37,8 @@ export const useProfile = ({ route }) => {
 		setBioAvailable(compitable)
 	}
 
-	// TODO: use thunk logout
-	const logout = async () => {
-		const refresh_token = await SecureStore.getItemAsync('refreshToken')
-		const status = await logoutUtil(refresh_token)
-
-		//TODO: Fix this
-		// if (status === 204
-		// 	) {
-		// 	await SecureStore.deleteItemAsync('accessToken')
-		// 	await SecureStore.deleteItemAsync('refreshToken')
-		// 	navigation.navigate('Welcome')
-
-		// 	dispatch({ type: 'LOGOUT' })
-		// }
-		if (true) {
-			await SecureStore.deleteItemAsync('accessToken')
-			await SecureStore.deleteItemAsync('refreshToken')
-			navigation.navigate('Welcome')
-
-			dispatch({ type: 'LOGOUT' })
-		}
+	const logout = () => {
+		dispatch(logoutThunk())
 	}
 
 	const onRefresh = () => {

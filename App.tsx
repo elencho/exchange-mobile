@@ -9,7 +9,6 @@ import store from '@app/refactor/redux/store'
 import AppNavigator from '@app/refactor/setup/nav/index'
 import AppToast from '@components/app_toast'
 import images from './src/constants/images'
-import { IS_ANDROID } from './src/constants/system'
 import {
 	CryptalThemeProvider,
 	Theme,

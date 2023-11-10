@@ -12,13 +12,13 @@ import {
 	resetPasswordConfirmCodeThunk as resetPasswordConfirmCodeThunk,
 	resendPasswordCodeThunk,
 } from '@store/redux/auth/thunks'
-import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
 import { setTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
+import GeneralError from '@components/general_error'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 const COUNTDOWN = 30
@@ -127,16 +127,14 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 						password
 					</AppText>
 				</View>
-
-				<GeneralError show={errorHappenedHere('ForgotPassword')} />
-
+				<GeneralError />
 				<AppInput
 					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.input}
 					label="Enter Email"
 					value={mail}
 					onChangeText={setMail}
-					onFocus={() => setMailError(false)}
+					onFocusOrChange={() => setMailError(false)}
 					rightComponent={<MailInputRight />}
 					error={mailError}
 				/>
@@ -146,7 +144,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 					label="Enter Code"
 					value={code}
 					onChangeText={setCode}
-					onFocus={() => setCodeError(false)}
+					onFocusOrChange={() => setCodeError(false)}
 					error={codeError}
 				/>
 				<AppButton

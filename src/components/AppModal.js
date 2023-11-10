@@ -26,6 +26,7 @@ function AppModal({
 	modalStyle,
 }) {
 	const webViewVisible = useSelector((state) => state?.modals?.webViewVisible)
+	const { isBiometricScreenOpened } = useSelector((state) => state.common)
 
 	// const deviceHeight =
 	//   Platform.OS === 'ios'
@@ -42,7 +43,7 @@ function AppModal({
 	return (
 		webViewVisible && (
 			<Modal
-				isVisible={visible}
+				isVisible={visible && !isBiometricScreenOpened}
 				onBackdropPress={hide}
 				onSwipeComplete={hide}
 				// swipeDirection="down"

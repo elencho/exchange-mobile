@@ -17,6 +17,7 @@ import {
 	forgotPasswordStartThunk,
 	startRegistrationThunk,
 	registrationFormThunk,
+	setNewPasswordOtpThunk,
 } from '@store/redux/auth/thunks'
 import KVStore from '@store/kv'
 
@@ -56,11 +57,17 @@ const auth = createSlice({
 			state.otpType = jwt_decode<TokenParams>(action.payload.accessToken)
 				?.otpType
 		},
+		clearTokens: (state) => {
+			KVStore.del('refreshToken')
+			state.accessToken = undefined
+			// TODO?: delete otpType
+		},
 	},
 	extraReducers: (builder) => {
 		login(builder)
 		register(builder)
 		forgotPass(builder)
+		setPass(builder)
 		login2fa(builder)
 		resetOtp(builder)
 
@@ -103,6 +110,7 @@ const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(resendPasswordCodeThunk.fulfilled, (state, action) => {
 		state.callbackUrl = action.payload.callbackUrl
 		state.timerVisible = action.payload.timerVisible
+		state.otpType = action.payload.otpType
 	})
 
 	builder.addCase(resetPasswordConfirmCodeThunk.pending, (state) => {
@@ -113,6 +121,18 @@ const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 		state.callbackUrl = action.payload.callbackUrl
 	})
 	builder.addCase(resetPasswordConfirmCodeThunk.rejected, (state) => {
+		state.authLoading = false
+	})
+}
+
+const setPass = (builder: ActionReducerMapBuilder<AuthState>) => {
+	builder.addCase(setNewPasswordOtpThunk.pending, (state) => {
+		state.authLoading = true
+	})
+	builder.addCase(setNewPasswordOtpThunk.fulfilled, (state, action) => {
+		state.authLoading = false
+	})
+	builder.addCase(setNewPasswordOtpThunk.rejected, (state) => {
 		state.authLoading = false
 	})
 }
@@ -165,5 +185,5 @@ const register = (builder: ActionReducerMapBuilder<AuthState>) => {
 		})
 }
 
-export const { savePkceInfo, setTimer, setTokens } = auth.actions
+export const { savePkceInfo, setTimer, setTokens, clearTokens } = auth.actions
 export default auth.reducer
