@@ -217,7 +217,6 @@ const codeToTokenThunk = (
 		)
 
 		const otpType = jwt_decode<TokenParams>(tokenData.access_token)?.otpType
-		KVStore.set('isLoggedIn', true)
 		navigation.navigate('Main')
 		return { otpType }
 	})()
