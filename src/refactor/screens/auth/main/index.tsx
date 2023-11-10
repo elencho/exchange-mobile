@@ -36,7 +36,6 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	}, [])
 
 	const onBeforeShow = async () => {
-		console.log('OnBeforeShow')
 		KVStore.set('lastOpenDateMillis', Date.now())
 		changeNavigationBarColor(theme.color.backgroundSecondary, true)
 		setSubscription(AppState.addEventListener('change', handleAppStateChange))
@@ -48,7 +47,6 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	}
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
-		console.log('AppStateChange:', newState)
 		const webViewVisible = KVStore.get('webViewVisible')
 
 		const bioVisible =
@@ -57,7 +55,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			newState === 'active' &&
 			biometricDiffElapsed()
 
-		if (bioVisible) {
+		if (bioVisible && accessToken) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
 		}
