@@ -1,9 +1,8 @@
 import VersionCheck from 'react-native-version-check'
 import { useFocusEffect } from '@react-navigation/native'
-import jwt_decode from 'jwt-decode'
 import { useCallback } from 'react'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useTheme } from '@theme/index'
 import {
 	checkReadiness,
@@ -15,10 +14,13 @@ import { System } from '@app/refactor/common/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import KVStore from '@app/refactor/store/kv'
 import { i18n } from '@app/refactor/setup/i18n'
-import { TokenParams } from '@app/refactor/types/auth/splash'
 import { setTokens } from '@store/redux/auth/slice'
 import { fetchCountriesThunk } from '@store/redux/common/thunks'
 import { BIOMETRIC_DIFF_MILLIS } from '@app/refactor/common/constants'
+import {
+	biometricDiffElapsed,
+	canDoBiometric,
+} from '@app/refactor/utils/authUtils'
 
 export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const { theme } = useTheme()
@@ -55,38 +57,20 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			return
 		}
 
-		if (hasBiometricEnabled(accessToken)) {
-			handleBiometric()
+		if (canDoBiometric(accessToken)) {
+			console.log('bioEnabled')
+			if (biometricDiffElapsed()) {
+				navigation.navigate('Resume', { fromSplash: true })
+			} else {
+				navigation.navigate('Main')
+			}
 		} else {
+			console.log('bioDisabled')
 			if (!accessToken) {
 				navigation.navigate('Welcome')
 			} else {
 				navigation.navigate('Main') // Main
 			}
-		}
-	}
-
-	const hasBiometricEnabled = (accessToken: string | undefined): Boolean => {
-		const bioEnabledEmails = KVStore.get('bioEnabledEmails')
-		if (!bioEnabledEmails || !accessToken) return false
-
-		const email = jwt_decode<TokenParams>(accessToken)?.email
-		return bioEnabledEmails.includes(email)
-	}
-
-	const handleBiometric = () => {
-		const isLoggedIn = KVStore.get('isLoggedIn')
-		const lateTimeOpenMillis = KVStore.get('lastOpenDateMillis')
-
-		const biometricDiffElapsed = lateTimeOpenMillis
-			? Date.now() - lateTimeOpenMillis >= BIOMETRIC_DIFF_MILLIS
-			: false
-
-		// TODO: && or ||
-		if (biometricDiffElapsed && !isLoggedIn) {
-			navigation.navigate('Resume', { fromSplash: true })
-		} else {
-			navigation.navigate('Main')
 		}
 	}
 

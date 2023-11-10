@@ -36,7 +36,6 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 
 	useFocusEffect(
 		useCallback(() => {
-			KVStore.set('authVisible', true)
 			handleBiometricType()
 			tryBioAuth(fromSplash)
 		}, [fromSplash])
@@ -48,22 +47,6 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 			dispatch(setBiometricScreenOpened(false))
 		}
 	}, [])
-
-	// TODO: Ask about this
-	// const startAuthActions = async () => {
-	// 	if (IS_ANDROID && withdrawalConfirmModalVisible) {
-	// 		dispatch(toggleGoogleOtpModal(false))
-	// 		dispatch(toggleEmailAuthModal(false))
-	// 		dispatch(toggleSmsAuthModal(false))
-	// 	}
-	// 	if (Personal_Security === 'Security') {
-	// 		dispatch(switchPersonalSecurity('Security'))
-	// 	}
-	// 	dispatch(toggleWebViewVisible(true))
-	// 	await AsyncStorage.setItem('isLoggedIn', 'true')
-	// 	await AsyncStorage.removeItem('isOpenDate')
-	// 	await AsyncStorage.removeItem('authVisible')
-	// }
 
 	const handleBiometricType = useCallback(async () => {
 		try {
@@ -90,7 +73,6 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 		})
 
 		if (authResult?.success) {
-			//TODO: Check all bad cases
 			if (fromSplash && !resumed && !maintenanceInProgress && !version) {
 				navigation.navigate('Main')
 			} else {
@@ -99,12 +81,11 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 		} else if (
 			['passcode_not_set', 'not_enrolled'].includes(authResult?.error)
 		) {
-			standardLogin()
+			logoutAndReturnToWelcome()
 		}
 	}, [])
 
-	const standardLogin = () => {
-		KVStore.del('authVisible')
+	const logoutAndReturnToWelcome = () => {
 		dispatch(logoutThunk())
 	}
 
@@ -134,7 +115,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 			<AppButton
 				variant="text"
 				text="Standard Log In"
-				onPress={standardLogin}
+				onPress={logoutAndReturnToWelcome}
 			/>
 		</View>
 	)

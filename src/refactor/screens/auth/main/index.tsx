@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useIsFocused } from '@react-navigation/native'
 import jwt_decode from 'jwt-decode'
 import React, { memo, useCallback, useEffect, useState } from 'react'
-import { AppState, NativeEventSubscription } from 'react-native'
+import { AppState, AppStateStatus, NativeEventSubscription } from 'react-native'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch, useSelector } from 'react-redux'
 import TransactionHistory from '@app/refactor/screens/transactions/TransactionHistory'
@@ -10,13 +10,13 @@ import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { useTheme } from '@theme/index'
 import BottomTabs from '@app/components/BottomTabs'
 import KVStore from '@store/kv'
-import { BIOMETRIC_DIFF_MILLIS } from '@app/refactor/common/constants'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { TokenParams } from '@app/refactor/types/auth/splash'
 import InstantTrade from '@app/screens/InstantTrade'
 import Wallet from '@app/screens/Wallet'
 import Exchange from '@app/screens/Exchange'
 import { setTabRouteName } from '@app/redux/transactions/actions'
+import { biometricDiffElapsed } from '@app/refactor/utils/authUtils'
 
 const Tab = createBottomTabNavigator()
 
@@ -36,6 +36,8 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	}, [])
 
 	const onBeforeShow = async () => {
+		console.log('OnBeforeShow')
+		KVStore.set('lastOpenDateMillis', Date.now())
 		changeNavigationBarColor(theme.color.backgroundSecondary, true)
 		setSubscription(AppState.addEventListener('change', handleAppStateChange))
 	}
@@ -45,31 +47,23 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		subscription?.remove()
 	}
 
-	const handleAppStateChange = useCallback(async (newState: string) => {
-		const isLoggedIn = KVStore.get('isLoggedIn')
+	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
+		console.log('AppStateChange:', newState)
 		const webViewVisible = KVStore.get('webViewVisible')
-		const authVisible = KVStore.get('authVisible')
-
-		const lateTimeOpenMillis = KVStore.get('lastOpenDateMillis')
-		const biometricDiffElapsed = lateTimeOpenMillis
-			? Date.now() - lateTimeOpenMillis >= BIOMETRIC_DIFF_MILLIS
-			: false
-
-		if (newState !== 'active' && !authVisible) {
-			KVStore.set('lastOpenDateMillis', Date.now())
-			KVStore.del('isLoggedIn')
-		}
 
 		const bioVisible =
+			accessToken &&
 			!webViewVisible &&
-			!isLoggedIn &&
 			newState === 'active' &&
-			biometricDiffElapsed
+			biometricDiffElapsed()
 
-		if (bioVisible && accessToken) {
+		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
-			// TODO? dispatch({ type: 'OTP_SAGA', token: t })
 			getBiometricEnabled(email)
+		}
+
+		if (newState === 'active') {
+			KVStore.set('lastOpenDateMillis', Date.now())
 		}
 	}, [])
 
@@ -93,9 +87,9 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		<Tab.Navigator
 			screenListeners={{
 				state: (e) => {
-					// const tabs = e?.data?.state
-					// const tabName = tabs.routes[tabs.index].name
-					// dispatch(setTabRouteName(tabName))
+					const tabs = e?.data?.state
+					const tabName = tabs.routes[tabs.index].name
+					dispatch(setTabRouteName(tabName))
 				},
 			}}
 			screenOptions={({}) => ({
