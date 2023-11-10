@@ -93,9 +93,10 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		<Tab.Navigator
 			screenListeners={{
 				state: (e) => {
-					// const tabs = e?.data?.state
-					// const tabName = tabs.routes[tabs.index].name
-					// dispatch(setTabRouteName(tabName))
+					//TODO: remove after wallet refactor
+					const tabs = e?.data?.state
+					const tabName = tabs.routes[tabs.index].name
+					dispatch(setTabRouteName(tabName))
 				},
 			}}
 			screenOptions={({}) => ({
