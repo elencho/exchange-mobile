@@ -18,6 +18,7 @@ function TransactionHistory() {
 	const isFocused = useIsFocused()
 	const dispatch = useDispatch()
 
+	const [isFilterVisible, setIsFilterVisible] = useState(false)
 	const [activeTab, setActiveTab] = useState<TabName>('Transfer')
 	const isInstantTrade = activeTab === 'Instant trade'
 
@@ -38,12 +39,22 @@ function TransactionHistory() {
 		<Background>
 			<TopRow clear={clearAllFilters} />
 			<TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} />
-			<SearchAndFilter isInstantTrade={isInstantTrade} />
+			<SearchAndFilter
+				isInstantTrade={isInstantTrade}
+				isFilterVisible={isFilterVisible}
+				setIsFilterVisible={setIsFilterVisible}
+			/>
 
 			{isInstantTrade ? (
-				<TradeList isInstantTrade={isInstantTrade} />
+				<TradeList
+					isInstantTrade={isInstantTrade}
+					isFilterVisible={isFilterVisible}
+				/>
 			) : (
-				<TransactionList isInstantTrade={isInstantTrade} />
+				<TransactionList
+					isInstantTrade={isInstantTrade}
+					isFilterVisible={isFilterVisible}
+				/>
 			)}
 
 			{isFocused && (

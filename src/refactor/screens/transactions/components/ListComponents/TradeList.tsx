@@ -14,9 +14,10 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface Props {
 	isInstantTrade: boolean
+	isFilterVisible: boolean
 }
 
-const TradeList: React.FC<Props> = ({ isInstantTrade }) => {
+const TradeList: React.FC<Props> = ({ isInstantTrade, isFilterVisible }) => {
 	const {
 		fetchTrades,
 		refreshTrades,
@@ -27,7 +28,6 @@ const TradeList: React.FC<Props> = ({ isInstantTrade }) => {
 	} = useTrades()
 
 	const {
-		modalState: { transactionFiltersModalVisible },
 		trades: {
 			fiatCodesQuery,
 			statusQuery,
@@ -40,7 +40,7 @@ const TradeList: React.FC<Props> = ({ isInstantTrade }) => {
 
 	useFocusEffect(
 		useCallback(() => {
-			!transactionFiltersModalVisible && fetchTrades()
+			!isFilterVisible && fetchTrades()
 		}, [
 			fiatCodesQuery,
 			statusQuery,
@@ -48,7 +48,7 @@ const TradeList: React.FC<Props> = ({ isInstantTrade }) => {
 			cryptoCodeQuery,
 			fromDateTimeQuery,
 			toDateTimeQuery,
-			transactionFiltersModalVisible,
+			isFilterVisible,
 		])
 	)
 

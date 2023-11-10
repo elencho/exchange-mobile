@@ -13,9 +13,13 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface Props {
 	isInstantTrade: boolean
+	isFilterVisible: boolean
 }
 
-const TransactionList: React.FC<Props> = ({ isInstantTrade }) => {
+const TransactionList: React.FC<Props> = ({
+	isInstantTrade,
+	isFilterVisible,
+}) => {
 	const {
 		fetchTransactions,
 		refreshTransactions,
@@ -35,11 +39,10 @@ const TransactionList: React.FC<Props> = ({ isInstantTrade }) => {
 			toDateTime,
 			txIdOrRecipient,
 		},
-		modalState: { transactionFiltersModalVisible },
 	} = useSelector((state: RootState) => state)
 
 	useEffect(() => {
-		!transactionFiltersModalVisible && fetchTransactions()
+		!isFilterVisible && fetchTransactions()
 	}, [
 		typeFilter,
 		method,
@@ -48,7 +51,7 @@ const TransactionList: React.FC<Props> = ({ isInstantTrade }) => {
 		fromDateTime,
 		toDateTime,
 		txIdOrRecipient,
-		transactionFiltersModalVisible,
+		isFilterVisible,
 	])
 
 	const renderTransaction = ({

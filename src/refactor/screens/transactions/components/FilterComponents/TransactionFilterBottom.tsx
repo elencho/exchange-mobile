@@ -53,7 +53,7 @@ function TransactionFilterBottom({ handleClose, isInstantTrade }: Props) {
 			cryptoTransactions ||
 			fromDateTime ||
 			toDateTime ||
-			selectedMethod?.length > 0 ||
+			selectedMethod !== 'None' ||
 			status?.length > 0
 	)
 	const isFilteredAny = isInstantTrade

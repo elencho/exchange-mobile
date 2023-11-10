@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { StyleSheet, View, Image, Keyboard } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import CryptoModalTrade from '@components/modals/CryptoModalTrade'
@@ -7,10 +7,7 @@ import AppDropdown from '@app/components/AppDropdown'
 import AppInput from '@app/refactor/common/components/input'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
-import {
-	toggleCryptoModal,
-	toggleTransactionFiltersModal,
-} from '@app/refactor/redux/modals/modalsSlice'
+import { toggleCryptoModal } from '@app/refactor/redux/modals/modalsSlice'
 
 import { setCryptoCodeQuery } from '@app/refactor/redux/trade/tradeSlice'
 import {
@@ -24,14 +21,19 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface Props {
 	isInstantTrade: boolean
+	isFilterVisible: boolean
+	setIsFilterVisible: Dispatch<SetStateAction<boolean>>
 }
 
-const SearchAndFilter: React.FC<Props> = ({ isInstantTrade }) => {
+const SearchAndFilter: React.FC<Props> = ({
+	isInstantTrade,
+	isFilterVisible,
+	setIsFilterVisible,
+}) => {
 	const dispatch = useDispatch()
 	const {
 		trades: { cryptoCodeQuery },
 		transactions: { cryptoFilter: cryptoCodeTransactions, txIdOrRecipient },
-		modalState: { transactionFiltersModalVisible },
 	} = useSelector((state: RootState) => state)
 
 	const [searchValue, setSearchValue] = useState('')
@@ -104,15 +106,15 @@ const SearchAndFilter: React.FC<Props> = ({ isInstantTrade }) => {
 			<FilterIcon
 				isInstantTrade={isInstantTrade}
 				onPress={() => {
-					dispatch(toggleTransactionFiltersModal(true))
+					setIsFilterVisible(true)
 					Keyboard.dismiss()
 				}}
 			/>
 			<DownloadIcon isInstantTrade={isInstantTrade} />
 			<CryptoModalTrade isInstantTrade={isInstantTrade} />
 			<TransactionFilter
-				isOpen={transactionFiltersModalVisible}
-				handleClose={() => dispatch(toggleTransactionFiltersModal(false))}
+				isOpen={isFilterVisible}
+				handleClose={() => setIsFilterVisible(false)}
 				isInstantTrade={isInstantTrade}
 			/>
 		</View>
