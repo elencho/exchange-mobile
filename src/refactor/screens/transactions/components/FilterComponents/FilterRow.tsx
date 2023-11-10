@@ -32,13 +32,11 @@ const tradeActionMapping = {
 	SELL: 'ASK',
 }
 
-type Actions = 'BID' | 'ASK'
-
 type Statuses = 'PENDING' | 'FAILED' | 'SUCCESS'
 
 interface Props {
 	array: string[]
-	filterType: any
+	filterType: string
 }
 
 export default function FilterRow({ array = [''], filterType }: Props) {
@@ -60,7 +58,8 @@ export default function FilterRow({ array = [''], filterType }: Props) {
 			} else {
 				dispatch(setFiatCodesQuery([...fiatCodesQuery, fil]))
 			}
-			if (statusQuery.includes(statusMapping[fil][0])) {
+		} else if (filterType === 'statusTrade') {
+			if (statusQuery?.includes(statusMapping[fil][0])) {
 				dispatch(
 					setStatusQuery(
 						[...statusQuery].filter(
@@ -78,10 +77,20 @@ export default function FilterRow({ array = [''], filterType }: Props) {
 				)
 			} else dispatch(setStatusFilter([...transactionStatus, fil]))
 		} else if (filterType === 'type') {
-			if (typeFilter.includes(fil)) {
+			if (typeFilter?.includes(fil)) {
 				dispatch(setTypeFilter([...typeFilter].filter((item) => item !== fil)))
 			} else {
 				dispatch(setTypeFilter([...typeFilter, fil]))
+			}
+		} else if (filterType === 'tradeAction') {
+			if (actionQuery?.includes(tradeActionMapping[fil])) {
+				dispatch(
+					setTradeActionQuery(
+						[...actionQuery].filter((item) => item !== tradeActionMapping[fil])
+					)
+				)
+			} else {
+				dispatch(setTradeActionQuery([...actionQuery, tradeActionMapping[fil]]))
 			}
 		}
 	}
