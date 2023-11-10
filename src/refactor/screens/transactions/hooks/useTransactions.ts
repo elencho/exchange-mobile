@@ -28,11 +28,12 @@ const useTransactions = () => {
 		Staking: ['STAKING'],
 		B2C: ['B2C'],
 		Transfer: ['TRANSFER'],
+		None: [],
 	}
 
 	const queryParams = {
 		type: typeFilter?.length === 1 ? typeFilter[0] : null,
-		methods: methodsMapping[method],
+		methods: methodsMapping[method] ?? [],
 		statuses: status,
 		currency: cryptoFilter && cryptoFilter.length > 0 ? cryptoFilter : null,
 		fromTime: fromDateTime,
@@ -52,7 +53,8 @@ const useTransactions = () => {
 			})
 			const newTransactions = transactionsData?.data ?? []
 			setTransactions([...newTransactions])
-			setTotalTransactionsQty(transactionsData?.paging?.pageCount)
+			transactionsData &&
+				setTotalTransactionsQty(transactionsData?.paging?.pageCount)
 
 			console.log('fetch Transactions')
 		} catch (error) {
@@ -73,7 +75,7 @@ const useTransactions = () => {
 				offset: 0,
 			})
 			const newTransactions = transactionsData?.data
-			setTransactions([...newTransactions])
+			setTransactions([...(newTransactions ?? [])])
 		} catch (error) {
 			console.error('Error refreshing transactions:', error)
 		} finally {

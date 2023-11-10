@@ -110,7 +110,7 @@ export default function TransactionFilter({
 			? dispatch(toggleCryptoModal(true))
 			: dispatch(toggleCurrencyModal(true))
 	const handleMethodsDropdown = () => dispatch(toggleMethodsModal(true))
-	const clearMethodsDropdown = () => dispatch(setMethodFilter([]))
+	const clearMethodsDropdown = () => dispatch(setMethodFilter('None'))
 	const clearCurrencyDropdown = () =>
 		isInstantTrade
 			? dispatch(setCryptoCodeQuery(null))
@@ -123,6 +123,7 @@ export default function TransactionFilter({
 			? setPrevFilterState(initialStateTrade)
 			: setPrevFilterState(initialStateTransactions)
 	}, [isInstantTrade, isOpen])
+	console.log('selectedMethod', selectedMethod)
 
 	const children = (
 		<>
@@ -152,7 +153,9 @@ export default function TransactionFilter({
 
 					<AppDropdown
 						selectedText={
-							selectedCrypto?.length > 0 && seperateCurrencyName(selectedCrypto)
+							selectedCrypto &&
+							selectedCrypto?.length > 0 &&
+							seperateCurrencyName(selectedCrypto)
 						}
 						label={isInstantTrade ? 'Choose Crypto' : 'Choose Currency'}
 						handleClear={clearCurrencyDropdown}
@@ -169,6 +172,12 @@ export default function TransactionFilter({
 						}
 						handlePress={openModal}
 						style={!isInstantTrade && { marginVertical: 24 }}
+						activeLabel={undefined}
+						notClearable={undefined}
+						error={undefined}
+						disabled={undefined}
+						hideArrow={undefined}
+						noTranslate={undefined}
 					/>
 
 					{isInstantTrade && (
@@ -186,7 +195,15 @@ export default function TransactionFilter({
 							label="Choose Methods:"
 							handlePress={handleMethodsDropdown}
 							handleClear={clearMethodsDropdown}
-							selectedText={selectedMethod?.[0] ?? null}
+							selectedText={selectedMethod === 'None' ? null : selectedMethod}
+							style={undefined}
+							icon={undefined}
+							activeLabel={undefined}
+							notClearable={undefined}
+							error={undefined}
+							disabled={undefined}
+							hideArrow={undefined}
+							noTranslate={undefined}
 						/>
 					)}
 
@@ -225,8 +242,12 @@ export default function TransactionFilter({
 			title=""
 			hide={onClosePressed}
 			children={children}
-			// onModalHide={savePrevFilters}
 			fullScreen
+			bottom={undefined}
+			custom={undefined}
+			onModalHide={undefined}
+			onDismiss={undefined}
+			modalStyle={undefined} // onModalHide={savePrevFilters}
 		/>
 	)
 }

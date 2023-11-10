@@ -42,7 +42,7 @@ type TabName = 'Transfer' | 'Instant trade'
 
 type Status = 'Pending' | 'Completed' | 'Failed'
 
-type Methods =
+type Method =
 	| 'ECOMMERCE'
 	| 'WIRE'
 	| 'WALLET'

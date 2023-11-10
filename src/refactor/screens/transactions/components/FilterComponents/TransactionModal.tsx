@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Copy from '@app/assets/images/Copy.svg'
 import Link from '@app/assets/images/Link.svg'
 import AppModal from '@app/components/AppModal'
-import AppText from '@app/components/AppText'
+import AppText from '@components/text'
 import TradeDetails from '@app/components/InstantTrade/TradeDetails'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
@@ -52,31 +52,41 @@ function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 
 	useEffect(() => {
 		if (!currencyList.length) {
-			fetchCurrencies().then((res) => dispatch(setCurrencyList(res)))
+			fetchCurrencies().then((res) => {
+				res && dispatch(setCurrencyList(res as Currency[]))
+			})
 		}
 	}, [])
 
 	const handleTransactionUrl = () => {
-		let pattern
+		let pattern: string | undefined
 		currencyList.forEach((c) => {
 			if (c.code === currency) {
 				pattern =
-					c.providerToUrlPattern[provider].transactionUrlPattern.split('{')[0]
+					c.providerToUrlPattern[
+						provider as keyof typeof c.providerToUrlPattern
+					]?.transactionUrlPattern.split('{')[0]
 			}
 		})
-		Linking.openURL(pattern + transactionInfo)
+		if (pattern && recipient) {
+			Linking.openURL(pattern + recipient)
+		}
 	}
 
 	const handleAddressUrl = () => {
-		let pattern
+		let pattern: string | undefined
 		currencyList.forEach((c) => {
 			if (c.code === currency) {
 				pattern =
-					c.providerToUrlPattern[provider].addressUrlPattern.split('{')[0]
+					c.providerToUrlPattern[
+						provider as keyof typeof c.providerToUrlPattern
+					]?.addressUrlPattern.split('{')[0]
 			}
 		})
 
-		Linking.openURL(pattern + recipient)
+		if (pattern && recipient) {
+			Linking.openURL(pattern + recipient)
+		}
 	}
 
 	const copyId = () => copyToClipboard(transactionInfo)
@@ -101,9 +111,7 @@ function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 								<AppText medium style={styles.white}>
 									identifier (TXID):
 								</AppText>
-								<AppText style={styles.address} subtext>
-									{transactionInfo}
-								</AppText>
+								<AppText style={styles.address}>{transactionInfo}</AppText>
 							</View>
 
 							<View style={styles.vertical} />
@@ -133,12 +141,10 @@ function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 							<>
 								<View style={styles.line} />
 								<View style={{ marginTop: 12 }}>
-									<AppText medium style={styles.white}>
-										Destination
-									</AppText>
+									<AppText style={styles.white}>Destination</AppText>
 
 									<View style={styles.tagRow}>
-										<AppText subtext style={[styles.address, { flex: 1 }]}>
+										<AppText style={[styles.address, { flex: 1 }]}>
 											{recipient}
 										</AppText>
 										<View style={{ flexDirection: 'row' }}>
@@ -169,9 +175,7 @@ function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 								</AppText>
 
 								<View style={styles.tagRow}>
-									<AppText subtext style={[styles.address, { flex: 1 }]}>
-										{tag}
-									</AppText>
+									<AppText style={[styles.address, { flex: 1 }]}>{tag}</AppText>
 									<View style={{ flexDirection: 'row' }}>
 										<View style={styles.vertical} />
 										<View style={styles.row}>
@@ -210,17 +214,14 @@ function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 						</View>
 
 						<View style={styles.middle}>
-							<AppText medium body style={styles.white}>
+							<AppText medium style={styles.white}>
 								{quoteCurrency} - {baseCurrency}
 							</AppText>
 							<AppText style={styles.instantTrade}>Instant trade</AppText>
 						</View>
 
 						<View style={[styles.buy_sell, { backgroundColor }]}>
-							<AppText
-								medium
-								subtext
-								style={styles[action === 'BID' ? 'grey' : 'red']}>
+							<AppText medium style={styles[action === 'BID' ? 'grey' : 'red']}>
 								{buySell}
 							</AppText>
 						</View>
@@ -241,6 +242,11 @@ function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 			visible={transactionDetailsVisible}
 			children={children()}
 			bottom
+			fullScreen={undefined}
+			custom={undefined}
+			onModalHide={undefined}
+			onDismiss={undefined}
+			modalStyle={undefined}
 		/>
 	)
 }

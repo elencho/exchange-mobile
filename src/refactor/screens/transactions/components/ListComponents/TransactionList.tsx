@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import CustomRefreshContol from '@app/components/CustomRefreshContol'
 import List from '@app/assets/images/List.svg'
-import AppText from '@app/components/AppText'
+import AppText from '@components/text'
 import TransactionSkeleton from '@app/components/TransactionHistory/TransactionSkeleton'
 import colors from '@app/constants/colors'
 import Transaction from '@app/refactor/screens/transactions/components/ListComponents/Transaction'
@@ -51,12 +51,17 @@ const TransactionList: React.FC<Props> = ({ isInstantTrade }) => {
 		transactionFiltersModalVisible,
 	])
 
-	const renderTransaction = ({ item, index }) => {
+	const renderTransaction = ({
+		item,
+		index,
+	}: {
+		item: Transaction
+		index: number
+	}) => {
 		return (
 			<Transaction
 				isTransfer
 				transactionData={item}
-				loading={transactionsLoading}
 				isLast={index === totalTransactionsQty - 1}
 			/>
 		)
@@ -65,7 +70,7 @@ const TransactionList: React.FC<Props> = ({ isInstantTrade }) => {
 	const listEmptyContainer = (
 		<View style={styles.empty}>
 			<List />
-			<AppText subtext style={styles.subtext}>
+			<AppText style={styles.subtext}>
 				Transaction history no transactions
 			</AppText>
 		</View>
@@ -93,7 +98,7 @@ const TransactionList: React.FC<Props> = ({ isInstantTrade }) => {
 			contentContainerStyle={{ flexGrow: 1 }}
 			data={transactions}
 			renderItem={renderTransaction}
-			keyExtractor={(item, index) => item.transactionId + index}
+			keyExtractor={(item) => item.id.toString()}
 			onEndReached={handleScrollEnd}
 			onEndReachedThreshold={1}
 			showsVerticalScrollIndicator={false}

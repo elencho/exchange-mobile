@@ -1,7 +1,6 @@
 import { Pressable, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import AppText from '@components/text'
-import PurpleText from '@app/components/PurpleText'
 import colors from '@app/constants/colors'
 import { IS_ANDROID } from '@app/constants/system'
 import {

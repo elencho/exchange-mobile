@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import CryptoModalTrade from '@components/modals/CryptoModalTrade'
 import Search from '@assets/images/Search.svg'
 import AppDropdown from '@app/components/AppDropdown'
-import AppInput from '@app/components/AppInput'
-// import AppInput from '@app/refactor/common/components/input'
+import AppInput from '@app/refactor/common/components/input'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
 import {
@@ -65,7 +64,9 @@ const SearchAndFilter: React.FC<Props> = ({ isInstantTrade }) => {
 					handleClear={clearCurrencyDropdown}
 					style={styles.dropdown}
 					selectedText={
-						cryptoCode?.length > 0 && seperateCurrencyName(cryptoCode)
+						cryptoCode &&
+						cryptoCode?.length > 0 &&
+						seperateCurrencyName(cryptoCode)
 					}
 					label="Choose Crypto"
 					icon={
@@ -79,15 +80,20 @@ const SearchAndFilter: React.FC<Props> = ({ isInstantTrade }) => {
 							/>
 						)
 					}
+					activeLabel={undefined}
+					notClearable={undefined}
+					error={undefined}
+					disabled={undefined}
+					hideArrow={undefined}
+					noTranslate={undefined}
 				/>
 			) : (
 				<AppInput
 					style={styles.searchInput}
 					placeholder="Search by TXID"
-					right={<Search />}
+					rightComponent={<Search />}
 					value={searchValue}
-					isSearch
-					onChangeText={(text) => setSearchValue(text)}
+					onChangeText={(text: string) => setSearchValue(text)}
 					labelBackgroundColor={colors.PRIMARY_BACKGROUND}
 					handleClear={() => {
 						setSearchValue('')

@@ -10,7 +10,7 @@ import { fetchCountriesThunk } from './thunks'
 
 interface CommonState {
 	language: Language
-	currencyList: string[]
+	currencyList: Currency[]
 	countries: Country[]
 
 	// error
@@ -34,7 +34,7 @@ const common = createSlice({
 			KVStore.set('language', action.payload)
 			i18n.switchLanguage(action.payload)
 		},
-		setCurrencyList(state, action: PayloadAction<string[]>) {
+		setCurrencyList(state, action: PayloadAction<Currency[]>) {
 			state.currencyList = action.payload
 		},
 		setGeneralError(state, action: PayloadAction<UiErrorData | undefined>) {

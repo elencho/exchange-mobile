@@ -2,22 +2,24 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface TransactionState {
-	selectedTransactionDetails: {
-		currency?: string
-		provider?: string
-		method?: Methods[]
-		transactionInfo?: string
-		baseCurrency?: string
-		quoteCurrency?: string
-		action?: string
-		recipient?: string
-		tag?: string
-	}
+	// selectedTransactionDetails: {
+	// 	currency?: string
+	// 	provider?: string
+	// 	method?: Method
+	// 	transactionInfo?: string
+	// 	baseCurrency?: string
+	// 	quoteCurrency?: string
+	// 	action?: string
+	// 	recipient?: string
+	// 	tag?: string
+	// }
+
+	selectedTransactionDetails: any
 
 	// Query Params
 	cryptoFilter: null | string
 	limit: number
-	method: Methods[]
+	method: string
 	status: Status[]
 	offset: number
 	fromDateTime: number | null
@@ -29,7 +31,7 @@ export interface TransactionState {
 const initialQueryParams = {
 	cryptoFilter: null,
 	limit: 10,
-	method: [],
+	method: 'None',
 	status: [],
 	offset: 0,
 	fromDateTime: null,
@@ -61,7 +63,7 @@ const transactionSlice = createSlice({
 		setCryptoFilter: (state, action: PayloadAction<null | string>) => {
 			state.cryptoFilter = action.payload
 		},
-		setMethodFilter: (state, action: PayloadAction<Methods[]>) => {
+		setMethodFilter: (state, action: PayloadAction<string>) => {
 			state.method = action.payload
 		},
 		setPreviousTransactionsFilter: (state, action: PayloadAction<{}>) => {

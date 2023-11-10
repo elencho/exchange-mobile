@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Failed from '@assets/images/Status_Failed.svg'
 import Pending from '@assets/images/Status_Pending.svg'
 import Success from '@assets/images/Status_Success.svg'
-import AppText from '@app/components/AppText'
+import AppText from '@components/text'
 import colors from '@app/constants/colors'
 import {
 	setFiatCodesQuery,
@@ -32,7 +32,16 @@ const tradeActionMapping = {
 	SELL: 'ASK',
 }
 
-export default function FilterRow({ array = [''], filterType }) {
+type Actions = 'BID' | 'ASK'
+
+type Statuses = 'PENDING' | 'FAILED' | 'SUCCESS'
+
+interface Props {
+	array: string[]
+	filterType: any
+}
+
+export default function FilterRow({ array = [''], filterType }: Props) {
 	const dispatch = useDispatch()
 	const transactionsState = useSelector(
 		(state: RootState) => state.transactions
@@ -51,16 +60,6 @@ export default function FilterRow({ array = [''], filterType }) {
 			} else {
 				dispatch(setFiatCodesQuery([...fiatCodesQuery, fil]))
 			}
-		} else if (filterType === 'tradeAction') {
-			if (actionQuery.includes(tradeActionMapping[fil])) {
-				dispatch(
-					setTradeActionQuery(
-						[...actionQuery].filter((item) => item !== tradeActionMapping[fil])
-					)
-				)
-			} else
-				dispatch(setTradeActionQuery([...actionQuery, tradeActionMapping[fil]]))
-		} else if (filterType === 'statusTrade') {
 			if (statusQuery.includes(statusMapping[fil][0])) {
 				dispatch(
 					setStatusQuery(
@@ -110,15 +109,16 @@ export default function FilterRow({ array = [''], filterType }) {
 				onPress={() => handleFilter(item)}>
 				{(filterType === 'statusTrade' ||
 					filterType === 'statusTransaction') && (
-					<View style={{ marginRight: 6 }}>{statusIcons[item]}</View>
+					<View style={{ marginRight: 6 }}>
+						{statusIcons[item as Statuses]}
+					</View>
 				)}
 				<AppText
 					style={[
 						styles.text,
 						filterConditional(item) && { color: colors.SECONDARY_PURPLE },
 					]}
-					medium={filterConditional(item)}
-					body>
+					medium={filterConditional(item)}>
 					{item}
 				</AppText>
 			</Pressable>

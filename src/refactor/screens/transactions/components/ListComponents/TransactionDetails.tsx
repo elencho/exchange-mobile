@@ -13,21 +13,21 @@ export default function TransactionDetails({ isInstantTrade }: Props) {
 	const {
 		selectedTransactionDetails: {
 			method,
-			amount,
-			fee,
-			status,
-			date,
-			time,
-			currency,
-			type,
-			totalAmount,
-			providerDisplayName,
-			cumulativeCost,
-			quoteCurrency,
-			size,
-			baseCurrency,
-			price,
 			action,
+			currency,
+			quoteCurrency,
+			baseCurrency,
+			totalAmount,
+			status,
+			fee,
+			time,
+			date,
+			amount,
+			providerDisplayName,
+			type,
+			cumulativeCost,
+			size,
+			price,
 			note,
 			year,
 		},
@@ -38,13 +38,17 @@ export default function TransactionDetails({ isInstantTrade }: Props) {
 		ASK: 'Sell',
 	}
 
-	const LeftText = ({ text }) => (
+	interface Text {
+		text: string
+	}
+
+	const LeftText = ({ text }: Text) => (
 		<View style={styles.leftTextContainer}>
 			<AppText style={styles.leftText}>{text}</AppText>
 		</View>
 	)
 
-	const RightText = ({ text }) => (
+	const RightText = ({ text }: Text) => (
 		<View style={styles.rightTextContainer}>
 			<AppText medium style={styles.rightText}>
 				{text}
@@ -52,11 +56,11 @@ export default function TransactionDetails({ isInstantTrade }: Props) {
 		</View>
 	)
 
-	const Status = ({ statusText }) => {
+	const Status = ({ text }: Text) => {
 		return (
 			<View style={styles.statusContainer}>
 				<View style={{ backgroundColor: statusIcon, width: 4, height: 4 }} />
-				<AppText style={styles.rightText}>{statusText}</AppText>
+				<AppText style={styles.rightText}>{text}</AppText>
 			</View>
 		)
 	}
@@ -95,7 +99,7 @@ export default function TransactionDetails({ isInstantTrade }: Props) {
 			? `${size} ${baseCurrency}`
 			: `${cumulativeCost} ${quoteCurrency}`,
 		`${price} ${quoteCurrency}`,
-		<Status statusText={status} />,
+		<Status text={status} />,
 	]
 
 	const leftTransactions = [
@@ -116,7 +120,7 @@ export default function TransactionDetails({ isInstantTrade }: Props) {
 		amount ? `${amount} ${currency}` : ` ${cumulativeCost} ${quoteCurrency}`,
 		`${fee} ${currency}`,
 		`${totalAmount} ${currency}`,
-		<Status statusText={status} />,
+		<Status text={status} />,
 		method,
 		note ? note : null,
 	]

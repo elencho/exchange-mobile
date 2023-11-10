@@ -81,6 +81,7 @@ const TradeList: React.FC<Props> = ({ isInstantTrade }) => {
 			<TransactionSkeleton
 				length={[1, 2, 3, 4, 5]}
 				isInstantTrade={isInstantTrade}
+				isFooter={undefined}
 			/>
 		</View>
 	) : (
