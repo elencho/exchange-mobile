@@ -1,18 +1,24 @@
 import React, { memo } from 'react'
 import { Pressable, StyleSheet, View, Image } from 'react-native'
 import { useDispatch } from 'react-redux'
-import BuyIcon from '@app/assets/images/Buy'
+import BuyIcon from '@app/assets/images/Buy.svg'
 import DepositlIcon from '@app/assets/images/Deposit.svg'
-import SellIcon from '@app/assets/images/Sell'
+import SellIcon from '@app/assets/images/Sell.svg'
 import WithdrawalIcon from '@app/assets/images/Withdrawal.svg'
-import AppText from '@app/components/AppText'
+import AppText from '@app/refactor/common/components/text'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
 import { monthsShort } from '@app/constants/months'
 import { toggleTransactionDetails } from '@app/refactor/redux/modals/modalsSlice'
 import { setSelectedTransactionDetails } from '@app/refactor/redux/transactions/transactionSlice'
 
-function Transaction({ transactionData, loading, isTransfer, isLast }) {
+interface Props {
+	transactionData: any
+	isTransfer?: boolean
+	isLast: boolean
+}
+
+function Transaction({ transactionData, isTransfer, isLast }: Props) {
 	const dispatch = useDispatch()
 
 	const {
@@ -31,8 +37,10 @@ function Transaction({ transactionData, loading, isTransfer, isLast }) {
 		action,
 	} = transactionData
 
-	let date = new Date(isTransfer ? timestamp : creationTime)
-	const time = date.toTimeString('en-US', { hour12: false }).split(' ')[0]
+	let date: Date | string
+	date = new Date(isTransfer ? timestamp : creationTime)
+	let year
+	const time = date.toTimeString().split(' ')[0]
 	year = date.getFullYear()
 	date = `${date.getDate()} ${monthsShort[date.getMonth()]} `
 
@@ -86,7 +94,7 @@ function Transaction({ transactionData, loading, isTransfer, isLast }) {
 			? '#FADD90'
 			: '#F83974'
 
-	const shortenDestination = (destination) => {
+	const shortenDestination = (destination: string) => {
 		if (!destination) return null
 		return method === 'WALLET_INTERNAL' || method === 'WALLET'
 			? destination?.slice(0, 13) + '...' + destination?.slice(-10)
@@ -115,7 +123,7 @@ function Transaction({ transactionData, loading, isTransfer, isLast }) {
 				{isTransfer && image()}
 
 				<View style={[styles.middle, isTransfer && { marginLeft: 10 }]}>
-					<AppText medium style={styles.primaryText} body>
+					<AppText medium style={styles.primaryText}>
 						{title}
 					</AppText>
 					{!isTransfer && (
@@ -142,9 +150,7 @@ function Transaction({ transactionData, loading, isTransfer, isLast }) {
 						{`${date} /${time}`}
 					</AppText>
 					<View style={styles.statusRow}>
-						<AppText subtext style={styles.status}>
-							{status}
-						</AppText>
+						<AppText style={styles.status}>{status}</AppText>
 						<View style={[{ backgroundColor: statusIcon }, styles.bullet]} />
 					</View>
 				</View>
@@ -157,7 +163,7 @@ function Transaction({ transactionData, loading, isTransfer, isLast }) {
 
 			<View style={styles.row}>
 				<AppText style={styles.secondaryText}>{amountText}</AppText>
-				<AppText medium style={styles.primaryText} body>
+				<AppText medium style={styles.primaryText}>
 					{amountDisplay}
 				</AppText>
 			</View>

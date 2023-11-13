@@ -33,7 +33,7 @@ export const fetchWireDeposit = async (currency, provider) => {
 
 export const generateFile = async (
 	link,
-	setLoading = () => {},
+	setLoading,
 	fileName,
 	type,
 	reportParams

@@ -1,44 +1,47 @@
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { StyleSheet, View, Image, Keyboard } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import CryptoModalTrade from '@components/modals/CryptoModalTrade'
 import Search from '@assets/images/Search.svg'
 import AppDropdown from '@app/components/AppDropdown'
-import AppInput from '@app/components/AppInput'
+import AppInput from '@app/refactor/common/components/input'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
-import {
-	toggleCryptoModal,
-	toggleTransactionFiltersModal,
-} from '@app/refactor/redux/modals/modalsSlice'
+import { toggleCryptoModal } from '@app/refactor/redux/modals/modalsSlice'
 
-import {
-	setCryptoCodeQuery,
-	setTrades,
-} from '@app/refactor/redux/trade/tradeSlice'
+import { setCryptoCodeQuery } from '@app/refactor/redux/trade/tradeSlice'
 import {
 	setTransactionsOffset,
 	setTransactionsSearch,
 } from '@app/refactor/redux/transactions/transactionSlice'
-import DownloadIcon from '@app/refactor/screens/transactions/components/DownloadIcon'
-import FilterIcon from '@app/refactor/screens/transactions/components/FilterIcon'
-import TransactionFilter from '../TransactionFilter'
+import DownloadIcon from '@app/refactor/screens/transactions/components/FilterComponents/DownloadIcon'
+import FilterIcon from '@app/refactor/screens/transactions/components/FilterComponents/FilterIcon'
+import TransactionFilter from '../../transactions_filter'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { FilterState } from '../../transactions_history'
 
-const SearchAndFilter = ({ isInstantTrade }) => {
+interface Props {
+	isInstantTrade: boolean
+	isFilterVisible: FilterState
+	setIsFilterVisible: Dispatch<SetStateAction<FilterState>>
+}
+
+const SearchAndFilter: React.FC<Props> = ({
+	isInstantTrade,
+	isFilterVisible,
+	setIsFilterVisible,
+}) => {
 	const dispatch = useDispatch()
 	const {
 		trades: { cryptoCodeQuery },
-		transactions: { cryptoCodeTransactions, txIdOrRecipient },
-		modalState: { transactionFiltersModalVisible },
+		transactions: { cryptoFilter: cryptoCodeTransactions, txIdOrRecipient },
 	} = useSelector((state: RootState) => state)
 
 	const [searchValue, setSearchValue] = useState('')
 	const openCryptoModal = () => dispatch(toggleCryptoModal(true))
-	const seperateCurrencyName = (currency) => currency.split('(')[0]
+	const seperateCurrencyName = (currency: string) => currency.split('(')[0]
 	const clearCurrencyDropdown = () => {
 		dispatch(setCryptoCodeQuery(null))
-		dispatch(setTrades([]))
 	}
 
 	//debounce
@@ -64,7 +67,9 @@ const SearchAndFilter = ({ isInstantTrade }) => {
 					handleClear={clearCurrencyDropdown}
 					style={styles.dropdown}
 					selectedText={
-						cryptoCode?.length > 0 && seperateCurrencyName(cryptoCode)
+						cryptoCode &&
+						cryptoCode?.length > 0 &&
+						seperateCurrencyName(cryptoCode)
 					}
 					label="Choose Crypto"
 					icon={
@@ -78,15 +83,20 @@ const SearchAndFilter = ({ isInstantTrade }) => {
 							/>
 						)
 					}
+					activeLabel={undefined}
+					notClearable={undefined}
+					error={undefined}
+					disabled={undefined}
+					hideArrow={undefined}
+					noTranslate={undefined}
 				/>
 			) : (
 				<AppInput
 					style={styles.searchInput}
 					placeholder="Search by TXID"
-					right={<Search />}
+					rightComponent={<Search />}
 					value={searchValue}
-					isSearch
-					onChangeText={(text) => setSearchValue(text)}
+					onChangeText={(text: string) => setSearchValue(text)}
 					labelBackgroundColor={colors.PRIMARY_BACKGROUND}
 					handleClear={() => {
 						setSearchValue('')
@@ -97,15 +107,15 @@ const SearchAndFilter = ({ isInstantTrade }) => {
 			<FilterIcon
 				isInstantTrade={isInstantTrade}
 				onPress={() => {
-					dispatch(toggleTransactionFiltersModal(true))
+					setIsFilterVisible({ isVisible: true, shouldFilter: false })
 					Keyboard.dismiss()
 				}}
 			/>
 			<DownloadIcon isInstantTrade={isInstantTrade} />
 			<CryptoModalTrade isInstantTrade={isInstantTrade} />
 			<TransactionFilter
-				isOpen={transactionFiltersModalVisible}
-				handleClose={() => dispatch(toggleTransactionFiltersModal(false))}
+				isOpen={isFilterVisible.isVisible}
+				setIsFilterVisible={setIsFilterVisible}
 				isInstantTrade={isInstantTrade}
 			/>
 		</View>

@@ -1,11 +1,17 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
-import Filter from '@app/assets/images/Filter'
+import Filter from '@app/assets/images/Filter.svg'
 import colors from '@app/constants/colors'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
-export default function FilterIcon({ onPress, isInstantTrade }) {
-	const { trades, transactions } = useSelector((state) => state)
+interface Props {
+	onPress: () => void
+	isInstantTrade: boolean
+}
+
+export default function FilterIcon({ onPress, isInstantTrade }: Props) {
+	const { trades, transactions } = useSelector((state: RootState) => state)
 	const {
 		cryptoFilter: cryptoTransactions,
 		method: selectedMethod,
@@ -36,7 +42,7 @@ export default function FilterIcon({ onPress, isInstantTrade }) {
 			cryptoTransactions ||
 			fromDateTime ||
 			toDateTime ||
-			selectedMethod?.length > 0 ||
+			selectedMethod !== 'None' ||
 			status?.length > 0
 	)
 	const isFilteredAny = isInstantTrade

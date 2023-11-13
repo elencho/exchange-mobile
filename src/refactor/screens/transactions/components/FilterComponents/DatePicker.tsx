@@ -9,27 +9,35 @@ import {
 	setFromTime,
 	setToTime,
 } from '@app/refactor/redux/transactions/transactionSlice'
-import CalendarIcon from '@app/assets/images/Calendar'
-import Close from '@app/assets/images/Close'
+import CalendarIcon from '@app/assets/images/Calendar.svg'
+import Close from '@app/assets/images/Close.svg'
 import colors from '@app/constants/colors'
 import { toggleDatePicker } from '@app/refactor/redux/modals/modalsSlice'
-import AppText from '@app/components/AppText'
+import AppText from '@components/text'
+import { RootState } from '@app/refactor/redux/rootReducer'
+
+interface Props {
+	to?: boolean
+	from?: boolean
+	isInstantTrade: boolean
+}
 
 export default function DatePicker({
 	to = false,
 	from = false,
 	isInstantTrade,
-}) {
+}: Props) {
 	const dispatch = useDispatch()
-
 	const {
-		fromDateTime: fromDateTimeTransactions,
-		toDateTime: toDateTimeTransactions,
-	} = useSelector((state) => state.transactions)
-	const {
-		fromDateTimeQuery: fromDateTimeTrades,
-		toDateTimeQuery: toDateTimeTrades,
-	} = useSelector((state) => state.trades)
+		trades: {
+			fromDateTimeQuery: fromDateTimeTrades,
+			toDateTimeQuery: toDateTimeTrades,
+		},
+		transactions: {
+			fromDateTime: fromDateTimeTransactions,
+			toDateTime: toDateTimeTransactions,
+		},
+	} = useSelector((state: RootState) => state)
 
 	const fromDateTime = isInstantTrade
 		? fromDateTimeTrades
@@ -37,17 +45,18 @@ export default function DatePicker({
 	const toDateTime = isInstantTrade ? toDateTimeTrades : toDateTimeTransactions
 
 	const text = () => {
-		const fromDate = new Date(fromDateTime)
-		const toDate = new Date(toDateTime)
-		const formatDate = (date) =>
+		const fromDate = fromDateTime ? new Date(fromDateTime) : null
+		const toDate = toDateTime ? new Date(toDateTime) : null
+		const formatDate = (date: Date) =>
 			`${date.getDate()} ${
 				date.toDateString().split(' ')[1]
 			}, ${date.getFullYear()}`
 
-		if (from && fromDateTime) return formatDate(fromDate)
-		if (to && toDateTime) return formatDate(toDate)
-		if (from && !fromDateTime) return 'From Date'
-		if (to && !toDateTime) return 'To Date'
+		if (from && fromDate) return formatDate(fromDate)
+		if (to && toDate) return formatDate(toDate)
+		if (from && !fromDate) return 'From Date'
+		if (to && !toDate) return 'To Date'
+		return ''
 	}
 
 	const color = () => {

@@ -8,10 +8,8 @@ interface Schema {
 	// Auth
 	refreshToken: string
 	// Biometric
-	isLoggedIn: boolean
 	bioEnabledEmails: string[]
 	lastOpenDateMillis: number
-	authVisible: boolean
 }
 type Key = keyof Schema
 
@@ -64,20 +62,16 @@ const deserializers: {
 	[key in Key]: (value: string) => Schema[key]
 } = {
 	webViewVisible: deserializeBoolean,
-	isLoggedIn: deserializeBoolean,
 	refreshToken: deserializeString,
 	bioEnabledEmails: deserializeObject,
 	language: (value: string) => (value === 'ka' ? 'ka' : 'en'),
 	lastOpenDateMillis: deserializeNumber,
-	authVisible: deserializeBoolean,
 }
 
 const serializers: { [key in Key]: (value: Schema[key]) => string } = {
 	webViewVisible: serializeBoolean,
-	isLoggedIn: serializeBoolean,
 	refreshToken: serializeString,
 	bioEnabledEmails: serializeObject,
 	language: serializeString,
 	lastOpenDateMillis: serializeNumber,
-	authVisible: serializeBoolean,
 }

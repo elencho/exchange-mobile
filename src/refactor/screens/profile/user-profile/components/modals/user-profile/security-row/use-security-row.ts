@@ -1,76 +1,60 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import jwt_decode from 'jwt-decode'
 import {
 	authenticateAsync,
 	isEnrolledAsync,
 	supportedAuthenticationTypesAsync,
 } from 'expo-local-authentication'
-import React, { useEffect, useState } from 'react'
-import { View, Text } from 'react-native'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	toggleEmailAuthModal,
-	toggleGoogleOtpModal,
-	togglePasswordModal,
-	toggleSmsAuthModal,
-} from '@app/refactor/redux/modals/modalsSlice'
-import {
-	setCurrentSecurityAction,
-	setEmailAuth,
-	setGoogleAuth,
-} from '@app/refactor/redux/profile/actions'
+import { togglePasswordModal } from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { sendOtp } from '@app/utils/userProfileUtils'
+import { canDoBiometric } from '@app/refactor/utils/authUtils'
+import KVStore from '@store/kv'
+import { TokenParams } from '@app/refactor/types/auth/splash'
 
 export const useSecurityRow = ({ text }: { text: string }) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
-	const {
-		profile: { userInfo },
-		auth: { otpType },
-	} = state
+	const { userInfo } = state.profile
+	const { accessToken } = state.auth
+	const { otpType } = state.auth
 
 	const [bioType, setBioType] = useState<string | null>(null)
 	const [isBioOn, setIsBioOn] = useState(false)
 
 	useEffect(() => {
 		handleBiometricIcon()
-		getBiometricEnabled(userInfo?.email)
+
+		if (canDoBiometric(accessToken)) {
+			setIsBioOn(true)
+		}
 	}, [])
 
 	const handlePassword = () => {
 		dispatch(togglePasswordModal(true))
 	}
 
-	const handleAuth = async (type, user) => {
-		const enabledUsers = await AsyncStorage.getItem('BiometricEnabled')
-		const enrolled = await isEnrolledAsync()
-		let newUser = JSON.parse(enabledUsers!)
-		if (!newUser) {
-			newUser = []
-		}
+	const handleAuth = async (userEmail: string) => {
+		const cachedEmails = KVStore.get('bioEnabledEmails') || []
+		const hasFaceOrTouchIdSaved = await isEnrolledAsync()
 
 		if (isBioOn) {
-			const newUsers = newUser.filter((u) => u.user !== user)
-			await AsyncStorage.removeItem('BiometricEnabled')
-			await AsyncStorage.setItem('BiometricEnabled', JSON.stringify(newUsers))
+			const withoutUserMail = cachedEmails.filter((e) => e !== userEmail)
+			KVStore.set('bioEnabledEmails', withoutUserMail)
 			return setIsBioOn(false)
 		}
-
-		if (enrolled) {
+		if (hasFaceOrTouchIdSaved) {
 			const result = await authenticateAsync({
 				promptMessage: 'Log in with fingerprint or faceid',
 				cancelLabel: 'Abort',
 			})
 			if (result.success) {
-				newUser?.push({ user: user, enabled: true, type: type })
-				await AsyncStorage.setItem('BiometricEnabled', JSON.stringify(newUser))
-					.then(async () => {
-						setIsBioOn(true)
-						await AsyncStorage.setItem('isLoggedIn', 'true')
-					})
-					.catch(() => {
-						console.log('‘There was an error saving the product’')
-					})
+				const addedUserMail = cachedEmails
+					.filter((e) => e !== userEmail)
+					.concat([userEmail])
+
+				KVStore.set('bioEnabledEmails', addedUserMail)
+				setIsBioOn(true)
 			}
 		}
 	}
@@ -91,49 +75,38 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 		}
 	}
 
-	// TODO: add user type
-	const getBiometricEnabled = async (user) => {
-		const enabledUsers = await AsyncStorage.getItem('BiometricEnabled')
-		if (enabledUsers) {
-			let parsedUsers = JSON.parse(enabledUsers)
-			const userIndex = parsedUsers?.find(
-				(u) => u?.user === user && u?.enabled === true
-			)
-			if (userIndex) {
-				setIsBioOn(true)
-			}
-		}
-	}
-
 	const handleChange = () => {
-		switch (text) {
-			case 'Google_Auth':
-				if (otpType === 'EMAIL') dispatch(toggleEmailAuthModal(true))
-				if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
-				dispatch(setCurrentSecurityAction('google'))
-				dispatch(setGoogleAuth(true))
-				sendOtp()
-				break
-			case 'E_mail_Auth':
-				if (otpType === 'TOTP') dispatch(toggleGoogleOtpModal(true))
-				if (otpType === 'SMS') {
-					dispatch(toggleSmsAuthModal(true))
-					sendOtp()
-				}
-				dispatch(setCurrentSecurityAction('email'))
-				dispatch(setEmailAuth(true))
+		// TODO: Remove this and use userInfo.email
+		// Right now returns undefined so I take email from accessToken
+		const email = jwt_decode<TokenParams>(accessToken || '')?.email
+		handleAuth(email)
+		// switch (text) {
+		// 	case 'Google_Auth':
+		// 		if (emailAuth) dispatch(toggleEmailAuthModal(true))
+		// 		if (smsAuth) dispatch(toggleSmsAuthModal(true))
+		// 		dispatch(setCurrentSecurityAction('google'))
+		// 		dispatch(setGoogleAuth(true))
+		// 		sendOtp()
+		// 		break
+		// 	case 'E_mail_Auth':
+		// 		if (googleAuth) dispatch(toggleGoogleOtpModal(true))
+		// 		if (smsAuth) {
+		// 			dispatch(toggleSmsAuthModal(true))
+		// 			sendOtp()
+		// 		}
+		// 		dispatch(setCurrentSecurityAction('email'))
+		// 		dispatch(setEmailAuth(true))
 
-				break
-			case 'Biometric':
-				handleAuth(bioType, userInfo?.email)
-			default:
-				break
-		}
+		// 		break
+		// 	case 'Biometric':
+		// 		handleAuth(userInfo?.email)
+		// 	default:
+		// 		break
+		// }
 	}
 	return {
 		handleAuth,
 		handleChange,
-		getBiometricEnabled,
 		handlePassword,
 		userInfo,
 		isBioOn,

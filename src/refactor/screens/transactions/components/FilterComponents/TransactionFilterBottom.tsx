@@ -1,7 +1,6 @@
 import { Pressable, StyleSheet, View, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import AppText from '@components/text'
-import PurpleText from '@app/components/PurpleText'
 import colors from '@app/constants/colors'
 import { IS_ANDROID } from '@app/constants/system'
 import {
@@ -13,8 +12,14 @@ import {
 	setTransactionsOffset,
 } from '@app/refactor/redux/transactions/transactionSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { AppButton } from '@app/refactor/common/components/button'
 
-function TransactionFilterBottom({ handleClose, isInstantTrade }) {
+interface Props {
+	handleClose: () => void
+	isInstantTrade: boolean
+}
+
+function TransactionFilterBottom({ handleClose, isInstantTrade }: Props) {
 	const {
 		transactions: {
 			cryptoFilter: cryptoTransactions,
@@ -48,7 +53,7 @@ function TransactionFilterBottom({ handleClose, isInstantTrade }) {
 			cryptoTransactions ||
 			fromDateTime ||
 			toDateTime ||
-			selectedMethod?.length > 0 ||
+			selectedMethod !== 'None' ||
 			status?.length > 0
 	)
 	const isFilteredAny = isInstantTrade
@@ -79,10 +84,11 @@ function TransactionFilterBottom({ handleClose, isInstantTrade }) {
 				</AppText>
 			</Pressable>
 			<TouchableOpacity style={styles.clear} onPress={clear}>
-				<PurpleText
-					style={styles.purple}
+				<AppButton
 					text="Clear Filters"
 					disabled={!isFilteredAny}
+					style={styles.purple}
+					variant="text"
 				/>
 			</TouchableOpacity>
 		</View>

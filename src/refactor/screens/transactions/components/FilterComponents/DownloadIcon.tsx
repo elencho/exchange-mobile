@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { StyleSheet, Pressable } from 'react-native'
 import { MaterialIndicator } from 'react-native-indicators'
 import { useSelector } from 'react-redux'
-import Download from '@app/assets/images/Download'
+import Download from '@app/assets/images/Download.svg'
 import colors from '@app/constants/colors'
 import { generateFile } from '@app/utils/walletUtils'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface Props {
 	isInstantTrade: boolean
@@ -14,7 +15,7 @@ const DownloadIcon: React.FC<Props> = ({ isInstantTrade }) => {
 	const {
 		transactions: { fromDateTime, toDateTime, cryptoFilter, typeFilter },
 		trades: { fromDateTimeQuery, toDateTimeQuery, cryptoCodeQuery },
-	} = useSelector((state) => state)
+	} = useSelector((state: RootState) => state)
 	const [loading, setLoading] = useState(false)
 
 	const typeFilterReport =
