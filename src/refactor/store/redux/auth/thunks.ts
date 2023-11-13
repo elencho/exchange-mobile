@@ -1,9 +1,7 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import jwt_decode from 'jwt-decode'
 import pkceChallenge from 'react-native-pkce-challenge'
-import KVStore from '@store/kv'
-import { NavProp, Route, Screens } from '@app/refactor/setup/nav/nav'
+import { Route, Screens } from '@app/refactor/setup/nav/nav'
 import { Execution } from '@app/refactor/types/enums'
 import { RootState } from '../../../redux/rootReducer'
 import {
@@ -18,13 +16,11 @@ import {
 	resetPassword,
 	resetPasswordOtp,
 	setNewPassword,
-	fetchCountries,
 	registrationForm,
 	verifyAccount,
 	logout,
 } from './api'
-import { clearTokens, savePkceInfo, setTokens } from './slice'
-import { TokenParams } from '@app/refactor/types/auth/splash'
+import { resetAuth, savePkceInfo, setTokens } from './slice'
 import { navigationRef } from '@app/refactor/setup/nav'
 
 export const startLoginThunk = createAsyncThunk(
@@ -112,7 +108,6 @@ export const resendPasswordCodeThunk = createAsyncThunk(
 		return {
 			timerVisible,
 			callbackUrl: data.callbackUrl,
-			otpType: data.attributes.otpType,
 		}
 	}
 )
@@ -137,7 +132,7 @@ export const resetPasswordConfirmCodeThunk = createAsyncThunk(
 		if (data.execution === Execution.LOGIN_OTP) {
 			navigation.navigate('Login2Fa')
 		}
-		return { callbackUrl: data.callbackUrl }
+		return { callbackUrl: data.callbackUrl, otpType: data.attributes.otpType }
 	}
 )
 
@@ -215,10 +210,7 @@ const codeToTokenThunk = (
 				accessToken: tokenData.access_token,
 			})
 		)
-
-		const otpType = jwt_decode<TokenParams>(tokenData.access_token)?.otpType
 		navigation.navigate('Main')
-		return { otpType }
 	})()
 
 export const setNewPasswordOtpThunk = createAsyncThunk(
@@ -249,11 +241,9 @@ export const startRegistrationThunk = createAsyncThunk(
 		{}
 	) => {
 		const data = await registrationStart()
-
 		if (data?.execution === Execution.EMAIL_VERIFICATION_OTP) {
 			navigation.push('EmailVerification', { from: 'Registration' })
 		}
-
 		return data
 	}
 )
@@ -310,10 +300,16 @@ export const registrationFormThunk = createAsyncThunk(
 	}
 )
 
-export const logoutThunk = createAsyncThunk('logout', async (_, {}) => {
-	const httpStatus = await logout()
-	if (httpStatus === 204) {
-		clearTokens()
-		navigationRef.navigate('Welcome')
+export const logoutThunk = createAsyncThunk(
+	'logout',
+	async (_, { dispatch }) => {
+		const httpStatus = await logout()
+		if (httpStatus === 204) {
+			dispatch(resetAuth())
+			navigationRef.reset({
+				index: 0,
+				routes: [{ name: 'Welcome' }],
+			})
+		}
 	}
-})
+)

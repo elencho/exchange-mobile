@@ -16,7 +16,6 @@ import KVStore from '@app/refactor/store/kv'
 import { i18n } from '@app/refactor/setup/i18n'
 import { setTokens } from '@store/redux/auth/slice'
 import { fetchCountriesThunk } from '@store/redux/common/thunks'
-import { BIOMETRIC_DIFF_MILLIS } from '@app/refactor/common/constants'
 import {
 	biometricDiffElapsed,
 	canDoBiometric,
@@ -46,7 +45,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		}
 
 		// // ! For Testing
-		// navigation.navigate('EmailVerification')
+		// navigation.navigate('SetNewPassword')
 		// return
 
 		if (await updateNeeded()) {
@@ -58,14 +57,12 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		}
 
 		if (canDoBiometric(accessToken)) {
-			console.log('bioEnabled')
 			if (biometricDiffElapsed()) {
 				navigation.navigate('Resume', { fromSplash: true })
 			} else {
 				navigation.navigate('Main')
 			}
 		} else {
-			console.log('bioDisabled')
 			if (!accessToken) {
 				navigation.navigate('Welcome')
 			} else {

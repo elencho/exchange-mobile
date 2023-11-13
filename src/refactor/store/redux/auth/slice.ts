@@ -57,10 +57,9 @@ const auth = createSlice({
 			state.otpType = jwt_decode<TokenParams>(action.payload.accessToken)
 				?.otpType
 		},
-		clearTokens: (state) => {
+		resetAuth: (state) => {
+			state = initialState
 			KVStore.del('refreshToken')
-			state.accessToken = undefined
-			// TODO?: delete otpType
 		},
 	},
 	extraReducers: (builder) => {
@@ -110,7 +109,6 @@ const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(resendPasswordCodeThunk.fulfilled, (state, action) => {
 		state.callbackUrl = action.payload.callbackUrl
 		state.timerVisible = action.payload.timerVisible
-		state.otpType = action.payload.otpType
 	})
 
 	builder.addCase(resetPasswordConfirmCodeThunk.pending, (state) => {
@@ -119,6 +117,7 @@ const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(resetPasswordConfirmCodeThunk.fulfilled, (state, action) => {
 		state.authLoading = false
 		state.callbackUrl = action.payload.callbackUrl
+		state.otpType = action.payload.otpType
 	})
 	builder.addCase(resetPasswordConfirmCodeThunk.rejected, (state) => {
 		state.authLoading = false
@@ -185,5 +184,5 @@ const register = (builder: ActionReducerMapBuilder<AuthState>) => {
 		})
 }
 
-export const { savePkceInfo, setTimer, setTokens, clearTokens } = auth.actions
+export const { savePkceInfo, setTimer, setTokens, resetAuth } = auth.actions
 export default auth.reducer

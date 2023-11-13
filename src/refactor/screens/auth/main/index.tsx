@@ -25,26 +25,20 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const { theme } = useTheme()
 	const isFocused = useIsFocused()
 
-	const [subscription, setSubscription] = useState<NativeEventSubscription>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
 
 	useEffect(() => {
-		onBeforeShow()
+		changeNavigationBarColor(theme.color.backgroundSecondary, true)
+		KVStore.set('lastOpenDateMillis', Date.now())
+		const stateChangeListener = AppState.addEventListener(
+			'change',
+			handleAppStateChange
+		)
 		return () => {
-			onClose()
+			changeNavigationBarColor(theme.color.backgroundPrimary, true)
+			stateChangeListener.remove()
 		}
 	}, [])
-
-	const onBeforeShow = async () => {
-		KVStore.set('lastOpenDateMillis', Date.now())
-		changeNavigationBarColor(theme.color.backgroundSecondary, true)
-		setSubscription(AppState.addEventListener('change', handleAppStateChange))
-	}
-
-	const onClose = async () => {
-		changeNavigationBarColor(theme.color.backgroundPrimary, true)
-		subscription?.remove()
-	}
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
 		const webViewVisible = KVStore.get('webViewVisible')

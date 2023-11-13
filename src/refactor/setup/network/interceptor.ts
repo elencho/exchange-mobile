@@ -8,7 +8,7 @@ import {
 } from '@store/redux/common/slice'
 import { navigationRef } from '@app/refactor/setup/nav'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
-import { clearTokens } from '@store/redux/auth/slice'
+import { resetAuth } from '@store/redux/auth/slice'
 
 axios.interceptors.request.use((request) => {
 	const hasToast: boolean | undefined = request.headers.toast
@@ -74,13 +74,13 @@ const handleError = async (err: any) => {
 		if (response) {
 			return response
 		} else {
-			store.dispatch(clearTokens())
+			store.dispatch(resetAuth())
 			navigationRef.navigate('Welcome')
 		}
 	}
 
 	if (status === 400 && invalidGrant) {
-		store.dispatch(clearTokens())
+		store.dispatch(resetAuth())
 		navigationRef.navigate('Welcome')
 	}
 
