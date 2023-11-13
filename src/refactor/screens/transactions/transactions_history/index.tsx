@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Keyboard } from 'react-native'
 import { useDispatch } from 'react-redux'
 import Background from '@app/refactor/common/components/background'
-import TopRow from '@app/components/TransactionHistory/TopRow'
+import TopRow from '@components/top_row'
 import { clearTransactionFilters } from '@app/refactor/redux/transactions/transactionSlice'
 import { clearTradeFilters } from '@app/refactor/redux/trade/tradeSlice'
 import {

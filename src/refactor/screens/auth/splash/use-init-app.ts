@@ -21,6 +21,7 @@ import {
 	biometricDiffElapsed,
 	canDoBiometric,
 } from '@app/refactor/utils/authUtils'
+import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 
 export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const { theme } = useTheme()
@@ -43,6 +44,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		const refreshToken = tokens?.refresh_token
 		if (refreshToken && accessToken) {
 			dispatch(setTokens({ refreshToken, accessToken }))
+			dispatch(fetchUserInfoThunk())
 		}
 
 		// // ! For Testing
