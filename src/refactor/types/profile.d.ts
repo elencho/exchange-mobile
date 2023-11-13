@@ -81,4 +81,11 @@ type UserInfoType = {
 	verificationToolEnabled: boolean
 	verificationToolStatus: string
 	walletProEnabled: boolean
+	directors?: Directors[]
+}
+
+type Directors = {
+	id: number
+	firstName: string
+	lastName: string
 }

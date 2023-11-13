@@ -22,8 +22,8 @@ interface VerifyAccountResponse {
 type CountriesResponse = Country[]
 
 interface Country {
-	code: string
-	name: string
-	phoneCode: string
+	code?: string
+	name?: string
+	phoneCode?: string
 	banned?: boolean
 }

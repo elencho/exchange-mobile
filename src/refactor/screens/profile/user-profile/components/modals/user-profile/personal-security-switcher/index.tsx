@@ -4,7 +4,12 @@ import { Theme, useTheme } from '@theme/index'
 import AppText from '@components/text'
 import usePersonalSecuritySwitcher from './use-personal-security-switcher'
 
-export default function PersonalSecuritySwitcher(props) {
+interface Props {
+	value: string
+	switcher: (p: string) => void
+}
+
+export default function PersonalSecuritySwitcher(props: Props) {
 	const { value, switcher } = props
 	const { personalSecurity, handleSwitch } = usePersonalSecuritySwitcher(
 		value,

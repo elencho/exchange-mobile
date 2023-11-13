@@ -9,21 +9,28 @@ import { setEmailAuth } from '@app/refactor/redux/profile/actions'
 export const useGoogleOtp = () => {
 	const dispatch = useDispatch()
 	const navigation = useNavigation()
-
 	const state = useSelector((state: RootState) => state)
 	const {
 		modalState: { googleOtpModalVisible },
-		profile: { currentSecurityAction },
+		auth: { otpType },
 	} = state
-
+	const [otpModalVisible, setOtpModalVisible] = useState(false)
 	const [value, setValue] = useState('')
 
-	const email = currentSecurityAction === 'email'
+	const email = otpType === 'EMAIL'
 
 	const hide = () => {
-		dispatch(toggleGoogleOtpModal(false))
+		setOtpModalVisible(false)
 		if (email) dispatch(setEmailAuth(false))
 		setValue('')
 	}
-	return { hide, value, email, googleOtpModalVisible, navigation, setValue }
+	return {
+		hide,
+		value,
+		email,
+		googleOtpModalVisible,
+		navigation,
+		setValue,
+		otpModalVisible,
+	}
 }

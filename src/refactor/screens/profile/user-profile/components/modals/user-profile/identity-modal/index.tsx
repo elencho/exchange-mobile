@@ -27,12 +27,10 @@ export default function IdentityModal() {
 	const Bullet = ({ text, isLast }: { text: number; isLast: boolean }) => {
 		const verificationText = `verification text key ${text}`
 		return (
-			t(verificationText) !== '' && (
-				<View style={{ flexDirection: 'row', marginBottom: isLast ? 0 : 10 }}>
-					<Dot color="#969CBF" style={{ marginTop: 7 }} />
-					<AppText style={{ color: '#969CBF' }}>{verificationText}</AppText>
-				</View>
-			)
+			<View style={{ flexDirection: 'row', marginBottom: isLast ? 0 : 10 }}>
+				<Dot color="#969CBF" style={{ marginTop: 7 }} />
+				<AppText style={{ color: '#969CBF' }}>{verificationText}</AppText>
+			</View>
 		)
 	}
 

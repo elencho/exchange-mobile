@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AppButton } from '@components/button'
 import AppModal from '@components/modal'
 import AppDropdown from '@app/components/AppDropdown'
-import AppInput from '@app/components/AppInput'
+import AppInput from '@components/input'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { COUNTRIES_URL_PNG } from '@app/constants/api'
@@ -31,10 +31,15 @@ export default function PhoneNumberModal() {
 	const number = userInfo?.phoneNumber
 	const country = userInfo?.phoneCountry
 	const borderColor = error && !country ? '#F45E8C' : '#42475D'
-	console.log(chosenCountry.country)
+
 	const children = () => {
 		return (
-			<WithKeyboard padding flexGrow modal>
+			<WithKeyboard
+				padding
+				flexGrow
+				modal
+				scrollUp={false}
+				refreshControl={null}>
 				<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
 					<GeneralError
 						style={styles.error}
@@ -64,7 +69,7 @@ export default function PhoneNumberModal() {
 						onChangeText={(text: string) => handlePhoneNumber(text)}
 						value={phoneNumber}
 						keyboardType="number-pad"
-						error={error && !(phoneNumber?.trim()?.length > 2)}
+						error={(error && !(phoneNumber?.trim()?.length > 2))}
 					/>
 				</TouchableOpacity>
 

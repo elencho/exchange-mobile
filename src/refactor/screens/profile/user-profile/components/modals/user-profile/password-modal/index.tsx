@@ -85,7 +85,12 @@ export default function PasswordModal() {
 
 	const children = () => {
 		return (
-			<WithKeyboard padding flexGrow modal>
+			<WithKeyboard
+				padding
+				flexGrow
+				modal
+				scrollUp={false}
+				refreshControl={null}>
 				<TouchableOpacity activeOpacity={0.99} style={{ flex: 1 }}>
 					<GeneralError
 						style={styles.error}

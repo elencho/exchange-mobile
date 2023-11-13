@@ -31,7 +31,7 @@ const usePersonalInfoModal = () => {
 		name: userInfo?.country,
 		code: userInfo?.countryCode,
 	}
-	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(x)
+	const [chosenCountry, setChosenCountry] = useState<Country>(x)
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
 	const alphabeticRegex = (text: string) => /^[a-zA-Z]+$/.test(text?.trim())

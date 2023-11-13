@@ -40,8 +40,7 @@ export const CompanyInformation = () => {
 			</View>
 
 			{userInfo?.directors?.length ? <View style={styles.line} /> : null}
-			{/* TODO: add type */}
-			{userInfo?.directors?.map((d, i, a) => (
+			{userInfo?.directors?.map((d: Directors, i: number, a: Directors[]) => (
 				<View
 					style={[styles.director, i === a.length - 1 && { marginBottom: 0 }]}
 					key={d.id}>
