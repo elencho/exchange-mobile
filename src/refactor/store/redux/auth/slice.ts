@@ -18,6 +18,7 @@ import {
 	startRegistrationThunk,
 	registrationFormThunk,
 	setNewPasswordOtpThunk,
+	verifyRegistrationThunk,
 } from '@store/redux/auth/thunks'
 import KVStore from '@store/kv'
 
@@ -69,17 +70,6 @@ const auth = createSlice({
 		setPass(builder)
 		login2fa(builder)
 		resetOtp(builder)
-
-		builder.addCase(otpForLoginThunk.pending, (state) => {
-			state.authLoading = true
-		})
-		builder.addCase(otpForLoginThunk.fulfilled, (state, action) => {
-			state.authLoading = false
-			state.callbackUrl = action.payload.callbackUrl
-		})
-		builder.addCase(otpForLoginThunk.rejected, (state) => {
-			state.authLoading = false
-		})
 	},
 })
 
@@ -149,6 +139,16 @@ const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
 		state.authLoading = false
 		state.timerVisible = true
 	})
+
+	builder.addCase(otpForLoginThunk.pending, (state) => {
+		state.authLoading = true
+	})
+	builder.addCase(otpForLoginThunk.fulfilled, (state, action) => {
+		state.callbackUrl = action.payload.callbackUrl
+	})
+	builder.addCase(otpForLoginThunk.rejected, (state) => {
+		state.authLoading = false
+	})
 }
 
 const resetOtp = (builder: ActionReducerMapBuilder<AuthState>) => {
@@ -180,6 +180,14 @@ const register = (builder: ActionReducerMapBuilder<AuthState>) => {
 			state.callbackUrl = action.payload.callbackUrl
 		})
 		.addCase(registrationFormThunk.rejected, (state) => {
+			state.authLoading = false
+		})
+
+	builder
+		.addCase(verifyRegistrationThunk.pending, (state) => {
+			state.authLoading = true
+		})
+		.addCase(verifyRegistrationThunk.rejected, (state) => {
 			state.authLoading = false
 		})
 }

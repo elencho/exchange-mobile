@@ -47,7 +47,7 @@ const TermsCheck = ({ checked, toggleChecked, error }: Props) => {
 const _styles = (_: Theme) =>
 	StyleSheet.create({
 		container: {
-			marginTop: 25,
+			marginTop: 10,
 			marginBottom: 50,
 			justifyContent: 'space-between',
 		},

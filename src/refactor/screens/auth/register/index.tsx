@@ -161,7 +161,7 @@ const Register = ({ navigation }: Props) => {
 						style={styles.input}
 						onFocusOrChange={() => setMailErr(false)}
 						onChangeText={setMail}
-						error={mailErr && (mail ? 'Enter Valid Email' : true)}
+						error={mailErr && (mail.trim() ? 'Enter Valid Email' : true)}
 					/>
 					<AppInput
 						value={pass}

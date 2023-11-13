@@ -44,9 +44,9 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			dispatch(setTokens({ refreshToken, accessToken }))
 		}
 
-		// // ! For Testing
-		// navigation.navigate('SetNewPassword')
-		// return
+		// ! For Testing
+		navigation.navigate('Login')
+		return
 
 		if (await updateNeeded()) {
 			navigation.navigate('UpdateAvailable')
