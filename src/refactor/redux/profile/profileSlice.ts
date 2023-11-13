@@ -1,33 +1,29 @@
 // src/redux/errorsSlice.ts
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { fetchUserInfoThunk } from './profileThunks'
+import {
+	ActionReducerMapBuilder,
+	createSlice,
+	PayloadAction,
+} from '@reduxjs/toolkit'
+import {
+	fetchUserInfoThunk,
+	toggleSubscriptionThunk,
+	updatePasswordThunk,
+	updateUserThunk,
+} from './profileThunks'
 
 export interface ProfileState {
-	// TODO: change any types
-	userInfo: any
-	language: 'En' | 'Ka'
-	googleAuth: boolean
-	emailAuth: boolean
-	smsAuth: boolean
-	currentSecurityAction: any
-	otpChangeToken: any
-	totpSecretObj: any
-	countriesConstant: any
+	userInfo: UserInfoType | null | undefined
+	otpChangeToken: string | null
+	totpSecretObj: string | {}
 	userProfileLoading: boolean
-	verificationInfo: any
+	verificationInfo: {}
 }
 
 const initialState: ProfileState = {
-	userInfo: {},
-	language: 'En',
-	googleAuth: false,
-	emailAuth: false,
-	smsAuth: false,
-	currentSecurityAction: null,
+	userInfo: null,
 	otpChangeToken: null,
 	totpSecretObj: {},
 	userProfileLoading: false,
-	countriesConstant: [],
 	verificationInfo: {},
 }
 
@@ -35,63 +31,86 @@ const profileSlice = createSlice({
 	name: 'profile',
 	initialState,
 	reducers: {
-		setUserInfo(state, action: PayloadAction<any>) {
+		setUserInfo(state, action: PayloadAction<UserInfoType>) {
 			state.userInfo = action.payload
 		},
-		setLanguage(state, action: PayloadAction<'En' | 'Ka'>) {
-			state.language = action.payload
-		},
-		setGoogleAuth(state, action: PayloadAction<boolean>) {
-			state.googleAuth = action.payload
-		},
-		setEmailAuth(state, action: PayloadAction<boolean>) {
-			state.emailAuth = action.payload
-		},
-		setSmsAuth(state, action: PayloadAction<boolean>) {
-			state.smsAuth = action.payload
-		},
-		setCurrentSecurityAction(state, action: PayloadAction<any>) {
-			state.currentSecurityAction = action.payload
-		},
-		setOtpChangeToken(state, action: PayloadAction<any>) {
+		setOtpChangeToken(state, action: PayloadAction<string>) {
 			state.otpChangeToken = action.payload
 		},
-		setTotpSecretObj(state, action: PayloadAction<any>) {
+		setTotpSecretObj(state, action: PayloadAction<string>) {
 			state.totpSecretObj = action.payload
-		},
-
-		setCountriesConstant(state, action: PayloadAction<any>) {
-			state.countriesConstant = action.payload
 		},
 		setVerificationInfo(state, action: PayloadAction<any>) {
 			state.verificationInfo = action.payload
 		},
 	},
 	extraReducers: (builder) => {
-		builder
-			.addCase(fetchUserInfoThunk.pending, (state) => {
-				state.userProfileLoading = true
-			})
-			.addCase(fetchUserInfoThunk.fulfilled, (state, action) => {
-				state.userProfileLoading = false
-				state.userInfo = action.payload
-			})
-			.addCase(fetchUserInfoThunk.rejected, (state) => {
-				state.userProfileLoading = false
-			})
+		fetchUser(builder)
+		updatePassword(builder)
+		updateUser(builder)
+		emailUpdates(builder)
 	},
 })
 
+const fetchUser = (builder: ActionReducerMapBuilder<ProfileState>) => {
+	builder
+		.addCase(fetchUserInfoThunk.pending, (state) => {
+			state.userProfileLoading = true
+		})
+		.addCase(fetchUserInfoThunk.fulfilled, (state, action) => {
+			state.userProfileLoading = false
+			state.userInfo = action.payload
+		})
+		.addCase(fetchUserInfoThunk.rejected, (state) => {
+			state.userProfileLoading = false
+		})
+}
+
+const updateUser = (builder: ActionReducerMapBuilder<ProfileState>) => {
+	builder
+		.addCase(updateUserThunk.pending, (state) => {
+			state.userProfileLoading = true
+		})
+		.addCase(updateUserThunk.fulfilled, (state, action) => {
+			state.userProfileLoading = false
+			state.userInfo = action.payload
+		})
+		.addCase(updateUserThunk.rejected, (state) => {
+			state.userProfileLoading = false
+		})
+}
+
+const updatePassword = (builder: ActionReducerMapBuilder<ProfileState>) => {
+	builder
+		.addCase(updatePasswordThunk.pending, (state) => {
+			state.userProfileLoading = true
+		})
+		.addCase(updatePasswordThunk.fulfilled, (state, action) => {
+			state.userProfileLoading = false
+		})
+		.addCase(updatePasswordThunk.rejected, (state) => {
+			state.userProfileLoading = false
+		})
+}
+
+const emailUpdates = (builder: ActionReducerMapBuilder<ProfileState>) => {
+	builder
+		.addCase(toggleSubscriptionThunk.pending, (state) => {
+			state.userProfileLoading = true
+		})
+		.addCase(toggleSubscriptionThunk.fulfilled, (state, action) => {
+			state.userProfileLoading = false
+			state.userInfo = action.payload
+		})
+		.addCase(toggleSubscriptionThunk.rejected, (state) => {
+			state.userProfileLoading = false
+		})
+}
+
 export const {
 	setUserInfo,
-	setLanguage,
-	setGoogleAuth,
-	setEmailAuth,
-	setSmsAuth,
-	setCurrentSecurityAction,
 	setOtpChangeToken,
 	setTotpSecretObj,
-	setCountriesConstant,
 	setVerificationInfo,
 } = profileSlice.actions
 export default profileSlice.reducer

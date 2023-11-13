@@ -15,8 +15,9 @@ import { TokenParams } from '@app/refactor/types/auth/splash'
 export const useSecurityRow = ({ text }: { text: string }) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
-	const { userInfo, smsAuth, emailAuth, googleAuth } = state.profile
+	const { userInfo } = state.profile
 	const { accessToken } = state.auth
+	const { otpType } = state.auth
 
 	const [bioType, setBioType] = useState<string | null>(null)
 	const [isBioOn, setIsBioOn] = useState(false)
@@ -108,10 +109,8 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 		handleChange,
 		handlePassword,
 		userInfo,
-		smsAuth,
-		emailAuth,
-		googleAuth,
 		isBioOn,
 		bioType,
+		otpType,
 	}
 }

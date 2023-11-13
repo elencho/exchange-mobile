@@ -33,19 +33,22 @@ export default function PersonalInfoModal() {
 		hide,
 		countryModalVisible,
 		setCountryModalVisible,
+		handleFieldChange,
+		localUserInfo,
+		setChosenCountry,
 	} = usePersonalInfoModal()
 	const dispatch = useDispatch()
 
 	const { styles, theme } = useTheme(_styles)
-	const firstName = userInfo?.firstName
-	const lastName = userInfo?.lastName
-	const email = userInfo?.email
-	const country = userInfo?.country
-	const countryCode = userInfo?.countryCode
-	const city = userInfo?.city
-	const postalCode = userInfo?.postalCode
-	const address = userInfo?.address
-	const citizenship = userInfo?.citizenship
+	const firstName = localUserInfo?.firstName
+	const lastName = localUserInfo?.lastName
+	const email = localUserInfo?.email
+	const country = localUserInfo?.country
+	const countryCode = localUserInfo?.countryCode
+	const city = localUserInfo?.city
+	const postalCode = localUserInfo?.postalCode
+	const address = localUserInfo?.address
+	const citizenship = localUserInfo?.citizenship
 
 	const citizenshipError = error && !citizenship
 	const countryError = error && !country
@@ -74,24 +77,30 @@ export default function PersonalInfoModal() {
 					<>
 						<AppInput
 							style={styles.inputContainer}
-							onChangeText={onChangeText}
+							onChangeText={(text: string) =>
+								handleFieldChange('firstName', text)
+							}
 							label="First Name"
-							value={firstName}
+							value={localUserInfo.firstName}
 							error={
-								error && (!alphabeticRegex(firstName) || !firstName?.trim())
+								error &&
+								(!alphabeticRegex(localUserInfo.firstName) ||
+									!localUserInfo.firstName?.trim())
 							}
 							labelBackgroundColor={theme.color.backgroundPrimary}
 						/>
-						{error && firstName?.trim() && !alphabeticRegex(firstName) && (
-							<InputErrorMsg message="Only English letters allowed" />
-						)}
+						{error &&
+							localUserInfo.firstName?.trim() &&
+							!alphabeticRegex(localUserInfo.firstName) && (
+								<InputErrorMsg message="Only English letters allowed" />
+							)}
 						<AppInput
 							style={styles.inputContainer}
 							onChangeText={(lastName) =>
-								dispatch(saveUserInfo({ ...userInfo, lastName }))
+								handleFieldChange('lastName', lastName)
 							}
 							label="Last Name"
-							value={lastName}
+							value={localUserInfo.lastName}
 							error={error && (!alphabeticRegex(lastName) || !lastName?.trim())}
 							labelBackgroundColor={theme.color.backgroundPrimary}
 						/>
@@ -142,7 +151,7 @@ export default function PersonalInfoModal() {
 
 				<AppInput
 					style={styles.inputContainer}
-					onChangeText={(city) => dispatch(saveUserInfo({ ...userInfo, city }))}
+					onChangeText={(city) => handleFieldChange('city', city)}
 					label="City"
 					value={city}
 					error={error && (!alphabeticRegex(city) || !city?.trim())}
@@ -154,7 +163,7 @@ export default function PersonalInfoModal() {
 				<AppInput
 					style={styles.inputContainer}
 					onChangeText={(postalCode) =>
-						dispatch(saveUserInfo({ ...userInfo, postalCode }))
+						handleFieldChange('postalCode', postalCode)
 					}
 					label="Postal Code"
 					value={postalCode}
@@ -164,9 +173,7 @@ export default function PersonalInfoModal() {
 
 				<AppInput
 					style={styles.inputContainer}
-					onChangeText={(address) =>
-						dispatch(saveUserInfo({ ...userInfo, address }))
-					}
+					onChangeText={(address) => handleFieldChange('address', address)}
 					label="Address"
 					value={address}
 					error={error && !address?.trim()}
@@ -187,6 +194,7 @@ export default function PersonalInfoModal() {
 					citizenshipDrop={citizenshipDrop}
 					countryDrop={countryDrop}
 					reset={handleReset}
+					onCountryChosen={setChosenCountry}
 					hide={() => setCountryModalVisible(false)}
 				/>
 			)}

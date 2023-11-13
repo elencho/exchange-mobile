@@ -11,8 +11,17 @@ import PersonalSecuritySwitcher from './components/modals/user-profile/personal-
 import { Personal } from './components/personal'
 import Security from './components/security'
 import { useProfile } from './use-profile'
+import { NavigationProp } from '@react-navigation/native'
 
-export default function UserProfile({ route }) {
+interface Props {
+	route: {
+		params: {
+			fromRegistration: boolean
+		}
+	}
+}
+
+export default function UserProfile(props: Props) {
 	const { theme, styles } = useTheme(_styles)
 	const {
 		logout,
@@ -26,7 +35,7 @@ export default function UserProfile({ route }) {
 		userProfileLoading,
 		bioAvailable,
 		setPersonalSecurity,
-	} = useProfile(route)
+	} = useProfile()
 
 	const renderItem = () => (
 		<>

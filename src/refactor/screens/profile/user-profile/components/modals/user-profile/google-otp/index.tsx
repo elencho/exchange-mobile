@@ -3,11 +3,16 @@ import { StyleSheet, View } from 'react-native'
 import { Theme, useTheme } from '@theme/index'
 import AppModal from '@components/modal'
 import AppText from '@components/text'
-import TwoFaInput from '@app/components/TwoFaInput'
 import { useGoogleOtp } from './use-google-otp'
+import TwoFaInput from '@components/input_2fa'
 
-//TODO: FIX types
-export default function GoogleOtpModal({ withdrawal, whitelist }) {
+interface Props {
+	withdrawal?: boolean
+	whitelist?: boolean
+}
+
+export default function GoogleOtpModal(props: Props) {
+	const { withdrawal, whitelist } = props
 	const { navigation, value, setValue, hide, googleOtpModalVisible } =
 		useGoogleOtp()
 	const { styles, theme } = useTheme()
@@ -20,14 +25,11 @@ export default function GoogleOtpModal({ withdrawal, whitelist }) {
 			<AppText style={styles.secondary}>Enter One Time Password</AppText>
 
 			<View style={styles.codeInput}>
-				{/*TODO: fix this */}
 				<TwoFaInput
-					navigation={navigation}
-					withdrawal={withdrawal}
-					whitelist={whitelist}
 					value={value}
 					cellCount={6}
 					setValue={setValue}
+					navigation={navigation}
 				/>
 			</View>
 		</View>
