@@ -35,7 +35,7 @@ function WithdrawalAddress({ error, right }) {
 		const { address, tag } = w
 		return (
 			<View style={styles.mb10}>
-				<View style={styles.flex}>
+				<View style={styles.addressFlex}>
 					<AppText subtext style={styles.subtext}>
 						Address :
 					</AppText>
@@ -78,7 +78,6 @@ function WithdrawalAddress({ error, right }) {
 					<>
 						<AppInput
 							label="Destination Address"
-							labelBackgroundColor={colors.PRIMARY_BACKGROUND}
 							onChangeText={setAddress}
 							value={w.address}
 							error={error && !w?.address}
@@ -95,7 +94,6 @@ function WithdrawalAddress({ error, right }) {
 			return (
 				<AppInput
 					label="Destination Address"
-					labelBackgroundColor={colors.PRIMARY_BACKGROUND}
 					style={styles.mb22}
 					onChangeText={setAddress}
 					value={w.address}
@@ -142,11 +140,16 @@ const styles = StyleSheet.create({
 		opacity: 0.5,
 	},
 	dropdown: {
-		marginBottom: 12,
+		marginBottom: 22,
 	},
 	flex: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+	},
+	addressFlex: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		marginTop: -10,
 	},
 	subtext: {
 		color: colors.SECONDARY_TEXT,

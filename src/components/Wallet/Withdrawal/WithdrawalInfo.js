@@ -139,7 +139,6 @@ export default function WithdrawalInfo({ error }) {
 				label="Name"
 				style={styles.name}
 				value={`${userInfo.firstName} ${userInfo.lastName}`}
-				labelBackgroundColor={colors.PRIMARY_BACKGROUND}
 				disabled
 			/>
 
@@ -244,10 +243,11 @@ const styles = StyleSheet.create({
 	block: {
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 		paddingVertical: 22,
-		marginBottom: 12,
+		// marginBottom: 12,
 	},
 	dropdownText: {
 		flex: 1,
+		paddingLeft: 8,
 	},
 	dropdown: {
 		borderWidth: 1,
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
 		marginTop: 22,
 	},
 	name: {
-		marginBottom: 30,
+		marginBottom: 22,
 		marginTop: 18,
 	},
 	address: {

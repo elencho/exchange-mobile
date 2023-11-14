@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 22,
 		flexDirection: 'row',
 		alignItems: 'center',
-		marginTop: 11,
+		// marginTop: 11,
 	},
 	labelContainer: {
 		position: 'absolute',
