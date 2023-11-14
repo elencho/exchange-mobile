@@ -19,7 +19,6 @@ import Splash from '@app/refactor/screens/auth/splash/index'
 import UpdateAvailable from '@app/refactor/screens/auth/update'
 import Welcome from '@app/refactor/screens/auth/welcome'
 import UserProfile from '@app/refactor/screens/profile/user-profile'
-import TransactionFilter from '@app/refactor/screens/transactions/TransactionFilter'
 import EmailVerification from '@app/refactor/screens/auth/email_verification'
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
@@ -97,7 +96,6 @@ export default function AppNavigator() {
 					options={{ animation: 'fade' }}
 				/>
 
-				<Stack.Screen name="TransactionFilter" component={TransactionFilter} />
 				<Stack.Screen name="UserProfile" component={UserProfile} />
 				<Stack.Screen name="Balance" component={BalanceScreen} />
 

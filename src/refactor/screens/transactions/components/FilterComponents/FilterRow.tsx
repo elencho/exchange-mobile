@@ -1,10 +1,10 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import Failed from '@assets/images/Status_Failed'
-import Pending from '@assets/images/Status_Pending'
-import Success from '@assets/images/Status_Success'
-import AppText from '@app/components/AppText'
+import Failed from '@assets/images/Status_Failed.svg'
+import Pending from '@assets/images/Status_Pending.svg'
+import Success from '@assets/images/Status_Success.svg'
+import AppText from '@components/text'
 import colors from '@app/constants/colors'
 import {
 	setFiatCodesQuery,
@@ -15,6 +15,7 @@ import {
 	setStatusFilter,
 	setTypeFilter,
 } from '@app/refactor/redux/transactions/transactionSlice'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 const statusIcons = {
 	SUCCESS: <Success />,
@@ -31,10 +32,19 @@ const tradeActionMapping = {
 	SELL: 'ASK',
 }
 
-export default function FilterRow({ array = [''], filterType }) {
+type Statuses = 'PENDING' | 'FAILED' | 'SUCCESS'
+
+interface Props {
+	array: string[]
+	filterType: string
+}
+
+export default function FilterRow({ array = [''], filterType }: Props) {
 	const dispatch = useDispatch()
-	const transactionsState = useSelector((state) => state.transactions)
-	const tradesState = useSelector((state) => state.trades)
+	const transactionsState = useSelector(
+		(state: RootState) => state.transactions
+	)
+	const tradesState = useSelector((state: RootState) => state.trades)
 
 	const { typeFilter, method, status: transactionStatus } = transactionsState
 	const { statusQuery, actionQuery, fiatCodesQuery } = tradesState
@@ -48,17 +58,8 @@ export default function FilterRow({ array = [''], filterType }) {
 			} else {
 				dispatch(setFiatCodesQuery([...fiatCodesQuery, fil]))
 			}
-		} else if (filterType === 'tradeAction') {
-			if (actionQuery.includes(tradeActionMapping[fil])) {
-				dispatch(
-					setTradeActionQuery(
-						[...actionQuery].filter((item) => item !== tradeActionMapping[fil])
-					)
-				)
-			} else
-				dispatch(setTradeActionQuery([...actionQuery, tradeActionMapping[fil]]))
 		} else if (filterType === 'statusTrade') {
-			if (statusQuery.includes(statusMapping[fil][0])) {
+			if (statusQuery?.includes(statusMapping[fil][0])) {
 				dispatch(
 					setStatusQuery(
 						[...statusQuery].filter(
@@ -76,10 +77,20 @@ export default function FilterRow({ array = [''], filterType }) {
 				)
 			} else dispatch(setStatusFilter([...transactionStatus, fil]))
 		} else if (filterType === 'type') {
-			if (typeFilter.includes(fil)) {
+			if (typeFilter?.includes(fil)) {
 				dispatch(setTypeFilter([...typeFilter].filter((item) => item !== fil)))
 			} else {
 				dispatch(setTypeFilter([...typeFilter, fil]))
+			}
+		} else if (filterType === 'tradeAction') {
+			if (actionQuery?.includes(tradeActionMapping[fil])) {
+				dispatch(
+					setTradeActionQuery(
+						[...actionQuery].filter((item) => item !== tradeActionMapping[fil])
+					)
+				)
+			} else {
+				dispatch(setTradeActionQuery([...actionQuery, tradeActionMapping[fil]]))
 			}
 		}
 	}
@@ -107,15 +118,16 @@ export default function FilterRow({ array = [''], filterType }) {
 				onPress={() => handleFilter(item)}>
 				{(filterType === 'statusTrade' ||
 					filterType === 'statusTransaction') && (
-					<View style={{ marginRight: 6 }}>{statusIcons[item]}</View>
+					<View style={{ marginRight: 6 }}>
+						{statusIcons[item as Statuses]}
+					</View>
 				)}
 				<AppText
 					style={[
 						styles.text,
 						filterConditional(item) && { color: colors.SECONDARY_PURPLE },
 					]}
-					medium={filterConditional(item)}
-					body>
+					medium={filterConditional(item)}>
 					{item}
 				</AppText>
 			</Pressable>

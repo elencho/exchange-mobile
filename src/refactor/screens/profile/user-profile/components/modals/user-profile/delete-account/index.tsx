@@ -25,7 +25,7 @@ const DeleteAccount = () => {
 						b: (
 							<AppButton
 								variant="text"
-								text=""
+								text="Deactivate Account"
 								style={styles.textSec}
 								onPress={handlePress}
 							/>
@@ -57,5 +57,6 @@ const _styles = (theme: Theme) =>
 		},
 		textSec: {
 			color: theme.color.redLite,
+			fontSize: 14,
 		},
 	})

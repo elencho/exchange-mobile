@@ -22,6 +22,7 @@ import {
 } from './api'
 import { resetAuth, savePkceInfo, setTokens } from './slice'
 import { navigationRef } from '@app/refactor/setup/nav'
+import { StackActions } from '@react-navigation/native'
 
 export const startLoginThunk = createAsyncThunk(
 	'startLogin',

@@ -5,26 +5,23 @@ import AppSwitcher from '@components/switcher'
 import AppText from '@components/text'
 import Skeleton from '@app/components/Skeleton'
 
-const FirstPart = ({
-	hasSwitch,
-	styles,
-}: {
-	hasSwitch?: boolean
-	styles?: StyleProp<any>
-}) => (
-	<View style={styles.mainWrapper}>
-		<View style={styles.wrapper}>
-			<View style={styles.lastWrapper}>
-				<Skeleton width={34} height={34} style={{ borderRadius: 100 }} />
-				<View style={styles.smallWrapper}>
-					<Skeleton width={58} height={10} style={{ marginBottom: 15 }} />
-					<Skeleton width={120} height={8} />
+const FirstPart = ({ hasSwitch }: { hasSwitch?: boolean }) => {
+	const { styles } = useTheme(_styles)
+	return (
+		<View style={styles.mainWrapper}>
+			<View style={styles.wrapper}>
+				<View style={styles.lastWrapper}>
+					<Skeleton width={34} height={34} style={{ borderRadius: 100 }} />
+					<View style={styles.smallWrapper}>
+						<Skeleton width={58} height={10} style={{ marginBottom: 15 }} />
+						<Skeleton width={120} height={8} />
+					</View>
 				</View>
+				<View>{hasSwitch && <AppSwitcher disabled />}</View>
 			</View>
-			<View>{hasSwitch && <AppSwitcher disabled />}</View>
 		</View>
-	</View>
-)
+	)
+}
 
 const PersonalSecuritySkeleton = () => {
 	const { styles } = useTheme(_styles)

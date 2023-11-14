@@ -1,24 +1,27 @@
+import React from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import React, { useEffect } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
-import colors from '../../constants/colors'
-import AppText from '../AppText'
-import Headline from './Headline'
-import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
+import { useSelector } from 'react-redux'
+import colors from '@app/constants/colors'
+import AppText from '@components/text'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import { Screens } from '@app/refactor/setup/nav/nav'
 
-function TopRow({ clear, headlineLogo, style }) {
-	const navigation = useNavigation()
+interface Props {
+	clear?: () => void
+	headlineLogo?: React.ReactNode
+	style?: any
+}
+
+function TopRow({ clear, headlineLogo, style }: Props) {
+	const navigation =
+		useNavigation<NativeStackNavigationProp<Screens, 'UserProfile'>>()
 	const route = useRoute()
-	const dispatch = useDispatch()
 
-	const userInfo = useSelector((state) => state?.profile?.userInfo)
+	const userInfo = useSelector((state: RootState) => state?.profile?.userInfo)
 	const firstName = userInfo?.firstName
 	const lastName = userInfo?.lastName
-
-	useEffect(() => {
-		if (!firstName) dispatch(fetchUserInfoThunk())
-	}, [firstName])
 
 	const initials = () => {
 		if (firstName && lastName) {
@@ -33,7 +36,7 @@ function TopRow({ clear, headlineLogo, style }) {
 		clear && clear()
 	}
 
-	const getDisplayText = (routeName) => {
+	const getDisplayText = (routeName: string) => {
 		switch (routeName) {
 			case 'Transactions':
 				return 'Transaction History'
@@ -53,7 +56,9 @@ function TopRow({ clear, headlineLogo, style }) {
 	return (
 		<View style={styles.topRow}>
 			<View style={styles.flexRow}>
-				<Headline title={title} style={style} />
+				<AppText variant="headline" style={styles.headline}>
+					{title}
+				</AppText>
 				{headlineLogo ? headlineLogo : null}
 			</View>
 
@@ -108,6 +113,9 @@ const styles = StyleSheet.create({
 		color: colors.PRIMARY_TEXT,
 		fontSize: 15,
 		lineHeight: 19,
+	},
+	headline: {
+		color: colors.PRIMARY_TEXT,
 	},
 	flexRow: {
 		flexDirection: 'row',

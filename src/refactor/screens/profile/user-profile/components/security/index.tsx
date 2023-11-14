@@ -7,6 +7,7 @@ import GoogleOtpModal from '../modals/user-profile/google-otp'
 import PasswordModal from '../modals/user-profile/password-modal'
 import SecurityRow from '../modals/user-profile/security-row'
 import SmsEmailAuthModal from '../modals/user-profile/sms-email-auth-modal'
+import PersonalSecuritySkeleton from '../modals/user-profile/skeletons/PersonalSecuritySkeleton'
 
 export default function Security({ loading, bioAvailable }) {
 	const { styles } = useTheme(_styles)

@@ -6,9 +6,9 @@ import {
 	toggleLanguageModal,
 	togglePhoneNumberModal,
 } from '@app/refactor/redux/modals/modalsSlice'
-import { toggleEmailSubscription } from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { UserStatus } from '@app/refactor/types/enums'
+import { toggleSubscriptionThunk } from '@app/refactor/redux/profile/profileThunks'
 
 export const usePersonal = () => {
 	const dispatch = useDispatch()
@@ -33,6 +33,7 @@ export const usePersonal = () => {
 	}
 	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(x)
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
+	const [languageModalVisible, setLanguageModalVisible] = useState(false)
 
 	const hideError = () =>
 		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
@@ -84,7 +85,8 @@ export const usePersonal = () => {
 		dispatch({ type: 'TOGGLE_IDENTITY_MODAL' })
 	}
 
-	const handleEmailUpdates = (value) => dispatch(toggleEmailSubscription(value))
+	const handleEmailUpdates = (value: ToggleSubscriptionData) =>
+		dispatch(toggleSubscriptionThunk(value))
 
 	return {
 		userStatus: { verified, unverified, pending, corporate, eligibleToVerify },

@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 const useTrades = () => {
-	const [trades, setTrades] = useState([])
+	const [trades, setTrades] = useState<Trade[]>([])
 	const [tradesLoading, setTradesLoading] = useState(false)
 	const [totalTradesQty, setTotalTradesQty] = useState(0)
 

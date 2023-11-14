@@ -6,8 +6,18 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { clearFilters } from '@app/refactor/redux/transactions/actions'
 import { checkIsCompatable } from '@app/utils/biometricsAuth'
 import { logoutThunk } from '@store/redux/auth/thunks'
+import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native'
 
-export const useProfile = ({ route }) => {
+interface Props {
+	route: {
+		params: {
+			fromRegistration: boolean
+		}
+	}
+}
+
+export const useProfile = () => {
+	
 	const navigation = useNavigation()
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state.profile)
@@ -18,7 +28,7 @@ export const useProfile = ({ route }) => {
 	const { userInfo, userProfileLoading } = state
 
 	useEffect(() => {
-		dispatch(fetchUserInfoThunk(route?.params?.fromRegistration))
+		dispatch(fetchUserInfoThunk())
 		checkCompitable()
 		const timer = setTimeout(() => {
 			setShowRefreshControl(true)
@@ -55,7 +65,7 @@ export const useProfile = ({ route }) => {
 		dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' })
 	}
 
-	const onScroll = (event) => {
+	const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
 		const { y } = event.nativeEvent.contentOffset
 		if (y > 0) {
 			setShowRefreshControl(true)

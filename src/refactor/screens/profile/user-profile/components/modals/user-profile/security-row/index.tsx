@@ -17,26 +17,18 @@ interface SecurityRowProps {
 }
 export default function SecurityRow(props: SecurityRowProps) {
 	const { text } = props
-	const {
-		userInfo,
-		smsAuth,
-		emailAuth,
-		googleAuth,
-		isBioOn,
-		bioType,
-		handlePassword,
-		handleChange,
-	} = useSecurityRow(text)
+	const { userInfo, otpType, isBioOn, bioType, handlePassword, handleChange } =
+		useSecurityRow({ text })
 	const { styles } = useTheme(_styles)
 
 	const disabledCond = () => {
 		switch (text) {
 			case 'Google_Auth':
-				return googleAuth
+				return otpType === 'TOTP'
 			case 'E_mail_Auth':
-				return emailAuth
+				return otpType === 'EMAIL'
 			case 'SMS_Auth':
-				return smsAuth
+				return otpType === 'SMS'
 			default:
 				break
 		}
@@ -83,11 +75,11 @@ export default function SecurityRow(props: SecurityRowProps) {
 	const switchCond = () => {
 		switch (text) {
 			case 'E_mail_Auth':
-				return emailAuth
+				return otpType === 'EMAIL'
 			case 'SMS_Auth':
-				return smsAuth
+				return otpType === 'SMS'
 			case 'Google_Auth':
-				return googleAuth
+				return otpType === 'TOTP'
 			case 'Biometric':
 				return isBioOn
 			default:
@@ -97,7 +89,7 @@ export default function SecurityRow(props: SecurityRowProps) {
 
 	const renderCond = () => {
 		if (text === 'SMS_Auth') {
-			return smsAuth
+			return otpType === 'SMS'
 		}
 		return true
 	}

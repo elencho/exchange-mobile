@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useIsFocused } from '@react-navigation/native'
 import jwt_decode from 'jwt-decode'
-import React, { memo, useCallback, useEffect, useState } from 'react'
-import { AppState, AppStateStatus, NativeEventSubscription } from 'react-native'
+import React, { memo, useCallback, useEffect } from 'react'
+import { AppState, AppStateStatus } from 'react-native'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch, useSelector } from 'react-redux'
-import TransactionHistory from '@app/refactor/screens/transactions/TransactionHistory'
+import TransactionHistory from '@app/refactor/screens/transactions/transactions_history'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { useTheme } from '@theme/index'
 import BottomTabs from '@app/components/BottomTabs'
@@ -20,7 +20,7 @@ import { biometricDiffElapsed } from '@app/refactor/utils/authUtils'
 
 const Tab = createBottomTabNavigator()
 
-const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
+const Main = ({ navigation }: ScreenProp<'Main'>) => {
 	const dispatch = useDispatch()
 	const { theme } = useTheme()
 	const isFocused = useIsFocused()
@@ -34,6 +34,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			'change',
 			handleAppStateChange
 		)
+
 		return () => {
 			changeNavigationBarColor(theme.color.backgroundPrimary, true)
 			stateChangeListener.remove()
@@ -49,7 +50,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			newState === 'active' &&
 			biometricDiffElapsed()
 
-		if (bioVisible && accessToken) {
+		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
 		}

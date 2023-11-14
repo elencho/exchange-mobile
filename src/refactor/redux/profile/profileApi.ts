@@ -13,6 +13,7 @@ import {
 	UNSUBSCRIBE_EMAIL_URL,
 	UPDATE_PASSWORD,
 	UPDATE_PHONE_NUMBER,
+	UPDATE_USER_DATA,
 	USER_INFO_URL,
 } from '@app/constants/api'
 
@@ -43,8 +44,22 @@ export const refreshToken = async (config?: any) => {
 }
 
 export const fetchUserInfoUtil = async () => {
-	const data = await axios.get(USER_INFO_URL)
+	const data = await axios.get<UserInfoType>(USER_INFO_URL)
 	if (data) return data.data
+}
+
+export const updateUserData = async (data: UserInfoType) => {
+	const userInfo = await axios<UserInfoType>({
+		method: 'POST',
+		url: UPDATE_USER_DATA,
+		data,
+		headers: {
+			requestName: 'updateUserData',
+			toast: false,
+			'Content-Type': 'multipart/form-data',
+		},
+	})
+	return userInfo
 }
 
 export const updatePasswordUtil = async (
@@ -94,6 +109,7 @@ export const subscribeMail = async () => {
 	})
 	return data
 }
+
 export const unsubscribeMail = async () => {
 	const data = await axios({
 		method: 'POST',

@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AppButton } from '@components/button'
 import AppModal from '@components/modal'
 import AppDropdown from '@app/components/AppDropdown'
-import AppInput from '@app/components/AppInput'
+import AppInput from '@components/input'
 import GeneralError from '@app/components/GeneralError'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { COUNTRIES_URL_PNG } from '@app/constants/api'
@@ -13,11 +13,7 @@ import CountriesModal from '@app/refactor/common/modals/countries'
 
 export default function PhoneNumberModal() {
 	const {
-		userInfoVariable,
 		userInfo,
-		countries,
-		timerVisible,
-		isProfileUpdating,
 		phoneNumberModalVisible,
 		hide,
 		onModalHide,
@@ -30,6 +26,7 @@ export default function PhoneNumberModal() {
 		chosenCountry,
 		countryModalVisible,
 		setCountryModalVisible,
+		phoneNumber,
 	} = usePhoneNumberModal()
 	const number = userInfo?.phoneNumber
 	const country = userInfo?.phoneCountry
@@ -37,7 +34,12 @@ export default function PhoneNumberModal() {
 
 	const children = () => {
 		return (
-			<WithKeyboard padding flexGrow modal>
+			<WithKeyboard
+				padding
+				flexGrow
+				modal
+				scrollUp={false}
+				refreshControl={null}>
 				<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
 					<GeneralError
 						style={styles.error}
@@ -46,7 +48,7 @@ export default function PhoneNumberModal() {
 
 					<AppDropdown
 						handlePress={handleCountries}
-						selectedText={phoneCountry()}
+						selectedText={chosenCountry.name}
 						notClearable
 						withLabel
 						label="Choose code"
@@ -54,7 +56,7 @@ export default function PhoneNumberModal() {
 						icon={
 							<Image
 								source={{
-									uri: `${COUNTRIES_URL_PNG}/${country}.png`,
+									uri: `${COUNTRIES_URL_PNG}/${chosenCountry.code}.png`,
 								}}
 								style={styles.image}
 							/>
@@ -65,9 +67,9 @@ export default function PhoneNumberModal() {
 						style={styles.inputContainer}
 						label="Phone Number"
 						onChangeText={(text: string) => handlePhoneNumber(text)}
-						value={number}
+						value={phoneNumber}
 						keyboardType="number-pad"
-						error={error && !(number?.trim()?.length > 2)}
+						error={(error && !(phoneNumber?.trim()?.length > 2))}
 					/>
 				</TouchableOpacity>
 
@@ -76,7 +78,7 @@ export default function PhoneNumberModal() {
 					text="Save"
 					onPress={handleSave}
 					style={styles.button}
-					loading={isProfileUpdating}
+					// loading={isProfileUpdating}
 				/>
 
 				{countryModalVisible && (

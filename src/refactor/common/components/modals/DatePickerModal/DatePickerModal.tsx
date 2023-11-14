@@ -9,12 +9,19 @@ import { months } from '@app/constants/months'
 import { toggleDatePicker } from '@app/refactor/redux/modals/modalsSlice'
 import CalendarDay from './CalendarDay'
 import CalendarHeader from './CalendarHeader'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 const theme = {
 	calendarBackground: colors.PRIMARY_BACKGROUND,
 }
 
-export default function DatePickerModal({ from, to, isInstantTrade }) {
+interface Props {
+	from?: boolean
+	to?: boolean
+	isInstantTrade: boolean
+}
+
+export default function DatePickerModal({ from, to, isInstantTrade }: Props) {
 	const dispatch = useDispatch()
 	const {
 		modalState: { datePickerVisible },
@@ -26,7 +33,7 @@ export default function DatePickerModal({ from, to, isInstantTrade }) {
 			fromDateTimeQuery: fromDateTimeTrades,
 			toDateTimeQuery: toDateTimeTrades,
 		},
-	} = useSelector((state) => state)
+	} = useSelector((state: RootState) => state)
 
 	const fromDateTime = isInstantTrade
 		? fromDateTimeTrades

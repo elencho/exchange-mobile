@@ -8,7 +8,7 @@ import {
 	Pressable,
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import TransactionDetails from '@app/refactor/screens/transactions/components/TransactionDetails'
+import TransactionDetails from '@app/refactor/screens/transactions/components/ListComponents/TransactionDetails'
 import Copy from '../../assets/images/Copy.svg'
 import Link from '../../assets/images/Link.svg'
 import { COINS_URL_PNG } from '../../constants/api'

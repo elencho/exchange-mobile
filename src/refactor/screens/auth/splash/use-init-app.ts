@@ -1,8 +1,9 @@
 import VersionCheck from 'react-native-version-check'
 import { useFocusEffect } from '@react-navigation/native'
+import jwt_decode from 'jwt-decode'
 import { useCallback } from 'react'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTheme } from '@theme/index'
 import {
 	checkReadiness,
@@ -20,6 +21,7 @@ import {
 	biometricDiffElapsed,
 	canDoBiometric,
 } from '@app/refactor/utils/authUtils'
+import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 
 export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const { theme } = useTheme()
@@ -42,11 +44,12 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		const refreshToken = tokens?.refresh_token
 		if (refreshToken && accessToken) {
 			dispatch(setTokens({ refreshToken, accessToken }))
+			dispatch(fetchUserInfoThunk())
 		}
 
-		// ! For Testing
-		navigation.navigate('Login')
-		return
+		// // ! For Testing
+		// navigation.navigate('Login')
+		// return
 
 		if (await updateNeeded()) {
 			navigation.navigate('UpdateAvailable')
@@ -66,7 +69,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			if (!accessToken) {
 				navigation.navigate('Welcome')
 			} else {
-				navigation.navigate('Main') // Main
+				navigation.navigate('Main')
 			}
 		}
 	}
