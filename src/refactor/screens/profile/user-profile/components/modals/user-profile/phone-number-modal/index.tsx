@@ -69,7 +69,7 @@ export default function PhoneNumberModal() {
 						onChangeText={(text: string) => handlePhoneNumber(text)}
 						value={phoneNumber}
 						keyboardType="number-pad"
-						error={(error && !(phoneNumber?.trim()?.length > 2))}
+						error={error && !(phoneNumber?.trim()?.length > 2)}
 					/>
 				</TouchableOpacity>
 

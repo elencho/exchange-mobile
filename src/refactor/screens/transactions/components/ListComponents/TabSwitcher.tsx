@@ -10,7 +10,11 @@ interface Props {
 	setIsFilterVisible: Dispatch<SetStateAction<FilterState>>
 }
 
-const TabSwitcher: React.FC<Props> = ({ activeTab, setActiveTab,setIsFilterVisible }) => {
+const TabSwitcher: React.FC<Props> = ({
+	activeTab,
+	setActiveTab,
+	setIsFilterVisible,
+}) => {
 	const tabTextStyle = (tabName: TabName) => {
 		return {
 			color: activeTab === tabName ? colors.PRIMARY_TEXT : '#969CBF',
@@ -24,7 +28,7 @@ const TabSwitcher: React.FC<Props> = ({ activeTab, setActiveTab,setIsFilterVisib
 	}
 
 	const handlePress = (tabName: TabName) => {
-		setActiveTab(tabName )
+		setActiveTab(tabName)
 		setIsFilterVisible({ isVisible: false, shouldFilter: true })
 	}
 
