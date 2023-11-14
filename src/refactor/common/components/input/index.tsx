@@ -177,6 +177,8 @@ const _style = (theme: Theme) =>
 		errorText: {
 			color: theme.color.error,
 			marginTop: 8,
+			position: 'absolute',
+			bottom: -20,
 		},
 		input: {
 			fontFamily: theme.font.medium,
