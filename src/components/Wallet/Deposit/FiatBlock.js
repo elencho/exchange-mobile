@@ -104,7 +104,7 @@ export default function FiatBlock() {
 
 	const marginTop = () => {
 		if (network === 'ECOMMERCE') {
-			return !depositProvider ? -35 : -12
+			return !depositProvider ? -35 : -0
 		} else {
 			return -10
 		}
@@ -138,7 +138,6 @@ export default function FiatBlock() {
 						keyboardType="numeric"
 						maxLength={maxLength}
 						label="Enter Amount"
-						labelBackgroundColor={colors.PRIMARY_BACKGROUND}
 						editable={editable}
 						disabled={!editable}
 						error={error && !validateAmount(depositAmount)}
