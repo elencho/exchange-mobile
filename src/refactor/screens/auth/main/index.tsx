@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useIsFocused } from '@react-navigation/native'
 import jwt_decode from 'jwt-decode'
-import React, { memo, useCallback, useEffect, useState } from 'react'
-import { AppState, AppStateStatus, NativeEventSubscription } from 'react-native'
+import React, { memo, useCallback, useEffect } from 'react'
+import { AppState, AppStateStatus } from 'react-native'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch, useSelector } from 'react-redux'
 import TransactionHistory from '@app/refactor/screens/transactions/transactions_history'
@@ -20,31 +20,26 @@ import { biometricDiffElapsed } from '@app/refactor/utils/authUtils'
 
 const Tab = createBottomTabNavigator()
 
-const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
+const Main = ({ navigation }: ScreenProp<'Main'>) => {
 	const dispatch = useDispatch()
 	const { theme } = useTheme()
 	const isFocused = useIsFocused()
 
-	const [subscription, setSubscription] = useState<NativeEventSubscription>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
 
 	useEffect(() => {
-		onBeforeShow()
+		changeNavigationBarColor(theme.color.backgroundSecondary, true)
+		KVStore.set('lastOpenDateMillis', Date.now())
+		const stateChangeListener = AppState.addEventListener(
+			'change',
+			handleAppStateChange
+		)
+
 		return () => {
-			onClose()
+			changeNavigationBarColor(theme.color.backgroundPrimary, true)
+			stateChangeListener.remove()
 		}
 	}, [])
-
-	const onBeforeShow = async () => {
-		KVStore.set('lastOpenDateMillis', Date.now())
-		changeNavigationBarColor(theme.color.backgroundSecondary, true)
-		setSubscription(AppState.addEventListener('change', handleAppStateChange))
-	}
-
-	const onClose = async () => {
-		changeNavigationBarColor(theme.color.backgroundPrimary, true)
-		subscription?.remove()
-	}
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
 		const webViewVisible = KVStore.get('webViewVisible')
@@ -55,7 +50,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			newState === 'active' &&
 			biometricDiffElapsed()
 
-		if (bioVisible && accessToken) {
+		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
 		}

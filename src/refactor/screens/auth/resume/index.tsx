@@ -1,4 +1,3 @@
-import PurpleText from '@app/components/PurpleText'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
@@ -16,7 +15,6 @@ import {
 	cancelAuthenticate,
 	supportedAuthenticationTypesAsync,
 } from 'expo-local-authentication'
-import KVStore from '@store/kv'
 import { System } from '@app/refactor/common/util'
 import { t } from 'i18next'
 import { logoutThunk } from '@store/redux/auth/thunks'
@@ -69,9 +67,8 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 
 		const authResult = await authenticateAsync({
 			promptMessage: t('Log in with fingerprint or faceid').toString(),
-			cancelLabel: t('Abort').toString(),
+			cancelLabel: t('Abort') || '',
 		})
-
 		if (authResult?.success) {
 			if (fromSplash && !resumed && !maintenanceInProgress && !version) {
 				navigation.replace('Main')
