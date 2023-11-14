@@ -1,5 +1,4 @@
 import axios from 'axios'
-import KVStore from '@store/kv'
 import store from '@app/refactor/redux/store'
 import {
 	setAppToast,
@@ -9,6 +8,7 @@ import {
 import { navigationRef } from '@app/refactor/setup/nav'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
 import { resetAuth } from '@store/redux/auth/slice'
+import SecureKV from '@store/kv/secure'
 
 axios.interceptors.request.use((request) => {
 	const hasToast: boolean | undefined = request.headers.toast
@@ -50,8 +50,6 @@ axios.interceptors.response.use(
 )
 
 const handleError = async (err: any) => {
-	// if (!err.response) return
-
 	const state = store.getState()
 
 	const status: number = err.response.status
@@ -66,11 +64,9 @@ const handleError = async (err: any) => {
 		}
 	}
 
+	const oldRefresh = await SecureKV.get('refreshToken')
 	if (status === 401) {
-		const response = await retryUnauthorizedCall(
-			err.config,
-			KVStore.get('refreshToken')
-		)
+		const response = await retryUnauthorizedCall(err.config, oldRefresh)
 		if (response) {
 			return response
 		} else {

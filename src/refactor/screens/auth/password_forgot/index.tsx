@@ -130,7 +130,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 				<GeneralError />
 				<AppInput
 					labelBackgroundColor={theme.color.backgroundPrimary}
-					style={styles.input}
+					style={styles.inputMail}
 					label="Enter Email"
 					value={mail}
 					onChangeText={setMail}
@@ -140,7 +140,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 				/>
 				<AppInput
 					labelBackgroundColor={theme.color.backgroundPrimary}
-					style={styles.input}
+					style={styles.inputPass}
 					label="Enter Code"
 					value={code}
 					onChangeText={setCode}
@@ -176,8 +176,12 @@ const _styles = (theme: Theme) =>
 			width: '100%',
 			marginTop: 84,
 		},
-
-		input: {
+		inputMail: {
+			width: '100%',
+			marginBottom: 16,
+			marginVertical: 6,
+		},
+		inputPass: {
 			width: '100%',
 			marginVertical: 6,
 		},

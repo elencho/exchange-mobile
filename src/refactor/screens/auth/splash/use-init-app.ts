@@ -1,9 +1,8 @@
 import VersionCheck from 'react-native-version-check'
 import { useFocusEffect } from '@react-navigation/native'
-import jwt_decode from 'jwt-decode'
 import { useCallback } from 'react'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useTheme } from '@theme/index'
 import {
 	checkReadiness,
@@ -13,7 +12,6 @@ import {
 import { currentVersion } from '@app/constants/system'
 import { System } from '@app/refactor/common/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import KVStore from '@app/refactor/store/kv'
 import { i18n } from '@app/refactor/setup/i18n'
 import { setTokens } from '@store/redux/auth/slice'
 import { fetchCountriesThunk } from '@store/redux/common/thunks'
@@ -22,6 +20,8 @@ import {
 	canDoBiometric,
 } from '@app/refactor/utils/authUtils'
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
+import KV from '@store/kv/regular'
+import SecureKV from '@store/kv/secure'
 
 export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	const { theme } = useTheme()
@@ -34,12 +34,14 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 	)
 
 	const startApp = async () => {
-		KVStore.del('webViewVisible')
+		KV.del('webViewVisible')
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
 		dispatch(fetchCountriesThunk())
 		await fetchLexicon()
 
-		const tokens = await getTokensOnInit(KVStore.get('refreshToken'))
+		const oldRefresh = await SecureKV.get('refreshToken')
+		const tokens = await getTokensOnInit(oldRefresh)
+
 		const accessToken = tokens?.access_token
 		const refreshToken = tokens?.refresh_token
 		if (refreshToken && accessToken) {
@@ -48,7 +50,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		}
 
 		// // ! For Testing
-		// navigation.navigate('Login')
+		// navigation.navigate('SetNewPassword')
 		// return
 
 		if (await updateNeeded()) {
@@ -59,7 +61,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			return
 		}
 
-		if (canDoBiometric(accessToken)) {
+		if (await canDoBiometric(accessToken)) {
 			if (biometricDiffElapsed()) {
 				navigation.navigate('Resume', { fromSplash: true })
 			} else {
@@ -109,7 +111,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 					})
 					i18n.addResources(languages[i], translations)
 				}
-				i18n.switchLanguage(KVStore.get('language') || 'en')
+				i18n.switchLanguage(KV.get('language') || 'en')
 			})
 			.catch((err) => console.log(err))
 	}

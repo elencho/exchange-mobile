@@ -12,6 +12,7 @@ import { setNewPasswordOtpThunk } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { Screens } from '@app/refactor/setup/nav/nav'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { setAuthLoading } from '@store/redux/auth/slice'
 
 interface Props extends NativeStackScreenProps<Screens, 'SetNewPassword'> {}
 
@@ -26,6 +27,10 @@ export default function SetNewPassword({ navigation }: Props) {
 	const [confirmPassError, setConfirmPassError] = useState(false)
 
 	const { authLoading } = useSelector((state: RootState) => state.auth)
+
+	useEffect(() => {
+		dispatch(setAuthLoading(false))
+	}, [])
 
 	const goToLogin = () => navigation.navigate('Login')
 

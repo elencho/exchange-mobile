@@ -9,8 +9,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { togglePasswordModal } from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { canDoBiometric } from '@app/refactor/utils/authUtils'
-import KVStore from '@store/kv'
 import { TokenParams } from '@app/refactor/types/auth/splash'
+import SecureKV from '@store/kv/secure'
 
 export const useSecurityRow = ({ text }: { text: string }) => {
 	const dispatch = useDispatch()
@@ -24,9 +24,11 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 	useEffect(() => {
 		handleBiometricIcon()
 
-		if (canDoBiometric(accessToken)) {
-			setIsBioOn(true)
-		}
+		canDoBiometric(accessToken).then((can) => {
+			if (can) {
+				setIsBioOn(true)
+			}
+		})
 	}, [])
 
 	const handlePassword = () => {
@@ -34,12 +36,12 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 	}
 
 	const handleAuth = async (userEmail: string) => {
-		const cachedEmails = KVStore.get('bioEnabledEmails') || []
+		const cachedEmails = (await SecureKV.get('bioEnabledEmails')) || []
 		const hasFaceOrTouchIdSaved = await isEnrolledAsync()
 
 		if (isBioOn) {
 			const withoutUserMail = cachedEmails.filter((e) => e !== userEmail)
-			KVStore.set('bioEnabledEmails', withoutUserMail)
+			SecureKV.set('bioEnabledEmails', withoutUserMail)
 			return setIsBioOn(false)
 		}
 		if (hasFaceOrTouchIdSaved) {
@@ -52,7 +54,7 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 					.filter((e) => e !== userEmail)
 					.concat([userEmail])
 
-				KVStore.set('bioEnabledEmails', addedUserMail)
+				SecureKV.set('bioEnabledEmails', addedUserMail)
 				setIsBioOn(true)
 			}
 		}
