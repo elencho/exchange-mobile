@@ -5,13 +5,15 @@ import colors from '../../constants/colors'
 import { openCompanyInfoModal } from '../../redux/modals/actions'
 import AppText from '../AppText'
 import PurpleText from '../PurpleText'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function CompanyInformation() {
 	const dispatch = useDispatch()
 	const userInfo = useSelector((state) => state.profile.userInfo)
 
 	const openModal = () => {
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		dispatch(saveGeneralError(null))
+
 		dispatch(
 			openCompanyInfoModal(
 				'go web company header',

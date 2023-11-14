@@ -26,6 +26,7 @@ import ChooseNetworkDropdown from '../../Wallet/Deposit/ChooseNetworkDropdown'
 import ChooseNetworkModal from '../../Wallet/Deposit/ChooseNetworkModal'
 import WithKeyboard from '../../WithKeyboard'
 import QrScannerToggler from '../Withdrawal/widgets/QrScannerToggler'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function AddEditWhitelistModal({ add, edit }) {
 	const dispatch = useDispatch()
@@ -46,7 +47,9 @@ export default function AddEditWhitelistModal({ add, edit }) {
 	const hide = () => {
 		if (add) dispatch(toggleAddWhitelistModal(false))
 		if (edit) dispatch(toggleEditWhitelistModal(false))
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+
+		//TODO: remove after wallet refactor
+		dispatch(saveGeneralError(null))
 	}
 
 	const [error, setError] = useState(false)
