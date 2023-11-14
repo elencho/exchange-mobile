@@ -14,7 +14,7 @@ import InfoMark from '../components/InstantTrade/InfoMark'
 import InfoModal from '../components/InstantTrade/InfoModal'
 import TradeBlock from '../components/InstantTrade/TradeBlock'
 import TradeBlockSkeleton from '../components/InstantTrade/TradeBlockSkeleton'
-import TopRow from '../components/TransactionHistory/TopRow'
+import TopRow from '../refactor/common/components/top_row'
 import colors from '../constants/colors'
 import { toggleChooseCardModal } from '../redux/modals/actions'
 import {

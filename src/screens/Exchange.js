@@ -4,7 +4,7 @@ import { StyleSheet, View, Linking, Pressable } from 'react-native'
 import Rocket from '../assets/images/Rocket'
 import AppText from '../components/AppText'
 import Background from '../components/Background'
-import TopRow from '../components/TransactionHistory/TopRow'
+import TopRow from '../refactor/common/components/top_row'
 import colors from '../constants/colors'
 import { exchangeUtil } from '../utils/userProfileUtils'
 
