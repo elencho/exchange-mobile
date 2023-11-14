@@ -74,7 +74,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 
 		if (authResult?.success) {
 			if (fromSplash && !resumed && !maintenanceInProgress && !version) {
-				navigation.navigate('Main')
+				navigation.replace('Main')
 			} else {
 				navigation.goBack()
 			}
