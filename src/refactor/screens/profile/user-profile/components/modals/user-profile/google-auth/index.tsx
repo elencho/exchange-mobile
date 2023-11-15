@@ -14,7 +14,8 @@ import { IS_IOS } from '@app/constants/system'
 import { errorHappenedHere } from '@app/utils/appUtils'
 import { useGoogleAuth } from './use-google-auth'
 
-export default function GoogleAuthModal() {
+export default function GoogleAuthModal(props) {
+	const { googleAuthModalVisible, toggleGoogleAuthModal } = props
 	const {
 		googleAuthLoading,
 		isKeyEmpty,
@@ -26,8 +27,7 @@ export default function GoogleAuthModal() {
 		key,
 		hide,
 		onModalHide,
-		googleAuthModalVisible,
-	} = useGoogleAuth()
+	} = useGoogleAuth(props)
 
 	const { theme, styles } = useTheme(_styles)
 	const right = (

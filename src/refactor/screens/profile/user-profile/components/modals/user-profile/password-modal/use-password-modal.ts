@@ -1,16 +1,18 @@
-import React, { useEffect, useReducer, useState } from 'react'
-import { View, Text } from 'react-native'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { togglePasswordModal } from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { updatePasswordUtil } from '@app/refactor/redux/profile/profileApi'
 import { updatePasswordThunk } from '@app/refactor/redux/profile/profileThunks'
 
-export const usePasswordModal = () => {
+export const usePasswordModal = ({
+	togglePasswordModal,
+	passwordModalVisible,
+}: {
+	togglePasswordModal: (v: boolean) => void
+	passwordModalVisible: boolean
+}) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		modalState: { passwordModalVisible },
 		profile: { userProfileLoading },
 	} = state
 
@@ -41,11 +43,10 @@ export const usePasswordModal = () => {
 	}, [passwordModalVisible, passwordState])
 
 	const hide = () => {
-		dispatch(togglePasswordModal(false))
+		togglePasswordModal(false)
 	}
 
 	const handleSave = () => {
-		console.log(currentPassword, newPassword, repeatPassword)
 		const condition =
 			error ||
 			!currentPassword ||
@@ -115,7 +116,6 @@ export const usePasswordModal = () => {
 		handleSave,
 		hide,
 		passwordState,
-		passwordModalVisible,
 		error,
 		newPassCond,
 		handleFieldChange,

@@ -89,3 +89,10 @@ type Directors = {
 	firstName: string
 	lastName: string
 }
+
+interface EditProfileParams {
+	country?: string
+	city?: string
+	postalCode?: string
+	address?: string
+}

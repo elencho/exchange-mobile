@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import useCopyToClipboard from '@app/utils/copyToClipboard'
 
-export const useGoogleAuth = () => {
+export const useGoogleAuth = (props) => {
+	const { googleAuthModalVisible, toggleGoogleAuthModal } = props
+
 	const { copyToClipboard } = useCopyToClipboard()
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		modalState: { googleAuthModalVisible },
 		profile: { totpSecretObj },
 	} = state
 
@@ -33,8 +34,8 @@ export const useGoogleAuth = () => {
 	}
 
 	const hide = () => {
-		dispatch(toggleGoogleAuthModal(false))
-		dispatch(setGoogleAuth(false))
+		// toggleGoogleAuthModal(false)
+		// dispatch(setGoogleAuth(false))
 	}
 
 	const onModalHide = () => {

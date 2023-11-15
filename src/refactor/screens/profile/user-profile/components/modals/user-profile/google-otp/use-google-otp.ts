@@ -6,21 +6,20 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { toggleGoogleOtpModal } from '@app/refactor/redux/modals/modalsSlice'
 import { setEmailAuth } from '@app/refactor/redux/profile/actions'
 
-export const useGoogleOtp = () => {
+export const useGoogleOtp = (props) => {
+	const { toggleGoogleOtpModalVisible, googleOtpModalVisible } = props
 	const dispatch = useDispatch()
 	const navigation = useNavigation()
 	const state = useSelector((state: RootState) => state)
 	const {
-		modalState: { googleOtpModalVisible },
 		auth: { otpType },
 	} = state
-	const [otpModalVisible, setOtpModalVisible] = useState(false)
 	const [value, setValue] = useState('')
 
 	const email = otpType === 'EMAIL'
 
 	const hide = () => {
-		setOtpModalVisible(false)
+		toggleGoogleOtpModalVisible(false)
 		if (email) dispatch(setEmailAuth(false))
 		setValue('')
 	}
@@ -31,6 +30,5 @@ export const useGoogleOtp = () => {
 		googleOtpModalVisible,
 		navigation,
 		setValue,
-		otpModalVisible,
 	}
 }
