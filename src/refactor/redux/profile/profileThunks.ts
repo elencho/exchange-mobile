@@ -7,10 +7,6 @@ import {
 	updateUserData,
 } from './profileApi'
 import { getOtpChangeToken } from '@app/utils/userProfileUtils'
-import {
-	toggleGoogleAuthModal,
-	toggleGoogleOtpModal,
-} from '../modals/modalsSlice'
 
 export const fetchUserInfoThunk = createAsyncThunk(
 	'profile/fetchUserInfo',
@@ -84,47 +80,15 @@ export const toggleSubscriptionThunk = createAsyncThunk(
 
 export const credentialsForGoogleThunk = createAsyncThunk(
 	'profile/credentialsForGoogle',
-	async ({ OTP, openModal }: CredentialsForEmailData, { dispatch }) => {
+	async ({ OTP, openModal, otpType }: CredentialsForEmailData) => {
 		try {
-			const response = await getOtpChangeToken(OTP, 'TOTP')
+			const response = await getOtpChangeToken(OTP, otpType)
 
 			if (response) {
-				// dispatch(setOtpChangeToken(response.changeOTPToken))
-				// dispatch(setTotpSecretObj(response.totp))
-				// Replace 'delay' with your actual delay function
-				// await new Promise((resolve) => setTimeout(resolve, 1000))
-				dispatch(toggleGoogleOtpModal(true))
+				openModal(true)
 			}
 
 			return response
-		} catch (error) {
-			throw error
-		}
-	}
-)
-
-export const activateGoogleThunk = createAsyncThunk(
-	'profile/activateGoogle',
-	async (data: ActivateGoogleData, { dispatch, getState }) => {
-		try {
-			const { OTP } = data
-
-			const otpChangeToken = getState().profile.tOTPChangeParams.changeOTPToken
-			const totpSecret = getState().profile.tOTPChangeParams.totp.totpSecret
-
-			const status = await activateGoogleOtp(otpChangeToken, OTP, totpSecret)
-
-			if (status && status >= 200 && status < 300) {
-				await fetchUserInfoUtil()
-
-				// if (typeof token === 'string') {
-				// 	await dispatch({ type: 'OTP_SAGA', token })
-				// }
-			}
-			// TODO: this loading
-			// setGoogleAuthLoading(false)
-
-			return status
 		} catch (error) {
 			throw error
 		}

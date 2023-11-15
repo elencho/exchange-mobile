@@ -21,7 +21,7 @@ export default function GoogleAuthModal(props) {
 		isKeyEmpty,
 		enable,
 		handleStore,
-		totpSecretObj,
+		tOTPChangeParams,
 		handleCopy,
 		handleKey,
 		key,
@@ -75,7 +75,7 @@ export default function GoogleAuthModal(props) {
 
 			<View style={styles.block}>
 				<AppText variant="m" style={styles.subtext}>
-					{totpSecretObj.totpSecretEncoded}
+					{tOTPChangeParams?.totp?.totpSecretEncoded}
 				</AppText>
 				<View style={styles.line} />
 				<TouchableOpacity onPress={handleCopy}>

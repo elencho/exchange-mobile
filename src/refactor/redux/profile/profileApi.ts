@@ -17,8 +17,6 @@ import {
 	USER_INFO_URL,
 } from '@app/constants/api'
 
-// TODO: ADD RETURN TYPES
-
 const refreshTokenService = async (refresh_token: string | null) => {
 	const data = await axios({
 		method: 'POST',
@@ -113,7 +111,7 @@ export const sendEmailOtp = async () => {
 }
 
 export const getOtpChangeToken = async (OTP: string, newOTPType: string) => {
-	const data = await axios({
+	const data = await axios<tOTPChangeParams>({
 		method: 'GET',
 		headers: { OTP, requestName: 'getOtpChangeToken', toast: false },
 		url: OTP_CHANGE_TOKEN,
