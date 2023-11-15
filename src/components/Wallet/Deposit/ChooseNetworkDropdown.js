@@ -27,9 +27,9 @@ export default function ChooseNetworkDropdown({
 		modals: { addWhitelistModalVisble },
 	} = state
 	// const uri = `${ICONS_URL_PNG}/${network}.png`;
-	// const fiat = cur?.type === 'FIAT';
 
 	const cur = currentBalanceObj
+	const isFiat = cur?.type === 'FIAT'
 
 	const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods'
 
@@ -72,7 +72,7 @@ export default function ChooseNetworkDropdown({
 					styles.secondary,
 					disabled && { color: 'rgba(105, 111, 142, 0.4)' },
 				]}>
-				({network === 'MAINNET' ? code : network})
+				{isFiat ? '' : network === 'MAINNET' ? `(${code})` : `(${network})`}
 			</AppText>
 		</AppText>
 	)
