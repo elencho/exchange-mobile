@@ -1,10 +1,8 @@
 import axios from 'axios'
 import KVStore from '@store/kv'
 import store from '@app/refactor/redux/store'
-import oldStore from '@app/redux/store'
 import {
 	setAppToast,
-	setGeneralError,
 	setLastRequestUiErrorType,
 } from '@store/redux/common/slice'
 import { navigationRef } from '@app/refactor/setup/nav'

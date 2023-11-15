@@ -29,20 +29,6 @@ function AppModal({
 	const webViewVisible = useSelector((state) => state?.modals?.webViewVisible)
 	const { isBiometricScreenOpened } = useSelector((state) => state.common)
 
-	// const deviceHeight =
-	//   Platform.OS === 'ios'
-	//     ? Dimensions.get('window').height
-	//     : require('react-native-extra-dimensions-android').get(
-	//         'REAL_WINDOW_HEIGHT'
-	//       );
-
-	//ERROR DISSAPEARING
-
-	// useEffect(() => {
-	// 	console.log('zdes')
-	// 	!visible && saveGeneralError(null)
-	// }, [visible])
-
 	return (
 		webViewVisible && (
 			<Modal

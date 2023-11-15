@@ -28,11 +28,6 @@ function GeneralError({ style = {}, show = true }) {
 	const message = generalError?.errorMessage
 	const errorMessage = !params ? message : `${message} params{${params.join()}}`
 
-	console.log({
-		generalError,
-		errorMessage,
-	})
-
 	return (
 		<>
 			{generalError && show ? (
