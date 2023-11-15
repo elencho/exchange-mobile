@@ -23,7 +23,7 @@ interface SecurityRowProps {
 	text: ImageKey
 	togglePasswordModal?: (v: boolean) => void
 	toggleEmailAuthModalVisible?: (v: boolean) => void
-	toggleGoogleOtpModalVisible: (v: boolean) => void
+	toggleGoogleOtpModalVisible?: (v: boolean) => void
 }
 export default function SecurityRow(props: SecurityRowProps) {
 	const {
@@ -31,6 +31,7 @@ export default function SecurityRow(props: SecurityRowProps) {
 		togglePasswordModal,
 		toggleEmailAuthModalVisible,
 		toggleGoogleOtpModalVisible,
+		toggleGoogleAuthModal,
 	} = props
 	const {
 		userInfo,

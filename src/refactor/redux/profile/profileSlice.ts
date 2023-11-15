@@ -1,4 +1,3 @@
-// src/redux/errorsSlice.ts
 import {
 	ActionReducerMapBuilder,
 	createSlice,
@@ -14,22 +13,18 @@ import {
 
 export interface ProfileState {
 	userInfo: UserInfoType | null | undefined
-	otpChangeToken: string | null
-	totpSecretObj: string | {}
 	userProfileLoading: boolean
 	verificationInfo: {}
 	currentSecurityAction: OTP | null
-	tOTPChangeParams: {}
+	tOTPChangeParams: tOTPChangeParams | null
 }
 
 const initialState: ProfileState = {
 	userInfo: null,
-	otpChangeToken: null,
-	totpSecretObj: {},
 	userProfileLoading: false,
 	verificationInfo: {},
 	currentSecurityAction: null,
-	tOTPChangeParams: {},
+	tOTPChangeParams: null,
 }
 
 const profileSlice = createSlice({
@@ -38,12 +33,6 @@ const profileSlice = createSlice({
 	reducers: {
 		setUserInfo(state, action: PayloadAction<UserInfoType>) {
 			state.userInfo = action.payload
-		},
-		setOtpChangeToken(state, action: PayloadAction<string>) {
-			state.otpChangeToken = action.payload
-		},
-		setTotpSecretObj(state, action: PayloadAction<string>) {
-			state.totpSecretObj = action.payload
 		},
 		setVerificationInfo(state, action: PayloadAction<any>) {
 			state.verificationInfo = action.payload
@@ -130,11 +119,6 @@ const googleOtpChange = (builder: ActionReducerMapBuilder<ProfileState>) => {
 		})
 }
 
-export const {
-	setUserInfo,
-	setOtpChangeToken,
-	setTotpSecretObj,
-	setVerificationInfo,
-	setCurrentSecurityAction,
-} = profileSlice.actions
+export const { setUserInfo, setVerificationInfo, setCurrentSecurityAction } =
+	profileSlice.actions
 export default profileSlice.reducer

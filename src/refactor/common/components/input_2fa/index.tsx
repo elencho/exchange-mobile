@@ -29,6 +29,7 @@ interface Props {
 	navigation: NativeStackNavigationProp<Screens>
 	from?: Route
 	indicatorStyle?: StyleProp<ViewStyle>
+	onFill?: () => void
 }
 
 const TwoFaInput = ({
@@ -38,22 +39,21 @@ const TwoFaInput = ({
 	navigation,
 	from,
 	indicatorStyle,
+	onFill = () => {},
 }: Props) => {
 	const dispatch = useDispatch()
+	// TODO: add loading from param
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
-	const currentOtpType = useSelector(
-		(state: RootState) => state.profile.currentSecurityAction
-	)
 
+	// TODO: add onSuccess instead of if elses
 	useEffect(() => {
 		if (value.length === cellCount) {
 			if (from === 'Login2Fa') {
 				dispatch(otpForLoginThunk({ otp: value, from: 'Login2Fa', navigation }))
 			} else if (from === 'Registration') {
 				dispatch(verifyRegistrationThunk({ otp: value, navigation }))
-			} else if (currentOtpType === 'TOTP') {
-				dispatch(credentialsForGoogleThunk(value))
 			}
+			onFill()
 		}
 	}, [value])
 

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	setEmailAuth,
-	setGoogleAuth,
-	setSmsAuth,
-} from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import {
+	credentialsForGoogleThunk,
+	fetchUserInfoThunk,
+} from '@app/refactor/redux/profile/profileThunks'
+import { activateEmailOtp } from '@app/refactor/redux/profile/profileApi'
 
 interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
@@ -13,6 +13,7 @@ interface SmsEmailAuthModalProps {
 	toggleEmailAuthModal: (v: boolean) => void
 	emailAuthModalVisible: boolean
 	smsAuthModalVisible: boolean
+	toggleGoogleAuthModal: (v: boolean) => void
 }
 
 export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
@@ -22,41 +23,31 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		toggleSmsAuthModal,
 		smsAuthModalVisible,
 		emailAuthModalVisible,
+		toggleGoogleAuthModal,
 	} = props
 	const dispatch = useDispatch()
 
 	const state = useSelector((state: RootState) => state)
 	const {
-		profile: { currentSecurityAction, timerVisible },
+		profile: { currentSecurityAction, tOTPChangeParams },
 	} = state
 
-	// const action =
-	// 	type === 'SMS' ? toggleSmsAuthModal(false) : toggleEmailAuthModal(false)
 	const visible = emailAuthModalVisible
 	const cellCount = type === 'SMS' ? 4 : 6
-	// const email = currentSecurityAction === 'email'
-	// const google = currentSecurityAction === 'google'
 
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(30)
 	const [otpLoading, setOtpLoading] = useState(false)
 
 	const reset = () => {
-		dispatch({ type: 'TOGGLE_TIMER', timerVisible: false })
 		setSeconds(30)
 		return
 	}
 
-	// useEffect(() => {
-	// 	if (emailAuthModalVisible || smsAuthModalVisible) {
-	// 		dispatch({ type: 'TOGGLE_TIMER', timerVisible: true })
-	// 	}
-	// }, [emailAuthModalVisible, smsAuthModalVisible])
-
 	useEffect(() => {
 		if (emailAuthModalVisible || smsAuthModalVisible) {
-			if (!seconds || !timerVisible) reset()
-			if (seconds && timerVisible) {
+			if (!seconds) reset()
+			if (seconds) {
 				setTimeout(() => {
 					setSeconds(seconds - 1)
 				}, 1000)
@@ -64,31 +55,41 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		} else {
 			reset()
 		}
-	}, [seconds, timerVisible])
+	}, [seconds])
 
 	const handleHide = () => {
 		setSeconds(30)
 		setValue('')
-		// if (value.length === cellCount && email) {
-		// 	dispatch(setSmsAuth(false))
-		// 	dispatch(setGoogleAuth(false))
-		// }
 	}
-
-	const hide = () => {
-		if (type === 'SMS') {
-			toggleSmsAuthModal(false)
-		} else {
-			toggleEmailAuthModal(false)
+	const handleFill = () => {
+		if (currentSecurityAction === 'TOTP') {
+			dispatch(
+				credentialsForGoogleThunk({
+					OTP: value,
+					openModal: toggleGoogleAuthModal,
+					otpType: 'TOTP',
+				})
+			)
+		} else if (currentSecurityAction === 'EMAIL') {
+			activateEmailOtp(tOTPChangeParams.changeOTPToken!, value)
+			hide()
+			dispatch(fetchUserInfoThunk())
 		}
 	}
 
-	const resend = () =>
-		dispatch({
-			type: 'RESEND_SAGA',
-			smsEmailAuth: true,
-			setOtpLoading,
-		})
+	const hide = () => {
+		toggleSmsAuthModal(false)
+		toggleEmailAuthModal(false)
+	}
+
+	const resend = () => {
+		// TODO: ADD LOGIC
+		// dispatch({
+		// 	type: 'RESEND_SAGA',
+		// 	smsEmailAuth: true,
+		// 	setOtpLoading,
+		// })
+	}
 
 	return {
 		resend,
@@ -96,17 +97,14 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		handleHide,
 		otpLoading,
 		reset,
-		// google,
-		// email,
 		cellCount,
 		visible,
-		// action,
 		smsAuthModalVisible,
 		emailAuthModalVisible,
 		currentSecurityAction,
-		timerVisible,
 		seconds,
 		setValue,
 		value,
+		handleFill,
 	}
 }

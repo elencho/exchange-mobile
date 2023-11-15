@@ -10,7 +10,11 @@ import SmsEmailAuthModal from '../modals/user-profile/sms-email-auth-modal'
 import PersonalSecuritySkeleton from '../modals/user-profile/skeletons/PersonalSecuritySkeleton'
 import { useSecurity } from './use-security'
 
-export default function Security({ loading, bioAvailable }) {
+interface Props {
+	loading: boolean
+	bioAvailable: boolean
+}
+export default function Security({ loading, bioAvailable }: Props) {
 	const { styles } = useTheme(_styles)
 	const {
 		passwordModalVisible,
@@ -35,6 +39,7 @@ export default function Security({ loading, bioAvailable }) {
 						text={r}
 						toggleEmailAuthModalVisible={toggleEmailAuthModalVisible}
 						toggleGoogleOtpModalVisible={toggleGoogleOtpModalVisible}
+						toggleGoogleAuthModal={toggleGoogleAuthModal}
 					/>
 				))}
 				<View style={styles.line} />
@@ -74,6 +79,7 @@ export default function Security({ loading, bioAvailable }) {
 			<GoogleOtpModal
 				toggleGoogleOtpModalVisible={toggleGoogleOtpModalVisible}
 				googleOtpModalVisible={googleOtpModalVisible}
+				toggleEmailAuthModalVisible={toggleEmailAuthModalVisible}
 			/>
 		</>
 	) : (
