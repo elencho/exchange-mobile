@@ -70,7 +70,7 @@ const handleError = async (err: any) => {
 			store.dispatch(setAppToast(uiError))
 		} else {
 			//TODO: Remove this when wallets are refactored
-			store.dispatch(saveGeneralError(uiError))
+			if (uiError) store.dispatch(saveGeneralError(uiError))
 		}
 	}
 

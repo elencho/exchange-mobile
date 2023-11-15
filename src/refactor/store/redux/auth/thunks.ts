@@ -133,7 +133,8 @@ export const resetPasswordConfirmCodeThunk = createAsyncThunk(
 		if (data.execution === Execution.LOGIN_OTP) {
 			navigation.navigate('Login2Fa')
 		}
-		return { callbackUrl: data.callbackUrl, otpType: data.attributes.otpType }
+
+		return data
 	}
 )
 
