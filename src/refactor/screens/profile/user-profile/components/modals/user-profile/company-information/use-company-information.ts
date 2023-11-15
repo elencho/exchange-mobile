@@ -1,3 +1,4 @@
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import React, { useState } from 'react'
 import { View, Text } from 'react-native'
@@ -9,7 +10,9 @@ const useCompanyInformation = () => {
 	const [companyModalVisible, setCompanyModalVisible] = useState(false)
 
 	const openModal = () => {
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		// TODO: Remove after wallets refactor
+		dispatch(saveGeneralError(null))
+
 		setCompanyModalVisible(true)
 	}
 	return { openModal, userInfo, companyModalVisible, setCompanyModalVisible }

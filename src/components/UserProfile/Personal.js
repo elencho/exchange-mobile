@@ -26,6 +26,7 @@ import PersonalInfoModal from './PersonalInfoModal'
 import PersonalInformation from './PersonalInformation'
 import PersonalProfileSkeleton from './PersonalProfileSkeleton'
 import PhoneNumberModal from './PhoneNumberModal'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function Personal({ loading }) {
 	const dispatch = useDispatch()
@@ -42,8 +43,7 @@ export default function Personal({ loading }) {
 	const corporate = userInfo?.userType === 'CORPORATE'
 	const eligibleToVerify = userInfo?.verificationToolEnabled
 
-	const hideError = () =>
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+	const hideError = () => dispatch(saveGeneralError(null))
 
 	useEffect(() => {
 		return () => hideError()

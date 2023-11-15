@@ -10,9 +10,7 @@ import LogoWhite from '@assets/images/LogoWhite.svg'
 import { useTheme, Theme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
-import GeneralError from '@app/components/GeneralError'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import { errorHappenedHere } from '@app/utils/appUtils'
 import LanguageSwitcher from '@app/refactor/screens/auth/welcome/components/language-switcher'
 
 const Welcome = ({ navigation }: ScreenProp<'Welcome'>) => {
@@ -41,10 +39,6 @@ const Welcome = ({ navigation }: ScreenProp<'Welcome'>) => {
 						Secure and Simple · Your Gateway to the Global Crypto Universe
 					</AppText>
 					<View style={styles.paddingHorizontal}>
-						<GeneralError
-							style={styles.error}
-							show={errorHappenedHere('Welcome')}
-						/>
 						<AppButton
 							variant="primary"
 							text="Login"

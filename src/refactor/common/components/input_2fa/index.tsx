@@ -19,6 +19,7 @@ import GeneralError from '@app/components/GeneralError'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Route, Screens } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 interface Props {
 	value: string
@@ -75,8 +76,8 @@ const CodeInput = ({ value, setValue, cellCount }: CodeInputProps) => {
 
 	const handleValue = (value: string) => {
 		setValue(value)
-		// TODO
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		// TODO: Remove after wallets refactor
+		dispatch(saveGeneralError(null))
 	}
 
 	return (

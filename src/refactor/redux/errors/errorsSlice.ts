@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface ErrorsState {
-	generalError: string | null
+	generalError: UiErrorData | null
 	requestName: string | null
 }
 
@@ -14,7 +14,7 @@ const errorsSlice = createSlice({
 	name: 'errors',
 	initialState,
 	reducers: {
-		saveGeneralError: (state, action: PayloadAction<string | null>) => {
+		saveGeneralError: (state, action: PayloadAction<UiErrorData | null>) => {
 			state.generalError = action.payload
 		},
 		setRequestName: (state, action: PayloadAction<string | null>) => {

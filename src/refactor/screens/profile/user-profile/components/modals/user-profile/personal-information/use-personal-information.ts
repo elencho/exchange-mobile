@@ -1,8 +1,7 @@
-import React from 'react'
-import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { togglePersonalInfoModal } from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 const usePersonalInformation = () => {
 	const dispatch = useDispatch()
@@ -10,7 +9,9 @@ const usePersonalInformation = () => {
 	const { userInfo } = state
 
 	const edit = () => {
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		// TODO: Remove after wallets refactor
+		dispatch(saveGeneralError(null))
+
 		dispatch(togglePersonalInfoModal(true))
 	}
 	return {

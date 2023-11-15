@@ -1,5 +1,5 @@
 import Constants from 'expo-constants'
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import Modal from 'react-native-modal'
 import { RootSiblingParent } from 'react-native-root-siblings'
@@ -12,6 +12,7 @@ import Background from './Background'
 import CloseModalIcon from './InstantTrade/CloseModalIcon'
 import ModalTop from './ModalTop'
 import Headline from './TransactionHistory/Headline'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 function AppModal({
 	children,
@@ -28,18 +29,6 @@ function AppModal({
 	const webViewVisible = useSelector((state) => state?.modals?.webViewVisible)
 	const { isBiometricScreenOpened } = useSelector((state) => state.common)
 
-	// const deviceHeight =
-	//   Platform.OS === 'ios'
-	//     ? Dimensions.get('window').height
-	//     : require('react-native-extra-dimensions-android').get(
-	//         'REAL_WINDOW_HEIGHT'
-	//       );
-
-	// ERROR DISSAPEARING
-	// const modalHide = () => {
-	//   dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null });
-	//   hide();
-	// };
 	return (
 		webViewVisible && (
 			<Modal
