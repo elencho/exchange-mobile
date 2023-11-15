@@ -8,9 +8,20 @@ import PasswordModal from '../modals/user-profile/password-modal'
 import SecurityRow from '../modals/user-profile/security-row'
 import SmsEmailAuthModal from '../modals/user-profile/sms-email-auth-modal'
 import PersonalSecuritySkeleton from '../modals/user-profile/skeletons/PersonalSecuritySkeleton'
+import { useSecurity } from './use-security'
 
 export default function Security({ loading, bioAvailable }) {
 	const { styles } = useTheme(_styles)
+	const {
+		passwordModalVisible,
+		togglePasswordModal,
+		toggleGoogleAuthModal,
+		emailAuthModalVisible,
+		toggleEmailAuthModalVisible,
+		googleAuthModalVisible,
+		toggleGoogleOtpModalVisible,
+		googleOtpModalVisible,
+	} = useSecurity()
 	return !loading ? (
 		<>
 			<View style={styles.block}>
@@ -19,21 +30,51 @@ export default function Security({ loading, bioAvailable }) {
 					access security
 				</AppText>
 				{['Google_Auth', 'E_mail_Auth', 'SMS_Auth'].map((r, i, a) => (
-					<SecurityRow key={r} text={r} />
+					<SecurityRow
+						key={r}
+						text={r}
+						toggleEmailAuthModalVisible={toggleEmailAuthModalVisible}
+						toggleGoogleOtpModalVisible={toggleGoogleOtpModalVisible}
+					/>
 				))}
 				<View style={styles.line} />
 			</View>
 
 			<View style={styles.block}>
 				{bioAvailable && <SecurityRow text="Biometric" />}
-				<SecurityRow text="Strong_Password" />
+				<SecurityRow
+					text="Strong_Password"
+					togglePasswordModal={togglePasswordModal}
+				/>
 			</View>
 
-			<PasswordModal />
-			<GoogleAuthModal />
-			<SmsEmailAuthModal type="Email" />
-			<SmsEmailAuthModal type="SMS" />
-			<GoogleOtpModal />
+			<PasswordModal
+				passwordModalVisible={passwordModalVisible}
+				togglePasswordModal={togglePasswordModal}
+			/>
+			<GoogleAuthModal
+				toggleGoogleAuthModal={toggleGoogleAuthModal}
+				googleAuthModalVisible={googleAuthModalVisible}
+			/>
+			<SmsEmailAuthModal
+				type="Email"
+				toggleSmsAuthModal={toggleEmailAuthModalVisible}
+				toggleEmailAuthModal={toggleEmailAuthModalVisible}
+				smsAuthModalVisible={emailAuthModalVisible}
+				emailAuthModalVisible={emailAuthModalVisible}
+				toggleGoogleAuthModal={toggleGoogleAuthModal}
+			/>
+			<SmsEmailAuthModal
+				type="SMS"
+				toggleSmsAuthModal={toggleEmailAuthModalVisible}
+				toggleEmailAuthModal={toggleEmailAuthModalVisible}
+				smsAuthModalVisible={emailAuthModalVisible}
+				emailAuthModalVisible={emailAuthModalVisible}
+			/>
+			<GoogleOtpModal
+				toggleGoogleOtpModalVisible={toggleGoogleOtpModalVisible}
+				googleOtpModalVisible={googleOtpModalVisible}
+			/>
 		</>
 	) : (
 		<PersonalSecuritySkeleton />
@@ -47,7 +88,7 @@ const _styles = (theme: Theme) =>
 		},
 		margin: { marginBottom: 20, marginTop: 10 },
 		secondary: {
-			color: theme.color.backgroundSecondary,
+			color: theme.color.textSecondary,
 		},
 		line: {
 			marginBottom: 10,

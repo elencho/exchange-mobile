@@ -35,11 +35,6 @@ export const useProfile = () => {
 		return () => clearTimeout(timer)
 	}, [])
 
-	// useFocusEffect(
-	// 	useCallback(() => {
-	// 		return () => setPersonalSecurity('Personal')
-	// 	}, [])
-	// )
 
 	const checkCompitable = async () => {
 		const compitable = await checkIsCompatable()

@@ -12,7 +12,13 @@ import WithKeyboard from '@app/components/WithKeyboard'
 import { errorHappenedHere } from '@app/utils/appUtils'
 import { usePasswordModal } from './use-password-modal'
 
-export default function PasswordModal() {
+export default function PasswordModal({
+	passwordModalVisible,
+	togglePasswordModal,
+}: {
+	passwordModalVisible: boolean
+	togglePasswordModal: (v: boolean) => void
+}) {
 	const array = [
 		'8 or more characters',
 		'At least one number',
@@ -24,12 +30,11 @@ export default function PasswordModal() {
 		handleSave,
 		hide,
 		passwordState,
-		passwordModalVisible,
 		error,
 		newPassCond,
 		handleFieldChange,
 		userProfileLoading,
-	} = usePasswordModal()
+	} = usePasswordModal({ togglePasswordModal, passwordModalVisible })
 
 	const background = (i: number) => {
 		switch (i) {

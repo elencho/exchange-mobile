@@ -12,10 +12,12 @@ interface Props {
 }
 
 export default function GoogleOtpModal(props: Props) {
-	const { withdrawal, whitelist } = props
-	const { navigation, value, setValue, hide, googleOtpModalVisible } =
-		useGoogleOtp()
-	const { styles, theme } = useTheme()
+	const { toggleGoogleOtpModalVisible, googleOtpModalVisible } = props
+	const { navigation, value, setValue, hide } = useGoogleOtp({
+		googleOtpModalVisible,
+		toggleGoogleOtpModalVisible,
+	})
+	const { styles, theme } = useTheme(_styles)
 
 	const children = (
 		<View style={styles.container}>

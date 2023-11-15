@@ -1,69 +1,53 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Image, StyleSheet, TouchableOpacity } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppInput from '@components/input'
 import AppModal from '@components/modal'
 import AppText from '@components/text'
 import AppDropdown from '@app/components/AppDropdown'
-import GeneralError from '@app/components/GeneralError'
 import InputErrorMsg from '@app/components/InputErrorMsg'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { COUNTRIES_URL_PNG } from '@app/constants/api'
-import { saveUserInfo } from '@app/refactor/redux/profile/actions'
 import usePersonalInfoModal from './use-personal-info-modal'
 import CountriesModal from '@app/refactor/common/modals/countries'
 
-export default function PersonalInfoModal() {
+export default function PersonalInfoModal({
+	personalInfoModalVisible,
+	togglePersonalInfoModal,
+}: {
+	personalInfoModalVisible: boolean
+	togglePersonalInfoModal: (visible: boolean) => void
+}) {
 	const {
 		userInfo,
-		onChangeText,
 		error,
-		canEditInfo,
 		alphabeticRegex,
-		handleReset,
+		changeCountry,
 		handleCountries,
 		handleSave,
-		citizenshipText,
-		isProfileUpdating,
-		citizenshipDrop,
-		countryDrop,
-		personalInfoModalVisible,
+		userProfileLoading,
 		hide,
 		countryModalVisible,
 		setCountryModalVisible,
 		handleFieldChange,
 		localUserInfo,
-		setChosenCountry,
-	} = usePersonalInfoModal()
-	const dispatch = useDispatch()
+		chosenCountry,
+	} = usePersonalInfoModal({
+		personalInfoModalVisible,
+		togglePersonalInfoModal,
+	})
 
 	const { styles, theme } = useTheme(_styles)
-	const firstName = localUserInfo?.firstName
-	const lastName = localUserInfo?.lastName
-	const email = localUserInfo?.email
+
+	const email = userInfo?.email
 	const country = localUserInfo?.country
-	const countryCode = localUserInfo?.countryCode
+	const countryCode = chosenCountry?.code
 	const city = localUserInfo?.city
 	const postalCode = localUserInfo?.postalCode
 	const address = localUserInfo?.address
-	const citizenship = localUserInfo?.citizenship
-
-	const citizenshipError = error && !citizenship
 	const countryError = error && !country
 
-	const subtext = {
-		transform: [{ scaleX: 0.7 }, { scaleY: 0.7 }],
-		position: 'absolute',
-		left: -5,
-		top: -7,
-		backgroundColor: theme.color.backgroundPrimary,
-		paddingHorizontal: 8,
-	}
-
-	const countryLabel = country ? subtext : {}
-	const citizenshipLabel = citizenship ? subtext : {}
 	const children = (
 		<WithKeyboard flexGrow modal>
 			<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
@@ -73,68 +57,10 @@ export default function PersonalInfoModal() {
 					show={errorHappenedHere('PersonalInfoModal')}
 				/> */}
 
-				{!canEditInfo && (
-					<>
-						<AppInput
-							style={styles.inputContainer}
-							onChangeText={(text: string) =>
-								handleFieldChange('firstName', text)
-							}
-							label="First Name"
-							value={localUserInfo.firstName}
-							error={
-								error &&
-								(!alphabeticRegex(localUserInfo.firstName) ||
-									!localUserInfo.firstName?.trim())
-							}
-							labelBackgroundColor={theme.color.backgroundPrimary}
-						/>
-						{error &&
-							localUserInfo.firstName?.trim() &&
-							!alphabeticRegex(localUserInfo.firstName) && (
-								<InputErrorMsg message="Only English letters allowed" />
-							)}
-						<AppInput
-							style={styles.inputContainer}
-							onChangeText={(lastName) =>
-								handleFieldChange('lastName', lastName)
-							}
-							label="Last Name"
-							value={localUserInfo.lastName}
-							error={error && (!alphabeticRegex(lastName) || !lastName?.trim())}
-							labelBackgroundColor={theme.color.backgroundPrimary}
-						/>
-						{error && lastName?.trim() && !alphabeticRegex(lastName) && (
-							<InputErrorMsg message="Only English letters allowed" />
-						)}
-					</>
-				)}
-
-				{!canEditInfo && (
-					<AppDropdown
-						withLabel
-						notClearable
-						handlePress={() => handleCountries(null, true)}
-						label="Citizenship"
-						error={citizenshipError}
-						style={styles.dropdown}
-						handleClear={handleReset}
-						icon={
-							<Image
-								source={{
-									uri: `${COUNTRIES_URL_PNG}/${citizenship}.png`,
-								}}
-								style={styles.image}
-							/>
-						}
-						selectedText={citizenshipText(citizenship)}
-					/>
-				)}
-
 				<AppDropdown
 					notClearable
 					withLabel
-					handlePress={() => handleCountries(true)}
+					handlePress={() => handleCountries()}
 					icon={
 						<Image
 							source={{
@@ -184,18 +110,16 @@ export default function PersonalInfoModal() {
 			<AppButton
 				variant="primary"
 				onPress={handleSave}
-				loading={isProfileUpdating}
+				loading={userProfileLoading}
 				style={styles.button}
 				text="Save"
 			/>
 
 			{countryModalVisible && (
 				<CountriesModal
-					citizenshipDrop={citizenshipDrop}
-					countryDrop={countryDrop}
-					reset={handleReset}
-					onCountryChosen={setChosenCountry}
+					onCountryChosen={changeCountry}
 					hide={() => setCountryModalVisible(false)}
+					from={'UserProfile'}
 				/>
 			)}
 		</WithKeyboard>

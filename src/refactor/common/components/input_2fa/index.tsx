@@ -19,6 +19,7 @@ import GeneralError from '@app/components/GeneralError'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Route, Screens } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
+import { credentialsForGoogleThunk } from '@app/refactor/redux/profile/profileThunks'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 interface Props {
@@ -40,6 +41,9 @@ const TwoFaInput = ({
 }: Props) => {
 	const dispatch = useDispatch()
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
+	const currentOtpType = useSelector(
+		(state: RootState) => state.profile.currentSecurityAction
+	)
 
 	useEffect(() => {
 		if (value.length === cellCount) {
@@ -47,6 +51,8 @@ const TwoFaInput = ({
 				dispatch(otpForLoginThunk({ otp: value, from: 'Login2Fa', navigation }))
 			} else if (from === 'Registration') {
 				dispatch(verifyRegistrationThunk({ otp: value, navigation }))
+			} else if (currentOtpType === 'TOTP') {
+				dispatch(credentialsForGoogleThunk(value))
 			}
 		}
 	}, [value])

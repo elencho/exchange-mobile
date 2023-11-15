@@ -11,8 +11,23 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { canDoBiometric } from '@app/refactor/utils/authUtils'
 import KVStore from '@store/kv'
 import { TokenParams } from '@app/refactor/types/auth/splash'
+import { sendOtp } from '@app/refactor/redux/profile/profileApi'
+import { setCurrentSecurityAction } from '@app/refactor/redux/profile/profileSlice'
 
-export const useSecurityRow = ({ text }: { text: string }) => {
+interface SecurityRowProps {
+	text: string
+	togglePasswordModal?: (v: boolean) => void
+	toggleEmailAuthModalVisible?: (v: boolean) => void
+	toggleGoogleOtpModalVisible?: (v: boolean) => void
+}
+export const useSecurityRow = (props: SecurityRowProps) => {
+	const {
+		text,
+		togglePasswordModal,
+		toggleEmailAuthModalVisible,
+		toggleGoogleOtpModalVisible,
+	} = props
+
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const { userInfo } = state.profile
@@ -20,6 +35,7 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 
 	const [bioType, setBioType] = useState<string | null>(null)
 	const [isBioOn, setIsBioOn] = useState(false)
+	const [chosenOtpType, setChosenOtpType] = useState('')
 
 	useEffect(() => {
 		handleBiometricIcon()
@@ -30,9 +46,8 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 	}, [])
 
 	const handlePassword = () => {
-		dispatch(togglePasswordModal(true))
+		togglePasswordModal(true)
 	}
-
 	const handleAuth = async (userEmail: string) => {
 		const cachedEmails = KVStore.get('bioEnabledEmails') || []
 		const hasFaceOrTouchIdSaved = await isEnrolledAsync()
@@ -74,35 +89,43 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 		}
 	}
 
-	const handleChange = () => {
+	const handleChange = (value) => {
+		console.log('value', text)
 		// TODO: Remove this and use userInfo.email
 		// Right now returns undefined so I take email from accessToken
 		const email = jwt_decode<TokenParams>(accessToken || '')?.email
 		handleAuth(email)
-		// switch (text) {
-		// 	case 'Google_Auth':
-		// 		if (emailAuth) dispatch(toggleEmailAuthModal(true))
-		// 		if (smsAuth) dispatch(toggleSmsAuthModal(true))
-		// 		dispatch(setCurrentSecurityAction('google'))
-		// 		dispatch(setGoogleAuth(true))
-		// 		sendOtp()
-		// 		break
-		// 	case 'E_mail_Auth':
-		// 		if (googleAuth) dispatch(toggleGoogleOtpModal(true))
-		// 		if (smsAuth) {
-		// 			dispatch(toggleSmsAuthModal(true))
-		// 			sendOtp()
-		// 		}
-		// 		dispatch(setCurrentSecurityAction('email'))
-		// 		dispatch(setEmailAuth(true))
+		switch (text) {
+			case 'Google_Auth':
+				if (otpType === 'EMAIL') toggleEmailAuthModalVisible(true)
+				if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
+				dispatch(setCurrentSecurityAction('TOTP'))
+				sendOtp()
 
-		// 		break
-		// 	case 'Biometric':
-		// 		handleAuth(userInfo?.email)
-		// 	default:
-		// 		break
-		// }
+			case 'E_mail_Auth':
+				if (otpType === 'TOTP') toggleGoogleOtpModalVisible(true)
+				// if (otpType === 'SMS') {
+				// 	dispatch(toggleSmsAuthModal(true))
+				// 	sendOtp()
+				// }
+				dispatch(setCurrentSecurityAction('EMAIL'))
+			// dispatch(setCurrentSecurityAction('email'))
+			// toggleEmailAuthModalVisible(true)
+
+			// 	// 	case 'Biometric':
+			// 	// 		handleAuth(userInfo?.email)
+			default:
+				break
+		}
 	}
+	const handleChangeGoogle = () => {
+		if (otpType === 'EMAIL') toggleEmailAuthModalVisible(true)
+		if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
+		dispatch(setCurrentSecurityAction('TOTP'))
+		sendOtp()
+	}
+	console.log('chosenOtpType', chosenOtpType)
+
 	return {
 		handleAuth,
 		handleChange,
@@ -111,5 +134,7 @@ export const useSecurityRow = ({ text }: { text: string }) => {
 		isBioOn,
 		bioType,
 		otpType,
+		chosenOtpType,
+		handleChangeGoogle,
 	}
 }

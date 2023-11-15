@@ -3,7 +3,6 @@ import { Linking } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import {
 	openCompanyInfoModal,
-	toggleLanguageModal,
 	togglePhoneNumberModal,
 } from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
@@ -35,6 +34,8 @@ export const usePersonal = () => {
 	const [chosenCountry, setChosenCountry] = useState<Country | undefined>(x)
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 	const [languageModalVisible, setLanguageModalVisible] = useState(false)
+	const [personalInfoModalVisible, togglePersonalInfoModal] = useState(false)
+	const [phoneNumberModalVisible, togglePhoneNumberModal] = useState(false)
 
 	const hideError = () =>
 		// TODO: Remove after wallets refactor
@@ -55,7 +56,7 @@ export const usePersonal = () => {
 				)
 			)
 		} else {
-			dispatch(togglePhoneNumberModal(true))
+			togglePhoneNumberModal(true)
 		}
 		hideError()
 	}
@@ -79,7 +80,7 @@ export const usePersonal = () => {
 
 	const editLanguage = () => {
 		hideError()
-		dispatch(toggleLanguageModal(true))
+		setLanguageModalVisible(true)
 	}
 
 	const openModal = () => {
@@ -87,8 +88,9 @@ export const usePersonal = () => {
 		dispatch({ type: 'TOGGLE_IDENTITY_MODAL' })
 	}
 
-	const handleEmailUpdates = (value: ToggleSubscriptionData) =>
-		dispatch(toggleSubscriptionThunk(value))
+	const handleEmailUpdates = (value: ToggleSubscriptionData) => {
+		dispatch(toggleSubscriptionThunk({ value }))
+	}
 
 	return {
 		userStatus: { verified, unverified, pending, corporate, eligibleToVerify },
@@ -108,5 +110,11 @@ export const usePersonal = () => {
 		countryModalVisible,
 		setChosenCountry,
 		chosenCountry,
+		togglePersonalInfoModal,
+		personalInfoModalVisible,
+		languageModalVisible,
+		setLanguageModalVisible,
+		phoneNumberModalVisible,
+		togglePhoneNumberModal,
 	}
 }

@@ -29,27 +29,13 @@ const refreshTokenService = async (refresh_token: string | null) => {
 	if (data) return data.data
 }
 
-export const refreshToken = async (config?: any) => {
-	const refresh_token = await KVStore.get('refreshToken')
-	const data = await refreshTokenService(refresh_token)
-	if (data) {
-		if (data.access_token && data.refresh_token) {
-			await SecureStore.setItemAsync('accessToken', data.access_token)
-			await SecureStore.setItemAsync('refreshToken', data.refresh_token)
-			if (config) return axios.request(config)
-			return data.access_token
-		}
-	}
-	// else Promise.reject().then((err) => err);
-}
-
 export const fetchUserInfoUtil = async () => {
 	const data = await axios.get<UserInfoType>(USER_INFO_URL)
 	if (data) return data.data
 }
 
-export const updateUserData = async (data: UserInfoType) => {
-	const userInfo = await axios<UserInfoType>({
+export const updateUserData = async (data: EditProfileParams) => {
+	const userInfo = await axios({
 		method: 'POST',
 		url: UPDATE_USER_DATA,
 		data,

@@ -1,11 +1,5 @@
-import { useNavigation } from '@react-navigation/native'
-import React, { useEffect, useState } from 'react'
-import { View, Text } from 'react-native'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	toggleEmailAuthModal,
-	toggleSmsAuthModal,
-} from '@app/refactor/redux/modals/modalsSlice'
 import {
 	setEmailAuth,
 	setGoogleAuth,
@@ -13,21 +7,35 @@ import {
 } from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
-export const useSmsAuthEmailModal = ({ type }) => {
+interface SmsEmailAuthModalProps {
+	type: 'SMS' | 'Email'
+	toggleSmsAuthModal: (v: boolean) => void
+	toggleEmailAuthModal: (v: boolean) => void
+	emailAuthModalVisible: boolean
+	smsAuthModalVisible: boolean
+}
+
+export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
+	const {
+		type,
+		toggleEmailAuthModal,
+		toggleSmsAuthModal,
+		smsAuthModalVisible,
+		emailAuthModalVisible,
+	} = props
 	const dispatch = useDispatch()
 
 	const state = useSelector((state: RootState) => state)
 	const {
-		modalState: { smsAuthModalVisible, emailAuthModalVisible },
 		profile: { currentSecurityAction, timerVisible },
 	} = state
 
-	const action =
-		type === 'SMS' ? toggleSmsAuthModal(false) : toggleEmailAuthModal(false)
-	const visible = type === 'SMS' ? smsAuthModalVisible : emailAuthModalVisible
+	// const action =
+	// 	type === 'SMS' ? toggleSmsAuthModal(false) : toggleEmailAuthModal(false)
+	const visible = emailAuthModalVisible
 	const cellCount = type === 'SMS' ? 4 : 6
-	const email = currentSecurityAction === 'email'
-	const google = currentSecurityAction === 'google'
+	// const email = currentSecurityAction === 'email'
+	// const google = currentSecurityAction === 'google'
 
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(30)
@@ -39,11 +47,11 @@ export const useSmsAuthEmailModal = ({ type }) => {
 		return
 	}
 
-	useEffect(() => {
-		if (emailAuthModalVisible || smsAuthModalVisible) {
-			dispatch({ type: 'TOGGLE_TIMER', timerVisible: true })
-		}
-	}, [emailAuthModalVisible, smsAuthModalVisible])
+	// useEffect(() => {
+	// 	if (emailAuthModalVisible || smsAuthModalVisible) {
+	// 		dispatch({ type: 'TOGGLE_TIMER', timerVisible: true })
+	// 	}
+	// }, [emailAuthModalVisible, smsAuthModalVisible])
 
 	useEffect(() => {
 		if (emailAuthModalVisible || smsAuthModalVisible) {
@@ -61,16 +69,18 @@ export const useSmsAuthEmailModal = ({ type }) => {
 	const handleHide = () => {
 		setSeconds(30)
 		setValue('')
-		if (value.length === cellCount && email) {
-			dispatch(setSmsAuth(false))
-			dispatch(setGoogleAuth(false))
-		}
+		// if (value.length === cellCount && email) {
+		// 	dispatch(setSmsAuth(false))
+		// 	dispatch(setGoogleAuth(false))
+		// }
 	}
 
 	const hide = () => {
-		dispatch(action)
-		if (email) dispatch(setEmailAuth(false))
-		if (google) dispatch(setGoogleAuth(false))
+		if (type === 'SMS') {
+			toggleSmsAuthModal(false)
+		} else {
+			toggleEmailAuthModal(false)
+		}
 	}
 
 	const resend = () =>
@@ -86,11 +96,11 @@ export const useSmsAuthEmailModal = ({ type }) => {
 		handleHide,
 		otpLoading,
 		reset,
-		google,
-		email,
+		// google,
+		// email,
 		cellCount,
 		visible,
-		action,
+		// action,
 		smsAuthModalVisible,
 		emailAuthModalVisible,
 		currentSecurityAction,

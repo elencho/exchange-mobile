@@ -6,10 +6,15 @@ import { setLanguage } from '@store/redux/common/slice'
 import { Language } from '@app/refactor/common/constants'
 import { useState } from 'react'
 
-export const useChooseLanguage = () => {
+export const useChooseLanguage = ({
+	languageModalVisible,
+	setLanguageModalVisible,
+}: {
+	languageModalVisible: boolean
+	setLanguageModalVisible: (v: boolean) => void
+}) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
-	const [languageModalVisible, setLanguageModalVisible] = useState(false)
 	const {
 		common: { language },
 	} = state

@@ -7,10 +7,19 @@ import { COUNTRIES_URL_PNG } from '@app/constants/api'
 import images from '@app/constants/images'
 import { useChooseLanguage } from './use-choose-language'
 
-export const ChooseLanguageModal = () => {
+export const ChooseLanguageModal = ({
+	languageModalVisible,
+	setLanguageModalVisible,
+}: {
+	languageModalVisible: boolean
+	setLanguageModalVisible: (v: boolean) => void
+}) => {
+	
 	const { styles } = useTheme(_styles)
-	const { chooseLanguage, hide, language, languageModalVisible } =
-		useChooseLanguage()
+	const { chooseLanguage, hide, language } = useChooseLanguage({
+		languageModalVisible,
+		setLanguageModalVisible,
+	})
 
 	const background = (l: string) => {
 		if (l === language) {
