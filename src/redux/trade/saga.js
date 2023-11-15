@@ -259,9 +259,9 @@ function* refreshWalletAndTradesSaga() {
 				(whitelist && !addWhitelistModalVisble && !whitelistActionsModalVisible)
 			)
 				yield put(getWhitelistAction())
-			// if (withdrawal) {
-			//   yield put(fetchFee('withdrawal'));
-			// }
+			if (withdrawal) {
+				yield put(fetchFee('withdrawal'))
+			}
 		}
 	}
 

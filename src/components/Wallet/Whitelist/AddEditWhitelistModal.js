@@ -167,6 +167,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 					value={add ? newWhitelist.address : currentWhitelistObj.address}
 					label="Destination Address"
 					editable={add ? true : false}
+					disabled={add ? false : true}
 					focusable={add ? true : false}
 					error={error && addressError}
 				/>
@@ -179,6 +180,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 						value={add ? newWhitelist.tag : currentWhitelistObj.tag}
 						label="Address Tag"
 						editable={add ? true : false}
+						disabled={add ? false : true}
 						focusable={add ? true : false}
 						error={error && tagError}
 					/>
