@@ -3,6 +3,7 @@ import { View, Text, Linking } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import useCopyToClipboard from '@app/utils/copyToClipboard'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export const useGoogleAuth = (props) => {
 	const { googleAuthModalVisible, toggleGoogleAuthModal } = props
@@ -46,7 +47,8 @@ export const useGoogleAuth = (props) => {
 		if (key && /^[0-9]+$/.test(key)) setKey(key)
 		else setKey('')
 
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		// TODO: Remove after wallets refactor
+		dispatch(saveGeneralError(null))
 	}
 
 	const handleCopy = () => copyToClipboard(totpSecretObj?.totpSecretEncoded)

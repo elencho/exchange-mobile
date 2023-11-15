@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { t } from 'i18next'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
 	Image,
 	Pressable,
@@ -29,7 +29,8 @@ import TermsCheck from '@app/refactor/screens/auth/register/components/check_ter
 import PersonalCompanySwitcher from '@app/refactor/screens/auth/register/components/personal_company_switcher'
 import { Screens } from '@app/refactor/setup/nav/nav'
 import GeneralError from '@components/general_error'
-import useCleanGeneralError from '@components/general_error/use_clean_error'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
+import { useFocusEffect } from '@react-navigation/native'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -38,6 +39,9 @@ const Register = ({ navigation }: Props) => {
 	const { styles, theme } = useTheme(_styles)
 
 	const [userType, setUserType] = useState<UserType>('Personal')
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 
 	const [mail, setMail] = useState('')
 	const [mailErr, setMailErr] = useState(false)
@@ -76,9 +80,11 @@ const Register = ({ navigation }: Props) => {
 		terms: termsSelected,
 	}
 
-	useEffect(() => {
-		dispatch(startRegistrationThunk({ navigation }))
-	}, [])
+	useFocusEffect(
+		useCallback(() => {
+			dispatch(startRegistrationThunk({ navigation }))
+		}, [])
+	)
 
 	useEffect(() => {
 		setPassErr(pass.length > 0 && !valid.pass)
@@ -100,22 +106,24 @@ const Register = ({ navigation }: Props) => {
 		setChosenCountry(defaultCountry)
 	}, [phoneCountryCode])
 
-	useCleanGeneralError()
-
-	const onRegisterPressed = () => {
+	const onRegisterPressed = async () => {
 		const allInputsValid = Object.values(valid).every(Boolean)
 
 		if (allInputsValid) {
-			dispatch(
-				registrationFormThunk({
-					clientType: userType,
-					email: mail,
-					passwordNew: pass,
-					passwordConfirm: confirmPass,
-					phoneNumber: phone,
-					phoneCountry: chosenCountry?.code || '',
-					referralCode: referral,
-				})
+			handleGeneralError(
+				() =>
+					dispatch(
+						registrationFormThunk({
+							clientType: userType,
+							email: mail,
+							passwordNew: pass,
+							passwordConfirm: confirmPass,
+							phoneNumber: phone,
+							phoneCountry: chosenCountry?.code || '',
+							referralCode: referral,
+						})
+					),
+				setGeneralErrorData
 			)
 		} else {
 			setMailErr(!valid.email)
@@ -154,14 +162,14 @@ const Register = ({ navigation }: Props) => {
 						chosenType={userType}
 						onUserTypeChanged={setUserType}
 					/>
-					<GeneralError style={styles.error} />
+					<GeneralError errorData={generalErrorData} style={styles.error} />
 					<AppInput
 						value={mail}
 						label="Enter E-mail"
 						style={styles.input}
 						onFocusOrChange={() => setMailErr(false)}
 						onChangeText={setMail}
-						error={mailErr && (mail ? 'Enter Valid Email' : true)}
+						error={mailErr && (mail.trim() ? 'Enter Valid Email' : true)}
 					/>
 					<AppInput
 						value={pass}

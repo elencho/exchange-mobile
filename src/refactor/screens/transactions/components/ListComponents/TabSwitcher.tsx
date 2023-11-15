@@ -3,6 +3,12 @@ import { Pressable, StyleSheet, View } from 'react-native'
 import colors from '@app/constants/colors'
 import AppText from '@app/refactor/common/components/text/index'
 import { FilterState } from '../../transactions_history'
+import Animated, {
+	interpolateColor,
+	useAnimatedStyle,
+	useDerivedValue,
+	withTiming,
+} from 'react-native-reanimated'
 
 interface Props {
 	activeTab: TabName
@@ -10,7 +16,13 @@ interface Props {
 	setIsFilterVisible: Dispatch<SetStateAction<FilterState>>
 }
 
-const TabSwitcher: React.FC<Props> = ({ activeTab, setActiveTab,setIsFilterVisible }) => {
+const TabSwitcher: React.FC<Props> = ({
+	activeTab,
+	setActiveTab,
+	setIsFilterVisible,
+}) => {
+	const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
+
 	const tabTextStyle = (tabName: TabName) => {
 		return {
 			color: activeTab === tabName ? colors.PRIMARY_TEXT : '#969CBF',
@@ -18,28 +30,55 @@ const TabSwitcher: React.FC<Props> = ({ activeTab, setActiveTab,setIsFilterVisib
 	}
 	const tabColor = (tabName: TabName) => {
 		return {
-			backgroundColor:
-				activeTab === tabName ? colors.PRIMARY_PURPLE : colors.BUTTON_DISABLED,
+			backgroundColor: withTiming(
+				activeTab === tabName ? colors.PRIMARY_PURPLE : colors.BUTTON_DISABLED
+			),
 		}
 	}
 
 	const handlePress = (tabName: TabName) => {
-		setActiveTab(tabName )
+		setActiveTab(tabName)
 		setIsFilterVisible({ isVisible: false, shouldFilter: true })
 	}
 
 	return (
 		<View style={styles.container}>
-			{['Transfer', 'Instant trade'].map((tabName: string) => (
-				<Pressable
-					key={tabName}
-					style={[styles.tab, tabColor(tabName as TabName)]}
-					onPress={() => handlePress(tabName as TabName)}>
-					<AppText medium style={tabTextStyle(tabName as TabName)}>
-						{tabName}
-					</AppText>
-				</Pressable>
-			))}
+			{['Transfer', 'Instant trade'].map((tabName: string) => {
+				const isActive = useDerivedValue(() => {
+					return withTiming(activeTab === tabName ? 1 : 0)
+				})
+
+				const rStyle = useAnimatedStyle(() => {
+					const backgroundColor = interpolateColor(
+						isActive.value,
+						[0, 1],
+						[colors.BUTTON_DISABLED, colors.PRIMARY_PURPLE]
+					)
+					return {
+						backgroundColor,
+					}
+				})
+
+				const rTextColor = useAnimatedStyle(() => {
+					const color = interpolateColor(
+						isActive.value,
+						[0, 1],
+						['#969CBF', colors.PRIMARY_TEXT]
+					)
+					return { color }
+				})
+
+				return (
+					<AnimatedPressable
+						key={tabName}
+						style={[styles.tab, rStyle]}
+						onPress={() => handlePress(tabName as TabName)}>
+						<AppText medium style={[rTextColor]}>
+							{tabName}
+						</AppText>
+					</AnimatedPressable>
+				)
+			})}
 		</View>
 	)
 }

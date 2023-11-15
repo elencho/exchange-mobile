@@ -97,7 +97,6 @@ const SearchAndFilter: React.FC<Props> = ({
 					rightComponent={<Search />}
 					value={searchValue}
 					onChangeText={(text: string) => setSearchValue(text)}
-					labelBackgroundColor={colors.PRIMARY_BACKGROUND}
 					handleClear={() => {
 						setSearchValue('')
 					}}

@@ -31,8 +31,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const { userInfo } = state.profile
-	const { accessToken } = state.auth
-	const { otpType } = state.auth
+	const { accessToken, otpType } = state.auth
 
 	const [bioType, setBioType] = useState<string | null>(null)
 	const [isBioOn, setIsBioOn] = useState(false)

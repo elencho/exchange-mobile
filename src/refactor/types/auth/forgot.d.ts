@@ -5,15 +5,15 @@ interface ForgotPasswordStartResponse {
 }
 
 interface ResetPasswordResponse {
-	attributes: {
-		otpType: OTP
-	}
 	callbackUrl: string
 	execution: Execution
 	errors: any[] //TODO: Type
 }
 
 interface ResetPasswordOtpResponse {
+	attributes: {
+		otpType: OTP
+	}
 	callbackUrl: string
 	execution: Execution
 	errors: any[] //TODO: Type

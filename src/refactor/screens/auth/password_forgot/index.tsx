@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Strong_Password from '@assets/images/User_profile/Strong_Password.svg'
@@ -15,10 +15,11 @@ import {
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import { errorHappenedHere } from '@app/utils/appUtils'
 import { setTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import GeneralError from '@components/general_error'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
+import { useFocusEffect } from '@react-navigation/native'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 const COUNTDOWN = 30
@@ -26,6 +27,9 @@ const COUNTDOWN = 30
 const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	const { styles, theme } = useTheme(_styles)
 	const dispatch = useDispatch()
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 
 	const [mail, setMail] = useState('')
 	const [mailError, setMailError] = useState<string | boolean>(false)
@@ -40,13 +44,15 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 
 	const validMail = mail.trim().length ? LOGIN_REGEX.test(mail) : false
 
-	useEffect(() => {
-		dispatch(forgotPasswordStartThunk({ navigation }))
+	useFocusEffect(
+		useCallback(() => {
+			dispatch(forgotPasswordStartThunk({ navigation }))
 
-		return () => {
-			dispatch(setTimer(false))
-		}
-	}, [])
+			return () => {
+				dispatch(setTimer(false))
+			}
+		}, [])
+	)
 
 	useEffect(() => {
 		if (seconds) {
@@ -71,18 +77,28 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 		else if (!validMail) setMailError('Enter Valid Email')
 
 		if (mail.trim() && validMail) {
-			dispatch(resendPasswordCodeThunk({ mail }))
+			handleGeneralError(
+				() => dispatch(resendPasswordCodeThunk({ mail })),
+				setGeneralErrorData
+			)
+
 			setSeconds(COUNTDOWN)
 		}
 	}
 
-	const onNextPressed = () => {
+	const onNextPressed = async () => {
 		if (!code.trim()) setCodeError(true)
 		if (!mail.trim()) setMailError(true)
 		else if (!validMail) setMailError('Enter Valid Email')
 
 		if (mail.trim() && code.trim() && validMail) {
-			dispatch(resetPasswordConfirmCodeThunk({ mail, otp: code, navigation }))
+			handleGeneralError(
+				() =>
+					dispatch(
+						resetPasswordConfirmCodeThunk({ mail, otp: code, navigation })
+					),
+				setGeneralErrorData
+			)
 		}
 	}
 
@@ -127,7 +143,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 						password
 					</AppText>
 				</View>
-				<GeneralError />
+				<GeneralError errorData={generalErrorData} />
 				<AppInput
 					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.input}

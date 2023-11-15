@@ -17,7 +17,6 @@ interface Props {
 }
 
 export const useProfile = () => {
-	
 	const navigation = useNavigation()
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state.profile)

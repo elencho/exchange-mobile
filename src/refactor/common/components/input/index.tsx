@@ -212,6 +212,7 @@ const _style = (theme: Theme) =>
 			position: 'absolute',
 			paddingHorizontal: 14,
 			height: 25,
+			overflow: 'visible',
 			justifyContent: 'center',
 		},
 		icon: {

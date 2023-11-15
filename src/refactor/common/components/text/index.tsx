@@ -6,6 +6,7 @@ import { useTheme } from '@theme/index'
 import { useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { System } from '@app/refactor/common/util'
+import Animated from 'react-native-reanimated'
 
 type Variant = 's' | 'm' | 'l' | 'title' | 'headline'
 
@@ -44,7 +45,7 @@ const AppText: React.FC<Props> = (props) => {
 	return (
 		<>
 			{text !== '' && (
-				<Text
+				<Animated.Text
 					{...props}
 					accessibilityRole={onPress ? 'button' : 'text'}
 					style={[
@@ -53,7 +54,7 @@ const AppText: React.FC<Props> = (props) => {
 						style,
 					]}>
 					{text}
-				</Text>
+				</Animated.Text>
 			)}
 		</>
 	)

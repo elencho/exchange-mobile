@@ -8,6 +8,7 @@ import {
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { UserStatus } from '@app/refactor/types/enums'
 import { toggleSubscriptionThunk } from '@app/refactor/redux/profile/profileThunks'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export const usePersonal = () => {
 	const dispatch = useDispatch()
@@ -37,7 +38,8 @@ export const usePersonal = () => {
 	const [phoneNumberModalVisible, togglePhoneNumberModal] = useState(false)
 
 	const hideError = () =>
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		// TODO: Remove after wallets refactor
+		dispatch(saveGeneralError(null))
 
 	useEffect(() => {
 		return () => hideError()

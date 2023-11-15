@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 const usePersonalInformation = ({
 	togglePersonalInfoModal,
@@ -11,7 +12,7 @@ const usePersonalInformation = ({
 	const { userInfo } = state
 
 	const edit = () => {
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		dispatch(saveGeneralError(null))
 		togglePersonalInfoModal(true)
 	}
 	return {

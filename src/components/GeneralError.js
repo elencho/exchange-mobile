@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import GeneralErrorIcon from '../assets/images/User_profile/General_Error.svg'
 import AppText from './AppText'
+import { logProfileData } from 'react-native-calendars/src/Profiler'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 function GeneralError({ style = {}, show = true }) {
 	const dispatch = useDispatch()
@@ -16,7 +18,7 @@ function GeneralError({ style = {}, show = true }) {
 	useEffect(() => {
 		return () => {
 			if (generalError) {
-				dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+				dispatch(saveGeneralError(null))
 			}
 		}
 	}, [modals, trade, transactions, wallet, profile])

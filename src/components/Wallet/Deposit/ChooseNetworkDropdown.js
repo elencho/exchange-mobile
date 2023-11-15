@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Image, Pressable, StyleSheet, View } from 'react-native'
+import React, { useEffect } from 'react'
+import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Arrow from '../../../assets/images/Arrow'
 import Card from '../../../assets/images/Card.svg'
 import Euro from '../../../assets/images/Euro.svg'
 import Bank from '../../../assets/images/LocalBank.svg'
-import { ICONS_URL_PNG } from '../../../constants/api'
 import colors from '../../../constants/colors'
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions'
 import { setNetwork } from '../../../redux/wallet/actions'
@@ -27,9 +26,9 @@ export default function ChooseNetworkDropdown({
 		modals: { addWhitelistModalVisble },
 	} = state
 	// const uri = `${ICONS_URL_PNG}/${network}.png`;
-	// const fiat = cur?.type === 'FIAT';
 
 	const cur = currentBalanceObj
+	const isFiat = cur?.type === 'FIAT'
 
 	const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods'
 
@@ -72,7 +71,7 @@ export default function ChooseNetworkDropdown({
 					styles.secondary,
 					disabled && { color: 'rgba(105, 111, 142, 0.4)' },
 				]}>
-				({network === 'MAINNET' ? code : network})
+				{isFiat ? '' : network === 'MAINNET' ? `(${code})` : `(${network})`}
 			</AppText>
 		</AppText>
 	)

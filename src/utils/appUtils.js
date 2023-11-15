@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { DICTIONARY, READINESS_URL } from '../constants/api'
-import store from '../redux/store'
+import store from '@app/refactor/redux/store'
 
 export const errorHappenedHere = (component) => {
 	const state = store.getState()

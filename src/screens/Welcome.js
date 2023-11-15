@@ -37,6 +37,7 @@ import { errorHappenedHere } from '../utils/appUtils'
 import { checkReadiness, fetchTranslations } from '../utils/appUtils'
 import { addResources, switchLanguage } from '../utils/i18n'
 import useNotificationsAndroid from './useNotificationsAndroid'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function Welcome({ navigation }) {
 	const dispatch = useDispatch()
@@ -177,8 +178,7 @@ export default function Welcome({ navigation }) {
 			type: 'SET_STACK_NAVIGATION_ROUTE',
 			stackRoute: state.routes[state.routes.length - 1].name,
 		})
-		if (generalError)
-			dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		if (generalError) dispatch(saveGeneralError(null))
 	}
 
 	const startLogin = () => {
