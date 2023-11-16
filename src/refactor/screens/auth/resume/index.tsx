@@ -20,12 +20,16 @@ import { t } from 'i18next'
 import { logoutThunk } from '@store/redux/auth/thunks'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { setBiometricScreenOpened } from '@store/redux/common/slice'
+import KV from '@store/kv/regular'
 
 const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 	const dispatch = useDispatch()
 	const { styles } = useTheme(_styles)
 
-	const { fromSplash, maintenanceInProgress, version } = route.params
+	const { from, maintenanceInProgress, version } = route.params
+	const fromSplash = from === 'Splash'
+	const fromMain = from === 'Main'
+
 	const resumed = route?.key === 'Resume-uniqueKey'
 
 	const { userInfo } = useSelector((state: RootState) => state.profile)
@@ -71,7 +75,10 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 		})
 		if (authResult?.success) {
 			if (fromSplash && !resumed && !maintenanceInProgress && !version) {
+				KV.set('lastOpenDateMillis', Date.now())
 				navigation.replace('Main')
+			} else if (fromMain) {
+				navigation.replace('Main', { fromResume: true })
 			} else {
 				navigation.goBack()
 			}

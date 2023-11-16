@@ -1,6 +1,5 @@
 import axios from 'axios'
 import * as SecureStore from 'expo-secure-store'
-import KVStore from '@store/kv'
 import {
 	ACTIVATE_EMAIL_OTP,
 	ACTIVATE_GOOGLE_OTP,
@@ -16,6 +15,9 @@ import {
 	UPDATE_USER_DATA,
 	USER_INFO_URL,
 } from '@app/constants/api'
+import SecureKV from '@store/kv/secure'
+
+// TODO: ADD RETURN TYPES
 
 const refreshTokenService = async (refresh_token: string | null) => {
 	const data = await axios({
@@ -25,6 +27,20 @@ const refreshTokenService = async (refresh_token: string | null) => {
 		data: `grant_type=refresh_token&client_id=mobile-service-public&refresh_token=${refresh_token}`,
 	})
 	if (data) return data.data
+}
+
+export const refreshToken = async (config?: any) => {
+	const refresh_token = await SecureKV.get('refreshToken')
+	const data = await refreshTokenService(refresh_token)
+	if (data) {
+		if (data.access_token && data.refresh_token) {
+			await SecureStore.setItemAsync('accessToken', data.access_token)
+			await SecureStore.setItemAsync('refreshToken', data.refresh_token)
+			if (config) return axios.request(config)
+			return data.access_token
+		}
+	}
+	// else Promise.reject().then((err) => err);
 }
 
 export const fetchUserInfoUtil = async () => {

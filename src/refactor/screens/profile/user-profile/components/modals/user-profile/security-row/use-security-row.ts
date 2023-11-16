@@ -9,8 +9,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { togglePasswordModal } from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { canDoBiometric } from '@app/refactor/utils/authUtils'
-import KVStore from '@store/kv'
 import { TokenParams } from '@app/refactor/types/auth/splash'
+import SecureKV from '@store/kv/secure'
 import { sendOtp } from '@app/refactor/redux/profile/profileApi'
 import { setCurrentSecurityAction } from '@app/refactor/redux/profile/profileSlice'
 
@@ -20,6 +20,7 @@ interface SecurityRowProps {
 	toggleEmailAuthModalVisible?: (v: boolean) => void
 	toggleGoogleOtpModalVisible?: (v: boolean) => void
 }
+
 export const useSecurityRow = (props: SecurityRowProps) => {
 	const {
 		text,
@@ -40,21 +41,23 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 	useEffect(() => {
 		handleBiometricIcon()
 
-		if (canDoBiometric(accessToken)) {
-			setIsBioOn(true)
-		}
+		canDoBiometric(accessToken).then((can) => {
+			if (can) {
+				setIsBioOn(true)
+			}
+		})
 	}, [])
 
 	const handlePassword = () => {
 		togglePasswordModal(true)
 	}
 	const handleAuth = async (userEmail: string) => {
-		const cachedEmails = KVStore.get('bioEnabledEmails') || []
+		const cachedEmails = (await SecureKV.get('bioEnabledEmails')) || []
 		const hasFaceOrTouchIdSaved = await isEnrolledAsync()
 
 		if (isBioOn) {
 			const withoutUserMail = cachedEmails.filter((e) => e !== userEmail)
-			KVStore.set('bioEnabledEmails', withoutUserMail)
+			SecureKV.set('bioEnabledEmails', withoutUserMail)
 			return setIsBioOn(false)
 		}
 		if (hasFaceOrTouchIdSaved) {
@@ -67,7 +70,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 					.filter((e) => e !== userEmail)
 					.concat([userEmail])
 
-				KVStore.set('bioEnabledEmails', addedUserMail)
+				SecureKV.set('bioEnabledEmails', addedUserMail)
 				setIsBioOn(true)
 			}
 		}
@@ -90,7 +93,6 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 	}
 
 	const handleChange = (value) => {
-		console.log('value', text)
 		// TODO: Remove this and use userInfo.email
 		// Right now returns undefined so I take email from accessToken
 		const email = jwt_decode<TokenParams>(accessToken || '')?.email

@@ -9,7 +9,6 @@ import TransactionHistory from '@app/refactor/screens/transactions/transactions_
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { useTheme } from '@theme/index'
 import BottomTabs from '@app/components/BottomTabs'
-import KVStore from '@store/kv'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { TokenParams } from '@app/refactor/types/auth/splash'
 import InstantTrade from '@app/screens/InstantTrade'
@@ -17,19 +16,22 @@ import Wallet from '@app/screens/Wallet'
 import Exchange from '@app/screens/Exchange'
 import { setTabRouteName } from '@app/redux/transactions/actions'
 import { biometricDiffElapsed } from '@app/refactor/utils/authUtils'
+import KV from '@store/kv/regular'
+import SecureKV from '@store/kv/secure'
 
 const Tab = createBottomTabNavigator()
 
-const Main = ({ navigation }: ScreenProp<'Main'>) => {
+const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const dispatch = useDispatch()
 	const { theme } = useTheme()
 	const isFocused = useIsFocused()
 
+	const fromResume = route.params?.fromResume === true
 	const { accessToken } = useSelector((state: RootState) => state.auth)
 
 	useEffect(() => {
 		changeNavigationBarColor(theme.color.backgroundSecondary, true)
-		KVStore.set('lastOpenDateMillis', Date.now())
+		KV.set('lastOpenDateMillis', Date.now())
 		const stateChangeListener = AppState.addEventListener(
 			'change',
 			handleAppStateChange
@@ -42,9 +44,10 @@ const Main = ({ navigation }: ScreenProp<'Main'>) => {
 	}, [])
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
-		const webViewVisible = KVStore.get('webViewVisible')
+		const webViewVisible = KV.get('webViewVisible')
 
 		const bioVisible =
+			!fromResume &&
 			accessToken &&
 			!webViewVisible &&
 			newState === 'active' &&
@@ -55,20 +58,22 @@ const Main = ({ navigation }: ScreenProp<'Main'>) => {
 			getBiometricEnabled(email)
 		}
 
-		if (newState === 'active') {
-			KVStore.set('lastOpenDateMillis', Date.now())
+		if (newState === 'inactive') {
+			KV.set('lastOpenDateMillis', Date.now())
 		}
 	}, [])
 
 	const getBiometricEnabled = useCallback(
 		async (email: string) => {
-			const userEnabledBio = KVStore.get('bioEnabledEmails')?.includes(email)
+			const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
+			const userEnabledBio = bioEnabledEmails?.includes(email)
+
 			if (userEnabledBio && isFocused) {
 				navigation.navigate({
 					key: 'Resume-uniqueKey',
 					name: 'Resume',
 					params: {
-						fromSplash: false,
+						from: 'Main',
 					},
 				})
 			}

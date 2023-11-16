@@ -1,4 +1,3 @@
-import { refreshToken } from './../../../redux/profile/profileApi'
 import axios from 'axios'
 import Constants from 'expo-constants'
 import { Platform } from 'react-native'
@@ -18,9 +17,9 @@ import {
 	Dictionary,
 	RefreshTokenResponse,
 } from '@app/refactor/types/auth/splash'
-import KVStore from '@store/kv'
 import { setTokens } from '@store/redux/auth/slice'
 import store from '@app/refactor/redux/store'
+import SecureKV from '@store/kv/secure'
 
 const authRedirectUrl = Constants?.manifest?.extra?.authRedirectUrl
 
@@ -255,7 +254,7 @@ export const verifyAccount = async (callbackUrl: string, otp: string) => {
 
 export const retryUnauthorizedCall = async (
 	config: any,
-	oldRefreshToken: string | undefined
+	oldRefreshToken: string | null
 ) => {
 	if (!oldRefreshToken) return undefined
 
@@ -271,7 +270,7 @@ export const retryUnauthorizedCall = async (
 	return axios.request(config)
 }
 
-export const getTokensOnInit = async (oldRefreshToken: string | undefined) => {
+export const getTokensOnInit = async (oldRefreshToken: string | null) => {
 	if (!oldRefreshToken) return undefined
 
 	const data = await refreshTokenService(oldRefreshToken)
@@ -300,7 +299,7 @@ export const fetchCountries = async () => {
 }
 
 export const logout = async () => {
-	const refreshToken = KVStore.get('refreshToken')
+	const refreshToken = await SecureKV.get('refreshToken')
 	const data = await axios({
 		method: 'POST',
 		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

@@ -201,7 +201,7 @@ const Register = ({ navigation }: Props) => {
 						value={confirmPass}
 						label="Repeat Password"
 						labelBackgroundColor={theme.color.backgroundPrimary}
-						style={[styles.input, { marginTop: 10 }]}
+						style={[styles.input, { marginTop: 0 }]}
 						onChangeText={setConfirmPass}
 						onFocusOrChange={() => setConfirmPassErr(false)}
 						error={confirmPassErr}

@@ -5,7 +5,6 @@ import { useTheme, Theme } from '@theme/index'
 import { CommonProps } from '@components/button'
 import AppText from '@components/text'
 import { Element } from '@components/types'
-import KVStore from '@store/kv'
 import { useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 

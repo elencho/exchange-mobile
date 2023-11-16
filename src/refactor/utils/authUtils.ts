@@ -1,10 +1,13 @@
 import { BIOMETRIC_DIFF_MILLIS } from '@app/refactor/common/constants'
 import { TokenParams } from '@app/refactor/types/auth/splash'
-import KVStore from '@store/kv'
+import KV from '@store/kv/regular'
+import SecureKV from '@store/kv/secure'
 import jwt_decode from 'jwt-decode'
 
-export const canDoBiometric = (accessToken: string | undefined): boolean => {
-	const bioEnabledEmails = KVStore.get('bioEnabledEmails')
+export const canDoBiometric = async (
+	accessToken: string | undefined
+): Promise<boolean> => {
+	const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
 	if (!bioEnabledEmails || !accessToken) return false
 
 	const email = jwt_decode<TokenParams>(accessToken)?.email
@@ -12,10 +15,10 @@ export const canDoBiometric = (accessToken: string | undefined): boolean => {
 }
 
 export const biometricDiffElapsed = (): boolean => {
-	const lastTimeOpenMillis = KVStore.get('lastOpenDateMillis')
+	const lastTimeOpenMillis = KV.get('lastOpenDateMillis')
 
-	// TODO: Remove
-	console.log((Date.now() - (lastTimeOpenMillis || 0)) / 1000)
+	// TODO: Remove, let it be for now
+	// console.log((Date.now() - (lastTimeOpenMillis || 0)) / 1000)
 
 	return lastTimeOpenMillis
 		? Date.now() - lastTimeOpenMillis >= BIOMETRIC_DIFF_MILLIS

@@ -8,7 +8,6 @@ import { Theme, useTheme } from '@theme/index'
 import AppBackground from '@components/background'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
-import KVStore from '@store/kv'
 import { resendOtpThunk, startLoginThunk } from '@store/redux/auth/thunks'
 import TwoFaInput from '@components/input_2fa'
 import WithKeyboard from '@app/components/WithKeyboard'
@@ -16,6 +15,7 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { setTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
+import KV from '@store/kv/regular'
 
 export const ResetOtpInstructions = (
 	props: ScreenProp<'ResetOtpInstructions'>
@@ -50,7 +50,7 @@ export const ResetOtpInstructions = (
 	useEffect(() => {
 		setTimer(true)
 
-		const language = KVStore.get('language')
+		const language = KV.get('language')
 		setUrl(`https://support.cryptal.com/hc/${language}`)
 
 		return () => {
