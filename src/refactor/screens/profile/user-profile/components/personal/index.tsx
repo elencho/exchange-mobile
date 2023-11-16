@@ -48,13 +48,14 @@ export const Personal = ({ loading }: PersonalProps) => {
 		setLanguageModalVisible,
 		phoneNumberModalVisible,
 		togglePhoneNumberModal,
+		emailUpdated,
 	} = usePersonal()
 
 	const { styles } = useTheme(_styles)
 
 	const textCond = useCallback(
 		(r: string) => {
-			const isOn = !!userInfo?.emailUpdates
+			const isOn = emailUpdated
 			console.log('isOn', isOn)
 			switch (r) {
 				case PersonalFeatures.IDENTITY:

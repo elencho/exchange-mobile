@@ -30,9 +30,11 @@ export type Screens = {
 	ResetOtpInstructions?: {
 		resetOtpType?: ResetOtp
 	}
-	Main?: {}
+	Main?: {
+		fromResume: boolean
+	}
 	Resume: {
-		fromSplash: boolean
+		from: Route
 		maintenanceInProgress?: boolean
 		version?: boolean
 	}

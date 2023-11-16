@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import AppModal from '@app/components/AppModal'
-import ModalWithSearch from '@app/components/ModalWithSearch'
+import { ModalWithSearch } from '@components/modal/modal-with-search'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Route } from '@app/refactor/setup/nav/nav'
 
@@ -10,16 +10,21 @@ interface Props {
 	onCountryChosen: (country: Country) => void
 	from: Route
 	title?: string
+	chosenItem?: Country
+	visible: boolean
 }
 
-const CountriesModal = ({
-	hide,
-	onCountryChosen,
-	from,
-	title = 'Choose Country',
-}: Props) => {
+const CountriesModal = (props: Props) => {
 	const { auth, common } = useSelector((state: RootState) => state)
 	const { phoneCountryCode } = auth
+	const {
+		hide,
+		onCountryChosen,
+		chosenItem = phoneCountryCode,
+		from,
+		title = 'Choose Country',
+		visible = true,
+	} = props
 	const { countries } = common
 
 	const [filteredCountries, setFilteredCountries] = useState<Country[]>([])
@@ -35,7 +40,7 @@ const CountriesModal = ({
 		setFilteredCountries(filtered)
 	}
 
-	const choose = (countryName: string) => {
+	const choose = (countryName?: string) => {
 		const country = countries.find((c: Country) => c.name === countryName)
 		country && onCountryChosen(country)
 		hide()
@@ -46,20 +51,16 @@ const CountriesModal = ({
 			array={filteredCountries}
 			choose={choose}
 			filter={filter}
-			currentItem={phoneCountryCode}
+			currentItem={chosenItem?.name}
 			title={title}
-			phoneCountry={true}
-			countryDrop={undefined}
-			citizenshipDrop={undefined}
-			tradeType={undefined}
-			isForTransactions={undefined}
-			wallet={undefined}
+			phoneCountry={false}
+			countryDrop={true}
 		/>
 	)
 
 	return (
 		<AppModal
-			visible={true}
+			visible={visible}
 			hide={hide}
 			onModalHide={hide}
 			children={children}

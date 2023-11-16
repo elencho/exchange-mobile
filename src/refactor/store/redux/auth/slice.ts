@@ -1,6 +1,5 @@
 import { TokenParams } from '@app/refactor/types/auth/splash'
 import jwt_decode from 'jwt-decode'
-
 import {
 	ActionReducerMapBuilder,
 	createSlice,
@@ -20,7 +19,7 @@ import {
 	setNewPasswordOtpThunk,
 	verifyRegistrationThunk,
 } from '@store/redux/auth/thunks'
-import KVStore from '@store/kv'
+import SecureKV from '@store/kv/secure'
 
 interface AuthState {
 	timerVisible: boolean
@@ -49,18 +48,21 @@ const auth = createSlice({
 		setTimer: (state, action: PayloadAction<boolean>) => {
 			state.timerVisible = action.payload
 		},
+		setAuthLoading: (state, action: PayloadAction<boolean>) => {
+			state.authLoading = action.payload
+		},
 		setTokens(
 			state,
 			action: PayloadAction<{ refreshToken: string; accessToken: string }>
 		) {
-			KVStore.set('refreshToken', action.payload.refreshToken)
+			SecureKV.set('refreshToken', action.payload.refreshToken)
 			state.accessToken = action.payload.accessToken
 			state.otpType = jwt_decode<TokenParams>(action.payload.accessToken)
 				?.otpType
 		},
 		resetAuth: (state) => {
 			state = initialState
-			KVStore.del('refreshToken')
+			SecureKV.del('refreshToken')
 		},
 	},
 	extraReducers: (builder) => {
@@ -192,5 +194,6 @@ const register = (builder: ActionReducerMapBuilder<AuthState>) => {
 		})
 }
 
-export const { savePkceInfo, setTimer, setTokens, resetAuth } = auth.actions
+export const { savePkceInfo, setTimer, setTokens, setAuthLoading, resetAuth } =
+	auth.actions
 export default auth.reducer

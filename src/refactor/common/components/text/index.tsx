@@ -74,11 +74,7 @@ const AppText: React.FC<Props> = (props) => {
 			case 'l':
 				return { fontSize: 14, lineHeight: 18, fontFamily: curFont }
 			case 'title':
-				if (System.isAndroid)
-					return { fontSize: 14, lineHeight: 18, fontFamily: font.regular }
-				else {
-					return { fontSize: 16, lineHeight: 20, fontFamily: curFont }
-				}
+				return { fontSize: 16, lineHeight: 20, fontFamily: curFont }
 			case 'headline':
 				return { fontSize: 20, lineHeight: 24, fontFamily: curFont }
 		}

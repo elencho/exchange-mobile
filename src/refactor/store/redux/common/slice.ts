@@ -5,8 +5,8 @@ import {
 	PayloadAction,
 	createSlice,
 } from '@reduxjs/toolkit'
-import KVStore from '@store/kv'
 import { fetchCountriesThunk } from './thunks'
+import KV from '@store/kv/regular'
 
 interface CommonState {
 	language: Language
@@ -23,7 +23,7 @@ interface CommonState {
 }
 
 const initialState: CommonState = {
-	language: KVStore.get('language') || 'en',
+	language: KV.get('language') || 'en',
 	currencyList: [],
 	countries: [],
 	isBiometricScreenOpened: false,
@@ -35,7 +35,7 @@ const common = createSlice({
 	reducers: {
 		setLanguage(state, action: PayloadAction<Language>) {
 			state.language = action.payload
-			KVStore.set('language', action.payload)
+			KV.set('language', action.payload)
 			i18n.switchLanguage(action.payload)
 		},
 		setCurrencyList(state, action: PayloadAction<Currency[]>) {

@@ -13,6 +13,7 @@ interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
 	toggleSmsAuthModal: (v: boolean) => void
 	toggleEmailAuthModal: (v: boolean) => void
+	toggleGoogleAuthModal?: (v: boolean) => void
 	smsAuthModalVisible: boolean
 	emailAuthModalVisible: boolean
 }
@@ -24,6 +25,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 		toggleEmailAuthModal,
 		smsAuthModalVisible,
 		emailAuthModalVisible,
+		toggleGoogleAuthModal,
 	} = props
 
 	const navigation = useNavigation()
@@ -38,12 +40,14 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 		timerVisible,
 		value,
 		setValue,
+		handleFill,
 	} = useSmsAuthEmailModal({
 		type,
 		toggleSmsAuthModal,
 		toggleEmailAuthModal,
 		smsAuthModalVisible,
 		emailAuthModalVisible,
+		toggleGoogleAuthModal,
 	})
 
 	const { styles, theme } = useTheme(_styles)
@@ -78,6 +82,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 
 			<View style={styles.codeInput}>
 				<TwoFaInput
+					onFill={handleFill}
 					otpChangeType={type}
 					navigation={navigation}
 					value={value}

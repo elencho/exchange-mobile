@@ -7,15 +7,21 @@ import { useGoogleOtp } from './use-google-otp'
 import TwoFaInput from '@components/input_2fa'
 
 interface Props {
-	withdrawal?: boolean
-	whitelist?: boolean
+	toggleGoogleOtpModalVisible?: (v: boolean) => void
+	googleOtpModalVisible: boolean
+	toggleEmailAuthModalVisible: (v: boolean) => void
 }
 
 export default function GoogleOtpModal(props: Props) {
-	const { toggleGoogleOtpModalVisible, googleOtpModalVisible } = props
-	const { navigation, value, setValue, hide } = useGoogleOtp({
+	const {
+		toggleGoogleOtpModalVisible,
+		googleOtpModalVisible = false,
+		toggleEmailAuthModalVisible,
+	} = props
+	const { navigation, value, setValue, hide, onFill } = useGoogleOtp({
 		googleOtpModalVisible,
 		toggleGoogleOtpModalVisible,
+		toggleEmailAuthModalVisible,
 	})
 	const { styles, theme } = useTheme(_styles)
 
@@ -28,6 +34,7 @@ export default function GoogleOtpModal(props: Props) {
 
 			<View style={styles.codeInput}>
 				<TwoFaInput
+					onFill={onFill}
 					value={value}
 					cellCount={6}
 					setValue={setValue}

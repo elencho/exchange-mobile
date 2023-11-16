@@ -22,10 +22,9 @@ interface ModalWithSearchProps {
 	name: string
 	code: string
 	onPress: () => void
-	// TODO: fix any type on state
-	currentItem?: any
+	currentItem?: Country | any
 	uri?: string
-	phoneCountry: string
+	phoneCountry?: boolean
 	phoneCode?: string
 	countryDrop?: string
 	citizenshipDrop?: string
@@ -50,6 +49,7 @@ export const ModalSearchItem = (props: ModalWithSearchProps) => {
 		isForTransactions,
 	} = props
 	const { styles } = useTheme(_styles)
+	console.log({ name, currentItem, code })
 	const backgroundCond = () => {
 		if (name === currentItem || code === currentItem) {
 			return styles.background
@@ -130,4 +130,24 @@ const _styles = (theme: Theme) =>
 			alignItems: 'center',
 			backgroundColor: theme.color.backgroundPrimary,
 		},
+		background: { backgroundColor: 'rgba(101, 130, 253, 0.1 )' },
+		container: {
+			flexDirection: 'row',
+			alignItems: 'center',
+			marginBottom: 5,
+			borderRadius: 5,
+			padding: 10,
+		},
+		image: {
+			marginRight: 14,
+			width: 36,
+			height: 36,
+		},
+		primary: { color: theme.color.textPrimary },
+		secondary: { color: theme.color.textSecondary },
+		codeWrapper: {
+			flexDirection: 'row',
+			width: 250,
+		},
+		row: { flexDirection: 'row' },
 	})

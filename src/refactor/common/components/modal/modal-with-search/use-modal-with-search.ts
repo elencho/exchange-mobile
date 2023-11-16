@@ -3,8 +3,8 @@ import { COINS_URL_PNG, COUNTRIES_URL_PNG } from '@app/constants/api'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface useModalWithSearch {
-	choose: (name?: string, code?: string) => void
-	crypto: boolean
+	choose: (countryName?: string, code?: string) => void
+	crypto?: boolean
 	title: string
 }
 

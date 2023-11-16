@@ -86,7 +86,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	return (
 		<View style={styles.background}>
 			<WithKeyboard
-				keyboardVerticalOffsetIOS={10}
+				keyboardVerticalOffsetIOS={0}
 				contentContainerStyle={styles.container}
 				flexGrow={true}
 				padding={true}
