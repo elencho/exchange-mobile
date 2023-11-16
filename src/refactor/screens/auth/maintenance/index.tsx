@@ -32,25 +32,27 @@ export default function Maintenance(navigation: any) {
 			resizeMode="contain"
 			source={Images.stars}
 			style={styles.background}>
-			<Logo style={{ marginTop: 15 }} />
-			<Margin margin={80} />
-			<Gear />
-			<AppText style={styles.header}>Hey there!</AppText>
-			<AppText style={styles.secondary}>
-				We've been hard at work bringing new improvements to the platform. Soon
-				the platform will be fully operational.
-			</AppText>
-			<Margin margin={22} />
-			<AppText style={styles.secondary}>
-				Thanks for your patience and understanding.
-			</AppText>
-			<AppButton
-				variant="primary"
-				text="Refresh"
-				loading={loading}
-				onPress={refresh}
-				style={styles.button}
-			/>
+			<Logo style={styles.logo} />
+			<View style={styles.content}>
+				<Margin margin={80} />
+				<Gear />
+				<AppText style={styles.header}>Hey there!</AppText>
+				<AppText style={styles.secondary}>
+					We've been hard at work bringing new improvements to the platform.
+					Soon the platform will be fully operational.
+				</AppText>
+				<Margin margin={22} />
+				<AppText style={styles.secondary}>
+					Thanks for your patience and understanding.
+				</AppText>
+				<AppButton
+					variant="primary"
+					text="Refresh"
+					loading={loading}
+					onPress={refresh}
+					style={styles.button}
+				/>
+			</View>
 			<View style={styles.footer}>
 				<AppText style={styles.supportText}>
 					Need Help? Contact
@@ -78,6 +80,17 @@ const _styles = (theme: Theme) =>
 			alignItems: 'center',
 			backgroundColor: theme.color.backgroundPrimary,
 			paddingVertical: 30,
+			justifyContent: 'center',
+			flexDirection: 'column',
+		},
+		content: {
+			alignItems: 'center',
+			width: '100%',
+		},
+		logo: {
+			position: 'absolute',
+			marginTop: 15,
+			top: 55,
 		},
 		button: {
 			width: '50%',

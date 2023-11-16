@@ -21,11 +21,12 @@ import SecureKV from '@store/kv/secure'
 
 const Tab = createBottomTabNavigator()
 
-const Main = ({ navigation }: ScreenProp<'Main'>) => {
+const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const dispatch = useDispatch()
 	const { theme } = useTheme()
 	const isFocused = useIsFocused()
 
+	const fromResume = route.params?.fromResume === true
 	const { accessToken } = useSelector((state: RootState) => state.auth)
 
 	useEffect(() => {
@@ -46,6 +47,7 @@ const Main = ({ navigation }: ScreenProp<'Main'>) => {
 		const webViewVisible = KV.get('webViewVisible')
 
 		const bioVisible =
+			!fromResume &&
 			accessToken &&
 			!webViewVisible &&
 			newState === 'active' &&
@@ -56,7 +58,7 @@ const Main = ({ navigation }: ScreenProp<'Main'>) => {
 			getBiometricEnabled(email)
 		}
 
-		if (newState === 'active') {
+		if (newState === 'inactive') {
 			KV.set('lastOpenDateMillis', Date.now())
 		}
 	}, [])
@@ -71,7 +73,7 @@ const Main = ({ navigation }: ScreenProp<'Main'>) => {
 					key: 'Resume-uniqueKey',
 					name: 'Resume',
 					params: {
-						fromSplash: false,
+						from: 'Main',
 					},
 				})
 			}

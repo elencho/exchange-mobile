@@ -50,7 +50,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		}
 
 		// // ! For Testing
-		// navigation.navigate('SetNewPassword')
+		// navigation.navigate('Maintenance')
 		// return
 
 		if (await updateNeeded()) {
@@ -63,7 +63,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 
 		if (await canDoBiometric(accessToken)) {
 			if (biometricDiffElapsed()) {
-				navigation.navigate('Resume', { fromSplash: true })
+				navigation.navigate('Resume', { from: 'Splash' })
 			} else {
 				navigation.navigate('Main')
 			}

@@ -98,6 +98,7 @@ export const Login2Fa = ({ navigation }: Props) => {
 	return (
 		<AppBackground>
 			<WithKeyboard
+				keyboardVerticalOffsetIOS={0}
 				padding={true}
 				flexGrow={true}
 				modal={undefined}

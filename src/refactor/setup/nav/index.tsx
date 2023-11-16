@@ -27,17 +27,14 @@ import useNotifications from '@app/screens/useNotifications'
 import { Screens } from './nav'
 import { useDispatch } from 'react-redux'
 import { setGeneralError } from '@store/redux/common/slice'
+import { enableScreens } from 'react-native-screens'
 
+enableScreens(false)
 const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef<Screens>()
 
 export default function AppNavigator() {
 	const dispatch = useDispatch()
-	// const state: any = useSelector((state) => state)
-	// const {
-	// 	errors: { generalError },
-	// } = state
-
 	useNotifications()
 
 	const onNavigationChanged = (state?: NavigationState) => {
@@ -67,6 +64,7 @@ export default function AppNavigator() {
 					gestureEnabled: false,
 					headerLeft: () => null,
 					animation: 'slide_from_right',
+					navigationBarColor: '#161629',
 				}}
 				initialRouteName="Splash">
 				<Stack.Screen name="Splash" component={Splash} />
