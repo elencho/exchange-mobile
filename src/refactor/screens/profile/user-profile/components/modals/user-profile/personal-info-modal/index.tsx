@@ -33,6 +33,7 @@ export default function PersonalInfoModal({
 		handleFieldChange,
 		localUserInfo,
 		chosenCountry,
+		onHide,
 	} = usePersonalInfoModal({
 		personalInfoModalVisible,
 		togglePersonalInfoModal,
@@ -70,7 +71,7 @@ export default function PersonalInfoModal({
 						/>
 					}
 					label="Country"
-					selectedText={country}
+					selectedText={chosenCountry?.name}
 					style={styles.dropdown}
 					error={countryError}
 				/>
@@ -115,13 +116,13 @@ export default function PersonalInfoModal({
 				text="Save"
 			/>
 
-			{countryModalVisible && (
-				<CountriesModal
-					onCountryChosen={changeCountry}
-					hide={() => setCountryModalVisible(false)}
-					from={'UserProfile'}
-				/>
-			)}
+			<CountriesModal
+				visible={countryModalVisible}
+				onCountryChosen={changeCountry}
+				hide={() => setCountryModalVisible(false)}
+				from={'UserProfile'}
+				chosenItem={chosenCountry}
+			/>
 		</WithKeyboard>
 	)
 
@@ -129,6 +130,7 @@ export default function PersonalInfoModal({
 		<AppModal
 			visible={personalInfoModalVisible}
 			hide={hide}
+			onModalHide={onHide}
 			fullScreen
 			title="Personal Information"
 			children={children}

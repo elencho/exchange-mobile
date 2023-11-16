@@ -25,7 +25,7 @@ const usePersonalInfoModal = ({
 	}
 	const [chosenCountry, setChosenCountry] = useState<Country>(x)
 	const [localUserInfo, setLocalUserInfo] = useState({
-		country: chosenCountry?.code!,
+		country: chosenCountry?.name!,
 		city: userInfo?.city!,
 		postalCode: userInfo?.postalCode!,
 		address: userInfo?.address!,
@@ -41,23 +41,34 @@ const usePersonalInfoModal = ({
 	const hide = () => {
 		togglePersonalInfoModal(false)
 	}
-	const handleSave = () => {
-		const condition = canEditInfo
-			? !userInfo?.country ||
-			  !userInfo?.city?.trim() ||
-			  !alphabeticRegex(userInfo?.city) ||
-			  !userInfo?.postalCode?.trim() ||
-			  !userInfo?.address?.trim()
-			: !userInfo?.country ||
-			  !userInfo.city?.trim() ||
-			  !alphabeticRegex(userInfo.city) ||
-			  !userInfo.postalCode?.trim() ||
-			  !userInfo.address?.trim() ||
-			  !userInfo.firstName?.trim() ||
-			  !userInfo.lastName?.trim() ||
-			  !userInfo.citizenship
 
-		if (error || condition) {
+	const onHide = () => {
+		setChosenCountry(x)
+		setLocalUserInfo({
+			country: chosenCountry?.code!,
+			city: userInfo?.city!,
+			postalCode: userInfo?.postalCode!,
+			address: userInfo?.address!,
+		})
+	}
+
+	const handleSave = () => {
+		// const condition = canEditInfo
+		// 	? !userInfo?.country ||
+		// 	  !userInfo?.city?.trim() ||
+		// 	  !alphabeticRegex(userInfo?.city) ||
+		// 	  !userInfo?.postalCode?.trim() ||
+		// 	  !userInfo?.address?.trim()
+		// 	: !userInfo?.country ||
+		// 	  !userInfo.city?.trim() ||
+		// 	  !alphabeticRegex(userInfo.city) ||
+		// 	  !userInfo.postalCode?.trim() ||
+		// 	  !userInfo.address?.trim() ||
+		// 	  !userInfo.firstName?.trim() ||
+		// 	  !userInfo.lastName?.trim() ||
+		// 	  !userInfo.citizenship
+
+		if (error) {
 			setError(true)
 		} else {
 			dispatch(updateUserThunk(localUserInfo))
@@ -111,6 +122,7 @@ const usePersonalInfoModal = ({
 		handleFieldChange,
 		localUserInfo,
 		changeCountry,
+		onHide,
 	}
 }
 
