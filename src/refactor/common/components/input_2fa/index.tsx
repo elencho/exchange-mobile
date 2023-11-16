@@ -19,6 +19,8 @@ import GeneralError from '@app/components/GeneralError'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Route, Screens } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
+import { credentialsForGoogleThunk } from '@app/refactor/redux/profile/profileThunks'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 interface Props {
 	value: string
@@ -27,6 +29,7 @@ interface Props {
 	navigation: NativeStackNavigationProp<Screens>
 	from?: Route
 	indicatorStyle?: StyleProp<ViewStyle>
+	onFill?: () => void
 }
 
 const TwoFaInput = ({
@@ -36,10 +39,13 @@ const TwoFaInput = ({
 	navigation,
 	from,
 	indicatorStyle,
+	onFill = () => {},
 }: Props) => {
 	const dispatch = useDispatch()
+	// TODO: add loading from param
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
 
+	// TODO: add onSuccess instead of if elses
 	useEffect(() => {
 		if (value.length === cellCount) {
 			if (from === 'Login2Fa') {
@@ -47,6 +53,7 @@ const TwoFaInput = ({
 			} else if (from === 'Registration') {
 				dispatch(verifyRegistrationThunk({ otp: value, navigation }))
 			}
+			onFill()
 		}
 	}, [value])
 
@@ -75,8 +82,8 @@ const CodeInput = ({ value, setValue, cellCount }: CodeInputProps) => {
 
 	const handleValue = (value: string) => {
 		setValue(value)
-		// TODO
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		// TODO: Remove after wallets refactor
+		dispatch(saveGeneralError(null))
 	}
 
 	return (

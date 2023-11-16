@@ -25,8 +25,10 @@ import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
 import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
 import { Screens } from './nav'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setGeneralError } from '@store/redux/common/slice'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
+import { RootState } from '@app/refactor/redux/rootReducer'
 import { enableScreens } from 'react-native-screens'
 
 enableScreens(false)
@@ -35,6 +37,10 @@ export const navigationRef = createNavigationContainerRef<Screens>()
 
 export default function AppNavigator() {
 	const dispatch = useDispatch()
+	const {
+		errors: { generalError },
+	} = useSelector((state: RootState) => state)
+
 	useNotifications()
 
 	const onNavigationChanged = (state?: NavigationState) => {
@@ -48,6 +54,7 @@ export default function AppNavigator() {
 			type: 'SET_STACK_NAVIGATION_ROUTE',
 			stackRoute: state?.routes[state.routes.length - 1].name,
 		})
+		if (generalError) dispatch(saveGeneralError(null))
 	}
 
 	return (

@@ -6,9 +6,14 @@ import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import usePersonalInformation from './use-personal-information'
 
-export default function PersonalInformation() {
-	const { edit, userInfo } = usePersonalInformation()
+export default function PersonalInformation({
+	togglePersonalInfoModal,
+}: {
+	togglePersonalInfoModal: (visible: boolean) => void
+}) {
+	const { edit, userInfo } = usePersonalInformation({ togglePersonalInfoModal })
 	const { styles } = useTheme(_styles)
+	
 	return (
 		<View style={styles.block}>
 			<View style={styles.row}>

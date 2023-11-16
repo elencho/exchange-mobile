@@ -11,10 +11,15 @@ import { errorHappenedHere } from '@app/utils/appUtils'
 import { usePhoneNumberModal } from './use-phone-number-modal'
 import CountriesModal from '@app/refactor/common/modals/countries'
 
-export default function PhoneNumberModal() {
+export default function PhoneNumberModal({
+	phoneNumberModalVisible,
+	togglePhoneNumberModal,
+}: {
+	phoneNumberModalVisible: boolean
+	togglePhoneNumberModal: (v: boolean) => void
+}) {
 	const {
 		userInfo,
-		phoneNumberModalVisible,
 		hide,
 		onModalHide,
 		handlePhoneNumber,
@@ -27,7 +32,7 @@ export default function PhoneNumberModal() {
 		countryModalVisible,
 		setCountryModalVisible,
 		phoneNumber,
-	} = usePhoneNumberModal()
+	} = usePhoneNumberModal({ phoneNumberModalVisible, togglePhoneNumberModal })
 	const number = userInfo?.phoneNumber
 	const country = userInfo?.phoneCountry
 	const borderColor = error && !country ? '#F45E8C' : '#42475D'

@@ -11,6 +11,7 @@ import colors from '../constants/colors'
 import { errorHappenedHere } from '../utils/appUtils'
 import AppText from './AppText'
 import GeneralError from './GeneralError'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function CodeInput({ cellCount = 6, value, setValue }) {
 	const dispatch = useDispatch()
@@ -22,7 +23,7 @@ export default function CodeInput({ cellCount = 6, value, setValue }) {
 
 	const handleValue = (value) => {
 		setValue(value)
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		dispatch(saveGeneralError(null))
 	}
 
 	return (

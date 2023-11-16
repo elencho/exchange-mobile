@@ -1,54 +1,53 @@
-import { useNavigation } from '@react-navigation/native'
-import React, { useEffect, useState } from 'react'
-import { View, Text } from 'react-native'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	toggleEmailAuthModal,
-	toggleSmsAuthModal,
-} from '@app/refactor/redux/modals/modalsSlice'
-import {
-	setEmailAuth,
-	setGoogleAuth,
-	setSmsAuth,
-} from '@app/refactor/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import {
+	credentialsForGoogleThunk,
+	fetchUserInfoThunk,
+} from '@app/refactor/redux/profile/profileThunks'
+import { activateEmailOtp } from '@app/refactor/redux/profile/profileApi'
 
-export const useSmsAuthEmailModal = ({ type }) => {
+interface SmsEmailAuthModalProps {
+	type: 'SMS' | 'Email'
+	toggleSmsAuthModal: (v: boolean) => void
+	toggleEmailAuthModal: (v: boolean) => void
+	emailAuthModalVisible: boolean
+	smsAuthModalVisible: boolean
+	toggleGoogleAuthModal: (v: boolean) => void
+}
+
+export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
+	const {
+		type,
+		toggleEmailAuthModal,
+		toggleSmsAuthModal,
+		smsAuthModalVisible,
+		emailAuthModalVisible,
+		toggleGoogleAuthModal,
+	} = props
 	const dispatch = useDispatch()
 
 	const state = useSelector((state: RootState) => state)
 	const {
-		modalState: { smsAuthModalVisible, emailAuthModalVisible },
-		profile: { currentSecurityAction, timerVisible },
+		profile: { currentSecurityAction, tOTPChangeParams },
 	} = state
 
-	const action =
-		type === 'SMS' ? toggleSmsAuthModal(false) : toggleEmailAuthModal(false)
-	const visible = type === 'SMS' ? smsAuthModalVisible : emailAuthModalVisible
+	const visible = emailAuthModalVisible
 	const cellCount = type === 'SMS' ? 4 : 6
-	const email = currentSecurityAction === 'email'
-	const google = currentSecurityAction === 'google'
 
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(30)
 	const [otpLoading, setOtpLoading] = useState(false)
 
 	const reset = () => {
-		dispatch({ type: 'TOGGLE_TIMER', timerVisible: false })
 		setSeconds(30)
 		return
 	}
 
 	useEffect(() => {
 		if (emailAuthModalVisible || smsAuthModalVisible) {
-			dispatch({ type: 'TOGGLE_TIMER', timerVisible: true })
-		}
-	}, [emailAuthModalVisible, smsAuthModalVisible])
-
-	useEffect(() => {
-		if (emailAuthModalVisible || smsAuthModalVisible) {
-			if (!seconds || !timerVisible) reset()
-			if (seconds && timerVisible) {
+			if (!seconds) reset()
+			if (seconds) {
 				setTimeout(() => {
 					setSeconds(seconds - 1)
 				}, 1000)
@@ -56,29 +55,41 @@ export const useSmsAuthEmailModal = ({ type }) => {
 		} else {
 			reset()
 		}
-	}, [seconds, timerVisible])
+	}, [seconds])
 
 	const handleHide = () => {
 		setSeconds(30)
 		setValue('')
-		if (value.length === cellCount && email) {
-			dispatch(setSmsAuth(false))
-			dispatch(setGoogleAuth(false))
+	}
+	const handleFill = () => {
+		if (currentSecurityAction === 'TOTP') {
+			dispatch(
+				credentialsForGoogleThunk({
+					OTP: value,
+					openModal: toggleGoogleAuthModal,
+					otpType: 'TOTP',
+				})
+			)
+		} else if (currentSecurityAction === 'EMAIL') {
+			activateEmailOtp(tOTPChangeParams.changeOTPToken!, value)
+			hide()
+			dispatch(fetchUserInfoThunk())
 		}
 	}
 
 	const hide = () => {
-		dispatch(action)
-		if (email) dispatch(setEmailAuth(false))
-		if (google) dispatch(setGoogleAuth(false))
+		toggleSmsAuthModal(false)
+		toggleEmailAuthModal(false)
 	}
 
-	const resend = () =>
-		dispatch({
-			type: 'RESEND_SAGA',
-			smsEmailAuth: true,
-			setOtpLoading,
-		})
+	const resend = () => {
+		// TODO: ADD LOGIC
+		// dispatch({
+		// 	type: 'RESEND_SAGA',
+		// 	smsEmailAuth: true,
+		// 	setOtpLoading,
+		// })
+	}
 
 	return {
 		resend,
@@ -86,17 +97,14 @@ export const useSmsAuthEmailModal = ({ type }) => {
 		handleHide,
 		otpLoading,
 		reset,
-		google,
-		email,
 		cellCount,
 		visible,
-		action,
 		smsAuthModalVisible,
 		emailAuthModalVisible,
 		currentSecurityAction,
-		timerVisible,
 		seconds,
 		setValue,
 		value,
+		handleFill,
 	}
 }

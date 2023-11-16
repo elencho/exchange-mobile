@@ -1,16 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text, Linking } from 'react-native'
+import { useEffect, useState } from 'react'
+import { Linking } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import useCopyToClipboard from '@app/utils/copyToClipboard'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
+import { activateGoogleOtp } from '@app/refactor/redux/profile/profileApi'
+import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 
-export const useGoogleAuth = () => {
+interface GoogleAuthProps {
+	googleAuthModalVisible: boolean
+	toggleGoogleAuthModal: (visible: boolean) => void
+}
+
+export const useGoogleAuth = (props: GoogleAuthProps) => {
+	const { googleAuthModalVisible, toggleGoogleAuthModal } = props
+
 	const { copyToClipboard } = useCopyToClipboard()
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		modalState: { googleAuthModalVisible },
-		profile: { totpSecretObj },
+		profile: { tOTPChangeParams },
 	} = state
 
 	const [key, setKey] = useState('')
@@ -20,7 +29,19 @@ export const useGoogleAuth = () => {
 		return () => setGoogleAuthLoading(false)
 	}, [])
 
-	const enable = () => dispatch(activateGoogleOtp(key, setGoogleAuthLoading))
+	const enable = async () => {
+		try {
+			await activateGoogleOtp(
+				tOTPChangeParams?.changeOTPToken!,
+				key,
+				tOTPChangeParams?.totp?.totpSecret!
+			)
+			dispatch(fetchUserInfoThunk())
+			hide()
+		} catch (e) {
+			console.log(e)
+		}
+	}
 
 	const handleStore = () => {
 		const androidLink =
@@ -33,8 +54,7 @@ export const useGoogleAuth = () => {
 	}
 
 	const hide = () => {
-		dispatch(toggleGoogleAuthModal(false))
-		dispatch(setGoogleAuth(false))
+		toggleGoogleAuthModal(false)
 	}
 
 	const onModalHide = () => {
@@ -45,10 +65,12 @@ export const useGoogleAuth = () => {
 		if (key && /^[0-9]+$/.test(key)) setKey(key)
 		else setKey('')
 
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		// TODO: Remove after wallets refactor
+		dispatch(saveGeneralError(null))
 	}
 
-	const handleCopy = () => copyToClipboard(totpSecretObj?.totpSecretEncoded)
+	const handleCopy = () =>
+		copyToClipboard(tOTPChangeParams?.totp?.totpSecretEncoded)
 
 	const isKeyEmpty = key?.length === 0
 	return {
@@ -61,7 +83,7 @@ export const useGoogleAuth = () => {
 		enable,
 		googleAuthLoading,
 		googleAuthModalVisible,
-		totpSecretObj,
+		tOTPChangeParams,
 		key,
 	}
 }

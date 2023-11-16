@@ -25,6 +25,7 @@ import BalanceScreen from '../screens/Wallet/Balance'
 import WelcomeScreen from '../screens/Welcome'
 import useNotifications from '../screens/useNotifications'
 import MainScreen from './MainScreen'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 enableScreens(false)
 const Stack = createNativeStackNavigator()
@@ -44,8 +45,7 @@ export default function Navigator() {
 			type: 'SET_STACK_NAVIGATION_ROUTE',
 			stackRoute: state.routes[state.routes.length - 1].name,
 		})
-		if (generalError)
-			dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		if (generalError) dispatch(saveGeneralError(null))
 	}
 
 	const screenOptions = {

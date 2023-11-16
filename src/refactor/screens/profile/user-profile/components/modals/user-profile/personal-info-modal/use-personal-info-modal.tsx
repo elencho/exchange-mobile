@@ -1,37 +1,35 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text } from 'react-native'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { saveUserInfo } from '@app/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { togglePersonalInfoModal } from '@app/refactor/redux/modals/modalsSlice'
 import { updateUserThunk } from '@app/refactor/redux/profile/profileThunks'
 
-const usePersonalInfoModal = () => {
+const usePersonalInfoModal = ({
+	personalInfoModalVisible,
+	togglePersonalInfoModal,
+}: {
+	personalInfoModalVisible: boolean
+	togglePersonalInfoModal: (visible: boolean) => void
+}) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		modalState: { personalInfoModalVisible },
-		profile: { userInfo },
+		profile: { userInfo, userProfileLoading },
 		common: { countries },
 	} = state
 
-	const [countryDrop, setCountryDrop] = useState(false)
 	const [error, setError] = useState(false)
-	const [localUserInfo, setLocalUserInfo] = useState({
-		firstName: userInfo?.firstName,
-		lastName: userInfo?.lastName,
-		email: userInfo?.email,
-		country: userInfo?.countryCode,
-		city: userInfo?.city,
-		postalCode: userInfo?.postalCode,
-		address: userInfo?.address,
-	})
 	const x = {
-		phoneCode: userInfo?.phoneCountry,
 		name: userInfo?.country,
 		code: userInfo?.countryCode,
 	}
 	const [chosenCountry, setChosenCountry] = useState<Country>(x)
+	const [localUserInfo, setLocalUserInfo] = useState({
+		country: chosenCountry?.code!,
+		city: userInfo?.city!,
+		postalCode: userInfo?.postalCode!,
+		address: userInfo?.address!,
+	})
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
 	const alphabeticRegex = (text: string) => /^[a-zA-Z]+$/.test(text?.trim())
@@ -41,10 +39,9 @@ const usePersonalInfoModal = () => {
 	}, [userInfo, personalInfoModalVisible])
 
 	const hide = () => {
-		dispatch(togglePersonalInfoModal(false))
+		togglePersonalInfoModal(false)
 	}
 	const handleSave = () => {
-		// TODO: refactor
 		const condition = canEditInfo
 			? !userInfo?.country ||
 			  !userInfo?.city?.trim() ||
@@ -62,19 +59,19 @@ const usePersonalInfoModal = () => {
 
 		if (error || condition) {
 			setError(true)
-		} else dispatch(updateUserThunk(localUserInfo))
+		} else {
+			dispatch(updateUserThunk(localUserInfo))
+			hide()
+		}
+	}
+	const changeCountry = (country: Country) => {
+		setChosenCountry(country)
+		setLocalUserInfo({ ...localUserInfo, country: country?.code! })
 	}
 
-	// TODO: FIX types
-	const handleCountries = (countryDrop, citizenshipDrop) => {
+	const handleCountries = () => {
 		setCountryModalVisible(true)
-		if (countryDrop) setCountryDrop(true)
-		if (citizenshipDrop) setCitizenshipDrop(true)
 	}
-
-	// const handleReset = () => {
-	// 	setCitizenshipDrop(false), setCountryDrop(false)
-	// }
 
 	const citizenshipText = (code: string) => {
 		let country
@@ -105,8 +102,7 @@ const usePersonalInfoModal = () => {
 		citizenshipText,
 		canEditInfo,
 		handleSave,
-		countryDrop,
-		personalInfoModalVisible,
+		userProfileLoading,
 		hide,
 		setChosenCountry,
 		chosenCountry,
@@ -114,6 +110,7 @@ const usePersonalInfoModal = () => {
 		setCountryModalVisible,
 		handleFieldChange,
 		localUserInfo,
+		changeCountry,
 	}
 }
 

@@ -28,6 +28,8 @@ interface ToggleSubscriptionData {
 
 interface CredentialsForEmailData {
 	OTP: string
+	openModal: (v: boolean) => void
+	otpType: string
 }
 
 interface ActivateGoogleData {
@@ -88,4 +90,20 @@ type Directors = {
 	id: number
 	firstName: string
 	lastName: string
+}
+
+interface EditProfileParams {
+	country?: string
+	city?: string
+	postalCode?: string
+	address?: string
+}
+
+interface tOTPChangeParams {
+	changeOTPToken: string
+	totp?: {
+		totpSecret: string
+		totpSecretEncoded: string
+		totpSecretQrCode: string
+	}
 }

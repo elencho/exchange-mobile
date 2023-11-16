@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Theme, useTheme } from '@theme/index'
 import { ChooseLanguageModal } from '@components/modal/choose-language'
@@ -42,44 +42,49 @@ export const Personal = ({ loading }: PersonalProps) => {
 		generalError,
 		language,
 		corporate,
-		smsAuth,
-		setChosenCountry,
-		chosenCountry,
-		countryModalVisible,
-		setCountryModalVisible,
+		togglePersonalInfoModal,
+		personalInfoModalVisible,
+		languageModalVisible,
+		setLanguageModalVisible,
+		phoneNumberModalVisible,
+		togglePhoneNumberModal,
 	} = usePersonal()
 
 	const { styles } = useTheme(_styles)
 
-	const textCond = (r: string) => {
-		const isOn = !!userInfo?.emailUpdates
-		switch (r) {
-			case PersonalFeatures.IDENTITY:
-				return (
-					<Identity
-						styles={styles}
-						userStatus={userStatus}
-						verify={verify}
-						goToSupport={goToSupport}
-						openModal={openModal}
-					/>
-				)
-			case PersonalFeatures.PHONE:
-				return <Phone styles={styles} edit={edit} />
-			case PersonalFeatures.NOTIFICATIONS:
-				return (
-					<Notifications
-						styles={styles}
-						isOn={isOn}
-						onToggle={(value) => handleEmailUpdates(value)}
-					/>
-				)
-			case PersonalFeatures.LANGUAGE:
-				return <Language styles={styles} editLanguage={editLanguage} />
-			default:
-				break
-		}
-	}
+	const textCond = useCallback(
+		(r: string) => {
+			const isOn = !!userInfo?.emailUpdates
+			console.log('isOn', isOn)
+			switch (r) {
+				case PersonalFeatures.IDENTITY:
+					return (
+						<Identity
+							styles={styles}
+							userStatus={userStatus!}
+							verify={verify}
+							goToSupport={goToSupport}
+							openModal={openModal}
+						/>
+					)
+				case PersonalFeatures.PHONE:
+					return <Phone styles={styles} edit={edit} />
+				case PersonalFeatures.NOTIFICATIONS:
+					return (
+						<Notifications
+							styles={styles}
+							isOn={isOn}
+							onToggle={(value) => handleEmailUpdates(value)}
+						/>
+					)
+				case PersonalFeatures.LANGUAGE:
+					return <Language styles={styles} editLanguage={editLanguage} />
+				default:
+					break
+			}
+		},
+		[userInfo]
+	)
 
 	const secondaryTextCond = (r: string) => {
 		const error = generalError && errorHappenedHere('NotificationSwitcher')
@@ -92,7 +97,6 @@ export const Personal = ({ loading }: PersonalProps) => {
 						styles={styles}
 					/>
 				)
-			// TODO: WILL BE CHANGED AFTER REDESIGN
 			case PersonalFeatures.PHONE:
 				return (
 					<AppText variant="s" style={styles.secondary}>
@@ -151,13 +155,22 @@ export const Personal = ({ loading }: PersonalProps) => {
 				))}
 			</View>
 			<View style={styles.line} />
-			<PersonalInformation />
+			<PersonalInformation togglePersonalInfoModal={togglePersonalInfoModal} />
 			{corporate && <CompanyInformation />}
 			<View style={styles.line} />
 			<DeleteAccount />
-			<PersonalInfoModal />
-			<PhoneNumberModal />
-			<ChooseLanguageModal />
+			<PersonalInfoModal
+				togglePersonalInfoModal={togglePersonalInfoModal}
+				personalInfoModalVisible={personalInfoModalVisible}
+			/>
+			<PhoneNumberModal
+				phoneNumberModalVisible={phoneNumberModalVisible}
+				togglePhoneNumberModal={togglePhoneNumberModal}
+			/>
+			<ChooseLanguageModal
+				languageModalVisible={languageModalVisible}
+				setLanguageModalVisible={setLanguageModalVisible}
+			/>
 			<EditCompanyModal />
 			<IdentityModal />
 		</>

@@ -26,6 +26,7 @@ import ChooseNetworkDropdown from '../../Wallet/Deposit/ChooseNetworkDropdown'
 import ChooseNetworkModal from '../../Wallet/Deposit/ChooseNetworkModal'
 import WithKeyboard from '../../WithKeyboard'
 import QrScannerToggler from '../Withdrawal/widgets/QrScannerToggler'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function AddEditWhitelistModal({ add, edit }) {
 	const dispatch = useDispatch()
@@ -46,7 +47,9 @@ export default function AddEditWhitelistModal({ add, edit }) {
 	const hide = () => {
 		if (add) dispatch(toggleAddWhitelistModal(false))
 		if (edit) dispatch(toggleEditWhitelistModal(false))
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+
+		//TODO: remove after wallet refactor
+		dispatch(saveGeneralError(null))
 	}
 
 	const [error, setError] = useState(false)
@@ -164,6 +167,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 					value={add ? newWhitelist.address : currentWhitelistObj.address}
 					label="Destination Address"
 					editable={add ? true : false}
+					disabled={add ? false : true}
 					focusable={add ? true : false}
 					error={error && addressError}
 				/>
@@ -176,6 +180,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 						value={add ? newWhitelist.tag : currentWhitelistObj.tag}
 						label="Address Tag"
 						editable={add ? true : false}
+						disabled={add ? false : true}
 						focusable={add ? true : false}
 						error={error && tagError}
 					/>

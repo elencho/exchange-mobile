@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react'
-import { View, Text } from 'react-native'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	toggleCountriesModal,
-	togglePhoneNumberModal,
-} from '@app/refactor/redux/modals/modalsSlice'
-import { saveUserInfo } from '@app/refactor/redux/profile/actions'
+
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { updatePhoneNumber } from '@app/utils/userProfileUtils'
 
-export const usePhoneNumberModal = () => {
+export const usePhoneNumberModal = ({
+	phoneNumberModalVisible,
+	togglePhoneNumberModal,
+}: {
+	phoneNumberModalVisible: boolean
+	togglePhoneNumberModal: (v: boolean) => void
+}) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		modalState: { phoneNumberModalVisible },
 		profile: { userInfo, userProfileLoading },
 		common: { countries },
 	} = state
@@ -41,7 +41,7 @@ export const usePhoneNumberModal = () => {
 	}, [phoneNumberModalVisible])
 
 	const hide = () => {
-		dispatch(togglePhoneNumberModal(false))
+		togglePhoneNumberModal(false)
 	}
 
 	const onModalHide = () => {

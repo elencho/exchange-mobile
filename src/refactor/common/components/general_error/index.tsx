@@ -1,39 +1,28 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 import GeneralErrorIcon from '@assets/images/User_profile/General_Error.svg'
 import AppText from '@components/text'
-import { RootState } from '@app/refactor/redux/rootReducer'
 import { Theme, useTheme } from '@theme/index'
 import { formatUiError } from '@components/util'
-import { setGeneralError } from '@store/redux/common/slice'
 
-function GeneralError({ style = {} }) {
-	const dispatch = useDispatch()
+interface Props {
+	errorData: UiErrorData | null
+	style?: any
+}
+
+function GeneralError({ errorData, style }: Props) {
 	const { styles } = useTheme(_styles)
-
-	const generalError = useSelector(
-		(state: RootState) => state.common.generalErrorData
-	)
-
-	useEffect(() => {
-		return () => {
-			if (generalError) {
-				dispatch(setGeneralError(undefined))
-			}
-		}
-	}, [])
 
 	return (
 		<>
-			{generalError ? (
+			{errorData ? (
 				<View style={[styles.container, style]}>
 					<GeneralErrorIcon />
 					<AppText
 						variant="m"
-						transParams={generalError.transParams}
+						transParams={errorData.transParams}
 						style={styles.red}>
-						{formatUiError(generalError)}
+						{formatUiError(errorData)}
 					</AppText>
 				</View>
 			) : null}

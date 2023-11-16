@@ -1,20 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Pressable, StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import colors from '@app/constants/colors'
 import AppText from '@components/text'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Screens } from '@app/refactor/setup/nav/nav'
+import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 
 interface Props {
 	clear?: () => void
 	headlineLogo?: React.ReactNode
-	style?: any
 }
 
-function TopRow({ clear, headlineLogo, style }: Props) {
+function TopRow({ clear, headlineLogo }: Props) {
+	const dispatch = useDispatch()
 	const navigation =
 		useNavigation<NativeStackNavigationProp<Screens, 'UserProfile'>>()
 	const route = useRoute()
@@ -22,6 +23,10 @@ function TopRow({ clear, headlineLogo, style }: Props) {
 	const userInfo = useSelector((state: RootState) => state?.profile?.userInfo)
 	const firstName = userInfo?.firstName
 	const lastName = userInfo?.lastName
+
+	useEffect(() => {
+		if (!firstName) dispatch(fetchUserInfoThunk())
+	}, [firstName])
 
 	const initials = () => {
 		if (firstName && lastName) {

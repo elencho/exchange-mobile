@@ -48,8 +48,8 @@ export const fetchUserInfoUtil = async () => {
 	if (data) return data.data
 }
 
-export const updateUserData = async (data: UserInfoType) => {
-	const userInfo = await axios<UserInfoType>({
+export const updateUserData = async (data: EditProfileParams) => {
+	const userInfo = await axios({
 		method: 'POST',
 		url: UPDATE_USER_DATA,
 		data,
@@ -127,7 +127,7 @@ export const sendEmailOtp = async () => {
 }
 
 export const getOtpChangeToken = async (OTP: string, newOTPType: string) => {
-	const data = await axios({
+	const data = await axios<tOTPChangeParams>({
 		method: 'GET',
 		headers: { OTP, requestName: 'getOtpChangeToken', toast: false },
 		url: OTP_CHANGE_TOKEN,

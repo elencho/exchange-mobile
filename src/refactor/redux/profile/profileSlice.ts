@@ -1,10 +1,10 @@
-// src/redux/errorsSlice.ts
 import {
 	ActionReducerMapBuilder,
 	createSlice,
 	PayloadAction,
 } from '@reduxjs/toolkit'
 import {
+	credentialsForGoogleThunk,
 	fetchUserInfoThunk,
 	toggleSubscriptionThunk,
 	updatePasswordThunk,
@@ -13,18 +13,18 @@ import {
 
 export interface ProfileState {
 	userInfo: UserInfoType | null | undefined
-	otpChangeToken: string | null
-	totpSecretObj: string | {}
 	userProfileLoading: boolean
 	verificationInfo: {}
+	currentSecurityAction: OTP | null
+	tOTPChangeParams: tOTPChangeParams | null
 }
 
 const initialState: ProfileState = {
 	userInfo: null,
-	otpChangeToken: null,
-	totpSecretObj: {},
 	userProfileLoading: false,
 	verificationInfo: {},
+	currentSecurityAction: null,
+	tOTPChangeParams: null,
 }
 
 const profileSlice = createSlice({
@@ -34,14 +34,11 @@ const profileSlice = createSlice({
 		setUserInfo(state, action: PayloadAction<UserInfoType>) {
 			state.userInfo = action.payload
 		},
-		setOtpChangeToken(state, action: PayloadAction<string>) {
-			state.otpChangeToken = action.payload
-		},
-		setTotpSecretObj(state, action: PayloadAction<string>) {
-			state.totpSecretObj = action.payload
-		},
 		setVerificationInfo(state, action: PayloadAction<any>) {
 			state.verificationInfo = action.payload
+		},
+		setCurrentSecurityAction(state, action: PayloadAction<OTP>) {
+			state.currentSecurityAction = action.payload
 		},
 	},
 	extraReducers: (builder) => {
@@ -49,6 +46,7 @@ const profileSlice = createSlice({
 		updatePassword(builder)
 		updateUser(builder)
 		emailUpdates(builder)
+		googleOtpChange(builder)
 	},
 })
 
@@ -107,10 +105,20 @@ const emailUpdates = (builder: ActionReducerMapBuilder<ProfileState>) => {
 		})
 }
 
-export const {
-	setUserInfo,
-	setOtpChangeToken,
-	setTotpSecretObj,
-	setVerificationInfo,
-} = profileSlice.actions
+const googleOtpChange = (builder: ActionReducerMapBuilder<ProfileState>) => {
+	builder
+		.addCase(credentialsForGoogleThunk.pending, (state) => {
+			state.userProfileLoading = true
+		})
+		.addCase(credentialsForGoogleThunk.fulfilled, (state, action) => {
+			state.userProfileLoading = false
+			state.tOTPChangeParams = action.payload
+		})
+		.addCase(credentialsForGoogleThunk.rejected, (state) => {
+			state.userProfileLoading = false
+		})
+}
+
+export const { setUserInfo, setVerificationInfo, setCurrentSecurityAction } =
+	profileSlice.actions
 export default profileSlice.reducer

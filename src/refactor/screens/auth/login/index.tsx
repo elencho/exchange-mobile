@@ -1,5 +1,5 @@
 import { t } from 'i18next'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Platform, StatusBar, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Logo from '@assets/images/Logo.svg'
@@ -17,6 +17,8 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import Constants from 'expo-constants'
 import { setGeneralError } from '@store/redux/common/slice'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
+import { useFocusEffect } from '@react-navigation/native'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
@@ -43,14 +45,17 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	const [mailError, setMailError] = useState<string | boolean>(false)
 	const [pass, setPass] = useState('')
 	const [passError, setPassError] = useState(false)
+	const [generalErrorData, setGeneralErrorData] = useState(null)
 
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
 
 	const validMail = LOGIN_REGEX.test(mail)
 
-	useEffect(() => {
-		dispatch(startLoginThunk(navigation))
-	}, [])
+	useFocusEffect(
+		useCallback(() => {
+			dispatch(startLoginThunk(navigation))
+		}, [])
+	)
 
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
@@ -62,13 +67,16 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 		})
 	}, [navigation])
 
-	const onLoginPressed = () => {
+	const onLoginPressed = async () => {
 		if (!pass.trim()) setPassError(true)
 		if (!mail.trim()) setMailError(true)
 		else if (!validMail) setMailError('Enter Valid Email')
 
 		if (mail.trim() && pass.trim() && validMail) {
-			dispatch(usernameAndPaswordThunk({ mail, pass, navigation }))
+			handleGeneralError(
+				() => dispatch(usernameAndPaswordThunk({ mail, pass, navigation })),
+				setGeneralErrorData
+			)
 		}
 	}
 
@@ -92,7 +100,9 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 					</AppText>
 				</View>
 
-				<View style={styles.height42}>{<GeneralError />}</View>
+				<View style={styles.height42}>
+					{<GeneralError errorData={generalErrorData} />}
+				</View>
 				<AppInput
 					style={styles.email}
 					value={mail}

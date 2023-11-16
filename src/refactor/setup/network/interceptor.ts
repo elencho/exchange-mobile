@@ -2,12 +2,15 @@ import axios from 'axios'
 import store from '@app/refactor/redux/store'
 import {
 	setAppToast,
-	setGeneralError,
 	setLastRequestUiErrorType,
 } from '@store/redux/common/slice'
 import { navigationRef } from '@app/refactor/setup/nav'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
 import { resetAuth } from '@store/redux/auth/slice'
+import {
+	saveGeneralError,
+	setRequestName,
+} from '@app/refactor/redux/errors/errorsSlice'
 import SecureKV from '@store/kv/secure'
 
 axios.interceptors.request.use((request) => {
@@ -27,7 +30,8 @@ axios.interceptors.request.use((request) => {
 		setLastRequestUiErrorType(hasToast ? 'AppToast' : 'GeneralError')
 	)
 
-	// TODO?: Save requestName
+	//TODO: Remove this when wallets are refactored
+	requestName && store.dispatch(setRequestName(requestName))
 
 	delete request.headers.toast
 	delete request.headers.requestName
@@ -39,7 +43,8 @@ axios.interceptors.response.use(
 	(response) => {
 		const errors: UiErrorData[] = response.data.errors || []
 		if (errors.length > 0) {
-			store.dispatch(setGeneralError(errors[0]))
+			//TODO: Remove this when wallets are refactored
+			store.dispatch(saveGeneralError(errors[0]))
 		}
 		return response
 	},
@@ -60,7 +65,8 @@ const handleError = async (err: any) => {
 		if (state.common.lastRequestUiError === 'AppToast') {
 			store.dispatch(setAppToast(uiError))
 		} else {
-			store.dispatch(setGeneralError(uiError))
+			//TODO: Remove this when wallets are refactored
+			if (uiError) store.dispatch(saveGeneralError(uiError))
 		}
 	}
 

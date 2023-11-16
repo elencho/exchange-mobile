@@ -5,6 +5,7 @@ import colors from '../../constants/colors'
 import { togglePersonalInfoModal } from '../../redux/modals/actions'
 import AppText from '../AppText'
 import PurpleText from '../PurpleText'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function PersonalInformation() {
 	const dispatch = useDispatch()
@@ -12,7 +13,8 @@ export default function PersonalInformation() {
 	const { userInfo } = state
 
 	const edit = () => {
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		dispatch(saveGeneralError(null))
+
 		dispatch(togglePersonalInfoModal(true))
 	}
 

@@ -6,24 +6,49 @@ import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppModal from '@components/modal'
 import AppText from '@components/text'
-import TwoFaInput from '@app/components/TwoFaInput'
+import TwoFaInput from '@components/input_2fa'
 import { useSmsAuthEmailModal } from './use-sms-email-auth-modal'
 
-export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
+interface SmsEmailAuthModalProps {
+	type: 'SMS' | 'Email'
+	toggleSmsAuthModal: (v: boolean) => void
+	toggleEmailAuthModal: (v: boolean) => void
+	toggleGoogleAuthModal?: (v: boolean) => void
+	smsAuthModalVisible: boolean
+	emailAuthModalVisible: boolean
+}
+
+export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
+	const {
+		type,
+		toggleSmsAuthModal,
+		toggleEmailAuthModal,
+		smsAuthModalVisible,
+		emailAuthModalVisible,
+		toggleGoogleAuthModal,
+	} = props
+
 	const navigation = useNavigation()
 	const {
 		resend,
 		hide,
 		handleHide,
 		otpLoading,
-
 		cellCount,
 		visible,
 		seconds,
 		timerVisible,
 		value,
 		setValue,
-	} = useSmsAuthEmailModal(type)
+		handleFill,
+	} = useSmsAuthEmailModal({
+		type,
+		toggleSmsAuthModal,
+		toggleEmailAuthModal,
+		smsAuthModalVisible,
+		emailAuthModalVisible,
+		toggleGoogleAuthModal,
+	})
 
 	const { styles, theme } = useTheme(_styles)
 
@@ -56,11 +81,10 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
 			</AppText>
 
 			<View style={styles.codeInput}>
-				{/* TODO: change to new component */}
 				<TwoFaInput
+					onFill={handleFill}
+					otpChangeType={type}
 					navigation={navigation}
-					withdrawal={withdrawal}
-					whitelist={whitelist}
 					value={value}
 					cellCount={cellCount}
 					setValue={setValue}

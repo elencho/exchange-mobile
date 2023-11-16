@@ -16,6 +16,7 @@ import AppModal from '../AppModal'
 import AppText from '../AppText'
 import GeneralError from '../GeneralError'
 import PurpleText from '../PurpleText'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function GoogleAuthModal() {
 	const { copyToClipboard } = useCopyToClipboard()
@@ -58,7 +59,7 @@ export default function GoogleAuthModal() {
 		if (key && /^[0-9]+$/.test(key)) setKey(key)
 		else setKey('')
 
-		dispatch({ type: 'SAVE_GENERAL_ERROR', generalError: null })
+		dispatch(saveGeneralError(null))
 	}
 
 	const handleCopy = () => copyToClipboard(totpSecretObj?.totpSecretEncoded)

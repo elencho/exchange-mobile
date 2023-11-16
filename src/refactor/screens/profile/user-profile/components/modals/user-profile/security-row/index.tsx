@@ -12,13 +12,41 @@ import AppSwitcher from '@components/switcher'
 import AppText from '@components/text'
 import { useSecurityRow } from './use-security-row'
 
+type ImageKey =
+	| 'Google_Auth'
+	| 'E_mail_Auth'
+	| 'SMS_Auth'
+	| 'Strong_Password'
+	| 'Biometric'
+
 interface SecurityRowProps {
-	text: string
+	text: ImageKey
+	togglePasswordModal?: (v: boolean) => void
+	toggleEmailAuthModalVisible?: (v: boolean) => void
+	toggleGoogleOtpModalVisible?: (v: boolean) => void
 }
 export default function SecurityRow(props: SecurityRowProps) {
-	const { text } = props
-	const { userInfo, otpType, isBioOn, bioType, handlePassword, handleChange } =
-		useSecurityRow({ text })
+	const {
+		text,
+		togglePasswordModal,
+		toggleEmailAuthModalVisible,
+		toggleGoogleOtpModalVisible,
+		toggleGoogleAuthModal,
+	} = props
+	const {
+		userInfo,
+		otpType,
+		isBioOn,
+		bioType,
+		handlePassword,
+		handleChange,
+		handleChangeGoogle,
+	} = useSecurityRow({
+		text,
+		togglePasswordModal,
+		toggleEmailAuthModalVisible,
+		toggleGoogleOtpModalVisible,
+	})
 	const { styles } = useTheme(_styles)
 
 	const disabledCond = () => {
@@ -83,7 +111,7 @@ export default function SecurityRow(props: SecurityRowProps) {
 			case 'Biometric':
 				return isBioOn
 			default:
-				break
+				return false
 		}
 	}
 
@@ -102,11 +130,13 @@ export default function SecurityRow(props: SecurityRowProps) {
 		Biometric: bioType === 'FACEID' ? <FaceID /> : <TouchID />,
 	}
 
+	const imageToSearch: ImageKey = text
+
 	return (
 		<>
 			{renderCond() && (
 				<View style={styles.row} key={text}>
-					{images[text]}
+					{images[imageToSearch]}
 
 					<View style={styles.justify}>
 						<AppText style={styles.white}>{textCond()}</AppText>
@@ -117,6 +147,12 @@ export default function SecurityRow(props: SecurityRowProps) {
 
 					{text === 'Strong_Password' ? (
 						<AppButton variant="text" text="Edit" onPress={handlePassword} />
+					) : text === 'Google_Auth' ? (
+						<AppSwitcher
+							isOn={switchCond()}
+							onToggle={handleChangeGoogle}
+							disabled={disabledCond()}
+						/>
 					) : (
 						<AppSwitcher
 							isOn={switchCond()}

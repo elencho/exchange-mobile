@@ -14,20 +14,20 @@ import { IS_IOS } from '@app/constants/system'
 import { errorHappenedHere } from '@app/utils/appUtils'
 import { useGoogleAuth } from './use-google-auth'
 
-export default function GoogleAuthModal() {
+export default function GoogleAuthModal(props) {
+	const { googleAuthModalVisible, toggleGoogleAuthModal } = props
 	const {
 		googleAuthLoading,
 		isKeyEmpty,
 		enable,
 		handleStore,
-		totpSecretObj,
+		tOTPChangeParams,
 		handleCopy,
 		handleKey,
 		key,
 		hide,
 		onModalHide,
-		googleAuthModalVisible,
-	} = useGoogleAuth()
+	} = useGoogleAuth(props)
 
 	const { theme, styles } = useTheme(_styles)
 	const right = (
@@ -75,7 +75,7 @@ export default function GoogleAuthModal() {
 
 			<View style={styles.block}>
 				<AppText variant="m" style={styles.subtext}>
-					{totpSecretObj.totpSecretEncoded}
+					{tOTPChangeParams?.totp?.totpSecretEncoded}
 				</AppText>
 				<View style={styles.line} />
 				<TouchableOpacity onPress={handleCopy}>
