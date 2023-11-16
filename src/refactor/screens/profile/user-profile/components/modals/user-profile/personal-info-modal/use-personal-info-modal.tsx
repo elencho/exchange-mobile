@@ -41,6 +41,17 @@ const usePersonalInfoModal = ({
 	const hide = () => {
 		togglePersonalInfoModal(false)
 	}
+
+	const onHide = () => {
+		setChosenCountry(x)
+		setLocalUserInfo({
+			country: chosenCountry?.code!,
+			city: userInfo?.city!,
+			postalCode: userInfo?.postalCode!,
+			address: userInfo?.address!,
+		})
+	}
+
 	const handleSave = () => {
 		// const condition = canEditInfo
 		// 	? !userInfo?.country ||
@@ -66,7 +77,7 @@ const usePersonalInfoModal = ({
 	}
 	const changeCountry = (country: Country) => {
 		setChosenCountry(country)
-		setLocalUserInfo({ ...localUserInfo, country: country?.name! })
+		setLocalUserInfo({ ...localUserInfo, country: country?.code! })
 	}
 
 	const handleCountries = () => {
@@ -111,6 +122,7 @@ const usePersonalInfoModal = ({
 		handleFieldChange,
 		localUserInfo,
 		changeCountry,
+		onHide,
 	}
 }
 
