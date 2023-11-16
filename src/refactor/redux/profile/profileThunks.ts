@@ -5,8 +5,32 @@ import {
 	subscribeMail,
 	unsubscribeMail,
 	updateUserData,
+	updatePhoneNumber,
 } from './profileApi'
 import { getOtpChangeToken } from '@app/utils/userProfileUtils'
+
+export const updatePhoneNumberThunk = createAsyncThunk(
+	'profile/updatePhoneNumber',
+	async ({
+		phoneNumber,
+		phoneCountry,
+		hideModal,
+	}: {
+		phoneNumber: string
+		phoneCountry: string
+		hideModal: () => void
+	}) => {
+		try {
+			const response = await updatePhoneNumber(phoneNumber, phoneCountry)
+			if (response?.status >= 200 && response?.status < 300) {
+				hideModal()
+			}
+			return response
+		} catch (error) {
+			return error
+		}
+	}
+)
 
 export const fetchUserInfoThunk = createAsyncThunk(
 	'profile/fetchUserInfo',
@@ -23,12 +47,20 @@ export const fetchUserInfoThunk = createAsyncThunk(
 
 export const updateUserThunk = createAsyncThunk(
 	'profile/updateUser',
-	async (data: EditProfileParams) => {
+	async ({
+		localUserInfo,
+		hide,
+	}: {
+		localUserInfo: EditProfileParams
+		hide: () => void
+	}) => {
 		try {
-			await updateUserData(data)
-			const userInfo = await fetchUserInfoUtil()
-
-			return userInfo
+			const response = await updateUserData(localUserInfo)
+			if (response?.status >= 200 && response?.status < 300) {
+				hide()
+				const userInfo = await fetchUserInfoUtil()
+				return userInfo
+			}
 		} catch (error) {
 			console.log(error)
 		}
