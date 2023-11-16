@@ -31,9 +31,9 @@ function TransactionHistory() {
 	const isInstantTrade = activeTab === 'Instant trade'
 
 	const clearAllFilters = () => {
-		dispatch(clearTransactionFilters())
-		dispatch(clearTradeFilters())
 		setTimeout(() => {
+			dispatch(clearTransactionFilters())
+			dispatch(clearTradeFilters())
 			setActiveTab('Transfer')
 		}, 1000)
 		Keyboard.dismiss()

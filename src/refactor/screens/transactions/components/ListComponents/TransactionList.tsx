@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo, useCallback } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import CustomRefreshContol from '@app/components/CustomRefreshContol'
@@ -11,6 +11,7 @@ import ListFooter from './ListFooter'
 import { useTransactions } from '@app/refactor/screens/transactions/hooks'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { FilterState } from '../../transactions_history'
+import { useFocusEffect } from '@react-navigation/native'
 
 interface Props {
 	isInstantTrade: boolean
@@ -42,18 +43,20 @@ const TransactionList: React.FC<Props> = ({
 		},
 	} = useSelector((state: RootState) => state)
 
-	useEffect(() => {
-		isFilterVisible.shouldFilter && fetchTransactions()
-	}, [
-		typeFilter,
-		method,
-		status,
-		cryptoFilter,
-		fromDateTime,
-		toDateTime,
-		txIdOrRecipient,
-		isFilterVisible.isVisible,
-	])
+	useFocusEffect(
+		useCallback(() => {
+			isFilterVisible.shouldFilter && fetchTransactions()
+		}, [
+			typeFilter,
+			method,
+			status,
+			cryptoFilter,
+			fromDateTime,
+			toDateTime,
+			txIdOrRecipient,
+			isFilterVisible.isVisible,
+		])
+	)
 
 	const renderTransaction = ({
 		item,
