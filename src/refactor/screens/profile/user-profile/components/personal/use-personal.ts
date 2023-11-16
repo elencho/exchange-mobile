@@ -36,7 +36,7 @@ export const usePersonal = () => {
 	const [languageModalVisible, setLanguageModalVisible] = useState(false)
 	const [personalInfoModalVisible, togglePersonalInfoModal] = useState(false)
 	const [phoneNumberModalVisible, togglePhoneNumberModal] = useState(false)
-
+	const [emailUpdated, setEmailUpdated] = useState(!!userInfo?.emailUpdates)
 	const hideError = () =>
 		// TODO: Remove after wallets refactor
 		dispatch(saveGeneralError(null))
@@ -88,7 +88,8 @@ export const usePersonal = () => {
 		dispatch({ type: 'TOGGLE_IDENTITY_MODAL' })
 	}
 
-	const handleEmailUpdates = (value: ToggleSubscriptionData) => {
+	const handleEmailUpdates = (value: boolean) => {
+		setEmailUpdated(value)
 		dispatch(toggleSubscriptionThunk({ value }))
 	}
 
@@ -116,5 +117,6 @@ export const usePersonal = () => {
 		setLanguageModalVisible,
 		phoneNumberModalVisible,
 		togglePhoneNumberModal,
+		emailUpdated
 	}
 }
