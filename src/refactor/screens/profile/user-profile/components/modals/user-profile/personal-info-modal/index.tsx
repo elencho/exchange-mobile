@@ -115,13 +115,13 @@ export default function PersonalInfoModal({
 				text="Save"
 			/>
 
-			{countryModalVisible && (
-				<CountriesModal
-					onCountryChosen={changeCountry}
-					hide={() => setCountryModalVisible(false)}
-					from={'UserProfile'}
-				/>
-			)}
+			<CountriesModal
+				visible={countryModalVisible}
+				onCountryChosen={changeCountry}
+				hide={() => setCountryModalVisible(false)}
+				from={'UserProfile'}
+				chosenItem={chosenCountry}
+			/>
 		</WithKeyboard>
 	)
 

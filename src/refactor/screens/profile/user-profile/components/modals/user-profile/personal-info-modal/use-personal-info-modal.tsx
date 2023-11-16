@@ -25,7 +25,7 @@ const usePersonalInfoModal = ({
 	}
 	const [chosenCountry, setChosenCountry] = useState<Country>(x)
 	const [localUserInfo, setLocalUserInfo] = useState({
-		country: chosenCountry?.code!,
+		country: chosenCountry?.name!,
 		city: userInfo?.city!,
 		postalCode: userInfo?.postalCode!,
 		address: userInfo?.address!,
@@ -42,22 +42,22 @@ const usePersonalInfoModal = ({
 		togglePersonalInfoModal(false)
 	}
 	const handleSave = () => {
-		const condition = canEditInfo
-			? !userInfo?.country ||
-			  !userInfo?.city?.trim() ||
-			  !alphabeticRegex(userInfo?.city) ||
-			  !userInfo?.postalCode?.trim() ||
-			  !userInfo?.address?.trim()
-			: !userInfo?.country ||
-			  !userInfo.city?.trim() ||
-			  !alphabeticRegex(userInfo.city) ||
-			  !userInfo.postalCode?.trim() ||
-			  !userInfo.address?.trim() ||
-			  !userInfo.firstName?.trim() ||
-			  !userInfo.lastName?.trim() ||
-			  !userInfo.citizenship
+		// const condition = canEditInfo
+		// 	? !userInfo?.country ||
+		// 	  !userInfo?.city?.trim() ||
+		// 	  !alphabeticRegex(userInfo?.city) ||
+		// 	  !userInfo?.postalCode?.trim() ||
+		// 	  !userInfo?.address?.trim()
+		// 	: !userInfo?.country ||
+		// 	  !userInfo.city?.trim() ||
+		// 	  !alphabeticRegex(userInfo.city) ||
+		// 	  !userInfo.postalCode?.trim() ||
+		// 	  !userInfo.address?.trim() ||
+		// 	  !userInfo.firstName?.trim() ||
+		// 	  !userInfo.lastName?.trim() ||
+		// 	  !userInfo.citizenship
 
-		if (error || condition) {
+		if (error) {
 			setError(true)
 		} else {
 			dispatch(updateUserThunk(localUserInfo))
@@ -66,7 +66,7 @@ const usePersonalInfoModal = ({
 	}
 	const changeCountry = (country: Country) => {
 		setChosenCountry(country)
-		setLocalUserInfo({ ...localUserInfo, country: country?.code! })
+		setLocalUserInfo({ ...localUserInfo, country: country?.name! })
 	}
 
 	const handleCountries = () => {
