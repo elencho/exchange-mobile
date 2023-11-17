@@ -147,6 +147,7 @@ const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
 	})
 	builder.addCase(otpForLoginThunk.fulfilled, (state, action) => {
 		state.callbackUrl = action.payload.callbackUrl
+		state.authLoading = false
 	})
 	builder.addCase(otpForLoginThunk.rejected, (state) => {
 		state.authLoading = false

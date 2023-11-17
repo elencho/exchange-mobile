@@ -9,6 +9,7 @@ import {
 } from '../../redux/profile/actions'
 import AppModal from '../AppModal'
 import ModalWithSearch from '../ModalWithSearch'
+import { setUserInfo } from '@app/refactor/redux/profile/profileSlice'
 
 export default function CountriesModal({
 	countryDrop = false,
@@ -24,6 +25,7 @@ export default function CountriesModal({
 	const {
 		modals: { countriesModalVisible },
 		profileOld: { countries, countriesConstant, userInfo, registrationInputs },
+		profile: { userInfo: userInfoNew },
 	} = state
 
 	useEffect(() => {
@@ -44,7 +46,7 @@ export default function CountriesModal({
 	}
 
 	const currentItem = () => {
-		if (countryDrop) return userInfo?.country
+		if (countryDrop) return userInfoNew?.country
 		if (citizenshipDrop) return userInfo?.citizenship
 		if (registration) return registrationInputs?.phoneCountry
 		if (phoneCountry) return userInfo?.phoneCountry
@@ -61,8 +63,12 @@ export default function CountriesModal({
 
 		if (countryDrop) {
 			dispatch(
-				saveUserInfo({ ...userInfo, country, countryCode: code(country) })
+				setUserInfo({ ...userInfoNew, country, countryCode: code(country) })
 			)
+
+			// dispatch(
+			// 	saveUserInfo({ ...userInfo, country, countryCode: code(country) })
+			// )
 		}
 		if (citizenshipDrop) {
 			dispatch(saveUserInfo({ ...userInfo, citizenship: code(country) }))
