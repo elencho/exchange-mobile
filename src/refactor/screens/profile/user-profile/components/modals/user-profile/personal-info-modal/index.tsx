@@ -11,6 +11,7 @@ import WithKeyboard from '@app/components/WithKeyboard'
 import { COUNTRIES_URL_PNG } from '@app/constants/api'
 import usePersonalInfoModal from './use-personal-info-modal'
 import CountriesModal from '@app/refactor/common/modals/countries'
+import GeneralError from '@components/general_error'
 
 export default function PersonalInfoModal({
 	personalInfoModalVisible,
@@ -33,6 +34,8 @@ export default function PersonalInfoModal({
 		handleFieldChange,
 		localUserInfo,
 		chosenCountry,
+		generalErrorData,
+		onHide,
 	} = usePersonalInfoModal({
 		personalInfoModalVisible,
 		togglePersonalInfoModal,
@@ -52,10 +55,7 @@ export default function PersonalInfoModal({
 		<WithKeyboard flexGrow modal>
 			<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
 				<AppText style={styles.email}>{email}</AppText>
-				{/* <GeneralError
-					style={styles.error}
-					show={errorHappenedHere('PersonalInfoModal')}
-				/> */}
+				<GeneralError style={styles.error} errorData={generalErrorData} />
 
 				<AppDropdown
 					notClearable
@@ -70,7 +70,7 @@ export default function PersonalInfoModal({
 						/>
 					}
 					label="Country"
-					selectedText={country}
+					selectedText={chosenCountry?.name}
 					style={styles.dropdown}
 					error={countryError}
 				/>
@@ -115,13 +115,13 @@ export default function PersonalInfoModal({
 				text="Save"
 			/>
 
-			{countryModalVisible && (
-				<CountriesModal
-					onCountryChosen={changeCountry}
-					hide={() => setCountryModalVisible(false)}
-					from={'UserProfile'}
-				/>
-			)}
+			<CountriesModal
+				visible={countryModalVisible}
+				onCountryChosen={changeCountry}
+				hide={() => setCountryModalVisible(false)}
+				from={'UserProfile'}
+				chosenItem={chosenCountry}
+			/>
 		</WithKeyboard>
 	)
 
@@ -129,6 +129,7 @@ export default function PersonalInfoModal({
 		<AppModal
 			visible={personalInfoModalVisible}
 			hide={hide}
+			onModalHide={onHide}
 			fullScreen
 			title="Personal Information"
 			children={children}

@@ -100,10 +100,11 @@ export default function ChooseNetworkModal() {
 						<AppText medium body style={styles.primary}>
 							{n?.displayName}
 						</AppText>
-
-						<AppText body style={styles.secondary}>
-							{`(${n?.provider})`}
-						</AppText>
+						{code !== 'EUR' && (
+							<AppText body style={styles.secondary}>
+								{`(${n?.provider})`}
+							</AppText>
+						)}
 					</View>
 				</Pressable>
 			))}

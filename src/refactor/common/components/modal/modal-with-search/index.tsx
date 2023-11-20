@@ -12,18 +12,18 @@ import { ModalSearchItem } from '../modal-parts'
 import { useModalWithSearch } from './use-modal-with-search'
 
 interface ModalWIthSearchProps {
-	array: any[]
-	filter: (val: string) => void
-	choose: (name?: string, code?: string) => void
-	currentItem: any
-	crypto: boolean
+	array?: any[]
+	filter?: (val: string) => void
+	choose: (countryName?: string, code?: string) => void
+	currentItem?: Country | any
+	crypto?: boolean
 	title: string
-	phoneCountry: string
-	countryDrop: any
-	citizenshipDrop: any
-	tradeType: TradeTypesEnum.BUY | TradeTypesEnum.SELL
-	isForTransactions: boolean
-	wallet: boolean
+	phoneCountry?: boolean
+	countryDrop?: any
+	citizenshipDrop?: any
+	tradeType?: TradeTypesEnum.BUY | TradeTypesEnum.SELL
+	isForTransactions?: boolean
+	wallet?: boolean
 }
 
 export const ModalWithSearch = (props: ModalWIthSearchProps) => {
@@ -49,7 +49,7 @@ export const ModalWithSearch = (props: ModalWIthSearchProps) => {
 	})
 	const { styles } = useTheme(_styles)
 	// TODO: FIX ANY TYPE AFTER STATE
-	const searchItem = ({ item }: any) => {
+	const searchItem = ({ item }: Country | any) => {
 		const name =
 			item?.name ||
 			item?.pair?.baseCurrencyName ||
@@ -91,7 +91,7 @@ export const ModalWithSearch = (props: ModalWIthSearchProps) => {
 	}
 	return (
 		<View style={styles.container}>
-			<AppText variant="l" style={styles.headline}>
+			<AppText variant="headline" style={styles.headline}>
 				{title}
 			</AppText>
 

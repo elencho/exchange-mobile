@@ -30,6 +30,7 @@ import { setGeneralError } from '@store/redux/common/slice'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { enableScreens } from 'react-native-screens'
+import { useTheme } from '@theme/index'
 
 enableScreens(false)
 const Stack = createNativeStackNavigator<Screens>()
@@ -41,6 +42,7 @@ export default function AppNavigator() {
 		errors: { generalError },
 	} = useSelector((state: RootState) => state)
 
+	const { theme } = useTheme()
 	useNotifications()
 
 	const onNavigationChanged = (state?: NavigationState) => {
@@ -71,7 +73,7 @@ export default function AppNavigator() {
 					gestureEnabled: false,
 					headerLeft: () => null,
 					animation: 'slide_from_right',
-					navigationBarColor: '#161629',
+					navigationBarColor: theme.color.backgroundPrimary,
 				}}
 				initialRouteName="Splash">
 				<Stack.Screen name="Splash" component={Splash} />
@@ -98,7 +100,10 @@ export default function AppNavigator() {
 				<Stack.Screen
 					name="Main"
 					component={Main}
-					options={{ animation: 'fade' }}
+					options={{
+						animation: 'fade',
+						navigationBarColor: theme.color.backgroundSecondary,
+					}}
 				/>
 
 				<Stack.Screen name="UserProfile" component={UserProfile} />

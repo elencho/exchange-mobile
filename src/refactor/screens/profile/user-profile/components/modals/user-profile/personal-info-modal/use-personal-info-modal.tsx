@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { saveUserInfo } from '@app/redux/profile/actions'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { updateUserThunk } from '@app/refactor/redux/profile/profileThunks'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 const usePersonalInfoModal = ({
 	personalInfoModalVisible,
@@ -18,6 +19,9 @@ const usePersonalInfoModal = ({
 		common: { countries },
 	} = state
 
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 	const [error, setError] = useState(false)
 	const x = {
 		name: userInfo?.country,
@@ -25,12 +29,14 @@ const usePersonalInfoModal = ({
 	}
 	const [chosenCountry, setChosenCountry] = useState<Country>(x)
 	const [localUserInfo, setLocalUserInfo] = useState({
-		country: chosenCountry?.code!,
+		country: chosenCountry?.name!,
 		city: userInfo?.city!,
 		postalCode: userInfo?.postalCode!,
 		address: userInfo?.address!,
 	})
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
+
+	console.log('generalErrorData', generalErrorData)
 
 	const alphabeticRegex = (text: string) => /^[a-zA-Z]+$/.test(text?.trim())
 
@@ -41,27 +47,40 @@ const usePersonalInfoModal = ({
 	const hide = () => {
 		togglePersonalInfoModal(false)
 	}
-	const handleSave = () => {
-		const condition = canEditInfo
-			? !userInfo?.country ||
-			  !userInfo?.city?.trim() ||
-			  !alphabeticRegex(userInfo?.city) ||
-			  !userInfo?.postalCode?.trim() ||
-			  !userInfo?.address?.trim()
-			: !userInfo?.country ||
-			  !userInfo.city?.trim() ||
-			  !alphabeticRegex(userInfo.city) ||
-			  !userInfo.postalCode?.trim() ||
-			  !userInfo.address?.trim() ||
-			  !userInfo.firstName?.trim() ||
-			  !userInfo.lastName?.trim() ||
-			  !userInfo.citizenship
 
-		if (error || condition) {
+	const onHide = () => {
+		setChosenCountry(x)
+		setLocalUserInfo({
+			country: chosenCountry?.code!,
+			city: userInfo?.city!,
+			postalCode: userInfo?.postalCode!,
+			address: userInfo?.address!,
+		})
+	}
+
+	const handleSave = () => {
+		// const condition = canEditInfo
+		// 	? !userInfo?.country ||
+		// 	  !userInfo?.city?.trim() ||
+		// 	  !alphabeticRegex(userInfo?.city) ||
+		// 	  !userInfo?.postalCode?.trim() ||
+		// 	  !userInfo?.address?.trim()
+		// 	: !userInfo?.country ||
+		// 	  !userInfo.city?.trim() ||
+		// 	  !alphabeticRegex(userInfo.city) ||
+		// 	  !userInfo.postalCode?.trim() ||
+		// 	  !userInfo.address?.trim() ||
+		// 	  !userInfo.firstName?.trim() ||
+		// 	  !userInfo.lastName?.trim() ||
+		// 	  !userInfo.citizenship
+
+		if (error) {
 			setError(true)
 		} else {
-			dispatch(updateUserThunk(localUserInfo))
-			hide()
+			handleGeneralError(
+				() => dispatch(updateUserThunk({ localUserInfo, hide })),
+				setGeneralErrorData
+			)
 		}
 	}
 	const changeCountry = (country: Country) => {
@@ -111,6 +130,8 @@ const usePersonalInfoModal = ({
 		handleFieldChange,
 		localUserInfo,
 		changeCountry,
+		generalErrorData,
+		onHide,
 	}
 }
 

@@ -4,10 +4,9 @@ import { AppButton } from '@components/button'
 import AppModal from '@components/modal'
 import AppDropdown from '@app/components/AppDropdown'
 import AppInput from '@components/input'
-import GeneralError from '@app/components/GeneralError'
+import GeneralError from '@components/general_error'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { COUNTRIES_URL_PNG } from '@app/constants/api'
-import { errorHappenedHere } from '@app/utils/appUtils'
 import { usePhoneNumberModal } from './use-phone-number-modal'
 import CountriesModal from '@app/refactor/common/modals/countries'
 
@@ -32,6 +31,7 @@ export default function PhoneNumberModal({
 		countryModalVisible,
 		setCountryModalVisible,
 		phoneNumber,
+		generalErrorData,
 	} = usePhoneNumberModal({ phoneNumberModalVisible, togglePhoneNumberModal })
 	const number = userInfo?.phoneNumber
 	const country = userInfo?.phoneCountry
@@ -46,10 +46,7 @@ export default function PhoneNumberModal({
 				scrollUp={false}
 				refreshControl={null}>
 				<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
-					<GeneralError
-						style={styles.error}
-						show={errorHappenedHere('PhoneNumberModal')}
-					/>
+					<GeneralError style={styles.error} errorData={generalErrorData} />
 
 					<AppDropdown
 						handlePress={handleCountries}

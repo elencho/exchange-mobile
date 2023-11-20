@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { updatePhoneNumber } from '@app/utils/userProfileUtils'
+import { updatePhoneNumberThunk } from '@app/refactor/redux/profile/profileThunks'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 export const usePhoneNumberModal = ({
 	phoneNumberModalVisible,
@@ -18,6 +20,9 @@ export const usePhoneNumberModal = ({
 		common: { countries },
 	} = state
 
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 	const [error, setError] = useState(false)
 	const [seconds, setSeconds] = useState(30)
 	const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber)
@@ -42,6 +47,7 @@ export const usePhoneNumberModal = ({
 
 	const hide = () => {
 		togglePhoneNumberModal(false)
+		setGeneralErrorData(null)
 	}
 
 	const onModalHide = () => {
@@ -58,8 +64,20 @@ export const usePhoneNumberModal = ({
 		) {
 			setError(true)
 		} else {
-			updatePhoneNumber(phoneNumber, chosenCountry.code)
-			hide()
+			const phoneCountry = chosenCountry.code
+			if (phoneNumber && phoneCountry) {
+				handleGeneralError(
+					() =>
+						dispatch(
+							updatePhoneNumberThunk({
+								phoneNumber,
+								phoneCountry,
+								hideModal: hide,
+							})
+						),
+					setGeneralErrorData
+				)
+			}
 		}
 	}
 
@@ -91,5 +109,6 @@ export const usePhoneNumberModal = ({
 		countryModalVisible,
 		setCountryModalVisible,
 		phoneNumber,
+		generalErrorData,
 	}
 }

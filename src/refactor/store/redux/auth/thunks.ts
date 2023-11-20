@@ -188,13 +188,18 @@ export const otpForLoginThunk = createAsyncThunk(
 
 		const loginInfo = await loginOtp(otp, callbackUrl)
 
-		if (loginInfo.execution === Execution.UPDATE_PASSWORD) {
-			navigation.navigate('SetNewPassword')
-		} else {
-			dispatch(codeToTokenThunk(loginInfo.code, from, navigation))
-		}
+		try {
+			if (loginInfo?.errors) return loginInfo
 
-		return loginInfo
+			if (loginInfo.execution === Execution.UPDATE_PASSWORD) {
+				navigation.navigate('SetNewPassword')
+			} else {
+				dispatch(codeToTokenThunk(loginInfo.code, from, navigation))
+			}
+			return loginInfo
+		} catch (e) {
+			console.log(e)
+		}
 	}
 )
 

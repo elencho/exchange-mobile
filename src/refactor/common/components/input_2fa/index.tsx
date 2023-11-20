@@ -1,5 +1,5 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import {
 	useBlurOnFulfill,
@@ -15,12 +15,13 @@ import {
 	otpForLoginThunk,
 	verifyRegistrationThunk,
 } from '@store/redux/auth/thunks'
-import GeneralError from '@app/components/GeneralError'
+import GeneralError from '@components/general_error'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Route, Screens } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
 import { credentialsForGoogleThunk } from '@app/refactor/redux/profile/profileThunks'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 interface Props {
 	value: string
@@ -44,12 +45,21 @@ const TwoFaInput = ({
 	const dispatch = useDispatch()
 	// TODO: add loading from param
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 
 	// TODO: add onSuccess instead of if elses
 	useEffect(() => {
 		if (value.length === cellCount) {
 			if (from === 'Login2Fa') {
-				dispatch(otpForLoginThunk({ otp: value, from: 'Login2Fa', navigation }))
+				handleGeneralError(
+					() =>
+						dispatch(
+							otpForLoginThunk({ otp: value, from: 'Login2Fa', navigation })
+						),
+					setGeneralErrorData
+				)
 			} else if (from === 'Registration') {
 				dispatch(verifyRegistrationThunk({ otp: value, navigation }))
 			}
@@ -64,13 +74,26 @@ const TwoFaInput = ({
 			style={[{ position: 'absolute', alignSelf: 'center' }, indicatorStyle]}
 		/>
 	) : (
-		<CodeInput cellCount={cellCount} value={value} setValue={setValue} />
+		<CodeInput
+			cellCount={cellCount}
+			value={value}
+			setValue={setValue}
+			generalErrorData={generalErrorData}
+		/>
 	)
 }
 
-type CodeInputProps = Pick<Props, 'value' | 'setValue' | 'cellCount'>
+type CodeInputProps = Pick<
+	Props,
+	'value' | 'setValue' | 'cellCount' | 'generalErrorData'
+>
 
-const CodeInput = ({ value, setValue, cellCount }: CodeInputProps) => {
+const CodeInput = ({
+	value,
+	setValue,
+	cellCount,
+	generalErrorData,
+}: CodeInputProps) => {
 	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
@@ -89,10 +112,7 @@ const CodeInput = ({ value, setValue, cellCount }: CodeInputProps) => {
 	return (
 		<View>
 			<View>
-				<GeneralError
-					style={styles.error}
-					show={errorHappenedHere('CodeInput')}
-				/>
+				<GeneralError style={styles.error} errorData={generalErrorData} />
 			</View>
 
 			<CodeField
