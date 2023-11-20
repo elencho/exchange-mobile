@@ -14,7 +14,6 @@ export const ChooseLanguageModal = ({
 	languageModalVisible: boolean
 	setLanguageModalVisible: (v: boolean) => void
 }) => {
-	
 	const { styles } = useTheme(_styles)
 	const { chooseLanguage, hide, language } = useChooseLanguage({
 		languageModalVisible,

@@ -1,5 +1,6 @@
 import { Platform } from 'react-native'
 import VersionCheck from 'react-native-version-check'
+import React, { useState, useEffect, useRef } from 'react'
 
 export const System = {
 	isIos: Platform.OS === 'ios',
@@ -9,3 +10,19 @@ export const System = {
 	currentVersion: VersionCheck.getCurrentVersion(),
 	getCountryName: VersionCheck.getCountry(),
 } as const
+
+export const useInterval = (callback: () => void, delayMillis: number) => {
+	const savedCallback = useRef(callback)
+
+	useEffect(() => {
+		savedCallback.current = callback
+	}, [callback])
+
+	useEffect(() => {
+		function tick() {
+			savedCallback.current()
+		}
+		let id = setInterval(tick, delayMillis)
+		return () => clearInterval(id)
+	}, [delayMillis])
+}

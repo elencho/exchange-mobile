@@ -51,6 +51,18 @@ const Welcome = ({ navigation }: ScreenProp<'Welcome'>) => {
 							onPress={goToRegistration}
 							style={{ fontSize: 16 }}
 						/>
+						<AppButton
+							variant="text"
+							text="Maintenance"
+							onPress={() => navigation.navigate('Maintenance')}
+							style={{ fontSize: 16, marginTop: 36 }}
+						/>
+						<AppButton
+							variant="text"
+							text="Update"
+							onPress={() => navigation.navigate('UpdateAvailable')}
+							style={{ fontSize: 16, marginTop: 36 }}
+						/>
 					</View>
 				</View>
 

@@ -83,7 +83,7 @@ export default function SetNewPassword({ navigation }: Props) {
 
 				<AppInput
 					labelBackgroundColor={theme.color.backgroundPrimary}
-					style={styles.input}
+					style={styles.inputNewPass}
 					label="Enter New Password"
 					onChangeText={setPass}
 					onFocusOrChange={() => setPassError(false)}
@@ -96,23 +96,23 @@ export default function SetNewPassword({ navigation }: Props) {
 					<AppText
 						variant="m"
 						style={pass.length > 0 && !passLength && styles.redText}>
-						8 or more characters,
+						8 or more characters
 					</AppText>{' '}
 					<AppText
 						variant="m"
 						style={pass.length > 0 && !hasUpperAndLower && styles.redText}>
-						Upper & lowercase letters,
+						Upper & lowercase letters
 					</AppText>{' '}
 					<AppText
 						variant="m"
 						style={pass.length > 0 && !hasNumber && styles.redText}>
-						At least one number,
+						At least one number
 					</AppText>
 				</Text>
 
 				<AppInput
 					labelBackgroundColor={theme.color.backgroundPrimary}
-					style={styles.input}
+					style={styles.inputConfirmPass}
 					label="Confirm New Password"
 					onChangeText={(txt: string) => {
 						setConfirmPass(txt)
@@ -153,10 +153,14 @@ const _styles = (theme: Theme) =>
 			width: '100%',
 			marginTop: 84,
 		},
-		input: {
+		inputNewPass: {
+			marginTop: 24,
 			width: '100%',
-			marginVertical: 6,
 		},
+		inputConfirmPass: {
+			width: '100%',
+		},
+		input: {},
 		middle: {
 			justifyContent: 'center',
 		},

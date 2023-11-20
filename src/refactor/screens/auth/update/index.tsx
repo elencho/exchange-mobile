@@ -7,8 +7,9 @@ import AppBackground from '@components/background'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import { System } from '@app/refactor/common/util'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
 
-export default function UpdateAvailable() {
+const Update = ({}: ScreenProp<'Welcome'>) => {
 	const { styles } = useTheme(_styles)
 
 	const update = async () => {
@@ -68,3 +69,5 @@ const _styles = (theme: Theme) =>
 			lineHeight: 22,
 		},
 	})
+
+export default Update

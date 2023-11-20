@@ -50,7 +50,7 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 		}
 
 		// // ! For Testing
-		// navigation.navigate('Maintenance')
+		// navigation.navigate('SetNewPassword')
 		// return
 
 		if (await updateNeeded()) {

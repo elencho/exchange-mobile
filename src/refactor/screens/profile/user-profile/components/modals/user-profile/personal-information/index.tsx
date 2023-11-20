@@ -13,7 +13,7 @@ export default function PersonalInformation({
 }) {
 	const { edit, userInfo } = usePersonalInformation({ togglePersonalInfoModal })
 	const { styles } = useTheme(_styles)
-	
+
 	return (
 		<View style={styles.block}>
 			<View style={styles.row}>

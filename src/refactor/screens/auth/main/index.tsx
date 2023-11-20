@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useIsFocused } from '@react-navigation/native'
 import jwt_decode from 'jwt-decode'
-import React, { memo, useCallback, useEffect } from 'react'
+import React, { memo, useCallback, useEffect, useRef } from 'react'
 import { AppState, AppStateStatus } from 'react-native'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,11 +27,11 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const isFocused = useIsFocused()
 
 	const fromResume = route.params?.fromResume === true
+	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
 
 	useEffect(() => {
 		changeNavigationBarColor(theme.color.backgroundSecondary, true)
-		KV.set('lastOpenDateMillis', Date.now())
 		const stateChangeListener = AppState.addEventListener(
 			'change',
 			handleAppStateChange
@@ -44,13 +44,14 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	}, [])
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
-		const webViewVisible = KV.get('webViewVisible')
+		const appClosing =
+			newState === 'inactive' && prevAppState.current === 'active'
 
 		const bioVisible =
+			newState === 'active' &&
 			!fromResume &&
 			accessToken &&
-			!webViewVisible &&
-			newState === 'active' &&
+			!KV.get('webViewVisible') &&
 			biometricDiffElapsed()
 
 		if (bioVisible) {
@@ -58,9 +59,12 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			getBiometricEnabled(email)
 		}
 
-		if (newState === 'inactive') {
+		if (appClosing) {
 			KV.set('lastOpenDateMillis', Date.now())
 		}
+
+		console.log(prevAppState.current, newState)
+		prevAppState.current = newState
 	}, [])
 
 	const getBiometricEnabled = useCallback(

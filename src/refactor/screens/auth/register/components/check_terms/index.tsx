@@ -22,7 +22,7 @@ const TermsCheck = ({ checked, toggleChecked, error }: Props) => {
 
 	return (
 		<View style={styles.container}>
-			<View style={[styles.row, { marginTop: 20 }]}>
+			<View style={styles.row}>
 				<Pressable style={styles.image} onPress={toggleChecked}>
 					{error ? <CheckRed /> : checked ? <CheckFull /> : <CheckEmpty />}
 				</Pressable>
@@ -47,8 +47,8 @@ const TermsCheck = ({ checked, toggleChecked, error }: Props) => {
 const _styles = (_: Theme) =>
 	StyleSheet.create({
 		container: {
-			marginTop: 10,
-			marginBottom: 50,
+			marginTop: 25,
+			marginBottom: 55,
 			justifyContent: 'space-between',
 		},
 		image: {

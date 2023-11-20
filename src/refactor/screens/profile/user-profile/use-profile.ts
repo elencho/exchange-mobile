@@ -35,7 +35,6 @@ export const useProfile = () => {
 		return () => clearTimeout(timer)
 	}, [])
 
-
 	const checkCompitable = async () => {
 		const compitable = await checkIsCompatable()
 		setBioAvailable(compitable)

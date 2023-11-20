@@ -56,7 +56,6 @@ export const Personal = ({ loading }: PersonalProps) => {
 	const textCond = useCallback(
 		(r: string) => {
 			const isOn = emailUpdated
-			console.log('isOn', isOn)
 			switch (r) {
 				case PersonalFeatures.IDENTITY:
 					return (

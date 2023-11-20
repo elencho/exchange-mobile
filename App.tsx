@@ -1,6 +1,6 @@
 import { useAssets } from 'expo-asset'
 import { useFonts } from 'expo-font'
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { StatusBar, LogBox, View, StyleSheet } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -16,7 +16,9 @@ import {
 } from './src/refactor/setup/theme'
 import { THEME_DARK } from './src/refactor/setup/theme/variants'
 import '@app/refactor/setup/network/interceptor'
-import { System } from '@app/refactor/common/util'
+import { System, useInterval } from '@app/refactor/common/util'
+import { BIOMETRIC_DIFF_MILLIS } from '@app/refactor/common/constants'
+import KV from '@store/kv/regular'
 
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed
@@ -24,6 +26,11 @@ LogBox.ignoreLogs([
 ])
 
 const App = React.memo(() => {
+	// useInterval(() => {
+	// 	console.log('Saving time')
+	// 	KV.set('lastOpenDateMillis', Date.now())
+	// }, BIOMETRIC_DIFF_MILLIS / 2)
+
 	const [fontsLoaded] = useFonts({
 		Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
 		Ubuntu_Medium: require('./src/assets/fonts/Ubuntu_Medium.ttf'),
