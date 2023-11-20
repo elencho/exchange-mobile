@@ -129,7 +129,7 @@ const AppInput = (props: Props) => {
 						onFocusOrChange?.()
 					}}
 					editable={!disabled}
-					autoCapitalize="none"
+					autoCapitalize={props.autoCapitalize || 'none'}
 				/>
 
 				{label ? (
@@ -178,7 +178,7 @@ const _style = (theme: Theme) =>
 			color: theme.color.error,
 			marginTop: 8,
 			position: 'absolute',
-			bottom: -20,
+			bottom: -17,
 		},
 		input: {
 			fontFamily: theme.font.medium,

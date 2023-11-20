@@ -135,7 +135,7 @@ const Register = ({ navigation }: Props) => {
 	}
 
 	const onPhoneCodePressed = () => setCountryModalVisible(true)
-	const goToSignIn = () => navigation.navigate('Login')
+	const goToSignIn = () => navigation.replace('Login')
 	const goBack = () => navigation.goBack()
 
 	return (
@@ -149,7 +149,7 @@ const Register = ({ navigation }: Props) => {
 				flexGrow={undefined}>
 				<AppButton
 					variant="text"
-					text="Back to Log In"
+					text="Back"
 					onPress={goBack}
 					style={[styles.backText, styles.back]}
 				/>
@@ -166,7 +166,7 @@ const Register = ({ navigation }: Props) => {
 					<AppInput
 						value={mail}
 						label="Enter E-mail"
-						style={styles.input}
+						style={styles.input && { marginTop: 27 }}
 						onFocusOrChange={() => setMailErr(false)}
 						onChangeText={setMail}
 						error={mailErr && (mail.trim() ? 'Enter Valid Email' : true)}
@@ -184,17 +184,17 @@ const Register = ({ navigation }: Props) => {
 						<AppText
 							variant="m"
 							style={passErr && !passLength && styles.redText}>
-							8 or more characters,
+							8 or more characters
 						</AppText>{' '}
 						<AppText
 							variant="m"
 							style={passErr && !passHasUpperLower && styles.redText}>
-							Upper & lowercase letters,
+							Upper & lowercase letters
 						</AppText>{' '}
 						<AppText
 							variant="m"
 							style={passErr && !passHasNumber && styles.redText}>
-							At least one number,
+							At least one number
 						</AppText>
 					</Text>
 					<AppInput
@@ -272,7 +272,7 @@ const Register = ({ navigation }: Props) => {
 							<AppInput
 								value={promo}
 								label="Promo Code"
-								style={[styles.input, { marginTop: 12 }]}
+								style={styles.input}
 								onChangeText={setPromo}
 							/>
 						</>
@@ -336,7 +336,7 @@ const _styles = (theme: Theme) =>
 		},
 		subtext: {
 			color: theme.color.textSecondary,
-			marginTop: 40,
+			marginTop: 36,
 			alignSelf: 'center',
 		},
 		back: {
@@ -349,7 +349,7 @@ const _styles = (theme: Theme) =>
 			flex: 1,
 		},
 		input: {
-			marginTop: 22,
+			marginTop: 11,
 		},
 		line: {
 			width: 1,
@@ -369,7 +369,6 @@ const _styles = (theme: Theme) =>
 			flexDirection: 'row',
 			alignItems: 'center',
 			marginTop: 22,
-			marginBottom: -11,
 			borderColor: '#42475D',
 		},
 		redText: {

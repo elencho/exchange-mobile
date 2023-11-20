@@ -27,16 +27,15 @@ const COUNTDOWN = 30
 const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	const { styles, theme } = useTheme(_styles)
 	const dispatch = useDispatch()
-	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
-		null
-	)
 
 	const [mail, setMail] = useState('')
 	const [mailError, setMailError] = useState<string | boolean>(false)
 	const [code, setCode] = useState('')
 	const [codeError, setCodeError] = useState(false)
-
 	const [seconds, setSeconds] = useState(0)
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 
 	const { authLoading, timerVisible } = useSelector(
 		(state: RootState) => state.auth
@@ -70,11 +69,10 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 		}
 	}, [timerVisible])
 
-	const goToLogin = () => navigation.navigate('Login')
+	const goToLogin = () => navigation.replace('Login')
 
 	const onResendPressed = () => {
-		if (!mail.trim()) setMailError(true)
-		else if (!validMail) setMailError('Enter Valid Email')
+		setMailError(!(mail.trim() && validMail))
 
 		if (mail.trim() && validMail) {
 			handleGeneralError(
@@ -87,9 +85,8 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	}
 
 	const onNextPressed = async () => {
-		if (!code.trim()) setCodeError(true)
-		if (!mail.trim()) setMailError(true)
-		else if (!validMail) setMailError('Enter Valid Email')
+		setCodeError(!code.trim())
+		setMailError(!(mail.trim() && validMail))
 
 		if (mail.trim() && code.trim() && validMail) {
 			handleGeneralError(
@@ -193,13 +190,12 @@ const _styles = (theme: Theme) =>
 			marginTop: 84,
 		},
 		inputMail: {
+			marginTop: 24,
 			width: '100%',
-			marginBottom: 16,
-			marginVertical: 6,
 		},
 		inputPass: {
+			marginTop: 11,
 			width: '100%',
-			marginVertical: 6,
 		},
 		middle: {
 			alignItems: 'center',

@@ -42,10 +42,12 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	const dispatch = useDispatch()
 
 	const [mail, setMail] = useState('')
-	const [mailError, setMailError] = useState<string | boolean>(false)
+	const [mailError, setMailError] = useState<boolean>(false)
 	const [pass, setPass] = useState('')
 	const [passError, setPassError] = useState(false)
-	const [generalErrorData, setGeneralErrorData] = useState(null)
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
 
@@ -68,9 +70,8 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 	}, [navigation])
 
 	const onLoginPressed = async () => {
-		if (!pass.trim()) setPassError(true)
-		if (!mail.trim()) setMailError(true)
-		else if (!validMail) setMailError('Enter Valid Email')
+		setPassError(!pass.trim())
+		setMailError(!(mail.trim() && validMail))
 
 		if (mail.trim() && pass.trim() && validMail) {
 			handleGeneralError(
@@ -80,7 +81,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 		}
 	}
 
-	const onRegisterPressed = () => navigation.replace('Registration')
+	const onRegisterPressed = () => navigation.navigate('Registration')
 	const onForgotPasswordPressed = () => navigation.navigate('ForgotPassword')
 
 	return (
@@ -172,7 +173,6 @@ const _styles = (theme: Theme) =>
 			paddingHorizontal: '8%',
 		},
 		email: {
-			marginBottom: 22,
 			width: '100%',
 		},
 		height42: {
@@ -185,6 +185,7 @@ const _styles = (theme: Theme) =>
 			height: 54,
 		},
 		password: {
+			marginTop: 11,
 			width: '100%',
 		},
 		primary: {

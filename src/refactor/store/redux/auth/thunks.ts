@@ -102,6 +102,7 @@ export const resendPasswordCodeThunk = createAsyncThunk(
 		const { callbackUrl } = (getState() as RootState).auth
 
 		const data = await resetPassword(callbackUrl, mail)
+		console.log(data)
 		const timerVisible =
 			data.execution === Execution.RESET_PASSWORD_WITH_CODE &&
 			data.errors.length === 0

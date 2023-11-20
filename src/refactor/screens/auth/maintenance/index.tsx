@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { ImageBackground, Linking, StyleSheet, Text, View } from 'react-native'
-import DeviceInfo from 'react-native-device-info'
 import Gear from '@assets/images/Gear.svg'
 import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import { Images } from '@app/refactor/common/constants'
-import { checkReadiness } from '@app/utils/appUtils'
+import { checkReadiness } from '@store/redux/auth/api'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
 
-export default function Maintenance(navigation: any) {
+const Maintenance = ({ navigation }: ScreenProp<'Welcome'>) => {
 	const { styles } = useTheme(_styles)
 	const [loading, setLoading] = useState(false)
 
@@ -18,7 +18,7 @@ export default function Maintenance(navigation: any) {
 
 	const refresh = async () => {
 		setLoading(true)
-		const { status } = await checkReadiness(DeviceInfo.getVersion())
+		const { status } = await checkReadiness()
 		if (status !== 'DOWN') navigation.navigate('Welcome')
 		setLoading(false)
 	}
@@ -128,3 +128,5 @@ const _styles = (theme: Theme) =>
 			marginLeft: 10,
 		},
 	})
+
+export default Maintenance

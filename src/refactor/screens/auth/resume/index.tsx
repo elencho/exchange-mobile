@@ -74,11 +74,9 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 			cancelLabel: t('Abort') || '',
 		})
 		if (authResult?.success) {
+			KV.set('lastOpenDateMillis', Date.now())
 			if (fromSplash && !resumed && !maintenanceInProgress && !version) {
-				KV.set('lastOpenDateMillis', Date.now())
 				navigation.replace('Main')
-			} else if (fromMain) {
-				navigation.replace('Main', { fromResume: true })
 			} else {
 				navigation.goBack()
 			}
