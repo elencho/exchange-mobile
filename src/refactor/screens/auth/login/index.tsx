@@ -51,29 +51,21 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
 
-	const validMail = LOGIN_REGEX.test(mail)
-
 	useFocusEffect(
 		useCallback(() => {
 			dispatch(startLoginThunk(navigation))
 		}, [])
 	)
 
-	useEffect(() => {
-		return navigation.addListener('focus', () => {
-			setMail('')
-			setPass('')
-			setMailError(false)
-			setPassError(false)
-			dispatch(setGeneralError(undefined))
-		})
-	}, [navigation])
-
 	const onLoginPressed = async () => {
-		setPassError(!pass.trim())
-		setMailError(!(mail.trim() && validMail))
+		const passEmpty = pass.trim().length === 0
+		const mailEmpty = mail.trim().length === 0
+		const mailValid = LOGIN_REGEX.test(mail)
 
-		if (mail.trim() && pass.trim() && validMail) {
+		setPassError(passEmpty)
+		setMailError(mailEmpty || !mailValid)
+
+		if (!passEmpty && !mailEmpty && mailValid) {
 			handleGeneralError(
 				() => dispatch(usernameAndPaswordThunk({ mail, pass, navigation })),
 				setGeneralErrorData

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { TouchableOpacity, View, StyleSheet } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Strong_Password from '@assets/images/User_profile/Strong_Password.svg'
@@ -20,6 +20,7 @@ import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import GeneralError from '@components/general_error'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
+import { MaterialIndicator } from 'react-native-indicators'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 const COUNTDOWN = 30
@@ -37,7 +38,8 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 		null
 	)
 
-	const { authLoading, timerVisible } = useSelector(
+	const alreadySent = useRef(false)
+	const { authLoading, forgotResendLoading, timerVisible } = useSelector(
 		(state: RootState) => state.auth
 	)
 
@@ -66,14 +68,13 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	useEffect(() => {
 		if (timerVisible) {
 			setSeconds(COUNTDOWN_SECONDS)
+			alreadySent.current = true
 		}
 	}, [timerVisible])
 
 	const goToLogin = () => navigation.replace('Login')
 
 	const onResendPressed = () => {
-		setMailError(!(mail.trim() && validMail))
-
 		if (mail.trim() && validMail) {
 			handleGeneralError(
 				() => dispatch(resendPasswordCodeThunk({ mail })),
@@ -81,6 +82,8 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 			)
 
 			setSeconds(COUNTDOWN)
+		} else {
+			setMailError(true)
 		}
 	}
 
@@ -100,7 +103,18 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	}
 
 	const MailInputRight = () => {
-		if (timerVisible) {
+		const sendText = alreadySent.current ? 'Resend' : 'Send'
+
+		if (forgotResendLoading) {
+			return (
+				<MaterialIndicator
+					color="#6582FD"
+					animationDuration={3000}
+					size={16}
+					style={{ flex: 0 }}
+				/>
+			)
+		} else if (timerVisible) {
 			return (
 				<AppText variant="l" style={{ color: theme.color.textPrimary }}>
 					{seconds.toString()}
@@ -108,7 +122,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 			)
 		} else
 			return (
-				<AppButton variant="text" text={'Send'} onPress={onResendPressed} />
+				<AppButton variant="text" text={sendText} onPress={onResendPressed} />
 			)
 	}
 

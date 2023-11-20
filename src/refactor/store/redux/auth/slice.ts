@@ -24,6 +24,7 @@ import SecureKV from '@store/kv/secure'
 interface AuthState {
 	timerVisible: boolean
 	authLoading: boolean
+	forgotResendLoading: boolean //TODO: Remove
 	callbackUrl: string
 	accessToken?: string
 	otpType: OTP
@@ -33,6 +34,7 @@ interface AuthState {
 
 const initialState: AuthState = {
 	timerVisible: false,
+	forgotResendLoading: false,
 	authLoading: false,
 	callbackUrl: '',
 	otpType: 'EMAIL',
@@ -98,9 +100,17 @@ const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(forgotPasswordStartThunk.fulfilled, (state, action) => {
 		state.callbackUrl = action.payload.callbackUrl
 	})
+
+	builder.addCase(resendPasswordCodeThunk.pending, (state) => {
+		state.forgotResendLoading = true
+	})
 	builder.addCase(resendPasswordCodeThunk.fulfilled, (state, action) => {
+		state.forgotResendLoading = false
 		state.callbackUrl = action.payload.callbackUrl
 		state.timerVisible = action.payload.timerVisible
+	})
+	builder.addCase(resendPasswordCodeThunk.rejected, (state) => {
+		state.forgotResendLoading = false
 	})
 
 	builder.addCase(resetPasswordConfirmCodeThunk.pending, (state) => {
@@ -146,7 +156,9 @@ const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
 		state.authLoading = true
 	})
 	builder.addCase(otpForLoginThunk.fulfilled, (state, action) => {
-		state.callbackUrl = action.payload.callbackUrl
+		if (action.payload?.callbackUrl) {
+			state.callbackUrl = action.payload.callbackUrl
+		}
 		state.authLoading = false
 	})
 	builder.addCase(otpForLoginThunk.rejected, (state) => {
