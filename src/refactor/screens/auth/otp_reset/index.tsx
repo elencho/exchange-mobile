@@ -17,9 +17,7 @@ import { setTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import KV from '@store/kv/regular'
 
-export const ResetOtpInstructions = (
-	props: ScreenProp<'ResetOtpInstructions'>
-) => {
+export const ResetOtp = (props: ScreenProp<'ResetOtpInstructions'>) => {
 	const dispatch = useDispatch()
 	const { theme, styles } = useTheme(_styles)
 
@@ -56,7 +54,7 @@ export const ResetOtpInstructions = (
 		return () => {
 			setValue('')
 			setTimer(false)
-			setSeconds(30)
+			setSeconds(COUNTDOWN_SECONDS)
 		}
 	}, [])
 
@@ -192,4 +190,4 @@ const _styles = (theme: Theme) =>
 		},
 	})
 
-export default ResetOtpInstructions
+export default ResetOtp

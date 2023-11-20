@@ -11,7 +11,7 @@ import Resume from '@app/refactor/screens/auth/resume'
 import Login from '@app/refactor/screens/auth/login'
 import Login2Fa from '@app/refactor/screens/auth/login2fa'
 import Maintenance from '@app/refactor/screens/auth/maintenance'
-import ResetOtpInstructions from '@app/refactor/screens/auth/otp_reset'
+import ResetOtp from '@app/refactor/screens/auth/otp_reset'
 import ForgotPassword from '@app/refactor/screens/auth/password_forgot'
 import SetNewPassword from '@app/refactor/screens/auth/password_set'
 import Register from '@app/refactor/screens/auth/register/'
@@ -119,10 +119,7 @@ export default function AppNavigator() {
 				/>
 
 				<Stack.Screen name="Login2Fa" component={Login2Fa} />
-				<Stack.Screen
-					name="ResetOtpInstructions"
-					component={ResetOtpInstructions}
-				/>
+				<Stack.Screen name="ResetOtpInstructions" component={ResetOtp} />
 				<Stack.Screen
 					name="Resume"
 					component={Resume}

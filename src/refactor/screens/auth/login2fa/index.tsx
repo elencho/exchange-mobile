@@ -144,7 +144,12 @@ export const Login2Fa = ({ navigation }: Props) => {
 							</View>
 						) : null}
 						{otpType !== 'EMAIL' ? (
-							<AppButton variant="text" text="Reset OTP" onPress={goToReset} />
+							<AppButton
+								variant="text"
+								text="Reset OTP"
+								style={styles.resetText}
+								onPress={goToReset}
+							/>
 						) : null}
 					</View>
 				</Pressable>
@@ -198,6 +203,9 @@ const _styles = (theme: Theme) =>
 		},
 		twoFaInput: {
 			marginTop: 40,
+		},
+		resetText: {
+			marginBottom: 10,
 		},
 	})
 
