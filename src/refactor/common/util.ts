@@ -1,6 +1,6 @@
 import { Platform } from 'react-native'
 import VersionCheck from 'react-native-version-check'
-import React, { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 export const System = {
 	isIos: Platform.OS === 'ios',

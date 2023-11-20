@@ -62,8 +62,6 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		if (appClosing) {
 			KV.set('lastOpenDateMillis', Date.now())
 		}
-
-		console.log(prevAppState.current, newState)
 		prevAppState.current = newState
 	}, [])
 
