@@ -9,14 +9,16 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { UserStatus } from '@app/refactor/types/enums'
 import { toggleSubscriptionThunk } from '@app/refactor/redux/profile/profileThunks'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
+import launchSumsubSdk from '@app/utils/sumsubMobileSdk'
 
 export const usePersonal = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		profile: { userInfo, smsAuth },
+		profile: { userInfo },
 		errors: { generalError },
 		common: { language },
+		auth: { otpType },
 	} = state
 
 	const verified = userInfo?.userStatus === UserStatus.VERIFIED
@@ -46,7 +48,7 @@ export const usePersonal = () => {
 	}, [])
 
 	const edit = () => {
-		if (smsAuth) {
+		if (otpType === 'SMS') {
 			dispatch(
 				openCompanyInfoModal(
 					'go web phone header',
@@ -105,7 +107,6 @@ export const usePersonal = () => {
 		userInfo,
 		generalError,
 		language,
-		smsAuth,
 		corporate,
 		setCountryModalVisible,
 		countryModalVisible,
@@ -117,6 +118,6 @@ export const usePersonal = () => {
 		setLanguageModalVisible,
 		phoneNumberModalVisible,
 		togglePhoneNumberModal,
-		emailUpdated
+		emailUpdated,
 	}
 }
