@@ -28,15 +28,14 @@ const ModalSearchItem = ({
 	const text =
 		phoneCountry || countryDrop || citizenshipDrop ? (
 			<View style={styles.codeWrapper}>
-				<AppText body medium style={styles.primary}>
-					({codeText})
+				<AppText body medium style={[styles.primary, { width: 32 }]}>
+					{codeText}
 				</AppText>
 				<AppText
 					body
 					medium
 					numberOfLines={1}
-					style={[styles.secondary, { flex: 1 }]}>
-					{' '}
+					style={[styles.secondary, { flex: 1, marginLeft: 8 }]}>
 					{name}
 				</AppText>
 			</View>

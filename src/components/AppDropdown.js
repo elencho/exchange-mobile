@@ -39,6 +39,7 @@ const AppDropdown = ({
 							styles.selectedText,
 							error && { color: colors.ERROR_TEXT },
 							disabled && { color: colors.SECONDARY_TEXT },
+							icon && { marginRight: 30, marginLeft: 12 },
 						]}
 						numberOfLines={1}>
 						{selectedText}
@@ -61,14 +62,16 @@ const AppDropdown = ({
 				</AppText>
 			)}
 			{withLabel && selectedText && (
-				<AppText
-					subtext
-					style={[
-						styles.withLabel,
-						disabled && { color: colors.SECONDARY_TEXT, opacity: 0.6 },
-					]}>
-					{label}
-				</AppText>
+				<View style={styles.withLabelContainer}>
+					<AppText
+						subtext
+						style={[
+							styles.withLabelText,
+							disabled && { color: colors.SECONDARY_TEXT, opacity: 0.3 },
+						]}>
+						{label}
+					</AppText>
+				</View>
 			)}
 
 			<View>
@@ -77,7 +80,9 @@ const AppDropdown = ({
 						<Close width={9} height={9} />
 					</Pressable>
 				) : !hideArrow ? (
-					<Arrow />
+					<View style={{ marginLeft: -10 }}>
+						<Arrow />
+					</View>
 				) : null}
 			</View>
 		</Pressable>
@@ -99,18 +104,20 @@ const styles = StyleSheet.create({
 	label: {
 		color: colors.SECONDARY_TEXT,
 	},
-	withLabel: {
-		color: colors.SECONDARY_TEXT,
+	withLabelContainer: {
 		position: 'absolute',
 		left: 13,
 		top: -9,
 		paddingHorizontal: 8,
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 	},
+	withLabelText: {
+		color: colors.SECONDARY_TEXT,
+	},
 	selectedText: {
 		color: colors.PRIMARY_TEXT,
 		flex: 0,
-		marginRight: 6,
+		marginRight: 10,
 	},
 	close: {
 		width: 36,
@@ -124,6 +131,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	icon: {
-		marginRight: 10,
+		// marginLeft: 10,
+		// position: 'absolute',
 	},
 })

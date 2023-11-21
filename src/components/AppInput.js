@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
 		height: '100%',
 		marginRight: 10,
 	},
-	disabledInput: { color: colors.SECONDARY_TEXT },
+	disabledInput: { color: colors.SECONDARY_TEXT, opacity: 0.6 },
 	Gesinput: {
 		fontFamily: 'Ubuntu_Medium',
 		fontSize: 14,

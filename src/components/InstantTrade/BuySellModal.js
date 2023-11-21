@@ -254,7 +254,7 @@ const BuySellModal = () => {
 								{fiat}
 							</AppText>
 						}
-						style={{ marginTop: 12 }}
+						style={styles.mt22}
 						error={error && !validateAmount(price)}
 					/>
 					<AppInput
@@ -268,7 +268,7 @@ const BuySellModal = () => {
 								{crypto}
 							</AppText>
 						}
-						style={{ marginTop: 12 }}
+						style={styles.mt22}
 						error={error && !validateAmount(size)}
 					/>
 
@@ -329,5 +329,8 @@ const styles = StyleSheet.create({
 	},
 	flex: {
 		flex: 1,
+	},
+	mt22: {
+		marginTop: 22,
 	},
 })

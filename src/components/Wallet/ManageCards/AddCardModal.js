@@ -241,8 +241,8 @@ const styles = StyleSheet.create({
 		marginLeft: 15,
 	},
 	image: {
-		width: 40,
-		height: 40,
+		// width: 40,
+		// height: 40,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
