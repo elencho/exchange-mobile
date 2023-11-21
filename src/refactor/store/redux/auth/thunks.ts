@@ -153,7 +153,7 @@ export const resetOtpThunk = createAsyncThunk(
 		navigation.replace('ResetOtpInstructions', {
 			resetOtpType: resetType,
 		})
-		return { callbackUrl: data.callbackUrl, otpType: data.attributes.otpType }
+		return { callbackUrl: data.callbackUrl }
 	}
 )
 

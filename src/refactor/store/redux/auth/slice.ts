@@ -73,7 +73,6 @@ const auth = createSlice({
 		forgotPass(builder)
 		setPass(builder)
 		login2fa(builder)
-		resetOtp(builder)
 	},
 })
 
@@ -164,19 +163,17 @@ const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(otpForLoginThunk.rejected, (state) => {
 		state.authLoading = false
 	})
+
+	builder.addCase(resetOtpThunk.fulfilled, (state, action) => {
+		state.callbackUrl = action.payload.callbackUrl
+	})
 }
 
 const resetOtp = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder
-		.addCase(resetOtpThunk.pending, (state) => {
-			state.authLoading = true
-		})
+		.addCase(resetOtpThunk.pending, (state) => {})
 		.addCase(resetOtpThunk.fulfilled, (state, action) => {
-			state.authLoading = false
 			state.callbackUrl = action.payload.callbackUrl
-		})
-		.addCase(resetOtpThunk.rejected, (state) => {
-			state.authLoading = false
 		})
 }
 

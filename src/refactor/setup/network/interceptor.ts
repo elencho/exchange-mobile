@@ -62,7 +62,6 @@ const handleError = async (err: any) => {
 	const invalidGrant = err.response.data.error === 'invalid_grant'
 
 	if (status > 401) {
-		console.log(err.response.data)
 		if (state.common.lastRequestUiError === 'AppToast') {
 			store.dispatch(setAppToast(uiError))
 		} else {
