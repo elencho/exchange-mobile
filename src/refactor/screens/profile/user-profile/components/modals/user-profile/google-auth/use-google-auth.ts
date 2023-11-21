@@ -6,6 +6,9 @@ import useCopyToClipboard from '@app/utils/copyToClipboard'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 import { activateGoogleOtp } from '@app/refactor/redux/profile/profileApi'
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
+import { System } from '@app/refactor/common/util'
+import { retryUnauthorizedCall } from '@store/redux/auth/api'
+import SecureKV from '@store/kv/secure'
 
 interface GoogleAuthProps {
 	googleAuthModalVisible: boolean
@@ -31,13 +34,17 @@ export const useGoogleAuth = (props: GoogleAuthProps) => {
 
 	const enable = async () => {
 		try {
-			await activateGoogleOtp(
+		await activateGoogleOtp(
 				tOTPChangeParams?.changeOTPToken!,
 				key,
 				tOTPChangeParams?.totp?.totpSecret!
-			)
-			dispatch(fetchUserInfoThunk())
-			hide()
+			).then(async () => {
+				const oldRefresh = await SecureKV.get('refreshToken')
+
+				retryUnauthorizedCall({}, oldRefresh)
+				dispatch(fetchUserInfoThunk())
+				hide()
+			})
 		} catch (e) {
 			console.log(e)
 		}
@@ -48,7 +55,7 @@ export const useGoogleAuth = (props: GoogleAuthProps) => {
 			'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en&gl=US'
 		const iosLink =
 			'https://apps.apple.com/us/app/google-authenticator/id388497605'
-		Linking.openURL(IS_IOS ? iosLink : androidLink)
+		Linking.openURL(System.isIos ? iosLink : androidLink)
 			.then(() => {})
 			.catch((err) => console.log(err))
 	}

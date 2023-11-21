@@ -28,7 +28,6 @@ interface ToggleSubscriptionData {
 
 interface CredentialsForEmailData {
 	OTP: string
-	openModal: (v: boolean) => void
 	otpType: string
 }
 

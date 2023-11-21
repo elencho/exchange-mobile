@@ -278,7 +278,7 @@ export const getTokensOnInit = async (oldRefreshToken: string | null) => {
 	return data
 }
 
-const refreshTokenService = async (refreshToken: string) => {
+export const refreshTokenService = async (refreshToken: string) => {
 	const refreshData = await axios<RefreshTokenResponse>({
 		method: 'POST',
 		headers: {

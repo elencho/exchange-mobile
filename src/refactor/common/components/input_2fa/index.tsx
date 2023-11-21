@@ -19,7 +19,6 @@ import GeneralError from '@components/general_error'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Route, Screens } from '@app/refactor/setup/nav/nav'
 import { errorHappenedHere } from '@app/utils/appUtils'
-import { credentialsForGoogleThunk } from '@app/refactor/redux/profile/profileThunks'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
