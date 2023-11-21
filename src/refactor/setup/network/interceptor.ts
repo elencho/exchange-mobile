@@ -14,7 +14,7 @@ import {
 import SecureKV from '@store/kv/secure'
 
 axios.interceptors.request.use((request) => {
-	const hasToast: boolean | undefined = request.headers.toast
+	const hasToast: boolean = request.headers.toast === false ? false : true
 	const requestName: string | undefined = request.headers.requestName
 	const accessToken = store.getState().auth.accessToken
 
@@ -62,9 +62,12 @@ const handleError = async (err: any) => {
 	const invalidGrant = err.response.data.error === 'invalid_grant'
 
 	if (status > 401) {
+		console.log(err.response.data)
 		if (state.common.lastRequestUiError === 'AppToast') {
+			console.log('toast', uiError)
 			store.dispatch(setAppToast(uiError))
 		} else {
+			console.log('general', uiError)
 			//TODO: Remove this when wallets are refactored
 			if (uiError) store.dispatch(saveGeneralError(uiError))
 		}

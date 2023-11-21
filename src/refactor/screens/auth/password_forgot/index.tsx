@@ -80,7 +80,6 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 				() => dispatch(resendPasswordCodeThunk({ mail })),
 				setGeneralErrorData
 			)
-
 			setSeconds(COUNTDOWN)
 		} else {
 			setMailError(true)
