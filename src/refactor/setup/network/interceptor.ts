@@ -64,10 +64,8 @@ const handleError = async (err: any) => {
 	if (status > 401) {
 		console.log(err.response.data)
 		if (state.common.lastRequestUiError === 'AppToast') {
-			console.log('toast', uiError)
 			store.dispatch(setAppToast(uiError))
 		} else {
-			console.log('general', uiError)
 			//TODO: Remove this when wallets are refactored
 			if (uiError) store.dispatch(saveGeneralError(uiError))
 		}
