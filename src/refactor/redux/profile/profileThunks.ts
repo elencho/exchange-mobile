@@ -78,15 +78,11 @@ export const toggleSubscriptionThunk = createAsyncThunk(
 	}
 )
 
-export const credentialsForGoogleThunk = createAsyncThunk(
-	'profile/credentialsForGoogle',
-	async ({ OTP, openModal, otpType }: CredentialsForEmailData) => {
+export const credentialsForChangeOTPThunk = createAsyncThunk(
+	'profile/credentialsForChangeOTP',
+	async ({ OTP, otpType }: CredentialsForEmailData) => {
 		try {
 			const response = await getOtpChangeToken(OTP, otpType)
-
-			if (response) {
-				openModal(true)
-			}
 
 			return response
 		} catch (error) {

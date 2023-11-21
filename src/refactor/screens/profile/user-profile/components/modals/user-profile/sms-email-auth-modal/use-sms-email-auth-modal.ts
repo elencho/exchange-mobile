@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import {
-	credentialsForGoogleThunk,
+	credentialsForChangeOTPThunk,
 	fetchUserInfoThunk,
 } from '@app/refactor/redux/profile/profileThunks'
 import { activateEmailOtp } from '@app/refactor/redux/profile/profileApi'
+import { useAppDispatch } from '@app/refactor/redux/store'
+import SecureKV from '@store/kv/secure'
+import { retryUnauthorizedCall } from '@store/redux/auth/api'
 
 interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
@@ -25,7 +28,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		emailAuthModalVisible,
 		toggleGoogleAuthModal,
 	} = props
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 
 	const state = useSelector((state: RootState) => state)
 	const {
@@ -63,17 +66,23 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	}
 	const handleFill = () => {
 		if (currentSecurityAction === 'TOTP') {
-			dispatch(
-				credentialsForGoogleThunk({
+			const getOtp = dispatch(
+				credentialsForChangeOTPThunk({
 					OTP: value,
-					openModal: toggleGoogleAuthModal,
 					otpType: 'TOTP',
 				})
 			)
+			getOtp.then(() => toggleGoogleAuthModal(true))
 		} else if (currentSecurityAction === 'EMAIL') {
-			activateEmailOtp(tOTPChangeParams.changeOTPToken!, value)
-			hide()
-			dispatch(fetchUserInfoThunk())
+			activateEmailOtp(tOTPChangeParams!.changeOTPToken!, value).then(
+				async () => {
+					const oldRefresh = await SecureKV.get('refreshToken')
+
+					retryUnauthorizedCall({}, oldRefresh)
+					hide()
+					dispatch(fetchUserInfoThunk())
+				}
+			)
 		}
 	}
 
