@@ -9,7 +9,6 @@ import {
 	toggleTemplatesModal,
 	toggleCountriesModal,
 } from '../../../redux/modals/actions'
-import { saveUserInfo } from '../../../redux/profile/actions'
 import {
 	setIban,
 	setReceiverBank,
@@ -21,6 +20,7 @@ import CountriesModal from '../../UserProfile/CountriesModal'
 import TemplatesModal from './TemplatesModal'
 import WithdrawalBanksModal from './WithdrawalBanksModal'
 import AppDropdown from '@app/components/AppDropdown'
+import { setUserInfo } from '@app/refactor/redux/profile/profileSlice'
 
 export default function WithdrawalInfo({ error }) {
 	const dispatch = useDispatch()
@@ -99,7 +99,7 @@ export default function WithdrawalInfo({ error }) {
 			default:
 				break
 		}
-		dispatch(saveUserInfo(updatedInfo))
+		dispatch(setUserInfo(updatedInfo))
 	}
 
 	const handleBankInfo = (t, infoType) => {
