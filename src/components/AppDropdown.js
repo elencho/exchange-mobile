@@ -61,14 +61,16 @@ const AppDropdown = ({
 				</AppText>
 			)}
 			{withLabel && selectedText && (
-				<AppText
-					subtext
-					style={[
-						styles.withLabel,
-						disabled && { color: colors.SECONDARY_TEXT, opacity: 0.6 },
-					]}>
-					{label}
-				</AppText>
+				<View style={styles.withLabelContainer}>
+					<AppText
+						subtext
+						style={[
+							styles.withLabelText,
+							disabled && { color: colors.SECONDARY_TEXT, opacity: 0.3 },
+						]}>
+						{label}
+					</AppText>
+				</View>
 			)}
 
 			<View>
@@ -98,19 +100,22 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		color: colors.SECONDARY_TEXT,
+		marginLeft: 8,
 	},
-	withLabel: {
-		color: colors.SECONDARY_TEXT,
+	withLabelContainer: {
 		position: 'absolute',
 		left: 13,
 		top: -9,
 		paddingHorizontal: 8,
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 	},
+	withLabelText: {
+		color: colors.SECONDARY_TEXT,
+	},
 	selectedText: {
 		color: colors.PRIMARY_TEXT,
 		flex: 0,
-		marginRight: 6,
+		marginLeft: 12,
 	},
 	close: {
 		width: 36,

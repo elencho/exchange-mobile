@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+
+import AppInput from '../../AppInput'
+import PurpleText from '../../PurpleText'
+import WithdrawalAddress from './WithdrawalAddress'
+import CardSection from '../../InstantTrade/CardSection'
+import ChooseBankModal from '../../InstantTrade/ChooseBankModal'
+import ChooseCardModal from '../../InstantTrade/ChooseCardModal'
+import Fee from '../Fee'
+import QrScanner from '../../QrScanner'
+import QrScannerToggler from './widgets/QrScannerToggler'
+
 import colors from '../../../constants/colors'
 import { fetchFee } from '../../../redux/trade/actions'
 import {
@@ -9,18 +20,9 @@ import {
 	setWithdrawalNote,
 	chooseWhitelist,
 } from '../../../redux/wallet/actions'
-import { validateAmount } from '../../../utils/appUtils'
 import { handleAmountInput } from '../../../utils/formUtils'
+import { validateAmount } from '../../../utils/appUtils'
 import AppDropdown from '../../AppDropdown'
-import AppInput from '../../AppInput'
-import CardSection from '../../InstantTrade/CardSection'
-import ChooseBankModal from '../../InstantTrade/ChooseBankModal'
-import ChooseCardModal from '../../InstantTrade/ChooseCardModal'
-import PurpleText from '../../PurpleText'
-import QrScanner from '../../QrScanner'
-import Fee from '../Fee'
-import WithdrawalAddress from './WithdrawalAddress'
-import QrScannerToggler from './widgets/QrScannerToggler'
 
 export default function WithdrawalInputs({
 	isFiat,
@@ -105,7 +107,7 @@ export default function WithdrawalInputs({
 		</TouchableOpacity>
 	)
 
-	const marginTop = network === 'ECOMMERCE' && !depositProvider ? 0 : 22
+	const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 14
 	const needsTag = () => {
 		if (currentBalanceObj?.infos) {
 			return (

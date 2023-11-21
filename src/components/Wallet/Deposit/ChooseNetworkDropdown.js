@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 22,
 	},
 	dropdown: {
-		marginTop: 20,
+		marginTop: 28,
 	},
 	iconDimensions: {
 		width: 18,

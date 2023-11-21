@@ -192,7 +192,11 @@ export default function Deposit({ refreshControl }) {
 									<AppInfoBlock content={infos.ecommerce.deposit} info />
 								)}
 								{network === 'SWIFT' && (
-									<AppInfoBlock content={warnings.swift.deposit} warning />
+									<AppInfoBlock
+										content={warnings.swift.deposit}
+										style={{ marginTop: 26 }}
+										warning
+									/>
 								)}
 								{network === 'SEPA' && (
 									<AppInfoBlock content={warnings.sepa} warning />

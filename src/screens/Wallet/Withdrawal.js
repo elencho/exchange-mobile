@@ -197,10 +197,12 @@ function Withdrawal({ refreshControl }) {
 										<TransferMethodDropdown />
 										<TransferMethodModal />
 										{network === 'SWIFT' && (
-											<AppInfoBlock
-												content={warnings.swift.withdrawal}
-												warning
-											/>
+											<View style={{ marginTop: 10, marginBottom: -16 }}>
+												<AppInfoBlock
+													content={warnings.swift.withdrawal}
+													warning
+												/>
+											</View>
 										)}
 										{network === 'SEPA' && (
 											<AppInfoBlock content={warnings.sepa} warning />
