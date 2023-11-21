@@ -34,7 +34,7 @@ function WithdrawalAddress({ error, right }) {
 	const AddressAndTag = () => {
 		const { address, tag } = w
 		return (
-			<View style={styles.mb10}>
+			<View style={styles.mb18}>
 				<View style={styles.addressFlex}>
 					<AppText subtext style={styles.subtext}>
 						Address :
@@ -45,7 +45,7 @@ function WithdrawalAddress({ error, right }) {
 				</View>
 
 				{tag && (
-					<View style={[styles.flex, styles.mt10]}>
+					<View style={[styles.flex, styles.mt10, styles.mb10]}>
 						<AppText subtext style={styles.subtext}>
 							Address Tag :
 						</AppText>
@@ -158,8 +158,10 @@ const styles = StyleSheet.create({
 	mt10: {
 		marginTop: 10,
 	},
-	mb10: {
-		marginBottom: 10,
+	mb10: { marginBottom: 10 },
+
+	mb18: {
+		marginBottom: 18,
 	},
 	mb22: {
 		marginBottom: 22,

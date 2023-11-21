@@ -264,7 +264,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 22,
 		borderColor: '#42475D',
-		paddingHorizontal: 15,
 	},
 	IBAN: {
 		marginTop: 22,

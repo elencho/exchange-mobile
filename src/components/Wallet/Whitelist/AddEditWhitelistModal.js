@@ -133,14 +133,14 @@ export default function AddEditWhitelistModal({ add, edit }) {
 		<WithKeyboard padding flexGrow modal>
 			<TouchableOpacity
 				activeOpacity={0.99}
-				style={{ flex: 1, paddingTop: 16 }}>
+				style={{ flex: 1, paddingTop: 14 }}>
 				<GeneralError
 					style={styles.error}
 					show={errorHappenedHere('AddEditWhitelistModal')}
 				/>
 
 				{hasMultipleNetworks && (
-					<View style={styles.input}>
+					<View style={[styles.input, { marginTop: -28 }]}>
 						<ChooseNetworkDropdown disabled={!!edit} whitelist error={error} />
 						<ChooseNetworkModal />
 					</View>
@@ -213,9 +213,9 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
 const styles = StyleSheet.create({
 	error: {
-		marginBottom: 10,
+		marginBottom: 28,
 	},
 	input: {
-		marginBottom: 16,
+		marginBottom: 22,
 	},
 })

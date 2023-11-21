@@ -107,7 +107,7 @@ export default function WithdrawalInputs({
 		</TouchableOpacity>
 	)
 
-	const marginTop = network === 'ECOMMERCE' && !depositProvider ? -10 : 14
+	const marginTop = network === 'ECOMMERCE' && !depositProvider ? 0 : 22
 	const needsTag = () => {
 		if (currentBalanceObj?.infos) {
 			return (

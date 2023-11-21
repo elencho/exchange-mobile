@@ -39,7 +39,7 @@ const AppDropdown = ({
 							styles.selectedText,
 							error && { color: colors.ERROR_TEXT },
 							disabled && { color: colors.SECONDARY_TEXT },
-							icon && { marginRight: 30 },
+							icon && { marginRight: 30, marginLeft: 12 },
 						]}
 						numberOfLines={1}>
 						{selectedText}
@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
 	},
 	label: {
 		color: colors.SECONDARY_TEXT,
-		marginLeft: 8,
 	},
 	withLabelContainer: {
 		position: 'absolute',
@@ -118,7 +117,6 @@ const styles = StyleSheet.create({
 	selectedText: {
 		color: colors.PRIMARY_TEXT,
 		flex: 0,
-		marginLeft: 12,
 		marginRight: 10,
 	},
 	close: {
