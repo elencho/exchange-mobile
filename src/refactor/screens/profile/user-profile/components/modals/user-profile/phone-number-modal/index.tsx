@@ -53,7 +53,7 @@ export default function PhoneNumberModal({
 
 					<AppDropdown
 						handlePress={handleCountries}
-						selectedText={chosenCountry.name}
+						selectedText={chosenCountry?.name}
 						notClearable
 						withLabel
 						label="Choose code"
@@ -61,7 +61,7 @@ export default function PhoneNumberModal({
 						icon={
 							<Image
 								source={{
-									uri: `${COUNTRIES_URL_PNG}/${chosenCountry.code}.png`,
+									uri: `${COUNTRIES_URL_PNG}/${chosenCountry?.code}.png`,
 								}}
 								style={styles.image}
 							/>
@@ -86,13 +86,13 @@ export default function PhoneNumberModal({
 					// loading={isProfileUpdating}
 				/>
 
-				{countryModalVisible && (
-					<CountriesModal
-						onCountryChosen={setChosenCountry}
-						hide={() => setCountryModalVisible(false)}
-						from="UserProfile"
-					/>
-				)}
+				<CountriesModal
+					visible={countryModalVisible}
+					chosenItem={chosenCountry}
+					onCountryChosen={setChosenCountry}
+					hide={() => setCountryModalVisible(false)}
+					from="UserProfile"
+				/>
 			</WithKeyboard>
 		)
 	}
