@@ -20,8 +20,8 @@ export type Screens = {
 	Maintenance?: {}
 	Login?: {}
 	Registration?: {}
-	EmailVerification?: {
-		from: Route
+	EmailVerification: {
+		from: 'Login' | 'Registration'
 		mail?: string
 	}
 	Login2Fa?: {}

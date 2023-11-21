@@ -23,7 +23,7 @@ import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import KV from '@store/kv/regular'
 import SecureKV from '@store/kv/secure'
 
-export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
+const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 	const { theme } = useTheme()
 	const dispatch = useDispatch()
 
@@ -116,3 +116,5 @@ export default function useInitApp({ navigation }: ScreenProp<'Splash'>) {
 			.catch((err) => console.log(err))
 	}
 }
+
+export default useInitApp

@@ -12,9 +12,11 @@ import { resendOtpThunk } from '@store/redux/auth/thunks'
 import CloseModalIcon from '@app/components/InstantTrade/CloseModalIcon'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { ScreenProp, Screens } from '@app/refactor/setup/nav/nav'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { setTimer } from '@store/redux/auth/slice'
+import jwt_decode from 'jwt-decode'
+import { TokenParams } from '@app/refactor/types/auth/splash'
 
 const EmailVerification = ({
 	navigation,
@@ -23,11 +25,12 @@ const EmailVerification = ({
 	const dispatch = useDispatch()
 	const { styles, theme } = useTheme(_styles)
 
+	const { from, mail } = route.params
+
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(0)
 
-	const state = useSelector((state: RootState) => state.auth)
-	const { timerVisible } = state
+	const { timerVisible } = useSelector((state: RootState) => state.auth)
 
 	useEffect(() => {
 		dispatch(setTimer(true))
@@ -58,18 +61,20 @@ const EmailVerification = ({
 	}, [timerVisible])
 
 	const checkMailText = () => {
-		if (route.params?.mail) {
+		if (mail) {
 			return (
 				<View>
 					<AppText style={[styles.secondary, { marginBottom: 36 }]}>
 						{t('check your {{email}} after registration params{email}', {
-							email: route.params.mail,
+							email: mail,
 						})}
 					</AppText>
 				</View>
 			)
 		}
 	}
+
+	const goBack = () => navigation.replace(from)
 
 	const resend = () => dispatch(resendOtpThunk({ from: 'EmailVerification' }))
 
@@ -88,15 +93,12 @@ const EmailVerification = ({
 			<WithKeyboard
 				flexGrow={true}
 				padding={true}
-				modal={undefined}
+				modal={true}
 				refreshControl={undefined}
 				scrollUp={undefined}>
 				<View style={styles.container}>
 					<View style={styles.top}>
-						<CloseModalIcon
-							onPress={() => navigation.navigate('Registration')}
-							style={undefined}
-						/>
+						<CloseModalIcon onPress={goBack} style={undefined} />
 					</View>
 
 					<View style={styles.middle}>

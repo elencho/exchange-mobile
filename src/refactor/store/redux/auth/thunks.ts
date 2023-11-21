@@ -22,7 +22,6 @@ import {
 } from './api'
 import { resetAuth, savePkceInfo, setTokens } from './slice'
 import { navigationRef } from '@app/refactor/setup/nav'
-import { StackActions } from '@react-navigation/native'
 
 export const startLoginThunk = createAsyncThunk(
 	'startLogin',
@@ -72,7 +71,7 @@ export const usernameAndPaswordThunk = createAsyncThunk(
 			navigation.navigate('Login2Fa')
 		}
 		if (userAndPassInfo?.execution === Execution.EMAIL_VERIFICATION_OTP) {
-			navigation.push('EmailVerification', { from: 'Login' })
+			navigation.push('EmailVerification', { from: 'Login', mail })
 		}
 		return userAndPassInfo
 	}
