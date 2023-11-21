@@ -39,6 +39,7 @@ const AppDropdown = ({
 							styles.selectedText,
 							error && { color: colors.ERROR_TEXT },
 							disabled && { color: colors.SECONDARY_TEXT },
+							icon && { marginRight: 30 },
 						]}
 						numberOfLines={1}>
 						{selectedText}
@@ -79,7 +80,9 @@ const AppDropdown = ({
 						<Close width={9} height={9} />
 					</Pressable>
 				) : !hideArrow ? (
-					<Arrow />
+					<View style={{ marginLeft: -10 }}>
+						<Arrow />
+					</View>
 				) : null}
 			</View>
 		</Pressable>
@@ -116,6 +119,7 @@ const styles = StyleSheet.create({
 		color: colors.PRIMARY_TEXT,
 		flex: 0,
 		marginLeft: 12,
+		marginRight: 10,
 	},
 	close: {
 		width: 36,
@@ -129,6 +133,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	icon: {
-		marginRight: 10,
+		// marginLeft: 10,
+		// position: 'absolute',
 	},
 })
