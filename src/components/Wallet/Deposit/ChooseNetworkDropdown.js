@@ -119,6 +119,7 @@ export default function ChooseNetworkDropdown({
 						/>
 					) : (
 						<View style={styles.view}>
+							<View style={{ marginRight: 8 }}>{renderIcon(network)}</View>
 							<NetworkWithTicker />
 						</View>
 					)}
