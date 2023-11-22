@@ -1,5 +1,5 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import {
 	useBlurOnFulfill,
@@ -11,57 +11,34 @@ import { MaterialIndicator } from 'react-native-indicators'
 import { useDispatch, useSelector } from 'react-redux'
 import { Theme, useTheme } from '@theme/index'
 import AppText from '@components/text'
-import {
-	otpForLoginThunk,
-	verifyRegistrationThunk,
-} from '@store/redux/auth/thunks'
 import GeneralError from '@components/general_error'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { Route, Screens } from '@app/refactor/setup/nav/nav'
-import { errorHappenedHere } from '@app/utils/appUtils'
+import { Screens } from '@app/refactor/setup/nav/nav'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
-import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 interface Props {
 	value: string
 	setValue: (text: string) => void
 	cellCount: 4 | 6
 	navigation: NativeStackNavigationProp<Screens>
-	from?: Route
 	indicatorStyle?: StyleProp<ViewStyle>
-	onFill?: () => void
+	generalErrorData?: UiErrorData | null
+	onFill: () => void
 }
 
 const TwoFaInput = ({
 	value,
 	setValue,
 	cellCount,
-	navigation,
-	from,
 	indicatorStyle,
-	onFill = () => {},
+	onFill,
+	generalErrorData,
 }: Props) => {
-	const dispatch = useDispatch()
 	// TODO: add loading from param
 	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
-	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
-		null
-	)
 
-	// TODO: add onSuccess instead of if elses
 	useEffect(() => {
 		if (value.length === cellCount) {
-			if (from === 'Login2Fa') {
-				handleGeneralError(
-					() =>
-						dispatch(
-							otpForLoginThunk({ otp: value, from: 'Login2Fa', navigation })
-						),
-					setGeneralErrorData
-				)
-			} else if (from === 'Registration') {
-				dispatch(verifyRegistrationThunk({ otp: value, navigation }))
-			}
 			onFill()
 		}
 	}, [value])
@@ -82,10 +59,9 @@ const TwoFaInput = ({
 	)
 }
 
-type CodeInputProps = Pick<
-	Props,
-	'value' | 'setValue' | 'cellCount' | 'generalErrorData'
->
+type CodeInputProps = Pick<Props, 'value' | 'setValue' | 'cellCount'> & {
+	generalErrorData?: UiErrorData | null
+}
 
 const CodeInput = ({
 	value,
@@ -111,7 +87,9 @@ const CodeInput = ({
 	return (
 		<View>
 			<View>
-				<GeneralError style={styles.error} errorData={generalErrorData} />
+				{generalErrorData && (
+					<GeneralError style={styles.error} errorData={generalErrorData} />
+				)}
 			</View>
 
 			<CodeField

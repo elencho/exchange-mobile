@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,13 +9,11 @@ import AppInput from '@components/input'
 import AppText from '@components/text'
 import { setNewPasswordOtpThunk } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
-import { Screens } from '@app/refactor/setup/nav/nav'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { setAuthLoading } from '@store/redux/auth/slice'
 
-interface Props extends NativeStackScreenProps<Screens, 'SetNewPassword'> {}
-
-export default function SetNewPassword({ navigation }: Props) {
+const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const dispatch = useDispatch()
 	const { theme, styles } = useTheme(_styles)
 
@@ -49,6 +46,10 @@ export default function SetNewPassword({ navigation }: Props) {
 			)
 		}
 	}
+
+	const styleManyChars = pass.length > 0 && !passLength && styles.redText
+	const styleUpperLower = pass.length > 0 && !hasUpperAndLower && styles.redText
+	const styleHasNumber = pass.length > 0 && !hasNumber && styles.redText
 
 	return (
 		<Background>
@@ -92,23 +93,21 @@ export default function SetNewPassword({ navigation }: Props) {
 					error={passError && (!passValid || !pass)}
 				/>
 
-				<Text style={styles.validations}>
-					<AppText
-						variant="m"
-						style={pass.length > 0 && !passLength && styles.redText}>
-						8 or more characters
-					</AppText>{' '}
-					<AppText
-						variant="m"
-						style={pass.length > 0 && !hasUpperAndLower && styles.redText}>
-						Upper & lowercase letters
-					</AppText>{' '}
-					<AppText
-						variant="m"
-						style={pass.length > 0 && !hasNumber && styles.redText}>
-						At least one number
-					</AppText>
-				</Text>
+				<View>
+					<Text style={styles.validations}>
+						<AppText variant="m" style={styleManyChars}>
+							8_more_chars_registration
+						</AppText>
+						<AppText style={styleManyChars}>{', '}</AppText>
+						<AppText variant="m" style={styleUpperLower}>
+							upper_lowercase_letters_registration
+						</AppText>
+						<AppText style={styleUpperLower}>{', '}</AppText>
+						<AppText variant="m" style={styleHasNumber}>
+							at_least_one_number
+						</AppText>
+					</Text>
+				</View>
 
 				<AppInput
 					labelBackgroundColor={theme.color.backgroundPrimary}
@@ -116,9 +115,8 @@ export default function SetNewPassword({ navigation }: Props) {
 					label="Confirm New Password"
 					onChangeText={(txt: string) => {
 						setConfirmPass(txt)
-						if (txt === pass) setConfirmPassError(false)
+						setConfirmPassError(!txt.trim() || txt.trim() !== pass.trim())
 					}}
-					onFocusOrChange={() => setConfirmPassError(false)}
 					value={confirmPass}
 					secureTextEntry={true}
 					error={confirmPassError}
@@ -158,9 +156,9 @@ const _styles = (theme: Theme) =>
 			width: '100%',
 		},
 		inputConfirmPass: {
+			marginTop: 11,
 			width: '100%',
 		},
-		input: {},
 		middle: {
 			justifyContent: 'center',
 		},
@@ -186,3 +184,5 @@ const _styles = (theme: Theme) =>
 			color: theme.color.error,
 		},
 	})
+
+export default SetNewPassword

@@ -24,7 +24,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
 	const state = useSelector((state) => state)
 	const {
 		modals: { smsAuthModalVisible, emailAuthModalVisible },
-		profile: { currentSecurityAction, timerVisible },
+		profileOld: { currentSecurityAction, timerVisible },
 	} = state
 
 	const action =

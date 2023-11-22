@@ -108,8 +108,10 @@ const Register = ({ navigation }: Props) => {
 
 	const onRegisterPressed = async () => {
 		const allInputsValid = Object.values(valid).every(Boolean)
+		setGeneralErrorData(null)
 
 		if (allInputsValid) {
+			setGeneralErrorData(null)
 			handleGeneralError(
 				() =>
 					dispatch(
@@ -137,6 +139,10 @@ const Register = ({ navigation }: Props) => {
 	const onPhoneCodePressed = () => setCountryModalVisible(true)
 	const goToSignIn = () => navigation.replace('Login')
 	const goBack = () => navigation.goBack()
+
+	const styleManyChars = passErr && !passLength && styles.redText
+	const styleUpperLower = passErr && !passHasUpperLower && styles.redText
+	const styleHasNumber = passErr && !passHasNumber && styles.redText
 
 	return (
 		<SafeAreaView style={styles.safeArea}>
@@ -167,7 +173,10 @@ const Register = ({ navigation }: Props) => {
 						value={mail}
 						label="Enter E-mail"
 						style={styles.input && { marginTop: 27 }}
-						onFocusOrChange={() => setMailErr(false)}
+						onFocusOrChange={() => {
+							setMailErr(false)
+							setGeneralErrorData(null)
+						}}
 						onChangeText={setMail}
 						error={mailErr && (mail.trim() ? 'Enter Valid Email' : true)}
 					/>
@@ -176,25 +185,24 @@ const Register = ({ navigation }: Props) => {
 						label="Enter Password"
 						style={styles.input}
 						onChangeText={setPass}
-						onFocusOrChange={() => setPassErr(false)}
+						onFocusOrChange={() => {
+							setPassErr(false)
+							setGeneralErrorData(null)
+						}}
 						error={passErr}
 						secureTextEntry={true}
 					/>
 					<Text style={styles.validations}>
-						<AppText
-							variant="m"
-							style={passErr && !passLength && styles.redText}>
-							8 or more characters
-						</AppText>{' '}
-						<AppText
-							variant="m"
-							style={passErr && !passHasUpperLower && styles.redText}>
-							Upper & lowercase letters
-						</AppText>{' '}
-						<AppText
-							variant="m"
-							style={passErr && !passHasNumber && styles.redText}>
-							At least one number
+						<AppText variant="m" style={styleManyChars}>
+							8_more_chars_registration
+						</AppText>
+						<AppText style={styleManyChars}>{', '}</AppText>
+						<AppText variant="m" style={styleUpperLower}>
+							upper_lowercase_letters_registration
+						</AppText>
+						<AppText style={styleUpperLower}>{', '}</AppText>
+						<AppText variant="m" style={styleHasNumber}>
+							at_least_one_number
 						</AppText>
 					</Text>
 					<AppInput
@@ -203,7 +211,10 @@ const Register = ({ navigation }: Props) => {
 						labelBackgroundColor={theme.color.backgroundPrimary}
 						style={[styles.input, { marginTop: 0 }]}
 						onChangeText={setConfirmPass}
-						onFocusOrChange={() => setConfirmPassErr(false)}
+						onFocusOrChange={() => {
+							setConfirmPassErr(false)
+							setGeneralErrorData(null)
+						}}
 						error={confirmPassErr}
 						secureTextEntry={true}
 					/>
@@ -244,8 +255,12 @@ const Register = ({ navigation }: Props) => {
 							onChangeText={(txt: string) => {
 								setPhone(txt)
 								setPhoneErr(false)
+								setGeneralErrorData(null)
 							}}
-							onFocus={() => setPhoneErr(false)}
+							onFocus={() => {
+								setPhoneErr(false)
+								setGeneralErrorData(null)
+							}}
 							placeholder="Phone Number"
 							placeholderTextColor={
 								phoneErr ? theme.color.error : theme.color.textSecondary
@@ -254,14 +269,13 @@ const Register = ({ navigation }: Props) => {
 							keyboardType="numeric"
 						/>
 					</View>
-					{countryModalVisible && (
-						<CountriesModal
-							onCountryChosen={setChosenCountry}
-							hide={() => setCountryModalVisible(false)}
-							from="Registration"
-							phoneCountry={true}
-						/>
-					)}
+					<CountriesModal
+						visible={countryModalVisible}
+						onCountryChosen={setChosenCountry}
+						hide={() => setCountryModalVisible(false)}
+						from="Registration"
+						phoneCountry={true}
+					/>
 					{userType === 'Personal' && (
 						<>
 							<AppInput
@@ -269,12 +283,14 @@ const Register = ({ navigation }: Props) => {
 								label="Referral Code"
 								style={styles.input}
 								onChangeText={setReferral}
+								onFocusOrChange={() => setGeneralErrorData(null)}
 							/>
 							<AppInput
 								value={promo}
 								label="Promo Code"
 								style={styles.input}
 								onChangeText={setPromo}
+								onFocusOrChange={() => setGeneralErrorData(null)}
 							/>
 						</>
 					)}

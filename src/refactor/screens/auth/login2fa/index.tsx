@@ -1,4 +1,3 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
 import {
@@ -18,27 +17,31 @@ import { AppButton } from '@components/button'
 import TwoFaInput from '@components/input_2fa'
 import AppText from '@components/text'
 import {
+	otpForLoginThunk,
 	resendOtpThunk,
 	resetOtpThunk,
 	startLoginThunk,
 } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { Screens } from '@app/refactor/setup/nav/nav'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { setTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
-interface Props extends NativeStackScreenProps<Screens, 'Login2Fa'> {}
-
-export const Login2Fa = ({ navigation }: Props) => {
+export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	const dispatch = useDispatch()
 	const { theme, styles } = useTheme(_styles)
 
 	const [value, setValue] = useState('')
-	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
+	const [seconds, setSeconds] = useState(0)
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 
-	const state = useSelector((state: RootState) => state.auth)
-	const { timerVisible, otpType } = state
+	const { timerVisible, otpType } = useSelector(
+		(state: RootState) => state.auth
+	)
 
 	const cellCount = otpType === 'SMS' ? 4 : 6
 
@@ -72,7 +75,6 @@ export const Login2Fa = ({ navigation }: Props) => {
 
 	const goBack = () => dispatch(startLoginThunk(navigation))
 	const goToReset = () => dispatch(resetOtpThunk(navigation))
-	const resend = () => dispatch(resendOtpThunk({ from: 'Login2Fa' }))
 
 	const image = () => {
 		switch (otpType) {
@@ -91,9 +93,26 @@ export const Login2Fa = ({ navigation }: Props) => {
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)
 		} else {
-			return <AppButton variant="text" text="resend purple" onPress={resend} />
+			return (
+				<AppButton
+					variant="text"
+					text="resend purple"
+					onPress={() => {
+						resend()
+						setGeneralErrorData(null)
+					}}
+				/>
+			)
 		}
 	}
+
+	const resend = () => dispatch(resendOtpThunk())
+
+	const onCodeFilled = () =>
+		handleGeneralError(
+			() => dispatch(otpForLoginThunk({ otp: value, navigation })),
+			setGeneralErrorData
+		)
 
 	return (
 		<AppBackground>
@@ -128,8 +147,9 @@ export const Login2Fa = ({ navigation }: Props) => {
 								value={value}
 								setValue={setValue}
 								cellCount={cellCount}
-								from="Login2Fa"
 								navigation={navigation}
+								onFill={onCodeFilled}
+								generalErrorData={generalErrorData}
 							/>
 						</View>
 					</View>

@@ -124,7 +124,8 @@ const styles = StyleSheet.create({
 		marginHorizontal: 10,
 	},
 	searchInput: {
-		marginVertical: 20,
+		marginTop: 34,
+		marginBottom: 18,
 		marginHorizontal: 10,
 	},
 })

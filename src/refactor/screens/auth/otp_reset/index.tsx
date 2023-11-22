@@ -8,7 +8,11 @@ import { Theme, useTheme } from '@theme/index'
 import AppBackground from '@components/background'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
-import { resendOtpThunk, startLoginThunk } from '@store/redux/auth/thunks'
+import {
+	otpForLoginThunk,
+	resendOtpThunk,
+	startLoginThunk,
+} from '@store/redux/auth/thunks'
 import TwoFaInput from '@components/input_2fa'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
@@ -16,21 +20,27 @@ import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { setTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import KV from '@store/kv/regular'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
-export const ResetOtp = (props: ScreenProp<'ResetOtpInstructions'>) => {
+export const ResetOtp = ({
+	navigation,
+	route,
+}: ScreenProp<'ResetOtpInstructions'>) => {
 	const dispatch = useDispatch()
 	const { theme, styles } = useTheme(_styles)
 
-	const resetOtpType = props.route.params?.resetOtpType
+	const resetOtpType = route.params?.resetOtpType
 
-	const state = useSelector((state: RootState) => state.auth)
-	const { timerVisible } = state
+	const { timerVisible } = useSelector((state: RootState) => state.auth)
 
 	const [url, setUrl] = useState('')
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 
-	const goBack = () => dispatch(startLoginThunk(props.navigation))
+	const goBack = () => dispatch(startLoginThunk(navigation))
 	const openSupport = () => Linking.openURL(url)
 
 	useEffect(() => {
@@ -58,7 +68,7 @@ export const ResetOtp = (props: ScreenProp<'ResetOtpInstructions'>) => {
 		}
 	}, [])
 
-	const resend = () => dispatch(resendOtpThunk({ from: 'Login2Fa' }))
+	const resend = () => dispatch(resendOtpThunk())
 
 	const resendOrCountDown = () => {
 		if (timerVisible) {
@@ -66,9 +76,24 @@ export const ResetOtp = (props: ScreenProp<'ResetOtpInstructions'>) => {
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)
 		} else {
-			return <AppButton variant="text" text="resend purple" onPress={resend} />
+			return (
+				<AppButton
+					variant="text"
+					text="resend purple"
+					onPress={() => {
+						resend()
+						setGeneralErrorData(null)
+					}}
+				/>
+			)
 		}
 	}
+
+	const onCodeFilled = () =>
+		handleGeneralError(
+			() => dispatch(otpForLoginThunk({ otp: value, navigation })),
+			setGeneralErrorData
+		)
 
 	return (
 		<AppBackground>
@@ -105,12 +130,13 @@ export const ResetOtp = (props: ScreenProp<'ResetOtpInstructions'>) => {
 								Enter the code you received on the email
 							</AppText>
 							<TwoFaInput
-								navigation={props.navigation}
+								navigation={navigation}
 								value={value}
 								setValue={setValue}
 								cellCount={6}
-								from="ResetOtpInstructions"
+								onFill={onCodeFilled}
 								indicatorStyle={{ top: '70%' }}
+								generalErrorData={generalErrorData}
 							/>
 						</View>
 					)}
