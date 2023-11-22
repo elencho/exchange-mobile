@@ -74,11 +74,11 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 		const mailEmpty = mail.trim().length === 0
 		const mailValid = LOGIN_REGEX.test(mail)
 
-		setGeneralErrorData(null)
 		setPassError(passEmpty)
 		setMailError(mailEmpty || !mailValid)
 
 		if (!passEmpty && !mailEmpty && mailValid) {
+			setGeneralErrorData(null)
 			handleGeneralError(
 				() => dispatch(usernameAndPaswordThunk({ mail, pass, navigation })),
 				setGeneralErrorData

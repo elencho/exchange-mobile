@@ -90,9 +90,9 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	const onNextPressed = async () => {
 		setCodeError(!code.trim())
 		setMailError(!(mail.trim() && validMail))
-		setGeneralErrorData(null)
 
 		if (mail.trim() && code.trim() && validMail) {
+			setGeneralErrorData(null)
 			handleGeneralError(
 				() =>
 					dispatch(

@@ -47,6 +47,10 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 		}
 	}
 
+	const styleManyChars = pass.length > 0 && !passLength && styles.redText
+	const styleUpperLower = pass.length > 0 && !hasUpperAndLower && styles.redText
+	const styleHasNumber = pass.length > 0 && !hasNumber && styles.redText
+
 	return (
 		<Background>
 			<TouchableOpacity style={styles.back} onPress={goToLogin}>
@@ -91,20 +95,16 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 
 				<View>
 					<Text style={styles.validations}>
-						<AppText
-							variant="m"
-							style={pass.length > 0 && !passLength && styles.redText}>
-							8 or more characters
-						</AppText>{' '}
-						<AppText
-							variant="m"
-							style={pass.length > 0 && !hasUpperAndLower && styles.redText}>
-							Upper & lowercase letters
-						</AppText>{' '}
-						<AppText
-							variant="m"
-							style={pass.length > 0 && !hasNumber && styles.redText}>
-							At least one number
+						<AppText variant="m" style={styleManyChars}>
+							8_more_chars_registration
+						</AppText>
+						<AppText style={styleManyChars}>{', '}</AppText>
+						<AppText variant="m" style={styleUpperLower}>
+							upper_lowercase_letters_registration
+						</AppText>
+						<AppText style={styleUpperLower}>{', '}</AppText>
+						<AppText variant="m" style={styleHasNumber}>
+							at_least_one_number
 						</AppText>
 					</Text>
 				</View>
