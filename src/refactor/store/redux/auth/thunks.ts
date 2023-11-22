@@ -156,13 +156,11 @@ export const resetOtpThunk = createAsyncThunk(
 	}
 )
 
-type ResendFrom = 'Login2Fa' | 'EmailVerification' | 'TODO:SMS_EMAIL_MODAL'
-
 export const resendOtpThunk = createAsyncThunk(
 	'resendOtp',
-	async ({ from }: { from?: ResendFrom }, { getState }) => {
-		const state = (getState() as RootState).auth
-		const resendInfo = await resendEmail(state.callbackUrl)
+	async (_, { getState }) => {
+		const { callbackUrl } = (getState() as RootState).auth
+		const resendInfo = await resendEmail(callbackUrl)
 		return { callbackUrl: resendInfo.callbackUrl }
 	}
 )
@@ -172,17 +170,14 @@ export const otpForLoginThunk = createAsyncThunk(
 	async (
 		{
 			otp,
-			from,
 			navigation,
 		}: {
 			otp: string
-			from: Route
 			navigation: NativeStackNavigationProp<Screens, any>
 		},
 		{ dispatch, getState }
 	) => {
-		const state = (getState() as RootState).auth
-		const { callbackUrl } = state
+		const { callbackUrl } = (getState() as RootState).auth
 
 		const loginInfo = await loginOtp(otp, callbackUrl)
 
@@ -192,7 +187,7 @@ export const otpForLoginThunk = createAsyncThunk(
 			if (loginInfo.execution === Execution.UPDATE_PASSWORD) {
 				navigation.navigate('SetNewPassword')
 			} else {
-				dispatch(codeToTokenThunk(loginInfo.code, from, navigation))
+				dispatch(codeToTokenThunk(loginInfo.code, 'Login', navigation))
 			}
 			return loginInfo
 		} catch (e) {
@@ -203,13 +198,14 @@ export const otpForLoginThunk = createAsyncThunk(
 
 const codeToTokenThunk = (
 	code: string,
-	from: Route,
+	from: 'Login' | 'Registration' | 'SetNewPassword',
 	navigation: NativeStackNavigationProp<Screens, any>
 ) =>
 	createAsyncThunk('codeToToken', async (_, { dispatch, getState }) => {
 		const { pkceInfo } = (getState() as RootState).auth
 
 		const tokenData = await codeToToken(code, pkceInfo?.codeVerifier || '')
+		console.log(tokenData)
 		dispatch(
 			setTokens({
 				refreshToken: tokenData.refresh_token,

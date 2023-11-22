@@ -87,20 +87,6 @@ export const resendEmail = async (callbackUrl: string) => {
 	return data?.data
 }
 
-export const resetOtp = async (callbackUrl: string) => {
-	const data = await axios<ResetOtpResponse>({
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			requestName: 'resetOtp',
-			toast: false,
-		},
-		url: callbackUrl,
-		data: `resetOTP=true`,
-	})
-	return data?.data
-}
-
 export const loginOtp = async (otp: string, url: string) => {
 	const data = await axios<OtpLoginResponse>({
 		method: 'POST',
@@ -111,6 +97,20 @@ export const loginOtp = async (otp: string, url: string) => {
 		},
 		url,
 		data: `otp=${otp}`,
+	})
+	return data?.data
+}
+
+export const resetOtp = async (callbackUrl: string) => {
+	const data = await axios<ResetOtpResponse>({
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			requestName: 'resetOtp',
+			toast: false,
+		},
+		url: callbackUrl,
+		data: `resetOTP=true`,
 	})
 	return data?.data
 }

@@ -8,15 +8,16 @@ import AppBackground from '@components/background'
 import { AppButton } from '@components/button'
 import TwoFaInput from '@components/input_2fa'
 import AppText from '@components/text'
-import { resendOtpThunk } from '@store/redux/auth/thunks'
+import {
+	resendOtpThunk,
+	verifyRegistrationThunk,
+} from '@store/redux/auth/thunks'
 import CloseModalIcon from '@app/components/InstantTrade/CloseModalIcon'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { setTimer } from '@store/redux/auth/slice'
-import jwt_decode from 'jwt-decode'
-import { TokenParams } from '@app/refactor/types/auth/splash'
 
 const EmailVerification = ({
 	navigation,
@@ -76,7 +77,7 @@ const EmailVerification = ({
 
 	const goBack = () => navigation.replace(from)
 
-	const resend = () => dispatch(resendOtpThunk({ from: 'EmailVerification' }))
+	const resend = () => dispatch(resendOtpThunk())
 
 	const resendOrCountDown = () => {
 		if (timerVisible) {
@@ -87,6 +88,9 @@ const EmailVerification = ({
 			return <AppButton variant="text" text="resend purple" onPress={resend} />
 		}
 	}
+
+	const onCodeFilled = () =>
+		dispatch(verifyRegistrationThunk({ otp: value, navigation }))
 
 	return (
 		<AppBackground>
@@ -116,7 +120,7 @@ const EmailVerification = ({
 							value={value}
 							setValue={setValue}
 							cellCount={6}
-							from="Registration"
+							onFill={onCodeFilled}
 							indicatorStyle={{ top: '70%' }}
 						/>
 					</View>

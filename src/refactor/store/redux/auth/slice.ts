@@ -129,7 +129,7 @@ const setPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(setNewPasswordOtpThunk.pending, (state) => {
 		state.authLoading = true
 	})
-	builder.addCase(setNewPasswordOtpThunk.fulfilled, (state, action) => {
+	builder.addCase(setNewPasswordOtpThunk.fulfilled, (state) => {
 		state.authLoading = false
 	})
 	builder.addCase(setNewPasswordOtpThunk.rejected, (state) => {
@@ -167,14 +167,6 @@ const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(resetOtpThunk.fulfilled, (state, action) => {
 		state.callbackUrl = action.payload.callbackUrl
 	})
-}
-
-const resetOtp = (builder: ActionReducerMapBuilder<AuthState>) => {
-	builder
-		.addCase(resetOtpThunk.pending, (state) => {})
-		.addCase(resetOtpThunk.fulfilled, (state, action) => {
-			state.callbackUrl = action.payload.callbackUrl
-		})
 }
 
 const register = (builder: ActionReducerMapBuilder<AuthState>) => {

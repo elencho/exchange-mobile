@@ -19,6 +19,7 @@ import Constants from 'expo-constants'
 import { setGeneralError } from '@store/redux/common/slice'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
+import { setAuthLoading } from '@store/redux/auth/slice'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
@@ -56,6 +57,17 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 			dispatch(startLoginThunk(navigation))
 		}, [])
 	)
+
+	useEffect(() => {
+		return navigation.addListener('focus', () => {
+			setMail('')
+			setPass('')
+			setMailError(false)
+			setPassError(false)
+			setGeneralErrorData(null)
+			setAuthLoading(false)
+		})
+	}, [navigation])
 
 	const onLoginPressed = async () => {
 		const passEmpty = pass.trim().length === 0
