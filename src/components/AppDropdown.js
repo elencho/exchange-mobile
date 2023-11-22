@@ -19,6 +19,7 @@ const AppDropdown = ({
 	disabled,
 	hideArrow,
 	noTranslate,
+	isOneMethod,
 }) => {
 	return (
 		<Pressable
@@ -38,7 +39,7 @@ const AppDropdown = ({
 						style={[
 							styles.selectedText,
 							error && { color: colors.ERROR_TEXT },
-							disabled && { color: colors.SECONDARY_TEXT },
+							disabled && !isOneMethod && { color: colors.SECONDARY_TEXT },
 							icon && { marginRight: 30, marginLeft: 12 },
 						]}
 						numberOfLines={1}>
