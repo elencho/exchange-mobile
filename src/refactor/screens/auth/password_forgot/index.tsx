@@ -93,6 +93,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 		setGeneralErrorData(null)
 
 		if (mail.trim() && code.trim() && validMail) {
+			setGeneralErrorData(null)
 			handleGeneralError(
 				() =>
 					dispatch(

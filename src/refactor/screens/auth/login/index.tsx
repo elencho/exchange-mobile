@@ -79,6 +79,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 		setMailError(mailEmpty || !mailValid)
 
 		if (!passEmpty && !mailEmpty && mailValid) {
+			setGeneralErrorData(null)
 			handleGeneralError(
 				() => dispatch(usernameAndPaswordThunk({ mail, pass, navigation })),
 				setGeneralErrorData

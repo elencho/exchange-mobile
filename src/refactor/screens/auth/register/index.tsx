@@ -111,6 +111,7 @@ const Register = ({ navigation }: Props) => {
 		setGeneralErrorData(null)
 
 		if (allInputsValid) {
+			setGeneralErrorData(null)
 			handleGeneralError(
 				() =>
 					dispatch(
@@ -138,6 +139,10 @@ const Register = ({ navigation }: Props) => {
 	const onPhoneCodePressed = () => setCountryModalVisible(true)
 	const goToSignIn = () => navigation.replace('Login')
 	const goBack = () => navigation.goBack()
+
+	const styleManyChars = passErr && !passLength && styles.redText
+	const styleUpperLower = passErr && !passHasUpperLower && styles.redText
+	const styleHasNumber = passErr && !passHasNumber && styles.redText
 
 	return (
 		<SafeAreaView style={styles.safeArea}>
@@ -188,20 +193,16 @@ const Register = ({ navigation }: Props) => {
 						secureTextEntry={true}
 					/>
 					<Text style={styles.validations}>
-						<AppText
-							variant="m"
-							style={passErr && !passLength && styles.redText}>
-							8 or more characters
-						</AppText>{' '}
-						<AppText
-							variant="m"
-							style={passErr && !passHasUpperLower && styles.redText}>
-							Upper & lowercase letters
-						</AppText>{' '}
-						<AppText
-							variant="m"
-							style={passErr && !passHasNumber && styles.redText}>
-							At least one number
+						<AppText variant="m" style={styleManyChars}>
+							8_more_chars_registration
+						</AppText>
+						<AppText style={styleManyChars}>{', '}</AppText>
+						<AppText variant="m" style={styleUpperLower}>
+							upper_lowercase_letters_registration
+						</AppText>
+						<AppText style={styleUpperLower}>{', '}</AppText>
+						<AppText variant="m" style={styleHasNumber}>
+							at_least_one_number
 						</AppText>
 					</Text>
 					<AppInput
