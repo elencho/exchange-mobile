@@ -7,7 +7,7 @@ import AppInput from '@components/input'
 import AppModal from '@components/modal'
 import AppText from '@components/text'
 import HideIcon from '@app/assets/images/User_profile/Hide.svg'
-import GeneralError from '@app/components/GeneralError'
+import GeneralError from '@components/general_error'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { errorHappenedHere } from '@app/utils/appUtils'
 import { usePasswordModal } from './use-password-modal'
@@ -34,6 +34,8 @@ export default function PasswordModal({
 		newPassCond,
 		handleFieldChange,
 		userProfileLoading,
+		onHide,
+		generalErrorData,
 	} = usePasswordModal({ togglePasswordModal, passwordModalVisible })
 
 	const background = (i: number) => {
@@ -97,10 +99,7 @@ export default function PasswordModal({
 				scrollUp={false}
 				refreshControl={null}>
 				<TouchableOpacity activeOpacity={0.99} style={{ flex: 1 }}>
-					<GeneralError
-						style={styles.error}
-						show={errorHappenedHere('PasswordModal')}
-					/>
+					<GeneralError style={styles.error} errorData={generalErrorData} />
 
 					<AppInput
 						style={[styles.inputContainer, { marginTop: 18 }]}
@@ -168,6 +167,7 @@ export default function PasswordModal({
 			fullScreen
 			title="Set a Strong Password"
 			children={children()}
+			onModalHide={onHide}
 		/>
 	)
 }
