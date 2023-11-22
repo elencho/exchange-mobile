@@ -1,18 +1,16 @@
 import Constants from 'expo-constants'
-import React, { memo, useEffect } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
 import Modal from 'react-native-modal'
 import { RootSiblingParent } from 'react-native-root-siblings'
 import { useSelector } from 'react-redux'
 import colors from '../constants/colors'
-import { IS_IOS } from '../constants/system'
 import AppText from './AppText'
 import AppToast from './AppToast'
 import Background from './Background'
 import CloseModalIcon from './InstantTrade/CloseModalIcon'
 import ModalTop from './ModalTop'
 import Headline from './TransactionHistory/Headline'
-import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 function AppModal({
 	children,
@@ -29,10 +27,32 @@ function AppModal({
 	const webViewVisible = useSelector((state) => state?.modals?.webViewVisible)
 	const { isBiometricScreenOpened } = useSelector((state) => state.common)
 
+	// For bottom modals after Biometric Unlock
+	const [isBottomVisible, setIsBottomVisible] = useState(false)
+	useEffect(() => {
+		if (bottom && visible) {
+			setTimeout(() => {
+				setIsBottomVisible(true)
+			}, 0)
+		}
+	}, [isBiometricScreenOpened, visible])
+
+	useEffect(() => {
+		if (bottom) {
+			if (isBiometricScreenOpened) {
+				setIsBottomVisible(false)
+			}
+		}
+	}, [isBiometricScreenOpened])
+
 	return (
 		webViewVisible && (
 			<Modal
-				isVisible={visible && !isBiometricScreenOpened}
+				isVisible={
+					bottom
+						? visible && !isBiometricScreenOpened && isBottomVisible
+						: visible && !isBiometricScreenOpened
+				}
 				onBackdropPress={hide}
 				onSwipeComplete={hide}
 				// swipeDirection="down"
