@@ -108,6 +108,7 @@ const Register = ({ navigation }: Props) => {
 
 	const onRegisterPressed = async () => {
 		const allInputsValid = Object.values(valid).every(Boolean)
+		setGeneralErrorData(null)
 
 		if (allInputsValid) {
 			setGeneralErrorData(null)
