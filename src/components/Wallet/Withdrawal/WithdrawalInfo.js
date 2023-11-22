@@ -9,7 +9,6 @@ import {
 	toggleTemplatesModal,
 	toggleCountriesModal,
 } from '../../../redux/modals/actions'
-import { saveUserInfo } from '../../../redux/profile/actions'
 import {
 	setIban,
 	setReceiverBank,
@@ -20,6 +19,8 @@ import AppText from '../../AppText'
 import CountriesModal from '../../UserProfile/CountriesModal'
 import TemplatesModal from './TemplatesModal'
 import WithdrawalBanksModal from './WithdrawalBanksModal'
+import AppDropdown from '@app/components/AppDropdown'
+import { setUserInfo } from '@app/refactor/redux/profile/profileSlice'
 
 export default function WithdrawalInfo({ error }) {
 	const dispatch = useDispatch()
@@ -98,7 +99,7 @@ export default function WithdrawalInfo({ error }) {
 			default:
 				break
 		}
-		dispatch(saveUserInfo(updatedInfo))
+		dispatch(setUserInfo(updatedInfo))
 	}
 
 	const handleBankInfo = (t, infoType) => {
@@ -144,22 +145,23 @@ export default function WithdrawalInfo({ error }) {
 
 			{isBankOther && (
 				<>
-					<Pressable
+					<AppDropdown
+						handlePress={openCountriesModal}
 						style={styles.languageSelector}
-						onPress={openCountriesModal}>
-						<View style={styles.countryInfo}>
+						icon={
 							<Image
 								source={{
 									uri: `${COUNTRIES_URL_PNG}/${userInfo.countryCode}.png`,
 								}}
 								style={styles.flag}
 							/>
-							<AppText style={styles.countryText} medium>
-								{userInfo.country}
-							</AppText>
-						</View>
-						<Arrow />
-					</Pressable>
+						}
+						selectedText={userInfo?.country}
+						label="Recipient country"
+						withLabel
+						notClearable
+						error={error && !userInfo?.country}
+					/>
 
 					<AppInput
 						style={styles.inputContainer}
@@ -184,21 +186,27 @@ export default function WithdrawalInfo({ error }) {
 				Bank Info
 			</AppText>
 
-			<Pressable style={[styles.dropdown, templateRed]} onPress={showTemplates}>
-				<AppText style={[styles.dropdownText, titleColor('template')]}>
-					{title}
-				</AppText>
-				<Arrow />
-			</Pressable>
+			<AppDropdown
+				handlePress={showTemplates}
+				selectedText={currentTemplate?.templateName}
+				label="Choose or Add Template"
+				withLabel
+				style={styles.dropdown}
+				notClearable
+				error={error && !isTemplate}
+			/>
 
 			{currentTemplate.templateName === 'New Template' ? (
 				<>
-					<Pressable style={[styles.dropdown, bankColor]} onPress={showBanks}>
-						<AppText style={[styles.dropdownText, titleColor('bank')]}>
-							{bankTitle}
-						</AppText>
-						<Arrow />
-					</Pressable>
+					<AppDropdown
+						selectedText={withdrawalBank?.bankName}
+						label="Choose Bank"
+						withLabel
+						handlePress={showBanks}
+						style={styles.dropdown}
+						notClearable
+						error={error && !isBank}
+					/>
 					<WithdrawalBanksModal />
 				</>
 			) : null}
@@ -256,7 +264,6 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginTop: 22,
 		borderColor: '#42475D',
-		paddingHorizontal: 15,
 	},
 	IBAN: {
 		marginTop: 22,
@@ -289,10 +296,7 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		paddingHorizontal: 15,
 		paddingVertical: 10,
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		borderColor: colors.BORDER,
+		paddingRight: 30,
 		marginBottom: 30,
 		height: 45,
 	},
@@ -303,10 +307,10 @@ const styles = StyleSheet.create({
 		color: colors.PRIMARY_TEXT,
 	},
 	flag: {
-		height: 20,
-		width: 20,
+		height: 18,
+		width: 18,
 		borderRadius: 8,
-		marginRight: 20,
+		marginLeft: 4,
 		resizeMode: 'stretch',
 	},
 })

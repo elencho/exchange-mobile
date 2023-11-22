@@ -4,7 +4,7 @@ import {
 	PayloadAction,
 } from '@reduxjs/toolkit'
 import {
-	credentialsForGoogleThunk,
+	credentialsForChangeOTPThunk,
 	fetchUserInfoThunk,
 	toggleSubscriptionThunk,
 	updatePasswordThunk,
@@ -106,14 +106,14 @@ const emailUpdates = (builder: ActionReducerMapBuilder<ProfileState>) => {
 
 const googleOtpChange = (builder: ActionReducerMapBuilder<ProfileState>) => {
 	builder
-		.addCase(credentialsForGoogleThunk.pending, (state) => {
+		.addCase(credentialsForChangeOTPThunk.pending, (state) => {
 			state.userProfileLoading = true
 		})
-		.addCase(credentialsForGoogleThunk.fulfilled, (state, action) => {
+		.addCase(credentialsForChangeOTPThunk.fulfilled, (state, action) => {
 			state.userProfileLoading = false
 			state.tOTPChangeParams = action.payload
 		})
-		.addCase(credentialsForGoogleThunk.rejected, (state) => {
+		.addCase(credentialsForChangeOTPThunk.rejected, (state) => {
 			state.userProfileLoading = false
 		})
 }

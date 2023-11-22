@@ -43,11 +43,23 @@ export const usePhoneNumberModal = ({
 		if (phoneNumberModalVisible) {
 			setSeconds(30)
 		}
+		phoneCountry()
 	}, [phoneNumberModalVisible])
 
 	const hide = () => {
 		togglePhoneNumberModal(false)
 		setGeneralErrorData(null)
+	}
+	const phoneCountry = () => {
+		let phoneCountry
+		countries?.forEach((c: Country) => {
+			if (userInfo?.phoneCountry === c.code) {
+				// phoneCountry = c.phoneCode
+				setChosenCountry({ name: c.name, code: c.code })
+			}
+		})
+
+		return phoneCountry
 	}
 
 	const onModalHide = () => {
@@ -82,16 +94,6 @@ export const usePhoneNumberModal = ({
 	}
 
 	const handleCountries = () => setCountryModalVisible(true)
-
-	const phoneCountry = () => {
-		let phoneCountry
-		countries?.forEach((c: Country) => {
-			if (userInfo?.country === c.code) {
-				phoneCountry = c.phoneCode
-			}
-		})
-		return phoneCountry
-	}
 
 	return {
 		userInfo,

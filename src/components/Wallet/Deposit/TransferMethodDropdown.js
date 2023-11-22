@@ -24,15 +24,17 @@ export default function TransferMethodDropdown() {
 		borderWidth: isOneMethod ? 0 : 1,
 	}
 	const renderIcon = (network) => {
+		let logo
 		if (network === 'ECOMMERCE') {
-			return <Card />
+			logo = <Card />
 		}
 		if (network === 'SWIFT') {
-			return <Bank />
+			logo = <Bank />
 		}
 		if (network === 'SEPA') {
-			return <Euro />
+			logo = <Euro />
 		}
+		return <View style={{ marginRight: -4 }}>{logo}</View>
 	}
 
 	return (

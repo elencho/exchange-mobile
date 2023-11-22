@@ -20,8 +20,8 @@ import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import GeneralError from '@components/general_error'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
-import { MaterialIndicator } from 'react-native-indicators'
 import KV from '@store/kv/regular'
+import { MaterialIndicator } from 'react-native-indicators'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 const COUNTDOWN = 30

@@ -23,13 +23,13 @@ const usePersonalInfoModal = ({
 		null
 	)
 	const [error, setError] = useState(false)
-	const x = {
+	const defaultCountry = {
 		name: userInfo?.country,
 		code: userInfo?.countryCode,
 	}
-	const [chosenCountry, setChosenCountry] = useState<Country>(x)
+	const [chosenCountry, setChosenCountry] = useState<Country>(defaultCountry)
 	const [localUserInfo, setLocalUserInfo] = useState({
-		country: chosenCountry?.name!,
+		country: chosenCountry?.code!,
 		city: userInfo?.city!,
 		postalCode: userInfo?.postalCode!,
 		address: userInfo?.address!,
@@ -42,14 +42,14 @@ const usePersonalInfoModal = ({
 
 	useEffect(() => {
 		error && setError(false)
-	}, [userInfo, personalInfoModalVisible])
+	}, [userInfo, personalInfoModalVisible, localUserInfo])
 
 	const hide = () => {
 		togglePersonalInfoModal(false)
 	}
 
 	const onHide = () => {
-		setChosenCountry(x)
+		setChosenCountry(defaultCountry)
 		setLocalUserInfo({
 			country: chosenCountry?.code!,
 			city: userInfo?.city!,
@@ -59,22 +59,14 @@ const usePersonalInfoModal = ({
 	}
 
 	const handleSave = () => {
-		// const condition = canEditInfo
-		// 	? !userInfo?.country ||
-		// 	  !userInfo?.city?.trim() ||
-		// 	  !alphabeticRegex(userInfo?.city) ||
-		// 	  !userInfo?.postalCode?.trim() ||
-		// 	  !userInfo?.address?.trim()
-		// 	: !userInfo?.country ||
-		// 	  !userInfo.city?.trim() ||
-		// 	  !alphabeticRegex(userInfo.city) ||
-		// 	  !userInfo.postalCode?.trim() ||
-		// 	  !userInfo.address?.trim() ||
-		// 	  !userInfo.firstName?.trim() ||
-		// 	  !userInfo.lastName?.trim() ||
-		// 	  !userInfo.citizenship
+		const condition =
+			!localUserInfo?.country ||
+			!localUserInfo.city?.trim() ||
+			!alphabeticRegex(localUserInfo.city) ||
+			!localUserInfo.postalCode?.trim() ||
+			!localUserInfo.address?.trim()
 
-		if (error) {
+			if (error || condition) {
 			setError(true)
 		} else {
 			handleGeneralError(

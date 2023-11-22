@@ -1,5 +1,5 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import {
 	useBlurOnFulfill,
@@ -15,8 +15,6 @@ import GeneralError from '@components/general_error'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Screens } from '@app/refactor/setup/nav/nav'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
-import { handleGeneralError } from '@app/refactor/utils/errorUtils'
-import { otpForLoginThunk } from '@store/redux/auth/thunks'
 
 interface Props {
 	value: string

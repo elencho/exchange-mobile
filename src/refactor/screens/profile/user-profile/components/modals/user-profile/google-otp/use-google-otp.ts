@@ -3,7 +3,8 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { sendEmailOtp } from '@app/refactor/redux/profile/profileApi'
-import { credentialsForGoogleThunk } from '@app/refactor/redux/profile/profileThunks'
+import { credentialsForChangeOTPThunk } from '@app/refactor/redux/profile/profileThunks'
+import { useAppDispatch } from '@app/refactor/redux/store'
 
 interface GoogleOtpProps {
 	googleOtpModalVisible: boolean
@@ -18,7 +19,7 @@ export const useGoogleOtp = (props: GoogleOtpProps) => {
 		toggleEmailAuthModalVisible,
 	} = props
 	const navigation = useNavigation()
-	const dispatch = useDispatch()
+	const dispatch = useAppDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
 		auth: { otpType },
@@ -36,14 +37,15 @@ export const useGoogleOtp = (props: GoogleOtpProps) => {
 	const onFill = async () => {
 		try {
 			dispatch(
-				credentialsForGoogleThunk({
+				credentialsForChangeOTPThunk({
 					OTP: value,
-					openModal: toggleEmailAuthModalVisible,
 					otpType: 'EMAIL',
 				})
-			)
-			await sendEmailOtp()
-			hide()
+			).then(async () => {
+				await sendEmailOtp()
+				hide()
+				toggleEmailAuthModalVisible(true)
+			})
 		} catch (e) {
 			console.log(e)
 		}

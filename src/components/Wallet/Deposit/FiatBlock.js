@@ -104,7 +104,7 @@ export default function FiatBlock() {
 
 	const marginTop = () => {
 		if (network === 'ECOMMERCE') {
-			return !depositProvider ? -35 : -0
+			return !depositProvider ? -20 : 0
 		} else {
 			return -10
 		}
@@ -164,7 +164,8 @@ export default function FiatBlock() {
 
 const styles = StyleSheet.create({
 	block: {
-		paddingVertical: 22,
+		paddingTop: 6,
+		paddingBottom: 22,
 		marginBottom: 22,
 	},
 	button: {
