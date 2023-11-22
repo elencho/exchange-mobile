@@ -8,6 +8,7 @@ interface LoginStartResponse {
 
 interface LoginFormResponse {
 	attributes: {
+		email?: string
 		otpType: OTP
 	}
 	execution: Execution

@@ -9,7 +9,7 @@ import { Images } from '@app/refactor/common/constants'
 import { checkReadiness } from '@store/redux/auth/api'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 
-const Maintenance = ({ navigation }: ScreenProp<'Welcome'>) => {
+const Maintenance = ({ navigation }: ScreenProp<'Maintenance'>) => {
 	const { styles } = useTheme(_styles)
 	const [loading, setLoading] = useState(false)
 

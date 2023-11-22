@@ -19,6 +19,7 @@ import Constants from 'expo-constants'
 import { setGeneralError } from '@store/redux/common/slice'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
+import { setAuthLoading } from '@store/redux/auth/slice'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
@@ -57,11 +58,23 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 		}, [])
 	)
 
+	useEffect(() => {
+		return navigation.addListener('focus', () => {
+			setMail('')
+			setPass('')
+			setMailError(false)
+			setPassError(false)
+			setGeneralErrorData(null)
+			setAuthLoading(false)
+		})
+	}, [navigation])
+
 	const onLoginPressed = async () => {
 		const passEmpty = pass.trim().length === 0
 		const mailEmpty = mail.trim().length === 0
 		const mailValid = LOGIN_REGEX.test(mail)
 
+		setGeneralErrorData(null)
 		setPassError(passEmpty)
 		setMailError(mailEmpty || !mailValid)
 
@@ -100,7 +113,10 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 					style={styles.email}
 					value={mail}
 					onChangeText={setMail}
-					onFocusOrChange={() => setMailError(false)}
+					onFocusOrChange={() => {
+						setMailError(false)
+						setGeneralErrorData(null)
+					}}
 					error={mailError}
 					label={'Enter Email'}
 				/>
@@ -109,7 +125,10 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 					value={pass}
 					style={styles.password}
 					onChangeText={setPass}
-					onFocusOrChange={() => setPassError(false)}
+					onFocusOrChange={() => {
+						setPassError(false)
+						setGeneralErrorData(null)
+					}}
 					error={passError}
 					label={'Enter Password'}
 					rightComponent={

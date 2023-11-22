@@ -2,7 +2,7 @@ interface UiErrorData {
 	errorKey: string
 	errorMessage: string
 	errorType: string
-	transParams?: TransParams
+	transParams: TransParams | null
 }
 
 type TransParams = Record<string, string>

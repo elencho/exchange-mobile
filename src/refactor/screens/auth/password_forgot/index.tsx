@@ -20,6 +20,7 @@ import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import GeneralError from '@components/general_error'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
+import KV from '@store/kv/regular'
 import { MaterialIndicator } from 'react-native-indicators'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
@@ -72,7 +73,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 		}
 	}, [timerVisible])
 
-	const goToLogin = () => navigation.replace('Login')
+	const goBack = () => navigation.goBack()
 
 	const onResendPressed = () => {
 		if (mail.trim() && validMail) {
@@ -80,7 +81,6 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 				() => dispatch(resendPasswordCodeThunk({ mail })),
 				setGeneralErrorData
 			)
-
 			setSeconds(COUNTDOWN)
 		} else {
 			setMailError(true)
@@ -90,6 +90,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	const onNextPressed = async () => {
 		setCodeError(!code.trim())
 		setMailError(!(mail.trim() && validMail))
+		setGeneralErrorData(null)
 
 		if (mail.trim() && code.trim() && validMail) {
 			handleGeneralError(
@@ -103,7 +104,8 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	}
 
 	const MailInputRight = () => {
-		const sendText = alreadySent.current ? 'Resend' : 'Send'
+		const sendText =
+			alreadySent.current && KV.get('language') === 'en' ? 'Resend' : 'Send'
 
 		if (forgotResendLoading) {
 			return (
@@ -128,7 +130,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 
 	return (
 		<AppBackground>
-			<TouchableOpacity style={styles.back} onPress={goToLogin}>
+			<TouchableOpacity style={styles.back} onPress={goBack}>
 				<AppButton
 					variant="text"
 					text="Back to Log In"
@@ -161,7 +163,10 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 					label="Enter Email"
 					value={mail}
 					onChangeText={setMail}
-					onFocusOrChange={() => setMailError(false)}
+					onFocusOrChange={() => {
+						setMailError(false)
+						setGeneralErrorData(null)
+					}}
 					rightComponent={<MailInputRight />}
 					error={mailError}
 				/>
@@ -171,7 +176,10 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 					label="Enter Code"
 					value={code}
 					onChangeText={setCode}
-					onFocusOrChange={() => setCodeError(false)}
+					onFocusOrChange={() => {
+						setCodeError(false)
+						setGeneralErrorData(null)
+					}}
 					error={codeError}
 				/>
 				<AppButton

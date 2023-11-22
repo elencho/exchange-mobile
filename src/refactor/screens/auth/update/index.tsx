@@ -9,7 +9,7 @@ import AppText from '@components/text'
 import { System } from '@app/refactor/common/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 
-const Update = ({}: ScreenProp<'Welcome'>) => {
+const Update = ({}: ScreenProp<'UpdateAvailable'>) => {
 	const { styles } = useTheme(_styles)
 
 	const update = async () => {
