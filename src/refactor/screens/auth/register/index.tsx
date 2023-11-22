@@ -259,6 +259,7 @@ const Register = ({ navigation }: Props) => {
 							onCountryChosen={setChosenCountry}
 							hide={() => setCountryModalVisible(false)}
 							from="Registration"
+							phoneCountry={true}
 						/>
 					)}
 					{userType === 'Personal' && (

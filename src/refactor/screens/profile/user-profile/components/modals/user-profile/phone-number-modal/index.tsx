@@ -89,6 +89,7 @@ export default function PhoneNumberModal({
 					onCountryChosen={setChosenCountry}
 					hide={() => setCountryModalVisible(false)}
 					from="UserProfile"
+					phoneCountry={true}
 				/>
 			</WithKeyboard>
 		)
