@@ -108,6 +108,7 @@ const Register = ({ navigation }: Props) => {
 
 	const onRegisterPressed = async () => {
 		const allInputsValid = Object.values(valid).every(Boolean)
+		setGeneralErrorData(null)
 
 		if (allInputsValid) {
 			handleGeneralError(
@@ -167,7 +168,10 @@ const Register = ({ navigation }: Props) => {
 						value={mail}
 						label="Enter E-mail"
 						style={styles.input && { marginTop: 27 }}
-						onFocusOrChange={() => setMailErr(false)}
+						onFocusOrChange={() => {
+							setMailErr(false)
+							setGeneralErrorData(null)
+						}}
 						onChangeText={setMail}
 						error={mailErr && (mail.trim() ? 'Enter Valid Email' : true)}
 					/>
@@ -176,7 +180,10 @@ const Register = ({ navigation }: Props) => {
 						label="Enter Password"
 						style={styles.input}
 						onChangeText={setPass}
-						onFocusOrChange={() => setPassErr(false)}
+						onFocusOrChange={() => {
+							setPassErr(false)
+							setGeneralErrorData(null)
+						}}
 						error={passErr}
 						secureTextEntry={true}
 					/>
@@ -203,7 +210,10 @@ const Register = ({ navigation }: Props) => {
 						labelBackgroundColor={theme.color.backgroundPrimary}
 						style={[styles.input, { marginTop: 0 }]}
 						onChangeText={setConfirmPass}
-						onFocusOrChange={() => setConfirmPassErr(false)}
+						onFocusOrChange={() => {
+							setConfirmPassErr(false)
+							setGeneralErrorData(null)
+						}}
 						error={confirmPassErr}
 						secureTextEntry={true}
 					/>
@@ -244,8 +254,12 @@ const Register = ({ navigation }: Props) => {
 							onChangeText={(txt: string) => {
 								setPhone(txt)
 								setPhoneErr(false)
+								setGeneralErrorData(null)
 							}}
-							onFocus={() => setPhoneErr(false)}
+							onFocus={() => {
+								setPhoneErr(false)
+								setGeneralErrorData(null)
+							}}
 							placeholder="Phone Number"
 							placeholderTextColor={
 								phoneErr ? theme.color.error : theme.color.textSecondary
@@ -254,13 +268,12 @@ const Register = ({ navigation }: Props) => {
 							keyboardType="numeric"
 						/>
 					</View>
-					{countryModalVisible && (
-						<CountriesModal
-							onCountryChosen={setChosenCountry}
-							hide={() => setCountryModalVisible(false)}
-							from="Registration"
-						/>
-					)}
+					<CountriesModal
+						visible={countryModalVisible}
+						onCountryChosen={setChosenCountry}
+						hide={() => setCountryModalVisible(false)}
+						from="Registration"
+					/>
 					{userType === 'Personal' && (
 						<>
 							<AppInput
@@ -268,12 +281,14 @@ const Register = ({ navigation }: Props) => {
 								label="Referral Code"
 								style={styles.input}
 								onChangeText={setReferral}
+								onFocusOrChange={() => setGeneralErrorData(null)}
 							/>
 							<AppInput
 								value={promo}
 								label="Promo Code"
 								style={styles.input}
 								onChangeText={setPromo}
+								onFocusOrChange={() => setGeneralErrorData(null)}
 							/>
 						</>
 					)}

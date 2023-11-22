@@ -90,6 +90,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	const onNextPressed = async () => {
 		setCodeError(!code.trim())
 		setMailError(!(mail.trim() && validMail))
+		setGeneralErrorData(null)
 
 		if (mail.trim() && code.trim() && validMail) {
 			handleGeneralError(
@@ -162,7 +163,10 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 					label="Enter Email"
 					value={mail}
 					onChangeText={setMail}
-					onFocusOrChange={() => setMailError(false)}
+					onFocusOrChange={() => {
+						setMailError(false)
+						setGeneralErrorData(null)
+					}}
 					rightComponent={<MailInputRight />}
 					error={mailError}
 				/>
@@ -172,7 +176,10 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 					label="Enter Code"
 					value={code}
 					onChangeText={setCode}
-					onFocusOrChange={() => setCodeError(false)}
+					onFocusOrChange={() => {
+						setCodeError(false)
+						setGeneralErrorData(null)
+					}}
 					error={codeError}
 				/>
 				<AppButton

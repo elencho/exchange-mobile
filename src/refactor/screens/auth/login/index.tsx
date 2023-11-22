@@ -74,6 +74,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 		const mailEmpty = mail.trim().length === 0
 		const mailValid = LOGIN_REGEX.test(mail)
 
+		setGeneralErrorData(null)
 		setPassError(passEmpty)
 		setMailError(mailEmpty || !mailValid)
 
@@ -112,7 +113,10 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 					style={styles.email}
 					value={mail}
 					onChangeText={setMail}
-					onFocusOrChange={() => setMailError(false)}
+					onFocusOrChange={() => {
+						setMailError(false)
+						setGeneralErrorData(null)
+					}}
 					error={mailError}
 					label={'Enter Email'}
 				/>
@@ -121,7 +125,10 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 					value={pass}
 					style={styles.password}
 					onChangeText={setPass}
-					onFocusOrChange={() => setPassError(false)}
+					onFocusOrChange={() => {
+						setPassError(false)
+						setGeneralErrorData(null)
+					}}
 					error={passError}
 					label={'Enter Password'}
 					rightComponent={

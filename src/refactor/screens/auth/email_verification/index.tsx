@@ -18,6 +18,7 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { setTimer } from '@store/redux/auth/slice'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 const EmailVerification = ({
 	navigation,
@@ -30,6 +31,9 @@ const EmailVerification = ({
 
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(0)
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 
 	const { timerVisible } = useSelector((state: RootState) => state.auth)
 
@@ -85,12 +89,24 @@ const EmailVerification = ({
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)
 		} else {
-			return <AppButton variant="text" text="resend purple" onPress={resend} />
+			return (
+				<AppButton
+					variant="text"
+					text="resend purple"
+					onPress={() => {
+						resend()
+						setGeneralErrorData(null)
+					}}
+				/>
+			)
 		}
 	}
 
 	const onCodeFilled = () =>
-		dispatch(verifyRegistrationThunk({ otp: value, navigation }))
+		handleGeneralError(
+			() => dispatch(verifyRegistrationThunk({ otp: value, navigation })),
+			setGeneralErrorData
+		)
 
 	return (
 		<AppBackground>
@@ -122,6 +138,7 @@ const EmailVerification = ({
 							cellCount={6}
 							onFill={onCodeFilled}
 							indicatorStyle={{ top: '70%' }}
+							generalErrorData={generalErrorData}
 						/>
 					</View>
 

@@ -14,7 +14,7 @@ type Props = TextProps & {
 	variant?: Variant
 	medium?: boolean
 	noTranslate?: boolean
-	transParams?: TransParams
+	transParams?: TransParams | null
 }
 
 const AppText: React.FC<Props> = (props) => {

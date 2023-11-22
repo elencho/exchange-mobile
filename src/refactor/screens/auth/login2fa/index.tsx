@@ -93,12 +93,20 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)
 		} else {
-			return <AppButton variant="text" text="resend purple" onPress={resend} />
+			return (
+				<AppButton
+					variant="text"
+					text="resend purple"
+					onPress={() => {
+						resend()
+						setGeneralErrorData(null)
+					}}
+				/>
+			)
 		}
 	}
 
-	const resend = () =>
-		handleGeneralError(() => dispatch(resendOtpThunk()), setGeneralErrorData)
+	const resend = () => dispatch(resendOtpThunk())
 
 	const onCodeFilled = () =>
 		handleGeneralError(

@@ -20,6 +20,7 @@ import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { setTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import KV from '@store/kv/regular'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 export const ResetOtp = ({
 	navigation,
@@ -35,6 +36,9 @@ export const ResetOtp = ({
 	const [url, setUrl] = useState('')
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 
 	const goBack = () => dispatch(startLoginThunk(navigation))
 	const openSupport = () => Linking.openURL(url)
@@ -72,12 +76,24 @@ export const ResetOtp = ({
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)
 		} else {
-			return <AppButton variant="text" text="resend purple" onPress={resend} />
+			return (
+				<AppButton
+					variant="text"
+					text="resend purple"
+					onPress={() => {
+						resend()
+						setGeneralErrorData(null)
+					}}
+				/>
+			)
 		}
 	}
 
 	const onCodeFilled = () =>
-		dispatch(otpForLoginThunk({ otp: value, navigation }))
+		handleGeneralError(
+			() => dispatch(otpForLoginThunk({ otp: value, navigation })),
+			setGeneralErrorData
+		)
 
 	return (
 		<AppBackground>
@@ -120,6 +136,7 @@ export const ResetOtp = ({
 								cellCount={6}
 								onFill={onCodeFilled}
 								indicatorStyle={{ top: '70%' }}
+								generalErrorData={generalErrorData}
 							/>
 						</View>
 					)}
