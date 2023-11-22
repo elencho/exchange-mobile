@@ -46,7 +46,7 @@ const profileSlice = createSlice({
 		updatePassword(builder)
 		updateUser(builder)
 		emailUpdates(builder)
-		googleOtpChange(builder)
+		otpChange(builder)
 	},
 })
 
@@ -81,7 +81,7 @@ const updateUser = (builder: ActionReducerMapBuilder<ProfileState>) => {
 const updatePassword = (builder: ActionReducerMapBuilder<ProfileState>) => {
 	builder
 		.addCase(updatePasswordThunk.pending, (state) => {
-			state.userProfileLoading = true
+			state.userProfileLoading = false
 		})
 		.addCase(updatePasswordThunk.fulfilled, (state, action) => {
 			state.userProfileLoading = false
@@ -104,7 +104,7 @@ const emailUpdates = (builder: ActionReducerMapBuilder<ProfileState>) => {
 		})
 }
 
-const googleOtpChange = (builder: ActionReducerMapBuilder<ProfileState>) => {
+const otpChange = (builder: ActionReducerMapBuilder<ProfileState>) => {
 	builder
 		.addCase(credentialsForChangeOTPThunk.pending, (state) => {
 			state.userProfileLoading = true
