@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { updatePasswordThunk } from '@app/refactor/redux/profile/profileThunks'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 export const usePasswordModal = ({
 	togglePasswordModal,
@@ -16,6 +17,9 @@ export const usePasswordModal = ({
 		profile: { userProfileLoading },
 	} = state
 
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 	const [error, setError] = useState(false)
 	const [passwordState, setPasswordState] = useState({
 		secure: true,
@@ -46,6 +50,20 @@ export const usePasswordModal = ({
 		togglePasswordModal(false)
 	}
 
+	const onHide = () => {
+		setError(false)
+		setGeneralErrorData(null)
+		setPasswordState({
+			secure: true,
+			eightChars: false,
+			hasNumber: false,
+			hasUpperAndLower: false,
+			currentPassword: '',
+			newPassword: '',
+			repeatPassword: '',
+		})
+	}
+
 	const handleSave = () => {
 		const condition =
 			error ||
@@ -59,13 +77,17 @@ export const usePasswordModal = ({
 		if (condition) {
 			setError(true)
 		} else {
-			dispatch(
-				updatePasswordThunk({
-					currentPassword,
-					newPassword,
-					repeatPassword,
-					hide,
-				})
+			handleGeneralError(
+				() =>
+					dispatch(
+						updatePasswordThunk({
+							currentPassword,
+							newPassword,
+							repeatPassword,
+							hide,
+						})
+					),
+				setGeneralErrorData
 			)
 		}
 	}
@@ -120,5 +142,7 @@ export const usePasswordModal = ({
 		newPassCond,
 		handleFieldChange,
 		userProfileLoading,
+		onHide,
+		generalErrorData,
 	}
 }

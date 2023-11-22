@@ -25,7 +25,7 @@ export const usePhoneNumberModal = ({
 	)
 	const [error, setError] = useState(false)
 	const [seconds, setSeconds] = useState(30)
-	const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber)
+	const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber!)
 	const x = {
 		name: userInfo?.phoneCountry,
 		code: userInfo?.phoneCountry,
@@ -48,8 +48,8 @@ export const usePhoneNumberModal = ({
 
 	const hide = () => {
 		togglePhoneNumberModal(false)
-		setGeneralErrorData(null)
 	}
+
 	const phoneCountry = () => {
 		let phoneCountry
 		countries?.forEach((c: Country) => {
@@ -63,17 +63,19 @@ export const usePhoneNumberModal = ({
 	}
 
 	const onModalHide = () => {
-		dispatch({ type: 'TOGGLE_TIMER', timerVisible: false })
+		// dispatch({ type: 'TOGGLE_TIMER', timerVisible: false })
+		setGeneralErrorData(null)
+		setPhoneNumber(userInfo?.phoneNumber!)
+		setChosenCountry(x)
 	}
 
-	const handlePhoneNumber = (phoneNumber: string) => setPhoneNumber(phoneNumber)
+	const handlePhoneNumber = (phoneNumber: string) => {
+		setGeneralErrorData(null)
+		setPhoneNumber(phoneNumber)
+	}
 
 	const handleSave = () => {
-		if (
-			error ||
-			!userInfo?.country ||
-			!(userInfo?.phoneNumber?.trim()?.length > 2)
-		) {
+		if (error || !userInfo?.country || !(phoneNumber?.trim()?.length > 2)) {
 			setError(true)
 		} else {
 			const phoneCountry = chosenCountry.code

@@ -12,6 +12,7 @@ interface Props {
 	title?: string
 	chosenItem?: Country
 	visible: boolean
+	phoneCountry?: boolean
 }
 
 const CountriesModal = (props: Props) => {
@@ -24,6 +25,7 @@ const CountriesModal = (props: Props) => {
 		from,
 		title = 'Choose Country',
 		visible = true,
+		phoneCountry,
 	} = props
 	const { countries } = common
 
@@ -53,7 +55,7 @@ const CountriesModal = (props: Props) => {
 			filter={filter}
 			currentItem={chosenItem?.name}
 			title={title}
-			phoneCountry={false}
+			phoneCountry={phoneCountry}
 			countryDrop={true}
 		/>
 	)
