@@ -117,7 +117,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	return (
 		<AppBackground>
 			<WithKeyboard
-				keyboardVerticalOffsetIOS={0}
+				keyboardVerticalOffsetIOS={40}
 				padding={true}
 				flexGrow={true}
 				modal={undefined}
@@ -145,7 +145,10 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 						<View style={styles.twoFaInput}>
 							<TwoFaInput
 								value={value}
-								setValue={setValue}
+								setValue={(txt) => {
+									setValue(txt)
+									setGeneralErrorData(null)
+								}}
 								cellCount={cellCount}
 								navigation={navigation}
 								onFill={onCodeFilled}

@@ -183,7 +183,10 @@ const Register = ({ navigation }: Props) => {
 					<AppInput
 						value={pass}
 						label="Enter Password"
-						style={styles.input}
+						style={[
+							styles.input,
+							{ marginTop: mailErr && mail.trim() ? 32 : 11 },
+						]}
 						onChangeText={setPass}
 						onFocusOrChange={() => {
 							setPassErr(false)
@@ -209,7 +212,7 @@ const Register = ({ navigation }: Props) => {
 						value={confirmPass}
 						label="Repeat Password"
 						labelBackgroundColor={theme.color.backgroundPrimary}
-						style={[styles.input, { marginTop: 0 }]}
+						style={styles.input}
 						onChangeText={setConfirmPass}
 						onFocusOrChange={() => {
 							setConfirmPassErr(false)
@@ -395,7 +398,7 @@ const _styles = (theme: Theme) =>
 			color: theme.color.textSecondary,
 			fontSize: 11,
 			lineHeight: 15,
-			marginTop: 8,
+			marginTop: 7,
 		},
 		white: {
 			color: theme.color.textPrimary,
