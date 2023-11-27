@@ -48,6 +48,7 @@ export default function TransferMethodDropdown() {
 			selectedText={network}
 			handlePress={show}
 			hideArrow={isOneMethod}
+			isOneMethod={isOneMethod}
 		/>
 	)
 }

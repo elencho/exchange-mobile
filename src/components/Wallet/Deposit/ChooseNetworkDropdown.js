@@ -48,13 +48,17 @@ export default function ChooseNetworkDropdown({
 	}
 
 	const networkName = () => {
-		const currentNetwork =
-			currentBalanceObj?.supportedProviders?.WALLET?.filter(
-				(item) => item.provider === network
-			) ||
-			currentBalanceObj?.supportedProviders?.WIRE?.filter(
-				(item) => item.provider === network
-			)
+		const currentNetwork = isFiat
+			? currentBalanceObj?.depositMethods?.WIRE?.filter(
+					(item) => item.provider === network
+			  )
+			: currentBalanceObj?.supportedProviders?.WALLET?.filter(
+					(item) => item.provider === network
+			  ) ||
+			  currentBalanceObj?.supportedProviders?.WIRE?.filter(
+					(item) => item.provider === network
+			  )
+
 		return (
 			<AppText medium body>
 				{currentNetwork?.[0]?.displayName}
@@ -115,6 +119,7 @@ export default function ChooseNetworkDropdown({
 						/>
 					) : (
 						<View style={styles.view}>
+							<View style={{ marginRight: 8 }}>{renderIcon(network)}</View>
 							<NetworkWithTicker />
 						</View>
 					)}
