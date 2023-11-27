@@ -182,7 +182,7 @@ export const otpForLoginThunk = createAsyncThunk(
 		const loginInfo = await loginOtp(otp, callbackUrl)
 
 		try {
-			if (loginInfo?.errors) return loginInfo
+			if (loginInfo?.errors?.length !== 0) return loginInfo
 
 			if (loginInfo.execution === Execution.UPDATE_PASSWORD) {
 				navigation.navigate('SetNewPassword')
@@ -205,7 +205,6 @@ const codeToTokenThunk = (
 		const { pkceInfo } = (getState() as RootState).auth
 
 		const tokenData = await codeToToken(code, pkceInfo?.codeVerifier || '')
-		console.log(tokenData)
 		dispatch(
 			setTokens({
 				refreshToken: tokenData.refresh_token,

@@ -148,7 +148,7 @@ const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
 	})
 	builder.addCase(resendOtpThunk.rejected, (state) => {
 		state.authLoading = false
-		state.timerVisible = true
+		state.timerVisible = false
 	})
 
 	builder.addCase(otpForLoginThunk.pending, (state) => {

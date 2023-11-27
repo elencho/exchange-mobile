@@ -176,9 +176,8 @@ const _style = (theme: Theme) =>
 	StyleSheet.create({
 		errorText: {
 			color: theme.color.error,
-			marginTop: 8,
 			position: 'absolute',
-			bottom: -17,
+			bottom: -23,
 		},
 		input: {
 			fontFamily: theme.font.medium,
