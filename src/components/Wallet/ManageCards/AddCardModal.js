@@ -44,6 +44,9 @@ export default function AddCardModal() {
 	const [saveCardAgreeTerms, setSaveCardAgreeTerms] = useState(false)
 	const [statusObj, setStatusObj] = useState(null)
 	const [error, setError] = useState(false)
+	const [selectedProvider, setSelectedProvider] = useState(depositProvider)
+
+	console.log('selectedProvider', selectedProvider)
 
 	useEffect(() => {
 		error && setError(false)
@@ -51,9 +54,13 @@ export default function AddCardModal() {
 
 	useEffect(() => {
 		setSaveCardAgreeTerms(depositProvider !== 'BOG')
+		setSelectedProvider(depositProvider)
 	}, [depositProvider])
 
-	const hide = () => dispatch(toggleAddCardModal(false))
+	const hide = () => {
+		dispatch(toggleAddCardModal(false))
+		setSelectedProvider(null)
+	}
 
 	const image = () => {
 		let result
@@ -71,8 +78,8 @@ export default function AddCardModal() {
 		return result
 	}
 
-	const toggle = () => setSaveCardAgreeTerms(!saveCardAgreeTerms)
 	const showBanks = () => dispatch(toggleChooseBankModal(true))
+	const toggle = () => setSaveCardAgreeTerms(!saveCardAgreeTerms)
 	const showFees = () => dispatch(toggleBankFeesModal(true))
 	const multipleBanks = () => depositProviders?.length > 1
 
@@ -139,7 +146,6 @@ export default function AddCardModal() {
 
 	const children = (
 		<>
-			{/* {!multipleBanks() ? ( */}
 			<>
 				<AppDropdown
 					handlePress={showBanks}
@@ -158,17 +164,7 @@ export default function AddCardModal() {
 						)
 					}
 				/>
-
-				{/* <AppText subtext style={styles.subText}>
-          100 ₾-500 ₾ Visa / MC Card 4% Amex 6 %{' '}
-          <PurpleText text=" See More" onPress={showFees} />
-        </AppText> */}
 			</>
-			{/* ) : (
-        <AppText style={styles.grey}>
-          See card processor <PurpleText text="Show Fees" onPress={showFees} />
-        </AppText>
-      )} */}
 
 			<AppInfoBlock content={['Add Card Info']} info />
 
@@ -186,7 +182,7 @@ export default function AddCardModal() {
 
 			<AppButton text="Next" style={styles.button} onPress={handleAddCard} />
 
-			<ChooseBankModal />
+			<ChooseBankModal selectedProvider={selectedProvider} />
 			<BankFeesModal />
 
 			{webViewObj?.actionMethod === 'POST' && (
