@@ -55,7 +55,7 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 		// 	from: 'Registration',
 		// 	mail: 'remora.418@gmail.com',
 		// })
-		return
+		// return
 
 		if (await updateNeeded()) {
 			navigation.navigate('UpdateAvailable')
