@@ -8,6 +8,8 @@ import {
 	updatePhoneNumber,
 	getOtpChangeToken,
 } from './profileApi'
+import { useDispatch } from 'react-redux'
+import { setUserProfileLoading } from './profileSlice'
 
 export const updatePhoneNumberThunk = createAsyncThunk(
 	'profile/updatePhoneNumber',
@@ -112,12 +114,21 @@ export const toggleSubscriptionThunk = createAsyncThunk(
 
 export const credentialsForChangeOTPThunk = createAsyncThunk(
 	'profile/credentialsForChangeOTP',
-	async ({ OTP, otpType, onSuccess }: CredentialsForEmailData) => {
+	async (
+		{ OTP, otpType, onSuccess }: CredentialsForEmailData,
+		{ dispatch }
+	) => {
 		try {
 			const response = await getOtpChangeToken(OTP, otpType)
-			if (response?.status! >= 200 && response?.status! < 300) {
+			if (
+				(response?.status! >= 200 && response?.status! <= 300) ||
+				(response.response?.status! >= 200 && response.response?.status! <= 300)
+			) {
+				dispatch(setUserProfileLoading(true))
 				onSuccess()
+				dispatch(setUserProfileLoading(false))
 			}
+			console.log('response', response)
 			return response
 		} catch (error) {
 			console.log(error)

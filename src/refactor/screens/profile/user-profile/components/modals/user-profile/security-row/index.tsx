@@ -134,34 +134,32 @@ export default function SecurityRow(props: SecurityRowProps) {
 
 	return (
 		<>
-			{renderCond() && (
-				<View style={styles.row} key={text}>
-					{images[imageToSearch]}
+			<View style={styles.row} key={text}>
+				{images[imageToSearch]}
 
-					<View style={styles.justify}>
-						<AppText style={styles.white}>{textCond()}</AppText>
-						<AppText variant="s" style={styles.secondary}>
-							{secondaryTextCond()}
-						</AppText>
-					</View>
-
-					{text === 'Strong_Password' ? (
-						<AppButton variant="text" text="Edit" onPress={handlePassword} />
-					) : text === 'Google_Auth' ? (
-						<AppSwitcher
-							isOn={switchCond()}
-							onToggle={handleChangeGoogle}
-							disabled={disabledCond()}
-						/>
-					) : (
-						<AppSwitcher
-							isOn={switchCond()}
-							onToggle={handleChange}
-							disabled={disabledCond()}
-						/>
-					)}
+				<View style={styles.justify}>
+					<AppText style={styles.white}>{textCond()}</AppText>
+					<AppText variant="s" style={styles.secondary}>
+						{secondaryTextCond()}
+					</AppText>
 				</View>
-			)}
+
+				{text === 'Strong_Password' ? (
+					<AppButton variant="text" text="Edit" onPress={handlePassword} />
+				) : text === ('Google_Auth' | 'E_mail_Auth' | 'SMS_Auth') ? (
+					<AppSwitcher
+						isOn={switchCond()}
+						onToggle={() => handleChangeGoogle()}
+						disabled={disabledCond()}
+					/>
+				) : (
+					<AppSwitcher
+						isOn={switchCond()}
+						onToggle={() => handleChange(text)}
+						disabled={disabledCond()}
+					/>
+				)}
+			</View>
 		</>
 	)
 }

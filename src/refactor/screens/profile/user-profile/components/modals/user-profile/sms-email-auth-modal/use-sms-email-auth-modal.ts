@@ -88,7 +88,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 			)
 		} else if (currentSecurityAction === 'EMAIL') {
 			activateEmailOtp(tOTPChangeParams!.changeOTPToken!, value)
-				.then(async () => {
+				.then(async (res) => {
 					const oldRefresh = await SecureKV.get('refreshToken')
 
 					retryUnauthorizedCall({}, oldRefresh)
@@ -100,7 +100,6 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	}
 
 	const hide = () => {
-		console.log("wet to")
 		toggleSmsAuthModal(false)
 		toggleEmailAuthModal(false)
 		setGeneralErrorData(null)

@@ -5,6 +5,7 @@ import AppModal from '@components/modal'
 import AppText from '@components/text'
 import { useGoogleOtp } from './use-google-otp'
 import TwoFaInput from '@components/input_2fa'
+import General_error from '@components/general_error'
 
 interface Props {
 	toggleGoogleOtpModalVisible?: (v: boolean) => void
@@ -18,11 +19,12 @@ export default function GoogleOtpModal(props: Props) {
 		googleOtpModalVisible = false,
 		toggleEmailAuthModalVisible,
 	} = props
-	const { navigation, value, setValue, hide, onFill } = useGoogleOtp({
-		googleOtpModalVisible,
-		toggleGoogleOtpModalVisible,
-		toggleEmailAuthModalVisible,
-	})
+	const { navigation, value, setValue, hide, onFill, generalErrorData } =
+		useGoogleOtp({
+			googleOtpModalVisible,
+			toggleGoogleOtpModalVisible,
+			toggleEmailAuthModalVisible,
+		})
 	const { styles, theme } = useTheme(_styles)
 
 	const children = (
@@ -31,7 +33,7 @@ export default function GoogleOtpModal(props: Props) {
 				Google Authentication
 			</AppText>
 			<AppText style={styles.secondary}>Enter One Time Password</AppText>
-
+			<General_error errorData={generalErrorData} />
 			<View style={styles.codeInput}>
 				<TwoFaInput
 					onFill={onFill}
