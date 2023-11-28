@@ -9,6 +9,7 @@ import WithKeyboard from '@app/components/WithKeyboard'
 import { COUNTRIES_URL_PNG } from '@app/constants/api'
 import { usePhoneNumberModal } from './use-phone-number-modal'
 import CountriesModal from '@app/refactor/common/modals/countries'
+import General_error from '@components/general_error'
 
 export default function PhoneNumberModal({
 	phoneNumberModalVisible,
@@ -26,6 +27,7 @@ export default function PhoneNumberModal({
 		handleCountries,
 		phoneCountry,
 		error,
+		userProfileButtonsLoading,
 		setChosenCountry,
 		chosenCountry,
 		countryModalVisible,
@@ -36,7 +38,7 @@ export default function PhoneNumberModal({
 	const number = userInfo?.phoneNumber
 	const country = userInfo?.phoneCountry
 	const borderColor = error && !country ? '#F45E8C' : '#42475D'
-
+	console.log(generalErrorData, 'generalErrorData')
 	const children = () => {
 		return (
 			<WithKeyboard
@@ -46,7 +48,7 @@ export default function PhoneNumberModal({
 				scrollUp={false}
 				refreshControl={null}>
 				<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
-					<GeneralError style={styles.error} errorData={generalErrorData} />
+					<General_error errorData={generalErrorData} />
 
 					<AppDropdown
 						handlePress={handleCountries}
@@ -71,7 +73,7 @@ export default function PhoneNumberModal({
 						onChangeText={(text: string) => handlePhoneNumber(text)}
 						value={phoneNumber}
 						keyboardType="number-pad"
-						error={error && !(phoneNumber?.trim()?.length > 2)}
+						error={error && !(phoneNumber?.trim()?.length > 0)}
 					/>
 				</TouchableOpacity>
 
@@ -80,7 +82,7 @@ export default function PhoneNumberModal({
 					text="Save"
 					onPress={handleSave}
 					style={styles.button}
-					// loading={isProfileUpdating}
+					loading={userProfileButtonsLoading}
 				/>
 
 				<CountriesModal

@@ -27,7 +27,7 @@ export default function PersonalInfoModal({
 		changeCountry,
 		handleCountries,
 		handleSave,
-		userProfileLoading,
+		userProfileButtonsLoading,
 		hide,
 		countryModalVisible,
 		setCountryModalVisible,
@@ -110,7 +110,7 @@ export default function PersonalInfoModal({
 			<AppButton
 				variant="primary"
 				onPress={handleSave}
-				loading={userProfileLoading}
+				loading={userProfileButtonsLoading}
 				style={styles.button}
 				text="Save"
 			/>

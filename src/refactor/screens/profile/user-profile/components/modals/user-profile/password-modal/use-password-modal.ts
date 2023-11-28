@@ -14,7 +14,7 @@ export const usePasswordModal = ({
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		profile: { userProfileLoading },
+		profile: { userProfileButtonsLoading },
 	} = state
 
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
@@ -47,7 +47,7 @@ export const usePasswordModal = ({
 	}, [passwordModalVisible, passwordState])
 
 	const hide = () => {
-		togglePasswordModal(false)
+		!userProfileButtonsLoading && togglePasswordModal(false)
 	}
 
 	const onHide = () => {
@@ -141,7 +141,7 @@ export const usePasswordModal = ({
 		error,
 		newPassCond,
 		handleFieldChange,
-		userProfileLoading,
+		userProfileButtonsLoading,
 		onHide,
 		generalErrorData,
 	}

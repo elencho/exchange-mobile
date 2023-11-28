@@ -23,6 +23,7 @@ import {
 } from './api'
 import { resetAuth, savePkceInfo, setTimer, setTokens } from './slice'
 import { navigationRef } from '@app/refactor/setup/nav'
+import { setUserInfo } from '@app/refactor/redux/profile/profileSlice'
 
 export const startLoginThunk = createAsyncThunk(
 	'startLogin',
@@ -348,6 +349,7 @@ export const logoutThunk = createAsyncThunk(
 		const httpStatus = await logout()
 		if (httpStatus === 204) {
 			dispatch(resetAuth())
+			dispatch(setUserInfo(null))
 			navigationRef.reset({
 				index: 0,
 				routes: [{ name: 'Welcome' }],

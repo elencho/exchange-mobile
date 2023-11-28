@@ -8,26 +8,32 @@ import {
 	updatePhoneNumber,
 	getOtpChangeToken,
 } from './profileApi'
+import { setUserInfo, setUserProfileLoading } from './profileSlice'
 
 export const updatePhoneNumberThunk = createAsyncThunk(
 	'profile/updatePhoneNumber',
-	async ({
-		phoneNumber,
-		phoneCountry,
-		hideModal,
-	}: {
-		phoneNumber: string
-		phoneCountry: string
-		hideModal: () => void
-	}) => {
+	async (
+		{
+			phoneNumber,
+			phoneCountry,
+			hideModal,
+		}: {
+			phoneNumber: string
+			phoneCountry: string
+			hideModal: () => void
+		},
+		{ dispatch }
+	) => {
 		try {
 			const response = await updatePhoneNumber(phoneNumber, phoneCountry)
 			if (response?.status >= 200 && response?.status < 300) {
 				hideModal()
 			}
+			const userInfo = await fetchUserInfoUtil()
+			dispatch(setUserInfo(userInfo!))
 			return response
 		} catch (error) {
-			return error
+			console.log(error)
 		}
 	}
 )
@@ -112,12 +118,21 @@ export const toggleSubscriptionThunk = createAsyncThunk(
 
 export const credentialsForChangeOTPThunk = createAsyncThunk(
 	'profile/credentialsForChangeOTP',
-	async ({ OTP, otpType, onSuccess }: CredentialsForEmailData) => {
+	async (
+		{ OTP, otpType, onSuccess }: CredentialsForEmailData,
+		{ dispatch }
+	) => {
 		try {
 			const response = await getOtpChangeToken(OTP, otpType)
-			if (response?.status! >= 200 && response?.status! < 300) {
+			if (
+				(response?.status! >= 200 && response?.status! <= 300) ||
+				(response.response?.status! >= 200 && response.response?.status! <= 300)
+			) {
+				dispatch(setUserProfileLoading(true))
 				onSuccess()
+				dispatch(setUserProfileLoading(false))
 			}
+			console.log('response', response)
 			return response
 		} catch (error) {
 			console.log(error)

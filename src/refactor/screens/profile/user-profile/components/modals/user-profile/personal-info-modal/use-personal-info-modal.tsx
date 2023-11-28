@@ -15,7 +15,7 @@ const usePersonalInfoModal = ({
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		profile: { userInfo, userProfileLoading },
+		profile: { userInfo, userProfileLoading, userProfileButtonsLoading},
 		common: { countries },
 	} = state
 
@@ -43,7 +43,7 @@ const usePersonalInfoModal = ({
 	}, [userInfo, personalInfoModalVisible, localUserInfo])
 
 	const hide = () => {
-		togglePersonalInfoModal(false)
+		!userProfileButtonsLoading && togglePersonalInfoModal(false)
 	}
 
 	const onHide = () => {
@@ -111,7 +111,7 @@ const usePersonalInfoModal = ({
 		citizenshipText,
 		canEditInfo,
 		handleSave,
-		userProfileLoading,
+		userProfileButtonsLoading,
 		hide,
 		setChosenCountry,
 		chosenCountry,

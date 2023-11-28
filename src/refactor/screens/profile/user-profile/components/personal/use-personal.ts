@@ -38,6 +38,7 @@ export const usePersonal = () => {
 	const [languageModalVisible, setLanguageModalVisible] = useState(false)
 	const [personalInfoModalVisible, togglePersonalInfoModal] = useState(false)
 	const [phoneNumberModalVisible, togglePhoneNumberModal] = useState(false)
+	const [companyInfoModalVisible, setCompanyInfoModalVisible] = useState(false)
 	const [emailUpdated, setEmailUpdated] = useState(!!userInfo?.emailUpdates)
 	const hideError = () =>
 		// TODO: Remove after wallets refactor
@@ -65,15 +66,15 @@ export const usePersonal = () => {
 
 	const verify = () => {
 		if (eligibleToVerify) launchSumsubSdk()
-		else
-			dispatch(
-				openCompanyInfoModal(
-					'go web personal header',
-					'go web personal description',
-					'go web personal link',
-					'go web personal button'
-				)
+		else setCompanyInfoModalVisible(true)
+		dispatch(
+			openCompanyInfoModal(
+				'go web personal header',
+				'go web personal description',
+				'go web personal link',
+				'go web personal button'
 			)
+		)
 	}
 
 	const goToSupport = () =>
