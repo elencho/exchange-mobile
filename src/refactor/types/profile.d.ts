@@ -29,6 +29,7 @@ interface ToggleSubscriptionData {
 interface CredentialsForEmailData {
 	OTP: string
 	otpType: string
+	onSuccess: () => void
 }
 
 interface ActivateGoogleData {
@@ -105,4 +106,9 @@ interface tOTPChangeParams {
 		totpSecretEncoded: string
 		totpSecretQrCode: string
 	}
+}
+
+interface tOTPVerifyParams {
+	status: number
+	data: tOTPChangeParams
 }

@@ -17,8 +17,6 @@ import {
 } from '@app/constants/api'
 import SecureKV from '@store/kv/secure'
 
-// TODO: ADD RETURN TYPES
-
 const refreshTokenService = async (refresh_token: string | null) => {
 	const data = await axios({
 		method: 'POST',
@@ -127,13 +125,13 @@ export const sendEmailOtp = async () => {
 }
 
 export const getOtpChangeToken = async (OTP: string, newOTPType: string) => {
-	const data = await axios<tOTPChangeParams>({
+	const data = await axios<tOTPVerifyParams>({
 		method: 'GET',
 		headers: { OTP, requestName: 'getOtpChangeToken', toast: false },
 		url: OTP_CHANGE_TOKEN,
 		params: { newOTPType },
 	})
-	if (data) return data.data
+	if (data) return data
 }
 
 export const activateEmailOtp = async (

@@ -59,8 +59,9 @@ const auth = createSlice({
 		) {
 			SecureKV.set('refreshToken', action.payload.refreshToken)
 			state.accessToken = action.payload.accessToken
-			state.otpType = jwt_decode<TokenParams>(action.payload.accessToken)
-				?.otpType
+			state.otpType = jwt_decode<TokenParams>(
+				action.payload.accessToken
+			)?.otpType
 		},
 		resetAuth: (state) => {
 			state = initialState

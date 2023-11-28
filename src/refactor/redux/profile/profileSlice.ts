@@ -31,7 +31,7 @@ const profileSlice = createSlice({
 	name: 'profile',
 	initialState,
 	reducers: {
-		setUserInfo(state, action: PayloadAction<UserInfoType>) {
+		setUserInfo(state, action: PayloadAction<UserInfoType | null>) {
 			state.userInfo = action.payload
 		},
 		setVerificationInfo(state, action: PayloadAction<any>) {
@@ -111,7 +111,7 @@ const otpChange = (builder: ActionReducerMapBuilder<ProfileState>) => {
 		})
 		.addCase(credentialsForChangeOTPThunk.fulfilled, (state, action) => {
 			state.userProfileLoading = false
-			state.tOTPChangeParams = action.payload
+			state.tOTPChangeParams = action.payload.data
 		})
 		.addCase(credentialsForChangeOTPThunk.rejected, (state) => {
 			state.userProfileLoading = false
