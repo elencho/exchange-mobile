@@ -42,6 +42,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 		setValue,
 		handleFill,
 		generalErrorData,
+		timerVisible,
 	} = useSmsAuthEmailModal({
 		type,
 		toggleSmsAuthModal,
@@ -63,13 +64,11 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 					style={styles.indicator}
 				/>
 			)
-		}
-		// else if (timerVisible) {
-		// 	return (
-		// 		<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
-		// 	)
-		// }
-		else {
+		} else if (timerVisible) {
+			return (
+				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
+			)
+		} else {
 			return <AppButton variant="text" text="resend purple" onPress={resend} />
 		}
 	}
