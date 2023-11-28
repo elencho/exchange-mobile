@@ -36,7 +36,6 @@ const usePersonalInfoModal = ({
 	})
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
-
 	const alphabeticRegex = (text: string) => /^[a-zA-Z]+$/.test(text?.trim())
 
 	useEffect(() => {

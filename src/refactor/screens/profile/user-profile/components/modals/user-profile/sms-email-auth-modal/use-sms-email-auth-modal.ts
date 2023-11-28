@@ -100,7 +100,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	}
 
 	const hide = () => {
-		console.log("wet to")
+		console.log('wet to')
 		toggleSmsAuthModal(false)
 		toggleEmailAuthModal(false)
 		setGeneralErrorData(null)
