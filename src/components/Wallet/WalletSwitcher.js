@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
 	row: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		marginVertical: 22,
+		marginTop: 22,
+		marginBottom: 28,
 	},
 })

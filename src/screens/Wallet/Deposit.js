@@ -240,7 +240,7 @@ export default function Deposit({ refreshControl }) {
 
 const styles = StyleSheet.create({
 	block: {
-		paddingVertical: 6,
+		// paddingVertical: 6,
 		marginBottom: 12,
 	},
 	error: {

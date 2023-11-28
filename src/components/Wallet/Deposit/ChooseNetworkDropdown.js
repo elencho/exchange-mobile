@@ -60,7 +60,12 @@ export default function ChooseNetworkDropdown({
 			  )
 
 		return (
-			<AppText medium body style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+			<AppText
+				medium
+				body
+				style={
+					addWhitelistModalVisble && { color: 'rgba(255, 255, 255, 0.6)' }
+				}>
 				{currentNetwork?.[0]?.displayName}
 			</AppText>
 		)
@@ -119,7 +124,7 @@ export default function ChooseNetworkDropdown({
 						/>
 					) : (
 						<View style={styles.view}>
-							<View style={{ marginRight: 8 }}>{renderIcon(network)}</View>
+							<View>{renderIcon(network)}</View>
 							<NetworkWithTicker />
 						</View>
 					)}
