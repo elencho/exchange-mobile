@@ -39,7 +39,9 @@ const TwoFaInput = ({
 
 	useEffect(() => {
 		if (value.length === cellCount) {
-			onFill()
+			setTimeout(() => {
+				onFill()
+			}, 500)
 		}
 	}, [value])
 

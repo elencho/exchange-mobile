@@ -27,7 +27,7 @@ export type Screens = {
 	Login2Fa?: {}
 	ForgotPassword?: {}
 	SetNewPassword?: {}
-	ResetOtpInstructions?: {
+	ResetOtpInstructions: {
 		resetOtpType?: ResetOtp
 	}
 	Main?: {
