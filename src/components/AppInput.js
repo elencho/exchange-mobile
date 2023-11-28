@@ -50,6 +50,8 @@ const AppInput = ({
 		? colors.ERROR_TEXT
 		: isFocused
 		? colors.SECONDARY_PURPLE
+		: disabled
+		? 'rgba(105, 111, 142, 0.4)'
 		: '#42475D'
 
 	const rightComponent = isFocused && activeRight ? activeRight : right
@@ -125,6 +127,7 @@ const AppInput = ({
 											? colors.ERROR_TEXT
 											: colors.SECONDARY_TEXT,
 									opacity: disabled ? 0.6 : 1,
+									backgroundColor: colors.PRIMARY_BACKGROUND,
 								}}>
 								{label}
 							</AppText>
@@ -172,7 +175,10 @@ const styles = StyleSheet.create({
 		height: '100%',
 		marginRight: 10,
 	},
-	disabledInput: { color: colors.SECONDARY_TEXT, opacity: 0.6 },
+	disabledInput: {
+		color: colors.SECONDARY_TEXT,
+		opacity: 0.6,
+	},
 	Gesinput: {
 		fontFamily: 'Ubuntu_Medium',
 		fontSize: 14,

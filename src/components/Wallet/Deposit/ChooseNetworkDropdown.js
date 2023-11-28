@@ -60,7 +60,7 @@ export default function ChooseNetworkDropdown({
 			  )
 
 		return (
-			<AppText medium body>
+			<AppText medium body style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
 				{currentNetwork?.[0]?.displayName}
 			</AppText>
 		)
