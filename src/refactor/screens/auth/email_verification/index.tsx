@@ -70,7 +70,8 @@ const EmailVerification = ({
 			return (
 				<View>
 					<AppText style={[styles.secondary, { marginBottom: 36 }]}>
-						{t('check your {{email}} after registration params{email}', {
+						{t('check_your_{{email}}_after_registration', {
+							// TODO: Key
 							email: mail,
 						})}
 					</AppText>
@@ -79,7 +80,7 @@ const EmailVerification = ({
 		}
 	}
 
-	const goBack = () => navigation.replace(from)
+	const goBack = () => navigation.navigate(from)
 
 	const resend = () => dispatch(resendOtpThunk())
 
@@ -126,7 +127,7 @@ const EmailVerification = ({
 
 						<View>
 							<AppText variant="headline" style={styles.primary}>
-								E-mail Has Been Sent
+								EMAIL authentication login
 							</AppText>
 						</View>
 						{checkMailText()}

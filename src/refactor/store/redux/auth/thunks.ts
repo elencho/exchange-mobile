@@ -20,7 +20,7 @@ import {
 	verifyAccount,
 	logout,
 } from './api'
-import { resetAuth, savePkceInfo, setTokens } from './slice'
+import { resetAuth, savePkceInfo, setTimer, setTokens } from './slice'
 import { navigationRef } from '@app/refactor/setup/nav'
 
 export const startLoginThunk = createAsyncThunk(
@@ -124,14 +124,20 @@ export const resetPasswordConfirmCodeThunk = createAsyncThunk(
 			otp: string
 			navigation: NativeStackNavigationProp<Screens, any>
 		},
-		{ getState }
+		{ getState, dispatch }
 	) => {
 		const state = (getState() as RootState).auth
 		const data = await resetPasswordOtp(state.callbackUrl, mail, otp)
 
-		if (data.execution === Execution.LOGIN_OTP) {
-			navigation.navigate('Login2Fa')
-		}
+		// TODO: Refactor
+		dispatch(setTimer(false))
+		setTimeout(() => {
+			if (data.execution === Execution.LOGIN_OTP) {
+				navigation.replace('Login2Fa')
+			} else if (data.execution === Execution.EMAIL_VERIFICATION_OTP) {
+				navigation.push('EmailVerification', { from: 'ForgotPassword', mail })
+			}
+		}, 10)
 
 		return data
 	}
@@ -182,7 +188,7 @@ export const otpForLoginThunk = createAsyncThunk(
 		const loginInfo = await loginOtp(otp, callbackUrl)
 
 		try {
-			if (loginInfo?.errors?.length !== 0) return loginInfo
+			if (loginInfo?.errors && loginInfo.errors.length !== 0) return loginInfo
 
 			if (loginInfo.execution === Execution.UPDATE_PASSWORD) {
 				navigation.navigate('SetNewPassword')

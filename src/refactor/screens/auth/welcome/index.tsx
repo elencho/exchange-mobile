@@ -51,7 +51,7 @@ const Welcome = ({ navigation }: ScreenProp<'Welcome'>) => {
 							onPress={goToRegistration}
 							style={{ fontSize: 16 }}
 						/>
-						<AppButton
+						{/* <AppButton
 							variant="text"
 							text="Maintenance"
 							onPress={() => navigation.navigate('Maintenance')}
@@ -62,7 +62,7 @@ const Welcome = ({ navigation }: ScreenProp<'Welcome'>) => {
 							text="Update"
 							onPress={() => navigation.navigate('UpdateAvailable')}
 							style={{ fontSize: 16, marginTop: 36 }}
-						/>
+						/> */}
 					</View>
 				</View>
 

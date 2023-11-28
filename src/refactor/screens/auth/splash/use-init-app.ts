@@ -51,11 +51,7 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 
 		// ! For Testing
 		// navigation.navigate('Login2Fa')
-		// navigation.navigate('EmailVerification', {
-		// 	from: 'Registration',
-		// 	mail: 'remora.418@gmail.com',
-		// })
-		return
+		// return
 
 		if (await updateNeeded()) {
 			navigation.navigate('UpdateAvailable')

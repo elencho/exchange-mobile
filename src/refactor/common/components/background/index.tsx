@@ -9,11 +9,11 @@ import {
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Theme, useTheme } from '@theme/index'
-import { IS_IOS } from '@app/constants/system'
+import { System } from '@app/refactor/common/util'
 
 type Props = {
 	children: ReactNode
-	style?: StyleProp<ViewStyle>
+	style?: StyleProp<any>
 }
 
 const AppBackground: React.FC<Props> = ({ children, style }) => {
@@ -28,9 +28,9 @@ const AppBackground: React.FC<Props> = ({ children, style }) => {
 	}
 	return (
 		<>
-			{IS_IOS && <View style={safeAreaStyles} />}
-			<View style={[styles.container, style]}>{children}</View>
-			{IS_IOS && <SafeAreaView style={styles.safeArea} />}
+			{System.isIos && <View style={safeAreaStyles} />}
+			<View style={[styles.container, { ...style }]}>{children}</View>
+			{System.isIos && <SafeAreaView style={styles.safeArea} />}
 		</>
 	)
 }

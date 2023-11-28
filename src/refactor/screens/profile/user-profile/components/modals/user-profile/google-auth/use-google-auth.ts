@@ -9,6 +9,7 @@ import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import { System } from '@app/refactor/common/util'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
 import SecureKV from '@store/kv/secure'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 interface GoogleAuthProps {
 	googleAuthModalVisible: boolean
@@ -27,24 +28,31 @@ export const useGoogleAuth = (props: GoogleAuthProps) => {
 
 	const [key, setKey] = useState('')
 	const [googleAuthLoading, setGoogleAuthLoading] = useState(false)
-
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 	useEffect(() => {
 		return () => setGoogleAuthLoading(false)
 	}, [])
 
 	const enable = async () => {
 		try {
-		await activateGoogleOtp(
-				tOTPChangeParams?.changeOTPToken!,
-				key,
-				tOTPChangeParams?.totp?.totpSecret!
-			).then(async () => {
-				const oldRefresh = await SecureKV.get('refreshToken')
-
-				retryUnauthorizedCall({}, oldRefresh)
-				dispatch(fetchUserInfoThunk())
-				hide()
-			})
+			handleGeneralError(async () => {
+				setGoogleAuthLoading(true)
+				await activateGoogleOtp(
+					tOTPChangeParams?.changeOTPToken!,
+					key,
+					tOTPChangeParams?.totp?.totpSecret!
+				).then(async (res) => {
+					const oldRefresh = await SecureKV.get('refreshToken')
+					if (res >= 200 && res <= 300) {
+						retryUnauthorizedCall({}, oldRefresh)
+						dispatch(fetchUserInfoThunk())
+						hide()
+					}
+				})
+				setGoogleAuthLoading(false)
+			}, setGeneralErrorData)
 		} catch (e) {
 			console.log(e)
 		}
@@ -92,5 +100,6 @@ export const useGoogleAuth = (props: GoogleAuthProps) => {
 		googleAuthModalVisible,
 		tOTPChangeParams,
 		key,
+		generalErrorData,
 	}
 }
