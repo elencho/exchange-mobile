@@ -33,7 +33,7 @@ export default function PasswordModal({
 		error,
 		newPassCond,
 		handleFieldChange,
-		userProfileLoading,
+		userProfileButtonsLoading,
 		onHide,
 		generalErrorData,
 	} = usePasswordModal({ togglePasswordModal, passwordModalVisible })
@@ -153,7 +153,7 @@ export default function PasswordModal({
 					variant="primary"
 					onPress={handleSave}
 					style={styles.button}
-					loading={userProfileLoading}
+					loading={userProfileButtonsLoading}
 					text="Save"
 				/>
 			</WithKeyboard>
