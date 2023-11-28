@@ -130,9 +130,8 @@ const updatePhoneNumber = (builder: ActionReducerMapBuilder<ProfileState>) => {
 		.addCase(updatePhoneNumberThunk.pending, (state) => {
 			state.userProfileButtonsLoading = true
 		})
-		.addCase(updatePhoneNumberThunk.fulfilled, (state, action) => {
+		.addCase(updatePhoneNumberThunk.fulfilled, (state) => {
 			state.userProfileButtonsLoading = false
-			state.userInfo = action.payload
 		})
 		.addCase(updatePhoneNumberThunk.rejected, (state) => {
 			state.userProfileButtonsLoading = false

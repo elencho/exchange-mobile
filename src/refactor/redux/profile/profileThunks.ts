@@ -8,29 +8,32 @@ import {
 	updatePhoneNumber,
 	getOtpChangeToken,
 } from './profileApi'
-import { useDispatch } from 'react-redux'
-import { setUserProfileLoading } from './profileSlice'
+import { setUserInfo, setUserProfileLoading } from './profileSlice'
 
 export const updatePhoneNumberThunk = createAsyncThunk(
 	'profile/updatePhoneNumber',
-	async ({
-		phoneNumber,
-		phoneCountry,
-		hideModal,
-	}: {
-		phoneNumber: string
-		phoneCountry: string
-		hideModal: () => void
-	}) => {
+	async (
+		{
+			phoneNumber,
+			phoneCountry,
+			hideModal,
+		}: {
+			phoneNumber: string
+			phoneCountry: string
+			hideModal: () => void
+		},
+		{ dispatch }
+	) => {
 		try {
 			const response = await updatePhoneNumber(phoneNumber, phoneCountry)
 			if (response?.status >= 200 && response?.status < 300) {
 				hideModal()
 			}
 			const userInfo = await fetchUserInfoUtil()
-			return userInfo
+			dispatch(setUserInfo(userInfo!))
+			return response
 		} catch (error) {
-			return error
+			console.log(error)
 		}
 	}
 )
