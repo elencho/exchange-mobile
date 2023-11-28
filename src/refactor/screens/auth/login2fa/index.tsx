@@ -184,7 +184,6 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
 		back: {
-			backgroundColor: 'yellow',
 			flexDirection: 'row',
 			alignItems: 'center',
 			marginTop: 28,
