@@ -9,10 +9,9 @@ import { AppButton } from '@components/button'
 import AppInput from '@components/input'
 import AppModal from '@components/modal'
 import AppText from '@components/text'
-import GeneralError from '@app/components/GeneralError'
 import { IS_IOS } from '@app/constants/system'
-import { errorHappenedHere } from '@app/utils/appUtils'
 import { useGoogleAuth } from './use-google-auth'
+import General_error from '@components/general_error'
 
 export default function GoogleAuthModal(props) {
 	const { googleAuthModalVisible, toggleGoogleAuthModal } = props
@@ -27,6 +26,7 @@ export default function GoogleAuthModal(props) {
 		key,
 		hide,
 		onModalHide,
+		generalErrorData,
 	} = useGoogleAuth(props)
 
 	const { theme, styles } = useTheme(_styles)
@@ -67,11 +67,7 @@ export default function GoogleAuthModal(props) {
 					{IS_IOS ? <AppStoreIcon /> : <PlayStoreIcon />}
 				</TouchableOpacity>
 			</View>
-
-			<GeneralError
-				style={styles.error}
-				show={errorHappenedHere('GoogleAuthModal')}
-			/>
+			<General_error errorData={generalErrorData} />
 
 			<View style={styles.block}>
 				<AppText variant="m" style={styles.subtext}>

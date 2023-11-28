@@ -126,7 +126,6 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		dispatch(setCurrentSecurityAction('TOTP'))
 		sendOtp()
 	}
-	console.log('chosenOtpType', chosenOtpType)
 
 	return {
 		handleAuth,

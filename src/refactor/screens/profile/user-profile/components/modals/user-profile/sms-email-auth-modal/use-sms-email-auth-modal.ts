@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import {
 	credentialsForChangeOTPThunk,
@@ -9,6 +9,7 @@ import { activateEmailOtp } from '@app/refactor/redux/profile/profileApi'
 import { useAppDispatch } from '@app/refactor/redux/store'
 import SecureKV from '@store/kv/secure'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
@@ -41,7 +42,9 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(30)
 	const [otpLoading, setOtpLoading] = useState(false)
-
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 	const reset = () => {
 		setSeconds(30)
 		return
@@ -64,31 +67,43 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		setSeconds(30)
 		setValue('')
 	}
+
+	const emailHide = () => {
+		hide()
+		toggleGoogleAuthModal(true)
+	}
+
 	const handleFill = () => {
 		if (currentSecurityAction === 'TOTP') {
-			const getOtp = dispatch(
-				credentialsForChangeOTPThunk({
-					OTP: value,
-					otpType: 'TOTP',
-				})
+			handleGeneralError(
+				() =>
+					dispatch(
+						credentialsForChangeOTPThunk({
+							OTP: value,
+							otpType: 'TOTP',
+							onSuccess: emailHide,
+						})
+					),
+				setGeneralErrorData
 			)
-			getOtp.then(() => toggleGoogleAuthModal(true))
 		} else if (currentSecurityAction === 'EMAIL') {
-			activateEmailOtp(tOTPChangeParams!.changeOTPToken!, value).then(
-				async () => {
+			activateEmailOtp(tOTPChangeParams!.changeOTPToken!, value)
+				.then(async () => {
 					const oldRefresh = await SecureKV.get('refreshToken')
 
 					retryUnauthorizedCall({}, oldRefresh)
 					hide()
 					dispatch(fetchUserInfoThunk())
-				}
-			)
+				})
+				.catch(() => console.log('first catch'))
 		}
 	}
 
 	const hide = () => {
+		console.log("wet to")
 		toggleSmsAuthModal(false)
 		toggleEmailAuthModal(false)
+		setGeneralErrorData(null)
 	}
 
 	const resend = () => {
@@ -115,5 +130,6 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		setValue,
 		value,
 		handleFill,
+		generalErrorData,
 	}
 }
