@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Strong_Password from '@assets/images/User_profile/Strong_Password.svg'
@@ -11,7 +11,6 @@ import { setNewPasswordOtpThunk } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { setAuthLoading } from '@store/redux/auth/slice'
 
 const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const dispatch = useDispatch()
@@ -23,11 +22,7 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const [confirmPass, setConfirmPass] = useState('')
 	const [confirmPassError, setConfirmPassError] = useState(false)
 
-	const { authLoading } = useSelector((state: RootState) => state.auth)
-
-	useEffect(() => {
-		dispatch(setAuthLoading(false))
-	}, [])
+	const { setPasswordLoading } = useSelector((state: RootState) => state.auth)
 
 	const goToLogin = () => navigation.navigate('Login')
 
@@ -127,7 +122,7 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 					text="Save"
 					style={styles.button}
 					onPress={onSavePressed}
-					loading={authLoading}
+					loading={setPasswordLoading}
 				/>
 			</WithKeyboard>
 		</Background>

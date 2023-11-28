@@ -17,7 +17,7 @@ import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
-import { setTimer } from '@store/redux/auth/slice'
+import { setOtpTimer } from '@store/redux/auth/slice'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 const EmailVerification = ({
@@ -35,35 +35,35 @@ const EmailVerification = ({
 		null
 	)
 
-	const { timerVisible } = useSelector((state: RootState) => state.auth)
+	const { otpTimerVisible } = useSelector((state: RootState) => state.auth)
 
 	useEffect(() => {
-		dispatch(setTimer(true))
+		dispatch(setOtpTimer(true))
 
 		return () => {
-			dispatch(setTimer(false))
+			dispatch(setOtpTimer(false))
 			setValue('')
 			setSeconds(0)
 		}
 	}, [])
 
 	useEffect(() => {
-		if (!timerVisible) return
+		if (!otpTimerVisible) return
 
 		if (seconds) {
 			setTimeout(() => {
 				setSeconds(seconds - 1)
 			}, 1000)
 		} else {
-			dispatch(setTimer(false))
+			dispatch(setOtpTimer(false))
 		}
 	}, [seconds])
 
 	useEffect(() => {
-		if (timerVisible) {
+		if (otpTimerVisible) {
 			setSeconds(COUNTDOWN_SECONDS)
 		}
-	}, [timerVisible])
+	}, [otpTimerVisible])
 
 	const checkMailText = () => {
 		if (mail) {
@@ -71,7 +71,6 @@ const EmailVerification = ({
 				<View>
 					<AppText style={[styles.secondary, { marginBottom: 36 }]}>
 						{t('check_your_{{email}}_after_registration', {
-							// TODO: Key
 							email: mail,
 						})}
 					</AppText>
@@ -85,7 +84,7 @@ const EmailVerification = ({
 	const resend = () => dispatch(resendOtpThunk())
 
 	const resendOrCountDown = () => {
-		if (timerVisible) {
+		if (otpTimerVisible) {
 			return (
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)
@@ -112,6 +111,7 @@ const EmailVerification = ({
 	return (
 		<AppBackground>
 			<WithKeyboard
+				keyboardVerticalOffsetIOS={40}
 				flexGrow={true}
 				padding={true}
 				modal={true}
@@ -135,7 +135,10 @@ const EmailVerification = ({
 						<TwoFaInput
 							navigation={navigation}
 							value={value}
-							setValue={setValue}
+							setValue={(txt) => {
+								setValue(txt)
+								setGeneralErrorData(null)
+							}}
 							cellCount={6}
 							onFill={onCodeFilled}
 							indicatorStyle={{ top: '70%' }}

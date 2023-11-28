@@ -25,7 +25,7 @@ import {
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import { setTimer } from '@store/redux/auth/slice'
+import { setOtpTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
@@ -39,39 +39,39 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 		null
 	)
 
-	const { timerVisible, otpType } = useSelector(
+	const { otpTimerVisible, otpType } = useSelector(
 		(state: RootState) => state.auth
 	)
 
 	const cellCount = otpType === 'SMS' ? 4 : 6
 
 	useEffect(() => {
-		dispatch(setTimer(true))
+		dispatch(setOtpTimer(true))
 
 		return () => {
-			dispatch(setTimer(false))
+			dispatch(setOtpTimer(false))
 			setValue('')
 			setSeconds(0)
 		}
 	}, [])
 
 	useEffect(() => {
-		if (!timerVisible) return
+		if (!otpTimerVisible) return
 
 		if (seconds) {
 			setTimeout(() => {
 				setSeconds(seconds - 1)
 			}, 1000)
 		} else {
-			dispatch(setTimer(false))
+			dispatch(setOtpTimer(false))
 		}
 	}, [seconds])
 
 	useEffect(() => {
-		if (timerVisible) {
+		if (otpTimerVisible) {
 			setSeconds(COUNTDOWN_SECONDS)
 		}
-	}, [timerVisible])
+	}, [otpTimerVisible])
 
 	const goBack = () => dispatch(startLoginThunk(navigation))
 	const goToReset = () => dispatch(resetOtpThunk(navigation))
@@ -88,7 +88,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	}
 
 	const resendOrCountDown = () => {
-		if (timerVisible) {
+		if (otpTimerVisible) {
 			return (
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)

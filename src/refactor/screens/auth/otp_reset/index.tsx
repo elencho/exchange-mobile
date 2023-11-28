@@ -17,7 +17,7 @@ import TwoFaInput from '@components/input_2fa'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import { setTimer } from '@store/redux/auth/slice'
+import { setOtpTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import KV from '@store/kv/regular'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
@@ -31,7 +31,7 @@ export const ResetOtp = ({
 
 	const resetOtpType = route.params?.resetOtpType
 
-	const { timerVisible } = useSelector((state: RootState) => state.auth)
+	const { otpTimerVisible } = useSelector((state: RootState) => state.auth)
 
 	const [url, setUrl] = useState('')
 	const [value, setValue] = useState('')
@@ -45,25 +45,25 @@ export const ResetOtp = ({
 
 	useEffect(() => {
 		if (!seconds) {
-			dispatch(setTimer(false))
+			dispatch(setOtpTimer(false))
 			setSeconds(COUNTDOWN_SECONDS)
 		}
-		if (seconds && timerVisible) {
+		if (seconds && otpTimerVisible) {
 			setTimeout(() => {
 				setSeconds(seconds - 1)
 			}, 1000)
 		}
-	}, [seconds, timerVisible])
+	}, [seconds, otpTimerVisible])
 
 	useEffect(() => {
-		setTimer(true)
+		setOtpTimer(true)
 
 		const language = KV.get('language')
 		setUrl(`https://support.cryptal.com/hc/${language}`)
 
 		return () => {
 			setValue('')
-			setTimer(false)
+			setOtpTimer(false)
 			setSeconds(COUNTDOWN_SECONDS)
 		}
 	}, [])
@@ -71,7 +71,7 @@ export const ResetOtp = ({
 	const resend = () => dispatch(resendOtpThunk())
 
 	const resendOrCountDown = () => {
-		if (timerVisible) {
+		if (otpTimerVisible) {
 			return (
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)
@@ -132,7 +132,10 @@ export const ResetOtp = ({
 							<TwoFaInput
 								navigation={navigation}
 								value={value}
-								setValue={setValue}
+								setValue={(txt) => {
+									setValue(txt)
+									setGeneralErrorData(null)
+								}}
 								cellCount={6}
 								onFill={onCodeFilled}
 								indicatorStyle={{ top: '70%' }}

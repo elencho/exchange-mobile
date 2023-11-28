@@ -17,6 +17,7 @@ interface RegistrationFormResponse {
 interface VerifyAccountResponse {
 	code: string
 	session_state: string
+	errors: any[] //TODO: Type
 }
 
 type CountriesResponse = Country[]
