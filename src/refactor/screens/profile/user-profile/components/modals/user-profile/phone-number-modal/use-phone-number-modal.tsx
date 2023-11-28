@@ -16,7 +16,7 @@ export const usePhoneNumberModal = ({
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		profile: { userInfo, userProfileLoading },
+		profile: { userInfo, userProfileButtonsLoading },
 		common: { countries },
 	} = state
 
@@ -47,7 +47,7 @@ export const usePhoneNumberModal = ({
 	}, [phoneNumberModalVisible])
 
 	const hide = () => {
-		togglePhoneNumberModal(false)
+		!userProfileButtonsLoading && togglePhoneNumberModal(false)
 	}
 
 	const phoneCountry = () => {
@@ -114,5 +114,6 @@ export const usePhoneNumberModal = ({
 		setCountryModalVisible,
 		phoneNumber,
 		generalErrorData,
+		userProfileButtonsLoading,
 	}
 }

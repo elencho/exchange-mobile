@@ -26,6 +26,7 @@ export default function PhoneNumberModal({
 		handleCountries,
 		phoneCountry,
 		error,
+		userProfileButtonsLoading,
 		setChosenCountry,
 		chosenCountry,
 		countryModalVisible,
@@ -80,7 +81,7 @@ export default function PhoneNumberModal({
 					text="Save"
 					onPress={handleSave}
 					style={styles.button}
-					// loading={isProfileUpdating}
+					loading={userProfileButtonsLoading}
 				/>
 
 				<CountriesModal
