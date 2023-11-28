@@ -9,11 +9,13 @@ import {
 	toggleSubscriptionThunk,
 	updatePasswordThunk,
 	updateUserThunk,
+	updatePhoneNumberThunk,
 } from './profileThunks'
 
 export interface ProfileState {
 	userInfo: UserInfoType | null | undefined
 	userProfileLoading: boolean
+	userProfileButtonsLoading: boolean
 	verificationInfo: {}
 	currentSecurityAction: OTP | null
 	tOTPChangeParams: tOTPChangeParams | null
@@ -25,6 +27,7 @@ const initialState: ProfileState = {
 	verificationInfo: {},
 	currentSecurityAction: null,
 	tOTPChangeParams: null,
+	userProfileButtonsLoading: false,
 }
 
 const profileSlice = createSlice({
@@ -50,6 +53,7 @@ const profileSlice = createSlice({
 		updateUser(builder)
 		emailUpdates(builder)
 		otpChange(builder)
+		updatePhoneNumber(builder)
 	},
 })
 
@@ -70,27 +74,27 @@ const fetchUser = (builder: ActionReducerMapBuilder<ProfileState>) => {
 const updateUser = (builder: ActionReducerMapBuilder<ProfileState>) => {
 	builder
 		.addCase(updateUserThunk.pending, (state) => {
-			state.userProfileLoading = true
+			state.userProfileButtonsLoading = true
 		})
 		.addCase(updateUserThunk.fulfilled, (state, action) => {
-			state.userProfileLoading = false
+			state.userProfileButtonsLoading = false
 			state.userInfo = action.payload
 		})
 		.addCase(updateUserThunk.rejected, (state) => {
-			state.userProfileLoading = false
+			state.userProfileButtonsLoading = false
 		})
 }
 
 const updatePassword = (builder: ActionReducerMapBuilder<ProfileState>) => {
 	builder
 		.addCase(updatePasswordThunk.pending, (state) => {
-			state.userProfileLoading = false
+			state.userProfileButtonsLoading = true
 		})
 		.addCase(updatePasswordThunk.fulfilled, (state, action) => {
-			state.userProfileLoading = false
+			state.userProfileButtonsLoading = false
 		})
 		.addCase(updatePasswordThunk.rejected, (state) => {
-			state.userProfileLoading = false
+			state.userProfileButtonsLoading = false
 		})
 }
 
@@ -118,6 +122,20 @@ const otpChange = (builder: ActionReducerMapBuilder<ProfileState>) => {
 		})
 		.addCase(credentialsForChangeOTPThunk.rejected, (state) => {
 			state.userProfileLoading = false
+		})
+}
+
+const updatePhoneNumber = (builder: ActionReducerMapBuilder<ProfileState>) => {
+	builder
+		.addCase(updatePhoneNumberThunk.pending, (state) => {
+			state.userProfileButtonsLoading = true
+		})
+		.addCase(updatePhoneNumberThunk.fulfilled, (state, action) => {
+			state.userProfileButtonsLoading = false
+			state.userInfo = action.payload
+		})
+		.addCase(updatePhoneNumberThunk.rejected, (state) => {
+			state.userProfileButtonsLoading = false
 		})
 }
 

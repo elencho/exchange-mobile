@@ -27,7 +27,8 @@ export const updatePhoneNumberThunk = createAsyncThunk(
 			if (response?.status >= 200 && response?.status < 300) {
 				hideModal()
 			}
-			return response
+			const userInfo = await fetchUserInfoUtil()
+			return userInfo
 		} catch (error) {
 			return error
 		}
