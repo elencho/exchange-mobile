@@ -5,6 +5,7 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { sendEmailOtp } from '@app/refactor/redux/profile/profileApi'
 import { credentialsForChangeOTPThunk } from '@app/refactor/redux/profile/profileThunks'
 import { useAppDispatch } from '@app/refactor/redux/store'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 interface GoogleOtpProps {
 	googleOtpModalVisible: boolean
@@ -19,12 +20,15 @@ export const useGoogleOtp = (props: GoogleOtpProps) => {
 		toggleEmailAuthModalVisible,
 	} = props
 	const navigation = useNavigation()
-	const dispatch = useAppDispatch()
+	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
 		auth: { otpType },
 	} = state
 	const [value, setValue] = useState('')
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 
 	const email = otpType === 'EMAIL'
 
@@ -34,23 +38,25 @@ export const useGoogleOtp = (props: GoogleOtpProps) => {
 		setValue('')
 	}
 
-	const onFill = async () => {
-		try {
-			dispatch(
-				credentialsForChangeOTPThunk({
-					OTP: value,
-					otpType: 'EMAIL',
-				})
-			).then(async () => {
-				await sendEmailOtp()
-				hide()
-				toggleEmailAuthModalVisible(true)
-			})
-		} catch (e) {
-			console.log(e)
-		}
+	const emailHide = () => {
+		sendEmailOtp()
+		hide()
+		toggleEmailAuthModalVisible(true)
 	}
 
+	const onFill = () =>
+		handleGeneralError(
+			() =>
+				dispatch(
+					credentialsForChangeOTPThunk({
+						OTP: value,
+						otpType: 'EMAIL',
+						onSuccess: emailHide,
+					})
+				),
+			setGeneralErrorData
+		)
+	console.log(generalErrorData, 'generalErrorData')
 	return {
 		hide,
 		value,
@@ -59,5 +65,6 @@ export const useGoogleOtp = (props: GoogleOtpProps) => {
 		navigation,
 		setValue,
 		onFill,
+		generalErrorData,
 	}
 }

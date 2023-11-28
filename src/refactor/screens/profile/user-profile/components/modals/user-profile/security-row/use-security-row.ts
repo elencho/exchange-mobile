@@ -4,7 +4,7 @@ import {
 	isEnrolledAsync,
 	supportedAuthenticationTypesAsync,
 } from 'expo-local-authentication'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { togglePasswordModal } from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
@@ -52,6 +52,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		togglePasswordModal(true)
 	}
 	const handleAuth = async (userEmail: string) => {
+		console.log('wewew')
 		const cachedEmails = (await SecureKV.get('bioEnabledEmails')) || []
 		const hasFaceOrTouchIdSaved = await isEnrolledAsync()
 
@@ -92,34 +93,25 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		}
 	}
 
-	const handleChange = (value) => {
+	const handleChange = useCallback((value) => {
 		// TODO: Remove this and use userInfo.email
 		// Right now returns undefined so I take email from accessToken
+
 		const email = jwt_decode<TokenParams>(accessToken || '')?.email
-		handleAuth(email)
-		switch (text) {
-			case 'Google_Auth':
-				if (otpType === 'EMAIL') toggleEmailAuthModalVisible(true)
-				if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
-				dispatch(setCurrentSecurityAction('TOTP'))
-				sendOtp()
 
-			case 'E_mail_Auth':
-				if (otpType === 'TOTP') toggleGoogleOtpModalVisible(true)
-				// if (otpType === 'SMS') {
-				// 	dispatch(toggleSmsAuthModal(true))
-				// 	sendOtp()
-				// }
-				dispatch(setCurrentSecurityAction('EMAIL'))
-			// dispatch(setCurrentSecurityAction('email'))
-			// toggleEmailAuthModalVisible(true)
-
-			// 	// 	case 'Biometric':
-			// 	// 		handleAuth(userInfo?.email)
-			default:
-				break
+		if (value === 'Google_Auth') {
+			if (otpType === 'EMAIL') toggleEmailAuthModalVisible!(true)
+			if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
+			dispatch(setCurrentSecurityAction('TOTP'))
+			sendOtp()
+		} else if (value === 'E_mail_Auth') {
+			if (otpType === 'TOTP') toggleGoogleOtpModalVisible!(true)
+			dispatch(setCurrentSecurityAction('EMAIL'))
+		} else if (value === 'Biometric') {
+			handleAuth(email!)
 		}
-	}
+	}, [])
+
 	const handleChangeGoogle = () => {
 		if (otpType === 'EMAIL') toggleEmailAuthModalVisible(true)
 		if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
@@ -128,7 +120,6 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 	}
 
 	return {
-		handleAuth,
 		handleChange,
 		handlePassword,
 		userInfo,

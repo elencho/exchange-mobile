@@ -37,22 +37,22 @@ export const useGoogleAuth = (props: GoogleAuthProps) => {
 
 	const enable = async () => {
 		try {
-			handleGeneralError(async () => {
-				setGoogleAuthLoading(true)
-				await activateGoogleOtp(
-					tOTPChangeParams?.changeOTPToken!,
-					key,
-					tOTPChangeParams?.totp?.totpSecret!
-				).then(async (res) => {
-					const oldRefresh = await SecureKV.get('refreshToken')
-					if (res >= 200 && res <= 300) {
-						retryUnauthorizedCall({}, oldRefresh)
-						dispatch(fetchUserInfoThunk())
-						hide()
-					}
-				})
-				setGoogleAuthLoading(false)
-			}, setGeneralErrorData)
+			handleGeneralError(
+				async () =>
+					await activateGoogleOtp(
+						tOTPChangeParams?.changeOTPToken!,
+						key,
+						tOTPChangeParams?.totp?.totpSecret!
+					).then(async (res) => {
+						const oldRefresh = await SecureKV.get('refreshToken')
+						if (res >= 200 && res <= 300) {
+							retryUnauthorizedCall({}, oldRefresh)
+							dispatch(fetchUserInfoThunk())
+							hide()
+						}
+					}),
+				setGeneralErrorData
+			)
 		} catch (e) {
 			console.log(e)
 		}

@@ -40,6 +40,9 @@ const profileSlice = createSlice({
 		setCurrentSecurityAction(state, action: PayloadAction<OTP>) {
 			state.currentSecurityAction = action.payload
 		},
+		setUserProfileLoading(state, action: PayloadAction<boolean>) {
+			state.userProfileLoading = action.payload
+		},
 	},
 	extraReducers: (builder) => {
 		fetchUser(builder)
@@ -107,7 +110,7 @@ const emailUpdates = (builder: ActionReducerMapBuilder<ProfileState>) => {
 const otpChange = (builder: ActionReducerMapBuilder<ProfileState>) => {
 	builder
 		.addCase(credentialsForChangeOTPThunk.pending, (state) => {
-			state.userProfileLoading = true
+			state.userProfileLoading = false
 		})
 		.addCase(credentialsForChangeOTPThunk.fulfilled, (state, action) => {
 			state.userProfileLoading = false
@@ -118,6 +121,10 @@ const otpChange = (builder: ActionReducerMapBuilder<ProfileState>) => {
 		})
 }
 
-export const { setUserInfo, setVerificationInfo, setCurrentSecurityAction } =
-	profileSlice.actions
+export const {
+	setUserInfo,
+	setVerificationInfo,
+	setCurrentSecurityAction,
+	setUserProfileLoading,
+} = profileSlice.actions
 export default profileSlice.reducer
