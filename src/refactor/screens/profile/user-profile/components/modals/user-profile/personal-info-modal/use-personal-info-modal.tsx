@@ -36,7 +36,6 @@ const usePersonalInfoModal = ({
 	})
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
-	console.log('generalErrorData', generalErrorData)
 
 	const alphabeticRegex = (text: string) => /^[a-zA-Z]+$/.test(text?.trim())
 
@@ -66,7 +65,7 @@ const usePersonalInfoModal = ({
 			!localUserInfo.postalCode?.trim() ||
 			!localUserInfo.address?.trim()
 
-			if (error || condition) {
+		if (error || condition) {
 			setError(true)
 		} else {
 			handleGeneralError(

@@ -6,8 +6,8 @@ import {
 	unsubscribeMail,
 	updateUserData,
 	updatePhoneNumber,
+	getOtpChangeToken,
 } from './profileApi'
-import { getOtpChangeToken } from '@app/utils/userProfileUtils'
 
 export const updatePhoneNumberThunk = createAsyncThunk(
 	'profile/updatePhoneNumber',
@@ -105,20 +105,22 @@ export const toggleSubscriptionThunk = createAsyncThunk(
 
 			return userInfo
 		} catch (error) {
-			throw error
+			console.log('first error', error)
 		}
 	}
 )
 
 export const credentialsForChangeOTPThunk = createAsyncThunk(
 	'profile/credentialsForChangeOTP',
-	async ({ OTP, otpType }: CredentialsForEmailData) => {
+	async ({ OTP, otpType, onSuccess }: CredentialsForEmailData) => {
 		try {
 			const response = await getOtpChangeToken(OTP, otpType)
-
+			if (response?.status! >= 200 && response?.status! < 300) {
+				onSuccess()
+			}
 			return response
 		} catch (error) {
-			throw error
+			console.log(error)
 		}
 	}
 )

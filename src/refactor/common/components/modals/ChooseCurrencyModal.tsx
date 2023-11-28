@@ -44,8 +44,8 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 
 	const filter = (text) => {
 		const filteredArray =
-			currencyList?.filter(
-				(currency) => currency.code?.toLowerCase()?.includes(text.toLowerCase())
+			currencyList?.filter((currency) =>
+				currency.code?.toLowerCase()?.includes(text.toLowerCase())
 			) ?? []
 		setFilteredData(filteredArray)
 	}

@@ -8,6 +8,7 @@ import AppModal from '@components/modal'
 import AppText from '@components/text'
 import TwoFaInput from '@components/input_2fa'
 import { useSmsAuthEmailModal } from './use-sms-email-auth-modal'
+import General_error from '@components/general_error'
 
 interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
@@ -37,10 +38,10 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 		cellCount,
 		visible,
 		seconds,
-		timerVisible,
 		value,
 		setValue,
 		handleFill,
+		generalErrorData,
 	} = useSmsAuthEmailModal({
 		type,
 		toggleSmsAuthModal,
@@ -62,11 +63,13 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 					style={styles.indicator}
 				/>
 			)
-		} else if (timerVisible) {
-			return (
-				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
-			)
-		} else {
+		}
+		// else if (timerVisible) {
+		// 	return (
+		// 		<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
+		// 	)
+		// }
+		else {
 			return <AppButton variant="text" text="resend purple" onPress={resend} />
 		}
 	}
@@ -79,6 +82,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 			<AppText style={styles.secondary} variant="s">
 				Enter One Time Password
 			</AppText>
+			<General_error errorData={generalErrorData} />
 
 			<View style={styles.codeInput}>
 				<TwoFaInput
@@ -135,5 +139,6 @@ const _styles = (theme: Theme) =>
 			color: theme.color.textSecondary,
 			fontSize: 20,
 			lineHeight: 28,
+			marginBottom: 10,
 		},
 	})
