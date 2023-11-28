@@ -96,7 +96,6 @@ const styles = StyleSheet.create({
 	block: {
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 		marginBottom: 12,
-		paddingTop: 22,
 	},
 	description: {
 		color: colors.SECONDARY_TEXT,

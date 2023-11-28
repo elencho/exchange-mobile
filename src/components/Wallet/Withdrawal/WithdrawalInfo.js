@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 15,
 		paddingVertical: 10,
 		paddingRight: 30,
-		marginBottom: 30,
+		marginBottom: 22,
 		height: 45,
 	},
 	countryInfo: {

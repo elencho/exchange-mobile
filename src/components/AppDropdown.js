@@ -27,6 +27,7 @@ const AppDropdown = ({
 				styles.container,
 				style,
 				error && { borderColor: colors.ERROR_TEXT },
+				disabled && { borderColor: 'rgba(105, 111, 142, 0.2)' },
 			]}
 			onPress={!disabled ? handlePress : null}>
 			{selectedText ? (

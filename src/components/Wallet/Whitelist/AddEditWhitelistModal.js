@@ -47,6 +47,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 	const hide = () => {
 		if (add) dispatch(toggleAddWhitelistModal(false))
 		if (edit) dispatch(toggleEditWhitelistModal(false))
+		clearInputs()
 
 		//TODO: remove after wallet refactor
 		dispatch(saveGeneralError(null))
@@ -129,8 +130,11 @@ export default function AddEditWhitelistModal({ add, edit }) {
 	const addressError = add ? !newWhitelist?.address?.trim() : false
 	const tagError = add ? !newWhitelist?.tag?.trim() : false
 
+	const [twoFaInputValue, setTwoFaInputValue] = useState('')
+
 	const children = (
-		<WithKeyboard padding flexGrow modal>
+		<WithKeyboard padding flexGrow modal noRefresh>
+			{/* <View></View> */}
 			<TouchableOpacity
 				activeOpacity={0.99}
 				style={{ flex: 1, paddingTop: 14 }}>
@@ -189,7 +193,11 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
 			<SmsEmailAuthModal type="SMS" whitelist />
 			<SmsEmailAuthModal type="Email" whitelist />
-			<GoogleOtpModal whitelist />
+			<GoogleOtpModal
+				setTwoFaInputValue={setTwoFaInputValue}
+				twoFaInputValue={twoFaInputValue}
+				whitelist
+			/>
 			<QrScanner
 				setAddress={(address) =>
 					dispatch(setNewWhitelist({ ...newWhitelist, address }))
@@ -206,7 +214,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 			fullScreen
 			visible={isVisible}
 			title={`${add ? 'Add' : 'Edit'} Whitelist`}
-			onModalHide={clearInputs}
+			// onModalHide={clearInputs}
 		/>
 	)
 }

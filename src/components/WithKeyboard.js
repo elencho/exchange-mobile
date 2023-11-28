@@ -21,6 +21,7 @@ export default function WithKeyboard({
 	contentContainerStyle = {},
 	refreshControl,
 	keyboardVerticalOffsetIOS = 50,
+	noRefresh,
 }) {
 	const dispatch = useDispatch()
 	const scrollRef = useRef()
@@ -60,7 +61,7 @@ export default function WithKeyboard({
 				refreshControl={refreshControl}
 				ref={scrollRef}
 				onScrollEndDrag={(e) => {
-					if (IS_IOS && e.nativeEvent?.contentOffset?.y < -90)
+					if (!noRefresh && IS_IOS && e.nativeEvent?.contentOffset?.y < -90)
 						dispatch(setShouldRefreshOnScroll(true))
 				}}>
 				{children}
