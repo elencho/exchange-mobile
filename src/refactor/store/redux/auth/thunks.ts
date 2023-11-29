@@ -301,9 +301,13 @@ export const verifyRegistrationThunk = createAsyncThunk(
 		const data = await verifyAccount(callbackUrl, otp)
 		if (data?.errors && data.errors.length !== 0) return data
 
-		dispatch(
-			codeToTokenThunk({ code: data.code, from: 'Registration', navigation })
-		)
+		if (data.execution === Execution.UPDATE_PASSWORD) {
+			navigation.navigate('SetNewPassword')
+		} else {
+			dispatch(
+				codeToTokenThunk({ code: data.code, from: 'Registration', navigation })
+			)
+		}
 		return data
 	}
 )

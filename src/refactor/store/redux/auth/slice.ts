@@ -204,7 +204,10 @@ const register = (builder: ActionReducerMapBuilder<AuthState>) => {
 		.addCase(verifyRegistrationThunk.pending, (state) => {
 			state.authLoading = true
 		})
-		.addCase(verifyRegistrationThunk.fulfilled, (state) => {
+		.addCase(verifyRegistrationThunk.fulfilled, (state, action) => {
+			if (action.payload.callbackUrl) {
+				state.callbackUrl = action.payload.callbackUrl
+			}
 			state.authLoading = false
 		})
 		.addCase(verifyRegistrationThunk.rejected, (state) => {
