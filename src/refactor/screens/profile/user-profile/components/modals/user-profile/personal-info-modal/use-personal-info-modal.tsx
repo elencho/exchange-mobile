@@ -36,7 +36,6 @@ const usePersonalInfoModal = ({
 	})
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 
-
 	const alphabeticRegex = (text: string) => /^[a-zA-Z]+$/.test(text?.trim())
 
 	useEffect(() => {
@@ -45,9 +44,6 @@ const usePersonalInfoModal = ({
 
 	const hide = () => {
 		togglePersonalInfoModal(false)
-	}
-
-	const onHide = () => {
 		setChosenCountry(defaultCountry)
 		setLocalUserInfo({
 			country: chosenCountry?.code!,
@@ -122,7 +118,6 @@ const usePersonalInfoModal = ({
 		localUserInfo,
 		changeCountry,
 		generalErrorData,
-		onHide,
 	}
 }
 

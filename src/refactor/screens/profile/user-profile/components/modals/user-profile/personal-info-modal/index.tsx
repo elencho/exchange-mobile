@@ -35,7 +35,6 @@ export default function PersonalInfoModal({
 		localUserInfo,
 		chosenCountry,
 		generalErrorData,
-		onHide,
 	} = usePersonalInfoModal({
 		personalInfoModalVisible,
 		togglePersonalInfoModal,
@@ -129,7 +128,6 @@ export default function PersonalInfoModal({
 		<AppModal
 			visible={personalInfoModalVisible}
 			hide={hide}
-			onModalHide={onHide}
 			fullScreen
 			title="Personal Information"
 			children={children}
