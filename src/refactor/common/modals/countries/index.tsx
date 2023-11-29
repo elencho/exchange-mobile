@@ -36,8 +36,8 @@ const CountriesModal = (props: Props) => {
 	}, [])
 
 	const filter = (txt: string) => {
-		const filtered = countries.filter((country) =>
-			country?.name?.toLowerCase().includes(txt.toLowerCase())
+		const filtered = countries.filter(
+			(country) => country?.name?.toLowerCase().includes(txt.toLowerCase())
 		)
 		setFilteredCountries(filtered)
 	}
@@ -46,6 +46,9 @@ const CountriesModal = (props: Props) => {
 		const country = countries.find((c: Country) => c.name === countryName)
 		country && onCountryChosen(country)
 		hide()
+	}
+	const onHideModal = () => {
+		setFilteredCountries(countries)
 	}
 
 	const children = (
@@ -64,7 +67,7 @@ const CountriesModal = (props: Props) => {
 		<AppModal
 			visible={visible}
 			hide={hide}
-			onModalHide={hide}
+			onModalHide={onHideModal}
 			children={children}
 			fullScreen
 			bottom={undefined}

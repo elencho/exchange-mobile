@@ -150,13 +150,13 @@ export default function SecurityRow(props: SecurityRowProps) {
 					) : text === 'Google_Auth' ? (
 						<AppSwitcher
 							isOn={switchCond()}
-							onToggle={handleChangeGoogle}
+							onToggle={() => handleChangeGoogle()}
 							disabled={disabledCond()}
 						/>
 					) : (
 						<AppSwitcher
 							isOn={switchCond()}
-							onToggle={handleChange}
+							onToggle={() => handleChange(text)}
 							disabled={disabledCond()}
 						/>
 					)}

@@ -1,5 +1,4 @@
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { StyleProp, StyleSheet, View } from 'react-native'
 import Identity from '@assets/images/User_profile/Identity.svg'
 import { Theme, useTheme } from '@theme/index'
@@ -7,10 +6,17 @@ import AppModal from '@components/modal'
 import AppText from '@components/text'
 import { useIdentityModal } from './use-identity-modal'
 
-export default function IdentityModal() {
-	const { t } = useTranslation()
-	const { hide, identityModalVisible } = useIdentityModal()
-	const { styles } = useTheme(_styles)
+interface Props {
+	identityModalVisible: boolean
+	toggleIdentityModalVisible: (visible: boolean) => void
+}
+
+export default function IdentityModal({
+	toggleIdentityModalVisible,
+	identityModalVisible,
+}: Props) {
+	const { hide } = useIdentityModal({ toggleIdentityModalVisible })
+	const { styles, theme } = useTheme(_styles)
 
 	const Dot = ({ color, style }: { color: string; style?: StyleProp<any> }) => (
 		<View
@@ -28,8 +34,10 @@ export default function IdentityModal() {
 		const verificationText = `verification text key ${text}`
 		return (
 			<View style={{ flexDirection: 'row', marginBottom: isLast ? 0 : 10 }}>
-				<Dot color="#969CBF" style={{ marginTop: 7 }} />
-				<AppText style={{ color: '#969CBF' }}>{verificationText}</AppText>
+				<Dot color={theme.color.textThird} style={{ marginTop: 7 }} />
+				<AppText style={{ color: theme.color.textThird }}>
+					{verificationText}
+				</AppText>
 			</View>
 		)
 	}
@@ -40,7 +48,7 @@ export default function IdentityModal() {
 				<Identity />
 
 				<View style={{ marginLeft: 15 }}>
-					<AppText variant="l" style={styles.title}>
+					<AppText variant="headline" style={styles.title}>
 						Verification Modal Title
 					</AppText>
 
@@ -53,11 +61,12 @@ export default function IdentityModal() {
 				</View>
 			</View>
 
-			<AppText style={[{ color: '#969CBF' }, styles.marginVertical]}>
+			<AppText
+				style={[{ color: theme.color.textThird }, styles.marginVertical]}>
 				Advantages of verification
 			</AppText>
 
-			{[1, 2, 3, 4, 5].map((b, i, a) => (
+			{[1, 2, 3, 4].map((b, i, a) => (
 				<View key={b}>
 					<Bullet text={b} isLast={i === a.length - 1} />
 				</View>
@@ -85,7 +94,8 @@ const _styles = (theme: Theme) =>
 			alignItems: 'center',
 		},
 		subtext: {
-			color: theme.color.textPrimary,
+			color: theme.color.textThird,
+			marginRight: 45,
 		},
 		title: {
 			marginBottom: 5,

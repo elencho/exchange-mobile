@@ -106,7 +106,7 @@ const AppModal = (props: AppModalProps) => {
 							<View style={styles.bottom}>
 								{title && (
 									<AppText
-										variant="l"
+										variant="headline"
 										style={[styles.header, bottom && { marginLeft: 8 }]}>
 										{title}
 									</AppText>

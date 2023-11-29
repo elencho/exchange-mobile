@@ -49,6 +49,10 @@ export const Personal = ({ loading }: PersonalProps) => {
 		phoneNumberModalVisible,
 		togglePhoneNumberModal,
 		emailUpdated,
+		setCompanyInfoModalVisible,
+		companyInfoModalVisible,
+		toggleIdentityModalVisible,
+		identityModalVisible,
 	} = usePersonal()
 
 	const { styles } = useTheme(_styles)
@@ -171,8 +175,14 @@ export const Personal = ({ loading }: PersonalProps) => {
 				languageModalVisible={languageModalVisible}
 				setLanguageModalVisible={setLanguageModalVisible}
 			/>
-			<EditCompanyModal />
-			<IdentityModal />
+			<EditCompanyModal
+				companyInfoModalVisible={companyInfoModalVisible}
+				setCompanyInfoModalVisible={setCompanyInfoModalVisible}
+			/>
+			<IdentityModal
+				toggleIdentityModalVisible={toggleIdentityModalVisible}
+				identityModalVisible={identityModalVisible}
+			/>
 		</>
 	)
 }

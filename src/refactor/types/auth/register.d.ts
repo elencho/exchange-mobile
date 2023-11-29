@@ -15,8 +15,11 @@ interface RegistrationFormResponse {
 }
 
 interface VerifyAccountResponse {
+	execution?: Execution
+	callbackUrl?: string
 	code: string
 	session_state: string
+	errors: any[] //TODO: Type
 }
 
 type CountriesResponse = Country[]

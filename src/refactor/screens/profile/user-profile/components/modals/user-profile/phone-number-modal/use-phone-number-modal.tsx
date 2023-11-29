@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { updatePhoneNumber } from '@app/utils/userProfileUtils'
 import { updatePhoneNumberThunk } from '@app/refactor/redux/profile/profileThunks'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
@@ -16,7 +15,7 @@ export const usePhoneNumberModal = ({
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		profile: { userInfo, userProfileLoading },
+		profile: { userInfo, userProfileButtonsLoading, userProfileLoading },
 		common: { countries },
 	} = state
 
@@ -47,7 +46,9 @@ export const usePhoneNumberModal = ({
 	}, [phoneNumberModalVisible])
 
 	const hide = () => {
-		togglePhoneNumberModal(false)
+		if (!userProfileButtonsLoading && !userProfileLoading) {
+			togglePhoneNumberModal(false)
+		}
 	}
 
 	const phoneCountry = () => {
@@ -75,7 +76,7 @@ export const usePhoneNumberModal = ({
 	}
 
 	const handleSave = () => {
-		if (error || !userInfo?.country || !(phoneNumber?.trim()?.length > 2)) {
+		if (error || !userInfo?.country || !(phoneNumber?.trim()?.length > 0)) {
 			setError(true)
 		} else {
 			const phoneCountry = chosenCountry.code
@@ -114,5 +115,6 @@ export const usePhoneNumberModal = ({
 		setCountryModalVisible,
 		phoneNumber,
 		generalErrorData,
+		userProfileButtonsLoading,
 	}
 }

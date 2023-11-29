@@ -8,36 +8,35 @@ import AppModal from '@components/modal'
 import AppText from '@components/text'
 import { useEditCompany } from './use-edit-company'
 
-export default function EditCompanyModal() {
-	const {
-		companyInfoModalVisible,
-		companyInfoModalHeader,
-		companyInfoModalDescription,
-		companyInfoModalLink,
-		companyInfoModalButton,
-		hide,
-		goToWeb,
-	} = useEditCompany()
+interface Props {
+	companyInfoModalVisible: boolean
+	setCompanyInfoModalVisible: (visible: boolean) => void
+}
+
+export default function EditCompanyModal({
+	companyInfoModalVisible,
+	setCompanyInfoModalVisible,
+}: Props) {
+	
+	const { hide, goToWeb } = useEditCompany({
+		setCompanyInfoModalVisible,
+	})
 	const { styles } = useTheme(_styles)
 
 	const children = (
 		<View style={styles.container}>
 			<Browser />
 			<AppText variant="l" style={styles.white}>
-				{companyInfoModalHeader ?? 'Go To web'}
+				Go To web
 			</AppText>
 			<AppText style={styles.secondary}>
-				{t(companyInfoModalDescription ?? 'Visit Website')}{' '}
-				<AppButton
-					variant="text"
-					text={companyInfoModalLink ?? 'Web Link'}
-					onPress={goToWeb}
-				/>
+				{t('Visit Website')}{' '}
+				<AppButton variant="text" text={'Web Link'} onPress={goToWeb} />
 			</AppText>
 
 			<AppButton
 				variant="primary"
-				text={companyInfoModalButton ?? 'OK'}
+				text={'OK'}
 				style={styles.button}
 				onPress={hide}
 			/>

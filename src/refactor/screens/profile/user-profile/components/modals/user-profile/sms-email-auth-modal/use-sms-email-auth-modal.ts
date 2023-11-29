@@ -5,11 +5,15 @@ import {
 	credentialsForChangeOTPThunk,
 	fetchUserInfoThunk,
 } from '@app/refactor/redux/profile/profileThunks'
-import { activateEmailOtp } from '@app/refactor/redux/profile/profileApi'
+import {
+	activateEmailOtp,
+	sendOtp,
+} from '@app/refactor/redux/profile/profileApi'
 import { useAppDispatch } from '@app/refactor/redux/store'
 import SecureKV from '@store/kv/secure'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
+import { setTimer } from '@store/redux/auth/slice'
 
 interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
@@ -45,15 +49,17 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
 	)
+	const [timerVisible, setTimerVisible] = useState(false)
 	const reset = () => {
 		setSeconds(30)
+		setTimerVisible(false)
 		return
 	}
 
 	useEffect(() => {
 		if (emailAuthModalVisible || smsAuthModalVisible) {
 			if (!seconds) reset()
-			if (seconds) {
+			if (seconds && timerVisible) {
 				setTimeout(() => {
 					setSeconds(seconds - 1)
 				}, 1000)
@@ -61,7 +67,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		} else {
 			reset()
 		}
-	}, [seconds])
+	}, [seconds, timerVisible])
 
 	const handleHide = () => {
 		setSeconds(30)
@@ -88,7 +94,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 			)
 		} else if (currentSecurityAction === 'EMAIL') {
 			activateEmailOtp(tOTPChangeParams!.changeOTPToken!, value)
-				.then(async () => {
+				.then(async (res) => {
 					const oldRefresh = await SecureKV.get('refreshToken')
 
 					retryUnauthorizedCall({}, oldRefresh)
@@ -100,19 +106,14 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	}
 
 	const hide = () => {
-		console.log("wet to")
 		toggleSmsAuthModal(false)
 		toggleEmailAuthModal(false)
 		setGeneralErrorData(null)
 	}
 
 	const resend = () => {
-		// TODO: ADD LOGIC
-		// dispatch({
-		// 	type: 'RESEND_SAGA',
-		// 	smsEmailAuth: true,
-		// 	setOtpLoading,
-		// })
+		setTimerVisible(true)
+		sendOtp()
 	}
 
 	return {
@@ -131,5 +132,6 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		value,
 		handleFill,
 		generalErrorData,
+		timerVisible,
 	}
 }
