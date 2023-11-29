@@ -52,16 +52,14 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		togglePasswordModal(true)
 	}
 	const handleAuth = async (userEmail: string) => {
-		console.log('wewew')
 		const cachedEmails = (await SecureKV.get('bioEnabledEmails')) || []
 		const hasFaceOrTouchIdSaved = await isEnrolledAsync()
-
 		if (isBioOn) {
 			const withoutUserMail = cachedEmails.filter((e) => e !== userEmail)
 			SecureKV.set('bioEnabledEmails', withoutUserMail)
 			return setIsBioOn(false)
 		}
-		if (hasFaceOrTouchIdSaved) {
+		if (!isBioOn && hasFaceOrTouchIdSaved) {
 			const result = await authenticateAsync({
 				promptMessage: 'Log in with fingerprint or faceid',
 				cancelLabel: 'Abort',
@@ -93,7 +91,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		}
 	}
 
-	const handleChange = useCallback((value) => {
+	const handleChange = (value: string) => {
 		// TODO: Remove this and use userInfo.email
 		// Right now returns undefined so I take email from accessToken
 
@@ -110,7 +108,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		} else if (value === 'Biometric') {
 			handleAuth(email!)
 		}
-	}, [])
+	}
 
 	const handleChangeGoogle = () => {
 		if (otpType === 'EMAIL') toggleEmailAuthModalVisible(true)
