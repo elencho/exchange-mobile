@@ -46,8 +46,6 @@ export default function AddCardModal() {
 	const [error, setError] = useState(false)
 	const [selectedProvider, setSelectedProvider] = useState(depositProvider)
 
-	console.log('selectedProvider', selectedProvider)
-
 	useEffect(() => {
 		error && setError(false)
 	}, [saveCardAgreeTerms, depositProvider])
@@ -57,9 +55,16 @@ export default function AddCardModal() {
 		setSelectedProvider(depositProvider)
 	}, [depositProvider])
 
+	console.log('saveCardAgreeTerms', saveCardAgreeTerms)
+
 	const hide = () => {
 		dispatch(toggleAddCardModal(false))
 		setSelectedProvider(null)
+		if (webViewVisible) {
+			if (statusObj) dispatch(setStatusModalInfo(statusObj))
+			setSaveCardAgreeTerms(false)
+			setStatusObj(null)
+		}
 	}
 
 	const image = () => {
@@ -215,7 +220,7 @@ export default function AddCardModal() {
 			fullScreen
 			visible={addCardModalVisible}
 			hide={hide}
-			onModalHide={handleHide}
+			// onModalHide={handleHide}
 		/>
 	)
 }
