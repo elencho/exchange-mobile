@@ -44,6 +44,8 @@ export default function AddEditWhitelistModal({ add, edit }) {
 		auth: { otpType },
 	} = state
 
+	const [seconds, setSeconds] = useState(30)
+
 	const hide = () => {
 		if (add) dispatch(toggleAddWhitelistModal(false))
 		if (edit) dispatch(toggleEditWhitelistModal(false))
@@ -191,8 +193,18 @@ export default function AddEditWhitelistModal({ add, edit }) {
 				style={{ marginTop: 20, marginBottom: 36 }}
 			/>
 
-			<SmsEmailAuthModal type="SMS" whitelist />
-			<SmsEmailAuthModal type="Email" whitelist />
+			<SmsEmailAuthModal
+				seconds={seconds}
+				setSeconds={setSeconds}
+				type="SMS"
+				whitelist
+			/>
+			<SmsEmailAuthModal
+				seconds={seconds}
+				setSeconds={setSeconds}
+				type="Email"
+				whitelist
+			/>
 			<GoogleOtpModal
 				setTwoFaInputValue={setTwoFaInputValue}
 				twoFaInputValue={twoFaInputValue}

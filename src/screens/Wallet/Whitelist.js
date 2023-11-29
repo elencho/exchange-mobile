@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import { MaterialIndicator } from 'react-native-indicators'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,6 +21,8 @@ export default function Whitelist({ refreshControl }) {
 		wallet: { whitelist, hasWhitelist, whitelistLoading },
 		transactionsOld: { loading },
 	} = state
+
+	const [seconds, setSeconds] = useState(30)
 
 	const showAddModal = () => dispatch(toggleAddWhitelistModal(true))
 
@@ -73,8 +75,18 @@ export default function Whitelist({ refreshControl }) {
 					<AddEditWhitelistModal edit />
 
 					<GoogleOtpModal whitelist />
-					<SmsEmailAuthModal whitelist type="E-mail" />
-					<SmsEmailAuthModal whitelist type="SMS" />
+					<SmsEmailAuthModal
+						seconds={seconds}
+						setSeconds={setSeconds}
+						whitelist
+						type="E-mail"
+					/>
+					<SmsEmailAuthModal
+						seconds={seconds}
+						setSeconds={setSeconds}
+						whitelist
+						type="SMS"
+					/>
 				</View>
 			)}
 		</>

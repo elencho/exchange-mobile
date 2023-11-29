@@ -31,7 +31,7 @@ export default function ManageCards({ refreshControl }) {
 	}
 
 	return (
-		<View style={{ flex: 1, paddingTop: 18, paddingTop: 10 }}>
+		<View style={{ flex: 1 }}>
 			<WalletCoinsDropdown />
 
 			{cardsLoading && (

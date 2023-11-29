@@ -55,8 +55,6 @@ export default function AddCardModal() {
 		setSelectedProvider(depositProvider)
 	}, [depositProvider])
 
-	console.log('saveCardAgreeTerms', saveCardAgreeTerms)
-
 	const hide = () => {
 		dispatch(toggleAddCardModal(false))
 		setSelectedProvider(null)
