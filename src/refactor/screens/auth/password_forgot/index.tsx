@@ -40,7 +40,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	)
 
 	const alreadySent = useRef(false)
-	const { authLoading, forgotResendLoading, timerVisible } = useSelector(
+	const { forgotLoading, forgotResendLoading, timerVisible } = useSelector(
 		(state: RootState) => state.auth
 	)
 
@@ -184,7 +184,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 					text="Next"
 					style={styles.button}
 					onPress={onNextPressed}
-					loading={authLoading}
+					loading={forgotLoading}
 				/>
 			</WithKeyboard>
 		</AppBackground>
