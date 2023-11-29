@@ -99,29 +99,17 @@ export const usePasswordModal = ({
 		}))
 
 	const validate = (pass: string) => {
-		if (pass.length >= 8) {
-			setPasswordState((prevState) => ({
-				...prevState,
-				eightChars: true,
-			}))
-		} else if (/\d/.test(pass)) {
-			setPasswordState((prevState) => ({
-				...prevState,
-				hasNumber: true,
-			}))
-		} else if (/^(?=.*[a-z])(?=.*[A-Z])\S+$/.test(pass)) {
-			setPasswordState((prevState) => ({
-				...prevState,
-				hasUpperAndLower: true,
-			}))
-		} else {
-			setPasswordState((prevState) => ({
-				...prevState,
-				hasUpperAndLower: false,
-				hasNumber: false,
-				eightChars: false,
-			}))
-		}
+		let hasEightChars = pass.length >= 8
+		let hasNumber = /\d/.test(pass)
+		let hasLowercase = /[a-z]/.test(pass)
+		let hasUppercase = /[A-Z]/.test(pass)
+
+		setPasswordState((prevState) => ({
+			...prevState,
+			eightChars: hasEightChars,
+			hasNumber: hasNumber,
+			hasUpperAndLower: hasLowercase && hasUppercase,
+		}))
 	}
 	const handleFieldChange = (fieldName: string, value: string) => {
 		setPasswordState((prevState) => ({
