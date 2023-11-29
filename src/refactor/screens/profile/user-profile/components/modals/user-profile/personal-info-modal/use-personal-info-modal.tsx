@@ -52,6 +52,10 @@ const usePersonalInfoModal = ({
 			address: userInfo?.address!,
 		})
 	}
+	const saveHide = () => {
+		!userProfileButtonsLoading && togglePersonalInfoModal(false)
+		setChosenCountry(defaultCountry)
+	}
 
 	const handleSave = () => {
 		const condition =
@@ -65,7 +69,7 @@ const usePersonalInfoModal = ({
 			setError(true)
 		} else {
 			handleGeneralError(
-				() => dispatch(updateUserThunk({ localUserInfo, hide })),
+				() => dispatch(updateUserThunk({ localUserInfo, hide: saveHide })),
 				setGeneralErrorData
 			)
 		}
