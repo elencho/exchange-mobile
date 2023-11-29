@@ -6,6 +6,7 @@ export interface ColorTheme {
 	textPrimary: string //PRIMARY TEXT
 	backgroundSecondary: string //SECONDARY_BACKGROUND
 	textSecondary: string //SECONDARY_TEXT
+	textThird: string //THIRD_TEXT
 
 	skeleton: string //SKELETON
 	border: string //BORDER
@@ -21,6 +22,7 @@ export const COLORS_DARK: ColorTheme = {
 	textPrimary: '#FFFFFF',
 	backgroundSecondary: '#1F1F35',
 	textSecondary: '#696F8E',
+	textThird: '#C0C5E0',
 	skeleton: '#4B4B65',
 	border: '#42475D',
 	buttonDisabled: '#292943',

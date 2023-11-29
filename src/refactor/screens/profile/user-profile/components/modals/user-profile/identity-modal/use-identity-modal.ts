@@ -1,13 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
-export const useIdentityModal = () => {
-	const dispatch = useDispatch()
-	const identityModalVisible = useSelector(
-		(state: RootState) => state.modalState.identityModalVisible
-	)
+interface Props {
+	toggleIdentityModalVisible: (visible: boolean) => void
+}
 
-	const hide = () => dispatch({ type: 'TOGGLE_IDENTITY_MODAL' })
+export const useIdentityModal = ({ toggleIdentityModalVisible }: Props) => {
+	const hide = () => toggleIdentityModalVisible(false)
 
-	return { identityModalVisible, hide }
+	return { hide }
 }
