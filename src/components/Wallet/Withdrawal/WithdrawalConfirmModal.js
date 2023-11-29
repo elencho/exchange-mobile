@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Trans } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
@@ -33,6 +33,8 @@ export default function WithdrawalConfirmModal() {
 	const isEcommerce = network === 'ECOMMERCE'
 	const isCrypto = type === 'CRYPTO'
 	const isFiat = type === 'FIAT'
+
+	const [seconds, setSeconds] = useState(30)
 
 	const hide = () =>
 		dispatch({
@@ -86,8 +88,18 @@ export default function WithdrawalConfirmModal() {
 
 	const children = (
 		<View style={styles.flex}>
-			<SmsEmailAuthModal type="SMS" withdrawal={withdrawalType()} />
-			<SmsEmailAuthModal type="Email" withdrawal={withdrawalType()} />
+			<SmsEmailAuthModal
+				seconds={seconds}
+				setSeconds={setSeconds}
+				type="SMS"
+				withdrawal={withdrawalType()}
+			/>
+			<SmsEmailAuthModal
+				seconds={seconds}
+				setSeconds={setSeconds}
+				type="Email"
+				withdrawal={withdrawalType()}
+			/>
 			<GoogleOtpModal withdrawal={withdrawalType()} />
 			<View style={styles.flex}>
 				{networkInfo() && (
