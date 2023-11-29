@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Strong_Password from '@assets/images/User_profile/Strong_Password.svg'
@@ -11,6 +11,7 @@ import { setNewPasswordOtpThunk } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { setAuthLoading } from '@store/redux/auth/slice'
 
 const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const dispatch = useDispatch()
@@ -30,6 +31,12 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const hasNumber = /\d/.test(pass)
 	const hasUpperAndLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(pass)
 	const passValid = passLength && hasNumber && hasUpperAndLower
+
+	useEffect(() => {
+		setTimeout(() => {
+			dispatch(setAuthLoading(false))
+		}, 2000)
+	}, [])
 
 	const onSavePressed = () => {
 		if (pass !== confirmPass || !passValid) {

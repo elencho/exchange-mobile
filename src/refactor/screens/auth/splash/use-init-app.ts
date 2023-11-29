@@ -97,7 +97,7 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 
 	const backIsDown = async () => {
 		const { status } = await checkReadiness()
-		return status === 'DOWN'
+		return status !== 'UP'
 	}
 
 	const fetchLexicon = async () => {
