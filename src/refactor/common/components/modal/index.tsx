@@ -1,5 +1,11 @@
-import React, { ReactNode, memo } from 'react'
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
+import React, { ReactNode, memo, useEffect, useState } from 'react'
+import {
+	View,
+	StyleSheet,
+	KeyboardAvoidingView,
+	Platform,
+	Keyboard,
+} from 'react-native'
 import Modal from 'react-native-modal'
 import { RootSiblingParent } from 'react-native-root-siblings'
 import { Theme, useTheme } from '@theme/index'
@@ -10,6 +16,8 @@ import AppText from '@components/text'
 import AppToast from '@components/app_toast'
 import { ModalTop } from './modal-parts'
 import { useModal } from './use-modal'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface AppModalProps {
 	children: ReactNode
@@ -40,13 +48,40 @@ const AppModal = (props: AppModalProps) => {
 		modalStyle,
 	} = props
 
+	const { isBiometricScreenOpened } = useSelector(
+		(state: RootState) => state.common
+	)
+
+	// For bottom modals after Biometric Unlock
+	const [isBottomVisible, setIsBottomVisible] = useState(false)
+	useEffect(() => {
+		if (bottom && visible) {
+			setTimeout(() => {
+				setIsBottomVisible(true)
+			}, 0)
+		}
+	}, [isBiometricScreenOpened, visible])
+
+	useEffect(() => {
+		if (bottom) {
+			if (isBiometricScreenOpened) {
+				setIsBottomVisible(false)
+			}
+		}
+		isBiometricScreenOpened && Keyboard.dismiss()
+	}, [isBiometricScreenOpened])
+
 	return (
 		webViewVisible && (
 			<Modal
-				isVisible={visible}
+				isVisible={
+					bottom
+						? visible && !isBiometricScreenOpened && isBottomVisible
+						: visible && !isBiometricScreenOpened
+				}
 				onBackdropPress={hide}
 				onSwipeComplete={hide}
-				swipeDirection="down"
+				// swipeDirection="down"
 				propagateSwipe={true}
 				style={[styles.modal, modalStyle]}
 				animationOutTiming={500}

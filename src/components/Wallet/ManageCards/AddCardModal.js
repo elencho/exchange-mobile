@@ -112,14 +112,6 @@ export default function AddCardModal() {
 		}
 	}
 
-	const handleHide = () => {
-		if (webViewVisible) {
-			if (statusObj) dispatch(setStatusModalInfo(statusObj))
-			setSaveCardAgreeTerms(false)
-			setStatusObj(null)
-		}
-	}
-
 	const urlEncodedData = () => {
 		const data = new URLSearchParams(webViewObj?.data)
 		return data.toString()
@@ -198,6 +190,7 @@ export default function AddCardModal() {
 						headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 						body: urlEncodedData(),
 					}}
+					onClose={hide}
 				/>
 			)}
 
@@ -206,6 +199,7 @@ export default function AddCardModal() {
 					cardsAdd
 					onNavigationStateChange={onNavigationStateChange}
 					source={{ uri: webViewObj?.actionUrl }}
+					onClose={hide}
 				/>
 			)}
 		</>

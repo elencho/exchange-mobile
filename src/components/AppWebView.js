@@ -20,7 +20,7 @@ import {
 } from '../redux/trade/actions'
 
 export default function AppWebView(props) {
-	const { verifyCards, trade, deposit, cardsAdd } = props
+	const { verifyCards, trade, deposit, cardsAdd, onClose } = props
 
 	const dispatch = useDispatch()
 	const webViewObj = useSelector((state) => state.modals.webViewObj)
@@ -53,6 +53,7 @@ export default function AppWebView(props) {
 			dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: null })
 			dispatch({ type: 'BALANCE_SAGA' })
 		}
+		onClose && onClose()
 	}
 
 	const handleOnShow = async () => {
