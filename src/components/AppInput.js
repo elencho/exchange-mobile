@@ -51,7 +51,7 @@ const AppInput = ({
 		: isFocused
 		? colors.SECONDARY_PURPLE
 		: disabled
-		? 'rgba(105, 111, 142, 0.4)'
+		? 'rgba(105, 111, 142, 0.3)'
 		: '#42475D'
 
 	const rightComponent = isFocused && activeRight ? activeRight : right

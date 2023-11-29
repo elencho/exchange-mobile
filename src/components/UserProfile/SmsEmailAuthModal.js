@@ -18,7 +18,13 @@ import AppText from '../AppText'
 import PurpleText from '../PurpleText'
 import TwoFaInput from '../TwoFaInput'
 
-export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
+export default function SmsEmailAuthModal({
+	type,
+	withdrawal,
+	whitelist,
+	seconds,
+	setSeconds,
+}) {
 	const dispatch = useDispatch()
 	const navigation = useNavigation()
 	const state = useSelector((state) => state)
@@ -35,7 +41,7 @@ export default function SmsEmailAuthModal({ type, withdrawal, whitelist }) {
 	const google = currentSecurityAction === 'google'
 
 	const [value, setValue] = useState('')
-	const [seconds, setSeconds] = useState(30)
+	// const [seconds, setSeconds] = useState(remainingSeconds ?? 30)
 	const [otpLoading, setOtpLoading] = useState(false)
 
 	const reset = () => {

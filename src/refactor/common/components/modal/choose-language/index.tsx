@@ -71,7 +71,7 @@ const _styles = (theme: Theme) =>
 			height: 45,
 			alignItems: 'center',
 			// marginHorizontal: -13,
-			paddingHorizontal: 18,
+			paddingHorizontal: 10,
 			flexDirection: 'row',
 			borderRadius: 6,
 		},

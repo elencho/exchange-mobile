@@ -1,6 +1,12 @@
 import Constants from 'expo-constants'
 import React, { memo, useEffect, useRef, useState } from 'react'
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
+import {
+	View,
+	StyleSheet,
+	KeyboardAvoidingView,
+	Platform,
+	Keyboard,
+} from 'react-native'
 import Modal from 'react-native-modal'
 import { RootSiblingParent } from 'react-native-root-siblings'
 import { useSelector } from 'react-redux'
@@ -43,6 +49,7 @@ function AppModal({
 				setIsBottomVisible(false)
 			}
 		}
+		isBiometricScreenOpened && Keyboard.dismiss()
 	}, [isBiometricScreenOpened])
 
 	return (
