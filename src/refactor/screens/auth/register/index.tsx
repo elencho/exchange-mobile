@@ -274,6 +274,7 @@ const Register = ({ navigation }: Props) => {
 						/>
 					</View>
 					<CountriesModal
+						chosenItem={chosenCountry}
 						visible={countryModalVisible}
 						onCountryChosen={setChosenCountry}
 						hide={() => setCountryModalVisible(false)}

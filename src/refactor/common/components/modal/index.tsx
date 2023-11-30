@@ -31,6 +31,7 @@ interface AppModalProps {
 	onModalHide?: () => void
 	onDismiss?: () => void
 	modalStyle?: StyleSheet.NamedStyles<any>
+	backgroundStyle?: StyleSheet.NamedStyles<any>
 }
 
 const AppModal = (props: AppModalProps) => {
@@ -47,6 +48,7 @@ const AppModal = (props: AppModalProps) => {
 		onModalHide,
 		onDismiss,
 		modalStyle,
+		backgroundStyle,
 		delayedOpen,
 	} = props
 
@@ -118,7 +120,7 @@ const AppModal = (props: AppModalProps) => {
 						</KeyboardAvoidingView>
 					)}
 					{fullScreen && (
-						<Background>
+						<Background style={backgroundStyle}>
 							<CloseIcon onPress={hide} />
 							{title && <Headline title={title} />}
 							{children}

@@ -24,7 +24,7 @@ interface SecurityRowProps {
 	togglePasswordModal?: (v: boolean) => void
 	toggleEmailAuthModalVisible?: (v: boolean) => void
 	toggleGoogleOtpModalVisible?: (v: boolean) => void
-	setChosenOtpType?: (otp: string) => void
+	toggleSmsAuthModalVisible?: (v: boolean) => void
 }
 export default function SecurityRow(props: SecurityRowProps) {
 	const {
@@ -33,7 +33,6 @@ export default function SecurityRow(props: SecurityRowProps) {
 		toggleEmailAuthModalVisible,
 		toggleGoogleOtpModalVisible,
 		toggleSmsAuthModalVisible,
-		setChosenOtpType,
 	} = props
 	const {
 		userInfo,
@@ -48,7 +47,6 @@ export default function SecurityRow(props: SecurityRowProps) {
 		togglePasswordModal,
 		toggleEmailAuthModalVisible,
 		toggleGoogleOtpModalVisible,
-		setChosenOtpType,
 		toggleSmsAuthModalVisible,
 	})
 	const { styles } = useTheme(_styles)

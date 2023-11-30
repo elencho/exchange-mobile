@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import AppModal from '@app/components/AppModal'
+import AppModal from '@components/modal'
 import { ModalWithSearch } from '@components/modal/modal-with-search'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Route } from '@app/refactor/setup/nav/nav'
@@ -71,11 +71,7 @@ const CountriesModal = (props: Props) => {
 			children={children}
 			delayedOpen
 			fullScreen
-			bottom={undefined}
-			title={undefined}
-			custom={undefined}
-			onDismiss={undefined}
-			modalStyle={undefined}
+			backgroundStyle={{ paddingHorizontal: 10 }}
 		/>
 	)
 }

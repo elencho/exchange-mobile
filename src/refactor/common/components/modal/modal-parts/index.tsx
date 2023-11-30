@@ -59,14 +59,13 @@ export const ModalSearchItem = (props: ModalWithSearchProps) => {
 	const text =
 		phoneCountry || countryDrop || citizenshipDrop ? (
 			<View style={styles.codeWrapper}>
-				<AppText variant="m" style={styles.primary}>
+				<AppText variant="title" style={styles.primary}>
 					({codeText})
 				</AppText>
 				<AppText
-					variant="m"
+					variant="title"
 					numberOfLines={1}
 					style={[styles.secondary, { flex: 1 }]}>
-					{' '}
 					{name}
 				</AppText>
 			</View>
@@ -98,14 +97,16 @@ export const ModalSearchItem = (props: ModalWithSearchProps) => {
 	return (
 		<Pressable style={[styles.container, backgroundCond()]} onPress={onPress}>
 			{code !== 'Show all currency' ? (
-				<FastImage
-					style={styles.image}
-					resizeMode="contain"
-					source={{
-						uri,
-						priority: FastImage.priority.normal,
-					}}
-				/>
+				<View style={styles.border}>
+					<FastImage
+						style={styles.image}
+						resizeMode="stretch"
+						source={{
+							uri,
+							priority: FastImage.priority.normal,
+						}}
+					/>
+				</View>
 			) : (
 				<ShowAll style={{ marginRight: 20 }} />
 			)}
@@ -130,24 +131,35 @@ const _styles = (theme: Theme) =>
 			alignItems: 'center',
 			backgroundColor: theme.color.backgroundPrimary,
 		},
-		background: { backgroundColor: 'rgba(101, 130, 253, 0.1 )' },
+		background: {
+			backgroundColor: 'rgba(101, 130, 253, 0.1 )',
+		},
 		container: {
 			flexDirection: 'row',
 			alignItems: 'center',
 			marginBottom: 5,
 			borderRadius: 5,
-			padding: 10,
+			paddingVertical: 6,
+			paddingLeft: 10,
+			marginRight: 10,
 		},
 		image: {
-			marginRight: 14,
 			width: 36,
 			height: 36,
+			backgroundColor: 'red',
+			borderRadius: 18,
 		},
-		primary: { color: theme.color.textPrimary },
+		primary: { color: theme.color.textPrimary, width: 60 },
 		secondary: { color: theme.color.textSecondary },
 		codeWrapper: {
 			flexDirection: 'row',
 			width: 250,
 		},
 		row: { flexDirection: 'row' },
+		border: {
+			width: 36,
+			height: 36,
+			marginRight: 14,
+			borderRadius: 18,
+		},
 	})

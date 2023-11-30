@@ -132,7 +132,7 @@ export const _styles = (theme: Theme) =>
 		headline: {
 			color: theme.color.textPrimary,
 			marginBottom: -10,
-			marginHorizontal: 10,
+			marginLeft: 10,
 		},
 		searchInput: {
 			marginVertical: 20,
