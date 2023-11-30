@@ -19,7 +19,6 @@ interface SecurityRowProps {
 	togglePasswordModal?: (v: boolean) => void
 	toggleEmailAuthModalVisible?: (v: boolean) => void
 	toggleGoogleOtpModalVisible?: (v: boolean) => void
-	setChosenOtpType?: (v: string) => void
 }
 
 export const useSecurityRow = (props: SecurityRowProps) => {
@@ -28,7 +27,6 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		togglePasswordModal = () => {},
 		toggleEmailAuthModalVisible = () => {},
 		toggleGoogleOtpModalVisible = () => {},
-		setChosenOtpType,
 		toggleSmsAuthModalVisible,
 	} = props
 
@@ -118,7 +116,6 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		} else if (value === 'Biometric') {
 			handleAuth(email!)
 		}
-		setChosenOtpType(otpType)
 	}
 
 	const handleChangeGoogle = () => {
@@ -135,7 +132,6 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		isBioOn,
 		bioType,
 		otpType,
-		// chosenOtpType,
 		handleChangeGoogle,
 	}
 }
