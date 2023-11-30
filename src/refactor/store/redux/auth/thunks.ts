@@ -1,7 +1,7 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import pkceChallenge from 'react-native-pkce-challenge'
-import { Route, Screens } from '@app/refactor/setup/nav/nav'
+import { Screens } from '@app/refactor/setup/nav/nav'
 import { Execution } from '@app/refactor/types/enums'
 import { RootState } from '../../../redux/rootReducer'
 import {
@@ -20,9 +20,19 @@ import {
 	verifyAccount,
 	logout,
 } from './api'
-import { resetAuth, savePkceInfo, setTokens } from './slice'
+import {
+	resetAuth,
+	savePkceInfo,
+	setLoginLoading,
+	setOtpLoading,
+	setRegisterLoading,
+	setSetPasswordLoading,
+	setTokens,
+} from './slice'
 import { navigationRef } from '@app/refactor/setup/nav'
 import { setUserInfo } from '@app/refactor/redux/profile/profileSlice'
+
+const LOADING_DELAY = 2000
 
 export const startLoginThunk = createAsyncThunk(
 	'startLogin',
@@ -36,7 +46,7 @@ export const startLoginThunk = createAsyncThunk(
 				navigation.navigate('Login')
 			}
 			if (loginStartInfo?.execution === Execution.EMAIL_VERIFICATION_OTP) {
-				navigation.push('EmailVerification', { from: 'Login' })
+				navigation.navigate('EmailVerification', { from: 'Login' })
 			}
 
 			return loginStartInfo
@@ -58,7 +68,7 @@ export const usernameAndPaswordThunk = createAsyncThunk(
 			pass: string
 			navigation: NativeStackNavigationProp<Screens, any>
 		},
-		{ getState }
+		{ getState, dispatch }
 	) => {
 		const state = (getState() as RootState).auth
 
@@ -72,8 +82,13 @@ export const usernameAndPaswordThunk = createAsyncThunk(
 			navigation.navigate('Login2Fa')
 		}
 		if (userAndPassInfo?.execution === Execution.EMAIL_VERIFICATION_OTP) {
-			navigation.push('EmailVerification', { from: 'Login', mail })
+			navigation.navigate('EmailVerification', { from: 'Login', mail })
 		}
+
+		//setTimeout(() => {
+		// dispatch(setLoginLoading(false))
+		//}, LOADING_DELAY)
+
 		return userAndPassInfo
 	}
 )
@@ -125,14 +140,23 @@ export const resetPasswordConfirmCodeThunk = createAsyncThunk(
 			otp: string
 			navigation: NativeStackNavigationProp<Screens, any>
 		},
-		{ getState }
+		{ getState, dispatch }
 	) => {
 		const state = (getState() as RootState).auth
 		const data = await resetPasswordOtp(state.callbackUrl, mail, otp)
 
 		if (data.execution === Execution.LOGIN_OTP) {
-			navigation.navigate('Login2Fa')
+			navigation.replace('Login2Fa')
+		} else if (data.execution === Execution.EMAIL_VERIFICATION_OTP) {
+			navigation.navigate('EmailVerification', {
+				from: 'ForgotPassword',
+				mail,
+			})
 		}
+
+		//setTimeout(() => {
+		// dispatch(setLoginLoading(false))
+		//}, LOADING_DELAY)
 
 		return data
 	}
@@ -183,12 +207,18 @@ export const otpForLoginThunk = createAsyncThunk(
 		const loginInfo = await loginOtp(otp, callbackUrl)
 
 		try {
-			if (loginInfo?.errors) return loginInfo
-
 			if (loginInfo.execution === Execution.UPDATE_PASSWORD) {
 				navigation.navigate('SetNewPassword')
+			} else if (loginInfo.execution === Execution.LOGIN_USERNAME_PASSWORD) {
+				// TODO: Pass general error to login & fix authLoading button
+				navigation.navigate('Login')
+			} else if (loginInfo?.errors && loginInfo.errors.length !== 0) {
+				dispatch(setOtpLoading(false))
+				return loginInfo
 			} else {
-				dispatch(codeToTokenThunk(loginInfo.code, 'Login', navigation))
+				dispatch(
+					codeToTokenThunk({ code: loginInfo.code, from: 'Login', navigation })
+				)
 			}
 			return loginInfo
 		} catch (e) {
@@ -197,24 +227,38 @@ export const otpForLoginThunk = createAsyncThunk(
 	}
 )
 
-const codeToTokenThunk = (
-	code: string,
-	from: 'Login' | 'Registration' | 'SetNewPassword',
-	navigation: NativeStackNavigationProp<Screens, any>
-) =>
-	createAsyncThunk('codeToToken', async (_, { dispatch, getState }) => {
+export const codeToTokenThunk = createAsyncThunk(
+	'codeToToken',
+	async (
+		{
+			code,
+			from,
+			navigation,
+		}: {
+			code: string
+			from: 'Login' | 'Registration' | 'SetNewPassword'
+			navigation: NativeStackNavigationProp<Screens, any>
+		},
+		{ dispatch, getState }
+	) => {
 		const { pkceInfo } = (getState() as RootState).auth
 
 		const tokenData = await codeToToken(code, pkceInfo?.codeVerifier || '')
-		console.log(tokenData)
-		dispatch(
-			setTokens({
-				refreshToken: tokenData.refresh_token,
-				accessToken: tokenData.access_token,
-			})
-		)
-		navigation.navigate('Main')
-	})()
+		if (tokenData) {
+			dispatch(
+				setTokens({
+					refreshToken: tokenData.refresh_token,
+					accessToken: tokenData.access_token,
+				})
+			)
+			navigation.navigate('Main')
+		}
+
+		setTimeout(() => {
+			dispatch(setOtpLoading(false))
+		}, LOADING_DELAY)
+	}
+)
 
 export const setNewPasswordOtpThunk = createAsyncThunk(
 	'setNewPassword',
@@ -233,7 +277,9 @@ export const setNewPasswordOtpThunk = createAsyncThunk(
 		const { callbackUrl } = (getState() as RootState).auth
 		const data = await setNewPassword(callbackUrl, newPass, confirmPass)
 
-		dispatch(codeToTokenThunk(data.code, 'SetNewPassword', navigation))
+		dispatch(
+			codeToTokenThunk({ code: data.code, from: 'SetNewPassword', navigation })
+		)
 	}
 )
 
@@ -241,13 +287,20 @@ export const startRegistrationThunk = createAsyncThunk(
 	'startRegistration',
 	async (
 		{ navigation }: { navigation: NativeStackNavigationProp<Screens, any> },
-		{}
+		{ dispatch }
 	) => {
-		const data = await registrationStart()
-		if (data?.execution === Execution.EMAIL_VERIFICATION_OTP) {
-			navigation.push('EmailVerification', { from: 'Registration' })
+		try {
+			const pkceInfo = pkceChallenge()
+			dispatch(savePkceInfo(pkceInfo))
+
+			const data = await registrationStart()
+			if (data?.execution === Execution.EMAIL_VERIFICATION_OTP) {
+				navigation.navigate('EmailVerification', { from: 'Registration' })
+			}
+			return data
+		} catch (error) {
+			throw error
 		}
-		return data
 	}
 )
 
@@ -263,7 +316,15 @@ export const verifyRegistrationThunk = createAsyncThunk(
 		const { callbackUrl } = (getState() as RootState).auth
 
 		const data = await verifyAccount(callbackUrl, otp)
-		dispatch(codeToTokenThunk(data.code, 'Registration', navigation))
+		if (data?.errors && data.errors.length !== 0) return data
+
+		if (data.execution === Execution.UPDATE_PASSWORD) {
+			navigation.navigate('SetNewPassword')
+		} else {
+			dispatch(
+				codeToTokenThunk({ code: data.code, from: 'Registration', navigation })
+			)
+		}
 		return data
 	}
 )
@@ -280,7 +341,7 @@ type RegistrationFormProps = {
 }
 export const registrationFormThunk = createAsyncThunk(
 	'registrationForm',
-	async (props: RegistrationFormProps, { getState }) => {
+	async (props: RegistrationFormProps, { getState, dispatch }) => {
 		const { callbackUrl } = (getState() as RootState).auth
 
 		const data = await registrationForm(

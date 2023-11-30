@@ -6,11 +6,11 @@ import modal from './modals/modalsSlice'
 import modals from '@app/redux/modals/reducer'
 import profile from './profile/profileSlice'
 import profileOld from '../../redux/profile/reducer'
-import trade from './trade/reducer'
+import trade from '@app/redux/trade/reducer'
 import trades from './trade/tradeSlice'
 import transactions from './transactions/transactionSlice'
-import transaction from './transactions/reducer'
-import wallet from './wallet/reducer'
+import transaction from '@app/redux/transactions/reducer'
+import wallet from '@app/redux/wallet/reducer'
 
 const reducers = {
 	common,

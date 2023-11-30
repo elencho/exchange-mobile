@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../constants/colors'
@@ -9,7 +9,12 @@ import AppModal from '../AppModal'
 import AppText from '../AppText'
 import TwoFaInput from '../TwoFaInput'
 
-export default function GoogleOtpModal({ withdrawal, whitelist }) {
+export default function GoogleOtpModal({
+	withdrawal,
+	whitelist,
+	setTwoFaInputValue,
+	twoFaInputValue,
+}) {
 	const dispatch = useDispatch()
 	const navigation = useNavigation()
 
@@ -19,7 +24,7 @@ export default function GoogleOtpModal({ withdrawal, whitelist }) {
 		profile: { currentSecurityAction },
 	} = state
 
-	const [value, setValue] = useState('')
+	const [value, setValue] = useState(twoFaInputValue ?? '')
 
 	const email = currentSecurityAction === 'email'
 
@@ -27,7 +32,12 @@ export default function GoogleOtpModal({ withdrawal, whitelist }) {
 		dispatch(toggleGoogleOtpModal(false))
 		if (email) dispatch(setEmailAuth(false))
 		setValue('')
+		setTwoFaInputValue && setTwoFaInputValue(null)
 	}
+
+	useEffect(() => {
+		setTwoFaInputValue && setTwoFaInputValue(value)
+	}, [value])
 
 	const children = (
 		<View style={styles.container}>

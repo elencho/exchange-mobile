@@ -1,6 +1,12 @@
 import Constants from 'expo-constants'
 import React, { memo, useEffect, useRef, useState } from 'react'
-import { View, StyleSheet, KeyboardAvoidingView, Platform } from 'react-native'
+import {
+	View,
+	StyleSheet,
+	KeyboardAvoidingView,
+	Platform,
+	Keyboard,
+} from 'react-native'
 import Modal from 'react-native-modal'
 import { RootSiblingParent } from 'react-native-root-siblings'
 import { useSelector } from 'react-redux'
@@ -23,6 +29,7 @@ function AppModal({
 	onModalHide,
 	onDismiss,
 	modalStyle,
+	delayedOpen,
 }) {
 	const webViewVisible = useSelector((state) => state?.modals?.webViewVisible)
 	const { isBiometricScreenOpened } = useSelector((state) => state.common)
@@ -30,7 +37,7 @@ function AppModal({
 	// For bottom modals after Biometric Unlock
 	const [isBottomVisible, setIsBottomVisible] = useState(false)
 	useEffect(() => {
-		if (bottom && visible) {
+		if ((bottom || delayedOpen) && visible) {
 			setTimeout(() => {
 				setIsBottomVisible(true)
 			}, 0)
@@ -38,18 +45,19 @@ function AppModal({
 	}, [isBiometricScreenOpened, visible])
 
 	useEffect(() => {
-		if (bottom) {
+		if (bottom || delayedOpen) {
 			if (isBiometricScreenOpened) {
 				setIsBottomVisible(false)
 			}
 		}
+		isBiometricScreenOpened && Keyboard.dismiss()
 	}, [isBiometricScreenOpened])
 
 	return (
 		webViewVisible && (
 			<Modal
 				isVisible={
-					bottom
+					bottom || delayedOpen
 						? visible && !isBiometricScreenOpened && isBottomVisible
 						: visible && !isBiometricScreenOpened
 				}

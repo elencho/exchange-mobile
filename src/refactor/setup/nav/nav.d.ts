@@ -21,13 +21,13 @@ export type Screens = {
 	Login?: {}
 	Registration?: {}
 	EmailVerification: {
-		from: 'Login' | 'Registration'
+		from: 'Login' | 'Registration' | 'ForgotPassword'
 		mail?: string
 	}
 	Login2Fa?: {}
 	ForgotPassword?: {}
 	SetNewPassword?: {}
-	ResetOtpInstructions?: {
+	ResetOtpInstructions: {
 		resetOtpType?: ResetOtp
 	}
 	Main?: {

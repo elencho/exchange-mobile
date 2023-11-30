@@ -11,6 +11,7 @@ import {
 import {
 	chooseWhitelist,
 	editWhitelistAction,
+	setNetwork,
 	setNewWhitelist,
 } from '../../../redux/wallet/actions'
 import { errorHappenedHere } from '../../../utils/appUtils'
@@ -44,9 +45,13 @@ export default function AddEditWhitelistModal({ add, edit }) {
 		auth: { otpType },
 	} = state
 
+	const [seconds, setSeconds] = useState(30)
+
 	const hide = () => {
 		if (add) dispatch(toggleAddWhitelistModal(false))
 		if (edit) dispatch(toggleEditWhitelistModal(false))
+		clearInputs()
+		hasMultipleNetworks && dispatch(setNetwork(null))
 
 		//TODO: remove after wallet refactor
 		dispatch(saveGeneralError(null))
@@ -111,26 +116,17 @@ export default function AddEditWhitelistModal({ add, edit }) {
 		if (edit) dispatch(chooseWhitelist({ ...currentWhitelistObj, name }))
 	}
 
-	const tagStyle = {
-		opacity: add ? 1 : 0.5,
-		borderColor: error && !currentWhitelistObj?.tag && '#F45E8C',
-	}
-	const addressStyle = {
-		opacity: add ? 1 : 0.5,
-		borderColor: error && !currentWhitelistObj?.address && '#F45E8C',
-	}
-	const nameStyle = {
-		borderColor: error && !currentWhitelistObj?.name && '#F45E8C',
-		// marginTop: 32,
-	}
 	const nameError = add
 		? !newWhitelist?.name?.trim()
 		: !currentWhitelistObj?.name?.trim()
 	const addressError = add ? !newWhitelist?.address?.trim() : false
 	const tagError = add ? !newWhitelist?.tag?.trim() : false
 
+	const [twoFaInputValue, setTwoFaInputValue] = useState('')
+
 	const children = (
-		<WithKeyboard padding flexGrow modal>
+		<WithKeyboard padding flexGrow modal noRefresh>
+			{/* <View></View> */}
 			<TouchableOpacity
 				activeOpacity={0.99}
 				style={{ flex: 1, paddingTop: 14 }}>
@@ -147,14 +143,14 @@ export default function AddEditWhitelistModal({ add, edit }) {
 				)}
 
 				<AppInput
-					style={[styles.input, nameStyle]}
+					style={styles.input}
 					onChangeText={(name) => handleChange(name)}
 					value={add ? newWhitelist.name : currentWhitelistObj.name}
 					label="Enter Address Name"
 					error={error && nameError}
 				/>
 				<AppInput
-					style={[styles.input, addressStyle]}
+					style={styles.input}
 					onChangeText={(address) =>
 						dispatch(setNewWhitelist({ ...newWhitelist, address }))
 					}
@@ -168,7 +164,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 				/>
 				{tag() && (
 					<AppInput
-						style={[styles.input, tagStyle]}
+						style={styles.input}
 						onChangeText={(tag) =>
 							dispatch(setNewWhitelist({ ...newWhitelist, tag }))
 						}
@@ -176,7 +172,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 						label="Address Tag"
 						editable={add ? true : false}
 						disabled={add ? false : true}
-						focusable={add ? true : false}
+						// focusable={add ? true : false}
 						error={error && tagError}
 					/>
 				)}
@@ -187,9 +183,23 @@ export default function AddEditWhitelistModal({ add, edit }) {
 				style={{ marginTop: 20, marginBottom: 36 }}
 			/>
 
-			<SmsEmailAuthModal type="SMS" whitelist />
-			<SmsEmailAuthModal type="Email" whitelist />
-			<GoogleOtpModal whitelist />
+			<SmsEmailAuthModal
+				seconds={seconds}
+				setSeconds={setSeconds}
+				type="SMS"
+				whitelist
+			/>
+			<SmsEmailAuthModal
+				seconds={seconds}
+				setSeconds={setSeconds}
+				type="Email"
+				whitelist
+			/>
+			<GoogleOtpModal
+				setTwoFaInputValue={setTwoFaInputValue}
+				twoFaInputValue={twoFaInputValue}
+				whitelist
+			/>
 			<QrScanner
 				setAddress={(address) =>
 					dispatch(setNewWhitelist({ ...newWhitelist, address }))
@@ -206,7 +216,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 			fullScreen
 			visible={isVisible}
 			title={`${add ? 'Add' : 'Edit'} Whitelist`}
-			onModalHide={clearInputs}
+			// onModalHide={clearInputs}
 		/>
 	)
 }

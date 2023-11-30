@@ -5,9 +5,9 @@
 #import <React/RCTLinkingManager.h>
 #import <React/RCTConvert.h>
 
-#import <AppCenterReactNative.h>
-#import <AppCenterReactNativeAnalytics.h>
-#import <AppCenterReactNativeCrashes.h>
+// #import <AppCenterReactNative.h>
+// #import <AppCenterReactNativeAnalytics.h>
+// #import <AppCenterReactNativeCrashes.h>
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -33,9 +33,9 @@
 	  // They will be passed down to the ViewController used by React Native.
 	self.initialProps = @{};
 
-  [AppCenterReactNative register];
-  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
-  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
+  // [AppCenterReactNative register];
+  // [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
+  // [AppCenterReactNativeCrashes registerW ithAutomaticProcessing];
   
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   

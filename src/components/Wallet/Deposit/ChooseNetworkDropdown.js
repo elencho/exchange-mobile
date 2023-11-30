@@ -1,19 +1,16 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import Arrow from '../../../assets/images/Arrow'
 import Card from '../../../assets/images/Card.svg'
 import Euro from '../../../assets/images/Euro.svg'
 import Bank from '../../../assets/images/LocalBank.svg'
 import colors from '../../../constants/colors'
 import { toggleChooseNetworkModal } from '../../../redux/modals/actions'
-import { setNetwork } from '../../../redux/wallet/actions'
 import AppDropdown from '../../AppDropdown'
 import AppText from '../../AppText'
 
 export default function ChooseNetworkDropdown({
 	disabled = false,
-	whitelist,
 	error,
 	style,
 }) {
@@ -23,7 +20,6 @@ export default function ChooseNetworkDropdown({
 		wallet: { hasMultipleNetworks, network, walletTab },
 		trade: { currentBalanceObj },
 		transactionsOld: { code },
-		modals: { addWhitelistModalVisble },
 	} = state
 	// const uri = `${ICONS_URL_PNG}/${network}.png`;
 
@@ -31,12 +27,6 @@ export default function ChooseNetworkDropdown({
 	const isFiat = cur?.type === 'FIAT'
 
 	const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods'
-
-	useEffect(() => {
-		if (addWhitelistModalVisble && hasMultipleNetworks) {
-			dispatch(setNetwork(null))
-		}
-	}, [addWhitelistModalVisble])
 
 	const handleDropdown = () => dispatch(toggleChooseNetworkModal(true))
 
@@ -60,7 +50,10 @@ export default function ChooseNetworkDropdown({
 			  )
 
 		return (
-			<AppText medium body>
+			<AppText
+				medium
+				body
+				style={disabled && { color: 'rgba(255, 255, 255, 0.6)' }}>
 				{currentNetwork?.[0]?.displayName}
 			</AppText>
 		)
@@ -119,7 +112,7 @@ export default function ChooseNetworkDropdown({
 						/>
 					) : (
 						<View style={styles.view}>
-							<View style={{ marginRight: 8 }}>{renderIcon(network)}</View>
+							<View>{renderIcon(network)}</View>
 							<NetworkWithTicker />
 						</View>
 					)}

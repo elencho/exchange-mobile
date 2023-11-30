@@ -261,7 +261,6 @@ export default memo(Withdrawal)
 
 const styles = StyleSheet.create({
 	block: {
-		paddingTop: 10,
 		paddingBottom: 18,
 	},
 	// button: { marginBottom: 46 },

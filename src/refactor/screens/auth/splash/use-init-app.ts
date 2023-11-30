@@ -49,8 +49,8 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 			dispatch(fetchUserInfoThunk())
 		}
 
-		// // ! For Testing
-		// navigation.navigate('SetNewPassword')
+		// ! For Testing
+		// navigation.navigate('Login2Fa')
 		// return
 
 		if (await updateNeeded()) {
@@ -97,7 +97,7 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 
 	const backIsDown = async () => {
 		const { status } = await checkReadiness()
-		return status === 'DOWN'
+		return status !== 'UP'
 	}
 
 	const fetchLexicon = async () => {

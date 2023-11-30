@@ -19,7 +19,7 @@ import Constants from 'expo-constants'
 import { setGeneralError } from '@store/redux/common/slice'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
-import { setAuthLoading } from '@store/redux/auth/slice'
+import { setLoginLoading } from '@store/redux/auth/slice'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
@@ -50,7 +50,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 		null
 	)
 
-	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
+	const loading = useSelector((state: RootState) => state.auth.loginLoading)
 
 	useFocusEffect(
 		useCallback(() => {
@@ -65,7 +65,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 			setMailError(false)
 			setPassError(false)
 			setGeneralErrorData(null)
-			setAuthLoading(false)
+			setLoginLoading(false)
 		})
 	}, [navigation])
 
@@ -145,7 +145,7 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 					variant="primary"
 					text="Login"
 					onPress={onLoginPressed}
-					loading={authLoading}
+					loading={loading}
 					style={styles.button}
 				/>
 				<View style={{ marginBottom: 20 }}>

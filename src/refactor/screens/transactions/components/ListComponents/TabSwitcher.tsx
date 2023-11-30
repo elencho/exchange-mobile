@@ -23,19 +23,6 @@ const TabSwitcher: React.FC<Props> = ({
 }) => {
 	const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
-	const tabTextStyle = (tabName: TabName) => {
-		return {
-			color: activeTab === tabName ? colors.PRIMARY_TEXT : '#969CBF',
-		}
-	}
-	const tabColor = (tabName: TabName) => {
-		return {
-			backgroundColor: withTiming(
-				activeTab === tabName ? colors.PRIMARY_PURPLE : colors.BUTTON_DISABLED
-			),
-		}
-	}
-
 	const handlePress = (tabName: TabName) => {
 		setActiveTab(tabName)
 		setIsFilterVisible({ isVisible: false, shouldFilter: true })

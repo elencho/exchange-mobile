@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import { View } from 'react-native'
-import TransactionSkeleton from '@app/components/TransactionHistory/TransactionSkeleton'
+import TransactionSkeleton from './TransactionSkeleton'
 
 interface Props {
 	dataArray: any[]

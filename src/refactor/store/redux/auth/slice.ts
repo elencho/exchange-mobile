@@ -18,13 +18,21 @@ import {
 	registrationFormThunk,
 	setNewPasswordOtpThunk,
 	verifyRegistrationThunk,
+	codeToTokenThunk,
 } from '@store/redux/auth/thunks'
 import SecureKV from '@store/kv/secure'
 
 interface AuthState {
 	timerVisible: boolean
-	authLoading: boolean
-	forgotResendLoading: boolean //TODO: Remove
+	otpTimerVisible: boolean
+
+	loginLoading: boolean
+	otpLoading: boolean
+	registerLoading: boolean
+	forgotLoading: boolean
+	forgotResendLoading: boolean
+	setPasswordLoading: boolean
+
 	callbackUrl: string
 	accessToken?: string
 	otpType: OTP
@@ -34,8 +42,15 @@ interface AuthState {
 
 const initialState: AuthState = {
 	timerVisible: false,
+	otpTimerVisible: false,
+
+	loginLoading: false,
+	otpLoading: false,
+	registerLoading: false,
+	forgotLoading: false,
 	forgotResendLoading: false,
-	authLoading: false,
+	setPasswordLoading: false,
+
 	callbackUrl: '',
 	otpType: 'EMAIL',
 }
@@ -50,8 +65,20 @@ const auth = createSlice({
 		setTimer: (state, action: PayloadAction<boolean>) => {
 			state.timerVisible = action.payload
 		},
-		setAuthLoading: (state, action: PayloadAction<boolean>) => {
-			state.authLoading = action.payload
+		setOtpTimer: (state, action: PayloadAction<boolean>) => {
+			state.otpTimerVisible = action.payload
+		},
+		setOtpLoading: (state, action: PayloadAction<boolean>) => {
+			state.otpLoading = action.payload
+		},
+		setLoginLoading: (state, action: PayloadAction<boolean>) => {
+			state.loginLoading = action.payload
+		},
+		setSetPasswordLoading: (state, action: PayloadAction<boolean>) => {
+			state.setPasswordLoading = action.payload
+		},
+		setRegisterLoading: (state, action: PayloadAction<boolean>) => {
+			state.registerLoading = action.payload
 		},
 		setTokens(
 			state,
@@ -59,9 +86,8 @@ const auth = createSlice({
 		) {
 			SecureKV.set('refreshToken', action.payload.refreshToken)
 			state.accessToken = action.payload.accessToken
-			state.otpType = jwt_decode<TokenParams>(
-				action.payload.accessToken
-			)?.otpType
+			state.otpType = jwt_decode<TokenParams>(action.payload.accessToken)
+				?.otpType
 		},
 		resetAuth: (state) => {
 			state = initialState
@@ -84,15 +110,15 @@ const login = (builder: ActionReducerMapBuilder<AuthState>) => {
 
 	builder
 		.addCase(usernameAndPaswordThunk.pending, (state) => {
-			state.authLoading = true
+			state.loginLoading = true
 		})
 		.addCase(usernameAndPaswordThunk.fulfilled, (state, action) => {
-			state.authLoading = false
+			state.loginLoading = false
 			state.callbackUrl = action.payload.callbackUrl
 			state.otpType = action.payload.attributes.otpType
 		})
 		.addCase(usernameAndPaswordThunk.rejected, (state) => {
-			state.authLoading = false
+			state.loginLoading = false
 		})
 }
 
@@ -114,60 +140,79 @@ const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 	})
 
 	builder.addCase(resetPasswordConfirmCodeThunk.pending, (state) => {
-		state.authLoading = true
+		state.forgotLoading = true
 	})
 	builder.addCase(resetPasswordConfirmCodeThunk.fulfilled, (state, action) => {
-		state.authLoading = false
+		state.forgotLoading = false
 		state.callbackUrl = action.payload.callbackUrl
 		state.otpType = action.payload.attributes.otpType
 	})
 	builder.addCase(resetPasswordConfirmCodeThunk.rejected, (state) => {
-		state.authLoading = false
+		state.forgotLoading = false
 	})
 }
 
 const setPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(setNewPasswordOtpThunk.pending, (state) => {
-		state.authLoading = true
+		state.setPasswordLoading = true
 	})
 	builder.addCase(setNewPasswordOtpThunk.fulfilled, (state) => {
-		state.authLoading = false
+		state.setPasswordLoading = false
 	})
 	builder.addCase(setNewPasswordOtpThunk.rejected, (state) => {
-		state.authLoading = false
+		state.setPasswordLoading = false
 	})
 }
 
 const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(resendOtpThunk.pending, (state) => {
-		state.authLoading = true
+		state.otpLoading = true
 	})
 	builder.addCase(resendOtpThunk.fulfilled, (state, action) => {
-		state.authLoading = false
-		state.callbackUrl = action.payload.callbackUrl
-		state.timerVisible = true
+		state.otpLoading = false
+		if (action.payload?.callbackUrl) {
+			state.callbackUrl = action.payload.callbackUrl
+		}
+		state.otpTimerVisible = true
 	})
 	builder.addCase(resendOtpThunk.rejected, (state) => {
-		state.authLoading = false
-		state.timerVisible = true
+		state.otpLoading = false
+		state.otpTimerVisible = false
 	})
 
 	builder.addCase(otpForLoginThunk.pending, (state) => {
-		state.authLoading = true
+		state.otpLoading = true
 	})
 	builder.addCase(otpForLoginThunk.fulfilled, (state, action) => {
 		if (action.payload?.callbackUrl) {
 			state.callbackUrl = action.payload.callbackUrl
 		}
-		state.authLoading = false
 	})
 	builder.addCase(otpForLoginThunk.rejected, (state) => {
-		state.authLoading = false
+		state.otpLoading = false
+	})
+
+	builder.addCase(codeToTokenThunk.rejected, (state) => {
+		state.otpLoading = false
 	})
 
 	builder.addCase(resetOtpThunk.fulfilled, (state, action) => {
 		state.callbackUrl = action.payload.callbackUrl
 	})
+
+	builder
+		.addCase(verifyRegistrationThunk.pending, (state) => {
+			state.otpLoading = true
+		})
+		.addCase(verifyRegistrationThunk.fulfilled, (state, action) => {
+			if (action.payload.callbackUrl) {
+				state.callbackUrl = action.payload.callbackUrl
+			}
+			state.otpLoading = false
+		})
+		.addCase(verifyRegistrationThunk.rejected, (state) => {
+			state.otpLoading = false
+		})
 }
 
 const register = (builder: ActionReducerMapBuilder<AuthState>) => {
@@ -178,25 +223,26 @@ const register = (builder: ActionReducerMapBuilder<AuthState>) => {
 
 	builder
 		.addCase(registrationFormThunk.pending, (state) => {
-			state.authLoading = true
+			state.registerLoading = true
 		})
 		.addCase(registrationFormThunk.fulfilled, (state, action) => {
-			state.authLoading = false
+			state.registerLoading = false
 			state.callbackUrl = action.payload.callbackUrl
 		})
 		.addCase(registrationFormThunk.rejected, (state) => {
-			state.authLoading = false
-		})
-
-	builder
-		.addCase(verifyRegistrationThunk.pending, (state) => {
-			state.authLoading = true
-		})
-		.addCase(verifyRegistrationThunk.rejected, (state) => {
-			state.authLoading = false
+			state.registerLoading = false
 		})
 }
 
-export const { savePkceInfo, setTimer, setTokens, setAuthLoading, resetAuth } =
-	auth.actions
+export const {
+	savePkceInfo,
+	setTimer,
+	setOtpTimer,
+	setTokens,
+	resetAuth,
+	setLoginLoading,
+	setOtpLoading,
+	setSetPasswordLoading,
+	setRegisterLoading,
+} = auth.actions
 export default auth.reducer

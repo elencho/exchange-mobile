@@ -8,7 +8,7 @@ import { setCard, setDepositProvider } from '../../redux/trade/actions'
 import AppModal from '../AppModal'
 import AppText from '../AppText'
 
-export default function ChooseBankModal() {
+export default function ChooseBankModal({ selectedProvider }) {
 	const dispatch = useDispatch()
 
 	const {
@@ -19,7 +19,7 @@ export default function ChooseBankModal() {
 	} = useSelector((state) => state)
 
 	useEffect(() => {
-		dispatch(setDepositProvider(null))
+		selectedProvider ? null : dispatch(setDepositProvider(null))
 		dispatch({ type: 'SET_WIRE_DEPOSIT_PROVIDER', wireDepositProvider: null })
 	}, [])
 

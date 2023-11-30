@@ -11,7 +11,7 @@ import { setNewPasswordOtpThunk } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { setAuthLoading } from '@store/redux/auth/slice'
+import { System } from '@app/refactor/common/util'
 
 const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const dispatch = useDispatch()
@@ -23,11 +23,7 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const [confirmPass, setConfirmPass] = useState('')
 	const [confirmPassError, setConfirmPassError] = useState(false)
 
-	const { authLoading } = useSelector((state: RootState) => state.auth)
-
-	useEffect(() => {
-		dispatch(setAuthLoading(false))
-	}, [])
+	const { setPasswordLoading } = useSelector((state: RootState) => state.auth)
 
 	const goToLogin = () => navigation.navigate('Login')
 
@@ -35,6 +31,10 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const hasNumber = /\d/.test(pass)
 	const hasUpperAndLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(pass)
 	const passValid = passLength && hasNumber && hasUpperAndLower
+
+	useEffect(() => {
+		setConfirmPassError(confirmPass.length > 0 && confirmPass !== pass)
+	}, [confirmPass])
 
 	const onSavePressed = () => {
 		if (pass !== confirmPass || !passValid) {
@@ -113,9 +113,9 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.inputConfirmPass}
 					label="Confirm New Password"
-					onChangeText={(txt: string) => {
-						setConfirmPass(txt)
-						setConfirmPassError(!txt.trim() || txt.trim() !== pass.trim())
+					onChangeText={setConfirmPass}
+					onFocusOrChange={() => {
+						setConfirmPassError(false)
 					}}
 					value={confirmPass}
 					secureTextEntry={true}
@@ -127,7 +127,7 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 					text="Save"
 					style={styles.button}
 					onPress={onSavePressed}
-					loading={authLoading}
+					loading={setPasswordLoading}
 				/>
 			</WithKeyboard>
 		</Background>
@@ -156,7 +156,7 @@ const _styles = (theme: Theme) =>
 			width: '100%',
 		},
 		inputConfirmPass: {
-			marginTop: 11,
+			marginTop: System.isAndroid ? 5 : 11,
 			width: '100%',
 		},
 		middle: {

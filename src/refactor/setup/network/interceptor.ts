@@ -83,6 +83,7 @@ const handleError = async (err: any) => {
 
 	if (status === 400 && invalidGrant) {
 		store.dispatch(resetAuth())
+		// TODO: Login
 		navigationRef.navigate('Welcome')
 	}
 

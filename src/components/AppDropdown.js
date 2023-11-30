@@ -27,6 +27,7 @@ const AppDropdown = ({
 				styles.container,
 				style,
 				error && { borderColor: colors.ERROR_TEXT },
+				disabled && { borderColor: 'rgba(105, 111, 142, 0.3)' },
 			]}
 			onPress={!disabled ? handlePress : null}>
 			{selectedText ? (
@@ -68,7 +69,7 @@ const AppDropdown = ({
 						subtext
 						style={[
 							styles.withLabelText,
-							disabled && { color: colors.SECONDARY_TEXT, opacity: 0.3 },
+							disabled && { color: colors.SECONDARY_TEXT, opacity: 0.6 },
 						]}>
 						{label}
 					</AppText>
