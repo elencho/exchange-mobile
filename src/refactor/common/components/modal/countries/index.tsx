@@ -59,6 +59,7 @@ export const CountriesModal = (props: CountriesModalProps) => {
 			onModalHide={hide}
 			children={children}
 			fullScreen
+			backgroundStyle={{ paddingHorizontal: 10 }}
 		/>
 	)
 }
