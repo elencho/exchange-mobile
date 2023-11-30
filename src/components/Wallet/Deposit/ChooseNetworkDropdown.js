@@ -32,12 +32,6 @@ export default function ChooseNetworkDropdown({
 
 	const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods'
 
-	useEffect(() => {
-		if (addWhitelistModalVisble && hasMultipleNetworks) {
-			dispatch(setNetwork(null))
-		}
-	}, [addWhitelistModalVisble])
-
 	const handleDropdown = () => dispatch(toggleChooseNetworkModal(true))
 
 	const isAvailable = () => {

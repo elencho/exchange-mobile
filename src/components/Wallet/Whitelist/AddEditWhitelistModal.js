@@ -11,6 +11,7 @@ import {
 import {
 	chooseWhitelist,
 	editWhitelistAction,
+	setNetwork,
 	setNewWhitelist,
 } from '../../../redux/wallet/actions'
 import { errorHappenedHere } from '../../../utils/appUtils'
@@ -50,6 +51,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 		if (add) dispatch(toggleAddWhitelistModal(false))
 		if (edit) dispatch(toggleEditWhitelistModal(false))
 		clearInputs()
+		hasMultipleNetworks && dispatch(setNetwork(null))
 
 		//TODO: remove after wallet refactor
 		dispatch(saveGeneralError(null))
