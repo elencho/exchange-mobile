@@ -27,6 +27,7 @@ interface AppModalProps {
 	title?: string
 	fullScreen?: boolean
 	custom?: boolean
+	delayedOpen?: boolean
 	onModalHide?: () => void
 	onDismiss?: () => void
 	modalStyle?: StyleSheet.NamedStyles<any>
@@ -46,6 +47,7 @@ const AppModal = (props: AppModalProps) => {
 		onModalHide,
 		onDismiss,
 		modalStyle,
+		delayedOpen,
 	} = props
 
 	const { isBiometricScreenOpened } = useSelector(
@@ -55,7 +57,7 @@ const AppModal = (props: AppModalProps) => {
 	// For bottom modals after Biometric Unlock
 	const [isBottomVisible, setIsBottomVisible] = useState(false)
 	useEffect(() => {
-		if (bottom && visible) {
+		if ((bottom || delayedOpen) && visible) {
 			setTimeout(() => {
 				setIsBottomVisible(true)
 			}, 0)
@@ -63,7 +65,7 @@ const AppModal = (props: AppModalProps) => {
 	}, [isBiometricScreenOpened, visible])
 
 	useEffect(() => {
-		if (bottom) {
+		if (bottom || delayedOpen) {
 			if (isBiometricScreenOpened) {
 				setIsBottomVisible(false)
 			}
@@ -75,7 +77,7 @@ const AppModal = (props: AppModalProps) => {
 		webViewVisible && (
 			<Modal
 				isVisible={
-					bottom
+					bottom || delayedOpen
 						? visible && !isBiometricScreenOpened && isBottomVisible
 						: visible && !isBiometricScreenOpened
 				}

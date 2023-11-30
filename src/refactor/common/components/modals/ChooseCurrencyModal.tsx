@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import AppModal from '@app/components/AppModal'
+import AppModal from '@app/refactor/common/components/modal'
 import ModalWithSearch from '@app/components/ModalWithSearch'
 import { toggleCurrencyModal } from '@app/refactor/redux/modals/modalsSlice'
 import { setCurrentBalanceObj } from '@app/redux/trade/actions'
@@ -116,6 +116,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 			children={children}
 			// onModalHide={hide}
 			fullScreen
+			delayedOpen
 		/>
 	)
 }
