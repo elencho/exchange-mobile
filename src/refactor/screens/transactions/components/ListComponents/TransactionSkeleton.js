@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import Skeleton from '../Skeleton'
+import Skeleton from './Skeleton'
 
 const MainPart = ({ isInstantTrade, isFooter }) => (
 	<View style={[styles.container, isFooter && { marginTop: 0 }]}>
