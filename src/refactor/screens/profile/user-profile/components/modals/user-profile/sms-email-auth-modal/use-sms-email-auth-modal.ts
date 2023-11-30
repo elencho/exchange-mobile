@@ -31,6 +31,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		smsAuthModalVisible,
 		emailAuthModalVisible,
 		toggleGoogleAuthModal,
+		type,
 	} = props
 	const dispatch = useAppDispatch()
 
@@ -40,9 +41,9 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		auth: { otpType },
 	} = state
 
-	const visible = emailAuthModalVisible
-	const type = otpType
-	const cellCount = type === 'SMS' ? 4 : 6
+	const visible = type === 'SMS' ? smsAuthModalVisible : emailAuthModalVisible
+
+	const cellCount = smsAuthModalVisible ? 4 : 6
 
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(30)
@@ -75,8 +76,8 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		setValue('')
 	}
 
-	const emailHide = () => {
-		hide()
+	const emailHide = async () => {
+		await hide()
 		toggleGoogleAuthModal(true)
 	}
 

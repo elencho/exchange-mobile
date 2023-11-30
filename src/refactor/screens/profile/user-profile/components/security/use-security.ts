@@ -5,6 +5,8 @@ export const useSecurity = () => {
 	const [googleAuthModalVisible, toggleGoogleAuthModal] = useState(false)
 	const [googleOtpModalVisible, toggleGoogleOtpModalVisible] = useState(false)
 	const [emailAuthModalVisible, toggleEmailAuthModalVisible] = useState(false)
+	const [smsAuthModalVisible, toggleSmsAuthModalVisible] = useState(false)
+	const [chosenOtpType, setChosenOtpType] = useState<OTP>()
 	return {
 		passwordModalVisible,
 		togglePasswordModal,
@@ -14,5 +16,9 @@ export const useSecurity = () => {
 		toggleEmailAuthModalVisible,
 		toggleGoogleOtpModalVisible,
 		googleOtpModalVisible,
+		toggleSmsAuthModalVisible,
+		smsAuthModalVisible,
+		setChosenOtpType,
+		chosenOtpType,
 	}
 }

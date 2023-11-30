@@ -131,7 +131,7 @@ export const getOtpChangeToken = async (OTP: string, newOTPType: string) => {
 		url: OTP_CHANGE_TOKEN,
 		params: { newOTPType },
 	})
-	if (data) return data
+	if (data?.data) return data
 }
 
 export const activateEmailOtp = async (
@@ -166,6 +166,7 @@ export const activateGoogleOtp = async (
 		url: ACTIVATE_GOOGLE_OTP,
 		data: `changeOTPToken=${changeOTPToken}&totpCode=${totpCode}&totpSecret=${totpSecret}`,
 	})
+	console.log('data', data)
 	if (data) return data.status!
 }
 

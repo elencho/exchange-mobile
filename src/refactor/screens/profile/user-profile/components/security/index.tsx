@@ -25,6 +25,10 @@ export default function Security({ loading, bioAvailable }: Props) {
 		googleAuthModalVisible,
 		toggleGoogleOtpModalVisible,
 		googleOtpModalVisible,
+		toggleSmsAuthModalVisible,
+		smsAuthModalVisible,
+		setChosenOtpType,
+		chosenOtpType,
 	} = useSecurity()
 	return !loading ? (
 		<>
@@ -40,6 +44,8 @@ export default function Security({ loading, bioAvailable }: Props) {
 						toggleEmailAuthModalVisible={toggleEmailAuthModalVisible}
 						toggleGoogleOtpModalVisible={toggleGoogleOtpModalVisible}
 						toggleGoogleAuthModal={toggleGoogleAuthModal}
+						setChosenOtpType={setChosenOtpType}
+						toggleSmsAuthModalVisible={toggleSmsAuthModalVisible}
 					/>
 				))}
 				<View style={styles.line} />
@@ -62,20 +68,21 @@ export default function Security({ loading, bioAvailable }: Props) {
 				googleAuthModalVisible={googleAuthModalVisible}
 			/>
 			<SmsEmailAuthModal
-				type="Email"
-				toggleSmsAuthModal={toggleEmailAuthModalVisible}
+				type={chosenOtpType}
+				toggleSmsAuthModal={toggleSmsAuthModalVisible}
 				toggleEmailAuthModal={toggleEmailAuthModalVisible}
-				smsAuthModalVisible={emailAuthModalVisible}
+				smsAuthModalVisible={smsAuthModalVisible}
 				emailAuthModalVisible={emailAuthModalVisible}
 				toggleGoogleAuthModal={toggleGoogleAuthModal}
 			/>
-			<SmsEmailAuthModal
+			{/* <SmsEmailAuthModal
 				type="SMS"
-				toggleSmsAuthModal={toggleEmailAuthModalVisible}
+				toggleSmsAuthModal={toggleSmsAuthModalVisible}
 				toggleEmailAuthModal={toggleEmailAuthModalVisible}
-				smsAuthModalVisible={emailAuthModalVisible}
+				smsAuthModalVisible={smsAuthModalVisible}
 				emailAuthModalVisible={emailAuthModalVisible}
-			/>
+				toggleGoogleAuthModal={toggleGoogleAuthModal}
+			/> */}
 			<GoogleOtpModal
 				toggleGoogleOtpModalVisible={toggleGoogleOtpModalVisible}
 				googleOtpModalVisible={googleOtpModalVisible}

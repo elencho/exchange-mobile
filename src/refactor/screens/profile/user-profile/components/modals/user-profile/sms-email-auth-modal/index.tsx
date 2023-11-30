@@ -21,7 +21,6 @@ interface SmsEmailAuthModalProps {
 
 export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 	const {
-		type,
 		toggleSmsAuthModal,
 		toggleEmailAuthModal,
 		smsAuthModalVisible,
@@ -51,9 +50,8 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 		emailAuthModalVisible,
 		toggleGoogleAuthModal,
 	})
-
 	const { styles, theme } = useTheme(_styles)
-
+	const type = emailAuthModalVisible ? 'Email' : 'SMS'
 	const resendOrCountDown = () => {
 		if (otpLoading) {
 			return (
@@ -72,11 +70,11 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 			return <AppButton variant="text" text="resend purple" onPress={resend} />
 		}
 	}
-console.log("type,", type)
+
 	const children = (
 		<View style={styles.container}>
 			<AppText style={styles.header} variant="l">
-				{`${type} Authentication`}asd {type}
+				{`${type} Authentication`}
 			</AppText>
 			<AppText style={styles.secondary} variant="s">
 				Enter One Time Password
@@ -108,7 +106,7 @@ console.log("type,", type)
 			children={children}
 			bottom
 			hide={hide}
-			visible={visible}
+			visible={smsAuthModalVisible || emailAuthModalVisible}
 			onModalHide={handleHide}
 		/>
 	)

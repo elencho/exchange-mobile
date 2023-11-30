@@ -56,7 +56,6 @@ export const useGoogleOtp = (props: GoogleOtpProps) => {
 				),
 			setGeneralErrorData
 		)
-	console.log(generalErrorData, 'generalErrorData')
 	return {
 		hide,
 		value,

@@ -19,6 +19,7 @@ interface SecurityRowProps {
 	togglePasswordModal?: (v: boolean) => void
 	toggleEmailAuthModalVisible?: (v: boolean) => void
 	toggleGoogleOtpModalVisible?: (v: boolean) => void
+	setChosenOtpType?: (v: string) => void
 }
 
 export const useSecurityRow = (props: SecurityRowProps) => {
@@ -27,6 +28,8 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		togglePasswordModal = () => {},
 		toggleEmailAuthModalVisible = () => {},
 		toggleGoogleOtpModalVisible = () => {},
+		setChosenOtpType,
+		toggleSmsAuthModalVisible,
 	} = props
 
 	const dispatch = useDispatch()
@@ -36,7 +39,6 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 
 	const [bioType, setBioType] = useState<string | null>(null)
 	const [isBioOn, setIsBioOn] = useState(false)
-	const [chosenOtpType, setChosenOtpType] = useState('')
 
 	useEffect(() => {
 		handleBiometricIcon()
@@ -96,23 +98,32 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		// Right now returns undefined so I take email from accessToken
 
 		const email = jwt_decode<TokenParams>(accessToken || '')?.email
-
 		if (value === 'Google_Auth') {
-			if (otpType === 'EMAIL') toggleEmailAuthModalVisible!(true)
-			if (otpType === 'SMS') toggleSmsAuthModal(true)
+			if (otpType === 'EMAIL') {
+				toggleEmailAuthModalVisible!(true)
+			}
+			if (otpType === 'SMS') {
+				toggleSmsAuthModalVisible(true)
+			}
 			dispatch(setCurrentSecurityAction('TOTP'))
 			sendOtp()
 		} else if (value === 'E_mail_Auth') {
-			if (otpType === 'TOTP') toggleGoogleOtpModalVisible!(true)
+			if (otpType === 'TOTP') {
+				toggleGoogleOtpModalVisible!(true)
+			}
+			if (otpType === 'SMS') {
+				toggleSmsAuthModalVisible(true)
+			}
 			dispatch(setCurrentSecurityAction('EMAIL'))
 		} else if (value === 'Biometric') {
 			handleAuth(email!)
 		}
+		setChosenOtpType(otpType)
 	}
 
 	const handleChangeGoogle = () => {
 		if (otpType === 'EMAIL') toggleEmailAuthModalVisible(true)
-		if (otpType === 'SMS') toggleEmailAuthModalVisible(true)
+		if (otpType === 'SMS') toggleSmsAuthModalVisible(true)
 		dispatch(setCurrentSecurityAction('TOTP'))
 		sendOtp()
 	}
@@ -124,7 +135,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		isBioOn,
 		bioType,
 		otpType,
-		chosenOtpType,
+		// chosenOtpType,
 		handleChangeGoogle,
 	}
 }
