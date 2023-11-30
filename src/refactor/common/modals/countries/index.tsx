@@ -69,6 +69,7 @@ const CountriesModal = (props: Props) => {
 			hide={hide}
 			onModalHide={onHideModal}
 			children={children}
+			delayedOpen
 			fullScreen
 			bottom={undefined}
 			title={undefined}

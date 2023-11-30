@@ -31,7 +31,7 @@ import {
 	setMethodFilter,
 	setPreviousTransactionsFilter,
 } from '@app/refactor/redux/transactions/transactionSlice'
-import AppModal from '@app/components/AppModal'
+import AppModal from '@app/refactor/common/components/modal'
 import { RootState } from '../../../redux/rootReducer'
 import {
 	TransactionFilterBottom,

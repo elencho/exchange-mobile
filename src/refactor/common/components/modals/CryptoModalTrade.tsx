@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import AppModal from '@app/components/AppModal'
+import AppModal from '@app/refactor/common/components/modal'
 import ModalWithSearch from '@app/components/ModalWithSearch'
 import { toggleCryptoModal } from '@app/refactor/redux/modals/modalsSlice'
 import {
@@ -8,6 +8,7 @@ import {
 	setTradesOffset,
 } from '@app/refactor/redux/trade/tradeSlice'
 import { setCryptoFilter } from '@app/refactor/redux/transactions/transactionSlice'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface Props {
 	isInstantTrade: boolean
@@ -15,7 +16,7 @@ interface Props {
 
 export default function CryptoModalTrade({ isInstantTrade }: Props) {
 	const dispatch = useDispatch()
-	const state = useSelector((state) => state)
+	const state = useSelector((state: RootState) => state)
 
 	const {
 		modalState: { cryptoModalVisible },
@@ -77,6 +78,7 @@ export default function CryptoModalTrade({ isInstantTrade }: Props) {
 				hide={hide}
 				children={children}
 				onModalHide={onModalHide}
+				delayedOpen
 				fullScreen
 			/>
 		)

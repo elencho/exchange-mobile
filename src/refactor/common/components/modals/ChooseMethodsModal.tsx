@@ -1,7 +1,7 @@
 import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import AppModal from '@app/components/AppModal'
+import AppModal from '@app/refactor/common/components/modal'
 import AppText from '@components/text'
 import colors from '@app/constants/colors'
 import { methods } from '@app/constants/filters'
@@ -43,11 +43,6 @@ const ChooseMethodsModal = () => {
 			title="Choose Methods"
 			bottom
 			children={children()}
-			fullScreen={undefined}
-			custom={undefined}
-			onModalHide={undefined}
-			onDismiss={undefined}
-			modalStyle={undefined}
 		/>
 	)
 }

@@ -56,7 +56,10 @@ export default function ChooseNetworkModal() {
 	useEffect(() => {
 		let networksToDisplay = []
 		const m = withdrawal || isWhitelist ? 'withdrawalMethods' : 'depositMethods'
-		const n = currentBalanceObj[m]
+		const n =
+			currentBalanceObj[m]?.length > 0
+				? currentBalanceObj[m]
+				: currentBalanceObj['supportedProviders']
 
 		if (n?.WALLET) n?.WALLET?.forEach((n) => networksToDisplay.push(n))
 		if (n?.WIRE) n?.WIRE?.forEach((n) => networksToDisplay.push(n))

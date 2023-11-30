@@ -15,7 +15,7 @@ const usePersonalInfoModal = ({
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		profile: { userInfo, userProfileLoading, userProfileButtonsLoading},
+		profile: { userInfo, userProfileLoading, userProfileButtonsLoading },
 		common: { countries },
 	} = state
 
@@ -44,9 +44,6 @@ const usePersonalInfoModal = ({
 
 	const hide = () => {
 		!userProfileButtonsLoading && togglePersonalInfoModal(false)
-	}
-
-	const onHide = () => {
 		setChosenCountry(defaultCountry)
 		setLocalUserInfo({
 			country: chosenCountry?.code!,
@@ -54,6 +51,10 @@ const usePersonalInfoModal = ({
 			postalCode: userInfo?.postalCode!,
 			address: userInfo?.address!,
 		})
+	}
+	const saveHide = () => {
+		!userProfileButtonsLoading && togglePersonalInfoModal(false)
+		setChosenCountry(defaultCountry)
 	}
 
 	const handleSave = () => {
@@ -68,7 +69,7 @@ const usePersonalInfoModal = ({
 			setError(true)
 		} else {
 			handleGeneralError(
-				() => dispatch(updateUserThunk({ localUserInfo, hide })),
+				() => dispatch(updateUserThunk({ localUserInfo, hide: saveHide })),
 				setGeneralErrorData
 			)
 		}
@@ -121,7 +122,6 @@ const usePersonalInfoModal = ({
 		localUserInfo,
 		changeCountry,
 		generalErrorData,
-		onHide,
 	}
 }
 

@@ -10,7 +10,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import Copy from '@app/assets/images/Copy.svg'
 import Link from '@app/assets/images/Link.svg'
-import AppModal from '@app/components/AppModal'
+import AppModal from '@app/refactor/common/components/modal'
 import AppText from '@components/text'
 import TradeDetails from '@app/components/InstantTrade/TradeDetails'
 import { COINS_URL_PNG } from '@app/constants/api'
