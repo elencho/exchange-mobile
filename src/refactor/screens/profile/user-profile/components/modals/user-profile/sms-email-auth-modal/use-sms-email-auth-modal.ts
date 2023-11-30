@@ -26,22 +26,24 @@ interface SmsEmailAuthModalProps {
 
 export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	const {
-		type,
 		toggleEmailAuthModal,
 		toggleSmsAuthModal,
 		smsAuthModalVisible,
 		emailAuthModalVisible,
 		toggleGoogleAuthModal,
+		type,
 	} = props
 	const dispatch = useAppDispatch()
 
 	const state = useSelector((state: RootState) => state)
 	const {
 		profile: { currentSecurityAction, tOTPChangeParams },
+		auth: { otpType },
 	} = state
 
-	const visible = emailAuthModalVisible
-	const cellCount = type === 'SMS' ? 4 : 6
+	const visible = type === 'SMS' ? smsAuthModalVisible : emailAuthModalVisible
+
+	const cellCount = smsAuthModalVisible ? 4 : 6
 
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(30)
@@ -74,8 +76,8 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		setValue('')
 	}
 
-	const emailHide = () => {
-		hide()
+	const emailHide = async () => {
+		await hide()
 		toggleGoogleAuthModal(true)
 	}
 

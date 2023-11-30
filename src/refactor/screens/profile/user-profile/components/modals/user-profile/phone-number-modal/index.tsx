@@ -38,7 +38,6 @@ export default function PhoneNumberModal({
 	const number = userInfo?.phoneNumber
 	const country = userInfo?.phoneCountry
 	const borderColor = error && !country ? '#F45E8C' : '#42475D'
-	console.log(generalErrorData, 'generalErrorData')
 	const children = () => {
 		return (
 			<WithKeyboard
