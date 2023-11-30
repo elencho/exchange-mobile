@@ -28,6 +28,7 @@ export const usePhoneNumberModal = ({
 	const x = {
 		name: userInfo?.phoneCountry,
 		code: userInfo?.phoneCountry,
+		phoneCode: userInfo?.phoneCountry,
 	}
 	const [chosenCountry, setChosenCountry] = useState(x)
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
@@ -56,7 +57,7 @@ export const usePhoneNumberModal = ({
 		countries?.forEach((c: Country) => {
 			if (userInfo?.phoneCountry === c.code) {
 				// phoneCountry = c.phoneCode
-				setChosenCountry({ name: c.name, code: c.code })
+				setChosenCountry({ name: c.name, code: c.code, phoneCode: c.phoneCode })
 			}
 		})
 

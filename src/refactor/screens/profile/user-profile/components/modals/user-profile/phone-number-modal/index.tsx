@@ -51,7 +51,7 @@ export default function PhoneNumberModal({
 
 					<AppDropdown
 						handlePress={handleCountries}
-						selectedText={chosenCountry?.name}
+						selectedText={chosenCountry?.phoneCode}
 						notClearable
 						withLabel
 						label="Choose code"
