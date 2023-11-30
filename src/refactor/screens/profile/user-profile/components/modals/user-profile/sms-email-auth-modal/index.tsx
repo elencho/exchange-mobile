@@ -72,11 +72,11 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 			return <AppButton variant="text" text="resend purple" onPress={resend} />
 		}
 	}
-
+console.log("type,", type)
 	const children = (
 		<View style={styles.container}>
 			<AppText style={styles.header} variant="l">
-				{`${type} Authentication`}
+				{`${type} Authentication`}asd {type}
 			</AppText>
 			<AppText style={styles.secondary} variant="s">
 				Enter One Time Password

@@ -94,7 +94,7 @@ const AppModal = (props: AppModalProps) => {
 		)
 	)
 }
-export default memo(AppModal)
+export default AppModal
 
 const _styles = (theme: Theme) =>
 	StyleSheet.create({

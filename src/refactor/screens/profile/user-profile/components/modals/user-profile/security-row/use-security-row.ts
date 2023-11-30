@@ -24,9 +24,9 @@ interface SecurityRowProps {
 export const useSecurityRow = (props: SecurityRowProps) => {
 	const {
 		text,
-		togglePasswordModal,
-		toggleEmailAuthModalVisible,
-		toggleGoogleOtpModalVisible,
+		togglePasswordModal = () => {},
+		toggleEmailAuthModalVisible = () => {},
+		toggleGoogleOtpModalVisible = () => {},
 	} = props
 
 	const dispatch = useDispatch()
@@ -99,7 +99,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 
 		if (value === 'Google_Auth') {
 			if (otpType === 'EMAIL') toggleEmailAuthModalVisible!(true)
-			if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
+			if (otpType === 'SMS') toggleSmsAuthModal(true)
 			dispatch(setCurrentSecurityAction('TOTP'))
 			sendOtp()
 		} else if (value === 'E_mail_Auth') {
@@ -112,7 +112,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 
 	const handleChangeGoogle = () => {
 		if (otpType === 'EMAIL') toggleEmailAuthModalVisible(true)
-		if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
+		if (otpType === 'SMS') toggleEmailAuthModalVisible(true)
 		dispatch(setCurrentSecurityAction('TOTP'))
 		sendOtp()
 	}
