@@ -10,6 +10,7 @@ import { UserStatus } from '@app/refactor/types/enums'
 import { toggleSubscriptionThunk } from '@app/refactor/redux/profile/profileThunks'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 import launchSumsubSdk from '@app/utils/sumsubMobileSdk'
+import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
 export const usePersonal = () => {
 	const dispatch = useDispatch()
@@ -41,7 +42,9 @@ export const usePersonal = () => {
 	const [identityModalVisible, toggleIdentityModalVisible] = useState(false)
 	const [companyInfoModalVisible, setCompanyInfoModalVisible] = useState(false)
 	const [emailUpdated, setEmailUpdated] = useState(!!userInfo?.emailUpdates)
-
+	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
+		null
+	)
 	const hideError = () =>
 		// TODO: Remove after wallets refactor
 		dispatch(saveGeneralError(null))
@@ -87,7 +90,10 @@ export const usePersonal = () => {
 
 	const handleEmailUpdates = (value: boolean) => {
 		setEmailUpdated(value)
-		dispatch(toggleSubscriptionThunk({ value }))
+		handleGeneralError(
+			() => dispatch(toggleSubscriptionThunk({ value })),
+			setGeneralErrorData
+		)
 	}
 
 	return {
@@ -118,5 +124,6 @@ export const usePersonal = () => {
 		companyInfoModalVisible,
 		toggleIdentityModalVisible,
 		identityModalVisible,
+		generalErrorData,
 	}
 }

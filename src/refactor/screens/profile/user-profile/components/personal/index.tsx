@@ -39,7 +39,7 @@ export const Personal = ({ loading }: PersonalProps) => {
 		openModal,
 		handleEmailUpdates,
 		userInfo,
-		generalError,
+		generalErrorData,
 		language,
 		corporate,
 		togglePersonalInfoModal,
@@ -91,7 +91,7 @@ export const Personal = ({ loading }: PersonalProps) => {
 	)
 
 	const secondaryTextCond = (r: string) => {
-		const error = generalError && errorHappenedHere('NotificationSwitcher')
+		const error = generalErrorData
 		switch (r) {
 			case PersonalFeatures.IDENTITY:
 				return (

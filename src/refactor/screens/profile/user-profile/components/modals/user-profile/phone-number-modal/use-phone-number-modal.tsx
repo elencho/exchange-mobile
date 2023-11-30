@@ -49,6 +49,8 @@ export const usePhoneNumberModal = ({
 	const hide = () => {
 		if (!userProfileButtonsLoading && !userProfileLoading) {
 			togglePhoneNumberModal(false)
+			setPhoneNumber(userInfo?.phoneNumber!)
+			setChosenCountry(x)
 		}
 	}
 
