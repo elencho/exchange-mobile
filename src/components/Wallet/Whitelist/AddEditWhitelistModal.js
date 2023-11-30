@@ -116,18 +116,6 @@ export default function AddEditWhitelistModal({ add, edit }) {
 		if (edit) dispatch(chooseWhitelist({ ...currentWhitelistObj, name }))
 	}
 
-	const tagStyle = {
-		opacity: add ? 1 : 0.5,
-		borderColor: error && !currentWhitelistObj?.tag && '#F45E8C',
-	}
-	const addressStyle = {
-		opacity: add ? 1 : 0.5,
-		borderColor: error && !currentWhitelistObj?.address && '#F45E8C',
-	}
-	const nameStyle = {
-		borderColor: error && !currentWhitelistObj?.name && '#F45E8C',
-		// marginTop: 32,
-	}
 	const nameError = add
 		? !newWhitelist?.name?.trim()
 		: !currentWhitelistObj?.name?.trim()
@@ -155,14 +143,14 @@ export default function AddEditWhitelistModal({ add, edit }) {
 				)}
 
 				<AppInput
-					style={[styles.input, nameStyle]}
+					style={styles.input}
 					onChangeText={(name) => handleChange(name)}
 					value={add ? newWhitelist.name : currentWhitelistObj.name}
 					label="Enter Address Name"
 					error={error && nameError}
 				/>
 				<AppInput
-					style={[styles.input, addressStyle]}
+					style={styles.input}
 					onChangeText={(address) =>
 						dispatch(setNewWhitelist({ ...newWhitelist, address }))
 					}
@@ -176,7 +164,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 				/>
 				{tag() && (
 					<AppInput
-						style={[styles.input, tagStyle]}
+						style={styles.input}
 						onChangeText={(tag) =>
 							dispatch(setNewWhitelist({ ...newWhitelist, tag }))
 						}
@@ -184,7 +172,7 @@ export default function AddEditWhitelistModal({ add, edit }) {
 						label="Address Tag"
 						editable={add ? true : false}
 						disabled={add ? false : true}
-						focusable={add ? true : false}
+						// focusable={add ? true : false}
 						error={error && tagError}
 					/>
 				)}

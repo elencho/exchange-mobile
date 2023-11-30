@@ -69,7 +69,7 @@ const AppDropdown = ({
 						subtext
 						style={[
 							styles.withLabelText,
-							disabled && { color: colors.SECONDARY_TEXT, opacity: 0.3 },
+							disabled && { color: colors.SECONDARY_TEXT, opacity: 0.6 },
 						]}>
 						{label}
 					</AppText>
