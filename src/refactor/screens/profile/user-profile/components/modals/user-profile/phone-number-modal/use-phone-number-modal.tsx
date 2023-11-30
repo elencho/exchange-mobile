@@ -74,6 +74,7 @@ export const usePhoneNumberModal = ({
 	const handlePhoneNumber = (phoneNumber: string) => {
 		setGeneralErrorData(null)
 		setPhoneNumber(phoneNumber)
+		setError(false)
 	}
 
 	const handleSave = () => {
