@@ -20,7 +20,6 @@ import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import GeneralError from '@components/general_error'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
-import KV from '@store/kv/regular'
 import { MaterialIndicator } from 'react-native-indicators'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
@@ -40,11 +39,20 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	)
 
 	const alreadySent = useRef(false)
+
+	const language = useSelector((state: RootState) => state.common.language)
 	const { forgotLoading, forgotResendLoading, timerVisible } = useSelector(
 		(state: RootState) => state.auth
 	)
 
 	const validMail = mail.trim().length ? LOGIN_REGEX.test(mail) : false
+
+	useEffect(() => {
+		return navigation.addListener('focus', () => {
+			setSeconds(0)
+			alreadySent.current = false
+		})
+	}, [navigation])
 
 	useFocusEffect(
 		useCallback(() => {
@@ -102,7 +110,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 
 	const MailInputRight = () => {
 		const sendText =
-			alreadySent.current && KV.get('language') === 'en' ? 'Resend' : 'Send'
+			alreadySent.current && language === 'en' ? 'Resend' : 'Send'
 
 		if (forgotResendLoading) {
 			return (

@@ -31,6 +31,7 @@ import { Screens } from '@app/refactor/setup/nav/nav'
 import GeneralError from '@components/general_error'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
+import { System } from '@app/refactor/common/util'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -212,7 +213,7 @@ const Register = ({ navigation }: Props) => {
 						value={confirmPass}
 						label="Repeat Password"
 						labelBackgroundColor={theme.color.backgroundPrimary}
-						style={styles.input && { marginTop: 6 }}
+						style={styles.input && { marginTop: System.isAndroid ? 1 : 6 }}
 						onChangeText={setConfirmPass}
 						onFocusOrChange={() => {
 							setConfirmPassErr(false)

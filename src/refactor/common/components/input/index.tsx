@@ -39,6 +39,7 @@ const AppInput = (props: Props) => {
 		style,
 		labelBackgroundColor,
 		rightComponent,
+		onBlur,
 		onFocus,
 		onFocusRightComponent,
 		onFocusOrChange,
@@ -116,7 +117,10 @@ const AppInput = (props: Props) => {
 					{...props}
 					style={[styles.input, disabled && styles.disabledInput]}
 					ref={inputRef}
-					onBlur={() => setIsFocused(false)}
+					onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
+						setIsFocused(false)
+						onBlur?.(e)
+					}}
 					onFocus={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
 						setIsFocused(true)
 						onFocus?.(e)
