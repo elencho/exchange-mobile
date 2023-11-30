@@ -35,7 +35,7 @@
 
   [AppCenterReactNative register];
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
-  [AppCenterReactNativeCrashes registerW ithAutomaticProcessing];
+  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
   
   [super application:application didFinishLaunchingWithOptions:launchOptions];
   
