@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Strong_Password from '@assets/images/User_profile/Strong_Password.svg'
@@ -11,6 +11,7 @@ import { setNewPasswordOtpThunk } from '@store/redux/auth/thunks'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { System } from '@app/refactor/common/util'
 
 const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const dispatch = useDispatch()
@@ -30,6 +31,10 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const hasNumber = /\d/.test(pass)
 	const hasUpperAndLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(pass)
 	const passValid = passLength && hasNumber && hasUpperAndLower
+
+	useEffect(() => {
+		setConfirmPassError(confirmPass.length > 0 && confirmPass !== pass)
+	}, [confirmPass])
 
 	const onSavePressed = () => {
 		if (pass !== confirmPass || !passValid) {
@@ -108,9 +113,9 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 					labelBackgroundColor={theme.color.backgroundPrimary}
 					style={styles.inputConfirmPass}
 					label="Confirm New Password"
-					onChangeText={(txt: string) => {
-						setConfirmPass(txt)
-						setConfirmPassError(!txt.trim() || txt.trim() !== pass.trim())
+					onChangeText={setConfirmPass}
+					onFocusOrChange={() => {
+						setConfirmPassError(false)
 					}}
 					value={confirmPass}
 					secureTextEntry={true}
@@ -151,7 +156,7 @@ const _styles = (theme: Theme) =>
 			width: '100%',
 		},
 		inputConfirmPass: {
-			marginTop: 11,
+			marginTop: System.isAndroid ? 5 : 11,
 			width: '100%',
 		},
 		middle: {

@@ -35,7 +35,7 @@ const TwoFaInput = ({
 	generalErrorData,
 }: Props) => {
 	// TODO: add loading from param
-	const authLoading = useSelector((state: RootState) => state.auth.authLoading)
+	const loading = useSelector((state: RootState) => state.auth.otpLoading)
 
 	useEffect(() => {
 		if (value.length === cellCount) {
@@ -45,7 +45,7 @@ const TwoFaInput = ({
 		}
 	}, [value])
 
-	return authLoading ? (
+	return loading ? (
 		<MaterialIndicator
 			color="#6582FD"
 			animationDuration={3000}

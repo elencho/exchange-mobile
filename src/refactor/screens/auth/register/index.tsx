@@ -31,6 +31,7 @@ import { Screens } from '@app/refactor/setup/nav/nav'
 import GeneralError from '@components/general_error'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
+import { System } from '@app/refactor/common/util'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -66,7 +67,7 @@ const Register = ({ navigation }: Props) => {
 
 	const authState = useSelector((state: RootState) => state.auth)
 	const { countries } = useSelector((state: RootState) => state.common)
-	const { authLoading, phoneCountryCode } = authState
+	const { registerLoading, phoneCountryCode } = authState
 
 	const passLength = pass?.length >= 8
 	const passHasUpperLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(pass)
@@ -212,7 +213,7 @@ const Register = ({ navigation }: Props) => {
 						value={confirmPass}
 						label="Repeat Password"
 						labelBackgroundColor={theme.color.backgroundPrimary}
-						style={styles.input}
+						style={styles.input && { marginTop: System.isAndroid ? 1 : 6 }}
 						onChangeText={setConfirmPass}
 						onFocusOrChange={() => {
 							setConfirmPassErr(false)
@@ -306,7 +307,7 @@ const Register = ({ navigation }: Props) => {
 						variant="primary"
 						text="Register"
 						onPress={onRegisterPressed}
-						loading={authLoading}
+						loading={registerLoading}
 					/>
 					<AppText style={styles.subtext}>
 						{t('Have an Account?')}{' '}
