@@ -24,7 +24,7 @@ interface OtpLoginResponse {
 	code: string
 	session_state: string
 	execution: Execution
-	errors: any[] //TODO: Type
+	errors: UiErrorData[]
 }
 
 interface CodeToTokenResponse {

@@ -31,44 +31,50 @@ export const ResetOtp = ({
 
 	const resetOtpType = route.params?.resetOtpType
 
-	const { otpTimerVisible } = useSelector((state: RootState) => state.auth)
-
 	const [url, setUrl] = useState('')
 	const [value, setValue] = useState('')
-	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
+	const [seconds, setSeconds] = useState(0)
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
 	)
 
-	const goBack = () => dispatch(startLoginThunk(navigation))
-	const openSupport = () => Linking.openURL(url)
+	const { otpTimerVisible } = useSelector((state: RootState) => state.auth)
 
 	useEffect(() => {
-		if (!seconds) {
-			dispatch(setOtpTimer(false))
-			setSeconds(COUNTDOWN_SECONDS)
-		}
-		if (seconds && otpTimerVisible) {
-			setTimeout(() => {
-				setSeconds(seconds - 1)
-			}, 1000)
-		}
-	}, [seconds, otpTimerVisible])
-
-	useEffect(() => {
-		setOtpTimer(true)
+		console.log({ otpTimerVisible, seconds })
+		dispatch(setOtpTimer(true))
 
 		const language = KV.get('language')
 		setUrl(`https://support.cryptal.com/hc/${language}`)
 
 		return () => {
+			dispatch(setOtpTimer(false))
 			setValue('')
-			setOtpTimer(false)
-			setSeconds(COUNTDOWN_SECONDS)
+			setSeconds(0)
 		}
 	}, [])
 
+	useEffect(() => {
+		if (!otpTimerVisible) return
+
+		if (seconds) {
+			setTimeout(() => {
+				setSeconds(seconds - 1)
+			}, 1000)
+		} else {
+			dispatch(setOtpTimer(false))
+		}
+	}, [seconds])
+
+	useEffect(() => {
+		if (otpTimerVisible) {
+			setSeconds(COUNTDOWN_SECONDS)
+		}
+	}, [otpTimerVisible])
+
 	const resend = () => dispatch(resendOtpThunk())
+	const goBack = () => dispatch(startLoginThunk(navigation))
+	const openSupport = () => Linking.openURL(url)
 
 	const resendOrCountDown = () => {
 		if (otpTimerVisible) {
@@ -98,6 +104,7 @@ export const ResetOtp = ({
 	return (
 		<AppBackground>
 			<WithKeyboard
+				keyboardVerticalOffsetIOS={40} // TODO?
 				padding={true}
 				flexGrow={true}
 				modal={undefined}

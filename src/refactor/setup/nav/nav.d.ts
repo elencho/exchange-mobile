@@ -18,7 +18,9 @@ export type Screens = {
 	Welcome?: {}
 	UpdateAvailable?: {}
 	Maintenance?: {}
-	Login?: {}
+	Login?: {
+		generalError?: UiErrorData
+	}
 	Registration?: {}
 	EmailVerification: {
 		from: 'Login' | 'Registration' | 'ForgotPassword'
