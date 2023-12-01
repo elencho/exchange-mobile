@@ -55,12 +55,12 @@ export const ModalSearchItem = (props: ModalWithSearchProps) => {
 			return styles.background
 		}
 	}
-	const codeText = phoneCountry ? phoneCode : code
+	const codeText = phoneCountry ? `(${phoneCode})` : code
 	const text =
 		phoneCountry || countryDrop || citizenshipDrop ? (
 			<View style={styles.codeWrapper}>
 				<AppText variant="title" style={styles.primary}>
-					({codeText})
+					{codeText}
 				</AppText>
 				<AppText
 					variant="title"
