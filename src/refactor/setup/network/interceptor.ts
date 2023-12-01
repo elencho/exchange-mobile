@@ -60,6 +60,7 @@ const handleError = async (err: any) => {
 	const status: number = err.response.status
 	const uiError: UiErrorData | undefined = err.response.data
 	const invalidGrant = err.response.data.error === 'invalid_grant'
+	const errorDesc = err.response.data.error_description
 
 	if (status > 401) {
 		if (state.common.lastRequestUiError === 'AppToast') {
@@ -83,6 +84,10 @@ const handleError = async (err: any) => {
 
 	if (status === 400 && invalidGrant) {
 		store.dispatch(resetAuth())
+
+		// console.log(err.response.data)
+		// console.log('to Welcome!', uiError, errorDesc)
+
 		// TODO: Login
 		navigationRef.navigate('Welcome')
 	}

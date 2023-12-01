@@ -117,13 +117,11 @@ export const resendPasswordCodeThunk = createAsyncThunk(
 		const { callbackUrl } = (getState() as RootState).auth
 
 		const data = await resetPassword(callbackUrl, mail)
-		const timerVisible =
-			data.execution === Execution.RESET_PASSWORD_WITH_CODE &&
-			data.errors.length === 0
-
 		return {
-			timerVisible,
-			callbackUrl: data.callbackUrl,
+			...data,
+			timerVisible:
+				data.execution === Execution.RESET_PASSWORD_WITH_CODE &&
+				data.errors.length === 0,
 		}
 	}
 )
@@ -208,6 +206,9 @@ export const otpForLoginThunk = createAsyncThunk(
 
 		try {
 			if (loginInfo.execution === Execution.UPDATE_PASSWORD) {
+				setTimeout(() => {
+					dispatch(setOtpLoading(false))
+				}, LOADING_DELAY)
 				navigation.navigate('SetNewPassword')
 			} else if (loginInfo.execution === Execution.LOGIN_USERNAME_PASSWORD) {
 				// TODO: Pass general error to login & fix authLoading button
@@ -319,6 +320,9 @@ export const verifyRegistrationThunk = createAsyncThunk(
 		if (data?.errors && data.errors.length !== 0) return data
 
 		if (data.execution === Execution.UPDATE_PASSWORD) {
+			setTimeout(() => {
+				dispatch(setOtpLoading(false))
+			}, LOADING_DELAY)
 			navigation.navigate('SetNewPassword')
 		} else {
 			dispatch(

@@ -79,7 +79,10 @@ const EmailVerification = ({
 		}
 	}
 
-	const goBack = () => navigation.navigate(from)
+	const goBack = () => {
+		if (from === 'Registration') navigation.navigate('Registration')
+		else navigation.navigate('Login')
+	}
 
 	const resend = () => dispatch(resendOtpThunk())
 

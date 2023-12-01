@@ -208,7 +208,6 @@ const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
 			if (action.payload.callbackUrl) {
 				state.callbackUrl = action.payload.callbackUrl
 			}
-			state.otpLoading = false
 		})
 		.addCase(verifyRegistrationThunk.rejected, (state) => {
 			state.otpLoading = false
