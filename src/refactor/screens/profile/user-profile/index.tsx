@@ -27,7 +27,6 @@ export default function UserProfile(props: Props) {
 		logout,
 		onRefresh,
 		back,
-		clear,
 		onScroll,
 		showRefreshControl,
 		personalSecurity,

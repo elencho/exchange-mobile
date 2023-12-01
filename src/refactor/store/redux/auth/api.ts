@@ -284,6 +284,7 @@ export const refreshTokenService = async (refreshToken: string) => {
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
 			requestName: 'refreshToken',
+			toast: false,
 		},
 		url: CODE_TO_TOKEN,
 		data: `grant_type=refresh_token&client_id=mobile-service-public&refresh_token=${refreshToken}`,

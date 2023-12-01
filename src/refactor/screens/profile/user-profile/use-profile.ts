@@ -48,15 +48,7 @@ export const useProfile = () => {
 		checkCompitable()
 		dispatch(fetchUserInfoThunk())
 	}
-	const back = () => {
-		clear()
-		navigation.goBack()
-	}
-
-	const clear = () => {
-		dispatch(clearFilters())
-		dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' })
-	}
+	const back = () => navigation.goBack()
 
 	const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
 		const { y } = event.nativeEvent.contentOffset
@@ -69,7 +61,6 @@ export const useProfile = () => {
 		logout,
 		onRefresh,
 		back,
-		clear,
 		onScroll,
 		showRefreshControl,
 		personalSecurity,
