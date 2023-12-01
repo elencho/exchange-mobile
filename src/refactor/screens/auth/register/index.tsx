@@ -124,6 +124,7 @@ const Register = ({ navigation }: Props) => {
 							phoneNumber: phone,
 							phoneCountry: chosenCountry?.code || '',
 							referralCode: referral,
+							promoCode: promo,
 						})
 					),
 				setGeneralErrorData

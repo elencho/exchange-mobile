@@ -41,7 +41,9 @@ export type Screens = {
 		version?: boolean
 	}
 	TransactionFilter?: {}
-	UserProfile?: {}
+	UserProfile?: {
+		justRegistered: boolean
+	}
 	Balance?: {}
 	CardVerificationOne?: {}
 	CardVerificationTwo?: {}

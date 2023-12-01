@@ -80,7 +80,7 @@ export const usernameAndPaswordThunk = createAsyncThunk(
 		)
 
 		if (userAndPassInfo?.execution === Execution.LOGIN_OTP) {
-			navigation.replace('Login2Fa')
+			navigation.navigate('Login2Fa')
 		}
 		if (userAndPassInfo?.execution === Execution.EMAIL_VERIFICATION_OTP) {
 			navigation.navigate('EmailVerification', { from: 'Login', mail })
@@ -218,6 +218,9 @@ export const otpForLoginThunk = createAsyncThunk(
 				}, LOADING_DELAY)
 				navigation.navigate('SetNewPassword')
 			} else if (loginInfo.execution === Execution.LOGIN_USERNAME_PASSWORD) {
+				setTimeout(() => {
+					dispatch(setOtpLoading(false))
+				}, LOADING_DELAY)
 				navigation.navigate('Login', { generalError: error })
 			} else if (hasErrors) {
 				dispatch(setOtpLoading(false))
@@ -258,7 +261,7 @@ export const codeToTokenThunk = createAsyncThunk(
 				})
 			)
 			if (from === 'Registration') {
-				navigation.navigate('UserProfile') // TODO: Sumsub logic
+				navigation.navigate('UserProfile', { justRegistered: true })
 			} else {
 				navigation.navigate('Main')
 			}
@@ -326,7 +329,12 @@ export const verifyRegistrationThunk = createAsyncThunk(
 		const { callbackUrl } = (getState() as RootState).auth
 
 		const data = await verifyAccount(callbackUrl, otp)
-		if (data?.errors && data.errors.length !== 0) return data
+		if (data?.errors && data.errors.length !== 0) {
+			setTimeout(() => {
+				dispatch(setOtpLoading(false))
+			}, LOADING_DELAY)
+			return data
+		}
 
 		if (data.execution === Execution.UPDATE_PASSWORD) {
 			setTimeout(() => {
@@ -350,7 +358,7 @@ type RegistrationFormProps = {
 	phoneCountry: string
 	phoneNumber: string
 	referralCode: string
-	// TODO promo: string
+	promoCode: string
 }
 export const registrationFormThunk = createAsyncThunk(
 	'registrationForm',
@@ -365,7 +373,8 @@ export const registrationFormThunk = createAsyncThunk(
 			props.passwordConfirm,
 			props.phoneCountry,
 			props.phoneNumber,
-			props.referralCode
+			props.referralCode,
+			props.promoCode
 		)
 		if (data?.execution === Execution.EMAIL_VERIFICATION_OTP) {
 			navigationRef.navigate('EmailVerification', {
@@ -384,6 +393,7 @@ export const logoutThunk = createAsyncThunk(
 		if (httpStatus === 204) {
 			dispatch(resetAuth())
 			dispatch(setUserInfo(null))
+
 			navigationRef.reset({
 				index: 0,
 				routes: [{ name: 'Welcome' }],

@@ -41,7 +41,6 @@ export const ResetOtp = ({
 	const { otpTimerVisible } = useSelector((state: RootState) => state.auth)
 
 	useEffect(() => {
-		console.log({ otpTimerVisible, seconds })
 		dispatch(setOtpTimer(true))
 
 		const language = KV.get('language')
@@ -104,7 +103,7 @@ export const ResetOtp = ({
 	return (
 		<AppBackground>
 			<WithKeyboard
-				keyboardVerticalOffsetIOS={40} // TODO?
+				keyboardVerticalOffsetIOS={40}
 				padding={true}
 				flexGrow={true}
 				modal={undefined}
