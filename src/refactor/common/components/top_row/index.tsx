@@ -23,10 +23,11 @@ function TopRow({ clear, headlineLogo }: Props) {
 	const userInfo = useSelector((state: RootState) => state?.profile?.userInfo)
 	const firstName = userInfo?.firstName
 	const lastName = userInfo?.lastName
+	const isVerifiedUser = userInfo?.userStatus === 'VERIFIED'
 
 	useEffect(() => {
-		if (!firstName) dispatch(fetchUserInfoThunk())
-	}, [firstName])
+		if (!firstName && isVerifiedUser) dispatch(fetchUserInfoThunk())
+	}, [firstName, isVerifiedUser])
 
 	const initials = () => {
 		if (firstName && lastName) {
