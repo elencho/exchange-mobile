@@ -49,7 +49,7 @@ export const ModalSearchItem = (props: ModalWithSearchProps) => {
 		isForTransactions,
 	} = props
 	const { styles } = useTheme(_styles)
-	console.log({ name, currentItem, code })
+
 	const backgroundCond = () => {
 		if (name === currentItem || code === currentItem) {
 			return styles.background
@@ -146,7 +146,6 @@ const _styles = (theme: Theme) =>
 		image: {
 			width: 36,
 			height: 36,
-			backgroundColor: 'red',
 			borderRadius: 18,
 		},
 		primary: { color: theme.color.textPrimary, width: 60 },

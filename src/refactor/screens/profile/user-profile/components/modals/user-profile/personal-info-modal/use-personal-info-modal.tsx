@@ -54,7 +54,6 @@ const usePersonalInfoModal = ({
 	}
 	const saveHide = () => {
 		!userProfileButtonsLoading && togglePersonalInfoModal(false)
-		setChosenCountry(defaultCountry)
 	}
 
 	const handleSave = () => {
