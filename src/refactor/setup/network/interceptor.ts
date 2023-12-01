@@ -14,7 +14,10 @@ import {
 import SecureKV from '@store/kv/secure'
 
 axios.interceptors.request.use((request) => {
-	const hasToast: boolean = request.headers.toast === false ? false : true
+	const hasToast: boolean =
+		request.headers.toast === false || request.headers.toast === undefined
+			? false
+			: true
 	const requestName: string | undefined = request.headers.requestName
 	const accessToken = store.getState().auth.accessToken
 
