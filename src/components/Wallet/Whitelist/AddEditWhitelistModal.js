@@ -45,6 +45,12 @@ export default function AddEditWhitelistModal({ add, edit }) {
 		auth: { otpType },
 	} = state
 
+	useEffect(() => {
+		if (addWhitelistModalVisble && hasMultipleNetworks) {
+			dispatch(setNetwork(null))
+		}
+	}, [addWhitelistModalVisble])
+
 	const [seconds, setSeconds] = useState(30)
 
 	const hide = () => {
@@ -126,7 +132,6 @@ export default function AddEditWhitelistModal({ add, edit }) {
 
 	const children = (
 		<WithKeyboard padding flexGrow modal noRefresh>
-			{/* <View></View> */}
 			<TouchableOpacity
 				activeOpacity={0.99}
 				style={{ flex: 1, paddingTop: 14 }}>

@@ -13,6 +13,7 @@ import AppModal from '../../AppModal'
 import AppText from '../../AppText'
 import GeneralError from '../../GeneralError'
 import PurpleText from '../../PurpleText'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function DeleteModal({ type }) {
 	const dispatch = useDispatch()
@@ -22,7 +23,10 @@ export default function DeleteModal({ type }) {
 		trade: { cards },
 	} = state
 
-	const hide = () => dispatch(setDeleteModalInfo({}))
+	const hide = () => {
+		dispatch(setDeleteModalInfo({}))
+		dispatch(saveGeneralError(null))
+	}
 
 	const id = deleteModalInfo?.id
 	const visible = deleteModalInfo?.visible

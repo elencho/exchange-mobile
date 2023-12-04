@@ -32,6 +32,7 @@ import {
 	setNetwork,
 } from '../../redux/wallet/actions'
 import { errorHappenedHere } from '../../utils/appUtils'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function Deposit({ refreshControl }) {
 	const dispatch = useDispatch()
@@ -99,6 +100,7 @@ export default function Deposit({ refreshControl }) {
 		dispatch(setCard(null))
 		dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 })
 		dispatch({ type: 'BALANCE_SAGA' })
+		dispatch(saveGeneralError(null))
 	}
 
 	const onNavigationStateChange = async (state) => {

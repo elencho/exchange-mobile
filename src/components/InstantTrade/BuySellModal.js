@@ -34,6 +34,7 @@ import ChooseCardModal from './ChooseCardModal'
 import CryptoModal from './CryptoModal'
 import CurrencyDropdowns from './CurrencyDropdowns'
 import FiatModal from './FiatModal'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 const BuySellModal = () => {
 	const dispatch = useDispatch()
@@ -107,6 +108,7 @@ const BuySellModal = () => {
 		dispatch(toggleBuySellModal(false))
 		dispatch(setCurrentTrade({ price: '', size: '' }))
 		dispatch(setFee(null))
+		dispatch(saveGeneralError(null))
 	}
 
 	const onDismiss = () => {

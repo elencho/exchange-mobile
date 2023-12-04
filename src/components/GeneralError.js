@@ -15,13 +15,15 @@ function GeneralError({ style = {}, show = true }) {
 	const wallet = useSelector((state) => state.wallet)
 	const profile = useSelector((state) => state.profile)
 
-	useEffect(() => {
-		return () => {
-			if (generalError) {
-				dispatch(saveGeneralError(null))
-			}
-		}
-	}, [modals, trade, transactions, wallet, profile])
+	// useEffect(() => {
+	// 	return () => {
+	// 		if (generalError) {
+	// 			setTimeout(() => {
+	// 				dispatch(saveGeneralError(null))
+	// 			}, 500)
+	// 		}
+	// 	}
+	// }, [modals, trade, transactions, wallet, profile])
 
 	const params =
 		generalError?.transParams && Object.keys(generalError?.transParams)
