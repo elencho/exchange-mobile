@@ -6,6 +6,7 @@ import colors from '../../constants/colors'
 import { toggleCryptoModal, toggleFiatModal } from '../../redux/modals/actions'
 import AppDropdown from '../AppDropdown'
 import AppText from '../AppText'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function CurrencyDropdowns({ style }) {
 	const dispatch = useDispatch()
@@ -15,6 +16,10 @@ export default function CurrencyDropdowns({ style }) {
 	const open = (currency) => {
 		if (currency === crypto) dispatch(toggleCryptoModal(true))
 		if (currency === fiat) dispatch(toggleFiatModal(true))
+
+		setTimeout(() => {
+			dispatch(saveGeneralError(null))
+		}, 500)
 	}
 
 	return (
