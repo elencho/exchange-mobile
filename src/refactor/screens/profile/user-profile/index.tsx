@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { Theme, useTheme } from '@theme/index'
 import Background from '@components/background'
@@ -12,16 +12,10 @@ import { Personal } from './components/personal'
 import Security from './components/security'
 import { useProfile } from './use-profile'
 import { NavigationProp } from '@react-navigation/native'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
+import launchSumsubSdk from '@app/utils/sumsubMobileSdk'
 
-interface Props {
-	route: {
-		params: {
-			fromRegistration: boolean
-		}
-	}
-}
-
-export default function UserProfile(props: Props) {
+const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 	const { theme, styles } = useTheme(_styles)
 	const {
 		logout,
@@ -35,6 +29,15 @@ export default function UserProfile(props: Props) {
 		bioAvailable,
 		setPersonalSecurity,
 	} = useProfile()
+
+	useEffect(() => {
+		if (
+			route.params?.justRegistered === true &&
+			userInfo?.userType === 'PHYSICAL'
+		) {
+			launchSumsubSdk()
+		}
+	}, [])
 
 	const renderItem = () => (
 		<>
@@ -102,3 +105,5 @@ const _styles = (theme: Theme) =>
 			paddingBottom: 28,
 		},
 	})
+
+export default UserProfile

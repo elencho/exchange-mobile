@@ -214,7 +214,8 @@ export const registrationForm = async (
 	passwordConfirm: string,
 	phoneCountry: string,
 	phoneNumber: string,
-	referralCode: string
+	referralCode: string,
+	promoCode: string
 ) => {
 	const data = await axios<RegistrationFormResponse>({
 		method: 'POST',
@@ -232,6 +233,7 @@ export const registrationForm = async (
 			phoneCountry,
 			phoneNumber,
 			referralCode,
+			promoCode,
 			acceptTerms: 'on',
 		},
 	})

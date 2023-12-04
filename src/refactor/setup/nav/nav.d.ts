@@ -18,7 +18,9 @@ export type Screens = {
 	Welcome?: {}
 	UpdateAvailable?: {}
 	Maintenance?: {}
-	Login?: {}
+	Login?: {
+		generalError?: UiErrorData
+	}
 	Registration?: {}
 	EmailVerification: {
 		from: 'Login' | 'Registration' | 'ForgotPassword'
@@ -39,7 +41,9 @@ export type Screens = {
 		version?: boolean
 	}
 	TransactionFilter?: {}
-	UserProfile?: {}
+	UserProfile?: {
+		justRegistered: boolean
+	}
 	Balance?: {}
 	CardVerificationOne?: {}
 	CardVerificationTwo?: {}
