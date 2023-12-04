@@ -46,6 +46,10 @@ export const usePhoneNumberModal = ({
 		phoneCountry()
 	}, [phoneNumberModalVisible])
 
+	const saveHide = () => {
+		togglePhoneNumberModal(false)
+	}
+
 	const hide = () => {
 		if (!userProfileButtonsLoading && !userProfileLoading) {
 			togglePhoneNumberModal(false)
@@ -91,7 +95,7 @@ export const usePhoneNumberModal = ({
 							updatePhoneNumberThunk({
 								phoneNumber,
 								phoneCountry,
-								hideModal: hide,
+								onSuccess: saveHide,
 							})
 						),
 					setGeneralErrorData
