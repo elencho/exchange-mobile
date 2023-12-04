@@ -120,6 +120,7 @@ const BuySellModal = () => {
 	const handleSubmit = () => {
 		const balanceCondition = !validateAmount(price) || !validateAmount(size)
 		const cardCondition = balanceCondition || !depositProvider || !card
+		dispatch(saveGeneralError(null))
 
 		if (
 			(Balance_Card === 'balance' && balanceCondition) ||
@@ -223,6 +224,7 @@ const BuySellModal = () => {
 			dispatch(setTradeOffset(0))
 			dispatch(fetchTrades())
 			dispatch(toggleBuySellModal(false))
+			dispatch(saveGeneralError(null))
 		}
 	}
 
@@ -249,7 +251,10 @@ const BuySellModal = () => {
 						onChangeText={(t) => handleChangeText(t, 'crypto')}
 						keyboardType="decimal-pad"
 						value={price ? price.trim() : ''}
-						onFocus={() => setFocusedInput('fiat')}
+						onFocus={() => {
+							setFocusedInput('fiat')
+							dispatch(saveGeneralError(null))
+						}}
 						// maxLength={maxLength}
 						right={
 							<AppText body style={styles.code}>
@@ -263,7 +268,11 @@ const BuySellModal = () => {
 						onChangeText={(t) => handleChangeText(t, 'fiat')}
 						keyboardType="decimal-pad"
 						// maxLength={maxLength}
-						onFocus={() => setFocusedInput('crypto')}
+
+						onFocus={() => {
+							setFocusedInput('crypto')
+							dispatch(saveGeneralError(null))
+						}}
 						value={size ? size.trim() : ''}
 						right={
 							<AppText body style={styles.code}>
