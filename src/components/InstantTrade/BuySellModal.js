@@ -34,6 +34,7 @@ import ChooseCardModal from './ChooseCardModal'
 import CryptoModal from './CryptoModal'
 import CurrencyDropdowns from './CurrencyDropdowns'
 import FiatModal from './FiatModal'
+import KV from '@store/kv/regular'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 const BuySellModal = () => {
@@ -217,7 +218,7 @@ const BuySellModal = () => {
 		const ending = urlArray[urlArray.length - 1]
 		if (ending === 'false' || ending === 'true') {
 			dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' })
-			await AsyncStorage.removeItem('webViewVisible')
+			KV.del('webViewVisible')
 			dispatch({ type: 'BALANCE_SAGA' })
 			dispatch(saveTrades([]))
 			dispatch(setTradeOffset(0))

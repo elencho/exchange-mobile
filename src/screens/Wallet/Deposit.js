@@ -32,6 +32,7 @@ import {
 	setNetwork,
 } from '../../redux/wallet/actions'
 import { errorHappenedHere } from '../../utils/appUtils'
+import KV from '@store/kv/regular'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function Deposit({ refreshControl }) {
@@ -111,7 +112,7 @@ export default function Deposit({ refreshControl }) {
 		if (ending === 'false' || ending === 'true') {
 			dispatch(setStatusModalInfo({ success: ending, visible: true }))
 			clear()
-			await AsyncStorage.removeItem('webViewVisible')
+			KV.del('webViewVisible')
 		}
 	}
 

@@ -51,12 +51,11 @@ export const useGoogleAuth = (props: GoogleAuthProps) => {
 						dispatch(fetchUserInfoThunk())
 						hide()
 					}
-					console.log(res,"asdafasdsd")
+					console.log(res, 'asdafasdsd')
 				})
 				.catch((err) => {
 					console.log(err, 'err')
 				}),
-
 				setGoogleAuthLoading(false)
 		} catch (e) {
 			console.log(e)

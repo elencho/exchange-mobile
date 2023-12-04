@@ -34,7 +34,14 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 	)
 
 	const startApp = async () => {
+		if (KV.get('everOpened') !== true) {
+			SecureKV.del('bioEnabledEmails')
+			SecureKV.del('refreshToken')
+			KV.set('everOpened', true)
+		}
+
 		KV.del('webViewVisible')
+
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
 		dispatch(fetchCountriesThunk())
 		await fetchLexicon()

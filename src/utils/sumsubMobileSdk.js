@@ -4,6 +4,7 @@ import axios from 'axios'
 import { VERIFICATION_TOKEN } from '../constants/api'
 import { IS_ANDROID, IS_IOS } from '../constants/system'
 import { sumsubVerificationToken } from '../utils/userProfileUtils'
+import KV from '@store/kv/regular'
 
 export default async () => {
 	const token = await sumsubVerificationToken()
@@ -25,22 +26,22 @@ export default async () => {
 					event?.prevStatus === 'Ready' &&
 					event?.newStatus === 'Initial'
 				) {
-					await AsyncStorage.setItem('webViewVisible', 'true')
+					KV.set('webViewVisible', true)
 				}
 			},
 			onLog: async (event) => {
 				if (IS_ANDROID && event?.message === 'msdk:dismiss') {
 					const sleep = (m) => new Promise((r) => setTimeout(r, m))
 					await sleep(3000)
-					await AsyncStorage.removeItem('webViewVisible')
+					KV.del('webViewVisible', true)
 				}
 			},
 			onEvent: async (event) => {
 				if (IS_IOS && event?.payload?.eventName === 'msdk:init') {
-					await AsyncStorage.setItem('webViewVisible', 'true')
+					KV.set('webViewVisible', true)
 				}
 				if (IS_IOS && event?.payload?.eventName === 'msdk:dismiss') {
-					await AsyncStorage.removeItem('webViewVisible')
+					KV.del('webViewVisible')
 				}
 			},
 		})

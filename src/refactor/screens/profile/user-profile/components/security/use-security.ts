@@ -17,6 +17,5 @@ export const useSecurity = () => {
 		googleOtpModalVisible,
 		toggleSmsAuthModalVisible,
 		smsAuthModalVisible,
-		
 	}
 }

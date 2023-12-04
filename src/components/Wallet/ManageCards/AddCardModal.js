@@ -26,6 +26,7 @@ import AppWebView from '../../AppWebView'
 import BankFeesModal from '../../InstantTrade/BankFeesModal'
 import ChooseBankModal from '../../InstantTrade/ChooseBankModal'
 import PurpleText from '../../PurpleText'
+import KV from '@store/kv/regular'
 
 export default function AddCardModal() {
 	const dispatch = useDispatch()
@@ -105,7 +106,7 @@ export default function AddCardModal() {
 		const ending = urlArray[urlArray.length - 1]
 		if (ending === 'false' || ending === 'true') {
 			dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' })
-			await AsyncStorage.removeItem('webViewVisible')
+			KV.del('webViewVisible')
 			setStatusObj({ success: ending, visible: true })
 			dispatch(cardsSagaAction())
 			hide()

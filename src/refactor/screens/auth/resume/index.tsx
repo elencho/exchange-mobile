@@ -54,7 +54,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 		try {
 			await supportedAuthenticationTypesAsync()
 				.then((data) => {
-					if (data[0] === AuthenticationType.FACIAL_RECOGNITION) {
+					if (data.includes(AuthenticationType.FACIAL_RECOGNITION)) {
 						setBioType('FaceID')
 					} else {
 						setBioType('TouchID')
