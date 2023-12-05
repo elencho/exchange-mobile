@@ -46,6 +46,9 @@ const profileSlice = createSlice({
 		setUserProfileLoading(state, action: PayloadAction<boolean>) {
 			state.userProfileLoading = action.payload
 		},
+		setOTPChangeParams(state, action: PayloadAction<tOTPChangeParams | null>) {
+			state.tOTPChangeParams = action.payload
+		},
 	},
 	extraReducers: (builder) => {
 		fetchUser(builder)
@@ -118,7 +121,7 @@ const otpChange = (builder: ActionReducerMapBuilder<ProfileState>) => {
 		})
 		.addCase(credentialsForChangeOTPThunk.fulfilled, (state, action) => {
 			state.userProfileLoading = false
-			state.tOTPChangeParams = action.payload.data
+			state.tOTPChangeParams = action?.payload?.data
 		})
 		.addCase(credentialsForChangeOTPThunk.rejected, (state) => {
 			state.userProfileLoading = false
@@ -143,5 +146,6 @@ export const {
 	setVerificationInfo,
 	setCurrentSecurityAction,
 	setUserProfileLoading,
+	setOTPChangeParams,
 } = profileSlice.actions
 export default profileSlice.reducer

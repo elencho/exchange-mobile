@@ -1,6 +1,6 @@
 import React from 'react'
 import { Trans } from 'react-i18next'
-import { Linking, StyleSheet, View } from 'react-native'
+import { Linking, StyleSheet, Text, View } from 'react-native'
 import Deactivate from '@assets/images/Deactivate.svg'
 import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
@@ -22,14 +22,7 @@ const DeleteAccount = () => {
 					i18nKey="deactivateAccount"
 					defaults="<t>Contact support to</t>  <b>Deactivate Account</b>"
 					components={{
-						b: (
-							<AppButton
-								variant="text"
-								text="Deactivate Account"
-								style={styles.textSec}
-								onPress={handlePress}
-							/>
-						),
+						b: <Text style={styles.textSec} onPress={handlePress} />,
 						t: <AppText />,
 					}}
 				/>

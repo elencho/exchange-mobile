@@ -16,18 +16,18 @@ export const updatePhoneNumberThunk = createAsyncThunk(
 		{
 			phoneNumber,
 			phoneCountry,
-			hideModal,
+			onSuccess,
 		}: {
 			phoneNumber: string
 			phoneCountry: string
-			hideModal: () => void
+			onSuccess: () => void
 		},
 		{ dispatch }
 	) => {
 		try {
 			const response = await updatePhoneNumber(phoneNumber, phoneCountry)
 			if (response?.status >= 200 && response?.status < 300) {
-				hideModal()
+				onSuccess()
 			}
 			const userInfo = await fetchUserInfoUtil()
 			dispatch(setUserInfo(userInfo!))
@@ -132,7 +132,6 @@ export const credentialsForChangeOTPThunk = createAsyncThunk(
 				onSuccess()
 				dispatch(setUserProfileLoading(false))
 			}
-			console.log('response', response)
 			return response
 		} catch (error) {
 			console.log(error)

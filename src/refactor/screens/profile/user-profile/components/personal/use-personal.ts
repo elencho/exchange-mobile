@@ -55,14 +55,7 @@ export const usePersonal = () => {
 
 	const edit = () => {
 		if (otpType === 'SMS') {
-			dispatch(
-				openCompanyInfoModal(
-					'go web phone header',
-					'go web phone description',
-					'go web phone link',
-					'go web phone button'
-				)
-			)
+			setCompanyInfoModalVisible(true)
 		} else {
 			togglePhoneNumberModal(true)
 		}
@@ -70,7 +63,7 @@ export const usePersonal = () => {
 	}
 
 	const verify = () => {
-		if (eligibleToVerify) launchSumsubSdk()
+		if (eligibleToVerify) launchSumsubSdk(userInfo.email)
 		else setCompanyInfoModalVisible(true)
 	}
 

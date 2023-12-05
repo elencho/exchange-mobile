@@ -131,7 +131,7 @@ export const getOtpChangeToken = async (OTP: string, newOTPType: string) => {
 		url: OTP_CHANGE_TOKEN,
 		params: { newOTPType },
 	})
-	if (data?.data) return data
+	return data
 }
 
 export const activateEmailOtp = async (
@@ -148,7 +148,7 @@ export const activateEmailOtp = async (
 		url: ACTIVATE_EMAIL_OTP,
 		data: `changeOTPToken=${changeOTPToken}&verificationCode=${verificationCode}`,
 	})
-	if (data) return data.status
+	if (data) return data!
 }
 
 export const activateGoogleOtp = async (
@@ -156,7 +156,7 @@ export const activateGoogleOtp = async (
 	totpCode: string,
 	totpSecret: string
 ) => {
-	const data = await axios<number>({
+	const data = await axios({
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
@@ -166,8 +166,7 @@ export const activateGoogleOtp = async (
 		url: ACTIVATE_GOOGLE_OTP,
 		data: `changeOTPToken=${changeOTPToken}&totpCode=${totpCode}&totpSecret=${totpSecret}`,
 	})
-	console.log('data', data)
-	if (data) return data.status!
+	if (data) return data!
 }
 
 export const resendEmail = async (url: string) => {

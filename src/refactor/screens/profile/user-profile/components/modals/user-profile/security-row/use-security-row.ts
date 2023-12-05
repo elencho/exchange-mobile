@@ -115,6 +115,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 			}
 			if (otpType === 'SMS') {
 				toggleSmsAuthModalVisible(true)
+				sendOtp()
 			}
 			dispatch(setCurrentSecurityAction('EMAIL'))
 		} else if (value === 'Biometric') {

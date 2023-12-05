@@ -27,6 +27,7 @@ export default function GoogleAuthModal(props) {
 		hide,
 		onModalHide,
 		generalErrorData,
+		setGeneralErrorData,
 	} = useGoogleAuth(props)
 
 	const { theme, styles } = useTheme(_styles)
@@ -67,6 +68,7 @@ export default function GoogleAuthModal(props) {
 					{IS_IOS ? <AppStoreIcon /> : <PlayStoreIcon />}
 				</TouchableOpacity>
 			</View>
+			<View style={styles.space} />
 			<General_error errorData={generalErrorData} />
 
 			<View style={styles.block}>
@@ -85,6 +87,7 @@ export default function GoogleAuthModal(props) {
 				onChangeText={handleKey}
 				value={key}
 				keyboardType="numeric"
+				onFocusOrChange={() => setGeneralErrorData(null)}
 			/>
 		</>
 	)
@@ -132,6 +135,9 @@ const _styles = (theme: Theme) =>
 		storeIcon: {
 			width: '100%',
 			height: '100%',
+		},
+		space: {
+			height: 15,
 		},
 		header: { color: theme.color.textPrimary, fontSize: 19 },
 		secondary: { color: theme.color.textSecondary, fontSize: 13 },
