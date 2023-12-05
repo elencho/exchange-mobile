@@ -17,7 +17,6 @@ export default function EditCompanyModal({
 	companyInfoModalVisible,
 	setCompanyInfoModalVisible,
 }: Props) {
-	
 	const { hide, goToWeb } = useEditCompany({
 		setCompanyInfoModalVisible,
 	})

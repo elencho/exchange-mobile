@@ -7,13 +7,15 @@ import {
 } from '@app/refactor/redux/profile/profileThunks'
 import {
 	activateEmailOtp,
+	sendEmailOtp,
 	sendOtp,
 } from '@app/refactor/redux/profile/profileApi'
 import { useAppDispatch } from '@app/refactor/redux/store'
 import SecureKV from '@store/kv/secure'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
-import { handleGeneralError } from '@app/refactor/utils/errorUtils'
+import { handleGeneralError, parseError } from '@app/refactor/utils/errorUtils'
 import { setTimer } from '@store/redux/auth/slice'
+import { setOTPChangeParams } from '@app/refactor/redux/profile/profileSlice'
 
 interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
@@ -51,11 +53,17 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
 	)
+	const [activateEmail, setActivateEmail] = useState(false)
 	const [timerVisible, setTimerVisible] = useState(false)
 	const reset = () => {
 		setSeconds(30)
 		setTimerVisible(false)
 		return
+	}
+
+	const handleValue = (text: string) => {
+		setValue(text)
+		setGeneralErrorData(null)
 	}
 
 	useEffect(() => {
@@ -94,23 +102,54 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 					),
 				setGeneralErrorData
 			)
-		} else if (currentSecurityAction === 'EMAIL') {
-			activateEmailOtp(tOTPChangeParams!.changeOTPToken!, value)
-				.then(async (res) => {
-					const oldRefresh = await SecureKV.get('refreshToken')
+		} else if (currentSecurityAction === 'EMAIL' && otpType === 'SMS') {
+			if (emailAuthModalVisible) {
+				emailActivation()
+			} else {
+				handleGeneralError(
+					() =>
+						dispatch(
+							credentialsForChangeOTPThunk({
+								OTP: value,
+								otpType: 'EMAIL',
+								onSuccess: showEmailFromSMS,
+							})
+						),
+					setGeneralErrorData
+				)
+			}
+		} else if (currentSecurityAction === 'EMAIL' && otpType === 'TOTP') {
+			emailActivation()
+		}
+	}
 
+	const emailActivation = () => {
+		activateEmailOtp(tOTPChangeParams!.changeOTPToken!, value).then(
+			async (res) => {
+				if (res?.status >= 200 && res?.status <= 300) {
+					const oldRefresh = await SecureKV.get('refreshToken')
 					retryUnauthorizedCall({}, oldRefresh)
 					hide()
 					dispatch(fetchUserInfoThunk())
-				})
-				.catch(() => console.log('first catch'))
-		}
+					dispatch(setOTPChangeParams(null))
+				} else {
+					parseError(res, setGeneralErrorData)
+				}
+			}
+		)
 	}
 
 	const hide = () => {
 		toggleSmsAuthModal(false)
 		toggleEmailAuthModal(false)
 		setGeneralErrorData(null)
+	}
+
+	const showEmailFromSMS = () => {
+		toggleSmsAuthModal(false)
+		toggleEmailAuthModal(true)
+		sendEmailOtp()
+		setActivateEmail(true)
 	}
 
 	const resend = () => {
@@ -130,7 +169,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		emailAuthModalVisible,
 		currentSecurityAction,
 		seconds,
-		setValue,
+		setValue: handleValue,
 		value,
 		handleFill,
 		generalErrorData,
