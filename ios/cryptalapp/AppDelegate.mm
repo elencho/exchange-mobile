@@ -4,6 +4,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
 #import <React/RCTConvert.h>
+#import "RNSplashScreen.h"
 
 #import <AppCenterReactNative.h>
 #import <AppCenterReactNativeAnalytics.h>
@@ -38,6 +39,8 @@
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
   
   [super application:application didFinishLaunchingWithOptions:launchOptions];
+
+  [RNSplashScreen show]; 
   
   return YES;
 }

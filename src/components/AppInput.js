@@ -68,7 +68,7 @@ const AppInput = ({
 					onBlur={() => setIsFocused(false)}
 					onFocus={() => {
 						setIsFocused(true)
-						onFocus()
+						onFocus && onFocus()
 					}}
 					value={value}
 					placeholderTextColor={colors.SECONDARY_TEXT}
