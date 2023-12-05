@@ -5,7 +5,7 @@ import { VERIFICATION_TOKEN } from '../constants/api'
 import { IS_ANDROID, IS_IOS } from '../constants/system'
 import { sumsubVerificationToken } from '../utils/userProfileUtils'
 
-export default async () => {
+export default async (email) => {
 	const token = await sumsubVerificationToken()
 
 	const snsMobileSDK = SNSMobileSDK.init(token, () => {
@@ -45,6 +45,9 @@ export default async () => {
 			},
 		})
 		.withDebug(true)
+		.withApplicantConf({
+			email: email,
+		})
 		.withLocale('en') // Optional, for cases when you need to override system locale
 		.build()
 
