@@ -32,6 +32,7 @@ import GeneralError from '@components/general_error'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
 import { System } from '@app/refactor/common/util'
+import BackButton from '@components/back_button'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -124,6 +125,7 @@ const Register = ({ navigation }: Props) => {
 							phoneNumber: phone,
 							phoneCountry: chosenCountry?.code || '',
 							referralCode: referral,
+							promoCode: promo,
 						})
 					),
 				setGeneralErrorData
@@ -154,12 +156,7 @@ const Register = ({ navigation }: Props) => {
 				modal={undefined}
 				refreshControl={undefined}
 				flexGrow={undefined}>
-				<AppButton
-					variant="text"
-					text="Back"
-					onPress={goBack}
-					style={[styles.backText, styles.back]}
-				/>
+				<BackButton onPress={goBack} style={styles.back} />
 				<View style={styles.container}>
 					<Logo style={styles.logo} />
 					<AppText variant="headline" style={styles.header}>
@@ -362,14 +359,11 @@ const _styles = (theme: Theme) =>
 			alignSelf: 'center',
 		},
 		back: {
-			marginTop: 28,
+			marginTop: 33,
 			marginLeft: 15,
+			alignSelf: 'flex-start',
 		},
-		backText: {
-			marginBottom: 2,
-			marginLeft: 10,
-			flex: 1,
-		},
+
 		input: {
 			marginTop: 11,
 		},

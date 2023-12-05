@@ -18,6 +18,9 @@ import { setTabRouteName } from '@app/redux/transactions/actions'
 import { biometricDiffElapsed } from '@app/refactor/utils/authUtils'
 import KV from '@store/kv/regular'
 import SecureKV from '@store/kv/secure'
+import { isEnrolledAsync } from 'expo-local-authentication'
+import { System } from '@app/refactor/common/util'
+import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 
 const Tab = createBottomTabNavigator()
 
@@ -36,6 +39,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			'change',
 			handleAppStateChange
 		)
+		dispatch(fetchUserInfoThunk())
 
 		return () => {
 			changeNavigationBarColor(theme.color.backgroundPrimary, true)
@@ -44,15 +48,17 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	}, [])
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
-		const appClosing =
-			newState === 'inactive' && prevAppState.current === 'active'
+		const appClosing = System.isIos
+			? newState === 'inactive' && prevAppState.current === 'active'
+			: newState === 'background' && prevAppState.current === 'active'
 
 		const bioVisible =
 			newState === 'active' &&
 			!fromResume &&
-			accessToken &&
-			!KV.get('webViewVisible') &&
-			biometricDiffElapsed()
+			accessToken !== undefined &&
+			KV.get('webViewVisible') !== true &&
+			biometricDiffElapsed() &&
+			(await isEnrolledAsync())
 
 		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email

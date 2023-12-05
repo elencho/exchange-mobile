@@ -2,6 +2,7 @@ import { BIOMETRIC_DIFF_MILLIS } from '@app/refactor/common/constants'
 import { TokenParams } from '@app/refactor/types/auth/splash'
 import KV from '@store/kv/regular'
 import SecureKV from '@store/kv/secure'
+import { isEnrolledAsync } from 'expo-local-authentication'
 import jwt_decode from 'jwt-decode'
 
 export const canDoBiometric = async (
@@ -11,14 +12,16 @@ export const canDoBiometric = async (
 	if (!bioEnabledEmails || !accessToken) return false
 
 	const email = jwt_decode<TokenParams>(accessToken)?.email
-	return bioEnabledEmails.includes(email)
+	const hasFaceOrTouchIdSaved = await isEnrolledAsync()
+
+	return bioEnabledEmails.includes(email) && hasFaceOrTouchIdSaved
 }
 
 export const biometricDiffElapsed = (): boolean => {
 	const lastTimeOpenMillis = KV.get('lastOpenDateMillis')
 
 	// TODO: Remove, let it be for now
-	// console.log((Date.now() - (lastTimeOpenMillis || 0)) / 1000)
+	console.log((Date.now() - (lastTimeOpenMillis || 0)) / 1000)
 
 	return lastTimeOpenMillis
 		? Date.now() - lastTimeOpenMillis >= BIOMETRIC_DIFF_MILLIS

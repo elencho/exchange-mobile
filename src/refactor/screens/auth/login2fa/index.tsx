@@ -28,6 +28,7 @@ import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { setOtpTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
+import BackButton from '@components/back_button'
 
 export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	const dispatch = useDispatch()
@@ -46,7 +47,9 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	const cellCount = otpType === 'SMS' ? 4 : 6
 
 	useEffect(() => {
-		dispatch(setOtpTimer(true))
+		if (otpType !== 'TOTP') {
+			dispatch(setOtpTimer(true))
+		}
 
 		return () => {
 			dispatch(setOtpTimer(false))
@@ -124,13 +127,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 				refreshControl={undefined}
 				scrollUp={undefined}>
 				<Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
-					<TouchableOpacity style={styles.back} onPress={goBack}>
-						<AppButton
-							variant="text"
-							text="Back to Log In"
-							style={styles.backText}
-						/>
-					</TouchableOpacity>
+					<BackButton onPress={goBack} style={styles.back} />
 					<View style={styles.middle}>
 						{image()}
 						<View>

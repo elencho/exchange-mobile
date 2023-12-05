@@ -9,6 +9,7 @@ import {
 } from '@store/kv/serialization'
 
 interface Schema {
+	everOpened: boolean
 	language: Language
 	webViewVisible: boolean
 	lastOpenDateMillis: number
@@ -40,12 +41,14 @@ const deserializers: {
 	[key in Key]: (value: string) => Schema[key]
 } = {
 	webViewVisible: deserializeBoolean,
+	everOpened: deserializeBoolean,
 	language: (value: string) => (value === 'ka' ? 'ka' : 'en'),
 	lastOpenDateMillis: deserializeNumber,
 }
 
 const serializers: { [key in Key]: (value: Schema[key]) => string } = {
 	webViewVisible: serializeBoolean,
+	everOpened: serializeBoolean,
 	language: serializeString,
 	lastOpenDateMillis: serializeNumber,
 }

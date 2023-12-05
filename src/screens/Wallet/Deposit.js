@@ -32,6 +32,8 @@ import {
 	setNetwork,
 } from '../../redux/wallet/actions'
 import { errorHappenedHere } from '../../utils/appUtils'
+import KV from '@store/kv/regular'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function Deposit({ refreshControl }) {
 	const dispatch = useDispatch()
@@ -99,6 +101,7 @@ export default function Deposit({ refreshControl }) {
 		dispatch(setCard(null))
 		dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 })
 		dispatch({ type: 'BALANCE_SAGA' })
+		dispatch(saveGeneralError(null))
 	}
 
 	const onNavigationStateChange = async (state) => {
@@ -109,7 +112,7 @@ export default function Deposit({ refreshControl }) {
 		if (ending === 'false' || ending === 'true') {
 			dispatch(setStatusModalInfo({ success: ending, visible: true }))
 			clear()
-			await AsyncStorage.removeItem('webViewVisible')
+			KV.del('webViewVisible')
 		}
 	}
 

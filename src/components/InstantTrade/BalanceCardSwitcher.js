@@ -8,6 +8,7 @@ import {
 	setCard,
 } from '../../redux/trade/actions'
 import AppText from '../AppText'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function BalanceCardSwitcher() {
 	const dispatch = useDispatch()
@@ -17,6 +18,7 @@ export default function BalanceCardSwitcher() {
 		dispatch(switchBalanceCard(filter))
 		dispatch(setDepositProvider(null))
 		dispatch(setCard(null))
+		dispatch(saveGeneralError(null))
 	}
 
 	const stylesCond = (f) => {

@@ -1,5 +1,5 @@
 import { t } from 'i18next'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Platform, StatusBar, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Logo from '@assets/images/Logo.svg'
@@ -14,11 +14,11 @@ import {
 import GeneralError from '@components/general_error'
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { ScreenProp } from '@app/refactor/setup/nav/nav'
+import { NavProp, ScreenProp } from '@app/refactor/setup/nav/nav'
 import Constants from 'expo-constants'
 import { setGeneralError } from '@store/redux/common/slice'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
-import { useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { setLoginLoading } from '@store/redux/auth/slice'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
@@ -38,7 +38,7 @@ const saliSatesto = {
 const banetaSms = { mail: 'iraklibanetishvili@yahoo.com', pass: 'Salo125' }
 const testMail = { mail: 'remora.419@gmail.com', pass: 'Derrickrose1$' }
 
-const Login = ({ navigation }: ScreenProp<'Login'>) => {
+const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
@@ -58,14 +58,24 @@ const Login = ({ navigation }: ScreenProp<'Login'>) => {
 		}, [])
 	)
 
+	const alreadyDrewPassedError = useRef(false)
+
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
 			setMail('')
 			setPass('')
 			setMailError(false)
 			setPassError(false)
-			setGeneralErrorData(null)
 			setLoginLoading(false)
+
+			const passedErr = route.params?.generalError
+
+			if (!alreadyDrewPassedError.current && passedErr) {
+				setGeneralErrorData(passedErr)
+				alreadyDrewPassedError.current = true
+			} else {
+				setGeneralErrorData(null)
+			}
 		})
 	}, [navigation])
 

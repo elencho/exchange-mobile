@@ -66,7 +66,10 @@ const AppInput = ({
 					style={[styles.input, disabled && styles.disabledInput]}
 					ref={inputRef}
 					onBlur={() => setIsFocused(false)}
-					onFocus={() => setIsFocused(true)?.bind(onFocus)}
+					onFocus={() => {
+						setIsFocused(true)
+						onFocus && onFocus()
+					}}
 					value={value}
 					placeholderTextColor={colors.SECONDARY_TEXT}
 					onChangeText={(text) => onChangeText(text)}

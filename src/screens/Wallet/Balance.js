@@ -18,6 +18,7 @@ import Deposit from './Deposit'
 import ManageCards from './ManageCards'
 import Whitelist from './Whitelist'
 import Withdrawal from './Withdrawal'
+import BackButton from '@components/back_button'
 
 function Balance({ navigation }) {
 	const dispatch = useDispatch()
@@ -64,9 +65,11 @@ function Balance({ navigation }) {
 
 	return (
 		<Background>
-			<TouchableOpacity onPress={back} style={styles.back} disabled={disabled}>
+			{/* <TouchableOpacity onPress={back} style={styles.back} disabled={disabled}>
 				<PurpleText text="Back to Wallet" style={styles.purpleText} />
-			</TouchableOpacity>
+			</TouchableOpacity> */}
+
+			<BackButton onPress={back} style={styles.back} />
 
 			<Headline title="My Wallet" />
 

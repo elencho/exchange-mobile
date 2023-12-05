@@ -1,5 +1,11 @@
-import React from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import React, { useEffect } from 'react'
+import {
+	FlatList,
+	Pressable,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native'
 import { Theme, useTheme } from '@theme/index'
 import Background from '@components/background'
 import { AppButton } from '@components/button'
@@ -12,30 +18,37 @@ import { Personal } from './components/personal'
 import Security from './components/security'
 import { useProfile } from './use-profile'
 import { NavigationProp } from '@react-navigation/native'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
+import launchSumsubSdk from '@app/utils/sumsubMobileSdk'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import BackSvg from '@app/assets/images/Back.svg'
+import BackButton from '@components/back_button'
 
-interface Props {
-	route: {
-		params: {
-			fromRegistration: boolean
-		}
-	}
-}
-
-export default function UserProfile(props: Props) {
+const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 	const { theme, styles } = useTheme(_styles)
 	const {
 		logout,
 		onRefresh,
 		back,
-		clear,
 		onScroll,
 		showRefreshControl,
 		personalSecurity,
-		userInfo,
 		userProfileLoading,
 		bioAvailable,
 		setPersonalSecurity,
 	} = useProfile()
+
+	const { userInfo } = useSelector((state: RootState) => state.profile)
+
+	useEffect(() => {
+		if (
+			route.params?.justRegistered === true &&
+			userInfo?.userType === 'PHYSICAL'
+		) {
+			launchSumsubSdk()
+		}
+	}, [])
 
 	const renderItem = () => (
 		<>
@@ -51,12 +64,7 @@ export default function UserProfile(props: Props) {
 	return (
 		<Background>
 			<View style={styles.topRow}>
-				<AppButton
-					onPress={back}
-					variant="text"
-					text="Back to Home"
-					style={styles.back}
-				/>
+				<BackButton onPress={back} />
 
 				<TouchableOpacity onPress={logout}>
 					<Logout />
@@ -103,3 +111,5 @@ const _styles = (theme: Theme) =>
 			paddingBottom: 28,
 		},
 	})
+
+export default UserProfile

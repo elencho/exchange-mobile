@@ -34,6 +34,8 @@ import ChooseCardModal from './ChooseCardModal'
 import CryptoModal from './CryptoModal'
 import CurrencyDropdowns from './CurrencyDropdowns'
 import FiatModal from './FiatModal'
+import KV from '@store/kv/regular'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 const BuySellModal = () => {
 	const dispatch = useDispatch()
@@ -107,6 +109,7 @@ const BuySellModal = () => {
 		dispatch(toggleBuySellModal(false))
 		dispatch(setCurrentTrade({ price: '', size: '' }))
 		dispatch(setFee(null))
+		dispatch(saveGeneralError(null))
 	}
 
 	const onDismiss = () => {
@@ -118,6 +121,7 @@ const BuySellModal = () => {
 	const handleSubmit = () => {
 		const balanceCondition = !validateAmount(price) || !validateAmount(size)
 		const cardCondition = balanceCondition || !depositProvider || !card
+		dispatch(saveGeneralError(null))
 
 		if (
 			(Balance_Card === 'balance' && balanceCondition) ||
@@ -215,12 +219,13 @@ const BuySellModal = () => {
 		const ending = urlArray[urlArray.length - 1]
 		if (ending === 'false' || ending === 'true') {
 			dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' })
-			await AsyncStorage.removeItem('webViewVisible')
+			KV.del('webViewVisible')
 			dispatch({ type: 'BALANCE_SAGA' })
 			dispatch(saveTrades([]))
 			dispatch(setTradeOffset(0))
 			dispatch(fetchTrades())
 			dispatch(toggleBuySellModal(false))
+			dispatch(saveGeneralError(null))
 		}
 	}
 
@@ -247,7 +252,10 @@ const BuySellModal = () => {
 						onChangeText={(t) => handleChangeText(t, 'crypto')}
 						keyboardType="decimal-pad"
 						value={price ? price.trim() : ''}
-						onFocus={() => setFocusedInput('fiat')}
+						onFocus={() => {
+							setFocusedInput('fiat')
+							dispatch(saveGeneralError(null))
+						}}
 						// maxLength={maxLength}
 						right={
 							<AppText body style={styles.code}>
@@ -261,7 +269,11 @@ const BuySellModal = () => {
 						onChangeText={(t) => handleChangeText(t, 'fiat')}
 						keyboardType="decimal-pad"
 						// maxLength={maxLength}
-						onFocus={() => setFocusedInput('crypto')}
+
+						onFocus={() => {
+							setFocusedInput('crypto')
+							dispatch(saveGeneralError(null))
+						}}
 						value={size ? size.trim() : ''}
 						right={
 							<AppText body style={styles.code}>

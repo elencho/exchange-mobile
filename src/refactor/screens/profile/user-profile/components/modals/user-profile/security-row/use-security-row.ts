@@ -13,6 +13,7 @@ import { TokenParams } from '@app/refactor/types/auth/splash'
 import SecureKV from '@store/kv/secure'
 import { sendOtp } from '@app/refactor/redux/profile/profileApi'
 import { setCurrentSecurityAction } from '@app/refactor/redux/profile/profileSlice'
+import KV from '@store/kv/regular'
 
 interface SecurityRowProps {
 	text: string
@@ -51,6 +52,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 	const handlePassword = () => {
 		togglePasswordModal(true)
 	}
+
 	const handleAuth = async (userEmail: string) => {
 		const cachedEmails = (await SecureKV.get('bioEnabledEmails')) || []
 		const hasFaceOrTouchIdSaved = await isEnrolledAsync()
@@ -65,6 +67,8 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 				cancelLabel: 'Abort',
 			})
 			if (result.success) {
+				KV.set('lastOpenDateMillis', Date.now())
+
 				const addedUserMail = cachedEmails
 					.filter((e) => e !== userEmail)
 					.concat([userEmail])

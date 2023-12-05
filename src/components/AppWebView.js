@@ -18,6 +18,7 @@ import {
 	setDepositProvider,
 	setFee,
 } from '../redux/trade/actions'
+import KV from '@store/kv/regular'
 
 export default function AppWebView(props) {
 	const { verifyCards, trade, deposit, cardsAdd, onClose } = props
@@ -26,7 +27,7 @@ export default function AppWebView(props) {
 	const webViewObj = useSelector((state) => state.modals.webViewObj)
 
 	const closeWebView = async () => {
-		await AsyncStorage.removeItem('webViewVisible')
+		KV.del('webViewVisible')
 		dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' })
 		if (verifyCards) {
 			dispatch(cardsSagaAction())
@@ -57,11 +58,11 @@ export default function AppWebView(props) {
 	}
 
 	const handleOnShow = async () => {
-		await AsyncStorage.setItem('webViewVisible', `${!!webViewObj}`)
+		KV.set('webViewVisible', true)
 	}
 
 	const handleOnRequestClose = async () => {
-		await AsyncStorage.removeItem('webViewVisible')
+		KV.del('webViewVisible')
 	}
 
 	return (

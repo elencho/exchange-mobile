@@ -214,7 +214,8 @@ export const registrationForm = async (
 	passwordConfirm: string,
 	phoneCountry: string,
 	phoneNumber: string,
-	referralCode: string
+	referralCode: string,
+	promoCode: string
 ) => {
 	const data = await axios<RegistrationFormResponse>({
 		method: 'POST',
@@ -232,6 +233,7 @@ export const registrationForm = async (
 			phoneCountry,
 			phoneNumber,
 			referralCode,
+			promoCode,
 			acceptTerms: 'on',
 		},
 	})
@@ -284,6 +286,7 @@ export const refreshTokenService = async (refreshToken: string) => {
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
 			requestName: 'refreshToken',
+			toast: false,
 		},
 		url: CODE_TO_TOKEN,
 		data: `grant_type=refresh_token&client_id=mobile-service-public&refresh_token=${refreshToken}`,

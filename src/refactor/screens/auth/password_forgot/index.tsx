@@ -21,6 +21,7 @@ import GeneralError from '@components/general_error'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
 import { MaterialIndicator } from 'react-native-indicators'
+import BackButton from '@components/back_button'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 const COUNTDOWN = 30
@@ -134,13 +135,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 
 	return (
 		<AppBackground>
-			<TouchableOpacity style={styles.back} onPress={goBack}>
-				<AppButton
-					variant="text"
-					text="Back to Log In"
-					style={styles.backText}
-				/>
-			</TouchableOpacity>
+			<BackButton onPress={goBack} style={styles.back} />
 
 			<WithKeyboard
 				contentContainerStyle={styles.middle}

@@ -24,7 +24,7 @@ export const useProfile = () => {
 	const [showRefreshControl, setShowRefreshControl] = useState(false)
 	const [bioAvailable, setBioAvailable] = useState(false)
 	const [personalSecurity, setPersonalSecurity] = useState('Personal')
-	const { userInfo, userProfileLoading } = state
+	const { userProfileLoading } = state
 
 	useEffect(() => {
 		dispatch(fetchUserInfoThunk())
@@ -48,15 +48,7 @@ export const useProfile = () => {
 		checkCompitable()
 		dispatch(fetchUserInfoThunk())
 	}
-	const back = () => {
-		clear()
-		navigation.goBack()
-	}
-
-	const clear = () => {
-		dispatch(clearFilters())
-		dispatch({ type: 'REFRESH_TRANSACTIONS_ACTION' })
-	}
+	const back = () => navigation.goBack()
 
 	const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
 		const { y } = event.nativeEvent.contentOffset
@@ -69,11 +61,9 @@ export const useProfile = () => {
 		logout,
 		onRefresh,
 		back,
-		clear,
 		onScroll,
 		showRefreshControl,
 		personalSecurity,
-		userInfo,
 		userProfileLoading,
 		bioAvailable,
 		setPersonalSecurity,

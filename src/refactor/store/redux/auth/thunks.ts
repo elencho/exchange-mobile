@@ -25,6 +25,7 @@ import {
 	savePkceInfo,
 	setLoginLoading,
 	setOtpLoading,
+	setOtpTimer,
 	setRegisterLoading,
 	setSetPasswordLoading,
 	setTokens,
@@ -162,8 +163,12 @@ export const resetPasswordConfirmCodeThunk = createAsyncThunk(
 
 export const resetOtpThunk = createAsyncThunk(
 	'resetOtp',
-	async (navigation: NativeStackNavigationProp<Screens, any>, { getState }) => {
+	async (
+		navigation: NativeStackNavigationProp<Screens, any>,
+		{ getState, dispatch }
+	) => {
 		const state = (getState() as RootState).auth
+		dispatch(setOtpTimer(false))
 
 		const data = await resetOtp(state.callbackUrl)
 		const resetType: ResetOtp | undefined = data.attributes.resetOTPInstructions
@@ -203,6 +208,8 @@ export const otpForLoginThunk = createAsyncThunk(
 		const { callbackUrl } = (getState() as RootState).auth
 
 		const loginInfo = await loginOtp(otp, callbackUrl)
+		const hasErrors = loginInfo?.errors && loginInfo.errors.length !== 0
+		const error = loginInfo?.errors?.[0]
 
 		try {
 			if (loginInfo.execution === Execution.UPDATE_PASSWORD) {
@@ -211,11 +218,12 @@ export const otpForLoginThunk = createAsyncThunk(
 				}, LOADING_DELAY)
 				navigation.navigate('SetNewPassword')
 			} else if (loginInfo.execution === Execution.LOGIN_USERNAME_PASSWORD) {
-				// TODO: Pass general error to login & fix authLoading button
-				navigation.navigate('Login')
-			} else if (loginInfo?.errors && loginInfo.errors.length !== 0) {
+				setTimeout(() => {
+					dispatch(setOtpLoading(false))
+				}, LOADING_DELAY)
+				navigation.navigate('Login', { generalError: error })
+			} else if (hasErrors) {
 				dispatch(setOtpLoading(false))
-				return loginInfo
 			} else {
 				dispatch(
 					codeToTokenThunk({ code: loginInfo.code, from: 'Login', navigation })
@@ -252,7 +260,11 @@ export const codeToTokenThunk = createAsyncThunk(
 					accessToken: tokenData.access_token,
 				})
 			)
-			navigation.navigate('Main')
+			if (from === 'Registration') {
+				navigation.navigate('UserProfile', { justRegistered: true })
+			} else {
+				navigation.navigate('Main')
+			}
 		}
 
 		setTimeout(() => {
@@ -317,7 +329,12 @@ export const verifyRegistrationThunk = createAsyncThunk(
 		const { callbackUrl } = (getState() as RootState).auth
 
 		const data = await verifyAccount(callbackUrl, otp)
-		if (data?.errors && data.errors.length !== 0) return data
+		if (data?.errors && data.errors.length !== 0) {
+			setTimeout(() => {
+				dispatch(setOtpLoading(false))
+			}, LOADING_DELAY)
+			return data
+		}
 
 		if (data.execution === Execution.UPDATE_PASSWORD) {
 			setTimeout(() => {
@@ -341,7 +358,7 @@ type RegistrationFormProps = {
 	phoneCountry: string
 	phoneNumber: string
 	referralCode: string
-	// TODO promo: string
+	promoCode: string
 }
 export const registrationFormThunk = createAsyncThunk(
 	'registrationForm',
@@ -356,7 +373,8 @@ export const registrationFormThunk = createAsyncThunk(
 			props.passwordConfirm,
 			props.phoneCountry,
 			props.phoneNumber,
-			props.referralCode
+			props.referralCode,
+			props.promoCode
 		)
 		if (data?.execution === Execution.EMAIL_VERIFICATION_OTP) {
 			navigationRef.navigate('EmailVerification', {
@@ -375,6 +393,7 @@ export const logoutThunk = createAsyncThunk(
 		if (httpStatus === 204) {
 			dispatch(resetAuth())
 			dispatch(setUserInfo(null))
+
 			navigationRef.reset({
 				index: 0,
 				routes: [{ name: 'Welcome' }],
