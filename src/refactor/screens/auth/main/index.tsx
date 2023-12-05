@@ -20,6 +20,7 @@ import KV from '@store/kv/regular'
 import SecureKV from '@store/kv/secure'
 import { isEnrolledAsync } from 'expo-local-authentication'
 import { System } from '@app/refactor/common/util'
+import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 
 const Tab = createBottomTabNavigator()
 
@@ -38,6 +39,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			'change',
 			handleAppStateChange
 		)
+		dispatch(fetchUserInfoThunk())
 
 		return () => {
 			changeNavigationBarColor(theme.color.backgroundPrimary, true)
