@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import {
+	FlatList,
+	Pressable,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native'
 import { Theme, useTheme } from '@theme/index'
 import Background from '@components/background'
 import { AppButton } from '@components/button'
@@ -16,6 +22,8 @@ import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import launchSumsubSdk from '@app/utils/sumsubMobileSdk'
 import { useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import BackSvg from '@app/assets/images/Back.svg'
+import BackButton from '@components/back_button'
 
 const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 	const { theme, styles } = useTheme(_styles)
@@ -56,12 +64,7 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 	return (
 		<Background>
 			<View style={styles.topRow}>
-				<AppButton
-					onPress={back}
-					variant="text"
-					text="Back to Home"
-					style={styles.back}
-				/>
+				<BackButton onPress={back} />
 
 				<TouchableOpacity onPress={logout}>
 					<Logout />

@@ -12,6 +12,7 @@ import WithKeyboard from '@app/components/WithKeyboard'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { System } from '@app/refactor/common/util'
+import BackButton from '@components/back_button'
 
 const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const dispatch = useDispatch()
@@ -53,14 +54,7 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 
 	return (
 		<Background>
-			<TouchableOpacity style={styles.back} onPress={goToLogin}>
-				<AppButton
-					variant="text"
-					text="Back to Log In"
-					style={styles.backText}
-					onPress={goToLogin}
-				/>
-			</TouchableOpacity>
+			<BackButton onPress={goToLogin} style={styles.back} />
 
 			<WithKeyboard
 				flexGrow={true}
