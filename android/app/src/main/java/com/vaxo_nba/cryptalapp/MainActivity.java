@@ -2,6 +2,7 @@ package com.cryptal.exchange.mobile;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.graphics.Color;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -19,6 +20,7 @@ public class MainActivity extends ReactActivity {
   protected void onCreate(Bundle savedInstanceState) {
     setTheme(R.style.AppTheme);
     super.onCreate(null);
+    getWindow().getDecorView().setBackgroundColor(Color.parseColor("#161629")); 
 
     try {
       if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {

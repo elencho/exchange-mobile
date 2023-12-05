@@ -535,6 +535,8 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
+  - react-native-splash-screen (3.3.0):
+    - React-Core
   - react-native-version-check (3.4.7):
     - React-Core
   - react-native-webview (12.1.0):
@@ -771,6 +773,7 @@ DEPENDENCIES:
   - "react-native-mobilesdk-module (from `../node_modules/@sumsub/react-native-mobilesdk-module`)"
   - react-native-pkce-challenge (from `../node_modules/react-native-pkce-challenge`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-version-check (from `../node_modules/react-native-version-check`)
   - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -927,6 +930,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pkce-challenge"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   react-native-version-check:
     :path: "../node_modules/react-native-version-check"
   react-native-webview:
@@ -1059,6 +1064,7 @@ SPEC CHECKSUMS:
   react-native-mobilesdk-module: 8b1761e630ca84100aa1e3cc8c830748b3f2dd88
   react-native-pkce-challenge: 160cda7bad5678866dc8d6106a4be3edca9411a0
   react-native-safe-area-context: b8979f5eda6ed5903d4dbc885be3846ea3daa753
+  react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457
   react-native-version-check: 6cd36aad4e30b8e3216747e3b4ddeb09e0647af8
   react-native-webview: 13db17f7c7fe8f91c826e9afcc369cbc74507ea0
   React-perflogger: 0bb0522a12e058f6eb69d888bc16f40c16c4b907
