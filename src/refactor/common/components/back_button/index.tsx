@@ -31,7 +31,8 @@ const _styles = (theme: Theme) => {
 		text: {
 			color: theme.color.textThird,
 			marginLeft: 2,
-			fontSize: 12,
+			marginBottom: 1,
+			fontSize: 14,
 		},
 	})
 }
