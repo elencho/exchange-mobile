@@ -24,7 +24,7 @@ export const useProfile = () => {
 	const [showRefreshControl, setShowRefreshControl] = useState(false)
 	const [bioAvailable, setBioAvailable] = useState(false)
 	const [personalSecurity, setPersonalSecurity] = useState('Personal')
-	const { userInfo, userProfileLoading } = state
+	const { userProfileLoading } = state
 
 	useEffect(() => {
 		dispatch(fetchUserInfoThunk())
@@ -64,7 +64,6 @@ export const useProfile = () => {
 		onScroll,
 		showRefreshControl,
 		personalSecurity,
-		userInfo,
 		userProfileLoading,
 		bioAvailable,
 		setPersonalSecurity,

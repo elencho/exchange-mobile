@@ -14,6 +14,8 @@ import { useProfile } from './use-profile'
 import { NavigationProp } from '@react-navigation/native'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import launchSumsubSdk from '@app/utils/sumsubMobileSdk'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 	const { theme, styles } = useTheme(_styles)
@@ -24,11 +26,12 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 		onScroll,
 		showRefreshControl,
 		personalSecurity,
-		userInfo,
 		userProfileLoading,
 		bioAvailable,
 		setPersonalSecurity,
 	} = useProfile()
+
+	const { userInfo } = useSelector((state: RootState) => state.profile)
 
 	useEffect(() => {
 		if (
