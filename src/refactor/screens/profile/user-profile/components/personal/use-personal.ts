@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Linking } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	openCompanyInfoModal,
-	togglePhoneNumberModal,
-} from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { UserStatus } from '@app/refactor/types/enums'
 import { toggleSubscriptionThunk } from '@app/refactor/redux/profile/profileThunks'
@@ -45,6 +41,13 @@ export const usePersonal = () => {
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
 	)
+	const [companyModalData, setCompanyModalData] = useState<CompanyInfoData>({
+		header: 'Go To web',
+		description: 'Visit Website',
+		link: 'Web Link',
+		button: 'OK',
+	})
+
 	const hideError = () =>
 		// TODO: Remove after wallets refactor
 		dispatch(saveGeneralError(null))
@@ -55,6 +58,12 @@ export const usePersonal = () => {
 
 	const edit = () => {
 		if (otpType === 'SMS') {
+			setCompanyModalData({
+				header: 'go web phone header',
+				description: 'go web phone description',
+				link: 'go web phone link',
+				button: 'go web phone button',
+			})
 			setCompanyInfoModalVisible(true)
 		} else {
 			togglePhoneNumberModal(true)
@@ -63,8 +72,17 @@ export const usePersonal = () => {
 	}
 
 	const verify = () => {
-		if (eligibleToVerify) launchSumsubSdk(userInfo.email)
-		else setCompanyInfoModalVisible(true)
+		if (eligibleToVerify) {
+			launchSumsubSdk(userInfo.email)
+		} else {
+			setCompanyModalData({
+				header: 'go web personal header',
+				description: 'go web personal description',
+				link: 'go web personal link',
+				button: 'go web personal button',
+			})
+			setCompanyInfoModalVisible(true)
+		}
 	}
 
 	const goToSupport = () =>
@@ -118,5 +136,7 @@ export const usePersonal = () => {
 		toggleIdentityModalVisible,
 		identityModalVisible,
 		generalErrorData,
+		companyModalData,
+		setCompanyModalData,
 	}
 }

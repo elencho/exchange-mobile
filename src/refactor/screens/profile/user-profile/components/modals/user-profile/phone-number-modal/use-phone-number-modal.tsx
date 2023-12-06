@@ -84,7 +84,7 @@ export const usePhoneNumberModal = ({
 	}
 
 	const handleSave = () => {
-		if (error || !userInfo?.country || !(phoneNumber?.trim()?.length > 0)) {
+		if (error || !userInfo?.phoneCountry || !(phoneNumber?.trim()?.length > 0)) {
 			setError(true)
 		} else {
 			const phoneCountry = chosenCountry.code
