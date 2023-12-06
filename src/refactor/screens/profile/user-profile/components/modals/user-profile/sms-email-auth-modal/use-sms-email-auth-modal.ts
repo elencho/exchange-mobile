@@ -54,7 +54,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		null
 	)
 	const [activateEmail, setActivateEmail] = useState(false)
-	const [timerVisible, setTimerVisible] = useState(false)
+	const [timerVisible, setTimerVisible] = useState(true)
 	const reset = () => {
 		setSeconds(30)
 		setTimerVisible(false)
