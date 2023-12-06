@@ -5,9 +5,13 @@ import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import useCompanyInformation from './use-company-information'
 
-export const CompanyInformation = ({ setCompanyInfoModalVisible }) => {
+export const CompanyInformation = ({
+	setCompanyInfoModalVisible,
+	setCompanyModalData,
+}) => {
 	const { openModal, userInfo } = useCompanyInformation({
 		setCompanyInfoModalVisible,
+		setCompanyModalData,
 	})
 	const { styles } = useTheme(_styles)
 	return (

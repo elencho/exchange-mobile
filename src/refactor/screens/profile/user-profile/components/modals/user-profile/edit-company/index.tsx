@@ -1,6 +1,6 @@
 import { t } from 'i18next'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import Browser from '@assets/images/User_profile/Browser.svg'
 import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
@@ -11,6 +11,12 @@ import { useEditCompany } from './use-edit-company'
 interface Props {
 	companyInfoModalVisible: boolean
 	setCompanyInfoModalVisible: (visible: boolean) => void
+	companyModalData: {
+		header: string
+		description: string
+		link: string
+		button: string
+	}
 }
 
 export default function EditCompanyModal({
@@ -29,14 +35,14 @@ export default function EditCompanyModal({
 			<AppText variant="headline" style={styles.white}>
 				{companyModalData.header}
 			</AppText>
-			<AppText style={styles.secondary}>
-				{companyModalData.description}{' '}
+			<Text style={styles.secondary}>
+				{t(`${companyModalData.description}`)}{' '}
 				<AppButton
 					variant="text"
 					text={companyModalData.link}
 					onPress={goToWeb}
 				/>
-			</AppText>
+			</Text>
 
 			<AppButton
 				variant="primary"

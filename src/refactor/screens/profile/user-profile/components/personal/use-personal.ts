@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Linking } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-	openCompanyInfoModal,
-	togglePhoneNumberModal,
-} from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { UserStatus } from '@app/refactor/types/enums'
 import { toggleSubscriptionThunk } from '@app/refactor/redux/profile/profileThunks'
@@ -45,7 +41,7 @@ export const usePersonal = () => {
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
 	)
-	const [companyModalData, setCompanyModalData] = useState({
+	const [companyModalData, setCompanyModalData] = useState<CompanyInfoData>({
 		header: 'Go To web',
 		description: 'Visit Website',
 		link: 'Web Link',
@@ -62,6 +58,12 @@ export const usePersonal = () => {
 
 	const edit = () => {
 		if (otpType === 'SMS') {
+			setCompanyModalData({
+				header: 'go web phone header',
+				description: 'go web phone description',
+				link: 'go web phone link',
+				button: 'go web phone button',
+			})
 			setCompanyInfoModalVisible(true)
 		} else {
 			togglePhoneNumberModal(true)
@@ -135,5 +137,6 @@ export const usePersonal = () => {
 		identityModalVisible,
 		generalErrorData,
 		companyModalData,
+		setCompanyModalData,
 	}
 }

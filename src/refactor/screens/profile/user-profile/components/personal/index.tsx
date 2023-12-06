@@ -54,6 +54,7 @@ export const Personal = ({ loading }: PersonalProps) => {
 		toggleIdentityModalVisible,
 		identityModalVisible,
 		companyModalData,
+		setCompanyModalData,
 	} = usePersonal()
 
 	const { styles } = useTheme(_styles)
@@ -164,6 +165,7 @@ export const Personal = ({ loading }: PersonalProps) => {
 			{corporate && (
 				<CompanyInformation
 					setCompanyInfoModalVisible={setCompanyInfoModalVisible}
+					setCompanyModalData={setCompanyModalData}
 				/>
 			)}
 			<View style={styles.line} />
