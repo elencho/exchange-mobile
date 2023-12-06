@@ -39,7 +39,9 @@ export const ResetOtp = ({
 		null
 	)
 
-	const { otpTimerVisible } = useSelector((state: RootState) => state.auth)
+	const { otpTimerVisible, otpLoading } = useSelector(
+		(state: RootState) => state.auth
+	)
 
 	useEffect(() => {
 		dispatch(setOtpTimer(true))
@@ -145,6 +147,7 @@ export const ResetOtp = ({
 								onFill={onCodeFilled}
 								indicatorStyle={{ top: '70%' }}
 								generalErrorData={generalErrorData}
+								loading={otpLoading}
 							/>
 						</View>
 					)}

@@ -35,7 +35,9 @@ const EmailVerification = ({
 		null
 	)
 
-	const { otpTimerVisible } = useSelector((state: RootState) => state.auth)
+	const { otpTimerVisible, otpLoading } = useSelector(
+		(state: RootState) => state.auth
+	)
 
 	useEffect(() => {
 		dispatch(setOtpTimer(true))
@@ -146,6 +148,7 @@ const EmailVerification = ({
 							onFill={onCodeFilled}
 							indicatorStyle={{ top: '70%' }}
 							generalErrorData={generalErrorData}
+							loading={otpLoading}
 						/>
 					</View>
 
