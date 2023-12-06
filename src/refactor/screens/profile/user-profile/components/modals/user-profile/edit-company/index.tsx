@@ -16,6 +16,7 @@ interface Props {
 export default function EditCompanyModal({
 	companyInfoModalVisible,
 	setCompanyInfoModalVisible,
+	companyModalData,
 }: Props) {
 	const { hide, goToWeb } = useEditCompany({
 		setCompanyInfoModalVisible,
@@ -25,17 +26,21 @@ export default function EditCompanyModal({
 	const children = (
 		<View style={styles.container}>
 			<Browser />
-			<AppText variant="l" style={styles.white}>
-				Go To web
+			<AppText variant="headline" style={styles.white}>
+				{companyModalData.header}
 			</AppText>
 			<AppText style={styles.secondary}>
-				{t('Visit Website')}{' '}
-				<AppButton variant="text" text={'Web Link'} onPress={goToWeb} />
+				{companyModalData.description}{' '}
+				<AppButton
+					variant="text"
+					text={companyModalData.link}
+					onPress={goToWeb}
+				/>
 			</AppText>
 
 			<AppButton
 				variant="primary"
-				text={'OK'}
+				text={companyModalData.button}
 				style={styles.button}
 				onPress={hide}
 			/>

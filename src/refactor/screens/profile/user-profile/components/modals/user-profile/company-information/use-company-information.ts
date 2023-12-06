@@ -4,18 +4,16 @@ import React, { useState } from 'react'
 import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-const useCompanyInformation = () => {
+const useCompanyInformation = ({ setCompanyInfoModalVisible }) => {
 	const dispatch = useDispatch()
 	const userInfo = useSelector((state: RootState) => state.profile.userInfo)
-	const [companyModalVisible, setCompanyModalVisible] = useState(false)
 
 	const openModal = () => {
 		// TODO: Remove after wallets refactor
+		setCompanyInfoModalVisible(true)
 		dispatch(saveGeneralError(null))
-
-		setCompanyModalVisible(true)
 	}
-	return { openModal, userInfo, companyModalVisible, setCompanyModalVisible }
+	return { openModal, userInfo }
 }
 
 export default useCompanyInformation

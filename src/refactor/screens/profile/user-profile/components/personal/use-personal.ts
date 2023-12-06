@@ -45,6 +45,13 @@ export const usePersonal = () => {
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
 	)
+	const [companyModalData, setCompanyModalData] = useState({
+		header: 'Go To web',
+		description: 'Visit Website',
+		link: 'Web Link',
+		button: 'OK',
+	})
+
 	const hideError = () =>
 		// TODO: Remove after wallets refactor
 		dispatch(saveGeneralError(null))
@@ -63,8 +70,17 @@ export const usePersonal = () => {
 	}
 
 	const verify = () => {
-		if (eligibleToVerify) launchSumsubSdk(userInfo.email)
-		else setCompanyInfoModalVisible(true)
+		if (eligibleToVerify) {
+			launchSumsubSdk(userInfo.email)
+		} else {
+			setCompanyModalData({
+				header: 'go web personal header',
+				description: 'go web personal description',
+				link: 'go web personal link',
+				button: 'go web personal button',
+			})
+			setCompanyInfoModalVisible(true)
+		}
 	}
 
 	const goToSupport = () =>
@@ -118,5 +134,6 @@ export const usePersonal = () => {
 		toggleIdentityModalVisible,
 		identityModalVisible,
 		generalErrorData,
+		companyModalData,
 	}
 }
