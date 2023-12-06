@@ -81,7 +81,6 @@ const updateUser = (builder: ActionReducerMapBuilder<ProfileState>) => {
 		})
 		.addCase(updateUserThunk.fulfilled, (state, action) => {
 			state.userProfileButtonsLoading = false
-			state.userInfo = action.payload
 		})
 		.addCase(updateUserThunk.rejected, (state) => {
 			state.userProfileButtonsLoading = false

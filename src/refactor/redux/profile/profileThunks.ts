@@ -43,7 +43,6 @@ export const fetchUserInfoThunk = createAsyncThunk(
 	async () => {
 		try {
 			const userInfo = await fetchUserInfoUtil()
-
 			return userInfo
 		} catch (error) {
 			console.log(error)
@@ -53,20 +52,23 @@ export const fetchUserInfoThunk = createAsyncThunk(
 
 export const updateUserThunk = createAsyncThunk(
 	'profile/updateUser',
-	async ({
-		localUserInfo,
-		hide,
-	}: {
-		localUserInfo: EditProfileParams
-		hide: () => void
-	}) => {
+	async (
+		{
+			localUserInfo,
+			hide,
+		}: {
+			localUserInfo: EditProfileParams
+			hide: () => void
+		},
+		{ dispatch }
+	) => {
 		try {
 			const response = await updateUserData(localUserInfo)
 			if (response?.status >= 200 && response?.status < 300) {
 				hide()
-				const userInfo = await fetchUserInfoUtil()
-				return userInfo
+				dispatch(fetchUserInfoThunk())
 			}
+			return response
 		} catch (error) {
 			console.log(error)
 		}

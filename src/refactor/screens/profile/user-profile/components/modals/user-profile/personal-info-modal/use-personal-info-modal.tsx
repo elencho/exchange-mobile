@@ -51,6 +51,7 @@ const usePersonalInfoModal = ({
 			postalCode: userInfo?.postalCode!,
 			address: userInfo?.address!,
 		})
+		setGeneralErrorData(null)
 	}
 	const saveHide = () => {
 		!userProfileButtonsLoading && togglePersonalInfoModal(false)
