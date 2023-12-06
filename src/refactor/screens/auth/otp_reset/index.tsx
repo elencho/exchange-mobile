@@ -21,6 +21,7 @@ import { setOtpTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import KV from '@store/kv/regular'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
+import BackButton from '@components/back_button'
 
 export const ResetOtp = ({
 	navigation,
@@ -109,9 +110,7 @@ export const ResetOtp = ({
 				modal={undefined}
 				refreshControl={undefined}
 				scrollUp={undefined}>
-				<TouchableOpacity style={styles.back} onPress={goBack}>
-					<AppButton variant="text" text="Go Back" style={styles.backText} />
-				</TouchableOpacity>
+				<BackButton onPress={goBack} style={styles.back} />
 				<View style={styles.middle}>
 					<Logo style={styles.logo} />
 					<View>
