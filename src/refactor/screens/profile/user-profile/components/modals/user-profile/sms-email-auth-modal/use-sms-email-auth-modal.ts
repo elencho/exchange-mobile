@@ -82,11 +82,13 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	const handleHide = () => {
 		setSeconds(30)
 		setValue('')
+		setGeneralErrorData(null)
 	}
 
 	const emailHide = async () => {
 		await hide()
 		toggleGoogleAuthModal(true)
+		setGeneralErrorData(null)
 	}
 
 	const handleFill = () => {
