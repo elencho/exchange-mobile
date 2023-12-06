@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import {
 	credentialsForChangeOTPThunk,
@@ -14,8 +14,6 @@ import { useAppDispatch } from '@app/refactor/redux/store'
 import SecureKV from '@store/kv/secure'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
 import { handleGeneralError, parseError } from '@app/refactor/utils/errorUtils'
-import { setTimer } from '@store/redux/auth/slice'
-import { setOTPChangeParams } from '@app/refactor/redux/profile/profileSlice'
 
 interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
@@ -154,9 +152,28 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		setActivateEmail(true)
 	}
 
+	const onShow = () => {
+		setTimerVisible(true)
+	}
+
 	const resend = () => {
 		setTimerVisible(true)
-		sendOtp()
+		if (currentSecurityAction === 'EMAIL') {
+			if (emailAuthModalVisible) {
+				sendEmailOtp()
+			}
+			if (smsAuthModalVisible) {
+				sendOtp()
+			}
+		}
+		if (currentSecurityAction === 'TOTP') {
+			if (emailAuthModalVisible) {
+				sendOtp()
+			}
+			if (smsAuthModalVisible) {
+				sendOtp()
+			}
+		}
 	}
 
 	return {
@@ -176,5 +193,6 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		handleFill,
 		generalErrorData,
 		timerVisible,
+		onShow,
 	}
 }
