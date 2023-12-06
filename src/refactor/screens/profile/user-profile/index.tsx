@@ -46,7 +46,7 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 			route.params?.justRegistered === true &&
 			userInfo?.userType === 'PHYSICAL'
 		) {
-			launchSumsubSdk()
+			launchSumsubSdk(userInfo.email)
 		}
 	}, [])
 
