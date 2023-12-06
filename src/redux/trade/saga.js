@@ -266,7 +266,6 @@ function* refreshWalletAndTradesSaga() {
 	}
 
 	if (main && wallet) yield put({ type: 'BALANCE_SAGA' })
-	if (!Object.keys(userInfo)?.length) yield put(fetchUserInfo())
 }
 
 export default function* () {
