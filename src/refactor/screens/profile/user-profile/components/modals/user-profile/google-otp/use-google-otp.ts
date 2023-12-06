@@ -36,12 +36,19 @@ export const useGoogleOtp = (props: GoogleOtpProps) => {
 		toggleEmailAuthModalVisible(false)
 		toggleGoogleOtpModalVisible(false)
 		setValue('')
+		setGeneralErrorData(null)
+	}
+
+	const handleChange = (text: string) => {
+		setGeneralErrorData(null)
+		setValue(text)
 	}
 
 	const emailHide = () => {
 		sendEmailOtp()
 		hide()
 		toggleEmailAuthModalVisible(true)
+		setGeneralErrorData(null)
 	}
 
 	const onFill = () =>
@@ -62,7 +69,7 @@ export const useGoogleOtp = (props: GoogleOtpProps) => {
 		email,
 		googleOtpModalVisible,
 		navigation,
-		setValue,
+		setValue: handleChange,
 		onFill,
 		generalErrorData,
 	}

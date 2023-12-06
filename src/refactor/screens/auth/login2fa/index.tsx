@@ -40,7 +40,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 		null
 	)
 
-	const { otpTimerVisible, otpType } = useSelector(
+	const { otpTimerVisible, otpType, otpLoading } = useSelector(
 		(state: RootState) => state.auth
 	)
 
@@ -150,6 +150,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 								navigation={navigation}
 								onFill={onCodeFilled}
 								generalErrorData={generalErrorData}
+								loading={otpLoading}
 							/>
 						</View>
 					</View>

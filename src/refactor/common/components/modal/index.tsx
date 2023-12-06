@@ -32,6 +32,7 @@ interface AppModalProps {
 	onDismiss?: () => void
 	modalStyle?: StyleSheet.NamedStyles<any>
 	backgroundStyle?: StyleSheet.NamedStyles<any>
+	onShow?: () => void
 }
 
 const AppModal = (props: AppModalProps) => {
@@ -50,6 +51,7 @@ const AppModal = (props: AppModalProps) => {
 		modalStyle,
 		backgroundStyle,
 		delayedOpen,
+		onShow,
 	} = props
 
 	const { isBiometricScreenOpened } = useSelector(
@@ -94,6 +96,7 @@ const AppModal = (props: AppModalProps) => {
 				hideModalContentWhileAnimating
 				useNativeDriver
 				useNativeDriverForBackdrop
+				onShow={onShow}
 				onDismiss={onDismiss}>
 				<RootSiblingParent>
 					{bottom && (

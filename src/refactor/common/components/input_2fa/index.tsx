@@ -24,6 +24,7 @@ interface Props {
 	indicatorStyle?: StyleProp<ViewStyle>
 	generalErrorData?: UiErrorData | null
 	onFill: () => void
+	loading?: boolean
 }
 
 const TwoFaInput = ({
@@ -33,10 +34,8 @@ const TwoFaInput = ({
 	indicatorStyle,
 	onFill,
 	generalErrorData,
+	loading,
 }: Props) => {
-	// TODO: add loading from param
-	const loading = useSelector((state: RootState) => state.auth.otpLoading)
-
 	useEffect(() => {
 		if (value.length === cellCount) {
 			setTimeout(() => {
