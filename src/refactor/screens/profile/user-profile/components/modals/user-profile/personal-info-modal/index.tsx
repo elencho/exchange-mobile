@@ -138,7 +138,7 @@ export default function PersonalInfoModal({
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
 		button: {
-			marginVertical: 20,
+			marginBottom: 35,
 		},
 		dropdownText: {
 			flex: 1,
