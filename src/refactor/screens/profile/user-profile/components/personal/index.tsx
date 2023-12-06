@@ -53,6 +53,8 @@ export const Personal = ({ loading }: PersonalProps) => {
 		companyInfoModalVisible,
 		toggleIdentityModalVisible,
 		identityModalVisible,
+		companyModalData,
+		setCompanyModalData,
 	} = usePersonal()
 
 	const { styles } = useTheme(_styles)
@@ -160,7 +162,12 @@ export const Personal = ({ loading }: PersonalProps) => {
 			</View>
 			<View style={styles.line} />
 			<PersonalInformation togglePersonalInfoModal={togglePersonalInfoModal} />
-			{corporate && <CompanyInformation />}
+			{corporate && (
+				<CompanyInformation
+					setCompanyInfoModalVisible={setCompanyInfoModalVisible}
+					setCompanyModalData={setCompanyModalData}
+				/>
+			)}
 			<View style={styles.line} />
 			<DeleteAccount />
 			<PersonalInfoModal
@@ -176,6 +183,7 @@ export const Personal = ({ loading }: PersonalProps) => {
 				setLanguageModalVisible={setLanguageModalVisible}
 			/>
 			<EditCompanyModal
+				companyModalData={companyModalData}
 				companyInfoModalVisible={companyInfoModalVisible}
 				setCompanyInfoModalVisible={setCompanyInfoModalVisible}
 			/>

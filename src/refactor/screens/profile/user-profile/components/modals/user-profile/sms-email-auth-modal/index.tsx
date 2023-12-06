@@ -43,6 +43,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 		handleFill,
 		generalErrorData,
 		timerVisible,
+		onShow,
 	} = useSmsAuthEmailModal({
 		type,
 		toggleSmsAuthModal,
@@ -108,6 +109,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 			hide={hide}
 			visible={smsAuthModalVisible || emailAuthModalVisible}
 			onModalHide={handleHide}
+			onShow={onShow}
 		/>
 	)
 }

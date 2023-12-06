@@ -1,6 +1,6 @@
 import { t } from 'i18next'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import Browser from '@assets/images/User_profile/Browser.svg'
 import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
@@ -11,11 +11,18 @@ import { useEditCompany } from './use-edit-company'
 interface Props {
 	companyInfoModalVisible: boolean
 	setCompanyInfoModalVisible: (visible: boolean) => void
+	companyModalData: {
+		header: string
+		description: string
+		link: string
+		button: string
+	}
 }
 
 export default function EditCompanyModal({
 	companyInfoModalVisible,
 	setCompanyInfoModalVisible,
+	companyModalData,
 }: Props) {
 	const { hide, goToWeb } = useEditCompany({
 		setCompanyInfoModalVisible,
@@ -25,17 +32,21 @@ export default function EditCompanyModal({
 	const children = (
 		<View style={styles.container}>
 			<Browser />
-			<AppText variant="l" style={styles.white}>
-				Go To web
+			<AppText variant="headline" style={styles.white}>
+				{companyModalData.header}
 			</AppText>
-			<AppText style={styles.secondary}>
-				{t('Visit Website')}{' '}
-				<AppButton variant="text" text={'Web Link'} onPress={goToWeb} />
-			</AppText>
+			<Text style={styles.secondary}>
+				{t(`${companyModalData.description}`)}{' '}
+				<AppButton
+					variant="text"
+					text={companyModalData.link}
+					onPress={goToWeb}
+				/>
+			</Text>
 
 			<AppButton
 				variant="primary"
-				text={'OK'}
+				text={companyModalData.button}
 				style={styles.button}
 				onPress={hide}
 			/>

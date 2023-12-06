@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import AppModal from '@components/modal'
 import { ModalWithSearch } from '@components/modal/modal-with-search'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { Route } from '@app/refactor/setup/nav/nav'
+import { fetchCountriesThunk } from '@store/redux/common/thunks'
 
 interface Props {
 	hide: () => void
@@ -28,6 +29,7 @@ const CountriesModal = (props: Props) => {
 		phoneCountry,
 	} = props
 	const { countries } = common
+	const dispatch = useDispatch()
 
 	const [filteredCountries, setFilteredCountries] = useState<Country[]>([])
 
@@ -40,6 +42,10 @@ const CountriesModal = (props: Props) => {
 			(country) => country?.name?.toLowerCase().includes(txt.toLowerCase())
 		)
 		setFilteredCountries(filtered)
+	}
+
+	const onShow = () => {
+		dispatch(fetchCountriesThunk())
 	}
 
 	const choose = (countryName?: string) => {
@@ -72,6 +78,7 @@ const CountriesModal = (props: Props) => {
 			delayedOpen
 			fullScreen
 			backgroundStyle={{ paddingHorizontal: 10 }}
+			onShow={onShow}
 		/>
 	)
 }

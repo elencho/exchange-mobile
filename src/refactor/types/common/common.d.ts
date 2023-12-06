@@ -26,3 +26,10 @@ interface Currency {
 }
 
 type CurrencyType = 'FIAT' | 'CRYPTO'
+
+type CompanyInfoData = {
+	header: string
+	description: string
+	link: string
+	button: string
+}
