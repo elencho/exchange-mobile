@@ -14,7 +14,7 @@ interface UpdatePasswordData {
 	currentPassword: string
 	newPassword: string
 	repeatPassword: string
-	hide: () => void
+	onSuccess: () => void
 }
 
 interface UpdatePhoneNumberData {

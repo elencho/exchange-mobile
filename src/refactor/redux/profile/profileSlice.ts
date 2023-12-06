@@ -103,10 +103,11 @@ const updatePassword = (builder: ActionReducerMapBuilder<ProfileState>) => {
 const emailUpdates = (builder: ActionReducerMapBuilder<ProfileState>) => {
 	builder
 		.addCase(toggleSubscriptionThunk.pending, (state) => {
-			state.userProfileLoading = false
+			state.userProfileLoading = true
 		})
 		.addCase(toggleSubscriptionThunk.fulfilled, (state, action) => {
 			state.userInfo = action.payload
+			state.userProfileLoading = false
 		})
 		.addCase(toggleSubscriptionThunk.rejected, (state) => {
 			state.userProfileLoading = false

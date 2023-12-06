@@ -28,6 +28,7 @@ export const updatePhoneNumberThunk = createAsyncThunk(
 			const response = await updatePhoneNumber(phoneNumber, phoneCountry)
 			if (response?.status >= 200 && response?.status < 300) {
 				onSuccess()
+				dispatch(fetchUserInfoThunk())
 			}
 			const userInfo = await fetchUserInfoUtil()
 			dispatch(setUserInfo(userInfo!))
@@ -77,12 +78,15 @@ export const updateUserThunk = createAsyncThunk(
 
 export const updatePasswordThunk = createAsyncThunk(
 	'profile/updatePassword',
-	async ({
-		currentPassword,
-		newPassword,
-		repeatPassword,
-		hide,
-	}: UpdatePasswordData) => {
+	async (
+		{
+			currentPassword,
+			newPassword,
+			repeatPassword,
+			onSuccess,
+		}: UpdatePasswordData,
+		{ dispatch }
+	) => {
 		try {
 			const response = await updatePasswordUtil(
 				currentPassword,
@@ -90,7 +94,8 @@ export const updatePasswordThunk = createAsyncThunk(
 				repeatPassword
 			)
 			if (response?.status >= 200 && response?.status < 300) {
-				hide()
+				onSuccess()
+				dispatch(fetchUserInfoThunk())
 			}
 			return response
 		} catch (error) {

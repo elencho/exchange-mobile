@@ -84,7 +84,7 @@ export const usePasswordModal = ({
 							currentPassword,
 							newPassword,
 							repeatPassword,
-							hide,
+							onSuccess: hide,
 						})
 					),
 				setGeneralErrorData
