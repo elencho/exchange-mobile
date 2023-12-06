@@ -56,7 +56,7 @@ export default function AppNavigator() {
 			type: 'SET_STACK_NAVIGATION_ROUTE',
 			stackRoute: state?.routes[state.routes.length - 1].name,
 		})
-		if (generalError) dispatch(saveGeneralError(null))
+		// if (generalError) dispatch(saveGeneralError(null))
 	}
 
 	return (

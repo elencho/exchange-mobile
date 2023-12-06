@@ -285,7 +285,7 @@ export const refreshTokenService = async (refreshToken: string) => {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
-			requestName: 'refreshToken',
+			// requestName: 'refreshToken',
 			toast: false,
 		},
 		url: CODE_TO_TOKEN,
