@@ -94,7 +94,7 @@ export default function ModalWithSearch({
 				style={styles.searchInput}
 			/>
 
-			<WithKeyboard padding flexGrow modal>
+			<WithKeyboard padding flexGrow modal noRefresh>
 				<FlashList
 					data={array}
 					renderItem={searchItem}

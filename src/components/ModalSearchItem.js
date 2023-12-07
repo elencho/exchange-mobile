@@ -69,7 +69,7 @@ const ModalSearchItem = ({
 			{code !== 'Show all currency' ? (
 				<FastImage
 					style={styles.image}
-					resizeMode="contain"
+					resizeMode="stretch"
 					source={{
 						uri,
 						priority: FastImage.priority.normal,
@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
 		marginRight: 14,
 		width: 36,
 		height: 36,
+		borderRadius: 18,
 	},
 	primary: { color: colors.PRIMARY_TEXT },
 	secondary: { color: colors.SECONDARY_TEXT },
