@@ -60,8 +60,6 @@ axios.interceptors.response.use(
 const handleError = async (err: any) => {
 	const state = store.getState()
 
-	console.log('Errrrr', err)
-
 	const status: number = err.response.status
 	const uiError: UiErrorData | undefined = err.response.data
 	const invalidGrant = err.response.data.error === 'invalid_grant'
