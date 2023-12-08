@@ -59,7 +59,9 @@ export const ModalSearchItem = (props: ModalWithSearchProps) => {
 	const text =
 		phoneCountry || countryDrop || citizenshipDrop ? (
 			<View style={styles.codeWrapper}>
-				<AppText variant="title" style={styles.primary}>
+				<AppText
+					variant="title"
+					style={phoneCountry ? styles.primary : styles.code}>
 					{codeText}
 				</AppText>
 				<AppText
@@ -160,5 +162,9 @@ const _styles = (theme: Theme) =>
 			height: 36,
 			marginRight: 14,
 			borderRadius: 18,
+		},
+		code: {
+			color: theme.color.textPrimary,
+			width: 40,
 		},
 	})
