@@ -25,13 +25,20 @@ export const useProfile = () => {
 	const [bioAvailable, setBioAvailable] = useState(false)
 	const [personalSecurity, setPersonalSecurity] = useState('Personal')
 	const { userProfileLoading } = state
+	const [companyModalData, setCompanyModalData] = useState<CompanyInfoData>({
+		header: 'Go To web',
+		description: 'Visit Website',
+		link: 'Web Link',
+		button: 'OK',
+	})
+	const [companyInfoModalVisible, setCompanyInfoModalVisible] = useState(false)
 
 	useEffect(() => {
 		dispatch(fetchUserInfoThunk())
 		checkCompitable()
 		const timer = setTimeout(() => {
 			setShowRefreshControl(true)
-		}, 1000)
+		}, 5000)
 		return () => clearTimeout(timer)
 	}, [])
 
@@ -67,5 +74,9 @@ export const useProfile = () => {
 		userProfileLoading,
 		bioAvailable,
 		setPersonalSecurity,
+		companyModalData,
+		setCompanyModalData,
+		companyInfoModalVisible,
+		setCompanyInfoModalVisible,
 	}
 }

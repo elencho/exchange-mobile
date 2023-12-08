@@ -37,23 +37,39 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 		userProfileLoading,
 		bioAvailable,
 		setPersonalSecurity,
+		companyModalData,
+		setCompanyModalData,
+		companyInfoModalVisible,
+		setCompanyInfoModalVisible,
 	} = useProfile()
 
 	const { userInfo } = useSelector((state: RootState) => state.profile)
-
 	useEffect(() => {
-		if (
-			route.params?.justRegistered === true &&
-			userInfo?.userType === 'PHYSICAL'
-		) {
-			launchSumsubSdk(userInfo.email)
+		if (route.params?.justRegistered === true) {
+			if (userInfo?.verificationToolEnabled) {
+				launchSumsubSdk(userInfo.email)
+			} else {
+				setCompanyModalData({
+					header: 'go web personal header',
+					description: 'go web personal description',
+					link: 'go web personal link',
+					button: 'go web personal button',
+				})
+				setCompanyInfoModalVisible(true)
+			}
 		}
-	}, [])
+	}, [userInfo, route.params?.justRegistered])
 
 	const renderItem = () => (
 		<>
 			{personalSecurity === 'Personal' && (
-				<Personal loading={userProfileLoading} />
+				<Personal
+					loading={userProfileLoading}
+					companyModalData={companyModalData}
+					setCompanyModalData={setCompanyModalData}
+					companyInfoModalVisible={companyInfoModalVisible}
+					setCompanyInfoModalVisible={setCompanyInfoModalVisible}
+				/>
 			)}
 			{personalSecurity === 'Security' && (
 				<Security loading={userProfileLoading} bioAvailable={bioAvailable} />
