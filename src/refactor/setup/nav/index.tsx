@@ -72,7 +72,6 @@ export default function AppNavigator() {
 					headerShown: false,
 					gestureEnabled: false,
 					headerLeft: () => null,
-					animation: 'slide_from_right',
 					navigationBarColor: theme.color.backgroundPrimary,
 				}}
 				initialRouteName="Splash">
