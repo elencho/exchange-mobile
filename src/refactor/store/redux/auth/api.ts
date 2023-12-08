@@ -271,7 +271,7 @@ export const retryUnauthorizedCall = async (
 	)
 	config.headers.isFromRetry = true
 	config.headers.hasToast = false
-	
+
 	return axios.request(config)
 }
 
