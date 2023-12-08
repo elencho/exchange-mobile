@@ -32,6 +32,10 @@ import {
 } from './slice'
 import { navigationRef } from '@app/refactor/setup/nav'
 import { setUserInfo } from '@app/refactor/redux/profile/profileSlice'
+import { saveUserInfo, setCredentials } from '@app/redux/profile/actions'
+import { resetTradesState } from '@app/redux/trade/actions'
+import { resetTransactionsState } from '@app/redux/transactions/actions'
+import { resetWalletState } from '@app/redux/wallet/actions'
 
 const LOADING_DELAY = 2000
 
@@ -399,6 +403,13 @@ export const logoutThunk = createAsyncThunk(
 		if (httpStatus === 204) {
 			dispatch(resetAuth())
 			dispatch(setUserInfo(null))
+
+			// saga
+			dispatch(resetTradesState())
+			dispatch(saveUserInfo({}))
+			dispatch(setCredentials({}))
+			dispatch(resetTransactionsState())
+			dispatch(resetWalletState())
 
 			navigationRef.reset({
 				index: 0,

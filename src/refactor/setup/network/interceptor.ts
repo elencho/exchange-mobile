@@ -16,6 +16,7 @@ import SecureKV from '@store/kv/secure'
 axios.interceptors.request.use((request) => {
 	const hasToast: boolean = request.headers.toast === false ? false : true
 	const requestName: string | undefined = request.headers.requestName
+	const isFromRetry = request.headers.isFromRetry
 	const accessToken = store.getState().auth.accessToken
 
 	const needsToken =
@@ -27,7 +28,9 @@ axios.interceptors.request.use((request) => {
 		request.headers.Authorization = `Bearer ${accessToken}`
 	}
 	store.dispatch(
-		setLastRequestUiErrorType(hasToast ? 'AppToast' : 'GeneralError')
+		setLastRequestUiErrorType(
+			hasToast && !isFromRetry ? 'AppToast' : 'GeneralError'
+		)
 	)
 
 	//TODO: Remove this when wallets are refactored

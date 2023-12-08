@@ -17,6 +17,7 @@ import AppModal from '../AppModal'
 import AppText from '../AppText'
 import PurpleText from '../PurpleText'
 import TwoFaInput from '../TwoFaInput'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function SmsEmailAuthModal({
 	type,
@@ -31,6 +32,7 @@ export default function SmsEmailAuthModal({
 	const {
 		modals: { smsAuthModalVisible, emailAuthModalVisible },
 		profileOld: { currentSecurityAction, timerVisible },
+		errors: { generalError },
 	} = state
 
 	const action =
@@ -82,6 +84,7 @@ export default function SmsEmailAuthModal({
 		dispatch(action)
 		if (email) dispatch(setEmailAuth(false))
 		if (google) dispatch(setGoogleAuth(false))
+		if (generalError) dispatch(saveGeneralError(null))
 	}
 
 	const resend = () =>

@@ -262,11 +262,15 @@ const Register = ({ navigation }: Props) => {
 								setPhoneErr(false)
 								setGeneralErrorData(null)
 							}}
-							placeholder="Phone Number"
+							placeholder={t('Phone Number').toString()}
 							placeholderTextColor={
 								phoneErr ? theme.color.error : theme.color.textSecondary
 							}
-							style={{ flex: 1, color: 'white' }}
+							style={{
+								flex: 1,
+								color: 'white',
+								fontFamily: theme.font.regular,
+							}}
 							keyboardType="numeric"
 						/>
 					</View>

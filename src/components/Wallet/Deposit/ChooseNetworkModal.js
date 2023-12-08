@@ -57,7 +57,7 @@ export default function ChooseNetworkModal() {
 		let networksToDisplay = []
 		const m = withdrawal || isWhitelist ? 'withdrawalMethods' : 'depositMethods'
 		const n =
-			currentBalanceObj[m]?.length > 0
+			Object.keys(currentBalanceObj[m])?.length > 0
 				? currentBalanceObj[m]
 				: currentBalanceObj['supportedProviders']
 

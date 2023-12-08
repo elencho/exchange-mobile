@@ -20,10 +20,10 @@ import { useProfile } from './use-profile'
 import { NavigationProp } from '@react-navigation/native'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import launchSumsubSdk from '@app/utils/sumsubMobileSdk'
-import { useSelector } from 'react-redux'
-import { RootState } from '@app/refactor/redux/rootReducer'
 import BackSvg from '@app/assets/images/Back.svg'
 import BackButton from '@components/back_button'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 	const { theme, styles } = useTheme(_styles)

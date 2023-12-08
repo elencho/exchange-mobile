@@ -8,6 +8,7 @@ import { setEmailAuth } from '../../redux/profile/actions'
 import AppModal from '../AppModal'
 import AppText from '../AppText'
 import TwoFaInput from '../TwoFaInput'
+import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
 export default function GoogleOtpModal({
 	withdrawal,
@@ -22,6 +23,7 @@ export default function GoogleOtpModal({
 	const {
 		modals: { googleOtpModalVisible },
 		profile: { currentSecurityAction },
+		errors: { generalError },
 	} = state
 
 	const [value, setValue] = useState(twoFaInputValue ?? '')
@@ -33,6 +35,7 @@ export default function GoogleOtpModal({
 		if (email) dispatch(setEmailAuth(false))
 		setValue('')
 		setTwoFaInputValue && setTwoFaInputValue(null)
+		if (generalError) dispatch(saveGeneralError(null))
 	}
 
 	useEffect(() => {

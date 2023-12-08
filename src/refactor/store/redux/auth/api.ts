@@ -269,6 +269,9 @@ export const retryUnauthorizedCall = async (
 			accessToken: data.access_token,
 		})
 	)
+	config.headers.isFromRetry = true
+	config.headers.hasToast = false
+	
 	return axios.request(config)
 }
 
@@ -285,7 +288,7 @@ export const refreshTokenService = async (refreshToken: string) => {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
-			requestName: 'refreshToken',
+			// requestName: 'refreshToken',
 			toast: false,
 		},
 		url: CODE_TO_TOKEN,

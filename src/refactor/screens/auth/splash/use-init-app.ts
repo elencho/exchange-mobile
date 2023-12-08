@@ -41,8 +41,8 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 		}
 
 		KV.del('webViewVisible')
-
 		changeNavigationBarColor(theme.color.backgroundPrimary, true)
+
 		dispatch(fetchCountriesThunk())
 		await fetchLexicon()
 
