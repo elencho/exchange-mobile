@@ -265,7 +265,13 @@ export const codeToTokenThunk = createAsyncThunk(
 				})
 			)
 			if (from === 'Registration') {
-				navigation.navigate('UserProfile', { justRegistered: true })
+				navigationRef.reset({
+					index: 1,
+					routes: [
+						{ name: 'Main' },
+						{ name: 'UserProfile', params: { justRegistered: true } },
+					],
+				})
 			} else {
 				navigation.navigate('Main')
 			}

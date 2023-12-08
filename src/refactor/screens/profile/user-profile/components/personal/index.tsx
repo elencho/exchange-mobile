@@ -26,9 +26,19 @@ import { usePersonal } from './use-personal'
 
 interface PersonalProps {
 	loading: boolean
+	companyModalData: CompanyInfoData
+	setCompanyModalData: (data: CompanyInfoData) => void
+	companyInfoModalVisible: boolean
+	setCompanyInfoModalVisible: (v: boolean) => void
 }
 
-export const Personal = ({ loading }: PersonalProps) => {
+export const Personal = ({
+	loading,
+	companyModalData,
+	setCompanyModalData,
+	companyInfoModalVisible,
+	setCompanyInfoModalVisible,
+}: PersonalProps) => {
 	const {
 		userStatus,
 		hideError,
@@ -49,13 +59,14 @@ export const Personal = ({ loading }: PersonalProps) => {
 		phoneNumberModalVisible,
 		togglePhoneNumberModal,
 		emailUpdated,
-		setCompanyInfoModalVisible,
-		companyInfoModalVisible,
 		toggleIdentityModalVisible,
 		identityModalVisible,
+	} = usePersonal({
 		companyModalData,
 		setCompanyModalData,
-	} = usePersonal()
+		companyInfoModalVisible,
+		setCompanyInfoModalVisible,
+	})
 
 	const { styles } = useTheme(_styles)
 

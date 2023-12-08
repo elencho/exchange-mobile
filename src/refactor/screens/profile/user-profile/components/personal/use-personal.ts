@@ -8,7 +8,19 @@ import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 import launchSumsubSdk from '@app/utils/sumsubMobileSdk'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 
-export const usePersonal = () => {
+interface PersonalProps {
+	companyModalData: CompanyInfoData
+	setCompanyModalData: (data: CompanyInfoData) => void
+	companyInfoModalVisible: boolean
+	setCompanyInfoModalVisible: (v: boolean) => void
+}
+
+export const usePersonal = ({
+	companyModalData,
+	setCompanyModalData,
+	companyInfoModalVisible,
+	setCompanyInfoModalVisible,
+}: PersonalProps) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
@@ -36,17 +48,10 @@ export const usePersonal = () => {
 	const [personalInfoModalVisible, togglePersonalInfoModal] = useState(false)
 	const [phoneNumberModalVisible, togglePhoneNumberModal] = useState(false)
 	const [identityModalVisible, toggleIdentityModalVisible] = useState(false)
-	const [companyInfoModalVisible, setCompanyInfoModalVisible] = useState(false)
 	const [emailUpdated, setEmailUpdated] = useState(!!userInfo?.emailUpdates)
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
 	)
-	const [companyModalData, setCompanyModalData] = useState<CompanyInfoData>({
-		header: 'Go To web',
-		description: 'Visit Website',
-		link: 'Web Link',
-		button: 'OK',
-	})
 
 	const hideError = () =>
 		// TODO: Remove after wallets refactor
