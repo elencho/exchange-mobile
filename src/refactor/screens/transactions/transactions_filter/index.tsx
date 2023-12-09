@@ -229,6 +229,23 @@ export default function TransactionFilter({
 					/>
 				</View>
 			</ScrollView>
+		</>
+	)
+
+	return (
+		<>
+			<AppModal
+				visible={isOpen}
+				title=""
+				hide={onClosePressed}
+				children={children}
+				fullScreen
+				bottom={undefined}
+				custom={undefined}
+				onModalHide={undefined}
+				onDismiss={undefined}
+				modalStyle={undefined} // onModalHide={savePrevFilters}
+			/>
 
 			<CryptoModalTrade isInstantTrade={isInstantTrade} />
 			<ChooseCurrencyModal isForTransactions />
@@ -237,21 +254,6 @@ export default function TransactionFilter({
 			<DatePickerModal isInstantTrade={isInstantTrade} to />
 			<ChooseMethodsModal />
 		</>
-	)
-
-	return (
-		<AppModal
-			visible={isOpen}
-			title=""
-			hide={onClosePressed}
-			children={children}
-			fullScreen
-			bottom={undefined}
-			custom={undefined}
-			onModalHide={undefined}
-			onDismiss={undefined}
-			modalStyle={undefined} // onModalHide={savePrevFilters}
-		/>
 	)
 }
 

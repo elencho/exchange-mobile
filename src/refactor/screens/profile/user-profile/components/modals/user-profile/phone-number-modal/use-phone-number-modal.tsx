@@ -70,13 +70,6 @@ export const usePhoneNumberModal = ({
 		return phoneCountry
 	}
 
-	const onModalHide = () => {
-		// dispatch({ type: 'TOGGLE_TIMER', timerVisible: false })
-		setGeneralErrorData(null)
-		setPhoneNumber(userInfo?.phoneNumber!)
-		setChosenCountry(x)
-	}
-
 	const handlePhoneNumber = (phoneNumber: string) => {
 		setGeneralErrorData(null)
 		setPhoneNumber(phoneNumber)
@@ -115,7 +108,6 @@ export const usePhoneNumberModal = ({
 		countries,
 		phoneNumberModalVisible,
 		hide,
-		onModalHide,
 		handlePhoneNumber,
 		handleSave,
 		handleCountries,

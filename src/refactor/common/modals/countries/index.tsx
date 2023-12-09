@@ -32,29 +32,26 @@ const CountriesModal = (props: Props) => {
 	const dispatch = useDispatch()
 
 	const [filteredCountries, setFilteredCountries] = useState<Country[]>([])
+	const [filterText, setFilterText] = useState('')
 
 	useEffect(() => {
 		setFilteredCountries(countries)
 	}, [])
 
-	const filter = (txt: string) => {
+	const filter = (txt: string) => setFilterText(txt.toLowerCase())
+	useEffect(() => {
 		const filtered = countries.filter(
-			(country) => country?.name?.toLowerCase().includes(txt.toLowerCase())
+			(country) => country?.name?.toLowerCase().includes(filterText)
 		)
 		setFilteredCountries(filtered)
-	}
+	}, [filterText])
 
-	const onShow = () => {
-		dispatch(fetchCountriesThunk())
-	}
+	const onShow = () => dispatch(fetchCountriesThunk())
 
 	const choose = (countryName?: string) => {
 		const country = countries.find((c: Country) => c.name === countryName)
 		country && onCountryChosen(country)
 		hide()
-	}
-	const onHideModal = () => {
-		setFilteredCountries(countries)
 	}
 
 	const children = (
@@ -66,14 +63,17 @@ const CountriesModal = (props: Props) => {
 			title={title}
 			phoneCountry={phoneCountry}
 			countryDrop={true}
+			filterText={filterText}
 		/>
 	)
 
 	return (
 		<AppModal
 			visible={visible}
-			hide={hide}
-			onModalHide={onHideModal}
+			hide={() => {
+				hide()
+				setFilterText('')
+			}}
 			children={children}
 			delayedOpen
 			fullScreen

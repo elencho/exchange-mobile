@@ -35,6 +35,7 @@ export default function WithdrawalConfirmModal() {
 	const isFiat = type === 'FIAT'
 
 	const [seconds, setSeconds] = useState(30)
+	const [twoFaInputValue, setTwoFaInputValue] = useState('')
 
 	const hide = () =>
 		dispatch({
@@ -100,7 +101,11 @@ export default function WithdrawalConfirmModal() {
 				type="Email"
 				withdrawal={withdrawalType()}
 			/>
-			<GoogleOtpModal withdrawal={withdrawalType()} />
+			<GoogleOtpModal
+				withdrawal={withdrawalType()}
+				setTwoFaInputValue={setTwoFaInputValue}
+				twoFaInputValue={twoFaInputValue}
+			/>
 			<View style={styles.flex}>
 				{networkInfo() && (
 					<AppInfoBlock

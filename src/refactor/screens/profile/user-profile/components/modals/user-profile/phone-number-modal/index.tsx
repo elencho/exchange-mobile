@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AppButton } from '@components/button'
 import AppModal from '@components/modal'
@@ -21,7 +21,6 @@ export default function PhoneNumberModal({
 	const {
 		userInfo,
 		hide,
-		onModalHide,
 		handlePhoneNumber,
 		handleSave,
 		handleCountries,
@@ -38,6 +37,11 @@ export default function PhoneNumberModal({
 	const number = userInfo?.phoneNumber
 	const country = userInfo?.phoneCountry
 	const borderColor = error && !country ? '#F45E8C' : '#42475D'
+
+	useEffect(() => {
+		console.log('phone modl render')
+	}, [])
+
 	const children = () => {
 		return (
 			<WithKeyboard
@@ -83,28 +87,28 @@ export default function PhoneNumberModal({
 					style={styles.button}
 					loading={userProfileButtonsLoading}
 				/>
-
-				<CountriesModal
-					visible={countryModalVisible}
-					chosenItem={chosenCountry}
-					onCountryChosen={setChosenCountry}
-					hide={() => setCountryModalVisible(false)}
-					from="UserProfile"
-					phoneCountry={true}
-				/>
 			</WithKeyboard>
 		)
 	}
 
 	return (
-		<AppModal
-			visible={phoneNumberModalVisible}
-			hide={hide}
-			onModalHide={onModalHide}
-			fullScreen
-			title="My Phone Number"
-			children={children()}
-		/>
+		<>
+			<AppModal
+				visible={phoneNumberModalVisible}
+				hide={hide}
+				fullScreen
+				title="My Phone Number"
+				children={children()}
+			/>
+			<CountriesModal
+				visible={countryModalVisible}
+				chosenItem={chosenCountry}
+				onCountryChosen={setChosenCountry}
+				hide={() => setCountryModalVisible(false)}
+				from="UserProfile"
+				phoneCountry={true}
+			/>
+		</>
 	)
 }
 

@@ -48,9 +48,6 @@ export const usePasswordModal = ({
 
 	const hide = () => {
 		!userProfileButtonsLoading && togglePasswordModal(false)
-	}
-
-	const onHide = () => {
 		setError(false)
 		setGeneralErrorData(null)
 		setPasswordState({
@@ -130,7 +127,6 @@ export const usePasswordModal = ({
 		newPassCond,
 		handleFieldChange,
 		userProfileButtonsLoading,
-		onHide,
 		generalErrorData,
 	}
 }

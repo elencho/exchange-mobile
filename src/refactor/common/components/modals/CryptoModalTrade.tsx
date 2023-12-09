@@ -26,6 +26,8 @@ export default function CryptoModalTrade({ isInstantTrade }: Props) {
 	} = state
 
 	const [filteredData, setFiletredData] = useState(offers?.[fiat])
+	const [filterText, setFilterText] = useState('')
+
 	const arrayToPass =
 		filteredData?.length > 0 ? [...filteredData] : offers?.[fiat]
 
@@ -36,21 +38,20 @@ export default function CryptoModalTrade({ isInstantTrade }: Props) {
 		filter('')
 	}, [cryptoModalVisible])
 
-	const filter = (text) => {
+	const filter = (text: string) => setFilterText(text.toLowerCase())
+
+	useEffect(() => {
 		const filteredArray = offers?.[fiat]?.filter(
 			(c) =>
 				(c?.pair?.baseCurrencyName &&
-					c?.pair?.baseCurrencyName
-						.toLowerCase()
-						.includes(text.toLowerCase())) ||
+					c?.pair?.baseCurrencyName.toLowerCase().includes(filterText)) ||
 				(c?.pair?.baseCurrency &&
-					c?.pair?.baseCurrency.toLowerCase().includes(text.toLowerCase()))
+					c?.pair?.baseCurrency.toLowerCase().includes(filterText))
 		)
 		setFiletredData(filteredArray)
-	}
+	}, [filterText])
 
 	const hide = () => dispatch(toggleCryptoModal(false))
-	const onModalHide = () => {}
 
 	const choose = (code) => {
 		dispatch(isInstantTrade ? setCryptoCodeQuery(code) : setCryptoFilter(code))
@@ -68,6 +69,7 @@ export default function CryptoModalTrade({ isInstantTrade }: Props) {
 			tradeType={tradeType}
 			title="Choose Currency"
 			isForTransactions
+			filterText={filterText}
 		/>
 	)
 
@@ -77,7 +79,6 @@ export default function CryptoModalTrade({ isInstantTrade }: Props) {
 				visible={cryptoModalVisible}
 				hide={hide}
 				children={children}
-				onModalHide={onModalHide}
 				delayedOpen
 				fullScreen
 			/>
