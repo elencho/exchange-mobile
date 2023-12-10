@@ -38,10 +38,6 @@ export default function PhoneNumberModal({
 	const country = userInfo?.phoneCountry
 	const borderColor = error && !country ? '#F45E8C' : '#42475D'
 
-	useEffect(() => {
-		console.log('phone modl render')
-	}, [])
-
 	const children = () => {
 		return (
 			<WithKeyboard
