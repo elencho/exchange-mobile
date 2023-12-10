@@ -34,7 +34,6 @@ export default function PasswordModal({
 		newPassCond,
 		handleFieldChange,
 		userProfileButtonsLoading,
-		onHide,
 		generalErrorData,
 	} = usePasswordModal({ togglePasswordModal, passwordModalVisible })
 
@@ -167,7 +166,6 @@ export default function PasswordModal({
 			fullScreen
 			title="Set a Strong Password"
 			children={children()}
-			onModalHide={onHide}
 		/>
 	)
 }

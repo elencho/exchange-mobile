@@ -33,7 +33,6 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 	const {
 		resend,
 		hide,
-		handleHide,
 		otpLoading,
 		cellCount,
 		visible,
@@ -108,7 +107,6 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 			bottom
 			hide={hide}
 			visible={smsAuthModalVisible || emailAuthModalVisible}
-			onModalHide={handleHide}
 			onShow={onShow}
 		/>
 	)

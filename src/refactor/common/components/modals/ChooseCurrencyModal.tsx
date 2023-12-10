@@ -31,6 +31,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 	} = useSelector((state: RootState) => state)
 
 	const [filteredData, setFilteredData] = useState(currencyList)
+	const [filterText, setFilterText] = useState('')
 
 	useEffect(() => {
 		filter('')
@@ -42,13 +43,16 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 		}
 	}, [])
 
-	const filter = (text) => {
+	const filter = (text: string) => setFilterText(text.toLowerCase())
+
+	useEffect(() => {
 		const filteredArray =
 			currencyList?.filter(
-				(currency) => currency.code?.toLowerCase()?.includes(text.toLowerCase())
+				(currency) => currency.code?.toLowerCase()?.includes(filterText)
 			) ?? []
 		setFilteredData(filteredArray)
-	}
+	}, [filterText])
+
 	const hide = () => dispatch(toggleCurrencyModal(false))
 
 	const fiats = fiatsArray.map((f) => f.code)
@@ -106,6 +110,7 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 			title="Choose Currency"
 			isForTransactions={isForTransactions}
 			wallet={wallet}
+			filterText={filterText}
 		/>
 	)
 
@@ -114,7 +119,6 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 			visible={chooseCurrencyModalVisible}
 			hide={hide}
 			children={children}
-			// onModalHide={hide}
 			fullScreen
 			delayedOpen
 		/>

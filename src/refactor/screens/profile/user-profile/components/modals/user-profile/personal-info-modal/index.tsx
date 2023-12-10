@@ -113,7 +113,18 @@ export default function PersonalInfoModal({
 				style={styles.button}
 				text="Save"
 			/>
+		</WithKeyboard>
+	)
 
+	return (
+		<>
+			<AppModal
+				visible={personalInfoModalVisible}
+				hide={hide}
+				fullScreen
+				title="Personal Information"
+				children={children}
+			/>
 			<CountriesModal
 				visible={countryModalVisible}
 				onCountryChosen={changeCountry}
@@ -121,17 +132,7 @@ export default function PersonalInfoModal({
 				from={'UserProfile'}
 				chosenItem={chosenCountry}
 			/>
-		</WithKeyboard>
-	)
-
-	return (
-		<AppModal
-			visible={personalInfoModalVisible}
-			hide={hide}
-			fullScreen
-			title="Personal Information"
-			children={children}
-		/>
+		</>
 	)
 }
 

@@ -188,6 +188,11 @@ export default function AddEditWhitelistModal({ add, edit }) {
 				style={{ marginTop: 20, marginBottom: 36 }}
 			/>
 
+			<QrScanner
+				setAddress={(address) =>
+					dispatch(setNewWhitelist({ ...newWhitelist, address }))
+				}
+			/>
 			<SmsEmailAuthModal
 				seconds={seconds}
 				setSeconds={setSeconds}
@@ -205,11 +210,6 @@ export default function AddEditWhitelistModal({ add, edit }) {
 				twoFaInputValue={twoFaInputValue}
 				whitelist
 			/>
-			<QrScanner
-				setAddress={(address) =>
-					dispatch(setNewWhitelist({ ...newWhitelist, address }))
-				}
-			/>
 		</WithKeyboard>
 	)
 	const isVisible = add ? addWhitelistModalVisble : editWhitelistModalVisble
@@ -221,7 +221,6 @@ export default function AddEditWhitelistModal({ add, edit }) {
 			fullScreen
 			visible={isVisible}
 			title={`${add ? 'Add' : 'Edit'} Whitelist`}
-			// onModalHide={clearInputs}
 		/>
 	)
 }
