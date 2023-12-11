@@ -24,7 +24,6 @@ import { MaterialIndicator } from 'react-native-indicators'
 import BackButton from '@components/back_button'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
-const COUNTDOWN = 30
 
 const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	const { styles, theme } = useTheme(_styles)

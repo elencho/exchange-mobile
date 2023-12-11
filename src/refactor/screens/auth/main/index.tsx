@@ -47,6 +47,11 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		}
 	}, [])
 
+	const resumeIsShown = () => {
+		const routes = navigation.getState().routes
+		return routes.length > 0 && routes[routes.length - 1].name === 'Resume'
+	}
+
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
 		const appClosing = System.isIos
 			? newState === 'inactive' && prevAppState.current === 'active'
@@ -65,7 +70,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			getBiometricEnabled(email)
 		}
 
-		if (appClosing) {
+		if (appClosing && !resumeIsShown()) {
 			KV.set('lastOpenDateMillis', Date.now())
 		}
 		prevAppState.current = newState

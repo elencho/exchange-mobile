@@ -28,6 +28,7 @@ interface AuthState {
 
 	loginLoading: boolean
 	otpLoading: boolean
+	otpResendLoading: boolean
 	registerLoading: boolean
 	forgotLoading: boolean
 	forgotResendLoading: boolean
@@ -46,6 +47,7 @@ const initialState: AuthState = {
 
 	loginLoading: false,
 	otpLoading: false,
+	otpResendLoading: false,
 	registerLoading: false,
 	forgotLoading: false,
 	forgotResendLoading: false,
@@ -166,17 +168,17 @@ const setPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 
 const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(resendOtpThunk.pending, (state) => {
-		state.otpLoading = true
+		state.otpResendLoading = true
 	})
 	builder.addCase(resendOtpThunk.fulfilled, (state, action) => {
-		state.otpLoading = false
+		state.otpResendLoading = false
 		if (action.payload?.callbackUrl) {
 			state.callbackUrl = action.payload.callbackUrl
 		}
 		state.otpTimerVisible = true
 	})
 	builder.addCase(resendOtpThunk.rejected, (state) => {
-		state.otpLoading = false
+		state.otpResendLoading = false
 		state.otpTimerVisible = false
 	})
 

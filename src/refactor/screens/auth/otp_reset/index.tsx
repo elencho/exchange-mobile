@@ -22,6 +22,7 @@ import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import KV from '@store/kv/regular'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import BackButton from '@components/back_button'
+import { MaterialIndicator } from 'react-native-indicators'
 
 export const ResetOtp = ({
 	navigation,
@@ -39,7 +40,7 @@ export const ResetOtp = ({
 		null
 	)
 
-	const { otpTimerVisible, otpLoading } = useSelector(
+	const { otpTimerVisible, otpLoading, otpResendLoading } = useSelector(
 		(state: RootState) => state.auth
 	)
 
@@ -79,7 +80,16 @@ export const ResetOtp = ({
 	const openSupport = () => Linking.openURL(url)
 
 	const resendOrCountDown = () => {
-		if (otpTimerVisible) {
+		if (otpResendLoading) {
+			return (
+				<MaterialIndicator
+					color="#6582FD"
+					animationDuration={3000}
+					size={16}
+					style={{ flex: 0 }}
+				/>
+			)
+		} else if (otpTimerVisible) {
 			return (
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)
