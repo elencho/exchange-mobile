@@ -47,9 +47,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	const cellCount = otpType === 'SMS' ? 4 : 6
 
 	useEffect(() => {
-		if (otpType !== 'TOTP') {
-			dispatch(setOtpTimer(true))
-		}
+		dispatch(setOtpTimer(true))
 
 		return () => {
 			dispatch(setOtpTimer(false))

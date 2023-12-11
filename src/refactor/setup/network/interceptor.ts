@@ -81,18 +81,19 @@ const handleError = async (err: any) => {
 			return response
 		} else {
 			store.dispatch(resetAuth())
-			navigationRef.navigate('Welcome')
+			navigationRef.reset({
+				index: 0,
+				routes: [{ name: 'Welcome' }],
+			})
 		}
 	}
 
 	if (status === 400 && invalidGrant) {
 		store.dispatch(resetAuth())
-
-		// console.log(err.response.data)
-		// console.log('to Welcome!', uiError, errorDesc)
-
-		// TODO: Login
-		navigationRef.navigate('Welcome')
+		navigationRef.reset({
+			index: 0,
+			routes: [{ name: 'Welcome' }],
+		})
 	}
 
 	if (status === 503) {

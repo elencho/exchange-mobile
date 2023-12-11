@@ -82,7 +82,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	const onResendPressed = () => {
 		if (mail.trim() && validMail) {
 			handleGeneralError(
-				() => dispatch(resendPasswordCodeThunk({ mail })),
+				() => dispatch(resendPasswordCodeThunk({ mail, navigation })),
 				setGeneralErrorData
 			)
 		} else {

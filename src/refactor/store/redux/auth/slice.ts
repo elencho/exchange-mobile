@@ -21,6 +21,7 @@ import {
 	codeToTokenThunk,
 } from '@store/redux/auth/thunks'
 import SecureKV from '@store/kv/secure'
+import KV from '@store/kv/regular'
 
 interface AuthState {
 	timerVisible: boolean
@@ -94,6 +95,7 @@ const auth = createSlice({
 		resetAuth: (state) => {
 			state = initialState
 			SecureKV.del('refreshToken')
+			KV.del('lastOpenDateMillis')
 		},
 	},
 	extraReducers: (builder) => {
@@ -134,7 +136,9 @@ const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 	})
 	builder.addCase(resendPasswordCodeThunk.fulfilled, (state, action) => {
 		state.forgotResendLoading = false
-		state.callbackUrl = action.payload.callbackUrl
+		if (action.payload.callbackUrl) {
+			state.callbackUrl = action.payload.callbackUrl
+		}
 		state.timerVisible = action.payload.timerVisible
 	})
 	builder.addCase(resendPasswordCodeThunk.rejected, (state) => {

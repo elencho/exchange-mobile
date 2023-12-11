@@ -119,10 +119,22 @@ export const forgotPasswordStartThunk = createAsyncThunk(
 
 export const resendPasswordCodeThunk = createAsyncThunk(
 	'resetPassword',
-	async ({ mail }: { mail: string }, { getState }) => {
+	async (
+		{
+			mail,
+			navigation,
+		}: { mail: string; navigation: NativeStackNavigationProp<Screens, any> },
+		{ getState, dispatch }
+	) => {
 		const { callbackUrl } = (getState() as RootState).auth
 
 		const data = await resetPassword(callbackUrl, mail)
+		const error = data?.errors?.[0]
+
+		if (data.execution === Execution.LOGIN_USERNAME_PASSWORD) {
+			navigation.navigate('Login', { generalError: error })
+		}
+
 		return {
 			...data,
 			timerVisible:
