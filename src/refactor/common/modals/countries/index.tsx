@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AppModal from '@components/modal'
 import { ModalWithSearch } from '@components/modal/modal-with-search'
@@ -14,6 +14,8 @@ interface Props {
 	chosenItem?: Country
 	visible: boolean
 	phoneCountry?: boolean
+	countryFilterText: string
+	setCountryFilterText: Dispatch<SetStateAction<string>>
 }
 
 const CountriesModal = (props: Props) => {
@@ -27,24 +29,25 @@ const CountriesModal = (props: Props) => {
 		title = 'Choose Country',
 		visible = true,
 		phoneCountry,
+		countryFilterText,
+		setCountryFilterText,
 	} = props
 	const { countries } = common
 	const dispatch = useDispatch()
 
 	const [filteredCountries, setFilteredCountries] = useState<Country[]>([])
-	const [filterText, setFilterText] = useState('')
 
 	useEffect(() => {
 		setFilteredCountries(countries)
 	}, [])
 
-	const filter = (txt: string) => setFilterText(txt.toLowerCase())
+	const filter = (txt: string) => setCountryFilterText(txt.toLowerCase())
 	useEffect(() => {
 		const filtered = countries.filter(
-			(country) => country?.name?.toLowerCase().includes(filterText)
+			(country) => country?.name?.toLowerCase().includes(countryFilterText)
 		)
 		setFilteredCountries(filtered)
-	}, [filterText])
+	}, [countryFilterText])
 
 	const onShow = () => dispatch(fetchCountriesThunk())
 
@@ -63,17 +66,14 @@ const CountriesModal = (props: Props) => {
 			title={title}
 			phoneCountry={phoneCountry}
 			countryDrop={true}
-			filterText={filterText}
+			filterText={countryFilterText}
 		/>
 	)
 
 	return (
 		<AppModal
 			visible={visible}
-			hide={() => {
-				hide()
-				setFilterText('')
-			}}
+			hide={hide}
 			children={children}
 			delayedOpen
 			fullScreen

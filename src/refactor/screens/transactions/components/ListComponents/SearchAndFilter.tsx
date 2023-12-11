@@ -7,8 +7,6 @@ import AppDropdown from '@app/components/AppDropdown'
 import AppInput from '@app/refactor/common/components/input'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
-import { toggleCryptoModal } from '@app/refactor/redux/modals/modalsSlice'
-
 import { setCryptoCodeQuery } from '@app/refactor/redux/trade/tradeSlice'
 import {
 	setTransactionsOffset,
@@ -38,7 +36,10 @@ const SearchAndFilter: React.FC<Props> = ({
 	} = useSelector((state: RootState) => state)
 
 	const [searchValue, setSearchValue] = useState('')
-	const openCryptoModal = () => dispatch(toggleCryptoModal(true))
+	const [isCryptoModalVisible, setIsCryptoModalVisible] = useState(false)
+	const [cryptoFilterText, setCryptoFilterText] = useState('')
+
+	const openCryptoModal = () => setIsCryptoModalVisible(true)
 	const seperateCurrencyName = (currency: string) => currency.split('(')[0]
 	const clearCurrencyDropdown = () => {
 		dispatch(setCryptoCodeQuery(null))
@@ -111,11 +112,21 @@ const SearchAndFilter: React.FC<Props> = ({
 				}}
 			/>
 			<DownloadIcon isInstantTrade={isInstantTrade} />
-			<CryptoModalTrade isInstantTrade={isInstantTrade} />
+			<CryptoModalTrade
+				isInstantTrade={isInstantTrade}
+				isCryptoModalVisible={isCryptoModalVisible}
+				setIsCryptoModalVisible={setIsCryptoModalVisible}
+				cryptoFilterText={cryptoFilterText}
+				setCryptoFilterText={setCryptoFilterText}
+			/>
 			<TransactionFilter
 				isOpen={isFilterVisible.isVisible}
 				setIsFilterVisible={setIsFilterVisible}
 				isInstantTrade={isInstantTrade}
+				// isCryptoModalVisible={isCryptoModalVisible}
+				// setIsCryptoModalVisible={setIsCryptoModalVisible}
+				// cryptoFilterText={cryptoFilterText}
+				// setCryptoFilterText={setCryptoFilterText}
 			/>
 		</View>
 	)

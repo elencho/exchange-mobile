@@ -57,6 +57,7 @@ const Register = ({ navigation }: Props) => {
 
 	const [chosenCountry, setChosenCountry] = useState<Country | undefined>()
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
+	const [countryFilterText, setCountryFilterText] = useState('')
 
 	const [phone, setPhone] = useState('')
 	const [phoneErr, setPhoneErr] = useState(false)
@@ -282,6 +283,8 @@ const Register = ({ navigation }: Props) => {
 						hide={() => setCountryModalVisible(false)}
 						from="Registration"
 						phoneCountry={true}
+						countryFilterText={countryFilterText}
+						setCountryFilterText={setCountryFilterText}
 					/>
 					{userType === 'Personal' && (
 						<>

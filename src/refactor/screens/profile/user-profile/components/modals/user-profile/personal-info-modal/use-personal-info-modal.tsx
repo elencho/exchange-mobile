@@ -35,6 +35,7 @@ const usePersonalInfoModal = ({
 		address: userInfo?.address!,
 	})
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
+	const [countryFilterText, setCountryFilterText] = useState('')
 
 	const alphabeticRegex = (text: string) => /^[a-zA-Z]+$/.test(text?.trim())
 
@@ -122,6 +123,8 @@ const usePersonalInfoModal = ({
 		localUserInfo,
 		changeCountry,
 		generalErrorData,
+		countryFilterText,
+		setCountryFilterText,
 	}
 }
 

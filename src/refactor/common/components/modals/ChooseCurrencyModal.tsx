@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AppModal from '@app/refactor/common/components/modal'
 import ModalWithSearch from '@app/components/ModalWithSearch'
-import { toggleCurrencyModal } from '@app/refactor/redux/modals/modalsSlice'
 import { setCurrentBalanceObj } from '@app/redux/trade/actions'
 import { currencyAction } from '@app/redux/transactions/actions'
 import {
@@ -18,24 +17,25 @@ import { fetchCurrencies } from '@app/utils/fetchTransactions'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { setCurrencyList } from '@store/redux/common/slice'
 
-function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
+function ChooseCurrencyModal({
+	wallet = false,
+	isForTransactions,
+	isCurrencyModalVisible,
+	setIsCurrencyModalVisible,
+	currencyFilterText,
+	setCurrencyFilterText,
+}) {
 	const navigation = useNavigation()
 	const dispatch = useDispatch()
 
 	const {
 		transactions: { currenciesConstant, cryptoFilter, currency, code },
-		modalState: { chooseCurrencyModalVisible },
 		trade: { balance, fiatsArray, currentBalanceObj },
 		wallet: { walletTab },
 		common: { currencyList },
 	} = useSelector((state: RootState) => state)
 
 	const [filteredData, setFilteredData] = useState(currencyList)
-	const [filterText, setFilterText] = useState('')
-
-	useEffect(() => {
-		filter('')
-	}, [chooseCurrencyModalVisible])
 
 	useEffect(() => {
 		if (!currencyList?.length) {
@@ -43,17 +43,20 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 		}
 	}, [])
 
-	const filter = (text: string) => setFilterText(text.toLowerCase())
+	const filter = (text: string) => setCurrencyFilterText(text.toLowerCase())
 
 	useEffect(() => {
 		const filteredArray =
 			currencyList?.filter(
-				(currency) => currency.code?.toLowerCase()?.includes(filterText)
+				(currency) => currency.code?.toLowerCase()?.includes(currencyFilterText)
 			) ?? []
 		setFilteredData(filteredArray)
-	}, [filterText])
+	}, [currencyFilterText])
 
-	const hide = () => dispatch(toggleCurrencyModal(false))
+	const hide = () => {
+		setIsCurrencyModalVisible(false)
+		filter('')
+	}
 
 	const fiats = fiatsArray.map((f) => f.code)
 
@@ -110,13 +113,13 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 			title="Choose Currency"
 			isForTransactions={isForTransactions}
 			wallet={wallet}
-			filterText={filterText}
+			filterText={currencyFilterText}
 		/>
 	)
 
 	return (
 		<AppModal
-			visible={chooseCurrencyModalVisible}
+			visible={isCurrencyModalVisible}
 			hide={hide}
 			children={children}
 			fullScreen

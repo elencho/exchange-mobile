@@ -35,6 +35,8 @@ export default function PersonalInfoModal({
 		localUserInfo,
 		chosenCountry,
 		generalErrorData,
+		countryFilterText,
+		setCountryFilterText,
 	} = usePersonalInfoModal({
 		personalInfoModalVisible,
 		togglePersonalInfoModal,
@@ -51,88 +53,94 @@ export default function PersonalInfoModal({
 	const countryError = error && !country
 
 	const children = (
-		<WithKeyboard flexGrow modal>
-			<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
-				<AppText style={styles.email}>{email}</AppText>
-				<GeneralError style={styles.error} errorData={generalErrorData} />
-
-				<AppDropdown
-					notClearable
-					withLabel
-					handlePress={() => handleCountries()}
-					icon={
-						<Image
-							source={{
-								uri: `${COUNTRIES_URL_PNG}/${countryCode}.png`,
-							}}
-							style={styles.image}
-						/>
-					}
-					label="Country"
-					selectedText={chosenCountry?.name}
-					style={styles.dropdown}
-					error={countryError}
-				/>
-
-				<AppInput
-					style={styles.inputContainer}
-					onChangeText={(city) => handleFieldChange('city', city)}
-					label="City"
-					value={city}
-					error={error && (!alphabeticRegex(city) || !city?.trim())}
-					labelBackgroundColor={theme.color.backgroundPrimary}
-				/>
-				{error && !alphabeticRegex(city) && city?.trim() && (
-					<InputErrorMsg message="Only English letters allowed" />
-				)}
-				<AppInput
-					style={styles.inputContainer}
-					onChangeText={(postalCode) =>
-						handleFieldChange('postalCode', postalCode)
-					}
-					label="Postal Code"
-					value={postalCode}
-					error={error && !postalCode?.trim()}
-					labelBackgroundColor={theme.color.backgroundPrimary}
-				/>
-
-				<AppInput
-					style={styles.inputContainer}
-					onChangeText={(address) => handleFieldChange('address', address)}
-					label="Address"
-					value={address}
-					error={error && !address?.trim()}
-					labelBackgroundColor={theme.color.backgroundPrimary}
-				/>
-			</TouchableOpacity>
-
-			<AppButton
-				variant="primary"
-				onPress={handleSave}
-				loading={userProfileButtonsLoading}
-				style={styles.button}
-				text="Save"
-			/>
-		</WithKeyboard>
-	)
-
-	return (
 		<>
-			<AppModal
-				visible={personalInfoModalVisible}
-				hide={hide}
-				fullScreen
-				title="Personal Information"
-				children={children}
-			/>
+			<WithKeyboard flexGrow modal>
+				<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
+					<AppText style={styles.email}>{email}</AppText>
+					<GeneralError style={styles.error} errorData={generalErrorData} />
+
+					<AppDropdown
+						notClearable
+						withLabel
+						handlePress={() => handleCountries()}
+						icon={
+							<Image
+								source={{
+									uri: `${COUNTRIES_URL_PNG}/${countryCode}.png`,
+								}}
+								style={styles.image}
+							/>
+						}
+						label="Country"
+						selectedText={chosenCountry?.name}
+						style={styles.dropdown}
+						error={countryError}
+					/>
+
+					<AppInput
+						style={styles.inputContainer}
+						onChangeText={(city) => handleFieldChange('city', city)}
+						label="City"
+						value={city}
+						error={error && (!alphabeticRegex(city) || !city?.trim())}
+						labelBackgroundColor={theme.color.backgroundPrimary}
+					/>
+					{error && !alphabeticRegex(city) && city?.trim() && (
+						<InputErrorMsg message="Only English letters allowed" />
+					)}
+					<AppInput
+						style={styles.inputContainer}
+						onChangeText={(postalCode) =>
+							handleFieldChange('postalCode', postalCode)
+						}
+						label="Postal Code"
+						value={postalCode}
+						error={error && !postalCode?.trim()}
+						labelBackgroundColor={theme.color.backgroundPrimary}
+					/>
+
+					<AppInput
+						style={styles.inputContainer}
+						onChangeText={(address) => handleFieldChange('address', address)}
+						label="Address"
+						value={address}
+						error={error && !address?.trim()}
+						labelBackgroundColor={theme.color.backgroundPrimary}
+					/>
+				</TouchableOpacity>
+
+				<AppButton
+					variant="primary"
+					onPress={handleSave}
+					loading={userProfileButtonsLoading}
+					style={styles.button}
+					text="Save"
+				/>
+			</WithKeyboard>
+
 			<CountriesModal
 				visible={countryModalVisible}
 				onCountryChosen={changeCountry}
-				hide={() => setCountryModalVisible(false)}
+				hide={() => {
+					setCountryModalVisible(false)
+					setCountryFilterText('')
+				}}
 				from={'UserProfile'}
 				chosenItem={chosenCountry}
+				countryFilterText={countryFilterText}
+				setCountryFilterText={setCountryFilterText}
 			/>
 		</>
+	)
+
+	return (
+		<AppModal
+			visible={personalInfoModalVisible}
+			hide={hide}
+			fullScreen
+			title="Personal Information"
+			children={children}
+		/>
 	)
 }
 

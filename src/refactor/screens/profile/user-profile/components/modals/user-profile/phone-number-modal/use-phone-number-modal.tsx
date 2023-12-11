@@ -32,6 +32,7 @@ export const usePhoneNumberModal = ({
 	}
 	const [chosenCountry, setChosenCountry] = useState(x)
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
+	const [countryFilterText, setCountryFilterText] = useState('')
 
 	useEffect(() => {
 		if (error) {
@@ -120,5 +121,7 @@ export const usePhoneNumberModal = ({
 		phoneNumber,
 		generalErrorData,
 		userProfileButtonsLoading,
+		countryFilterText,
+		setCountryFilterText,
 	}
 }

@@ -5,11 +5,11 @@ import { Theme, useTheme } from '@theme/index'
 import useInitApp from '@app/refactor/screens/auth/splash/use-init-app'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
-import SplashScreen from 'react-native-splash-screen'
+import { IS_IOS } from '@app/constants/system'
 
 const Splash = (props: ScreenProp<'Splash'>) => {
 	const { styles } = useTheme(_styles)
-	const [shouldRender, setShouldRender] = useState(false)
+	const [shouldRender, setShouldRender] = useState(IS_IOS ? true : false)
 
 	useNotificationsAndroid()
 	useInitApp(props)
@@ -17,7 +17,7 @@ const Splash = (props: ScreenProp<'Splash'>) => {
 	useEffect(() => {
 		setTimeout(() => {
 			setShouldRender(true)
-		}, 500)
+		}, 800)
 	}, [])
 
 	return (

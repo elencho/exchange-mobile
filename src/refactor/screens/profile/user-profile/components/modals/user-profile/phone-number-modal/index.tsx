@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { AppButton } from '@components/button'
 import AppModal from '@components/modal'
@@ -33,6 +33,8 @@ export default function PhoneNumberModal({
 		setCountryModalVisible,
 		phoneNumber,
 		generalErrorData,
+		countryFilterText,
+		setCountryFilterText,
 	} = usePhoneNumberModal({ phoneNumberModalVisible, togglePhoneNumberModal })
 	const number = userInfo?.phoneNumber
 	const country = userInfo?.phoneCountry
@@ -40,50 +42,66 @@ export default function PhoneNumberModal({
 
 	const children = () => {
 		return (
-			<WithKeyboard
-				padding
-				flexGrow
-				modal
-				scrollUp={false}
-				refreshControl={null}>
-				<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
-					<General_error errorData={generalErrorData} />
+			<>
+				<WithKeyboard
+					padding
+					flexGrow
+					modal
+					scrollUp={false}
+					refreshControl={null}>
+					<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
+						<General_error errorData={generalErrorData} />
 
-					<AppDropdown
-						handlePress={handleCountries}
-						selectedText={chosenCountry?.phoneCode}
-						notClearable
-						withLabel
-						label="Choose code"
-						style={[styles.dropdown, { borderColor }]}
-						icon={
-							<Image
-								source={{
-									uri: `${COUNTRIES_URL_PNG}/${chosenCountry?.code}.png`,
-								}}
-								style={styles.image}
-							/>
-						}
+						<AppDropdown
+							handlePress={handleCountries}
+							selectedText={chosenCountry?.phoneCode}
+							notClearable
+							withLabel
+							label="Choose code"
+							style={[styles.dropdown, { borderColor }]}
+							icon={
+								<Image
+									source={{
+										uri: `${COUNTRIES_URL_PNG}/${chosenCountry?.code}.png`,
+									}}
+									style={styles.image}
+								/>
+							}
+						/>
+
+						<AppInput
+							style={styles.inputContainer}
+							label="Phone Number"
+							onChangeText={(text: string) => handlePhoneNumber(text)}
+							value={phoneNumber}
+							keyboardType="number-pad"
+							error={error && !(phoneNumber?.trim()?.length > 0)}
+						/>
+					</TouchableOpacity>
+
+					<AppButton
+						variant="primary"
+						text="Save"
+						onPress={handleSave}
+						style={styles.button}
+						loading={userProfileButtonsLoading}
 					/>
+				</WithKeyboard>
 
-					<AppInput
-						style={styles.inputContainer}
-						label="Phone Number"
-						onChangeText={(text: string) => handlePhoneNumber(text)}
-						value={phoneNumber}
-						keyboardType="number-pad"
-						error={error && !(phoneNumber?.trim()?.length > 0)}
-					/>
-				</TouchableOpacity>
-
-				<AppButton
-					variant="primary"
-					text="Save"
-					onPress={handleSave}
-					style={styles.button}
-					loading={userProfileButtonsLoading}
+				<CountriesModal
+					visible={countryModalVisible}
+					chosenItem={chosenCountry}
+					onCountryChosen={setChosenCountry}
+					hide={() => {
+						setCountryModalVisible(false)
+						setCountryFilterText('')
+					}}
+					from="UserProfile"
+					phoneCountry={true}
+					countryFilterText={countryFilterText}
+					setCountryFilterText={setCountryFilterText}
 				/>
-			</WithKeyboard>
+			</>
 		)
 	}
 
@@ -95,14 +113,6 @@ export default function PhoneNumberModal({
 				fullScreen
 				title="My Phone Number"
 				children={children()}
-			/>
-			<CountriesModal
-				visible={countryModalVisible}
-				chosenItem={chosenCountry}
-				onCountryChosen={setChosenCountry}
-				hide={() => setCountryModalVisible(false)}
-				from="UserProfile"
-				phoneCountry={true}
 			/>
 		</>
 	)

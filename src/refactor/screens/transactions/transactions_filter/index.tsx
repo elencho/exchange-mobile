@@ -16,11 +16,7 @@ import {
 	currencies,
 	transactionTypes,
 } from '@app/constants/filters'
-import {
-	toggleCryptoModal,
-	toggleCurrencyModal,
-	toggleMethodsModal,
-} from '@app/refactor/redux/modals/modalsSlice'
+import { toggleMethodsModal } from '@app/refactor/redux/modals/modalsSlice'
 import CryptoModalTrade from '@app/refactor/common/components/modals/CryptoModalTrade'
 import {
 	setPreviousTradeFilter,
@@ -106,10 +102,16 @@ export default function TransactionFilter({
 		setIsFilterVisible({ isVisible: false, shouldFilter: false })
 	}
 
+	const [isCurrencyModalVisible, setIsCurrencyModalVisible] = useState(false)
+	const [currencyFilterText, setCurrencyFilterText] = useState('')
+
+	const [isCryptoModalVisible, setIsCryptoModalVisible] = useState(false)
+	const [cryptoFilterText, setCryptoFilterText] = useState('')
+
 	const openModal = () =>
 		isInstantTrade
-			? dispatch(toggleCryptoModal(true))
-			: dispatch(toggleCurrencyModal(true))
+			? setIsCryptoModalVisible(true)
+			: setIsCurrencyModalVisible(true)
 	const handleMethodsDropdown = () => dispatch(toggleMethodsModal(true))
 	const clearMethodsDropdown = () => dispatch(setMethodFilter('None'))
 	const clearCurrencyDropdown = () =>
@@ -124,7 +126,6 @@ export default function TransactionFilter({
 			? setPrevFilterState(initialStateTrade)
 			: setPrevFilterState(initialStateTransactions)
 	}, [isInstantTrade, isOpen])
-	console.log('selectedMethod', selectedMethod)
 
 	const children = (
 		<>
@@ -229,31 +230,41 @@ export default function TransactionFilter({
 					/>
 				</View>
 			</ScrollView>
-		</>
-	)
 
-	return (
-		<>
-			<AppModal
-				visible={isOpen}
-				title=""
-				hide={onClosePressed}
-				children={children}
-				fullScreen
-				bottom={undefined}
-				custom={undefined}
-				onModalHide={undefined}
-				onDismiss={undefined}
-				modalStyle={undefined} // onModalHide={savePrevFilters}
+			<CryptoModalTrade
+				isInstantTrade={isInstantTrade}
+				isCryptoModalVisible={isCryptoModalVisible}
+				setIsCryptoModalVisible={setIsCryptoModalVisible}
+				cryptoFilterText={cryptoFilterText}
+				setCryptoFilterText={setCryptoFilterText}
 			/>
-
-			<CryptoModalTrade isInstantTrade={isInstantTrade} />
-			<ChooseCurrencyModal isForTransactions />
+			<ChooseCurrencyModal
+				isForTransactions
+				isCurrencyModalVisible={isCurrencyModalVisible}
+				setIsCurrencyModalVisible={setIsCurrencyModalVisible}
+				currencyFilterText={currencyFilterText}
+				setCurrencyFilterText={setCurrencyFilterText}
+			/>
 
 			<DatePickerModal isInstantTrade={isInstantTrade} from />
 			<DatePickerModal isInstantTrade={isInstantTrade} to />
 			<ChooseMethodsModal />
 		</>
+	)
+
+	return (
+		<AppModal
+			visible={isOpen}
+			title=""
+			hide={onClosePressed}
+			children={children}
+			fullScreen
+			bottom={undefined}
+			custom={undefined}
+			onModalHide={undefined}
+			onDismiss={undefined}
+			modalStyle={undefined} // onModalHide={savePrevFilters}
+		/>
 	)
 }
 
