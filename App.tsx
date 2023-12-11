@@ -76,7 +76,7 @@ const _styles = (theme: Theme) => {
 		container: {
 			flex: 1,
 			overflow: 'hidden',
-			backgroundColor: theme.color.backgroundSecondary,
+			backgroundColor: theme.color.backgroundPrimary,
 		},
 		statusBar: {
 			flex: 0,

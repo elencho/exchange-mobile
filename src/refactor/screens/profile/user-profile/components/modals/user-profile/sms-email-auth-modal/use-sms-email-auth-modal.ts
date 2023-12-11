@@ -77,12 +77,6 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		}
 	}, [seconds, timerVisible])
 
-	const handleHide = () => {
-		setSeconds(30)
-		setValue('')
-		setGeneralErrorData(null)
-	}
-
 	const emailHide = async () => {
 		await hide()
 		toggleGoogleAuthModal(true)
@@ -143,6 +137,9 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		toggleSmsAuthModal(false)
 		toggleEmailAuthModal(false)
 		setGeneralErrorData(null)
+		setSeconds(30)
+		setValue('')
+		setGeneralErrorData(null)
 	}
 
 	const showEmailFromSMS = () => {
@@ -179,7 +176,6 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	return {
 		resend,
 		hide,
-		handleHide,
 		otpLoading,
 		reset,
 		cellCount,

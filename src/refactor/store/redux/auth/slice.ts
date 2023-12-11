@@ -21,6 +21,7 @@ import {
 	codeToTokenThunk,
 } from '@store/redux/auth/thunks'
 import SecureKV from '@store/kv/secure'
+import KV from '@store/kv/regular'
 
 interface AuthState {
 	timerVisible: boolean
@@ -28,6 +29,7 @@ interface AuthState {
 
 	loginLoading: boolean
 	otpLoading: boolean
+	otpResendLoading: boolean
 	registerLoading: boolean
 	forgotLoading: boolean
 	forgotResendLoading: boolean
@@ -46,6 +48,7 @@ const initialState: AuthState = {
 
 	loginLoading: false,
 	otpLoading: false,
+	otpResendLoading: false,
 	registerLoading: false,
 	forgotLoading: false,
 	forgotResendLoading: false,
@@ -92,6 +95,7 @@ const auth = createSlice({
 		resetAuth: (state) => {
 			state = initialState
 			SecureKV.del('refreshToken')
+			KV.del('lastOpenDateMillis')
 		},
 	},
 	extraReducers: (builder) => {
@@ -132,7 +136,9 @@ const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 	})
 	builder.addCase(resendPasswordCodeThunk.fulfilled, (state, action) => {
 		state.forgotResendLoading = false
-		state.callbackUrl = action.payload.callbackUrl
+		if (action.payload.callbackUrl) {
+			state.callbackUrl = action.payload.callbackUrl
+		}
 		state.timerVisible = action.payload.timerVisible
 	})
 	builder.addCase(resendPasswordCodeThunk.rejected, (state) => {
@@ -166,17 +172,17 @@ const setPass = (builder: ActionReducerMapBuilder<AuthState>) => {
 
 const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
 	builder.addCase(resendOtpThunk.pending, (state) => {
-		state.otpLoading = true
+		state.otpResendLoading = true
 	})
 	builder.addCase(resendOtpThunk.fulfilled, (state, action) => {
-		state.otpLoading = false
+		state.otpResendLoading = false
 		if (action.payload?.callbackUrl) {
 			state.callbackUrl = action.payload.callbackUrl
 		}
 		state.otpTimerVisible = true
 	})
 	builder.addCase(resendOtpThunk.rejected, (state) => {
-		state.otpLoading = false
+		state.otpResendLoading = false
 		state.otpTimerVisible = false
 	})
 

@@ -25,5 +25,5 @@ export const biometricDiffElapsed = (): boolean => {
 
 	return lastTimeOpenMillis
 		? Date.now() - lastTimeOpenMillis >= BIOMETRIC_DIFF_MILLIS
-		: true
+		: false
 }

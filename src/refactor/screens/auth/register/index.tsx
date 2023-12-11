@@ -33,6 +33,7 @@ import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
 import { System } from '@app/refactor/common/util'
 import BackButton from '@components/back_button'
+import { IS_ANDROID } from '@app/constants/system'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -363,7 +364,7 @@ const _styles = (theme: Theme) =>
 			alignSelf: 'center',
 		},
 		back: {
-			marginTop: 33,
+			marginTop: IS_ANDROID ? 45 : 28,
 			marginLeft: 15,
 			alignSelf: 'flex-start',
 		},

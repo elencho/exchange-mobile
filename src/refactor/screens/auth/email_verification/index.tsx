@@ -19,6 +19,7 @@ import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { setOtpTimer } from '@store/redux/auth/slice'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
+import { MaterialIndicator } from 'react-native-indicators'
 
 const EmailVerification = ({
 	navigation,
@@ -35,7 +36,7 @@ const EmailVerification = ({
 		null
 	)
 
-	const { otpTimerVisible, otpLoading } = useSelector(
+	const { otpTimerVisible, otpLoading, otpResendLoading } = useSelector(
 		(state: RootState) => state.auth
 	)
 
@@ -89,7 +90,16 @@ const EmailVerification = ({
 	const resend = () => dispatch(resendOtpThunk())
 
 	const resendOrCountDown = () => {
-		if (otpTimerVisible) {
+		if (otpResendLoading) {
+			return (
+				<MaterialIndicator
+					color="#6582FD"
+					animationDuration={3000}
+					size={16}
+					style={{ flex: 0 }}
+				/>
+			)
+		} else if (otpTimerVisible) {
 			return (
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)
@@ -177,6 +187,7 @@ const _styles = (theme: Theme) =>
 		},
 		primary: {
 			color: theme.color.textPrimary,
+			textAlign: 'center',
 			marginTop: 23,
 			marginBottom: 12,
 		},

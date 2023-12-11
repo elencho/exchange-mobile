@@ -25,6 +25,7 @@ export default function ModalWithSearch({
 	tradeType,
 	isForTransactions,
 	wallet,
+	filterText,
 }) {
 	const usdBtcSwitch = useSelector((state) => state.wallet.usdBtcSwitch)
 	const handlePress = (name, code) => {
@@ -92,6 +93,7 @@ export default function ModalWithSearch({
 				right={<Search />}
 				activeRight={<SearchActive />}
 				style={styles.searchInput}
+				value={filterText}
 			/>
 
 			<WithKeyboard padding flexGrow modal noRefresh>

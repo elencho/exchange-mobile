@@ -29,6 +29,7 @@ import { setOtpTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import BackButton from '@components/back_button'
+import { MaterialIndicator } from 'react-native-indicators'
 
 export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	const dispatch = useDispatch()
@@ -40,16 +41,13 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 		null
 	)
 
-	const { otpTimerVisible, otpType, otpLoading } = useSelector(
-		(state: RootState) => state.auth
-	)
+	const { otpTimerVisible, otpType, otpLoading, otpResendLoading } =
+		useSelector((state: RootState) => state.auth)
 
 	const cellCount = otpType === 'SMS' ? 4 : 6
 
 	useEffect(() => {
-		if (otpType !== 'TOTP') {
-			dispatch(setOtpTimer(true))
-		}
+		dispatch(setOtpTimer(true))
 
 		return () => {
 			dispatch(setOtpTimer(false))
@@ -91,7 +89,16 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	}
 
 	const resendOrCountDown = () => {
-		if (otpTimerVisible) {
+		if (otpResendLoading) {
+			return (
+				<MaterialIndicator
+					color="#6582FD"
+					animationDuration={3000}
+					size={16}
+					style={{ flex: 0 }}
+				/>
+			)
+		} else if (otpTimerVisible) {
 			return (
 				<AppText style={{ color: theme.color.textPrimary }}>{seconds}</AppText>
 			)
@@ -210,6 +217,7 @@ const _styles = (theme: Theme) =>
 		},
 		primary: {
 			color: theme.color.textPrimary,
+			textAlign: 'center',
 			marginTop: 27,
 			marginBottom: 12,
 		},

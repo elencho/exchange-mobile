@@ -24,6 +24,7 @@ interface ModalWIthSearchProps {
 	tradeType?: TradeTypesEnum.BUY | TradeTypesEnum.SELL
 	isForTransactions?: boolean
 	wallet?: boolean
+	filterText?: string
 }
 
 export const ModalWithSearch = (props: ModalWIthSearchProps) => {
@@ -40,6 +41,7 @@ export const ModalWithSearch = (props: ModalWIthSearchProps) => {
 		tradeType,
 		isForTransactions,
 		wallet,
+		filterText,
 	} = props
 
 	const { getUri, handlePress, usdBtcSwitch } = useModalWithSearch({
@@ -102,6 +104,7 @@ export const ModalWithSearch = (props: ModalWIthSearchProps) => {
 				rightComponent={<Search />}
 				onFocusRightComponent={<SearchActive />}
 				style={styles.searchInput}
+				value={filterText}
 			/>
 
 			<WithKeyboard padding flexGrow modal>

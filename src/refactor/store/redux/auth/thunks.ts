@@ -36,6 +36,7 @@ import { saveUserInfo, setCredentials } from '@app/redux/profile/actions'
 import { resetTradesState } from '@app/redux/trade/actions'
 import { resetTransactionsState } from '@app/redux/transactions/actions'
 import { resetWalletState } from '@app/redux/wallet/actions'
+import KV from '@store/kv/regular'
 
 const LOADING_DELAY = 2000
 
@@ -118,10 +119,22 @@ export const forgotPasswordStartThunk = createAsyncThunk(
 
 export const resendPasswordCodeThunk = createAsyncThunk(
 	'resetPassword',
-	async ({ mail }: { mail: string }, { getState }) => {
+	async (
+		{
+			mail,
+			navigation,
+		}: { mail: string; navigation: NativeStackNavigationProp<Screens, any> },
+		{ getState, dispatch }
+	) => {
 		const { callbackUrl } = (getState() as RootState).auth
 
 		const data = await resetPassword(callbackUrl, mail)
+		const error = data?.errors?.[0]
+
+		if (data.execution === Execution.LOGIN_USERNAME_PASSWORD) {
+			navigation.navigate('Login', { generalError: error })
+		}
+
 		return {
 			...data,
 			timerVisible:
@@ -258,6 +271,7 @@ export const codeToTokenThunk = createAsyncThunk(
 
 		const tokenData = await codeToToken(code, pkceInfo?.codeVerifier || '')
 		if (tokenData) {
+			KV.set('lastOpenDateMillis', Date.now())
 			dispatch(
 				setTokens({
 					refreshToken: tokenData.refresh_token,
