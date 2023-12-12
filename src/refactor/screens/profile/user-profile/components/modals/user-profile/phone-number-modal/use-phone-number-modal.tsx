@@ -56,6 +56,7 @@ export const usePhoneNumberModal = ({
 			togglePhoneNumberModal(false)
 			setPhoneNumber(userInfo?.phoneNumber!)
 			setChosenCountry(x)
+			setGeneralErrorData(null)
 		}
 	}
 

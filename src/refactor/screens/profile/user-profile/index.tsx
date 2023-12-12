@@ -32,7 +32,6 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 		onRefresh,
 		back,
 		onScroll,
-		showRefreshControl,
 		personalSecurity,
 		userProfileLoading,
 		bioAvailable,
@@ -41,6 +40,7 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 		setCompanyModalData,
 		companyInfoModalVisible,
 		setCompanyInfoModalVisible,
+		shouldShowRefresh,
 	} = useProfile()
 
 	const { userInfo } = useSelector((state: RootState) => state.profile)
@@ -100,12 +100,10 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 				onScroll={onScroll}
 				showsVerticalScrollIndicator={false}
 				refreshControl={
-					showRefreshControl ? (
-						<CustomRefreshContol
-							refreshing={userProfileLoading}
-							onRefresh={onRefresh}
-						/>
-					) : undefined
+					<CustomRefreshContol
+						refreshing={userProfileLoading && shouldShowRefresh}
+						onRefresh={onRefresh}
+					/>
 				}
 			/>
 		</Background>

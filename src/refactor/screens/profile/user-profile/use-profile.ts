@@ -21,7 +21,7 @@ export const useProfile = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state.profile)
 
-	const [showRefreshControl, setShowRefreshControl] = useState(false)
+	const [shouldShowRefresh, setShouldShowRefresh] = useState(false)
 	const [bioAvailable, setBioAvailable] = useState(false)
 	const [personalSecurity, setPersonalSecurity] = useState('Personal')
 	const { userProfileLoading } = state
@@ -36,10 +36,6 @@ export const useProfile = () => {
 	useEffect(() => {
 		dispatch(fetchUserInfoThunk())
 		checkCompitable()
-		const timer = setTimeout(() => {
-			setShowRefreshControl(true)
-		}, 5000)
-		return () => clearTimeout(timer)
 	}, [])
 
 	const checkCompitable = async () => {
@@ -52,16 +48,15 @@ export const useProfile = () => {
 	}
 
 	const onRefresh = () => {
+		setShouldShowRefresh(true)
 		checkCompitable()
 		dispatch(fetchUserInfoThunk())
+		setShouldShowRefresh(false)
 	}
 	const back = () => navigation.goBack()
 
 	const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-		const { y } = event.nativeEvent.contentOffset
-		if (y > 0) {
-			setShowRefreshControl(true)
-		}
+		// const { y } = event.nativeEvent.contentOffset
 	}
 
 	return {
@@ -69,7 +64,6 @@ export const useProfile = () => {
 		onRefresh,
 		back,
 		onScroll,
-		showRefreshControl,
 		personalSecurity,
 		userProfileLoading,
 		bioAvailable,
@@ -78,5 +72,6 @@ export const useProfile = () => {
 		setCompanyModalData,
 		companyInfoModalVisible,
 		setCompanyInfoModalVisible,
+		shouldShowRefresh,
 	}
 }

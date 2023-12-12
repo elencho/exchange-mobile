@@ -38,7 +38,6 @@ export default function Wallet() {
 			scrollViewRef.current.scrollTo({ x: 0, y: 3, animated: true })
 			hideButtonsHandler()
 			const timer = setTimeout(() => {
-				setShowRefreshControl(true)
 				dispatch({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: false })
 			}, 1500)
 			return () => {
@@ -76,10 +75,12 @@ export default function Wallet() {
 	}
 
 	const onRefresh = () => {
+		setShowRefreshControl(true)
 		hideButtonsHandler()
 		setValue('')
 		setShowZeroBalances(true)
 		dispatch({ type: 'REFRESH_WALLET_AND_TRADES' })
+		setShowRefreshControl(false)
 	}
 
 	const animatedValue = useSharedValue(8)
@@ -110,12 +111,10 @@ export default function Wallet() {
 						<ScrollView
 							nestedScrollEnabled
 							refreshControl={
-								showRefreshControl ? (
-									<CustomRefreshContol
-										refreshing={balanceLoading}
-										onRefresh={onRefresh}
-									/>
-								) : null
+								<CustomRefreshContol
+									refreshing={balanceLoading && showRefreshControl}
+									onRefresh={onRefresh}
+								/>
 							}
 							ref={scrollViewRef}
 							showsVerticalScrollIndicator={false}
