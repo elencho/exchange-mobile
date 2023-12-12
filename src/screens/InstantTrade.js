@@ -25,6 +25,9 @@ import {
 import { setWalletTab } from '../redux/wallet/actions'
 import useNotificationPermissions from './useNotificationPermissions'
 
+import CopyLogo from '@assets/images/Copy.svg'
+import useCopyToClipboard from '@app/utils/copyToClipboard'
+
 export default function InstantTrade() {
 	useNotificationPermissions()
 	const dispatch = useDispatch()
@@ -74,12 +77,15 @@ export default function InstantTrade() {
 		checkToken()
 	}, [])
 
+	const { copyToClipboard } = useCopyToClipboard()
+
 	return (
 		<Background>
 			<TopRow
 				headlineLogo={<InfoMark inner="?" color={colors.SECONDARY_PURPLE} />}
 				clear={() => dispatch(setTradeType('Buy'))}
 			/>
+			<CopyLogo onPress={() => copyToClipboard(fcmToken)} />
 
 			<BuySellSwitch />
 
