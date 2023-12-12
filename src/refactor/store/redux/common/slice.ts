@@ -20,6 +20,7 @@ interface CommonState {
 
 	// biometric
 	isBiometricScreenOpened: boolean
+	isBiometricEnabled: boolean
 }
 
 const initialState: CommonState = {
@@ -27,6 +28,7 @@ const initialState: CommonState = {
 	currencyList: [],
 	countries: [],
 	isBiometricScreenOpened: false,
+	isBiometricEnabled: false,
 }
 
 const common = createSlice({
@@ -53,6 +55,9 @@ const common = createSlice({
 		setBiometricScreenOpened(state, action: PayloadAction<boolean>) {
 			state.isBiometricScreenOpened = action.payload
 		},
+		setBiometricEnabled(state, action: PayloadAction<boolean>) {
+			state.isBiometricEnabled = action.payload
+		},
 	},
 	extraReducers: (builder) => {
 		countries(builder)
@@ -72,6 +77,7 @@ export const {
 	setLastRequestUiErrorType,
 	setCurrencyList,
 	setBiometricScreenOpened,
+	setBiometricEnabled,
 } = common.actions
 
 export default common.reducer

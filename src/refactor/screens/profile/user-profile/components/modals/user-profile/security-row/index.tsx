@@ -37,7 +37,7 @@ export default function SecurityRow(props: SecurityRowProps) {
 	const {
 		userInfo,
 		otpType,
-		isBioOn,
+		isBiometricEnabled,
 		bioType,
 		handlePassword,
 		handleChange,
@@ -111,7 +111,7 @@ export default function SecurityRow(props: SecurityRowProps) {
 			case 'Google_Auth':
 				return otpType === 'TOTP'
 			case 'Biometric':
-				return isBioOn
+				return isBiometricEnabled
 			default:
 				return false
 		}

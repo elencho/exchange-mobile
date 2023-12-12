@@ -22,6 +22,7 @@ import {
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import KV from '@store/kv/regular'
 import SecureKV from '@store/kv/secure'
+import { setBiometricEnabled } from '@store/redux/common/slice'
 
 const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 	const { theme } = useTheme()
@@ -69,6 +70,7 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 		}
 
 		if (await canDoBiometric(accessToken)) {
+			dispatch(setBiometricEnabled(true))
 			if (biometricDiffElapsed()) {
 				navigation.navigate('Resume', { from: 'Splash' })
 			} else {

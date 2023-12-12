@@ -4,22 +4,22 @@ import {
 	isEnrolledAsync,
 	supportedAuthenticationTypesAsync,
 } from 'expo-local-authentication'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { togglePasswordModal } from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { canDoBiometric } from '@app/refactor/utils/authUtils'
 import { TokenParams } from '@app/refactor/types/auth/splash'
 import SecureKV from '@store/kv/secure'
 import { sendOtp } from '@app/refactor/redux/profile/profileApi'
 import { setCurrentSecurityAction } from '@app/refactor/redux/profile/profileSlice'
 import KV from '@store/kv/regular'
+import { setBiometricEnabled } from '@store/redux/common/slice'
 
 interface SecurityRowProps {
 	text: string
 	togglePasswordModal?: (v: boolean) => void
 	toggleEmailAuthModalVisible?: (v: boolean) => void
 	toggleGoogleOtpModalVisible?: (v: boolean) => void
+	toggleSmsAuthModalVisible: (v: boolean) => void
 }
 
 export const useSecurityRow = (props: SecurityRowProps) => {
@@ -34,19 +34,13 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const { userInfo } = state.profile
+	const { isBiometricEnabled } = state.common
 	const { accessToken, otpType } = state.auth
 
 	const [bioType, setBioType] = useState<string | null>(null)
-	const [isBioOn, setIsBioOn] = useState(false)
 
 	useEffect(() => {
 		handleBiometricIcon()
-
-		canDoBiometric(accessToken).then((can) => {
-			if (can) {
-				setIsBioOn(true)
-			}
-		})
 	}, [])
 
 	const handlePassword = () => {
@@ -56,12 +50,12 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 	const handleAuth = async (userEmail: string) => {
 		const cachedEmails = (await SecureKV.get('bioEnabledEmails')) || []
 		const hasFaceOrTouchIdSaved = await isEnrolledAsync()
-		if (isBioOn) {
+		if (isBiometricEnabled) {
 			const withoutUserMail = cachedEmails.filter((e) => e !== userEmail)
 			SecureKV.set('bioEnabledEmails', withoutUserMail)
-			return setIsBioOn(false)
+			return dispatch(setBiometricEnabled(false))
 		}
-		if (!isBioOn && hasFaceOrTouchIdSaved) {
+		if (!isBiometricEnabled && hasFaceOrTouchIdSaved) {
 			const result = await authenticateAsync({
 				promptMessage: 'Log in with fingerprint or faceid',
 				cancelLabel: 'Abort',
@@ -74,7 +68,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 					.concat([userEmail])
 
 				SecureKV.set('bioEnabledEmails', addedUserMail)
-				setIsBioOn(true)
+				dispatch(setBiometricEnabled(true))
 			}
 		}
 	}
@@ -134,7 +128,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		handleChange,
 		handlePassword,
 		userInfo,
-		isBioOn,
+		isBiometricEnabled,
 		bioType,
 		otpType,
 		handleChangeGoogle,

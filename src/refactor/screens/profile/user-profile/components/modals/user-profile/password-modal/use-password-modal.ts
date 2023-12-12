@@ -62,6 +62,7 @@ export const usePasswordModal = ({
 	}
 
 	const handleSave = () => {
+		setGeneralErrorData(null)
 		const condition =
 			error ||
 			!currentPassword ||
@@ -109,6 +110,8 @@ export const usePasswordModal = ({
 		}))
 	}
 	const handleFieldChange = (fieldName: string, value: string) => {
+		setGeneralErrorData(null)
+
 		setPasswordState((prevState) => ({
 			...prevState,
 			[fieldName]: value,
