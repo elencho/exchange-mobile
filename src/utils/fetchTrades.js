@@ -25,7 +25,10 @@ export const submitTrade = async (payload) => {
 	return data
 }
 export const fetchBalance = async () => {
-	const data = await axios.get(BALANCE_URL)
+	const data = await axios.get(BALANCE_URL, {
+		headers: { toast: false, requestName: 'fetchBalance' },
+	})
+
 	return data?.data
 }
 
