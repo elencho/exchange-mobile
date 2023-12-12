@@ -105,7 +105,10 @@ export const usePhoneNumberModal = ({
 	}
 
 	const handleCountries = () => setCountryModalVisible(true)
-
+	const handleChangeCountry = (country: Country) => {
+		setChosenCountry(country)
+		setGeneralErrorData(null)
+	}
 	return {
 		userInfo,
 		countries,
@@ -116,7 +119,7 @@ export const usePhoneNumberModal = ({
 		handleCountries,
 		phoneCountry,
 		error,
-		setChosenCountry,
+		setChosenCountry: handleChangeCountry,
 		chosenCountry,
 		countryModalVisible,
 		setCountryModalVisible,
