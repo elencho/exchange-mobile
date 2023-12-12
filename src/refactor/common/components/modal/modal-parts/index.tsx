@@ -143,7 +143,6 @@ const _styles = (theme: Theme) =>
 			borderRadius: 5,
 			paddingVertical: 6,
 			paddingLeft: 10,
-			marginRight: 10,
 		},
 		image: {
 			width: 36,

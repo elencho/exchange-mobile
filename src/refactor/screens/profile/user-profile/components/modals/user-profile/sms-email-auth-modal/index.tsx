@@ -118,7 +118,8 @@ const _styles = (theme: Theme) =>
 			alignItems: 'center',
 		},
 		codeInput: {
-			marginVertical: 35,
+			marginTop: 24,
+			marginBottom: 40,
 		},
 		header: {
 			color: theme.color.textPrimary,
@@ -136,6 +137,6 @@ const _styles = (theme: Theme) =>
 			color: theme.color.textSecondary,
 			fontSize: 20,
 			lineHeight: 28,
-			marginBottom: 10,
+			marginBottom: 14,
 		},
 	})
