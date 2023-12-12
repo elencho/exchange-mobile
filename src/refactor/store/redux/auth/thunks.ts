@@ -37,6 +37,8 @@ import { resetTradesState } from '@app/redux/trade/actions'
 import { resetTransactionsState } from '@app/redux/transactions/actions'
 import { resetWalletState } from '@app/redux/wallet/actions'
 import KV from '@store/kv/regular'
+import { canDoBiometric } from '@app/refactor/utils/authUtils'
+import { setBiometricEnabled } from '../common/slice'
 
 const LOADING_DELAY = 2000
 
@@ -278,6 +280,9 @@ export const codeToTokenThunk = createAsyncThunk(
 					accessToken: tokenData.access_token,
 				})
 			)
+			canDoBiometric(tokenData.access_token).then((canDo) => {
+				dispatch(setBiometricEnabled(canDo))
+			})
 			if (from === 'Registration') {
 				navigationRef.reset({
 					index: 1,
