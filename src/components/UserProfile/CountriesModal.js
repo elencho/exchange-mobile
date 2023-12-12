@@ -29,8 +29,8 @@ export default function CountriesModal({
 	} = state
 
 	useEffect(() => {
-		dispatch(fetchCountries())
-	}, [])
+		countriesModalVisible && dispatch(fetchCountries())
+	}, [countriesModalVisible])
 
 	const filter = (text) => {
 		const filteredArray = countriesConstant.filter((c) =>
