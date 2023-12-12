@@ -19,7 +19,7 @@ const Maintenance = ({ navigation }: ScreenProp<'Maintenance'>) => {
 	const refresh = async () => {
 		setLoading(true)
 		const { status } = await checkReadiness()
-		if (status !== 'UP') navigation.navigate('Welcome')
+		if (status === 'UP') navigation.navigate('Welcome')
 		setLoading(false)
 	}
 

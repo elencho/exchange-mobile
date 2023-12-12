@@ -12,7 +12,7 @@ import SecureKV from '@store/kv/secure'
 import { sendOtp } from '@app/refactor/redux/profile/profileApi'
 import { setCurrentSecurityAction } from '@app/refactor/redux/profile/profileSlice'
 import KV from '@store/kv/regular'
-import { setBiometricEnabled } from '@store/redux/common/slice'
+import { setBiometricToggleEnabled } from '@store/redux/common/slice'
 
 interface SecurityRowProps {
 	text: string
@@ -53,7 +53,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		if (isBiometricEnabled) {
 			const withoutUserMail = cachedEmails.filter((e) => e !== userEmail)
 			SecureKV.set('bioEnabledEmails', withoutUserMail)
-			return dispatch(setBiometricEnabled(false))
+			return dispatch(setBiometricToggleEnabled(false))
 		}
 		if (!isBiometricEnabled && hasFaceOrTouchIdSaved) {
 			const result = await authenticateAsync({
@@ -68,7 +68,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 					.concat([userEmail])
 
 				SecureKV.set('bioEnabledEmails', addedUserMail)
-				dispatch(setBiometricEnabled(true))
+				dispatch(setBiometricToggleEnabled(true))
 			}
 		}
 	}

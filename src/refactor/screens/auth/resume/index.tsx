@@ -28,7 +28,6 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 
 	const { from, maintenanceInProgress, version } = route.params
 	const fromSplash = from === 'Splash'
-	const fromMain = from === 'Main'
 
 	const resumed = route?.key === 'Resume-uniqueKey'
 
@@ -75,7 +74,12 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 		})
 		if (authResult?.success) {
 			KV.set('lastOpenDateMillis', Date.now())
-			if (fromSplash && !resumed && !maintenanceInProgress && !version) {
+
+			if (maintenanceInProgress) {
+				navigation.navigate('Maintenance')
+			} else if (version) {
+				navigation.navigate('UpdateAvailable')
+			} else if (fromSplash && !resumed) {
 				navigation.replace('Main')
 			} else {
 				navigation.goBack()

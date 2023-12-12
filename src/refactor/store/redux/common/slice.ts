@@ -55,7 +55,7 @@ const common = createSlice({
 		setBiometricScreenOpened(state, action: PayloadAction<boolean>) {
 			state.isBiometricScreenOpened = action.payload
 		},
-		setBiometricEnabled(state, action: PayloadAction<boolean>) {
+		setBiometricToggleEnabled(state, action: PayloadAction<boolean>) {
 			state.isBiometricEnabled = action.payload
 		},
 	},
@@ -77,7 +77,7 @@ export const {
 	setLastRequestUiErrorType,
 	setCurrencyList,
 	setBiometricScreenOpened,
-	setBiometricEnabled,
+	setBiometricToggleEnabled,
 } = common.actions
 
 export default common.reducer

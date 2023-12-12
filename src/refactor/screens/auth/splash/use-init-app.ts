@@ -22,7 +22,7 @@ import {
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import KV from '@store/kv/regular'
 import SecureKV from '@store/kv/secure'
-import { setBiometricEnabled } from '@store/redux/common/slice'
+import { setBiometricToggleEnabled } from '@store/redux/common/slice'
 
 const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 	const { theme } = useTheme()
@@ -61,26 +61,27 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 		// navigation.navigate('Login2Fa')
 		// return
 
-		if (await updateNeeded()) {
-			navigation.navigate('UpdateAvailable')
-			return
-		} else if (await backIsDown()) {
-			navigation.navigate('Maintenance')
-			return
-		}
+		const update = await updateNeeded()
+		const maintenance = await backIsDown()
+		const showBio =
+			(await canDoBiometric(accessToken)) && biometricDiffElapsed()
 
-		if (await canDoBiometric(accessToken)) {
-			dispatch(setBiometricEnabled(true))
-			if (biometricDiffElapsed()) {
-				navigation.navigate('Resume', { from: 'Splash' })
-			} else {
-				navigation.navigate('Main')
-			}
+		if (showBio) {
+			dispatch(setBiometricToggleEnabled(true))
+			navigation.navigate('Resume', {
+				from: 'Splash',
+				maintenanceInProgress: maintenance,
+				version: update,
+			})
 		} else {
-			if (!accessToken) {
-				navigation.navigate('Welcome')
-			} else {
+			if (update) {
+				navigation.navigate('UpdateAvailable')
+			} else if (maintenance) {
+				navigation.navigate('Maintenance')
+			} else if (accessToken) {
 				navigation.navigate('Main')
+			} else {
+				navigation.navigate('Welcome')
 			}
 		}
 	}
