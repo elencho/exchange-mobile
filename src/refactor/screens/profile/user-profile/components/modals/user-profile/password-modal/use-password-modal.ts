@@ -62,6 +62,7 @@ export const usePasswordModal = ({
 	}
 
 	const handleSave = () => {
+		setGeneralErrorData(null)
 		const condition =
 			error ||
 			!currentPassword ||

@@ -77,6 +77,7 @@ export const usePhoneNumberModal = ({
 	}
 
 	const handleSave = () => {
+		setGeneralErrorData(null)
 		if (
 			error ||
 			!userInfo?.phoneCountry ||
