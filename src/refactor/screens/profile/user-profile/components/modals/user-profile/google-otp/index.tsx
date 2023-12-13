@@ -61,9 +61,11 @@ const _styles = (theme: Theme) =>
 		container: {
 			alignItems: 'center',
 			backgroundColor: theme.color.backgroundPrimary,
+			paddingHorizontal: 41,
 		},
 		codeInput: {
-			marginVertical: 35,
+			marginTop: 24,
+			marginBottom: 40,
 		},
 		header: {
 			color: theme.color.textPrimary,
@@ -71,5 +73,6 @@ const _styles = (theme: Theme) =>
 		},
 		secondary: {
 			color: theme.color.textSecondary,
+			marginBottom: 14,
 		},
 	})

@@ -79,6 +79,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 			<AppText style={styles.secondary} variant="s">
 				Enter One Time Password
 			</AppText>
+
 			<General_error errorData={generalErrorData} />
 
 			<View style={styles.codeInput}>
@@ -116,6 +117,7 @@ const _styles = (theme: Theme) =>
 	StyleSheet.create({
 		container: {
 			alignItems: 'center',
+			paddingHorizontal: 41,
 		},
 		codeInput: {
 			marginTop: 24,
