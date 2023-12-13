@@ -52,10 +52,18 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		return routes.length > 0 && routes[routes.length - 1].name === 'Resume'
 	}
 
+	const isAppClosing = (newState: AppStateStatus) => {
+		return System.isIos
+			? newState === 'inactive' &&
+					(prevAppState.current === 'active' ||
+						prevAppState.current === undefined)
+			: newState === 'background' &&
+					(prevAppState.current === 'active' ||
+						prevAppState.current === undefined)
+	}
+
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
-		const appClosing = System.isIos
-			? newState === 'inactive' && prevAppState.current === 'active'
-			: newState === 'background' && prevAppState.current === 'active'
+		const appClosing = isAppClosing(newState)
 
 		const bioVisible =
 			newState === 'active' &&

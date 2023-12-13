@@ -1,7 +1,7 @@
 interface ForgotPasswordStartResponse {
 	callbackUrl: string
 	execution: Execution
-	errors: any[] //TODO: Type
+	errors: UiErrorData[]
 }
 
 interface ResetPasswordResponse {
@@ -16,11 +16,11 @@ interface ResetPasswordOtpResponse {
 	}
 	callbackUrl: string
 	execution: Execution
-	errors: any[] //TODO: Type
+	errors: UiErrorData[]
 }
 
 interface SetNewPasswordResponse {
 	code: string
 	session_state: string
-	errors: any[] //TODO: Type
+	errors: UiErrorData[]
 }

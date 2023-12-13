@@ -87,7 +87,7 @@ const EmailVerification = ({
 		else navigation.navigate('Login')
 	}
 
-	const resend = () => dispatch(resendOtpThunk())
+	const resend = () => dispatch(resendOtpThunk({ navigation }))
 
 	const resendOrCountDown = () => {
 		if (otpResendLoading) {

@@ -116,7 +116,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 		}
 	}
 
-	const resend = () => dispatch(resendOtpThunk())
+	const resend = () => dispatch(resendOtpThunk({ navigation }))
 
 	const onCodeFilled = () =>
 		handleGeneralError(

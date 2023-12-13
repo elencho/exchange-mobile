@@ -76,7 +76,7 @@ export const usernameAndPaswordThunk = createAsyncThunk(
 			pass: string
 			navigation: NativeStackNavigationProp<Screens, any>
 		},
-		{ getState, dispatch }
+		{ getState }
 	) => {
 		const state = (getState() as RootState).auth
 
@@ -108,11 +108,14 @@ export const forgotPasswordStartThunk = createAsyncThunk(
 		{}
 	) => {
 		const data = await forgotPassword()
+		const error = data?.errors?.[0]
 
 		if (data.execution === Execution.RESET_PASSWORD_WITH_CODE) {
 			navigation.navigate('ForgotPassword')
 		} else if (data.execution === Execution.LOGIN_OTP) {
 			navigation.navigate('Login2Fa')
+		} else if (data.execution === Execution.LOGIN_USERNAME_PASSWORD) {
+			navigation.replace('Login', { generalError: error })
 		}
 
 		return { callbackUrl: data.callbackUrl }
@@ -126,7 +129,7 @@ export const resendPasswordCodeThunk = createAsyncThunk(
 			mail,
 			navigation,
 		}: { mail: string; navigation: NativeStackNavigationProp<Screens, any> },
-		{ getState, dispatch }
+		{ getState }
 	) => {
 		const { callbackUrl } = (getState() as RootState).auth
 
@@ -158,10 +161,11 @@ export const resetPasswordConfirmCodeThunk = createAsyncThunk(
 			otp: string
 			navigation: NativeStackNavigationProp<Screens, any>
 		},
-		{ getState, dispatch }
+		{ getState }
 	) => {
 		const state = (getState() as RootState).auth
 		const data = await resetPasswordOtp(state.callbackUrl, mail, otp)
+		const error = data?.errors?.[0]
 
 		if (data.execution === Execution.LOGIN_OTP) {
 			navigation.replace('Login2Fa')
@@ -170,6 +174,8 @@ export const resetPasswordConfirmCodeThunk = createAsyncThunk(
 				from: 'ForgotPassword',
 				mail,
 			})
+		} else if (data.execution === Execution.LOGIN_USERNAME_PASSWORD) {
+			navigation.replace('Login', { generalError: error })
 		}
 
 		//setTimeout(() => {
@@ -205,9 +211,22 @@ export const resetOtpThunk = createAsyncThunk(
 
 export const resendOtpThunk = createAsyncThunk(
 	'resendOtp',
-	async (_, { getState }) => {
+	async (
+		{
+			navigation,
+		}: {
+			navigation: NativeStackNavigationProp<Screens, any>
+		},
+		{ getState }
+	) => {
 		const { callbackUrl } = (getState() as RootState).auth
 		const resendInfo = await resendEmail(callbackUrl)
+
+		const error = resendInfo?.errors?.[0]
+		if (error) {
+			navigation.replace('Login', { generalError: error })
+		}
+
 		return { callbackUrl: resendInfo.callbackUrl }
 	}
 )
@@ -240,7 +259,7 @@ export const otpForLoginThunk = createAsyncThunk(
 				setTimeout(() => {
 					dispatch(setOtpLoading(false))
 				}, LOADING_DELAY)
-				navigation.navigate('Login', { generalError: error })
+				navigation.replace('Login', { generalError: error })
 			} else if (hasErrors) {
 				dispatch(setOtpLoading(false))
 			} else {
@@ -274,6 +293,7 @@ export const codeToTokenThunk = createAsyncThunk(
 		const tokenData = await codeToToken(code, pkceInfo?.codeVerifier || '')
 		if (tokenData) {
 			KV.set('lastOpenDateMillis', Date.now())
+
 			dispatch(
 				setTokens({
 					refreshToken: tokenData.refresh_token,
@@ -391,7 +411,7 @@ type RegistrationFormProps = {
 }
 export const registrationFormThunk = createAsyncThunk(
 	'registrationForm',
-	async (props: RegistrationFormProps, { getState, dispatch }) => {
+	async (props: RegistrationFormProps, { getState }) => {
 		const { callbackUrl } = (getState() as RootState).auth
 
 		const data = await registrationForm(

@@ -17,6 +17,7 @@ interface ResetOtpResponse {
 interface ResendOtpResponse {
 	execution: Execution
 	callbackUrl: string
+	errors: UiErrorData[]
 }
 
 interface OtpLoginResponse {
