@@ -38,13 +38,10 @@ const Maintenance = ({ navigation }: ScreenProp<'Maintenance'>) => {
 				<Gear />
 				<AppText style={styles.header}>Hey there!</AppText>
 				<AppText style={styles.secondary}>
-					We've been hard at work bringing new improvements to the platform.
-					Soon the platform will be fully operational.
+					Cryptal is temporarily unavailable, but upgrades are on its way. We
+					apologize for any inconvenience caused by the temporary downtime.
 				</AppText>
 				<Margin margin={22} />
-				<AppText style={styles.secondary}>
-					Thanks for your patience and understanding.
-				</AppText>
 				<AppButton
 					variant="primary"
 					text="Refresh"
@@ -55,7 +52,7 @@ const Maintenance = ({ navigation }: ScreenProp<'Maintenance'>) => {
 			</View>
 			<View style={styles.footer}>
 				<AppText style={styles.supportText}>
-					Need Help? Contact
+					Need help? Contact
 					<View style={{ width: 4 }} />
 					<AppButton
 						variant="text"
@@ -66,7 +63,7 @@ const Maintenance = ({ navigation }: ScreenProp<'Maintenance'>) => {
 				</AppText>
 				<Margin margin={14} />
 				<AppText style={styles.contactText}>
-					+995 322 053 253 | Support@cryptal.com
+					+995 322 053 253 Support@cryptal.com
 				</AppText>
 			</View>
 		</ImageBackground>
@@ -107,6 +104,7 @@ const _styles = (theme: Theme) =>
 			color: '#838BB2CC',
 		},
 		contactText: {
+			marginBottom: 30,
 			textAlign: 'center',
 			color: 'rgba(131, 139, 178, 0.8)',
 		},

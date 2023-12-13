@@ -117,7 +117,8 @@ export default function ModalWithSearch({
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		width: '100%',
+		width: '105%',
+		marginLeft: -10,
 		backgroundColor: colors.PRIMARY_BACKGROUND,
 	},
 	headline: {

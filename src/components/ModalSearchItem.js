@@ -94,7 +94,8 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		marginBottom: 5,
 		borderRadius: 5,
-		padding: 10,
+		paddingVertical: 6,
+		paddingLeft: 10,
 	},
 	image: {
 		marginRight: 14,

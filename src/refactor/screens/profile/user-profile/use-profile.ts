@@ -21,6 +21,7 @@ export const useProfile = () => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state.profile)
 
+	const [isBackPressed, setIsBackPressed] = useState(false)
 	const [shouldShowRefresh, setShouldShowRefresh] = useState(false)
 	const [bioAvailable, setBioAvailable] = useState(false)
 	const [personalSecurity, setPersonalSecurity] = useState('Personal')
@@ -43,9 +44,7 @@ export const useProfile = () => {
 		setBioAvailable(compitable)
 	}
 
-	const logout = () => {
-		dispatch(logoutThunk())
-	}
+	const logout = () => dispatch(logoutThunk())
 
 	const onRefresh = () => {
 		setShouldShowRefresh(true)
@@ -53,7 +52,12 @@ export const useProfile = () => {
 		dispatch(fetchUserInfoThunk())
 		setShouldShowRefresh(false)
 	}
-	const back = () => navigation.goBack()
+	const back = () => {
+		setIsBackPressed(true)
+		setTimeout(() => {
+			navigation.goBack()
+		}, 0)
+	}
 
 	const onScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
 		// const { y } = event.nativeEvent.contentOffset
@@ -73,5 +77,6 @@ export const useProfile = () => {
 		companyInfoModalVisible,
 		setCompanyInfoModalVisible,
 		shouldShowRefresh,
+		isBackPressed,
 	}
 }

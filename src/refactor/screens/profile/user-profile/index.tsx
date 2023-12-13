@@ -41,6 +41,7 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 		companyInfoModalVisible,
 		setCompanyInfoModalVisible,
 		shouldShowRefresh,
+		isBackPressed,
 	} = useProfile()
 
 	const { userInfo } = useSelector((state: RootState) => state.profile)
@@ -100,10 +101,12 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 				onScroll={onScroll}
 				showsVerticalScrollIndicator={false}
 				refreshControl={
-					<CustomRefreshContol
-						refreshing={userProfileLoading && shouldShowRefresh}
-						onRefresh={onRefresh}
-					/>
+					!isBackPressed ? (
+						<CustomRefreshContol
+							refreshing={userProfileLoading && shouldShowRefresh}
+							onRefresh={onRefresh}
+						/>
+					) : undefined
 				}
 			/>
 		</Background>
