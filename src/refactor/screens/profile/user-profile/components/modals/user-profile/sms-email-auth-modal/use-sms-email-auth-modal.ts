@@ -154,6 +154,8 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	}
 
 	const resend = () => {
+		setValue('')
+		setGeneralErrorData(null)
 		setTimerVisible(true)
 		if (currentSecurityAction === 'EMAIL') {
 			if (emailAuthModalVisible) {
