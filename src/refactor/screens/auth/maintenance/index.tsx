@@ -6,7 +6,7 @@ import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import { Images } from '@app/refactor/common/constants'
-import { checkReadiness } from '@store/redux/auth/api'
+import { isBackDown } from '@store/redux/auth/api'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 
 const Maintenance = ({ navigation }: ScreenProp<'Maintenance'>) => {
@@ -18,8 +18,9 @@ const Maintenance = ({ navigation }: ScreenProp<'Maintenance'>) => {
 
 	const refresh = async () => {
 		setLoading(true)
-		const { status } = await checkReadiness()
-		if (status === 'UP') navigation.navigate('Welcome')
+		if (await isBackDown()) {
+			navigation.navigate('Welcome')
+		}
 		setLoading(false)
 	}
 

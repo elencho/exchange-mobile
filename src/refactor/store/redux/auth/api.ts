@@ -30,7 +30,9 @@ export const fetchTranslations = async () => {
 	return data?.data
 }
 
-export const checkReadiness = async () => {
+export const isBackDown = async () => {
+	let errorHappened = false
+
 	const config = {
 		params: {
 			version: DeviceInfo.getVersion(),
@@ -38,11 +40,13 @@ export const checkReadiness = async () => {
 		},
 	}
 	const uninterceptedAxiosInstance = axios.create()
-	const data = await uninterceptedAxiosInstance.get<AppReadiness>(
-		READINESS_URL,
-		config
-	)
-	return data?.data
+	const data = await uninterceptedAxiosInstance
+		.get<AppReadiness>(READINESS_URL, config)
+		.catch((_) => {
+			errorHappened = true
+		})
+
+	return errorHappened || !(data?.status === 200 && data.data.status === 'UP')
 }
 
 export const loginStart = async (code_challenge: string) => {

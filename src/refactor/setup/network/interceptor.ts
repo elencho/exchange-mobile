@@ -12,13 +12,7 @@ import {
 	setRequestName,
 } from '@app/refactor/redux/errors/errorsSlice'
 import SecureKV from '@store/kv/secure'
-import {
-	resetTransactionsState,
-	setTabRouteName,
-} from '@app/redux/transactions/actions'
-import { saveUserInfo, setCredentials } from '@app/redux/profile/actions'
-import { resetTradesState } from '@app/redux/trade/actions'
-import { resetWalletState } from '@app/redux/wallet/actions'
+import { setTabRouteName } from '@app/redux/transactions/actions'
 
 axios.interceptors.request.use((request) => {
 	const hasToast: boolean = request.headers.toast === false ? false : true
@@ -70,7 +64,6 @@ const handleError = async (err: any) => {
 	const status: number = err.response.status
 	const uiError: UiErrorData | undefined = err.response.data
 	const invalidGrant = err.response.data.error === 'invalid_grant'
-	const errorDesc = err.response.data.error_description
 
 	if (status > 401) {
 		if (state.common.lastRequestUiError === 'AppToast') {

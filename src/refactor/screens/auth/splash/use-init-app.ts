@@ -5,7 +5,7 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch } from 'react-redux'
 import { useTheme } from '@theme/index'
 import {
-	checkReadiness,
+	isBackDown,
 	fetchTranslations,
 	getTokensOnInit,
 } from '@store/redux/auth/api'
@@ -23,6 +23,7 @@ import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import KV from '@store/kv/regular'
 import SecureKV from '@store/kv/secure'
 import { setBiometricToggleEnabled } from '@store/redux/common/slice'
+import main from '@app/refactor/screens/auth/main'
 
 const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 	const { theme } = useTheme()
@@ -62,10 +63,12 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 		// return
 
 		const update = await updateNeeded()
-		const maintenance = await backIsDown()
+		const maintenance = await isBackDown()
+		console.log(maintenance)
 		const showBio = await canDoBiometric(accessToken).then((canDo) =>
 			dispatch(setBiometricToggleEnabled(canDo))
 		)
+
 		if (showBio.payload && biometricDiffElapsed()) {
 			navigation.navigate('Resume', {
 				from: 'Splash',
@@ -103,11 +106,6 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 			return false
 		}
 	}, [])
-
-	const backIsDown = async () => {
-		const { status } = await checkReadiness()
-		return status !== 'UP'
-	}
 
 	const fetchLexicon = async () => {
 		await fetchTranslations()
