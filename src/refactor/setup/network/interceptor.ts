@@ -88,11 +88,6 @@ const handleError = async (err: any) => {
 			return response
 		} else {
 			store.dispatch(resetAuth())
-			store.dispatch(resetTradesState())
-			store.dispatch(saveUserInfo({}))
-			store.dispatch(setCredentials({}))
-			store.dispatch(resetTransactionsState())
-			store.dispatch(resetWalletState())
 			store.dispatch(setTabRouteName('Trade'))
 
 			navigationRef.reset({
@@ -104,11 +99,6 @@ const handleError = async (err: any) => {
 
 	if (status === 400 && invalidGrant) {
 		store.dispatch(resetAuth())
-		store.dispatch(resetTradesState())
-		store.dispatch(saveUserInfo({}))
-		store.dispatch(setCredentials({}))
-		store.dispatch(resetTransactionsState())
-		store.dispatch(resetWalletState())
 		store.dispatch(setTabRouteName('Trade'))
 
 		navigationRef.reset({
