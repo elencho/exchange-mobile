@@ -42,6 +42,11 @@ import { setBiometricToggleEnabled } from '../common/slice'
 
 const LOADING_DELAY = 2000
 
+const isLoginShown = (navigation: NativeStackNavigationProp<Screens, any>) => {
+	const routes = navigation.getState().routes
+	return routes.length > 0 && routes[routes.length - 1].name === 'Login'
+}
+
 export const startLoginThunk = createAsyncThunk(
 	'startLogin',
 	async (navigation: NativeStackNavigationProp<Screens, any>, { dispatch }) => {
@@ -50,7 +55,10 @@ export const startLoginThunk = createAsyncThunk(
 			dispatch(savePkceInfo(pkceInfo))
 
 			const loginStartInfo = await loginStart(pkceInfo?.codeChallenge)
-			if (loginStartInfo?.execution === Execution.LOGIN_USERNAME_PASSWORD) {
+			if (
+				loginStartInfo?.execution === Execution.LOGIN_USERNAME_PASSWORD &&
+				!isLoginShown(navigation)
+			) {
 				navigation.navigate('Login')
 			}
 			if (loginStartInfo?.execution === Execution.EMAIL_VERIFICATION_OTP) {
