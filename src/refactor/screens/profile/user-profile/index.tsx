@@ -45,7 +45,7 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 
 	const { userInfo } = useSelector((state: RootState) => state.profile)
 	useEffect(() => {
-		if (route.params?.justRegistered === true) {
+		if (route.params?.justRegistered === true && userInfo) {
 			if (userInfo?.verificationToolEnabled) {
 				launchSumsubSdk(userInfo.email)
 			} else {
@@ -57,7 +57,7 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 				})
 				setCompanyInfoModalVisible(true)
 			}
-		}
+		} 
 	}, [userInfo, route.params?.justRegistered])
 
 	const renderItem = () => (
