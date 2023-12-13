@@ -32,12 +32,12 @@ const Update = ({}: ScreenProp<'UpdateAvailable'>) => {
 				source={require('@assets/images/Update.png')}
 			/>
 			<AppText variant="headline" style={styles.header}>
-				Update Available
+				update_header
 			</AppText>
-			<AppText style={styles.secondary}>Update Available descr</AppText>
+			<AppText style={styles.secondary}>update_description</AppText>
 			<AppButton
 				variant="primary"
-				text="Update"
+				text="update_button"
 				onPress={update}
 				style={styles.button}
 			/>

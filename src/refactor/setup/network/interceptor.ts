@@ -12,6 +12,13 @@ import {
 	setRequestName,
 } from '@app/refactor/redux/errors/errorsSlice'
 import SecureKV from '@store/kv/secure'
+import {
+	resetTransactionsState,
+	setTabRouteName,
+} from '@app/redux/transactions/actions'
+import { saveUserInfo, setCredentials } from '@app/redux/profile/actions'
+import { resetTradesState } from '@app/redux/trade/actions'
+import { resetWalletState } from '@app/redux/wallet/actions'
 
 axios.interceptors.request.use((request) => {
 	const hasToast: boolean = request.headers.toast === false ? false : true
@@ -81,6 +88,13 @@ const handleError = async (err: any) => {
 			return response
 		} else {
 			store.dispatch(resetAuth())
+			store.dispatch(resetTradesState())
+			store.dispatch(saveUserInfo({}))
+			store.dispatch(setCredentials({}))
+			store.dispatch(resetTransactionsState())
+			store.dispatch(resetWalletState())
+			store.dispatch(setTabRouteName('Trade'))
+
 			navigationRef.reset({
 				index: 0,
 				routes: [{ name: 'Welcome' }],
@@ -90,6 +104,13 @@ const handleError = async (err: any) => {
 
 	if (status === 400 && invalidGrant) {
 		store.dispatch(resetAuth())
+		store.dispatch(resetTradesState())
+		store.dispatch(saveUserInfo({}))
+		store.dispatch(setCredentials({}))
+		store.dispatch(resetTransactionsState())
+		store.dispatch(resetWalletState())
+		store.dispatch(setTabRouteName('Trade'))
+
 		navigationRef.reset({
 			index: 0,
 			routes: [{ name: 'Welcome' }],
