@@ -14,7 +14,9 @@ export const fetchTrades = async (params) => {
 }
 
 export const fetchOffers = async () => {
-	const data = await axios.get(OFFERS_URL)
+	const data = await axios.get(OFFERS_URL, {
+		headers: { toast: false, requestName: 'fetchOffers' },
+	})
 	return data?.data
 }
 

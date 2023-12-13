@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Background from '../../components/Background'
@@ -29,6 +29,8 @@ function Balance({ navigation }) {
 		transactionsOld: { tabNavigationRef, loading },
 	} = state
 
+	const [isBackPressed, setIsBackPressed] = useState(false)
+
 	const onRefresh = () => {
 		if (shouldRefreshOnScroll || IS_ANDROID) {
 			dispatch(setCard(null))
@@ -46,8 +48,11 @@ function Balance({ navigation }) {
 	}, [walletTab])
 
 	const back = () => {
-		dispatch(setWalletTab('Deposit'))
-		navigation.navigate('Main', { screen: 'Wallet' })
+		setIsBackPressed(true)
+		setTimeout(() => {
+			dispatch(setWalletTab('Deposit'))
+			navigation.navigate('Main', { screen: 'Wallet' })
+		}, 0)
 	}
 
 	useEffect(() => {
@@ -58,7 +63,7 @@ function Balance({ navigation }) {
 	const refreshControl = () => {
 		const props = { onRefresh, refreshing: loading || cardsLoading }
 
-		return <CustomRefreshContol {...props} />
+		return isBackPressed ? undefined : <CustomRefreshContol {...props} />
 	}
 
 	const disabled = loading || cardsLoading
