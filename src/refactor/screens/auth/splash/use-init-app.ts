@@ -63,11 +63,10 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 
 		const update = await updateNeeded()
 		const maintenance = await backIsDown()
-		const showBio =
-			(await canDoBiometric(accessToken)) && biometricDiffElapsed()
-
-		if (showBio) {
-			dispatch(setBiometricToggleEnabled(true))
+		const showBio = await canDoBiometric(accessToken).then((canDo) =>
+			dispatch(setBiometricToggleEnabled(canDo))
+		)
+		if (showBio.payload && biometricDiffElapsed()) {
 			navigation.navigate('Resume', {
 				from: 'Splash',
 				maintenanceInProgress: maintenance,
