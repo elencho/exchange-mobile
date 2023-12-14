@@ -78,8 +78,8 @@ export default function WhitelistActionsModal({
 	}
 
 	const tag = () => {
-		if (whitelist[0]) {
-			return whitelist[0]?.tag
+		if (whitelist?.[0]) {
+			return whitelist?.[0]?.tag
 		}
 		return
 	}
