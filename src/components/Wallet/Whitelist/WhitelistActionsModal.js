@@ -17,7 +17,9 @@ import { sendOtp } from '../../../utils/userProfileUtils'
 import AppModal from '../../AppModal'
 import AppText from '../../AppText'
 
-export default function WhitelistActionsModal() {
+export default function WhitelistActionsModal({
+	setDeleteWhitelistOtpVisible,
+}) {
 	const { copyToClipboard } = useCopyToClipboard()
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
@@ -29,6 +31,7 @@ export default function WhitelistActionsModal() {
 
 	const hide = () => {
 		dispatch(toggleWhitelistActionsModal(false))
+		setDeleteWhitelistOtpVisible(false)
 	}
 
 	const handlePress = (a) => {
@@ -45,6 +48,7 @@ export default function WhitelistActionsModal() {
 					if (otpType === 'TOTP') dispatch(toggleGoogleOtpModal(true))
 					if (otpType === 'EMAIL') dispatch(toggleEmailAuthModal(true))
 					if (otpType === 'SMS') dispatch(toggleSmsAuthModal(true))
+					setDeleteWhitelistOtpVisible(true)
 				}, 1000)
 				if (otpType !== 'TOTP') sendOtp()
 				break

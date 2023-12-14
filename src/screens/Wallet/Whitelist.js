@@ -23,6 +23,8 @@ export default function Whitelist({ refreshControl }) {
 	} = state
 
 	const [seconds, setSeconds] = useState(30)
+	const [deleteWhitelistOtpVisible, setDeleteWhitelistOtpVisible] =
+		useState(false)
 
 	const showAddModal = () => dispatch(toggleAddWhitelistModal(true))
 
@@ -70,23 +72,29 @@ export default function Whitelist({ refreshControl }) {
 						</View>
 					)}
 
-					<WhitelistActionsModal />
+					<WhitelistActionsModal
+						setDeleteWhitelistOtpVisible={setDeleteWhitelistOtpVisible}
+					/>
 					<AddEditWhitelistModal add />
 					<AddEditWhitelistModal edit />
 
-					<GoogleOtpModal whitelist />
-					<SmsEmailAuthModal
-						seconds={seconds}
-						setSeconds={setSeconds}
-						whitelist
-						type="E-mail"
-					/>
-					<SmsEmailAuthModal
-						seconds={seconds}
-						setSeconds={setSeconds}
-						whitelist
-						type="SMS"
-					/>
+					{deleteWhitelistOtpVisible && (
+						<>
+							<GoogleOtpModal whitelist />
+							<SmsEmailAuthModal
+								seconds={seconds}
+								setSeconds={setSeconds}
+								whitelist
+								type="E-mail"
+							/>
+							<SmsEmailAuthModal
+								seconds={seconds}
+								setSeconds={setSeconds}
+								whitelist
+								type="SMS"
+							/>
+						</>
+					)}
 				</View>
 			)}
 		</>
