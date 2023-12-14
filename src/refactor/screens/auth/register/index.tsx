@@ -280,7 +280,10 @@ const Register = ({ navigation }: Props) => {
 						chosenItem={chosenCountry}
 						visible={countryModalVisible}
 						onCountryChosen={setChosenCountry}
-						hide={() => setCountryModalVisible(false)}
+						hide={() => {
+							setCountryModalVisible(false)
+							setCountryFilterText('')
+						}}
 						from="Registration"
 						phoneCountry={true}
 						countryFilterText={countryFilterText}
