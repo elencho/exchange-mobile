@@ -64,7 +64,6 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 
 		const update = await updateNeeded()
 		const maintenance = await isBackDown()
-		console.log(maintenance)
 		const showBio = await canDoBiometric(accessToken).then((canDo) =>
 			dispatch(setBiometricToggleEnabled(canDo))
 		)

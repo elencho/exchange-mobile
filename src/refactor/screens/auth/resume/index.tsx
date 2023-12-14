@@ -82,7 +82,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 			} else if (fromSplash && !resumed) {
 				navigation.replace('Main')
 			} else {
-				navigation.goBack()
+				if (navigation.getState().routes.length > 1) navigation.goBack()
 			}
 		} else if (
 			['passcode_not_set', 'not_enrolled'].includes(authResult?.error)

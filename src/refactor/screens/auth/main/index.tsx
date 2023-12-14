@@ -65,6 +65,13 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
 		const appClosing = isAppClosing(newState)
 
+		// console.log({
+		// 	new: newState,
+		// 	prev: prevAppState.current,
+		// 	diff: (Date.now() - (KV.get('lastOpenDateMillis') || 0)) / 1000,
+		// 	enrolled: await isEnrolledAsync(),
+		// })
+
 		const bioVisible =
 			newState === 'active' &&
 			!fromResume &&
