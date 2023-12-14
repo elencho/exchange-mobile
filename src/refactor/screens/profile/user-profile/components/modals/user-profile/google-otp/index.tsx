@@ -33,7 +33,6 @@ export default function GoogleOtpModal(props: Props) {
 				Google Authentication
 			</AppText>
 			<AppText style={styles.secondary}>Enter One Time Password</AppText>
-			<General_error errorData={generalErrorData} />
 			<View style={styles.codeInput}>
 				<TwoFaInput
 					onFill={onFill}
@@ -41,6 +40,7 @@ export default function GoogleOtpModal(props: Props) {
 					cellCount={6}
 					setValue={setValue}
 					navigation={navigation}
+					generalErrorData={generalErrorData}
 				/>
 			</View>
 		</View>
@@ -73,6 +73,5 @@ const _styles = (theme: Theme) =>
 		},
 		secondary: {
 			color: theme.color.textSecondary,
-			marginBottom: 14,
 		},
 	})

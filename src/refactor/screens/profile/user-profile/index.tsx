@@ -49,7 +49,7 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 		if (route.params?.justRegistered === true && userInfo) {
 			if (userInfo?.verificationToolEnabled) {
 				launchSumsubSdk(userInfo.email)
-			} else {
+			} else if (userInfo?.verificationToolEnabled === false) {
 				setCompanyModalData({
 					header: 'go web personal header',
 					description: 'go web personal description',
@@ -58,7 +58,7 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 				})
 				setCompanyInfoModalVisible(true)
 			}
-		} 
+		}
 	}, [userInfo, route.params?.justRegistered])
 
 	const renderItem = () => (
