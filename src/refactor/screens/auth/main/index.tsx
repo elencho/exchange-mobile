@@ -80,6 +80,15 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			biometricDiffElapsed() &&
 			(await isEnrolledAsync())
 
+		console.log({
+			new: newState,
+			prev: prevAppState.current,
+			diff: (Date.now() - (KV.get('lastOpenDateMillis') || 0)) / 1000,
+			enrolled: await isEnrolledAsync(),
+			webView: KV.get('webViewVisible'),
+			bioVisible,
+		})
+
 		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
@@ -96,7 +105,18 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
 			const userEnabledBio = bioEnabledEmails?.includes(email)
 
-			if (userEnabledBio && isFocused) {
+			const routes = navigation.getState().routes
+			const inUserProfile =
+				routes.length > 1 && routes[routes.length - 1].name === 'UserProfile'
+
+			console.log({
+				userEnabledBio,
+				isFocused,
+				route: navigation.getState().routes,
+				inUserProfile,
+			})
+
+			if (userEnabledBio && (isFocused || inUserProfile)) {
 				navigation.navigate({
 					key: 'Resume-uniqueKey',
 					name: 'Resume',

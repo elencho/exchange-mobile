@@ -25,7 +25,7 @@ const authRedirectUrl = Constants?.manifest?.extra?.authRedirectUrl
 
 export const fetchTranslations = async () => {
 	const data = await axios.get<Dictionary>(DICTIONARY, {
-		headers: { requestName: 'fetchTranslations' },
+		headers: { requestName: 'fetchTranslations', toast: false },
 	})
 	return data?.data
 }
