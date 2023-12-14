@@ -25,6 +25,8 @@ export default function SmsEmailAuthModal({
 	whitelist,
 	seconds,
 	setSeconds,
+	setTwoFaInputValue,
+	twoFaInputValue,
 }) {
 	const dispatch = useDispatch()
 	const navigation = useNavigation()
@@ -42,9 +44,9 @@ export default function SmsEmailAuthModal({
 	const email = currentSecurityAction === 'email'
 	const google = currentSecurityAction === 'google'
 
-	const [value, setValue] = useState('')
 	// const [seconds, setSeconds] = useState(remainingSeconds ?? 30)
 	const [otpLoading, setOtpLoading] = useState(false)
+	const [value, setValue] = useState(twoFaInputValue ?? '')
 
 	const reset = () => {
 		dispatch({ type: 'TOGGLE_TIMER', timerVisible: false })
@@ -85,7 +87,12 @@ export default function SmsEmailAuthModal({
 		if (email) dispatch(setEmailAuth(false))
 		if (google) dispatch(setGoogleAuth(false))
 		if (generalError) dispatch(saveGeneralError(null))
+		setTwoFaInputValue && setTwoFaInputValue(null)
 	}
+
+	useEffect(() => {
+		setTwoFaInputValue && setTwoFaInputValue(value)
+	}, [value])
 
 	const resend = () =>
 		dispatch({

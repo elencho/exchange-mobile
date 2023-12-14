@@ -198,12 +198,16 @@ export default function AddEditWhitelistModal({ add, edit }) {
 				setSeconds={setSeconds}
 				type="SMS"
 				whitelist
+				twoFaInputValue={twoFaInputValue}
+				setTwoFaInputValue={setTwoFaInputValue}
 			/>
 			<SmsEmailAuthModal
 				seconds={seconds}
 				setSeconds={setSeconds}
 				type="Email"
 				whitelist
+				twoFaInputValue={twoFaInputValue}
+				setTwoFaInputValue={setTwoFaInputValue}
 			/>
 			<GoogleOtpModal
 				setTwoFaInputValue={setTwoFaInputValue}
