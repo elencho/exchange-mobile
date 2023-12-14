@@ -88,6 +88,12 @@ export default function SmsEmailAuthModal({
 		if (google) dispatch(setGoogleAuth(false))
 		if (generalError) dispatch(saveGeneralError(null))
 		setTwoFaInputValue && setTwoFaInputValue(null)
+		setSeconds(30)
+		setValue('')
+		if (value.length === cellCount && email) {
+			dispatch(setSmsAuth(false))
+			dispatch(setGoogleAuth(false))
+		}
 	}
 
 	useEffect(() => {
@@ -159,7 +165,7 @@ export default function SmsEmailAuthModal({
 			bottom
 			hide={hide}
 			visible={visible}
-			onModalHide={handleHide}
+			// onModalHide={handleHide}
 		/>
 	)
 }

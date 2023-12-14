@@ -94,12 +94,16 @@ export default function WithdrawalConfirmModal() {
 				setSeconds={setSeconds}
 				type="SMS"
 				withdrawal={withdrawalType()}
+				setTwoFaInputValue={setTwoFaInputValue}
+				twoFaInputValue={twoFaInputValue}
 			/>
 			<SmsEmailAuthModal
 				seconds={seconds}
 				setSeconds={setSeconds}
 				type="Email"
 				withdrawal={withdrawalType()}
+				setTwoFaInputValue={setTwoFaInputValue}
+				twoFaInputValue={twoFaInputValue}
 			/>
 			<GoogleOtpModal
 				withdrawal={withdrawalType()}
