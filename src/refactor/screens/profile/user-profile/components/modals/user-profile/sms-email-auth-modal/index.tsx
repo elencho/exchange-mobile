@@ -80,8 +80,6 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 				Enter One Time Password
 			</AppText>
 
-			<General_error errorData={generalErrorData} />
-
 			<View style={styles.codeInput}>
 				<TwoFaInput
 					onFill={handleFill}
@@ -90,6 +88,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 					value={value}
 					cellCount={cellCount}
 					setValue={setValue}
+					generalErrorData={generalErrorData}
 				/>
 			</View>
 
@@ -139,6 +138,5 @@ const _styles = (theme: Theme) =>
 			color: theme.color.textSecondary,
 			fontSize: 20,
 			lineHeight: 28,
-			marginBottom: 14,
 		},
 	})
