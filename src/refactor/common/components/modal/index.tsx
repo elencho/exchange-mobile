@@ -5,6 +5,7 @@ import {
 	KeyboardAvoidingView,
 	Platform,
 	Keyboard,
+	StatusBar,
 } from 'react-native'
 import Modal from 'react-native-modal'
 import { RootSiblingParent } from 'react-native-root-siblings'
@@ -36,7 +37,7 @@ interface AppModalProps {
 }
 
 const AppModal = (props: AppModalProps) => {
-	const { styles } = useTheme(_styles)
+	const { styles, theme } = useTheme(_styles)
 	const { webViewVisible } = useModal()
 	const {
 		children,
@@ -123,7 +124,12 @@ const AppModal = (props: AppModalProps) => {
 						</KeyboardAvoidingView>
 					)}
 					{fullScreen && (
-						<Background style={backgroundStyle}>
+						<Background>
+							<StatusBar
+								backgroundColor={theme.color.backgroundPrimary}
+								translucent
+								barStyle="light-content"
+							/>
 							<CloseIcon onPress={hide} />
 							{title && <Headline title={title} />}
 							{children}
