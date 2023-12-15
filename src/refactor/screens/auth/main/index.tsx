@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { useIsFocused } from '@react-navigation/native'
 import jwt_decode from 'jwt-decode'
 import React, { memo, useCallback, useEffect, useRef } from 'react'
 import { AppState, AppStateStatus } from 'react-native'
@@ -27,7 +26,6 @@ const Tab = createBottomTabNavigator()
 const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const dispatch = useDispatch()
 	const { theme } = useTheme()
-	const isFocused = useIsFocused()
 
 	const fromResume = route.params?.fromResume === true
 	const prevAppState = useRef<AppStateStatus>()
@@ -65,13 +63,6 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
 		const appClosing = isAppClosing(newState)
 
-		// console.log({
-		// 	new: newState,
-		// 	prev: prevAppState.current,
-		// 	diff: (Date.now() - (KV.get('lastOpenDateMillis') || 0)) / 1000,
-		// 	enrolled: await isEnrolledAsync(),
-		// })
-
 		const bioVisible =
 			newState === 'active' &&
 			!fromResume &&
@@ -80,14 +71,14 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			biometricDiffElapsed() &&
 			(await isEnrolledAsync())
 
-		console.log({
-			new: newState,
-			prev: prevAppState.current,
-			diff: (Date.now() - (KV.get('lastOpenDateMillis') || 0)) / 1000,
-			enrolled: await isEnrolledAsync(),
-			webView: KV.get('webViewVisible'),
-			bioVisible,
-		})
+		// console.log({
+		// 	new: newState,
+		// 	prev: prevAppState.current,
+		// 	diff: (Date.now() - (KV.get('lastOpenDateMillis') || 0)) / 1000,
+		// 	enrolled: await isEnrolledAsync(),
+		// 	webView: KV.get('webViewVisible'),
+		// 	bioVisible,
+		// })
 
 		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
@@ -100,34 +91,20 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		prevAppState.current = newState
 	}, [])
 
-	const getBiometricEnabled = useCallback(
-		async (email: string) => {
-			const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
-			const userEnabledBio = bioEnabledEmails?.includes(email)
+	const getBiometricEnabled = async (email: string) => {
+		const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
+		const userEnabledBio = bioEnabledEmails?.includes(email)
 
-			const routes = navigation.getState().routes
-			const inUserProfile =
-				routes.length > 1 && routes[routes.length - 1].name === 'UserProfile'
-
-			console.log({
-				userEnabledBio,
-				isFocused,
-				route: navigation.getState().routes,
-				inUserProfile,
+		if (userEnabledBio) {
+			navigation.navigate({
+				key: 'Resume-uniqueKey',
+				name: 'Resume',
+				params: {
+					from: 'Main',
+				},
 			})
-
-			if (userEnabledBio && (isFocused || inUserProfile)) {
-				navigation.navigate({
-					key: 'Resume-uniqueKey',
-					name: 'Resume',
-					params: {
-						from: 'Main',
-					},
-				})
-			}
-		},
-		[isFocused]
-	)
+		}
+	}
 
 	return (
 		<Tab.Navigator

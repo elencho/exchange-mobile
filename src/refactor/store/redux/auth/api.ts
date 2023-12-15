@@ -46,7 +46,7 @@ export const isBackDown = async () => {
 			errorHappened = true
 		})
 
-	return errorHappened || !(data?.status === 200 && data.data.status === 'UP')
+	return errorHappened || !(data?.status === 200 && data?.data?.status === 'UP')
 }
 
 export const loginStart = async (code_challenge: string) => {
