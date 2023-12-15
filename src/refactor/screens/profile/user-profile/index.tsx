@@ -59,7 +59,7 @@ const UserProfile = ({ route }: ScreenProp<'UserProfile'>) => {
 				setCompanyInfoModalVisible(true)
 			}
 		}
-	}, [userInfo, route.params?.justRegistered])
+	}, [userInfo?.verificationToolEnabled, route.params?.justRegistered])
 
 	const renderItem = () => (
 		<>
