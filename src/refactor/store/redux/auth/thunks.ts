@@ -448,6 +448,11 @@ export const logoutThunk = createAsyncThunk(
 	async (_, { dispatch }) => {
 		const httpStatus = await logout()
 		if (httpStatus === 204) {
+			navigationRef.reset({
+				index: 0,
+				routes: [{ name: 'Welcome' }],
+			})
+
 			dispatch(resetAuth())
 			dispatch(setUserInfo(null))
 
@@ -457,11 +462,6 @@ export const logoutThunk = createAsyncThunk(
 			dispatch(setCredentials({}))
 			dispatch(resetTransactionsState())
 			dispatch(resetWalletState())
-
-			navigationRef.reset({
-				index: 0,
-				routes: [{ name: 'Welcome' }],
-			})
 		}
 	}
 )
