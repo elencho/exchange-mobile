@@ -13,6 +13,12 @@ import {
 } from '@app/refactor/redux/errors/errorsSlice'
 import SecureKV from '@store/kv/secure'
 import { setTabRouteName } from '@app/redux/transactions/actions'
+import { setUserInfo } from '@app/refactor/redux/profile/profileSlice'
+import { resetTradesState } from '@app/redux/trade/actions'
+import { saveUserInfo, setCredentials } from '@app/redux/profile/actions'
+import { resetTransactionsState } from '@app/redux/transactions/actions'
+import { resetWalletState } from '@app/redux/wallet/actions'
+import { resetModalsState } from '@app/redux/modals/actions'
 
 axios.interceptors.request.use((request) => {
 	const hasToast: boolean = request.headers.toast === false ? false : true
@@ -74,30 +80,42 @@ const handleError = async (err: any) => {
 		}
 	}
 
+	const clearReduxStates = () => {
+		store.dispatch(resetAuth())
+		store.dispatch(setUserInfo(null))
+		store.dispatch(setTabRouteName('Trade'))
+
+		// saga
+		store.dispatch(resetTradesState())
+		store.dispatch(saveUserInfo({}))
+		store.dispatch(setCredentials({}))
+		store.dispatch(resetTransactionsState())
+		store.dispatch(resetWalletState())
+		store.dispatch(resetModalsState())
+	}
+
 	const oldRefresh = await SecureKV.get('refreshToken')
 	if (status === 401) {
 		const response = await retryUnauthorizedCall(err.config, oldRefresh)
 		if (response) {
 			return response
 		} else {
-			store.dispatch(resetAuth())
-			store.dispatch(setTabRouteName('Trade'))
-
 			navigationRef.reset({
 				index: 0,
 				routes: [{ name: 'Welcome' }],
 			})
+
+			clearReduxStates()
 		}
 	}
 
 	if (status === 400 && invalidGrant) {
-		store.dispatch(resetAuth())
-		store.dispatch(setTabRouteName('Trade'))
-
 		navigationRef.reset({
 			index: 0,
 			routes: [{ name: 'Welcome' }],
 		})
+
+		clearReduxStates()
 	}
 
 	if (status === 503) {
