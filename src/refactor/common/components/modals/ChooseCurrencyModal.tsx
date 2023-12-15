@@ -1,0 +1,131 @@
+import { useNavigation } from '@react-navigation/native'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import AppModal from '@app/refactor/common/components/modal'
+import ModalWithSearch from '@app/components/ModalWithSearch'
+import { setCurrentBalanceObj } from '@app/redux/trade/actions'
+import { currencyAction } from '@app/redux/transactions/actions'
+import {
+	cryptoAddressesAction,
+	saveCryptoAddress,
+	setNetwork,
+	setWalletTab,
+	wireDepositAction,
+} from '@app/redux/wallet/actions'
+import { setCryptoFilter } from '@app/refactor/redux/transactions/transactionSlice'
+import { fetchCurrencies } from '@app/utils/fetchTransactions'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import { setCurrencyList } from '@store/redux/common/slice'
+
+function ChooseCurrencyModal({
+	wallet = false,
+	isForTransactions,
+	isCurrencyModalVisible,
+	setIsCurrencyModalVisible,
+	currencyFilterText,
+	setCurrencyFilterText,
+}) {
+	const navigation = useNavigation()
+	const dispatch = useDispatch()
+
+	const {
+		transactions: { currenciesConstant, cryptoFilter, currency, code },
+		trade: { balance, fiatsArray, currentBalanceObj },
+		wallet: { walletTab },
+		common: { currencyList },
+	} = useSelector((state: RootState) => state)
+
+	const [filteredData, setFilteredData] = useState(currencyList)
+
+	useEffect(() => {
+		if (!currencyList?.length) {
+			fetchCurrencies().then((res) => dispatch(setCurrencyList(res)))
+		}
+	}, [])
+
+	const filter = (text: string) => setCurrencyFilterText(text.toLowerCase())
+
+	useEffect(() => {
+		const filteredArray =
+			currencyList?.filter(
+				(currency) => currency.code?.toLowerCase()?.includes(currencyFilterText)
+			) ?? []
+		setFilteredData(filteredArray)
+	}, [currencyFilterText])
+
+	const hide = () => {
+		setIsCurrencyModalVisible(false)
+		filter('')
+	}
+
+	const fiats = fiatsArray.map((f) => f.code)
+
+	const choose = (name, currencyCode) => {
+		if (isForTransactions) {
+			dispatch(setCryptoFilter(currencyCode))
+			hide()
+			return
+		}
+
+		if (code === currencyCode) {
+			hide()
+			return
+		}
+
+		dispatch(setNetwork(null))
+		let network
+		const m = 'depositMethods'
+		balance?.balances?.forEach((b) => {
+			if (currencyCode === b.currencyCode) {
+				if (b[m].WALLET) network = b[m].WALLET[0].provider
+				dispatch(setCurrentBalanceObj(b))
+			}
+		})
+
+		if (wallet) {
+			if (fiats.includes(currencyCode)) {
+				dispatch(wireDepositAction(name, currencyCode, navigation))
+				dispatch(saveCryptoAddress({}))
+			} else {
+				dispatch(cryptoAddressesAction(name, currencyCode, navigation, network))
+			}
+
+			if (
+				(walletTab === 'Manage Cards' && !fiats.includes(currencyCode)) ||
+				(walletTab === 'Whitelist' && fiats.includes(currencyCode)) ||
+				currentBalanceObj?.depositMethods?.ECOMMERCE
+			) {
+				dispatch(setWalletTab('Deposit'))
+			}
+		} else {
+			dispatch(currencyAction(name, currenciesConstant, currencyCode))
+		}
+		dispatch({ type: 'GET_WHITELIST_ACTION' })
+		hide()
+	}
+
+	const children = (
+		<ModalWithSearch
+			array={filteredData}
+			choose={choose}
+			filter={filter}
+			currentItem={isForTransactions ? cryptoFilter : currency}
+			title="Choose Currency"
+			isForTransactions={isForTransactions}
+			wallet={wallet}
+			filterText={currencyFilterText}
+		/>
+	)
+
+	return (
+		<AppModal
+			visible={isCurrencyModalVisible}
+			hide={hide}
+			children={children}
+			fullScreen
+			delayedOpen
+		/>
+	)
+}
+
+export default ChooseCurrencyModal

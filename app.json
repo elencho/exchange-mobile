@@ -1,42 +1,42 @@
 {
-  "expo": {
-    "name": "cryptal-app",
-    "slug": "cryptal-app",
-    "scheme": "cryptal-app",
-    "version": "1.0.0",
-    "assetBundlePatterns": ["assets/images/*", "assets/fonts/*"],
-    "description": "",
-    "plugins": [
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "Allow cryptal-app to access your photos.",
-          "savePhotosPermission": "Allow cryptal-app to save photos.",
-          "isAccessMediaLocationEnabled": "true"
-        }
-      ],
-      [
-        "expo-barcode-scanner",
-        {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
-        }
-      ]
-    ],
-    "ios": {
-      "infoPlist": {
-        "NSFaceIDUsageDescription": "This app will optionally use Face ID or Touch ID to save login",
-        "NSLocationAlwaysUsageDescription": "This app will optionally use location for identity check",
-        "NSLocationWhenInUseUsageDescription": "Your location allows you to detect your language and country guidlines"
-      },
+	"expo": {
+		"name": "cryptal-app",
+		"slug": "cryptal-app",
+		"scheme": "cryptal-app",
+		"version": "1.0.0",
+		"assetBundlePatterns": ["assets/images/*", "assets/fonts/*"],
+		"description": "",
+		"plugins": [
+			[
+				"expo-media-library",
+				{
+					"photosPermission": "Allow cryptal-app to access your photos.",
+					"savePhotosPermission": "Allow cryptal-app to save photos.",
+					"isAccessMediaLocationEnabled": "true"
+				}
+			],
+			[
+				"expo-barcode-scanner",
+				{
+					"cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
+				}
+			]
+		],
+		"ios": {
+			"infoPlist": {
+				"NSFaceIDUsageDescription": "This app will optionally use Face ID or Touch ID to save login",
+				"NSLocationAlwaysUsageDescription": "This app will optionally use location for identity check",
+				"NSLocationWhenInUseUsageDescription": "Your location allows you to detect your language and country guidlines"
+			},
 
-      "bundleIdentifier": "com.cryptal.cryptalapp",
-      "buildNumber": "1.0.0"
-    },
-    "android": {
-      "package": "com.cryptal.cryptalapp",
-      "versionCode": 2,
-      "softwareKeyboardLayoutMode": "pan"
-    }
-  },
-  "name": "cryptal-app"
+			"bundleIdentifier": "com.cryptal.cryptalapp",
+			"buildNumber": "1.0.0"
+		},
+		"android": {
+			"package": "com.cryptal.cryptalapp",
+			"versionCode": 2,
+			"softwareKeyboardLayoutMode": "pan"
+		}
+	},
+	"name": "cryptal-app"
 }

@@ -1,3 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="14.08" height="9.009" viewBox="0 0 14.08 9.009">
-  <path id="back" d="M245.265,306.462h1.788v10.7l2.378-2.379,1.244,1.24-4.521,4.52-4.489-4.49,1.2-1.207,2.339,2.34.06-.032Z" transform="translate(320.542 -241.666) rotate(90)" fill="#6582fd"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="12" height="12" viewBox="0 0 12 12">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_21507" data-name="Rectangle 21507" width="12" height="12" transform="translate(1.8 1.718)" fill="#c0c5e0"/>
+    </clipPath>
+  </defs>
+  <g id="Arrrow" transform="translate(13.8 13.718) rotate(180)" clip-path="url(#clip-path)">
+    <path id="Path_90307" data-name="Path 90307" d="M.837,5.921,0,5.108,4.962,0,9.771,5.115l-.851.8L4.948,1.69Z" transform="translate(12.761 2.833) rotate(90)" fill="#c0c5e0" stroke="#c0c5e0" stroke-width="0.2"/>
+  </g>
 </svg>

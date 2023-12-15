@@ -2,6 +2,7 @@ package com.cryptal.exchange.mobile;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.graphics.Color;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
@@ -12,19 +13,14 @@ import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
 
-import org.devio.rn.splashscreen.SplashScreen;
-
 import expo.modules.ReactActivityDelegateWrapper;
 
 public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    // Set the theme to AppTheme BEFORE onCreate to support 
-    // coloring the background, status bar, and navigation bar.
-    // This is required for expo-splash-screen.
     setTheme(R.style.AppTheme);
-    SplashScreen.show(this, R.style.SplashScreenTheme, true);
     super.onCreate(null);
+    getWindow().getDecorView().setBackgroundColor(Color.parseColor("#161629")); 
 
     try {
       if (android.os.Build.VERSION.SDK_INT != Build.VERSION_CODES.O) {

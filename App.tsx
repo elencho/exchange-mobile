@@ -1,80 +1,88 @@
-import React, { useCallback } from 'react';
-import { StyleSheet, StatusBar, LogBox, View } from 'react-native';
-import { Provider } from 'react-redux';
-import { useFonts } from 'expo-font';
-import { useAssets } from 'expo-asset';
-
-import AppToast from './src/components/AppToast';
-import Navigator from './src/navigation';
-import store from './src/redux/store';
-import images from './src/constants/images';
-import colors from './src/constants/colors';
-import './src/utils/i18n';
-import './src/utils/interceptor';
-import { IS_ANDROID } from './src/constants/system';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAssets } from 'expo-asset'
+import { useFonts } from 'expo-font'
+import React, { useCallback } from 'react'
+import { StatusBar, LogBox, View, StyleSheet } from 'react-native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { Provider } from 'react-redux'
+import store from '@app/refactor/redux/store'
+import AppNavigator from '@app/refactor/setup/nav/index'
+import AppToast from '@components/app_toast'
+import images from './src/constants/images'
+import {
+	CryptalThemeProvider,
+	Theme,
+	useTheme,
+} from './src/refactor/setup/theme'
+import { THEME_DARK } from './src/refactor/setup/theme/variants'
+import '@app/refactor/setup/network/interceptor'
+import { System } from '@app/refactor/common/util'
 
 LogBox.ignoreLogs([
-  // TODO: Remove when fixed
-  'VirtualizedLists should never be nested',
-]);
+	// TODO: Remove when fixed
+	'VirtualizedLists should never be nested',
+])
 
-function App(): JSX.Element {
-  const [fontsLoaded] = useFonts({
-    Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
-    Ubuntu_Medium: require('./src/assets/fonts/Ubuntu_Medium.ttf'),
-    HelveticaNeue: require('./src/assets/fonts/HelveticaNeue.ttf'),
-  });
+const App = React.memo(() => {
+	const [fontsLoaded] = useFonts({
+		Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
+		Ubuntu_Medium: require('./src/assets/fonts/Ubuntu_Medium.ttf'),
+		HelveticaNeue: require('./src/assets/fonts/HelveticaNeue.ttf'),
+	})
 
-  const [assets] = useAssets(Object.values(images));
+	const { styles } = useTheme(_styles)
+	const [assets] = useAssets(Object.values(images))
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) return;
-  }, [fontsLoaded]);
+	const onLayoutRootView = useCallback(async () => {
+		if (fontsLoaded) return
+	}, [fontsLoaded])
 
-  if (!fontsLoaded || !assets) {
-    return <View />;
-  }
+	if (!fontsLoaded || !assets) {
+		return <View />
+	}
 
-  return (
-    <Provider store={store}>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <StatusBar
-          backgroundColor={'transparent'}
-          translucent
-          barStyle="light-content"
-        />
+	return (
+		<CryptalThemeProvider initial={THEME_DARK}>
+			<Provider store={store}>
+				<GestureHandlerRootView style={{ flex: 1 }}>
+					<StatusBar
+						backgroundColor={'transparent'}
+						translucent
+						barStyle="light-content"
+					/>
 
-        {(IS_ANDROID && (
-          <SafeAreaView
-            style={styles.container}
-            onLayout={onLayoutRootView}
-            edges={['bottom']}
-          >
-            <AppToast />
-            <Navigator />
-          </SafeAreaView>
-        )) || (
-          <>
-            <AppToast />
-            <Navigator />
-          </>
-        )}
-      </GestureHandlerRootView>
-    </Provider>
-  );
+					{System.isAndroid ? (
+						<SafeAreaView
+							style={styles.container}
+							onLayout={onLayoutRootView}
+							edges={['bottom']}>
+							<AppToast />
+							<AppNavigator />
+						</SafeAreaView>
+					) : (
+						<>
+							<AppToast />
+							<AppNavigator />
+						</>
+					)}
+				</GestureHandlerRootView>
+			</Provider>
+		</CryptalThemeProvider>
+	)
+})
+
+const _styles = (theme: Theme) => {
+	return StyleSheet.create({
+		container: {
+			flex: 1,
+			overflow: 'hidden',
+			backgroundColor: theme.color.backgroundPrimary,
+		},
+		statusBar: {
+			flex: 0,
+			backgroundColor: theme.color.backgroundPrimary,
+		},
+	})
 }
-export default App;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    overflow: 'hidden',
-    backgroundColor: colors.SECONDARY_BACKGROUND,
-  },
-  statusBar: {
-    flex: 0,
-    backgroundColor: colors.PRIMARY_BACKGROUND,
-  },
-});
+export default App

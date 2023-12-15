@@ -43,4 +43,4 @@ function launchWebSdk(accessToken, applicantEmail, applicantPhone) {
 
     launchWebSdk("${token}")
 </script>
-`;
+`

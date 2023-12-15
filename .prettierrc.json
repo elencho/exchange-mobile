@@ -1,6 +1,17 @@
 {
-  "trailingComma": "es5",
-  "tabWidth": 2,
-  "singleQuote": true,
-  "arrowParens": "always"
+	"trailingComma": "es5",
+	"tabWidth": 2,
+	"singleQuote": true,
+	"arrowParens": "always",
+	"semi": false,
+	"bracketSameLine": true,
+	"useTabs": true,
+	"importOrder": [
+		"^@assets/(.*)$",
+		"^@theme/(.*)$",
+		"^@components/(.*)$",
+		"^@store/(.*)$",
+		"^@app/(.*)$",
+		"^[./]"
+	]
 }
