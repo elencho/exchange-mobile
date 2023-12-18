@@ -39,6 +39,7 @@ import { resetWalletState } from '@app/redux/wallet/actions'
 import KV from '@store/kv/regular'
 import { canDoBiometric } from '@app/refactor/utils/authUtils'
 import { setBiometricToggleEnabled } from '../common/slice'
+import { resetModalsState } from '@app/redux/modals/actions'
 
 const LOADING_DELAY = 2000
 
@@ -448,6 +449,11 @@ export const logoutThunk = createAsyncThunk(
 	async (_, { dispatch }) => {
 		const httpStatus = await logout()
 		if (httpStatus === 204) {
+			navigationRef.reset({
+				index: 0,
+				routes: [{ name: 'Welcome' }],
+			})
+
 			dispatch(resetAuth())
 			dispatch(setUserInfo(null))
 
@@ -457,11 +463,7 @@ export const logoutThunk = createAsyncThunk(
 			dispatch(setCredentials({}))
 			dispatch(resetTransactionsState())
 			dispatch(resetWalletState())
-
-			navigationRef.reset({
-				index: 0,
-				routes: [{ name: 'Welcome' }],
-			})
+			dispatch(resetModalsState())
 		}
 	}
 )

@@ -42,6 +42,7 @@ export const actionTypes = {
 
 	SET_APP_TOAST: 'SET_APP_TOAST',
 	SET_TOAST_OBJ: 'SET_TOAST_OBJ',
+	RESET_MODALS_STATE: 'RESET_MODALS_STATE',
 }
 
 export const toggleDatePicker = (datePickerVisible) => ({
@@ -212,4 +213,8 @@ export const setToastObj = (toastObj) => ({
 export const grantCameraPermission = (hasCameraPermission) => ({
 	type: actionTypes.GRANT_CAMERA_PERMISSION,
 	hasCameraPermission,
+})
+
+export const resetModalsState = () => ({
+	type: actionTypes.RESET_MODALS_STATE,
 })
