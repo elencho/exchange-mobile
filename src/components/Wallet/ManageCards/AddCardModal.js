@@ -58,12 +58,6 @@ export default function AddCardModal() {
 
 	const hide = () => {
 		dispatch(toggleAddCardModal(false))
-		setSelectedProvider(null)
-		if (webViewVisible) {
-			if (statusObj) dispatch(setStatusModalInfo(statusObj))
-			setSaveCardAgreeTerms(false)
-			setStatusObj(null)
-		}
 	}
 
 	const image = () => {
@@ -110,6 +104,14 @@ export default function AddCardModal() {
 			setStatusObj({ success: ending, visible: true })
 			dispatch(cardsSagaAction())
 			hide()
+		}
+	}
+	const handleHide = () => {
+		setSelectedProvider(null)
+		if (webViewVisible) {
+			if (statusObj) dispatch(setStatusModalInfo(statusObj))
+			setSaveCardAgreeTerms(false)
+			setStatusObj(null)
 		}
 	}
 
@@ -213,7 +215,7 @@ export default function AddCardModal() {
 			fullScreen
 			visible={addCardModalVisible}
 			hide={hide}
-			// onModalHide={handleHide}
+			onModalHide={handleHide}
 		/>
 	)
 }
