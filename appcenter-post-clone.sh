@@ -45,4 +45,7 @@ copy_firebase_config "$branch"
 cat $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-Info.plist
 cat $APPCENTER_SOURCE_DIRECTORY/android/app/google-services.json
 printf "\nFirebase configuration files used: GoogleService-info.plist and google-service.json\n"
+cat $APPCENTER_SOURCE_DIRECTORY/android/app/google-services.json
+printf "\nnetwork xml used $APPCENTER_SOURCE_DIRECTORY/android/app/src/main/res/xml/network_security_config.xml\n"
+
 
