@@ -14,3 +14,7 @@
     </trust-anchors>
   </base-config>
 </network-security-config>
+
+
+<!-- Add this to AndroidManifest.xml application tag -->
+<!-- android:networkSecurityConfig="${networkSecurityConfig}" -->
