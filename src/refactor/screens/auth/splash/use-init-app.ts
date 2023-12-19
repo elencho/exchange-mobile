@@ -30,18 +30,6 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 	const { theme } = useTheme()
 	const dispatch = useDispatch()
 
-	// useFocusEffect(
-	// 	useCallback(() => {
-	// 		NetInfo.addEventListener((state) => {
-	// 			if (state.isConnected) {
-	// 				startApp()
-	// 			} else {
-	// 				navigation.navigate('NoInternet')
-	// 			}
-	// 		})
-	// 	}, [])
-	// )
-
 	useEffect(() => {
 		const unsubscribe = NetInfo.addEventListener((state) => {
 			if (state.isConnected) {

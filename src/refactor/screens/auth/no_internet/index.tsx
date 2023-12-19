@@ -1,19 +1,29 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import FastImage from 'react-native-fast-image'
 import { Theme, useTheme } from '@theme/index'
 import AppText from '@components/text'
 import { Trans } from 'react-i18next'
 import { useNetInfoInstance } from '@react-native-community/netinfo'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch } from 'react-redux'
+import { setBiometricScreenOpened } from '@store/redux/common/slice'
 
 const NoInternet = () => {
 	const { styles } = useTheme(_styles)
 	const navigation = useNavigation()
+	const dispatch = useDispatch()
 	const {
 		refresh,
 		netInfo: { isConnected },
 	} = useNetInfoInstance()
+
+	useEffect(() => {
+		dispatch(setBiometricScreenOpened(true))
+		return () => {
+			dispatch(setBiometricScreenOpened(false))
+		}
+	}, [])
 
 	const handlePress = () => {
 		refresh()
@@ -21,7 +31,7 @@ const NoInternet = () => {
 			navigation.goBack()
 		}
 	}
-    
+
 	return (
 		<View style={styles.background}>
 			<FastImage
