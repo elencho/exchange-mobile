@@ -10,6 +10,7 @@ import WithKeyboard from '@app/components/WithKeyboard'
 import { TradeTypesEnum } from '@app/refactor/types/enums'
 import { ModalSearchItem } from '../modal-parts'
 import { useModalWithSearch } from './use-modal-with-search'
+import { t } from 'i18next'
 
 interface ModalWIthSearchProps {
 	array?: any[]
@@ -98,7 +99,7 @@ export const ModalWithSearch = (props: ModalWIthSearchProps) => {
 			</AppText>
 
 			<AppInput
-				placeholder={title.replace('Choose', 'Search')}
+				placeholder={t(title.replace('Choose', 'Search')).toString()}
 				placeholderTextColor="rgba(105, 111, 142, 0.5)"
 				onChangeText={filter}
 				rightComponent={<Search />}

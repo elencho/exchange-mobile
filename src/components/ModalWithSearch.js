@@ -11,6 +11,7 @@ import AppText from './AppText'
 import ModalSearchItem from './ModalSearchItem'
 import ModalTop from './ModalTop'
 import WithKeyboard from './WithKeyboard'
+import { t } from 'i18next'
 
 export default function ModalWithSearch({
 	array,
@@ -87,7 +88,7 @@ export default function ModalWithSearch({
 			</AppText>
 
 			<AppInput
-				placeholder={title.replace('Choose', 'Search')}
+				placeholder={t(title.replace('Choose', 'Search'))}
 				placeholderTextColor="rgba(105, 111, 142, 0.5)"
 				onChangeText={filter}
 				right={<Search />}

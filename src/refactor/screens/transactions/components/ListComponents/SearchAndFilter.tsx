@@ -17,6 +17,7 @@ import FilterIcon from '@app/refactor/screens/transactions/components/FilterComp
 import TransactionFilter from '../../transactions_filter'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { FilterState } from '../../transactions_history'
+import { t } from 'i18next'
 
 interface Props {
 	isInstantTrade: boolean
@@ -94,7 +95,7 @@ const SearchAndFilter: React.FC<Props> = ({
 			) : (
 				<AppInput
 					style={styles.searchInput}
-					placeholder="Search by TXID"
+					placeholder={t('Search by TXID').toString()}
 					rightComponent={<Search />}
 					value={searchValue}
 					onChangeText={(text: string) => setSearchValue(text)}

@@ -24,6 +24,7 @@ import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
 import BalanceScreen from '@app/screens/Wallet/Balance'
 import useNotifications from '@app/screens/useNotifications'
+import NoInternet from '@app/refactor/screens/auth/no_internet'
 import { Screens } from './nav'
 import { useDispatch, useSelector } from 'react-redux'
 import { setGeneralError } from '@store/redux/common/slice'
@@ -59,6 +60,8 @@ export default function AppNavigator() {
 		// if (generalError) dispatch(saveGeneralError(null))
 	}
 
+	
+
 	return (
 		<NavigationContainer
 			onStateChange={onNavigationChanged}
@@ -79,6 +82,11 @@ export default function AppNavigator() {
 				<Stack.Screen
 					name="Welcome"
 					component={Welcome}
+					options={{ animation: 'fade' }}
+				/>
+				<Stack.Screen
+					name="NoInternet"
+					component={NoInternet}
 					options={{ animation: 'fade' }}
 				/>
 				<Stack.Screen
