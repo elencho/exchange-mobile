@@ -6,8 +6,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { Trans } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import FaceID from '@assets/images/Face_ID-pruple.svg'
-import TouchID from '@assets/images/TouchID-Purple.svg'
+import Biometric from '@assets/images/Biometric.svg'
 import { useFocusEffect } from '@react-navigation/native'
 import {
 	AuthenticationType,
@@ -97,7 +96,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 
 	return (
 		<View style={styles.container}>
-			{bioType === 'FaceID' ? <FaceID /> : <TouchID />}
+			<Biometric height={66} width={66} />
 			<AppText variant="headline" style={styles.primary}>
 				<Trans
 					i18nKey="welcome back {{username}} params{username}"

@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import FaceID from '@assets/images/Face_ID.svg'
-import TouchID from '@assets/images/Touch_ID.svg'
+import Biometric from '@assets/images/Biometric.svg'
 import E_mail_Auth from '@assets/images/User_profile/Email_Auth.svg'
 import SMS_Auth from '@assets/images/User_profile/Sms_Auth.svg'
 import Strong_Password from '@assets/images/User_profile/Strong_Password.svg'
@@ -129,7 +128,7 @@ export default function SecurityRow(props: SecurityRowProps) {
 		E_mail_Auth: <E_mail_Auth />,
 		SMS_Auth: <SMS_Auth />,
 		Strong_Password: <Strong_Password />,
-		Biometric: bioType === 'FACEID' ? <FaceID /> : <TouchID />,
+		Biometric: <Biometric />,
 	}
 
 	const imageToSearch: ImageKey = text
