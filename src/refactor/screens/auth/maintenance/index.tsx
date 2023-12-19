@@ -8,17 +8,22 @@ import AppText from '@components/text'
 import { Images } from '@app/refactor/common/constants'
 import { isBackDown } from '@store/redux/auth/api'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
+import { useNetInfoInstance } from '@react-native-community/netinfo'
 
 const Maintenance = ({ navigation }: ScreenProp<'Maintenance'>) => {
 	const { styles } = useTheme(_styles)
 	const [loading, setLoading] = useState(false)
+	const {
+		netInfo: { isConnected },
+	} = useNetInfoInstance()
 
 	const goToSupport = () =>
 		Linking.openURL('https://support.cryptal.com/hc/en-us/requests/new')
 
 	const refresh = async () => {
 		setLoading(true)
-		if (await isBackDown()) {
+		const resp = await isBackDown()
+		if (resp && isConnected) {
 			navigation.navigate('Welcome')
 		}
 		setLoading(false)
