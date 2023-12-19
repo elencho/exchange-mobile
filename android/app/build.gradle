@@ -132,6 +132,10 @@ android {
         }
     }
     buildTypes {
+        release {
+            // Your release configuration
+            manifestPlaceholders = [networkSecurityConfigPlaceholder: project.hasProperty("RELEASE_NETWORK_SECURITY_CONFIG") ? project.RELEASE_NETWORK_SECURITY_CONFIG : '']
+        }
         debug {
             signingConfig signingConfigs.debug
         }
