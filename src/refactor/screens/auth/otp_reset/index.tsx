@@ -1,7 +1,7 @@
 import * as Linking from 'expo-linking'
 import { t } from 'i18next'
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
@@ -19,7 +19,6 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { setOtpTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
-import KV from '@store/kv/regular'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import BackButton from '@components/back_button'
 import { MaterialIndicator } from 'react-native-indicators'
@@ -40,14 +39,14 @@ export const ResetOtp = ({
 		null
 	)
 
+	const { language } = useSelector((state: RootState) => state.common)
+
 	const { otpTimerVisible, otpLoading, otpResendLoading } = useSelector(
 		(state: RootState) => state.auth
 	)
 
 	useEffect(() => {
 		dispatch(setOtpTimer(true))
-
-		const language = KV.get('language')
 		setUrl(`https://support.cryptal.com/hc/${language}`)
 
 		return () => {
