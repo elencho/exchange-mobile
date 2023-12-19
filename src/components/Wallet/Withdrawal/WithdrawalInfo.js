@@ -180,7 +180,7 @@ export default function WithdrawalInfo({ error }) {
 					/>
 				</>
 			)}
-			<CountriesModal title="Select Country" countryDrop />
+			<CountriesModal title="Choose Country" countryDrop />
 
 			<AppText body style={[styles.text, { marginBottom: -5 }]}>
 				Bank Info
