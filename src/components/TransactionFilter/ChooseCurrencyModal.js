@@ -18,7 +18,7 @@ import {
 import AppModal from '../AppModal'
 import ModalWithSearch from '../ModalWithSearch'
 
-function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
+function ChooseCurrencyModal({ wallet = false }) {
 	const navigation = useNavigation()
 
 	const dispatch = useDispatch()
@@ -59,12 +59,6 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 	const fiats = fiatsArray.map((f) => f.code)
 
 	const choose = (name, currencyCode) => {
-		if (isForTransactions) {
-			dispatch(setCryptoFilter(currencyCode))
-			hide()
-			return
-		}
-
 		if (code === currencyCode) {
 			hide()
 			return
@@ -109,9 +103,8 @@ function ChooseCurrencyModal({ wallet = false, isForTransactions }) {
 			array={filteredData}
 			choose={choose}
 			filter={filter}
-			currentItem={isForTransactions ? cryptoFilter : currency}
+			currentItem={currency}
 			title="Choose Currency"
-			isForTransactions={isForTransactions}
 			wallet={wallet}
 		/>
 	)

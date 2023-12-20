@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import List from '@assets/images/List.svg'
@@ -13,6 +13,7 @@ import { useTrades } from '@app/refactor/screens/transactions/hooks'
 import { useFocusEffect } from '@react-navigation/native'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { FilterState } from '../../transactions_history'
+import { TransactionModal } from '@app/refactor/screens/transactions/components/FilterComponents'
 
 interface Props {
 	isInstantTrade: boolean
@@ -40,6 +41,9 @@ const TradeList: React.FC<Props> = ({ isInstantTrade, isFilterVisible }) => {
 		},
 	} = useSelector((state: RootState) => state)
 
+	const [transactionDetails, setTransactionDetails] =
+		useState<TransactionDetails>({} as TransactionDetails)
+
 	useFocusEffect(
 		useCallback(() => {
 			isFilterVisible.shouldFilter && fetchTrades()
@@ -64,8 +68,18 @@ const TradeList: React.FC<Props> = ({ isInstantTrade, isFilterVisible }) => {
 
 	const onRefresh = () => refreshTrades()
 
-	const renderTrade = ({ item, index }: { item: Trade; index: number }) => (
-		<Transaction transactionData={item} isLast={index === totalTradesQty - 1} />
+	const renderTrade = ({
+		item,
+		index,
+	}: {
+		item: TransactionDetails
+		index: number
+	}) => (
+		<Transaction
+			transactionData={item}
+			isLast={index === totalTradesQty - 1}
+			setTransactionDetails={setTransactionDetails}
+		/>
 	)
 
 	const listEmptyContainer = () =>
@@ -78,40 +92,53 @@ const TradeList: React.FC<Props> = ({ isInstantTrade, isFilterVisible }) => {
 			</View>
 		)
 
-	return tradesLoading ? (
-		<View style={{ marginTop: 10 }}>
-			<TransactionSkeleton
-				length={[1, 2, 3, 4, 5]}
-				isInstantTrade={isInstantTrade}
-				isFooter={undefined}
-			/>
-		</View>
-	) : (
-		<FlatList
-			style={styles.container}
-			data={trades}
-			renderItem={renderTrade}
-			keyExtractor={(item, idx) => `${item.creationTime}${idx.toString()}`}
-			onEndReached={handleScrollEnd}
-			onEndReachedThreshold={1}
-			contentContainerStyle={{ flexGrow: 1 }}
-			nestedScrollEnabled
-			showsVerticalScrollIndicator={false}
-			initialNumToRender={10}
-			ListFooterComponent={
-				<ListFooter
-					isLoading={tradesLoading}
-					totalDataQty={totalTradesQty}
-					dataArray={trades}
-					isInstantTrade={isInstantTrade}
+	return (
+		<>
+			{tradesLoading ? (
+				<View style={{ marginTop: 10 }}>
+					<TransactionSkeleton
+						length={[1, 2, 3, 4, 5]}
+						isInstantTrade={isInstantTrade}
+						isFooter={undefined}
+					/>
+				</View>
+			) : (
+				<FlatList
+					style={styles.container}
+					data={trades}
+					renderItem={renderTrade}
+					keyExtractor={(item, idx) => `${item.creationTime}${idx.toString()}`}
+					onEndReached={handleScrollEnd}
+					onEndReachedThreshold={1}
+					contentContainerStyle={{ flexGrow: 1 }}
+					nestedScrollEnabled
+					showsVerticalScrollIndicator={false}
+					initialNumToRender={10}
+					ListFooterComponent={
+						<ListFooter
+							isLoading={tradesLoading}
+							totalDataQty={totalTradesQty}
+							dataArray={trades}
+							isInstantTrade={isInstantTrade}
+						/>
+					}
+					ListEmptyComponent={() => <>{listEmptyContainer()}</>}
+					maxToRenderPerBatch={30}
+					refreshControl={
+						<CustomRefreshContol
+							refreshing={tradesLoading}
+							onRefresh={onRefresh}
+						/>
+					}
 				/>
-			}
-			ListEmptyComponent={() => <>{listEmptyContainer()}</>}
-			maxToRenderPerBatch={30}
-			refreshControl={
-				<CustomRefreshContol refreshing={tradesLoading} onRefresh={onRefresh} />
-			}
-		/>
+			)}
+			<TransactionModal
+				transactions
+				isInstantTrade={isInstantTrade}
+				transactionDetails={transactionDetails}
+				setTransactionDetails={setTransactionDetails}
+			/>
+		</>
 	)
 }
 export default memo(TradeList)

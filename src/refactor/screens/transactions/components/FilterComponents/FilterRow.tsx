@@ -27,6 +27,13 @@ const statusMapping = {
 	FAILED: ['FAILED', 'EXPIRED'],
 	SUCCESS: ['COMPLETED'],
 }
+
+const currencyMapping = {
+	TOGEL: 'GEL',
+	TOUSD: 'USD',
+	TOEUR: 'EUR',
+}
+
 const tradeActionMapping = {
 	BUY: 'BID',
 	SELL: 'ASK',
@@ -49,14 +56,16 @@ export default function FilterRow({ array = [''], filterType }: Props) {
 	const { typeFilter, method, status: transactionStatus } = transactionsState
 	const { statusQuery, actionQuery, fiatCodesQuery } = tradesState
 
-	const handleFilter = (fil) => {
+	const handleFilter = (fil: string) => {
 		if (filterType === 'currency') {
-			if (fiatCodesQuery.includes(fil)) {
+			if (fiatCodesQuery.includes(currencyMapping[fil])) {
 				dispatch(
-					setFiatCodesQuery([...fiatCodesQuery].filter((item) => item !== fil))
+					setFiatCodesQuery(
+						[...fiatCodesQuery].filter((item) => item !== currencyMapping[fil])
+					)
 				)
 			} else {
-				dispatch(setFiatCodesQuery([...fiatCodesQuery, fil]))
+				dispatch(setFiatCodesQuery([...fiatCodesQuery, currencyMapping[fil]]))
 			}
 		} else if (filterType === 'statusTrade') {
 			if (statusQuery?.includes(statusMapping[fil][0])) {
@@ -99,7 +108,8 @@ export default function FilterRow({ array = [''], filterType }: Props) {
 		if (filterType === 'method') return fil === method
 		if (filterType === 'statusTrade')
 			return statusQuery?.includes(statusMapping[fil][0])
-		if (filterType === 'currency') return fiatCodesQuery.includes(fil)
+		if (filterType === 'currency')
+			return fiatCodesQuery.includes(currencyMapping[fil])
 		if (filterType === 'tradeAction')
 			return actionQuery?.includes(tradeActionMapping[fil])
 		if (filterType === 'statusTransaction')

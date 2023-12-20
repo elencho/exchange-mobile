@@ -5,7 +5,7 @@ import {
 	NavigationState,
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Main from '@app/refactor/screens/auth/main'
 import Resume from '@app/refactor/screens/auth/resume'
 import Login from '@app/refactor/screens/auth/login'
@@ -28,10 +28,11 @@ import NoInternet from '@app/refactor/screens/auth/no_internet'
 import { Screens } from './nav'
 import { useDispatch, useSelector } from 'react-redux'
 import { setGeneralError } from '@store/redux/common/slice'
-import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
+
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { enableScreens } from 'react-native-screens'
 import { useTheme } from '@theme/index'
+import NetInfo from '@react-native-community/netinfo'
 
 enableScreens(false)
 const Stack = createNativeStackNavigator<Screens>()
@@ -60,7 +61,14 @@ export default function AppNavigator() {
 		// if (generalError) dispatch(saveGeneralError(null))
 	}
 
-	
+	useEffect(() => {
+		const unsubscribe = NetInfo.addEventListener((state) => {
+			if (state.isConnected === false) {
+				navigationRef.navigate('NoInternet')
+			}
+		})
+		return () => unsubscribe()
+	}, [])
 
 	return (
 		<NavigationContainer

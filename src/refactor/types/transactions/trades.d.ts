@@ -44,4 +44,4 @@ type StatusTrades =
 	| 'EXPIRED'
 	| 'COMPLETED'
 
-type Actions = 'ASK' | 'BID'
+type Actions = 'ASK' | 'BID' | ''

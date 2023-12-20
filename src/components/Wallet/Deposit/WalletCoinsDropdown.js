@@ -35,12 +35,8 @@ export default function WalletCoinsDropdown() {
 				}
 				selectedText={`${available} ${code}`}
 				notClearable
+				totalText={`Total : ${total} ≈ ${value} ${usdBtcSwitch}`}
 			/>
-
-			<Text style={styles.secondary}>
-				<AppText subtext>Total :</AppText>
-				<AppText subtext>{` ${total} ≈ ${value} ${usdBtcSwitch}`}</AppText>
-			</Text>
 		</>
 	)
 }
@@ -55,14 +51,6 @@ const styles = StyleSheet.create({
 		marginLeft: 12,
 		marginRight: 18,
 		flex: 1,
-	},
-	container: {
-		borderWidth: 1,
-		borderColor: '#3C4167',
-		paddingHorizontal: 20,
-		paddingVertical: 10,
-		flexDirection: 'row',
-		alignItems: 'center',
 	},
 	image: {
 		width: 24,

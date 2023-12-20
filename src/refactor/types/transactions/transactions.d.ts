@@ -25,7 +25,7 @@ interface Transaction {
 	baseCurrencyDisplayCode: string
 	quoteCurrency: string
 	quoteCurrencyDisplayCode: string
-	action: 'ASK' | 'BID'
+	action: 'ASK' | 'BID' | ''
 	type: string
 	size: string
 	price: string
@@ -36,6 +36,34 @@ interface Transaction {
 	creationTime: number
 	creatorUserId: number
 	lastChangeTime: number
+}
+
+interface TransactionDetails {
+	method?: any
+	action?: any
+	currency?: string
+	quoteCurrencyDisplayCode?: string
+	baseCurrencyDisplayCode?: string
+	totalAmount?: number
+	status?: string
+	fee?: number
+	time?: number
+	date?: number
+	amount?: number
+	providerDisplayName?: string
+	type?: string
+	cumulativeCost?: string
+	size?: string
+	price?: string
+	note?: string
+	year?: number
+	creationTime?: number
+	timestamp?: number
+	transactionInfo?: string
+	recipient?: string
+	tag?: string
+	provider?: string
+	displayCurrencyCode?: string
 }
 
 type TabName = 'Transfer' | 'Instant trade'
