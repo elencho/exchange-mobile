@@ -90,6 +90,7 @@ const SearchAndFilter: React.FC<Props> = ({
 					disabled={undefined}
 					hideArrow={undefined}
 					noTranslate={undefined}
+					isOneMethod={undefined}
 				/>
 			) : (
 				<AppInput

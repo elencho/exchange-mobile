@@ -25,15 +25,19 @@ interface Props {
 	trades?: boolean
 	transactions?: boolean
 	isInstantTrade: boolean
-	transactionDetails: {}
-	setTransactionDetails: Dispatch<SetStateAction<{}>>
+	transactionDetails: TransactionDetails
+	setTransactionDetails: Dispatch<SetStateAction<TransactionDetails>>
 }
 
 function TransactionModal({
 	transactions,
 	trades,
 	isInstantTrade,
-	transactionDetails = {},
+	transactionDetails = {
+		method: undefined,
+		creationTime: 0,
+		timestamp: 0,
+	},
 	setTransactionDetails,
 }: Props) {
 	const { copyToClipboard } = useCopyToClipboard()
@@ -45,7 +49,6 @@ function TransactionModal({
 
 	const {
 		currency,
-		provider,
 		method,
 		transactionInfo,
 		baseCurrencyDisplayCode,
@@ -53,6 +56,7 @@ function TransactionModal({
 		action,
 		recipient,
 		tag,
+		provider,
 	} = transactionDetails
 
 	useEffect(() => {
@@ -98,7 +102,7 @@ function TransactionModal({
 	const copyDestination = () => copyToClipboard(recipient)
 	const copyTag = () => copyToClipboard(tag)
 
-	const hide = () => setTransactionDetails({})
+	const hide = () => setTransactionDetails({} as TransactionDetails)
 
 	const buySell = action === 'BID' ? 'Buy' : 'Sell'
 	const backgroundColor =

@@ -1,13 +1,11 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
 import AppText from '@app/refactor/common/components/text'
 import colors from '@app/constants/colors'
-import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface Props {
 	isInstantTrade: boolean
-	transactionDetails: {}
+	transactionDetails: TransactionDetails
 }
 
 export default function TransactionDetails({
@@ -91,7 +89,7 @@ export default function TransactionDetails({
 	]
 
 	const rightInstant = [
-		`${actionMapping[action]} - ${type}`,
+		`${actionMapping[action as keyof typeof actionMapping]} - ${type}`,
 		`${date} ${year} / ${time}`,
 		`${date} ${year} / ${time}`,
 		action === 'BID'
@@ -101,7 +99,7 @@ export default function TransactionDetails({
 			? `${size} ${baseCurrencyDisplayCode}`
 			: `${cumulativeCost} ${quoteCurrencyDisplayCode}`,
 		`${price} ${quoteCurrencyDisplayCode}`,
-		<Status text={status} />,
+		<Status text={status ?? ''} />,
 	]
 
 	const leftTransactions = [
@@ -124,7 +122,7 @@ export default function TransactionDetails({
 			: ` ${cumulativeCost} ${quoteCurrencyDisplayCode}`,
 		`${fee} ${currency}`,
 		`${totalAmount} ${currency}`,
-		<Status text={status} />,
+		<Status text={status ?? ''} />,
 		method,
 		note ? note : null,
 	]

@@ -184,6 +184,7 @@ export default function TransactionFilter({
 						disabled={undefined}
 						hideArrow={undefined}
 						noTranslate={undefined}
+						isOneMethod={undefined}
 					/>
 
 					{isInstantTrade && (
@@ -210,6 +211,7 @@ export default function TransactionFilter({
 							disabled={undefined}
 							hideArrow={undefined}
 							noTranslate={undefined}
+							isOneMethod={undefined}
 						/>
 					)}
 

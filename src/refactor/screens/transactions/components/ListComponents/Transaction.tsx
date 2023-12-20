@@ -10,10 +10,10 @@ import colors from '@app/constants/colors'
 import { monthsShort } from '@app/constants/months'
 
 interface Props {
-	transactionData: any
+	transactionData: TransactionDetails
 	isTransfer?: boolean
 	isLast: boolean
-	setTransactionDetails: Dispatch<SetStateAction<{}>>
+	setTransactionDetails: Dispatch<SetStateAction<TransactionDetails>>
 }
 
 function Transaction({
@@ -25,7 +25,6 @@ function Transaction({
 	const {
 		type,
 		status,
-		transactionInfo,
 		amount,
 		currency,
 		method,
@@ -33,13 +32,14 @@ function Transaction({
 		quoteCurrencyDisplayCode,
 		creationTime,
 		timestamp,
+		transactionInfo,
 		cumulativeCost,
 		size,
 		action,
 	} = transactionData
 
 	let date: Date | string
-	date = new Date(isTransfer ? timestamp : creationTime)
+	date = new Date(isTransfer ? timestamp ?? '' : creationTime ?? '')
 	let year
 	const time = date.toTimeString().split(' ')[0]
 	year = date.getFullYear()
@@ -50,7 +50,7 @@ function Transaction({
 		date,
 		time,
 		year,
-	}
+	} as unknown as TransactionDetails
 
 	const showModal = () => setTransactionDetails(currentTransaction)
 
@@ -64,14 +64,14 @@ function Transaction({
 					<Image
 						style={styles.icon}
 						source={{
-							uri: `${COINS_URL_PNG}/${baseCurrencyDisplayCode.toLowerCase()}.png`,
+							uri: `${COINS_URL_PNG}/${baseCurrencyDisplayCode?.toLowerCase()}.png`,
 						}}
 					/>
 
 					<Image
 						style={styles.upperIcon}
 						source={{
-							uri: `${COINS_URL_PNG}/${quoteCurrencyDisplayCode.toLowerCase()}.png`,
+							uri: `${COINS_URL_PNG}/${quoteCurrencyDisplayCode?.toLowerCase()}.png`,
 						}}
 					/>
 				</View>
@@ -110,7 +110,7 @@ function Transaction({
 		? `${size} ${baseCurrencyDisplayCode}`
 		: `${cumulativeCost} ${quoteCurrencyDisplayCode}`
 	const destinationDisplay = isTransfer
-		? shortenDestination(transactionInfo) || '-'
+		? shortenDestination(transactionInfo ?? '') || '-'
 		: action === 'BID'
 		? `${cumulativeCost} ${quoteCurrencyDisplayCode}`
 		: `${size} ${baseCurrencyDisplayCode}`

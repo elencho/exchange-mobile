@@ -79,67 +79,69 @@ const AppModal = (props: AppModalProps) => {
 	}, [isBiometricScreenOpened])
 
 	return (
-		webViewVisible && (
-			<Modal
-				isVisible={
-					bottom || delayedOpen
-						? visible && !isBiometricScreenOpened && isBottomVisible
-						: visible && !isBiometricScreenOpened
-				}
-				onBackdropPress={hide}
-				onSwipeComplete={hide}
-				// swipeDirection="down"
-				propagateSwipe={true}
-				style={[styles.modal, modalStyle]}
-				animationOutTiming={500}
-				backdropTransitionInTiming={300}
-				onModalHide={onModalHide}
-				hideModalContentWhileAnimating
-				useNativeDriver
-				useNativeDriverForBackdrop
-				onShow={onShow}
-				onDismiss={onDismiss}>
-				<RootSiblingParent>
-					{bottom && (
-						<KeyboardAvoidingView
-							behavior={Platform.select({
-								android: undefined,
-								ios: 'padding',
-							})}
-							keyboardVerticalOffset={Platform.select({
-								ios: 0,
-								android: 500,
-							})}>
-							<ModalTop bottom={bottom} />
-							<View style={styles.bottom}>
-								{title && (
-									<AppText
-										variant="headline"
-										style={[styles.header, bottom && { marginLeft: 8 }]}>
-										{title}
-									</AppText>
-								)}
+		<>
+			{webViewVisible && (
+				<Modal
+					isVisible={
+						bottom || delayedOpen
+							? visible && !isBiometricScreenOpened && isBottomVisible
+							: visible && !isBiometricScreenOpened
+					}
+					onBackdropPress={hide}
+					onSwipeComplete={hide}
+					// swipeDirection="down"
+					propagateSwipe={true}
+					style={[styles.modal, modalStyle]}
+					animationOutTiming={500}
+					backdropTransitionInTiming={300}
+					onModalHide={onModalHide}
+					hideModalContentWhileAnimating
+					useNativeDriver
+					useNativeDriverForBackdrop
+					onShow={onShow}
+					onDismiss={onDismiss}>
+					<RootSiblingParent>
+						{bottom && (
+							<KeyboardAvoidingView
+								behavior={Platform.select({
+									android: undefined,
+									ios: 'padding',
+								})}
+								keyboardVerticalOffset={Platform.select({
+									ios: 0,
+									android: 500,
+								})}>
+								<ModalTop bottom={bottom} />
+								<View style={styles.bottom}>
+									{title && (
+										<AppText
+											variant="headline"
+											style={[styles.header, bottom && { marginLeft: 8 }]}>
+											{title}
+										</AppText>
+									)}
+									{children}
+								</View>
+							</KeyboardAvoidingView>
+						)}
+						{fullScreen && (
+							<Background>
+								<StatusBar
+									backgroundColor={theme.color.backgroundPrimary}
+									translucent
+									barStyle="light-content"
+								/>
+								<CloseIcon onPress={hide} />
+								{title && <Headline title={title} />}
 								{children}
-							</View>
-						</KeyboardAvoidingView>
-					)}
-					{fullScreen && (
-						<Background>
-							<StatusBar
-								backgroundColor={theme.color.backgroundPrimary}
-								translucent
-								barStyle="light-content"
-							/>
-							<CloseIcon onPress={hide} />
-							{title && <Headline title={title} />}
-							{children}
-						</Background>
-					)}
-					{custom && children}
-				</RootSiblingParent>
-				<AppToast />
-			</Modal>
-		)
+							</Background>
+						)}
+						{custom && children}
+					</RootSiblingParent>
+					<AppToast />
+				</Modal>
+			)}
+		</>
 	)
 }
 export default AppModal

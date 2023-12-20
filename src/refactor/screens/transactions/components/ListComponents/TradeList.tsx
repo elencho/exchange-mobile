@@ -41,7 +41,8 @@ const TradeList: React.FC<Props> = ({ isInstantTrade, isFilterVisible }) => {
 		},
 	} = useSelector((state: RootState) => state)
 
-	const [transactionDetails, setTransactionDetails] = useState({})
+	const [transactionDetails, setTransactionDetails] =
+		useState<TransactionDetails>({} as TransactionDetails)
 
 	useFocusEffect(
 		useCallback(() => {
@@ -67,7 +68,13 @@ const TradeList: React.FC<Props> = ({ isInstantTrade, isFilterVisible }) => {
 
 	const onRefresh = () => refreshTrades()
 
-	const renderTrade = ({ item, index }: { item: Trade; index: number }) => (
+	const renderTrade = ({
+		item,
+		index,
+	}: {
+		item: TransactionDetails
+		index: number
+	}) => (
 		<Transaction
 			transactionData={item}
 			isLast={index === totalTradesQty - 1}
