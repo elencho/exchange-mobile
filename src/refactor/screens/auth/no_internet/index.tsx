@@ -6,12 +6,19 @@ import AppText from '@components/text'
 import { Trans } from 'react-i18next'
 import { useNetInfoInstance } from '@react-native-community/netinfo'
 import { useNavigation } from '@react-navigation/native'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setBiometricScreenOpened } from '@store/redux/common/slice'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import KV from '@store/kv/regular'
+import { biometricDiffElapsed } from '@app/refactor/utils/authUtils'
+import { isEnrolledAsync } from 'expo-local-authentication'
 
 const NoInternet = () => {
 	const { styles } = useTheme(_styles)
 	const navigation = useNavigation()
+	const isBiometricEnabled = useSelector(
+		(state: RootState) => state.common.isBiometricEnabled
+	)
 	const dispatch = useDispatch()
 	const {
 		refresh,
@@ -25,10 +32,20 @@ const NoInternet = () => {
 		}
 	}, [])
 
-	const handlePress = () => {
+	const handlePress = async () => {
+		const bioVisible =
+			KV.get('webViewVisible') !== true &&
+			biometricDiffElapsed() &&
+			(await isEnrolledAsync()) &&
+			isBiometricEnabled
+
 		refresh()
 		if (isConnected) {
-			navigation.goBack()
+			if (bioVisible) {
+				navigation.replace('Resume', { from: 'NoInternet' })
+			} else {
+				navigation.goBack()
+			}
 		}
 	}
 
