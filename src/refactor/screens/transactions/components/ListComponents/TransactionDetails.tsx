@@ -7,31 +7,33 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface Props {
 	isInstantTrade: boolean
+	transactionDetails: {}
 }
 
-export default function TransactionDetails({ isInstantTrade }: Props) {
+export default function TransactionDetails({
+	isInstantTrade,
+	transactionDetails,
+}: Props) {
 	const {
-		selectedTransactionDetails: {
-			method,
-			action,
-			currency,
-			quoteCurrency,
-			baseCurrency,
-			totalAmount,
-			status,
-			fee,
-			time,
-			date,
-			amount,
-			providerDisplayName,
-			type,
-			cumulativeCost,
-			size,
-			price,
-			note,
-			year,
-		},
-	} = useSelector((state: RootState) => state.transactions)
+		method,
+		action,
+		currency,
+		quoteCurrencyDisplayCode,
+		baseCurrencyDisplayCode,
+		totalAmount,
+		status,
+		fee,
+		time,
+		date,
+		amount,
+		providerDisplayName,
+		type,
+		cumulativeCost,
+		size,
+		price,
+		note,
+		year,
+	} = transactionDetails
 
 	const actionMapping = {
 		BID: 'Buy',
@@ -93,12 +95,12 @@ export default function TransactionDetails({ isInstantTrade }: Props) {
 		`${date} ${year} / ${time}`,
 		`${date} ${year} / ${time}`,
 		action === 'BID'
-			? `${cumulativeCost} ${quoteCurrency}`
-			: `${size} ${baseCurrency}`,
+			? `${cumulativeCost} ${quoteCurrencyDisplayCode}`
+			: `${size} ${baseCurrencyDisplayCode}`,
 		action === 'BID'
-			? `${size} ${baseCurrency}`
-			: `${cumulativeCost} ${quoteCurrency}`,
-		`${price} ${quoteCurrency}`,
+			? `${size} ${baseCurrencyDisplayCode}`
+			: `${cumulativeCost} ${quoteCurrencyDisplayCode}`,
+		`${price} ${quoteCurrencyDisplayCode}`,
 		<Status text={status} />,
 	]
 
@@ -117,7 +119,9 @@ export default function TransactionDetails({ isInstantTrade }: Props) {
 		type,
 		providerDisplayName,
 		`${date} ${year} / ${time}`,
-		amount ? `${amount} ${currency}` : ` ${cumulativeCost} ${quoteCurrency}`,
+		amount
+			? `${amount} ${currency}`
+			: ` ${cumulativeCost} ${quoteCurrencyDisplayCode}`,
 		`${fee} ${currency}`,
 		`${totalAmount} ${currency}`,
 		<Status text={status} />,

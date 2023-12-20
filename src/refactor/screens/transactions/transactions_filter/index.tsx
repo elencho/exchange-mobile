@@ -71,6 +71,7 @@ export default function TransactionFilter({
 			fromDateTimeQuery,
 			toDateTimeQuery,
 		},
+		common: { currencyList },
 	} = useSelector((state: RootState) => state)
 
 	const initialStateTrade = {
@@ -120,6 +121,9 @@ export default function TransactionFilter({
 			: dispatch(setCryptoFilter(null))
 
 	const selectedCrypto = isInstantTrade ? cryptoCodeQuery : cryptoTransactions
+	const selectedCryptoDisplayCode = currencyList.filter(
+		(i) => i.code === selectedCrypto
+	)?.[0]?.displayCode
 
 	useEffect(() => {
 		isInstantTrade
@@ -157,7 +161,7 @@ export default function TransactionFilter({
 						selectedText={
 							selectedCrypto &&
 							selectedCrypto?.length > 0 &&
-							seperateCurrencyName(selectedCrypto)
+							seperateCurrencyName(selectedCryptoDisplayCode)
 						}
 						label={isInstantTrade ? 'Choose Crypto' : 'Choose Currency'}
 						handleClear={clearCurrencyDropdown}
@@ -166,7 +170,7 @@ export default function TransactionFilter({
 							selectedCrypto !== 'Show all currency' && (
 								<Image
 									source={{
-										uri: `${COINS_URL_PNG}/${selectedCrypto?.toLowerCase()}.png`,
+										uri: `${COINS_URL_PNG}/${selectedCryptoDisplayCode?.toLowerCase()}.png`,
 									}}
 									style={styles.coin}
 								/>

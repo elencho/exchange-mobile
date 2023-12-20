@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react'
+import React, { memo, useCallback, useState } from 'react'
 import { FlatList, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 import CustomRefreshContol from '@app/components/CustomRefreshContol'
@@ -12,6 +12,7 @@ import { useTransactions } from '@app/refactor/screens/transactions/hooks'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { FilterState } from '../../transactions_history'
 import { useFocusEffect } from '@react-navigation/native'
+import { TransactionModal } from '@app/refactor/screens/transactions/components/FilterComponents'
 
 interface Props {
 	isInstantTrade: boolean
@@ -43,6 +44,8 @@ const TransactionList: React.FC<Props> = ({
 		},
 	} = useSelector((state: RootState) => state)
 
+	const [transactionDetails, setTransactionDetails] = useState({})
+
 	useFocusEffect(
 		useCallback(() => {
 			isFilterVisible.shouldFilter && fetchTransactions()
@@ -70,6 +73,7 @@ const TransactionList: React.FC<Props> = ({
 				isTransfer
 				transactionData={item}
 				isLast={index === totalTransactionsQty - 1}
+				setTransactionDetails={setTransactionDetails}
 			/>
 		)
 	}
@@ -91,44 +95,54 @@ const TransactionList: React.FC<Props> = ({
 		}
 	}
 
-	return transactionsLoading ? (
-		<View style={{ marginTop: 10 }}>
-			<TransactionSkeleton
-				length={[0, 1, 2, 3, 4, 5]}
+	return (
+		<>
+			{transactionsLoading ? (
+				<View style={{ marginTop: 10 }}>
+					<TransactionSkeleton
+						length={[0, 1, 2, 3, 4, 5]}
+						isInstantTrade={isInstantTrade}
+						isFooter={false}
+					/>
+				</View>
+			) : (
+				<FlatList
+					style={styles.transactions}
+					contentContainerStyle={{ flexGrow: 1 }}
+					data={transactions}
+					renderItem={renderTransaction}
+					keyExtractor={(item) => item.id.toString()}
+					onEndReached={handleScrollEnd}
+					onEndReachedThreshold={1}
+					showsVerticalScrollIndicator={false}
+					nestedScrollEnabled
+					initialNumToRender={10}
+					ListFooterComponent={
+						<ListFooter
+							isLoading={transactionsLoading}
+							dataArray={transactions}
+							totalDataQty={totalTransactionsQty}
+							isInstantTrade={isInstantTrade}
+						/>
+					}
+					ListEmptyComponent={listEmptyContainer}
+					keyboardShouldPersistTaps="never"
+					maxToRenderPerBatch={30}
+					refreshControl={
+						<CustomRefreshContol
+							refreshing={transactionsLoading}
+							onRefresh={() => refreshTransactions()}
+						/>
+					}
+				/>
+			)}
+			<TransactionModal
+				transactions
 				isInstantTrade={isInstantTrade}
-				isFooter={false}
+				transactionDetails={transactionDetails}
+				setTransactionDetails={setTransactionDetails}
 			/>
-		</View>
-	) : (
-		<FlatList
-			style={styles.transactions}
-			contentContainerStyle={{ flexGrow: 1 }}
-			data={transactions}
-			renderItem={renderTransaction}
-			keyExtractor={(item) => item.id.toString()}
-			onEndReached={handleScrollEnd}
-			onEndReachedThreshold={1}
-			showsVerticalScrollIndicator={false}
-			nestedScrollEnabled
-			initialNumToRender={10}
-			ListFooterComponent={
-				<ListFooter
-					isLoading={transactionsLoading}
-					dataArray={transactions}
-					totalDataQty={totalTransactionsQty}
-					isInstantTrade={isInstantTrade}
-				/>
-			}
-			ListEmptyComponent={listEmptyContainer}
-			keyboardShouldPersistTaps="never"
-			maxToRenderPerBatch={30}
-			refreshControl={
-				<CustomRefreshContol
-					refreshing={transactionsLoading}
-					onRefresh={() => refreshTransactions()}
-				/>
-			}
-		/>
+		</>
 	)
 }
 

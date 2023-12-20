@@ -55,8 +55,6 @@ const useTransactions = () => {
 			setTransactions([...newTransactions])
 			transactionsData &&
 				setTotalTransactionsQty(transactionsData?.paging?.pageCount)
-
-			console.log('fetch Transactions')
 		} catch (error) {
 			console.error('Error fetching transactions:', error)
 		} finally {
