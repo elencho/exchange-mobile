@@ -1,5 +1,5 @@
 import * as Linking from 'expo-linking'
-import React, { memo, useEffect } from 'react'
+import React, { Dispatch, SetStateAction, memo, useEffect } from 'react'
 import {
 	Image,
 	StyleSheet,
@@ -17,7 +17,6 @@ import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
 import TransactionDetails from '@app/refactor/screens/transactions/components/ListComponents/TransactionDetails'
 import useCopyToClipboard from '@app/utils/copyToClipboard'
-import { toggleTransactionDetails } from '@app/refactor/redux/modals/modalsSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { setCurrencyList } from '@store/redux/common/slice'
 import { fetchCurrencies } from '@app/refactor/utils/transactionUtils'
@@ -26,29 +25,39 @@ interface Props {
 	trades?: boolean
 	transactions?: boolean
 	isInstantTrade: boolean
+	transactionDetails: TransactionDetails
+	setTransactionDetails: Dispatch<SetStateAction<TransactionDetails>>
 }
 
-function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
+function TransactionModal({
+	transactions,
+	trades,
+	isInstantTrade,
+	transactionDetails = {
+		method: undefined,
+		creationTime: 0,
+		timestamp: 0,
+	},
+	setTransactionDetails,
+}: Props) {
 	const { copyToClipboard } = useCopyToClipboard()
 	const dispatch = useDispatch()
 
 	const {
-		transactions: {
-			selectedTransactionDetails: {
-				currency,
-				provider,
-				method,
-				transactionInfo,
-				baseCurrency,
-				quoteCurrency,
-				action,
-				recipient,
-				tag,
-			},
-		},
-		modalState: { transactionDetailsVisible },
 		common: { currencyList },
 	} = useSelector((state: RootState) => state)
+
+	const {
+		currency,
+		method,
+		transactionInfo,
+		baseCurrencyDisplayCode,
+		quoteCurrencyDisplayCode,
+		action,
+		recipient,
+		tag,
+		provider,
+	} = transactionDetails
 
 	useEffect(() => {
 		if (!currencyList.length) {
@@ -93,9 +102,7 @@ function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 	const copyDestination = () => copyToClipboard(recipient)
 	const copyTag = () => copyToClipboard(tag)
 
-	const hide = () => {
-		dispatch(toggleTransactionDetails(false))
-	}
+	const hide = () => setTransactionDetails({} as TransactionDetails)
 
 	const buySell = action === 'BID' ? 'Buy' : 'Sell'
 	const backgroundColor =
@@ -133,7 +140,10 @@ function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 
 					{!isInstantTrade && transactionInfo && <View style={styles.line} />}
 
-					<TransactionDetails isInstantTrade={isInstantTrade} />
+					<TransactionDetails
+						isInstantTrade={isInstantTrade}
+						transactionDetails={transactionDetails}
+					/>
 
 					{/* DESTINATION  */}
 					{(method === 'WALLET' || method === 'WALLET_INTERNAL') &&
@@ -201,13 +211,13 @@ function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 						<View style={[styles.top, styles.icons]}>
 							<Image
 								source={{
-									uri: `${COINS_URL_PNG}/${quoteCurrency?.toLowerCase()}.png`,
+									uri: `${COINS_URL_PNG}/${quoteCurrencyDisplayCode?.toLowerCase()}.png`,
 								}}
 								style={styles.leftIcon}
 							/>
 							<Image
 								source={{
-									uri: `${COINS_URL_PNG}/${baseCurrency?.toLowerCase()}.png`,
+									uri: `${COINS_URL_PNG}/${baseCurrencyDisplayCode?.toLowerCase()}.png`,
 								}}
 								style={styles.rightIcon}
 							/>
@@ -215,7 +225,7 @@ function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 
 						<View style={styles.middle}>
 							<AppText medium style={styles.white}>
-								{quoteCurrency} - {baseCurrency}
+								{quoteCurrencyDisplayCode} - {baseCurrencyDisplayCode}
 							</AppText>
 							<AppText style={styles.instantTrade}>Instant trade</AppText>
 						</View>
@@ -239,7 +249,7 @@ function TransactionModal({ transactions, trades, isInstantTrade }: Props) {
 		<AppModal
 			title="Transaction Details"
 			hide={hide}
-			visible={transactionDetailsVisible}
+			visible={Object.keys(transactionDetails).length > 0}
 			children={children()}
 			bottom
 			fullScreen={undefined}

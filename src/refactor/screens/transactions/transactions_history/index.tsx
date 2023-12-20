@@ -1,4 +1,3 @@
-import { useIsFocused } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { Keyboard } from 'react-native'
 import { useDispatch } from 'react-redux'
@@ -12,7 +11,6 @@ import {
 	TabSwitcher,
 	SearchAndFilter,
 } from '@app/refactor/screens/transactions/components/ListComponents'
-import { TransactionModal } from '@app/refactor/screens/transactions/components/FilterComponents'
 
 export interface FilterState {
 	isVisible: boolean
@@ -20,7 +18,6 @@ export interface FilterState {
 }
 
 function TransactionHistory() {
-	const isFocused = useIsFocused()
 	const dispatch = useDispatch()
 
 	const [isFilterVisible, setIsFilterVisible] = useState<FilterState>({
@@ -67,10 +64,6 @@ function TransactionHistory() {
 					isInstantTrade={isInstantTrade}
 					isFilterVisible={isFilterVisible}
 				/>
-			)}
-
-			{isFocused && (
-				<TransactionModal transactions isInstantTrade={isInstantTrade} />
 			)}
 		</Background>
 	)

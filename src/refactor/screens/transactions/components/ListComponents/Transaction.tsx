@@ -1,6 +1,5 @@
-import React, { memo } from 'react'
+import React, { Dispatch, SetStateAction, memo } from 'react'
 import { Pressable, StyleSheet, View, Image } from 'react-native'
-import { useDispatch } from 'react-redux'
 import BuyIcon from '@app/assets/images/Buy.svg'
 import DepositlIcon from '@app/assets/images/Deposit.svg'
 import SellIcon from '@app/assets/images/Sell.svg'
@@ -9,36 +8,38 @@ import AppText from '@app/refactor/common/components/text'
 import { COINS_URL_PNG } from '@app/constants/api'
 import colors from '@app/constants/colors'
 import { monthsShort } from '@app/constants/months'
-import { toggleTransactionDetails } from '@app/refactor/redux/modals/modalsSlice'
-import { setSelectedTransactionDetails } from '@app/refactor/redux/transactions/transactionSlice'
 
 interface Props {
-	transactionData: any
+	transactionData: TransactionDetails
 	isTransfer?: boolean
 	isLast: boolean
+	setTransactionDetails: Dispatch<SetStateAction<TransactionDetails>>
 }
 
-function Transaction({ transactionData, isTransfer, isLast }: Props) {
-	const dispatch = useDispatch()
-
+function Transaction({
+	transactionData,
+	isTransfer,
+	isLast,
+	setTransactionDetails,
+}: Props) {
 	const {
 		type,
 		status,
-		transactionInfo,
 		amount,
 		currency,
 		method,
-		baseCurrency,
-		quoteCurrency,
+		baseCurrencyDisplayCode,
+		quoteCurrencyDisplayCode,
 		creationTime,
 		timestamp,
+		transactionInfo,
 		cumulativeCost,
 		size,
 		action,
 	} = transactionData
 
 	let date: Date | string
-	date = new Date(isTransfer ? timestamp : creationTime)
+	date = new Date(isTransfer ? timestamp ?? '' : creationTime ?? '')
 	let year
 	const time = date.toTimeString().split(' ')[0]
 	year = date.getFullYear()
@@ -49,12 +50,9 @@ function Transaction({ transactionData, isTransfer, isLast }: Props) {
 		date,
 		time,
 		year,
-	}
+	} as unknown as TransactionDetails
 
-	const showModal = () => {
-		dispatch(setSelectedTransactionDetails(currentTransaction))
-		dispatch(toggleTransactionDetails(true))
-	}
+	const showModal = () => setTransactionDetails(currentTransaction)
 
 	const image = () => {
 		if (isTransfer) {
@@ -66,14 +64,14 @@ function Transaction({ transactionData, isTransfer, isLast }: Props) {
 					<Image
 						style={styles.icon}
 						source={{
-							uri: `${COINS_URL_PNG}/${baseCurrency.toLowerCase()}.png`,
+							uri: `${COINS_URL_PNG}/${baseCurrencyDisplayCode?.toLowerCase()}.png`,
 						}}
 					/>
 
 					<Image
 						style={styles.upperIcon}
 						source={{
-							uri: `${COINS_URL_PNG}/${quoteCurrency.toLowerCase()}.png`,
+							uri: `${COINS_URL_PNG}/${quoteCurrencyDisplayCode?.toLowerCase()}.png`,
 						}}
 					/>
 				</View>
@@ -101,19 +99,21 @@ function Transaction({ transactionData, isTransfer, isLast }: Props) {
 			: destination
 	}
 
-	const title = isTransfer ? type : `${baseCurrency}-${quoteCurrency}`
+	const title = isTransfer
+		? type
+		: `${baseCurrencyDisplayCode}-${quoteCurrencyDisplayCode}`
 	const amountText = isTransfer ? 'Amount' : 'To Amount'
 	const destinationText = isTransfer ? 'Identifier' : 'From Amount'
 	const amountDisplay = isTransfer
 		? `${amount} ${currency}`
 		: action === 'BID'
-		? `${size} ${baseCurrency}`
-		: `${cumulativeCost} ${quoteCurrency}`
+		? `${size} ${baseCurrencyDisplayCode}`
+		: `${cumulativeCost} ${quoteCurrencyDisplayCode}`
 	const destinationDisplay = isTransfer
-		? shortenDestination(transactionInfo) || '-'
+		? shortenDestination(transactionInfo ?? '') || '-'
 		: action === 'BID'
-		? `${cumulativeCost} ${quoteCurrency}`
-		: `${size} ${baseCurrency}`
+		? `${cumulativeCost} ${quoteCurrencyDisplayCode}`
+		: `${size} ${baseCurrencyDisplayCode}`
 
 	return (
 		<Pressable

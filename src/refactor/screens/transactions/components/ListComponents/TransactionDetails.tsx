@@ -1,37 +1,37 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
 import AppText from '@app/refactor/common/components/text'
 import colors from '@app/constants/colors'
-import { RootState } from '@app/refactor/redux/rootReducer'
 
 interface Props {
 	isInstantTrade: boolean
+	transactionDetails: TransactionDetails
 }
 
-export default function TransactionDetails({ isInstantTrade }: Props) {
+export default function TransactionDetails({
+	isInstantTrade,
+	transactionDetails,
+}: Props) {
 	const {
-		selectedTransactionDetails: {
-			method,
-			action,
-			currency,
-			quoteCurrency,
-			baseCurrency,
-			totalAmount,
-			status,
-			fee,
-			time,
-			date,
-			amount,
-			providerDisplayName,
-			type,
-			cumulativeCost,
-			size,
-			price,
-			note,
-			year,
-		},
-	} = useSelector((state: RootState) => state.transactions)
+		method,
+		action,
+		currency,
+		quoteCurrencyDisplayCode,
+		baseCurrencyDisplayCode,
+		totalAmount,
+		status,
+		fee,
+		time,
+		date,
+		amount,
+		providerDisplayName,
+		type,
+		cumulativeCost,
+		size,
+		price,
+		note,
+		year,
+	} = transactionDetails
 
 	const actionMapping = {
 		BID: 'Buy',
@@ -89,17 +89,17 @@ export default function TransactionDetails({ isInstantTrade }: Props) {
 	]
 
 	const rightInstant = [
-		`${actionMapping[action]} - ${type}`,
+		`${actionMapping[action as keyof typeof actionMapping]} - ${type}`,
 		`${date} ${year} / ${time}`,
 		`${date} ${year} / ${time}`,
 		action === 'BID'
-			? `${cumulativeCost} ${quoteCurrency}`
-			: `${size} ${baseCurrency}`,
+			? `${cumulativeCost} ${quoteCurrencyDisplayCode}`
+			: `${size} ${baseCurrencyDisplayCode}`,
 		action === 'BID'
-			? `${size} ${baseCurrency}`
-			: `${cumulativeCost} ${quoteCurrency}`,
-		`${price} ${quoteCurrency}`,
-		<Status text={status} />,
+			? `${size} ${baseCurrencyDisplayCode}`
+			: `${cumulativeCost} ${quoteCurrencyDisplayCode}`,
+		`${price} ${quoteCurrencyDisplayCode}`,
+		<Status text={status ?? ''} />,
 	]
 
 	const leftTransactions = [
@@ -117,10 +117,12 @@ export default function TransactionDetails({ isInstantTrade }: Props) {
 		type,
 		providerDisplayName,
 		`${date} ${year} / ${time}`,
-		amount ? `${amount} ${currency}` : ` ${cumulativeCost} ${quoteCurrency}`,
+		amount
+			? `${amount} ${currency}`
+			: ` ${cumulativeCost} ${quoteCurrencyDisplayCode}`,
 		`${fee} ${currency}`,
 		`${totalAmount} ${currency}`,
-		<Status text={status} />,
+		<Status text={status ?? ''} />,
 		method,
 		note ? note : null,
 	]

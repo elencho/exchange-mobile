@@ -45,8 +45,6 @@ const useTrades = () => {
 			const newTrades = tradesData?.data ?? []
 			setTrades([...newTrades])
 			setTotalTradesQty(tradesData?.paging?.pageCount)
-
-			console.log('fetch Trades')
 		} catch (error) {
 			console.error('Error fetching trades:', error)
 		} finally {

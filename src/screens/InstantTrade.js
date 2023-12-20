@@ -3,7 +3,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import React, { useCallback, useState, useEffect } from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import TransactionModal from '@app/refactor/screens/transactions/components/FilterComponents/TransactionModal'
+import TransactionModal from '@app/refactor/screens/transactions/components/ListComponents/TransactionModal'
 import Background from '../components/Background'
 import CustomRefreshContol from '../components/CustomRefreshContol'
 import BuySellModal from '../components/InstantTrade/BuySellModal'
@@ -109,7 +109,6 @@ export default function InstantTrade() {
 			<BuySellModal />
 			<CryptoModal />
 			<FiatModal />
-			<TransactionModal trades />
 		</Background>
 	)
 }
