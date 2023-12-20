@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AppModal from '@app/refactor/common/components/modal'
-import ModalWithSearch from '@app/components/ModalWithSearch'
+import ModalWithSearch from '@app/components/ModalWithSearchTemporary'
 import {
 	setCryptoCodeQuery,
 	setTradesOffset,

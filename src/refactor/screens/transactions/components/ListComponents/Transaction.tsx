@@ -26,7 +26,7 @@ function Transaction({
 		type,
 		status,
 		amount,
-		currency,
+		displayCurrencyCode,
 		method,
 		baseCurrencyDisplayCode,
 		quoteCurrencyDisplayCode,
@@ -105,7 +105,7 @@ function Transaction({
 	const amountText = isTransfer ? 'Amount' : 'To Amount'
 	const destinationText = isTransfer ? 'Identifier' : 'From Amount'
 	const amountDisplay = isTransfer
-		? `${amount} ${currency}`
+		? `${amount} ${displayCurrencyCode}`
 		: action === 'BID'
 		? `${size} ${baseCurrencyDisplayCode}`
 		: `${cumulativeCost} ${quoteCurrencyDisplayCode}`

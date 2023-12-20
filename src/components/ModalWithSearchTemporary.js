@@ -45,7 +45,8 @@ export default function ModalWithSearch({
 			(isForTransactions && `${item.currencyName} (${item.currencyCode})`) ||
 			`${item?.available} ${item?.currencyCode}`
 
-		const code = item?.code || item?.pair?.baseCurrency || item?.currencyCode
+		const code =
+			item?.displayCode || item?.pair?.baseCurrency || item?.currencyCode
 		const totalPrice = tradeType === 'Buy' ? item?.buyPrice : item?.sellPrice
 		const currency = item?.pair?.quoteCurrency
 		const isInstantTrade = item?.pair?.baseCurrency.length > 0
@@ -70,7 +71,7 @@ export default function ModalWithSearch({
 					isInstantTrade ||
 					isForTransactions
 				}
-				onPress={() => handlePress(name, code)}
+				onPress={() => handlePress(name, isInstantTrade ? code : item.code)}
 				uri={uri(code)}
 				phoneCountry={phoneCountry}
 				countryDrop={countryDrop}
