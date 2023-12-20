@@ -20,6 +20,7 @@ const AppDropdown = ({
 	hideArrow,
 	noTranslate,
 	isOneMethod,
+	totalText,
 }) => {
 	return (
 		<Pressable
@@ -28,24 +29,31 @@ const AppDropdown = ({
 				style,
 				error && { borderColor: colors.ERROR_TEXT },
 				disabled && { borderColor: 'rgba(105, 111, 142, 0.3)' },
+				totalText && { height: 60 },
 			]}
 			onPress={!disabled ? handlePress : null}>
 			{selectedText ? (
 				<View style={styles.row}>
 					{icon && <View style={styles.icon}>{icon}</View>}
-					<AppText
-						medium
-						body
-						noTranslate={noTranslate}
-						style={[
-							styles.selectedText,
-							error && { color: colors.ERROR_TEXT },
-							disabled && !isOneMethod && { color: colors.SECONDARY_TEXT },
-							icon && { marginRight: 30, marginLeft: 12 },
-						]}
-						numberOfLines={1}>
-						{selectedText}
-					</AppText>
+					<View style={icon && { marginRight: 30, marginLeft: 14 }}>
+						<AppText
+							medium
+							body
+							noTranslate={noTranslate}
+							style={[
+								styles.selectedText,
+								error && { color: colors.ERROR_TEXT },
+								disabled && !isOneMethod && { color: colors.SECONDARY_TEXT },
+							]}
+							numberOfLines={1}>
+							{selectedText}
+						</AppText>
+						{totalText && (
+							<AppText subtext style={styles.secondaryText} numberOfLines={1}>
+								{totalText}
+							</AppText>
+						)}
+					</View>
 				</View>
 			) : activeLabel ? (
 				<AppText medium body style={styles.selectedText}>
@@ -132,8 +140,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 	},
-	icon: {
-		// marginLeft: 10,
-		// position: 'absolute',
+
+	secondaryText: {
+		color: colors.SECONDARY_TEXT,
+		marginTop: 4,
 	},
 })
