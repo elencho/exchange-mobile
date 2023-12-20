@@ -1,6 +1,6 @@
 import VersionCheck from 'react-native-version-check'
 import { useFocusEffect } from '@react-navigation/native'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch } from 'react-redux'
 import { useTheme } from '@theme/index'
@@ -24,16 +24,24 @@ import KV from '@store/kv/regular'
 import SecureKV from '@store/kv/secure'
 import { setBiometricToggleEnabled } from '@store/redux/common/slice'
 import main from '@app/refactor/screens/auth/main'
+import NetInfo, { useNetInfoInstance } from '@react-native-community/netinfo'
 
 const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 	const { theme } = useTheme()
 	const dispatch = useDispatch()
+	const {
+		netInfo: { isConnected },
+	} = useNetInfoInstance()
 
 	useFocusEffect(
 		useCallback(() => {
-			startApp()
-		}, [])
+			if (typeof isConnected === 'boolean') {
+				startApp()
+			}
+		}, [isConnected])
 	)
+
+
 
 	const startApp = async () => {
 		if (KV.get('everOpened') !== true) {
@@ -68,7 +76,9 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 			dispatch(setBiometricToggleEnabled(canDo))
 		)
 
-		if (showBio.payload && biometricDiffElapsed()) {
+		if (isConnected === false) {
+			navigation.navigate('NoInternet')
+		} else if (showBio.payload && biometricDiffElapsed()) {
 			navigation.navigate('Resume', {
 				from: 'Splash',
 				maintenanceInProgress: maintenance,

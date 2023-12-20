@@ -112,7 +112,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         missingDimensionStrategy 'react-native-camera', 'general'
         versionCode 1
-        versionName "1.3.1"
+        versionName "1.3.5"
     }
 
     splits {
@@ -132,10 +132,6 @@ android {
         }
     }
     buildTypes {
-        release {
-            // Your release configuration
-            manifestPlaceholders = [networkSecurityConfigPlaceholder: project.hasProperty("RELEASE_NETWORK_SECURITY_CONFIG") ? project.RELEASE_NETWORK_SECURITY_CONFIG : '']
-        }
         debug {
             signingConfig signingConfigs.debug
         }

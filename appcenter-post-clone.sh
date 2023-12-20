@@ -17,8 +17,11 @@ fi;
 copy_firebase_config() {
     if [ "$1" == "master" ]; 
     then
+    # for firebase
         cp $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-Info-prod.plist $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-Info.plist
         cp $APPCENTER_SOURCE_DIRECTORY/android/app/google-services-prod.json $APPCENTER_SOURCE_DIRECTORY/android/app/google-services.json
+      # for network
+        cp $APPCENTER_SOURCE_DIRECTORY/android/app/src/main/res/xml/network_security_config_prod.xml $APPCENTER_SOURCE_DIRECTORY/android/app/src/main/res/xml/network_security_config.xml
     else
         cp $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-Info-dev.plist $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-Info.plist
         cp $APPCENTER_SOURCE_DIRECTORY/android/app/google-services-dev.json $APPCENTER_SOURCE_DIRECTORY/android/app/google-services.json
@@ -41,4 +44,7 @@ copy_firebase_config "$branch"
 cat $APPCENTER_SOURCE_DIRECTORY/ios/GoogleService-Info.plist
 cat $APPCENTER_SOURCE_DIRECTORY/android/app/google-services.json
 printf "\nFirebase configuration files used: GoogleService-info.plist and google-service.json\n"
+cat $APPCENTER_SOURCE_DIRECTORY/android/app/src/main/res/xml/network_security_config.xml
+printf "\network xml used\n"
+
 

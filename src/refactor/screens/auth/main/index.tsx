@@ -20,6 +20,7 @@ import SecureKV from '@store/kv/secure'
 import { isEnrolledAsync } from 'expo-local-authentication'
 import { System } from '@app/refactor/common/util'
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
+import { useNetInfoInstance } from '@react-native-community/netinfo'
 
 const Tab = createBottomTabNavigator()
 
@@ -30,7 +31,9 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const fromResume = route.params?.fromResume === true
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
-
+	const {
+		netInfo: { isConnected },
+	} = useNetInfoInstance()
 	useEffect(() => {
 		changeNavigationBarColor(theme.color.backgroundSecondary, true)
 		const stateChangeListener = AppState.addEventListener(
@@ -94,8 +97,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const getBiometricEnabled = async (email: string) => {
 		const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
 		const userEnabledBio = bioEnabledEmails?.includes(email)
-
-		if (userEnabledBio) {
+		if (userEnabledBio && isConnected) {
 			navigation.navigate({
 				key: 'Resume-uniqueKey',
 				name: 'Resume',

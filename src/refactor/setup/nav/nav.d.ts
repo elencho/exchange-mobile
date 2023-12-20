@@ -17,6 +17,7 @@ export type Screens = {
 	Splash?: {}
 	Welcome?: {}
 	UpdateAvailable?: {}
+	NoInternet?: {}
 	Maintenance?: {}
 	Login?: {
 		generalError?: UiErrorData
