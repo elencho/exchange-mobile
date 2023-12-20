@@ -63,6 +63,7 @@ interface TransactionDetails {
 	recipient?: string
 	tag?: string
 	provider?: string
+	displayCurrencyCode?: string
 }
 
 type TabName = 'Transfer' | 'Instant trade'

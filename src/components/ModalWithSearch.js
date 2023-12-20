@@ -9,7 +9,6 @@ import colors from '../constants/colors'
 import AppInput from './AppInput'
 import AppText from './AppText'
 import ModalSearchItem from './ModalSearchItem'
-import ModalTop from './ModalTop'
 import WithKeyboard from './WithKeyboard'
 import { t } from 'i18next'
 

@@ -49,6 +49,7 @@ function TransactionModal({
 
 	const {
 		currency,
+
 		method,
 		transactionInfo,
 		baseCurrencyDisplayCode,

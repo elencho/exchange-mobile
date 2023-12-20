@@ -15,7 +15,7 @@ export default function TransactionDetails({
 	const {
 		method,
 		action,
-		currency,
+		displayCurrencyCode,
 		quoteCurrencyDisplayCode,
 		baseCurrencyDisplayCode,
 		totalAmount,
@@ -118,10 +118,10 @@ export default function TransactionDetails({
 		providerDisplayName,
 		`${date} ${year} / ${time}`,
 		amount
-			? `${amount} ${currency}`
+			? `${amount} ${displayCurrencyCode}`
 			: ` ${cumulativeCost} ${quoteCurrencyDisplayCode}`,
-		`${fee} ${currency}`,
-		`${totalAmount} ${currency}`,
+		`${fee} ${displayCurrencyCode}`,
+		`${totalAmount} ${displayCurrencyCode}`,
 		<Status text={status ?? ''} />,
 		method,
 		note ? note : null,
