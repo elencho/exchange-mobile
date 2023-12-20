@@ -108,12 +108,15 @@ const styles = StyleSheet.create({
 		alignSelf: 'flex-end',
 		marginRight: 25,
 		marginTop: Platform.select({ ios: 20, android: 10 }),
+		padding: 10,
+		paddingLeft: 20,
+		alignItems: 'flex-end',
+		justifyContent: 'flex-end',
 	},
 	flex: { flex: 1 },
 	header: {
 		backgroundColor: 'white',
-		height: 66,
+		height: 80,
 		paddingTop: 30,
-		paddingBottom: 30,
 	},
 })
