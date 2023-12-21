@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Image, StyleSheet, TouchableOpacity } from 'react-native'
 import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
@@ -12,6 +12,7 @@ import { COUNTRIES_URL_PNG } from '@app/constants/api'
 import usePersonalInfoModal from './use-personal-info-modal'
 import CountriesModal from '@app/refactor/common/modals/countries'
 import GeneralError from '@components/general_error'
+import { AnimatedMargin } from '@components/animated/margin'
 
 export default function PersonalInfoModal({
 	personalInfoModalVisible,
@@ -37,6 +38,8 @@ export default function PersonalInfoModal({
 		generalErrorData,
 		countryFilterText,
 		setCountryFilterText,
+		cityMarginExpanded,
+		setCityMarginExpanded,
 	} = usePersonalInfoModal({
 		personalInfoModalVisible,
 		togglePersonalInfoModal,
@@ -51,6 +54,9 @@ export default function PersonalInfoModal({
 	const postalCode = localUserInfo?.postalCode
 	const address = localUserInfo?.address
 	const countryError = error && !country
+
+	const showCityError = error && (!alphabeticRegex(city) || !city?.trim())
+	const showCityErrorLabel = error && !alphabeticRegex(city) && city?.trim()
 
 	const children = (
 		<>
@@ -78,16 +84,25 @@ export default function PersonalInfoModal({
 					/>
 
 					<AppInput
-						style={styles.inputContainer}
-						onChangeText={(city) => handleFieldChange('city', city)}
+						onChangeText={(city) => {
+							handleFieldChange('city', city)
+							setCityMarginExpanded(false)
+						}}
 						label="City"
 						value={city}
-						error={error && (!alphabeticRegex(city) || !city?.trim())}
+						error={
+							showCityErrorLabel
+								? 'Only English letters allowed'
+								: showCityError
+						}
 						labelBackgroundColor={theme.color.backgroundPrimary}
 					/>
-					{error && !alphabeticRegex(city) && city?.trim() && (
-						<InputErrorMsg message="Only English letters allowed" />
-					)}
+					<AnimatedMargin
+						min={20}
+						max={32}
+						durationMillis={250}
+						expanded={cityMarginExpanded}
+					/>
 					<AppInput
 						style={styles.inputContainer}
 						onChangeText={(postalCode) =>

@@ -36,6 +36,7 @@ const usePersonalInfoModal = ({
 	})
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 	const [countryFilterText, setCountryFilterText] = useState('')
+	const [cityMarginExpanded, setCityMarginExpanded] = useState(false)
 
 	const alphabeticRegex = (text: string) => /^[a-zA-Z]+$/.test(text?.trim())
 
@@ -59,15 +60,17 @@ const usePersonalInfoModal = ({
 	}
 
 	const handleSave = () => {
+		const cityInvalidLetters = !alphabeticRegex(localUserInfo.city)
 		const condition =
 			!localUserInfo?.country ||
 			!localUserInfo.city?.trim() ||
-			!alphabeticRegex(localUserInfo.city) ||
+			cityInvalidLetters ||
 			!localUserInfo.postalCode?.trim() ||
 			!localUserInfo.address?.trim()
 
 		if (error || condition) {
 			setError(true)
+			cityInvalidLetters && setCityMarginExpanded(true)
 		} else {
 			handleGeneralError(
 				() => dispatch(updateUserThunk({ localUserInfo, hide: saveHide })),
@@ -125,6 +128,8 @@ const usePersonalInfoModal = ({
 		generalErrorData,
 		countryFilterText,
 		setCountryFilterText,
+		cityMarginExpanded,
+		setCityMarginExpanded,
 	}
 }
 
