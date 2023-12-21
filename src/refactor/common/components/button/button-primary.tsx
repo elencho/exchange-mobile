@@ -68,6 +68,7 @@ const _styles = (theme: Theme) => {
 	return StyleSheet.create({
 		button: {
 			height: 45,
+			borderRadius: 22,
 			justifyContent: 'center',
 			alignItems: 'center',
 			flexDirection: 'row',

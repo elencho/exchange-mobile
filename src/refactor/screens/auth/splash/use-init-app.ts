@@ -41,8 +41,6 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 		}, [isConnected])
 	)
 
-
-
 	const startApp = async () => {
 		if (KV.get('everOpened') !== true) {
 			SecureKV.del('bioEnabledEmails')

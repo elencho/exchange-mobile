@@ -206,6 +206,7 @@ const _style = (theme: Theme) =>
 			width: 250,
 		},
 		inputContainer: {
+			borderRadius: 6,
 			borderWidth: 1,
 			height: 44,
 			paddingHorizontal: 22,

@@ -391,6 +391,7 @@ const _styles = (theme: Theme) =>
 		},
 		phoneNumber: {
 			borderWidth: 1,
+			borderRadius: 6,
 			height: 45,
 			paddingHorizontal: 15,
 			flexDirection: 'row',

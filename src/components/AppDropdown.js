@@ -104,6 +104,7 @@ export default AppDropdown
 const styles = StyleSheet.create({
 	container: {
 		borderWidth: 1,
+		borderRadius: 6,
 		paddingHorizontal: 22,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
