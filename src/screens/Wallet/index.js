@@ -68,7 +68,8 @@ export default function Wallet() {
 		const filteredArray = array?.filter((c) => {
 			return (
 				c.currencyCode.toLowerCase().includes(text.toLowerCase()) ||
-				c.currencyName.toLowerCase().includes(text.toLowerCase())
+				c.currencyName.toLowerCase().includes(text.toLowerCase()) ||
+				c.displayCurrencyCode.toLowerCase().includes(text.toLowerCase())
 			)
 		})
 		setFilteredBalances(filteredArray)

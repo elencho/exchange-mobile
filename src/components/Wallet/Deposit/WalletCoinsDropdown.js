@@ -12,10 +12,15 @@ export default function WalletCoinsDropdown() {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 	const {
-		transactionsOld: { code },
 		wallet: { usdBtcSwitch },
 		trade: {
-			currentBalanceObj: { available, total, valueUSD, valueBTC },
+			currentBalanceObj: {
+				available,
+				total,
+				valueUSD,
+				valueBTC,
+				displayCurrencyCode,
+			},
 		},
 	} = state
 
@@ -29,11 +34,13 @@ export default function WalletCoinsDropdown() {
 				handlePress={handleDropdown}
 				icon={
 					<Image
-						source={{ uri: `${COINS_URL_PNG}/${code?.toLowerCase()}.png` }}
+						source={{
+							uri: `${COINS_URL_PNG}/${displayCurrencyCode?.toLowerCase()}.png`,
+						}}
 						style={styles.image}
 					/>
 				}
-				selectedText={`${available} ${code}`}
+				selectedText={`${available} ${displayCurrencyCode}`}
 				notClearable
 				totalText={`Total : ${total} ≈ ${value} ${usdBtcSwitch}`}
 			/>

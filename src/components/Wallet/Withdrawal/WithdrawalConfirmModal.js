@@ -25,11 +25,11 @@ export default function WithdrawalConfirmModal() {
 		modals: { withdrawalConfirmModalVisible },
 		trade: { currentBalanceObj, fee, card },
 		wallet: { network, withdrawalAmount, currentWhitelistObj, iban, memoTag },
-		transactionsOld: { code },
 		auth: { otpType },
 	} = state
 
 	const type = currentBalanceObj?.type
+	const code = currentBalanceObj?.displayCurrencyCode
 	const isEcommerce = network === 'ECOMMERCE'
 	const isCrypto = type === 'CRYPTO'
 	const isFiat = type === 'FIAT'

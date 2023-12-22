@@ -16,6 +16,7 @@ export default function BalancesList({ balanceLoading, filteredBalances }) {
 			<Currency
 				key={item.currencyName}
 				code={item.currencyCode}
+				displayCurrencyCode={item.displayCurrencyCode}
 				name={item.currencyName}
 				available={item.available}
 				total={item.total}

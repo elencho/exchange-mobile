@@ -14,7 +14,15 @@ import {
 } from '../../redux/wallet/actions'
 import AppText from '../AppText'
 
-function Currency({ code, name, total, available, valueUSD, valueBTC }) {
+function Currency({
+	code,
+	name,
+	total,
+	available,
+	valueUSD,
+	valueBTC,
+	displayCurrencyCode,
+}) {
 	const navigation = useNavigation()
 
 	const dispatch = useDispatch()
@@ -56,12 +64,14 @@ function Currency({ code, name, total, available, valueUSD, valueBTC }) {
 			<View style={styles.img}>
 				<Image
 					style={styles.image}
-					source={{ uri: `${COINS_URL_PNG}/${code.toLowerCase()}.png` }}
+					source={{
+						uri: `${COINS_URL_PNG}/${displayCurrencyCode.toLowerCase()}.png`,
+					}}
 				/>
 			</View>
 			<View style={styles.balance}>
 				<AppText calendarDay medium style={styles.primary}>
-					{available} {code}
+					{available} {displayCurrencyCode}
 				</AppText>
 				<AppText body style={styles.secondary}>
 					Total: {total} ≈ {usdBitcoin()} {usdBtcSwitch}
