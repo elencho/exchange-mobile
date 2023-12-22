@@ -17,6 +17,7 @@ import {
 import { THEME_DARK } from './src/refactor/setup/theme/variants'
 import '@app/refactor/setup/network/interceptor'
 import { System } from '@app/refactor/common/util'
+import { ModalProvider } from '@components/modal/global_modal'
 
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed
@@ -56,13 +57,17 @@ const App = React.memo(() => {
 							style={styles.container}
 							onLayout={onLayoutRootView}
 							edges={['bottom']}>
-							<AppToast />
-							<AppNavigator />
+							<ModalProvider>
+								<AppToast />
+								<AppNavigator />
+							</ModalProvider>
 						</SafeAreaView>
 					) : (
 						<>
-							<AppToast />
-							<AppNavigator />
+							<ModalProvider>
+								<AppToast />
+								<AppNavigator />
+							</ModalProvider>
 						</>
 					)}
 				</GestureHandlerRootView>
