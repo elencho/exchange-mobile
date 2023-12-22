@@ -85,7 +85,7 @@ export default function InstantTrade() {
 				headlineLogo={<InfoMark inner="?" color={colors.SECONDARY_PURPLE} />}
 				clear={() => dispatch(setTradeType('Buy'))}
 			/>
-			{/* <CopyLogo onPress={() => copyToClipboard(fcmToken)} /> */}
+			<CopyLogo onPress={() => copyToClipboard(fcmToken)} />
 
 			<BuySellSwitch />
 

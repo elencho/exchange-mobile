@@ -1,9 +1,11 @@
+import { useModal } from '@components/modal/global_modal'
 import notifee, { EventType, AndroidImportance } from '@notifee/react-native'
 import messaging from '@react-native-firebase/messaging'
 import { useEffect } from 'react'
 import { Linking } from 'react-native'
 
 const useNotifications = () => {
+	const { showModal } = useModal()
 	const checkToken = async () => {
 		const fcmToken = await messaging().getToken()
 		if (fcmToken) {
@@ -22,8 +24,12 @@ const useNotifications = () => {
 					case EventType.DISMISSED:
 						break
 					case EventType.PRESS:
-						if (detail.notification?.data?.redirectUrl)
-							Linking.openURL(detail.notification?.data?.redirectUrl)
+						if (
+							detail.notification?.data?.title &&
+							detail.notification?.data?.description
+						) {
+							showModal(detail.notification?.data)
+						}
 						break
 					default:
 						break
@@ -42,13 +48,25 @@ const useNotifications = () => {
 
 	useEffect(() => {
 		notifee.getInitialNotification().then((res) => {
-			const redirectUrl = res?.notification?.data?.redirectUrl
-			if (redirectUrl) Linking.openURL(redirectUrl)
+			// const redirectUrl = res?.notification?.data?.redirectUrl
+			// if (redirectUrl) Linking.openURL(redirectUrl)
+			if (
+				res.notification?.data?.title &&
+				res.notification?.data?.description
+			) {
+				showModal(res.notification?.data)
+			}
 		})
 
 		notifee.onBackgroundEvent(async ({ type, detail }) => {
-			const redirectUrl = detail?.notification?.data?.redirectUrl
-			if (redirectUrl) Linking.openURL(redirectUrl)
+			// const redirectUrl = detail?.notification?.data?.redirectUrl
+			// if (redirectUrl) Linking.openURL(redirectUrl)
+			if (
+				detail.notification?.data?.title &&
+				detail.notification?.data?.description
+			) {
+				showModal(detail.notification?.data)
+			}
 		})
 	}, [])
 

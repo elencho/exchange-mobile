@@ -41,13 +41,11 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const { styles } = useTheme(_styles)
 	// TODO: remove, left for testing purpose
 	const [modalContent, setModalContent] = useState<ContentType>({
-		title: 'Title',
-		redirectUrl: 'google.com',
-		callToAction: 'buy it now',
-		description:
-			'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt uti labore et dolore magna aliquyam erat, sed diamsd voluptua. At vero eos et accusam et justo duo asor dolores et ea rebum. Stet clita kasd gubergren, no Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquy. Find out more',
-		banner:
-			'https://s.yimg.com/ny/api/res/1.2/8y6wUwbKd.9Wbx_MS7t.Vw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTY0MDtoPTUwNQ--/https://media.zenfs.com/en-US/homerun/fx_empire_176/716acf40f2f984c032e885a3b3a0cf62',
+		title: '',
+		redirectUrl: '',
+		callToAction: '',
+		description: '',
+		banner: '',
 	})
 
 	const showModal = (content: ContentType) => {
@@ -96,39 +94,41 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	return (
 		<ModalContext.Provider value={{ showModal, hideModal }}>
 			{children}
-			<Modal
-				propagateSwipe={true}
-				useNativeDriver
-				isVisible={true}
-				onDismiss={hideModal}
-				coverScreen
-				animationOutTiming={500}
-				backdropTransitionInTiming={300}
-				style={{ margin: 0, justifyContent: 'flex-end' }}>
-				<View style={styles.scrollWrapper}>
-					<ScrollView bounces={false} showsVerticalScrollIndicator={false}>
-						<BackgroundWrapper>
-							<View
-								style={
-									modalContent?.banner
-										? styles.contentWrapper
-										: styles.contentWrapperWithoutBanner
-								}>
-								<Text style={styles.title}>{modalContent.title}</Text>
-								<Text style={styles.descr}>{modalContent.description}</Text>
-							</View>
-							{modalContent?.callToAction && modalContent?.redirectUrl && (
-								<AppButton
-									variant="primary"
-									text={modalContent.callToAction}
-									onPress={onPress}
-									style={styles.button}
-								/>
-							)}
-						</BackgroundWrapper>
-					</ScrollView>
-				</View>
-			</Modal>
+			{modalContent && (
+				<Modal
+					propagateSwipe={true}
+					useNativeDriver
+					isVisible={isModalVisible}
+					onDismiss={hideModal}
+					coverScreen
+					animationOutTiming={500}
+					backdropTransitionInTiming={300}
+					style={{ margin: 0, justifyContent: 'flex-end' }}>
+					<View style={styles.scrollWrapper}>
+						<ScrollView bounces={false} showsVerticalScrollIndicator={false}>
+							<BackgroundWrapper>
+								<View
+									style={
+										modalContent?.banner
+											? styles.contentWrapper
+											: styles.contentWrapperWithoutBanner
+									}>
+									<Text style={styles.title}>{modalContent.title}</Text>
+									<Text style={styles.descr}>{modalContent.description}</Text>
+								</View>
+								{modalContent?.callToAction && modalContent?.redirectUrl && (
+									<AppButton
+										variant="primary"
+										text={modalContent.callToAction}
+										onPress={onPress}
+										style={styles.button}
+									/>
+								)}
+							</BackgroundWrapper>
+						</ScrollView>
+					</View>
+				</Modal>
+			)}
 		</ModalContext.Provider>
 	)
 }
