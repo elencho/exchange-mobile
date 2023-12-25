@@ -40,7 +40,7 @@ import KV from '@store/kv/regular'
 import { canDoBiometric } from '@app/refactor/utils/authUtils'
 import { setBiometricToggleEnabled } from '../common/slice'
 import { resetModalsState } from '@app/redux/modals/actions'
-import messaging from '@react-native-firebase/messaging';
+import messaging from '@react-native-firebase/messaging'
 
 const LOADING_DELAY = 2000
 
@@ -454,8 +454,8 @@ export const logoutThunk = createAsyncThunk(
 				index: 0,
 				routes: [{ name: 'Welcome' }],
 			})
-			
-			await messaging().deleteToken();
+
+			await messaging().deleteToken()
 
 			dispatch(resetAuth())
 			dispatch(setUserInfo(null))
