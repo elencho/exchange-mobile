@@ -60,7 +60,13 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	}
 
 	const hideModal = () => {
-		setModalContent(null)
+		setModalContent({
+			title: '',
+			redirectUrl: '',
+			callToAction: '',
+			description: '',
+			banner: '',
+		})
 		setModalVisible(false)
 	}
 
