@@ -112,3 +112,7 @@ interface tOTPVerifyParams {
 	status: number
 	data: tOTPChangeParams
 }
+
+interface NotificationData {
+	firebaseToken: string
+}
