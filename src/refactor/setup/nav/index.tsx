@@ -33,6 +33,7 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { enableScreens } from 'react-native-screens'
 import { useTheme } from '@theme/index'
 import NetInfo from '@react-native-community/netinfo'
+import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
 
 enableScreens(false)
 const Stack = createNativeStackNavigator<Screens>()
@@ -46,7 +47,8 @@ export default function AppNavigator() {
 
 	const { theme } = useTheme()
 	useNotifications()
-
+	useNotificationsAndroid()
+	// const { showModal } = useModal()
 	const onNavigationChanged = (state?: NavigationState) => {
 		setTimeout(() => {
 			dispatch(setGeneralError(undefined))
@@ -67,6 +69,15 @@ export default function AppNavigator() {
 				navigationRef.navigate('NoInternet')
 			}
 		})
+		// showModal({
+		// 	title: 'Title',
+		// 	redirectUrl: 'google.com',
+		// 	callToAction: 'buy it now',
+		// 	description:
+		// 		'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt uti labore et dolore magna aliquyam erat, sed diamsd voluptua. At vero eos et accusam et justo duo asor dolores et ea rebum. Stet clita kasd gubergren, no Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquy. Find out more',
+		// 	banner:
+		// 		'https://s.yimg.com/ny/api/res/1.2/8y6wUwbKd.9Wbx_MS7t.Vw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTY0MDtoPTUwNQ--/https://media.zenfs.com/en-US/homerun/fx_empire_176/716acf40f2f984c032e885a3b3a0cf62',
+		// })
 		return () => unsubscribe()
 	}, [])
 

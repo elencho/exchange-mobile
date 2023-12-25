@@ -20,6 +20,8 @@ import CloseIcon from '@components/close-button'
 import { Theme, useTheme } from '@theme/index'
 
 import { AppButton } from '@components/button'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 type ModalContextType = {
 	showModal: (content: ContentType) => void
@@ -39,7 +41,11 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined)
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const [isModalVisible, setModalVisible] = useState(false)
 	const { styles } = useTheme(_styles)
-	// TODO: remove, left for testing purpose
+
+	const { isBiometricScreenOpened } = useSelector(
+		(state: RootState) => state.common
+	)
+
 	const [modalContent, setModalContent] = useState<ContentType>({
 		title: '',
 		redirectUrl: '',
@@ -54,7 +60,13 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	}
 
 	const hideModal = () => {
-		setModalContent(null)
+		setModalContent({
+			title: '',
+			redirectUrl: '',
+			callToAction: '',
+			description: '',
+			banner: '',
+		})
 		setModalVisible(false)
 	}
 
@@ -98,34 +110,32 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 				<Modal
 					propagateSwipe={true}
 					useNativeDriver
-					isVisible={isModalVisible}
+					isVisible={isModalVisible && !isBiometricScreenOpened}
 					onDismiss={hideModal}
 					coverScreen
 					animationOutTiming={500}
 					backdropTransitionInTiming={300}
 					style={{ margin: 0, justifyContent: 'flex-end' }}>
 					<View style={styles.scrollWrapper}>
-						<ScrollView bounces={false} showsVerticalScrollIndicator={false}>
-							<BackgroundWrapper>
-								<View
-									style={
-										modalContent?.banner
-											? styles.contentWrapper
-											: styles.contentWrapperWithoutBanner
-									}>
-									<Text style={styles.title}>{modalContent.title}</Text>
-									<Text style={styles.descr}>{modalContent.description}</Text>
-								</View>
-								{modalContent?.callToAction && modalContent?.redirectUrl && (
-									<AppButton
-										variant="primary"
-										text={modalContent.callToAction}
-										onPress={onPress}
-										style={styles.button}
-									/>
-								)}
-							</BackgroundWrapper>
-						</ScrollView>
+						<BackgroundWrapper>
+							<View
+								style={
+									modalContent?.banner
+										? styles.contentWrapper
+										: styles.contentWrapperWithoutBanner
+								}>
+								<Text style={styles.title}>{modalContent.title}</Text>
+								<Text style={styles.descr}>{modalContent.description}</Text>
+							</View>
+							{modalContent?.callToAction && modalContent?.redirectUrl && (
+								<AppButton
+									variant="primary"
+									text={modalContent.callToAction}
+									onPress={onPress}
+									style={styles.button}
+								/>
+							)}
+						</BackgroundWrapper>
 					</View>
 				</Modal>
 			)}
@@ -165,13 +175,16 @@ const _styles = (theme: Theme) =>
 			height: '100%',
 		},
 		imageBckWrapper: {
+			flex: 1,
+
 			backgroundColor: theme.color.backgroundPrimary,
 		},
 		contentWrapper: {
 			marginTop: 24,
 			marginHorizontal: 20,
 			paddingBottom: 154,
-			minHeight: WINDOW_HEIGHT / 2,
+
+			// minHeight: WINDOW_HEIGHT / 3,
 		},
 		contentWrapperWithoutBanner: {
 			marginTop: 24,
@@ -192,7 +205,7 @@ const _styles = (theme: Theme) =>
 			color: '#ccd9dd',
 		},
 		scrollWrapper: {
-			backgroundColor: theme.color.backgroundPrimary,
+			backgroundColor: 'red',
 			flex: 1,
 		},
 		button: {
