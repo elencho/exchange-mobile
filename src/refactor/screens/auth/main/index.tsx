@@ -21,6 +21,7 @@ import { isEnrolledAsync } from 'expo-local-authentication'
 import { System } from '@app/refactor/common/util'
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import { useNetInfoInstance } from '@react-native-community/netinfo'
+import { CommonActions } from '@react-navigation/native'
 
 const Tab = createBottomTabNavigator()
 
@@ -35,6 +36,12 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		netInfo: { isConnected },
 	} = useNetInfoInstance()
 	useEffect(() => {
+		// const unsubscribe = NetInfo.addEventListener((state) => {
+		// 	if (!state.isConnected) {
+		// 		navigation.navigate('NoInternet')
+		// 	}
+		// })
+
 		changeNavigationBarColor(theme.color.backgroundSecondary, true)
 		const stateChangeListener = AppState.addEventListener(
 			'change',
@@ -43,6 +50,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		dispatch(fetchUserInfoThunk())
 
 		return () => {
+			// unsubscribe()
 			changeNavigationBarColor(theme.color.backgroundPrimary, true)
 			stateChangeListener.remove()
 		}
@@ -74,15 +82,6 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			biometricDiffElapsed() &&
 			(await isEnrolledAsync())
 
-		// console.log({
-		// 	new: newState,
-		// 	prev: prevAppState.current,
-		// 	diff: (Date.now() - (KV.get('lastOpenDateMillis') || 0)) / 1000,
-		// 	enrolled: await isEnrolledAsync(),
-		// 	webView: KV.get('webViewVisible'),
-		// 	bioVisible,
-		// })
-
 		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
@@ -97,7 +96,32 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const getBiometricEnabled = async (email: string) => {
 		const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
 		const userEnabledBio = bioEnabledEmails?.includes(email)
-		if (userEnabledBio && isConnected) {
+		if (isConnected === false) {
+			console.log('from here')
+			navigation.dispatch((state) => {
+				const newRoutes = [
+					...state.routes,
+					[
+						{
+							key: 'Resume-uniqueKey',
+							name: 'Resume',
+							params: {
+								from: 'Main',
+							},
+						},
+						{
+							name: 'NoInternet',
+						},
+					],
+				]
+
+				return CommonActions.reset({
+					...state,
+					routes: newRoutes,
+					index: newRoutes.length - 1,
+				})
+			})
+		} else if (userEnabledBio && isConnected) {
 			navigation.navigate({
 				key: 'Resume-uniqueKey',
 				name: 'Resume',
