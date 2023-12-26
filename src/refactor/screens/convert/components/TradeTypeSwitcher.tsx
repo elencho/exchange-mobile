@@ -1,19 +1,16 @@
-import { AppButton } from '@components/button'
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
 
 type Props = {
 	selectedType: TradeType
 	onTypeChanged: (type: TradeType) => void
 }
 
-const trades: TradeType[] = ['Buy', 'Sell']
-
 const TradeTypeSwitcher = ({ selectedType, onTypeChanged }: Props) => {
 	const { styles, theme } = useTheme(_styles)
+	const tradesToDraw: TradeType[] = ['Buy', 'Sell']
 
 	const chooseBackgroundColor = (type: TradeType) => {
 		if (type === selectedType) {
@@ -30,8 +27,9 @@ const TradeTypeSwitcher = ({ selectedType, onTypeChanged }: Props) => {
 
 	return (
 		<View style={styles.container}>
-			{trades.map((type: TradeType) => (
+			{tradesToDraw.map((type: TradeType) => (
 				<Pressable
+					key={type}
 					style={[
 						styles.button,
 						{ backgroundColor: chooseBackgroundColor(type) },
