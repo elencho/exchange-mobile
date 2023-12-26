@@ -48,4 +48,5 @@ export type Screens = {
 	Balance?: {}
 	CardVerificationOne?: {}
 	CardVerificationTwo?: {}
+	ConvertNow?: {}
 }

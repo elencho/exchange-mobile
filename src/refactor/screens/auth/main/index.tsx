@@ -22,6 +22,7 @@ import { System } from '@app/refactor/common/util'
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import { useNetInfoInstance } from '@react-native-community/netinfo'
 import { CommonActions } from '@react-navigation/native'
+import ConvertNow from '@app/refactor/screens/convert'
 
 const Tab = createBottomTabNavigator()
 
@@ -149,7 +150,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 				freezeOnBlur: true,
 				swipeEnabled: false,
 			})}
-			initialRouteName="Trade"
+			initialRouteName="ConvertNow"
 			tabBar={({ state, navigation, descriptors }) => (
 				<BottomTabs
 					routes={state.routes}
@@ -160,7 +161,8 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			<Tab.Screen name="Trade" component={InstantTrade} />
 			<Tab.Screen name="Wallet" component={Wallet} />
 			<Tab.Screen name="Transactions" component={TransactionHistory} />
-			<Tab.Screen name="Exchange" component={Exchange} />
+			<Tab.Screen name="ConvertNow" component={ConvertNow} />
+			{/* <Tab.Screen name="Exchange" component={Exchange} /> */}
 		</Tab.Navigator>
 	)
 }

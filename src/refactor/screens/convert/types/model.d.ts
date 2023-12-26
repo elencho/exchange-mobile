@@ -1,0 +1,1 @@
+type TradeType = 'Buy' | 'Sell'
