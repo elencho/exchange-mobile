@@ -96,6 +96,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const getBiometricEnabled = async (email: string) => {
 		const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
 		const userEnabledBio = bioEnabledEmails?.includes(email)
+		console.log('isConnected', isConnected)
 		if (isConnected === false) {
 			console.log('from here')
 			navigation.dispatch((state) => {
@@ -121,7 +122,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 					index: newRoutes.length - 1,
 				})
 			})
-		} else if (userEnabledBio && isConnected) {
+		} else if (userEnabledBio) {
 			navigation.navigate({
 				key: 'Resume-uniqueKey',
 				name: 'Resume',

@@ -13,7 +13,7 @@ messaging().setBackgroundMessageHandler(async (remoteMessage) => {
 messaging().onNotificationOpenedApp((remoteMessage) => {
 	const redirectUrl = remoteMessage?.data?.redirectUrl
 	if (remoteMessage?.data?.title && remoteMessage?.data?.description) {
-		useNotificationHandler(detail.notification?.data)
+		useNotificationHandler(remoteMessage?.data)
 	}
 })
 
@@ -21,7 +21,7 @@ messaging()
 	.getInitialNotification()
 	.then(async (remoteMessage) => {
 		if (remoteMessage?.data?.title && remoteMessage?.data?.description) {
-			useNotificationHandler(detail.notification?.data)
+			useNotificationHandler(remoteMessage?.data)
 		}
 	})
 
