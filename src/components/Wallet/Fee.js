@@ -19,12 +19,14 @@ export default function Fee() {
 		},
 	} = state
 
+	const displayCurrencyCode = currentBalanceObj?.displayCurrencyCode
+
 	const notEmpty = () => {
 		if (tabRoute === 'Wallet') return depositAmount || withdrawalAmount
 		if (tabRoute === 'Trade') return currentTrade?.price || currentTrade?.size
 	}
 
-	const currency = tabRoute === 'Wallet' ? code : fiat
+	const currency = tabRoute === 'Wallet' ? displayCurrencyCode : fiat
 
 	const UpperLine = () => {
 		let feeText

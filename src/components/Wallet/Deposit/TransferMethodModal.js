@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Card from '../../../assets/images/Card.svg'
 import Euro from '../../../assets/images/Euro.svg'
 import Bank from '../../../assets/images/LocalBank.svg'
+import BlockChain from '@assets/images/BlockChainDark.svg'
 import colors from '../../../constants/colors'
 import { toggleTransferMethodModal } from '../../../redux/modals/actions'
 import { setNetwork } from '../../../redux/wallet/actions'
@@ -44,6 +45,8 @@ export default function TransferMethodModal() {
 			}
 		})
 
+		// console.log({ methodsToDisplay, network })
+
 		return () =>
 			dispatch({ type: 'SET_METHODS_TO_DISPLAY', methodsToDisplay: [] })
 	}, [code])
@@ -72,6 +75,9 @@ export default function TransferMethodModal() {
 		}
 		if (network === 'SEPA') {
 			return <Euro />
+		}
+		if (network === 'BEP20') {
+			return <BlockChain />
 		}
 	}
 	const children = (
