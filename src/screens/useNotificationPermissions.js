@@ -18,12 +18,6 @@ const useNotificationPermissions = () => {
 	const checkPermission = async () => {
 		const settings = await notifee.getNotificationSettings()
 
-		console.log(
-			'settings',
-			settings.authorizationStatus,
-			AuthorizationStatus.DENIED,
-			settings.authorizationStatus == AuthorizationStatus.DENIED
-		)
 		if (settings.authorizationStatus == AuthorizationStatus.DENIED) {
 			if (IS_ANDROID) {
 				requestPermissionsAndroid()
