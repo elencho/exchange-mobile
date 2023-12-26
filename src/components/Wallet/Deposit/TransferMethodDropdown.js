@@ -5,6 +5,8 @@ import Arrow from '../../../assets/images/Arrow'
 import Card from '../../../assets/images/Card.svg'
 import Euro from '../../../assets/images/Euro.svg'
 import Bank from '../../../assets/images/LocalBank.svg'
+import BlockChain from '@assets/images/BlockChainDark.svg'
+
 import { ICONS_URL_PNG } from '../../../constants/api'
 import colors from '../../../constants/colors'
 import { toggleTransferMethodModal } from '../../../redux/modals/actions'
@@ -33,6 +35,9 @@ export default function TransferMethodDropdown() {
 		}
 		if (network === 'SEPA') {
 			logo = <Euro />
+		}
+		if (network === 'BEP20') {
+			return <BlockChain />
 		}
 		return <View style={{ marginRight: -4 }}>{logo}</View>
 	}
