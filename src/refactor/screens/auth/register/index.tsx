@@ -134,7 +134,7 @@ const Register = ({ navigation }: Props) => {
 				setGeneralErrorData
 			)
 		} else {
-			setMailMarginExpanded(true)
+			mail.trim().length > 0 && !valid.email && setMailMarginExpanded(true)
 			setMailErr(!valid.email)
 			setPassErr(!valid.pass)
 			setConfirmPassErr(!valid.confirmPass)

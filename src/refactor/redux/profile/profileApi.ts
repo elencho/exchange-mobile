@@ -6,6 +6,7 @@ import {
 	CODE_TO_TOKEN,
 	EMAIL_VERIFICATION,
 	LOGOUT,
+	NOTIFICATIONS_FIREBASE,
 	OTP_CHANGE_TOKEN,
 	SEND_OTP,
 	SUBSCRIBE_EMAIL_URL,
@@ -184,4 +185,19 @@ export const logoutUtil = async (refresh_token: string) => {
 		data: `refresh_token=${refresh_token}&client_id=mobile-service-public`,
 	})
 	if (data) return data.status
+}
+export const notificationSubscribe = async (firebaseToken: string) => {
+	let form = new FormData()
+	form.append('firebaseToken', firebaseToken)
+
+	const result = await axios({
+		method: 'POST',
+		url: NOTIFICATIONS_FIREBASE,
+		data: form,
+		headers: {
+			toast: false,
+			'Content-Type': 'multipart/form-data',
+		},
+	})
+	return result
 }

@@ -55,6 +55,9 @@ export const GO_TO_EXCHANGE = `${auth}/auth/realms/GEX/GEX-resource/getLoginActi
 
 export const SEND_OTP = `${auth}/auth/realms/GEX/GEX-resource/sendOTP`
 
+export const NOTIFICATIONS_FIREBASE =
+	'https://notifications.cryptal.com/exchange/notification/api/v1/token/save'
+
 export const OTP_CHANGE_TOKEN = `${auth}/auth/realms/GEX/GEX-resource/getOTPChangeParams`
 
 export const EMAIL_VERIFICATION = `${auth}/auth/realms/GEX/GEX-resource/sendEmailVerification`

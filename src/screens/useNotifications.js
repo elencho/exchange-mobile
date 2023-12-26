@@ -81,7 +81,6 @@ export const onNotifeeMessageReceived = async (message) => {
 		id: 'default',
 		name: 'Default Channel',
 	})
-
 	notifee.displayNotification({
 		id: message.messageId,
 		title: message.notification.title,

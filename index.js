@@ -1,10 +1,10 @@
 import messaging from '@react-native-firebase/messaging'
 import { registerRootComponent } from 'expo'
-import { Linking } from 'react-native'
 import 'react-native-gesture-handler'
 import 'react-native-reanimated'
 import App from './App'
 import SplashScreen from 'react-native-splash-screen'
+import { useNotificationHandler } from 'notifiactionHandler'
 
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
 	console.log('Message handled in the background!', remoteMessage)
@@ -12,15 +12,16 @@ messaging().setBackgroundMessageHandler(async (remoteMessage) => {
 
 messaging().onNotificationOpenedApp((remoteMessage) => {
 	const redirectUrl = remoteMessage?.data?.redirectUrl
-	if (redirectUrl) Linking.openURL(redirectUrl)
+	if (remoteMessage?.data?.title && remoteMessage?.data?.description) {
+		useNotificationHandler(detail.notification?.data)
+	}
 })
 
 messaging()
 	.getInitialNotification()
 	.then(async (remoteMessage) => {
-		if (remoteMessage) {
-			const redirectUrl = remoteMessage?.data?.redirectUrl
-			if (redirectUrl) Linking.openURL(redirectUrl)
+		if (remoteMessage?.data?.title && remoteMessage?.data?.description) {
+			useNotificationHandler(detail.notification?.data)
 		}
 	})
 

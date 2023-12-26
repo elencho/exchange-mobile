@@ -14,11 +14,8 @@ const useNotificationsAndroid = () => {
 				if (remoteMessage) {
 					// const redirectUrl = remoteMessage?.data?.redirectUrl
 					// if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl)
-					if (
-						detail.notification?.data?.title &&
-						detail.notification?.data?.description
-					) {
-						showModal(detail.notification?.data)
+					if (remoteMessage?.data?.title && remoteMessage?.data?.description) {
+						showModal(remoteMessage?.data)
 					}
 				}
 			})

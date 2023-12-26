@@ -70,7 +70,9 @@ const usePersonalInfoModal = ({
 
 		if (error || condition) {
 			setError(true)
-			cityInvalidLetters && setCityMarginExpanded(true)
+			localUserInfo.city?.trim().length > 0 &&
+				cityInvalidLetters &&
+				setCityMarginExpanded(true)
 		} else {
 			handleGeneralError(
 				() => dispatch(updateUserThunk({ localUserInfo, hide: saveHide })),
