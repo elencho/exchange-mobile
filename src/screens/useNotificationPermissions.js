@@ -5,9 +5,7 @@ import { IS_ANDROID, IS_IOS } from '../constants/system'
 import { notificationSubscribe } from '@app/refactor/redux/profile/profileApi'
 import notifee, { AuthorizationStatus } from '@notifee/react-native'
 
-const useNotificationPermissions = async () => {
-	const settings = await notifee.getNotificationSettings()
-
+const useNotificationPermissions = () => {
 	const requestUserPermissionIOS = async () =>
 		await messaging()
 			.requestPermission()
@@ -17,7 +15,15 @@ const useNotificationPermissions = async () => {
 				}
 			})
 
-	const checkPermission = () => {
+	const checkPermission = async () => {
+		const settings = await notifee.getNotificationSettings()
+
+		console.log(
+			'settings',
+			settings.authorizationStatus,
+			AuthorizationStatus.DENIED,
+			settings.authorizationStatus == AuthorizationStatus.DENIED
+		)
 		if (settings.authorizationStatus == AuthorizationStatus.DENIED) {
 			if (IS_ANDROID) {
 				requestPermissionsAndroid()
