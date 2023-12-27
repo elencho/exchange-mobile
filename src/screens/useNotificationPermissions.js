@@ -7,40 +7,20 @@ import notifee, { AuthorizationStatus } from '@notifee/react-native'
 
 const useNotificationPermissions = () => {
 	const requestUserPermissionIOS = async () =>
-		await messaging()
-			.requestPermission()
-			.then((value) => {
-				if (value === AuthorizationStatus.AUTHORIZED) {
-					checkFcm()
-				}
-			})
+		await messaging().requestPermission()
 
 	const checkPermission = async () => {
-		const settings = await notifee.getNotificationSettings()
-
-		console.log(
-			'settings',
-			settings.authorizationStatus,
-			AuthorizationStatus.DENIED,
-			settings.authorizationStatus == AuthorizationStatus.DENIED
-		)
-		if (settings.authorizationStatus == AuthorizationStatus.DENIED) {
-			if (IS_ANDROID) {
-				requestPermissionsAndroid()
-			} else {
-				requestUserPermissionIOS()
-			}
+		if (IS_ANDROID) {
+			requestPermissionsAndroid()
+		} else {
+			requestUserPermissionIOS()
 		}
 	}
 
 	const requestPermissionsAndroid = () =>
 		PermissionsAndroid.request(
 			PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-		).then((value) => {
-			if (value === 'granted') {
-				checkFcm()
-			}
-		})
+		)
 
 	const checkFcm = async () => {
 		const token = await messaging().getToken()
