@@ -149,6 +149,7 @@ const styles = StyleSheet.create({
 		zIndex: 99,
 	},
 	inputText: {
+		borderRadius: 6,
 		fontFamily: 'Ubuntu_Medium',
 		fontSize: 14,
 		lineHeight: IS_ANDROID ? 18 : null,

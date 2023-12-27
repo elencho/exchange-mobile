@@ -20,6 +20,7 @@ import CloseIcon from '@components/close-button'
 import { Theme, useTheme } from '@theme/index'
 
 import { AppButton } from '@components/button'
+import AppText from '@components/text'
 import { useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
@@ -30,10 +31,12 @@ type ModalContextType = {
 
 interface ContentType {
 	banner?: string
+	localBanner?: boolean
 	callToAction?: string
 	redirectUrl?: string
 	title: string
 	description: string
+	bannerText?: string
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
@@ -44,6 +47,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const { styles } = useTheme(_styles)
 
 	const [modalContent, setModalContent] = useState<ContentType | null>(null)
+
 	const showModal = (
 		content: ContentType,
 		isBiometricScreenOpened: boolean
@@ -65,13 +69,25 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 					imageStyle={styles.imageFillStyle}
 					resizeMode="cover"
 					style={styles.imageStyle}
-					source={{
-						uri: modalContent?.banner,
-					}}>
+					source={
+						modalContent?.localBanner
+							? modalContent?.banner
+							: {
+									uri: modalContent?.banner,
+							  }
+					}>
 					<CloseIcon
 						style={{ marginTop: 60, marginRight: 30 }}
 						onPress={hideModal}
 					/>
+
+					{modalContent?.bannerText?.length > 0 && (
+						<View style={styles.bannerTextContainer}>
+							<AppText variant="headline" style={styles.bannerText}>
+								{modalContent.bannerText}
+							</AppText>
+						</View>
+					)}
 				</ImageBackground>
 
 				{children}
@@ -202,5 +218,13 @@ const _styles = (theme: Theme) =>
 			width: '90%',
 
 			alignSelf: 'center',
+		},
+		bannerTextContainer: {
+			position: 'absolute',
+			bottom: 28,
+			left: 21,
+		},
+		bannerText: {
+			color: '#BEC2DD',
 		},
 	})
