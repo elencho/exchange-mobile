@@ -40,33 +40,21 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined)
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const [isModalVisible, setModalVisible] = useState(false)
+	const [isBiometricScreenOpened, setIsBiometricScreenOpened] = useState(false)
 	const { styles } = useTheme(_styles)
 
-	const { isBiometricScreenOpened } = useSelector(
-		(state: RootState) => state.common
-	)
-
-	const [modalContent, setModalContent] = useState<ContentType>({
-		title: '',
-		redirectUrl: '',
-		callToAction: '',
-		description: '',
-		banner: '',
-	})
-
-	const showModal = (content: ContentType) => {
+	const [modalContent, setModalContent] = useState<ContentType | null>(null)
+	const showModal = (
+		content: ContentType,
+		isBiometricScreenOpened: boolean
+	) => {
 		setModalContent(content)
+		setIsBiometricScreenOpened(isBiometricScreenOpened)
 		setModalVisible(true)
 	}
 
 	const hideModal = () => {
-		setModalContent({
-			title: '',
-			redirectUrl: '',
-			callToAction: '',
-			description: '',
-			banner: '',
-		})
+		setModalContent(null)
 		setModalVisible(false)
 	}
 

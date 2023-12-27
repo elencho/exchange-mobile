@@ -34,6 +34,7 @@ import { enableScreens } from 'react-native-screens'
 import { useTheme } from '@theme/index'
 import NetInfo from '@react-native-community/netinfo'
 import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
+import { useNotificationHandler } from 'notifiactionHandler'
 
 enableScreens(false)
 const Stack = createNativeStackNavigator<Screens>()
@@ -47,6 +48,7 @@ export default function AppNavigator() {
 
 	const { theme } = useTheme()
 	useNotifications()
+	useNotificationHandler()
 	useNotificationsAndroid()
 	// const { showModal } = useModal()
 	const onNavigationChanged = (state?: NavigationState) => {
