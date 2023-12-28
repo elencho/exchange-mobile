@@ -9,6 +9,7 @@ import AppDropdown from '../../AppDropdown'
 import AppText from '../../AppText'
 import PurpleText from '@app/components/PurpleText'
 import { useModal } from '@components/modal/global_modal'
+import InfoBanner from './InfoBanner'
 
 export default function WalletCoinsDropdown() {
 	const { showModal } = useModal()
@@ -74,6 +75,7 @@ export default function WalletCoinsDropdown() {
 					/>
 				</View>
 			)}
+			<InfoBanner />
 		</>
 	)
 }

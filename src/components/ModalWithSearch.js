@@ -47,7 +47,7 @@ export default function ModalWithSearch({
 			(isForTransactions && `${item.currencyName} (${item.currencyCode})`) ||
 			`${item?.available} ${item?.currencyCode}`
 
-		const name = countryDrop ? nameCountry : nameRegular
+		const name = countryDrop || crypto ? nameCountry : nameRegular
 
 		const code = item?.code || item?.pair?.baseCurrency || item?.currencyCode
 		const totalPrice = tradeType === 'Buy' ? item?.buyPrice : item?.sellPrice
@@ -77,7 +77,7 @@ export default function ModalWithSearch({
 					isForTransactions
 				}
 				onPress={() => handlePress(name, code)}
-				uri={uri(wallet ? code : displayCurrencyCode)}
+				uri={uri(wallet || crypto ? code : displayCurrencyCode)}
 				phoneCountry={phoneCountry}
 				countryDrop={countryDrop}
 				citizenshipDrop={citizenshipDrop}
