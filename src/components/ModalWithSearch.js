@@ -41,13 +41,13 @@ export default function ModalWithSearch({
 	const searchItem = ({ item }) => {
 		const nameRegular = `${item?.available} ${item?.displayCurrencyCode}`
 
-		const nameWallet =
+		const nameCountry =
 			item?.name ||
 			item?.pair?.baseCurrencyName ||
 			(isForTransactions && `${item.currencyName} (${item.currencyCode})`) ||
 			`${item?.available} ${item?.currencyCode}`
 
-		const name = wallet ? nameWallet : nameRegular
+		const name = countryDrop ? nameCountry : nameRegular
 
 		const code = item?.code || item?.pair?.baseCurrency || item?.currencyCode
 		const totalPrice = tradeType === 'Buy' ? item?.buyPrice : item?.sellPrice
