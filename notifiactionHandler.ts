@@ -3,40 +3,79 @@ import { biometricDiffElapsed } from '@app/refactor/utils/authUtils'
 import { useModal } from '@components/modal/global_modal'
 import messaging from '@react-native-firebase/messaging'
 import KV from '@store/kv/regular'
+import { setNotificationData } from '@store/redux/common/slice'
 import { isEnrolledAsync } from 'expo-local-authentication'
 import { AppState } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 export const useNotificationHandler = () => {
 	const { showModal } = useModal()
+	const dispatch = useDispatch()
 
-	// messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-	// 	console.log('Message handled in the background!', remoteMessage)
-	// })
-	const { isBiometricScreenOpened } = useSelector(
+	const { isBiometricScreenOpened, isBiometricEnabled } = useSelector(
 		(state: RootState) => state.common
 	)
-	const { accessToken } = useSelector((state: RootState) => state.auth)
 
-	const bioVisible =
-		AppState.currentState === 'active' &&
-		accessToken !== undefined &&
-		KV.get('webViewVisible') !== true &&
-		biometricDiffElapsed() &&
-		// (await isEnrolledAsync())
+	const bioVisible = isBiometricEnabled && biometricDiffElapsed()
+
+	// messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+	// 	const data = {
+	// 		description: remoteMessage?.notification?.body,
+	// 		banner: remoteMessage?.data?.banner,
+	// 		callToAction: remoteMessage?.data?.callToAction,
+	// 		redirectUrl: remoteMessage?.data?.redirectUrl,
+	// 		title: remoteMessage?.data?.title,
+	// 	}
+	// 	if (remoteMessage?.data?.title && data.description && !isBiometricEnabled) {
+	// 		console.log('setBackgroundMessageHandler', data)
+
+	// 		showModal(data)
+	// 	} else if (remoteMessage?.data?.title && data.description && bioVisible) {
+	// 		console.log('from here setBackgroundMessageHandler', data)
+	// 		dispatch(setNotificationData(data))
+	// 	}
+	// })
 
 	messaging().onNotificationOpenedApp((remoteMessage) => {
-		const redirectUrl = remoteMessage?.data?.redirectUrl
-		if (remoteMessage?.data?.title && remoteMessage?.data?.description) {
-			showModal(remoteMessage?.data, isBiometricScreenOpened)
+		console.log('from onNotificationOpenedApp', remoteMessage)
+		const data = {
+			description: remoteMessage?.notification?.body,
+			banner: remoteMessage?.data?.banner,
+			callToAction: remoteMessage?.data?.callToAction,
+			redirectUrl: remoteMessage?.data?.redirectUrl,
+			title: remoteMessage?.data?.title,
+		}
+		if (remoteMessage?.data?.title && data.description && !bioVisible) {
+			console.log('from bio onNotificationOpenedApp', data)
+
+			showModal(data)
+		} else if (remoteMessage?.data?.title && data.description && bioVisible) {
+			console.log('from here onNotificationOpenedApp', data)
+			dispatch(setNotificationData(data))
 		}
 	})
 
-	messaging()
-		.getInitialNotification()
-		.then(async (remoteMessage) => {
-			if (remoteMessage?.data?.title && remoteMessage?.data?.description) {
-				showModal(remoteMessage?.data, isBiometricScreenOpened)
-			}
-		})
+	// messaging()
+	// 	.getInitialNotification()
+	// 	.then(async (remoteMessage) => {
+	// 		const data = {
+	// 			description: remoteMessage?.notification?.body,
+	// 			banner: remoteMessage?.data?.banner,
+	// 			callToAction: remoteMessage?.data?.callToAction,
+	// 			redirectUrl: remoteMessage?.data?.redirectUrl,
+	// 			title: remoteMessage?.data?.title,
+	// 		}
+	// 		if (
+	// 			remoteMessage?.data?.title &&
+	// 			data.description &&
+	// 			!isBiometricEnabled
+	// 		) {
+	// 			console.log('from bio getInitialNotification', data)
+
+	// 			showModal(data)
+	// 		} else if (remoteMessage?.data?.title && data.description && bioVisible) {
+	// 			console.log('from here getInitialNotification', data)
+	// 			dispatch(setNotificationData(data))
+	// 		}
+	// 	})
 }

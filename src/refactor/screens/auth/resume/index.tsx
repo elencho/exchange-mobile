@@ -20,18 +20,19 @@ import { logoutThunk } from '@store/redux/auth/thunks'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { setBiometricScreenOpened } from '@store/redux/common/slice'
 import KV from '@store/kv/regular'
+import { useModal } from '@components/modal/global_modal'
 
 const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 	const dispatch = useDispatch()
 	const { styles } = useTheme(_styles)
-
+	const { showModal } = useModal()
 	const { from, maintenanceInProgress, version } = route.params
 	const fromSplash = from === 'Splash'
 
 	const resumed = route?.key === 'Resume-uniqueKey'
 
 	const { userInfo } = useSelector((state: RootState) => state.profile)
-
+	const { notificationData } = useSelector((state: RootState) => state.common)
 	const [bioType, setBioType] = useState<BioType>()
 
 	useFocusEffect(
@@ -73,7 +74,9 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 		})
 		if (authResult?.success) {
 			KV.set('lastOpenDateMillis', Date.now())
-
+			if (notificationData) {
+				showModal(notificationData)
+			}
 			if (maintenanceInProgress) {
 				navigation.navigate('Maintenance')
 			} else if (version) {
