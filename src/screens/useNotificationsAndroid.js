@@ -12,10 +12,17 @@ const useNotificationsAndroid = () => {
 			.getInitialNotification()
 			.then(async (remoteMessage) => {
 				if (remoteMessage) {
+					const data = {
+						description: remoteMessage?.notification?.body,
+						banner: remoteMessage?.data?.banner,
+						callToAction: remoteMessage?.data?.callToAction,
+						redirectUrl: remoteMessage?.data?.redirectUrl,
+						title: remoteMessage?.data?.title,
+					}
 					// const redirectUrl = remoteMessage?.data?.redirectUrl
 					// if (redirectUrl) Linking.openURL(remoteMessage?.data?.redirectUrl)
-					if (remoteMessage?.data?.title && remoteMessage?.data?.description) {
-						showModal(remoteMessage?.data)
+					if (data.title && data.description) {
+						showModal(data)
 					}
 				}
 			})

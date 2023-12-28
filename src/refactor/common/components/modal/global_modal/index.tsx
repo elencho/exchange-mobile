@@ -43,17 +43,12 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined)
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const [isModalVisible, setModalVisible] = useState(false)
-	const [isBiometricScreenOpened, setIsBiometricScreenOpened] = useState(false)
+	// const [isBiometricScreenOpened, setIsBiometricScreenOpened] = useState(false)
 	const { styles } = useTheme(_styles)
 
 	const [modalContent, setModalContent] = useState<ContentType | null>(null)
-
-	const showModal = (
-		content: ContentType,
-		isBiometricScreenOpened: boolean
-	) => {
+	const showModal = (content: ContentType) => {
 		setModalContent(content)
-		setIsBiometricScreenOpened(isBiometricScreenOpened)
 		setModalVisible(true)
 	}
 
@@ -114,7 +109,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 				<Modal
 					propagateSwipe={true}
 					useNativeDriver
-					isVisible={isModalVisible && !isBiometricScreenOpened}
+					isVisible={isModalVisible}
 					onDismiss={hideModal}
 					coverScreen
 					animationOutTiming={500}
