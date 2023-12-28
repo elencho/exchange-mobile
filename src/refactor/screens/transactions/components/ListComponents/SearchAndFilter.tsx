@@ -53,6 +53,9 @@ const SearchAndFilter: React.FC<Props> = ({
 			dispatch(setTransactionsSearch(searchValue))
 		}, 1000)
 
+		if (!isFilterVisible.shouldFilter)
+			setIsFilterVisible({ shouldFilter: true, isVisible: false })
+
 		return () => clearTimeout(getSearchedData)
 	}, [searchValue])
 
