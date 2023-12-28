@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import { MaterialIndicator } from 'react-native-indicators'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,20 +13,46 @@ import WhitelistActionsModal from '../../components/Wallet/Whitelist/WhitelistAc
 import WhitelistItem from '../../components/Wallet/Whitelist/WhitelistItem'
 import colors from '../../constants/colors'
 import { toggleAddWhitelistModal } from '../../redux/modals/actions'
+import {
+	getWhitelistAction,
+	saveWhitelist,
+	setHasWhitelist,
+	setNetwork,
+} from '@app/redux/wallet/actions'
+import { fetchWhitelist } from '@app/utils/walletUtils'
 
 export default function Whitelist({ refreshControl }) {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 	const {
-		wallet: { whitelist, hasWhitelist, whitelistLoading },
-		transactionsOld: { loading },
+		wallet: { whitelist, hasWhitelist, whitelistLoading, network },
+		transactionsOld: { loading, code },
+		trade: {
+			currentBalanceObj: {
+				// available,
+				// total,
+				// valueUSD,
+				// valueBTC,
+				// displayCurrencyCode,
+				types,
+			},
+		},
 	} = state
 
 	const [seconds, setSeconds] = useState(30)
 	const [deleteWhitelistOtpVisible, setDeleteWhitelistOtpVisible] =
 		useState(false)
 
+	const isTolCurrency = types.includes('CRYPTO') && types.includes('FIAT')
+
 	const showAddModal = () => dispatch(toggleAddWhitelistModal(true))
+
+	useEffect(() => {
+		if (isTolCurrency) {
+			dispatch(setNetwork('BEP20'))
+			dispatch(getWhitelistAction())
+		}
+	}, [])
 
 	return (
 		<>
