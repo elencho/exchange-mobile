@@ -97,6 +97,7 @@ export default function CountriesModal({
 			phoneCountry={phoneCountry}
 			countryDrop={countryDrop}
 			citizenshipDrop={citizenshipDrop}
+			wallet
 		/>
 	)
 
