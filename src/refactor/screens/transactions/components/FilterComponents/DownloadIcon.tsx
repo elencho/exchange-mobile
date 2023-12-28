@@ -52,6 +52,7 @@ export default DownloadIcon
 
 const styles = StyleSheet.create({
 	container: {
+		borderRadius: 50,
 		height: 45,
 		width: 44,
 		backgroundColor: colors.BUTTON_DISABLED,

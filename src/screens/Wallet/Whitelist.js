@@ -104,7 +104,7 @@ export default function Whitelist({ refreshControl }) {
 const styles = StyleSheet.create({
 	button: {
 		borderWidth: 1,
-		borderRadius: 1,
+		borderRadius: 6,
 		borderStyle: 'dashed',
 		height: 45,
 		borderColor: colors.SECONDARY_PURPLE,

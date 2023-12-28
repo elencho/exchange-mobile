@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 	flex: {
+		borderRadius: 6,
 		flex: 1,
 		justifyContent: 'space-between',
 	},

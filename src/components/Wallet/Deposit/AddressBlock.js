@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 	},
 	container: {
+		borderRadius: 6,
 		marginTop: 25,
 	},
 	light: {

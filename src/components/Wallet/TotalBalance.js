@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: colors.SECONDARY_BACKGROUND,
 		padding: 25,
-		borderRadius: 6,
+		// borderRadius: 6,
+		borderRadius: 22,
 	},
 	balanceContainer: {
 		flexDirection: 'row',
