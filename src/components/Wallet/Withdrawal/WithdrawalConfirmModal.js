@@ -34,8 +34,6 @@ export default function WithdrawalConfirmModal() {
 	const isCrypto = type === 'CRYPTO' || network === 'BEP20'
 	const isFiat = type === 'FIAT' && network !== 'BEP20'
 
-	console.log({ type, network })
-
 	const [seconds, setSeconds] = useState(30)
 	const [twoFaInputValue, setTwoFaInputValue] = useState('')
 

@@ -8,13 +8,10 @@ import { toggleQrAddressModal } from '../../../redux/modals/actions'
 import useCopyToClipboard from '../../../utils/copyToClipboard'
 import AppText from '../../AppText'
 import AddressQrModal from './AddressQrModal'
-import { useNavigation } from '@react-navigation/native'
 import { fetchCryptoAddresses } from '@app/utils/walletUtils'
 import { saveCryptoAddress } from '@app/redux/wallet/actions'
 
 export default function AddressBlock() {
-	const navigation = useNavigation()
-
 	const { copyToClipboard } = useCopyToClipboard()
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
@@ -24,8 +21,6 @@ export default function AddressBlock() {
 	} = state
 
 	useEffect(() => {
-		// dispatch(cryptoAddressesAction(name, code, navigation, network))
-		console.log('add', cryptoAddress.address)
 		if (!cryptoAddress.address)
 			fetchCryptoAddresses(code, network).then((res) =>
 				dispatch(saveCryptoAddress(res))

@@ -13,29 +13,16 @@ import WhitelistActionsModal from '../../components/Wallet/Whitelist/WhitelistAc
 import WhitelistItem from '../../components/Wallet/Whitelist/WhitelistItem'
 import colors from '../../constants/colors'
 import { toggleAddWhitelistModal } from '../../redux/modals/actions'
-import {
-	getWhitelistAction,
-	saveWhitelist,
-	setHasWhitelist,
-	setNetwork,
-} from '@app/redux/wallet/actions'
-import { fetchWhitelist } from '@app/utils/walletUtils'
+import { getWhitelistAction, setNetwork } from '@app/redux/wallet/actions'
 
 export default function Whitelist({ refreshControl }) {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 	const {
-		wallet: { whitelist, hasWhitelist, whitelistLoading, network },
-		transactionsOld: { loading, code },
+		wallet: { whitelist, hasWhitelist, whitelistLoading },
+		transactionsOld: { loading },
 		trade: {
-			currentBalanceObj: {
-				// available,
-				// total,
-				// valueUSD,
-				// valueBTC,
-				// displayCurrencyCode,
-				types,
-			},
+			currentBalanceObj: { types },
 		},
 	} = state
 
