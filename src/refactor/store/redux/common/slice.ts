@@ -30,7 +30,7 @@ const initialState: CommonState = {
 	countries: [],
 	isBiometricScreenOpened: false,
 	isBiometricEnabled: false,
-	notificationData: null
+	notificationData: null,
 }
 
 const common = createSlice({
@@ -83,7 +83,7 @@ export const {
 	setCurrencyList,
 	setBiometricScreenOpened,
 	setBiometricToggleEnabled,
-	setNotificationData
+	setNotificationData,
 } = common.actions
 
 export default common.reducer
