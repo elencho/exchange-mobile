@@ -77,7 +77,7 @@ function ChooseCurrencyModal({ wallet = false }) {
 		})
 
 		if (wallet) {
-			if (fiats.includes(currencyCode)) {
+			if (fiats.includes(currencyCode) && network !== 'BEP20') {
 				dispatch(wireDepositAction(name, currencyCode, navigation))
 				dispatch(saveCryptoAddress({}))
 			} else {

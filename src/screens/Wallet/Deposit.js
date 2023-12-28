@@ -204,6 +204,13 @@ export default function Deposit({ refreshControl }) {
 								{network === 'SEPA' && (
 									<AppInfoBlock content={warnings.sepa} warning />
 								)}
+
+								{network === 'BEP20' && <AddressBlock />}
+
+								{network === 'BEP20' && content() && (
+									<AppInfoBlock content={content()} warning />
+								)}
+
 								<TransferMethodModal />
 							</>
 						)}
@@ -223,7 +230,9 @@ export default function Deposit({ refreshControl }) {
 				</View>
 			) : null}
 
-			{isFiat && !hasRestriction && hasMethod && <FiatBlock />}
+			{isFiat && !hasRestriction && hasMethod && network !== 'BEP20' && (
+				<FiatBlock />
+			)}
 			{hasRestriction || !hasMethod ? (
 				<FlexBlock
 					type="Deposit"
