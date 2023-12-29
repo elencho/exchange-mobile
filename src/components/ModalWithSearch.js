@@ -39,7 +39,9 @@ export default function ModalWithSearch({
 	}
 
 	const searchItem = ({ item }) => {
-		const nameRegular = `${item?.available} ${item?.displayCurrencyCode}`
+		const nameRegular = item?.displayCurrencyCode
+			? `${item?.available} ${item?.displayCurrencyCode}`
+			: `${item?.pair?.baseCurrencyName}`
 
 		const nameCountry =
 			item?.name ||
@@ -77,7 +79,7 @@ export default function ModalWithSearch({
 					isForTransactions
 				}
 				onPress={() => handlePress(name, code)}
-				uri={uri(wallet ? code : displayCurrencyCode)}
+				uri={uri(wallet || countryDrop ? code : displayCurrencyCode)}
 				phoneCountry={phoneCountry}
 				countryDrop={countryDrop}
 				citizenshipDrop={citizenshipDrop}

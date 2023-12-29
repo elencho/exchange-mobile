@@ -39,7 +39,7 @@ export default function Whitelist({ refreshControl }) {
 			dispatch(setNetwork('BEP20'))
 			dispatch(getWhitelistAction())
 		}
-	}, [])
+	}, [isTolCurrency])
 
 	return (
 		<>

@@ -112,8 +112,9 @@ function* wireDepositSaga(action) {
 	} else {
 		n = network
 	}
+	yield delay(600)
 
-	if (hasMethods && walletTab !== 'Withdrawal') {
+	if (hasMethods && walletTab !== 'Withdrawal' && network !== 'BEP20') {
 		const wireDepositData = yield call(fetchWireDeposit, code, n)
 		if (wireDepositData) {
 			const wireDepositProviders = wireDepositData[language]

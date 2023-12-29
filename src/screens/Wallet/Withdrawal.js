@@ -199,8 +199,6 @@ function Withdrawal({ refreshControl }) {
 									<>
 										{network !== 'BEP20' && (
 											<>
-												<TransferMethodDropdown />
-												<TransferMethodModal />
 												{network === 'SWIFT' && (
 													<View style={{ marginTop: 10, marginBottom: -16 }}>
 														<AppInfoBlock
@@ -224,6 +222,9 @@ function Withdrawal({ refreshControl }) {
 								) : (
 									<ChooseNetworkDropdown />
 								)}
+
+								<TransferMethodDropdown />
+								<TransferMethodModal />
 
 								{walletInfo() && (
 									<AppInfoBlock content={[walletInfo()]} warning />

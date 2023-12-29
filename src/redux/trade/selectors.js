@@ -79,7 +79,7 @@ export const withdrawalFeeParams = (state) => {
 
 	const instantTrade = tabRoute === 'Trade'
 	const eCommerce = network === 'ECOMMERCE'
-	const crypto = currentBalanceObj?.type === 'CRYPTO'
+	const crypto = currentBalanceObj?.type === 'CRYPTO' || network === 'BEP20'
 
 	const method = () => {
 		if (!instantTrade) {
