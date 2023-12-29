@@ -97,8 +97,6 @@ export const withdrawalFeeParams = (state) => {
 	const provider = instantTrade || eCommerce ? depositProvider : network
 	const cardId = instantTrade || eCommerce ? card?.id : null
 
-	console.log('neet', network)
-
 	return {
 		currency: instantTrade ? fiat : code,
 		method: method(),

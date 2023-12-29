@@ -72,14 +72,6 @@ export default function Deposit({ refreshControl }) {
 		}
 	}, [code])
 
-	// useEffect(() => {
-	// 	if (!cryptoAddress?.address && network) {
-	// 		fetchCryptoAddresses(code, network).then((res) =>
-	// 			dispatch(saveCryptoAddress(res))
-	// 		)
-	// 	}
-	// }, [network])
-
 	useEffect(() => {
 		dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 })
 		dispatch({ type: 'CLEAN_WALLET_INPUTS' })

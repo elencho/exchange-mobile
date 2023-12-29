@@ -67,8 +67,6 @@ export default function ModalWithSearch({
 
 		const displayCurrencyCode = item?.displayCurrencyCode
 
-		console.log({ item: item?.pair?.baseCurrencyName })
-
 		return (
 			<ModalSearchItem
 				name={name}
