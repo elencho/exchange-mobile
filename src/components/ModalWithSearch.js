@@ -39,7 +39,9 @@ export default function ModalWithSearch({
 	}
 
 	const searchItem = ({ item }) => {
-		const nameRegular = `${item?.available} ${item?.displayCurrencyCode}`
+		const nameRegular = item?.displayCurrencyCode
+			? `${item?.available} ${item?.displayCurrencyCode}`
+			: `${item?.pair?.baseCurrencyName}`
 
 		const nameCountry =
 			item?.name ||

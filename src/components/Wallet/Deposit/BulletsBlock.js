@@ -30,6 +30,7 @@ export default function BulletsBlock() {
 
 const styles = StyleSheet.create({
 	block: {
+		borderRadius: 6,
 		paddingVertical: 18,
 		paddingHorizontal: 22,
 		marginVertical: 10,
@@ -43,6 +44,7 @@ const styles = StyleSheet.create({
 	},
 
 	row: {
+		borderRadius: 6,
 		flexDirection: 'row',
 		marginBottom: 16,
 	},

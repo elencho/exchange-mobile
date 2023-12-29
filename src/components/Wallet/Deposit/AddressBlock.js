@@ -21,44 +21,51 @@ export default function AddressBlock() {
 	} = state
 
 	useEffect(() => {
-		if (!cryptoAddress.address)
+		if (!cryptoAddress?.address && network) {
 			fetchCryptoAddresses(code, network).then((res) =>
 				dispatch(saveCryptoAddress(res))
 			)
+		}
 	}, [])
 
-	const copyAddress = () => copyToClipboard(cryptoAddress.address)
+	const copyAddress = () => copyToClipboard(cryptoAddress?.address)
 	const showQr = () => dispatch(toggleQrAddressModal(true))
-	const copyTag = () => copyToClipboard(cryptoAddress.tag)
+	const copyTag = () => copyToClipboard(cryptoAddress?.tag)
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.row}>
-				<AppText style={styles.address}>{cryptoAddress.address}</AppText>
+		<>
+			{cryptoAddress?.address && (
+				<View style={styles.container}>
+					<View style={styles.row}>
+						<AppText style={styles.address}>{cryptoAddress?.address}</AppText>
 
-				<TouchableOpacity onPress={showQr} style={{ marginRight: 20 }}>
-					<QR />
-				</TouchableOpacity>
-				<TouchableOpacity onPress={copyAddress}>
-					<Copy />
-				</TouchableOpacity>
-			</View>
+						<TouchableOpacity onPress={showQr} style={{ marginRight: 20 }}>
+							<QR />
+						</TouchableOpacity>
+						<TouchableOpacity onPress={copyAddress}>
+							<Copy />
+						</TouchableOpacity>
+					</View>
 
-			{cryptoAddress.tag ? (
-				<View style={[styles.row, { marginTop: 12 }]}>
-					<AppText style={styles.address}>
-						<AppText style={{ textTransform: 'capitalize' }}>Memo :</AppText>
-						{cryptoAddress.tag}
-					</AppText>
+					{cryptoAddress?.tag ? (
+						<View style={[styles.row, { marginTop: 12 }]}>
+							<AppText style={styles.address}>
+								<AppText style={{ textTransform: 'capitalize' }}>
+									Memo :
+								</AppText>
+								{cryptoAddress?.tag}
+							</AppText>
 
-					<TouchableOpacity onPress={copyTag}>
-						<Copy />
-					</TouchableOpacity>
+							<TouchableOpacity onPress={copyTag}>
+								<Copy />
+							</TouchableOpacity>
+						</View>
+					) : null}
+
+					<AddressQrModal />
 				</View>
-			) : null}
-
-			<AddressQrModal />
-		</View>
+			)}
+		</>
 	)
 }
 
@@ -84,6 +91,7 @@ const styles = StyleSheet.create({
 		marginTop: 20,
 	},
 	container: {
+		borderRadius: 6,
 		marginTop: 25,
 	},
 	light: {

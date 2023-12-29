@@ -28,6 +28,7 @@ const BalanceSearchBar = forwardRef(
 		const inputStyle = useAnimatedStyle(() => {
 			return {
 				width: `${animatedValue.value}%`,
+				borderRadius: 6,
 				borderWidth: 1,
 				borderColor: interpolateColor(
 					animatedValue.value,
@@ -91,7 +92,6 @@ export default BalanceSearchBar
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: colors.PRIMARY_BACKGROUND,
 		paddingBottom: 10,
 		alignItems: 'flex-start',
 		flex: 1,
@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
 	},
 	searchInput: {
 		borderWidth: 1,
+		borderRadius: 6,
 		height: 45,
 		paddingHorizontal: 15,
 		flexDirection: 'row',

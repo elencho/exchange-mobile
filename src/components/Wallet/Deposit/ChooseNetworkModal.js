@@ -28,7 +28,7 @@ export default function ChooseNetworkModal() {
 	} = state
 
 	const fiat = currentBalanceObj?.type === 'FIAT'
-	const crypto = currentBalanceObj?.type === 'CRYPTO'
+	const crypto = currentBalanceObj?.type === 'CRYPTO' || network === 'BEP20'
 	const deposit = walletTab === 'Deposit'
 	const withdrawal = walletTab === 'Withdrawal'
 	const isWhitelist = walletTab === 'Whitelist'

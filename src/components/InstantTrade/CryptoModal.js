@@ -60,6 +60,8 @@ export default function CryptoModal() {
 			crypto
 			tradeType={tradeType}
 			title="Choose Currency"
+			// countryDrop
+			wallet
 		/>
 	)
 
