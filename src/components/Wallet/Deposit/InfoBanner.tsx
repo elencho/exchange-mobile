@@ -72,7 +72,7 @@ const InfoBanner = () => {
 
 	return (
 		<AppModal
-			visible={true}
+			visible={false}
 			// hide={hide}
 			fullScreen
 			// title={t(tradeType) + ' ' + crypto}
