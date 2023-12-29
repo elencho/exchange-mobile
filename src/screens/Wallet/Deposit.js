@@ -29,11 +29,13 @@ import {
 } from '../../redux/trade/actions'
 import {
 	generateCryptoAddressAction,
+	saveCryptoAddress,
 	setNetwork,
 } from '../../redux/wallet/actions'
 import { errorHappenedHere } from '../../utils/appUtils'
 import KV from '@store/kv/regular'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
+import { fetchCryptoAddresses } from '@app/utils/walletUtils'
 
 export default function Deposit({ refreshControl }) {
 	const dispatch = useDispatch()
@@ -52,6 +54,15 @@ export default function Deposit({ refreshControl }) {
 	const isFiat = currentBalanceObj.type === 'FIAT'
 	const isCrypto = currentBalanceObj.type === 'CRYPTO' || network === 'BEP20'
 	const isEcommerce = network === 'ECOMMERCE'
+
+	//TODO: Temporary Bug FIx
+	const [shouldShowDelayed, setShouldShowDelayed] = useState(false)
+	useEffect(() => {
+		setTimeout(() => {
+			setShouldShowDelayed(true)
+		}, 1000)
+	}, [])
+
 
 	useEffect(() => {
 		const m = currentBalanceObj?.depositMethods
@@ -177,7 +188,8 @@ export default function Deposit({ refreshControl }) {
 
 				{!hasRestriction && hasMethod && (
 					<>
-						{!isFiat || (code === 'EUR' && network !== 'BEP20') ? (
+						{!isFiat ||
+						(code === 'EUR' && !currentBalanceObj.types.includes('CRYPTO')) ? (
 							<>
 								<ChooseNetworkDropdown />
 								{cryptoAddress?.address &&
@@ -220,6 +232,7 @@ export default function Deposit({ refreshControl }) {
 
 			{!cryptoAddress?.address &&
 			(!isFiat || network === 'BEP20') &&
+			!shouldShowDelayed &&
 			!hasRestriction &&
 			hasMethod ? (
 				<View style={styles.flex}>
