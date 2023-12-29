@@ -10,6 +10,7 @@ import { toggleTransferMethodModal } from '../../../redux/modals/actions'
 import { setNetwork } from '../../../redux/wallet/actions'
 import AppModal from '../../AppModal'
 import AppText from '../../AppText'
+import { fetchFee } from '@app/redux/trade/actions'
 
 export default function TransferMethodModal() {
 	const dispatch = useDispatch()
@@ -55,6 +56,8 @@ export default function TransferMethodModal() {
 
 	const handlePress = (m) => {
 		dispatch(setNetwork(m))
+		dispatch(fetchFee('withdrawal'))
+
 		dispatch({ type: 'REFRESH_WALLET_AND_TRADES' })
 		// Card Needs to be checked
 		hide()

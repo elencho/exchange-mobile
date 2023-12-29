@@ -50,7 +50,7 @@ export default function Deposit({ refreshControl }) {
 	} = state
 
 	const isFiat = currentBalanceObj.type === 'FIAT'
-	const isCrypto = currentBalanceObj.type === 'CRYPTO'
+	const isCrypto = currentBalanceObj.type === 'CRYPTO' || network === 'BEP20'
 	const isEcommerce = network === 'ECOMMERCE'
 
 	useEffect(() => {
@@ -71,6 +71,14 @@ export default function Deposit({ refreshControl }) {
 			dispatch(setCard(null))
 		}
 	}, [code])
+
+	// useEffect(() => {
+	// 	if (!cryptoAddress?.address && network) {
+	// 		fetchCryptoAddresses(code, network).then((res) =>
+	// 			dispatch(saveCryptoAddress(res))
+	// 		)
+	// 	}
+	// }, [network])
 
 	useEffect(() => {
 		dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 })
@@ -177,7 +185,7 @@ export default function Deposit({ refreshControl }) {
 
 				{!hasRestriction && hasMethod && (
 					<>
-						{!isFiat || code === 'EUR' ? (
+						{!isFiat || (code === 'EUR' && network !== 'BEP20') ? (
 							<>
 								<ChooseNetworkDropdown />
 								{cryptoAddress?.address &&
@@ -218,7 +226,10 @@ export default function Deposit({ refreshControl }) {
 				)}
 			</View>
 
-			{!cryptoAddress?.address && !isFiat && !hasRestriction && hasMethod ? (
+			{!cryptoAddress?.address &&
+			(!isFiat || network === 'BEP20') &&
+			!hasRestriction &&
+			hasMethod ? (
 				<View style={styles.flex}>
 					<BulletsBlock />
 					<AppButton

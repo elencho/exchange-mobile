@@ -79,7 +79,7 @@ export const withdrawalFeeParams = (state) => {
 
 	const instantTrade = tabRoute === 'Trade'
 	const eCommerce = network === 'ECOMMERCE'
-	const crypto = currentBalanceObj?.type === 'CRYPTO'
+	const crypto = currentBalanceObj?.type === 'CRYPTO' || network === 'BEP20'
 
 	const method = () => {
 		if (!instantTrade) {
@@ -96,6 +96,8 @@ export const withdrawalFeeParams = (state) => {
 
 	const provider = instantTrade || eCommerce ? depositProvider : network
 	const cardId = instantTrade || eCommerce ? card?.id : null
+
+	console.log('neet', network)
 
 	return {
 		currency: instantTrade ? fiat : code,

@@ -40,10 +40,14 @@ const SearchAndFilter: React.FC<Props> = ({
 	const [isCryptoModalVisible, setIsCryptoModalVisible] = useState(false)
 	const [cryptoFilterText, setCryptoFilterText] = useState('')
 
-	const openCryptoModal = () => setIsCryptoModalVisible(true)
+	const openCryptoModal = () => {
+		setIsCryptoModalVisible(true)
+		setIsFilterVisible({ shouldFilter: true, isVisible: false })
+	}
 	const seperateCurrencyName = (currency: string) => currency.split('(')[0]
 	const clearCurrencyDropdown = () => {
 		dispatch(setCryptoCodeQuery(null))
+		setIsFilterVisible({ shouldFilter: true, isVisible: false })
 	}
 
 	//debounce
