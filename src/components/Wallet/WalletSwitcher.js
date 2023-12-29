@@ -20,7 +20,7 @@ export default function WalletSwitcher() {
 	const state = useSelector((state) => state)
 	const {
 		wallet: { walletTab },
-		trade: { currentBalanceObj },
+		trade: { currentBalanceObj, Balance_Card },
 	} = state
 
 	const cur = currentBalanceObj
@@ -57,8 +57,16 @@ export default function WalletSwitcher() {
 
 	const scrollViewRef = useRef()
 	useEffect(() => {
-		scrollViewRef.current.scrollTo({ x: 0, y: 0 })
+		scrollViewRef?.current?.scrollTo &&
+			scrollViewRef.current.scrollTo({ x: 0, y: 0 })
 	}, [currentBalanceObj])
+
+	useEffect(() => {
+		if (walletTab === 'Manage Cards' && scrollViewRef?.current?.scrollTo) {
+			scrollViewRef?.current?.scrollToEnd({ animated: true })
+			console.log({ walletTab })
+		}
+	}, [walletTab, Balance_Card, currentBalanceObj])
 
 	const buttonStyle = (f) => {
 		return {
@@ -77,33 +85,50 @@ export default function WalletSwitcher() {
 	}
 
 	return (
-		<View>
-			<ScrollView
-				ref={scrollViewRef}
-				style={styles.row}
-				contentContainerStyle={{
-					width:
-						switchers.length > 3
-							? BUTTON_WIDTH * switchers.length + 20
-							: BUTTON_WIDTH * switchers.length,
-					paddingRight: 5,
-				}}
-				horizontal
-				scrollEnabled={switchers.length > 3}
-				bounces={true}
-				showsHorizontalScrollIndicator={false}>
-				{switchers.map((f, i) => (
-					<Pressable
-						key={f}
-						style={[styles.button, buttonStyle(f)]}
-						onPress={() => handleWalletTab(f)}>
-						<AppText body style={textStyle(f)}>
-							{f}
-						</AppText>
-					</Pressable>
-				))}
-			</ScrollView>
-		</View>
+		<>
+			{switchers.length > 3 ? (
+				<View>
+					<ScrollView
+						ref={scrollViewRef}
+						style={styles.scrollView}
+						contentContainerStyle={{
+							width:
+								switchers.length > 3
+									? BUTTON_WIDTH * switchers.length + 20
+									: BUTTON_WIDTH * switchers.length,
+							paddingRight: 5,
+						}}
+						horizontal
+						scrollEnabled={switchers.length > 3}
+						bounces={true}
+						showsHorizontalScrollIndicator={false}>
+						{switchers.map((f, i) => (
+							<Pressable
+								key={f}
+								style={[styles.button, buttonStyle(f)]}
+								onPress={() => handleWalletTab(f)}>
+								<AppText body style={textStyle(f)}>
+									{f}
+								</AppText>
+							</Pressable>
+						))}
+					</ScrollView>
+				</View>
+			) : (
+				<View style={styles.row}>
+					{switchers.map((f, i) => (
+						<Pressable
+							key={f}
+							style={[styles.button, buttonStyle(f)]}
+							onPress={() => handleWalletTab(f)}>
+							<AppText body style={textStyle(f)}>
+								{f}
+							</AppText>
+						</Pressable>
+					))}
+				</View>
+			)}
+		</>
 	)
 }
 
@@ -116,7 +141,13 @@ const styles = StyleSheet.create({
 		marginRight: 6,
 		maxWidth: BUTTON_WIDTH,
 	},
+	scrollView: {
+		marginTop: 22,
+		marginBottom: 28,
+	},
 	row: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
 		marginTop: 22,
 		marginBottom: 28,
 	},
