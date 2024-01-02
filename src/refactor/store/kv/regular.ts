@@ -6,6 +6,8 @@ import {
 	serializeBoolean,
 	serializeString,
 	serializeNumber,
+	deserializeObject,
+	serializeObject,
 } from '@store/kv/serialization'
 
 interface Schema {
@@ -13,6 +15,7 @@ interface Schema {
 	language: Language
 	webViewVisible: boolean
 	lastOpenDateMillis: number
+	convertNowPair: CoinPair
 }
 type Key = keyof Schema
 
@@ -44,6 +47,7 @@ const deserializers: {
 	everOpened: deserializeBoolean,
 	language: (value: string) => (value === 'ka' ? 'ka' : 'en'),
 	lastOpenDateMillis: deserializeNumber,
+	convertNowPair: deserializeObject,
 }
 
 const serializers: { [key in Key]: (value: Schema[key]) => string } = {
@@ -51,6 +55,7 @@ const serializers: { [key in Key]: (value: Schema[key]) => string } = {
 	everOpened: serializeBoolean,
 	language: serializeString,
 	lastOpenDateMillis: serializeNumber,
+	convertNowPair: serializeObject,
 }
 
 export default KV
