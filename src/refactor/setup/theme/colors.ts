@@ -10,7 +10,7 @@ export interface ColorTheme {
 
 	skeleton: string //SKELETON
 	border: string //BORDER
-	buttonDisabled: string //BUTTON_DISABLED
+	tabTagHint: string //BUTTON_DISABLED
 	redLite: string //LITE_RED
 	error: string //ERROR_TEXT
 }
@@ -23,9 +23,9 @@ export const COLORS_DARK: ColorTheme = {
 	textPrimary: '#FFFFFF',
 	textSecondary: '#696F8E',
 	textThird: '#C0C5E0',
+	tabTagHint: '#292943',
 	skeleton: '#4B4B65',
 	border: '#42475D',
-	buttonDisabled: '#292943',
 	redLite: '#DE90A8',
 	error: '#F45E8C',
 }

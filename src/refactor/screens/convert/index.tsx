@@ -14,6 +14,7 @@ import ChooseFiatModal from '@app/refactor/screens/convert/modals/ChooseFiatModa
 import { MaterialIndicator } from 'react-native-indicators'
 import KV from '@store/kv/regular'
 import ChooseCryptoModal from '@app/refactor/screens/convert/modals/ChooseCryptoModal'
+import BalanceChips from '@app/refactor/screens/convert/components/BalanceChips'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const { styles, theme } = useTheme(_styles)
@@ -86,6 +87,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 						onTypeChanged={setTradeType}
 					/>
 					<CoinInputs />
+					<BalanceChips onChipPressed={() => {}} />
 					<Timer />
 
 					<ChooseFiatModal

@@ -276,6 +276,6 @@ const _styles = (theme: Theme) =>
 			marginHorizontal: 4,
 			height: 1,
 			flex: 1,
-			backgroundColor: theme.color.buttonDisabled,
+			backgroundColor: theme.color.tabTagHint,
 		},
 	})

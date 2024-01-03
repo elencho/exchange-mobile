@@ -36,7 +36,7 @@ export function PrimaryButton({
 				styles.button,
 				{
 					backgroundColor: disabled
-						? theme.color.buttonDisabled
+						? theme.color.tabTagHint
 						: backgroundColor
 						? backgroundColor
 						: theme.color.brandPrimary,
