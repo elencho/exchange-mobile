@@ -18,23 +18,28 @@ export const useNotificationHandler = () => {
 
 	const bioVisible = isBiometricEnabled && biometricDiffElapsed()
 
-	// messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-	// 	const data = {
-	// 		description: remoteMessage?.notification?.body,
-	// 		banner: remoteMessage?.data?.banner,
-	// 		callToAction: remoteMessage?.data?.callToAction,
-	// 		redirectUrl: remoteMessage?.data?.redirectUrl,
-	// 		title: remoteMessage?.data?.title,
-	// 	}
-	// 	if (remoteMessage?.data?.title && data.description && !isBiometricEnabled) {
-	// 		console.log('setBackgroundMessageHandler', data)
+	messaging()
+		.getInitialNotification()
+		.then(async (remoteMessage) => {
+			if (remoteMessage) {
+				const data = {
+					description: remoteMessage?.notification?.body,
+					banner: remoteMessage?.data?.banner,
+					callToAction: remoteMessage?.data?.callToAction,
+					redirectUrl: remoteMessage?.data?.redirectUrl,
+					title: remoteMessage?.data?.title,
+				}
+				dispatch(setNotificationData(data))
+				// if (data.title && data.description && !bioVisible) {
+				// 	console.log('from bio getInitialNotification', data)
 
-	// 		showModal(data)
-	// 	} else if (remoteMessage?.data?.title && data.description && bioVisible) {
-	// 		console.log('from here setBackgroundMessageHandler', data)
-	// 		dispatch(setNotificationData(data))
-	// 	}
-	// })
+				// 	showModal(data, isBiometricScreenOpened)
+				// } else if (data?.title && data.description && bioVisible) {
+				// 	console.log('from here getInitialNotification', data)
+				// 	dispatch(setNotificationData(data))
+				// }
+			}
+		})
 
 	messaging().onNotificationOpenedApp((remoteMessage) => {
 		console.log('from onNotificationOpenedApp', remoteMessage)
@@ -45,37 +50,14 @@ export const useNotificationHandler = () => {
 			redirectUrl: remoteMessage?.data?.redirectUrl,
 			title: remoteMessage?.data?.title,
 		}
-		if (remoteMessage?.data?.title && data.description && !bioVisible) {
-			console.log('from bio onNotificationOpenedApp', data)
+		dispatch(setNotificationData(data))
+		// if (remoteMessage?.data?.title && data.description && !bioVisible) {
+		// 	console.log('from bio onNotificationOpenedApp', data)
 
-			showModal(data)
-		} else if (remoteMessage?.data?.title && data.description && bioVisible) {
-			console.log('from here onNotificationOpenedApp', data)
-			dispatch(setNotificationData(data))
-		}
+		// 	 showModal(data)
+		// } else if (remoteMessage?.data?.title && data.description && bioVisible) {
+		// 	console.log('from here onNotificationOpenedApp', data)
+		// 	dispatch(setNotificationData(data))
+		// }
 	})
-
-	// messaging()
-	// 	.getInitialNotification()
-	// 	.then(async (remoteMessage) => {
-	// 		const data = {
-	// 			description: remoteMessage?.notification?.body,
-	// 			banner: remoteMessage?.data?.banner,
-	// 			callToAction: remoteMessage?.data?.callToAction,
-	// 			redirectUrl: remoteMessage?.data?.redirectUrl,
-	// 			title: remoteMessage?.data?.title,
-	// 		}
-	// 		if (
-	// 			remoteMessage?.data?.title &&
-	// 			data.description &&
-	// 			!isBiometricEnabled
-	// 		) {
-	// 			console.log('from bio getInitialNotification', data)
-
-	// 			showModal(data)
-	// 		} else if (remoteMessage?.data?.title && data.description && bioVisible) {
-	// 			console.log('from here getInitialNotification', data)
-	// 			dispatch(setNotificationData(data))
-	// 		}
-	// 	})
 }

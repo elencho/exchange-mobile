@@ -654,6 +654,8 @@ PODS:
     - RNNotifee/NotifeeCore (= 7.7.1)
   - RNNotifee/NotifeeCore (7.7.1):
     - React-Core
+  - RNPermissions (4.0.1):
+    - React-Core
   - RNReanimated (3.1.0):
     - DoubleConversion
     - FBLazyVector
@@ -801,6 +803,7 @@ DEPENDENCIES:
   - "RNFlashList (from `../node_modules/@shopify/flash-list`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNNotifee (from `../node_modules/@notifee/react-native`)"
+  - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
@@ -985,6 +988,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-gesture-handler"
   RNNotifee:
     :path: "../node_modules/@notifee/react-native"
+  RNPermissions:
+    :path: "../node_modules/react-native-permissions"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -1095,6 +1100,7 @@ SPEC CHECKSUMS:
   RNFlashList: ade81b4e928ebd585dd492014d40fb8d0e848aab
   RNGestureHandler: 42ec7c28dd02d540ed6c9159c57a98ff016492dc
   RNNotifee: 05692d7bb42b6c718a3906aeb8431c48ff2e8097
+  RNPermissions: 59c96206917535f6373e137a379cd1a0637f4147
   RNReanimated: b1220a0e5168745283ff5d53bfc7d2144b2cee1b
   RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
@@ -1105,6 +1111,6 @@ SPEC CHECKSUMS:
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5
 
-PODFILE CHECKSUM: 76ddf8fc328bd6a64a75275ba1ba5a1bdb76f0bf
+PODFILE CHECKSUM: b1f331d0e3a8ace51404cfb15f791a8ada5a651f
 
 COCOAPODS: 1.14.2

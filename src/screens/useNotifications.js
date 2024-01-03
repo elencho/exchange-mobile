@@ -41,14 +41,15 @@ const useNotifications = () => {
 							redirectUrl: detail?.data?.redirectUrl,
 							title: detail?.data?.title,
 						}
-						if (detail?.data?.title && data.description && !bioVisible) {
-							console.log('from bio onNotificationOpenedApp', data)
+						dispatch(setNotificationData(data))
+						// if (detail?.data?.title && data.description && !bioVisible) {
+						// 	console.log('from bio onNotificationOpenedApp', data)
 
-							showModal(data, isBiometricScreenOpened)
-						} else if (detail?.data?.title && data.description && bioVisible) {
-							console.log('from here onNotificationOpenedApp', data)
-							dispatch(setNotificationData(data))
-						}
+						// 	showModal(data, isBiometricScreenOpened)
+						// } else if (detail?.data?.title && data.description && bioVisible) {
+						// 	console.log('from here onNotificationOpenedApp', data)
+						// 	dispatch(setNotificationData(data))
+						// }
 						break
 					default:
 						break
@@ -68,15 +69,16 @@ const useNotifications = () => {
 			redirectUrl: message?.data?.redirectUrl,
 			title: message?.data?.title,
 		}
-		if (message?.data?.title && data.description && bioVisible) {
-			showModal(data, isBiometricScreenOpened)
-		} else if (
-			message?.data?.title &&
-			data.description &&
-			(!bioVisible || isBiometricScreenOpened)
-		) {
-			dispatch(setNotificationData(data))
-		}
+		dispatch(setNotificationData(data))
+		// if (message?.data?.title && data.description && !bioVisible) {
+		// 	showModal(data, isBiometricScreenOpened)
+		// } else if (
+		// 	message?.data?.title &&
+		// 	data.description &&
+		// 	(bioVisible || isBiometricScreenOpened)
+		// ) {
+		// 	dispatch(setNotificationData(data))
+		// }
 		const channelId = await notifee.createChannel({
 			id: 'default',
 			name: 'Default Channel',
