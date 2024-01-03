@@ -22,16 +22,18 @@ import { System } from '@app/refactor/common/util'
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import { useNetInfoInstance } from '@react-native-community/netinfo'
 import { CommonActions } from '@react-navigation/native'
+import { useModal } from '@components/modal/global_modal'
 
 const Tab = createBottomTabNavigator()
 
 const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const dispatch = useDispatch()
 	const { theme } = useTheme()
-
+	const { showModal } = useModal()
 	const fromResume = route.params?.fromResume === true
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
+	const { notificationData } = useSelector((state: RootState) => state.common)
 	const {
 		netInfo: { isConnected },
 	} = useNetInfoInstance()
@@ -96,7 +98,10 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const getBiometricEnabled = async (email: string) => {
 		const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
 		const userEnabledBio = bioEnabledEmails?.includes(email)
-		console.log('isConnected', isConnected)
+
+		if (!userEnabledBio) {
+			showModal(notificationData)
+		}
 		if (isConnected === false) {
 			console.log('from here')
 			navigation.dispatch((state) => {

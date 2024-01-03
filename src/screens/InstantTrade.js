@@ -23,7 +23,7 @@ import {
 	setTradeType,
 } from '../redux/trade/actions'
 import { setWalletTab } from '../redux/wallet/actions'
-import useNotificationPermissions from './useNotificationPermissions'
+import { useNotificationPermissions } from './useNotificationPermissions'
 
 import CopyLogo from '@assets/images/Copy.svg'
 import useCopyToClipboard from '@app/utils/copyToClipboard'

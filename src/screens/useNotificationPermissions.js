@@ -4,23 +4,32 @@ import { PermissionsAndroid } from 'react-native'
 import { IS_ANDROID, IS_IOS } from '../constants/system'
 import { notificationSubscribe } from '@app/refactor/redux/profile/profileApi'
 import notifee, { AuthorizationStatus } from '@notifee/react-native'
+import {
+	PERMISSIONS,
+	RESULTS,
+	requestNotifications,
+	request,
+} from 'react-native-permissions'
 
-const useNotificationPermissions = () => {
-	const requestUserPermissionIOS = async () =>
-		await messaging().requestPermission()
-
+export const useNotificationPermissions = () => {
 	const checkPermission = async () => {
 		if (IS_ANDROID) {
-			requestPermissionsAndroid()
+			request(PERMISSIONS.ANDROID.POST_NOTIFICATIONS).then((status) => {
+				if (status === RESULTS.GRANTED) {
+					checkFcm()
+				}
+			})
 		} else {
-			requestUserPermissionIOS()
+			await messaging()
+				.requestPermission()
+				.then((status) => {
+					console.log('status', status)
+					if (status > 0) {
+						checkFcm()
+					}
+				})
 		}
 	}
-
-	const requestPermissionsAndroid = () =>
-		PermissionsAndroid.request(
-			PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-		)
 
 	const checkFcm = async () => {
 		const token = await messaging().getToken()
@@ -35,5 +44,3 @@ const useNotificationPermissions = () => {
 
 	return {}
 }
-
-export default useNotificationPermissions

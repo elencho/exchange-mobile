@@ -42,7 +42,11 @@ import { setBiometricToggleEnabled } from '../common/slice'
 import { resetModalsState } from '@app/redux/modals/actions'
 import messaging from '@react-native-firebase/messaging'
 import { notificationSubscribe } from '@app/refactor/redux/profile/profileApi'
-
+import {
+	PERMISSIONS,
+	RESULTS,
+	checkNotifications,
+} from 'react-native-permissions'
 const LOADING_DELAY = 2000
 
 const isLoginShown = (navigation: NativeStackNavigationProp<Screens, any>) => {
@@ -302,7 +306,13 @@ export const codeToTokenThunk = createAsyncThunk(
 		const { pkceInfo } = (getState() as RootState).auth
 
 		const tokenData = await codeToToken(code, pkceInfo?.codeVerifier || '')
-		const token = await messaging().getToken()
+
+		await checkNotifications().then(async ({ status, settings }) => {
+			if (status === RESULTS.GRANTED) {
+				const token = await messaging().getToken()
+				notificationSubscribe(token)
+			}
+		})
 		if (tokenData) {
 			KV.set('lastOpenDateMillis', Date.now())
 
@@ -315,9 +325,7 @@ export const codeToTokenThunk = createAsyncThunk(
 			canDoBiometric(tokenData.access_token).then((canDo) => {
 				dispatch(setBiometricToggleEnabled(canDo))
 			})
-			if (token) {
-				notificationSubscribe(token)
-			}
+
 			if (from === 'Registration') {
 				navigationRef.reset({
 					index: 1,

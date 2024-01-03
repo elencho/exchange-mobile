@@ -47,9 +47,9 @@ export default function AppNavigator() {
 	} = useSelector((state: RootState) => state)
 
 	const { theme } = useTheme()
-	useNotifications()
+	// useNotifications()
 	useNotificationHandler()
-	useNotificationsAndroid()
+	// useNotificationsAndroid()
 	// const { showModal } = useModal()
 	const onNavigationChanged = (state?: NavigationState) => {
 		setTimeout(() => {
