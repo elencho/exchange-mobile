@@ -15,7 +15,7 @@ interface Schema {
 	language: Language
 	webViewVisible: boolean
 	lastOpenDateMillis: number
-	convertNowPair: CoinPair
+	convertNowPair: DefaultCoinPair
 }
 type Key = keyof Schema
 

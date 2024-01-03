@@ -2,14 +2,14 @@ type OffersResponse = Record<
 	'TOEUR' | 'TOGEL' | 'TOUSD',
 	[
 		{
-			pair: CoinPair
+			pair: CoinPairResponse
 			buyPrice: string
 			sellPrice: string
 		},
 	]
 >
 
-type CoinPair = {
+type CoinPairResponse = {
 	pair: string
 	pairDisplayName: string
 	baseCurrency: string
@@ -25,12 +25,12 @@ type CoinPair = {
 }
 
 type BalancesResponse = {
-	balances: CoinBalance[]
+	balances: CoinBalanceResponse[]
 	totalValueBTC: string
 	totalValueUSD: string
 }
 
-type CoinBalance = {
+type CoinBalanceResponse = {
 	currencyCode: string
 	displayCurrencyCode: string
 	currencyName: string
@@ -40,10 +40,10 @@ type CoinBalance = {
 	total: string
 	valueBTC: string
 	valueUSD: string
-	depositMethods: DepositMethod[]
+	depositMethods: DepositMethodResponse[]
 }
 
-type DepositMethod = Record<
+type DepositMethodResponse = Record<
 	string, // wire/eccomerce/wallet
 	{
 		displayName: string

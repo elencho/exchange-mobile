@@ -1,19 +1,16 @@
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
 import React, { useRef, useState } from 'react'
-import { Pressable, StyleSheet, TextInput, View } from 'react-native'
+import { Image, Pressable, StyleSheet, TextInput, View } from 'react-native'
 import Arrow from '@assets/images/Arrow.svg'
 
-// TODO: Create coin model?
-
 type Props = {
-	balance?: string
-	coinType?: CoinType
-	onCoinDropDownClicked?: (coinType: CoinType) => void
+	coin: Coin
+	onDropdownClick: (coinType: CoinType) => void
 	error?: boolean | string
 }
 
-const CoinInput = ({ error, onCoinDropDownClicked, coinType }: Props) => {
+const CoinInput = ({ coin, onDropdownClick, error }: Props) => {
 	const { styles, theme } = useTheme(_styles)
 
 	const [amount, setAmount] = useState<string>('0.0')
@@ -29,18 +26,15 @@ const CoinInput = ({ error, onCoinDropDownClicked, coinType }: Props) => {
 		return (
 			<Pressable
 				style={styles.coinButtonCointainer}
-				onPress={() => onCoinDropDownClicked?.(coinType || 'Crypto')}>
-				<View
-					style={{
-						borderRadius: 100,
-						backgroundColor: 'red',
-						width: 22,
-						height: 22,
-						marginHorizontal: 8,
+				onPress={() => onDropdownClick(coin.type)}>
+				<Image
+					style={{ width: 22, height: 22, marginHorizontal: 8 }}
+					source={{
+						uri: coin.iconPngUrl,
 					}}
 				/>
 				<AppText variant="l" style={styles.coinButtonText}>
-					TOGEL
+					{coin.displayCcy}
 				</AppText>
 				<Arrow style={{ marginLeft: 8, marginRight: 14 }} />
 			</Pressable>
@@ -59,7 +53,7 @@ const CoinInput = ({ error, onCoinDropDownClicked, coinType }: Props) => {
 					onChangeText={setAmount}
 				/>
 				<AppText style={styles.balanceText} variant="s">
-					Balance: 0.00
+					{'Balance: ' + coin.balance}
 				</AppText>
 			</View>
 			<CoinButton />
