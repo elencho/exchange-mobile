@@ -26,7 +26,10 @@ const NoInternet = () => {
 		netInfo: { isConnected },
 	} = useNetInfoInstance()
 	const [loading, setLoading] = useState(false)
+
+
 	useEffect(() => {
+		// FOR MODAL OPENING
 		dispatch(setBiometricScreenOpened(true))
 		return () => {
 			dispatch(setBiometricScreenOpened(false))
@@ -63,55 +66,27 @@ const NoInternet = () => {
 				source={require('@assets/images/Wifi.png')}
 			/>
 			<View>
-				{/* {loading ? (
-					<MaterialIndicator
-						color="#6582FD"
-						animationDuration={3000}
-						size={16}
-						style={{ flex: 0 }}
-					/>
-				) : (
-					<AppText variant="title" style={styles.text} />
-				)} */}
-				<AppText style={styles.textWrapper}>
-					{/* It seems you are offline right now! Refresh, or */}
-					<View style={styles.row}>
-						<AppText variant="title" style={styles.text}>
-							It seems you are offline right now! Refresh, or
-						</AppText>
-
-						{loading ? (
-							<MaterialIndicator
-								color="#6582FD"
-								animationDuration={3000}
-								size={16}
-								style={{ flex: 0 }}
-							/>
-						) : (
-							<AppText style={styles.textSec} onPress={handlePress}>
-								Try again
-							</AppText>
-						)}
-					</View>
-					{/* <Trans
-						i18nKey="noInternet"
-						defaults="<t>It seems you are offline right now! Refresh, or</t>  <b>Try again</b>"
-						components={{
-							b: loading ? (
-								<MaterialIndicator
-									color="#6582FD"
-									animationDuration={3000}
-									size={16}
-									style={{ flex: 0 }}
-								/>
-							) : (
-								<Text style={styles.textSec} onPress={handlePress} />
-							),
-							t: ,
-						}}
-					/> */}
+				<AppText variant="title" style={styles.text}>
+					It seems you are offline right now!
 				</AppText>
-				<AppText></AppText>
+				<View style={styles.row}>
+					<AppText variant="title" style={styles.text}>
+						Refresh, or
+					</AppText>
+
+					{loading ? (
+						<MaterialIndicator
+							color="#6582FD"
+							animationDuration={3000}
+							size={16}
+							style={{ flex: 0 }}
+						/>
+					) : (
+						<AppText style={styles.textSec} onPress={handlePress}>
+							Try again
+						</AppText>
+					)}
+				</View>
 			</View>
 		</View>
 	)
@@ -126,23 +101,28 @@ const _styles = (theme: Theme) =>
 			flex: 1,
 			alignItems: 'center',
 			justifyContent: 'center',
-			paddingHorizontal: 60,
 		},
 		text: {
 			color: '#838BB2',
 			flexWrap: 'nowrap',
+			textAlign: 'center',
 		},
 		textSec: {
 			fontSize: 16,
 			lineHeight: 20,
 			fontFamily: theme.font.regular,
 			color: '#6582fd',
+			marginLeft: 5,
+			textAlign: 'center',
 		},
 		textWrapper: {
-			textAlign: 'center',
 			marginTop: 30,
 		},
 		row: {
 			flexDirection: 'row',
+			flexWrap: 'wrap',
+			marginHorizontal: 20,
+			textAlign: 'center',
+			justifyContent: 'center',
 		},
 	})
