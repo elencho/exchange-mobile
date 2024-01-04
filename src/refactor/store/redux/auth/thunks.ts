@@ -483,3 +483,26 @@ export const logoutThunk = createAsyncThunk(
 		}
 	}
 )
+
+export const logoutWithoutInternet = createAsyncThunk(
+	'logoutWithoutInternet',
+	async (_, { dispatch }) => {
+		navigationRef.reset({
+			index: 1,
+			routes: [{ name: 'Welcome' }, { name: 'NoInternet' }],
+		})
+
+		await messaging().deleteToken()
+
+		dispatch(resetAuth())
+		dispatch(setUserInfo(null))
+
+		// saga
+		dispatch(resetTradesState())
+		dispatch(saveUserInfo({}))
+		dispatch(setCredentials({}))
+		dispatch(resetTransactionsState())
+		dispatch(resetWalletState())
+		dispatch(resetModalsState())
+	}
+)
