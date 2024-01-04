@@ -27,7 +27,6 @@ const NoInternet = () => {
 	} = useNetInfoInstance()
 	const [loading, setLoading] = useState(false)
 
-
 	useEffect(() => {
 		// FOR MODAL OPENING
 		dispatch(setBiometricScreenOpened(true))
@@ -62,6 +61,7 @@ const NoInternet = () => {
 				style={{
 					height: 54,
 					width: 66,
+					marginBottom: 30,
 				}}
 				source={require('@assets/images/Wifi.png')}
 			/>
