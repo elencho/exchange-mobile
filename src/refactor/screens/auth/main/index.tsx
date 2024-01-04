@@ -20,7 +20,8 @@ import SecureKV from '@store/kv/secure'
 import { isEnrolledAsync } from 'expo-local-authentication'
 import { System } from '@app/refactor/common/util'
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
-import { useNetInfoInstance } from '@react-native-community/netinfo'
+import { fetch } from '@react-native-community/netinfo'
+
 import { CommonActions } from '@react-navigation/native'
 import { useModal } from '@components/modal/global_modal'
 
@@ -34,9 +35,6 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
 	const { notificationData } = useSelector((state: RootState) => state.common)
-	const {
-		netInfo: { isConnected },
-	} = useNetInfoInstance()
 	useEffect(() => {
 		// const unsubscribe = NetInfo.addEventListener((state) => {
 		// 	if (!state.isConnected) {
@@ -98,44 +96,44 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const getBiometricEnabled = async (email: string) => {
 		const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
 		const userEnabledBio = bioEnabledEmails?.includes(email)
-
 		if (!userEnabledBio) {
 			showModal(notificationData)
 		}
-		if (isConnected === false) {
-			console.log('from here')
-			navigation.dispatch((state) => {
-				const newRoutes = [
-					...state.routes,
-					[
-						{
-							key: 'Resume-uniqueKey',
-							name: 'Resume',
-							params: {
-								from: 'Main',
-							},
-						},
-						{
-							name: 'NoInternet',
-						},
-					],
-				]
-
-				return CommonActions.reset({
-					...state,
-					routes: newRoutes,
-					index: newRoutes.length - 1,
+		fetch().then((state) => {
+			if (state.isConnected && userEnabledBio) {
+				navigation.navigate({
+					key: 'Resume-uniqueKey',
+					name: 'Resume',
+					params: {
+						from: 'Main',
+					},
 				})
-			})
-		} else if (userEnabledBio) {
-			navigation.navigate({
-				key: 'Resume-uniqueKey',
-				name: 'Resume',
-				params: {
-					from: 'Main',
-				},
-			})
-		}
+			} else if (state.isConnected === false) {
+				navigation.dispatch((state) => {
+					const newRoutes = [
+						...state.routes,
+						[
+							{
+								key: 'Resume-uniqueKey',
+								name: 'Resume',
+								params: {
+									from: 'Main',
+								},
+							},
+							{
+								name: 'NoInternet',
+							},
+						],
+					]
+
+					return CommonActions.reset({
+						...state,
+						routes: newRoutes,
+						index: newRoutes.length - 1,
+					})
+				})
+			}
+		})
 	}
 
 	return (
