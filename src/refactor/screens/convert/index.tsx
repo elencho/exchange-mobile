@@ -4,17 +4,17 @@ import { StyleSheet, View } from 'react-native'
 import AppBackground from '@components/background'
 import InfoMark from '@app/components/InstantTrade/InfoMark'
 import TopRow from '@components/top_row'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { TradeTypeSwitcher } from '@app/refactor/screens/convert/components/TradeTypeSwitcher'
 import { Timer } from '@app/refactor/screens/convert/components/Timer'
 import { CoinInput } from '@app/refactor/screens/convert/components/CoinInput'
 import CoinInputArrow from '@assets/images/CoinInputArrow.svg'
-import { useCoins } from '@app/refactor/screens/hooks/use-coins'
+import { useCoins } from '@app/refactor/screens/convert/hooks/use-coins'
 import ChooseFiatModal from '@app/refactor/screens/convert/modals/ChooseFiatModal'
 import { MaterialIndicator } from 'react-native-indicators'
-import KV from '@store/kv/regular'
 import ChooseCryptoModal from '@app/refactor/screens/convert/modals/ChooseCryptoModal'
 import BalanceChips from '@app/refactor/screens/convert/components/BalanceChips'
+import InfoModal from '@app/components/InstantTrade/InfoModal'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const { styles, theme } = useTheme(_styles)
@@ -23,25 +23,16 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
 
-	const [chosenFiat, setChosenFiat] = useState<Coin>()
-	const [chosenCrypto, setChosenCrypto] = useState<Coin>()
-
-	const { fiats, cryptos, loading } = useCoins()
-
-	useEffect(() => {
-		if (fiats.length > 0 && cryptos.length > 0) {
-			setChosenFiat(fiats[0])
-			setChosenCrypto(cryptos[0])
-		}
-	}, [fiats, cryptos])
+	const { pair, fiats, cryptos, loading, fetchCoins, onCoinSelected } =
+		useCoins()
 
 	const handleDropDownClick = (type: CoinType) => {
 		type === 'Crypto' ? setCryptoModalVisible(true) : setFiatModalVisible(true)
 	}
 
 	const CoinInputs = () => {
-		const upperCoin = tradeType === 'Buy' ? chosenFiat : chosenCrypto
-		const lowerCoin = tradeType === 'Sell' ? chosenFiat : chosenCrypto
+		const upperCoin = tradeType === 'Buy' ? pair?.fiat : pair?.crypto
+		const lowerCoin = tradeType === 'Sell' ? pair?.fiat : pair?.crypto
 
 		return upperCoin && lowerCoin ? (
 			<View style={{ marginTop: 24 }}>
@@ -63,22 +54,42 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		)
 	}
 
-	return loading ? (
-		<MaterialIndicator
-			color="#6582FD"
-			animationDuration={3000}
-			style={[{ position: 'absolute', alignSelf: 'center' }]}
-		/>
-	) : (
+	const CryptoModals = () => {
+		return (
+			<>
+				<ChooseFiatModal
+					visible={fiatModalVisible}
+					fiats={fiats}
+					onCoinSelected={(fiat: Coin) => {
+						onCoinSelected(fiat)
+						setFiatModalVisible(false)
+					}}
+					dismiss={() => setFiatModalVisible(false)}
+				/>
+
+				<ChooseCryptoModal
+					visible={cryptoModalVisible}
+					cryptos={cryptos}
+					onCoinSelected={(crypto: Coin) => {
+						onCoinSelected(crypto)
+						setCryptoModalVisible(false)
+					}}
+					dismiss={() => setCryptoModalVisible(false)}
+				/>
+			</>
+		)
+	}
+
+	return (
 		<AppBackground>
 			<TopRow
 				headlineLogo={<InfoMark inner="?" color={theme.color.textThird} />}
 			/>
-			{loading ? (
+			{loading || !pair ? (
 				<MaterialIndicator
 					color="#6582FD"
 					animationDuration={3000}
-					style={[{ position: 'absolute', alignSelf: 'center' }]}
+					style={{ alignSelf: 'center' }}
 				/>
 			) : (
 				<View>
@@ -88,27 +99,14 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 					/>
 					<CoinInputs />
 					<BalanceChips onChipPressed={() => {}} />
-					<Timer />
-
-					<ChooseFiatModal
-						visible={fiatModalVisible}
-						fiats={fiats}
-						onCoinSelected={(fiat: Coin) => {
-							setChosenFiat(fiat)
-							setFiatModalVisible(false)
-						}}
-						dismiss={() => setFiatModalVisible(false)}
+					<Timer
+						pair={pair}
+						tradeType={tradeType}
+						onTimerExpired={() => fetchCoins()}
 					/>
 
-					<ChooseCryptoModal
-						visible={cryptoModalVisible}
-						cryptos={cryptos}
-						onCoinSelected={(crypto: Coin) => {
-							setChosenCrypto(crypto)
-							setFiatModalVisible(false)
-						}}
-						dismiss={() => setCryptoModalVisible(false)}
-					/>
+					<InfoModal />
+					<CryptoModals />
 				</View>
 			)}
 		</AppBackground>

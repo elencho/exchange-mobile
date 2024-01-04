@@ -1,13 +1,10 @@
-type OffersResponse = Record<
-	'TOEUR' | 'TOGEL' | 'TOUSD',
-	[
-		{
-			pair: CoinPairResponse
-			buyPrice: string
-			sellPrice: string
-		},
-	]
->
+type OffersResponse = Record<string, CoinDataResponse[]>
+
+type CoinDataResponse = {
+	pair: CoinPairResponse
+	buyPrice: string
+	sellPrice: string
+}
 
 type CoinPairResponse = {
 	pair: string
@@ -31,6 +28,7 @@ type BalancesResponse = {
 }
 
 type CoinBalanceResponse = {
+	//fees
 	currencyCode: string
 	displayCurrencyCode: string
 	currencyName: string

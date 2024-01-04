@@ -7,17 +7,19 @@ import ProgressBar from 'react-native-animated-progress'
 const COUNTDOWN_SECONDS = 90
 
 type Props = {
-	// fiat, coin
+	pair: CoinPair
+	tradeType: TradeType
+	onTimerExpired: () => void
 }
 
-const Timer = ({}: Props) => {
+const Timer = ({ pair, tradeType, onTimerExpired }: Props) => {
 	const { styles, theme } = useTheme(_styles)
 
 	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
 
 	useEffect(() => {
 		if (!seconds) {
-			// fetch
+			onTimerExpired()
 			setSeconds(COUNTDOWN_SECONDS)
 			return
 		}
@@ -35,10 +37,18 @@ const Timer = ({}: Props) => {
 		const minStr = min ? '01' : '00'
 		const secStr = sec < 10 ? '0' + sec : sec
 
+		const price = tradeType === 'Buy' ? pair.buyPrice : pair.sellPrice
+
 		return (
 			<View style={styles.textContainer}>
 				<AppText style={styles.textCoins}>
-					1 MATIC = 2.10189 TOGEL - Updates in:
+					{'1 ' +
+						pair.fiat.displayCcy +
+						' = ' +
+						price +
+						' ' +
+						pair.crypto.displayCcy +
+						' - Updates in:'}
 				</AppText>
 				<AppText style={styles.textSeconds}>{` ${minStr}:${secStr}`}</AppText>
 			</View>

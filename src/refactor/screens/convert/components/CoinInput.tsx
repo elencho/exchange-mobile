@@ -6,7 +6,7 @@ import Arrow from '@assets/images/Arrow.svg'
 
 type Props = {
 	coin: Coin
-	onDropdownClick: (coinType: CoinType) => void
+	onDropdownClick: (type: CoinType) => void
 	error?: boolean | string
 }
 
@@ -18,9 +18,9 @@ const CoinInput = ({ coin, onDropdownClick, error }: Props) => {
 
 	const borderColor = error
 		? theme.color.error
-		: isFocused.current
-		? theme.color.brandSecondary
-		: theme.color.textSecondary
+		: // : isFocused.current
+		  // ? theme.color.brandSecondary
+		  theme.color.textSecondary
 
 	const CoinButton = () => {
 		return (
@@ -87,13 +87,16 @@ const _styles = (theme: Theme) =>
 		coinButtonCointainer: {
 			marginVertical: 18,
 			marginEnd: 20,
+			width: 110,
 			height: 40,
 			flexDirection: 'row',
+			justifyContent: 'space-between',
 			alignItems: 'center',
 			borderRadius: 24,
 			backgroundColor: theme.color.backgroundSecondary,
 		},
 		coinButtonText: {
+			textAlign: 'center',
 			color: theme.color.textThird,
 		},
 	})
