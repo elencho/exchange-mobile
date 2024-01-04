@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import FastImage from 'react-native-fast-image'
 import { Theme, useTheme } from '@theme/index'
 import AppText from '@components/text'
 import { Trans } from 'react-i18next'
 import { useNetInfoInstance, fetch } from '@react-native-community/netinfo'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { setBiometricScreenOpened } from '@store/redux/common/slice'
 import { RootState } from '@app/refactor/redux/rootReducer'
@@ -17,14 +17,9 @@ import { MaterialIndicator } from 'react-native-indicators'
 const NoInternet = () => {
 	const { styles } = useTheme(_styles)
 	const navigation = useNavigation()
-	const isBiometricEnabled = useSelector(
-		(state: RootState) => state.common.isBiometricEnabled
-	)
+
 	const dispatch = useDispatch()
-	const {
-		refresh,
-		netInfo: { isConnected },
-	} = useNetInfoInstance()
+
 	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
@@ -38,23 +33,14 @@ const NoInternet = () => {
 	const handlePress = async () => {
 		fetch().then(async (state) => {
 			setLoading(true)
-			const bioVisible =
-				KV.get('webViewVisible') !== true &&
-				biometricDiffElapsed() &&
-				(await isEnrolledAsync()) &&
-				isBiometricEnabled
+
 			if (state.isConnected) {
-				if (bioVisible) {
-					navigation.replace('Resume', { from: 'NoInternet' })
-				} else {
-					navigation.goBack()
-				}
+				navigation.goBack()
 			}
 			setLoading(false)
 		})
 	}
 
-	const TryAgain = console.log('loading', loading)
 	return (
 		<View style={styles.background}>
 			<FastImage
@@ -70,7 +56,7 @@ const NoInternet = () => {
 					It seems you are offline right now!
 				</AppText>
 				<View style={styles.row}>
-					<AppText variant="title" style={styles.text}>
+					<AppText variant="title" style={[styles.text, { marginRight: 5 }]}>
 						Refresh, or
 					</AppText>
 
@@ -112,7 +98,7 @@ const _styles = (theme: Theme) =>
 			lineHeight: 20,
 			fontFamily: theme.font.regular,
 			color: '#6582fd',
-			marginLeft: 5,
+
 			textAlign: 'center',
 		},
 		textWrapper: {

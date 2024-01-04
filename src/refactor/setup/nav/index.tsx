@@ -5,7 +5,7 @@ import {
 	NavigationState,
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Main from '@app/refactor/screens/auth/main'
 import Resume from '@app/refactor/screens/auth/resume'
 import Login from '@app/refactor/screens/auth/login'
@@ -35,6 +35,7 @@ import { useTheme } from '@theme/index'
 import NetInfo from '@react-native-community/netinfo'
 import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
 import { useNotificationHandler } from 'notifiactionHandler'
+import { AppState, AppStateStatus } from 'react-native'
 
 enableScreens(false)
 const Stack = createNativeStackNavigator<Screens>()
@@ -45,9 +46,12 @@ export default function AppNavigator() {
 	const {
 		errors: { generalError },
 	} = useSelector((state: RootState) => state)
+	const [currentPage, setCurrentPage] = useState('Splash')
+	const [activeAppState, setActiveAppState] = useState(AppState.currentState)
+	const appState = useRef(AppState.currentState)
 
 	const { theme } = useTheme()
-	// useNotifications()
+	useNotifications()
 	useNotificationHandler()
 	// useNotificationsAndroid()
 	// const { showModal } = useModal()
@@ -62,26 +66,49 @@ export default function AppNavigator() {
 			type: 'SET_STACK_NAVIGATION_ROUTE',
 			stackRoute: state?.routes[state.routes.length - 1].name,
 		})
-		// if (generalError) dispatch(saveGeneralError(null))
+		setCurrentPage(state?.routes[state.routes.length - 1].name)
+	}
+	useEffect(() => {
+		AppState.addEventListener('change', _handleAppStateChange)
+
+		return () => {
+			AppState.removeEventListener('change', _handleAppStateChange)
+		}
+	}, [])
+
+	const _handleAppStateChange = (nextAppState: AppStateStatus) => {
+		if (
+			appState.current.match(/inactive|background/) &&
+			nextAppState === 'active'
+		) {
+			console.log('App has come to the foreground!')
+		}
+		appState.current = nextAppState
+		setActiveAppState(appState.current)
 	}
 
 	useEffect(() => {
 		const unsubscribe = NetInfo.addEventListener((state) => {
-			if (state.isConnected === false) {
+			console.log({
+				state: activeAppState,
+				currentPage,
+				currentPagei:
+					currentPage !== 'Splash' &&
+					currentPage !== 'Resume' &&
+					currentPage !== 'NoInternet',
+				conne: state.isConnected === false,
+			})
+			if (
+				activeAppState === 'active' &&
+				currentPage !== 'Splash' &&
+				currentPage !== 'Resume' &&
+				state.isConnected === false
+			) {
 				navigationRef.navigate('NoInternet')
 			}
 		})
-		// showModal({
-		// 	title: 'Title',
-		// 	redirectUrl: 'google.com',
-		// 	callToAction: 'buy it now',
-		// 	description:
-		// 		'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt uti labore et dolore magna aliquyam erat, sed diamsd voluptua. At vero eos et accusam et justo duo asor dolores et ea rebum. Stet clita kasd gubergren, no Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquy. Find out more',
-		// 	banner:
-		// 		'https://s.yimg.com/ny/api/res/1.2/8y6wUwbKd.9Wbx_MS7t.Vw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTY0MDtoPTUwNQ--/https://media.zenfs.com/en-US/homerun/fx_empire_176/716acf40f2f984c032e885a3b3a0cf62',
-		// })
 		return () => unsubscribe()
-	}, [])
+	}, [currentPage, activeAppState])
 
 	return (
 		<NavigationContainer

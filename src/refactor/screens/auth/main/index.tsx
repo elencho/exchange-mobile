@@ -35,13 +35,8 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
 	const { notificationData } = useSelector((state: RootState) => state.common)
+	
 	useEffect(() => {
-		// const unsubscribe = NetInfo.addEventListener((state) => {
-		// 	if (!state.isConnected) {
-		// 		navigation.navigate('NoInternet')
-		// 	}
-		// })
-
 		changeNavigationBarColor(theme.color.backgroundSecondary, true)
 		const stateChangeListener = AppState.addEventListener(
 			'change',
@@ -108,22 +103,18 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 						from: 'Main',
 					},
 				})
-			} else if (state.isConnected === false) {
+			} else if (state.isConnected === false && userEnabledBio) {
 				navigation.dispatch((state) => {
 					const newRoutes = [
-						...state.routes,
-						[
-							{
-								key: 'Resume-uniqueKey',
-								name: 'Resume',
-								params: {
-									from: 'Main',
-								},
+						...state.routes.slice(0, state.index + 1),
+						{ name: 'NoInternet' },
+						{
+							key: 'Resume-uniqueKey',
+							name: 'Resume',
+							params: {
+								from: 'Main',
 							},
-							{
-								name: 'NoInternet',
-							},
-						],
+						},
 					]
 
 					return CommonActions.reset({
