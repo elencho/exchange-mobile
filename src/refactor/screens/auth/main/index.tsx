@@ -109,7 +109,6 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 				!resumeIsShown()
 			) {
 				navigation.dispatch((state) => {
-
 					const newRoutes = [
 						...state.routes.slice(0, state.index + 1),
 						{ name: 'NoInternet' },
