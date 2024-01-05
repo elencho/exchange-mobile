@@ -41,15 +41,12 @@ const useNotifications = () => {
 							redirectUrl: detail?.data?.redirectUrl,
 							title: detail?.data?.title,
 						}
-						dispatch(setNotificationData(data))
-						// if (detail?.data?.title && data.description && !bioVisible) {
-						// 	console.log('from bio onNotificationOpenedApp', data)
+						console.log(data, 'from Froeground')
+						// dispatch(setNotificationData(data))
+						if (detail?.data?.title && data.description && !bioVisible) {
+							showModal(data, isBiometricScreenOpened)
+						}
 
-						// 	showModal(data, isBiometricScreenOpened)
-						// } else if (detail?.data?.title && data.description && bioVisible) {
-						// 	console.log('from here onNotificationOpenedApp', data)
-						// 	dispatch(setNotificationData(data))
-						// }
 						break
 					default:
 						break
@@ -57,7 +54,7 @@ const useNotifications = () => {
 			})
 		}
 
-		unsubscribe()
+		return () => unsubscribe()
 	}, [])
 
 	const onNotifeeMessageReceived = async (message) => {
@@ -69,10 +66,11 @@ const useNotifications = () => {
 			redirectUrl: message?.data?.redirectUrl,
 			title: message?.data?.title,
 		}
-		dispatch(setNotificationData(data))
+		// dispatch(setNotificationData(data))
 		// if (message?.data?.title && data.description && !bioVisible) {
 		// 	showModal(data, isBiometricScreenOpened)
-		// } else if (
+		// }
+		//else if (
 		// 	message?.data?.title &&
 		// 	data.description &&
 		// 	(bioVisible || isBiometricScreenOpened)
