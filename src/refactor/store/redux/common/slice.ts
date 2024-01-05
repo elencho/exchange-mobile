@@ -18,6 +18,8 @@ interface CommonState {
 	generalErrorData?: UiErrorData
 	appToastData?: UiErrorData
 
+	isInternetScreenOpened: boolean
+
 	// biometric
 	isBiometricScreenOpened: boolean
 	isBiometricEnabled: boolean
@@ -31,6 +33,7 @@ const initialState: CommonState = {
 	isBiometricScreenOpened: false,
 	isBiometricEnabled: false,
 	notificationData: null,
+	isInternetScreenOpened: false,
 }
 
 const common = createSlice({
@@ -56,6 +59,9 @@ const common = createSlice({
 		},
 		setBiometricScreenOpened(state, action: PayloadAction<boolean>) {
 			state.isBiometricScreenOpened = action.payload
+		},
+		setInternetScreenOpened(state, action: PayloadAction<boolean>) {
+			state.isInternetScreenOpened = action.payload
 		},
 		setBiometricToggleEnabled(state, action: PayloadAction<boolean>) {
 			state.isBiometricEnabled = action.payload
@@ -84,6 +90,7 @@ export const {
 	setBiometricScreenOpened,
 	setBiometricToggleEnabled,
 	setNotificationData,
+	setInternetScreenOpened,
 } = common.actions
 
 export default common.reducer

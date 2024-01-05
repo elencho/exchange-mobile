@@ -55,9 +55,11 @@ const AppModal = (props: AppModalProps) => {
 		onShow,
 	} = props
 
-	const { isBiometricScreenOpened } = useSelector(
+	const { isBiometricScreenOpened, isInternetScreenOpened } = useSelector(
 		(state: RootState) => state.common
 	)
+
+	const globalScreenOpened = isBiometricScreenOpened || isInternetScreenOpened
 
 	// For bottom modals after Biometric Unlock
 	const [isBottomVisible, setIsBottomVisible] = useState(false)
@@ -67,16 +69,16 @@ const AppModal = (props: AppModalProps) => {
 				setIsBottomVisible(true)
 			}, 0)
 		}
-	}, [isBiometricScreenOpened, visible])
+	}, [globalScreenOpened, visible])
 
 	useEffect(() => {
 		if (bottom || delayedOpen) {
-			if (isBiometricScreenOpened) {
+			if (globalScreenOpened) {
 				setIsBottomVisible(false)
 			}
 		}
-		isBiometricScreenOpened && Keyboard.dismiss()
-	}, [isBiometricScreenOpened])
+		globalScreenOpened && Keyboard.dismiss()
+	}, [globalScreenOpened])
 
 	return (
 		<>
@@ -84,8 +86,8 @@ const AppModal = (props: AppModalProps) => {
 				<Modal
 					isVisible={
 						bottom || delayedOpen
-							? visible && !isBiometricScreenOpened && isBottomVisible
-							: visible && !isBiometricScreenOpened
+							? visible && !globalScreenOpened && isBottomVisible
+							: visible && !globalScreenOpened
 					}
 					onBackdropPress={hide}
 					onSwipeComplete={hide}
