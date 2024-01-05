@@ -26,8 +26,9 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { setNotificationData } from '@store/redux/common/slice'
 
 type ModalContextType = {
-	showModal: (content: ContentType) => void
+	showModal: (content: ContentType, isBiometricScreenOpened: boolean) => void
 	hideModal: () => void
+	setIsBiometricScreenOpenedForModal: (v: boolean) => void
 }
 
 interface ContentType {
@@ -44,10 +45,11 @@ const ModalContext = createContext<ModalContextType | undefined>(undefined)
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const [isModalVisible, setModalVisible] = useState(false)
-	const [isBiometricScreenOpened, setIsBiometricScreenOpened] = useState(false)
+	const [isBiometricScreenOpenedForModal, setIsBiometricScreenOpenedForModal] =
+		useState(false)
 	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
-
+	console.log({ isBiometricScreenOpenedForModal, isModalVisible })
 	const [modalContent, setModalContent] = useState<ContentType | null>(null)
 	const showModal = (
 		content: ContentType,
@@ -55,7 +57,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	) => {
 		setModalContent(content)
 		setModalVisible(true)
-		setIsBiometricScreenOpened(isBiometricScreenOpened)
+		// setIsBiometricScreenOpened(isBiometricScreenOpened)
 	}
 
 	const hideModal = () => {
@@ -110,13 +112,14 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	}
 
 	return (
-		<ModalContext.Provider value={{ showModal, hideModal }}>
+		<ModalContext.Provider
+			value={{ showModal, hideModal, setIsBiometricScreenOpenedForModal }}>
 			{children}
 			{modalContent && (
 				<Modal
 					propagateSwipe={true}
 					useNativeDriver
-					isVisible={isModalVisible && !isBiometricScreenOpened}
+					isVisible={isModalVisible && !isBiometricScreenOpenedForModal}
 					onDismiss={hideModal}
 					coverScreen
 					animationOutTiming={500}

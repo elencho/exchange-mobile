@@ -21,7 +21,7 @@ const useNotificationsAndroid = () => {
 					}
 
 					if (data.title && data.description) {
-						showModal(data)
+						showModal(data, false)
 					}
 				}
 			})

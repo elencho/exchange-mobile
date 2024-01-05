@@ -51,9 +51,7 @@ export default function AppNavigator() {
 	const appState = useRef(AppState.currentState)
 
 	const { theme } = useTheme()
-	useNotifications()
-	useNotificationHandler()
-	// useNotificationsAndroid()
+
 	// const { showModal } = useModal()
 	const onNavigationChanged = (state?: NavigationState) => {
 		setTimeout(() => {
@@ -77,27 +75,12 @@ export default function AppNavigator() {
 	}, [])
 
 	const _handleAppStateChange = (nextAppState: AppStateStatus) => {
-		if (
-			appState.current.match(/inactive|background/) &&
-			nextAppState === 'active'
-		) {
-			console.log('App has come to the foreground!')
-		}
 		appState.current = nextAppState
 		setActiveAppState(appState.current)
 	}
 
 	useEffect(() => {
 		const unsubscribe = NetInfo.addEventListener((state) => {
-			console.log({
-				state: activeAppState,
-				currentPage,
-				currentPagei:
-					currentPage !== 'Splash' &&
-					currentPage !== 'Resume' &&
-					currentPage !== 'NoInternet',
-				conne: state.isConnected === false,
-			})
 			if (
 				activeAppState === 'active' &&
 				currentPage !== 'Splash' &&
@@ -109,7 +92,9 @@ export default function AppNavigator() {
 		})
 		return () => unsubscribe()
 	}, [currentPage, activeAppState])
-
+	useNotifications()
+	useNotificationHandler()
+	useNotificationsAndroid()
 	return (
 		<NavigationContainer
 			onStateChange={onNavigationChanged}

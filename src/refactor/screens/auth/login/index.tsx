@@ -42,9 +42,9 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
-	const [mail, setMail] = useState('')
+	const [mail, setMail] = useState('ibanet@cryptx.com')
 	const [mailError, setMailError] = useState<boolean>(false)
-	const [pass, setPass] = useState('')
+	const [pass, setPass] = useState('Malina125$')
 	const [passError, setPassError] = useState(false)
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
@@ -62,8 +62,8 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
-			setMail('')
-			setPass('')
+			setMail('ibanet@cryptx.com')
+			setPass('Malina125$')
 			setMailError(false)
 			setPassError(false)
 			setLoginLoading(false)
@@ -113,7 +113,7 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 				<Logo style={styles.logo} />
 				<View>
 					<AppText variant="headline" style={styles.primary}>
-						Welcome to Cryptal
+						Welcome to Cryptalanskjdakj
 					</AppText>
 				</View>
 

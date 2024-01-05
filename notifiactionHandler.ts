@@ -16,7 +16,7 @@ export const useNotificationHandler = () => {
 		(state: RootState) => state.common
 	)
 
-	const bioVisible = isBiometricEnabled && biometricDiffElapsed()
+	// const bioVisible = isBiometricEnabled && biometricDiffElapsed()
 
 	messaging()
 		.getInitialNotification()
@@ -30,14 +30,9 @@ export const useNotificationHandler = () => {
 					title: remoteMessage?.data?.title,
 				}
 				dispatch(setNotificationData(data))
-				// if (data.title && data.description && !bioVisible) {
-				// 	console.log('from bio getInitialNotification', data)
-
-				// 	showModal(data, isBiometricScreenOpened)
-				// } else if (data?.title && data.description && bioVisible) {
-				// 	console.log('from here getInitialNotification', data)
-				// 	dispatch(setNotificationData(data))
-				// }
+				if (data.title && data.description) {
+					showModal(data)
+				}
 			}
 		})
 
@@ -50,7 +45,10 @@ export const useNotificationHandler = () => {
 			redirectUrl: remoteMessage?.data?.redirectUrl,
 			title: remoteMessage?.data?.title,
 		}
-		dispatch(setNotificationData(data))
+		// dispatch(setNotificationData(data))
+		if (data.title && data.description) {
+			showModal(data)
+		}
 		// if (remoteMessage?.data?.title && data.description && !bioVisible) {
 		// 	console.log('from bio onNotificationOpenedApp', data)
 
