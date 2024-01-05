@@ -35,7 +35,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
 	const { notificationData } = useSelector((state: RootState) => state.common)
-	
+
 	useEffect(() => {
 		changeNavigationBarColor(theme.color.backgroundSecondary, true)
 		const stateChangeListener = AppState.addEventListener(
@@ -103,8 +103,13 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 						from: 'Main',
 					},
 				})
-			} else if (state.isConnected === false && userEnabledBio) {
+			} else if (
+				state.isConnected === false &&
+				userEnabledBio &&
+				!resumeIsShown()
+			) {
 				navigation.dispatch((state) => {
+
 					const newRoutes = [
 						...state.routes.slice(0, state.index + 1),
 						{ name: 'NoInternet' },

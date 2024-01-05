@@ -492,8 +492,6 @@ export const logoutWithoutInternet = createAsyncThunk(
 			routes: [{ name: 'Welcome' }, { name: 'NoInternet' }],
 		})
 
-		await messaging().deleteToken()
-
 		dispatch(resetAuth())
 		dispatch(setUserInfo(null))
 
