@@ -1,17 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import { Pressable, StyleSheet, View } from 'react-native'
+import React, { useCallback, useState } from 'react'
 import FastImage from 'react-native-fast-image'
 import { Theme, useTheme } from '@theme/index'
 import AppText from '@components/text'
-import { Trans } from 'react-i18next'
-import { useNetInfoInstance, fetch } from '@react-native-community/netinfo'
+import { fetch } from '@react-native-community/netinfo'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import { useDispatch, useSelector } from 'react-redux'
-import { setBiometricScreenOpened } from '@store/redux/common/slice'
-import { RootState } from '@app/refactor/redux/rootReducer'
-import KV from '@store/kv/regular'
-import { biometricDiffElapsed } from '@app/refactor/utils/authUtils'
-import { isEnrolledAsync } from 'expo-local-authentication'
+import { useDispatch } from 'react-redux'
+import { setInternetScreenOpened } from '@store/redux/common/slice'
 import { MaterialIndicator } from 'react-native-indicators'
 
 const NoInternet = () => {
@@ -22,23 +17,27 @@ const NoInternet = () => {
 
 	const [loading, setLoading] = useState(false)
 
-	useEffect(() => {
-		// FOR MODAL OPENING
-		dispatch(setBiometricScreenOpened(true))
-		return () => {
-			dispatch(setBiometricScreenOpened(false))
-		}
-	}, [])
+	useFocusEffect(
+		useCallback(() => {
+			// FOR MODAL OPENING
+			dispatch(setInternetScreenOpened(true))
+			dispatch({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: null })
+			return () => {
+				dispatch(setInternetScreenOpened(false))
+			}
+		}, [])
+	)
 
 	const handlePress = async () => {
-		fetch().then(async (state) => {
-			setLoading(true)
-
-			if (state.isConnected) {
-				navigation.goBack()
-			}
+		setLoading(true)
+		setTimeout(async () => {
+			fetch().then(async (state) => {
+				if (state.isConnected) {
+					navigation.goBack()
+				}
+			})
 			setLoading(false)
-		})
+		}, 1000)
 	}
 
 	return (
@@ -68,9 +67,9 @@ const NoInternet = () => {
 							style={{ flex: 0 }}
 						/>
 					) : (
-						<AppText style={styles.textSec} onPress={handlePress}>
-							Try again
-						</AppText>
+						<Pressable hitSlop={40} onPress={handlePress}>
+							<AppText style={styles.textSec}>Try again</AppText>
+						</Pressable>
 					)}
 				</View>
 			</View>

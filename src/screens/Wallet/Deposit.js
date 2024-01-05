@@ -63,7 +63,6 @@ export default function Deposit({ refreshControl }) {
 		}, 1000)
 	}, [])
 
-
 	useEffect(() => {
 		const m = currentBalanceObj?.depositMethods
 		if (m?.ECOMMERCE) {
