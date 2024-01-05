@@ -10,6 +10,7 @@ import AppText from '../../AppText'
 import PurpleText from '@app/components/PurpleText'
 import { useModal } from '@components/modal/global_modal'
 import InfoBanner from './InfoBanner'
+import { t } from 'i18next'
 
 export default function WalletCoinsDropdown() {
 	const { showModal } = useModal()
@@ -27,6 +28,7 @@ export default function WalletCoinsDropdown() {
 				types,
 			},
 		},
+		common: { isBiometricScreenOpened },
 	} = state
 
 	const handleDropdown = () => dispatch(toggleCurrencyModal(true))
@@ -62,15 +64,20 @@ export default function WalletCoinsDropdown() {
 						style={{ fontSize: 12 }}
 						// style={styles.back}
 						onPress={() =>
-							showModal({
-								title: 'Changes regarding GEL, DOLLAR and EURO assets',
-								redirectUrl: '',
-								callToAction: '',
-								description: `Topped up balance is automatically converted into TOL currencies with a fixed 1:1 rate. ToGEL, ToUSD and ToEUR are BEP20 tokens, which can be conventionally used to purchase the desired cryptocurrency. \n\nThis adjustment was necessitated solely by regulatory requirements and is of a purely technical nature. Contract address: ToGEL, ToUSD, ToEUR.`,
-								localBanner: true,
-								banner: require('@assets/images/TolCoins1.png'),
-								bannerText: 'Introducing: TOL COINS',
-							})
+							showModal(
+								{
+									title: t('Changes regarding GEL, DOLLAR and EURO assets'),
+									redirectUrl: '',
+									callToAction: '',
+									description: `${t(`tolcoins_modal_text_1`)} \n \n ${t(
+										`tolcoins_modal_text_2`
+									)}`,
+									localBanner: true,
+									banner: require('@assets/images/TolCoins1.png'),
+									bannerText: t('tolcoins_modal_text_on_banner'),
+								},
+								isBiometricScreenOpened
+							)
 						}
 					/>
 				</View>
