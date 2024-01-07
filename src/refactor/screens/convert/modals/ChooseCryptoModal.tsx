@@ -1,8 +1,11 @@
 import AppModal from '@components/modal'
 import AppText from '@components/text'
-import { FlashList, ListRenderItemInfo } from '@shopify/flash-list'
+import AppInput from '@components/input/index'
+import Search from '@assets/images/Search.svg'
+import SearchActive from '@assets/images/Search_Active.svg'
 import { Theme, useTheme } from '@theme/index'
-import { Image, Pressable, StyleSheet, View } from 'react-native'
+import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native'
+import { useEffect, useState } from 'react'
 
 interface Props {
 	visible: boolean
@@ -19,6 +22,20 @@ const ChooseCryptoModal = ({
 }: Props) => {
 	const { styles, theme } = useTheme(_styles)
 
+	const [search, setSearch] = useState<string>('')
+	const [filteredCoins, setFilteredCoins] = useState<Coin[]>([])
+
+	useEffect(() => {
+		const searchLower = search.toLowerCase()
+		const coins =
+			searchLower.trim().length === 0
+				? cryptos
+				: cryptos.filter((coin) =>
+						coin.name.toLowerCase().includes(searchLower)
+				  )
+		setFilteredCoins(coins)
+	}, [search])
+
 	const CoinItemInfo = ({ desc, value }: { desc: string; value: string }) => {
 		return (
 			<View style={styles.coinInfoContainer}>
@@ -32,7 +49,7 @@ const ChooseCryptoModal = ({
 		)
 	}
 
-	const coinItem = ({ item }: ListRenderItemInfo<Coin>) => {
+	const renderCoin = (item: Coin) => {
 		return (
 			<Pressable
 				key={item.ccy}
@@ -49,7 +66,7 @@ const ChooseCryptoModal = ({
 				/>
 				<View style={styles.infoContainer}>
 					<AppText variant="title" style={styles.ccyText}>
-						{item.displayCcy}
+						{item.name}
 					</AppText>
 					<CoinItemInfo
 						desc="Balance :"
@@ -67,12 +84,21 @@ const ChooseCryptoModal = ({
 	const children = () => {
 		return (
 			<View style={styles.container}>
-				<FlashList
-					data={cryptos}
-					keyExtractor={(item) => item.ccy}
-					renderItem={coinItem}
-					scrollEventThrottle={1000}
-					estimatedItemSize={100}
+				<AppInput
+					style={styles.searchInput}
+					placeholder="Search currency"
+					rightComponent={<Search />}
+					onFocusRightComponent={<SearchActive />}
+					value={search}
+					onChangeText={(text: string) => setSearch(text)}
+					handleClear={() => setSearch('')}
+				/>
+				<FlatList
+					style={styles.listContainer}
+					data={filteredCoins}
+					keyExtractor={(item) => item.displayCcy}
+					renderItem={(coin) => renderCoin(coin.item)}
+					showsVerticalScrollIndicator={false}
 				/>
 			</View>
 		)
@@ -94,6 +120,12 @@ const _styles = (theme: Theme) =>
 		container: {
 			flex: 1,
 			marginTop: 20,
+		},
+		listContainer: {
+			marginTop: 30,
+		},
+		searchInput: {
+			marginTop: -20,
 		},
 		rowContainer: {
 			flexDirection: 'row',

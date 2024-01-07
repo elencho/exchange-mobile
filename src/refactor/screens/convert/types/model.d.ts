@@ -9,6 +9,8 @@ type Coin = {
 	name: string
 	balance: string
 	iconPngUrl: string
+	scale: number
+	type: CoinType
 }
 
 type CoinPair = {

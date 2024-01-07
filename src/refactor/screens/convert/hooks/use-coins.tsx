@@ -3,7 +3,9 @@ import {
 	fetchBalanceApi,
 	fetchOffersApi,
 } from '@app/refactor/screens/convert/api/convertNowApi'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+type displayCcy = string
 
 export const useCoins = () => {
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
@@ -13,8 +15,8 @@ export const useCoins = () => {
 	const [fiats, setFiats] = useState<Coin[]>([])
 	const [cryptos, setCryptos] = useState<Coin[]>([])
 
-	const offersDto = useRef<OffersResponse>()
-	const balancesDto = useRef<BalancesResponse>()
+	const offersCache = useRef<Record<displayCcy, CoinPair[]>>({})
+	const balancesCache = useRef<Record<displayCcy, string>>({})
 
 	//TODO: Save in local storage
 	const defFiatDisplayCcy = 'TOGEL'
@@ -24,16 +26,6 @@ export const useCoins = () => {
 		fetchCoins()
 	}, [])
 
-	const balancesCache: Record<string, string> = useMemo(() => {
-		if (!balancesDto.current) return {}
-
-		const cache: Record<string, string> = {}
-		balancesDto.current.balances.forEach((item) => {
-			cache[item.displayCurrencyCode] = item.available
-		})
-		return cache
-	}, [balancesDto.current])
-
 	const fetchCoins = async () => {
 		setLoading(true)
 
@@ -41,8 +33,8 @@ export const useCoins = () => {
 			.then((data) => {
 				const offers = data[0]
 				const balances = data[1]
-				offersDto.current = offers
-				balancesDto.current = balances
+				balancesCache.current = saveBalancesCache(balances)
+				offersCache.current = saveOffersCache(offers)
 
 				const fiatCoins = Object.values(offers).map((item) =>
 					mapCoin(item[0].pair, 'Fiat')
@@ -64,6 +56,44 @@ export const useCoins = () => {
 			})
 	}
 
+	const onCoinSelected = (coin: Coin) => {
+		if (coin.type === 'Fiat') {
+			const pairs = offersCache.current[coin.displayCcy]
+			const cryptosForFiat = pairs.map((item) => item.crypto)
+			const newPair =
+				pairs.find(
+					(item) => item.crypto.displayCcy === pair?.crypto.displayCcy
+				) || pairs[0]
+
+			setPair(newPair)
+			setCryptos(cryptosForFiat)
+		} else {
+			const pairs = offersCache.current[pair!.fiat.displayCcy]
+			const newPair = pairs.find(
+				(item) => item.crypto.displayCcy === coin.displayCcy
+			)
+			setPair(newPair)
+		}
+	}
+
+	const saveBalancesCache = (dto: BalancesResponse) => {
+		const cache: Record<string, string> = {}
+		dto.balances.forEach((item) => {
+			cache[item.displayCurrencyCode] = item.available
+		})
+		return cache
+	}
+
+	const saveOffersCache = (dto: OffersResponse) => {
+		const cache: Record<string, CoinPair[]> = {}
+		Object.entries(dto).forEach((item) => {
+			const fiatDisplayCcy = item[0]
+			const pairDtoList = item[1]
+			cache[fiatDisplayCcy] = pairDtoList.map(mapCoinPair)
+		})
+		return cache
+	}
+
 	const mapCoinPair = (dto: CoinDataResponse): CoinPair => {
 		return {
 			buyPrice: dto.buyPrice,
@@ -75,29 +105,26 @@ export const useCoins = () => {
 
 	const mapCoin = (dto: CoinPairResponse, type: CoinType): Coin => {
 		const base = type === 'Crypto'
+		const name = base ? dto.baseCurrencyName : dto.quoteCurrencyName
 		const ccy = base ? dto.baseCurrency : dto.quoteCurrency
+		const scale = Number(base ? dto.baseScale : dto.quoteScale)
 		const displayCcy = base
 			? dto.baseCurrencyDisplayCode
 			: dto.quoteCurrencyDisplayCode
-		const name = base ? dto.baseCurrencyName : dto.quoteCurrencyName
+		const balance = Number(balancesCache.current[displayCcy]).toFixed(scale)
 
-		console.log({ displayCcy: balancesCache[displayCcy] })
 		return {
 			ccy,
 			displayCcy,
 			name,
 			type,
 			iconPngUrl: ccyToIcon(ccy),
-			balance: balancesCache[displayCcy],
+			balance,
+			scale,
 		}
 	}
 
 	const ccyToIcon = (ccy: string) => `${COINS_URL_PNG}/${ccy.toLowerCase()}.png`
-
-	const onCoinSelected = (coin: Coin) => {
-		// if fiat, same
-		// if crypto, refresh cryptos
-	}
 
 	return {
 		pair,
