@@ -56,9 +56,7 @@
     //Foreground
     NSLog(@"APP_PUSH from foreground %@", userInfo);
    
-  //  [RNCPushNotificationIOS didReceiveRemoteNotification:userInfo
-  //  fetchCompletionHandler:^void (UIBackgroundFetchResult result){}];
-  //  completionHandler(UNNotificationPresentationOptionAlert);
+  
   if (@available(iOS 14.0, *)) {
     completionHandler(UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner);
   } else {
@@ -124,18 +122,9 @@
     NSLog(@"This is device token%@", deviceToken);
     //NSString *deviceTokenString = [deviceToken description];
     [FIRMessaging messaging].APNSToken = deviceToken;
-    [RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 
 }
 
-//// Required for localNotification event
-//- (void)userNotificationCenter:(UNUserNotificationCenter *)center
-//didReceiveNotificationResponse:(UNNotificationResponse *)response
-//         withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
-//{
-//   completionHandler(UNNotificationPresentationOptionBanner | UNNotificationPresentationOptionSound);
-//  // [RNCPushNotificationIOS didReceiveNotificationResponse:response];
-//}
 
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
@@ -143,7 +132,6 @@
   #if DEBUG
   return;
 #else
- [RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error];
   return [super application:application didFailToRegisterForRemoteNotificationsWithError:error];
  
 
@@ -154,7 +142,6 @@
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-  [RNCPushNotificationIOS didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
    return [super application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
 }
 
