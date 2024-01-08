@@ -66,7 +66,7 @@ export default function WalletCoinsDropdown() {
 						onPress={() =>
 							showModal(
 								{
-									title: t('Changes regarding GEL, DOLLAR and EURO assets'),
+									title: t('tolcoins_modal_header'),
 									redirectUrl: '',
 									callToAction: '',
 									description: `${t(`tolcoins_modal_text_1`)} \n \n ${t(

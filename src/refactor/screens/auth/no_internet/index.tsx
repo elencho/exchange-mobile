@@ -8,11 +8,12 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { useDispatch } from 'react-redux'
 import { setInternetScreenOpened } from '@store/redux/common/slice'
 import { MaterialIndicator } from 'react-native-indicators'
+import { useModal } from '@components/modal/global_modal'
 
 const NoInternet = () => {
 	const { styles } = useTheme(_styles)
 	const navigation = useNavigation()
-
+	const { setIsBiometricScreenOpenedForModal } = useModal()
 	const dispatch = useDispatch()
 
 	const [loading, setLoading] = useState(false)
@@ -22,7 +23,9 @@ const NoInternet = () => {
 			// FOR MODAL OPENING
 			dispatch(setInternetScreenOpened(true))
 			dispatch({ type: 'SET_APP_WEBVIEW_OBJ', webViewObj: null })
+			setIsBiometricScreenOpenedForModal(true)
 			return () => {
+				setIsBiometricScreenOpenedForModal(false)
 				dispatch(setInternetScreenOpened(false))
 			}
 		}, [])

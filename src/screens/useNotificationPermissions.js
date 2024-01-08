@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { PermissionsAndroid } from 'react-native'
 import { IS_ANDROID, IS_IOS } from '../constants/system'
 import { notificationSubscribe } from '@app/refactor/redux/profile/profileApi'
-import notifee, { AuthorizationStatus } from '@notifee/react-native'
+// import notifee, { AuthorizationStatus } from '@notifee/react-native'
 import {
 	PERMISSIONS,
 	RESULTS,
