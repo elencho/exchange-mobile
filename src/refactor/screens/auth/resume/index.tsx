@@ -16,22 +16,26 @@ import {
 } from 'expo-local-authentication'
 import { System } from '@app/refactor/common/util'
 import { t } from 'i18next'
-import { logoutThunk } from '@store/redux/auth/thunks'
+import { logoutThunk, logoutWithoutInternet } from '@store/redux/auth/thunks'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { setBiometricScreenOpened } from '@store/redux/common/slice'
 import KV from '@store/kv/regular'
+import { useModal } from '@components/modal/global_modal'
+import { useNetInfoInstance } from '@react-native-community/netinfo'
 
 const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 	const dispatch = useDispatch()
 	const { styles } = useTheme(_styles)
-
+	const { setIsBiometricScreenOpenedForModal } = useModal()
 	const { from, maintenanceInProgress, version } = route.params
 	const fromSplash = from === 'Splash'
-
 	const resumed = route?.key === 'Resume-uniqueKey'
 
+	const {
+		netInfo: { isConnected },
+	} = useNetInfoInstance()
 	const { userInfo } = useSelector((state: RootState) => state.profile)
-
+	const { notificationData } = useSelector((state: RootState) => state.common)
 	const [bioType, setBioType] = useState<BioType>()
 
 	useFocusEffect(
@@ -43,8 +47,10 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 
 	useEffect(() => {
 		dispatch(setBiometricScreenOpened(true))
+		setIsBiometricScreenOpenedForModal(true)
 		return () => {
 			dispatch(setBiometricScreenOpened(false))
+			setIsBiometricScreenOpenedForModal(false)
 		}
 	}, [])
 
@@ -73,7 +79,9 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 		})
 		if (authResult?.success) {
 			KV.set('lastOpenDateMillis', Date.now())
-
+			// if (notificationData) {
+			// 	showModal(notificationData)
+			// }
 			if (maintenanceInProgress) {
 				navigation.navigate('Maintenance')
 			} else if (version) {
@@ -91,7 +99,11 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 	}, [])
 
 	const logoutAndReturnToWelcome = () => {
-		dispatch(logoutThunk())
+		if (isConnected === false) {
+			dispatch(logoutWithoutInternet())
+		} else {
+			dispatch(logoutThunk())
+		}
 	}
 
 	return (

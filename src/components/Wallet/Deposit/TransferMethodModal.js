@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import Card from '../../../assets/images/Card.svg'
 import Euro from '../../../assets/images/Euro.svg'
 import Bank from '../../../assets/images/LocalBank.svg'
+import BlockChain from '@assets/images/BlockChainDark.svg'
 import colors from '../../../constants/colors'
 import { toggleTransferMethodModal } from '../../../redux/modals/actions'
 import { setNetwork } from '../../../redux/wallet/actions'
 import AppModal from '../../AppModal'
 import AppText from '../../AppText'
+import { fetchFee } from '@app/redux/trade/actions'
 
 export default function TransferMethodModal() {
 	const dispatch = useDispatch()
@@ -44,6 +46,8 @@ export default function TransferMethodModal() {
 			}
 		})
 
+		// console.log({ methodsToDisplay, network })
+
 		return () =>
 			dispatch({ type: 'SET_METHODS_TO_DISPLAY', methodsToDisplay: [] })
 	}, [code])
@@ -52,6 +56,8 @@ export default function TransferMethodModal() {
 
 	const handlePress = (m) => {
 		dispatch(setNetwork(m))
+		dispatch(fetchFee('withdrawal'))
+
 		dispatch({ type: 'REFRESH_WALLET_AND_TRADES' })
 		// Card Needs to be checked
 		hide()
@@ -72,6 +78,9 @@ export default function TransferMethodModal() {
 		}
 		if (network === 'SEPA') {
 			return <Euro />
+		}
+		if (network === 'BEP20') {
+			return <BlockChain />
 		}
 	}
 	const children = (

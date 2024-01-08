@@ -222,7 +222,7 @@ function* refreshWalletAndTradesSaga() {
 	const manageCards = walletTab === 'Manage Cards'
 	const whitelist = walletTab === 'Whitelist'
 	const ecommerce = network === 'ECOMMERCE'
-	const crypto = currentBalanceObj?.type === 'CRYPTO'
+	const crypto = currentBalanceObj?.type === 'CRYPTO' || network === 'BEP20'
 	const fiat = currentBalanceObj?.type === 'FIAT'
 
 	const m = withdrawal ? 'withdrawalMethods' : 'depositMethods'

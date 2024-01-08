@@ -77,7 +77,9 @@ function Withdrawal({ refreshControl }) {
 		}
 
 		setHasMethod(
-			isFiat ? !!Object.keys(m).length : !!Object.keys(m).includes('WALLET')
+			isFiat && network !== 'BEP20'
+				? !!Object.keys(m).length
+				: !!Object.keys(m).includes('WALLET')
 		)
 	}, [code])
 
@@ -86,7 +88,9 @@ function Withdrawal({ refreshControl }) {
 		dispatch(setFee(null))
 		if (
 			(isEcommerce && card && depositProvider) ||
-			(!isFiat && currentBalanceObj?.withdrawalMethods?.WALLET)
+			(!isFiat &&
+				network !== 'BEP20' &&
+				currentBalanceObj?.withdrawalMethods?.WALLET)
 		) {
 			dispatch(fetchFee('withdrawal'))
 		}
@@ -151,7 +155,7 @@ function Withdrawal({ refreshControl }) {
 		let condition
 		if (isEcommerce) {
 			condition = !validateAmount(withdrawalAmount) || !card || !depositProvider
-		} else if (isFiat) {
+		} else if (isFiat && network !== 'BEP20') {
 			condition = !validateAmount(withdrawalAmount) || !notEmpty()
 		} else {
 			condition = !validateAmount(withdrawalAmount) || !length || !tag()
@@ -193,26 +197,34 @@ function Withdrawal({ refreshControl }) {
 							<>
 								{isFiat ? (
 									<>
-										<TransferMethodDropdown />
-										<TransferMethodModal />
-										{network === 'SWIFT' && (
-											<View style={{ marginTop: 10, marginBottom: -16 }}>
-												<AppInfoBlock
-													content={warnings.swift.withdrawal}
-													warning
-												/>
-											</View>
-										)}
-										{network === 'SEPA' && (
-											<AppInfoBlock content={warnings.sepa} warning />
-										)}
-										{network === 'ECOMMERCE' && (
-											<AppInfoBlock content={infos.ecommerce.withdrawal} info />
+										{network !== 'BEP20' && (
+											<>
+												{network === 'SWIFT' && (
+													<View style={{ marginTop: 10, marginBottom: -16 }}>
+														<AppInfoBlock
+															content={warnings.swift.withdrawal}
+															warning
+														/>
+													</View>
+												)}
+												{network === 'SEPA' && (
+													<AppInfoBlock content={warnings.sepa} warning />
+												)}
+												{network === 'ECOMMERCE' && (
+													<AppInfoBlock
+														content={infos.ecommerce.withdrawal}
+														info
+													/>
+												)}
+											</>
 										)}
 									</>
 								) : (
 									<ChooseNetworkDropdown />
 								)}
+
+								<TransferMethodDropdown />
+								<TransferMethodModal />
 
 								{walletInfo() && (
 									<AppInfoBlock content={[walletInfo()]} warning />
@@ -221,13 +233,17 @@ function Withdrawal({ refreshControl }) {
 						)}
 					</View>
 
-					{!hasRestriction && isFiat && hasMethod && !isEcommerce && (
-						<WithdrawalInfo error={error} />
-					)}
+					{!hasRestriction &&
+						isFiat &&
+						network !== 'BEP20' &&
+						hasMethod &&
+						!isEcommerce &&
+						network !== 'BEP20' && <WithdrawalInfo error={error} />}
+
 					{!hasRestriction && hasMethod && (
 						<WithdrawalInputs
 							error={error}
-							isFiat={isFiat}
+							isFiat={isFiat && network !== 'BEP20'}
 							hasRestriction={hasRestriction}
 							notEmpty={notEmpty}
 						/>

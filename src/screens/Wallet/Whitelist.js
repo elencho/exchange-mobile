@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import { MaterialIndicator } from 'react-native-indicators'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,6 +13,7 @@ import WhitelistActionsModal from '../../components/Wallet/Whitelist/WhitelistAc
 import WhitelistItem from '../../components/Wallet/Whitelist/WhitelistItem'
 import colors from '../../constants/colors'
 import { toggleAddWhitelistModal } from '../../redux/modals/actions'
+import { getWhitelistAction, setNetwork } from '@app/redux/wallet/actions'
 
 export default function Whitelist({ refreshControl }) {
 	const dispatch = useDispatch()
@@ -20,13 +21,25 @@ export default function Whitelist({ refreshControl }) {
 	const {
 		wallet: { whitelist, hasWhitelist, whitelistLoading },
 		transactionsOld: { loading },
+		trade: {
+			currentBalanceObj: { types },
+		},
 	} = state
 
 	const [seconds, setSeconds] = useState(30)
 	const [deleteWhitelistOtpVisible, setDeleteWhitelistOtpVisible] =
 		useState(false)
 
+	const isTolCurrency = types.includes('CRYPTO') && types.includes('FIAT')
+
 	const showAddModal = () => dispatch(toggleAddWhitelistModal(true))
+
+	useEffect(() => {
+		if (isTolCurrency) {
+			dispatch(setNetwork('BEP20'))
+			dispatch(getWhitelistAction())
+		}
+	}, [isTolCurrency])
 
 	return (
 		<>
@@ -104,7 +117,7 @@ export default function Whitelist({ refreshControl }) {
 const styles = StyleSheet.create({
 	button: {
 		borderWidth: 1,
-		borderRadius: 1,
+		borderRadius: 6,
 		borderStyle: 'dashed',
 		height: 45,
 		borderColor: colors.SECONDARY_PURPLE,

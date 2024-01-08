@@ -33,7 +33,7 @@ import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
 import { System } from '@app/refactor/common/util'
 import BackButton from '@components/back_button'
-import { IS_ANDROID } from '@app/constants/system'
+import { AnimatedMargin } from '@components/animated/margin'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -48,6 +48,7 @@ const Register = ({ navigation }: Props) => {
 
 	const [mail, setMail] = useState('')
 	const [mailErr, setMailErr] = useState(false)
+	const [mailMarginExpanded, setMailMarginExpanded] = useState(false)
 
 	const [pass, setPass] = useState('')
 	const [passErr, setPassErr] = useState(false)
@@ -133,6 +134,7 @@ const Register = ({ navigation }: Props) => {
 				setGeneralErrorData
 			)
 		} else {
+			mail.trim().length > 0 && !valid.email && setMailMarginExpanded(true)
 			setMailErr(!valid.email)
 			setPassErr(!valid.pass)
 			setConfirmPassErr(!valid.confirmPass)
@@ -175,18 +177,21 @@ const Register = ({ navigation }: Props) => {
 						style={styles.input && { marginTop: 27 }}
 						onFocusOrChange={() => {
 							setMailErr(false)
+							setMailMarginExpanded(false)
 							setGeneralErrorData(null)
 						}}
 						onChangeText={setMail}
 						error={mailErr && (mail.trim() ? 'Enter Valid Email' : true)}
 					/>
+					<AnimatedMargin
+						min={11}
+						max={32}
+						durationMillis={250}
+						expanded={mailMarginExpanded}
+					/>
 					<AppInput
 						value={pass}
 						label="Enter Password"
-						style={[
-							styles.input,
-							{ marginTop: mailErr && mail.trim() ? 32 : 11 },
-						]}
 						onChangeText={setPass}
 						onFocusOrChange={() => {
 							setPassErr(false)
@@ -370,11 +375,10 @@ const _styles = (theme: Theme) =>
 			alignSelf: 'center',
 		},
 		back: {
-			marginTop: IS_ANDROID ? 45 : 28,
+			marginTop: System.isAndroid ? 45 : 28,
 			marginLeft: 15,
 			alignSelf: 'flex-start',
 		},
-
 		input: {
 			marginTop: 11,
 		},
@@ -391,6 +395,7 @@ const _styles = (theme: Theme) =>
 		},
 		phoneNumber: {
 			borderWidth: 1,
+			borderRadius: 6,
 			height: 45,
 			paddingHorizontal: 15,
 			flexDirection: 'row',

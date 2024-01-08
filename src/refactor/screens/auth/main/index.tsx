@@ -20,20 +20,22 @@ import SecureKV from '@store/kv/secure'
 import { isEnrolledAsync } from 'expo-local-authentication'
 import { System } from '@app/refactor/common/util'
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
-import { useNetInfoInstance } from '@react-native-community/netinfo'
+import { fetch } from '@react-native-community/netinfo'
+
+import { CommonActions } from '@react-navigation/native'
+import { useModal } from '@components/modal/global_modal'
 
 const Tab = createBottomTabNavigator()
 
 const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const dispatch = useDispatch()
 	const { theme } = useTheme()
-
+	const { showModal } = useModal()
 	const fromResume = route.params?.fromResume === true
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
-	const {
-		netInfo: { isConnected },
-	} = useNetInfoInstance()
+	const { notificationData } = useSelector((state: RootState) => state.common)
+
 	useEffect(() => {
 		changeNavigationBarColor(theme.color.backgroundSecondary, true)
 		const stateChangeListener = AppState.addEventListener(
@@ -43,6 +45,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		dispatch(fetchUserInfoThunk())
 
 		return () => {
+			// unsubscribe()
 			changeNavigationBarColor(theme.color.backgroundPrimary, true)
 			stateChangeListener.remove()
 		}
@@ -74,15 +77,6 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			biometricDiffElapsed() &&
 			(await isEnrolledAsync())
 
-		// console.log({
-		// 	new: newState,
-		// 	prev: prevAppState.current,
-		// 	diff: (Date.now() - (KV.get('lastOpenDateMillis') || 0)) / 1000,
-		// 	enrolled: await isEnrolledAsync(),
-		// 	webView: KV.get('webViewVisible'),
-		// 	bioVisible,
-		// })
-
 		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
@@ -97,15 +91,44 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const getBiometricEnabled = async (email: string) => {
 		const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
 		const userEnabledBio = bioEnabledEmails?.includes(email)
-		if (userEnabledBio && isConnected) {
-			navigation.navigate({
-				key: 'Resume-uniqueKey',
-				name: 'Resume',
-				params: {
-					from: 'Main',
-				},
-			})
-		}
+		// if (!userEnabledBio) {
+		// 	showModal(notificationData)
+		// }
+		fetch().then((state) => {
+			if (state.isConnected && userEnabledBio) {
+				navigation.navigate({
+					key: 'Resume-uniqueKey',
+					name: 'Resume',
+					params: {
+						from: 'Main',
+					},
+				})
+			} else if (
+				state.isConnected === false &&
+				userEnabledBio &&
+				!resumeIsShown()
+			) {
+				navigation.dispatch((state) => {
+					const newRoutes = [
+						...state.routes.slice(0, state.index + 1),
+						{ name: 'NoInternet' },
+						{
+							key: 'Resume-uniqueKey',
+							name: 'Resume',
+							params: {
+								from: 'Main',
+							},
+						},
+					]
+
+					return CommonActions.reset({
+						...state,
+						routes: newRoutes,
+						index: newRoutes.length - 1,
+					})
+				})
+			}
+		})
 	}
 
 	return (

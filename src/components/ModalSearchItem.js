@@ -18,12 +18,18 @@ const ModalSearchItem = ({
 	total,
 	canShowCode,
 	isForTransactions,
+	realCode = '',
 }) => {
 	const backgroundCond = () => {
-		if (name === currentItem || code === currentItem) {
+		if (
+			name === currentItem ||
+			code === currentItem ||
+			realCode === currentItem
+		) {
 			return styles.background
 		}
 	}
+
 	const codeText = phoneCountry ? phoneCode : code
 	const text =
 		phoneCountry || countryDrop || citizenshipDrop ? (
@@ -42,7 +48,7 @@ const ModalSearchItem = ({
 		) : (
 			<View style={styles.row}>
 				<AppText body medium style={styles.primary}>
-					{isForTransactions ? name.split('(')[0] : name}
+					{isForTransactions ? name?.split('(')[0] : name}
 				</AppText>
 
 				<AppText body medium style={styles.secondary}>

@@ -29,11 +29,13 @@ import {
 } from '../../redux/trade/actions'
 import {
 	generateCryptoAddressAction,
+	saveCryptoAddress,
 	setNetwork,
 } from '../../redux/wallet/actions'
 import { errorHappenedHere } from '../../utils/appUtils'
 import KV from '@store/kv/regular'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
+import { fetchCryptoAddresses } from '@app/utils/walletUtils'
 
 export default function Deposit({ refreshControl }) {
 	const dispatch = useDispatch()
@@ -50,8 +52,16 @@ export default function Deposit({ refreshControl }) {
 	} = state
 
 	const isFiat = currentBalanceObj.type === 'FIAT'
-	const isCrypto = currentBalanceObj.type === 'CRYPTO'
+	const isCrypto = currentBalanceObj.type === 'CRYPTO' || network === 'BEP20'
 	const isEcommerce = network === 'ECOMMERCE'
+
+	//TODO: Temporary Bug FIx
+	const [shouldShowDelayed, setShouldShowDelayed] = useState(false)
+	useEffect(() => {
+		setTimeout(() => {
+			setShouldShowDelayed(true)
+		}, 1000)
+	}, [])
 
 	useEffect(() => {
 		const m = currentBalanceObj?.depositMethods
@@ -177,7 +187,8 @@ export default function Deposit({ refreshControl }) {
 
 				{!hasRestriction && hasMethod && (
 					<>
-						{!isFiat || code === 'EUR' ? (
+						{!isFiat ||
+						(code === 'EUR' && !currentBalanceObj.types.includes('CRYPTO')) ? (
 							<>
 								<ChooseNetworkDropdown />
 								{cryptoAddress?.address &&
@@ -204,6 +215,13 @@ export default function Deposit({ refreshControl }) {
 								{network === 'SEPA' && (
 									<AppInfoBlock content={warnings.sepa} warning />
 								)}
+
+								{network === 'BEP20' && <AddressBlock />}
+
+								{network === 'BEP20' && content() && (
+									<AppInfoBlock content={content()} warning />
+								)}
+
 								<TransferMethodModal />
 							</>
 						)}
@@ -211,7 +229,11 @@ export default function Deposit({ refreshControl }) {
 				)}
 			</View>
 
-			{!cryptoAddress?.address && !isFiat && !hasRestriction && hasMethod ? (
+			{!cryptoAddress?.address &&
+			(!isFiat || network === 'BEP20') &&
+			!shouldShowDelayed &&
+			!hasRestriction &&
+			hasMethod ? (
 				<View style={styles.flex}>
 					<BulletsBlock />
 					<AppButton
@@ -223,7 +245,9 @@ export default function Deposit({ refreshControl }) {
 				</View>
 			) : null}
 
-			{isFiat && !hasRestriction && hasMethod && <FiatBlock />}
+			{isFiat && !hasRestriction && hasMethod && network !== 'BEP20' && (
+				<FiatBlock />
+			)}
 			{hasRestriction || !hasMethod ? (
 				<FlexBlock
 					type="Deposit"
@@ -250,6 +274,7 @@ const styles = StyleSheet.create({
 		marginBottom: 16,
 	},
 	flex: {
+		borderRadius: 6,
 		flex: 1,
 		justifyContent: 'space-between',
 	},

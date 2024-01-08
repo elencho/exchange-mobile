@@ -51,6 +51,7 @@ export default function AppButton({
 const styles = StyleSheet.create({
 	button: {
 		height: 45,
+		borderRadius: 22,
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row',

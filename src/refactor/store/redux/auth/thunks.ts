@@ -40,7 +40,13 @@ import KV from '@store/kv/regular'
 import { canDoBiometric } from '@app/refactor/utils/authUtils'
 import { setBiometricToggleEnabled } from '../common/slice'
 import { resetModalsState } from '@app/redux/modals/actions'
-
+import messaging from '@react-native-firebase/messaging'
+import { notificationSubscribe } from '@app/refactor/redux/profile/profileApi'
+import {
+	PERMISSIONS,
+	RESULTS,
+	checkNotifications,
+} from 'react-native-permissions'
 const LOADING_DELAY = 2000
 
 const isLoginShown = (navigation: NativeStackNavigationProp<Screens, any>) => {
@@ -300,6 +306,13 @@ export const codeToTokenThunk = createAsyncThunk(
 		const { pkceInfo } = (getState() as RootState).auth
 
 		const tokenData = await codeToToken(code, pkceInfo?.codeVerifier || '')
+
+		await checkNotifications().then(async ({ status, settings }) => {
+			if (status === RESULTS.GRANTED) {
+				const token = await messaging().getToken()
+				notificationSubscribe(token)
+			}
+		})
 		if (tokenData) {
 			KV.set('lastOpenDateMillis', Date.now())
 
@@ -312,6 +325,7 @@ export const codeToTokenThunk = createAsyncThunk(
 			canDoBiometric(tokenData.access_token).then((canDo) => {
 				dispatch(setBiometricToggleEnabled(canDo))
 			})
+
 			if (from === 'Registration') {
 				navigationRef.reset({
 					index: 1,
@@ -454,6 +468,8 @@ export const logoutThunk = createAsyncThunk(
 				routes: [{ name: 'Welcome' }],
 			})
 
+			await messaging().deleteToken()
+
 			dispatch(resetAuth())
 			dispatch(setUserInfo(null))
 
@@ -465,5 +481,26 @@ export const logoutThunk = createAsyncThunk(
 			dispatch(resetWalletState())
 			dispatch(resetModalsState())
 		}
+	}
+)
+
+export const logoutWithoutInternet = createAsyncThunk(
+	'logoutWithoutInternet',
+	async (_, { dispatch }) => {
+		navigationRef.reset({
+			index: 1,
+			routes: [{ name: 'Welcome' }, { name: 'NoInternet' }],
+		})
+
+		dispatch(resetAuth())
+		dispatch(setUserInfo(null))
+
+		// saga
+		dispatch(resetTradesState())
+		dispatch(saveUserInfo({}))
+		dispatch(setCredentials({}))
+		dispatch(resetTransactionsState())
+		dispatch(resetWalletState())
+		dispatch(resetModalsState())
 	}
 )

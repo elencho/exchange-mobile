@@ -83,7 +83,7 @@ export const maxWithdrawalParams = (state) => {
 	const provider = network === 'ECOMMERCE' ? depositProvider : network
 
 	let method
-	if (currentBalanceObj?.type === 'CRYPTO') {
+	if (currentBalanceObj?.type === 'CRYPTO' || network === 'BEP20') {
 		method = 'WALLET'
 	} else {
 		if (network === 'ECOMMERCE') {

@@ -39,11 +39,7 @@ export default function ModalWithSearch({
 	}
 
 	const searchItem = ({ item }) => {
-		const name =
-			item?.name ||
-			item?.pair?.baseCurrencyName ||
-			(isForTransactions && `${item.currencyName} (${item.currencyCode})`) ||
-			`${item?.available} ${item?.currencyCode}`
+		const name = item?.displayName || item?.pair?.baseCurrencyName
 
 		const code =
 			item?.displayCode || item?.pair?.baseCurrency || item?.currencyCode
@@ -60,10 +56,13 @@ export default function ModalWithSearch({
 				? ''
 				: `Total: ${item?.total} ≈ ${item?.valueBTC} BTC`
 
+		console.log({ item })
+
 		return (
 			<ModalSearchItem
 				name={name}
 				code={code}
+				realCode={item.code}
 				phoneCode={item?.phoneCode}
 				currentItem={currentItem}
 				canShowCode={

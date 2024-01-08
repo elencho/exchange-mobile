@@ -1,12 +1,14 @@
 import { t } from 'i18next'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import FeeIcon from '../../assets/images/Wallet/Fee'
 import colors from '../../constants/colors'
 import AppText from '../AppText'
+import { fetchFee } from '@app/redux/trade/actions'
 
 export default function Fee() {
+	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 	const {
 		trade: { fee, currentTrade, fiat, currentBalanceObj },
@@ -14,17 +16,20 @@ export default function Fee() {
 		wallet: {
 			depositAmount,
 			withdrawalAmount,
+			walletTab,
 			withdrawalBank,
 			currentTemplate,
 		},
 	} = state
+
+	const displayCurrencyCode = currentBalanceObj?.displayCurrencyCode
 
 	const notEmpty = () => {
 		if (tabRoute === 'Wallet') return depositAmount || withdrawalAmount
 		if (tabRoute === 'Trade') return currentTrade?.price || currentTrade?.size
 	}
 
-	const currency = tabRoute === 'Wallet' ? code : fiat
+	const currency = tabRoute === 'Wallet' ? displayCurrencyCode : fiat
 
 	const UpperLine = () => {
 		let feeText

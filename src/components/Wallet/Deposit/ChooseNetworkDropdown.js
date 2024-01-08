@@ -103,7 +103,7 @@ export default function ChooseNetworkDropdown({
 							notClearable
 							label="Choose Network"
 							withLabel
-							style={[styles.dropdown, style]}
+							style={[style, styles.dropdown]}
 							icon={renderIcon(network)}
 							handlePress={handleDropdown}
 							error={error && !network}
@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
 		gap: 6,
 	},
 	view: {
+		borderRadius: 6,
 		height: 45,
 		flexDirection: 'row',
 		alignItems: 'center',
@@ -137,6 +138,7 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 22,
 	},
 	dropdown: {
+		borderRadius: 6,
 		marginTop: 28,
 	},
 	iconDimensions: {

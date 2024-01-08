@@ -112,8 +112,9 @@ function* wireDepositSaga(action) {
 	} else {
 		n = network
 	}
+	yield delay(600)
 
-	if (hasMethods && walletTab !== 'Withdrawal') {
+	if (hasMethods && walletTab !== 'Withdrawal' && network !== 'BEP20') {
 		const wireDepositData = yield call(fetchWireDeposit, code, n)
 		if (wireDepositData) {
 			const wireDepositProviders = wireDepositData[language]
@@ -244,7 +245,7 @@ function* withdrawalTemplatesSaga() {
 	const currency = yield select((state) => state.transactionsOld.code)
 	const provider = yield select((state) => state.wallet.network)
 
-	if (provider !== 'ECOMMERCE' && provider) {
+	if (provider !== 'ECOMMERCE' && provider !== 'BEP20' && provider) {
 		const templates = yield call(fetchTemplates, currency, provider)
 		if (templates) yield put(saveTemplates(templates))
 

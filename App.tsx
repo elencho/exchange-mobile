@@ -17,6 +17,8 @@ import {
 import { THEME_DARK } from './src/refactor/setup/theme/variants'
 import '@app/refactor/setup/network/interceptor'
 import { System } from '@app/refactor/common/util'
+import { ModalProvider } from '@components/modal/global_modal'
+import { useNotificationHandler } from 'notifiactionHandler'
 
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed
@@ -24,6 +26,7 @@ LogBox.ignoreLogs([
 ])
 
 const App = React.memo(() => {
+	// useNotificationHandler()
 	const [fontsLoaded] = useFonts({
 		Ubuntu_Regular: require('./src/assets/fonts/Ubuntu_Regular.ttf'),
 		Ubuntu_Medium: require('./src/assets/fonts/Ubuntu_Medium.ttf'),
@@ -56,13 +59,17 @@ const App = React.memo(() => {
 							style={styles.container}
 							onLayout={onLayoutRootView}
 							edges={['bottom']}>
-							<AppToast />
-							<AppNavigator />
+							<ModalProvider>
+								<AppToast />
+								<AppNavigator />
+							</ModalProvider>
 						</SafeAreaView>
 					) : (
 						<>
-							<AppToast />
-							<AppNavigator />
+							<ModalProvider>
+								<AppToast />
+								<AppNavigator />
+							</ModalProvider>
 						</>
 					)}
 				</GestureHandlerRootView>
