@@ -46,7 +46,8 @@
   [RNSplashScreen show]; 
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
   center.delegate = self;
-  //  UNUserNotificationCenter.center().delegate = self
+//  UNUserNotificationCenter
+//    UNUserNotificationCenter.center().delegate = self
 
   return YES;
 }

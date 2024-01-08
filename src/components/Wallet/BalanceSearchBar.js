@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		paddingTop: 10,
+		backgroundColor: colors.PRIMARY_BACKGROUND,
 	},
 	input: {
 		position: 'absolute',

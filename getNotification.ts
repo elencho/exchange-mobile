@@ -1,11 +1,17 @@
 import { useModal } from '@components/modal/global_modal'
-import PushNotificationIOS from '@react-native-community/push-notification-ios'
 import messaging from '@react-native-firebase/messaging'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
+import * as Notifications from 'expo-notifications'
 
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: true,
+		shouldPlaySound: true,
+		shouldSetBadge: false,
+	}),
+})
 export const getNotification = () => {
 	const { showModal } = useModal()
-	console.log('from this page')
 	useEffect(() => {
 		messaging()
 			.getInitialNotification()
@@ -44,29 +50,25 @@ export const getNotification = () => {
 
 export const inAppNotificationListener = () => {
 	const { showModal } = useModal()
-	const [foregroundNotification, setForegroundNotification] = useState(null)
-	useEffect(() => {
-		const type = 'notification'
+	const responseListener = useRef()
 
+	useEffect(() => {
 		const unsubscribe = messaging().onMessage(onNotifeeMessageReceived)
-		// PushNotificationIOS.addEventListener(type)
+
 		return () => {
 			unsubscribe()
-			// PushNotificationIOS.removeEventListener(type)
 		}
 	}, [])
 
-	const setNotification = (message) => {
-		setForegroundNotification(message)
-	}
 	const onNotifeeMessageReceived = async (message) => {
-		// PushNotificationIOS.({
-		// 	title: message?.title,
-		// 	body: message?.body,
-		// 	id: '1',
-		// })
-		console.log('notifee received on foreground', message)
-		const isClicked = message.getData().userInteraction === 1
+		await Notifications.scheduleNotificationAsync({
+			content: {
+				title: message.notification.title,
+				body: message?.notification?.body,
+				data: { data: data },
+			},
+			trigger: null,
+		})
 		const data = {
 			description: message?.notification?.body,
 			banner: message?.data?.banner,
@@ -74,10 +76,6 @@ export const inAppNotificationListener = () => {
 			redirectUrl: message?.data?.redirectUrl,
 			title: message?.data?.title,
 		}
-		if (isClicked) {
-			showModal(data)
-		} else {
-			console.log('dismissed')
-		}
+		showModal(data)
 	}
 }
