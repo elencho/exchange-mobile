@@ -11,6 +11,7 @@ type Coin = {
 	iconPngUrl: string
 	scale: number
 	type: CoinType
+	buyWithCard: boolean
 }
 
 type CoinPair = {
@@ -18,4 +19,12 @@ type CoinPair = {
 	crypto: Coin
 	sellPrice: string
 	buyPrice: string
+}
+
+type Card = {
+	id: string
+	cardNumber: string
+	provider: string
+	network: string
+	iconPngUrl: string
 }

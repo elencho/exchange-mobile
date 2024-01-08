@@ -38,7 +38,7 @@ type CoinBalanceResponse = {
 	total: string
 	valueBTC: string
 	valueUSD: string
-	depositMethods: DepositMethodResponse[]
+	depositMethods: DepositMethodResponse
 }
 
 type DepositMethodResponse = Record<
@@ -51,3 +51,12 @@ type DepositMethodResponse = Record<
 		provider: string
 	}
 >
+
+type CardsResponse = CardResponse[]
+
+type CardResponse = {
+	id: string
+	cardNumber: string
+	provider: string
+	network: string
+}

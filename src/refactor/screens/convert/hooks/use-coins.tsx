@@ -1,22 +1,27 @@
-import { COINS_URL_PNG } from '@app/constants/api'
+import { COINS_URL_PNG, ICONS_URL_PNG } from '@app/constants/api'
 import {
 	fetchBalanceApi,
+	fetchCards,
 	fetchOffersApi,
 } from '@app/refactor/screens/convert/api/convertNowApi'
 import { useEffect, useRef, useState } from 'react'
 
 type displayCcy = string
+type BalanceEntry = {
+	available: string
+	buyWithCard: boolean
+}
 
 export const useCoins = () => {
-	const [tradeType, setTradeType] = useState<TradeType>('Buy')
 	const [pair, setPair] = useState<CoinPair>()
 	const [loading, setLoading] = useState(false)
 
 	const [fiats, setFiats] = useState<Coin[]>([])
 	const [cryptos, setCryptos] = useState<Coin[]>([])
+	const [cards, setCards] = useState<Card[]>([])
 
 	const offersCache = useRef<Record<displayCcy, CoinPair[]>>({})
-	const balancesCache = useRef<Record<displayCcy, string>>({})
+	const balancesCache = useRef<Record<displayCcy, BalanceEntry>>({})
 
 	//TODO: Save in local storage
 	const defFiatDisplayCcy = 'TOGEL'
@@ -24,6 +29,9 @@ export const useCoins = () => {
 
 	useEffect(() => {
 		fetchCoins()
+		fetchCards().then((data) => {
+			setCards(data.map(mapCard))
+		})
 	}, [])
 
 	const fetchCoins = async () => {
@@ -77,9 +85,12 @@ export const useCoins = () => {
 	}
 
 	const saveBalancesCache = (dto: BalancesResponse) => {
-		const cache: Record<string, string> = {}
+		const cache: Record<string, BalanceEntry> = {}
 		dto.balances.forEach((item) => {
-			cache[item.displayCurrencyCode] = item.available
+			cache[item.displayCurrencyCode] = {
+				available: item.available,
+				buyWithCard: Object.keys(item.depositMethods).includes('ECOMMERCE'),
+			}
 		})
 		return cache
 	}
@@ -111,7 +122,10 @@ export const useCoins = () => {
 		const displayCcy = base
 			? dto.baseCurrencyDisplayCode
 			: dto.quoteCurrencyDisplayCode
-		const balance = Number(balancesCache.current[displayCcy]).toFixed(scale)
+
+		const cachedBalance = balancesCache.current[displayCcy]
+		const balance = Number(cachedBalance.available).toFixed(scale)
+		const buyWithCard = cachedBalance.buyWithCard
 
 		return {
 			ccy,
@@ -121,17 +135,23 @@ export const useCoins = () => {
 			iconPngUrl: ccyToIcon(ccy),
 			balance,
 			scale,
+			buyWithCard,
 		}
 	}
 
+	const mapCard = (dto: CardResponse): Card => {
+		return { ...dto, iconPngUrl: cardToIcon(dto.network) }
+	}
+
 	const ccyToIcon = (ccy: string) => `${COINS_URL_PNG}/${ccy.toLowerCase()}.png`
+
+	const cardToIcon = (network: string) => `${ICONS_URL_PNG}/${network}.png`
 
 	return {
 		pair,
 		fiats,
 		cryptos,
-		tradeType,
-		setTradeType,
+		cards,
 		loading,
 		fetchCoins,
 		onCoinSelected,

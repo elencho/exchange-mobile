@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native'
 import AppBackground from '@components/background'
 import InfoMark from '@app/components/InstantTrade/InfoMark'
 import TopRow from '@components/top_row'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TradeTypeSwitcher } from '@app/refactor/screens/convert/components/TradeTypeSwitcher'
 import { Timer } from '@app/refactor/screens/convert/components/Timer'
 import { CoinInput } from '@app/refactor/screens/convert/components/CoinInput'
@@ -15,16 +15,24 @@ import { MaterialIndicator } from 'react-native-indicators'
 import ChooseCryptoModal from '@app/refactor/screens/convert/modals/ChooseCryptoModal'
 import BalanceChips from '@app/refactor/screens/convert/components/BalanceChips'
 import InfoModal from '@app/components/InstantTrade/InfoModal'
+import CardSection from '@app/refactor/screens/convert/components/CardSection'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const { styles, theme } = useTheme(_styles)
 
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
+	const [buyWithCardChecked, setBuyWithCardChecked] = useState(false)
+	const [chosenCard, setChosenCard] = useState<Card>()
+
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
 
-	const { pair, fiats, cryptos, loading, fetchCoins, onCoinSelected } =
+	const { pair, fiats, cryptos, cards, loading, fetchCoins, onCoinSelected } =
 		useCoins()
+
+	useEffect(() => {
+		cards.length && setChosenCard(cards[0])
+	}, [cards])
 
 	const handleDropDownClick = (type: CoinType) => {
 		type === 'Crypto' ? setCryptoModalVisible(true) : setFiatModalVisible(true)
@@ -98,7 +106,23 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 						onTypeChanged={setTradeType}
 					/>
 					<CoinInputs />
-					<BalanceChips onChipPressed={() => {}} />
+					{!buyWithCardChecked && (
+						<BalanceChips
+							onChipPressed={(balanceMultiplier) => {
+								// TODO: Multiply balance
+							}}
+						/>
+					)}
+					{tradeType === 'Buy' &&
+						pair.fiat.buyWithCard &&
+						cards.length !== 0 && (
+							<CardSection
+								cards={cards}
+								chosenCard={chosenCard}
+								buyWithCardChecked={buyWithCardChecked}
+								setBuyWithCardChecked={setBuyWithCardChecked}
+							/>
+						)}
 					<Timer
 						pair={pair}
 						tradeType={tradeType}
