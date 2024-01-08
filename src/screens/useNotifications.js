@@ -6,6 +6,7 @@ import { setNotificationData } from '@store/redux/common/slice'
 import { useEffect } from 'react'
 import { Linking } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
+import PushNotificationIOS from '@react-native-community/push-notification-ios'
 
 const useNotifications = () => {
 	const { showModal } = useModal()
@@ -133,23 +134,26 @@ const useNotifications = () => {
 				showModal(data)
 			}
 		})
-
-		notifee.onBackgroundEvent(async ({ type, detail }) => {
-			// const redirectUrl = detail?.notification?.data?.redirectUrl
-			// if (redirectUrl) Linking.openURL(redirectUrl)
-			console.log('onBackgroundEvent', detail)
-			const data = {
-				description: detail?.notification?.body,
-				banner: detail?.data?.banner,
-				callToAction: detail?.data?.callToAction,
-				redirectUrl: detail?.data?.redirectUrl,
-				title: detail?.data?.title,
-			}
-			if (data.title && data.description) {
-				showModal(data)
-			}
-		})
 	}, [])
+
+	// useEffect(() => {
+	// 	const unsubscribe = notifee.onBackgroundEvent(async ({ type, detail }) => {
+	// 		// const redirectUrl = detail?.notification?.data?.redirectUrl
+	// 		// if (redirectUrl) Linking.openURL(redirectUrl)
+	// 		console.log('onBackgroundEvent', detail)
+	// 		const data = {
+	// 			description: detail?.notification?.body,
+	// 			banner: detail?.data?.banner,
+	// 			callToAction: detail?.data?.callToAction,
+	// 			redirectUrl: detail?.data?.redirectUrl,
+	// 			title: detail?.data?.title,
+	// 		}
+	// 		if (data.title && data.description) {
+	// 			showModal(data)
+	// 		}
+	// 	})
+	// 	return () => unsubscribe()
+	// }, [])
 
 	return {}
 }

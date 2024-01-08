@@ -18,44 +18,45 @@ export const useNotificationHandler = () => {
 
 	// const bioVisible = isBiometricEnabled && biometricDiffElapsed()
 
-	messaging()
-		.getInitialNotification()
-		.then(async (remoteMessage) => {
-			if (remoteMessage) {
-				const data = {
-					description: remoteMessage?.notification?.body,
-					banner: remoteMessage?.data?.banner,
-					callToAction: remoteMessage?.data?.callToAction,
-					redirectUrl: remoteMessage?.data?.redirectUrl,
-					title: remoteMessage?.data?.title,
-				}
-				dispatch(setNotificationData(data))
-				if (data.title && data.description) {
-					showModal(data)
-				}
-			}
-		})
+	// messaging()
+	// 	.getInitialNotification()
+	// 	.then(async (remoteMessage) => {
+	// 		if (remoteMessage) {
+	// 			const data = {
+	// 				description: remoteMessage?.notification?.body,
+	// 				banner: remoteMessage?.data?.banner,
+	// 				callToAction: remoteMessage?.data?.callToAction,
+	// 				redirectUrl: remoteMessage?.data?.redirectUrl,
+	// 				title: remoteMessage?.data?.title,
+	// 			}
+	// 			dispatch(setNotificationData(data))
 
-	messaging().onNotificationOpenedApp((remoteMessage) => {
-		console.log('from onNotificationOpenedApp', remoteMessage)
-		const data = {
-			description: remoteMessage?.notification?.body,
-			banner: remoteMessage?.data?.banner,
-			callToAction: remoteMessage?.data?.callToAction,
-			redirectUrl: remoteMessage?.data?.redirectUrl,
-			title: remoteMessage?.data?.title,
-		}
-		// dispatch(setNotificationData(data))
-		if (data.title && data.description) {
-			showModal(data)
-		}
-		// if (remoteMessage?.data?.title && data.description && !bioVisible) {
-		// 	console.log('from bio onNotificationOpenedApp', data)
+	// 			if (data.title && data.description) {
+	// 				showModal(data)
+	// 			}
+	// 		}
+	// 	})
 
-		// 	 showModal(data)
-		// } else if (remoteMessage?.data?.title && data.description && bioVisible) {
-		// 	console.log('from here onNotificationOpenedApp', data)
-		// 	dispatch(setNotificationData(data))
-		// }
-	})
+	// messaging().onNotificationOpenedApp((remoteMessage) => {
+	// 	console.log('from onNotificationOpenedApp', remoteMessage)
+	// 	const data = {
+	// 		description: remoteMessage?.notification?.body,
+	// 		banner: remoteMessage?.data?.banner,
+	// 		callToAction: remoteMessage?.data?.callToAction,
+	// 		redirectUrl: remoteMessage?.data?.redirectUrl,
+	// 		title: remoteMessage?.data?.title,
+	// 	}
+	// 	// dispatch(setNotificationData(data))
+	// 	if (data.title && data.description) {
+	// 		showModal(data)
+	// 	}
+	// 	// if (remoteMessage?.data?.title && data.description && !bioVisible) {
+	// 	// 	console.log('from bio onNotificationOpenedApp', data)
+
+	// 	// 	 showModal(data)
+	// 	// } else if (remoteMessage?.data?.title && data.description && bioVisible) {
+	// 	// 	console.log('from here onNotificationOpenedApp', data)
+	// 	// 	dispatch(setNotificationData(data))
+	// 	// }
+	// })
 }
