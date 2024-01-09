@@ -1,21 +1,18 @@
 import React, { useState } from 'react'
-import { Image, Pressable, StyleSheet, View, Text } from 'react-native'
+import { Image, StyleSheet, View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import Arrow from '../../../assets/images/Arrow'
 import { COINS_URL_PNG } from '../../../constants/api'
 import colors from '../../../constants/colors'
 import { toggleCurrencyModal } from '../../../redux/modals/actions'
 import AppDropdown from '../../AppDropdown'
 import AppText from '../../AppText'
 import PurpleText from '@app/components/PurpleText'
-import { useModal } from '@components/modal/global_modal'
 import InfoBanner from './InfoBanner'
-import { t } from 'i18next'
 
 export default function WalletCoinsDropdown() {
-	const { showModal } = useModal()
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
+	const [infoVisible, setInfoVisible] = useState(false)
 	const {
 		wallet: { usdBtcSwitch },
 		trade: {
@@ -32,6 +29,9 @@ export default function WalletCoinsDropdown() {
 	} = state
 
 	const handleDropdown = () => dispatch(toggleCurrencyModal(true))
+	const toggleModal = () => {
+		setInfoVisible(!infoVisible)
+	}
 
 	const value = usdBtcSwitch === 'USD' ? valueUSD : valueBTC
 
@@ -63,26 +63,11 @@ export default function WalletCoinsDropdown() {
 						text="Find Out"
 						style={{ fontSize: 12 }}
 						// style={styles.back}
-						onPress={() =>
-							showModal(
-								{
-									title: t('tolcoins_modal_header'),
-									redirectUrl: '',
-									callToAction: '',
-									description: `${t(`tolcoins_modal_text_1`)} \n \n ${t(
-										`tolcoins_modal_text_2`
-									)}`,
-									localBanner: true,
-									banner: require('@assets/images/TolCoins1.png'),
-									bannerText: t('tolcoins_modal_text_on_banner'),
-								},
-								isBiometricScreenOpened
-							)
-						}
+						onPress={() => toggleModal()}
 					/>
 				</View>
 			)}
-			<InfoBanner />
+			<InfoBanner isModalVisible={infoVisible} hideModal={toggleModal} />
 		</>
 	)
 }

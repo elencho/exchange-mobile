@@ -1,83 +1,64 @@
-import {
-	StyleSheet,
-	Text,
-	View,
-	ImageBackground,
-	Dimensions,
-} from 'react-native'
-import React from 'react'
-import AppModal from '@components/modal'
-import { TurboModuleRegistry } from 'react-native'
+import { StyleSheet, View, ImageBackground, Dimensions } from 'react-native'
+import React, { FC, PropsWithChildren } from 'react'
 import CloseIcon from '@components/close-button'
 import colors from '@app/constants/colors'
+import Modal from 'react-native-modal'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import AppText from '@components/text'
 
 const WINDOW_HEIGHT = Dimensions.get('window').height
 
-const modalContent = {}
-
-const InfoBanner = () => {
-	const BackgroundWrapper: FC<PropsWithChildren> = ({ children }) => {
-		return true ? (
-			<View style={styles.imageBckWrapper}>
-				<ImageBackground
-					imageStyle={styles.imageFillStyle}
-					resizeMode="cover"
-					style={styles.imageStyle}
-					source={{
-						uri: '@assets/images/TolCoins1.png',
-					}}>
-					<CloseIcon
-						style={{ marginTop: 60, marginRight: 30 }}
-						// onPress={hideModal}
-					/>
-					{/* 
-					{modalContent?.bannerText?.length > 0 && (
-						<View style={styles.bannerTextContainer}>
-							<AppText variant="headline" style={styles.bannerText}>
-								{modalContent.bannerText}
-							</AppText>
-						</View>
-					)} */}
-				</ImageBackground>
-
-				{children}
-			</View>
-		) : (
-			<View style={styles.imageBckWrapper}>
-				<CloseIcon
-					style={{ marginTop: 60, marginRight: 30 }}
-					// onPress={hideModal}
-				/>
-				{children}
-			</View>
-		)
-	}
-
-	const children = (
-		<BackgroundWrapper>
-			<View style={styles.contentWrapper}>
-				<Text style={styles.title}>blablabla</Text>
-				<Text style={styles.descr}>blibliblis</Text>
-			</View>
-			{/* {modalContent?.callToAction && modalContent?.redirectUrl && (
-				<AppButton
-					variant="primary"
-					text={modalContent.callToAction}
-					onPress={onPress}
-					style={styles.button}
-				/>
-			)} */}
-		</BackgroundWrapper>
+const InfoBanner = ({
+	isModalVisible,
+	hideModal,
+}: {
+	isModalVisible: boolean
+	hideModal: (v: boolean) => void
+}) => {
+	const { isBiometricScreenOpened, isInternetScreenOpened } = useSelector(
+		(state: RootState) => state.common
 	)
+	const globalScreenOpened = isBiometricScreenOpened || isInternetScreenOpened
 
 	return (
-		<AppModal
-			visible={false}
-			// hide={hide}
-			fullScreen
-			// title={t(tradeType) + ' ' + crypto}
-			children={children}
-		/>
+		<Modal
+			propagateSwipe={true}
+			useNativeDriver
+			useNativeDriverForBackdrop
+			isVisible={!globalScreenOpened && isModalVisible}
+			coverScreen
+			backdropTransitionOutTiming={0}
+			animationOutTiming={500}
+			backdropTransitionInTiming={300}
+			style={{ margin: 0, justifyContent: 'flex-end' }}>
+			<View style={styles.scrollWrapper}>
+				<View style={styles.imageBckWrapper}>
+					<ImageBackground
+						imageStyle={styles.imageFillStyle}
+						resizeMode="cover"
+						style={styles.imageStyle}
+						source={require('@assets/images/TolCoins1.png')}>
+						<CloseIcon
+							style={{ marginTop: 60, marginRight: 30 }}
+							onPress={hideModal}
+						/>
+
+						<View style={styles.bannerTextContainer}>
+							<AppText variant="headline" style={styles.bannerText}>
+								tolcoins_modal_text_on_banner
+							</AppText>
+						</View>
+					</ImageBackground>
+
+					<View style={styles.contentWrapperWithoutBanner}>
+						<AppText style={styles.title}>tolcoins_modal_header</AppText>
+						<AppText style={styles.descr}>tolcoins_modal_text_1</AppText>
+						<AppText style={styles.descr}>tolcoins_modal_text_2</AppText>
+					</View>
+				</View>
+			</View>
+		</Modal>
 	)
 }
 
@@ -112,8 +93,6 @@ const styles = StyleSheet.create({
 		marginTop: 24,
 		marginHorizontal: 20,
 		paddingBottom: 154,
-
-		// minHeight: WINDOW_HEIGHT / 3,
 	},
 	contentWrapperWithoutBanner: {
 		marginTop: 24,
@@ -123,14 +102,12 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 24,
 		lineHeight: 28,
-		// fontFamily: theme.font.medium,
 		color: '#FFFFFF',
 	},
 	descr: {
 		fontSize: 14,
 		lineHeight: 18,
 		marginTop: 16,
-		// fontFamily: theme.font.medium,
 		color: '#ccd9dd',
 	},
 	scrollWrapper: {
