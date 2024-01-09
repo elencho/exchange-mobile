@@ -17,7 +17,13 @@ const WINDOW_HEIGHT = Dimensions.get('window').height
 
 const modalContent = {}
 
-const InfoBanner = ({ isModalVisible, hideModal }) => {
+const InfoBanner = ({
+	isModalVisible,
+	hideModal,
+}: {
+	isModalVisible: boolean
+	hideModal: (v: boolean) => void
+}) => {
 	const { isBiometricScreenOpened, isInternetScreenOpened } = useSelector(
 		(state: RootState) => state.common
 	)
