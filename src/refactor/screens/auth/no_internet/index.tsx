@@ -15,6 +15,8 @@ const NoInternet = () => {
 	const navigation = useNavigation()
 	const { setIsBiometricScreenOpenedForModal } = useModal()
 	const dispatch = useDispatch()
+	const routes = navigation.getState()?.routes
+	const prevRoute = routes[routes.length - 2].name === 'NoInternet'
 
 	const [loading, setLoading] = useState(false)
 
@@ -36,6 +38,9 @@ const NoInternet = () => {
 		setTimeout(async () => {
 			fetch().then(async (state) => {
 				if (state.isConnected) {
+					if (prevRoute) {
+						navigation.goBack()
+					}
 					navigation.goBack()
 				}
 			})
