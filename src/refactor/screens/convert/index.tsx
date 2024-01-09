@@ -27,8 +27,22 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
 
-	const { pair, fiats, cryptos, cards, loading, fetchCoins, onCoinSelected } =
-		useCoins()
+	const {
+		pair,
+		fiats,
+		cryptos,
+		cards,
+		fees,
+		loading,
+		fetchCoins,
+		onCoinSelected,
+	} = useCoins()
+
+	useEffect(() => {
+		cards.length &&
+			fees.length &&
+			navigation.navigate('SelectCard', { cards, fees })
+	}, [cards, fees])
 
 	useEffect(() => {
 		cards.length && setChosenCard(cards[0])

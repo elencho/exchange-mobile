@@ -28,7 +28,7 @@ type BalancesResponse = {
 }
 
 type CoinBalanceResponse = {
-	//fees
+	fees: FeeResponse[]
 	currencyCode: string
 	displayCurrencyCode: string
 	currencyName: string
@@ -39,6 +39,18 @@ type CoinBalanceResponse = {
 	valueBTC: string
 	valueUSD: string
 	depositMethods: DepositMethodResponse
+}
+
+type FeeResponse = {
+	feeRange: {
+		feeData: {
+			percentageValue: number
+			subMethod: string
+		}[]
+	}[]
+	method: string
+	type: string
+	provider: string
 }
 
 type DepositMethodResponse = Record<

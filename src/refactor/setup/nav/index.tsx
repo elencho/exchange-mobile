@@ -34,6 +34,7 @@ import { enableScreens } from 'react-native-screens'
 import { useTheme } from '@theme/index'
 import NetInfo from '@react-native-community/netinfo'
 import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
+import SelectCardScreen from '@app/refactor/screens/convert/screens/SelectCardScreen'
 
 enableScreens(false)
 const Stack = createNativeStackNavigator<Screens>()
@@ -151,6 +152,7 @@ export default function AppNavigator() {
 					component={Resume}
 					options={{ animation: 'fade' }}
 				/>
+				<Stack.Screen name="SelectCard" component={SelectCardScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	)

@@ -6,7 +6,10 @@ import {
 } from '@app/refactor/screens/convert/api/convertNowApi'
 import { useEffect, useRef, useState } from 'react'
 
-type displayCcy = string
+type DisplayCcy = string
+type Provider = string
+type CardType = string
+type Pct = number
 type BalanceEntry = {
 	available: string
 	buyWithCard: boolean
@@ -19,18 +22,21 @@ export const useCoins = () => {
 	const [fiats, setFiats] = useState<Coin[]>([])
 	const [cryptos, setCryptos] = useState<Coin[]>([])
 	const [cards, setCards] = useState<Card[]>([])
+	const [fees, setFees] = useState<CardFee[]>([])
 
-	const offersCache = useRef<Record<displayCcy, CoinPair[]>>({})
-	const balancesCache = useRef<Record<displayCcy, BalanceEntry>>({})
+	const offersCache = useRef<Record<DisplayCcy, CoinPair[]>>({})
+	const balancesCache = useRef<Record<DisplayCcy, BalanceEntry>>({})
+	const feesCache = useRef<Record<Provider, Record<CardType, Pct | null>>>({})
 
 	//TODO: Save in local storage
 	const defFiatDisplayCcy = 'TOGEL'
 	const defCryptoDisplayCcy = 'BTC'
 
 	useEffect(() => {
-		fetchCoins()
-		fetchCards().then((data) => {
-			setCards(data.map(mapCard))
+		fetchCoins().then(() => {
+			fetchCards().then((data) => {
+				setCards(data.map(mapCard))
+			})
 		})
 	}, [])
 
@@ -58,6 +64,7 @@ export const useCoins = () => {
 				setFiats(fiatCoins)
 				setCryptos(cryptosForFiat)
 				setPair(coinPair)
+				setFees(extractFeesFromBalances(balances))
 			})
 			.finally(() => {
 				setLoading(false)
@@ -105,6 +112,43 @@ export const useCoins = () => {
 		return cache
 	}
 
+	const extractFeesFromBalances = (dto: BalancesResponse) => {
+		const cache = feesCache.current
+		const fees =
+			dto.balances
+				.find((coin) => coin.displayCurrencyCode === 'TOGEL')
+				?.fees.filter(
+					(fee) => fee.method === 'ECOMMERCE' && fee.type === 'DEPOSIT'
+				) || []
+
+		fees.forEach((fee) => {
+			fee.feeRange[0].feeData.forEach((feeData) => {
+				if (!(fee.provider in cache)) cache[fee.provider] = {}
+				cache[fee.provider][feeData.subMethod] = feeData.percentageValue * 100
+			})
+		})
+
+		const uniqueProviders = Object.keys(cache)
+		const uniqueCardTypes = [
+			...new Set(
+				Object.values(cache).flatMap((cacheEntry) => Object.keys(cacheEntry))
+			),
+		]
+		uniqueProviders.forEach((provider) => {
+			uniqueCardTypes.forEach((cardType) => {
+				if (!(cardType in cache[provider])) cache[provider][cardType] = null
+			})
+		})
+
+		return Object.entries(cache).map(mapFee)
+	}
+
+	/***
+	 *
+	 * Mappers
+	 *
+	 **/
+
 	const mapCoinPair = (dto: CoinDataResponse): CoinPair => {
 		return {
 			buyPrice: dto.buyPrice,
@@ -140,7 +184,23 @@ export const useCoins = () => {
 	}
 
 	const mapCard = (dto: CardResponse): Card => {
-		return { ...dto, iconPngUrl: cardToIcon(dto.network) }
+		const cache = feesCache.current
+		return {
+			...dto,
+			iconPngUrl: cardToIcon(dto.network),
+			feePct: cache[dto.provider][dto.network],
+		}
+	}
+
+	const mapFee = (entry: [string, Record<string, number | null>]): CardFee => {
+		const providerBank = entry[0]
+		const data = entry[1]
+		return {
+			providerBank,
+			feeData: Object.entries(data).map((fee) => {
+				return { cardType: fee[0], pct: fee[1] }
+			}),
+		}
 	}
 
 	const ccyToIcon = (ccy: string) => `${COINS_URL_PNG}/${ccy.toLowerCase()}.png`
@@ -152,6 +212,7 @@ export const useCoins = () => {
 		fiats,
 		cryptos,
 		cards,
+		fees,
 		loading,
 		fetchCoins,
 		onCoinSelected,
