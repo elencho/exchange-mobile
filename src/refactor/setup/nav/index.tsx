@@ -92,9 +92,6 @@ export default function AppNavigator() {
 		})
 		return () => unsubscribe()
 	}, [currentPage, activeAppState])
-	// useNotifications()
-	// useNotificationHandler()
-	// useNotificationsAndroid()
 	getNotification()
 	inAppNotificationListener()
 
