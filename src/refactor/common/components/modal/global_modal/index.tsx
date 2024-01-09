@@ -33,7 +33,6 @@ type ModalContextType = {
 
 interface ContentType {
 	banner?: string
-	localBanner?: boolean
 	callToAction?: string
 	redirectUrl?: string
 	title: string
@@ -54,13 +53,9 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	} = useNetInfoInstance()
 
 	const [modalContent, setModalContent] = useState<ContentType | null>(null)
-	const showModal = (
-		content: ContentType,
-		isBiometricScreenOpened: boolean
-	) => {
+	const showModal = (content: ContentType) => {
 		setModalContent(content)
 		setModalVisible(true)
-		// setIsBiometricScreenOpened(isBiometricScreenOpened)
 	}
 
 	const hideModal = () => {
@@ -76,13 +71,9 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 					imageStyle={styles.imageFillStyle}
 					resizeMode="cover"
 					style={styles.imageStyle}
-					source={
-						modalContent?.localBanner
-							? modalContent?.banner
-							: {
-									uri: modalContent?.banner,
-							  }
-					}>
+					source={{
+						uri: modalContent?.banner,
+					}}>
 					<CloseIcon
 						style={{ marginTop: 60, marginRight: 30 }}
 						onPress={hideModal}

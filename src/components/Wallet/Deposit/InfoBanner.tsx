@@ -5,17 +5,24 @@ import {
 	ImageBackground,
 	Dimensions,
 } from 'react-native'
-import React from 'react'
-import AppModal from '@components/modal'
-import { TurboModuleRegistry } from 'react-native'
+import React, { FC, PropsWithChildren } from 'react'
 import CloseIcon from '@components/close-button'
 import colors from '@app/constants/colors'
+import Modal from 'react-native-modal'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/refactor/redux/rootReducer'
+import AppText from '@components/text'
 
 const WINDOW_HEIGHT = Dimensions.get('window').height
 
 const modalContent = {}
 
-const InfoBanner = () => {
+const InfoBanner = ({ isModalVisible, hideModal }) => {
+	const { isBiometricScreenOpened, isInternetScreenOpened } = useSelector(
+		(state: RootState) => state.common
+	)
+	const globalScreenOpened = isBiometricScreenOpened || isInternetScreenOpened
+
 	const BackgroundWrapper: FC<PropsWithChildren> = ({ children }) => {
 		return true ? (
 			<View style={styles.imageBckWrapper}>
@@ -23,21 +30,17 @@ const InfoBanner = () => {
 					imageStyle={styles.imageFillStyle}
 					resizeMode="cover"
 					style={styles.imageStyle}
-					source={{
-						uri: '@assets/images/TolCoins1.png',
-					}}>
+					source={require('@assets/images/TolCoins1.png')}>
 					<CloseIcon
 						style={{ marginTop: 60, marginRight: 30 }}
-						// onPress={hideModal}
+						onPress={hideModal}
 					/>
-					{/* 
-					{modalContent?.bannerText?.length > 0 && (
-						<View style={styles.bannerTextContainer}>
-							<AppText variant="headline" style={styles.bannerText}>
-								{modalContent.bannerText}
-							</AppText>
-						</View>
-					)} */}
+
+					<View style={styles.bannerTextContainer}>
+						<AppText variant="headline" style={styles.bannerText}>
+							tolcoins_modal_text_on_banner
+						</AppText>
+					</View>
 				</ImageBackground>
 
 				{children}
@@ -46,38 +49,39 @@ const InfoBanner = () => {
 			<View style={styles.imageBckWrapper}>
 				<CloseIcon
 					style={{ marginTop: 60, marginRight: 30 }}
-					// onPress={hideModal}
+					onPress={hideModal}
 				/>
 				{children}
 			</View>
 		)
 	}
 
-	const children = (
-		<BackgroundWrapper>
-			<View style={styles.contentWrapper}>
-				<Text style={styles.title}>blablabla</Text>
-				<Text style={styles.descr}>blibliblis</Text>
-			</View>
-			{/* {modalContent?.callToAction && modalContent?.redirectUrl && (
-				<AppButton
-					variant="primary"
-					text={modalContent.callToAction}
-					onPress={onPress}
-					style={styles.button}
-				/>
-			)} */}
-		</BackgroundWrapper>
-	)
-
 	return (
-		<AppModal
-			visible={false}
-			// hide={hide}
-			fullScreen
-			// title={t(tradeType) + ' ' + crypto}
-			children={children}
-		/>
+		<Modal
+			propagateSwipe={true}
+			useNativeDriver
+			useNativeDriverForBackdrop
+			isVisible={!globalScreenOpened && isModalVisible}
+			coverScreen
+			backdropTransitionOutTiming={0}
+			animationOutTiming={500}
+			backdropTransitionInTiming={300}
+			style={{ margin: 0, justifyContent: 'flex-end' }}>
+			<View style={styles.scrollWrapper}>
+				<BackgroundWrapper>
+					<View
+						style={
+							modalContent?.banner
+								? styles.contentWrapper
+								: styles.contentWrapperWithoutBanner
+						}>
+						<AppText style={styles.title}>tolcoins_modal_header</AppText>
+						<AppText style={styles.descr}>tolcoins_modal_text_1</AppText>
+						<AppText style={styles.descr}>tolcoins_modal_text_2</AppText>
+					</View>
+				</BackgroundWrapper>
+			</View>
+		</Modal>
 	)
 }
 
