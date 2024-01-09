@@ -50,10 +50,12 @@ export default function Whitelist({ refreshControl }) {
 					<View style={styles.block}>
 						<WalletCoinsDropdown />
 						{hasWhitelist && (
-							<AppText subtext style={styles.secondary}>
-								Add address for easy withdrawal, Some description here about
-								whitelist
-							</AppText>
+							<View style={styles.note}>
+								<AppText subtext style={styles.secondary}>
+									Add address for easy withdrawal, Some description here about
+									whitelist
+								</AppText>
+							</View>
 						)}
 					</View>
 
@@ -117,7 +119,7 @@ export default function Whitelist({ refreshControl }) {
 const styles = StyleSheet.create({
 	button: {
 		borderWidth: 1,
-		borderRadius: 6,
+		borderRadius: 22,
 		borderStyle: 'dashed',
 		height: 45,
 		borderColor: colors.SECONDARY_PURPLE,
@@ -149,11 +151,14 @@ const styles = StyleSheet.create({
 	},
 	secondary: {
 		color: '#969CBF',
-		marginTop: 15,
 		lineHeight: 18,
+	},
+	note: {
+		backgroundColor: 'rgba(149, 164, 247, 0.1)',
+		borderRadius: 6,
 		paddingHorizontal: 26,
 		paddingVertical: 14,
-		backgroundColor: 'rgba(149, 164, 247, 0.1)',
+		marginTop: 15,
 	},
 	secondaryPurple: {
 		color: colors.SECONDARY_PURPLE,
