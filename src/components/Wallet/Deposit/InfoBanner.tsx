@@ -1,10 +1,4 @@
-import {
-	StyleSheet,
-	Text,
-	View,
-	ImageBackground,
-	Dimensions,
-} from 'react-native'
+import { StyleSheet, View, ImageBackground, Dimensions } from 'react-native'
 import React, { FC, PropsWithChildren } from 'react'
 import CloseIcon from '@components/close-button'
 import colors from '@app/constants/colors'
@@ -14,8 +8,6 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import AppText from '@components/text'
 
 const WINDOW_HEIGHT = Dimensions.get('window').height
-
-const modalContent = {}
 
 const InfoBanner = ({
 	isModalVisible,
@@ -29,39 +21,6 @@ const InfoBanner = ({
 	)
 	const globalScreenOpened = isBiometricScreenOpened || isInternetScreenOpened
 
-	const BackgroundWrapper: FC<PropsWithChildren> = ({ children }) => {
-		return true ? (
-			<View style={styles.imageBckWrapper}>
-				<ImageBackground
-					imageStyle={styles.imageFillStyle}
-					resizeMode="cover"
-					style={styles.imageStyle}
-					source={require('@assets/images/TolCoins1.png')}>
-					<CloseIcon
-						style={{ marginTop: 60, marginRight: 30 }}
-						onPress={hideModal}
-					/>
-
-					<View style={styles.bannerTextContainer}>
-						<AppText variant="headline" style={styles.bannerText}>
-							tolcoins_modal_text_on_banner
-						</AppText>
-					</View>
-				</ImageBackground>
-
-				{children}
-			</View>
-		) : (
-			<View style={styles.imageBckWrapper}>
-				<CloseIcon
-					style={{ marginTop: 60, marginRight: 30 }}
-					onPress={hideModal}
-				/>
-				{children}
-			</View>
-		)
-	}
-
 	return (
 		<Modal
 			propagateSwipe={true}
@@ -74,18 +33,30 @@ const InfoBanner = ({
 			backdropTransitionInTiming={300}
 			style={{ margin: 0, justifyContent: 'flex-end' }}>
 			<View style={styles.scrollWrapper}>
-				<BackgroundWrapper>
-					<View
-						style={
-							modalContent?.banner
-								? styles.contentWrapper
-								: styles.contentWrapperWithoutBanner
-						}>
+				<View style={styles.imageBckWrapper}>
+					<ImageBackground
+						imageStyle={styles.imageFillStyle}
+						resizeMode="cover"
+						style={styles.imageStyle}
+						source={require('@assets/images/TolCoins1.png')}>
+						<CloseIcon
+							style={{ marginTop: 60, marginRight: 30 }}
+							onPress={hideModal}
+						/>
+
+						<View style={styles.bannerTextContainer}>
+							<AppText variant="headline" style={styles.bannerText}>
+								tolcoins_modal_text_on_banner
+							</AppText>
+						</View>
+					</ImageBackground>
+
+					<View style={styles.contentWrapperWithoutBanner}>
 						<AppText style={styles.title}>tolcoins_modal_header</AppText>
 						<AppText style={styles.descr}>tolcoins_modal_text_1</AppText>
 						<AppText style={styles.descr}>tolcoins_modal_text_2</AppText>
 					</View>
-				</BackgroundWrapper>
+				</View>
 			</View>
 		</Modal>
 	)
@@ -122,8 +93,6 @@ const styles = StyleSheet.create({
 		marginTop: 24,
 		marginHorizontal: 20,
 		paddingBottom: 154,
-
-		// minHeight: WINDOW_HEIGHT / 3,
 	},
 	contentWrapperWithoutBanner: {
 		marginTop: 24,
@@ -133,14 +102,12 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 24,
 		lineHeight: 28,
-		// fontFamily: theme.font.medium,
 		color: '#FFFFFF',
 	},
 	descr: {
 		fontSize: 14,
 		lineHeight: 18,
 		marginTop: 16,
-		// fontFamily: theme.font.medium,
 		color: '#ccd9dd',
 	},
 	scrollWrapper: {
