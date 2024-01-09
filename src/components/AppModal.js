@@ -69,6 +69,7 @@ function AppModal({
 				onSwipeComplete={hide}
 				// swipeDirection="down"
 				propagateSwipe={true}
+				backdropTransitionOutTiming={0}
 				style={[styles.modal, modalStyle]}
 				animationOutTiming={500}
 				backdropTransitionInTiming={300}

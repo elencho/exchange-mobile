@@ -119,9 +119,11 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 				<Modal
 					propagateSwipe={true}
 					useNativeDriver
+					useNativeDriverForBackdrop
 					isVisible={isModalVisible && !isBiometricScreenOpenedForModal}
 					// onDismiss={hideModal}
 					coverScreen
+					backdropTransitionOutTiming={0}
 					animationOutTiming={500}
 					backdropTransitionInTiming={300}
 					style={{ margin: 0, justifyContent: 'flex-end' }}>

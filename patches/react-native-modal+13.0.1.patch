@@ -1,0 +1,19 @@
+diff --git a/node_modules/react-native-modal/dist/modal.js b/node_modules/react-native-modal/dist/modal.js
+index 80f4e75..ca94ac3 100644
+--- a/node_modules/react-native-modal/dist/modal.js
++++ b/node_modules/react-native-modal/dist/modal.js
+@@ -379,12 +379,9 @@ export class ReactNativeModal extends React.Component {
+                     else {
+                         this.setState({
+                             showContent: false,
++                            isVisible: false,
+                         }, () => {
+-                            this.setState({
+-                                isVisible: false,
+-                            }, () => {
+-                                this.props.onModalHide();
+-                            });
++                            this.props.onModalHide();
+                         });
+                     }
+                 });
