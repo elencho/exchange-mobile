@@ -21,9 +21,9 @@ import { Theme, useTheme } from '@theme/index'
 
 import { AppButton } from '@components/button'
 import AppText from '@components/text'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '@app/refactor/redux/rootReducer'
+import { useDispatch } from 'react-redux'
 import { setNotificationData } from '@store/redux/common/slice'
+import { useNetInfoInstance } from '@react-native-community/netinfo'
 
 type ModalContextType = {
 	showModal: (content: ContentType, isBiometricScreenOpened?: boolean) => void
@@ -49,7 +49,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 		useState(false)
 	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
-	console.log({ isBiometricScreenOpenedForModal, isModalVisible, modalContent })
+	const {
+		netInfo: { isConnected },
+	} = useNetInfoInstance()
+
 	const [modalContent, setModalContent] = useState<ContentType | null>(null)
 	const showModal = (
 		content: ContentType,
@@ -120,7 +123,9 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 					propagateSwipe={true}
 					useNativeDriver
 					useNativeDriverForBackdrop
-					isVisible={isModalVisible && !isBiometricScreenOpenedForModal}
+					isVisible={
+						!!isConnected && isModalVisible && !isBiometricScreenOpenedForModal
+					}
 					// onDismiss={hideModal}
 					coverScreen
 					backdropTransitionOutTiming={0}

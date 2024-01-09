@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import TransactionHistory from '@app/refactor/screens/transactions/transactions_history'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { useTheme } from '@theme/index'
-import BottomTabs from '@app/components/BottomTabs'
+import { BottomTabs } from '@app/components/BottomTabs'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { TokenParams } from '@app/refactor/types/auth/splash'
 import InstantTrade from '@app/screens/InstantTrade'
@@ -149,13 +149,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 				swipeEnabled: false,
 			})}
 			initialRouteName="Trade"
-			tabBar={({ state, navigation, descriptors }) => (
-				<BottomTabs
-					routes={state.routes}
-					navigation={navigation}
-					descriptors={descriptors}
-				/>
-			)}>
+			tabBar={(props) => <BottomTabs {...props} />}>
 			<Tab.Screen name="Trade" component={InstantTrade} />
 			<Tab.Screen name="Wallet" component={Wallet} />
 			<Tab.Screen name="Transactions" component={TransactionHistory} />
@@ -163,4 +157,4 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		</Tab.Navigator>
 	)
 }
-export default memo(Main)
+export default Main

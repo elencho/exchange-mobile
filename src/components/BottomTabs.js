@@ -12,7 +12,7 @@ import WalletActive from '../assets/images/BottomTabs/Wallet_Active.svg'
 import FocusIcon from '../assets/images/Focused'
 import colors from '../constants/colors'
 
-export default function BottomTabs({ navigation, descriptors, routes }) {
+export const BottomTabs = ({ navigation, state }) => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
@@ -39,15 +39,14 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
 	return (
 		<>
 			<View style={styles.container}>
-				{routes.map((route) => {
-					const focused = descriptors[route.key].navigation.isFocused()
+				{state.routes.map((route, index) => {
+					const isFocused = state.index === index
 					const navigate = () => navigation.navigate(route.name)
-
 					return (
 						<Pressable key={route.key} style={styles.tab} onPress={navigate}>
 							<View style={styles.gradient}>
-								{focused ? active[route.name] : inactive[route.name]}
-								{focused && <FocusIcon style={styles.focus} />}
+								{isFocused ? active[route.name] : inactive[route.name]}
+								{isFocused && <FocusIcon style={styles.focus} />}
 							</View>
 						</Pressable>
 					)
@@ -57,7 +56,6 @@ export default function BottomTabs({ navigation, descriptors, routes }) {
 		</>
 	)
 }
-
 const styles = StyleSheet.create({
 	container: {
 		flexDirection: 'row',
