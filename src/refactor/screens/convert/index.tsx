@@ -39,13 +39,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	} = useCoins()
 
 	useEffect(() => {
-		cards.length &&
-			fees.length &&
-			navigation.navigate('SelectCard', { cards, fees })
-	}, [cards, fees])
-
-	useEffect(() => {
-		cards.length && setChosenCard(cards[0])
+		cards.length === 1 && setChosenCard(cards[0])
 	}, [cards])
 
 	const handleDropDownClick = (type: CoinType) => {
@@ -127,16 +121,23 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							}}
 						/>
 					)}
-					{tradeType === 'Buy' &&
-						pair.fiat.buyWithCard &&
-						cards.length !== 0 && (
-							<CardSection
-								cards={cards}
-								chosenCard={chosenCard}
-								buyWithCardChecked={buyWithCardChecked}
-								setBuyWithCardChecked={setBuyWithCardChecked}
-							/>
-						)}
+					{tradeType === 'Buy' && pair.fiat.buyWithCard && (
+						<CardSection
+							cards={cards}
+							chosenCard={chosenCard}
+							buyWithCardChecked={buyWithCardChecked}
+							setBuyWithCardChecked={setBuyWithCardChecked}
+							chooseCardClicked={() =>
+								navigation.navigate('SelectCard', {
+									cards,
+									fees,
+									onCardChoose(card) {
+										setChosenCard(card)
+									},
+								})
+							}
+						/>
+					)}
 					<Timer
 						pair={pair}
 						tradeType={tradeType}

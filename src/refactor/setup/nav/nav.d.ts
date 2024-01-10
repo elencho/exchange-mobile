@@ -52,5 +52,6 @@ export type Screens = {
 	SelectCard: {
 		fees: ProviderFees[]
 		cards: Card[]
+		onCardChoose: (card: Card) => void
 	}
 }

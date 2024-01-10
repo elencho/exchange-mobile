@@ -11,20 +11,21 @@ type Props = {
 	cards: Card[]
 	buyWithCardChecked: boolean
 	setBuyWithCardChecked: (checked: boolean) => void
+	chooseCardClicked: () => void
 }
 
 const CardSection = ({
+	chosenCard,
 	cards,
 	buyWithCardChecked,
 	setBuyWithCardChecked,
+	chooseCardClicked,
 }: Props) => {
 	const { styles, theme } = useTheme(_styles)
 
-	const [chosenCard, setChosenCard] = useState<Card>()
-
 	useEffect(() => {
-		cards.length === 1 && setChosenCard(cards[0])
-	}, [])
+		console.log(chosenCard)
+	}, [chosenCard])
 
 	return (
 		<View style={styles.container}>
@@ -43,7 +44,7 @@ const CardSection = ({
 					style={styles.dropdown}
 					notClearable
 					noTranslate
-					handlePress={() => {}} // TODO: open card modal
+					handlePress={chooseCardClicked}
 					disabled={cards.length === 0}
 					label="Choose Card"
 					selectedText={chosenCard && chosenCard?.cardNumber}

@@ -19,6 +19,7 @@ import '@app/refactor/setup/network/interceptor'
 import { System } from '@app/refactor/common/util'
 import { ModalProvider } from '@components/modal/global_modal'
 
+LogBox.ignoreAllLogs()
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed
 	'VirtualizedLists should never be nested',

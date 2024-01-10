@@ -1,6 +1,6 @@
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { Theme, useTheme } from '@theme/index'
-import { StyleSheet, View, Image } from 'react-native'
+import { StyleSheet, View, Image, Pressable } from 'react-native'
 import AppBackground from '@components/background'
 import AppText from '@components/text'
 import { AppButton } from '@components/button'
@@ -12,7 +12,7 @@ import { FlatList } from 'react-native-gesture-handler'
 
 const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 	const { styles, theme } = useTheme(_styles)
-	const { cards, fees } = props.route?.params
+	const { cards, onCardChoose, fees } = props.route?.params
 
 	const [feesModalVisible, setFeesModalVisible] = useState(false)
 
@@ -46,7 +46,12 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 	const CardList = () => {
 		const renderCard = (card: Card) => {
 			return (
-				<View style={styles.cardContainer}>
+				<Pressable
+					style={styles.cardContainer}
+					onPress={() => {
+						onCardChoose(card)
+						props.navigation.pop()
+					}}>
 					<Image
 						style={{ width: 50, height: 25, marginRight: 14, borderRadius: 2 }}
 						source={{
@@ -65,7 +70,7 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 					<AppText variant="l" style={styles.cardFeeText}>
 						{'Fee: ' + card.feePct + '%'}
 					</AppText>
-				</View>
+				</Pressable>
 			)
 		}
 
