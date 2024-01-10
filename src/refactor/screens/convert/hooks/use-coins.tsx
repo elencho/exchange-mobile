@@ -22,7 +22,7 @@ export const useCoins = () => {
 	const [fiats, setFiats] = useState<Coin[]>([])
 	const [cryptos, setCryptos] = useState<Coin[]>([])
 	const [cards, setCards] = useState<Card[]>([])
-	const [fees, setFees] = useState<CardFee[]>([])
+	const [fees, setFees] = useState<ProviderFees[]>([])
 
 	const offersCache = useRef<Record<DisplayCcy, CoinPair[]>>({})
 	const balancesCache = useRef<Record<DisplayCcy, BalanceEntry>>({})
@@ -192,13 +192,15 @@ export const useCoins = () => {
 		}
 	}
 
-	const mapFee = (entry: [string, Record<string, number | null>]): CardFee => {
+	const mapFee = (
+		entry: [string, Record<string, number | null>]
+	): ProviderFees => {
 		const providerBank = entry[0]
 		const data = entry[1]
 		return {
 			providerBank,
 			feeData: Object.entries(data).map((fee) => {
-				return { cardType: fee[0], pct: fee[1] }
+				return { cardType: fee[0], pct: fee[1], iconPngUrl: cardToIcon(fee[0]) }
 			}),
 		}
 	}

@@ -4,7 +4,7 @@ import { Theme, useTheme } from '@theme/index'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 
 interface Props {
-	fees: CardFee[]
+	fees: ProviderFees[]
 	visible: boolean
 	dismiss: () => void
 }
@@ -12,16 +12,48 @@ interface Props {
 const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 	const { styles, theme } = useTheme(_styles)
 
-	const renderBankFees = (fee: CardFee, drawUnderline: boolean) => {
+	const renderBankFees = (fee: ProviderFees, drawUnderline: boolean) => {
 		return (
-			<View key={fee.providerBank} style={styles.bankFeeContainer}>
-				<AppText variant="l" style={styles.bankText}>
-					{fee.providerBank}
-				</AppText>
-				{fee.feeData.map((item) => (
-					<AppText variant="l" style={styles.bankText}>
-						{item.pct ? item.pct + '%' : '-'}
+			<View style={{ flexDirection: 'column' }}>
+				<View key={fee.providerBank} style={styles.bankFeeContainer}>
+					<AppText variant="title" style={[styles.bankText, { marginLeft: 0 }]}>
+						{fee.providerBank}
 					</AppText>
+					<View style={{ flex: 1 }}></View>
+					{fee.feeData.map((item) => (
+						<AppText
+							variant="title"
+							style={styles.bankText}
+							key={item.cardType}>
+							{item.pct ? item.pct + '%' : '-'}
+						</AppText>
+					))}
+				</View>
+				{drawUnderline && <View style={styles.underline} />}
+			</View>
+		)
+	}
+
+	const ProviderRow = () => {
+		const icons = [
+			...new Set(
+				fees.flatMap((fee) => fee.feeData.map((data) => data.iconPngUrl))
+			),
+		]
+		return (
+			<View style={styles.providersContainer}>
+				<AppText variant="l" style={styles.providersText}>
+					{'PROVIDERS :'}
+				</AppText>
+				<View style={{ flex: 1 }}></View>
+				{icons.map((cardIcon) => (
+					<Image
+						key={cardIcon}
+						style={{ width: 38, height: 22, marginLeft: 42, borderRadius: 2 }}
+						source={{
+							uri: cardIcon,
+						}}
+					/>
 				))}
 			</View>
 		)
@@ -30,8 +62,10 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 	const children = () => {
 		return (
 			<View style={styles.container}>
-				{/* Render icons */}
-				{fees.map((fee: CardFee, index) => renderBankFees(fee, index !== 0))}
+				<ProviderRow />
+				{fees.map((fee: ProviderFees, index) =>
+					renderBankFees(fee, index !== fees.length - 1)
+				)}
 			</View>
 		)
 	}
@@ -50,15 +84,30 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
 		container: {
-			marginHorizontal: 8,
+			marginLeft: 8,
+		},
+		providersContainer: {
+			alignItems: 'center',
+			flexDirection: 'row',
+			marginVertical: 25,
 		},
 		bankFeeContainer: {
 			flexDirection: 'row',
 			marginBottom: 10,
-			justifyContent: 'space-around',
 		},
 		bankText: {
+			textAlign: 'center',
+			width: 38,
+			marginLeft: 42,
 			color: theme.color.textPrimary,
+		},
+		providersText: {
+			color: theme.color.textSecondary,
+		},
+		underline: {
+			backgroundColor: '#2E2E4D',
+			height: 1,
+			marginBottom: 10,
 		},
 	})
 

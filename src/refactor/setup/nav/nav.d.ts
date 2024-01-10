@@ -50,7 +50,7 @@ export type Screens = {
 	CardVerificationTwo?: {}
 	ConvertNow?: {}
 	SelectCard: {
-		fees: CardFee[]
+		fees: ProviderFees[]
 		cards: Card[]
 	}
 }

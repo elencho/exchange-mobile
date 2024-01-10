@@ -23,7 +23,7 @@ type CoinPair = {
 
 type CardData = {
 	cards: Card[]
-	fees: CardFee[]
+	fees: ProviderFees[]
 }
 
 type Card = {
@@ -35,10 +35,11 @@ type Card = {
 	feePct: number | null
 }
 
-type CardFee = {
+type ProviderFees = {
 	providerBank: string
 	feeData: {
 		pct: number | null
 		cardType: string
+		iconPngUrl: string
 	}[]
 }
