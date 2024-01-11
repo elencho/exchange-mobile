@@ -29,6 +29,7 @@ type ModalContextType = {
 	modalContent: ContentType | null
 	setModalVisible: (v: boolean) => void
 	isBiometricScreenOpenedForModal: boolean
+	isModalVisible?: boolean
 }
 
 interface ContentType {
@@ -111,6 +112,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 				modalContent,
 				setModalVisible,
 				isBiometricScreenOpenedForModal,
+				isModalVisible,
 			}}>
 			{children}
 			{modalContent && !isBiometricScreenOpenedForModal && (
