@@ -23,18 +23,14 @@ import EmailVerification from '@app/refactor/screens/auth/email_verification'
 import CardVerificationOneScreen from '@app/screens/CardVerificationOne'
 import CardVerificationTwoScreen from '@app/screens/CardVerificationTwo'
 import BalanceScreen from '@app/screens/Wallet/Balance'
-// import useNotifications from '@app/screens/useNotifications'
 import NoInternet from '@app/refactor/screens/auth/no_internet'
 import { Screens } from './nav'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setGeneralError } from '@store/redux/common/slice'
 
-import { RootState } from '@app/refactor/redux/rootReducer'
 import { enableScreens } from 'react-native-screens'
 import { useTheme } from '@theme/index'
 import NetInfo from '@react-native-community/netinfo'
-// import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
-// import { useNotificationHandler } from 'notifiactionHandler'
 import { AppState, AppStateStatus } from 'react-native'
 import { getNotification, inAppNotificationListener } from 'getNotification'
 
@@ -44,9 +40,7 @@ export const navigationRef = createNavigationContainerRef<Screens>()
 
 export default function AppNavigator() {
 	const dispatch = useDispatch()
-	const {
-		errors: { generalError },
-	} = useSelector((state: RootState) => state)
+
 	const [currentPage, setCurrentPage] = useState('Splash')
 	const [activeAppState, setActiveAppState] = useState(AppState.currentState)
 	const appState = useRef(AppState.currentState)

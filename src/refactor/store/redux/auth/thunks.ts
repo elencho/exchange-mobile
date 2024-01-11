@@ -323,6 +323,7 @@ export const codeToTokenThunk = createAsyncThunk(
 				})
 			)
 			canDoBiometric(tokenData.access_token).then((canDo) => {
+				KV.set('bioIsAvailableOnUser', canDo)
 				dispatch(setBiometricToggleEnabled(canDo))
 			})
 

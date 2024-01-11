@@ -20,7 +20,9 @@ export const canDoBiometric = async (
 export const biometricDiffElapsed = (): boolean => {
 	const lastTimeOpenMillis = KV.get('lastOpenDateMillis')
 
-	return lastTimeOpenMillis
-		? Date.now() - lastTimeOpenMillis >= BIOMETRIC_DIFF_MILLIS
-		: false
+	if (!lastTimeOpenMillis) {
+		return false
+	}
+
+	return Date.now() - lastTimeOpenMillis >= BIOMETRIC_DIFF_MILLIS
 }

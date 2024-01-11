@@ -1,7 +1,10 @@
 import { useModal } from '@components/modal/global_modal'
-import messaging from '@react-native-firebase/messaging'
-import { useEffect, useRef } from 'react'
+import messaging, {
+	FirebaseMessagingTypes,
+} from '@react-native-firebase/messaging'
+import { useEffect } from 'react'
 import * as Notifications from 'expo-notifications'
+import KV from '@store/kv/regular'
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -11,7 +14,9 @@ Notifications.setNotificationHandler({
 	}),
 })
 export const getNotification = () => {
-	const { showModal } = useModal()
+	const { showModal, setModalContent } = useModal()
+	const bioAvailable = KV.get('bioIsAvailableOnUser')
+
 	useEffect(() => {
 		messaging()
 			.getInitialNotification()
@@ -24,16 +29,16 @@ export const getNotification = () => {
 						redirectUrl: remoteMessage?.data?.redirectUrl,
 						title: remoteMessage?.data?.title,
 					}
-					console.log('getInitialNotification', data)
 
-					if (data.title && data.description) {
+					if (data.title && data.description && !bioAvailable) {
 						showModal(data)
+					} else if (data.title && data.description && bioAvailable) {
+						setModalContent(data)
 					}
 				}
 			})
 
 		messaging().onNotificationOpenedApp((remoteMessage) => {
-			console.log('from onNotificationOpenedApp', remoteMessage)
 			const data = {
 				description: remoteMessage?.notification?.body,
 				banner: remoteMessage?.data?.banner,
@@ -41,34 +46,34 @@ export const getNotification = () => {
 				redirectUrl: remoteMessage?.data?.redirectUrl,
 				title: remoteMessage?.data?.title,
 			}
-			if (data.title && data.description) {
+			if (data.title && data.description && !bioAvailable) {
 				showModal(data)
+			} else if (data.title && data.description && bioAvailable) {
+				setModalContent(data)
 			}
 		})
 	}, [])
 }
 
 export const inAppNotificationListener = () => {
-	const { showModal } = useModal()
-	const responseListener = useRef()
+	const {
+		showModal,
+		setModalContent,
+		isBiometricScreenOpenedForModal,
+		setModalVisible,
+	} = useModal()
 
 	useEffect(() => {
-		const unsubscribe = messaging().onMessage(onNotifeeMessageReceived)
+		const unsubscribe = messaging().onMessage(onForegroundMessageReceived)
 
 		return () => {
 			unsubscribe()
 		}
 	}, [])
 
-	const onNotifeeMessageReceived = async (message) => {
-		await Notifications.scheduleNotificationAsync({
-			content: {
-				title: message.notification.title,
-				body: message?.notification?.body,
-				data: { data: data },
-			},
-			trigger: null,
-		})
+	const onForegroundMessageReceived = async (
+		message: FirebaseMessagingTypes.RemoteMessage
+	) => {
 		const data = {
 			description: message?.notification?.body,
 			banner: message?.data?.banner,
@@ -76,6 +81,23 @@ export const inAppNotificationListener = () => {
 			redirectUrl: message?.data?.redirectUrl,
 			title: message?.data?.title,
 		}
-		showModal(data)
+		await Notifications.scheduleNotificationAsync({
+			content: {
+				title: message?.notification?.title,
+				body: message?.notification?.body,
+				data: { data: data },
+			},
+			trigger: null,
+		})
+		if (data.title && data.description && !isBiometricScreenOpenedForModal) {
+			showModal(data)
+		} else if (
+			data.title &&
+			data.description &&
+			isBiometricScreenOpenedForModal
+		) {
+			setModalVisible(true)
+			setModalContent(data)
+		}
 	}
 }

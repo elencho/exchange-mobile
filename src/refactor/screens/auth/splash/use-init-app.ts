@@ -23,12 +23,12 @@ import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import KV from '@store/kv/regular'
 import SecureKV from '@store/kv/secure'
 import { setBiometricToggleEnabled } from '@store/redux/common/slice'
-import main from '@app/refactor/screens/auth/main'
+import { useModal } from '@components/modal/global_modal'
 
 const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 	const { theme } = useTheme()
 	const dispatch = useDispatch()
-
+	const { setIsBiometricScreenOpenedForModal, setModalVisible } = useModal()
 	useFocusEffect(
 		useCallback(() => {
 			startApp()
@@ -64,9 +64,10 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 
 		const update = await updateNeeded()
 		const maintenance = await isBackDown()
-		const showBio = await canDoBiometric(accessToken).then((canDo) =>
-			dispatch(setBiometricToggleEnabled(canDo))
-		)
+		const showBio = await canDoBiometric(accessToken).then((canDo) => {
+			KV.set('bioIsAvailableOnUser', canDo)
+			return dispatch(setBiometricToggleEnabled(canDo))
+		})
 
 		if (showBio.payload && biometricDiffElapsed()) {
 			navigation.navigate('Resume', {
@@ -75,6 +76,8 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 				version: update,
 			})
 		} else {
+			setIsBiometricScreenOpenedForModal(false)
+			setModalVisible(true)
 			if (update) {
 				navigation.navigate('UpdateAvailable')
 			} else if (maintenance) {

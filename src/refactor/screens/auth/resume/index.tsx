@@ -26,16 +26,15 @@ import { useNetInfoInstance } from '@react-native-community/netinfo'
 const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 	const dispatch = useDispatch()
 	const { styles } = useTheme(_styles)
-	const { setIsBiometricScreenOpenedForModal } = useModal()
+	const { setIsBiometricScreenOpenedForModal, showModal, modalContent } =
+		useModal()
 	const { from, maintenanceInProgress, version } = route.params
 	const fromSplash = from === 'Splash'
 	const resumed = route?.key === 'Resume-uniqueKey'
-
 	const {
 		netInfo: { isConnected },
 	} = useNetInfoInstance()
 	const { userInfo } = useSelector((state: RootState) => state.profile)
-	const { notificationData } = useSelector((state: RootState) => state.common)
 	const [bioType, setBioType] = useState<BioType>()
 
 	useFocusEffect(
@@ -79,9 +78,10 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 		})
 		if (authResult?.success) {
 			KV.set('lastOpenDateMillis', Date.now())
-			// if (notificationData) {
-			// 	showModal(notificationData)
-			// }
+
+			if (modalContent) {
+				showModal(modalContent)
+			}
 			if (maintenanceInProgress) {
 				navigation.navigate('Maintenance')
 			} else if (version) {

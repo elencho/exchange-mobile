@@ -53,6 +53,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		if (isBiometricEnabled) {
 			const withoutUserMail = cachedEmails.filter((e) => e !== userEmail)
 			SecureKV.set('bioEnabledEmails', withoutUserMail)
+			KV.set('bioIsAvailableOnUser', false)
 			return dispatch(setBiometricToggleEnabled(false))
 		}
 		if (!isBiometricEnabled && hasFaceOrTouchIdSaved) {
@@ -68,6 +69,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 					.concat([userEmail])
 
 				SecureKV.set('bioEnabledEmails', addedUserMail)
+				KV.set('bioIsAvailableOnUser', true)
 				dispatch(setBiometricToggleEnabled(true))
 			}
 		}
