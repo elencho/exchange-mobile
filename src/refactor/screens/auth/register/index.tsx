@@ -34,6 +34,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import { System } from '@app/refactor/common/util'
 import BackButton from '@components/back_button'
 import { AnimatedMargin } from '@components/animated/margin'
+import { FullScreenLoader } from '@components/full_screen_loader'
 
 interface Props extends NativeStackScreenProps<Screens, 'Registration'> {}
 
@@ -152,188 +153,189 @@ const Register = ({ navigation }: Props) => {
 	const styleHasNumber = passErr && !passHasNumber && styles.redText
 
 	return (
-		<SafeAreaView style={styles.safeArea}>
-			<WithKeyboard
-				keyboardVerticalOffsetIOS={10}
-				scrollUp={true}
-				padding={true}
-				modal={undefined}
-				refreshControl={undefined}
-				flexGrow={undefined}>
-				<BackButton onPress={goBack} style={styles.back} />
-				<View style={styles.container}>
-					<Logo style={styles.logo} />
-					<AppText variant="headline" style={styles.header}>
-						Welcome to Cryptal
-					</AppText>
-					<PersonalCompanySwitcher
-						chosenType={userType}
-						onUserTypeChanged={setUserType}
-					/>
-					<GeneralError errorData={generalErrorData} style={styles.error} />
-					<AppInput
-						value={mail}
-						label="Enter E-mail"
-						style={styles.input && { marginTop: 27 }}
-						onFocusOrChange={() => {
-							setMailErr(false)
-							setMailMarginExpanded(false)
-							setGeneralErrorData(null)
-						}}
-						onChangeText={setMail}
-						error={mailErr && (mail.trim() ? 'Enter Valid Email' : true)}
-					/>
-					<AnimatedMargin
-						min={11}
-						max={32}
-						durationMillis={250}
-						expanded={mailMarginExpanded}
-					/>
-					<AppInput
-						value={pass}
-						label="Enter Password"
-						onChangeText={setPass}
-						onFocusOrChange={() => {
-							setPassErr(false)
-							setGeneralErrorData(null)
-						}}
-						error={passErr}
-						secureTextEntry={true}
-					/>
-					<Text style={styles.validations}>
-						<AppText variant="m" style={styleManyChars}>
-							8_more_chars_registration
+		<FullScreenLoader loading={registerLoading}>
+			<SafeAreaView style={styles.safeArea}>
+				<WithKeyboard
+					keyboardVerticalOffsetIOS={10}
+					scrollUp={true}
+					padding={true}
+					modal={undefined}
+					refreshControl={undefined}
+					flexGrow={undefined}>
+					<BackButton onPress={goBack} style={styles.back} />
+					<View style={styles.container}>
+						<Logo style={styles.logo} />
+						<AppText variant="headline" style={styles.header}>
+							Welcome to Cryptal
 						</AppText>
-						<AppText style={styleManyChars}>{', '}</AppText>
-						<AppText variant="m" style={styleUpperLower}>
-							upper_lowercase_letters_registration
-						</AppText>
-						<AppText style={styleUpperLower}>{', '}</AppText>
-						<AppText variant="m" style={styleHasNumber}>
-							at_least_one_number
-						</AppText>
-					</Text>
-					<AppInput
-						value={confirmPass}
-						label="Repeat Password"
-						labelBackgroundColor={theme.color.backgroundPrimary}
-						style={styles.input && { marginTop: System.isAndroid ? 1 : 6 }}
-						onChangeText={setConfirmPass}
-						onFocusOrChange={() => {
-							setConfirmPassErr(false)
-							setGeneralErrorData(null)
-						}}
-						error={confirmPassErr}
-						secureTextEntry={true}
-					/>
-					<View
-						style={[
-							styles.phoneNumber,
-							phoneErr && { borderColor: theme.color.error },
-						]}>
-						<Pressable
-							style={styles.number}
-							onPress={onPhoneCodePressed}
-							onFocus={() => setPhoneErr(false)}>
-							{chosenCountry ? (
-								<>
-									<Image
-										source={{
-											uri: `${COUNTRIES_URL_PNG}/${chosenCountry.code}.png`,
-										}}
-										style={{
-											width: 15,
-											height: 15,
-											borderRadius: 10,
-											resizeMode: 'stretch',
-										}}
-									/>
-									<AppText medium style={styles.white}>
-										{chosenCountry.phoneCode}
-									</AppText>
-								</>
-							) : (
-								<AppText style={styles.code}>Code</AppText>
-							)}
-							<Arrow />
-							<View style={styles.line} />
-						</Pressable>
-						<TextInput
-							value={phone}
-							onChangeText={(txt: string) => {
-								setPhone(txt)
-								setPhoneErr(false)
-								setGeneralErrorData(null)
-							}}
-							onFocus={() => {
-								setPhoneErr(false)
-								setGeneralErrorData(null)
-							}}
-							placeholder={t('Phone Number').toString()}
-							placeholderTextColor={
-								phoneErr ? theme.color.error : theme.color.textSecondary
-							}
-							style={{
-								flex: 1,
-								color: 'white',
-								fontFamily: theme.font.regular,
-							}}
-							keyboardType="numeric"
+						<PersonalCompanySwitcher
+							chosenType={userType}
+							onUserTypeChanged={setUserType}
 						/>
-					</View>
-					<CountriesModal
-						chosenItem={chosenCountry}
-						visible={countryModalVisible}
-						onCountryChosen={setChosenCountry}
-						hide={() => {
-							setCountryModalVisible(false)
-							setCountryFilterText('')
-						}}
-						from="Registration"
-						phoneCountry={true}
-						countryFilterText={countryFilterText}
-						setCountryFilterText={setCountryFilterText}
-					/>
-					{userType === 'Personal' && (
-						<>
-							<AppInput
-								value={referral}
-								label="Referral Code"
-								style={styles.input}
-								onChangeText={setReferral}
-								onFocusOrChange={() => setGeneralErrorData(null)}
+						<GeneralError errorData={generalErrorData} style={styles.error} />
+						<AppInput
+							value={mail}
+							label="Enter E-mail"
+							style={styles.input && { marginTop: 27 }}
+							onFocusOrChange={() => {
+								setMailErr(false)
+								setMailMarginExpanded(false)
+								setGeneralErrorData(null)
+							}}
+							onChangeText={setMail}
+							error={mailErr && (mail.trim() ? 'Enter Valid Email' : true)}
+						/>
+						<AnimatedMargin
+							min={11}
+							max={32}
+							durationMillis={250}
+							expanded={mailMarginExpanded}
+						/>
+						<AppInput
+							value={pass}
+							label="Enter Password"
+							onChangeText={setPass}
+							onFocusOrChange={() => {
+								setPassErr(false)
+								setGeneralErrorData(null)
+							}}
+							error={passErr}
+							secureTextEntry={true}
+						/>
+						<Text style={styles.validations}>
+							<AppText variant="m" style={styleManyChars}>
+								8_more_chars_registration
+							</AppText>
+							<AppText style={styleManyChars}>{', '}</AppText>
+							<AppText variant="m" style={styleUpperLower}>
+								upper_lowercase_letters_registration
+							</AppText>
+							<AppText style={styleUpperLower}>{', '}</AppText>
+							<AppText variant="m" style={styleHasNumber}>
+								at_least_one_number
+							</AppText>
+						</Text>
+						<AppInput
+							value={confirmPass}
+							label="Repeat Password"
+							labelBackgroundColor={theme.color.backgroundPrimary}
+							style={styles.input && { marginTop: System.isAndroid ? 1 : 6 }}
+							onChangeText={setConfirmPass}
+							onFocusOrChange={() => {
+								setConfirmPassErr(false)
+								setGeneralErrorData(null)
+							}}
+							error={confirmPassErr}
+							secureTextEntry={true}
+						/>
+						<View
+							style={[
+								styles.phoneNumber,
+								phoneErr && { borderColor: theme.color.error },
+							]}>
+							<Pressable
+								style={styles.number}
+								onPress={onPhoneCodePressed}
+								onFocus={() => setPhoneErr(false)}>
+								{chosenCountry ? (
+									<>
+										<Image
+											source={{
+												uri: `${COUNTRIES_URL_PNG}/${chosenCountry.code}.png`,
+											}}
+											style={{
+												width: 15,
+												height: 15,
+												borderRadius: 10,
+												resizeMode: 'stretch',
+											}}
+										/>
+										<AppText medium style={styles.white}>
+											{chosenCountry.phoneCode}
+										</AppText>
+									</>
+								) : (
+									<AppText style={styles.code}>Code</AppText>
+								)}
+								<Arrow />
+								<View style={styles.line} />
+							</Pressable>
+							<TextInput
+								value={phone}
+								onChangeText={(txt: string) => {
+									setPhone(txt)
+									setPhoneErr(false)
+									setGeneralErrorData(null)
+								}}
+								onFocus={() => {
+									setPhoneErr(false)
+									setGeneralErrorData(null)
+								}}
+								placeholder={t('Phone Number').toString()}
+								placeholderTextColor={
+									phoneErr ? theme.color.error : theme.color.textSecondary
+								}
+								style={{
+									flex: 1,
+									color: 'white',
+									fontFamily: theme.font.regular,
+								}}
+								keyboardType="numeric"
 							/>
-							<AppInput
-								value={promo}
-								label="Promo Code"
-								style={styles.input}
-								onChangeText={setPromo}
-								onFocusOrChange={() => setGeneralErrorData(null)}
-							/>
-						</>
-					)}
-					<TermsCheck
-						checked={termsSelected}
-						toggleChecked={() => setTermsSelected(!termsSelected)}
-						error={termsSelectedErr}
-					/>
-					<AppButton
-						variant="primary"
-						text="Register"
-						onPress={onRegisterPressed}
-						loading={registerLoading}
-					/>
-					<AppText style={styles.subtext}>
-						{t('Have an Account?')}{' '}
+						</View>
+						<CountriesModal
+							chosenItem={chosenCountry}
+							visible={countryModalVisible}
+							onCountryChosen={setChosenCountry}
+							hide={() => {
+								setCountryModalVisible(false)
+								setCountryFilterText('')
+							}}
+							from="Registration"
+							phoneCountry={true}
+							countryFilterText={countryFilterText}
+							setCountryFilterText={setCountryFilterText}
+						/>
+						{userType === 'Personal' && (
+							<>
+								<AppInput
+									value={referral}
+									label="Referral Code"
+									style={styles.input}
+									onChangeText={setReferral}
+									onFocusOrChange={() => setGeneralErrorData(null)}
+								/>
+								<AppInput
+									value={promo}
+									label="Promo Code"
+									style={styles.input}
+									onChangeText={setPromo}
+									onFocusOrChange={() => setGeneralErrorData(null)}
+								/>
+							</>
+						)}
+						<TermsCheck
+							checked={termsSelected}
+							toggleChecked={() => setTermsSelected(!termsSelected)}
+							error={termsSelectedErr}
+						/>
 						<AppButton
-							variant="text"
-							text={t('Sign In')}
-							onPress={goToSignIn}
+							variant="primary"
+							text="Register"
+							onPress={onRegisterPressed}
 						/>
-					</AppText>
-				</View>
-			</WithKeyboard>
-		</SafeAreaView>
+						<AppText style={styles.subtext}>
+							{t('Have an Account?')}{' '}
+							<AppButton
+								variant="text"
+								text={t('Sign In')}
+								onPress={goToSignIn}
+							/>
+						</AppText>
+					</View>
+				</WithKeyboard>
+			</SafeAreaView>
+		</FullScreenLoader>
 	)
 }
 

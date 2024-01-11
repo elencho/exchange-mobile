@@ -13,6 +13,7 @@ import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { System } from '@app/refactor/common/util'
 import BackButton from '@components/back_button'
+import { FullScreenLoader } from '@components/full_screen_loader'
 
 const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const dispatch = useDispatch()
@@ -53,78 +54,79 @@ const SetNewPassword = ({ navigation }: ScreenProp<'SetNewPassword'>) => {
 	const styleHasNumber = pass.length > 0 && !hasNumber && styles.redText
 
 	return (
-		<Background>
-			<BackButton onPress={goToLogin} style={styles.back} />
+		<FullScreenLoader loading={setPasswordLoading}>
+			<Background>
+				<BackButton onPress={goToLogin} style={styles.back} />
 
-			<WithKeyboard
-				flexGrow={true}
-				padding={true}
-				contentContainerStyle={styles.middle}
-				modal={undefined}
-				refreshControl={undefined}
-				scrollUp={undefined}>
-				<Strong_Password
-					style={{ alignSelf: 'center', transform: [{ scaleY: 1.1 }] }}
-				/>
+				<WithKeyboard
+					flexGrow={true}
+					padding={true}
+					contentContainerStyle={styles.middle}
+					modal={undefined}
+					refreshControl={undefined}
+					scrollUp={undefined}>
+					<Strong_Password
+						style={{ alignSelf: 'center', transform: [{ scaleY: 1.1 }] }}
+					/>
 
-				<View style={{ alignItems: 'center' }}>
-					<AppText variant="headline" style={styles.primary}>
-						Set New Password
-					</AppText>
-					<AppText style={styles.secondary}>
-						Generate new password for your account
-					</AppText>
-				</View>
-
-				<AppInput
-					labelBackgroundColor={theme.color.backgroundPrimary}
-					style={styles.inputNewPass}
-					label="Enter New Password"
-					onChangeText={setPass}
-					onFocusOrChange={() => setPassError(false)}
-					value={pass}
-					secureTextEntry={true}
-					error={passError && (!passValid || !pass)}
-				/>
-
-				<View>
-					<Text style={styles.validations}>
-						<AppText variant="m" style={styleManyChars}>
-							8_more_chars_registration
+					<View style={{ alignItems: 'center' }}>
+						<AppText variant="headline" style={styles.primary}>
+							Set New Password
 						</AppText>
-						<AppText style={styleManyChars}>{', '}</AppText>
-						<AppText variant="m" style={styleUpperLower}>
-							upper_lowercase_letters_registration
+						<AppText style={styles.secondary}>
+							Generate new password for your account
 						</AppText>
-						<AppText style={styleUpperLower}>{', '}</AppText>
-						<AppText variant="m" style={styleHasNumber}>
-							at_least_one_number
-						</AppText>
-					</Text>
-				</View>
+					</View>
 
-				<AppInput
-					labelBackgroundColor={theme.color.backgroundPrimary}
-					style={styles.inputConfirmPass}
-					label="Confirm New Password"
-					onChangeText={setConfirmPass}
-					onFocusOrChange={() => {
-						setConfirmPassError(false)
-					}}
-					value={confirmPass}
-					secureTextEntry={true}
-					error={confirmPassError}
-				/>
+					<AppInput
+						labelBackgroundColor={theme.color.backgroundPrimary}
+						style={styles.inputNewPass}
+						label="Enter New Password"
+						onChangeText={setPass}
+						onFocusOrChange={() => setPassError(false)}
+						value={pass}
+						secureTextEntry={true}
+						error={passError && (!passValid || !pass)}
+					/>
 
-				<AppButton
-					variant="primary"
-					text="Save"
-					style={styles.button}
-					onPress={onSavePressed}
-					loading={setPasswordLoading}
-				/>
-			</WithKeyboard>
-		</Background>
+					<View>
+						<Text style={styles.validations}>
+							<AppText variant="m" style={styleManyChars}>
+								8_more_chars_registration
+							</AppText>
+							<AppText style={styleManyChars}>{', '}</AppText>
+							<AppText variant="m" style={styleUpperLower}>
+								upper_lowercase_letters_registration
+							</AppText>
+							<AppText style={styleUpperLower}>{', '}</AppText>
+							<AppText variant="m" style={styleHasNumber}>
+								at_least_one_number
+							</AppText>
+						</Text>
+					</View>
+
+					<AppInput
+						labelBackgroundColor={theme.color.backgroundPrimary}
+						style={styles.inputConfirmPass}
+						label="Confirm New Password"
+						onChangeText={setConfirmPass}
+						onFocusOrChange={() => {
+							setConfirmPassError(false)
+						}}
+						value={confirmPass}
+						secureTextEntry={true}
+						error={confirmPassError}
+					/>
+
+					<AppButton
+						variant="primary"
+						text="Save"
+						style={styles.button}
+						onPress={onSavePressed}
+					/>
+				</WithKeyboard>
+			</Background>
+		</FullScreenLoader>
 	)
 }
 
