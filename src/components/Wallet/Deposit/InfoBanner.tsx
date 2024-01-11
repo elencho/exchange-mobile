@@ -1,4 +1,12 @@
-import { StyleSheet, View, ImageBackground, Dimensions } from 'react-native'
+import {
+	StyleSheet,
+	View,
+	ImageBackground,
+	Dimensions,
+	Platform,
+	Text,
+	Linking,
+} from 'react-native'
 import React, { FC, PropsWithChildren } from 'react'
 import CloseIcon from '@components/close-button'
 import colors from '@app/constants/colors'
@@ -6,6 +14,9 @@ import Modal from 'react-native-modal'
 import { useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import AppText from '@components/text'
+import { StatusBar } from 'react-native'
+import Constants from 'expo-constants'
+import { AppButton } from '@components/button'
 
 const WINDOW_HEIGHT = Dimensions.get('window').height
 
@@ -21,6 +32,27 @@ const InfoBanner = ({
 	)
 	const globalScreenOpened = isBiometricScreenOpened || isInternetScreenOpened
 
+	const onPress = (coin: string) => {
+		switch (coin) {
+			case 'ToGEL':
+				Linking.openURL(
+					'https://bscscan.com/address/0x536475131db68e96179d00e7531b7af880857995'
+				)
+				break
+			case 'ToUSD':
+				Linking.openURL(
+					'https://bscscan.com/address/0x8035733976e642b81c6ddf83abf68106fea3968f'
+				)
+				break
+			case 'ToEUR':
+				Linking.openURL(
+					'https://bscscan.com/address/0x0d56f7c944637f2d7edcde3d04ae9fcdde8d79b2'
+				)
+				break
+			default:
+				break
+		}
+	}
 	return (
 		<Modal
 			propagateSwipe={true}
@@ -39,10 +71,7 @@ const InfoBanner = ({
 						resizeMode="cover"
 						style={styles.imageStyle}
 						source={require('@assets/images/TolCoins1.png')}>
-						<CloseIcon
-							style={{ marginTop: 60, marginRight: 30 }}
-							onPress={hideModal}
-						/>
+						<CloseIcon style={styles.closeIcon} onPress={hideModal} />
 
 						<View style={styles.bannerTextContainer}>
 							<AppText variant="headline" style={styles.bannerText}>
@@ -54,7 +83,29 @@ const InfoBanner = ({
 					<View style={styles.contentWrapperWithoutBanner}>
 						<AppText style={styles.title}>tolcoins_modal_header</AppText>
 						<AppText style={styles.descr}>tolcoins_modal_text_1</AppText>
-						<AppText style={styles.descr}>tolcoins_modal_text_2</AppText>
+						<Text style={{ flexDirection: 'row' }}>
+							<AppText style={styles.descr}>tolcoins_modal_text_2</AppText>
+							<AppButton
+								onPress={() => onPress('ToGEL')}
+								text="TOGEL, "
+								variant="text"
+								style={styles.descr2}
+							/>
+
+							<AppButton
+								onPress={() => onPress('ToUSD')}
+								text="TOUSD, "
+								variant="text"
+								style={styles.descr2}
+							/>
+
+							<AppButton
+								onPress={() => onPress('ToEUR')}
+								text="TOEUR "
+								variant="text"
+								style={styles.descr2}
+							/>
+						</Text>
 					</View>
 				</View>
 			</View>
@@ -128,5 +179,18 @@ const styles = StyleSheet.create({
 	},
 	bannerText: {
 		color: '#BEC2DD',
+	},
+	closeIcon: {
+		marginTop: Platform.select({
+			ios: Constants.statusBarHeight + 10,
+			android: (StatusBar.currentHeight || 0) + 10,
+		}),
+		marginRight: 20,
+	},
+	descr2: {
+		fontSize: 14,
+		lineHeight: 18,
+		marginTop: 16,
+		marginLeft: 5,
 	},
 })

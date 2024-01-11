@@ -192,6 +192,7 @@ function Withdrawal({ refreshControl }) {
 				<WithKeyboard flexGrow padding refreshControl={refreshControl}>
 					<View style={styles.block}>
 						<WalletCoinsDropdown />
+						<TransferMethodDropdown />
 
 						{!hasRestriction && hasMethod && (
 							<>
@@ -223,7 +224,6 @@ function Withdrawal({ refreshControl }) {
 									<ChooseNetworkDropdown />
 								)}
 
-								<TransferMethodDropdown />
 								<TransferMethodModal />
 
 								{walletInfo() && (
