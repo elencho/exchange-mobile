@@ -30,6 +30,7 @@ import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import BackButton from '@components/back_button'
 import { MaterialIndicator } from 'react-native-indicators'
+import { FullScreenLoader } from '@components/full_screen_loader'
 
 export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	const dispatch = useDispatch()
@@ -125,64 +126,68 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 		)
 
 	return (
-		<AppBackground>
-			<WithKeyboard
-				keyboardVerticalOffsetIOS={40}
-				padding={true}
-				flexGrow={true}
-				modal={undefined}
-				refreshControl={undefined}
-				scrollUp={undefined}>
-				<Pressable style={styles.container} onPress={() => Keyboard.dismiss()}>
-					<BackButton onPress={goBack} style={styles.back} />
-					<View style={styles.middle}>
-						{image()}
-						<View>
-							<AppText variant="headline" style={styles.primary}>
-								{t(`${otpType} authentication login`)}
-							</AppText>
-							<AppText style={styles.secondary}>
-								enter one time password
-							</AppText>
-						</View>
-
-						<View style={styles.twoFaInput}>
-							<TwoFaInput
-								value={value}
-								setValue={(txt) => {
-									setValue(txt)
-									setGeneralErrorData(null)
-								}}
-								cellCount={cellCount}
-								navigation={navigation}
-								onFill={onCodeFilled}
-								generalErrorData={generalErrorData}
-								loading={otpLoading}
-							/>
-						</View>
-					</View>
-
-					<View style={styles.bottom}>
-						{otpType !== 'TOTP' ? (
-							<View style={styles.row}>
-								<AppText style={[styles.secondary, { marginRight: 5 }]}>
-									Didn't receive code?
+		<FullScreenLoader loading={otpLoading}>
+			<AppBackground>
+				<WithKeyboard
+					keyboardVerticalOffsetIOS={40}
+					padding={true}
+					flexGrow={true}
+					modal={undefined}
+					refreshControl={undefined}
+					scrollUp={undefined}>
+					<Pressable
+						style={styles.container}
+						onPress={() => Keyboard.dismiss()}>
+						<BackButton onPress={goBack} style={styles.back} />
+						<View style={styles.middle}>
+							{image()}
+							<View>
+								<AppText variant="headline" style={styles.primary}>
+									{t(`${otpType} authentication login`)}
 								</AppText>
-								{resendOrCountDown()}
+								<AppText style={styles.secondary}>
+									enter one time password
+								</AppText>
 							</View>
-						) : null}
-						{otpType !== 'EMAIL' ? (
-							<AppButton
-								variant="text"
-								text="Reset OTP"
-								style={styles.resetText}
-								onPress={goToReset}
-							/>
-						) : null}
-					</View>
-				</Pressable>
-			</WithKeyboard>
-		</AppBackground>
+
+							<View style={styles.twoFaInput}>
+								<TwoFaInput
+									value={value}
+									setValue={(txt) => {
+										setValue(txt)
+										setGeneralErrorData(null)
+									}}
+									cellCount={cellCount}
+									navigation={navigation}
+									onFill={onCodeFilled}
+									generalErrorData={generalErrorData}
+									// loading={otpLoading}
+								/>
+							</View>
+						</View>
+
+						<View style={styles.bottom}>
+							{otpType !== 'TOTP' ? (
+								<View style={styles.row}>
+									<AppText style={[styles.secondary, { marginRight: 5 }]}>
+										Didn't receive code?
+									</AppText>
+									{resendOrCountDown()}
+								</View>
+							) : null}
+							{otpType !== 'EMAIL' ? (
+								<AppButton
+									variant="text"
+									text="Reset OTP"
+									style={styles.resetText}
+									onPress={goToReset}
+								/>
+							) : null}
+						</View>
+					</Pressable>
+				</WithKeyboard>
+			</AppBackground>
+		</FullScreenLoader>
 	)
 }
 

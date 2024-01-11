@@ -20,6 +20,7 @@ import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { setOtpTimer } from '@store/redux/auth/slice'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { MaterialIndicator } from 'react-native-indicators'
+import { FullScreenLoader } from '@components/full_screen_loader'
 
 const EmailVerification = ({
 	navigation,
@@ -124,53 +125,54 @@ const EmailVerification = ({
 		)
 
 	return (
-		<AppBackground>
-			<WithKeyboard
-				keyboardVerticalOffsetIOS={40}
-				flexGrow={true}
-				padding={true}
-				modal={undefined}
-				refreshControl={undefined}
-				scrollUp={undefined}>
-				<View style={styles.container}>
-					<View style={styles.top}>
-						<CloseModalIcon onPress={goBack} style={undefined} />
-					</View>
-
-					<View style={styles.middle}>
-						<EmailLoginAuth />
-
-						<View>
-							<AppText variant="headline" style={styles.primary}>
-								EMAIL authentication login
-							</AppText>
+		<FullScreenLoader loading={otpLoading}>
+			<AppBackground>
+				<WithKeyboard
+					keyboardVerticalOffsetIOS={40}
+					flexGrow={true}
+					padding={true}
+					modal={undefined}
+					refreshControl={undefined}
+					scrollUp={undefined}>
+					<View style={styles.container}>
+						<View style={styles.top}>
+							<CloseModalIcon onPress={goBack} style={undefined} />
 						</View>
-						{checkMailText()}
 
-						<TwoFaInput
-							navigation={navigation}
-							value={value}
-							setValue={(txt) => {
-								setValue(txt)
-								setGeneralErrorData(null)
-							}}
-							cellCount={6}
-							onFill={onCodeFilled}
-							indicatorStyle={{ top: '70%' }}
-							generalErrorData={generalErrorData}
-							loading={otpLoading}
-						/>
-					</View>
+						<View style={styles.middle}>
+							<EmailLoginAuth />
 
-					<View style={styles.row}>
-						<AppText style={[styles.secondary, { marginRight: 5 }]}>
-							Didn't receive code?
-						</AppText>
-						{resendOrCountDown()}
+							<View>
+								<AppText variant="headline" style={styles.primary}>
+									EMAIL authentication login
+								</AppText>
+							</View>
+							{checkMailText()}
+
+							<TwoFaInput
+								navigation={navigation}
+								value={value}
+								setValue={(txt) => {
+									setValue(txt)
+									setGeneralErrorData(null)
+								}}
+								cellCount={6}
+								onFill={onCodeFilled}
+								indicatorStyle={{ top: '70%' }}
+								generalErrorData={generalErrorData}
+							/>
+						</View>
+
+						<View style={styles.row}>
+							<AppText style={[styles.secondary, { marginRight: 5 }]}>
+								Didn't receive code?
+							</AppText>
+							{resendOrCountDown()}
+						</View>
 					</View>
-				</View>
-			</WithKeyboard>
-		</AppBackground>
+				</WithKeyboard>
+			</AppBackground>
+		</FullScreenLoader>
 	)
 }
 
