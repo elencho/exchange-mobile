@@ -113,7 +113,7 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 				<Logo style={styles.logo} />
 				<View>
 					<AppText variant="headline" style={styles.primary}>
-						Welcome to Cryptalanskjdakj
+						Welcome to Cryptal
 					</AppText>
 				</View>
 
