@@ -78,7 +78,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 		})
 		if (authResult?.success) {
 			KV.set('lastOpenDateMillis', Date.now())
-			
+
 			if (modalContent) {
 				showModal(modalContent)
 			}
