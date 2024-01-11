@@ -470,6 +470,7 @@ export const logoutThunk = createAsyncThunk(
 			})
 
 			await messaging().deleteToken()
+			KV.set('bioIsAvailableOnUser', false)
 
 			dispatch(resetAuth())
 			dispatch(setUserInfo(null))

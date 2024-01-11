@@ -30,7 +30,11 @@ const Tab = createBottomTabNavigator()
 const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const dispatch = useDispatch()
 	const { theme } = useTheme()
-	const { setIsBiometricScreenOpenedForModal, setModalVisible } = useModal()
+	const {
+		setIsBiometricScreenOpenedForModal,
+		setModalVisible,
+		isModalVisible,
+	} = useModal()
 	const fromResume = route.params?.fromResume === true
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
@@ -67,7 +71,6 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
 		const appClosing = isAppClosing(newState)
-
 		const bioVisible =
 			newState === 'active' &&
 			!fromResume &&
@@ -79,13 +82,16 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
-		} else if (!appClosing) {
+		} else if (newState === 'active') {
 			setIsBiometricScreenOpenedForModal(false)
 			setModalVisible(true)
 		}
 
-		if (appClosing && !resumeIsShown()) {
+		if (appClosing && !isModalVisible) {
 			setIsBiometricScreenOpenedForModal(true)
+		}
+
+		if (appClosing && !resumeIsShown()) {
 			KV.set('lastOpenDateMillis', Date.now())
 		}
 		prevAppState.current = newState
