@@ -74,7 +74,7 @@ const CoinInput = ({
 					placeholderTextColor={hexOpacityPct(theme.color.textSecondary, 60)}
 					onBlur={() => {}}
 					onFocus={() => {}}
-					onChangeText={(txt) => onAmountChange(formatAmount(txt, coin))}
+					onChangeText={(txt) => onAmountChange(txt)}
 				/>
 				<AppText style={styles.balanceText} variant="s">
 					{'Balance: ' + coin.balance}
