@@ -31,8 +31,8 @@ export default function WithdrawalConfirmModal() {
 	const type = currentBalanceObj?.type
 	const code = currentBalanceObj?.displayCurrencyCode
 	const isEcommerce = network === 'ECOMMERCE'
-	const isCrypto = type === 'CRYPTO'
-	const isFiat = type === 'FIAT'
+	const isCrypto = type === 'CRYPTO' || network === 'BEP20'
+	const isFiat = type === 'FIAT' && network !== 'BEP20'
 
 	const [seconds, setSeconds] = useState(30)
 	const [twoFaInputValue, setTwoFaInputValue] = useState('')

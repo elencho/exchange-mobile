@@ -41,6 +41,7 @@ export default function ManageCards({ refreshControl }) {
 			{cards?.length && !cardsLoading ? (
 				<>
 					<ScrollView
+						showsVerticalScrollIndicator={false}
 						style={styles.scrollView}
 						contentContainerStyle={{
 							paddingVertical: 20,
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
 	},
 	button: {
 		borderWidth: 1,
-		borderRadius: 1,
+		borderRadius: 22,
 		borderStyle: 'dashed',
 		height: 45,
 		borderColor: colors.SECONDARY_PURPLE,

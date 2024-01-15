@@ -15,6 +15,7 @@ interface Schema {
 	language: Language
 	webViewVisible: boolean
 	lastOpenDateMillis: number
+	bioIsAvailableOnUser: boolean
 }
 type Key = keyof Schema
 
@@ -46,6 +47,7 @@ const deserializers: {
 	everOpened: deserializeBoolean,
 	language: (value: string) => (value === 'ka' ? 'ka' : 'en'),
 	lastOpenDateMillis: deserializeNumber,
+	bioIsAvailableOnUser: deserializeBoolean,
 }
 
 const serializers: { [key in Key]: (value: Schema[key]) => string } = {
@@ -53,6 +55,7 @@ const serializers: { [key in Key]: (value: Schema[key]) => string } = {
 	everOpened: serializeBoolean,
 	language: serializeString,
 	lastOpenDateMillis: serializeNumber,
+	bioIsAvailableOnUser: serializeBoolean,
 }
 
 export default KV

@@ -1,5 +1,5 @@
 import VersionCheck from 'react-native-version-check'
-import { useFocusEffect } from '@react-navigation/native'
+import { CommonActions, useFocusEffect } from '@react-navigation/native'
 import { useCallback, useEffect } from 'react'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch } from 'react-redux'
@@ -23,22 +23,16 @@ import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import KV from '@store/kv/regular'
 import SecureKV from '@store/kv/secure'
 import { setBiometricToggleEnabled } from '@store/redux/common/slice'
-import main from '@app/refactor/screens/auth/main'
-import NetInfo, { useNetInfoInstance } from '@react-native-community/netinfo'
+import { useModal } from '@components/modal/global_modal'
 
 const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 	const { theme } = useTheme()
 	const dispatch = useDispatch()
-	const {
-		netInfo: { isConnected },
-	} = useNetInfoInstance()
-
+	const { setIsBiometricScreenOpenedForModal, setModalVisible } = useModal()
 	useFocusEffect(
 		useCallback(() => {
-			if (typeof isConnected === 'boolean') {
-				startApp()
-			}
-		}, [isConnected])
+			startApp()
+		}, [])
 	)
 
 	const startApp = async () => {
@@ -70,19 +64,20 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 
 		const update = await updateNeeded()
 		const maintenance = await isBackDown()
-		const showBio = await canDoBiometric(accessToken).then((canDo) =>
-			dispatch(setBiometricToggleEnabled(canDo))
-		)
+		const showBio = await canDoBiometric(accessToken).then((canDo) => {
+			KV.set('bioIsAvailableOnUser', canDo)
+			return dispatch(setBiometricToggleEnabled(canDo))
+		})
 
-		if (isConnected === false) {
-			navigation.navigate('NoInternet')
-		} else if (showBio.payload && biometricDiffElapsed()) {
+		if (showBio.payload && biometricDiffElapsed()) {
 			navigation.navigate('Resume', {
 				from: 'Splash',
 				maintenanceInProgress: maintenance,
 				version: update,
 			})
 		} else {
+			setIsBiometricScreenOpenedForModal(false)
+			setModalVisible(true)
 			if (update) {
 				navigation.navigate('UpdateAvailable')
 			} else if (maintenance) {

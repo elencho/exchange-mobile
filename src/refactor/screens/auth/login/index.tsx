@@ -20,6 +20,7 @@ import { setGeneralError } from '@store/redux/common/slice'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { setLoginLoading } from '@store/redux/auth/slice'
+import { FullScreenLoader } from '@components/full_screen_loader'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
@@ -42,9 +43,9 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
-	const [mail, setMail] = useState('')
+	const [mail, setMail] = useState('ibanet@cryptx.com')
 	const [mailError, setMailError] = useState<boolean>(false)
-	const [pass, setPass] = useState('')
+	const [pass, setPass] = useState('Malina125$')
 	const [passError, setPassError] = useState(false)
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
@@ -62,8 +63,8 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
-			setMail('')
-			setPass('')
+			setMail('ibanet@cryptx.com')
+			setPass('Malina125$')
 			setMailError(false)
 			setPassError(false)
 			setLoginLoading(false)
@@ -102,73 +103,74 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 
 	return (
 		<View style={styles.background}>
-			<WithKeyboard
-				keyboardVerticalOffsetIOS={0}
-				contentContainerStyle={styles.container}
-				flexGrow={true}
-				padding={true}
-				modal={undefined}
-				refreshControl={undefined}
-				scrollUp={false}>
-				<Logo style={styles.logo} />
-				<View>
-					<AppText variant="headline" style={styles.primary}>
-						Welcome to Cryptal
-					</AppText>
-				</View>
+			<FullScreenLoader loading={loading}>
+				<WithKeyboard
+					keyboardVerticalOffsetIOS={0}
+					contentContainerStyle={styles.container}
+					flexGrow={true}
+					padding={true}
+					modal={undefined}
+					refreshControl={undefined}
+					scrollUp={false}>
+					<Logo style={styles.logo} />
+					<View>
+						<AppText variant="headline" style={styles.primary}>
+							Welcome to Cryptal
+						</AppText>
+					</View>
 
-				<View style={styles.height42}>
-					{<GeneralError errorData={generalErrorData} />}
-				</View>
-				<AppInput
-					style={styles.email}
-					value={mail}
-					onChangeText={setMail}
-					onFocusOrChange={() => {
-						setMailError(false)
-						setGeneralErrorData(null)
-					}}
-					error={mailError}
-					label={'Enter Email'}
-				/>
-				<AppInput
-					secureTextEntry={true}
-					value={pass}
-					style={styles.password}
-					onChangeText={setPass}
-					onFocusOrChange={() => {
-						setPassError(false)
-						setGeneralErrorData(null)
-					}}
-					error={passError}
-					label={'Enter Password'}
-					rightComponent={
-						<AppButton
-							variant="text"
-							text="Forgot?"
-							onPress={onForgotPasswordPressed}
-							style={{ marginLeft: 10 }}
-						/>
-					}
-				/>
-				<AppButton
-					variant="primary"
-					text="Login"
-					onPress={onLoginPressed}
-					loading={loading}
-					style={styles.button}
-				/>
-				<View style={{ marginBottom: 20 }}>
-					<AppText style={styles.secondary}>
-						{t('New User?')}{' '}
-						<AppButton
-							variant="text"
-							text="Register"
-							onPress={onRegisterPressed}
-						/>
-					</AppText>
-				</View>
-			</WithKeyboard>
+					<View style={styles.height42}>
+						{<GeneralError errorData={generalErrorData} />}
+					</View>
+					<AppInput
+						style={styles.email}
+						value={mail}
+						onChangeText={setMail}
+						onFocusOrChange={() => {
+							setMailError(false)
+							setGeneralErrorData(null)
+						}}
+						error={mailError}
+						label={'Enter Email'}
+					/>
+					<AppInput
+						secureTextEntry={true}
+						value={pass}
+						style={styles.password}
+						onChangeText={setPass}
+						onFocusOrChange={() => {
+							setPassError(false)
+							setGeneralErrorData(null)
+						}}
+						error={passError}
+						label={'Enter Password'}
+						rightComponent={
+							<AppButton
+								variant="text"
+								text="Forgot?"
+								onPress={onForgotPasswordPressed}
+								style={{ marginLeft: 10 }}
+							/>
+						}
+					/>
+					<AppButton
+						variant="primary"
+						text="Login"
+						onPress={onLoginPressed}
+						style={styles.button}
+					/>
+					<View style={{ marginBottom: 20 }}>
+						<AppText style={styles.secondary}>
+							{t('New User?')}{' '}
+							<AppButton
+								variant="text"
+								text="Register"
+								onPress={onRegisterPressed}
+							/>
+						</AppText>
+					</View>
+				</WithKeyboard>
+			</FullScreenLoader>
 		</View>
 	)
 }

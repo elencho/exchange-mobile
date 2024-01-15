@@ -1,19 +1,18 @@
 import React, { useState } from 'react'
-import { Image, Pressable, StyleSheet, View, Text } from 'react-native'
+import { Image, StyleSheet, View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import Arrow from '../../../assets/images/Arrow'
 import { COINS_URL_PNG } from '../../../constants/api'
 import colors from '../../../constants/colors'
 import { toggleCurrencyModal } from '../../../redux/modals/actions'
 import AppDropdown from '../../AppDropdown'
 import AppText from '../../AppText'
 import PurpleText from '@app/components/PurpleText'
-import { useModal } from '@components/modal/global_modal'
+import InfoBanner from './InfoBanner'
 
 export default function WalletCoinsDropdown() {
-	const { showModal } = useModal()
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
+	const [infoVisible, setInfoVisible] = useState(false)
 	const {
 		wallet: { usdBtcSwitch },
 		trade: {
@@ -26,9 +25,13 @@ export default function WalletCoinsDropdown() {
 				types,
 			},
 		},
+		common: { isBiometricScreenOpened },
 	} = state
 
 	const handleDropdown = () => dispatch(toggleCurrencyModal(true))
+	const toggleModal = () => {
+		setInfoVisible(!infoVisible)
+	}
 
 	const value = usdBtcSwitch === 'USD' ? valueUSD : valueBTC
 
@@ -60,20 +63,11 @@ export default function WalletCoinsDropdown() {
 						text="Find Out"
 						style={{ fontSize: 12 }}
 						// style={styles.back}
-						onPress={() =>
-							showModal({
-								title: 'Changes regarding GEL, DOLLAR and EURO assets',
-								redirectUrl: '',
-								callToAction: '',
-								description: `Topped up balance is automatically converted into TOL currencies with a fixed 1:1 rate. ToGEL, ToUSD and ToEUR are BEP20 tokens, which can be conventionally used to purchase the desired cryptocurrency. \n\nThis adjustment was necessitated solely by regulatory requirements and is of a purely technical nature. Contract address: ToGEL, ToUSD, ToEUR.`,
-								localBanner: true,
-								banner: require('@assets/images/TolCoins1.png'),
-								bannerText: 'Introducing: TOL COINS',
-							})
-						}
+						onPress={() => toggleModal()}
 					/>
 				</View>
 			)}
+			<InfoBanner isModalVisible={infoVisible} hideModal={toggleModal} />
 		</>
 	)
 }

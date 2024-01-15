@@ -13,65 +13,56 @@ import {
 	ImageBackground,
 	Linking,
 	Dimensions,
-	ScrollView,
 } from 'react-native'
 import Modal from 'react-native-modal'
 import CloseIcon from '@components/close-button'
 import { Theme, useTheme } from '@theme/index'
 
 import { AppButton } from '@components/button'
-import AppText from '@components/text'
-import { useSelector } from 'react-redux'
-import { RootState } from '@app/refactor/redux/rootReducer'
+import { useNetInfoInstance } from '@react-native-community/netinfo'
 
 type ModalContextType = {
 	showModal: (content: ContentType) => void
 	hideModal: () => void
+	setIsBiometricScreenOpenedForModal: (v: boolean) => void
+	setModalContent: (content: ContentType | null) => void
+	modalContent: ContentType | null
+	setModalVisible: (v: boolean) => void
+	isBiometricScreenOpenedForModal: boolean
+	isModalVisible?: boolean
 }
 
 interface ContentType {
 	banner?: string
-	localBanner?: boolean
 	callToAction?: string
 	redirectUrl?: string
-	title: string
-	description: string
-	bannerText?: string
+	title?: string
+	description?: string
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const [isModalVisible, setModalVisible] = useState(false)
+	const [isBiometricScreenOpenedForModal, setIsBiometricScreenOpenedForModal] =
+		useState(true)
+	const [modalContent, setModalContent] = useState<ContentType | null>(null)
+
 	const { styles } = useTheme(_styles)
-
-	const { isBiometricScreenOpened } = useSelector(
-		(state: RootState) => state.common
-	)
-
-	const [modalContent, setModalContent] = useState<ContentType>({
-		title: '',
-		redirectUrl: '',
-		callToAction: '',
-		description: '',
-		banner: '',
-		localBanner: false,
-		bannerText: '',
-	})
+	const {
+		netInfo: { isConnected },
+	} = useNetInfoInstance()
 
 	const showModal = (content: ContentType) => {
 		setModalContent(content)
-		setModalVisible(true)
+		if (content?.title && content?.description) {
+			setModalVisible(true)
+			setIsBiometricScreenOpenedForModal(false)
+		}
 	}
 
 	const hideModal = () => {
-		setModalContent({
-			title: '',
-			redirectUrl: '',
-			callToAction: '',
-			description: '',
-			banner: '',
-		})
+		setModalContent(null)
 		setModalVisible(false)
 	}
 
@@ -82,25 +73,13 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 					imageStyle={styles.imageFillStyle}
 					resizeMode="cover"
 					style={styles.imageStyle}
-					source={
-						modalContent?.localBanner
-							? modalContent?.banner
-							: {
-									uri: modalContent?.banner,
-							  }
-					}>
+					source={{
+						uri: modalContent?.banner,
+					}}>
 					<CloseIcon
 						style={{ marginTop: 60, marginRight: 30 }}
 						onPress={hideModal}
 					/>
-
-					{modalContent?.bannerText?.length > 0 && (
-						<View style={styles.bannerTextContainer}>
-							<AppText variant="headline" style={styles.bannerText}>
-								{modalContent.bannerText}
-							</AppText>
-						</View>
-					)}
 				</ImageBackground>
 
 				{children}
@@ -115,21 +94,36 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 			</View>
 		)
 	}
+	const onModalHide = () => {
+		setModalContent(null)
+	}
 
 	const onPress = () => {
-		Linking.openURL(modalContent?.redirectUrl)
+		modalContent?.redirectUrl && Linking.openURL(modalContent?.redirectUrl)
 	}
 
 	return (
-		<ModalContext.Provider value={{ showModal, hideModal }}>
+		<ModalContext.Provider
+			value={{
+				showModal,
+				hideModal,
+				setIsBiometricScreenOpenedForModal,
+				setModalContent,
+				modalContent,
+				setModalVisible,
+				isBiometricScreenOpenedForModal,
+				isModalVisible,
+			}}>
 			{children}
-			{modalContent && (
+			{modalContent && !isBiometricScreenOpenedForModal && (
 				<Modal
 					propagateSwipe={true}
 					useNativeDriver
-					isVisible={isModalVisible && !isBiometricScreenOpened}
-					onDismiss={hideModal}
+					useNativeDriverForBackdrop
+					isVisible={!!isConnected && isModalVisible}
+					onModalHide={onModalHide}
 					coverScreen
+					backdropTransitionOutTiming={0}
 					animationOutTiming={500}
 					backdropTransitionInTiming={300}
 					style={{ margin: 0, justifyContent: 'flex-end' }}>

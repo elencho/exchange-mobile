@@ -22,6 +22,7 @@ import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect } from '@react-navigation/native'
 import { MaterialIndicator } from 'react-native-indicators'
 import BackButton from '@components/back_button'
+import { FullScreenLoader } from '@components/full_screen_loader'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
@@ -133,62 +134,63 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	}
 
 	return (
-		<AppBackground>
-			<BackButton onPress={goBack} style={styles.back} />
+		<FullScreenLoader loading={forgotLoading}>
+			<AppBackground>
+				<BackButton onPress={goBack} style={styles.back} />
 
-			<WithKeyboard
-				contentContainerStyle={styles.middle}
-				flexGrow={true}
-				padding={true}
-				modal={undefined}
-				refreshControl={undefined}
-				scrollUp={undefined}>
-				<Strong_Password width={38} height={46} />
+				<WithKeyboard
+					contentContainerStyle={styles.middle}
+					flexGrow={true}
+					padding={true}
+					modal={undefined}
+					refreshControl={undefined}
+					scrollUp={undefined}>
+					<Strong_Password width={38} height={46} />
 
-				<View style={{ alignItems: 'center' }}>
-					<AppText variant="headline" style={styles.primary}>
-						Forgot Your Password?
-					</AppText>
-					<AppText style={styles.secondary}>
-						Enter the code you will receive on your e-mail to recover the
-						password
-					</AppText>
-				</View>
-				<GeneralError errorData={generalErrorData} />
-				<AppInput
-					labelBackgroundColor={theme.color.backgroundPrimary}
-					style={styles.inputMail}
-					label="Enter Email"
-					value={mail}
-					onChangeText={setMail}
-					onFocusOrChange={() => {
-						setMailError(false)
-						setGeneralErrorData(null)
-					}}
-					rightComponent={<MailInputRight />}
-					error={mailError}
-				/>
-				<AppInput
-					labelBackgroundColor={theme.color.backgroundPrimary}
-					style={styles.inputPass}
-					label="Enter Code"
-					value={code}
-					onChangeText={setCode}
-					onFocusOrChange={() => {
-						setCodeError(false)
-						setGeneralErrorData(null)
-					}}
-					error={codeError}
-				/>
-				<AppButton
-					variant="primary"
-					text="Next"
-					style={styles.button}
-					onPress={onNextPressed}
-					loading={forgotLoading}
-				/>
-			</WithKeyboard>
-		</AppBackground>
+					<View style={{ alignItems: 'center' }}>
+						<AppText variant="headline" style={styles.primary}>
+							Forgot Your Password?
+						</AppText>
+						<AppText style={styles.secondary}>
+							Enter the code you will receive on your e-mail to recover the
+							password
+						</AppText>
+					</View>
+					<GeneralError errorData={generalErrorData} />
+					<AppInput
+						labelBackgroundColor={theme.color.backgroundPrimary}
+						style={styles.inputMail}
+						label="Enter Email"
+						value={mail}
+						onChangeText={setMail}
+						onFocusOrChange={() => {
+							setMailError(false)
+							setGeneralErrorData(null)
+						}}
+						rightComponent={<MailInputRight />}
+						error={mailError}
+					/>
+					<AppInput
+						labelBackgroundColor={theme.color.backgroundPrimary}
+						style={styles.inputPass}
+						label="Enter Code"
+						value={code}
+						onChangeText={setCode}
+						onFocusOrChange={() => {
+							setCodeError(false)
+							setGeneralErrorData(null)
+						}}
+						error={codeError}
+					/>
+					<AppButton
+						variant="primary"
+						text="Next"
+						style={styles.button}
+						onPress={onNextPressed}
+					/>
+				</WithKeyboard>
+			</AppBackground>
+		</FullScreenLoader>
 	)
 }
 

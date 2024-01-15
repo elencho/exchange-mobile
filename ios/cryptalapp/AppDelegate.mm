@@ -1,5 +1,6 @@
 #import "AppDelegate.h"
 #import <Firebase.h>
+#import <UserNotifications/UserNotifications.h>
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTLinkingManager.h>
@@ -41,8 +42,27 @@
   [super application:application didFinishLaunchingWithOptions:launchOptions];
 
   [RNSplashScreen show]; 
-  
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  center.delegate = self;
+//  UNUserNotificationCenter
+//    UNUserNotificationCenter.center().delegate = self
+
   return YES;
+}
+//Called when a notification is delivered to a foreground app.
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
+
+    NSDictionary *userInfo = notification.request.content.userInfo;
+    //Foreground
+    NSLog(@"APP_PUSH from foreground %@", userInfo);
+   
+  
+  if (@available(iOS 14.0, *)) {
+    completionHandler(UNNotificationPresentationOptionList | UNNotificationPresentationOptionBanner);
+  } else {
+    // Fallback on earlier versions
+    completionHandler(UNNotificationPresentationOptionSound);
+  }
 }
 
 - (NSArray<id<RCTBridgeModule>> *)extraModulesForBridge:(RCTBridge *)bridge
@@ -102,7 +122,9 @@
     NSLog(@"This is device token%@", deviceToken);
     //NSString *deviceTokenString = [deviceToken description];
     [FIRMessaging messaging].APNSToken = deviceToken;
+
 }
+
 
 // Explicitly define remote notification delegates to ensure compatibility with some third-party libraries
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
@@ -111,6 +133,8 @@
   return;
 #else
   return [super application:application didFailToRegisterForRemoteNotificationsWithError:error];
+ 
+
 #endif
   
 }

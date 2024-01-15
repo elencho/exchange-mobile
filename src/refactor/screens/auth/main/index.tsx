@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import TransactionHistory from '@app/refactor/screens/transactions/transactions_history'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { useTheme } from '@theme/index'
-import BottomTabs from '@app/components/BottomTabs'
+import { BottomTabs } from '@app/components/BottomTabs'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { TokenParams } from '@app/refactor/types/auth/splash'
 import InstantTrade from '@app/screens/InstantTrade'
@@ -20,29 +20,27 @@ import SecureKV from '@store/kv/secure'
 import { isEnrolledAsync } from 'expo-local-authentication'
 import { System } from '@app/refactor/common/util'
 import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
-import { useNetInfoInstance } from '@react-native-community/netinfo'
+import { fetch } from '@react-native-community/netinfo'
+
 import { CommonActions } from '@react-navigation/native'
 import ConvertNow from '@app/refactor/screens/convert'
+import { useModal } from '@components/modal/global_modal'
 
 const Tab = createBottomTabNavigator()
 
 const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const dispatch = useDispatch()
 	const { theme } = useTheme()
-
+	const {
+		setIsBiometricScreenOpenedForModal,
+		setModalVisible,
+		isModalVisible,
+	} = useModal()
 	const fromResume = route.params?.fromResume === true
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
-	const {
-		netInfo: { isConnected },
-	} = useNetInfoInstance()
-	useEffect(() => {
-		// const unsubscribe = NetInfo.addEventListener((state) => {
-		// 	if (!state.isConnected) {
-		// 		navigation.navigate('NoInternet')
-		// 	}
-		// })
 
+	useEffect(() => {
 		changeNavigationBarColor(theme.color.backgroundSecondary, true)
 		const stateChangeListener = AppState.addEventListener(
 			'change',
@@ -74,7 +72,6 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
 		const appClosing = isAppClosing(newState)
-
 		const bioVisible =
 			newState === 'active' &&
 			!fromResume &&
@@ -86,6 +83,13 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
+		} else if (newState === 'active') {
+			setIsBiometricScreenOpenedForModal(false)
+			setModalVisible(true)
+		}
+
+		if (appClosing && !isModalVisible) {
+			setIsBiometricScreenOpenedForModal(true)
 		}
 
 		if (appClosing && !resumeIsShown()) {
@@ -97,12 +101,25 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const getBiometricEnabled = async (email: string) => {
 		const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
 		const userEnabledBio = bioEnabledEmails?.includes(email)
-		if (isConnected === false) {
-			console.log('from here')
-			navigation.dispatch((state) => {
-				const newRoutes = [
-					...state.routes,
-					[
+
+		fetch().then((state) => {
+			if (state.isConnected && userEnabledBio) {
+				navigation.navigate({
+					key: 'Resume-uniqueKey',
+					name: 'Resume',
+					params: {
+						from: 'Main',
+					},
+				})
+			} else if (
+				state.isConnected === false &&
+				userEnabledBio &&
+				!resumeIsShown()
+			) {
+				navigation.dispatch((state) => {
+					const newRoutes = [
+						...state.routes.slice(0, state.index + 1),
+						{ name: 'NoInternet' },
 						{
 							key: 'Resume-uniqueKey',
 							name: 'Resume',
@@ -110,27 +127,16 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 								from: 'Main',
 							},
 						},
-						{
-							name: 'NoInternet',
-						},
-					],
-				]
+					]
 
-				return CommonActions.reset({
-					...state,
-					routes: newRoutes,
-					index: newRoutes.length - 1,
+					return CommonActions.reset({
+						...state,
+						routes: newRoutes,
+						index: newRoutes.length - 1,
+					})
 				})
-			})
-		} else if (userEnabledBio && isConnected) {
-			navigation.navigate({
-				key: 'Resume-uniqueKey',
-				name: 'Resume',
-				params: {
-					from: 'Main',
-				},
-			})
-		}
+			}
+		})
 	}
 
 	return (
@@ -151,13 +157,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 				swipeEnabled: false,
 			})}
 			initialRouteName="ConvertNow"
-			tabBar={({ state, navigation, descriptors }) => (
-				<BottomTabs
-					routes={state.routes}
-					navigation={navigation}
-					descriptors={descriptors}
-				/>
-			)}>
+			tabBar={(props) => <BottomTabs {...props} />}>
 			<Tab.Screen name="ConvertNow" component={ConvertNow} />
 			<Tab.Screen name="Wallet" component={Wallet} />
 			<Tab.Screen name="Transactions" component={TransactionHistory} />
@@ -165,4 +165,4 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		</Tab.Navigator>
 	)
 }
-export default memo(Main)
+export default Main

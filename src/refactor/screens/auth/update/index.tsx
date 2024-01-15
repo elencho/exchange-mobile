@@ -27,7 +27,7 @@ const Update = ({}: ScreenProp<'UpdateAvailable'>) => {
 			<FastImage
 				style={{
 					height: 130,
-					width: 180,
+					width: 200,
 				}}
 				source={require('@assets/images/Update.png')}
 			/>

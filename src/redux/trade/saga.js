@@ -178,6 +178,9 @@ function* fetchFeeSaga(action) {
 	const params = yield select(
 		feeType === 'withdrawal' ? withdrawalFeeParams : depositFeeParams
 	)
+
+	if (!params?.provider) return
+
 	const fee = yield call(fetchFees, params)
 	yield put(setFee(fee))
 }
@@ -222,7 +225,7 @@ function* refreshWalletAndTradesSaga() {
 	const manageCards = walletTab === 'Manage Cards'
 	const whitelist = walletTab === 'Whitelist'
 	const ecommerce = network === 'ECOMMERCE'
-	const crypto = currentBalanceObj?.type === 'CRYPTO'
+	const crypto = currentBalanceObj?.type === 'CRYPTO' || network === 'BEP20'
 	const fiat = currentBalanceObj?.type === 'FIAT'
 
 	const m = withdrawal ? 'withdrawalMethods' : 'depositMethods'

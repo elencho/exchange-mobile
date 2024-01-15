@@ -4,14 +4,14 @@ import Logo from '@assets/images/Logo.svg'
 import { Theme, useTheme } from '@theme/index'
 import useInitApp from '@app/refactor/screens/auth/splash/use-init-app'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
+// import useNotificationsAndroid from '@app/screens/useNotificationsAndroid'
 import { IS_IOS } from '@app/constants/system'
 
 const Splash = (props: ScreenProp<'Splash'>) => {
 	const { styles } = useTheme(_styles)
 	const [shouldRender, setShouldRender] = useState(IS_IOS ? true : false)
 
-	useNotificationsAndroid()
+	// useNotificationsAndroid()
 	useInitApp(props)
 
 	useEffect(() => {

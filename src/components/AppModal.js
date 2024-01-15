@@ -32,7 +32,11 @@ function AppModal({
 	delayedOpen,
 }) {
 	const webViewVisible = useSelector((state) => state?.modals?.webViewVisible)
-	const { isBiometricScreenOpened } = useSelector((state) => state.common)
+	const { isBiometricScreenOpened, isInternetScreenOpened } = useSelector(
+		(state) => state.common
+	)
+
+	const globalScreenOpened = isBiometricScreenOpened || isInternetScreenOpened
 
 	// For bottom modals after Biometric Unlock
 	const [isBottomVisible, setIsBottomVisible] = useState(false)
@@ -42,29 +46,30 @@ function AppModal({
 				setIsBottomVisible(true)
 			}, 0)
 		}
-	}, [isBiometricScreenOpened, visible])
+	}, [globalScreenOpened, visible])
 
 	useEffect(() => {
 		if (bottom || delayedOpen) {
-			if (isBiometricScreenOpened) {
+			if (globalScreenOpened) {
 				setIsBottomVisible(false)
 			}
 		}
-		isBiometricScreenOpened && Keyboard.dismiss()
-	}, [isBiometricScreenOpened])
+		globalScreenOpened && Keyboard.dismiss()
+	}, [globalScreenOpened])
 
 	return (
 		webViewVisible && (
 			<Modal
 				isVisible={
 					bottom || delayedOpen
-						? visible && !isBiometricScreenOpened && isBottomVisible
-						: visible && !isBiometricScreenOpened
+						? visible && !globalScreenOpened && isBottomVisible
+						: visible && !globalScreenOpened
 				}
 				onBackdropPress={hide}
 				onSwipeComplete={hide}
 				// swipeDirection="down"
 				propagateSwipe={true}
+				backdropTransitionOutTiming={0}
 				style={[styles.modal, modalStyle]}
 				animationOutTiming={500}
 				backdropTransitionInTiming={300}

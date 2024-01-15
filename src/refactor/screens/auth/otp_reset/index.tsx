@@ -22,6 +22,7 @@ import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import BackButton from '@components/back_button'
 import { MaterialIndicator } from 'react-native-indicators'
+import { FullScreenLoader } from '@components/full_screen_loader'
 
 export const ResetOtp = ({
 	navigation,
@@ -113,76 +114,77 @@ export const ResetOtp = ({
 		)
 
 	return (
-		<AppBackground>
-			<WithKeyboard
-				keyboardVerticalOffsetIOS={40}
-				padding={true}
-				flexGrow={true}
-				modal={undefined}
-				refreshControl={undefined}
-				scrollUp={undefined}>
-				<BackButton onPress={goBack} style={styles.back} />
-				<View style={styles.middle}>
-					<Logo style={styles.logo} />
-					<View>
-						<AppText variant="headline" style={styles.primary}>
-							Reset One Time Password
-						</AppText>
-					</View>
-					{resetOtpType === 'Support' && (
-						<AppText style={styles.secondary}>
-							{t('Contact Our')}{' '}
-							<AppButton
-								variant="text"
-								text="support team"
-								onPress={openSupport}
-							/>{' '}
-							{t('for instructions')}
-						</AppText>
-					)}
-					{resetOtpType === 'Manual' && (
+		<FullScreenLoader loading={otpLoading}>
+			<AppBackground>
+				<WithKeyboard
+					keyboardVerticalOffsetIOS={40}
+					padding={true}
+					flexGrow={true}
+					modal={undefined}
+					refreshControl={undefined}
+					scrollUp={undefined}>
+					<BackButton onPress={goBack} style={styles.back} />
+					<View style={styles.middle}>
+						<Logo style={styles.logo} />
 						<View>
-							<AppText style={[styles.secondary, { marginBottom: 40 }]}>
-								Enter the code you received on the email
+							<AppText variant="headline" style={styles.primary}>
+								Reset One Time Password
 							</AppText>
-							<TwoFaInput
-								navigation={navigation}
-								value={value}
-								setValue={(txt) => {
-									setValue(txt)
-									setGeneralErrorData(null)
-								}}
-								cellCount={6}
-								onFill={onCodeFilled}
-								indicatorStyle={{ top: '70%' }}
-								generalErrorData={generalErrorData}
-								loading={otpLoading}
-							/>
+						</View>
+						{resetOtpType === 'Support' && (
+							<AppText style={styles.secondary}>
+								{t('Contact Our')}{' '}
+								<AppButton
+									variant="text"
+									text="support team"
+									onPress={openSupport}
+								/>{' '}
+								{t('for instructions')}
+							</AppText>
+						)}
+						{resetOtpType === 'Manual' && (
+							<View>
+								<AppText style={[styles.secondary, { marginBottom: 40 }]}>
+									Enter the code you received on the email
+								</AppText>
+								<TwoFaInput
+									navigation={navigation}
+									value={value}
+									setValue={(txt) => {
+										setValue(txt)
+										setGeneralErrorData(null)
+									}}
+									cellCount={6}
+									onFill={onCodeFilled}
+									indicatorStyle={{ top: '70%' }}
+									generalErrorData={generalErrorData}
+								/>
+							</View>
+						)}
+					</View>
+
+					{resetOtpType === 'Support' ? (
+						<View style={styles.bottom}>
+							<AppText style={[styles.secondary]}>
+								<AppText>
+									Note: After OTP reset, withdrawals will not be available for
+								</AppText>{' '}
+								<AppText medium style={{ color: '#8D92AD' }}>
+									48 hours
+								</AppText>
+							</AppText>
+						</View>
+					) : (
+						<View style={styles.row}>
+							<AppText style={[styles.secondary, { marginRight: 5 }]}>
+								Didn't receive code?
+							</AppText>
+							{resendOrCountDown()}
 						</View>
 					)}
-				</View>
-
-				{resetOtpType === 'Support' ? (
-					<View style={styles.bottom}>
-						<AppText style={[styles.secondary]}>
-							<AppText>
-								Note: After OTP reset, withdrawals will not be available for
-							</AppText>{' '}
-							<AppText medium style={{ color: '#8D92AD' }}>
-								48 hours
-							</AppText>
-						</AppText>
-					</View>
-				) : (
-					<View style={styles.row}>
-						<AppText style={[styles.secondary, { marginRight: 5 }]}>
-							Didn't receive code?
-						</AppText>
-						{resendOrCountDown()}
-					</View>
-				)}
-			</WithKeyboard>
-		</AppBackground>
+				</WithKeyboard>
+			</AppBackground>
+		</FullScreenLoader>
 	)
 }
 
