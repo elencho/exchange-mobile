@@ -107,6 +107,11 @@ const CoinPair = ({
 	}, [balanceMultiplier])
 
 	const recalculateUp = (txt: string, scale: number) => {
+		const num = Number(txt)
+		if (num === 0 || isNaN(num)) {
+			return setUpAmount('')
+		}
+
 		const price = tradeType === 'Buy' ? pair.buyPrice : pair.sellPrice
 		const mul = tradeType === 'Sell' ? 1 / Number(price) : Number(price)
 
@@ -120,6 +125,11 @@ const CoinPair = ({
 	}
 
 	const recalculateLow = (txt: string, scale: number) => {
+		const num = Number(txt)
+		if (num === 0 || isNaN(num)) {
+			return setLowAmount('')
+		}
+
 		const price = tradeType === 'Buy' ? pair.buyPrice : pair.sellPrice
 		const mul = tradeType === 'Buy' ? 1 / Number(price) : Number(price)
 
