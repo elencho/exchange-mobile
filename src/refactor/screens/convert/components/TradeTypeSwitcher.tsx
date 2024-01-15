@@ -1,3 +1,4 @@
+import { convertColors } from '@app/refactor/screens/convert/util'
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
 import React from 'react'
@@ -14,7 +15,7 @@ const TradeTypeSwitcher = ({ selectedType, onTypeChanged }: Props) => {
 
 	const chooseBackgroundColor = (type: TradeType) => {
 		if (type === selectedType) {
-			return type === 'Buy' ? '#0CCBB5' : '#E0355D'
+			return type === 'Buy' ? convertColors.buy : convertColors.sell
 		}
 		return theme.color.backgroundSecondary
 	}

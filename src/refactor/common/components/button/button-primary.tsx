@@ -34,14 +34,12 @@ export function PrimaryButton({
 			disabled={disabled}
 			style={[
 				styles.button,
-				{
-					backgroundColor: disabled
-						? theme.color.tabTagHint
-						: backgroundColor
-						? backgroundColor
-						: theme.color.brandPrimary,
-				},
 				style,
+				{
+					backgroundColor:
+						backgroundColor ||
+						(disabled ? theme.color.tabTagHint : theme.color.brandPrimary),
+				},
 			]}
 			onPress={loading ? null : onPress}>
 			{leftComponent}

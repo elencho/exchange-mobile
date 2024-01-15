@@ -1,6 +1,6 @@
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { Image, Pressable, StyleSheet, TextInput, View } from 'react-native'
 import Arrow from '@assets/images/Arrow.svg'
 import { formatAmount, hexOpacityPct } from '@app/refactor/screens/convert/util'

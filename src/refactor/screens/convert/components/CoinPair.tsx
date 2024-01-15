@@ -3,11 +3,14 @@ import React, { memo, useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import CoinInput from '@app/refactor/screens/convert/components/CoinInput'
 import CoinInputArrow from '@assets/images/CoinInputArrow.svg'
+import AppText from '@components/text'
+import { coinError } from '@app/refactor/screens/convert/util'
 
 type Props = {
 	pair: CoinPair
 	tradeType: TradeType
 	balanceMultiplier: number | undefined
+	buttonClicked: boolean | undefined
 	handleDropDownClick: (type: CoinType) => void
 }
 type Position = 'up' | 'low'
@@ -16,10 +19,10 @@ const CoinPair = ({
 	pair,
 	tradeType,
 	balanceMultiplier,
+	buttonClicked,
 	handleDropDownClick,
 }: Props) => {
 	const { styles, theme } = useTheme(_styles)
-	const [lastChanged, setLastChanged] = useState<Position | null>(null)
 
 	const [upCoin, setUpCoin] = useState<Coin>()
 	const [upAmount, setUpAmount] = useState('')
@@ -27,9 +30,38 @@ const CoinPair = ({
 	const [lowCoin, setLowCoin] = useState<Coin>()
 	const [lowAmount, setLowAmount] = useState('')
 
+	const [lastChanged, setLastChanged] = useState<Position | null>(null)
+	const [lastClicked, setLastClicked] = useState<Position | null>(null)
+
+	const [errorInput, setErrorInput] = useState<Position>()
+	const [errorText, setErrorText] = useState<string>()
+
 	useEffect(() => {
-		console.log(pair, tradeType, balanceMultiplier, handleDropDownClick)
-	}, [])
+		if (!buttonClicked) return
+
+		const err = coinError(
+			tradeType === 'Buy' ? upAmount : lowAmount,
+			tradeType === 'Sell' ? upAmount : lowAmount,
+			pair,
+			tradeType
+		)
+		if (err) {
+			setErrorText(err.err)
+			if (
+				(err.type === 'Fiat' && tradeType === 'Buy') ||
+				(err.type === 'Crypto' && tradeType === 'Sell')
+			) {
+				setErrorInput('up')
+			} else {
+				setErrorInput('low')
+			}
+		}
+	}, [buttonClicked])
+
+	const clearError = () => {
+		setErrorText('')
+		setErrorInput(undefined)
+	}
 
 	useEffect(() => {
 		const upC = tradeType === 'Buy' ? pair.fiat : pair.crypto
@@ -47,6 +79,20 @@ const CoinPair = ({
 			setLastChanged('up')
 		}
 	}, [tradeType])
+
+	useEffect(() => {
+		const upC = tradeType === 'Buy' ? pair.fiat : pair.crypto
+		const lowC = tradeType === 'Buy' ? pair.crypto : pair.fiat
+		setUpCoin(upC)
+		setLowCoin(lowC)
+
+		if (lastClicked === 'up') {
+			recalculateLow(upAmount, lowC.scale)
+		} else if (lastClicked === 'low') {
+			recalculateUp(lowAmount, upC.scale)
+		}
+		setLastClicked(null)
+	}, [pair])
 
 	useEffect(() => {
 		if (balanceMultiplier) {
@@ -96,8 +142,13 @@ const CoinPair = ({
 					setLastChanged('up')
 					setUpAmount(txt)
 					recalculateLow(txt, lowCoin.scale)
+					clearError()
 				}}
-				onDropdownClick={handleDropDownClick}
+				onDropdownClick={(type) => {
+					setLastClicked('up')
+					handleDropDownClick(type)
+				}}
+				error={errorInput === 'up'}
 			/>
 			<View style={{ height: 10 }} />
 			<CoinInput
@@ -108,8 +159,13 @@ const CoinPair = ({
 					setLastChanged('low')
 					setLowAmount(txt)
 					recalculateUp(txt, upCoin.scale)
+					clearError()
 				}}
-				onDropdownClick={handleDropDownClick}
+				onDropdownClick={(type) => {
+					setLastClicked('low')
+					handleDropDownClick(type)
+				}}
+				error={errorInput === 'low'}
 			/>
 			<CoinInputArrow
 				width={36}
@@ -120,15 +176,21 @@ const CoinPair = ({
 					left: '45%',
 				}}
 			/>
+			{errorText?.length ? (
+				<AppText variant="m" style={styles.errorText}>
+					{errorText}
+				</AppText>
+			) : null}
 		</View>
-	) : (
-		<View />
-	)
+	) : null
 }
 
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
 		container: {},
+		errorText: {
+			color: theme.color.error,
+		},
 	})
 
-export default memo(CoinPair)
+export default CoinPair

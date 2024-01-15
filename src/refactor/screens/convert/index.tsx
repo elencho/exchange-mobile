@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native'
 import AppBackground from '@components/background'
 import InfoMark from '@app/components/InstantTrade/InfoMark'
 import TopRow from '@components/top_row'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { TradeTypeSwitcher } from '@app/refactor/screens/convert/components/TradeTypeSwitcher'
 import { Timer } from '@app/refactor/screens/convert/components/Timer'
 import { useCoins } from '@app/refactor/screens/convert/hooks/use-coins'
@@ -15,17 +15,20 @@ import BalanceChips from '@app/refactor/screens/convert/components/BalanceChips'
 import InfoModal from '@app/components/InstantTrade/InfoModal'
 import CardSection from '@app/refactor/screens/convert/components/CardSection'
 import CoinPair from '@app/refactor/screens/convert/components/CoinPair'
+import { AppButton } from '@components/button'
+import { convertColors } from '@app/refactor/screens/convert/util'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
-	const { theme } = useTheme(_styles)
+	const { styles, theme } = useTheme(_styles)
 
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
-	const [buyWithCardChecked, setBuyWithCardChecked] = useState(false)
 	const [chosenCard, setChosenCard] = useState<Card>()
 	const [selectedChip, setSelectedChip] = useState<number>()
+	const [buyWithCardChecked, setBuyWithCardChecked] = useState(false)
 
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
+	const buttonClicked = useRef<boolean>()
 
 	const {
 		pair,
@@ -45,6 +48,10 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const handleDropDownClick = (type: CoinType) => {
 		type === 'Crypto' ? setCryptoModalVisible(true) : setFiatModalVisible(true)
 	}
+
+	useEffect(() => {
+		console.log({ pair })
+	}, [pair])
 
 	const CryptoModals = () => {
 		return (
@@ -84,7 +91,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 					style={{ alignSelf: 'center' }}
 				/>
 			) : (
-				<View>
+				<View style={styles.container}>
 					<TradeTypeSwitcher
 						selectedType={tradeType}
 						onTypeChanged={setTradeType}
@@ -94,6 +101,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 						tradeType={tradeType}
 						balanceMultiplier={selectedChip}
 						handleDropDownClick={handleDropDownClick}
+						buttonClicked={buttonClicked.current}
 					/>
 					{!buyWithCardChecked && (
 						<BalanceChips
@@ -124,6 +132,23 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 						onTimerExpired={() => fetchCoins()}
 					/>
 
+					<View style={{ flex: 1 }} />
+					<AppButton
+						style={styles.button}
+						backgroundColor={
+							tradeType === 'Buy' ? convertColors.buy : convertColors.sell
+						}
+						variant="primary"
+						text={
+							(tradeType === 'Buy' ? 'Buy' : 'Sell') +
+							' ' +
+							pair?.fiat.displayCcy
+						}
+						onPress={() => {
+							buttonClicked.current = true
+						}}
+					/>
+
 					<InfoModal />
 					<CryptoModals />
 				</View>
@@ -131,6 +156,14 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		</AppBackground>
 	)
 }
-const _styles = () => StyleSheet.create({})
+const _styles = () =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+		},
+		button: {
+			marginBottom: 30,
+		},
+	})
 
 export default ConvertNow
