@@ -93,6 +93,8 @@ export default function Fee() {
 				)
 			}
 
+			if (!value()) return
+
 			return (
 				<View style={styles.container}>
 					<AppText small style={styles.feeText}>
