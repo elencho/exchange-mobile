@@ -178,6 +178,9 @@ function* fetchFeeSaga(action) {
 	const params = yield select(
 		feeType === 'withdrawal' ? withdrawalFeeParams : depositFeeParams
 	)
+
+	if (!params?.provider) return
+
 	const fee = yield call(fetchFees, params)
 	yield put(setFee(fee))
 }

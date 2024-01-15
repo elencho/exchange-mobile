@@ -50,6 +50,7 @@ function Withdrawal({ refreshControl }) {
 	const [error, setError] = useState(false)
 
 	const isFiat = currentBalanceObj.type === 'FIAT'
+	const isCrypto = currentBalanceObj.type === 'CRYPTO'
 	const isEcommerce = network === 'ECOMMERCE'
 	const infoMessage = currentBalanceObj?.infos?.[network]?.walletInfo
 	const walletInfo = () => {
@@ -192,7 +193,7 @@ function Withdrawal({ refreshControl }) {
 				<WithKeyboard flexGrow padding refreshControl={refreshControl}>
 					<View style={styles.block}>
 						<WalletCoinsDropdown />
-						<TransferMethodDropdown />
+						{!isCrypto && <TransferMethodDropdown />}
 
 						{!hasRestriction && hasMethod && (
 							<>
