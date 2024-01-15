@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import ProgressBar from 'react-native-animated-progress'
 
-const COUNTDOWN_SECONDS = 90
+const COUNTDOWN_SECONDS = 15
 
 type Props = {
 	pair: CoinPair
@@ -43,11 +43,11 @@ const Timer = ({ pair, tradeType, onTimerExpired }: Props) => {
 			<View style={styles.textContainer}>
 				<AppText style={styles.textCoins}>
 					{'1 ' +
-						pair.fiat.displayCcy +
+						pair.crypto.displayCcy +
 						' = ' +
 						price +
 						' ' +
-						pair.crypto.displayCcy +
+						pair.fiat.displayCcy +
 						' - Updates in:'}
 				</AppText>
 				<AppText style={styles.textSeconds}>{` ${minStr}:${secStr}`}</AppText>
@@ -61,7 +61,7 @@ const Timer = ({ pair, tradeType, onTimerExpired }: Props) => {
 				backgroundColor={theme.color.brandPrimary}
 				trackColor={theme.color.textSecondary}
 				height={3}
-				progress={100 - (100 / 90) * seconds}
+				progress={100 - (100 / COUNTDOWN_SECONDS) * seconds}
 			/>
 			<TimerText />
 		</View>

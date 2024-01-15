@@ -29,8 +29,8 @@ export const useCoins = () => {
 	const feesCache = useRef<Record<Provider, Record<CardType, Pct | null>>>({})
 
 	//TODO: Save in local storage
-	const defFiatDisplayCcy = 'TOGEL'
-	const defCryptoDisplayCcy = 'BTC'
+	const defFiatDisplayCcy = 'TOUSD'
+	const defCryptoDisplayCcy = 'USDT'
 
 	useEffect(() => {
 		fetchCoins().then(() => {

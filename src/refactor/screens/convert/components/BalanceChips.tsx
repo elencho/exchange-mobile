@@ -4,14 +4,13 @@ import { useState } from 'react'
 import { Pressable, StyleSheet, View } from 'react-native'
 
 type Props = {
-	onChipPressed: (balanceMultiplier: number) => void
+	selectedChip: number | undefined
+	onChipSelect: (balanceMultiplier: number | undefined) => void
 }
 
-const BalanceChips = ({ onChipPressed }: Props) => {
+const BalanceChips = ({ selectedChip, onChipSelect }: Props) => {
 	const { styles, theme } = useTheme(_styles)
 	const chips = [0.25, 0.5, 0.75, 1]
-
-	const [selectedChip, setSelectedChip] = useState<number>()
 
 	const chipBackgroundColor = (mul: number) => {
 		return mul === selectedChip
@@ -35,8 +34,7 @@ const BalanceChips = ({ onChipPressed }: Props) => {
 					]}
 					key={mul}
 					onPress={() => {
-						setSelectedChip(mul)
-						onChipPressed(mul)
+						onChipSelect(mul)
 					}}>
 					<AppText
 						variant="l"

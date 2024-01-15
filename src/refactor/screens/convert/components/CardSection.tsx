@@ -23,10 +23,6 @@ const CardSection = ({
 }: Props) => {
 	const { styles, theme } = useTheme(_styles)
 
-	useEffect(() => {
-		console.log(chosenCard)
-	}, [chosenCard])
-
 	return (
 		<View style={styles.container}>
 			<View style={styles.rowContainer}>

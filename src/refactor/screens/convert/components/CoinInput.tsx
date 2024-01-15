@@ -1,26 +1,38 @@
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
-import React, { useRef, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { Image, Pressable, StyleSheet, TextInput, View } from 'react-native'
 import Arrow from '@assets/images/Arrow.svg'
+import { formatAmount, hexOpacityPct } from '@app/refactor/screens/convert/util'
 
 type Props = {
 	coin: Coin
+	amount: string | undefined
+	isActive: boolean
+	onAmountChange: (txt: string) => void
 	onDropdownClick: (type: CoinType) => void
 	error?: boolean | string
 }
 
-const CoinInput = ({ coin, onDropdownClick, error }: Props) => {
+const CoinInput = ({
+	coin,
+	amount,
+	isActive,
+	onAmountChange,
+	onDropdownClick,
+	error,
+}: Props) => {
 	const { styles, theme } = useTheme(_styles)
 
-	const [amount, setAmount] = useState<string>('0.0')
-	const isFocused = useRef(false)
+	const [formattedAmount, setFormattedAmount] = useState('')
 
-	const borderColor = error
-		? theme.color.error
-		: // : isFocused.current
-		  // ? theme.color.brandSecondary
-		  theme.color.textSecondary
+	useEffect(() => {
+		if (!amount) {
+			setFormattedAmount('')
+		} else {
+			setFormattedAmount(formatAmount(amount, coin))
+		}
+	}, [amount, coin])
 
 	const CoinButton = () => {
 		return (
@@ -42,15 +54,27 @@ const CoinInput = ({ coin, onDropdownClick, error }: Props) => {
 	}
 
 	return (
-		<View style={[styles.container, { borderColor }]}>
+		<View
+			style={[
+				styles.container,
+				{
+					borderColor: error
+						? theme.color.error
+						: isActive
+						? theme.color.brandSecondary
+						: theme.color.textSecondary,
+				},
+			]}>
 			<View style={styles.infoContainer}>
 				<TextInput
-					keyboardType="decimal-pad"
+					keyboardType="numeric"
 					style={styles.input}
-					value={amount}
-					onBlur={() => (isFocused.current = false)}
-					onFocus={() => (isFocused.current = true)}
-					onChangeText={setAmount}
+					value={formattedAmount}
+					placeholder="Enter Amount"
+					placeholderTextColor={hexOpacityPct(theme.color.textSecondary, 60)}
+					onBlur={() => {}}
+					onFocus={() => {}}
+					onChangeText={(txt) => onAmountChange(formatAmount(txt, coin))}
 				/>
 				<AppText style={styles.balanceText} variant="s">
 					{'Balance: ' + coin.balance}
@@ -82,7 +106,7 @@ const _styles = (theme: Theme) =>
 		},
 		balanceText: {
 			marginTop: 4,
-			color: theme.color.textSecondary,
+			color: hexOpacityPct(theme.color.textSecondary, 80),
 		},
 		coinButtonCointainer: {
 			marginVertical: 18,
@@ -101,4 +125,4 @@ const _styles = (theme: Theme) =>
 		},
 	})
 
-export { CoinInput }
+export default memo(CoinInput)
