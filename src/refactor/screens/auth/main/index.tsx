@@ -158,11 +158,10 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 					descriptors={descriptors}
 				/>
 			)}>
-			<Tab.Screen name="Trade" component={InstantTrade} />
+			<Tab.Screen name="ConvertNow" component={ConvertNow} />
 			<Tab.Screen name="Wallet" component={Wallet} />
 			<Tab.Screen name="Transactions" component={TransactionHistory} />
-			<Tab.Screen name="ConvertNow" component={ConvertNow} />
-			{/* <Tab.Screen name="Exchange" component={Exchange} /> */}
+			<Tab.Screen name="Exchange" component={Exchange} />
 		</Tab.Navigator>
 	)
 }
