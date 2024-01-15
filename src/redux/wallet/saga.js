@@ -141,7 +141,7 @@ function* cryptoAddressesSaga(action) {
 	const hasMethod = Object.keys(currentBalanceObj?.depositMethods)?.length
 	if (!!hasMethod && network) {
 		const cryptoAddress = yield call(fetchCryptoAddresses, code, network)
-		yield put(setNetwork(network))
+		// yield put(setNetwork(network))
 		yield put(saveCryptoAddress(cryptoAddress ? cryptoAddress : {}))
 	}
 
