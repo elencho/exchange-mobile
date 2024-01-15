@@ -23,6 +23,7 @@ import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import { fetch } from '@react-native-community/netinfo'
 
 import { CommonActions } from '@react-navigation/native'
+import ConvertNow from '@app/refactor/screens/convert'
 import { useModal } from '@components/modal/global_modal'
 
 const Tab = createBottomTabNavigator()
@@ -155,9 +156,9 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 				freezeOnBlur: true,
 				swipeEnabled: false,
 			})}
-			initialRouteName="Trade"
+			initialRouteName="ConvertNow"
 			tabBar={(props) => <BottomTabs {...props} />}>
-			<Tab.Screen name="Trade" component={InstantTrade} />
+			<Tab.Screen name="ConvertNow" component={ConvertNow} />
 			<Tab.Screen name="Wallet" component={Wallet} />
 			<Tab.Screen name="Transactions" component={TransactionHistory} />
 			<Tab.Screen name="Exchange" component={Exchange} />

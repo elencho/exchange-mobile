@@ -1,11 +1,10 @@
 import { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Text, TextProps, TextStyle } from 'react-native'
+import { TextProps, TextStyle } from 'react-native'
 import { FontTheme } from '@theme/fonts'
 import { useTheme } from '@theme/index'
 import { useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { System } from '@app/refactor/common/util'
 import Animated from 'react-native-reanimated'
 
 type Variant = 's' | 'm' | 'l' | 'title' | 'headline'

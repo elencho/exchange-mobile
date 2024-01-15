@@ -20,6 +20,7 @@ import { System } from '@app/refactor/common/util'
 import { ModalProvider } from '@components/modal/global_modal'
 import { useNotificationHandler } from 'notifiactionHandler'
 
+LogBox.ignoreAllLogs()
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed
 	'VirtualizedLists should never be nested',

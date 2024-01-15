@@ -22,9 +22,7 @@ export function TextButton({
 			onPress={onPress}
 			style={[
 				{
-					color: disabled
-						? theme.color.buttonDisabled
-						: theme.color.brandSecondary,
+					color: disabled ? theme.color.tabTagHint : theme.color.brandSecondary,
 				},
 				style,
 			]}>

@@ -31,6 +31,8 @@ export const TRADES_URL_PAGED = `${core}/private/simpleTrade/fetchTrades`
 
 export const OFFERS_URL = `${core}/private/simpleTrade/offers`
 
+export const OFFERS_NEW_URL = `${core}/private/simpleTrade/prices`
+
 export const BALANCE_URL = `${core}/private/account/balanceNew`
 
 export const CARDS_URL = `${core}/private/account/cards`

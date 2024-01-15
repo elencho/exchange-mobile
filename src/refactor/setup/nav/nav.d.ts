@@ -48,4 +48,10 @@ export type Screens = {
 	Balance?: {}
 	CardVerificationOne?: {}
 	CardVerificationTwo?: {}
+	ConvertNow?: {}
+	SelectCard: {
+		fees: ProviderFees[]
+		cards: Card[]
+		onCardChoose: (card: Card) => void
+	}
 }

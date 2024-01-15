@@ -6,6 +6,8 @@ import {
 	serializeBoolean,
 	serializeString,
 	serializeNumber,
+	deserializeObject,
+	serializeObject,
 } from '@store/kv/serialization'
 
 interface Schema {

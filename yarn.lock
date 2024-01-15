@@ -2138,6 +2138,13 @@
   resolved "https://registry.npmjs.org/@types/qs/-/qs-6.9.7.tgz"
   integrity sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==
 
+"@types/react-native-animated-progress@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react-native-animated-progress/-/react-native-animated-progress-1.0.4.tgz#32bd954d970dbeab58b6266f17ad75f53cb7ec83"
+  integrity sha512-9efJJQYIzNdt52GAJFjdQLuIgOeBmAc8Lc+q7pUKB7hcLciND5J7me9iUB7gIxQUGT6wXW4DdhCQS62V+hp7bA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-native-indicators@^0.16.5":
   version "0.16.5"
   resolved "https://registry.npmjs.org/@types/react-native-indicators/-/react-native-indicators-0.16.5.tgz"
