@@ -1,3 +1,4 @@
+import { hexOpacityPct } from '@app/refactor/screens/convert/util'
 import AppModal from '@components/modal'
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
@@ -6,17 +7,25 @@ import { Image, Pressable, StyleSheet, View } from 'react-native'
 interface Props {
 	visible: boolean
 	fiats: Coin[]
+	chosenFiat: Coin
 	onCoinSelected: (fiat: Coin) => void
 	dismiss: () => void
 }
 
 const ChooseFiatModal = ({
 	visible,
+	chosenFiat,
 	fiats,
 	onCoinSelected,
 	dismiss,
 }: Props) => {
 	const { styles, theme } = useTheme(_styles)
+
+	const coinBackgroundColor = (coin: Coin) => {
+		return coin.displayCcy === chosenFiat?.displayCcy
+			? hexOpacityPct(theme.color.textSecondary, 18)
+			: 'transparent'
+	}
 
 	const children = () => {
 		return (
@@ -24,12 +33,15 @@ const ChooseFiatModal = ({
 				{fiats.map((coin: Coin) => (
 					<Pressable
 						key={coin.ccy}
-						style={styles.rowContainer}
+						style={[
+							styles.rowContainer,
+							{ backgroundColor: coinBackgroundColor(coin) },
+						]}
 						onPress={() => {
 							onCoinSelected(coin)
 						}}>
 						<Image
-							style={{ width: 34, height: 34, marginLeft: 6 }}
+							style={{ width: 34, height: 34 }}
 							source={{
 								uri: coin.iconPngUrl,
 							}}
@@ -38,9 +50,8 @@ const ChooseFiatModal = ({
 							<AppText variant="title" style={styles.ccyText}>
 								{coin.displayCcy}
 							</AppText>
-							{/* TODO: Ask elene why : doesn't work */}
-							<AppText variant="l" style={styles.balanceText}>
-								Balance :
+							<AppText variant="l" style={styles.balanceText} noTranslate>
+								Balance:
 							</AppText>
 						</View>
 
@@ -72,8 +83,10 @@ const _styles = (theme: Theme) =>
 			marginTop: 20,
 		},
 		rowContainer: {
+			borderRadius: 6,
 			flexDirection: 'row',
-			marginBottom: 30,
+			paddingHorizontal: 10,
+			paddingVertical: 12,
 		},
 		infoContainer: {
 			marginLeft: 14,

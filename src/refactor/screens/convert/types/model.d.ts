@@ -2,7 +2,6 @@ type TradeType = 'Buy' | 'Sell'
 
 type CoinType = 'Fiat' | 'Crypto'
 
-// Add market price
 type Coin = {
 	ccy: string
 	displayCcy: string
@@ -12,6 +11,12 @@ type Coin = {
 	scale: number
 	type: CoinType
 	buyWithCard: boolean
+	marketPrice?: MarketPrice
+}
+
+type MarketPrice = {
+	buy: number
+	sell: number
 }
 
 type CoinPair = {
@@ -19,6 +24,10 @@ type CoinPair = {
 	crypto: Coin
 	sellPrice: string
 	buyPrice: string
+	minTradeCost: number
+	minTradeSize: number
+	maxTradeSize: number
+	pair: string
 }
 
 type CardData = {

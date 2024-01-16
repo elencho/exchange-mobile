@@ -51,10 +51,10 @@ export const useCoins = () => {
 				offersCache.current = saveOffersCache(offers)
 
 				const fiatCoins = Object.values(offers).map((item) =>
-					mapCoin(item[0].pair, 'Fiat')
+					mapCoin(item[0], 'Fiat')
 				)
 				const cryptosForFiat = offers[defFiatDisplayCcy].map((item) =>
-					mapCoin(item.pair, 'Crypto')
+					mapCoin(item, 'Crypto')
 				)
 				const pairDto = offers[defFiatDisplayCcy].find(
 					(item) => item.pair.baseCurrencyDisplayCode === defCryptoDisplayCcy
@@ -153,13 +153,19 @@ export const useCoins = () => {
 		return {
 			buyPrice: dto.buyPrice,
 			sellPrice: dto.sellPrice,
-			fiat: mapCoin(dto.pair, 'Fiat'),
-			crypto: mapCoin(dto.pair, 'Crypto'),
+			fiat: mapCoin(dto, 'Fiat'),
+			crypto: mapCoin(dto, 'Crypto'),
+			pair: dto.pair.pair,
+			minTradeSize: Number(dto.pair.minSimpleTradeSize),
+			minTradeCost: Number(dto.pair.minSimpleTradeCost),
+			maxTradeSize: Number(dto.pair.maxSize),
 		}
 	}
 
-	const mapCoin = (dto: CoinPairResponse, type: CoinType): Coin => {
+	const mapCoin = (data: CoinDataResponse, type: CoinType): Coin => {
 		const base = type === 'Crypto'
+		const dto = data.pair
+
 		const name = base ? dto.baseCurrencyName : dto.quoteCurrencyName
 		const ccy = base ? dto.baseCurrency : dto.quoteCurrency
 		const scale = Number(base ? dto.baseScale : dto.quoteScale)
@@ -170,16 +176,20 @@ export const useCoins = () => {
 		const cachedBalance = balancesCache.current[displayCcy]
 		const balance = Number(cachedBalance.available).toFixed(scale)
 		const buyWithCard = cachedBalance.buyWithCard
+		const marketPrice = base
+			? { buy: Number(data.buyPrice), sell: Number(data.sellPrice) }
+			: undefined
 
 		return {
 			ccy,
 			displayCcy,
 			name,
 			type,
-			iconPngUrl: ccyToIcon(ccy),
+			iconPngUrl: ccyToIcon(displayCcy),
 			balance,
 			scale,
 			buyWithCard,
+			marketPrice,
 		}
 	}
 

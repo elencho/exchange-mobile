@@ -24,6 +24,7 @@ LogBox.ignoreAllLogs()
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed
 	'VirtualizedLists should never be nested',
+	'Non-serializable values were found in the navigation state',
 ])
 
 const App = React.memo(() => {

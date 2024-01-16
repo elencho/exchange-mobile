@@ -1,3 +1,4 @@
+import { formatDisplayPair } from '@app/refactor/screens/convert/util'
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
 import React, { useEffect, useState } from 'react'
@@ -42,13 +43,7 @@ const Timer = ({ pair, tradeType, onTimerExpired }: Props) => {
 		return (
 			<View style={styles.textContainer}>
 				<AppText style={styles.textCoins}>
-					{'1 ' +
-						pair.crypto.displayCcy +
-						' = ' +
-						price +
-						' ' +
-						pair.fiat.displayCcy +
-						' - Updates in:'}
+					{formatDisplayPair(pair, tradeType) + ' - Updates in:'}
 				</AppText>
 				<AppText style={styles.textSeconds}>{` ${minStr}:${secStr}`}</AppText>
 			</View>

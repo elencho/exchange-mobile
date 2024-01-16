@@ -17,8 +17,10 @@ import CardSection from '@app/refactor/screens/convert/components/CardSection'
 import CoinPair from '@app/refactor/screens/convert/components/CoinPair'
 import { AppButton } from '@components/button'
 import { convertColors } from '@app/refactor/screens/convert/util'
+import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
+import WithKeyboard from '@app/components/WithKeyboard'
 
-const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
+const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 	const { styles, theme } = useTheme(_styles)
 
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
@@ -28,7 +30,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
-	const buttonClicked = useRef<boolean>()
+	const [buttonClicked, setButtonClicked] = useState(false)
 
 	const {
 		pair,
@@ -41,6 +43,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		onCoinSelected,
 	} = useCoins()
 
+	useNotificationPermissions()
+
 	useEffect(() => {
 		cards.length === 1 && setChosenCard(cards[0])
 	}, [cards])
@@ -49,16 +53,24 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		type === 'Crypto' ? setCryptoModalVisible(true) : setFiatModalVisible(true)
 	}
 
-	useEffect(() => {
-		console.log({ pair })
-	}, [pair])
+	const goToConfirm = (spentAmount: string, receivedAmount: string) => {
+		pair &&
+			navigation.navigate('ConfirmConvert', {
+				spentAmount,
+				receivedAmount,
+				pair,
+				tradeType,
+				card: chosenCard,
+			})
+	}
 
 	const CryptoModals = () => {
-		return (
+		return pair ? (
 			<>
 				<ChooseFiatModal
 					visible={fiatModalVisible}
 					fiats={fiats}
+					chosenFiat={pair.fiat}
 					onCoinSelected={(fiat: Coin) => {
 						onCoinSelected(fiat)
 						setFiatModalVisible(false)
@@ -69,6 +81,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 				<ChooseCryptoModal
 					visible={cryptoModalVisible}
 					cryptos={cryptos}
+					pair={pair}
+					tradeType={tradeType}
 					onCoinSelected={(crypto: Coin) => {
 						onCoinSelected(crypto)
 						setCryptoModalVisible(false)
@@ -76,7 +90,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 					dismiss={() => setCryptoModalVisible(false)}
 				/>
 			</>
-		)
+		) : null
 	}
 
 	return (
@@ -91,67 +105,81 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 					style={{ alignSelf: 'center' }}
 				/>
 			) : (
-				<View style={styles.container}>
-					<TradeTypeSwitcher
-						selectedType={tradeType}
-						onTypeChanged={setTradeType}
-					/>
-					<CoinPair
-						pair={pair}
-						tradeType={tradeType}
-						balanceMultiplier={selectedChip}
-						handleDropDownClick={handleDropDownClick}
-						buttonClicked={buttonClicked.current}
-					/>
-					{!buyWithCardChecked && (
-						<BalanceChips
-							selectedChip={selectedChip}
-							onChipSelect={setSelectedChip}
+				<WithKeyboard
+					style={styles.withKeyboard}
+					keyboardVerticalOffsetIOS={40}
+					flexGrow
+					modal={undefined}
+					refreshControl={undefined}
+					scrollUp={false}
+					padding={false}
+					noRefresh={true}>
+					<View style={styles.container}>
+						<TradeTypeSwitcher
+							selectedType={tradeType}
+							onTypeChanged={setTradeType}
 						/>
-					)}
-					{tradeType === 'Buy' && pair.fiat.buyWithCard && (
-						<CardSection
-							cards={cards}
-							chosenCard={chosenCard}
-							buyWithCardChecked={buyWithCardChecked}
-							setBuyWithCardChecked={setBuyWithCardChecked}
-							chooseCardClicked={() =>
-								navigation.navigate('SelectCard', {
-									cards,
-									fees,
-									onCardChoose(card) {
-										setChosenCard(card)
-									},
-								})
+						<CoinPair
+							pair={pair}
+							tradeType={tradeType}
+							balanceMultiplier={selectedChip}
+							handleDropDownClick={handleDropDownClick}
+							handleButtonClick={(spent, received) => {
+								setButtonClicked(false)
+								if (spent && received) {
+									goToConfirm(spent, received)
+								}
+							}}
+							buttonClicked={buttonClicked}
+						/>
+						{!buyWithCardChecked && (
+							<BalanceChips
+								selectedChip={selectedChip}
+								onChipSelect={setSelectedChip}
+							/>
+						)}
+						{tradeType === 'Buy' && pair.fiat.buyWithCard && (
+							<CardSection
+								cards={cards}
+								chosenCard={chosenCard}
+								buyWithCardChecked={buyWithCardChecked}
+								setBuyWithCardChecked={setBuyWithCardChecked}
+								chooseCardClicked={() =>
+									navigation.navigate('SelectCard', {
+										cards,
+										fees,
+										onCardChoose(card) {
+											setChosenCard(card)
+										},
+									})
+								}
+							/>
+						)}
+						<Timer
+							pair={pair}
+							tradeType={tradeType}
+							onTimerExpired={() => fetchCoins()}
+						/>
+						<View style={{ flex: 1 }} />
+						<AppButton
+							style={styles.button}
+							backgroundColor={
+								tradeType === 'Buy' ? convertColors.buy : convertColors.sell
 							}
+							variant="primary"
+							text={
+								(tradeType === 'Buy' ? 'Buy' : 'Sell') +
+								' ' +
+								pair?.fiat.displayCcy
+							}
+							onPress={() => {
+								setButtonClicked(true)
+							}}
 						/>
-					)}
-					<Timer
-						pair={pair}
-						tradeType={tradeType}
-						onTimerExpired={() => fetchCoins()}
-					/>
-
-					<View style={{ flex: 1 }} />
-					<AppButton
-						style={styles.button}
-						backgroundColor={
-							tradeType === 'Buy' ? convertColors.buy : convertColors.sell
-						}
-						variant="primary"
-						text={
-							(tradeType === 'Buy' ? 'Buy' : 'Sell') +
-							' ' +
-							pair?.fiat.displayCcy
-						}
-						onPress={() => {
-							buttonClicked.current = true
-						}}
-					/>
-
-					<InfoModal />
-					<CryptoModals />
-				</View>
+						<InfoModal />
+						<CryptoModals />
+					</View>
+				</WithKeyboard>
 			)}
 		</AppBackground>
 	)
@@ -161,8 +189,10 @@ const _styles = () =>
 		container: {
 			flex: 1,
 		},
+		withKeyboard: {},
 		button: {
-			marginBottom: 30,
+			verticalAlign: 'bottom',
+			marginBottom: 15,
 		},
 	})
 

@@ -10,6 +10,8 @@ type Props = {
 	amount: string | undefined
 	isActive: boolean
 	onAmountChange: (txt: string) => void
+	onFocus: () => void
+	onBlur: () => void
 	onDropdownClick: (type: CoinType) => void
 	error?: boolean | string
 }
@@ -20,6 +22,8 @@ const CoinInput = ({
 	isActive,
 	onAmountChange,
 	onDropdownClick,
+	onFocus,
+	onBlur,
 	error,
 }: Props) => {
 	const { styles, theme } = useTheme(_styles)
@@ -62,7 +66,7 @@ const CoinInput = ({
 						? theme.color.error
 						: isActive
 						? theme.color.brandSecondary
-						: theme.color.textSecondary,
+						: hexOpacityPct(theme.color.textSecondary, 50),
 				},
 			]}>
 			<View style={styles.infoContainer}>
@@ -72,8 +76,8 @@ const CoinInput = ({
 					value={formattedAmount}
 					placeholder="Enter Amount"
 					placeholderTextColor={hexOpacityPct(theme.color.textSecondary, 60)}
-					onBlur={() => {}}
-					onFocus={() => {}}
+					onFocus={onFocus}
+					onBlur={onBlur}
 					onChangeText={onAmountChange}
 				/>
 				<AppText style={styles.balanceText} variant="s">
@@ -88,6 +92,7 @@ const CoinInput = ({
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
 		container: {
+			width: '100%',
 			justifyContent: 'space-between',
 			alignItems: 'center',
 			flexDirection: 'row',

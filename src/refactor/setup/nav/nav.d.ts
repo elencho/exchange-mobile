@@ -54,4 +54,11 @@ export type Screens = {
 		cards: Card[]
 		onCardChoose: (card: Card) => void
 	}
+	ConfirmConvert: {
+		spentAmount: string
+		receivedAmount: string
+		pair: CoinPair
+		tradeType: TradeType
+		card: Card | undefined
+	}
 }

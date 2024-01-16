@@ -79,7 +79,7 @@ export default function ModalWithSearch({
 					isForTransactions
 				}
 				onPress={() => handlePress(name, code)}
-				uri={uri(wallet || crypto || countryDrop ? code : displayCurrencyCode)}
+				uri={uri(crypto || countryDrop ? code : displayCurrencyCode)}
 				phoneCountry={phoneCountry}
 				countryDrop={countryDrop}
 				citizenshipDrop={citizenshipDrop}
