@@ -28,7 +28,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
-	const buttonClicked = useRef<boolean>()
+	const [buttonClicked, setButtonClicked] = useState(false)
 
 	const {
 		pair,
@@ -48,10 +48,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const handleDropDownClick = (type: CoinType) => {
 		type === 'Crypto' ? setCryptoModalVisible(true) : setFiatModalVisible(true)
 	}
-
-	useEffect(() => {
-		console.log({ pair })
-	}, [pair])
 
 	const CryptoModals = () => {
 		return (
@@ -101,7 +97,11 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 						tradeType={tradeType}
 						balanceMultiplier={selectedChip}
 						handleDropDownClick={handleDropDownClick}
-						buttonClicked={buttonClicked.current}
+						handleButtonClick={(success) => {
+							console.log(success)
+							setButtonClicked(false)
+						}}
+						buttonClicked={buttonClicked}
 					/>
 					{!buyWithCardChecked && (
 						<BalanceChips
@@ -145,7 +145,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							pair?.fiat.displayCcy
 						}
 						onPress={() => {
-							buttonClicked.current = true
+							setButtonClicked(true)
 						}}
 					/>
 

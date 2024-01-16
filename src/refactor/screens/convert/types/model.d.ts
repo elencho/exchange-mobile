@@ -19,6 +19,8 @@ type CoinPair = {
 	crypto: Coin
 	sellPrice: string
 	buyPrice: string
+	minTradeCost: number
+	minTradeSize: number
 }
 
 type CardData = {
