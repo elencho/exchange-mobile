@@ -18,7 +18,6 @@ import { THEME_DARK } from './src/refactor/setup/theme/variants'
 import '@app/refactor/setup/network/interceptor'
 import { System } from '@app/refactor/common/util'
 import { ModalProvider } from '@components/modal/global_modal'
-import { useNotificationHandler } from 'notifiactionHandler'
 
 LogBox.ignoreAllLogs()
 LogBox.ignoreLogs([
