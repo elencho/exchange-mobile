@@ -11,6 +11,12 @@ type Coin = {
 	scale: number
 	type: CoinType
 	buyWithCard: boolean
+	marketPrice?: MarketPrice
+}
+
+type MarketPrice = {
+	buy: number
+	sell: number
 }
 
 type CoinPair = {

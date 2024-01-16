@@ -66,7 +66,7 @@ const CoinInput = ({
 						? theme.color.error
 						: isActive
 						? theme.color.brandSecondary
-						: theme.color.textSecondary,
+						: hexOpacityPct(theme.color.textSecondary, 50),
 				},
 			]}>
 			<View style={styles.infoContainer}>

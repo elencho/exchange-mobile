@@ -19,6 +19,7 @@ type CoinPairResponse = {
 	quoteScale: string
 	minSimpleTradeSize: string
 	minSimpleTradeCost: string
+	maxSize: string
 }
 
 type BalancesResponse = {

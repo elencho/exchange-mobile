@@ -18,6 +18,7 @@ import CoinPair from '@app/refactor/screens/convert/components/CoinPair'
 import { AppButton } from '@components/button'
 import { convertColors } from '@app/refactor/screens/convert/util'
 import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
+import WithKeyboard from '@app/components/WithKeyboard'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 	const { styles, theme } = useTheme(_styles)
@@ -64,11 +65,12 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 	}
 
 	const CryptoModals = () => {
-		return (
+		return pair ? (
 			<>
 				<ChooseFiatModal
 					visible={fiatModalVisible}
 					fiats={fiats}
+					chosenFiat={pair.fiat}
 					onCoinSelected={(fiat: Coin) => {
 						onCoinSelected(fiat)
 						setFiatModalVisible(false)
@@ -79,6 +81,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 				<ChooseCryptoModal
 					visible={cryptoModalVisible}
 					cryptos={cryptos}
+					pair={pair}
+					tradeType={tradeType}
 					onCoinSelected={(crypto: Coin) => {
 						onCoinSelected(crypto)
 						setCryptoModalVisible(false)
@@ -86,7 +90,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 					dismiss={() => setCryptoModalVisible(false)}
 				/>
 			</>
-		)
+		) : null
 	}
 
 	return (
@@ -101,73 +105,81 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 					style={{ alignSelf: 'center' }}
 				/>
 			) : (
-				<View style={styles.container}>
-					<TradeTypeSwitcher
-						selectedType={tradeType}
-						onTypeChanged={setTradeType}
-					/>
-					<CoinPair
-						pair={pair}
-						tradeType={tradeType}
-						balanceMultiplier={selectedChip}
-						handleDropDownClick={handleDropDownClick}
-						handleButtonClick={(spent, received) => {
-							setButtonClicked(false)
-							if (spent && received) {
-								goToConfirm(spent, received)
-							}
-						}}
-						buttonClicked={buttonClicked}
-					/>
-					{!buyWithCardChecked && (
-						<BalanceChips
-							selectedChip={selectedChip}
-							onChipSelect={setSelectedChip}
+				<WithKeyboard
+					style={styles.withKeyboard}
+					keyboardVerticalOffsetIOS={40}
+					flexGrow
+					modal={undefined}
+					refreshControl={undefined}
+					scrollUp={false}
+					padding={false}
+					noRefresh={true}>
+					<View style={styles.container}>
+						<TradeTypeSwitcher
+							selectedType={tradeType}
+							onTypeChanged={setTradeType}
 						/>
-					)}
-					{tradeType === 'Buy' && pair.fiat.buyWithCard && (
-						<CardSection
-							cards={cards}
-							chosenCard={chosenCard}
-							buyWithCardChecked={buyWithCardChecked}
-							setBuyWithCardChecked={setBuyWithCardChecked}
-							chooseCardClicked={() =>
-								navigation.navigate('SelectCard', {
-									cards,
-									fees,
-									onCardChoose(card) {
-										setChosenCard(card)
-									},
-								})
-							}
+						<CoinPair
+							pair={pair}
+							tradeType={tradeType}
+							balanceMultiplier={selectedChip}
+							handleDropDownClick={handleDropDownClick}
+							handleButtonClick={(spent, received) => {
+								setButtonClicked(false)
+								if (spent && received) {
+									goToConfirm(spent, received)
+								}
+							}}
+							buttonClicked={buttonClicked}
 						/>
-					)}
-					<Timer
-						pair={pair}
-						tradeType={tradeType}
-						onTimerExpired={() => fetchCoins()}
-					/>
-
-					<View style={{ flex: 1 }} />
-					<AppButton
-						style={styles.button}
-						backgroundColor={
-							tradeType === 'Buy' ? convertColors.buy : convertColors.sell
-						}
-						variant="primary"
-						text={
-							(tradeType === 'Buy' ? 'Buy' : 'Sell') +
-							' ' +
-							pair?.fiat.displayCcy
-						}
-						onPress={() => {
-							setButtonClicked(true)
-						}}
-					/>
-
-					<InfoModal />
-					<CryptoModals />
-				</View>
+						{!buyWithCardChecked && (
+							<BalanceChips
+								selectedChip={selectedChip}
+								onChipSelect={setSelectedChip}
+							/>
+						)}
+						{tradeType === 'Buy' && pair.fiat.buyWithCard && (
+							<CardSection
+								cards={cards}
+								chosenCard={chosenCard}
+								buyWithCardChecked={buyWithCardChecked}
+								setBuyWithCardChecked={setBuyWithCardChecked}
+								chooseCardClicked={() =>
+									navigation.navigate('SelectCard', {
+										cards,
+										fees,
+										onCardChoose(card) {
+											setChosenCard(card)
+										},
+									})
+								}
+							/>
+						)}
+						<Timer
+							pair={pair}
+							tradeType={tradeType}
+							onTimerExpired={() => fetchCoins()}
+						/>
+						<View style={{ flex: 1 }} />
+						<AppButton
+							style={styles.button}
+							backgroundColor={
+								tradeType === 'Buy' ? convertColors.buy : convertColors.sell
+							}
+							variant="primary"
+							text={
+								(tradeType === 'Buy' ? 'Buy' : 'Sell') +
+								' ' +
+								pair?.fiat.displayCcy
+							}
+							onPress={() => {
+								setButtonClicked(true)
+							}}
+						/>
+						<InfoModal />
+						<CryptoModals />
+					</View>
+				</WithKeyboard>
 			)}
 		</AppBackground>
 	)
@@ -177,8 +189,10 @@ const _styles = () =>
 		container: {
 			flex: 1,
 		},
+		withKeyboard: {},
 		button: {
-			marginBottom: 30,
+			verticalAlign: 'bottom',
+			marginBottom: 15,
 		},
 	})
 
