@@ -1,4 +1,9 @@
-import { BALANCE_URL, CARDS_URL, OFFERS_NEW_URL } from '@app/constants/api'
+import {
+	BALANCE_URL,
+	CARDS_URL,
+	OFFERS_NEW_URL,
+	TRADES_URL,
+} from '@app/constants/api'
 import axios from 'axios'
 
 export const fetchOffersApi = async () => {
@@ -23,6 +28,14 @@ export const fetchCards = async () => {
 			status: 'VERIFIED',
 			transactionType: 'DEPOSIT',
 		},
+	})
+	return data?.data
+}
+
+export const submitTrade = async () => {
+	const data = await axios.post<SubmitTradeResponse>(TRADES_URL, {
+		headers: { toast: false, requestName: 'submitTrade' },
+		data: {}, //TODO
 	})
 	return data?.data
 }

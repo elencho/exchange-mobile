@@ -34,6 +34,7 @@ import NetInfo from '@react-native-community/netinfo'
 import { AppState, AppStateStatus } from 'react-native'
 import { getNotification, inAppNotificationListener } from 'getNotification'
 import SelectCardScreen from '@app/refactor/screens/convert/screens/SelectCardScreen'
+import ConfirmConvertScreen from '@app/refactor/screens/convert/screens/ConfirmConvertScreen'
 
 enableScreens(false)
 const Stack = createNativeStackNavigator<Screens>()
@@ -161,6 +162,7 @@ export default function AppNavigator() {
 					options={{ animation: 'fade' }}
 				/>
 				<Stack.Screen name="SelectCard" component={SelectCardScreen} />
+				<Stack.Screen name="ConfirmConvert" component={ConfirmConvertScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	)

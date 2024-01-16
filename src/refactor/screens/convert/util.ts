@@ -13,6 +13,24 @@ export const hexOpacityPct = (hex: string, pct: number) => {
 	return hex + opacity.toString(16).toUpperCase().padStart(2, '0')
 }
 
+export const formatDisplayPair = (
+	pair: CoinPair,
+	type: TradeType,
+	equalDelim?: string
+) => {
+	const price = type === 'Buy' ? pair.buyPrice : pair.sellPrice
+	return (
+		'1 ' +
+		pair.crypto.displayCcy +
+		' ' +
+		(equalDelim || '=') +
+		' ' +
+		price +
+		' ' +
+		pair.fiat.displayCcy
+	)
+}
+
 export const formatAmount = (txt: string, coin?: Coin) => {
 	txt = txt.replace(',', '.')
 

@@ -155,8 +155,10 @@ export const useCoins = () => {
 			sellPrice: dto.sellPrice,
 			fiat: mapCoin(dto.pair, 'Fiat'),
 			crypto: mapCoin(dto.pair, 'Crypto'),
+			pair: dto.pair.pair,
 			minTradeSize: Number(dto.pair.minSimpleTradeSize),
 			minTradeCost: Number(dto.pair.minSimpleTradeCost),
+			maxTradeSize: Number(dto.pair.maxSize),
 		}
 	}
 

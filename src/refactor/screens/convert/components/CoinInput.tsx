@@ -92,6 +92,7 @@ const CoinInput = ({
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
 		container: {
+			width: '100%',
 			justifyContent: 'space-between',
 			alignItems: 'center',
 			flexDirection: 'row',

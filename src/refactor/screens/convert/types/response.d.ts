@@ -72,3 +72,5 @@ type CardResponse = {
 	provider: string
 	network: string
 }
+
+type SubmitTradeResponse = {}

@@ -2,7 +2,6 @@ type TradeType = 'Buy' | 'Sell'
 
 type CoinType = 'Fiat' | 'Crypto'
 
-// Add market price
 type Coin = {
 	ccy: string
 	displayCcy: string
@@ -21,6 +20,8 @@ type CoinPair = {
 	buyPrice: string
 	minTradeCost: number
 	minTradeSize: number
+	maxTradeSize: number
+	pair: string
 }
 
 type CardData = {

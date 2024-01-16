@@ -17,8 +17,9 @@ import CardSection from '@app/refactor/screens/convert/components/CardSection'
 import CoinPair from '@app/refactor/screens/convert/components/CoinPair'
 import { AppButton } from '@components/button'
 import { convertColors } from '@app/refactor/screens/convert/util'
+import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
 
-const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
+const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 	const { styles, theme } = useTheme(_styles)
 
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
@@ -41,12 +42,25 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		onCoinSelected,
 	} = useCoins()
 
+	useNotificationPermissions()
+
 	useEffect(() => {
 		cards.length === 1 && setChosenCard(cards[0])
 	}, [cards])
 
 	const handleDropDownClick = (type: CoinType) => {
 		type === 'Crypto' ? setCryptoModalVisible(true) : setFiatModalVisible(true)
+	}
+
+	const goToConfirm = (spentAmount: string, receivedAmount: string) => {
+		pair &&
+			navigation.navigate('ConfirmConvert', {
+				spentAmount,
+				receivedAmount,
+				pair,
+				tradeType,
+				card: chosenCard,
+			})
 	}
 
 	const CryptoModals = () => {
@@ -97,9 +111,11 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 						tradeType={tradeType}
 						balanceMultiplier={selectedChip}
 						handleDropDownClick={handleDropDownClick}
-						handleButtonClick={(success) => {
-							console.log(success)
+						handleButtonClick={(spent, received) => {
 							setButtonClicked(false)
+							if (spent && received) {
+								goToConfirm(spent, received)
+							}
 						}}
 						buttonClicked={buttonClicked}
 					/>

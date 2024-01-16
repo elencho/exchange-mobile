@@ -1,4 +1,4 @@
-type CoinError = {
+export type CoinError = {
 	err: string
 	type: CoinType[]
 }
@@ -52,9 +52,9 @@ export const coinError = (
 			}
 		}
 		// 8
-		if (f < pair.minTradeCost) {
+		if (f * sell < pair.minTradeCost) {
 			return {
-				err: 'max. deposit ' + pair.maxTradeSize + ' ' + pair.fiat.displayCcy,
+				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
 				type: ['Fiat'],
 			}
 		}
