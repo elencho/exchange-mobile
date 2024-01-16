@@ -87,7 +87,7 @@ const InfoBanner = ({
 							<AppText style={styles.descr}>tolcoins_modal_text_2</AppText>
 							<AppButton
 								onPress={() => onPress('ToGEL')}
-								text="TOGEL, "
+								text=" TOGEL, "
 								variant="text"
 								style={styles.descr2}
 							/>
