@@ -72,12 +72,6 @@ const InfoBanner = ({
 						style={styles.imageStyle}
 						source={require('@assets/images/TolCoins1.png')}>
 						<CloseIcon style={styles.closeIcon} onPress={hideModal} />
-
-						<View style={styles.bannerTextContainer}>
-							<AppText variant="headline" style={styles.bannerText}>
-								tolcoins_modal_text_on_banner
-							</AppText>
-						</View>
 					</ImageBackground>
 
 					<View style={styles.contentWrapperWithoutBanner}>
@@ -128,7 +122,7 @@ const styles = StyleSheet.create({
 		elevation: 5,
 	},
 	imageStyle: {
-		height: WINDOW_HEIGHT / 2,
+		height: 350,
 		width: '100%',
 	},
 	container: {},
@@ -182,8 +176,8 @@ const styles = StyleSheet.create({
 	},
 	closeIcon: {
 		marginTop: Platform.select({
-			ios: Constants.statusBarHeight + 10,
-			android: (StatusBar.currentHeight || 0) + 10,
+			ios: Constants.statusBarHeight,
+			android: StatusBar.currentHeight || 10,
 		}),
 		marginRight: 20,
 	},
