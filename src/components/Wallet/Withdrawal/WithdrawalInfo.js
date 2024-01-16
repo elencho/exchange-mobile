@@ -139,7 +139,11 @@ export default function WithdrawalInfo({ error }) {
 			<AppInput
 				label="Name"
 				style={styles.name}
-				value={`${userInfo.firstName} ${userInfo.lastName}`}
+				value={
+					!userInfo.firstName
+						? ''
+						: `${userInfo.firstName} ${userInfo.lastName}`
+				}
 				disabled
 			/>
 

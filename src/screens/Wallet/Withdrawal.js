@@ -21,6 +21,7 @@ import { fetchFee, setCard, setFee } from '../../redux/trade/actions'
 import { setNetwork } from '../../redux/wallet/actions'
 import { withdrawalTemplatesAction } from '../../redux/wallet/actions'
 import { validateAmount } from '../../utils/appUtils'
+import { UserStatus } from '@app/refactor/types/enums'
 
 function Withdrawal({ refreshControl }) {
 	const dispatch = useDispatch()
@@ -193,7 +194,9 @@ function Withdrawal({ refreshControl }) {
 				<WithKeyboard flexGrow padding refreshControl={refreshControl}>
 					<View style={styles.block}>
 						<WalletCoinsDropdown />
-						{!isCrypto && <TransferMethodDropdown />}
+						{!isCrypto && userInfo.userStatus === UserStatus.VERIFIED && (
+							<TransferMethodDropdown />
+						)}
 
 						{!hasRestriction && hasMethod && (
 							<>

@@ -86,7 +86,8 @@ export default function Deposit({ refreshControl }) {
 		dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 })
 		dispatch({ type: 'CLEAN_WALLET_INPUTS' })
 		dispatch(setFee(null))
-		card && depositProvider && dispatch(fetchFee('deposit'))
+		// card && depositProvider && dispatch(fetchFee('deposit'))
+		dispatch(fetchFee('deposit'))
 	}, [network, depositProvider, card])
 
 	useEffect(() => {

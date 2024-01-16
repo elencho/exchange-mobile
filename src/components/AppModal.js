@@ -107,7 +107,11 @@ function AppModal({
 					{fullScreen && (
 						<Background modal>
 							<CloseModalIcon onPress={hide} />
-							{title && <Headline title={title} />}
+							{title && (
+								<View style={{ marginLeft: 10 }}>
+									<Headline title={title} />
+								</View>
+							)}
 							{children}
 						</Background>
 					)}
