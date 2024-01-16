@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import jwt_decode from 'jwt-decode'
 import React, { memo, useCallback, useEffect, useRef } from 'react'
-import { AppState, AppStateStatus } from 'react-native'
+import { Alert, AppState, AppStateStatus } from 'react-native'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch, useSelector } from 'react-redux'
 import TransactionHistory from '@app/refactor/screens/transactions/transactions_history'
@@ -83,6 +83,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
 		} else if (newState === 'active') {
+			Alert.alert('from handleAppStateChange')
 			setIsBiometricScreenOpenedForModal(false)
 			setModalVisible(true)
 		}

@@ -26,6 +26,9 @@
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://exp.host/@vaxo_nba/cryptal-app"/>
     <meta-data android:name="com.google.firebase.messaging.default_notification_icon"  android:resource="@drawable/ic_small_icon" />
+    <meta-data
+      android:name="expo.modules.notifications.default_notification_icon"
+      android:resource="@drawable/ic_small_icon" />
     <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/notificationBackground" tools:replace="android:resource"  />
 
     <activity 

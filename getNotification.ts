@@ -5,6 +5,7 @@ import messaging, {
 import { useEffect } from 'react'
 import * as Notifications from 'expo-notifications'
 import KV from '@store/kv/regular'
+import { Alert } from 'react-native'
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -47,8 +48,11 @@ export const getNotification = () => {
 				title: remoteMessage?.data?.title,
 			}
 			if (data.title && data.description && !bioAvailable) {
+				Alert.alert('from onNotificationOpenedApp without bio')
 				showModal(data)
 			} else if (data.title && data.description && bioAvailable) {
+				Alert.alert('from onNotificationOpenedApp with bio')
+
 				setModalContent(data)
 			}
 		})
