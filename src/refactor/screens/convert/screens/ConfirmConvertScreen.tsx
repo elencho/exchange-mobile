@@ -8,11 +8,24 @@ import React from 'react'
 import CloseIcon from '@components/close-button'
 import ConfirmCard from '@app/refactor/screens/convert/components/ConfirmCard'
 import { formatDisplayPair } from '@app/refactor/screens/convert/util'
+import { useSubmit } from '@app/refactor/screens/convert/hooks/use-submit'
+import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
+import General_error from '@components/general_error'
 
 const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 	const { styles, theme } = useTheme(_styles)
 	const { spentAmount, receivedAmount, pair, tradeType, card } =
 		props.route?.params
+
+	const {
+		onConfirmPressed,
+		confirmModalStatus,
+		setConfirmModalStatus,
+		generalError,
+		setGeneralError,
+	} = useSubmit(props)
+
+	const goToTransactions = () => {}
 
 	type InfoItem = {
 		desc: string
@@ -98,12 +111,19 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 			<ConfirmCard pair={pair} tradeType={tradeType} />
 			{card ? <CardSection card={card} /> : null}
 			<TotalSection />
+			<General_error errorData={generalError} style={styles.generalError} />
 			<View style={{ flex: 1 }} />
 			<AppButton
 				style={styles.button}
 				variant="primary"
 				text="Confirm"
-				onPress={() => {}}
+				onPress={onConfirmPressed}
+			/>
+
+			<ConfirmModal
+				status={confirmModalStatus}
+				dismiss={() => setConfirmModalStatus(undefined)}
+				onTransactionsClick={goToTransactions}
 			/>
 		</AppBackground>
 	)
@@ -129,6 +149,9 @@ const _styles = (theme: Theme) =>
 		},
 		button: {
 			marginBottom: 40,
+		},
+		generalError: {
+			marginTop: 18,
 		},
 	})
 

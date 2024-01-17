@@ -27,7 +27,7 @@ type CoinPair = {
 	minTradeCost: number
 	minTradeSize: number
 	maxTradeSize: number
-	pair: string
+	code: string
 }
 
 type CardData = {
@@ -52,3 +52,5 @@ type ProviderFees = {
 		iconPngUrl: string
 	}[]
 }
+
+type ConfirmModalStatus = 'success' | 'pending' | 'error'
