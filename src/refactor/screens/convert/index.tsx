@@ -128,7 +128,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 							pair={pair}
 							tradeType={tradeType}
 							balanceMultiplier={selectedChip}
-							chosenCard={chosenCard}
 							handleDropDownClick={handleDropDownClick}
 							handleButtonClick={(spent, received) => {
 								setButtonClicked(false)
