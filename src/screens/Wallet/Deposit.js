@@ -232,7 +232,7 @@ export default function Deposit({ refreshControl }) {
 
 			{!cryptoAddress?.address &&
 			(!isFiat || network === 'BEP20') &&
-			!shouldShowDelayed &&
+			shouldShowDelayed &&
 			!hasRestriction &&
 			hasMethod ? (
 				<View style={styles.flex}>
