@@ -1,5 +1,5 @@
 import { Theme, useTheme } from '@theme/index'
-import React, { memo, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import CoinInput from '@app/refactor/screens/convert/components/CoinInput'
 import CoinInputArrow from '@assets/images/CoinInputArrow.svg'
@@ -13,6 +13,7 @@ type Props = {
 	buttonClicked: boolean | undefined
 	handleButtonClick: (spentAmount?: string, receiveAmount?: string) => void
 	handleDropDownClick: (type: CoinType) => void
+	saveBaseAmount: (amount: string) => void
 }
 type Position = 'up' | 'low'
 
@@ -23,8 +24,9 @@ const CoinPair = ({
 	buttonClicked,
 	handleButtonClick,
 	handleDropDownClick,
+	saveBaseAmount,
 }: Props) => {
-	const { styles, theme } = useTheme(_styles)
+	const { styles } = useTheme(_styles)
 
 	const [upCoin, setUpCoin] = useState<Coin>()
 	const [upAmount, setUpAmount] = useState('')
@@ -47,7 +49,7 @@ const CoinPair = ({
 			pair,
 			tradeType
 		)
-		if (err === null || true) {
+		if (err === null) {
 			handleButtonClick(upAmount, lowAmount)
 		} else {
 			handleButtonClick()
@@ -165,6 +167,7 @@ const CoinPair = ({
 					amount={upAmount}
 					isActive={lastChanged === 'up'}
 					onAmountChange={(txt) => {
+						saveBaseAmount(txt)
 						setLastChanged('up')
 						setUpAmount(txt)
 						recalculateLow(txt, lowCoin.scale)

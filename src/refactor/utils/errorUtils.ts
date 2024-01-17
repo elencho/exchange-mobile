@@ -13,7 +13,7 @@ export const handleGeneralError = async (
 	}
 }
 
-const extractApiError = (apiResult: any) => {
+export const extractApiError = (apiResult: any) => {
 	const keyCloakError = apiResult?.payload?.errors?.[0]
 	const regularError =
 		apiResult?.payload?.response?.data || apiResult?.response?.data

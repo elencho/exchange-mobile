@@ -74,4 +74,9 @@ type CardResponse = {
 	network: string
 }
 
-type SubmitTradeResponse = {}
+type SubmitTradeResponse = null | CardRedirectResponse | UiErrorData
+
+type CardRedirectResponse = {
+	actionMethod: 'GET' | 'POST'
+	actionUrl: string
+}

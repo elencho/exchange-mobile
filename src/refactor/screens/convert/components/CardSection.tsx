@@ -38,10 +38,9 @@ const CardSection = ({
 			{buyWithCardChecked && (
 				<AppDropdown
 					style={styles.dropdown}
-					notClearable
 					noTranslate
+					notClearable
 					handlePress={chooseCardClicked}
-					disabled={cards.length === 0}
 					label="Choose Card"
 					selectedText={chosenCard && chosenCard?.cardNumber}
 					icon={

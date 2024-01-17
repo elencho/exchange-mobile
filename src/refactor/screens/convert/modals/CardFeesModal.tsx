@@ -16,7 +16,9 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 		return (
 			<View style={{ flexDirection: 'column' }}>
 				<View key={fee.providerBank} style={styles.bankFeeContainer}>
-					<AppText variant="title" style={[styles.bankText, { marginLeft: 0 }]}>
+					<AppText
+						variant="title"
+						style={[styles.bankText, { marginLeft: 0, textAlign: 'left' }]}>
 						{fee.providerBank}
 					</AppText>
 					<View style={{ flex: 1 }}></View>
@@ -42,8 +44,8 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 		]
 		return (
 			<View style={styles.providersContainer}>
-				<AppText variant="l" style={styles.providersText}>
-					{'PROVIDERS :'}
+				<AppText variant="l" style={styles.providersText} noTranslate>
+					{'PROVIDERS:'}
 				</AppText>
 				<View style={{ flex: 1 }}></View>
 				{icons.map((cardIcon) => (

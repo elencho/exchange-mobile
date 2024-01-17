@@ -4,6 +4,7 @@ import {
 	OFFERS_NEW_URL,
 	TRADES_URL,
 } from '@app/constants/api'
+import { extractApiError } from '@app/refactor/utils/errorUtils'
 import axios from 'axios'
 
 export const fetchOffersApi = async () => {
@@ -32,10 +33,10 @@ export const fetchCards = async () => {
 	return data?.data
 }
 
-export const submitTrade = async () => {
-	const data = await axios.post<SubmitTradeResponse>(TRADES_URL, {
+export const submitTrade = async (params: SubmitTradeRequest) => {
+	const data = await axios.post<SubmitTradeResponse>(TRADES_URL, params, {
 		headers: { toast: false, requestName: 'submitTrade' },
-		data: {}, //TODO
 	})
-	return data?.data
+	const err = extractApiError(data)
+	return err || data?.data
 }

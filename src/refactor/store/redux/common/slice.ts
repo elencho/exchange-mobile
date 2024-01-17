@@ -24,10 +24,14 @@ interface CommonState {
 	isBiometricScreenOpened: boolean
 	isBiometricEnabled: boolean
 	notificationData: any
+
+	// convert
+	convertPair?: string
 }
 
 const initialState: CommonState = {
 	language: KV.get('language') || 'en',
+	convertPair: KV.get('defaultConvertPair'),
 	currencyList: [],
 	countries: [],
 	isBiometricScreenOpened: false,
@@ -69,6 +73,10 @@ const common = createSlice({
 		setNotificationData(state, action: PayloadAction<any>) {
 			state.notificationData = action.payload
 		},
+		setConvertPair(state, action: PayloadAction<string>) {
+			KV.set('defaultConvertPair', action.payload)
+			state.convertPair = action.payload
+		},
 	},
 	extraReducers: (builder) => {
 		countries(builder)
@@ -91,6 +99,7 @@ export const {
 	setBiometricToggleEnabled,
 	setNotificationData,
 	setInternetScreenOpened,
+	setConvertPair,
 } = common.actions
 
 export default common.reducer

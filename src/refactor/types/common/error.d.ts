@@ -1,3 +1,4 @@
+// TODO: Better naming
 interface UiErrorData {
 	// Keycloak
 	errorKey: string
