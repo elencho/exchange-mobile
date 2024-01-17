@@ -17,8 +17,9 @@ Notifications.setNotificationHandler({
 export const getNotification = () => {
 	const { showModal, setModalContent } = useModal()
 	const bioAvailable = KV.get('bioIsAvailableOnUser')
-
+	
 	useEffect(() => {
+		Alert.alert(`bioAvailable = ${bioAvailable}`)
 		messaging()
 			.getInitialNotification()
 			.then((remoteMessage) => {
