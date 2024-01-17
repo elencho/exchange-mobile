@@ -34,7 +34,7 @@ const AppDropdown = ({
 	notClearable,
 	withLabel = false,
 	error,
-	disabled,
+	disabled = false,
 	hideArrow,
 	noTranslate,
 	isOneMethod,

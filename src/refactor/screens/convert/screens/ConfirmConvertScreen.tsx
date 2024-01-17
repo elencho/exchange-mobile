@@ -6,7 +6,7 @@ import AppText from '@components/text'
 import { AppButton } from '@components/button'
 import React from 'react'
 import CloseIcon from '@components/close-button'
-import ConfirmCard from '@app/refactor/screens/convert/components/ConfirmCard'
+import ConfirmTradeCard from '@app/refactor/screens/convert/components/ConfirmTradeCard'
 import { formatDisplayPair } from '@app/refactor/screens/convert/util'
 import { useSubmit } from '@app/refactor/screens/convert/hooks/use-submit'
 import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
@@ -108,7 +108,7 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 	return (
 		<AppBackground>
 			<Top />
-			<ConfirmCard pair={pair} tradeType={tradeType} />
+			<ConfirmTradeCard pair={pair} tradeType={tradeType} />
 			{card ? <CardSection card={card} /> : null}
 			<TotalSection />
 			<General_error errorData={generalError} style={styles.generalError} />

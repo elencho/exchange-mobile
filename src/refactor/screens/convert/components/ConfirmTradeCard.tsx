@@ -9,7 +9,7 @@ type Props = {
 	tradeType: TradeType
 }
 
-const ConfirmCard = ({ pair, tradeType }: Props) => {
+const ConfirmTradeCard = ({ pair, tradeType }: Props) => {
 	const { styles } = useTheme(_styles)
 
 	const CoinRow = () => {
@@ -83,4 +83,4 @@ const _styles = (theme: Theme) =>
 		},
 	})
 
-export default ConfirmCard
+export default ConfirmTradeCard
