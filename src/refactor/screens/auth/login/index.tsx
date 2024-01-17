@@ -51,7 +51,9 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 		null
 	)
 
-	const loading = useSelector((state: RootState) => state.auth.loginLoading)
+	const { loginLoading, fullScreenLoading } = useSelector(
+		(state: RootState) => state.auth
+	)
 
 	useFocusEffect(
 		useCallback(() => {
@@ -103,7 +105,7 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 
 	return (
 		<View style={styles.background}>
-			<FullScreenLoader loading={loading}>
+			<FullScreenLoader loading={fullScreenLoading}>
 				<WithKeyboard
 					keyboardVerticalOffsetIOS={0}
 					contentContainerStyle={styles.container}
@@ -158,6 +160,7 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 						text="Login"
 						onPress={onLoginPressed}
 						style={styles.button}
+						loading={loginLoading}
 					/>
 					<View style={{ marginBottom: 20 }}>
 						<AppText style={styles.secondary}>
