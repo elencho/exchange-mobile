@@ -24,6 +24,7 @@ import KV from '@store/kv/regular'
 import SecureKV from '@store/kv/secure'
 import { setBiometricToggleEnabled } from '@store/redux/common/slice'
 import { useModal } from '@components/modal/global_modal'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 	const { theme } = useTheme()
@@ -64,8 +65,9 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 
 		const update = await updateNeeded()
 		const maintenance = await isBackDown()
-		const showBio = await canDoBiometric(accessToken).then((canDo) => {
+		const showBio = await canDoBiometric(accessToken).then(async (canDo) => {
 			KV.set('bioIsAvailableOnUser', canDo)
+			await AsyncStorage.setItem('bioIsAvailableOnUser', canDo.toString())
 			return dispatch(setBiometricToggleEnabled(canDo))
 		})
 

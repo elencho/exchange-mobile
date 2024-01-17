@@ -47,6 +47,7 @@ import {
 	RESULTS,
 	checkNotifications,
 } from 'react-native-permissions'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 const LOADING_DELAY = 2000
 
 const isLoginShown = (navigation: NativeStackNavigationProp<Screens, any>) => {
@@ -322,8 +323,9 @@ export const codeToTokenThunk = createAsyncThunk(
 					accessToken: tokenData.access_token,
 				})
 			)
-			canDoBiometric(tokenData.access_token).then((canDo) => {
+			canDoBiometric(tokenData.access_token).then(async (canDo) => {
 				KV.set('bioIsAvailableOnUser', canDo)
+				await AsyncStorage.setItem('bioIsAvailableOnUser', canDo.toString())
 				dispatch(setBiometricToggleEnabled(canDo))
 			})
 
@@ -472,7 +474,7 @@ export const logoutThunk = createAsyncThunk(
 			await messaging().deleteToken()
 
 			KV.del('bioIsAvailableOnUser')
-
+			await AsyncStorage.removeItem('bioIsAvailableOnUser')
 			dispatch(resetAuth())
 			dispatch(setUserInfo(null))
 

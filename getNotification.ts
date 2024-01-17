@@ -6,6 +6,7 @@ import { useEffect } from 'react'
 import * as Notifications from 'expo-notifications'
 import KV from '@store/kv/regular'
 import { Alert } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -16,13 +17,15 @@ Notifications.setNotificationHandler({
 })
 export const getNotification = () => {
 	const { showModal, setModalContent } = useModal()
-	const bioAvailable = KV.get('bioIsAvailableOnUser')
+	// const bioAvailable = KV.get('bioIsAvailableOnUser')
 
 	useEffect(() => {
-		Alert.alert(`bioAvailable = ${bioAvailable}`)
 		messaging()
 			.getInitialNotification()
-			.then((remoteMessage) => {
+			.then(async (remoteMessage) => {
+				const bioAvailableAsync = await AsyncStorage.getItem(
+					'bioIsAvailableOnUser'
+				)
 				if (remoteMessage) {
 					const data = {
 						description: remoteMessage?.notification?.body,
@@ -32,15 +35,19 @@ export const getNotification = () => {
 						title: remoteMessage?.data?.title,
 					}
 
-					if (data.title && data.description && !bioAvailable) {
+					if (data.title && data.description && !bioAvailableAsync) {
 						showModal(data)
-					} else if (data.title && data.description && bioAvailable) {
+					} else if (data.title && data.description && bioAvailableAsync) {
 						setModalContent(data)
 					}
 				}
 			})
 
-		messaging().onNotificationOpenedApp((remoteMessage) => {
+		messaging().onNotificationOpenedApp(async (remoteMessage) => {
+			const bioAvailableAsync = await AsyncStorage.getItem(
+				'bioIsAvailableOnUser'
+			)
+
 			const data = {
 				description: remoteMessage?.notification?.body,
 				banner: remoteMessage?.data?.banner,
@@ -48,10 +55,10 @@ export const getNotification = () => {
 				redirectUrl: remoteMessage?.data?.redirectUrl,
 				title: remoteMessage?.data?.title,
 			}
-			if (data.title && data.description && !bioAvailable) {
+			if (data.title && data.description && !bioAvailableAsync) {
 				Alert.alert('from onNotificationOpenedApp without bio')
 				showModal(data)
-			} else if (data.title && data.description && bioAvailable) {
+			} else if (data.title && data.description && bioAvailableAsync) {
 				Alert.alert('from onNotificationOpenedApp with bio')
 
 				setModalContent(data)

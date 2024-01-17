@@ -13,6 +13,7 @@ import { sendOtp } from '@app/refactor/redux/profile/profileApi'
 import { setCurrentSecurityAction } from '@app/refactor/redux/profile/profileSlice'
 import KV from '@store/kv/regular'
 import { setBiometricToggleEnabled } from '@store/redux/common/slice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface SecurityRowProps {
 	text: string
@@ -54,6 +55,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 			const withoutUserMail = cachedEmails.filter((e) => e !== userEmail)
 			SecureKV.set('bioEnabledEmails', withoutUserMail)
 			KV.del('bioIsAvailableOnUser')
+			AsyncStorage.removeItem('bioIsAvailableOnUser')
 			return dispatch(setBiometricToggleEnabled(false))
 		}
 		if (!isBiometricEnabled && hasFaceOrTouchIdSaved) {
@@ -70,6 +72,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 
 				SecureKV.set('bioEnabledEmails', addedUserMail)
 				KV.set('bioIsAvailableOnUser', true)
+				await AsyncStorage.setItem('bioIsAvailableOnUser', 'true')
 				dispatch(setBiometricToggleEnabled(true))
 			}
 		}
