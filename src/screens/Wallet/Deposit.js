@@ -55,14 +55,6 @@ export default function Deposit({ refreshControl }) {
 	const isCrypto = currentBalanceObj.type === 'CRYPTO' || network === 'BEP20'
 	const isEcommerce = network === 'ECOMMERCE'
 
-	//TODO: Temporary Bug FIx
-	const [shouldShowDelayed, setShouldShowDelayed] = useState(false)
-	useEffect(() => {
-		setTimeout(() => {
-			setShouldShowDelayed(true)
-		}, 1000)
-	}, [])
-
 	useEffect(() => {
 		const m = currentBalanceObj?.depositMethods
 		if (m?.ECOMMERCE) {
@@ -114,6 +106,12 @@ export default function Deposit({ refreshControl }) {
 		dispatch({ type: 'BALANCE_SAGA' })
 		dispatch(saveGeneralError(null))
 	}
+
+	useEffect(() => {
+		fetchCryptoAddresses(code, 'BEP20').then((res) => {
+			dispatch(saveCryptoAddress(res))
+		})
+	}, [])
 
 	const onNavigationStateChange = async (state) => {
 		const urlArray = state.url.split('=')
@@ -232,7 +230,6 @@ export default function Deposit({ refreshControl }) {
 
 			{!cryptoAddress?.address &&
 			(!isFiat || network === 'BEP20') &&
-			shouldShowDelayed &&
 			!hasRestriction &&
 			hasMethod ? (
 				<View style={styles.flex}>

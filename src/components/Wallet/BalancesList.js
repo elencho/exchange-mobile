@@ -11,6 +11,8 @@ const height = Platform.select({
 })
 
 export default function BalancesList({ balanceLoading, filteredBalances }) {
+	const dummyBalances = [1, 2, 3, 4, 5, 6, 7, 8]
+
 	const renderCurrency = ({ item }) =>
 		!balanceLoading ? (
 			<Currency
@@ -31,7 +33,7 @@ export default function BalancesList({ balanceLoading, filteredBalances }) {
 		<View style={styles.container}>
 			<FlatList
 				nestedScrollEnabled
-				data={filteredBalances}
+				data={filteredBalances?.length > 0 ? filteredBalances : dummyBalances}
 				renderItem={renderCurrency}
 				ListFooterComponent={() => <View style={{ height: height }} />}
 				keyExtractor={(item) => item.currencyCode}
