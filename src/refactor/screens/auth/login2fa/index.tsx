@@ -30,7 +30,6 @@ import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import BackButton from '@components/back_button'
 import { MaterialIndicator } from 'react-native-indicators'
-import { FullScreenLoader } from '@components/full_screen_loader'
 
 export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	const dispatch = useDispatch()
@@ -126,7 +125,6 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 		)
 
 	return (
-		<FullScreenLoader loading={otpLoading}>
 			<AppBackground>
 				<WithKeyboard
 					keyboardVerticalOffsetIOS={40}
@@ -161,7 +159,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 									navigation={navigation}
 									onFill={onCodeFilled}
 									generalErrorData={generalErrorData}
-									// loading={otpLoading}
+									loading={otpLoading}
 								/>
 							</View>
 						</View>
@@ -187,7 +185,6 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 					</Pressable>
 				</WithKeyboard>
 			</AppBackground>
-		</FullScreenLoader>
 	)
 }
 
