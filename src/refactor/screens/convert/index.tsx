@@ -19,6 +19,9 @@ import { AppButton } from '@components/button'
 import { convertColors } from '@app/refactor/screens/convert/util'
 import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
 import WithKeyboard from '@app/components/WithKeyboard'
+import CopyLogo from '@assets/images/Copy.svg'
+import useCopyToClipboard from '@app/utils/copyToClipboard'
+import messaging from '@react-native-firebase/messaging'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 	const { styles, theme } = useTheme(_styles)
@@ -92,12 +95,27 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 			</>
 		) : null
 	}
+	const [fcmToken, setFcmToken] = useState('')
+	
+	useEffect(() => {
+		checkToken()
+	}, [])
+
+	const checkToken = async () => {
+		const token = await messaging().getToken()
+		if (token) {
+			setFcmToken(token)
+		}
+	}
+	const { copyToClipboard } = useCopyToClipboard()
 
 	return (
 		<AppBackground>
 			<TopRow
 				headlineLogo={<InfoMark inner="?" color={theme.color.textThird} />}
 			/>
+			<CopyLogo onPress={() => copyToClipboard(fcmToken)} />
+
 			{loading || !pair ? (
 				<MaterialIndicator
 					color="#6582FD"
