@@ -22,7 +22,10 @@ export default function WithdrawalBanksModal() {
 	}
 
 	const children = (
-		<ScrollView style={{ padding: 0 }} bounces={false}>
+		<ScrollView
+			style={{ padding: 0 }}
+			bounces={false}
+			showsVerticalScrollIndicator={false}>
 			{[{ bankName: 'Other', id: null }, ...banks].map((b) => (
 				<View key={b.id}>
 					<Pressable
@@ -47,7 +50,6 @@ export default function WithdrawalBanksModal() {
 			children={children}
 			hide={hide}
 			fullScreen
-			// bottom
 			visible={chooseBankModalVisible}
 			title="Choose Bank"
 		/>
