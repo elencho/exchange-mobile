@@ -243,6 +243,7 @@ const register = (builder: ActionReducerMapBuilder<AuthState>) => {
 		.addCase(startRegistrationThunk.fulfilled, (state, action) => {
 			state.callbackUrl = action.payload.callbackUrl
 			state.phoneCountryCode = action.payload.attributes.phoneCountry
+			state.fullScreenLoading = false
 		})
 		.addCase(startRegistrationThunk.pending, (state, action) => {
 			state.fullScreenLoading = true
