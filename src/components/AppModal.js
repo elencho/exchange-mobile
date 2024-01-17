@@ -17,6 +17,7 @@ import Background from './Background'
 import CloseModalIcon from './InstantTrade/CloseModalIcon'
 import ModalTop from './ModalTop'
 import Headline from './TransactionHistory/Headline'
+import { useModal } from '@components/modal/global_modal'
 
 function AppModal({
 	children,
@@ -35,8 +36,12 @@ function AppModal({
 	const { isBiometricScreenOpened, isInternetScreenOpened } = useSelector(
 		(state) => state.common
 	)
+	const { isModalVisible, modalContent } = useModal()
 
-	const globalScreenOpened = isBiometricScreenOpened || isInternetScreenOpened
+	const globalScreenOpened =
+		(isModalVisible && modalContent) ||
+		isBiometricScreenOpened ||
+		isInternetScreenOpened
 
 	// For bottom modals after Biometric Unlock
 	const [isBottomVisible, setIsBottomVisible] = useState(false)
@@ -58,6 +63,7 @@ function AppModal({
 	}, [globalScreenOpened])
 
 	return (
+		!globalScreenOpened &&
 		webViewVisible && (
 			<Modal
 				isVisible={
@@ -107,7 +113,11 @@ function AppModal({
 					{fullScreen && (
 						<Background modal>
 							<CloseModalIcon onPress={hide} />
-							{title && <Headline title={title} />}
+							{title && (
+								<View style={{ marginLeft: 10 }}>
+									<Headline title={title} />
+								</View>
+							)}
 							{children}
 						</Background>
 					)}

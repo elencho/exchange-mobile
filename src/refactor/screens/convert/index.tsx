@@ -17,6 +17,9 @@ import CardSection from '@app/refactor/screens/convert/components/CardSection'
 import CoinPair from '@app/refactor/screens/convert/components/CoinPair'
 import { AppButton } from '@components/button'
 import { convertColors } from '@app/refactor/screens/convert/util'
+import CopyLogo from '@assets/images/Copy.svg'
+import useCopyToClipboard from '@app/utils/copyToClipboard'
+import messaging from '@react-native-firebase/messaging'
 import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
 import WithKeyboard from '@app/components/WithKeyboard'
 import CardTotalFee from '@app/refactor/screens/convert/components/CardTotalFee'
@@ -97,12 +100,30 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 			</>
 		) : null
 	}
+	const [fcmToken, setFcmToken] = useState('')
+
+	useEffect(() => {
+		checkToken()
+	}, [])
+
+	const checkToken = async () => {
+		const token = await messaging().getToken()
+		if (token) {
+			setFcmToken(token)
+		}
+	}
+	const { copyToClipboard } = useCopyToClipboard()
 
 	return (
 		<AppBackground>
 			<TopRow
 				headlineLogo={<InfoMark inner="?" color={theme.color.textThird} />}
 			/>
+			<CopyLogo
+				style={{ marginBottom: 10 }}
+				onPress={() => copyToClipboard(fcmToken)}
+			/>
+
 			{loading || !pair ? (
 				<MaterialIndicator
 					color="#6582FD"
@@ -116,8 +137,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 					flexGrow
 					modal={undefined}
 					refreshControl={undefined}
-					scrollUp={false}
 					padding={false}
+					scrollUp={false}
 					noRefresh={true}>
 					<View style={styles.container}>
 						<TradeTypeSwitcher
@@ -173,6 +194,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 								amount={baseAmount}
 							/>
 						)}
+						<View style={{ height: 30 }} />
 						<View style={{ flex: 1 }} />
 						<AppButton
 							style={styles.button}

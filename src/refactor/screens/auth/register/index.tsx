@@ -72,7 +72,7 @@ const Register = ({ navigation }: Props) => {
 
 	const authState = useSelector((state: RootState) => state.auth)
 	const { countries } = useSelector((state: RootState) => state.common)
-	const { registerLoading, phoneCountryCode } = authState
+	const { registerLoading, phoneCountryCode, fullScreenLoading } = authState
 
 	const passLength = pass?.length >= 8
 	const passHasUpperLower = /([A-Z].*[a-z]|[a-z].*[A-Z])/.test(pass)
@@ -153,7 +153,7 @@ const Register = ({ navigation }: Props) => {
 	const styleHasNumber = passErr && !passHasNumber && styles.redText
 
 	return (
-		<FullScreenLoader loading={registerLoading}>
+		<FullScreenLoader loading={fullScreenLoading}>
 			<SafeAreaView style={styles.safeArea}>
 				<WithKeyboard
 					keyboardVerticalOffsetIOS={10}
@@ -323,6 +323,7 @@ const Register = ({ navigation }: Props) => {
 							variant="primary"
 							text="Register"
 							onPress={onRegisterPressed}
+							loading={registerLoading}
 						/>
 						<AppText style={styles.subtext}>
 							{t('Have an Account?')}{' '}

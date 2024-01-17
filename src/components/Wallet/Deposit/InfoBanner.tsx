@@ -77,6 +77,7 @@ const InfoBanner = ({
 					<View style={styles.contentWrapperWithoutBanner}>
 						<AppText style={styles.title}>tolcoins_modal_header</AppText>
 						<AppText style={styles.descr}>tolcoins_modal_text_1</AppText>
+						<View style={{ height: 15 }} />
 						<Text style={{ flexDirection: 'row' }}>
 							<AppText style={styles.descr}>tolcoins_modal_text_2</AppText>
 							<AppButton

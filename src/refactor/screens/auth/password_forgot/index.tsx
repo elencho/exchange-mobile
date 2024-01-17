@@ -42,9 +42,12 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	const alreadySent = useRef(false)
 
 	const language = useSelector((state: RootState) => state.common.language)
-	const { forgotLoading, forgotResendLoading, timerVisible } = useSelector(
-		(state: RootState) => state.auth
-	)
+	const {
+		forgotLoading,
+		forgotResendLoading,
+		timerVisible,
+		fullScreenLoading,
+	} = useSelector((state: RootState) => state.auth)
 
 	const validMail = mail.trim().length ? LOGIN_REGEX.test(mail) : false
 
@@ -134,7 +137,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	}
 
 	return (
-		<FullScreenLoader loading={forgotLoading}>
+		<FullScreenLoader loading={fullScreenLoading}>
 			<AppBackground>
 				<BackButton onPress={goBack} style={styles.back} />
 
@@ -187,6 +190,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 						text="Next"
 						style={styles.button}
 						onPress={onNextPressed}
+						loading={forgotLoading}
 					/>
 				</WithKeyboard>
 			</AppBackground>
