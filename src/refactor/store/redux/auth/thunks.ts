@@ -472,6 +472,7 @@ export const logoutThunk = createAsyncThunk(
 			await messaging().deleteToken()
 
 			KV.del('bioIsAvailableOnUser')
+			KV.del('defaultConvertPair')
 
 			dispatch(resetAuth())
 			dispatch(setUserInfo(null))

@@ -158,7 +158,8 @@ export const useCoins = () => {
 			})
 		})
 
-		return Object.entries(cache).map(mapFee)
+		const res = Object.entries(cache).map(mapFee)
+		return res.sort((a, b) => a.providerBank.localeCompare(b.providerBank))
 	}
 
 	/***

@@ -28,6 +28,7 @@ type CoinPair = {
 	minTradeSize: number
 	maxTradeSize: number
 	code: string
+	displayCode: string
 }
 
 type CardData = {
