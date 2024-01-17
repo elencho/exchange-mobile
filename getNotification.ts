@@ -17,7 +17,7 @@ Notifications.setNotificationHandler({
 export const getNotification = () => {
 	const { showModal, setModalContent } = useModal()
 	const bioAvailable = KV.get('bioIsAvailableOnUser')
-	
+
 	useEffect(() => {
 		Alert.alert(`bioAvailable = ${bioAvailable}`)
 		messaging()
@@ -86,23 +86,33 @@ export const inAppNotificationListener = () => {
 			redirectUrl: message?.data?.redirectUrl,
 			title: message?.data?.title,
 		}
-		await Notifications.scheduleNotificationAsync({
-			content: {
-				title: message?.notification?.title,
-				body: message?.notification?.body,
-				data: { data: data },
-			},
-			trigger: null,
-		})
-		if (data.title && data.description && !isBiometricScreenOpenedForModal) {
-			showModal(data)
-		} else if (
-			data.title &&
-			data.description &&
-			isBiometricScreenOpenedForModal
-		) {
-			setModalVisible(true)
-			setModalContent(data)
+		const { granted } = await Notifications.getPermissionsAsync()
+		console.log('status', granted)
+		if (granted) {
+			await Notifications.scheduleNotificationAsync({
+				content: {
+					title: message?.notification?.title,
+					body: message?.notification?.body,
+					data: { data: data },
+				},
+				trigger: null,
+			}).then((id) => {
+				if (
+					data.title &&
+					data.description &&
+					!isBiometricScreenOpenedForModal
+				) {
+					showModal(data)
+				} else if (
+					data.title &&
+					data.description &&
+					isBiometricScreenOpenedForModal
+				) {
+					setModalVisible(true)
+					setModalContent(data)
+				}
+				Notifications.dismissNotificationAsync(id)
+			})
 		}
 	}
 }
