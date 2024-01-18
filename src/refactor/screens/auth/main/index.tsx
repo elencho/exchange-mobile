@@ -83,7 +83,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
-		} else if (newState === 'active') {
+		} else if (newState === 'active' && !bioVisible) {
 			Alert.alert('from handleAppStateChange')
 			setIsBiometricScreenOpenedForModal(false)
 			setModalVisible(true)
