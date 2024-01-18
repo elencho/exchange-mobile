@@ -48,6 +48,8 @@ import {
 	checkNotifications,
 } from 'react-native-permissions'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Notifications from 'expo-notifications'
+
 const LOADING_DELAY = 2000
 
 const isLoginShown = (navigation: NativeStackNavigationProp<Screens, any>) => {
@@ -472,6 +474,7 @@ export const logoutThunk = createAsyncThunk(
 			})
 
 			await messaging().deleteToken()
+			await Notifications.dismissAllNotificationsAsync()
 
 			KV.del('defaultConvertPair')
 			KV.del('bioIsAvailableOnUser')
