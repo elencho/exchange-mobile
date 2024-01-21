@@ -44,11 +44,11 @@ export default function Whitelist({ refreshControl }) {
 
 	const [manualLoading, setManualLoading] = useState(true)
 	useEffect(() => {
-		if (!addWhitelistModalVisble) setManualLoading(true)
+		// if (!addWhitelistModalVisble) setManualLoading(true)
 
 		setTimeout(() => {
 			setManualLoading(false)
-		}, 500)
+		}, 1000)
 	}, [addWhitelistModalVisble, editWhitelistModalVisble])
 
 	return (
@@ -100,7 +100,7 @@ export default function Whitelist({ refreshControl }) {
 					<WhitelistActionsModal
 						setDeleteWhitelistOtpVisible={setDeleteWhitelistOtpVisible}
 					/>
-					<AddEditWhitelistModal add />
+					<AddEditWhitelistModal add setManualLoading={setManualLoading} />
 					<AddEditWhitelistModal edit />
 
 					{deleteWhitelistOtpVisible && (
