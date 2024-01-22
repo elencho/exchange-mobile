@@ -7,6 +7,7 @@ import * as Notifications from 'expo-notifications'
 import KV from '@store/kv/regular'
 import { Alert } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useDispatch, useSelector } from 'react-redux'
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -17,6 +18,7 @@ Notifications.setNotificationHandler({
 })
 export const getNotification = () => {
 	const { showModal, setModalContent } = useModal()
+	const { biometricSuccess } = useSelector((state) => state.common)
 	// const bioAvailable = KV.get('bioIsAvailableOnUser')
 
 	useEffect(() => {
@@ -47,7 +49,6 @@ export const getNotification = () => {
 			const bioAvailableAsync = await AsyncStorage.getItem(
 				'bioIsAvailableOnUser'
 			)
-
 			const data = {
 				description: remoteMessage?.notification?.body,
 				banner: remoteMessage?.data?.banner,
@@ -55,13 +56,10 @@ export const getNotification = () => {
 				redirectUrl: remoteMessage?.data?.redirectUrl,
 				title: remoteMessage?.data?.title,
 			}
-			if (data.title && data.description && !bioAvailableAsync) {
-				Alert.alert('from onNotificationOpenedApp without bio')
-				showModal(data)
-			} else if (data.title && data.description && bioAvailableAsync) {
-				Alert.alert('from onNotificationOpenedApp with bio')
-
+			if (data.title && data.description && !biometricSuccess) {
 				setModalContent(data)
+			} else if (data.title && data.description && biometricSuccess) {
+				showModal(data)
 			}
 		})
 	}, [])
@@ -94,7 +92,7 @@ export const inAppNotificationListener = () => {
 			title: message?.data?.title,
 		}
 		const { granted } = await Notifications.getPermissionsAsync()
-		console.log('status', granted)
+
 		if (granted) {
 			await Notifications.scheduleNotificationAsync({
 				content: {
@@ -118,7 +116,6 @@ export const inAppNotificationListener = () => {
 					setModalVisible(true)
 					setModalContent(data)
 				}
-				Notifications.dismissNotificationAsync(id)
 			})
 		}
 	}

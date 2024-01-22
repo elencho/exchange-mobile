@@ -34,6 +34,7 @@ const initialState: CommonState = {
 	isBiometricEnabled: false,
 	notificationData: null,
 	isInternetScreenOpened: false,
+	biometricSuccess: null,
 }
 
 const common = createSlice({
@@ -69,6 +70,9 @@ const common = createSlice({
 		setNotificationData(state, action: PayloadAction<any>) {
 			state.notificationData = action.payload
 		},
+		setBiometricSuccess(state, action: PayloadAction<boolean>) {
+			state.biometricSuccess = action.payload
+		},
 	},
 	extraReducers: (builder) => {
 		countries(builder)
@@ -91,6 +95,7 @@ export const {
 	setBiometricToggleEnabled,
 	setNotificationData,
 	setInternetScreenOpened,
+	setBiometricSuccess,
 } = common.actions
 
 export default common.reducer

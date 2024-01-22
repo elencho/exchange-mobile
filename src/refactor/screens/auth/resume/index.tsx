@@ -18,7 +18,10 @@ import { System } from '@app/refactor/common/util'
 import { t } from 'i18next'
 import { logoutThunk, logoutWithoutInternet } from '@store/redux/auth/thunks'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { setBiometricScreenOpened } from '@store/redux/common/slice'
+import {
+	setBiometricScreenOpened,
+	setBiometricSuccess,
+} from '@store/redux/common/slice'
 import KV from '@store/kv/regular'
 import { useModal } from '@components/modal/global_modal'
 import { useNetInfoInstance } from '@react-native-community/netinfo'
@@ -78,7 +81,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 		})
 		if (authResult?.success) {
 			KV.set('lastOpenDateMillis', Date.now())
-
+			dispatch(setBiometricSuccess(true))
 			if (modalContent) {
 				showModal(modalContent)
 			}
