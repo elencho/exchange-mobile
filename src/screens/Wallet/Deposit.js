@@ -54,6 +54,9 @@ export default function Deposit({ refreshControl }) {
 	const isFiat = currentBalanceObj.type === 'FIAT'
 	const isCrypto = currentBalanceObj.type === 'CRYPTO' || network === 'BEP20'
 	const isEcommerce = network === 'ECOMMERCE'
+	const isTolCoin =
+		currentBalanceObj.types.includes('CRYPTO') &&
+		currentBalanceObj.types.includes('FIAT')
 
 	useEffect(() => {
 		const m = currentBalanceObj?.depositMethods
@@ -108,7 +111,8 @@ export default function Deposit({ refreshControl }) {
 	}
 
 	useEffect(() => {
-		fetchCryptoAddresses(code, 'BEP20').then((res) => {
+		fetchCryptoAddresses(code, isTolCoin ? 'BEP20' : network).then((res) => {
+			console.log('adddress', res)
 			dispatch(saveCryptoAddress(res))
 		})
 	}, [])

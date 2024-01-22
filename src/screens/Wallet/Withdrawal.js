@@ -194,9 +194,10 @@ function Withdrawal({ refreshControl }) {
 				<WithKeyboard flexGrow padding refreshControl={refreshControl}>
 					<View style={styles.block}>
 						<WalletCoinsDropdown />
-						{!isCrypto && userInfo.userStatus === UserStatus.VERIFIED && (
-							<TransferMethodDropdown />
-						)}
+						{!isCrypto &&
+							Object.keys(currentBalanceObj.withdrawalMethods).length > 0 && (
+								<TransferMethodDropdown />
+							)}
 
 						{!hasRestriction && hasMethod && (
 							<>
