@@ -50,7 +50,7 @@ export default function TransferMethodDropdown() {
 			withLabel={!isOneMethod}
 			disabled={isOneMethod}
 			icon={renderIcon(network)}
-			selectedText={network}
+			selectedText={network === 'BEP20' ? 'Blockchain' : network}
 			handlePress={show}
 			hideArrow={isOneMethod}
 			isOneMethod={isOneMethod}

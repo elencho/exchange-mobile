@@ -9,15 +9,20 @@ import CardFeesModal from '@app/refactor/screens/convert/modals/CardFeesModal'
 import CloseIcon from '@components/close-button'
 import CardAdd from '@assets/images/Card_Add.svg'
 import { FlatList } from 'react-native-gesture-handler'
+import AddCardModal from '@app/components/Wallet/ManageCards/AddCardModal'
+import { useDispatch } from 'react-redux'
+import { toggleAddCardModal } from '@app/redux/modals/actions'
+import AddCardIcon from '@assets/images/Instant_Add_Card.svg'
 
 const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
-	const { styles, theme } = useTheme(_styles)
+	const { styles } = useTheme(_styles)
 	const { cards, onCardChoose, fees } = props.route?.params
 
+	const dispatch = useDispatch()
 	const [feesModalVisible, setFeesModalVisible] = useState(false)
 
 	const goToAddCard = () => {
-		//TODO
+		dispatch(toggleAddCardModal(true))
 	}
 
 	const Top = () => {
@@ -53,7 +58,12 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 						props.navigation.pop()
 					}}>
 					<Image
-						style={{ width: 50, height: 25, marginRight: 14, borderRadius: 2 }}
+						style={{
+							width: 34,
+							height: 26,
+							marginRight: 14,
+							borderRadius: 2,
+						}}
 						source={{
 							uri: card.iconPngUrl,
 						}}
@@ -75,7 +85,14 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 		}
 
 		const AddCard = () => {
-			return <View></View>
+			return (
+				<Pressable style={styles.addCardContainer} onPress={goToAddCard}>
+					<AddCardIcon style={styles.addCardIcon} />
+					<AppText variant="title" style={styles.addCardText}>
+						Add New Card
+					</AppText>
+				</Pressable>
+			)
 		}
 
 		return (
@@ -113,6 +130,7 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 				visible={feesModalVisible}
 				dismiss={() => setFeesModalVisible(false)}
 			/>
+			<AddCardModal />
 		</AppBackground>
 	)
 }
@@ -164,6 +182,18 @@ const _styles = (theme: Theme) =>
 		cardFeeText: {
 			alignSelf: 'flex-end',
 			color: theme.color.textSecondary,
+		},
+		addCardContainer: {
+			alignSelf: 'flex-start',
+			flexDirection: 'row',
+			alignItems: 'center',
+			marginTop: 20,
+		},
+		addCardText: {
+			color: theme.color.brandSecondary,
+		},
+		addCardIcon: {
+			marginEnd: 14,
 		},
 	})
 

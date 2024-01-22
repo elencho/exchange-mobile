@@ -17,11 +17,12 @@ import BalanceSearchBar from '../../components/Wallet/BalanceSearchBar'
 import BalancesList from '../../components/Wallet/BalancesList'
 import TotalBalance from '../../components/Wallet/TotalBalance'
 import colors from '../../constants/colors'
+import { fetchBalanceApi } from '@app/refactor/screens/convert/api/convertNowApi'
 
 export default function Wallet() {
 	const dispatch = useDispatch()
-	const balanceLoading = useSelector((state) => state.trade.balanceLoading)
-	const balances = useSelector((state) => state.trade.balance.balances)
+	// const balanceLoading = useSelector((state) => state.trade.balanceLoading)
+	// const balances = useSelector((state) => state.trade.balance.balances)
 
 	const inputRef = useRef()
 	const scrollViewRef = useRef()
@@ -30,6 +31,18 @@ export default function Wallet() {
 	const [value, setValue] = useState('')
 	const [showZeroBalances, setShowZeroBalances] = useState(true)
 	const [nonZeroBalances, setNonZeroBalances] = useState([])
+
+	const [balanceLoading, setBalanceLoading] = useState(true)
+	const [balances, setBalances] = useState([])
+
+	// useEffect(() => {
+	// 	fetchBalanceApi().then((res) => {
+	// 		console.log({ res })
+	// 		console.log({ balances })
+	// 		setBalances(res.balances)
+	// 		setBalanceLoading(false)
+	// 	})
+	// }, [])
 
 	useFocusEffect(
 		useCallback(() => {
@@ -40,12 +53,19 @@ export default function Wallet() {
 			const timer = setTimeout(() => {
 				dispatch({ type: 'TOGGLE_BALANCE_LOADING', balanceLoading: false })
 			}, 1500)
+
+			fetchBalanceApi().then((res) => {
+				setBalances(res.balances)
+				setBalanceLoading(false)
+			})
+
 			return () => {
 				onRefresh()
 				clearTimeout(timer)
 				setShowZeroBalances(true)
 				setValue('')
 				Keyboard.dismiss()
+				setBalanceLoading(true)
 			}
 		}, [])
 	)
@@ -56,7 +76,7 @@ export default function Wallet() {
 
 	useEffect(() => {
 		if (balances) {
-			const nonZeroBalances = balances.filter((b) => b.total > 0)
+			const nonZeroBalances = balances?.filter((b) => b?.total > 0)
 			setNonZeroBalances(nonZeroBalances)
 			setFilteredBalances(balances)
 		}

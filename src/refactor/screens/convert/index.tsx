@@ -17,14 +17,17 @@ import CardSection from '@app/refactor/screens/convert/components/CardSection'
 import CoinPair from '@app/refactor/screens/convert/components/CoinPair'
 import { AppButton } from '@components/button'
 import { convertColors } from '@app/refactor/screens/convert/util'
-import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
-import WithKeyboard from '@app/components/WithKeyboard'
 import CopyLogo from '@assets/images/Copy.svg'
 import useCopyToClipboard from '@app/utils/copyToClipboard'
 import messaging from '@react-native-firebase/messaging'
+import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
+import WithKeyboard from '@app/components/WithKeyboard'
+import CardTotalFee from '@app/refactor/screens/convert/components/CardTotalFee'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 	const { styles, theme } = useTheme(_styles)
+
+	const [baseAmount, setBaseAmount] = useState<string>('')
 
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
 	const [chosenCard, setChosenCard] = useState<Card>()
@@ -51,6 +54,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 	useEffect(() => {
 		cards.length === 1 && setChosenCard(cards[0])
 	}, [cards])
+
+	const showCardDetails = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
 
 	const handleDropDownClick = (type: CoinType) => {
 		type === 'Crypto' ? setCryptoModalVisible(true) : setFiatModalVisible(true)
@@ -96,7 +101,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 		) : null
 	}
 	const [fcmToken, setFcmToken] = useState('')
-	
+
 	useEffect(() => {
 		checkToken()
 	}, [])
@@ -114,7 +119,10 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 			<TopRow
 				headlineLogo={<InfoMark inner="?" color={theme.color.textThird} />}
 			/>
-			<CopyLogo onPress={() => copyToClipboard(fcmToken)} />
+			<CopyLogo
+				style={{ marginBottom: 10 }}
+				onPress={() => copyToClipboard(fcmToken)}
+			/>
 
 			{loading || !pair ? (
 				<MaterialIndicator
@@ -129,8 +137,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 					flexGrow
 					modal={undefined}
 					refreshControl={undefined}
-					scrollUp={false}
 					padding={false}
+					scrollUp={false}
 					noRefresh={true}>
 					<View style={styles.container}>
 						<TradeTypeSwitcher
@@ -149,6 +157,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 								}
 							}}
 							buttonClicked={buttonClicked}
+							saveBaseAmount={setBaseAmount}
 						/>
 						{!buyWithCardChecked && (
 							<BalanceChips
@@ -156,7 +165,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 								onChipSelect={setSelectedChip}
 							/>
 						)}
-						{tradeType === 'Buy' && pair.fiat.buyWithCard && (
+						{showCardDetails && (
 							<CardSection
 								cards={cards}
 								chosenCard={chosenCard}
@@ -178,6 +187,14 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 							tradeType={tradeType}
 							onTimerExpired={() => fetchCoins()}
 						/>
+						{showCardDetails && chosenCard && (
+							<CardTotalFee
+								card={chosenCard}
+								fiat={pair.fiat}
+								amount={baseAmount}
+							/>
+						)}
+						<View style={{ height: 30 }} />
 						<View style={{ flex: 1 }} />
 						<AppButton
 							style={styles.button}

@@ -1,10 +1,13 @@
 import { COINS_URL_PNG, ICONS_URL_PNG } from '@app/constants/api'
+import { RootState } from '@app/refactor/redux/rootReducer'
 import {
 	fetchBalanceApi,
 	fetchCards,
 	fetchOffersApi,
 } from '@app/refactor/screens/convert/api/convertNowApi'
+import { setConvertPair } from '@store/redux/common/slice'
 import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 type DisplayCcy = string
 type Provider = string
@@ -16,6 +19,8 @@ type BalanceEntry = {
 }
 
 export const useCoins = () => {
+	const dispatch = useDispatch()
+
 	const [pair, setPair] = useState<CoinPair>()
 	const [loading, setLoading] = useState(false)
 
@@ -28,10 +33,6 @@ export const useCoins = () => {
 	const balancesCache = useRef<Record<DisplayCcy, BalanceEntry>>({})
 	const feesCache = useRef<Record<Provider, Record<CardType, Pct | null>>>({})
 
-	//TODO: Save in local storage
-	const defFiatDisplayCcy = 'TOUSD'
-	const defCryptoDisplayCcy = 'USDT'
-
 	useEffect(() => {
 		fetchCoins().then(() => {
 			fetchCards().then((data) => {
@@ -39,6 +40,19 @@ export const useCoins = () => {
 			})
 		})
 	}, [])
+
+	const convertPair = useSelector(
+		(state: RootState) => state.common.convertPair
+	)
+
+	const extractDisplayCcys = () => {
+		if (convertPair) {
+			const split = convertPair.split('-')
+			return { fiat: split[1], crypto: split[0] }
+		} else {
+			return { fiat: 'TOUSD', crypto: 'USDT' }
+		}
+	}
 
 	const fetchCoins = async () => {
 		setLoading(true)
@@ -50,14 +64,16 @@ export const useCoins = () => {
 				balancesCache.current = saveBalancesCache(balances)
 				offersCache.current = saveOffersCache(offers)
 
+				const defCcy = extractDisplayCcys()
+
 				const fiatCoins = Object.values(offers).map((item) =>
 					mapCoin(item[0], 'Fiat')
 				)
-				const cryptosForFiat = offers[defFiatDisplayCcy].map((item) =>
+				const cryptosForFiat = offers[defCcy.fiat].map((item) =>
 					mapCoin(item, 'Crypto')
 				)
-				const pairDto = offers[defFiatDisplayCcy].find(
-					(item) => item.pair.baseCurrencyDisplayCode === defCryptoDisplayCcy
+				const pairDto = offers[defCcy.fiat].find(
+					(item) => item.pair.baseCurrencyDisplayCode === defCcy.crypto
 				)
 				const coinPair = pairDto && mapCoinPair(pairDto)
 
@@ -82,12 +98,14 @@ export const useCoins = () => {
 
 			setPair(newPair)
 			setCryptos(cryptosForFiat)
+			dispatch(setConvertPair(newPair.displayCode))
 		} else {
 			const pairs = offersCache.current[pair!.fiat.displayCcy]
 			const newPair = pairs.find(
 				(item) => item.crypto.displayCcy === coin.displayCcy
 			)
 			setPair(newPair)
+			newPair && dispatch(setConvertPair(newPair.displayCode))
 		}
 	}
 
@@ -140,7 +158,8 @@ export const useCoins = () => {
 			})
 		})
 
-		return Object.entries(cache).map(mapFee)
+		const res = Object.entries(cache).map(mapFee)
+		return res.sort((a, b) => a.providerBank.localeCompare(b.providerBank))
 	}
 
 	/***
@@ -155,7 +174,8 @@ export const useCoins = () => {
 			sellPrice: dto.sellPrice,
 			fiat: mapCoin(dto, 'Fiat'),
 			crypto: mapCoin(dto, 'Crypto'),
-			pair: dto.pair.pair,
+			code: dto.pair.pair,
+			displayCode: dto.pair.pairDisplayName,
 			minTradeSize: Number(dto.pair.minSimpleTradeSize),
 			minTradeCost: Number(dto.pair.minSimpleTradeCost),
 			maxTradeSize: Number(dto.pair.maxSize),
