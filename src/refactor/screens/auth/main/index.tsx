@@ -25,6 +25,7 @@ import { fetch } from '@react-native-community/netinfo'
 import { CommonActions } from '@react-navigation/native'
 import ConvertNow from '@app/refactor/screens/convert'
 import { useModal } from '@components/modal/global_modal'
+import { setBiometricSuccess } from '@store/redux/common/slice'
 
 const Tab = createBottomTabNavigator()
 
@@ -84,13 +85,13 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
 		} else if (newState === 'active' && !bioVisible) {
-			Alert.alert('from handleAppStateChange')
 			setIsBiometricScreenOpenedForModal(false)
 			setModalVisible(true)
 		}
 
 		if (appClosing && !isModalVisible) {
 			setIsBiometricScreenOpenedForModal(true)
+			dispatch(setBiometricSuccess(false))
 		}
 
 		if (appClosing && !resumeIsShown()) {

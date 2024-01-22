@@ -38,6 +38,7 @@ const initialState: CommonState = {
 	isBiometricEnabled: false,
 	notificationData: null,
 	isInternetScreenOpened: false,
+	biometricSuccess: null,
 }
 
 const common = createSlice({
@@ -73,6 +74,9 @@ const common = createSlice({
 		setNotificationData(state, action: PayloadAction<any>) {
 			state.notificationData = action.payload
 		},
+		setBiometricSuccess(state, action: PayloadAction<boolean>) {
+			state.biometricSuccess = action.payload
+		},
 		setConvertPair(state, action: PayloadAction<string>) {
 			KV.set('defaultConvertPair', action.payload)
 			state.convertPair = action.payload
@@ -99,6 +103,7 @@ export const {
 	setBiometricToggleEnabled,
 	setNotificationData,
 	setInternetScreenOpened,
+	setBiometricSuccess,
 	setConvertPair,
 } = common.actions
 
