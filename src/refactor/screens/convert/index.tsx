@@ -192,7 +192,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 							tradeType={tradeType}
 							onTimerExpired={() => fetchCoins()}
 						/>
-						{showCardDetails && chosenCard && (
+						{buyWithCardChecked && chosenCard && (
 							<CardTotalFee
 								card={chosenCard}
 								fiat={pair.fiat}
