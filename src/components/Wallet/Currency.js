@@ -65,7 +65,7 @@ function Currency({
 				<Image
 					style={styles.image}
 					source={{
-						uri: `${COINS_URL_PNG}/${displayCurrencyCode.toLowerCase()}.png`,
+						uri: `${COINS_URL_PNG}/${displayCurrencyCode?.toLowerCase()}.png`,
 					}}
 				/>
 			</View>

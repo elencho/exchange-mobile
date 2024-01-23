@@ -29,7 +29,7 @@ import WithKeyboard from '../../WithKeyboard'
 import QrScannerToggler from '../Withdrawal/widgets/QrScannerToggler'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
-export default function AddEditWhitelistModal({ add, edit }) {
+export default function AddEditWhitelistModal({ add, edit, setManualLoading }) {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 	const {
@@ -54,6 +54,13 @@ export default function AddEditWhitelistModal({ add, edit }) {
 	const [seconds, setSeconds] = useState(30)
 
 	const hide = () => {
+		if (setManualLoading) {
+			setManualLoading(true)
+			setTimeout(() => {
+				setManualLoading(false)
+			}, 1000)
+		}
+
 		if (add) dispatch(toggleAddWhitelistModal(false))
 		if (edit) dispatch(toggleEditWhitelistModal(false))
 		clearInputs()

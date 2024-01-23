@@ -79,7 +79,7 @@ const useInitApp = ({ navigation }: ScreenProp<'Splash'>) => {
 			})
 		} else {
 			setIsBiometricScreenOpenedForModal(false)
-			setModalVisible(true)
+			setModalVisible('initApp')
 			if (update) {
 				navigation.navigate('UpdateAvailable')
 			} else if (maintenance) {

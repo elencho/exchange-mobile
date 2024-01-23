@@ -20,6 +20,7 @@ export default function Whitelist({ refreshControl }) {
 	const state = useSelector((state) => state)
 	const {
 		wallet: { whitelist, hasWhitelist, whitelistLoading },
+		modals: { addWhitelistModalVisble, editWhitelistModalVisble },
 		transactionsOld: { loading },
 		trade: {
 			currentBalanceObj: { types },
@@ -41,9 +42,18 @@ export default function Whitelist({ refreshControl }) {
 		}
 	}, [isTolCurrency])
 
+	const [manualLoading, setManualLoading] = useState(true)
+	useEffect(() => {
+		// if (!addWhitelistModalVisble) setManualLoading(true)
+
+		setTimeout(() => {
+			setManualLoading(false)
+		}, 1000)
+	}, [addWhitelistModalVisble, editWhitelistModalVisble])
+
 	return (
 		<>
-			{loading || whitelistLoading ? (
+			{manualLoading || loading || whitelistLoading ? (
 				<MaterialIndicator color="#6582FD" animationDuration={3000} />
 			) : (
 				<View style={{ flex: 1 }}>
@@ -90,7 +100,7 @@ export default function Whitelist({ refreshControl }) {
 					<WhitelistActionsModal
 						setDeleteWhitelistOtpVisible={setDeleteWhitelistOtpVisible}
 					/>
-					<AddEditWhitelistModal add />
+					<AddEditWhitelistModal add setManualLoading={setManualLoading} />
 					<AddEditWhitelistModal edit />
 
 					{deleteWhitelistOtpVisible && (

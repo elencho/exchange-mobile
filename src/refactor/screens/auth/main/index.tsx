@@ -25,6 +25,7 @@ import { fetch } from '@react-native-community/netinfo'
 import { CommonActions } from '@react-navigation/native'
 import ConvertNow from '@app/refactor/screens/convert'
 import { useModal } from '@components/modal/global_modal'
+import { setBiometricSuccess } from '@store/redux/common/slice'
 
 const Tab = createBottomTabNavigator()
 
@@ -35,6 +36,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		setIsBiometricScreenOpenedForModal,
 		setModalVisible,
 		isModalVisible,
+		modalContent,
 	} = useModal()
 	const fromResume = route.params?.fromResume === true
 	const prevAppState = useRef<AppStateStatus>()
@@ -72,29 +74,37 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
 		const appClosing = isAppClosing(newState)
-		const bioVisible =
-			newState === 'active' &&
-			!fromResume &&
-			accessToken !== undefined &&
-			KV.get('webViewVisible') !== true &&
-			biometricDiffElapsed() &&
-			(await isEnrolledAsync())
+		const isEnrolled = await isEnrolledAsync()
+		if (isEnrolled) {
+			const bioVisible =
+				newState === 'active' &&
+				!fromResume &&
+				accessToken !== undefined &&
+				KV.get('webViewVisible') !== true &&
+				biometricDiffElapsed()
 
-		if (bioVisible) {
-			const email = jwt_decode<TokenParams>(accessToken)?.email
-			getBiometricEnabled(email)
-		} else if (newState === 'active') {
-			Alert.alert('from handleAppStateChange')
-			setIsBiometricScreenOpenedForModal(false)
-			setModalVisible(true)
+			if (bioVisible) {
+				const email = jwt_decode<TokenParams>(accessToken)?.email
+				getBiometricEnabled(email)
+			}
+
+			if (newState === 'active' && !bioVisible) {
+				setIsBiometricScreenOpenedForModal(false)
+				setModalVisible('handleAppState')
+				dispatch(setBiometricSuccess(true))
+			}
 		}
 
 		if (appClosing && !isModalVisible) {
 			setIsBiometricScreenOpenedForModal(true)
 		}
 
+		if (appClosing) {
+			dispatch(setBiometricSuccess(false))
+		}
+
 		if (appClosing && !resumeIsShown()) {
-			KV.set('lastOpenDateMillis', Date.now())
+			KV.set('lastCloseDateMillis', Date.now())
 		}
 		prevAppState.current = newState
 	}, [])

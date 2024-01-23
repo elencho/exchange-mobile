@@ -64,7 +64,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 				cancelLabel: 'Abort',
 			})
 			if (result.success) {
-				KV.set('lastOpenDateMillis', Date.now())
+				KV.set('lastCloseDateMillis', Date.now())
 
 				const addedUserMail = cachedEmails
 					.filter((e) => e !== userEmail)
