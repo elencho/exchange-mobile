@@ -15,7 +15,7 @@ interface Schema {
 	everOpened: boolean
 	language: Language
 	webViewVisible: boolean
-	lastOpenDateMillis: number
+	lastCloseDateMillis: number
 	bioIsAvailableOnUser: boolean
 	defaultConvertPair: string
 }
@@ -48,7 +48,7 @@ const deserializers: {
 	webViewVisible: deserializeBoolean,
 	everOpened: deserializeBoolean,
 	language: (value: string) => (value === 'ka' ? 'ka' : 'en'),
-	lastOpenDateMillis: deserializeNumber,
+	lastCloseDateMillis: deserializeNumber,
 	bioIsAvailableOnUser: deserializeBoolean,
 	defaultConvertPair: deserializeString,
 }
@@ -57,7 +57,7 @@ const serializers: { [key in Key]: (value: Schema[key]) => string } = {
 	webViewVisible: serializeBoolean,
 	everOpened: serializeBoolean,
 	language: serializeString,
-	lastOpenDateMillis: serializeNumber,
+	lastCloseDateMillis: serializeNumber,
 	bioIsAvailableOnUser: serializeBoolean,
 	defaultConvertPair: serializeString,
 }

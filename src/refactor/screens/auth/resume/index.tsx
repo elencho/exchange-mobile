@@ -80,7 +80,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 			cancelLabel: t('Abort') || '',
 		})
 		if (authResult?.success) {
-			KV.set('lastOpenDateMillis', Date.now())
+			KV.set('lastCloseDateMillis', Date.now())
 			dispatch(setBiometricSuccess(true))
 			if (modalContent) {
 				showModal(modalContent)
