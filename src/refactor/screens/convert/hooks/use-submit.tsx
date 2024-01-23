@@ -1,10 +1,15 @@
 import { submitTrade } from '@app/refactor/screens/convert/api/convertNowApi'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
+import { setWebViewVisible } from '@store/redux/common/slice'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 	const { spentAmount, pair, tradeType, card } = props.route?.params
 
+	const dispatch = useDispatch()
+
+	const [webViewState, setWebViewState] = useState<CardRedirectResponse>()
 	const [generalError, setGeneralError] = useState<UiErrorData | null>(null)
 	const [confirmModalStatus, setConfirmModalStatus] =
 		useState<ConfirmModalStatus>()
@@ -28,10 +33,9 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 				// if errorKey === price changed: own logic
 				setGeneralError(data)
 			} else {
-				setConfirmModalStatus('success')
-				// redirect to webview
+				dispatch(setWebViewVisible(true))
+				setWebViewState(data)
 			}
-			return
 		})
 	}
 
@@ -39,7 +43,7 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 		onConfirmPressed,
 		confirmModalStatus,
 		setConfirmModalStatus,
+		webViewState,
 		generalError,
-		setGeneralError,
 	}
 }

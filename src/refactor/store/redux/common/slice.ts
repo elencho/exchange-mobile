@@ -12,6 +12,7 @@ interface CommonState {
 	language: Language
 	currencyList: Currency[]
 	countries: Country[]
+	webViewVisible: boolean
 
 	// error
 	lastRequestUiError?: UiErrorType
@@ -38,6 +39,7 @@ const initialState: CommonState = {
 	isBiometricEnabled: false,
 	notificationData: null,
 	isInternetScreenOpened: false,
+	webViewVisible: false,
 }
 
 const common = createSlice({
@@ -73,9 +75,17 @@ const common = createSlice({
 		setNotificationData(state, action: PayloadAction<any>) {
 			state.notificationData = action.payload
 		},
+		setWebViewVisible(state, action: PayloadAction<boolean>) {
+			state.webViewVisible = action.payload
+			KV.set('webViewVisible', action.payload)
+		},
 		setConvertPair(state, action: PayloadAction<string>) {
 			KV.set('defaultConvertPair', action.payload)
 			state.convertPair = action.payload
+		},
+		delConvertPair(state) {
+			KV.del('defaultConvertPair')
+			state.convertPair = undefined
 		},
 	},
 	extraReducers: (builder) => {
@@ -99,7 +109,9 @@ export const {
 	setBiometricToggleEnabled,
 	setNotificationData,
 	setInternetScreenOpened,
+	setWebViewVisible,
 	setConvertPair,
+	delConvertPair,
 } = common.actions
 
 export default common.reducer

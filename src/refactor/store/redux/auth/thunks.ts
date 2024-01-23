@@ -38,7 +38,7 @@ import { resetTransactionsState } from '@app/redux/transactions/actions'
 import { resetWalletState } from '@app/redux/wallet/actions'
 import KV from '@store/kv/regular'
 import { canDoBiometric } from '@app/refactor/utils/authUtils'
-import { setBiometricToggleEnabled } from '../common/slice'
+import { delConvertPair, setBiometricToggleEnabled } from '../common/slice'
 import { resetModalsState } from '@app/redux/modals/actions'
 import messaging from '@react-native-firebase/messaging'
 import { notificationSubscribe } from '@app/refactor/redux/profile/profileApi'
@@ -473,7 +473,7 @@ export const logoutThunk = createAsyncThunk(
 
 			await messaging().deleteToken()
 
-			KV.del('defaultConvertPair')
+			dispatch(delConvertPair())
 			KV.del('bioIsAvailableOnUser')
 			await AsyncStorage.removeItem('bioIsAvailableOnUser')
 

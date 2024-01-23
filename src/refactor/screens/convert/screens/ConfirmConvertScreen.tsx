@@ -11,9 +11,15 @@ import { formatDisplayPair } from '@app/refactor/screens/convert/util'
 import { useSubmit } from '@app/refactor/screens/convert/hooks/use-submit'
 import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
 import General_error from '@components/general_error'
+import AppWebView from '@components/web_view'
+import { WebViewNavigation } from 'react-native-webview'
+import { useDispatch } from 'react-redux'
+import { setWebViewVisible } from '@store/redux/common/slice'
 
 const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
-	const { styles, theme } = useTheme(_styles)
+	const { styles } = useTheme(_styles)
+	const dispatch = useDispatch()
+
 	const { spentAmount, receivedAmount, pair, tradeType, card } =
 		props.route?.params
 
@@ -22,10 +28,20 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		confirmModalStatus,
 		setConfirmModalStatus,
 		generalError,
-		setGeneralError,
+		webViewState,
 	} = useSubmit(props)
 
 	const goToTransactions = () => {}
+
+	const handleWebViewUrlChange = (event: WebViewNavigation) => {
+		const urlQueries = event.url.split('=')
+		const lastQuery = urlQueries[urlQueries.length - 1]
+
+		if (lastQuery === 'false' || lastQuery === 'true') {
+			dispatch(setWebViewVisible(false))
+			setConfirmModalStatus(lastQuery === 'true' ? 'pending' : 'error')
+		}
+	}
 
 	type InfoItem = {
 		desc: string
@@ -131,6 +147,12 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 				dismiss={() => setConfirmModalStatus(undefined)}
 				onTransactionsClick={goToTransactions}
 			/>
+			{webViewState && (
+				<AppWebView
+					source={{ uri: webViewState.actionUrl }}
+					onNavigationStateChange={handleWebViewUrlChange}
+				/>
+			)}
 		</AppBackground>
 	)
 }
