@@ -52,8 +52,12 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 	useNotificationPermissions()
 
 	useEffect(() => {
-		cards.length === 1 && setChosenCard(cards[0])
-	}, [cards])
+		if (tradeType === 'Buy') {
+			cards.length === 1 && setChosenCard(cards[0])
+		} else {
+			setChosenCard(undefined)
+		}
+	}, [tradeType, cards])
 
 	const buttonText = () => {
 		const buySell = tradeType === 'Buy' ? 'Buy' : 'Sell'
