@@ -21,6 +21,8 @@ type BalanceEntry = {
 export const useCoins = () => {
 	const dispatch = useDispatch()
 
+	const [timesFetched, setTimesFetched] = useState(0)
+
 	const [pair, setPair] = useState<CoinPair>()
 	const [loading, setLoading] = useState(false)
 
@@ -83,6 +85,7 @@ export const useCoins = () => {
 				setFees(extractFeesFromBalances(balances))
 			})
 			.finally(() => {
+				setTimesFetched(timesFetched + 1)
 				setLoading(false)
 			})
 	}
@@ -248,5 +251,6 @@ export const useCoins = () => {
 		loading,
 		fetchCoins,
 		onCoinSelected,
+		onFetch: timesFetched,
 	}
 }

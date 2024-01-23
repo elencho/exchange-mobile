@@ -38,8 +38,6 @@ const Timer = ({ pair, tradeType, onTimerExpired }: Props) => {
 		const minStr = min ? '01' : '00'
 		const secStr = sec < 10 ? '0' + sec : sec
 
-		const price = tradeType === 'Buy' ? pair.buyPrice : pair.sellPrice
-
 		return (
 			<View style={styles.textContainer}>
 				<AppText style={styles.textCoins}>

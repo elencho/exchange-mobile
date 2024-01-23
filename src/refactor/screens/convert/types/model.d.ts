@@ -2,6 +2,8 @@ type TradeType = 'Buy' | 'Sell'
 
 type CoinType = 'Fiat' | 'Crypto'
 
+type Position = 'up' | 'low'
+
 type Coin = {
 	ccy: string
 	displayCcy: string
