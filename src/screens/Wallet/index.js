@@ -21,7 +21,7 @@ import { fetchBalanceApi } from '@app/refactor/screens/convert/api/convertNowApi
 
 export default function Wallet() {
 	const dispatch = useDispatch()
-	// const balanceLoading = useSelector((state) => state.trade.balanceLoading)
+	const balanceLoadingSaga = useSelector((state) => state.trade.balanceLoading)
 	// const balances = useSelector((state) => state.trade.balance.balances)
 
 	const inputRef = useRef()
@@ -96,12 +96,17 @@ export default function Wallet() {
 	}
 
 	const onRefresh = () => {
+		// setBalanceLoading(true)
 		setShowRefreshControl(true)
 		hideButtonsHandler()
 		setValue('')
 		setShowZeroBalances(true)
 		dispatch({ type: 'REFRESH_WALLET_AND_TRADES' })
 		setShowRefreshControl(false)
+
+		// setTimeout(() => {
+		// 	setBalanceLoading(false)
+		// }, 500)
 	}
 
 	const animatedValue = useSharedValue(8)
@@ -133,14 +138,18 @@ export default function Wallet() {
 							nestedScrollEnabled
 							refreshControl={
 								<CustomRefreshContol
-									refreshing={balanceLoading && showRefreshControl}
+									refreshing={
+										(balanceLoading || balanceLoadingSaga) && showRefreshControl
+									}
 									onRefresh={onRefresh}
 								/>
 							}
 							ref={scrollViewRef}
 							showsVerticalScrollIndicator={false}
 							stickyHeaderIndices={[1]}>
-							<TotalBalance balanceLoading={balanceLoading} />
+							<TotalBalance
+								balanceLoading={balanceLoading || balanceLoadingSaga}
+							/>
 							<BalanceSearchBar
 								animatedValue={animatedValue}
 								showButtonsHandler={showButtonsHandler}
@@ -152,7 +161,7 @@ export default function Wallet() {
 								ref={inputRef}
 							/>
 							<BalancesList
-								balanceLoading={balanceLoading}
+								balanceLoading={balanceLoading || balanceLoadingSaga}
 								filteredBalances={filteredBalances}
 							/>
 							<View style={styles.footer} />

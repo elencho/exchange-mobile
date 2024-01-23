@@ -56,8 +56,6 @@ export default function ModalWithSearch({
 				? ''
 				: `Total: ${item?.total} ≈ ${item?.valueBTC} BTC`
 
-		console.log({ item })
-
 		return (
 			<ModalSearchItem
 				name={name}
