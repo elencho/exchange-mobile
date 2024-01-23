@@ -87,10 +87,14 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		} else if (newState === 'active' && !bioVisible) {
 			setIsBiometricScreenOpenedForModal(false)
 			setModalVisible(true)
+			dispatch(setBiometricSuccess(true))
 		}
 
 		if (appClosing && !isModalVisible) {
 			setIsBiometricScreenOpenedForModal(true)
+		}
+
+		if (appClosing) {
 			dispatch(setBiometricSuccess(false))
 		}
 
