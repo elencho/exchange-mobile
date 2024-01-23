@@ -111,10 +111,10 @@ export default function Deposit({ refreshControl }) {
 	}
 
 	useEffect(() => {
-		fetchCryptoAddresses(code, isTolCoin ? 'BEP20' : network).then((res) => {
-			console.log('adddress', res)
-			dispatch(saveCryptoAddress(res))
-		})
+		network &&
+			fetchCryptoAddresses(code, isTolCoin ? 'BEP20' : network).then((res) => {
+				dispatch(saveCryptoAddress(res))
+			})
 	}, [])
 
 	const onNavigationStateChange = async (state) => {
