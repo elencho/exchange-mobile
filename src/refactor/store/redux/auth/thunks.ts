@@ -317,7 +317,7 @@ export const codeToTokenThunk = createAsyncThunk(
 			}
 		})
 		if (tokenData) {
-			KV.set('lastOpenDateMillis', Date.now())
+			KV.set('lastCloseDateMillis', Date.now())
 
 			dispatch(
 				setTokens({

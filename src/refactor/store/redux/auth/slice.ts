@@ -97,7 +97,7 @@ const auth = createSlice({
 		resetAuth: (state) => {
 			state = initialState
 			SecureKV.del('refreshToken')
-			KV.del('lastOpenDateMillis')
+			KV.del('lastCloseDateMillis')
 		},
 	},
 	extraReducers: (builder) => {

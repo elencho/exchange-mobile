@@ -116,7 +116,7 @@ export const inAppNotificationListener = () => {
 					data.description &&
 					isBiometricScreenOpenedForModal
 				) {
-					setModalVisible(true)
+					setModalVisible('getNotificaftion')
 					setModalContent(data)
 				}
 			})

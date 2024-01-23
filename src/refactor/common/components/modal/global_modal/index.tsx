@@ -13,6 +13,7 @@ import {
 	ImageBackground,
 	Linking,
 	Dimensions,
+	Alert,
 } from 'react-native'
 import Modal from 'react-native-modal'
 import CloseIcon from '@components/close-button'
@@ -20,6 +21,7 @@ import { Theme, useTheme } from '@theme/index'
 
 import { AppButton } from '@components/button'
 import { useNetInfoInstance } from '@react-native-community/netinfo'
+import { useDispatch } from 'react-redux'
 
 type ModalContextType = {
 	showModal: (content: ContentType) => void
@@ -43,7 +45,7 @@ interface ContentType {
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
-	const [isModalVisible, setModalVisible] = useState(false)
+	const [isModalVisible, setModalSmallVisible] = useState(false)
 	const [isBiometricScreenOpenedForModal, setIsBiometricScreenOpenedForModal] =
 		useState(true)
 	const [modalContent, setModalContent] = useState<ContentType | null>(null)
@@ -56,9 +58,15 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const showModal = (content: ContentType) => {
 		setModalContent(content)
 		if (content?.title && content?.description) {
-			setModalVisible(true)
+			setModalVisible('showModal')
 			setIsBiometricScreenOpenedForModal(false)
 		}
+	}
+
+	// TODO: remove when tested
+	const setModalVisible = (visible) => {
+		Alert.alert('setModalVisible is from', visible)
+		setModalSmallVisible(visible)
 	}
 
 	const hideModal = () => {
@@ -120,7 +128,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 					propagateSwipe={true}
 					useNativeDriver
 					useNativeDriverForBackdrop
-					isVisible={!!isConnected && isModalVisible}
+					isVisible={isModalVisible}
 					onModalHide={onModalHide}
 					coverScreen
 					backdropTransitionOutTiming={0}
