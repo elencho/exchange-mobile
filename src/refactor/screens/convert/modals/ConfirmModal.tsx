@@ -26,15 +26,24 @@ const ConfirmModal = ({ status, onTransactionsClick, dismiss }: Props) => {
 				<Error />
 			)
 
+		const desc =
+			status === 'success'
+				? null
+				: status === 'pending'
+				? 'pending description'
+				: 'error description'
+
 		return (
 			<View style={styles.container}>
 				{image}
 				<AppText variant="title" style={styles.title} medium>
 					{'Transaction ' + status}
 				</AppText>
-				<AppText variant="m" style={styles.desc}>
-					{'Description???'}
-				</AppText>
+				{desc && (
+					<AppText variant="l" style={styles.desc}>
+						{desc}
+					</AppText>
+				)}
 
 				{(status === 'success' || status === 'pending') && (
 					<AppButton
@@ -65,14 +74,11 @@ const _styles = (theme: Theme) =>
 		},
 		title: {
 			marginTop: 18,
+			marginBottom: 10,
 			color: theme.color.textPrimary,
 		},
-		desc: {
-			marginTop: 10,
-			marginBottom: 30,
-			color: theme.color.textSecondary,
-		},
 		button: {
+			marginTop: 20,
 			width: '60%',
 			marginBottom: 10,
 		},

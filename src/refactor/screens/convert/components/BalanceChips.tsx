@@ -34,7 +34,11 @@ const BalanceChips = ({ selectedChip, onChipSelect }: Props) => {
 					]}
 					key={mul}
 					onPress={() => {
-						onChipSelect(mul)
+						if (selectedChip === mul) {
+							onChipSelect(undefined)
+						} else {
+							onChipSelect(mul)
+						}
 					}}>
 					<AppText
 						variant="l"

@@ -14,10 +14,6 @@ type Props = {
 const ConfirmTradeCard = ({ fiat, card, amount }: Props) => {
 	const { styles, theme } = useTheme(_styles)
 
-	useEffect(() => {
-		console.log(fiat.scale)
-	}, [fiat])
-
 	const feeNum = Number(amount) * (card.feePct ? card.feePct / 100 : 0)
 	const totalNum = Number(amount) + feeNum
 	const totalTxt =
@@ -27,7 +23,7 @@ const ConfirmTradeCard = ({ fiat, card, amount }: Props) => {
 		feeNum.toFixed(fiat.scale) +
 		' ' +
 		fiat.displayCcy +
-		'(' +
+		' (' +
 		card.network +
 		' ' +
 		(card.feePct || 0) +

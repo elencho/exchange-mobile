@@ -23,6 +23,7 @@ import messaging from '@react-native-firebase/messaging'
 import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
 import WithKeyboard from '@app/components/WithKeyboard'
 import CardTotalFee from '@app/refactor/screens/convert/components/CardTotalFee'
+import { handlePair } from '@app/refactor/screens/convert/hooks/handle-pair'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 	const { styles, theme } = useTheme(_styles)
@@ -47,13 +48,48 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 		loading,
 		fetchCoins,
 		onCoinSelected,
+		onFetch,
 	} = useCoins()
+
+	const {
+		upCoin,
+		setUpCoin,
+		upAmount,
+		setUpAmount,
+		lowCoin,
+		setLowCoin,
+		lowAmount,
+		setLowAmount,
+		lastChanged,
+		setLastChanged,
+		lastClicked,
+		setLastClicked,
+		errorInputs,
+		setErrorInputs,
+		errorText,
+		setErrorText,
+	} = handlePair()
 
 	useNotificationPermissions()
 
 	useEffect(() => {
-		cards.length === 1 && setChosenCard(cards[0])
-	}, [cards])
+		if (tradeType === 'Buy') {
+			cards.length === 1 && setChosenCard(cards[0])
+		} else {
+			setChosenCard(undefined)
+		}
+	}, [tradeType, pair, cards])
+
+	useEffect(() => {}, [onFetch])
+
+	const onTimerExpire = () => {
+		fetchCoins()
+	}
+
+	const buttonText = () => {
+		const buySell = tradeType === 'Buy' ? 'Buy' : 'Sell'
+		return buySell + ' ' + pair?.crypto.displayCcy
+	}
 
 	const showCardDetails = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
 
@@ -68,7 +104,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 				receivedAmount,
 				pair,
 				tradeType,
-				card: chosenCard,
+				card: showCardDetails ? chosenCard : undefined,
 			})
 	}
 
@@ -158,6 +194,22 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 							}}
 							buttonClicked={buttonClicked}
 							saveBaseAmount={setBaseAmount}
+							upCoin={upCoin}
+							upAmount={upAmount}
+							lowAmount={lowAmount}
+							lowCoin={lowCoin}
+							lastChanged={lastChanged}
+							lastClicked={lastClicked}
+							errorInputs={errorInputs}
+							errorText={errorText}
+							setUpCoin={setUpCoin}
+							setLowCoin={setLowCoin}
+							setUpAmount={setUpAmount}
+							setLowAmount={setLowAmount}
+							setLastChanged={setLastChanged}
+							setLastClicked={setLastClicked}
+							setErrorInputs={setErrorInputs}
+							setErrorText={setErrorText}
 						/>
 						{!buyWithCardChecked && (
 							<BalanceChips
@@ -185,9 +237,9 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 						<Timer
 							pair={pair}
 							tradeType={tradeType}
-							onTimerExpired={() => fetchCoins()}
+							onTimerExpired={onTimerExpire}
 						/>
-						{showCardDetails && chosenCard && (
+						{buyWithCardChecked && chosenCard && (
 							<CardTotalFee
 								card={chosenCard}
 								fiat={pair.fiat}
@@ -202,11 +254,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 								tradeType === 'Buy' ? convertColors.buy : convertColors.sell
 							}
 							variant="primary"
-							text={
-								(tradeType === 'Buy' ? 'Buy' : 'Sell') +
-								' ' +
-								pair?.fiat.displayCcy
-							}
+							text={buttonText()}
 							onPress={() => {
 								setButtonClicked(true)
 							}}

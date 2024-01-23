@@ -20,15 +20,15 @@ export const coinError = (
 	}
 
 	if (tradeType === 'Buy') {
-		if (f > Number(pair.fiat.balance)) {
-			// 1, 2
+		// 1, 2
+		if (f > Number(pair.fiat.balance) || c > Number(pair.fiat.balance)) {
 			return {
 				err: 'max. available ' + pair.fiat.balance + ' ' + pair.fiat.displayCcy,
 				type: ['Fiat'],
 			}
 		}
 		// 6
-		if (f * buy < pair.minTradeCost) {
+		if (f < pair.minTradeCost) {
 			return {
 				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
 				type: ['Fiat'],
@@ -42,17 +42,19 @@ export const coinError = (
 			}
 		}
 	} else {
-		if (f > Number(pair.fiat.balance)) {
-			// 3, 4
-			const maxAvailableCrypto = pair.crypto.balance
+		// 3, 4
+		if (c > Number(pair.crypto.balance) || f > Number(pair.crypto.balance)) {
 			return {
 				err:
-					'max. available ' + maxAvailableCrypto + ' ' + pair.crypto.displayCcy,
+					'max. available ' +
+					pair.crypto.balance +
+					' ' +
+					pair.crypto.displayCcy,
 				type: ['Crypto'],
 			}
 		}
 		// 8
-		if (f * sell < pair.minTradeCost) {
+		if (c * sell < pair.minTradeCost) {
 			return {
 				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
 				type: ['Fiat'],

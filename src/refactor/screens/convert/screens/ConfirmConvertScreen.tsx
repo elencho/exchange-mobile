@@ -4,16 +4,22 @@ import { StyleSheet, View, Image } from 'react-native'
 import AppBackground from '@components/background'
 import AppText from '@components/text'
 import { AppButton } from '@components/button'
-import React from 'react'
+import React, { useEffect } from 'react'
 import CloseIcon from '@components/close-button'
 import ConfirmTradeCard from '@app/refactor/screens/convert/components/ConfirmTradeCard'
 import { formatDisplayPair } from '@app/refactor/screens/convert/util'
 import { useSubmit } from '@app/refactor/screens/convert/hooks/use-submit'
 import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
 import General_error from '@components/general_error'
+import AppWebView from '@components/web_view'
+import { WebViewNavigation } from 'react-native-webview'
+import { useDispatch } from 'react-redux'
+import { setWebViewVisible } from '@store/redux/common/slice'
 
 const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
-	const { styles, theme } = useTheme(_styles)
+	const { styles } = useTheme(_styles)
+	const dispatch = useDispatch()
+
 	const { spentAmount, receivedAmount, pair, tradeType, card } =
 		props.route?.params
 
@@ -22,10 +28,20 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		confirmModalStatus,
 		setConfirmModalStatus,
 		generalError,
-		setGeneralError,
+		webViewState,
 	} = useSubmit(props)
 
 	const goToTransactions = () => {}
+
+	const handleWebViewUrlChange = (event: WebViewNavigation) => {
+		const urlQueries = event.url.split('=')
+		const lastQuery = urlQueries[urlQueries.length - 1]
+
+		if (lastQuery === 'false' || lastQuery === 'true') {
+			dispatch(setWebViewVisible(false))
+			setConfirmModalStatus(lastQuery === 'true' ? 'pending' : 'error')
+		}
+	}
 
 	type InfoItem = {
 		desc: string
@@ -54,6 +70,8 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 				}}
 			/>
 		)
+		const feeNum = Number(spentAmount) * (card.feePct ? card.feePct / 100 : 0)
+		const feeTxt = feeNum.toFixed(pair.fiat.scale) + ' ' + pair.fiat.displayCcy
 
 		return (
 			<View style={styles.cardSectionContainer}>
@@ -68,26 +86,30 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 						{'| ' + card.cardNumber}
 					</AppText>
 				</View>
-				<InfoItem
-					desc={'Provider fee ' + card.feePct + '%'}
-					value={'???????'}
-				/>
+				<InfoItem desc={'Provider fee ' + card.feePct + '%'} value={feeTxt} />
 			</View>
 		)
 	}
 
 	const TotalSection = () => {
-		const spentCcy =
-			tradeType === 'Buy' ? pair.fiat.displayCcy : pair.crypto.displayCcy
-		const receivedCcy =
-			tradeType === 'Sell' ? pair.fiat.displayCcy : pair.crypto.displayCcy
+		const spent = tradeType === 'Buy' ? pair.fiat : pair.crypto
+		const received = tradeType === 'Sell' ? pair.fiat : pair.crypto
 
 		return (
 			<View style={styles.totalSectionContainer}>
-				<InfoItem desc={'Total Spent'} value={spentAmount + ' ' + spentCcy} />
+				<InfoItem
+					desc={'Total Spent'}
+					value={
+						Number(spentAmount).toFixed(spent.scale) + ' ' + spent.displayCcy
+					}
+				/>
 				<InfoItem
 					desc={'Total Receive'}
-					value={receivedAmount + ' ' + receivedCcy}
+					value={
+						Number(receivedAmount).toFixed(received.scale) +
+						' ' +
+						received.displayCcy
+					}
 				/>
 				<InfoItem
 					desc={'Price'}
@@ -125,6 +147,12 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 				dismiss={() => setConfirmModalStatus(undefined)}
 				onTransactionsClick={goToTransactions}
 			/>
+			{webViewState && (
+				<AppWebView
+					source={{ uri: webViewState.actionUrl }}
+					onNavigationStateChange={handleWebViewUrlChange}
+				/>
+			)}
 		</AppBackground>
 	)
 }
