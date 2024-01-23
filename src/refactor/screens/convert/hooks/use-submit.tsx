@@ -21,13 +21,14 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 			},
 		}
 		submitTrade(params).then((data) => {
-			if (data === null) {
+			if (!data) {
 				setConfirmModalStatus('success')
 			} else if ('errorKey' in data) {
 				setConfirmModalStatus('error')
 				// if errorKey === price changed: own logic
 				setGeneralError(data)
 			} else {
+				setConfirmModalStatus('success')
 				// redirect to webview
 			}
 			return

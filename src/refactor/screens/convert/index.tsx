@@ -55,6 +55,11 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 		cards.length === 1 && setChosenCard(cards[0])
 	}, [cards])
 
+	const buttonText = () => {
+		const buySell = tradeType === 'Buy' ? 'Buy' : 'Sell'
+		return buySell + ' ' + pair?.crypto.displayCcy
+	}
+
 	const showCardDetails = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
 
 	const handleDropDownClick = (type: CoinType) => {
@@ -68,7 +73,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 				receivedAmount,
 				pair,
 				tradeType,
-				card: chosenCard,
+				card: showCardDetails ? chosenCard : undefined,
 			})
 	}
 
@@ -202,11 +207,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 								tradeType === 'Buy' ? convertColors.buy : convertColors.sell
 							}
 							variant="primary"
-							text={
-								(tradeType === 'Buy' ? 'Buy' : 'Sell') +
-								' ' +
-								pair?.fiat.displayCcy
-							}
+							text={buttonText()}
 							onPress={() => {
 								setButtonClicked(true)
 							}}

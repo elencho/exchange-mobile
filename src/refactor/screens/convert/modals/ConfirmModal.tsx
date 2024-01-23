@@ -32,8 +32,8 @@ const ConfirmModal = ({ status, onTransactionsClick, dismiss }: Props) => {
 				<AppText variant="title" style={styles.title} medium>
 					{'Transaction ' + status}
 				</AppText>
-				<AppText variant="m" style={styles.desc}>
-					{'Description???'}
+				<AppText variant="l" style={styles.desc}>
+					{'Description = ???'}
 				</AppText>
 
 				{(status === 'success' || status === 'pending') && (
