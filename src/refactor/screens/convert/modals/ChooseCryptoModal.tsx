@@ -67,7 +67,7 @@ const ChooseCryptoModal = ({
 				(tradeType === 'Buy'
 					? item.marketPrice?.buy
 					: item.marketPrice?.sell) || 1
-			const num = (Number(item.balance) * price).toFixed(pair.fiat.scale)
+			const num = Number(price).toFixed(pair.fiat.scale)
 			return num + ' ' + pair.fiat.displayCcy
 		}
 
