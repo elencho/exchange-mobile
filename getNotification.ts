@@ -46,9 +46,10 @@ export const getNotification = () => {
 			})
 
 		messaging().onNotificationOpenedApp(async (remoteMessage) => {
-			const bioAvailableAsync = await AsyncStorage.getItem(
-				'bioIsAvailableOnUser'
-			)
+			// const bioAvailableAsync = await AsyncStorage.getItem(
+			// 	'bioIsAvailableOnUser'
+			// )
+
 			const data = {
 				description: remoteMessage?.notification?.body,
 				banner: remoteMessage?.data?.banner,
@@ -58,7 +59,9 @@ export const getNotification = () => {
 			}
 			if (data.title && data.description && !biometricSuccess) {
 				setModalContent(data)
+				Alert.alert('biometricSuccess is false')
 			} else if (data.title && data.description && biometricSuccess) {
+				Alert.alert('biometricSuccess is true')
 				showModal(data)
 			}
 		})
