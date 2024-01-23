@@ -36,6 +36,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		setIsBiometricScreenOpenedForModal,
 		setModalVisible,
 		isModalVisible,
+		modalContent,
 	} = useModal()
 	const fromResume = route.params?.fromResume === true
 	const prevAppState = useRef<AppStateStatus>()
@@ -73,21 +74,25 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
 		const appClosing = isAppClosing(newState)
-		const bioVisible =
-			newState === 'active' &&
-			!fromResume &&
-			accessToken !== undefined &&
-			KV.get('webViewVisible') !== true &&
-			biometricDiffElapsed() &&
-			(await isEnrolledAsync())
+		const isEnrolled = await isEnrolledAsync()
+		if (isEnrolled) {
+			const bioVisible =
+				newState === 'active' &&
+				!fromResume &&
+				accessToken !== undefined &&
+				KV.get('webViewVisible') !== true &&
+				biometricDiffElapsed()
 
-		if (bioVisible) {
-			const email = jwt_decode<TokenParams>(accessToken)?.email
-			getBiometricEnabled(email)
-		} else if (newState === 'active' && !bioVisible) {
-			setIsBiometricScreenOpenedForModal(false)
-			setModalVisible(true)
-			dispatch(setBiometricSuccess(true))
+			if (bioVisible) {
+				const email = jwt_decode<TokenParams>(accessToken)?.email
+				getBiometricEnabled(email)
+			}
+
+			if (newState === 'active' && !bioVisible) {
+				setIsBiometricScreenOpenedForModal(false)
+				setModalVisible('handleAppState')
+				dispatch(setBiometricSuccess(true))
+			}
 		}
 
 		if (appClosing && !isModalVisible) {
@@ -99,7 +104,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		}
 
 		if (appClosing && !resumeIsShown()) {
-			KV.set('lastOpenDateMillis', Date.now())
+			KV.set('lastCloseDateMillis', Date.now())
 		}
 		prevAppState.current = newState
 	}, [])
