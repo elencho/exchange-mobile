@@ -65,7 +65,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
 	// TODO: remove when tested
 	const setModalVisible = (visible) => {
-		Alert.alert('setModalVisible is from', visible)
+		// Alert.alert('setModalVisible is from', visible)
 		setModalSmallVisible(visible)
 	}
 

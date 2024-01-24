@@ -6,9 +6,11 @@ export type CoinError = {
 export const coinError = (
 	fiatAmount: string,
 	cryptoAmount: string,
-	pair: CoinPair,
+	pair: CoinPair | undefined,
 	tradeType: TradeType
 ): CoinError | null => {
+	if (!pair) return { err: 'No pair', type: ['Fiat', 'Crypto'] }
+
 	const f = Number(fiatAmount)
 	const c = Number(cryptoAmount)
 	const buy = Number(pair.buyPrice)

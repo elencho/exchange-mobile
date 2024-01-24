@@ -37,7 +37,17 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
-	const [buttonClicked, setButtonClicked] = useState(false)
+
+	const goToConfirm = (spentAmount: string, receivedAmount: string) => {
+		pair &&
+			navigation.navigate('ConfirmConvert', {
+				spentAmount,
+				receivedAmount,
+				pair,
+				tradeType,
+				card: showCardDetails ? chosenCard : undefined,
+			})
+	}
 
 	const {
 		pair,
@@ -48,7 +58,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 		loading,
 		fetchCoins,
 		onCoinSelected,
-		onFetch,
 	} = useCoins()
 
 	const {
@@ -68,7 +77,15 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 		setErrorInputs,
 		errorText,
 		setErrorText,
-	} = handlePair()
+		onButtonClick,
+		recalculateUp,
+		recalculateLow,
+	} = handlePair({
+		tradeType,
+		pair,
+		balanceMultiplier: selectedChip,
+		onButtonSuccess: goToConfirm,
+	})
 
 	useNotificationPermissions()
 
@@ -80,8 +97,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 		}
 	}, [tradeType, pair, cards])
 
-	useEffect(() => {}, [onFetch])
-
 	const onTimerExpire = () => {
 		fetchCoins()
 	}
@@ -91,21 +106,10 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 		return buySell + ' ' + pair?.crypto.displayCcy
 	}
 
-	const showCardDetails = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
+	const showCardDetails = buyWithCardChecked && tradeType === 'Buy'
 
 	const handleDropDownClick = (type: CoinType) => {
 		type === 'Crypto' ? setCryptoModalVisible(true) : setFiatModalVisible(true)
-	}
-
-	const goToConfirm = (spentAmount: string, receivedAmount: string) => {
-		pair &&
-			navigation.navigate('ConfirmConvert', {
-				spentAmount,
-				receivedAmount,
-				pair,
-				tradeType,
-				card: showCardDetails ? chosenCard : undefined,
-			})
 	}
 
 	const CryptoModals = () => {
@@ -186,13 +190,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 							tradeType={tradeType}
 							balanceMultiplier={selectedChip}
 							handleDropDownClick={handleDropDownClick}
-							handleButtonClick={(spent, received) => {
-								setButtonClicked(false)
-								if (spent && received) {
-									goToConfirm(spent, received)
-								}
-							}}
-							buttonClicked={buttonClicked}
 							saveBaseAmount={setBaseAmount}
 							upCoin={upCoin}
 							upAmount={upAmount}
@@ -210,6 +207,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 							setLastClicked={setLastClicked}
 							setErrorInputs={setErrorInputs}
 							setErrorText={setErrorText}
+							recalculateUp={recalculateUp}
+							recalculateLow={recalculateLow}
 						/>
 						{!buyWithCardChecked && (
 							<BalanceChips
@@ -217,7 +216,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 								onChipSelect={setSelectedChip}
 							/>
 						)}
-						{showCardDetails && (
+						{pair.fiat.buyWithCard && (
 							<CardSection
 								cards={cards}
 								chosenCard={chosenCard}
@@ -255,9 +254,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 							}
 							variant="primary"
 							text={buttonText()}
-							onPress={() => {
-								setButtonClicked(true)
-							}}
+							onPress={onButtonClick}
 						/>
 						<InfoModal />
 						<CryptoModals />

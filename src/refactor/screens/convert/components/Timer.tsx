@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import ProgressBar from 'react-native-animated-progress'
 
-const COUNTDOWN_SECONDS = 90
+const COUNTDOWN_SECONDS = 15
 
 type Props = {
 	pair: CoinPair
