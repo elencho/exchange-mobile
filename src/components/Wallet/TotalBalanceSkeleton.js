@@ -26,5 +26,6 @@ const styles = StyleSheet.create({
 		padding: 25,
 		borderRadius: 6,
 		backgroundColor: colors.SECONDARY_BACKGROUND,
+		borderRadius: 6,
 	},
 })
