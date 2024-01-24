@@ -184,6 +184,8 @@ const Register = ({ navigation }: Props) => {
 							}}
 							onChangeText={setMail}
 							error={mailErr && (mail.trim() ? 'Enter Valid Email' : true)}
+							keyboardType="email-address"
+							textContentType={'emailAddress'}
 						/>
 						<AnimatedMargin
 							min={11}
