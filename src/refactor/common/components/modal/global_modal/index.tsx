@@ -21,7 +21,6 @@ import { Theme, useTheme } from '@theme/index'
 
 import { AppButton } from '@components/button'
 import { useNetInfoInstance } from '@react-native-community/netinfo'
-import { useDispatch } from 'react-redux'
 
 type ModalContextType = {
 	showModal: (content: ContentType) => void
@@ -57,16 +56,16 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
 	const showModal = (content: ContentType) => {
 		setModalContent(content)
+		console.log('content', content)
 		if (content?.title && content?.description) {
-			setModalVisible('showModal')
+			setModalVisible(true, content)
 			setIsBiometricScreenOpenedForModal(false)
 		}
 	}
 
-	// TODO: remove when tested
-	const setModalVisible = (visible) => {
-		if (modalContent) {
-			Alert.alert('setModalVisible is from', visible)
+	const setModalVisible = (visible: boolean, content?: ContentType) => {
+		console.log('modalContent', content)
+		if (modalContent || content) {
 			setModalSmallVisible(visible)
 		}
 	}
@@ -111,10 +110,6 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const onPress = () => {
 		modalContent?.redirectUrl && Linking.openURL(modalContent?.redirectUrl)
 	}
-
-	// Alert.alert(
-	// 	`${modalContent?.title} ${isBiometricScreenOpenedForModal} ${isModalVisible}`
-	// )
 
 	return (
 		<ModalContext.Provider
