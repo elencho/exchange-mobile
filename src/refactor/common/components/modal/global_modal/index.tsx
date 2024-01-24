@@ -28,7 +28,7 @@ type ModalContextType = {
 	setIsBiometricScreenOpenedForModal: (v: boolean) => void
 	setModalContent: (content: ContentType | null) => void
 	modalContent: ContentType | null
-	setModalVisible: (v: boolean) => void
+	setModalVisible: (v: boolean, content?: ContentType) => void
 	isBiometricScreenOpenedForModal: boolean
 	isModalVisible?: boolean
 }
