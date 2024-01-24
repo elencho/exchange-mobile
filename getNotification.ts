@@ -99,29 +99,16 @@ export const inAppNotificationListener = () => {
 		const { granted } = await Notifications.getPermissionsAsync()
 
 		if (granted) {
-			await Notifications.scheduleNotificationAsync({
-				content: {
-					title: message?.notification?.title,
-					body: message?.notification?.body,
-					data: { data: data },
-				},
-				trigger: null,
-			}).then((id) => {
-				if (
-					data.title &&
-					data.description &&
-					!isBiometricScreenOpenedForModal
-				) {
-					showModal(data)
-				} else if (
-					data.title &&
-					data.description &&
-					isBiometricScreenOpenedForModal
-				) {
-					setModalVisible(true)
-					setModalContent(data)
-				}
-			})
+			if (data.title && data.description && !isBiometricScreenOpenedForModal) {
+				showModal(data)
+			} else if (
+				data.title &&
+				data.description &&
+				isBiometricScreenOpenedForModal
+			) {
+				setModalVisible(true, data)
+				setModalContent(data)
+			}
 		}
 	}
 }
