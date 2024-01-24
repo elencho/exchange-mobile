@@ -65,9 +65,9 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
 	const setModalVisible = (visible: boolean, content?: ContentType) => {
 		console.log('modalContent', content)
-		if (modalContent || content) {
-			setModalSmallVisible(visible)
-		}
+		// if (modalContent || content) {
+		setModalSmallVisible(visible)
+		// }
 	}
 
 	const hideModal = () => {
