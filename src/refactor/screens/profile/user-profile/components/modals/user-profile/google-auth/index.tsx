@@ -112,6 +112,7 @@ const _styles = (theme: Theme) =>
 			paddingHorizontal: 30,
 			marginVertical: 27,
 			alignItems: 'center',
+			borderRadius: 6,
 		},
 		error: { marginTop: 25 },
 		flex: { flex: 1 },
