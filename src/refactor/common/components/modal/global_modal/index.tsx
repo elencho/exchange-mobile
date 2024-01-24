@@ -65,8 +65,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
 	// TODO: remove when tested
 	const setModalVisible = (visible) => {
-		Alert.alert('setModalVisible is from', visible)
-		setModalSmallVisible(visible)
+		if (modalContent) {
+			Alert.alert('setModalVisible is from', visible)
+			setModalSmallVisible(visible)
+		}
 	}
 
 	const hideModal = () => {
@@ -109,6 +111,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const onPress = () => {
 		modalContent?.redirectUrl && Linking.openURL(modalContent?.redirectUrl)
 	}
+
+	// Alert.alert(
+	// 	`${modalContent?.title} ${isBiometricScreenOpenedForModal} ${isModalVisible}`
+	// )
 
 	return (
 		<ModalContext.Provider
