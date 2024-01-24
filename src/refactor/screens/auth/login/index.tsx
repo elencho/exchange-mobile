@@ -134,6 +134,8 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 						}}
 						error={mailError}
 						label={'Enter Email'}
+						keyboardType="email-address"
+						textContentType={'emailAddress'}
 					/>
 					<AppInput
 						secureTextEntry={true}
