@@ -61,9 +61,7 @@ export const getNotification = () => {
 			}
 			if (data.title && data.description && bioAvailableAsync) {
 				setModalContent(data)
-				Alert.alert('biometricSuccess is false')
 			} else if (data.title && data.description && !bioAvailableAsync) {
-				Alert.alert('biometricSuccess is true')
 				showModal(data)
 			}
 		})
