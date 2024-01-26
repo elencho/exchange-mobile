@@ -1,5 +1,5 @@
 import { Theme, useTheme } from '@theme/index'
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import CoinInput from '@app/refactor/screens/convert/components/CoinInput'
 import CoinInputArrow from '@assets/images/CoinInputArrow.svg'
@@ -11,6 +11,7 @@ type Props = {
 	balanceMultiplier: number | undefined
 	handleDropDownClick: (type: CoinType) => void
 	saveBaseAmount: (amount: string) => void
+	onTextChanged: () => void
 
 	upCoin: Coin | undefined
 	upAmount: string
@@ -35,6 +36,7 @@ type Props = {
 }
 
 const CoinPair = ({
+	tradeType,
 	handleDropDownClick,
 	saveBaseAmount,
 	upCoin,
@@ -52,8 +54,11 @@ const CoinPair = ({
 	setErrorText,
 	recalculateUp,
 	recalculateLow,
+	onTextChanged,
 }: Props) => {
 	const { styles } = useTheme(_styles)
+
+	useEffect(() => {}, [tradeType])
 
 	const clearError = () => {
 		setErrorText('')
@@ -73,6 +78,7 @@ const CoinPair = ({
 						setUpAmount(txt)
 						recalculateLow(txt, lowCoin.scale)
 						clearError()
+						onTextChanged()
 					}}
 					onDropdownClick={(type) => {
 						setLastClicked('up')
@@ -97,6 +103,7 @@ const CoinPair = ({
 						setLowAmount(txt)
 						recalculateUp(txt, upCoin.scale)
 						clearError()
+						onTextChanged()
 					}}
 					onDropdownClick={(type) => {
 						setLastClicked('low')

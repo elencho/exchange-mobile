@@ -24,12 +24,11 @@ export const handlePair = ({
 	const [errorText, setErrorText] = useState<string>()
 
 	useEffect(() => {
-		const upC = tradeType === 'Buy' ? pair?.fiat : pair?.crypto
-		const lowC = tradeType === 'Buy' ? pair?.crypto : pair?.fiat
-		setUpCoin(upC)
-		setLowCoin(lowC)
+		const { upC, lowC } = sortCoins()
 
-		if (lastChanged === 'up') {
+		if (balanceMultiplier) {
+			rebalance(upC?.balance, lowC?.scale)
+		} else if (lastChanged === 'up') {
 			setLowAmount(upAmount)
 			recalculateUp(upAmount, upC?.scale)
 			setLastChanged('low')
@@ -41,43 +40,44 @@ export const handlePair = ({
 	}, [tradeType])
 
 	useEffect(() => {
-		// balance multiplier
-		const upC = tradeType === 'Buy' ? pair?.fiat : pair?.crypto
-		const lowC = tradeType === 'Buy' ? pair?.crypto : pair?.fiat
-		setUpCoin(upC)
-		setLowCoin(lowC)
+		const { upC, lowC } = sortCoins()
 
-		if (lastClicked === 'up') {
+		if (balanceMultiplier) {
+			rebalance(upC?.balance, lowC?.scale)
+		} else if (lastChanged === 'up') {
 			recalculateLow(upAmount, lowC?.scale)
-		} else if (lastClicked === 'low') {
+		} else if (lastChanged === 'low') {
 			recalculateUp(lowAmount, upC?.scale)
 		}
 		setLastClicked(null)
 	}, [pair])
 
 	useEffect(() => {
-		if (balanceMultiplier) {
-			const upBalance = Number(upCoin?.balance)
-			const amount = balanceMultiplier
-				? balanceMultiplier * upBalance
-				: Number(upAmount)
-
-			setUpAmount(amount.toString())
-			recalculateLow(amount.toString(), lowCoin!.scale)
-		}
+		rebalance(upCoin?.balance, lowCoin?.scale)
 	}, [balanceMultiplier])
 
-	const onButtonClick = () => {
-		const err = coinError(
+	const rebalance = (
+		upBalance: string | undefined,
+		lowScale: number | undefined
+	) => {
+		if (!balanceMultiplier) return
+
+		const amount = (balanceMultiplier * Number(upBalance)).toString()
+		setUpAmount(amount)
+		recalculateLow(amount, lowScale)
+	}
+
+	const handleButtonClick = () => {
+		const coinErr = coinError(
 			tradeType === 'Buy' ? upAmount : lowAmount,
 			tradeType === 'Sell' ? upAmount : lowAmount,
 			pair,
 			tradeType
 		)
-		if (err === null) {
+		if (coinErr === null) {
 			onButtonSuccess(upAmount, lowAmount)
 		} else {
-			handleError(err)
+			handleError(coinErr)
 		}
 	}
 
@@ -135,6 +135,14 @@ export const handlePair = ({
 		}
 	}
 
+	const sortCoins = () => {
+		const upC = tradeType === 'Buy' ? pair?.fiat : pair?.crypto
+		const lowC = tradeType === 'Buy' ? pair?.crypto : pair?.fiat
+		setUpCoin(upC)
+		setLowCoin(lowC)
+		return { upC, lowC }
+	}
+
 	return {
 		upCoin,
 		setUpCoin,
@@ -152,7 +160,7 @@ export const handlePair = ({
 		setErrorInputs,
 		errorText,
 		setErrorText,
-		onButtonClick,
+		handleButtonClick,
 		recalculateUp,
 		recalculateLow,
 	}
