@@ -58,8 +58,6 @@ const CoinPair = ({
 }: Props) => {
 	const { styles } = useTheme(_styles)
 
-	useEffect(() => {}, [tradeType])
-
 	const clearError = () => {
 		setErrorText('')
 		setErrorInputs([])

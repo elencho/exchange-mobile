@@ -19,15 +19,15 @@ Notifications.setNotificationHandler({
 export const getNotification = () => {
 	const { showModal, setModalContent } = useModal()
 	const { biometricSuccess } = useSelector((state) => state.common)
-	// const bioAvailable = KV.get('bioIsAvailableOnUser')
+	const bioAvailableAsync = KV.get('bioIsAvailableOnUser')
 
 	useEffect(() => {
 		messaging()
 			.getInitialNotification()
 			.then(async (remoteMessage) => {
-				const bioAvailableAsync = await AsyncStorage.getItem(
-					'bioIsAvailableOnUser'
-				)
+				// const bioAvailableAsync = await AsyncStorage.getItem(
+				// 	'bioIsAvailableOnUser'
+				// )
 				if (remoteMessage) {
 					const data = {
 						description: remoteMessage?.notification?.body,
@@ -49,7 +49,9 @@ export const getNotification = () => {
 			// const bioAvailableAsync = await AsyncStorage.getItem(
 			// 	'bioIsAvailableOnUser'
 			// )
+			const bioAvailableAsync = KV.get('bioIsAvailableOnUser')
 
+			console.log('bioAvailableAsync', typeof bioAvailableAsync)
 			const data = {
 				description: remoteMessage?.notification?.body,
 				banner: remoteMessage?.data?.banner,
@@ -57,11 +59,9 @@ export const getNotification = () => {
 				redirectUrl: remoteMessage?.data?.redirectUrl,
 				title: remoteMessage?.data?.title,
 			}
-			if (data.title && data.description && !biometricSuccess) {
+			if (data.title && data.description && bioAvailableAsync) {
 				setModalContent(data)
-				Alert.alert('biometricSuccess is false')
-			} else if (data.title && data.description && biometricSuccess) {
-				Alert.alert('biometricSuccess is true')
+			} else if (data.title && data.description && !bioAvailableAsync) {
 				showModal(data)
 			}
 		})
@@ -97,29 +97,16 @@ export const inAppNotificationListener = () => {
 		const { granted } = await Notifications.getPermissionsAsync()
 
 		if (granted) {
-			await Notifications.scheduleNotificationAsync({
-				content: {
-					title: message?.notification?.title,
-					body: message?.notification?.body,
-					data: { data: data },
-				},
-				trigger: null,
-			}).then((id) => {
-				if (
-					data.title &&
-					data.description &&
-					!isBiometricScreenOpenedForModal
-				) {
-					showModal(data)
-				} else if (
-					data.title &&
-					data.description &&
-					isBiometricScreenOpenedForModal
-				) {
-					setModalVisible('getNotificaftion')
-					setModalContent(data)
-				}
-			})
+			if (data.title && data.description && !isBiometricScreenOpenedForModal) {
+				showModal(data)
+			} else if (
+				data.title &&
+				data.description &&
+				isBiometricScreenOpenedForModal
+			) {
+				setModalVisible(true, data)
+				setModalContent(data)
+			}
 		}
 	}
 }

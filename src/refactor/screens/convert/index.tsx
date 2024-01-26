@@ -59,6 +59,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		loading,
 		fetchCoins,
 		onCoinSelected,
+		onFetch,
 	} = useCoins()
 
 	const {

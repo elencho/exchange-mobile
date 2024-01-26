@@ -105,7 +105,7 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 
 	return (
 		<View style={styles.background}>
-			<FullScreenLoader loading={fullScreenLoading}>
+			<FullScreenLoader loading={fullScreenLoading || loginLoading}>
 				<WithKeyboard
 					keyboardVerticalOffsetIOS={0}
 					contentContainerStyle={styles.container}
@@ -134,6 +134,8 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 						}}
 						error={mailError}
 						label={'Enter Email'}
+						keyboardType="email-address"
+						textContentType={'emailAddress'}
 					/>
 					<AppInput
 						secureTextEntry={true}
@@ -160,7 +162,7 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 						text="Login"
 						onPress={onLoginPressed}
 						style={styles.button}
-						loading={loginLoading}
+						// loading={loginLoading}
 					/>
 					<View style={{ marginBottom: 20 }}>
 						<AppText style={styles.secondary}>
