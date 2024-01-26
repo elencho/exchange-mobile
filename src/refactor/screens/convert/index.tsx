@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native'
 import AppBackground from '@components/background'
 import InfoMark from '@app/components/InstantTrade/InfoMark'
 import TopRow from '@components/top_row'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TradeTypeSwitcher } from '@app/refactor/screens/convert/components/TradeTypeSwitcher'
 import { Timer } from '@app/refactor/screens/convert/components/Timer'
 import { useCoins } from '@app/refactor/screens/convert/hooks/use-coins'
@@ -25,11 +25,12 @@ import WithKeyboard from '@app/components/WithKeyboard'
 import CardTotalFee from '@app/refactor/screens/convert/components/CardTotalFee'
 import { handlePair } from '@app/refactor/screens/convert/hooks/handle-pair'
 
-const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
+const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const { styles, theme } = useTheme(_styles)
 
 	const [baseAmount, setBaseAmount] = useState<string>('')
 
+	const [cardError, setCardError] = useState<boolean>(false)
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
 	const [chosenCard, setChosenCard] = useState<Card>()
 	const [selectedChip, setSelectedChip] = useState<number>()
@@ -37,7 +38,17 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
-	const [buttonClicked, setButtonClicked] = useState(false)
+
+	const goToConfirm = (spentAmount: string, receivedAmount: string) => {
+		pair &&
+			navigation.navigate('ConfirmConvert', {
+				spentAmount,
+				receivedAmount,
+				pair,
+				tradeType,
+				card: showCardDetails ? chosenCard : undefined,
+			})
+	}
 
 	const {
 		pair,
@@ -68,9 +79,15 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 		setErrorInputs,
 		errorText,
 		setErrorText,
-	} = handlePair()
-
-	useNotificationPermissions()
+		handleButtonClick,
+		recalculateUp,
+		recalculateLow,
+	} = handlePair({
+		tradeType,
+		pair,
+		balanceMultiplier: selectedChip,
+		onButtonSuccess: goToConfirm,
+	})
 
 	useEffect(() => {
 		if (tradeType === 'Buy') {
@@ -78,12 +95,22 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 		} else {
 			setChosenCard(undefined)
 		}
-	}, [tradeType, pair, cards])
-
-	useEffect(() => {}, [onFetch])
+	}, [tradeType, cards])
 
 	const onTimerExpire = () => {
 		fetchCoins()
+	}
+
+	const onButtonClick = () => {
+		if (buyWithCardChecked && !chosenCard) {
+			setCardError(true)
+		} else {
+			handleButtonClick()
+		}
+	}
+
+	const handleDropDownClick = (type: CoinType) => {
+		type === 'Crypto' ? setCryptoModalVisible(true) : setFiatModalVisible(true)
 	}
 
 	const buttonText = () => {
@@ -91,52 +118,11 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 		return buySell + ' ' + pair?.crypto.displayCcy
 	}
 
-	const showCardDetails = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
+	const showCardDetails = buyWithCardChecked && tradeType === 'Buy'
 
-	const handleDropDownClick = (type: CoinType) => {
-		type === 'Crypto' ? setCryptoModalVisible(true) : setFiatModalVisible(true)
-	}
-
-	const goToConfirm = (spentAmount: string, receivedAmount: string) => {
-		pair &&
-			navigation.navigate('ConfirmConvert', {
-				spentAmount,
-				receivedAmount,
-				pair,
-				tradeType,
-				card: showCardDetails ? chosenCard : undefined,
-			})
-	}
-
-	const CryptoModals = () => {
-		return pair ? (
-			<>
-				<ChooseFiatModal
-					visible={fiatModalVisible}
-					fiats={fiats}
-					chosenFiat={pair.fiat}
-					onCoinSelected={(fiat: Coin) => {
-						onCoinSelected(fiat)
-						setFiatModalVisible(false)
-					}}
-					dismiss={() => setFiatModalVisible(false)}
-				/>
-
-				<ChooseCryptoModal
-					visible={cryptoModalVisible}
-					cryptos={cryptos}
-					pair={pair}
-					tradeType={tradeType}
-					onCoinSelected={(crypto: Coin) => {
-						onCoinSelected(crypto)
-						setCryptoModalVisible(false)
-					}}
-					dismiss={() => setCryptoModalVisible(false)}
-				/>
-			</>
-		) : null
-	}
+	useNotificationPermissions()
 	const [fcmToken, setFcmToken] = useState('')
+	const { copyToClipboard } = useCopyToClipboard()
 
 	useEffect(() => {
 		checkToken()
@@ -148,7 +134,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 			setFcmToken(token)
 		}
 	}
-	const { copyToClipboard } = useCopyToClipboard()
 
 	return (
 		<AppBackground>
@@ -186,13 +171,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 							tradeType={tradeType}
 							balanceMultiplier={selectedChip}
 							handleDropDownClick={handleDropDownClick}
-							handleButtonClick={(spent, received) => {
-								setButtonClicked(false)
-								if (spent && received) {
-									goToConfirm(spent, received)
-								}
-							}}
-							buttonClicked={buttonClicked}
 							saveBaseAmount={setBaseAmount}
 							upCoin={upCoin}
 							upAmount={upAmount}
@@ -210,20 +188,26 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 							setLastClicked={setLastClicked}
 							setErrorInputs={setErrorInputs}
 							setErrorText={setErrorText}
+							recalculateUp={recalculateUp}
+							recalculateLow={recalculateLow}
+							onTextChanged={() => setSelectedChip(undefined)}
 						/>
-						{!buyWithCardChecked && (
+						{!(tradeType === 'Buy' && buyWithCardChecked) && (
 							<BalanceChips
 								selectedChip={selectedChip}
 								onChipSelect={setSelectedChip}
 							/>
 						)}
-						{showCardDetails && (
+						{tradeType === 'Buy' && pair.fiat.buyWithCard && (
 							<CardSection
-								cards={cards}
 								chosenCard={chosenCard}
 								buyWithCardChecked={buyWithCardChecked}
-								setBuyWithCardChecked={setBuyWithCardChecked}
-								chooseCardClicked={() =>
+								setBuyWithCardChecked={(checked) => {
+									setCardError(false)
+									setBuyWithCardChecked(checked)
+								}}
+								chooseCardClicked={() => {
+									setCardError(false)
 									navigation.navigate('SelectCard', {
 										cards,
 										fees,
@@ -231,7 +215,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 											setChosenCard(card)
 										},
 									})
-								}
+								}}
+								error={cardError}
 							/>
 						)}
 						<Timer
@@ -255,12 +240,31 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConfirmConvert'>) => {
 							}
 							variant="primary"
 							text={buttonText()}
-							onPress={() => {
-								setButtonClicked(true)
-							}}
+							onPress={onButtonClick}
 						/>
 						<InfoModal />
-						<CryptoModals />
+
+						<ChooseFiatModal
+							visible={fiatModalVisible}
+							fiats={fiats}
+							chosenFiat={pair.fiat}
+							onCoinSelected={(fiat: Coin) => {
+								onCoinSelected(fiat)
+								setFiatModalVisible(false)
+							}}
+							dismiss={() => setFiatModalVisible(false)}
+						/>
+						<ChooseCryptoModal
+							visible={cryptoModalVisible}
+							cryptos={cryptos}
+							pair={pair}
+							tradeType={tradeType}
+							onCoinSelected={(crypto: Coin) => {
+								onCoinSelected(crypto)
+								setCryptoModalVisible(false)
+							}}
+							dismiss={() => setCryptoModalVisible(false)}
+						/>
 					</View>
 				</WithKeyboard>
 			)}

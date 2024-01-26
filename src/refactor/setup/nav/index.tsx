@@ -34,7 +34,7 @@ import NetInfo from '@react-native-community/netinfo'
 import { AppState, AppStateStatus } from 'react-native'
 import { getNotification, inAppNotificationListener } from 'getNotification'
 import SelectCardScreen from '@app/refactor/screens/convert/screens/SelectCardScreen'
-import ConfirmConvertScreen from '@app/refactor/screens/convert/screens/ConfirmConvertScreen'
+import ConfirmConvertScreen from '@app/refactor/screens/convert/screens/ConvertConfirmScreen'
 
 enableScreens(false)
 const Stack = createNativeStackNavigator<Screens>()

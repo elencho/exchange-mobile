@@ -1,6 +1,6 @@
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Image, Pressable, StyleSheet, View } from 'react-native'
 import CheckEmpty from '@assets/images/Check_Empty.svg'
 import CheckFull from '@assets/images/Check_Full.svg'
@@ -8,20 +8,20 @@ import AppDropdown from '@components/dropdown/index'
 
 type Props = {
 	chosenCard?: Card
-	cards: Card[]
 	buyWithCardChecked: boolean
 	setBuyWithCardChecked: (checked: boolean) => void
 	chooseCardClicked: () => void
+	error: boolean
 }
 
 const CardSection = ({
 	chosenCard,
-	cards,
 	buyWithCardChecked,
 	setBuyWithCardChecked,
 	chooseCardClicked,
+	error,
 }: Props) => {
-	const { styles, theme } = useTheme(_styles)
+	const { styles } = useTheme(_styles)
 
 	return (
 		<View style={styles.container}>
@@ -51,6 +51,7 @@ const CardSection = ({
 							/>
 						)
 					}
+					error={error}
 				/>
 			)}
 		</View>

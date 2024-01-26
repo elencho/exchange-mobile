@@ -20,12 +20,12 @@ const Splash = (props: ScreenProp<'Splash'>) => {
 		}, 800)
 	}, [])
 
-	return (
-		shouldRender && (
-			<View style={styles.container}>
-				<Logo width={80} height={'100%'} />
-			</View>
-		)
+	return shouldRender ? (
+		<View style={styles.container}>
+			<Logo width={80} height={'100%'} />
+		</View>
+	) : (
+		<View />
 	)
 }
 
