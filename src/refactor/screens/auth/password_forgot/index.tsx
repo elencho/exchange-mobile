@@ -172,6 +172,8 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 						}}
 						rightComponent={<MailInputRight />}
 						error={mailError}
+						keyboardType="email-address"
+						textContentType={'emailAddress'}
 					/>
 					<AppInput
 						labelBackgroundColor={theme.color.backgroundPrimary}
