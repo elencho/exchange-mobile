@@ -74,32 +74,24 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
 		const appClosing = isAppClosing(newState)
-		const isEnrolled = await isEnrolledAsync()
-		if (isEnrolled) {
-			if (biometricDiffElapsed()) {
-				const bioVisible =
-					newState === 'active' &&
-					!fromResume &&
-					accessToken !== undefined &&
-					KV.get('webViewVisible') !== true
+		const bioVisible =
+			newState === 'active' &&
+			!fromResume &&
+			accessToken !== undefined &&
+			KV.get('webViewVisible') !== true &&
+			biometricDiffElapsed() &&
+			(await isEnrolledAsync())
 
-				if (bioVisible) {
-					const email = jwt_decode<TokenParams>(accessToken)?.email
-					getBiometricEnabled(email)
-				}
-			} else if (newState === 'active') {
-				setIsBiometricScreenOpenedForModal(false)
-				setModalVisible(true)
-				dispatch(setBiometricSuccess(true))
-			}
+		if (bioVisible) {
+			const email = jwt_decode<TokenParams>(accessToken)?.email
+			getBiometricEnabled(email)
+		} else if (newState === 'active' && !bioVisible) {
+			setIsBiometricScreenOpenedForModal(false)
+			setModalVisible(true)
 		}
 
 		if (appClosing && !isModalVisible) {
 			setIsBiometricScreenOpenedForModal(true)
-		}
-
-		if (appClosing) {
-			dispatch(setBiometricSuccess(false))
 		}
 
 		if (appClosing && !resumeIsShown()) {

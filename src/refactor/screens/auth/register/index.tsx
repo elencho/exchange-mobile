@@ -153,7 +153,7 @@ const Register = ({ navigation }: Props) => {
 	const styleHasNumber = passErr && !passHasNumber && styles.redText
 
 	return (
-		<FullScreenLoader loading={fullScreenLoading}>
+		<FullScreenLoader loading={fullScreenLoading || registerLoading}>
 			<SafeAreaView style={styles.safeArea}>
 				<WithKeyboard
 					keyboardVerticalOffsetIOS={10}
@@ -325,7 +325,7 @@ const Register = ({ navigation }: Props) => {
 							variant="primary"
 							text="Register"
 							onPress={onRegisterPressed}
-							loading={registerLoading}
+							// loading={registerLoading}
 						/>
 						<AppText style={styles.subtext}>
 							{t('Have an Account?')}{' '}

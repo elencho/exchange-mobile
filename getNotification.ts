@@ -5,9 +5,6 @@ import messaging, {
 import { useEffect } from 'react'
 import * as Notifications from 'expo-notifications'
 import KV from '@store/kv/regular'
-import { Alert } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useDispatch, useSelector } from 'react-redux'
 
 Notifications.setNotificationHandler({
 	handleNotification: async () => ({
@@ -18,16 +15,12 @@ Notifications.setNotificationHandler({
 })
 export const getNotification = () => {
 	const { showModal, setModalContent } = useModal()
-	const { biometricSuccess } = useSelector((state) => state.common)
 	const bioAvailableAsync = KV.get('bioIsAvailableOnUser')
 
 	useEffect(() => {
 		messaging()
 			.getInitialNotification()
 			.then(async (remoteMessage) => {
-				// const bioAvailableAsync = await AsyncStorage.getItem(
-				// 	'bioIsAvailableOnUser'
-				// )
 				if (remoteMessage) {
 					const data = {
 						description: remoteMessage?.notification?.body,
@@ -46,12 +39,8 @@ export const getNotification = () => {
 			})
 
 		messaging().onNotificationOpenedApp(async (remoteMessage) => {
-			// const bioAvailableAsync = await AsyncStorage.getItem(
-			// 	'bioIsAvailableOnUser'
-			// )
 			const bioAvailableAsync = KV.get('bioIsAvailableOnUser')
 
-			console.log('bioAvailableAsync', typeof bioAvailableAsync)
 			const data = {
 				description: remoteMessage?.notification?.body,
 				banner: remoteMessage?.data?.banner,
