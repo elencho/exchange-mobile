@@ -11,7 +11,7 @@ export const Phone = (props: PhoneProps) => {
 	const { styles, edit } = props
 	return (
 		<View style={styles.row}>
-			<AppText variant="m" style={styles.white}>
+			<AppText variant="title" style={styles.white}>
 				My Phone Number
 			</AppText>
 			<View style={styles.flex}>

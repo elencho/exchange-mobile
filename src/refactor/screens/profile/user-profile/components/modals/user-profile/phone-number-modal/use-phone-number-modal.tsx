@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { updatePhoneNumberThunk } from '@app/refactor/redux/profile/profileThunks'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
+import { verifyPhoneNumber } from '@app/utils/userProfileUtils'
+import { OTPTypes } from '@app/refactor/types/enums'
 
 export const usePhoneNumberModal = ({
 	phoneNumberModalVisible,
@@ -15,8 +17,9 @@ export const usePhoneNumberModal = ({
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		profile: { userInfo, userProfileButtonsLoading, userProfileLoading },
+		profile: { userInfo, userProfileButtonsLoading, userProfileLoading, tOTPChangeParams},
 		common: { countries },
+		auth: { otpType },
 	} = state
 
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
@@ -25,6 +28,7 @@ export const usePhoneNumberModal = ({
 	const [error, setError] = useState(false)
 	const [seconds, setSeconds] = useState(30)
 	const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber!)
+	const [verificationCode, setVerificationCode] = useState()
 	const x = {
 		name: userInfo?.phoneCountry,
 		code: userInfo?.phoneCountry,
@@ -83,6 +87,7 @@ export const usePhoneNumberModal = ({
 		if (
 			error ||
 			!userInfo?.phoneCountry ||
+			(!verificationCode && otpType === OTPTypes.SMS) ||
 			!(phoneNumber?.trim()?.length > 0)
 		) {
 			setError(true)
@@ -95,6 +100,8 @@ export const usePhoneNumberModal = ({
 							updatePhoneNumberThunk({
 								phoneNumber,
 								phoneCountry,
+								verificationCode,
+								changeOTPToken: tOTPChangeParams?.changeOTPToken,
 								onSuccess: saveHide,
 							})
 						),
@@ -109,6 +116,11 @@ export const usePhoneNumberModal = ({
 		setChosenCountry(country)
 		setGeneralErrorData(null)
 	}
+
+	const sendVerification = () => {
+		verifyPhoneNumber(userInfo?.phoneNumber, userInfo?.phoneCountry)
+	}
+
 	return {
 		userInfo,
 		countries,
@@ -128,5 +140,9 @@ export const usePhoneNumberModal = ({
 		userProfileButtonsLoading,
 		countryFilterText,
 		setCountryFilterText,
+		otpType,
+		setVerificationCode,
+		verificationCode,
+		sendVerification,
 	}
 }

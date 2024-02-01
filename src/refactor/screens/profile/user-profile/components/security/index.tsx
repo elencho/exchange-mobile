@@ -12,6 +12,7 @@ import { useSecurity } from './use-security'
 import { OtpToggle } from '../modals/user-profile/otp-toggle'
 import { OTPTypes } from '@app/refactor/types/enums'
 import SmsOtpModal from '../modals/user-profile/sms-otp-modal'
+import PhoneNumberModal from '../modals/user-profile/phone-number-modal'
 
 interface Props {
 	loading: boolean
@@ -33,6 +34,9 @@ export default function Security({ loading, bioAvailable }: Props) {
 		handleOtpPress,
 		otpType,
 		userInfo,
+		phoneNumberModalVisible,
+		togglePhoneNumberModal,
+		handleChangePhoneNumber,
 	} = useSecurity()
 
 	const data = [
@@ -50,6 +54,7 @@ export default function Security({ loading, bioAvailable }: Props) {
 			title: 'SMS Authentication',
 			description: userInfo?.phoneNumber,
 			otpType: OTPTypes.SMS,
+			extraPress: () => handleChangePhoneNumber(),
 		},
 	]
 
@@ -69,6 +74,7 @@ export default function Security({ loading, bioAvailable }: Props) {
 							isOn={otpType === item.otpType}
 							description={item.description}
 							otpType={item.otpType}
+							extraPress={item?.extraPress}
 						/>
 					)}
 				/>
@@ -103,6 +109,7 @@ export default function Security({ loading, bioAvailable }: Props) {
 				toggleGoogleAuthModal={toggleGoogleAuthModal}
 				toggleSmsAuthModal={toggleSmsAuthModalVisible}
 				smsAuthModalVisible={smsAuthModalVisible}
+				togglePhoneNumberModal={togglePhoneNumberModal}
 			/>
 
 			<GoogleOtpModal
@@ -110,6 +117,10 @@ export default function Security({ loading, bioAvailable }: Props) {
 				googleOtpModalVisible={googleOtpModalVisible}
 				toggleEmailAuthModalVisible={toggleEmailAuthModalVisible}
 				toggleSmsAuthModalVisible={toggleSmsAuthModalVisible}
+			/>
+			<PhoneNumberModal
+				phoneNumberModalVisible={phoneNumberModalVisible}
+				togglePhoneNumberModal={togglePhoneNumberModal}
 			/>
 		</>
 	) : (

@@ -17,24 +17,34 @@ export const useSecurity = () => {
 	const [googleOtpModalVisible, toggleGoogleOtpModalVisible] = useState(false)
 	const [emailAuthModalVisible, toggleEmailAuthModalVisible] = useState(false)
 	const [smsAuthModalVisible, toggleSmsAuthModalVisible] = useState(false)
+	const [phoneNumberModalVisible, togglePhoneNumberModal] = useState(false)
 
 	const handleOtpPress = (newType: OTPTypes) => {
 		dispatch(setCurrentSecurityAction(newType))
 
 		switch (otpType) {
-			case 'TOTP':
+			case OTPTypes.TOTP:
 				toggleGoogleOtpModalVisible(true)
 				break
-			case 'EMAIL':
+			case OTPTypes.EMAIL:
 				toggleEmailAuthModalVisible(true)
 				sendOtp()
 
 				break
-			case 'SMS':
+			case OTPTypes.SMS:
 				toggleSmsAuthModalVisible(true)
 				sendOtp()
 
 				break
+		}
+	}
+
+	const handleChangePhoneNumber = () => {
+		if (otpType === OTPTypes.SMS) {
+			toggleSmsAuthModalVisible(true)
+			sendOtp()
+		} else {
+			togglePhoneNumberModal(true)
 		}
 	}
 
@@ -52,5 +62,8 @@ export const useSecurity = () => {
 		handleOtpPress,
 		otpType,
 		userInfo,
+		phoneNumberModalVisible,
+		togglePhoneNumberModal,
+		handleChangePhoneNumber,
 	}
 }
