@@ -14,7 +14,7 @@ export const Notifications = (props: NotificationsProps) => {
 	const { styles, onToggle, isOn } = props
 	return (
 		<View style={styles.row}>
-			<AppText variant="m" style={[styles.white, { maxWidth: '80%' }]}>
+			<AppText variant="title" style={[styles.white, { maxWidth: '80%' }]}>
 				Receive Notifications
 			</AppText>
 			<View style={[styles.flex, { alignItems: 'flex-end' }]}>

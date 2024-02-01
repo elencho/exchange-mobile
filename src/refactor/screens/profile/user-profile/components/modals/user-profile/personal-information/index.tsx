@@ -17,7 +17,7 @@ export default function PersonalInformation({
 	return (
 		<View style={styles.block}>
 			<View style={styles.row}>
-				<AppText variant="m" style={styles.white}>
+				<AppText variant="title" style={styles.white}>
 					Personal Information
 				</AppText>
 				<View style={styles.flex}>
@@ -32,26 +32,26 @@ export default function PersonalInformation({
 
 			<View style={[styles.row, { marginTop: 20 }]}>
 				<View style={styles.column}>
-					<AppText variant="s" style={styles.secondary}>
+					<AppText variant="l" style={styles.secondary}>
 						Your Name:
 					</AppText>
-					<AppText variant="s" style={styles.secondary}>
+					<AppText variant="l" style={styles.secondary}>
 						Country / City:
 					</AppText>
-					<AppText variant="s" style={styles.secondary}>
+					<AppText variant="l" style={styles.secondary}>
 						Postal Code / Address :
 					</AppText>
 				</View>
 
 				<View style={[styles.column, styles.rightColumn]}>
-					<AppText variant="s" style={styles.white}>
+					<AppText variant="l" style={styles.white}>
 						{userInfo?.firstName} {userInfo?.lastName}
 					</AppText>
-					<AppText variant="s" style={styles.white}>
+					<AppText variant="l" style={styles.white}>
 						{(userInfo?.country || userInfo?.city) &&
 							`${userInfo?.country}, ${userInfo?.city}`}
 					</AppText>
-					<AppText variant="s" style={styles.white} numberOfLines={1}>
+					<AppText variant="l" style={styles.white} numberOfLines={1}>
 						{(userInfo?.postalCode || userInfo?.address) &&
 							`${userInfo?.postalCode} / ${userInfo?.address}`}
 					</AppText>

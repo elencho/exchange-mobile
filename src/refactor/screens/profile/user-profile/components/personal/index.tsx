@@ -116,7 +116,7 @@ export const Personal = ({
 				)
 			case PersonalFeatures.PHONE:
 				return (
-					<AppText variant="s" style={styles.secondary}>
+					<AppText variant="l" style={styles.secondary}>
 						{userInfo?.phoneNumber}
 					</AppText>
 				)
@@ -124,7 +124,7 @@ export const Personal = ({
 			case PersonalFeatures.NOTIFICATIONS:
 				return (
 					<AppText
-						variant="s"
+						variant="l"
 						style={[styles.secondary, error ? { color: '#F45E8C' } : {}]}>
 						{error
 							? 'Sorry.. Something went wrong'
@@ -133,7 +133,7 @@ export const Personal = ({
 				)
 			case PersonalFeatures.LANGUAGE:
 				return (
-					<AppText variant="s" style={styles.secondary}>
+					<AppText variant="l" style={styles.secondary}>
 						{language === 'ka' ? 'ქართული' : language === 'en' ? 'English' : ''}
 					</AppText>
 				)
