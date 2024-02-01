@@ -38,7 +38,6 @@ export const useSecurity = () => {
 		}
 	}
 
-
 	return {
 		passwordModalVisible,
 		togglePasswordModal,

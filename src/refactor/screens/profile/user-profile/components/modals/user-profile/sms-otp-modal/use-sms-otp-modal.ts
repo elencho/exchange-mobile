@@ -142,6 +142,6 @@ export const useSmsOtpModal = ({
 		resend,
 		onShow,
 		handleFill,
-        userInfo,
+		userInfo,
 	}
 }

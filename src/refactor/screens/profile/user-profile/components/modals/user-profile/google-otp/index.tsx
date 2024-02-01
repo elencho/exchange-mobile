@@ -26,7 +26,7 @@ export default function GoogleOtpModal(props: Props) {
 			googleOtpModalVisible,
 			toggleGoogleOtpModalVisible,
 			toggleEmailAuthModalVisible,
-			toggleSmsAuthModalVisible
+			toggleSmsAuthModalVisible,
 		})
 	const { styles, theme } = useTheme(_styles)
 

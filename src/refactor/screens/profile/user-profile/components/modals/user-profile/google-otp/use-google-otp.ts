@@ -2,7 +2,10 @@ import { useNavigation } from '@react-navigation/native'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { sendEmailOtp, sendOtp, sendSmsOtp } from '@app/refactor/redux/profile/profileApi'
+import {
+	sendEmailOtp,
+	sendSmsOtp,
+} from '@app/refactor/redux/profile/profileApi'
 import { credentialsForChangeOTPThunk } from '@app/refactor/redux/profile/profileThunks'
 import { useAppDispatch } from '@app/refactor/redux/store'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'

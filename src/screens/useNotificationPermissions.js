@@ -34,6 +34,7 @@ export const useNotificationPermissions = () => {
 	const checkFcm = async () => {
 		const token = await messaging().getToken()
 		if (token) {
+			console.log('token', token)
 			notificationSubscribe(token)
 		}
 	}
