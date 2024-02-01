@@ -20,7 +20,6 @@ interface Props {
 	value: string
 	setValue: (text: string) => void
 	cellCount: 4 | 6
-	navigation: NativeStackNavigationProp<Screens>
 	indicatorStyle?: StyleProp<ViewStyle>
 	generalErrorData?: UiErrorData | null
 	onFill: () => void

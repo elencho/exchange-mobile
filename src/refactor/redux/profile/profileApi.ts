@@ -3,12 +3,14 @@ import * as SecureStore from 'expo-secure-store'
 import {
 	ACTIVATE_EMAIL_OTP,
 	ACTIVATE_GOOGLE_OTP,
+	ACTIVATE_SMS_OTP,
 	CODE_TO_TOKEN,
 	EMAIL_VERIFICATION,
 	LOGOUT,
 	NOTIFICATIONS_FIREBASE,
 	OTP_CHANGE_TOKEN,
 	SEND_OTP,
+	SMS_VERIFICATION,
 	SUBSCRIBE_EMAIL_URL,
 	UNSUBSCRIBE_EMAIL_URL,
 	UPDATE_PASSWORD,
@@ -124,6 +126,12 @@ export const sendEmailOtp = async () => {
 		url: EMAIL_VERIFICATION,
 	})
 }
+export const sendSmsOtp = async () => {
+	await axios({
+		method: 'POST',
+		url: SMS_VERIFICATION,
+	})
+}
 
 export const getOtpChangeToken = async (OTP: string, newOTPType: string) => {
 	const data = await axios<tOTPVerifyParams>({
@@ -148,6 +156,26 @@ export const activateEmailOtp = async (
 		},
 		url: ACTIVATE_EMAIL_OTP,
 		data: `changeOTPToken=${changeOTPToken}&verificationCode=${verificationCode}`,
+	})
+	if (data) return data!
+}
+
+export const activateSmsOtp = async (
+	changeOTPToken: string,
+	verificationCode: string,
+	phoneNumber: string,
+	verificationNumber: string,
+	phoneCountry: string
+) => {
+	const data = await axios({
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			requestName: 'activateSmsOtp',
+			toast: false,
+		},
+		url: ACTIVATE_SMS_OTP,
+		data: `changeOTPToken=${changeOTPToken}&verificationCode=${verificationCode}&phoneNumber=${phoneNumber}&verificationNumber=${verificationNumber}&phoneCountry=${phoneCountry}`,
 	})
 	if (data) return data!
 }
