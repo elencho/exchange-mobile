@@ -7,13 +7,16 @@ import {
 } from '@app/refactor/redux/profile/profileThunks'
 import {
 	activateEmailOtp,
+	activateSmsOtp,
 	sendEmailOtp,
 	sendOtp,
+	sendSmsOtp,
 } from '@app/refactor/redux/profile/profileApi'
 import { useAppDispatch } from '@app/refactor/redux/store'
 import SecureKV from '@store/kv/secure'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
 import { handleGeneralError, parseError } from '@app/refactor/utils/errorUtils'
+import { setOTPChangeParams } from '@app/refactor/redux/profile/profileSlice'
 
 interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
@@ -28,7 +31,6 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	const {
 		toggleEmailAuthModal,
 		toggleSmsAuthModal,
-		smsAuthModalVisible,
 		emailAuthModalVisible,
 		toggleGoogleAuthModal,
 		type,
@@ -37,13 +39,13 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 
 	const state = useSelector((state: RootState) => state)
 	const {
-		profile: { currentSecurityAction, tOTPChangeParams },
+		profile: { currentSecurityAction, tOTPChangeParams, userInfo },
 		auth: { otpType },
 	} = state
 
-	const visible = type === 'SMS' ? smsAuthModalVisible : emailAuthModalVisible
+	const visible = emailAuthModalVisible
 
-	const cellCount = smsAuthModalVisible ? 4 : 6
+	const cellCount = 6
 
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(30)
@@ -51,7 +53,6 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
 	)
-	const [activateEmail, setActivateEmail] = useState(false)
 	const [timerVisible, setTimerVisible] = useState(true)
 	const reset = () => {
 		setSeconds(30)
@@ -65,7 +66,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 	}
 
 	useEffect(() => {
-		if (emailAuthModalVisible || smsAuthModalVisible) {
+		if (emailAuthModalVisible) {
 			if (!seconds) reset()
 			if (seconds && timerVisible) {
 				setTimeout(() => {
@@ -83,44 +84,38 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		setGeneralErrorData(null)
 	}
 
+	const getOtpChangeToken = async (otpType: OTP, onSuccess: () => void) => {
+		handleGeneralError(
+			() =>
+				dispatch(
+					credentialsForChangeOTPThunk({
+						OTP: value,
+						otpType: otpType,
+						onSuccess: onSuccess,
+					})
+				),
+			setGeneralErrorData
+		)
+	}
+
 	const handleFill = () => {
-		if (currentSecurityAction === 'TOTP') {
-			handleGeneralError(
-				() =>
-					dispatch(
-						credentialsForChangeOTPThunk({
-							OTP: value,
-							otpType: 'TOTP',
-							onSuccess: emailHide,
-						})
-					),
-				setGeneralErrorData
-			)
-		} else if (currentSecurityAction === 'EMAIL' && otpType === 'SMS') {
-			if (emailAuthModalVisible) {
+		switch (currentSecurityAction) {
+			case 'TOTP':
+				getOtpChangeToken(currentSecurityAction, emailHide)
+				break
+			case 'EMAIL':
 				emailActivation()
-			} else {
-				handleGeneralError(
-					() =>
-						dispatch(
-							credentialsForChangeOTPThunk({
-								OTP: value,
-								otpType: 'EMAIL',
-								onSuccess: showEmailFromSMS,
-							})
-						),
-					setGeneralErrorData
-				)
-			}
-		} else if (currentSecurityAction === 'EMAIL' && otpType === 'TOTP') {
-			emailActivation()
+				break
+			case 'SMS':
+				getOtpChangeToken(currentSecurityAction, showSmsFromEmail)
+				break
 		}
 	}
 
 	const emailActivation = () => {
 		activateEmailOtp(tOTPChangeParams!.changeOTPToken!, value).then(
 			async (res) => {
-				if (res?.status >= 200 && res?.status <= 300) {
+				if (res?.status! >= 200 && res?.status! <= 300) {
 					const oldRefresh = await SecureKV.get('refreshToken')
 					retryUnauthorizedCall({}, oldRefresh)
 					hide()
@@ -142,11 +137,10 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		setGeneralErrorData(null)
 	}
 
-	const showEmailFromSMS = () => {
-		toggleSmsAuthModal(false)
-		toggleEmailAuthModal(true)
-		sendEmailOtp()
-		setActivateEmail(true)
+	const showSmsFromEmail = () => {
+		toggleEmailAuthModal(false)
+		toggleSmsAuthModal(true)
+		sendSmsOtp()
 	}
 
 	const onShow = () => {
@@ -158,20 +152,9 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		setGeneralErrorData(null)
 		setTimerVisible(true)
 		if (currentSecurityAction === 'EMAIL') {
-			if (emailAuthModalVisible) {
-				sendEmailOtp()
-			}
-			if (smsAuthModalVisible) {
-				sendOtp()
-			}
-		}
-		if (currentSecurityAction === 'TOTP') {
-			if (emailAuthModalVisible) {
-				sendOtp()
-			}
-			if (smsAuthModalVisible) {
-				sendOtp()
-			}
+			sendEmailOtp()
+		} else {
+			sendOtp()
 		}
 	}
 
@@ -182,7 +165,6 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		reset,
 		cellCount,
 		visible,
-		smsAuthModalVisible,
 		emailAuthModalVisible,
 		currentSecurityAction,
 		seconds,

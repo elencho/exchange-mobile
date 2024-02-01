@@ -1,13 +1,16 @@
 import { useNavigation } from '@react-navigation/native'
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { MaterialIndicator } from 'react-native-indicators'
 import { Theme, useTheme } from '@theme/index'
 import { AppButton } from '@components/button'
 import AppModal from '@components/modal'
 import AppText from '@components/text'
 import TwoFaInput from '@components/input_2fa'
-import { useSmsAuthEmailModal } from './use-sms-email-auth-modal'
+import General_error from '@components/general_error'
+import { useSmsOtpModal } from './use-sms-otp-modal'
+import { Trans } from 'react-i18next'
+import { t } from 'i18next'
 
 interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
@@ -18,7 +21,7 @@ interface SmsEmailAuthModalProps {
 	emailAuthModalVisible: boolean
 }
 
-export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
+export default function SmsOtpModal(props: SmsEmailAuthModalProps) {
 	const {
 		toggleSmsAuthModal,
 		toggleEmailAuthModal,
@@ -27,14 +30,10 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 		toggleGoogleAuthModal,
 	} = props
 
-	const type = emailAuthModalVisible ? 'Email' : 'SMS'
-	const navigation = useNavigation()
 	const {
 		resend,
 		hide,
 		otpLoading,
-		cellCount,
-		visible,
 		seconds,
 		value,
 		setValue,
@@ -42,13 +41,12 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 		generalErrorData,
 		timerVisible,
 		onShow,
-	} = useSmsAuthEmailModal({
-		type,
+		userInfo,
+	} = useSmsOtpModal({
 		toggleSmsAuthModal,
 		toggleEmailAuthModal,
-		smsAuthModalVisible,
-		emailAuthModalVisible,
 		toggleGoogleAuthModal,
+		smsAuthModalVisible,
 	})
 	const { styles, theme } = useTheme(_styles)
 	const resendOrCountDown = () => {
@@ -73,18 +71,18 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 	const children = (
 		<View style={styles.container}>
 			<AppText style={styles.header} variant="headline">
-				{`${type} Authentication`}
+				SMS Authentication
 			</AppText>
-			<AppText style={styles.secondary} variant="l">
-				Enter One Time Password
-			</AppText>
+			<Trans />
+			<Text style={styles.secondary}>
+				{t('sms_otp_text')} {userInfo?.phoneNumber}
+			</Text>
 
 			<View style={styles.codeInput}>
 				<TwoFaInput
 					onFill={handleFill}
-					navigation={navigation}
 					value={value}
-					cellCount={6}
+					cellCount={4}
 					setValue={setValue}
 					generalErrorData={generalErrorData}
 				/>
@@ -104,7 +102,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 			children={children}
 			bottom
 			hide={hide}
-			visible={emailAuthModalVisible}
+			visible={smsAuthModalVisible}
 			onShow={onShow}
 		/>
 	)
@@ -134,5 +132,9 @@ const _styles = (theme: Theme) =>
 		},
 		secondary: {
 			color: theme.color.textSecondary,
+			fontSize: 14,
+			lineHeight: 18,
+			textAlign: 'center',
+			fontFamily: theme.font.regular,
 		},
 	})

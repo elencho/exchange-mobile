@@ -11,6 +11,7 @@ interface Props {
 	toggleGoogleOtpModalVisible?: (v: boolean) => void
 	googleOtpModalVisible: boolean
 	toggleEmailAuthModalVisible: (v: boolean) => void
+	toggleSmsAuthModalVisible: (v: boolean) => void
 }
 
 export default function GoogleOtpModal(props: Props) {
@@ -18,18 +19,20 @@ export default function GoogleOtpModal(props: Props) {
 		toggleGoogleOtpModalVisible,
 		googleOtpModalVisible = false,
 		toggleEmailAuthModalVisible,
+		toggleSmsAuthModalVisible,
 	} = props
 	const { navigation, value, setValue, hide, onFill, generalErrorData } =
 		useGoogleOtp({
 			googleOtpModalVisible,
 			toggleGoogleOtpModalVisible,
 			toggleEmailAuthModalVisible,
+			toggleSmsAuthModalVisible
 		})
 	const { styles, theme } = useTheme(_styles)
 
 	const children = (
 		<View style={styles.container}>
-			<AppText style={styles.header} variant="l">
+			<AppText style={styles.header} variant="headline">
 				Google Authentication
 			</AppText>
 			<AppText style={styles.secondary}>Enter One Time Password</AppText>
