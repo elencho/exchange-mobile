@@ -28,6 +28,7 @@ export default function SmsOtpModal(props: SmsEmailAuthModalProps) {
 		smsAuthModalVisible,
 		emailAuthModalVisible,
 		toggleGoogleAuthModal,
+		togglePhoneNumberModal,
 	} = props
 
 	const {
@@ -47,6 +48,7 @@ export default function SmsOtpModal(props: SmsEmailAuthModalProps) {
 		toggleEmailAuthModal,
 		toggleGoogleAuthModal,
 		smsAuthModalVisible,
+		togglePhoneNumberModal,
 	})
 	const { styles, theme } = useTheme(_styles)
 	const resendOrCountDown = () => {

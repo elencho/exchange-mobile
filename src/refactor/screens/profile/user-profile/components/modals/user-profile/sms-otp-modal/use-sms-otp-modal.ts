@@ -15,12 +15,14 @@ import {
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
 import { setOTPChangeParams } from '@app/refactor/redux/profile/profileSlice'
 import SecureKV from '@store/kv/secure'
+import { OTPTypes } from '@app/refactor/types/enums'
 
 export const useSmsOtpModal = ({
 	toggleSmsAuthModal,
 	toggleEmailAuthModal,
 	toggleGoogleAuthModal,
 	smsAuthModalVisible,
+	togglePhoneNumberModal,
 }) => {
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(30)
@@ -114,16 +116,24 @@ export const useSmsOtpModal = ({
 		toggleGoogleAuthModal(false)
 	}
 
+	const changePhoneNumber = () => {
+		togglePhoneNumberModal(true)
+		toggleSmsAuthModal(false)
+	}
+
 	const handleFill = () => {
 		switch (currentSecurityAction) {
-			case 'TOTP':
+			case OTPTypes.TOTP:
 				getOtpChangeToken(currentSecurityAction, emailHide)
 				break
-			case 'EMAIL':
+			case OTPTypes.EMAIL:
 				getOtpChangeToken(currentSecurityAction, showSmsFromEmail)
 				break
-			case 'SMS':
+			case OTPTypes.SMS:
 				smsActivation()
+				break
+			case null:
+				getOtpChangeToken(OTPTypes.SMS, changePhoneNumber)
 				break
 		}
 	}

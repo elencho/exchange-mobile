@@ -17,6 +17,7 @@ import {
 	UPDATE_PHONE_NUMBER,
 	UPDATE_USER_DATA,
 	USER_INFO_URL,
+	VERIFY_PHONE_NUMBER,
 } from '@app/constants/api'
 import SecureKV from '@store/kv/secure'
 
@@ -87,8 +88,22 @@ export const updatePasswordUtil = async (
 
 export const updatePhoneNumber = async (
 	phoneNumber: string,
-	phoneCountry: string
+	phoneCountry: string,
+	verificationNumber?: string,
+	changeOTPToken?: string
 ) => {
+	const params: Record<string, string | undefined> = {
+		phoneNumber,
+		phoneCountry,
+		verificationNumber,
+		changeOTPToken,
+	}
+	const filteredParams = Object.fromEntries(
+		Object.entries(params).filter(([_, value]) => value !== undefined)
+	)
+
+	const queryString = new URLSearchParams(filteredParams).toString()
+
 	const data = await axios({
 		method: 'POST',
 		headers: {
@@ -97,8 +112,9 @@ export const updatePhoneNumber = async (
 			toast: false,
 		},
 		url: UPDATE_PHONE_NUMBER,
-		data: `phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}`,
+		data: queryString,
 	})
+
 	return data
 }
 
@@ -130,6 +146,17 @@ export const sendSmsOtp = async () => {
 	await axios({
 		method: 'POST',
 		url: SMS_VERIFICATION,
+	})
+}
+
+export const verifyPhoneNumber = async (
+	phoneNumber: string,
+	phoneCountry: string
+) => {
+	await axios({
+		method: 'POST',
+		url: VERIFY_PHONE_NUMBER,
+		params: { phoneNumber, phoneCountry },
 	})
 }
 

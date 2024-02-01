@@ -15,6 +15,7 @@ interface Props {
 	isOn: boolean
 	description: string | undefined
 	otpType: OTPTypes
+	extraPress?: () => void
 }
 const images = {
 	TOTP: <Google_Auth />,
@@ -23,7 +24,7 @@ const images = {
 }
 
 export const OtpToggle = (props: Props) => {
-	const { title, onPress, isOn, otpType, description } = props
+	const { title, onPress, isOn, otpType, description, extraPress } = props
 	const { styles } = useTheme(_styles)
 	const imageToSearch: OTPTypes = otpType
 
@@ -40,7 +41,7 @@ export const OtpToggle = (props: Props) => {
 						{description}
 					</AppText>
 					{otpType === OTPTypes.SMS && (
-						<AppButton variant="text" text=" Change" />
+						<AppButton onPress={extraPress} variant="text" text=" Change" />
 					)}
 				</Text>
 			</View>

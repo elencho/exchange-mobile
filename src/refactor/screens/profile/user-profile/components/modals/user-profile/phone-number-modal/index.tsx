@@ -10,6 +10,7 @@ import { COUNTRIES_URL_PNG } from '@app/constants/api'
 import { usePhoneNumberModal } from './use-phone-number-modal'
 import CountriesModal from '@app/refactor/common/modals/countries'
 import General_error from '@components/general_error'
+import { OTPTypes } from '@app/refactor/types/enums'
 
 export default function PhoneNumberModal({
 	phoneNumberModalVisible,
@@ -34,8 +35,13 @@ export default function PhoneNumberModal({
 		phoneNumber,
 		generalErrorData,
 		countryFilterText,
+		otpType,
 		setCountryFilterText,
+		setVerificationCode,
+		verificationCode,
+		sendVerification,
 	} = usePhoneNumberModal({ phoneNumberModalVisible, togglePhoneNumberModal })
+	
 	const number = userInfo?.phoneNumber
 	const country = userInfo?.phoneCountry
 	const borderColor = error && !country ? '#F45E8C' : '#42475D'
@@ -76,7 +82,26 @@ export default function PhoneNumberModal({
 							value={phoneNumber}
 							keyboardType="number-pad"
 							error={error && !(phoneNumber?.trim()?.length > 0)}
+							rightComponent={
+								otpType === OTPTypes.SMS && (
+									<AppButton
+										text="Send"
+										variant="text"
+										onPress={sendVerification}
+									/>
+								)
+							}
 						/>
+						{otpType === OTPTypes.SMS && (
+							<AppInput
+								style={styles.inputContainer}
+								label="Verification Code"
+								onChangeText={(text: string) => setVerificationCode(text)}
+								value={verificationCode}
+								keyboardType="number-pad"
+								error={error && !(verificationCode?.trim()?.length > 0)}
+							/>
+						)}
 					</TouchableOpacity>
 
 					<AppButton

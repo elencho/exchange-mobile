@@ -156,7 +156,6 @@ export const Personal = ({
 			<View style={styles.block}>
 				{[
 					PersonalFeatures.IDENTITY,
-					PersonalFeatures.PHONE,
 					PersonalFeatures.NOTIFICATIONS,
 					PersonalFeatures.LANGUAGE,
 				].map((item, i, a) => (
@@ -185,10 +184,7 @@ export const Personal = ({
 				togglePersonalInfoModal={togglePersonalInfoModal}
 				personalInfoModalVisible={personalInfoModalVisible}
 			/>
-			<PhoneNumberModal
-				phoneNumberModalVisible={phoneNumberModalVisible}
-				togglePhoneNumberModal={togglePhoneNumberModal}
-			/>
+			
 			<ChooseLanguageModal
 				languageModalVisible={languageModalVisible}
 				setLanguageModalVisible={setLanguageModalVisible}

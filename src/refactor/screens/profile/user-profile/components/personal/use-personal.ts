@@ -46,7 +46,6 @@ export const usePersonal = ({
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 	const [languageModalVisible, setLanguageModalVisible] = useState(false)
 	const [personalInfoModalVisible, togglePersonalInfoModal] = useState(false)
-	const [phoneNumberModalVisible, togglePhoneNumberModal] = useState(false)
 	const [identityModalVisible, toggleIdentityModalVisible] = useState(false)
 	const [emailUpdated, setEmailUpdated] = useState(!!userInfo?.emailUpdates)
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
@@ -133,8 +132,6 @@ export const usePersonal = ({
 		personalInfoModalVisible,
 		languageModalVisible,
 		setLanguageModalVisible,
-		phoneNumberModalVisible,
-		togglePhoneNumberModal,
 		setCompanyInfoModalVisible,
 		emailUpdated,
 		companyInfoModalVisible,
