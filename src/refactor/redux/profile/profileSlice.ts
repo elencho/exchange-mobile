@@ -17,7 +17,7 @@ export interface ProfileState {
 	userProfileLoading: boolean
 	userProfileButtonsLoading: boolean
 	verificationInfo: {}
-	currentSecurityAction: OTP | null
+	currentSecurityAction: OTP | null | string
 	tOTPChangeParams: tOTPChangeParams | null
 }
 
@@ -40,7 +40,7 @@ const profileSlice = createSlice({
 		setVerificationInfo(state, action: PayloadAction<any>) {
 			state.verificationInfo = action.payload
 		},
-		setCurrentSecurityAction(state, action: PayloadAction<OTP>) {
+		setCurrentSecurityAction(state, action: PayloadAction<OTP | string>) {
 			state.currentSecurityAction = action.payload
 		},
 		setUserProfileLoading(state, action: PayloadAction<boolean>) {

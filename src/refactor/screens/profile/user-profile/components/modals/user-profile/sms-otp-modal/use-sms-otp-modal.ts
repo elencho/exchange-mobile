@@ -53,6 +53,11 @@ export const useSmsOtpModal = ({
 		setGeneralErrorData(null)
 	}
 
+	const handleValue = (text: string) => {
+		setValue(text)
+		setGeneralErrorData(null)
+	}
+
 	const resend = () => {
 		setValue('')
 		setGeneralErrorData(null)
@@ -147,14 +152,14 @@ export const useSmsOtpModal = ({
 			case OTPTypes.SMS:
 				smsActivation()
 				break
-			case null:
+			case null || 'changingNumber':
 				getOtpChangeToken(OTPTypes.SMS, changePhoneNumber)
 				break
 		}
 	}
 	return {
 		value,
-		setValue,
+		setValue: handleValue,
 		seconds,
 		setSeconds,
 		otpLoading,
