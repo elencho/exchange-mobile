@@ -18,7 +18,7 @@ export const Identity = (props: IdentityProps) => {
 	return (
 		<View style={styles.row}>
 			<View style={[styles.row, styles.flex]}>
-				<AppText variant="l" style={styles.white}>
+				<AppText variant="title" style={styles.white}>
 					Identification
 				</AppText>
 

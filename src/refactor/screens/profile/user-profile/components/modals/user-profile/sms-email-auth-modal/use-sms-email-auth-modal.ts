@@ -17,6 +17,7 @@ import SecureKV from '@store/kv/secure'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
 import { handleGeneralError, parseError } from '@app/refactor/utils/errorUtils'
 import { setOTPChangeParams } from '@app/refactor/redux/profile/profileSlice'
+import { OTPTypes } from '@app/refactor/types/enums'
 
 interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
@@ -100,13 +101,13 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 
 	const handleFill = () => {
 		switch (currentSecurityAction) {
-			case 'TOTP':
+			case OTPTypes.TOTP:
 				getOtpChangeToken(currentSecurityAction, emailHide)
 				break
-			case 'EMAIL':
+			case OTPTypes.EMAIL:
 				emailActivation()
 				break
-			case 'SMS':
+			case OTPTypes.SMS:
 				getOtpChangeToken(currentSecurityAction, showSmsFromEmail)
 				break
 		}
@@ -151,7 +152,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		setValue('')
 		setGeneralErrorData(null)
 		setTimerVisible(true)
-		if (currentSecurityAction === 'EMAIL') {
+		if (currentSecurityAction === OTPTypes.EMAIL) {
 			sendEmailOtp()
 		} else {
 			sendOtp()
