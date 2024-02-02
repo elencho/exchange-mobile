@@ -147,7 +147,7 @@ export const useSmsOtpModal = ({
 			case OTPTypes.SMS:
 				smsActivation()
 				break
-			case null:
+			case null || 'changingNumber':
 				getOtpChangeToken(OTPTypes.SMS, changePhoneNumber)
 				break
 		}
