@@ -42,6 +42,7 @@ export const useSecurity = () => {
 	const handleChangePhoneNumber = () => {
 		if (otpType === OTPTypes.SMS) {
 			toggleSmsAuthModalVisible(true)
+			dispatch(setCurrentSecurityAction('changingNumber'))
 			sendOtp()
 		} else {
 			togglePhoneNumberModal(true)

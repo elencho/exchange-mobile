@@ -118,7 +118,7 @@ export const usePhoneNumberModal = ({
 	}
 
 	const sendVerification = () => {
-		verifyPhoneNumber(userInfo?.phoneNumber, userInfo?.phoneCountry)
+		verifyPhoneNumber(phoneNumber, chosenCountry)
 	}
 
 	return {
