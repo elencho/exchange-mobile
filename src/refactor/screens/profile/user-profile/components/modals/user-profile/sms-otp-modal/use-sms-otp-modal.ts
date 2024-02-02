@@ -53,6 +53,11 @@ export const useSmsOtpModal = ({
 		setGeneralErrorData(null)
 	}
 
+	const handleValue = (text: string) => {
+		setValue(text)
+		setGeneralErrorData(null)
+	}
+
 	const resend = () => {
 		setValue('')
 		setGeneralErrorData(null)
@@ -154,7 +159,7 @@ export const useSmsOtpModal = ({
 	}
 	return {
 		value,
-		setValue,
+		setValue: handleValue,
 		seconds,
 		setSeconds,
 		otpLoading,

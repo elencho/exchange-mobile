@@ -28,7 +28,7 @@ export const usePhoneNumberModal = ({
 	const [error, setError] = useState(false)
 	const [seconds, setSeconds] = useState(30)
 	const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber!)
-	const [verificationCode, setVerificationCode] = useState()
+	const [verificationCode, setVerificationCode] = useState('')
 	const x = {
 		name: userInfo?.phoneCountry,
 		code: userInfo?.phoneCountry,
@@ -79,6 +79,12 @@ export const usePhoneNumberModal = ({
 	const handlePhoneNumber = (phoneNumber: string) => {
 		setGeneralErrorData(null)
 		setPhoneNumber(phoneNumber)
+		setError(false)
+	}
+
+	const handleVerificationNumber = (verificationNumber: string) => {
+		setGeneralErrorData(null)
+		setVerificationCode(verificationNumber)
 		setError(false)
 	}
 
@@ -141,7 +147,7 @@ export const usePhoneNumberModal = ({
 		countryFilterText,
 		setCountryFilterText,
 		otpType,
-		setVerificationCode,
+		setVerificationCode: handleVerificationNumber,
 		verificationCode,
 		sendVerification,
 	}
