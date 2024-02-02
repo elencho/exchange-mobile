@@ -10,12 +10,22 @@ import { handleGeneralError, parseError } from '@app/refactor/utils/errorUtils'
 import {
 	activateEmailOtp,
 	activateSmsOtp,
+	sendEmailOtp,
 	sendOtp,
+	sendSmsOtp,
 } from '@app/refactor/redux/profile/profileApi'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
 import { setOTPChangeParams } from '@app/refactor/redux/profile/profileSlice'
 import SecureKV from '@store/kv/secure'
 import { OTPTypes } from '@app/refactor/types/enums'
+
+interface SmsOtpModalProps {
+	toggleSmsAuthModal: (v: boolean) => void
+	toggleEmailAuthModal: (v: boolean) => void
+	toggleGoogleAuthModal: (v: boolean) => void
+	smsAuthModalVisible: boolean
+	togglePhoneNumberModal: (v: boolean) => void
+}
 
 export const useSmsOtpModal = ({
 	toggleSmsAuthModal,
@@ -23,7 +33,7 @@ export const useSmsOtpModal = ({
 	toggleGoogleAuthModal,
 	smsAuthModalVisible,
 	togglePhoneNumberModal,
-}) => {
+}: SmsOtpModalProps) => {
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(30)
 	const [otpLoading, setOtpLoading] = useState(false)
@@ -47,7 +57,11 @@ export const useSmsOtpModal = ({
 		setValue('')
 		setGeneralErrorData(null)
 		setTimerVisible(true)
-		sendOtp()
+		if (currentSecurityAction === OTPTypes.SMS) {
+			sendSmsOtp()
+		} else {
+			sendOtp()
+		}
 	}
 	const reset = () => {
 		setSeconds(30)
@@ -71,7 +85,7 @@ export const useSmsOtpModal = ({
 	const onShow = () => {
 		setTimerVisible(true)
 	}
-	const emailHide = async () => {
+	const smsHide = async () => {
 		await hide()
 		toggleGoogleAuthModal(true)
 		setGeneralErrorData(null)
@@ -110,10 +124,11 @@ export const useSmsOtpModal = ({
 			}
 		})
 	}
-	const showSmsFromEmail = () => {
+	const showEmailFromSms = () => {
 		toggleSmsAuthModal(false)
 		toggleEmailAuthModal(true)
 		toggleGoogleAuthModal(false)
+		sendEmailOtp()
 	}
 
 	const changePhoneNumber = () => {
@@ -124,10 +139,10 @@ export const useSmsOtpModal = ({
 	const handleFill = () => {
 		switch (currentSecurityAction) {
 			case OTPTypes.TOTP:
-				getOtpChangeToken(currentSecurityAction, emailHide)
+				getOtpChangeToken(currentSecurityAction, smsHide)
 				break
 			case OTPTypes.EMAIL:
-				getOtpChangeToken(currentSecurityAction, showSmsFromEmail)
+				getOtpChangeToken(currentSecurityAction, showEmailFromSms)
 				break
 			case OTPTypes.SMS:
 				smsActivation()
