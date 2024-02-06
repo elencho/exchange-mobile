@@ -47,6 +47,7 @@ export default function PhoneNumberModal({
 		sendLoading,
 		timerVisible,
 		seconds,
+		language,
 	} = usePhoneNumberModal({ phoneNumberModalVisible, togglePhoneNumberModal })
 
 	const number = userInfo?.phoneNumber
@@ -54,7 +55,7 @@ export default function PhoneNumberModal({
 	const borderColor = error && !country ? '#F45E8C' : '#42475D'
 	const { theme } = useTheme()
 	const PhoneInputRight = () => {
-		const sendText = alreadySent ? 'Resend' : 'Send'
+		const sendText = alreadySent && language === 'en' ? 'Resend' : 'Send'
 
 		if (sendLoading) {
 			return (
