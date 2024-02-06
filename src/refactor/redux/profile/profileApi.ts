@@ -153,11 +153,14 @@ export const verifyPhoneNumber = async (
 	phoneNumber: string,
 	phoneCountry: string
 ) => {
-	await axios({
+	const data = await axios({
 		method: 'POST',
+		headers: { toast: false },
 		url: VERIFY_PHONE_NUMBER,
 		params: { phoneNumber, phoneCountry },
 	})
+
+	return data
 }
 
 export const getOtpChangeToken = async (OTP: string, newOTPType: string) => {

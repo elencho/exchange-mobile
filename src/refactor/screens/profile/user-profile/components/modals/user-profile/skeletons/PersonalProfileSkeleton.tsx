@@ -77,7 +77,7 @@ const PersonalProfileSkeleton = () => {
 			<View style={styles.container}>
 				{[1, 2, 3].map((n, i) => (
 					<View key={i}>
-						<FirstPart styles={styles} hasSwitch={i === 2} />
+						<FirstPart styles={styles} hasSwitch={i === 1} />
 					</View>
 				))}
 			</View>
