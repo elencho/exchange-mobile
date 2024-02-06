@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { updatePhoneNumberThunk } from '@app/refactor/redux/profile/profileThunks'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
-import { verifyPhoneNumber } from '@app/utils/userProfileUtils'
 import { OTPTypes } from '@app/refactor/types/enums'
+import { verifyPhoneNumber } from '@app/refactor/redux/profile/profileApi'
 
 export const usePhoneNumberModal = ({
 	phoneNumberModalVisible,
@@ -17,7 +17,12 @@ export const usePhoneNumberModal = ({
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
 	const {
-		profile: { userInfo, userProfileButtonsLoading, userProfileLoading, tOTPChangeParams},
+		profile: {
+			userInfo,
+			userProfileButtonsLoading,
+			userProfileLoading,
+			tOTPChangeParams,
+		},
 		common: { countries },
 		auth: { otpType },
 	} = state
@@ -27,6 +32,9 @@ export const usePhoneNumberModal = ({
 	)
 	const [error, setError] = useState(false)
 	const [seconds, setSeconds] = useState(30)
+	const [timerVisible, setTimerVisible] = useState(false)
+	const [sendLoading, resendLoading] = useState(false)
+	const [alreadySent, setAlreadySent] = useState(false)
 	const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber!)
 	const [verificationCode, setVerificationCode] = useState('')
 	const x = {
@@ -34,6 +42,7 @@ export const usePhoneNumberModal = ({
 		code: userInfo?.phoneCountry,
 		phoneCode: userInfo?.phoneCountry,
 	}
+
 	const [chosenCountry, setChosenCountry] = useState(x)
 	const [countryModalVisible, setCountryModalVisible] = useState(false)
 	const [countryFilterText, setCountryFilterText] = useState('')
@@ -44,10 +53,25 @@ export const usePhoneNumberModal = ({
 		}
 	}, [userInfo])
 
+	const reset = () => {
+		setSeconds(30)
+		setTimerVisible(false)
+	}
+
 	useEffect(() => {
 		if (phoneNumberModalVisible) {
-			setSeconds(30)
+			if (!seconds) reset()
+			if (seconds && timerVisible) {
+				setTimeout(() => {
+					setSeconds(seconds - 1)
+				}, 1000)
+			}
+		} else {
+			reset()
 		}
+	}, [seconds, timerVisible])
+
+	useEffect(() => {
 		phoneCountry()
 	}, [phoneNumberModalVisible])
 
@@ -123,8 +147,13 @@ export const usePhoneNumberModal = ({
 		setGeneralErrorData(null)
 	}
 
-	const sendVerification = () => {
-		verifyPhoneNumber(phoneNumber, chosenCountry)
+	const sendVerification = async () => {
+		resendLoading(true)
+		setAlreadySent(true)
+		setTimerVisible(true)
+		verifyPhoneNumber(phoneNumber, chosenCountry?.code).then(() =>
+			resendLoading(false)
+		)
 	}
 
 	return {
@@ -150,5 +179,9 @@ export const usePhoneNumberModal = ({
 		setVerificationCode: handleVerificationNumber,
 		verificationCode,
 		sendVerification,
+		alreadySent,
+		sendLoading,
+		timerVisible,
+		seconds
 	}
 }
