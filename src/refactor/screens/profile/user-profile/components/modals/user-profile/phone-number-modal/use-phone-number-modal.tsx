@@ -26,7 +26,7 @@ export const usePhoneNumberModal = ({
 			userProfileLoading,
 			tOTPChangeParams,
 		},
-		common: { countries },
+		common: { countries, language },
 		auth: { otpType },
 	} = state
 
@@ -195,5 +195,6 @@ export const usePhoneNumberModal = ({
 		sendLoading,
 		timerVisible,
 		seconds,
+		language
 	}
 }
