@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { updatePhoneNumberThunk } from '@app/refactor/redux/profile/profileThunks'
-import { handleGeneralError } from '@app/refactor/utils/errorUtils'
+import {
+	handleAxiosErrors,
+	handleGeneralError,
+} from '@app/refactor/utils/errorUtils'
 import { OTPTypes } from '@app/refactor/types/enums'
 import { verifyPhoneNumber } from '@app/refactor/redux/profile/profileApi'
 
@@ -149,10 +152,19 @@ export const usePhoneNumberModal = ({
 
 	const sendVerification = async () => {
 		resendLoading(true)
-		setAlreadySent(true)
-		setTimerVisible(true)
-		verifyPhoneNumber(phoneNumber, chosenCountry?.code).then(() =>
-			resendLoading(false)
+
+		const response = await verifyPhoneNumber(phoneNumber, chosenCountry?.code)
+		await handleAxiosErrors(
+			response,
+			() => {
+				setAlreadySent(true)
+				setTimerVisible(true)
+				resendLoading(false)
+			},
+			(error) => {
+				resendLoading(false)
+				setGeneralErrorData(error)
+			}
 		)
 	}
 
@@ -182,6 +194,6 @@ export const usePhoneNumberModal = ({
 		alreadySent,
 		sendLoading,
 		timerVisible,
-		seconds
+		seconds,
 	}
 }
