@@ -19,7 +19,7 @@ import Constants from 'expo-constants'
 import { setGeneralError } from '@store/redux/common/slice'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import { setLoginLoading } from '@store/redux/auth/slice'
+import { resetCallbackUrl, setLoginLoading } from '@store/redux/auth/slice'
 import { FullScreenLoader } from '@components/full_screen_loader'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
@@ -55,16 +55,20 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 		(state: RootState) => state.auth
 	)
 
-	useFocusEffect(
-		useCallback(() => {
-			dispatch(startLoginThunk(navigation))
-		}, [])
-	)
+	// useFocusEffect(
+	// 	useCallback(() => {
+	// 		dispatch(startLoginThunk(navigation))
+	// 		return () => {
+	// 			dispatch(resetCallbackUrl(''))
+	// 		}
+	// 	}, [])
+	// )
 
 	const alreadyDrewPassedError = useRef(false)
 
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
+			dispatch(startLoginThunk(navigation))
 			setMail('ibanet@cryptx.com')
 			setPass('Malina125$')
 			setMailError(false)
