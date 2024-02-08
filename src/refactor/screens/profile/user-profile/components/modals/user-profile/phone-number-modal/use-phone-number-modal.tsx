@@ -33,7 +33,10 @@ export const usePhoneNumberModal = ({
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
 	)
-	const [error, setError] = useState(false)
+	const [error, setError] = useState({
+		phoneNumber: false,
+		verificationCode: false,
+	})
 	const [seconds, setSeconds] = useState(30)
 	const [timerVisible, setTimerVisible] = useState(false)
 	const [sendLoading, resendLoading] = useState(false)
@@ -52,7 +55,10 @@ export const usePhoneNumberModal = ({
 
 	useEffect(() => {
 		if (error) {
-			setError(false)
+			setError({
+				phoneNumber: false,
+				verificationCode: false,
+			})
 		}
 	}, [userInfo])
 
@@ -106,24 +112,34 @@ export const usePhoneNumberModal = ({
 	const handlePhoneNumber = (phoneNumber: string) => {
 		setGeneralErrorData(null)
 		setPhoneNumber(phoneNumber)
-		setError(false)
+		setError({
+			phoneNumber: false,
+			verificationCode: error.verificationCode,
+		})
 	}
 
 	const handleVerificationNumber = (verificationNumber: string) => {
 		setGeneralErrorData(null)
 		setVerificationCode(verificationNumber)
-		setError(false)
+		setError({
+			phoneNumber: error.phoneNumber,
+			verificationCode: false,
+		})
 	}
 
 	const handleSave = () => {
 		setGeneralErrorData(null)
 		if (
-			error ||
+			error.phoneNumber ||
+			error.verificationCode ||
 			!userInfo?.phoneCountry ||
-			(!verificationCode && otpType === OTPTypes.SMS) ||
+			(!(verificationCode?.trim()?.length > 0) && otpType === OTPTypes.SMS) ||
 			!(phoneNumber?.trim()?.length > 0)
 		) {
-			setError(true)
+			setError({
+				phoneNumber: !(phoneNumber?.trim()?.length > 0),
+				verificationCode: !(verificationCode?.trim()?.length > 0),
+			})
 		} else {
 			const phoneCountry = chosenCountry.code
 			if (phoneNumber && phoneCountry) {
@@ -164,6 +180,10 @@ export const usePhoneNumberModal = ({
 			(error) => {
 				resendLoading(false)
 				setGeneralErrorData(error)
+				setError({
+					phoneNumber: true,
+					verificationCode: false,
+				})
 			}
 		)
 	}
@@ -195,6 +215,8 @@ export const usePhoneNumberModal = ({
 		sendLoading,
 		timerVisible,
 		seconds,
-		language
+		language,
+		setGeneralErrorData,
+		setError,
 	}
 }

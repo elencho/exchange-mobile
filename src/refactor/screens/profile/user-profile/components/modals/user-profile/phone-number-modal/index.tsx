@@ -48,6 +48,8 @@ export default function PhoneNumberModal({
 		timerVisible,
 		seconds,
 		language,
+		setGeneralErrorData,
+		setError,
 	} = usePhoneNumberModal({ phoneNumberModalVisible, togglePhoneNumberModal })
 
 	const number = userInfo?.phoneNumber
@@ -111,8 +113,15 @@ export default function PhoneNumberModal({
 							label="Phone Number"
 							onChangeText={(text: string) => handlePhoneNumber(text)}
 							value={phoneNumber}
+							onFocusOrChange={() => {
+								setGeneralErrorData(null)
+								setError({
+									phoneNumber: false,
+									verificationCode: error.verificationCode,
+								})
+							}}
 							keyboardType="number-pad"
-							error={error && !(phoneNumber?.trim()?.length > 0)}
+							error={error.phoneNumber && !(phoneNumber?.trim()?.length > 0)}
 							rightComponent={otpType === OTPTypes.SMS && <PhoneInputRight />}
 						/>
 						{otpType === OTPTypes.SMS && (
@@ -122,7 +131,17 @@ export default function PhoneNumberModal({
 								onChangeText={(text: string) => setVerificationCode(text)}
 								value={verificationCode}
 								keyboardType="number-pad"
-								error={error && !(verificationCode?.trim()?.length > 0)}
+								onFocusOrChange={() => {
+									setGeneralErrorData(null)
+									setError({
+										phoneNumber: error.phoneNumber,
+										verificationCode: false,
+									})
+								}}
+								error={
+									error.verificationCode &&
+									!(verificationCode?.trim()?.length > 0)
+								}
 							/>
 						)}
 					</TouchableOpacity>
