@@ -86,7 +86,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 		}
 	}, [timerVisible])
 
-	const goBack = () => navigation.goBack()
+	const goBack = () => navigation.replace('Login')
 
 	const onResendPressed = () => {
 		if (mail.trim() && validMail) {
