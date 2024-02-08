@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AppModal from '@app/refactor/common/components/modal'
-import ModalWithSearch from '@app/components/ModalWithSearchTemporary'
+import ModalWithSearch from '@components/modals/ModalWithSearch'
 import { setCryptoFilter } from '@app/refactor/redux/transactions/transactionSlice'
 import { fetchCurrencies } from '@app/utils/fetchTransactions'
 import { RootState } from '@app/refactor/redux/rootReducer'
