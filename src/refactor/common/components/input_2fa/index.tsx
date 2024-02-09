@@ -19,10 +19,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Theme, useTheme } from '@theme/index'
 import AppText from '@components/text'
 import GeneralError from '@components/general_error'
-import { RootState } from '@app/refactor/redux/rootReducer'
-import { Screens } from '@app/refactor/setup/nav/nav'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
-import { startOtpListener, removeListener } from 'react-native-otp-verify'
+import { useSmsOtpVerifier } from '../../util'
 interface Props {
 	value: string
 	setValue: (text: string) => void
@@ -78,45 +76,20 @@ const CodeInput = ({
 }: CodeInputProps) => {
 	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
-	const TAN_CODE_REGULAR_EXP = /^[0-9]{0,9}$/
 
 	const ref = useBlurOnFulfill({ value, cellCount })
 	const [props, getCellOnLayoutHandler] = useClearByFocusCell({
 		value,
 		setValue,
 	})
-	const otpHandler = (message) => {
-		console.log(message, 'message')
-		const messageLower = message.toLowerCase()
-		const keyWord = 'code:'
-		var re = new RegExp(keyWord + '\\s*(\\d+)')
-		var m = messageLower.match(re)
-		if (TAN_CODE_REGULAR_EXP.test(m[1])) {
-			setValue(m[1])
-		}
-
-		removeListener()
-		Keyboard.dismiss()
-	}
-
-	useEffect(() => {
-		if (Platform.OS === 'android') {
-			startOtpListener((message) => {
-				console.log('first', message)
-				// extract the otp using regex e.g. the below regex extracts 4 digit otp from message
-				const otp = /(\d{4})/g.exec(message)[1]
-				setValue(otp)
-			})
-
-			return () => removeListener()
-		}
-	}, [setValue])
 
 	const handleValue = (value: string) => {
 		setValue(value)
 		// TODO: Remove after wallets refactor
 		dispatch(saveGeneralError(null))
 	}
+
+	useSmsOtpVerifier(handleValue)
 
 	return (
 		<View>

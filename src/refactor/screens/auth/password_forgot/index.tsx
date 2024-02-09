@@ -60,15 +60,6 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 		})
 	}, [navigation])
 
-	// useFocusEffect(
-	// 	useCallback(() => {
-	// 		dispatch(forgotPasswordStartThunk({ navigation }))
-	// 		return () => {
-	// 			dispatch(resetCallbackUrl(''))
-	// 		}
-	// 	}, [])
-	// )
-
 	useEffect(() => {
 		if (seconds) {
 			setTimeout(() => {
