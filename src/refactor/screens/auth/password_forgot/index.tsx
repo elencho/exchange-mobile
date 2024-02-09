@@ -60,15 +60,6 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 		})
 	}, [navigation])
 
-	// useFocusEffect(
-	// 	useCallback(() => {
-	// 		dispatch(forgotPasswordStartThunk({ navigation }))
-	// 		return () => {
-	// 			dispatch(resetCallbackUrl(''))
-	// 		}
-	// 	}, [])
-	// )
-
 	useEffect(() => {
 		if (seconds) {
 			setTimeout(() => {
@@ -86,7 +77,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 		}
 	}, [timerVisible])
 
-	const goBack = () => navigation.replace('Login')
+	const goBack = () => navigation.goBack()
 
 	const onResendPressed = () => {
 		if (mail.trim() && validMail) {

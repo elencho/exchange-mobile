@@ -131,6 +131,8 @@ export default function PhoneNumberModal({
 								onChangeText={(text: string) => setVerificationCode(text)}
 								value={verificationCode}
 								keyboardType="number-pad"
+								textContentType="oneTimeCode"
+								autoComplete="sms-otp"
 								onFocusOrChange={() => {
 									setGeneralErrorData(null)
 									setError({

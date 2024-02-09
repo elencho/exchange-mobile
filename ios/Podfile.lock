@@ -533,6 +533,8 @@ PODS:
     - React-Core
   - react-native-netinfo (11.2.1):
     - React-Core
+  - react-native-otp-verify (1.1.6):
+    - React-Core
   - react-native-pkce-challenge (5.2.0):
     - React-Core
   - react-native-safe-area-context (4.5.3):
@@ -777,6 +779,7 @@ DEPENDENCIES:
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - "react-native-mobilesdk-module (from `../node_modules/@sumsub/react-native-mobilesdk-module`)"
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-otp-verify (from `../node_modules/react-native-otp-verify`)
   - react-native-pkce-challenge (from `../node_modules/react-native-pkce-challenge`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
@@ -938,6 +941,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@sumsub/react-native-mobilesdk-module"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-otp-verify:
+    :path: "../node_modules/react-native-otp-verify"
   react-native-pkce-challenge:
     :path: "../node_modules/react-native-pkce-challenge"
   react-native-safe-area-context:
@@ -1077,6 +1082,7 @@ SPEC CHECKSUMS:
   react-native-mmkv: 9ae7ca3977e8ef48dbf7f066974eb844c20b5fd7
   react-native-mobilesdk-module: 8b1761e630ca84100aa1e3cc8c830748b3f2dd88
   react-native-netinfo: 8a7fd3f7130ef4ad2fb4276d5c9f8d3f28d2df3d
+  react-native-otp-verify: 3dbd8a52ceb8d4dfc775bddd6fc98a453091ed5f
   react-native-pkce-challenge: 160cda7bad5678866dc8d6106a4be3edca9411a0
   react-native-safe-area-context: b8979f5eda6ed5903d4dbc885be3846ea3daa753
   react-native-splash-screen: 4312f786b13a81b5169ef346d76d33bc0c6dc457

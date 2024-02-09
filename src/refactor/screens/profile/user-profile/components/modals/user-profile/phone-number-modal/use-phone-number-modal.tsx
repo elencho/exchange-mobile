@@ -9,6 +9,7 @@ import {
 } from '@app/refactor/utils/errorUtils'
 import { OTPTypes } from '@app/refactor/types/enums'
 import { verifyPhoneNumber } from '@app/refactor/redux/profile/profileApi'
+import { useSmsOtpVerifier } from '@app/refactor/common/util'
 
 export const usePhoneNumberModal = ({
 	phoneNumberModalVisible,
@@ -19,6 +20,7 @@ export const usePhoneNumberModal = ({
 }) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
+
 	const {
 		profile: {
 			userInfo,
@@ -126,6 +128,7 @@ export const usePhoneNumberModal = ({
 			verificationCode: false,
 		})
 	}
+	useSmsOtpVerifier(handleVerificationNumber)
 
 	const handleSave = () => {
 		setGeneralErrorData(null)
