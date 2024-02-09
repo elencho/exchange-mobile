@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+system_profiler SPHardwareDataType
+
 CUR_COCOAPODS_VER=`sed -n -e 's/^COCOAPODS: \([0-9.]*\)/\1/p' ios/Podfile.lock`
 ENV_COCOAPODS_VER=`pod --version`
 
