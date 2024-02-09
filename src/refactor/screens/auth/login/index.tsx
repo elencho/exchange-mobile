@@ -105,7 +105,7 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 	}
 
 	const onRegisterPressed = () => navigation.navigate('Registration')
-	const onForgotPasswordPressed = () => navigation.replace('ForgotPassword')
+	const onForgotPasswordPressed = () => navigation.navigate('ForgotPassword')
 
 	return (
 		<View style={styles.background}>
