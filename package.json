@@ -65,6 +65,7 @@
 		"react-native-mmkv": "^2.10.2",
 		"react-native-modal": "^13.0.1",
 		"react-native-navigation-bar-color": "^2.0.2",
+		"react-native-otp-verify": "^1.1.6",
 		"react-native-permissions": "^4.0.1",
 		"react-native-pkce-challenge": "^5.1.1",
 		"react-native-qrcode-svg": "^6.2.0",
