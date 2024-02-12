@@ -15,12 +15,12 @@ Notifications.setNotificationHandler({
 })
 export const getNotification = () => {
 	const { showModal, setModalContent } = useModal()
-	const bioAvailable = KV.get('bioIsAvailableOnUser')
+	const bioAvailableAsync = KV.get('bioIsAvailableOnUser')
 
 	useEffect(() => {
 		messaging()
 			.getInitialNotification()
-			.then((remoteMessage) => {
+			.then(async (remoteMessage) => {
 				if (remoteMessage) {
 					const data = {
 						description: remoteMessage?.notification?.body,
@@ -30,15 +30,17 @@ export const getNotification = () => {
 						title: remoteMessage?.data?.title,
 					}
 
-					if (data.title && data.description && !bioAvailable) {
+					if (data.title && data.description && !bioAvailableAsync) {
 						showModal(data)
-					} else if (data.title && data.description && bioAvailable) {
+					} else if (data.title && data.description && bioAvailableAsync) {
 						setModalContent(data)
 					}
 				}
 			})
 
-		messaging().onNotificationOpenedApp((remoteMessage) => {
+		messaging().onNotificationOpenedApp(async (remoteMessage) => {
+			const bioAvailableAsync = KV.get('bioIsAvailableOnUser')
+
 			const data = {
 				description: remoteMessage?.notification?.body,
 				banner: remoteMessage?.data?.banner,
@@ -46,10 +48,10 @@ export const getNotification = () => {
 				redirectUrl: remoteMessage?.data?.redirectUrl,
 				title: remoteMessage?.data?.title,
 			}
-			if (data.title && data.description && !bioAvailable) {
-				showModal(data)
-			} else if (data.title && data.description && bioAvailable) {
+			if (data.title && data.description && bioAvailableAsync) {
 				setModalContent(data)
+			} else if (data.title && data.description && !bioAvailableAsync) {
+				showModal(data)
 			}
 		})
 	}, [])
@@ -81,23 +83,19 @@ export const inAppNotificationListener = () => {
 			redirectUrl: message?.data?.redirectUrl,
 			title: message?.data?.title,
 		}
-		await Notifications.scheduleNotificationAsync({
-			content: {
-				title: message?.notification?.title,
-				body: message?.notification?.body,
-				data: { data: data },
-			},
-			trigger: null,
-		})
-		if (data.title && data.description && !isBiometricScreenOpenedForModal) {
-			showModal(data)
-		} else if (
-			data.title &&
-			data.description &&
-			isBiometricScreenOpenedForModal
-		) {
-			setModalVisible(true)
-			setModalContent(data)
+		const { granted } = await Notifications.getPermissionsAsync()
+
+		if (granted) {
+			if (data.title && data.description && !isBiometricScreenOpenedForModal) {
+				showModal(data)
+			} else if (
+				data.title &&
+				data.description &&
+				isBiometricScreenOpenedForModal
+			) {
+				setModalVisible(true, data)
+				setModalContent(data)
+			}
 		}
 	}
 }

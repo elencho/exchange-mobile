@@ -17,7 +17,7 @@ export const CompanyInformation = ({
 	return (
 		<View style={styles.block}>
 			<View style={[styles.row, { justifyContent: 'space-between' }]}>
-				<AppText variant="m" style={styles.white}>
+				<AppText variant="title" style={styles.white}>
 					Company Information
 				</AppText>
 				<AppButton variant="text" text="Edit" onPress={openModal} />
@@ -25,21 +25,21 @@ export const CompanyInformation = ({
 
 			<View style={[styles.row, { marginTop: 20 }]}>
 				<View>
-					<AppText variant="s" style={styles.secondary}>
+					<AppText variant="l" style={styles.secondary}>
 						Company Name:
 					</AppText>
 					<View style={{ marginVertical: 5 }} />
-					<AppText variant="s" style={styles.secondary}>
+					<AppText variant="l" style={styles.secondary}>
 						Company Number:
 					</AppText>
 				</View>
 
 				<View style={[styles.column, styles.rightColumn]}>
-					<AppText variant="s" style={styles.white}>
+					<AppText variant="l" style={styles.white}>
 						{userInfo?.company}
 					</AppText>
 					<View style={{ marginVertical: 5 }} />
-					<AppText variant="s" style={styles.white}>
+					<AppText variant="l" style={styles.white}>
 						{userInfo?.companyCode}
 					</AppText>
 				</View>
@@ -50,10 +50,10 @@ export const CompanyInformation = ({
 				<View
 					style={[styles.director, i === a.length - 1 && { marginBottom: 0 }]}
 					key={d.id}>
-					<AppText variant="s" style={styles.secondary}>
+					<AppText variant="l" style={styles.secondary}>
 						Director 0{i + 1}:
 					</AppText>
-					<AppText variant="s" style={styles.white}>
+					<AppText variant="l" style={styles.white}>
 						{d.firstName} {d.lastName}
 					</AppText>
 				</View>

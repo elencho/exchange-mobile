@@ -5,6 +5,16 @@ import {
 	NavigationState,
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import {
+	LogLevel,
+	initialize,
+	setCustomUserId,
+	setCustomSessionId,
+	setCustomTag,
+	setCurrentScreenName,
+	getCurrentSessionId,
+} from 'react-native-clarity'
+
 import React, { useEffect, useRef, useState } from 'react'
 import Main from '@app/refactor/screens/auth/main'
 import Resume from '@app/refactor/screens/auth/resume'
@@ -33,10 +43,18 @@ import { useTheme } from '@theme/index'
 import NetInfo from '@react-native-community/netinfo'
 import { AppState, AppStateStatus } from 'react-native'
 import { getNotification, inAppNotificationListener } from 'getNotification'
+import SelectCardScreen from '@app/refactor/screens/convert/screens/SelectCardScreen'
+import ConfirmConvertScreen from '@app/refactor/screens/convert/screens/ConvertConfirmScreen'
 
 enableScreens(false)
 const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef<Screens>()
+
+const clarityConfig = {
+	logLevel: LogLevel.Verbose,
+	allowMeteredNetworkUsage: true,
+}
+initialize('kvftkku6eb')
 
 export default function AppNavigator() {
 	const dispatch = useDispatch()
@@ -159,6 +177,8 @@ export default function AppNavigator() {
 					component={Resume}
 					options={{ animation: 'fade' }}
 				/>
+				<Stack.Screen name="SelectCard" component={SelectCardScreen} />
+				<Stack.Screen name="ConfirmConvert" component={ConfirmConvertScreen} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	)

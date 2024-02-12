@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import jwt_decode from 'jwt-decode'
 import React, { memo, useCallback, useEffect, useRef } from 'react'
-import { AppState, AppStateStatus } from 'react-native'
+import { Alert, AppState, AppStateStatus } from 'react-native'
 import changeNavigationBarColor from 'react-native-navigation-bar-color'
 import { useDispatch, useSelector } from 'react-redux'
 import TransactionHistory from '@app/refactor/screens/transactions/transactions_history'
@@ -23,7 +23,9 @@ import { fetchUserInfoThunk } from '@app/refactor/redux/profile/profileThunks'
 import { fetch } from '@react-native-community/netinfo'
 
 import { CommonActions } from '@react-navigation/native'
+import ConvertNow from '@app/refactor/screens/convert'
 import { useModal } from '@components/modal/global_modal'
+import { setBiometricSuccess } from '@store/redux/common/slice'
 
 const Tab = createBottomTabNavigator()
 
@@ -34,6 +36,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		setIsBiometricScreenOpenedForModal,
 		setModalVisible,
 		isModalVisible,
+		modalContent,
 	} = useModal()
 	const fromResume = route.params?.fromResume === true
 	const prevAppState = useRef<AppStateStatus>()
@@ -82,7 +85,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
-		} else if (newState === 'active') {
+		} else if (newState === 'active' && !bioVisible) {
 			setIsBiometricScreenOpenedForModal(false)
 			setModalVisible(true)
 		}
@@ -92,7 +95,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		}
 
 		if (appClosing && !resumeIsShown()) {
-			KV.set('lastOpenDateMillis', Date.now())
+			KV.set('lastCloseDateMillis', Date.now())
 		}
 		prevAppState.current = newState
 	}, [])
@@ -155,9 +158,9 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 				freezeOnBlur: true,
 				swipeEnabled: false,
 			})}
-			initialRouteName="Trade"
+			initialRouteName="ConvertNow"
 			tabBar={(props) => <BottomTabs {...props} />}>
-			<Tab.Screen name="Trade" component={InstantTrade} />
+			<Tab.Screen name="ConvertNow" component={ConvertNow} />
 			<Tab.Screen name="Wallet" component={Wallet} />
 			<Tab.Screen name="Transactions" component={TransactionHistory} />
 			<Tab.Screen name="Exchange" component={Exchange} />

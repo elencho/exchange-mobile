@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="97.7" height="53" viewBox="0 0 97.7 53">
+  <g id="Error" transform="translate(-134.941 -264)">
+    <circle id="Ellipse_280" data-name="Ellipse 280" cx="26.5" cy="26.5" r="26.5" transform="translate(161 264)" fill="#f83974"/>
+    <line id="Line_207" data-name="Line 207" x2="12" y2="12" transform="translate(182 285)" fill="none" stroke="#fff" stroke-width="2.6"/>
+    <line id="Line_208" data-name="Line 208" x1="12" y2="12" transform="translate(182 285)" fill="none" stroke="#fff" stroke-width="2.6"/>
+    <path id="Path_61961" data-name="Path 61961" d="M2.98,0A2.98,2.98,0,1,1,0,2.98,2.98,2.98,0,0,1,2.98,0Z" transform="translate(142.313 301.039)" fill="#f45e8c" opacity="0.187"/>
+    <path id="Path_61963" data-name="Path 61963" d="M1.98,0A1.98,1.98,0,1,1,0,1.98,1.98,1.98,0,0,1,1.98,0Z" transform="translate(228.682 269.686)" fill="#f45e8c" opacity="0.417"/>
+    <path id="Path_61962" data-name="Path 61962" d="M4.676,0A4.676,4.676,0,1,1,0,4.676,4.676,4.676,0,0,1,4.676,0Z" transform="translate(134.941 269.686)" fill="#f45e8c" opacity="0.417"/>
+    <path id="Path_61964" data-name="Path 61964" d="M7.338,0A7.338,7.338,0,1,1,0,7.338,7.338,7.338,0,0,1,7.338,0Z" transform="translate(215.986 302.324)" fill="#f45e8c" opacity="0.706"/>
+  </g>
+</svg>

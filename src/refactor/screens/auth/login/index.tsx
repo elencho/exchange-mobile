@@ -19,7 +19,7 @@ import Constants from 'expo-constants'
 import { setGeneralError } from '@store/redux/common/slice'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import { setLoginLoading } from '@store/redux/auth/slice'
+import { resetCallbackUrl, setLoginLoading } from '@store/redux/auth/slice'
 import { FullScreenLoader } from '@components/full_screen_loader'
 
 const LOGIN_REGEX = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
@@ -51,18 +51,24 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 		null
 	)
 
-	const loading = useSelector((state: RootState) => state.auth.loginLoading)
-
-	useFocusEffect(
-		useCallback(() => {
-			dispatch(startLoginThunk(navigation))
-		}, [])
+	const { loginLoading, fullScreenLoading } = useSelector(
+		(state: RootState) => state.auth
 	)
+
+	// useFocusEffect(
+	// 	useCallback(() => {
+	// 		dispatch(startLoginThunk(navigation))
+	// 		return () => {
+	// 			dispatch(resetCallbackUrl(''))
+	// 		}
+	// 	}, [])
+	// )
 
 	const alreadyDrewPassedError = useRef(false)
 
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
+			dispatch(startLoginThunk(navigation))
 			setMail('ibanet@cryptx.com')
 			setPass('Malina125$')
 			setMailError(false)
@@ -103,7 +109,7 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 
 	return (
 		<View style={styles.background}>
-			<FullScreenLoader loading={loading}>
+			<FullScreenLoader loading={fullScreenLoading || loginLoading}>
 				<WithKeyboard
 					keyboardVerticalOffsetIOS={0}
 					contentContainerStyle={styles.container}
@@ -132,6 +138,8 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 						}}
 						error={mailError}
 						label={'Enter Email'}
+						keyboardType="email-address"
+						textContentType={'emailAddress'}
 					/>
 					<AppInput
 						secureTextEntry={true}
@@ -158,6 +166,7 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 						text="Login"
 						onPress={onLoginPressed}
 						style={styles.button}
+						// loading={loginLoading}
 					/>
 					<View style={{ marginBottom: 20 }}>
 						<AppText style={styles.secondary}>

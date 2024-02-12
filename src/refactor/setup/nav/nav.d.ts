@@ -48,4 +48,17 @@ export type Screens = {
 	Balance?: {}
 	CardVerificationOne?: {}
 	CardVerificationTwo?: {}
+	ConvertNow?: {}
+	SelectCard: {
+		fees: ProviderFees[]
+		cards: Card[]
+		onCardChoose: (card: Card) => void
+	}
+	ConfirmConvert: {
+		spentAmount: string
+		receivedAmount: string
+		pair: CoinPair
+		tradeType: TradeType
+		card: Card | undefined
+	}
 }

@@ -12,6 +12,7 @@ interface CommonState {
 	language: Language
 	currencyList: Currency[]
 	countries: Country[]
+	webViewVisible: boolean
 
 	// error
 	lastRequestUiError?: UiErrorType
@@ -24,16 +25,22 @@ interface CommonState {
 	isBiometricScreenOpened: boolean
 	isBiometricEnabled: boolean
 	notificationData: any
+
+	// convert
+	convertPair?: string
 }
 
 const initialState: CommonState = {
 	language: KV.get('language') || 'en',
+	convertPair: KV.get('defaultConvertPair'),
 	currencyList: [],
 	countries: [],
 	isBiometricScreenOpened: false,
 	isBiometricEnabled: false,
 	notificationData: null,
 	isInternetScreenOpened: false,
+	webViewVisible: false,
+	biometricSuccess: null,
 }
 
 const common = createSlice({
@@ -69,6 +76,21 @@ const common = createSlice({
 		setNotificationData(state, action: PayloadAction<any>) {
 			state.notificationData = action.payload
 		},
+		setWebViewVisible(state, action: PayloadAction<boolean>) {
+			state.webViewVisible = action.payload
+			KV.set('webViewVisible', action.payload)
+		},
+		setBiometricSuccess(state, action: PayloadAction<boolean>) {
+			state.biometricSuccess = action.payload
+		},
+		setConvertPair(state, action: PayloadAction<string>) {
+			KV.set('defaultConvertPair', action.payload)
+			state.convertPair = action.payload
+		},
+		delConvertPair(state) {
+			KV.del('defaultConvertPair')
+			state.convertPair = undefined
+		},
 	},
 	extraReducers: (builder) => {
 		countries(builder)
@@ -91,6 +113,10 @@ export const {
 	setBiometricToggleEnabled,
 	setNotificationData,
 	setInternetScreenOpened,
+	setWebViewVisible,
+	setBiometricSuccess,
+	setConvertPair,
+	delConvertPair,
 } = common.actions
 
 export default common.reducer

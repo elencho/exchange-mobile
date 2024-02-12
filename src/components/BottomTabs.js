@@ -27,6 +27,7 @@ export const BottomTabs = ({ navigation, state }) => {
 		Transactions: <TransactionsActive />,
 		Exchange: <ExchangeActive />,
 		Trade: <TradeActive />,
+		ConvertNow: <TradeActive />,
 	}
 
 	const inactive = {
@@ -34,6 +35,7 @@ export const BottomTabs = ({ navigation, state }) => {
 		Transactions: <Transactions />,
 		Exchange: <Exchange />,
 		Trade: <Trade />,
+		ConvertNow: <Trade />,
 	}
 
 	return (

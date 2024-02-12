@@ -92,7 +92,7 @@ export default function TransferMethodModal() {
 					onPress={() => handlePress(m.provider)}>
 					{renderIcon(m.provider)}
 					<AppText body style={styles.primary}>
-						{m.provider}
+						{m.provider === 'BEP20' ? 'Blockchain' : m.provider}
 					</AppText>
 				</Pressable>
 			))}

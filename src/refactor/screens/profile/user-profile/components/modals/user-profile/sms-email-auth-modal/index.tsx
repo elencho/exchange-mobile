@@ -8,7 +8,6 @@ import AppModal from '@components/modal'
 import AppText from '@components/text'
 import TwoFaInput from '@components/input_2fa'
 import { useSmsAuthEmailModal } from './use-sms-email-auth-modal'
-import General_error from '@components/general_error'
 
 interface SmsEmailAuthModalProps {
 	type: 'SMS' | 'Email'
@@ -73,20 +72,19 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 
 	const children = (
 		<View style={styles.container}>
-			<AppText style={styles.header} variant="l">
+			<AppText style={styles.header} variant="headline">
 				{`${type} Authentication`}
 			</AppText>
-			<AppText style={styles.secondary} variant="s">
+			<AppText style={styles.secondary} variant="l">
 				Enter One Time Password
 			</AppText>
 
 			<View style={styles.codeInput}>
 				<TwoFaInput
 					onFill={handleFill}
-					otpChangeType={type}
 					navigation={navigation}
 					value={value}
-					cellCount={cellCount}
+					cellCount={6}
 					setValue={setValue}
 					generalErrorData={generalErrorData}
 				/>
@@ -106,7 +104,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 			children={children}
 			bottom
 			hide={hide}
-			visible={smsAuthModalVisible || emailAuthModalVisible}
+			visible={emailAuthModalVisible}
 			onShow={onShow}
 		/>
 	)
@@ -136,7 +134,5 @@ const _styles = (theme: Theme) =>
 		},
 		secondary: {
 			color: theme.color.textSecondary,
-			fontSize: 20,
-			lineHeight: 28,
 		},
 	})

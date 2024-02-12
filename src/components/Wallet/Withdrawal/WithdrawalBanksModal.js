@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Pressable, StyleSheet, View } from 'react-native'
+import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../../constants/colors'
 import { toggleChooseBankModal } from '../../../redux/modals/actions'
@@ -22,7 +22,10 @@ export default function WithdrawalBanksModal() {
 	}
 
 	const children = (
-		<>
+		<ScrollView
+			style={{ padding: 0 }}
+			bounces={false}
+			showsVerticalScrollIndicator={false}>
 			{[{ bankName: 'Other', id: null }, ...banks].map((b) => (
 				<View key={b.id}>
 					<Pressable
@@ -39,14 +42,14 @@ export default function WithdrawalBanksModal() {
 					</Pressable>
 				</View>
 			))}
-		</>
+		</ScrollView>
 	)
 
 	return (
 		<AppModal
 			children={children}
 			hide={hide}
-			bottom
+			fullScreen
 			visible={chooseBankModalVisible}
 			title="Choose Bank"
 		/>
@@ -60,7 +63,6 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 13,
 		paddingVertical: 10,
 		borderRadius: 5,
-		marginHorizontal: -5,
 		height: 50,
 	},
 	text: {

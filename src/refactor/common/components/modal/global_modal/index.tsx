@@ -13,10 +13,14 @@ import {
 	ImageBackground,
 	Linking,
 	Dimensions,
+	Alert,
+	Platform,
+	StatusBar,
 } from 'react-native'
 import Modal from 'react-native-modal'
 import CloseIcon from '@components/close-button'
 import { Theme, useTheme } from '@theme/index'
+import Constants from 'expo-constants'
 
 import { AppButton } from '@components/button'
 import { useNetInfoInstance } from '@react-native-community/netinfo'
@@ -27,7 +31,7 @@ type ModalContextType = {
 	setIsBiometricScreenOpenedForModal: (v: boolean) => void
 	setModalContent: (content: ContentType | null) => void
 	modalContent: ContentType | null
-	setModalVisible: (v: boolean) => void
+	setModalVisible: (v: boolean, content?: ContentType) => void
 	isBiometricScreenOpenedForModal: boolean
 	isModalVisible?: boolean
 }
@@ -43,11 +47,14 @@ interface ContentType {
 const ModalContext = createContext<ModalContextType | undefined>(undefined)
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
-	const [isModalVisible, setModalVisible] = useState(false)
+	const [isModalVisible, setModalSmallVisible] = useState(false)
 	const [isBiometricScreenOpenedForModal, setIsBiometricScreenOpenedForModal] =
 		useState(true)
 	const [modalContent, setModalContent] = useState<ContentType | null>(null)
-
+	console.log(
+		'isBiometricScreenOpenedForModal',
+		isBiometricScreenOpenedForModal
+	)
 	const { styles } = useTheme(_styles)
 	const {
 		netInfo: { isConnected },
@@ -55,9 +62,17 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
 	const showModal = (content: ContentType) => {
 		setModalContent(content)
+
 		if (content?.title && content?.description) {
-			setModalVisible(true)
+			setModalVisible(true, content)
 			setIsBiometricScreenOpenedForModal(false)
+		}
+	}
+
+	const setModalVisible = (visible: boolean, content?: ContentType) => {
+		console.log('modalContent', content)
+		if (modalContent || content) {
+			setModalSmallVisible(visible)
 		}
 	}
 
@@ -76,20 +91,14 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 					source={{
 						uri: modalContent?.banner,
 					}}>
-					<CloseIcon
-						style={{ marginTop: 60, marginRight: 30 }}
-						onPress={hideModal}
-					/>
+					<CloseIcon style={styles.closeIcon} onPress={hideModal} />
 				</ImageBackground>
 
 				{children}
 			</View>
 		) : (
 			<View style={styles.imageBckWrapper}>
-				<CloseIcon
-					style={{ marginTop: 60, marginRight: 30 }}
-					onPress={hideModal}
-				/>
+				<CloseIcon style={styles.closeIcon} onPress={hideModal} />
 				{children}
 			</View>
 		)
@@ -120,7 +129,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 					propagateSwipe={true}
 					useNativeDriver
 					useNativeDriverForBackdrop
-					isVisible={!!isConnected && isModalVisible}
+					isVisible={isModalVisible}
 					onModalHide={onModalHide}
 					coverScreen
 					backdropTransitionOutTiming={0}
@@ -233,5 +242,12 @@ const _styles = (theme: Theme) =>
 		},
 		bannerText: {
 			color: '#BEC2DD',
+		},
+		closeIcon: {
+			marginTop: Platform.select({
+				ios: Constants.statusBarHeight,
+				android: StatusBar.currentHeight || 10,
+			}),
+			marginRight: 20,
 		},
 	})

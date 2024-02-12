@@ -72,22 +72,17 @@ const InfoBanner = ({
 						style={styles.imageStyle}
 						source={require('@assets/images/TolCoins1.png')}>
 						<CloseIcon style={styles.closeIcon} onPress={hideModal} />
-
-						<View style={styles.bannerTextContainer}>
-							<AppText variant="headline" style={styles.bannerText}>
-								tolcoins_modal_text_on_banner
-							</AppText>
-						</View>
 					</ImageBackground>
 
 					<View style={styles.contentWrapperWithoutBanner}>
 						<AppText style={styles.title}>tolcoins_modal_header</AppText>
 						<AppText style={styles.descr}>tolcoins_modal_text_1</AppText>
+						<View style={{ height: 15 }} />
 						<Text style={{ flexDirection: 'row' }}>
 							<AppText style={styles.descr}>tolcoins_modal_text_2</AppText>
 							<AppButton
 								onPress={() => onPress('ToGEL')}
-								text="TOGEL, "
+								text=" TOGEL, "
 								variant="text"
 								style={styles.descr2}
 							/>
@@ -128,7 +123,7 @@ const styles = StyleSheet.create({
 		elevation: 5,
 	},
 	imageStyle: {
-		height: WINDOW_HEIGHT / 2,
+		height: 350,
 		width: '100%',
 	},
 	container: {},
@@ -182,8 +177,8 @@ const styles = StyleSheet.create({
 	},
 	closeIcon: {
 		marginTop: Platform.select({
-			ios: Constants.statusBarHeight + 10,
-			android: (StatusBar.currentHeight || 0) + 10,
+			ios: Constants.statusBarHeight,
+			android: StatusBar.currentHeight || 10,
 		}),
 		marginRight: 20,
 	},

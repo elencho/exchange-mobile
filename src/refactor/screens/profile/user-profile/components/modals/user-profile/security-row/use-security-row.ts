@@ -13,6 +13,7 @@ import { sendOtp } from '@app/refactor/redux/profile/profileApi'
 import { setCurrentSecurityAction } from '@app/refactor/redux/profile/profileSlice'
 import KV from '@store/kv/regular'
 import { setBiometricToggleEnabled } from '@store/redux/common/slice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface SecurityRowProps {
 	text: string
@@ -53,7 +54,8 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 		if (isBiometricEnabled) {
 			const withoutUserMail = cachedEmails.filter((e) => e !== userEmail)
 			SecureKV.set('bioEnabledEmails', withoutUserMail)
-			KV.set('bioIsAvailableOnUser', false)
+			KV.del('bioIsAvailableOnUser')
+			AsyncStorage.removeItem('bioIsAvailableOnUser')
 			return dispatch(setBiometricToggleEnabled(false))
 		}
 		if (!isBiometricEnabled && hasFaceOrTouchIdSaved) {
@@ -62,7 +64,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 				cancelLabel: 'Abort',
 			})
 			if (result.success) {
-				KV.set('lastOpenDateMillis', Date.now())
+				KV.set('lastCloseDateMillis', Date.now())
 
 				const addedUserMail = cachedEmails
 					.filter((e) => e !== userEmail)
@@ -70,6 +72,7 @@ export const useSecurityRow = (props: SecurityRowProps) => {
 
 				SecureKV.set('bioEnabledEmails', addedUserMail)
 				KV.set('bioIsAvailableOnUser', true)
+				await AsyncStorage.setItem('bioIsAvailableOnUser', 'true')
 				dispatch(setBiometricToggleEnabled(true))
 			}
 		}

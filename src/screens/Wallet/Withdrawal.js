@@ -21,6 +21,7 @@ import { fetchFee, setCard, setFee } from '../../redux/trade/actions'
 import { setNetwork } from '../../redux/wallet/actions'
 import { withdrawalTemplatesAction } from '../../redux/wallet/actions'
 import { validateAmount } from '../../utils/appUtils'
+import { UserStatus } from '@app/refactor/types/enums'
 
 function Withdrawal({ refreshControl }) {
 	const dispatch = useDispatch()
@@ -50,6 +51,7 @@ function Withdrawal({ refreshControl }) {
 	const [error, setError] = useState(false)
 
 	const isFiat = currentBalanceObj.type === 'FIAT'
+	const isCrypto = currentBalanceObj.type === 'CRYPTO'
 	const isEcommerce = network === 'ECOMMERCE'
 	const infoMessage = currentBalanceObj?.infos?.[network]?.walletInfo
 	const walletInfo = () => {
@@ -192,7 +194,10 @@ function Withdrawal({ refreshControl }) {
 				<WithKeyboard flexGrow padding refreshControl={refreshControl}>
 					<View style={styles.block}>
 						<WalletCoinsDropdown />
-						<TransferMethodDropdown />
+						{!isCrypto &&
+							Object.keys(currentBalanceObj.withdrawalMethods).length > 0 && (
+								<TransferMethodDropdown />
+							)}
 
 						{!hasRestriction && hasMethod && (
 							<>

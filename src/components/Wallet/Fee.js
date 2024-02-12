@@ -75,11 +75,15 @@ export default function Fee() {
 				},
 			} = fee
 
+			function isNumber(value) {
+				return typeof value === 'number'
+			}
+
 			const value = () => {
-				if (fixedValue && percentageValue)
+				if (isNumber(fixedValue) && isNumber(percentageValue))
 					return `${percentageValue * 100}% + ${fixedValue} ${currency}`
-				if (fixedValue) return ` ${fixedValue} ${currency}`
-				if (percentageValue) return ` ${percentageValue * 100}%`
+				if (isNumber(fixedValue)) return ` ${fixedValue} ${currency}`
+				if (isNumber(percentageValue)) return ` ${percentageValue * 100}%`
 			}
 
 			if (rangeStart || rangeEnd) {
@@ -92,6 +96,7 @@ export default function Fee() {
 					</AppText>
 				)
 			}
+			if (!value()) return
 
 			return (
 				<View style={styles.container}>

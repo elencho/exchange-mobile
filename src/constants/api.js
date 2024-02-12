@@ -31,6 +31,8 @@ export const TRADES_URL_PAGED = `${core}/private/simpleTrade/fetchTrades`
 
 export const OFFERS_URL = `${core}/private/simpleTrade/offers`
 
+export const OFFERS_NEW_URL = `${core}/private/simpleTrade/prices`
+
 export const BALANCE_URL = `${core}/private/account/balanceNew`
 
 export const CARDS_URL = `${core}/private/account/cards`
@@ -62,7 +64,11 @@ export const OTP_CHANGE_TOKEN = `${auth}/auth/realms/GEX/GEX-resource/getOTPChan
 
 export const EMAIL_VERIFICATION = `${auth}/auth/realms/GEX/GEX-resource/sendEmailVerification`
 
+export const SMS_VERIFICATION = `${auth}/auth/realms/GEX/GEX-resource/sendSmsVerification`
+
 export const ACTIVATE_EMAIL_OTP = `${auth}/auth/realms/GEX/GEX-resource/enableEmailTwoFA`
+
+export const ACTIVATE_SMS_OTP = `${auth}/auth/realms/GEX/GEX-resource/enableSmsTwoFA`
 
 export const ACTIVATE_GOOGLE_OTP = `${auth}/auth/realms/GEX/GEX-resource/enableTotpTwoFA`
 

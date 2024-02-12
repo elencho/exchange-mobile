@@ -54,14 +54,9 @@ export default function Deposit({ refreshControl }) {
 	const isFiat = currentBalanceObj.type === 'FIAT'
 	const isCrypto = currentBalanceObj.type === 'CRYPTO' || network === 'BEP20'
 	const isEcommerce = network === 'ECOMMERCE'
-
-	//TODO: Temporary Bug FIx
-	const [shouldShowDelayed, setShouldShowDelayed] = useState(false)
-	useEffect(() => {
-		setTimeout(() => {
-			setShouldShowDelayed(true)
-		}, 1000)
-	}, [])
+	const isTolCoin =
+		currentBalanceObj.types.includes('CRYPTO') &&
+		currentBalanceObj.types.includes('FIAT')
 
 	useEffect(() => {
 		const m = currentBalanceObj?.depositMethods
@@ -86,7 +81,8 @@ export default function Deposit({ refreshControl }) {
 		dispatch({ type: 'SET_DEPOSIT_AMOUNT', depositAmount: 0 })
 		dispatch({ type: 'CLEAN_WALLET_INPUTS' })
 		dispatch(setFee(null))
-		card && depositProvider && dispatch(fetchFee('deposit'))
+		// card && depositProvider && dispatch(fetchFee('deposit'))
+		dispatch(fetchFee('deposit'))
 	}, [network, depositProvider, card])
 
 	useEffect(() => {
@@ -113,6 +109,13 @@ export default function Deposit({ refreshControl }) {
 		dispatch({ type: 'BALANCE_SAGA' })
 		dispatch(saveGeneralError(null))
 	}
+
+	useEffect(() => {
+		network &&
+			fetchCryptoAddresses(code, isTolCoin ? 'BEP20' : network).then((res) => {
+				dispatch(saveCryptoAddress(res))
+			})
+	}, [])
 
 	const onNavigationStateChange = async (state) => {
 		const urlArray = state.url.split('=')
@@ -231,7 +234,6 @@ export default function Deposit({ refreshControl }) {
 
 			{!cryptoAddress?.address &&
 			(!isFiat || network === 'BEP20') &&
-			!shouldShowDelayed &&
 			!hasRestriction &&
 			hasMethod ? (
 				<View style={styles.flex}>

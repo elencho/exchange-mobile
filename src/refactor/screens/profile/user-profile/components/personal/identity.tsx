@@ -18,13 +18,13 @@ export const Identity = (props: IdentityProps) => {
 	return (
 		<View style={styles.row}>
 			<View style={[styles.row, styles.flex]}>
-				<AppText variant="m" style={styles.white}>
+				<AppText variant="title" style={styles.white}>
 					Identification
 				</AppText>
 
 				{!userStatus.verified && (
 					<Pressable style={styles.circle} onPress={openModal}>
-						<AppText variant="m" style={{ color: '#9EA6D0' }}>
+						<AppText variant="l" style={{ color: '#9EA6D0' }}>
 							i
 						</AppText>
 					</Pressable>
@@ -51,7 +51,7 @@ export const IdentitySecond = (props: IdentityProps) => {
 					{ backgroundColor: userStatus.verified ? '#25D8D1' : '#FFC65C' },
 				]}
 			/>
-			<AppText variant="s" style={styles.secondary}>
+			<AppText variant="l" style={styles.secondary}>
 				{`Verification subtext ${userInfoStatus}`}
 			</AppText>
 		</View>

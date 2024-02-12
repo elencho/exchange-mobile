@@ -16,9 +16,9 @@ import { Headline } from '@components/headline'
 import AppText from '@components/text'
 import AppToast from '@components/app_toast'
 import { ModalTop } from './modal-parts'
-import { useModal } from './use-modal'
 import { useSelector } from 'react-redux'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { useModal } from './global_modal'
 
 interface AppModalProps {
 	children: ReactNode
@@ -38,7 +38,7 @@ interface AppModalProps {
 
 const AppModal = (props: AppModalProps) => {
 	const { styles, theme } = useTheme(_styles)
-	const { webViewVisible } = useModal()
+	const { isModalVisible, modalContent } = useModal()
 	const {
 		children,
 		visible,
@@ -54,12 +54,16 @@ const AppModal = (props: AppModalProps) => {
 		delayedOpen,
 		onShow,
 	} = props
-
+	const webViewVisible = useSelector(
+		(state: RootState) => state?.modalState?.webViewVisible
+	)
 	const { isBiometricScreenOpened, isInternetScreenOpened } = useSelector(
 		(state: RootState) => state.common
 	)
-
-	const globalScreenOpened = isBiometricScreenOpened || isInternetScreenOpened
+	const globalScreenOpened =
+		(isModalVisible && modalContent) ||
+		isBiometricScreenOpened ||
+		isInternetScreenOpened
 
 	// For bottom modals after Biometric Unlock
 	const [isBottomVisible, setIsBottomVisible] = useState(false)
@@ -82,7 +86,7 @@ const AppModal = (props: AppModalProps) => {
 
 	return (
 		<>
-			{webViewVisible && (
+			{!globalScreenOpened && webViewVisible && (
 				<Modal
 					isVisible={
 						bottom || delayedOpen

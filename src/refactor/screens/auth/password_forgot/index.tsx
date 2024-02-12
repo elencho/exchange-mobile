@@ -15,7 +15,7 @@ import {
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import { setTimer } from '@store/redux/auth/slice'
+import { resetCallbackUrl, setTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import GeneralError from '@components/general_error'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
@@ -42,24 +42,23 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	const alreadySent = useRef(false)
 
 	const language = useSelector((state: RootState) => state.common.language)
-	const { forgotLoading, forgotResendLoading, timerVisible } = useSelector(
-		(state: RootState) => state.auth
-	)
+	const {
+		forgotLoading,
+		forgotResendLoading,
+		timerVisible,
+		fullScreenLoading,
+	} = useSelector((state: RootState) => state.auth)
 
 	const validMail = mail.trim().length ? LOGIN_REGEX.test(mail) : false
 
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
+			dispatch(forgotPasswordStartThunk({ navigation }))
+
 			setSeconds(0)
 			alreadySent.current = false
 		})
 	}, [navigation])
-
-	useFocusEffect(
-		useCallback(() => {
-			dispatch(forgotPasswordStartThunk({ navigation }))
-		}, [])
-	)
 
 	useEffect(() => {
 		if (seconds) {
@@ -134,7 +133,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 	}
 
 	return (
-		<FullScreenLoader loading={forgotLoading}>
+		<FullScreenLoader loading={fullScreenLoading}>
 			<AppBackground>
 				<BackButton onPress={goBack} style={styles.back} />
 
@@ -169,6 +168,8 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 						}}
 						rightComponent={<MailInputRight />}
 						error={mailError}
+						keyboardType="email-address"
+						textContentType={'emailAddress'}
 					/>
 					<AppInput
 						labelBackgroundColor={theme.color.backgroundPrimary}
@@ -187,6 +188,7 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 						text="Next"
 						style={styles.button}
 						onPress={onNextPressed}
+						loading={forgotLoading}
 					/>
 				</WithKeyboard>
 			</AppBackground>

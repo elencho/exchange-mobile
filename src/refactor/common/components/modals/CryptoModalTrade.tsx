@@ -8,6 +8,7 @@ import {
 } from '@app/refactor/redux/trade/tradeSlice'
 import { setCryptoFilter } from '@app/refactor/redux/transactions/transactionSlice'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { fetchCurrencies } from '@app/utils/fetchTransactions'
 
 interface Props {
 	isInstantTrade: boolean
@@ -29,28 +30,29 @@ export default function CryptoModalTrade({
 
 	const {
 		trades: { cryptoCodeQuery },
-		trade: { offers, fiat, tradeType },
+		trade: { tradeType },
 		transactions: { cryptoFilter: cryptoCodeTransactions },
 	} = state
 
-	const [filteredData, setFiletredData] = useState(offers?.[fiat])
+	const [currencyList, setCurrencyList] = useState([])
+	const [filteredData, setFiletredData] = useState(currencyList)
 
 	const arrayToPass =
-		filteredData?.length > 0 ? [...filteredData] : offers?.[fiat]
+		filteredData?.length > 0 ? [...filteredData] : currencyList
 
 	useEffect(() => {
-		offers && setFiletredData(offers[fiat])
+		fetchCurrencies().then((res) => {
+			setCurrencyList(res.filter((i) => i.type !== 'FIAT'))
+		})
 	}, [])
 
 	const filter = (text: string) => setCryptoFilterText(text.toLowerCase())
 
 	useEffect(() => {
-		const filteredArray = offers?.[fiat]?.filter(
+		const filteredArray = currencyList?.filter(
 			(c) =>
-				(c?.pair?.baseCurrencyName &&
-					c?.pair?.baseCurrencyName.toLowerCase().includes(cryptoFilterText)) ||
-				(c?.pair?.baseCurrency &&
-					c?.pair?.baseCurrency.toLowerCase().includes(cryptoFilterText))
+				c?.displayCode.toLowerCase().includes(cryptoFilterText) ||
+				c?.displayName.toLowerCase().includes(cryptoFilterText)
 		)
 		setFiletredData(filteredArray)
 	}, [cryptoFilterText])

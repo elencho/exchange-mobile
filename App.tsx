@@ -20,9 +20,11 @@ import { System } from '@app/refactor/common/util'
 import { ModalProvider } from '@components/modal/global_modal'
 import RNUxcam from 'react-native-ux-cam'
 
+LogBox.ignoreAllLogs()
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed
 	'VirtualizedLists should never be nested',
+	'Non-serializable values were found in the navigation state',
 ])
 RNUxcam.optIntoSchematicRecordings() // Add this line to enable iOS screen recordings
 const configuration = {

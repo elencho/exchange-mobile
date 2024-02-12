@@ -10,6 +10,10 @@ import { COUNTRIES_URL_PNG } from '@app/constants/api'
 import { usePhoneNumberModal } from './use-phone-number-modal'
 import CountriesModal from '@app/refactor/common/modals/countries'
 import General_error from '@components/general_error'
+import { OTPTypes } from '@app/refactor/types/enums'
+import { MaterialIndicator } from 'react-native-indicators'
+import AppText from '@components/text'
+import { useTheme } from '@theme/index'
 
 export default function PhoneNumberModal({
 	phoneNumberModalVisible,
@@ -34,12 +38,47 @@ export default function PhoneNumberModal({
 		phoneNumber,
 		generalErrorData,
 		countryFilterText,
+		otpType,
 		setCountryFilterText,
+		setVerificationCode,
+		verificationCode,
+		sendVerification,
+		alreadySent,
+		sendLoading,
+		timerVisible,
+		seconds,
+		language,
+		setGeneralErrorData,
+		setError,
 	} = usePhoneNumberModal({ phoneNumberModalVisible, togglePhoneNumberModal })
+
 	const number = userInfo?.phoneNumber
 	const country = userInfo?.phoneCountry
 	const borderColor = error && !country ? '#F45E8C' : '#42475D'
+	const { theme } = useTheme()
+	const PhoneInputRight = () => {
+		const sendText = alreadySent && language === 'en' ? 'Resend' : 'Send'
 
+		if (sendLoading) {
+			return (
+				<MaterialIndicator
+					color="#6582FD"
+					animationDuration={3000}
+					size={16}
+					style={{ flex: 0 }}
+				/>
+			)
+		} else if (timerVisible && seconds) {
+			return (
+				<AppText variant="l" style={{ color: theme.color.textPrimary }}>
+					{seconds}
+				</AppText>
+			)
+		} else
+			return (
+				<AppButton variant="text" text={sendText} onPress={sendVerification} />
+			)
+	}
 	const children = () => {
 		return (
 			<>
@@ -74,9 +113,39 @@ export default function PhoneNumberModal({
 							label="Phone Number"
 							onChangeText={(text: string) => handlePhoneNumber(text)}
 							value={phoneNumber}
+							onFocusOrChange={() => {
+								setGeneralErrorData(null)
+								setError({
+									phoneNumber: false,
+									verificationCode: error.verificationCode,
+								})
+							}}
 							keyboardType="number-pad"
-							error={error && !(phoneNumber?.trim()?.length > 0)}
+							error={error.phoneNumber && !(phoneNumber?.trim()?.length > 0)}
+							rightComponent={otpType === OTPTypes.SMS && <PhoneInputRight />}
 						/>
+						{otpType === OTPTypes.SMS && (
+							<AppInput
+								style={styles.inputContainer}
+								label="Verification Code"
+								onChangeText={(text: string) => setVerificationCode(text)}
+								value={verificationCode}
+								keyboardType="number-pad"
+								textContentType="oneTimeCode"
+								autoComplete="sms-otp"
+								onFocusOrChange={() => {
+									setGeneralErrorData(null)
+									setError({
+										phoneNumber: error.phoneNumber,
+										verificationCode: false,
+									})
+								}}
+								error={
+									error.verificationCode &&
+									!(verificationCode?.trim()?.length > 0)
+								}
+							/>
+						)}
 					</TouchableOpacity>
 
 					<AppButton

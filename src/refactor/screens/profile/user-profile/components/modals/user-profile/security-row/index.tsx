@@ -140,8 +140,8 @@ export default function SecurityRow(props: SecurityRowProps) {
 					{images[imageToSearch]}
 
 					<View style={styles.justify}>
-						<AppText style={styles.white}>{textCond()}</AppText>
-						<AppText variant="s" style={styles.secondary}>
+						<AppText style={styles.white} variant='title'>{textCond()}</AppText>
+						<AppText variant="l" style={styles.secondary}>
 							{secondaryTextCond()}
 						</AppText>
 					</View>

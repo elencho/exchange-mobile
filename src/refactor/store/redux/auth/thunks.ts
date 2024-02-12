@@ -38,7 +38,7 @@ import { resetTransactionsState } from '@app/redux/transactions/actions'
 import { resetWalletState } from '@app/redux/wallet/actions'
 import KV from '@store/kv/regular'
 import { canDoBiometric } from '@app/refactor/utils/authUtils'
-import { setBiometricToggleEnabled } from '../common/slice'
+import { delConvertPair, setBiometricToggleEnabled } from '../common/slice'
 import { resetModalsState } from '@app/redux/modals/actions'
 import messaging from '@react-native-firebase/messaging'
 import { notificationSubscribe } from '@app/refactor/redux/profile/profileApi'
@@ -47,6 +47,9 @@ import {
 	RESULTS,
 	checkNotifications,
 } from 'react-native-permissions'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import * as Notifications from 'expo-notifications'
+
 const LOADING_DELAY = 2000
 
 const isLoginShown = (navigation: NativeStackNavigationProp<Screens, any>) => {
@@ -314,7 +317,7 @@ export const codeToTokenThunk = createAsyncThunk(
 			}
 		})
 		if (tokenData) {
-			KV.set('lastOpenDateMillis', Date.now())
+			KV.set('lastCloseDateMillis', Date.now())
 
 			dispatch(
 				setTokens({
@@ -322,8 +325,9 @@ export const codeToTokenThunk = createAsyncThunk(
 					accessToken: tokenData.access_token,
 				})
 			)
-			canDoBiometric(tokenData.access_token).then((canDo) => {
+			canDoBiometric(tokenData.access_token).then(async (canDo) => {
 				KV.set('bioIsAvailableOnUser', canDo)
+				await AsyncStorage.setItem('bioIsAvailableOnUser', canDo.toString())
 				dispatch(setBiometricToggleEnabled(canDo))
 			})
 
@@ -470,7 +474,11 @@ export const logoutThunk = createAsyncThunk(
 			})
 
 			await messaging().deleteToken()
-			KV.set('bioIsAvailableOnUser', false)
+			await Notifications.dismissAllNotificationsAsync()
+
+			dispatch(delConvertPair())
+			KV.del('bioIsAvailableOnUser')
+			await AsyncStorage.removeItem('bioIsAvailableOnUser')
 
 			dispatch(resetAuth())
 			dispatch(setUserInfo(null))

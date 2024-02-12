@@ -34,6 +34,7 @@ interface AuthState {
 	forgotLoading: boolean
 	forgotResendLoading: boolean
 	setPasswordLoading: boolean
+	fullScreenLoading: boolean
 
 	callbackUrl: string
 	accessToken?: string
@@ -53,6 +54,7 @@ const initialState: AuthState = {
 	forgotLoading: false,
 	forgotResendLoading: false,
 	setPasswordLoading: false,
+	fullScreenLoading: false,
 
 	callbackUrl: '',
 	otpType: 'EMAIL',
@@ -95,7 +97,7 @@ const auth = createSlice({
 		resetAuth: (state) => {
 			state = initialState
 			SecureKV.del('refreshToken')
-			KV.del('lastOpenDateMillis')
+			KV.del('lastCloseDateMillis')
 		},
 	},
 	extraReducers: (builder) => {
@@ -108,9 +110,17 @@ const auth = createSlice({
 })
 
 const login = (builder: ActionReducerMapBuilder<AuthState>) => {
-	builder.addCase(startLoginThunk.fulfilled, (state, action) => {
-		state.callbackUrl = action.payload.callbackUrl
-	})
+	builder
+		.addCase(startLoginThunk.fulfilled, (state, action) => {
+			state.fullScreenLoading = false
+			state.callbackUrl = action.payload.callbackUrl
+		})
+		.addCase(startLoginThunk.pending, (state, action) => {
+			state.fullScreenLoading = true
+		})
+		.addCase(startLoginThunk.rejected, (state, action) => {
+			state.fullScreenLoading = false
+		})
 
 	builder
 		.addCase(usernameAndPaswordThunk.pending, (state) => {
@@ -127,9 +137,17 @@ const login = (builder: ActionReducerMapBuilder<AuthState>) => {
 }
 
 const forgotPass = (builder: ActionReducerMapBuilder<AuthState>) => {
-	builder.addCase(forgotPasswordStartThunk.fulfilled, (state, action) => {
-		state.callbackUrl = action.payload.callbackUrl
-	})
+	builder
+		.addCase(forgotPasswordStartThunk.fulfilled, (state, action) => {
+			state.callbackUrl = action.payload.callbackUrl
+			state.fullScreenLoading = false
+		})
+		.addCase(forgotPasswordStartThunk.rejected, (state) => {
+			state.fullScreenLoading = false
+		})
+		.addCase(forgotPasswordStartThunk.pending, (state) => {
+			state.fullScreenLoading = true
+		})
 
 	builder.addCase(resendPasswordCodeThunk.pending, (state) => {
 		state.forgotResendLoading = true
@@ -221,10 +239,18 @@ const login2fa = (builder: ActionReducerMapBuilder<AuthState>) => {
 }
 
 const register = (builder: ActionReducerMapBuilder<AuthState>) => {
-	builder.addCase(startRegistrationThunk.fulfilled, (state, action) => {
-		state.callbackUrl = action.payload.callbackUrl
-		state.phoneCountryCode = action.payload.attributes.phoneCountry
-	})
+	builder
+		.addCase(startRegistrationThunk.fulfilled, (state, action) => {
+			state.callbackUrl = action.payload.callbackUrl
+			state.phoneCountryCode = action.payload.attributes.phoneCountry
+			state.fullScreenLoading = false
+		})
+		.addCase(startRegistrationThunk.pending, (state, action) => {
+			state.fullScreenLoading = true
+		})
+		.addCase(startRegistrationThunk.rejected, (state, action) => {
+			state.fullScreenLoading = false
+		})
 
 	builder
 		.addCase(registrationFormThunk.pending, (state) => {
