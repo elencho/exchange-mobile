@@ -52,7 +52,6 @@ export default function CryptoModalTrade({
 					c?.displayCode.toLowerCase().includes(cryptoFilterText) ||
 					c?.displayName.toLowerCase().includes(cryptoFilterText)
 			) ?? []
-		console.log({ filteredArray: filteredArray.length })
 		setFiletredData(filteredArray)
 	}, [cryptoFilterText])
 
