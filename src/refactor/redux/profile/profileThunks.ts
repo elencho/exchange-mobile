@@ -33,7 +33,7 @@ export const updatePhoneNumberThunk = createAsyncThunk(
 				phoneNumber,
 				phoneCountry,
 				verificationCode,
-				changeOTPToken,
+				changeOTPToken
 			)
 			if (response?.status >= 200 && response?.status < 300) {
 				onSuccess()

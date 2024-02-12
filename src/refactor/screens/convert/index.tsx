@@ -120,7 +120,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	useNotificationPermissions()
 
-
 	return (
 		<AppBackground>
 			<TopRow
