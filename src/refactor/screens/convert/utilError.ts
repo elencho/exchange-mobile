@@ -7,7 +7,8 @@ export const coinError = (
 	fiatAmount: string,
 	cryptoAmount: string,
 	pair: CoinPair | undefined,
-	tradeType: TradeType
+	tradeType: TradeType,
+	buyWithCard: boolean
 ): CoinError | null => {
 	if (!pair) return { err: 'No pair', type: ['Fiat', 'Crypto'] }
 
@@ -16,6 +17,8 @@ export const coinError = (
 	const buy = Number(pair.buyPrice)
 	const sell = Number(pair.sellPrice)
 
+	console.log(buyWithCard)
+
 	// 5
 	if (!fiatAmount.trim().length || !cryptoAmount.trim().length) {
 		return { err: 'Both empty', type: ['Fiat', 'Crypto'] }
@@ -23,7 +26,10 @@ export const coinError = (
 
 	if (tradeType === 'Buy') {
 		// 1, 2
-		if (f > Number(pair.fiat.balance) || c > Number(pair.fiat.balance)) {
+		if (
+			!buyWithCard &&
+			(f > Number(pair.fiat.balance) || c > Number(pair.fiat.balance))
+		) {
 			return {
 				err: 'max. available ' + pair.fiat.balance + ' ' + pair.fiat.displayCcy,
 				type: ['Fiat'],
@@ -56,7 +62,7 @@ export const coinError = (
 			}
 		}
 		// 8
-		if (c * sell < pair.minTradeCost) {
+		if (!buyWithCard && c * sell < pair.minTradeCost) {
 			return {
 				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
 				type: ['Fiat'],
