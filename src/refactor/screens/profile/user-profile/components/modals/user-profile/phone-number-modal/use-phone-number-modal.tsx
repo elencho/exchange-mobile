@@ -132,10 +132,17 @@ export const usePhoneNumberModal = ({
 
 	const handleSave = () => {
 		setGeneralErrorData(null)
+		console.log(
+			error.phoneNumber,
+			(error.verificationCode && otpType === OTPTypes.SMS),
+			!chosenCountry?.phoneCode,
+			!(verificationCode?.trim()?.length > 0) && otpType === OTPTypes.SMS,
+			!(phoneNumber?.trim()?.length > 0)
+		)
 		if (
 			error.phoneNumber ||
-			error.verificationCode ||
-			!userInfo?.phoneCountry ||
+			(error.verificationCode && otpType === OTPTypes.SMS) ||
+			!chosenCountry?.phoneCode ||
 			(!(verificationCode?.trim()?.length > 0) && otpType === OTPTypes.SMS) ||
 			!(phoneNumber?.trim()?.length > 0)
 		) {
@@ -170,25 +177,33 @@ export const usePhoneNumberModal = ({
 	}
 
 	const sendVerification = async () => {
-		resendLoading(true)
+		setGeneralErrorData(null)
 
-		const response = await verifyPhoneNumber(phoneNumber, chosenCountry?.code)
-		await handleAxiosErrors(
-			response,
-			() => {
-				setAlreadySent(true)
-				setTimerVisible(true)
-				resendLoading(false)
-			},
-			(error) => {
-				resendLoading(false)
-				setGeneralErrorData(error)
-				setError({
-					phoneNumber: true,
-					verificationCode: false,
-				})
-			}
-		)
+		if (!(phoneNumber?.trim()?.length > 0)) {
+			setError({
+				phoneNumber: !(phoneNumber?.trim()?.length > 0),
+				verificationCode: error.verificationCode,
+			})
+		} else {
+			resendLoading(true)
+			const response = await verifyPhoneNumber(phoneNumber, chosenCountry?.code)
+			await handleAxiosErrors(
+				response,
+				() => {
+					setAlreadySent(true)
+					setTimerVisible(true)
+					resendLoading(false)
+				},
+				(error) => {
+					resendLoading(false)
+					setGeneralErrorData(error)
+					setError({
+						phoneNumber: true,
+						verificationCode: false,
+					})
+				}
+			)
+		}
 	}
 
 	return {
