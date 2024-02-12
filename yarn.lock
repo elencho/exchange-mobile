@@ -7014,6 +7014,11 @@ react-native-swipe-gestures@^1.0.5:
   resolved "https://registry.npmjs.org/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz"
   integrity sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw==
 
+react-native-ux-cam@^5.4.13:
+  version "5.4.13"
+  resolved "https://registry.yarnpkg.com/react-native-ux-cam/-/react-native-ux-cam-5.4.13.tgz#34dc4202ad3951ccf8051ae7e86827214543fa55"
+  integrity sha512-G4W8MhRFZ6anU8OmVKzg8LAZa/ATjSXtNOYgivkDK41IZff+DKALHY0idifQIu+cHABzz76VyehnNLq/yromLg==
+
 react-native-version-check@^3.4.7:
   version "3.4.7"
   resolved "https://registry.npmjs.org/react-native-version-check/-/react-native-version-check-3.4.7.tgz"
