@@ -184,7 +184,7 @@ export const Personal = ({
 				togglePersonalInfoModal={togglePersonalInfoModal}
 				personalInfoModalVisible={personalInfoModalVisible}
 			/>
-			
+
 			<ChooseLanguageModal
 				languageModalVisible={languageModalVisible}
 				setLanguageModalVisible={setLanguageModalVisible}

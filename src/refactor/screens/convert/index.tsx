@@ -17,9 +17,7 @@ import CardSection from '@app/refactor/screens/convert/components/CardSection'
 import CoinPair from '@app/refactor/screens/convert/components/CoinPair'
 import { AppButton } from '@components/button'
 import { convertColors } from '@app/refactor/screens/convert/util'
-import CopyLogo from '@assets/images/Copy.svg'
-import useCopyToClipboard from '@app/utils/copyToClipboard'
-import messaging from '@react-native-firebase/messaging'
+
 import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
 import WithKeyboard from '@app/components/WithKeyboard'
 import CardTotalFee from '@app/refactor/screens/convert/components/CardTotalFee'
@@ -121,28 +119,11 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const showCardDetails = buyWithCardChecked && tradeType === 'Buy'
 
 	useNotificationPermissions()
-	const [fcmToken, setFcmToken] = useState('')
-	const { copyToClipboard } = useCopyToClipboard()
-
-	useEffect(() => {
-		checkToken()
-	}, [])
-
-	const checkToken = async () => {
-		const token = await messaging().getToken()
-		if (token) {
-			setFcmToken(token)
-		}
-	}
 
 	return (
 		<AppBackground>
 			<TopRow
 				headlineLogo={<InfoMark inner="?" color={theme.color.textThird} />}
-			/>
-			<CopyLogo
-				style={{ marginBottom: 10 }}
-				onPress={() => copyToClipboard(fcmToken)}
 			/>
 
 			{loading || !pair ? (
