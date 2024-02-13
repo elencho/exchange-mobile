@@ -49,7 +49,7 @@ export const coinError = (
 		}
 	} else {
 		// 3, 4
-		if (c > Number(pair.crypto.balance) || f > Number(pair.crypto.balance)) {
+		if (c > Number(pair.crypto.balance)) {
 			return {
 				err:
 					'max. available ' +
@@ -60,6 +60,7 @@ export const coinError = (
 			}
 		}
 		// 8
+		// TODO: Buy?
 		if (!buyWithCard && c * sell < pair.minTradeCost) {
 			return {
 				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
