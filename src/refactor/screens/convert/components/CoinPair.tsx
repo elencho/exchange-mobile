@@ -10,7 +10,6 @@ type Props = {
 	tradeType: TradeType
 	balanceMultiplier: number | undefined
 	handleDropDownClick: (type: CoinType) => void
-	saveBaseAmount: (amount: string) => void
 	onTextChanged: () => void
 
 	upCoin: Coin | undefined
@@ -37,7 +36,6 @@ type Props = {
 
 const CoinPair = ({
 	handleDropDownClick,
-	saveBaseAmount,
 	upCoin,
 	upAmount,
 	lowAmount,
@@ -70,7 +68,6 @@ const CoinPair = ({
 					amount={upAmount}
 					isActive={lastChanged === 'up'}
 					onAmountChange={(txt) => {
-						saveBaseAmount(txt)
 						setLastChanged('up')
 						setUpAmount(txt)
 						recalculateLow(txt, lowCoin.scale)

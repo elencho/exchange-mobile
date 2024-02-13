@@ -15,14 +15,17 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 		useState<ConfirmModalStatus>()
 
 	const onConfirmPressed = () => {
+		const amount = Number(spentAmount).toFixed(
+			tradeType === 'Buy' ? pair.fiat.scale : pair.crypto.scale
+		)
 		const params: SubmitTradeRequest = {
 			pairCode: pair.code,
 			action: tradeType === 'Buy' ? 'BID' : 'ASK',
-			amount: spentAmount,
+			amount,
 			cardTransactionRequest: card && {
 				currency: 'GEL',
 				cardId: card.id,
-				amount: spentAmount,
+				amount,
 			},
 		}
 		submitTrade(params).then((data) => {

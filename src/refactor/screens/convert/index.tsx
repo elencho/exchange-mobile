@@ -28,8 +28,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const { styles, theme } = useTheme(_styles)
 
-	const [baseAmount, setBaseAmount] = useState<string>('')
-
 	const [cardError, setCardError] = useState<boolean>(false)
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
 	const [chosenCard, setChosenCard] = useState<Card>()
@@ -174,7 +172,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							tradeType={tradeType}
 							balanceMultiplier={selectedChip}
 							handleDropDownClick={handleDropDownClick}
-							saveBaseAmount={setBaseAmount}
 							upCoin={upCoin}
 							upAmount={upAmount}
 							lowAmount={lowAmount}
@@ -231,7 +228,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							<CardTotalFee
 								card={chosenCard}
 								fiat={pair.fiat}
-								amount={baseAmount}
+								amount={upAmount}
 							/>
 						)}
 						<View style={{ height: 30 }} />
