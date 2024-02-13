@@ -17,7 +17,6 @@ import CardSection from '@app/refactor/screens/convert/components/CardSection'
 import CoinPair from '@app/refactor/screens/convert/components/CoinPair'
 import { AppButton } from '@components/button'
 import { convertColors } from '@app/refactor/screens/convert/util'
-import CopyLogo from '@assets/images/Copy.svg'
 import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
 import WithKeyboard from '@app/components/WithKeyboard'
 import CardTotalFee from '@app/refactor/screens/convert/components/CardTotalFee'
@@ -211,6 +210,9 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 								setBuyWithCardChecked={(checked) => {
 									setCardError(false)
 									setBuyWithCardChecked(checked)
+									if (!checked) {
+										setChosenCard(undefined)
+									}
 								}}
 								chooseCardClicked={() => {
 									setCardError(false)
