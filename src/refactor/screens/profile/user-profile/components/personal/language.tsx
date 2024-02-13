@@ -11,7 +11,7 @@ export const Language = (props: LanguageProps) => {
 	const { styles, editLanguage } = props
 	return (
 		<View style={styles.row}>
-			<AppText variant="m" style={styles.white}>
+			<AppText variant="title" style={styles.white}>
 				Choose Language
 			</AppText>
 			<View style={styles.flex}>

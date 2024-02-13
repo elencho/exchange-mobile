@@ -16,16 +16,25 @@ export const updatePhoneNumberThunk = createAsyncThunk(
 		{
 			phoneNumber,
 			phoneCountry,
+			verificationCode,
+			changeOTPToken,
 			onSuccess,
 		}: {
 			phoneNumber: string
 			phoneCountry: string
+			verificationCode?: string
+			changeOTPToken?: string
 			onSuccess: () => void
 		},
 		{ dispatch }
 	) => {
 		try {
-			const response = await updatePhoneNumber(phoneNumber, phoneCountry)
+			const response = await updatePhoneNumber(
+				phoneNumber,
+				phoneCountry,
+				verificationCode,
+				changeOTPToken
+			)
 			if (response?.status >= 200 && response?.status < 300) {
 				onSuccess()
 				dispatch(fetchUserInfoThunk())

@@ -1,6 +1,13 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import React, { useEffect } from 'react'
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
+import {
+	Keyboard,
+	Platform,
+	StyleProp,
+	StyleSheet,
+	View,
+	ViewStyle,
+} from 'react-native'
 import {
 	useBlurOnFulfill,
 	useClearByFocusCell,
@@ -12,15 +19,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Theme, useTheme } from '@theme/index'
 import AppText from '@components/text'
 import GeneralError from '@components/general_error'
-import { RootState } from '@app/refactor/redux/rootReducer'
-import { Screens } from '@app/refactor/setup/nav/nav'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
-
+import { useSmsOtpVerifier } from '../../util'
 interface Props {
 	value: string
 	setValue: (text: string) => void
 	cellCount: 4 | 6
-	navigation: NativeStackNavigationProp<Screens>
 	indicatorStyle?: StyleProp<ViewStyle>
 	generalErrorData?: UiErrorData | null
 	onFill: () => void
@@ -85,6 +89,8 @@ const CodeInput = ({
 		dispatch(saveGeneralError(null))
 	}
 
+	useSmsOtpVerifier(handleValue)
+
 	return (
 		<View>
 			<View>
@@ -102,6 +108,8 @@ const CodeInput = ({
 				cellCount={cellCount}
 				keyboardType="number-pad"
 				textContentType="oneTimeCode"
+				autoComplete="sms-otp"
+				autoFocus={true}
 				renderCell={({ index, symbol, isFocused }) => (
 					<AppText
 						key={index}

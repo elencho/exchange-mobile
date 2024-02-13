@@ -29,7 +29,7 @@ export default function PersonalSecuritySwitcher(props: Props) {
 		const isActive = f === personalSecurity
 		return (
 			<AppText
-				variant="m"
+				variant="l"
 				style={{ color: isActive ? theme.color.textPrimary : '#C0C5E0' }}>
 				{f}
 			</AppText>

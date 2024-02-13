@@ -15,7 +15,7 @@ import {
 import WithKeyboard from '@app/components/WithKeyboard'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import { setTimer } from '@store/redux/auth/slice'
+import { resetCallbackUrl, setTimer } from '@store/redux/auth/slice'
 import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import GeneralError from '@components/general_error'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
@@ -53,16 +53,12 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
+			dispatch(forgotPasswordStartThunk({ navigation }))
+
 			setSeconds(0)
 			alreadySent.current = false
 		})
 	}, [navigation])
-
-	useFocusEffect(
-		useCallback(() => {
-			dispatch(forgotPasswordStartThunk({ navigation }))
-		}, [])
-	)
 
 	useEffect(() => {
 		if (seconds) {
@@ -172,6 +168,8 @@ const ForgotPassword = ({ navigation }: ScreenProp<'ForgotPassword'>) => {
 						}}
 						rightComponent={<MailInputRight />}
 						error={mailError}
+						keyboardType="email-address"
+						textContentType={'emailAddress'}
 					/>
 					<AppInput
 						labelBackgroundColor={theme.color.backgroundPrimary}

@@ -116,7 +116,7 @@ export const Personal = ({
 				)
 			case PersonalFeatures.PHONE:
 				return (
-					<AppText variant="s" style={styles.secondary}>
+					<AppText variant="l" style={styles.secondary}>
 						{userInfo?.phoneNumber}
 					</AppText>
 				)
@@ -124,7 +124,7 @@ export const Personal = ({
 			case PersonalFeatures.NOTIFICATIONS:
 				return (
 					<AppText
-						variant="s"
+						variant="l"
 						style={[styles.secondary, error ? { color: '#F45E8C' } : {}]}>
 						{error
 							? 'Sorry.. Something went wrong'
@@ -133,7 +133,7 @@ export const Personal = ({
 				)
 			case PersonalFeatures.LANGUAGE:
 				return (
-					<AppText variant="s" style={styles.secondary}>
+					<AppText variant="l" style={styles.secondary}>
 						{language === 'ka' ? 'ქართული' : language === 'en' ? 'English' : ''}
 					</AppText>
 				)
@@ -156,7 +156,6 @@ export const Personal = ({
 			<View style={styles.block}>
 				{[
 					PersonalFeatures.IDENTITY,
-					PersonalFeatures.PHONE,
 					PersonalFeatures.NOTIFICATIONS,
 					PersonalFeatures.LANGUAGE,
 				].map((item, i, a) => (
@@ -185,10 +184,7 @@ export const Personal = ({
 				togglePersonalInfoModal={togglePersonalInfoModal}
 				personalInfoModalVisible={personalInfoModalVisible}
 			/>
-			<PhoneNumberModal
-				phoneNumberModalVisible={phoneNumberModalVisible}
-				togglePhoneNumberModal={togglePhoneNumberModal}
-			/>
+
 			<ChooseLanguageModal
 				languageModalVisible={languageModalVisible}
 				setLanguageModalVisible={setLanguageModalVisible}

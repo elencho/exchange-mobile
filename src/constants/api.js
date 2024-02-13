@@ -64,7 +64,11 @@ export const OTP_CHANGE_TOKEN = `${auth}/auth/realms/GEX/GEX-resource/getOTPChan
 
 export const EMAIL_VERIFICATION = `${auth}/auth/realms/GEX/GEX-resource/sendEmailVerification`
 
+export const SMS_VERIFICATION = `${auth}/auth/realms/GEX/GEX-resource/sendSmsVerification`
+
 export const ACTIVATE_EMAIL_OTP = `${auth}/auth/realms/GEX/GEX-resource/enableEmailTwoFA`
+
+export const ACTIVATE_SMS_OTP = `${auth}/auth/realms/GEX/GEX-resource/enableSmsTwoFA`
 
 export const ACTIVATE_GOOGLE_OTP = `${auth}/auth/realms/GEX/GEX-resource/enableTotpTwoFA`
 

@@ -1,5 +1,5 @@
 import * as SecureStore from 'expo-secure-store'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, Linking, Pressable } from 'react-native'
 import Rocket from '../assets/images/Rocket'
 import AppText from '../components/AppText'
@@ -7,6 +7,9 @@ import Background from '../components/Background'
 import TopRow from '../refactor/common/components/top_row'
 import colors from '../constants/colors'
 import { exchangeUtil } from '../utils/userProfileUtils'
+import useCopyToClipboard from '@app/utils/copyToClipboard'
+import CopyLogo from '@assets/images/Copy.svg'
+import messaging from '@react-native-firebase/messaging'
 
 const Exchange = () => {
 	const handlePress = async () => {
@@ -14,10 +17,28 @@ const Exchange = () => {
 		const data = await exchangeUtil(refresh_token)
 		Linking.openURL(data?.redirectUri)
 	}
+	const [fcmToken, setFcmToken] = useState('')
+
+	const { copyToClipboard } = useCopyToClipboard()
+
+	useEffect(() => {
+		checkToken()
+	}, [])
+
+	const checkToken = async () => {
+		const token = await messaging().getToken()
+		if (token) {
+			setFcmToken(token)
+		}
+	}
 
 	return (
 		<Background>
 			<TopRow />
+			<CopyLogo
+				style={{ marginBottom: 10 }}
+				onPress={() => copyToClipboard(fcmToken)}
+			/>
 			<View style={styles.wrapper}>
 				<Rocket style={styles.rocket} />
 				<AppText header style={styles.mainText}>

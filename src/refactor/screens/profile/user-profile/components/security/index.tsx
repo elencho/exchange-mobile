@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { FlatList, StyleSheet, View } from 'react-native'
 import { Theme, useTheme } from '@theme/index'
 import AppText from '@components/text'
 import GoogleAuthModal from '../modals/user-profile/google-auth'
@@ -9,6 +9,10 @@ import SecurityRow from '../modals/user-profile/security-row'
 import SmsEmailAuthModal from '../modals/user-profile/sms-email-auth-modal'
 import PersonalSecuritySkeleton from '../modals/user-profile/skeletons/PersonalSecuritySkeleton'
 import { useSecurity } from './use-security'
+import { OtpToggle } from '../modals/user-profile/otp-toggle'
+import { OTPTypes } from '@app/refactor/types/enums'
+import SmsOtpModal from '../modals/user-profile/sms-otp-modal'
+import PhoneNumberModal from '../modals/user-profile/phone-number-modal'
 
 interface Props {
 	loading: boolean
@@ -27,7 +31,33 @@ export default function Security({ loading, bioAvailable }: Props) {
 		googleOtpModalVisible,
 		toggleSmsAuthModalVisible,
 		smsAuthModalVisible,
+		handleOtpPress,
+		otpType,
+		userInfo,
+		phoneNumberModalVisible,
+		togglePhoneNumberModal,
+		handleChangePhoneNumber,
 	} = useSecurity()
+
+	const data = [
+		{
+			title: 'Google Authentication',
+			description: 'Google Auth Description',
+			otpType: OTPTypes.TOTP,
+		},
+		{
+			title: 'E-mail Authentication',
+			description: userInfo?.email,
+			otpType: OTPTypes.EMAIL,
+		},
+		{
+			title: 'SMS Authentication',
+			description: userInfo?.phoneNumber,
+			otpType: OTPTypes.SMS,
+			extraPress: () => handleChangePhoneNumber(),
+		},
+	]
+
 	return !loading ? (
 		<>
 			<View style={styles.block}>
@@ -35,16 +65,20 @@ export default function Security({ loading, bioAvailable }: Props) {
 					2FA is specific type of multi-factor authentication that strengthens
 					access security
 				</AppText>
-				{['Google_Auth', 'E_mail_Auth', 'SMS_Auth'].map((r, i, a) => (
-					<SecurityRow
-						key={r}
-						text={r}
-						toggleEmailAuthModalVisible={toggleEmailAuthModalVisible}
-						toggleGoogleOtpModalVisible={toggleGoogleOtpModalVisible}
-						toggleGoogleAuthModal={toggleGoogleAuthModal}
-						toggleSmsAuthModalVisible={toggleSmsAuthModalVisible}
-					/>
-				))}
+				<FlatList
+					data={data}
+					renderItem={({ item }) => (
+						<OtpToggle
+							title={item.title}
+							onPress={handleOtpPress}
+							isOn={otpType === item.otpType}
+							description={item.description}
+							otpType={item.otpType}
+							extraPress={item?.extraPress}
+						/>
+					)}
+				/>
+
 				<View style={styles.line} />
 			</View>
 
@@ -67,15 +101,26 @@ export default function Security({ loading, bioAvailable }: Props) {
 			<SmsEmailAuthModal
 				toggleSmsAuthModal={toggleSmsAuthModalVisible}
 				toggleEmailAuthModal={toggleEmailAuthModalVisible}
-				smsAuthModalVisible={smsAuthModalVisible}
 				emailAuthModalVisible={emailAuthModalVisible}
 				toggleGoogleAuthModal={toggleGoogleAuthModal}
+			/>
+			<SmsOtpModal
+				toggleEmailAuthModal={toggleEmailAuthModalVisible}
+				toggleGoogleAuthModal={toggleGoogleAuthModal}
+				toggleSmsAuthModal={toggleSmsAuthModalVisible}
+				smsAuthModalVisible={smsAuthModalVisible}
+				togglePhoneNumberModal={togglePhoneNumberModal}
 			/>
 
 			<GoogleOtpModal
 				toggleGoogleOtpModalVisible={toggleGoogleOtpModalVisible}
 				googleOtpModalVisible={googleOtpModalVisible}
 				toggleEmailAuthModalVisible={toggleEmailAuthModalVisible}
+				toggleSmsAuthModalVisible={toggleSmsAuthModalVisible}
+			/>
+			<PhoneNumberModal
+				phoneNumberModalVisible={phoneNumberModalVisible}
+				togglePhoneNumberModal={togglePhoneNumberModal}
 			/>
 		</>
 	) : (

@@ -3,18 +3,21 @@ import * as SecureStore from 'expo-secure-store'
 import {
 	ACTIVATE_EMAIL_OTP,
 	ACTIVATE_GOOGLE_OTP,
+	ACTIVATE_SMS_OTP,
 	CODE_TO_TOKEN,
 	EMAIL_VERIFICATION,
 	LOGOUT,
 	NOTIFICATIONS_FIREBASE,
 	OTP_CHANGE_TOKEN,
 	SEND_OTP,
+	SMS_VERIFICATION,
 	SUBSCRIBE_EMAIL_URL,
 	UNSUBSCRIBE_EMAIL_URL,
 	UPDATE_PASSWORD,
 	UPDATE_PHONE_NUMBER,
 	UPDATE_USER_DATA,
 	USER_INFO_URL,
+	VERIFY_PHONE_NUMBER,
 } from '@app/constants/api'
 import SecureKV from '@store/kv/secure'
 
@@ -85,8 +88,22 @@ export const updatePasswordUtil = async (
 
 export const updatePhoneNumber = async (
 	phoneNumber: string,
-	phoneCountry: string
+	phoneCountry: string,
+	verificationNumber?: string,
+	changeOTPToken?: string
 ) => {
+	const params: Record<string, string | undefined> = {
+		phoneNumber,
+		phoneCountry,
+		verificationNumber,
+		changeOTPToken,
+	}
+	const filteredParams = Object.fromEntries(
+		Object.entries(params).filter(([_, value]) => value !== undefined)
+	)
+
+	const queryString = new URLSearchParams(filteredParams).toString()
+
 	const data = await axios({
 		method: 'POST',
 		headers: {
@@ -95,8 +112,9 @@ export const updatePhoneNumber = async (
 			toast: false,
 		},
 		url: UPDATE_PHONE_NUMBER,
-		data: `phoneNumber=${phoneNumber}&phoneCountry=${phoneCountry}`,
+		data: queryString,
 	})
+
 	return data
 }
 
@@ -124,6 +142,26 @@ export const sendEmailOtp = async () => {
 		url: EMAIL_VERIFICATION,
 	})
 }
+export const sendSmsOtp = async () => {
+	await axios({
+		method: 'POST',
+		url: SMS_VERIFICATION,
+	})
+}
+
+export const verifyPhoneNumber = async (
+	phoneNumber: string,
+	phoneCountry: string
+) => {
+	const data = await axios({
+		method: 'POST',
+		headers: { toast: false },
+		url: VERIFY_PHONE_NUMBER,
+		params: { phoneNumber, phoneCountry },
+	})
+
+	return data
+}
 
 export const getOtpChangeToken = async (OTP: string, newOTPType: string) => {
 	const data = await axios<tOTPVerifyParams>({
@@ -148,6 +186,26 @@ export const activateEmailOtp = async (
 		},
 		url: ACTIVATE_EMAIL_OTP,
 		data: `changeOTPToken=${changeOTPToken}&verificationCode=${verificationCode}`,
+	})
+	if (data) return data!
+}
+
+export const activateSmsOtp = async (
+	changeOTPToken: string,
+	verificationCode: string,
+	phoneNumber: string,
+	verificationNumber: string,
+	phoneCountry: string
+) => {
+	const data = await axios({
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			requestName: 'activateSmsOtp',
+			toast: false,
+		},
+		url: ACTIVATE_SMS_OTP,
+		data: `changeOTPToken=${changeOTPToken}&verificationCode=${verificationCode}&phoneNumber=${phoneNumber}&verificationNumber=${verificationNumber}&phoneCountry=${phoneCountry}`,
 	})
 	if (data) return data!
 }

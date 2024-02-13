@@ -25,20 +25,15 @@ export const extractApiError = (apiResult: any) => {
 		: null
 }
 
-export const handleAxiosErrors = (
+export const handleAxiosErrors = async (
 	apiResult: any,
-	setErrorData: (err: UiErrorData) => void,
-	handleSuccess: () => void
+	handleSuccess: (response: any) => void,
+	handleError: (err: UiErrorData) => void
 ) => {
-	if (
-		!(
-			apiResult?.response?.data?.statusCode! >= 200 &&
-			apiResult?.response?.data?.statusCode! <= 300
-		)
-	) {
-		parseError(apiResult, setErrorData)
+	if (apiResult?.status >= 200 && apiResult?.status <= 300) {
+		await handleSuccess(apiResult)
 	} else {
-		handleSuccess()
+		handleError(apiResult.response.data)
 	}
 }
 

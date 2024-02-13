@@ -32,9 +32,9 @@ export const formatDisplayPair = (
 }
 
 export const formatAmount = (txt: string, coin?: Coin) => {
-	if (txt.startsWith('0') && txt.length > 1 && isCharNumber(txt.charAt(1))) {
-		return '0'
-	}
+	// if (txt.startsWith('0') && txt.length > 1 && isCharNumber(txt.charAt(1))) {
+	// 	return '0'
+	// }
 
 	txt = txt.replace(',', '.')
 

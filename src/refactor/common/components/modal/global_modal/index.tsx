@@ -14,10 +14,13 @@ import {
 	Linking,
 	Dimensions,
 	Alert,
+	Platform,
+	StatusBar,
 } from 'react-native'
 import Modal from 'react-native-modal'
 import CloseIcon from '@components/close-button'
 import { Theme, useTheme } from '@theme/index'
+import Constants from 'expo-constants'
 
 import { AppButton } from '@components/button'
 import { useNetInfoInstance } from '@react-native-community/netinfo'
@@ -48,7 +51,10 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const [isBiometricScreenOpenedForModal, setIsBiometricScreenOpenedForModal] =
 		useState(true)
 	const [modalContent, setModalContent] = useState<ContentType | null>(null)
-
+	console.log(
+		'isBiometricScreenOpenedForModal',
+		isBiometricScreenOpenedForModal
+	)
 	const { styles } = useTheme(_styles)
 	const {
 		netInfo: { isConnected },
@@ -56,7 +62,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
 	const showModal = (content: ContentType) => {
 		setModalContent(content)
-		console.log('content', content)
+
 		if (content?.title && content?.description) {
 			setModalVisible(true, content)
 			setIsBiometricScreenOpenedForModal(false)
@@ -65,9 +71,9 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 
 	const setModalVisible = (visible: boolean, content?: ContentType) => {
 		console.log('modalContent', content)
-		// if (modalContent || content) {
-		setModalSmallVisible(visible)
-		// }
+		if (modalContent || content) {
+			setModalSmallVisible(visible)
+		}
 	}
 
 	const hideModal = () => {
@@ -85,20 +91,14 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 					source={{
 						uri: modalContent?.banner,
 					}}>
-					<CloseIcon
-						style={{ marginTop: 60, marginRight: 30 }}
-						onPress={hideModal}
-					/>
+					<CloseIcon style={styles.closeIcon} onPress={hideModal} />
 				</ImageBackground>
 
 				{children}
 			</View>
 		) : (
 			<View style={styles.imageBckWrapper}>
-				<CloseIcon
-					style={{ marginTop: 60, marginRight: 30 }}
-					onPress={hideModal}
-				/>
+				<CloseIcon style={styles.closeIcon} onPress={hideModal} />
 				{children}
 			</View>
 		)
@@ -242,5 +242,12 @@ const _styles = (theme: Theme) =>
 		},
 		bannerText: {
 			color: '#BEC2DD',
+		},
+		closeIcon: {
+			marginTop: Platform.select({
+				ios: Constants.statusBarHeight,
+				android: StatusBar.currentHeight || 10,
+			}),
+			marginRight: 20,
 		},
 	})

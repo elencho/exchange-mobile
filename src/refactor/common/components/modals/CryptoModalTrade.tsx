@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import AppModal from '@app/refactor/common/components/modal'
-import ModalWithSearch from '@app/components/ModalWithSearchTemporary'
+import ModalWithSearch from '@components/modals/ModalWithSearch'
 import {
 	setCryptoCodeQuery,
 	setTradesOffset,
@@ -37,9 +37,6 @@ export default function CryptoModalTrade({
 	const [currencyList, setCurrencyList] = useState([])
 	const [filteredData, setFiletredData] = useState(currencyList)
 
-	const arrayToPass =
-		filteredData?.length > 0 ? [...filteredData] : currencyList
-
 	useEffect(() => {
 		fetchCurrencies().then((res) => {
 			setCurrencyList(res.filter((i) => i.type !== 'FIAT'))
@@ -49,11 +46,12 @@ export default function CryptoModalTrade({
 	const filter = (text: string) => setCryptoFilterText(text.toLowerCase())
 
 	useEffect(() => {
-		const filteredArray = currencyList?.filter(
-			(c) =>
-				c?.displayCode.toLowerCase().includes(cryptoFilterText) ||
-				c?.displayName.toLowerCase().includes(cryptoFilterText)
-		)
+		const filteredArray =
+			currencyList?.filter(
+				(c) =>
+					c?.displayCode.toLowerCase().includes(cryptoFilterText) ||
+					c?.displayName.toLowerCase().includes(cryptoFilterText)
+			) ?? []
 		setFiletredData(filteredArray)
 	}, [cryptoFilterText])
 
@@ -70,7 +68,7 @@ export default function CryptoModalTrade({
 
 	const children = (
 		<ModalWithSearch
-			array={arrayToPass}
+			array={filteredData}
 			choose={choose}
 			filter={filter}
 			currentItem={isInstantTrade ? cryptoCodeQuery : cryptoCodeTransactions}

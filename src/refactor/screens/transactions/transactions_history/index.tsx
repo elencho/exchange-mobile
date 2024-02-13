@@ -33,6 +33,7 @@ function TransactionHistory() {
 			dispatch(clearTradeFilters())
 			setActiveTab('Transfer')
 		}, 1000)
+		setIsFilterVisible({ isVisible: false, shouldFilter: true })
 		Keyboard.dismiss()
 	}
 
