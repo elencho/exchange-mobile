@@ -36,7 +36,6 @@ type Props = {
 }
 
 const CoinPair = ({
-	tradeType,
 	handleDropDownClick,
 	saveBaseAmount,
 	upCoin,

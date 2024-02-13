@@ -17,13 +17,15 @@ import CardSection from '@app/refactor/screens/convert/components/CardSection'
 import CoinPair from '@app/refactor/screens/convert/components/CoinPair'
 import { AppButton } from '@components/button'
 import { convertColors } from '@app/refactor/screens/convert/util'
-
+import CopyLogo from '@assets/images/Copy.svg'
 import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
 import WithKeyboard from '@app/components/WithKeyboard'
 import CardTotalFee from '@app/refactor/screens/convert/components/CardTotalFee'
 import { handlePair } from '@app/refactor/screens/convert/hooks/handle-pair'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
+	useNotificationPermissions()
+
 	const { styles, theme } = useTheme(_styles)
 
 	const [baseAmount, setBaseAmount] = useState<string>('')
@@ -44,7 +46,12 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 				receivedAmount,
 				pair,
 				tradeType,
-				card: showCardDetails ? chosenCard : undefined,
+				card:
+					tradeType === 'Buy' &&
+					buyWithCardChecked &&
+					pair.fiat.buyWithCard === true
+						? chosenCard
+						: undefined,
 			})
 	}
 
@@ -83,6 +90,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	} = handlePair({
 		tradeType,
 		pair,
+		buyWithCard: buyWithCardChecked,
 		balanceMultiplier: selectedChip,
 		onButtonSuccess: goToConfirm,
 	})
@@ -95,6 +103,16 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		}
 	}, [tradeType, cards])
 
+	useEffect(() => {
+		clearErrors()
+	}, [tradeType])
+
+	const clearErrors = () => {
+		setErrorInputs([])
+		setErrorText('')
+		setCardError(false)
+	}
+
 	const onTimerExpire = () => {
 		fetchCoins()
 	}
@@ -102,6 +120,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const onButtonClick = () => {
 		if (buyWithCardChecked && !chosenCard) {
 			setCardError(true)
+			setErrorInputs(['low', 'up'])
 		} else {
 			handleButtonClick()
 		}
@@ -116,16 +135,19 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		return buySell + ' ' + pair?.crypto.displayCcy
 	}
 
-	const showCardDetails = buyWithCardChecked && tradeType === 'Buy'
+	const showPercentages = !(
+		tradeType === 'Buy' &&
+		buyWithCardChecked &&
+		pair?.fiat.buyWithCard === true
+	)
 
-	useNotificationPermissions()
+	const showCardSection = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
 
 	return (
 		<AppBackground>
 			<TopRow
 				headlineLogo={<InfoMark inner="?" color={theme.color.textThird} />}
 			/>
-
 			{loading || !pair ? (
 				<MaterialIndicator
 					color="#6582FD"
@@ -173,13 +195,13 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							recalculateLow={recalculateLow}
 							onTextChanged={() => setSelectedChip(undefined)}
 						/>
-						{!(tradeType === 'Buy' && buyWithCardChecked) && (
+						{showPercentages && (
 							<BalanceChips
 								selectedChip={selectedChip}
 								onChipSelect={setSelectedChip}
 							/>
 						)}
-						{tradeType === 'Buy' && pair.fiat.buyWithCard && (
+						{showCardSection && (
 							<CardSection
 								chosenCard={chosenCard}
 								buyWithCardChecked={buyWithCardChecked}
@@ -224,7 +246,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							onPress={onButtonClick}
 						/>
 						<InfoModal />
-
 						<ChooseFiatModal
 							visible={fiatModalVisible}
 							fiats={fiats}
@@ -252,6 +273,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		</AppBackground>
 	)
 }
+
 const _styles = () =>
 	StyleSheet.create({
 		container: {

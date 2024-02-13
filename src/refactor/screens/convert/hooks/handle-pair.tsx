@@ -5,6 +5,7 @@ type Props = {
 	pair: CoinPair | undefined
 	balanceMultiplier: number | undefined
 	tradeType: TradeType
+	buyWithCard: boolean
 	onButtonSuccess: (spent: string, received: string) => void
 }
 
@@ -12,6 +13,7 @@ export const handlePair = ({
 	pair,
 	balanceMultiplier,
 	tradeType,
+	buyWithCard,
 	onButtonSuccess,
 }: Props) => {
 	const [upCoin, setUpCoin] = useState<Coin>()
@@ -72,7 +74,8 @@ export const handlePair = ({
 			tradeType === 'Buy' ? upAmount : lowAmount,
 			tradeType === 'Sell' ? upAmount : lowAmount,
 			pair,
-			tradeType
+			tradeType,
+			buyWithCard
 		)
 		if (coinErr === null) {
 			onButtonSuccess(upAmount, lowAmount)

@@ -197,7 +197,6 @@ export const useCoins = () => {
 			: dto.quoteCurrencyDisplayCode
 
 		const cachedBalance = balancesCache.current[displayCcy]
-		const balance = Number(cachedBalance.available).toFixed(scale)
 		const buyWithCard = cachedBalance.buyWithCard
 		const marketPrice = base
 			? { buy: Number(data.buyPrice), sell: Number(data.sellPrice) }
@@ -209,7 +208,7 @@ export const useCoins = () => {
 			name,
 			type,
 			iconPngUrl: ccyToIcon(displayCcy),
-			balance,
+			balance: cachedBalance.available,
 			scale,
 			buyWithCard,
 			marketPrice,

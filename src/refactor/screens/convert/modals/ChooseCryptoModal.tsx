@@ -39,7 +39,13 @@ const ChooseCryptoModal = ({
 						coin.name.toLowerCase().includes(searchLower)
 				  )
 		setFilteredCoins(coins)
-	}, [search])
+	}, [search, cryptos])
+
+	useEffect(() => {
+		setTimeout(() => {
+			setSearch('')
+		}, 500)
+	}, [visible])
 
 	const CoinItemInfo = ({ desc, value }: { desc: string; value: string }) => {
 		return (
@@ -64,11 +70,8 @@ const ChooseCryptoModal = ({
 
 		const formatMarketPrice = () => {
 			const price =
-				(tradeType === 'Buy'
-					? item.marketPrice?.buy
-					: item.marketPrice?.sell) || 1
-			const num = Number(price).toFixed(pair.fiat.scale)
-			return num + ' ' + pair.fiat.displayCcy
+				tradeType === 'Buy' ? item.marketPrice?.buy : item.marketPrice?.sell
+			return price + ' ' + pair.fiat.displayCcy
 		}
 
 		return (
