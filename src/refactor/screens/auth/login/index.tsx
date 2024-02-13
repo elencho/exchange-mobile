@@ -43,9 +43,9 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
-	const [mail, setMail] = useState('ibanet@cryptx.com')
+	const [mail, setMail] = useState('gkerva@cryptal.com')
 	const [mailError, setMailError] = useState<boolean>(false)
-	const [pass, setPass] = useState('Malina125$')
+	const [pass, setPass] = useState('TestGexCryptal7')
 	const [passError, setPassError] = useState(false)
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
@@ -68,9 +68,8 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
-			dispatch(startLoginThunk(navigation))
-			setMail('ibanet@cryptx.com')
-			setPass('Malina125$')
+			setMail('gkerva@cryptal.com')
+			setPass('TestGexCryptal7')
 			setMailError(false)
 			setPassError(false)
 			setLoginLoading(false)

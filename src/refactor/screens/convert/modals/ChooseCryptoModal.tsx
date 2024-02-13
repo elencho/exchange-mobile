@@ -44,7 +44,7 @@ const ChooseCryptoModal = ({
 	useEffect(() => {
 		setTimeout(() => {
 			setSearch('')
-		}, 1000)
+		}, 500)
 	}, [visible])
 
 	const CoinItemInfo = ({ desc, value }: { desc: string; value: string }) => {
