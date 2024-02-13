@@ -58,7 +58,6 @@ const isCharNumber = (c: string) => {
 }
 
 export const formatScale = (amount: string, scale: number) => {
-	console.log({ amount, scale })
 	const dotIndex = amount.indexOf('.')
 	return dotIndex === -1 ? amount : amount.substring(0, dotIndex + 1 + scale)
 }

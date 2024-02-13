@@ -40,6 +40,7 @@ type CoinBalanceResponse = {
 	valueBTC: string
 	valueUSD: string
 	depositMethods: DepositMethodResponse
+	limits: [{ maxValue: string; method: string; transactionType: string }]
 }
 
 type FeeResponse = {

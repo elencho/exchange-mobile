@@ -62,7 +62,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		loading,
 		fetchCoins,
 		onCoinSelected,
-		onFetch,
+		maxLimitCard,
 	} = useCoins()
 
 	const {
@@ -119,6 +119,12 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		if (buyWithCardChecked && !chosenCard) {
 			setCardError(true)
 			setErrorInputs(['low', 'up'])
+		} else if (
+			buyWithCardChecked &&
+			maxLimitCard &&
+			Number(upAmount) > maxLimitCard
+		) {
+			setErrorText('max limit ' + maxLimitCard)
 		} else {
 			handleButtonClick()
 		}
