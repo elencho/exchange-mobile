@@ -74,7 +74,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 		}
 	}, [otpTimerVisible])
 
-	const goBack = () => dispatch(startLoginThunk(navigation))
+	const goBack = () => navigation.navigate('Login')
 	const goToReset = () => dispatch(resetOtpThunk(navigation))
 
 	const image = () => {
