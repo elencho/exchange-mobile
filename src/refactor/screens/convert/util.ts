@@ -32,6 +32,10 @@ export const formatDisplayPair = (
 }
 
 export const formatAmount = (txt: string, coin?: Coin) => {
+	if (txt.startsWith('0') && txt.length > 1 && isCharNumber(txt.charAt(1))) {
+		return '0'
+	}
+
 	txt = txt.replace(',', '.')
 
 	const dotIndexes = Array.from(txt).reduce((res, ch, i) => {
@@ -47,4 +51,8 @@ export const formatAmount = (txt: string, coin?: Coin) => {
 		txt = txt.slice(0, lastDoxIndex + (coin?.scale || 0) + 1)
 	}
 	return txt
+}
+
+const isCharNumber = (c: string) => {
+	return c >= '0' && c <= '9'
 }

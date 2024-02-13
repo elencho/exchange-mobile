@@ -41,6 +41,12 @@ const ChooseCryptoModal = ({
 		setFilteredCoins(coins)
 	}, [search, cryptos])
 
+	useEffect(() => {
+		setTimeout(() => {
+			setSearch('')
+		}, 1000)
+	}, [visible])
+
 	const CoinItemInfo = ({ desc, value }: { desc: string; value: string }) => {
 		return (
 			<View style={styles.coinInfoContainer}>

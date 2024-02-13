@@ -17,8 +17,6 @@ export const coinError = (
 	const buy = Number(pair.buyPrice)
 	const sell = Number(pair.sellPrice)
 
-	console.log(buyWithCard)
-
 	// 5
 	if (!fiatAmount.trim().length || !cryptoAmount.trim().length) {
 		return { err: 'Both empty', type: ['Fiat', 'Crypto'] }
