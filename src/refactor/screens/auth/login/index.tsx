@@ -68,8 +68,8 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
-			setMail('gkerva@cryptal.com')
-			setPass('TestGexCryptal7')
+			setMail('ibanet@cryptx.com')
+			setPass('Malina125$')
 			setMailError(false)
 			setPassError(false)
 			setLoginLoading(false)
