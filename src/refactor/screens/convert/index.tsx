@@ -75,8 +75,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		setLowAmount,
 		lastChanged,
 		setLastChanged,
-		lastClicked,
-		setLastClicked,
 		errorInputs,
 		setErrorInputs,
 		errorText,
@@ -146,12 +144,17 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const showCardSection = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
 
+	const canShowLoading = () => {
+		const noModalsVisible = !(fiatModalVisible || cryptoModalVisible)
+		return noModalsVisible && pair !== undefined && loading
+	}
+
 	return (
 		<AppBackground>
 			<TopRow
 				headlineLogo={<InfoMark inner="?" color={theme.color.textThird} />}
 			/>
-			{loading || !pair ? (
+			{canShowLoading() || !pair ? (
 				<MaterialIndicator
 					color="#6582FD"
 					animationDuration={3000}
@@ -182,7 +185,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							lowAmount={lowAmount}
 							lowCoin={lowCoin}
 							lastChanged={lastChanged}
-							lastClicked={lastClicked}
 							errorInputs={errorInputs}
 							errorText={errorText}
 							setUpCoin={setUpCoin}
@@ -190,12 +192,10 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							setUpAmount={setUpAmount}
 							setLowAmount={setLowAmount}
 							setLastChanged={setLastChanged}
-							setLastClicked={setLastClicked}
 							setErrorInputs={setErrorInputs}
 							setErrorText={setErrorText}
 							recalculateUp={recalculateUp}
 							recalculateLow={recalculateLow}
-							onTextChanged={() => setSelectedChip(undefined)}
 						/>
 						{showPercentages && (
 							<BalanceChips

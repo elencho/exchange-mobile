@@ -1,6 +1,6 @@
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
-import React, { memo, useEffect, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { Image, Pressable, StyleSheet, TextInput, View } from 'react-native'
 import Arrow from '@assets/images/Arrow.svg'
 import {
@@ -13,26 +13,25 @@ type Props = {
 	coin: Coin
 	amount: string | undefined
 	isActive: boolean
+	error?: boolean | string
 	onAmountChange: (txt: string) => void
 	onFocus: () => void
-	onBlur: () => void
 	onDropdownClick: (type: CoinType) => void
-	error?: boolean | string
 }
 
 const CoinInput = ({
 	coin,
 	amount,
 	isActive,
+	error,
 	onAmountChange,
 	onDropdownClick,
 	onFocus,
-	onBlur,
-	error,
 }: Props) => {
 	const { styles, theme } = useTheme(_styles)
 
 	const [formattedAmount, setFormattedAmount] = useState('')
+	const inputRef = useRef<TextInput | null>(null)
 
 	useEffect(() => {
 		if (!amount) {
@@ -41,6 +40,10 @@ const CoinInput = ({
 			setFormattedAmount(formatAmount(amount, coin))
 		}
 	}, [amount, coin])
+
+	useEffect(() => {
+		isActive && inputRef?.current?.focus()
+	}, [isActive])
 
 	const CoinButton = () => {
 		return (
@@ -75,14 +78,16 @@ const CoinInput = ({
 			]}>
 			<View style={styles.infoContainer}>
 				<TextInput
+					ref={inputRef}
 					keyboardType="numeric"
 					style={styles.input}
 					value={formattedAmount}
-					placeholder="0.00"
+					placeholder={'0.' + '0'.repeat(coin.scale)}
 					placeholderTextColor={hexOpacityPct(theme.color.textSecondary, 60)}
 					onFocus={onFocus}
-					onBlur={onBlur}
-					onChangeText={onAmountChange}
+					onChangeText={(txt) => {
+						if (isActive) onAmountChange(txt)
+					}}
 				/>
 				<AppText style={styles.balanceText} variant="s">
 					{'Balance: ' + formatScale(coin.balance, coin.scale)}
