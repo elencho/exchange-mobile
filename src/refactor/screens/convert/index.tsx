@@ -116,7 +116,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const onButtonClick = () => {
 		if (buyWithCardChecked && !chosenCard) {
 			setCardError(true)
-			setErrorInputs(['low', 'up'])
 		} else if (
 			buyWithCardChecked &&
 			maxLimitCard &&
@@ -225,9 +224,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 								setBuyWithCardChecked={(checked) => {
 									setCardError(false)
 									setBuyWithCardChecked(checked)
-									if (!checked) {
-										setChosenCard(undefined)
-									}
 								}}
 								chooseCardClicked={() => {
 									setCardError(false)
@@ -276,6 +272,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							onCoinSelected={(fiat: Coin) => {
 								onCoinSelected(fiat)
 								setFiatModalVisible(false)
+								setBuyWithCardChecked(false)
+								cards.length !== 1 && setChosenCard(undefined)
 							}}
 							dismiss={() => setFiatModalVisible(false)}
 						/>
