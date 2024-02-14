@@ -1,8 +1,7 @@
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import { useTheme } from '@theme/index'
-import { StyleSheet, View } from 'react-native'
+import { Theme, useTheme } from '@theme/index'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import AppBackground from '@components/background'
-import InfoMark from '@app/components/InstantTrade/InfoMark'
 import TopRow from '@components/top_row'
 import { useEffect, useState } from 'react'
 import { TradeTypeSwitcher } from '@app/refactor/screens/convert/components/TradeTypeSwitcher'
@@ -12,7 +11,6 @@ import ChooseFiatModal from '@app/refactor/screens/convert/modals/ChooseFiatModa
 import { MaterialIndicator } from 'react-native-indicators'
 import ChooseCryptoModal from '@app/refactor/screens/convert/modals/ChooseCryptoModal'
 import BalanceChips from '@app/refactor/screens/convert/components/BalanceChips'
-import InfoModal from '@app/components/InstantTrade/InfoModal'
 import CardSection from '@app/refactor/screens/convert/components/CardSection'
 import CoinPair from '@app/refactor/screens/convert/components/CoinPair'
 import { AppButton } from '@components/button'
@@ -21,11 +19,13 @@ import { useNotificationPermissions } from '@app/screens/useNotificationPermissi
 import WithKeyboard from '@app/components/WithKeyboard'
 import CardTotalFee from '@app/refactor/screens/convert/components/CardTotalFee'
 import { handlePair } from '@app/refactor/screens/convert/hooks/handle-pair'
+import InfoModal from '@app/refactor/screens/convert/modals/InfoModal'
+import AppText from '@components/text'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	useNotificationPermissions()
 
-	const { styles, theme } = useTheme(_styles)
+	const { styles } = useTheme(_styles)
 
 	const [cardError, setCardError] = useState<boolean>(false)
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
@@ -35,6 +35,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
+	const [infoModalVisible, setInfoModalVisible] = useState(false)
 
 	const goToConfirm = (spentAmount: string, receivedAmount: string) => {
 		pair &&
@@ -145,15 +146,29 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const showCardSection = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
 
 	const canShowLoading = () => {
-		const noModalsVisible = !(fiatModalVisible || cryptoModalVisible)
+		const noModalsVisible = !(
+			fiatModalVisible ||
+			cryptoModalVisible ||
+			infoModalVisible
+		)
 		return noModalsVisible && pair !== undefined && loading
+	}
+
+	const InfoLogo = () => {
+		return (
+			<TouchableOpacity
+				style={styles.infoContainer}
+				onPress={() => setInfoModalVisible(true)}>
+				<AppText variant="l" medium style={styles.infoText}>
+					?
+				</AppText>
+			</TouchableOpacity>
+		)
 	}
 
 	return (
 		<AppBackground>
-			<TopRow
-				headlineLogo={<InfoMark inner="?" color={theme.color.textThird} />}
-			/>
+			<TopRow headlineLogo={<InfoLogo />} />
 			{canShowLoading() || !pair ? (
 				<MaterialIndicator
 					color="#6582FD"
@@ -250,7 +265,10 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							text={buttonText()}
 							onPress={onButtonClick}
 						/>
-						<InfoModal />
+						<InfoModal
+							visible={infoModalVisible}
+							dismiss={() => setInfoModalVisible(false)}
+						/>
 						<ChooseFiatModal
 							visible={fiatModalVisible}
 							fiats={fiats}
@@ -279,7 +297,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	)
 }
 
-const _styles = () =>
+const _styles = (theme: Theme) =>
 	StyleSheet.create({
 		container: {
 			flex: 1,
@@ -288,6 +306,18 @@ const _styles = () =>
 		button: {
 			verticalAlign: 'bottom',
 			marginBottom: 15,
+		},
+		infoContainer: {
+			borderColor: theme.color.textThird,
+			borderWidth: 1,
+			width: 25,
+			height: 25,
+			borderRadius: 15,
+			justifyContent: 'center',
+			alignItems: 'center',
+		},
+		infoText: {
+			color: theme.color.textThird,
 		},
 	})
 

@@ -20,6 +20,8 @@ export default function CloseIcon(props: CloseIconProps) {
 
 const styles = StyleSheet.create({
 	close: {
+		marginEnd: 10,
+		marginTop: 10,
 		width: 25,
 		height: 25,
 		alignItems: 'center',
