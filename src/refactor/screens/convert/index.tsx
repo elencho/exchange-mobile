@@ -100,13 +100,13 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	}, [tradeType, cards])
 
 	useEffect(() => {
-		clearErrors()
+		clearErrors(false)
 	}, [tradeType])
 
-	const clearErrors = () => {
+	const clearErrors = (clearCard: boolean) => {
 		setErrorInputs([])
 		setErrorText('')
-		setCardError(false)
+		clearCard && setCardError(false)
 	}
 
 	const onTimerExpire = () => {
