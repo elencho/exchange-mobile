@@ -60,6 +60,7 @@ export const loginStart = async (code_challenge: string) => {
 			display: 'mobile',
 			code_challenge,
 			code_challenge_method: 'S256',
+			os: Platform.OS.toUpperCase(),
 		},
 		headers: { requestName: 'loginStart', toast: false },
 	})

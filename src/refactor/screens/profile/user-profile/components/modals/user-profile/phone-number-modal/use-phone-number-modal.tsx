@@ -132,13 +132,7 @@ export const usePhoneNumberModal = ({
 
 	const handleSave = () => {
 		setGeneralErrorData(null)
-		console.log(
-			error.phoneNumber,
-			error.verificationCode && otpType === OTPTypes.SMS,
-			!chosenCountry?.phoneCode,
-			!(verificationCode?.trim()?.length > 0) && otpType === OTPTypes.SMS,
-			!(phoneNumber?.trim()?.length > 0)
-		)
+		
 		if (
 			error.phoneNumber ||
 			(error.verificationCode && otpType === OTPTypes.SMS) ||

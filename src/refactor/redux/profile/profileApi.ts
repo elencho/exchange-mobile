@@ -20,6 +20,7 @@ import {
 	VERIFY_PHONE_NUMBER,
 } from '@app/constants/api'
 import SecureKV from '@store/kv/secure'
+import { Platform } from 'react-native'
 
 const refreshTokenService = async (refresh_token: string | null) => {
 	const data = await axios({
@@ -157,7 +158,7 @@ export const verifyPhoneNumber = async (
 		method: 'POST',
 		headers: { toast: false },
 		url: VERIFY_PHONE_NUMBER,
-		params: { phoneNumber, phoneCountry },
+		params: { phoneNumber, phoneCountry, os: Platform.OS.toUpperCase() },
 	})
 
 	return data
@@ -233,7 +234,16 @@ export const resendEmail = async (url: string) => {
 	return data?.data
 }
 
-export const sendOtp = async () => await axios.post(SEND_OTP)
+
+export const sendOtp = async () => {
+	const data = await axios({
+		method: 'POST',
+		url: SEND_OTP,
+		headers: { requestName: 'sendOtp', toast: false },
+		params: { os: Platform.OS.toUpperCase() },
+	})
+	return data
+}
 
 export const logoutUtil = async (refresh_token: string) => {
 	const data = await axios({
