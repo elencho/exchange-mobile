@@ -165,9 +165,18 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		)
 	}
 
+	const clearData = () => {
+		setTimeout(() => {
+			setUpAmount('')
+			setLowAmount('')
+			setBuyWithCardChecked(false)
+			setSelectedChip(undefined)
+		}, 500)
+	}
+
 	return (
 		<AppBackground>
-			<TopRow headlineLogo={<InfoLogo />} />
+			<TopRow headlineLogo={<InfoLogo />} clear={clearData} />
 			{canShowLoading() || !pair ? (
 				<MaterialIndicator
 					color="#6582FD"
