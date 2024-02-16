@@ -55,20 +55,16 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 		(state: RootState) => state.auth
 	)
 
-	// useFocusEffect(
-	// 	useCallback(() => {
-	// 		dispatch(startLoginThunk(navigation))
-	// 		return () => {
-	// 			dispatch(resetCallbackUrl(''))
-	// 		}
-	// 	}, [])
-	// )
+	useFocusEffect(
+		useCallback(() => {
+			dispatch(startLoginThunk(navigation))
+		}, [])
+	)
 
 	const alreadyDrewPassedError = useRef(false)
 
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
-			dispatch(startLoginThunk(navigation))
 			setMail('ibanet@cryptx.com')
 			setPass('Malina125$')
 			setMailError(false)

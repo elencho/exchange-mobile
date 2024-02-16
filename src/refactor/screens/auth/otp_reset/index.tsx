@@ -75,7 +75,7 @@ export const ResetOtp = ({
 	}, [otpTimerVisible])
 
 	const resend = () => dispatch(resendOtpThunk({ navigation }))
-	const goBack = () => dispatch(startLoginThunk(navigation))
+	const goBack = () => navigation.navigate('Login')
 	const openSupport = () => Linking.openURL(url)
 
 	const resendOrCountDown = () => {

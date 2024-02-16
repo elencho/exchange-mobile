@@ -5,6 +5,7 @@ CUR_COCOAPODS_VER=`sed -n -e 's/^COCOAPODS: \([0-9.]*\)/\1/p' ios/Podfile.lock`
 ENV_COCOAPODS_VER=`pod --version`
 
 # check if not the same version, reinstall cocoapods version to current project's
+echo "current env cocoapods version $ENV_COCOAPODS_VER"
 if [ $CUR_COCOAPODS_VER != $ENV_COCOAPODS_VER ];
 then
     echo "Uninstalling all CocoaPods versions"
