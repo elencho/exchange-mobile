@@ -283,6 +283,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 								setFiatModalVisible(false)
 								setBuyWithCardChecked(false)
 								cards.length !== 1 && setChosenCard(undefined)
+								clearErrors(false)
 							}}
 							dismiss={() => setFiatModalVisible(false)}
 						/>
@@ -294,6 +295,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							onCoinSelected={(crypto: Coin) => {
 								onCoinSelected(crypto)
 								setCryptoModalVisible(false)
+								clearErrors(false)
 							}}
 							dismiss={() => setCryptoModalVisible(false)}
 						/>

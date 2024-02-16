@@ -1,5 +1,5 @@
 export type CoinError = {
-	err: string
+	err?: string
 	type: CoinType[]
 }
 
@@ -19,7 +19,7 @@ export const coinError = (
 
 	// 5
 	if (!fiatAmount.trim().length || !cryptoAmount.trim().length) {
-		return { err: 'Both empty', type: ['Fiat', 'Crypto'] }
+		return { type: ['Fiat', 'Crypto'] }
 	}
 
 	if (tradeType === 'Buy') {
