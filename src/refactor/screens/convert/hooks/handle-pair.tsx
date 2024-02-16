@@ -21,7 +21,6 @@ export const handlePair = ({
 	const [lowCoin, setLowCoin] = useState<Coin>()
 	const [lowAmount, setLowAmount] = useState('')
 	const [lastChanged, setLastChanged] = useState<Position | null>(null)
-	const [lastClicked, setLastClicked] = useState<Position | null>(null)
 	const [errorInputs, setErrorInputs] = useState<Position[]>([])
 	const [errorText, setErrorText] = useState<string>()
 
@@ -51,7 +50,6 @@ export const handlePair = ({
 		} else if (lastChanged === 'low') {
 			recalculateUp(lowAmount, upC?.scale)
 		}
-		setLastClicked(null)
 	}, [pair])
 
 	useEffect(() => {
@@ -102,8 +100,8 @@ export const handlePair = ({
 		}
 	}
 
-	const recalculateUp = (txt: string, scale?: number) => {
-		const num = Number(txt)
+	const recalculateUp = (low: string, scale?: number, from: string = '.') => {
+		const num = Number(low)
 		if (num === 0 || isNaN(num)) {
 			return setUpAmount('')
 		}
@@ -111,7 +109,7 @@ export const handlePair = ({
 		const price = tradeType === 'Buy' ? pair?.buyPrice : pair?.sellPrice
 		const mul = tradeType === 'Sell' ? 1 / Number(price) : Number(price)
 
-		const newUp = mul * Number(txt)
+		const newUp = mul * Number(low)
 		if (newUp === 0) {
 			setUpAmount('')
 			setLowAmount('')
@@ -120,8 +118,8 @@ export const handlePair = ({
 		}
 	}
 
-	const recalculateLow = (txt: string, scale?: number) => {
-		const num = Number(txt)
+	const recalculateLow = (up: string, scale?: number, from: string = '.') => {
+		const num = Number(up)
 		if (num === 0 || isNaN(num)) {
 			return setLowAmount('')
 		}
@@ -129,7 +127,7 @@ export const handlePair = ({
 		const price = tradeType === 'Buy' ? pair?.buyPrice : pair?.sellPrice
 		const mul = tradeType === 'Buy' ? 1 / Number(price) : Number(price)
 
-		const newLow = mul * Number(txt)
+		const newLow = mul * Number(up)
 		if (newLow === 0) {
 			setUpAmount('')
 			setLowAmount('')
@@ -157,8 +155,6 @@ export const handlePair = ({
 		setLowAmount,
 		lastChanged,
 		setLastChanged,
-		lastClicked,
-		setLastClicked,
 		errorInputs,
 		setErrorInputs,
 		errorText,

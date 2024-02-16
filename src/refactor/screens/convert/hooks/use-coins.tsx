@@ -31,6 +31,7 @@ export const useCoins = () => {
 	const [cards, setCards] = useState<Card[]>([])
 	const [fees, setFees] = useState<ProviderFees[]>([])
 
+	const maxLimitCard = useRef<number>()
 	const offersCache = useRef<Record<DisplayCcy, CoinPair[]>>({})
 	const balancesCache = useRef<Record<DisplayCcy, BalanceEntry>>({})
 	const feesCache = useRef<Record<Provider, Record<CardType, Pct | null>>>({})
@@ -65,6 +66,7 @@ export const useCoins = () => {
 				const balances = data[1]
 				balancesCache.current = saveBalancesCache(balances)
 				offersCache.current = saveOffersCache(offers)
+				saveMaxLimitCard(balances)
 
 				const defCcy = extractDisplayCcys()
 
@@ -165,6 +167,18 @@ export const useCoins = () => {
 		return res.sort((a, b) => a.providerBank.localeCompare(b.providerBank))
 	}
 
+	const saveMaxLimitCard = (dto: BalancesResponse) => {
+		const toGelEntry = dto.balances.find(
+			(v) => v.displayCurrencyCode === 'TOGEL'
+		)
+		const maxLimit = toGelEntry?.limits.find(
+			(l) => l.method === 'ECOMMERCE' && l.transactionType === 'DEPOSIT'
+		)?.maxValue
+		if (maxLimit) {
+			maxLimitCard.current = Number(maxLimit)
+		}
+	}
+
 	/***
 	 *
 	 * Mappers
@@ -251,5 +265,6 @@ export const useCoins = () => {
 		fetchCoins,
 		onCoinSelected,
 		onFetch: timesFetched,
+		maxLimitCard: maxLimitCard.current,
 	}
 }

@@ -10,15 +10,12 @@ type Props = {
 	tradeType: TradeType
 	balanceMultiplier: number | undefined
 	handleDropDownClick: (type: CoinType) => void
-	saveBaseAmount: (amount: string) => void
-	onTextChanged: () => void
 
 	upCoin: Coin | undefined
 	upAmount: string
 	lowAmount: string
 	lowCoin: Coin | undefined
 	lastChanged: Position | null
-	lastClicked: Position | null
 	errorInputs: Position[]
 	errorText: string | undefined
 
@@ -27,17 +24,15 @@ type Props = {
 	setUpAmount: (amount: string) => void
 	setLowAmount: (amount: string) => void
 	setLastChanged: (pos: Position | null) => void
-	setLastClicked: (pos: Position | null) => void
 	setErrorInputs: (pos: Position[]) => void
 	setErrorText: (txt: string | undefined) => void
 
-	recalculateUp: (txt: string, scale?: number) => void
-	recalculateLow: (txt: string, scale?: number) => void
+	recalculateUp: (txt: string, scale: number) => void
+	recalculateLow: (txt: string, scale: number) => void
 }
 
 const CoinPair = ({
 	handleDropDownClick,
-	saveBaseAmount,
 	upCoin,
 	upAmount,
 	lowAmount,
@@ -48,12 +43,10 @@ const CoinPair = ({
 	setUpAmount,
 	setLowAmount,
 	setLastChanged,
-	setLastClicked,
 	setErrorInputs,
 	setErrorText,
 	recalculateUp,
 	recalculateLow,
-	onTextChanged,
 }: Props) => {
 	const { styles } = useTheme(_styles)
 
@@ -70,23 +63,16 @@ const CoinPair = ({
 					amount={upAmount}
 					isActive={lastChanged === 'up'}
 					onAmountChange={(txt) => {
-						saveBaseAmount(txt)
-						setLastChanged('up')
 						setUpAmount(txt)
 						recalculateLow(txt, lowCoin.scale)
 						clearError()
-						onTextChanged()
 					}}
 					onDropdownClick={(type) => {
-						setLastClicked('up')
 						handleDropDownClick(type)
 					}}
 					onFocus={() => {
 						setLastChanged('up')
 						clearError()
-					}}
-					onBlur={() => {
-						setLastChanged(null)
 					}}
 					error={errorInputs.includes('up')}
 				/>
@@ -96,22 +82,16 @@ const CoinPair = ({
 					amount={lowAmount}
 					isActive={lastChanged === 'low'}
 					onAmountChange={(txt) => {
-						setLastChanged('low')
 						setLowAmount(txt)
 						recalculateUp(txt, upCoin.scale)
 						clearError()
-						onTextChanged()
 					}}
 					onDropdownClick={(type) => {
-						setLastClicked('low')
 						handleDropDownClick(type)
 					}}
 					onFocus={() => {
 						setLastChanged('low')
 						clearError()
-					}}
-					onBlur={() => {
-						setLastChanged(null)
 					}}
 					error={errorInputs.includes('low')}
 				/>

@@ -12,7 +12,7 @@ type Props = {
 }
 
 const ConfirmTradeCard = ({ fiat, card, amount }: Props) => {
-	const { styles, theme } = useTheme(_styles)
+	const { styles } = useTheme(_styles)
 
 	const feeNum = Number(amount) * (card.feePct ? card.feePct / 100 : 0)
 	const totalNum = Number(amount) + feeNum

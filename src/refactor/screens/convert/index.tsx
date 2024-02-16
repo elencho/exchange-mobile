@@ -1,8 +1,7 @@
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
-import { useTheme } from '@theme/index'
-import { StyleSheet, View } from 'react-native'
+import { Theme, useTheme } from '@theme/index'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import AppBackground from '@components/background'
-import InfoMark from '@app/components/InstantTrade/InfoMark'
 import TopRow from '@components/top_row'
 import { useEffect, useState } from 'react'
 import { TradeTypeSwitcher } from '@app/refactor/screens/convert/components/TradeTypeSwitcher'
@@ -12,23 +11,21 @@ import ChooseFiatModal from '@app/refactor/screens/convert/modals/ChooseFiatModa
 import { MaterialIndicator } from 'react-native-indicators'
 import ChooseCryptoModal from '@app/refactor/screens/convert/modals/ChooseCryptoModal'
 import BalanceChips from '@app/refactor/screens/convert/components/BalanceChips'
-import InfoModal from '@app/components/InstantTrade/InfoModal'
 import CardSection from '@app/refactor/screens/convert/components/CardSection'
 import CoinPair from '@app/refactor/screens/convert/components/CoinPair'
 import { AppButton } from '@components/button'
 import { convertColors } from '@app/refactor/screens/convert/util'
-import CopyLogo from '@assets/images/Copy.svg'
 import { useNotificationPermissions } from '@app/screens/useNotificationPermissions'
 import WithKeyboard from '@app/components/WithKeyboard'
 import CardTotalFee from '@app/refactor/screens/convert/components/CardTotalFee'
 import { handlePair } from '@app/refactor/screens/convert/hooks/handle-pair'
+import InfoModal from '@app/refactor/screens/convert/modals/InfoModal'
+import AppText from '@components/text'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	useNotificationPermissions()
 
-	const { styles, theme } = useTheme(_styles)
-
-	const [baseAmount, setBaseAmount] = useState<string>('')
+	const { styles } = useTheme(_styles)
 
 	const [cardError, setCardError] = useState<boolean>(false)
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
@@ -38,6 +35,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
+	const [infoModalVisible, setInfoModalVisible] = useState(false)
 
 	const goToConfirm = (spentAmount: string, receivedAmount: string) => {
 		pair &&
@@ -64,7 +62,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		loading,
 		fetchCoins,
 		onCoinSelected,
-		onFetch,
+		maxLimitCard,
 	} = useCoins()
 
 	const {
@@ -78,8 +76,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		setLowAmount,
 		lastChanged,
 		setLastChanged,
-		lastClicked,
-		setLastClicked,
 		errorInputs,
 		setErrorInputs,
 		errorText,
@@ -104,13 +100,13 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	}, [tradeType, cards])
 
 	useEffect(() => {
-		clearErrors()
+		clearErrors(false)
 	}, [tradeType])
 
-	const clearErrors = () => {
+	const clearErrors = (clearCard: boolean) => {
 		setErrorInputs([])
 		setErrorText('')
-		setCardError(false)
+		clearCard && setCardError(false)
 	}
 
 	const onTimerExpire = () => {
@@ -120,7 +116,12 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const onButtonClick = () => {
 		if (buyWithCardChecked && !chosenCard) {
 			setCardError(true)
-			setErrorInputs(['low', 'up'])
+		} else if (
+			buyWithCardChecked &&
+			maxLimitCard &&
+			Number(upAmount) > maxLimitCard
+		) {
+			setErrorText('max limit ' + maxLimitCard)
 		} else {
 			handleButtonClick()
 		}
@@ -143,12 +144,40 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const showCardSection = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
 
+	const canShowLoading = () => {
+		const noModalsVisible = !(
+			fiatModalVisible ||
+			cryptoModalVisible ||
+			infoModalVisible
+		)
+		return noModalsVisible && pair !== undefined && loading
+	}
+
+	const InfoLogo = () => {
+		return (
+			<TouchableOpacity
+				style={styles.infoContainer}
+				onPress={() => setInfoModalVisible(true)}>
+				<AppText variant="l" medium style={styles.infoText}>
+					?
+				</AppText>
+			</TouchableOpacity>
+		)
+	}
+
+	const clearData = () => {
+		setTimeout(() => {
+			setUpAmount('')
+			setLowAmount('')
+			setBuyWithCardChecked(false)
+			setSelectedChip(undefined)
+		}, 500)
+	}
+
 	return (
 		<AppBackground>
-			<TopRow
-				headlineLogo={<InfoMark inner="?" color={theme.color.textThird} />}
-			/>
-			{loading || !pair ? (
+			<TopRow headlineLogo={<InfoLogo />} clear={clearData} />
+			{canShowLoading() || !pair ? (
 				<MaterialIndicator
 					color="#6582FD"
 					animationDuration={3000}
@@ -174,13 +203,11 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							tradeType={tradeType}
 							balanceMultiplier={selectedChip}
 							handleDropDownClick={handleDropDownClick}
-							saveBaseAmount={setBaseAmount}
 							upCoin={upCoin}
 							upAmount={upAmount}
 							lowAmount={lowAmount}
 							lowCoin={lowCoin}
 							lastChanged={lastChanged}
-							lastClicked={lastClicked}
 							errorInputs={errorInputs}
 							errorText={errorText}
 							setUpCoin={setUpCoin}
@@ -188,12 +215,10 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							setUpAmount={setUpAmount}
 							setLowAmount={setLowAmount}
 							setLastChanged={setLastChanged}
-							setLastClicked={setLastClicked}
 							setErrorInputs={setErrorInputs}
 							setErrorText={setErrorText}
 							recalculateUp={recalculateUp}
 							recalculateLow={recalculateLow}
-							onTextChanged={() => setSelectedChip(undefined)}
 						/>
 						{showPercentages && (
 							<BalanceChips
@@ -231,7 +256,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							<CardTotalFee
 								card={chosenCard}
 								fiat={pair.fiat}
-								amount={baseAmount}
+								amount={upAmount}
 							/>
 						)}
 						<View style={{ height: 30 }} />
@@ -245,7 +270,10 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							text={buttonText()}
 							onPress={onButtonClick}
 						/>
-						<InfoModal />
+						<InfoModal
+							visible={infoModalVisible}
+							dismiss={() => setInfoModalVisible(false)}
+						/>
 						<ChooseFiatModal
 							visible={fiatModalVisible}
 							fiats={fiats}
@@ -253,6 +281,9 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							onCoinSelected={(fiat: Coin) => {
 								onCoinSelected(fiat)
 								setFiatModalVisible(false)
+								setBuyWithCardChecked(false)
+								cards.length !== 1 && setChosenCard(undefined)
+								clearErrors(false)
 							}}
 							dismiss={() => setFiatModalVisible(false)}
 						/>
@@ -264,6 +295,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							onCoinSelected={(crypto: Coin) => {
 								onCoinSelected(crypto)
 								setCryptoModalVisible(false)
+								clearErrors(false)
 							}}
 							dismiss={() => setCryptoModalVisible(false)}
 						/>
@@ -274,7 +306,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	)
 }
 
-const _styles = () =>
+const _styles = (theme: Theme) =>
 	StyleSheet.create({
 		container: {
 			flex: 1,
@@ -283,6 +315,18 @@ const _styles = () =>
 		button: {
 			verticalAlign: 'bottom',
 			marginBottom: 15,
+		},
+		infoContainer: {
+			borderColor: theme.color.textThird,
+			borderWidth: 1,
+			width: 25,
+			height: 25,
+			borderRadius: 15,
+			justifyContent: 'center',
+			alignItems: 'center',
+		},
+		infoText: {
+			color: theme.color.textThird,
 		},
 	})
 
