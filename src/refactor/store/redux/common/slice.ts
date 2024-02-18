@@ -25,6 +25,7 @@ interface CommonState {
 	isBiometricScreenOpened: boolean
 	isBiometricEnabled: boolean
 	notificationData: any
+	biometricSuccess: boolean | null
 
 	// convert
 	convertPair?: string
