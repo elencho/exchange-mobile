@@ -94,34 +94,44 @@ export default function Security({ loading, bioAvailable }: Props) {
 				passwordModalVisible={passwordModalVisible}
 				togglePasswordModal={togglePasswordModal}
 			/>
-			<GoogleAuthModal
-				toggleGoogleAuthModal={toggleGoogleAuthModal}
-				googleAuthModalVisible={googleAuthModalVisible}
-			/>
-			<SmsEmailAuthModal
-				toggleSmsAuthModal={toggleSmsAuthModalVisible}
-				toggleEmailAuthModal={toggleEmailAuthModalVisible}
-				emailAuthModalVisible={emailAuthModalVisible}
-				toggleGoogleAuthModal={toggleGoogleAuthModal}
-			/>
-			<SmsOtpModal
-				toggleEmailAuthModal={toggleEmailAuthModalVisible}
-				toggleGoogleAuthModal={toggleGoogleAuthModal}
-				toggleSmsAuthModal={toggleSmsAuthModalVisible}
-				smsAuthModalVisible={smsAuthModalVisible}
-				togglePhoneNumberModal={togglePhoneNumberModal}
-			/>
+			{googleAuthModalVisible && (
+				<GoogleAuthModal
+					toggleGoogleAuthModal={toggleGoogleAuthModal}
+					googleAuthModalVisible={googleAuthModalVisible}
+				/>
+			)}
+			{emailAuthModalVisible && (
+				<SmsEmailAuthModal
+					toggleSmsAuthModal={toggleSmsAuthModalVisible}
+					toggleEmailAuthModal={toggleEmailAuthModalVisible}
+					emailAuthModalVisible={emailAuthModalVisible}
+					toggleGoogleAuthModal={toggleGoogleAuthModal}
+					togglePhoneNumberModal={togglePhoneNumberModal}
+				/>
+			)}
+			{smsAuthModalVisible && (
+				<SmsOtpModal
+					toggleEmailAuthModal={toggleEmailAuthModalVisible}
+					toggleGoogleAuthModal={toggleGoogleAuthModal}
+					toggleSmsAuthModal={toggleSmsAuthModalVisible}
+					smsAuthModalVisible={smsAuthModalVisible}
+					togglePhoneNumberModal={togglePhoneNumberModal}
+				/>
+			)}
 
 			<GoogleOtpModal
 				toggleGoogleOtpModalVisible={toggleGoogleOtpModalVisible}
 				googleOtpModalVisible={googleOtpModalVisible}
 				toggleEmailAuthModalVisible={toggleEmailAuthModalVisible}
 				toggleSmsAuthModalVisible={toggleSmsAuthModalVisible}
-			/>
-			<PhoneNumberModal
-				phoneNumberModalVisible={phoneNumberModalVisible}
 				togglePhoneNumberModal={togglePhoneNumberModal}
 			/>
+			{phoneNumberModalVisible && (
+				<PhoneNumberModal
+					phoneNumberModalVisible={phoneNumberModalVisible}
+					togglePhoneNumberModal={togglePhoneNumberModal}
+				/>
+			)}
 		</>
 	) : (
 		<PersonalSecuritySkeleton />

@@ -56,8 +56,6 @@ export const Personal = ({
 		personalInfoModalVisible,
 		languageModalVisible,
 		setLanguageModalVisible,
-		phoneNumberModalVisible,
-		togglePhoneNumberModal,
 		emailUpdated,
 		toggleIdentityModalVisible,
 		identityModalVisible,

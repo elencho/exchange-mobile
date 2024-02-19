@@ -23,6 +23,7 @@ export const useGoogleOtp = (props: GoogleOtpProps) => {
 		googleOtpModalVisible,
 		toggleEmailAuthModalVisible,
 		toggleSmsAuthModalVisible,
+		togglePhoneNumberModal,
 	} = props
 	const navigation = useNavigation()
 	const dispatch = useDispatch()
@@ -58,9 +59,8 @@ export const useGoogleOtp = (props: GoogleOtpProps) => {
 	}
 
 	const showSms = () => {
-		sendSmsOtp()
 		hide()
-		toggleSmsAuthModalVisible(true)
+		togglePhoneNumberModal('fromChangeOtp')
 		setGeneralErrorData(null)
 	}
 

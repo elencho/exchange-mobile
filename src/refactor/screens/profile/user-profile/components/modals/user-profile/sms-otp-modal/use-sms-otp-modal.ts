@@ -24,7 +24,7 @@ interface SmsOtpModalProps {
 	toggleEmailAuthModal: (v: boolean) => void
 	toggleGoogleAuthModal: (v: boolean) => void
 	smsAuthModalVisible: boolean
-	togglePhoneNumberModal: (v: boolean) => void
+	togglePhoneNumberModal: (v: boolean | string) => void
 }
 
 export const useSmsOtpModal = ({
@@ -44,6 +44,7 @@ export const useSmsOtpModal = ({
 	const { currentSecurityAction, tOTPChangeParams, userInfo } = useSelector(
 		(state: RootState) => state.profile
 	)
+	const { otpType } = useSelector((state: RootState) => state.auth)
 	const dispatch = useDispatch()
 	const hide = () => {
 		toggleSmsAuthModal(false)
@@ -173,5 +174,6 @@ export const useSmsOtpModal = ({
 		onShow,
 		handleFill,
 		userInfo,
+		otpType,
 	}
 }

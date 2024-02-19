@@ -137,6 +137,7 @@ export const forgotPassword = async () => {
 			params: {
 				client_id: 'mobile-service-public',
 				display: 'mobile',
+				os: Platform.OS.toUpperCase(),
 			},
 		}
 	)

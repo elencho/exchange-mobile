@@ -19,8 +19,8 @@ export default function PhoneNumberModal({
 	phoneNumberModalVisible,
 	togglePhoneNumberModal,
 }: {
-	phoneNumberModalVisible: boolean
-	togglePhoneNumberModal: (v: boolean) => void
+	phoneNumberModalVisible: boolean | string
+	togglePhoneNumberModal: (v: boolean | string) => void
 }) {
 	const {
 		userInfo,
@@ -86,6 +86,7 @@ export default function PhoneNumberModal({
 					padding
 					flexGrow
 					modal
+					keyboardShouldPersistTaps="handled"
 					scrollUp={false}
 					refreshControl={null}>
 					<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
@@ -122,9 +123,15 @@ export default function PhoneNumberModal({
 							}}
 							keyboardType="number-pad"
 							error={error.phoneNumber && !(phoneNumber?.trim()?.length > 0)}
-							rightComponent={otpType === OTPTypes.SMS && <PhoneInputRight />}
+							rightComponent={
+								(otpType === OTPTypes.SMS ||
+									phoneNumberModalVisible === 'fromChangeOtp') && (
+									<PhoneInputRight />
+								)
+							}
 						/>
-						{otpType === OTPTypes.SMS && (
+						{(otpType === OTPTypes.SMS ||
+							phoneNumberModalVisible === 'fromChangeOtp') && (
 							<AppInput
 								style={styles.inputContainer}
 								label="Verification Code"
@@ -133,6 +140,7 @@ export default function PhoneNumberModal({
 								keyboardType="number-pad"
 								textContentType="oneTimeCode"
 								autoComplete="sms-otp"
+								autoFocus={true}
 								onFocusOrChange={() => {
 									setGeneralErrorData(null)
 									setError({
@@ -177,7 +185,7 @@ export default function PhoneNumberModal({
 	return (
 		<>
 			<AppModal
-				visible={phoneNumberModalVisible}
+				visible={!!phoneNumberModalVisible}
 				hide={hide}
 				fullScreen
 				title="My Phone Number"
