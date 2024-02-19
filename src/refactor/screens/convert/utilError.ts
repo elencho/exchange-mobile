@@ -56,6 +56,7 @@ export const coinError = (
 			}
 		}
 		// 8
+		// TODO: Buy?
 		if (!buyWithCard && c * sell < pair.minTradeCost) {
 			return {
 				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,

@@ -51,7 +51,7 @@ export const formatAmount = (txt: string, coin?: Coin) => {
 		txt = txt.slice(0, lastDoxIndex + (coin?.scale || 0) + 1)
 	}
 	// This line ensures no trailing zeros
-	//return Number(txt).toLocaleString().replace(',', '.')
+	// return Number(txt).toLocaleString().replace(',', '.')
 	return txt
 }
 

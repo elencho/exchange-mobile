@@ -33,7 +33,13 @@ export default function BalancesList({ balanceLoading, filteredBalances }) {
 		<View style={styles.container}>
 			<FlatList
 				nestedScrollEnabled
-				data={filteredBalances?.length > 0 ? filteredBalances : dummyBalances}
+				data={
+					filteredBalances?.length > 0
+						? filteredBalances
+						: balanceLoading
+						? dummyBalances
+						: []
+				}
 				renderItem={renderCurrency}
 				ListFooterComponent={() => <View style={{ height: height }} />}
 				keyExtractor={(item) => item.currencyCode}

@@ -44,16 +44,14 @@ export default function CryptoModalTrade({
 	}, [])
 
 	const filter = (text: string) => setCryptoFilterText(text.toLowerCase())
-
 	useEffect(() => {
-		const filteredArray =
-			currencyList?.filter(
-				(c) =>
-					c?.displayCode.toLowerCase().includes(cryptoFilterText) ||
-					c?.displayName.toLowerCase().includes(cryptoFilterText)
-			) ?? []
+		const filteredArray = currencyList?.filter(
+			(c) =>
+				c?.displayCode.toLowerCase().includes(cryptoFilterText) ||
+				c?.displayName.toLowerCase().includes(cryptoFilterText)
+		)
 		setFiletredData(filteredArray)
-	}, [cryptoFilterText])
+	}, [cryptoFilterText, currencyList])
 
 	const hide = () => {
 		setIsCryptoModalVisible(false)

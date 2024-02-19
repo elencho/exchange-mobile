@@ -37,11 +37,40 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		setModalVisible,
 		isModalVisible,
 		modalContent,
+		showModal,
+		isBiometricScreenOpenedForModal,
 	} = useModal()
 	const fromResume = route.params?.fromResume === true
 	const openRoute = route.params?.openRoute
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
+	const { biometricSuccess, isBiometricScreenOpened } = useSelector(
+		(state: RootState) => state.common
+	)
+
+	console.log({
+		modalContent,
+		biometricSuccess,
+	})
+	useEffect(() => {
+		if (
+			Object.keys(modalContent ?? {}).length > 0 &&
+			biometricSuccess &&
+			!isBiometricScreenOpenedForModal
+		) {
+			// setTimeout(() => {
+			// 	console.log('hereee', modalContent)
+			// 	showModal(modalContent)
+			// }, 1000)
+			let intervalCount = 0
+			const interval = setInterval(() => {
+				console.log('intervaaaal')
+				showModal(modalContent)
+				intervalCount++
+				if (intervalCount === 4) clearInterval(interval)
+			}, 1000)
+		}
+	}, [modalContent, biometricSuccess])
 
 	useEffect(() => {
 		changeNavigationBarColor(theme.color.backgroundSecondary, true)
@@ -75,6 +104,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 
 	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
 		const appClosing = isAppClosing(newState)
+		dispatch(setBiometricSuccess(false))
 		const bioVisible =
 			newState === 'active' &&
 			!fromResume &&
