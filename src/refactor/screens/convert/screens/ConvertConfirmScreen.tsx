@@ -7,7 +7,10 @@ import { AppButton } from '@components/button'
 import React, { useEffect } from 'react'
 import CloseIcon from '@components/close-button'
 import ConfirmTradeCard from '@app/refactor/screens/convert/components/ConfirmTradeCard'
-import { formatDisplayPair } from '@app/refactor/screens/convert/util'
+import {
+	formatDisplayPair,
+	formatScale,
+} from '@app/refactor/screens/convert/util'
 import { useSubmit } from '@app/refactor/screens/convert/hooks/use-submit'
 import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
 import General_error from '@components/general_error'
@@ -36,7 +39,7 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		props.navigation.pop()
 		props.navigation.replace('Main', {
 			fromResume: false,
-			openScreenRoute: 'Transactions',
+			openRoute: 'Transactions',
 		})
 	}
 
@@ -115,7 +118,8 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 			/>
 		)
 		const feeNum = Number(spentAmount) * (card.feePct ? card.feePct / 100 : 0)
-		const feeTxt = feeNum.toFixed(pair.fiat.scale) + ' ' + pair.fiat.displayCcy
+		const feeTxt =
+			formatScale(feeNum, pair.fiat.scale) + ' ' + pair.fiat.displayCcy
 
 		return (
 			<View style={styles.cardSectionContainer}>
@@ -143,14 +147,12 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 			<View style={styles.totalSectionContainer}>
 				<InfoItem
 					desc={'Total Spent'}
-					value={
-						Number(spentAmount).toFixed(spent.scale) + ' ' + spent.displayCcy
-					}
+					value={formatScale(spentAmount, spent.scale) + ' ' + spent.displayCcy}
 				/>
 				<InfoItem
 					desc={'Total Receive'}
 					value={
-						Number(receivedAmount).toFixed(received.scale) +
+						formatScale(receivedAmount, received.scale) +
 						' ' +
 						received.displayCcy
 					}

@@ -1,4 +1,5 @@
 import { submitTrade } from '@app/refactor/screens/convert/api/convertNowApi'
+import { formatScale } from '@app/refactor/screens/convert/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { setWebViewVisible } from '@store/redux/common/slice'
 import { useState } from 'react'
@@ -16,9 +17,9 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 		useState<ConfirmModalStatus>()
 
 	const onConfirmPressed = () => {
-		const amount = Number(spentAmount).toFixed(
-			tradeType === 'Buy' ? pair.fiat.scale : pair.crypto.scale
-		)
+		const scale = tradeType === 'Buy' ? pair.fiat.scale : pair.crypto.scale
+		const amount = formatScale(spentAmount, scale)
+
 		const params: SubmitTradeRequest = {
 			pairCode: pair.code,
 			action: tradeType === 'Buy' ? 'BID' : 'ASK',

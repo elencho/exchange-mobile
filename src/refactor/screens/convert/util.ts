@@ -50,14 +50,18 @@ export const formatAmount = (txt: string, coin?: Coin) => {
 		const lastDoxIndex = dotIndexes[dotIndexes.length - 1]
 		txt = txt.slice(0, lastDoxIndex + (coin?.scale || 0) + 1)
 	}
+	// This line ensures no trailing zeros
+	//return Number(txt).toLocaleString().replace(',', '.')
 	return txt
 }
 
-const isCharNumber = (c: string) => {
-	return c >= '0' && c <= '9'
-}
+export const formatScale = (
+	amount: string | number,
+	scale: number | undefined
+) => {
+	if (!scale) return amount.toString()
 
-export const formatScale = (amount: string, scale: number) => {
+	amount = typeof amount === 'number' ? amount.toString() : amount
 	const dotIndex = amount.indexOf('.')
 	return dotIndex === -1 ? amount : amount.substring(0, dotIndex + 1 + scale)
 }

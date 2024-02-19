@@ -1,3 +1,4 @@
+import { formatScale } from '@app/refactor/screens/convert/util'
 import { CoinError, coinError } from '@app/refactor/screens/convert/utilError'
 import { useState, useEffect } from 'react'
 
@@ -52,12 +53,19 @@ export const handlePair = ({
 		if (!balanceMultiplier) return
 		const { upC, lowC } = sortCoins()
 
-		const amount = (balanceMultiplier * Number(upC?.balance)).toString()
+		const amount = formatForRebalancing(balanceMultiplier, upC)
 		setUpAmount(amount)
 		recalculateLow(amount, lowC?.scale)
 
 		setLastChanged('up')
 	}, [balanceMultiplier])
+
+	const formatForRebalancing = (
+		balanceMultiplier: number,
+		upC: Coin | undefined
+	) => {
+		return (balanceMultiplier * Number(upC?.balance)).toString()
+	}
 
 	const handleButtonClick = () => {
 		const coinErr = coinError(

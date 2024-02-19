@@ -124,11 +124,15 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const onButtonClick = () => {
 		if (buyWithCardChecked && !chosenCard) {
 			setCardError(true)
+			if (!upAmount.trim().length || !lowAmount.trim().length) {
+				return { type: ['Fiat', 'Crypto'] }
+			}
 		} else if (
 			buyWithCardChecked &&
 			maxLimitCard &&
 			Number(upAmount) > maxLimitCard
 		) {
+			setErrorInputs(['up'])
 			setErrorText('max limit ' + maxLimitCard)
 		} else {
 			handleButtonClick()

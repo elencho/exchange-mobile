@@ -3,7 +3,7 @@ import { Theme, useTheme } from '@theme/index'
 import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Fee from '@assets/images/Fee.svg'
-import { hexOpacityPct } from '@app/refactor/screens/convert/util'
+import { formatScale, hexOpacityPct } from '@app/refactor/screens/convert/util'
 
 type Props = {
 	fiat: Coin
@@ -17,10 +17,10 @@ const ConfirmTradeCard = ({ fiat, card, amount }: Props) => {
 	const feeNum = Number(amount) * (card.feePct ? card.feePct / 100 : 0)
 	const totalNum = Number(amount) + feeNum
 	const totalTxt =
-		'Total: ' + totalNum.toFixed(fiat.scale) + ' ' + fiat.displayCcy
+		'Total: ' + formatScale(totalNum, fiat.scale) + ' ' + fiat.displayCcy
 	const feeTxt =
 		'Fee: ' +
-		feeNum.toFixed(fiat.scale) +
+		formatScale(feeNum, fiat.scale) +
 		' ' +
 		fiat.displayCcy +
 		' (' +

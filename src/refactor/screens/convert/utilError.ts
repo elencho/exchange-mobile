@@ -14,7 +14,6 @@ export const coinError = (
 
 	const f = Number(fiatAmount)
 	const c = Number(cryptoAmount)
-	const buy = Number(pair.buyPrice)
 	const sell = Number(pair.sellPrice)
 
 	// 5
@@ -24,10 +23,7 @@ export const coinError = (
 
 	if (tradeType === 'Buy') {
 		// 1, 2
-		if (
-			!buyWithCard &&
-			(f > Number(pair.fiat.balance) || c > Number(pair.fiat.balance))
-		) {
+		if (!buyWithCard && f > Number(pair.fiat.balance)) {
 			return {
 				err: 'max. available ' + pair.fiat.balance + ' ' + pair.fiat.displayCcy,
 				type: ['Fiat'],
@@ -60,7 +56,6 @@ export const coinError = (
 			}
 		}
 		// 8
-		// TODO: Buy?
 		if (!buyWithCard && c * sell < pair.minTradeCost) {
 			return {
 				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
