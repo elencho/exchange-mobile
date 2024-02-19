@@ -1,7 +1,7 @@
-import { Platform } from 'react-native'
+import { Keyboard, Platform } from 'react-native'
 import VersionCheck from 'react-native-version-check'
 import { useEffect, useRef } from 'react'
-import { removeListener, startOtpListener } from 'react-native-otp-verify'
+import RNOtpVerify from 'react-native-otp-verify'
 
 export const System = {
 	isIos: Platform.OS === 'ios',
@@ -29,17 +29,27 @@ export const useInterval = (callback: () => void, delayMillis: number) => {
 }
 
 export const useSmsOtpVerifier = (setValue: (val: string) => void) => {
+	const otpHandler = (message: string) => {
+		if (message !== 'Timeout Error.') {
+			const otpMatch = /(\d{4})/g.exec(message)
+			const otp = otpMatch ? otpMatch[1] : ''
+
+			setValue(otp)
+			Keyboard.dismiss()
+			RNOtpVerify.removeListener()
+		} else {
+			console.log('Timeout Error.')
+			RNOtpVerify.removeListener()
+			RNOtpVerify.getOtp()
+		}
+	}
+
 	useEffect(() => {
 		if (System.isAndroid) {
-			startOtpListener((message) => {
-				if (message) {
-					const otpMatch = /(\d{4})/g.exec(message)
-					const otp = otpMatch ? otpMatch[1] : ''
-					setValue(otp)
-				}
-			})
-
-			return () => removeListener()
+			RNOtpVerify.getOtp()
+				.then(() => RNOtpVerify.addListener(otpHandler))
+				.catch()
 		}
+		return () => RNOtpVerify.removeListener()
 	}, [setValue])
 }

@@ -29,6 +29,7 @@ interface Props {
 	generalErrorData?: UiErrorData | null
 	onFill: () => void
 	loading?: boolean
+	autoFocus?: boolean
 }
 
 const TwoFaInput = ({
@@ -39,6 +40,7 @@ const TwoFaInput = ({
 	onFill,
 	generalErrorData,
 	loading,
+	autoFocus = false,
 }: Props) => {
 	useEffect(() => {
 		if (value.length === cellCount) {

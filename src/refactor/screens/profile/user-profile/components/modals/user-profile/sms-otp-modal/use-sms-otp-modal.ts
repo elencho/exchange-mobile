@@ -44,6 +44,7 @@ export const useSmsOtpModal = ({
 	const { currentSecurityAction, tOTPChangeParams, userInfo } = useSelector(
 		(state: RootState) => state.profile
 	)
+	const { otpType } = useSelector((state: RootState) => state.auth)
 	const dispatch = useDispatch()
 	const hide = () => {
 		toggleSmsAuthModal(false)
@@ -173,5 +174,6 @@ export const useSmsOtpModal = ({
 		onShow,
 		handleFill,
 		userInfo,
+		otpType,
 	}
 }

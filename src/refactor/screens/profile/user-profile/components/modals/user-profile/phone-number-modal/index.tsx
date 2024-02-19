@@ -86,6 +86,7 @@ export default function PhoneNumberModal({
 					padding
 					flexGrow
 					modal
+					keyboardShouldPersistTaps='handled'
 					scrollUp={false}
 					refreshControl={null}>
 					<TouchableOpacity activeOpacity={0.99} style={styles.flex}>
@@ -133,6 +134,7 @@ export default function PhoneNumberModal({
 								keyboardType="number-pad"
 								textContentType="oneTimeCode"
 								autoComplete="sms-otp"
+								autoFocus={true}
 								onFocusOrChange={() => {
 									setGeneralErrorData(null)
 									setError({
