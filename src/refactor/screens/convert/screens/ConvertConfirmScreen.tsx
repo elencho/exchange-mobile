@@ -24,6 +24,7 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		props.route?.params
 
 	const {
+		changedPrice,
 		onConfirmPressed,
 		confirmModalStatus,
 		setConfirmModalStatus,
@@ -48,14 +49,52 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		value: string
 	}
 	const InfoItem = ({ desc, value }: InfoItem) => {
+		const descText = (
+			<AppText variant="l" style={styles.infoDescText} noTranslate>
+				{desc + ':'}
+			</AppText>
+		)
+		const regularValueText = (
+			<AppText variant="l" style={styles.infoDescValue}>
+				{value}
+			</AppText>
+		)
+		// TODO: Logic
+		const valueText =
+			desc === 'Price' && changedPrice ? (
+				<ChangedPriceItem price={value} />
+			) : (
+				regularValueText
+			)
+
 		return (
 			<View style={styles.infoItemContainer}>
-				<AppText variant="l" style={styles.infoDescText} noTranslate>
-					{desc + ':'}
-				</AppText>
+				{descText}
 				<View style={{ flex: 1 }} />
+				{valueText}
+			</View>
+		)
+	}
+
+	const ChangedPriceItem = ({ price }: { price: string }) => {
+		const oldPrice = tradeType === 'Buy' ? pair.buyPrice : pair.sellPrice
+		const leftSide = '1 ' + pair.crypto.displayCcy + '≈'
+
+		return (
+			<View style={{ flexDirection: 'row' }}>
 				<AppText variant="l" style={styles.infoDescValue}>
-					{value}
+					{leftSide}
+				</AppText>
+				<AppText
+					variant="l"
+					style={[
+						styles.infoDescValue,
+						{ textDecorationLine: 'line-through' },
+					]}>
+					{' ' + oldPrice}
+				</AppText>
+				<AppText variant="l" style={styles.infoPriceChanged}>
+					{' ' + changedPrice + ' ' + pair.fiat.displayCcy}
 				</AppText>
 			</View>
 		)
@@ -174,6 +213,9 @@ const _styles = (theme: Theme) =>
 		},
 		infoDescValue: {
 			color: theme.color.textThird,
+		},
+		infoPriceChanged: {
+			color: theme.color.error,
 		},
 		button: {
 			marginBottom: 40,
