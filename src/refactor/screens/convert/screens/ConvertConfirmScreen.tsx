@@ -7,7 +7,10 @@ import { AppButton } from '@components/button'
 import React, { useEffect } from 'react'
 import CloseIcon from '@components/close-button'
 import ConfirmTradeCard from '@app/refactor/screens/convert/components/ConfirmTradeCard'
-import { formatDisplayPair } from '@app/refactor/screens/convert/util'
+import {
+	formatDisplayPair,
+	formatScale,
+} from '@app/refactor/screens/convert/util'
 import { useSubmit } from '@app/refactor/screens/convert/hooks/use-submit'
 import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
 import General_error from '@components/general_error'
@@ -24,6 +27,7 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		props.route?.params
 
 	const {
+		changedPrice,
 		onConfirmPressed,
 		confirmModalStatus,
 		setConfirmModalStatus,
@@ -31,7 +35,13 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		webViewState,
 	} = useSubmit(props)
 
-	const goToTransactions = () => {}
+	const goToTransactions = () => {
+		props.navigation.pop()
+		props.navigation.replace('Main', {
+			fromResume: false,
+			openRoute: 'Transactions',
+		})
+	}
 
 	const handleWebViewUrlChange = (event: WebViewNavigation) => {
 		const urlQueries = event.url.split('=')
@@ -48,14 +58,51 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		value: string
 	}
 	const InfoItem = ({ desc, value }: InfoItem) => {
+		const descText = (
+			<AppText variant="l" style={styles.infoDescText} noTranslate>
+				{desc + ':'}
+			</AppText>
+		)
+		const regularValueText = (
+			<AppText variant="l" style={styles.infoDescValue}>
+				{value}
+			</AppText>
+		)
+		const valueText =
+			desc === 'Price' && changedPrice ? (
+				<ChangedPriceItem price={value} />
+			) : (
+				regularValueText
+			)
+
 		return (
 			<View style={styles.infoItemContainer}>
-				<AppText variant="l" style={styles.infoDescText} noTranslate>
-					{desc + ':'}
-				</AppText>
+				{descText}
 				<View style={{ flex: 1 }} />
+				{valueText}
+			</View>
+		)
+	}
+
+	const ChangedPriceItem = ({ price }: { price: string }) => {
+		const oldPrice = tradeType === 'Buy' ? pair.buyPrice : pair.sellPrice
+		const leftSide = '1 ' + pair.crypto.displayCcy + '≈'
+
+		return (
+			<View style={{ flexDirection: 'row' }}>
 				<AppText variant="l" style={styles.infoDescValue}>
-					{value}
+					{leftSide}
+				</AppText>
+				<AppText
+					variant="l"
+					style={[
+						styles.infoDescValue,
+						{ textDecorationLine: 'line-through' },
+					]}>
+					{' ' + oldPrice}
+				</AppText>
+				<AppText variant="l" style={styles.infoPriceChanged}>
+					{' ' + changedPrice + ' ' + pair.fiat.displayCcy}
 				</AppText>
 			</View>
 		)
@@ -71,7 +118,8 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 			/>
 		)
 		const feeNum = Number(spentAmount) * (card.feePct ? card.feePct / 100 : 0)
-		const feeTxt = feeNum.toFixed(pair.fiat.scale) + ' ' + pair.fiat.displayCcy
+		const feeTxt =
+			formatScale(feeNum, pair.fiat.scale) + ' ' + pair.fiat.displayCcy
 
 		return (
 			<View style={styles.cardSectionContainer}>
@@ -99,14 +147,12 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 			<View style={styles.totalSectionContainer}>
 				<InfoItem
 					desc={'Total Spent'}
-					value={
-						Number(spentAmount).toFixed(spent.scale) + ' ' + spent.displayCcy
-					}
+					value={formatScale(spentAmount, spent.scale) + ' ' + spent.displayCcy}
 				/>
 				<InfoItem
 					desc={'Total Receive'}
 					value={
-						Number(receivedAmount).toFixed(received.scale) +
+						formatScale(receivedAmount, received.scale) +
 						' ' +
 						received.displayCcy
 					}
@@ -174,6 +220,9 @@ const _styles = (theme: Theme) =>
 		},
 		infoDescValue: {
 			color: theme.color.textThird,
+		},
+		infoPriceChanged: {
+			color: theme.color.error,
 		},
 		button: {
 			marginBottom: 40,

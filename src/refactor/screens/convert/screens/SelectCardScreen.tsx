@@ -4,25 +4,44 @@ import { StyleSheet, View, Image, Pressable } from 'react-native'
 import AppBackground from '@components/background'
 import AppText from '@components/text'
 import { AppButton } from '@components/button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CardFeesModal from '@app/refactor/screens/convert/modals/CardFeesModal'
 import CloseIcon from '@components/close-button'
 import CardAdd from '@assets/images/Card_Add.svg'
 import { FlatList } from 'react-native-gesture-handler'
 import AddCardModal from '@app/components/Wallet/ManageCards/AddCardModal'
-import { useDispatch } from 'react-redux'
-import { toggleAddCardModal } from '@app/redux/modals/actions'
+import { useDispatch, useSelector } from 'react-redux'
 import AddCardIcon from '@assets/images/Instant_Add_Card.svg'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 	const { styles } = useTheme(_styles)
 	const { cards, onCardChoose, fees } = props.route?.params
 
-	const dispatch = useDispatch()
 	const [feesModalVisible, setFeesModalVisible] = useState(false)
 
+	// TODO: Legacy saga code because of wallet, must refactor
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+		dispatch({ type: 'BALANCE_SAGA' })
+	}, [])
+
+	const state = useSelector((state: RootState) => state)
+	const {
+		trade: {
+			balance: { balances },
+		},
+	} = state
+
 	const goToAddCard = () => {
-		dispatch(toggleAddCardModal(true))
+		dispatch({
+			type: 'ADD_NEW_CARD_SAGA',
+			name: 'GEL',
+			code: 'GEL',
+			navigation: props.navigation,
+			balances,
+		})
 	}
 
 	const Top = () => {

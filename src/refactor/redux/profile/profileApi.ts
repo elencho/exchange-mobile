@@ -234,7 +234,6 @@ export const resendEmail = async (url: string) => {
 	return data?.data
 }
 
-
 export const sendOtp = async () => {
 	const data = await axios({
 		method: 'POST',

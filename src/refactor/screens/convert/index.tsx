@@ -100,8 +100,15 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	}, [tradeType, cards])
 
 	useEffect(() => {
+		setBuyWithCardChecked(false)
 		clearErrors(false)
 	}, [tradeType])
+
+	useEffect(() => {
+		if (!buyWithCardChecked) {
+			cards.length !== 1 && setChosenCard(undefined)
+		}
+	}, [buyWithCardChecked])
 
 	const clearErrors = (clearCard: boolean) => {
 		setErrorInputs([])
@@ -110,17 +117,22 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	}
 
 	const onTimerExpire = () => {
+		setSelectedChip(undefined)
 		fetchCoins()
 	}
 
 	const onButtonClick = () => {
 		if (buyWithCardChecked && !chosenCard) {
 			setCardError(true)
+			if (!upAmount.trim().length || !lowAmount.trim().length) {
+				return { type: ['Fiat', 'Crypto'] }
+			}
 		} else if (
 			buyWithCardChecked &&
 			maxLimitCard &&
 			Number(upAmount) > maxLimitCard
 		) {
+			setErrorInputs(['up'])
 			setErrorText('max limit ' + maxLimitCard)
 		} else {
 			handleButtonClick()
@@ -284,6 +296,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 								setBuyWithCardChecked(false)
 								cards.length !== 1 && setChosenCard(undefined)
 								clearErrors(false)
+								setSelectedChip(undefined)
 							}}
 							dismiss={() => setFiatModalVisible(false)}
 						/>
@@ -296,6 +309,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 								onCoinSelected(crypto)
 								setCryptoModalVisible(false)
 								clearErrors(false)
+								setSelectedChip(undefined)
 							}}
 							dismiss={() => setCryptoModalVisible(false)}
 						/>

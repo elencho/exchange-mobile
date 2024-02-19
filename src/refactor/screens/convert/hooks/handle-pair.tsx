@@ -1,3 +1,4 @@
+import { formatScale } from '@app/refactor/screens/convert/util'
 import { CoinError, coinError } from '@app/refactor/screens/convert/utilError'
 import { useState, useEffect } from 'react'
 
@@ -27,9 +28,7 @@ export const handlePair = ({
 	useEffect(() => {
 		const { upC, lowC } = sortCoins()
 
-		if (balanceMultiplier) {
-			rebalance(upC?.balance, lowC?.scale)
-		} else if (lastChanged === 'up') {
+		if (lastChanged === 'up') {
 			setLowAmount(upAmount)
 			recalculateUp(upAmount, upC?.scale)
 			setLastChanged('low')
@@ -43,9 +42,7 @@ export const handlePair = ({
 	useEffect(() => {
 		const { upC, lowC } = sortCoins()
 
-		if (balanceMultiplier) {
-			rebalance(upC?.balance, lowC?.scale)
-		} else if (lastChanged === 'up') {
+		if (lastChanged === 'up') {
 			recalculateLow(upAmount, lowC?.scale)
 		} else if (lastChanged === 'low') {
 			recalculateUp(lowAmount, upC?.scale)
@@ -53,18 +50,21 @@ export const handlePair = ({
 	}, [pair])
 
 	useEffect(() => {
-		rebalance(upCoin?.balance, lowCoin?.scale)
+		if (!balanceMultiplier) return
+		const { upC, lowC } = sortCoins()
+
+		const amount = formatForRebalancing(balanceMultiplier, upC)
+		setUpAmount(amount)
+		recalculateLow(amount, lowC?.scale)
+
+		setLastChanged('up')
 	}, [balanceMultiplier])
 
-	const rebalance = (
-		upBalance: string | undefined,
-		lowScale: number | undefined
+	const formatForRebalancing = (
+		balanceMultiplier: number,
+		upC: Coin | undefined
 	) => {
-		if (!balanceMultiplier) return
-
-		const amount = (balanceMultiplier * Number(upBalance)).toString()
-		setUpAmount(amount)
-		recalculateLow(amount, lowScale)
+		return (balanceMultiplier * Number(upC?.balance)).toString()
 	}
 
 	const handleButtonClick = () => {
@@ -83,7 +83,7 @@ export const handlePair = ({
 	}
 
 	const handleError = (err: CoinError) => {
-		setErrorText(err.err)
+		err.err && setErrorText(err.err)
 		if (err.type.length === 2) {
 			setErrorInputs(['up', 'low'])
 		} else if (err.type.length === 0) {
@@ -100,7 +100,7 @@ export const handlePair = ({
 		}
 	}
 
-	const recalculateUp = (low: string, scale?: number, from: string = '.') => {
+	const recalculateUp = (low: string, scale?: number) => {
 		const num = Number(low)
 		if (num === 0 || isNaN(num)) {
 			return setUpAmount('')
@@ -118,7 +118,7 @@ export const handlePair = ({
 		}
 	}
 
-	const recalculateLow = (up: string, scale?: number, from: string = '.') => {
+	const recalculateLow = (up: string, scale?: number) => {
 		const num = Number(up)
 		if (num === 0 || isNaN(num)) {
 			return setLowAmount('')
