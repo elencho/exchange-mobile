@@ -52,7 +52,11 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		biometricSuccess,
 	})
 	useEffect(() => {
-		if (Object.keys(modalContent ?? {}).length > 0 && biometricSuccess) {
+		if (
+			Object.keys(modalContent ?? {}).length > 0 &&
+			biometricSuccess &&
+			!isBiometricScreenOpenedForModal
+		) {
 			// setTimeout(() => {
 			// 	console.log('hereee', modalContent)
 			// 	showModal(modalContent)
