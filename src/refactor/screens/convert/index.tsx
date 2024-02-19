@@ -110,6 +110,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	}
 
 	const onTimerExpire = () => {
+		setSelectedChip(undefined)
 		fetchCoins()
 	}
 
@@ -284,6 +285,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 								setBuyWithCardChecked(false)
 								cards.length !== 1 && setChosenCard(undefined)
 								clearErrors(false)
+								setSelectedChip(undefined)
 							}}
 							dismiss={() => setFiatModalVisible(false)}
 						/>
@@ -296,6 +298,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 								onCoinSelected(crypto)
 								setCryptoModalVisible(false)
 								clearErrors(false)
+								setSelectedChip(undefined)
 							}}
 							dismiss={() => setCryptoModalVisible(false)}
 						/>

@@ -27,9 +27,7 @@ export const handlePair = ({
 	useEffect(() => {
 		const { upC, lowC } = sortCoins()
 
-		if (balanceMultiplier) {
-			rebalance(upC?.balance, lowC?.scale)
-		} else if (lastChanged === 'up') {
+		if (lastChanged === 'up') {
 			setLowAmount(upAmount)
 			recalculateUp(upAmount, upC?.scale)
 			setLastChanged('low')
@@ -43,9 +41,7 @@ export const handlePair = ({
 	useEffect(() => {
 		const { upC, lowC } = sortCoins()
 
-		if (balanceMultiplier) {
-			rebalance(upC?.balance, lowC?.scale)
-		} else if (lastChanged === 'up') {
+		if (lastChanged === 'up') {
 			recalculateLow(upAmount, lowC?.scale)
 		} else if (lastChanged === 'low') {
 			recalculateUp(lowAmount, upC?.scale)
@@ -53,19 +49,15 @@ export const handlePair = ({
 	}, [pair])
 
 	useEffect(() => {
-		rebalance(upCoin?.balance, lowCoin?.scale)
-	}, [balanceMultiplier])
-
-	const rebalance = (
-		upBalance: string | undefined,
-		lowScale: number | undefined
-	) => {
 		if (!balanceMultiplier) return
+		const { upC, lowC } = sortCoins()
 
-		const amount = (balanceMultiplier * Number(upBalance)).toString()
+		const amount = (balanceMultiplier * Number(upC?.balance)).toString()
 		setUpAmount(amount)
-		recalculateLow(amount, lowScale)
-	}
+		recalculateLow(amount, lowC?.scale)
+
+		setLastChanged('up')
+	}, [balanceMultiplier])
 
 	const handleButtonClick = () => {
 		const coinErr = coinError(
@@ -100,7 +92,7 @@ export const handlePair = ({
 		}
 	}
 
-	const recalculateUp = (low: string, scale?: number, from: string = '.') => {
+	const recalculateUp = (low: string, scale?: number) => {
 		const num = Number(low)
 		if (num === 0 || isNaN(num)) {
 			return setUpAmount('')
@@ -118,7 +110,7 @@ export const handlePair = ({
 		}
 	}
 
-	const recalculateLow = (up: string, scale?: number, from: string = '.') => {
+	const recalculateLow = (up: string, scale?: number) => {
 		const num = Number(up)
 		if (num === 0 || isNaN(num)) {
 			return setLowAmount('')
