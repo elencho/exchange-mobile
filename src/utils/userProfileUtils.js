@@ -348,7 +348,15 @@ export const updatePhoneNumber = async (phoneNumber, phoneCountry) => {
 	return data
 }
 
-export const sendOtp = async () => await axios.post(SEND_OTP)
+export const sendOtp = async () => {
+	const data = await axios({
+		method: 'POST',
+		url: SEND_OTP,
+		headers: { requestName: 'sendOtp', toast: false },
+		params: { os: Platform.OS.toUpperCase() },
+	})
+	return data
+}
 
 export const getOtpChangeToken = async (OTP, newOTPType) => {
 	const data = await axios({

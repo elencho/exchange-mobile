@@ -24,7 +24,7 @@ interface SmsOtpModalProps {
 	toggleEmailAuthModal: (v: boolean) => void
 	toggleGoogleAuthModal: (v: boolean) => void
 	smsAuthModalVisible: boolean
-	togglePhoneNumberModal: (v: boolean) => void
+	togglePhoneNumberModal: (v: boolean | string) => void
 }
 
 export const useSmsOtpModal = ({

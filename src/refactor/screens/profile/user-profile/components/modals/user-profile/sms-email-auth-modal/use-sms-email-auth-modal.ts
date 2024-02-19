@@ -26,6 +26,7 @@ interface SmsEmailAuthModalProps {
 	emailAuthModalVisible: boolean
 	smsAuthModalVisible: boolean
 	toggleGoogleAuthModal: (v: boolean) => void
+	togglePhoneNumberModal: (v: boolean | string) => void
 }
 
 export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
@@ -34,6 +35,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 		toggleSmsAuthModal,
 		emailAuthModalVisible,
 		toggleGoogleAuthModal,
+		togglePhoneNumberModal,
 		type,
 	} = props
 	const dispatch = useAppDispatch()
@@ -140,8 +142,7 @@ export const useSmsAuthEmailModal = (props: SmsEmailAuthModalProps) => {
 
 	const showSmsFromEmail = () => {
 		toggleEmailAuthModal(false)
-		toggleSmsAuthModal(true)
-		sendSmsOtp()
+		togglePhoneNumberModal('fromChangeOtp')
 	}
 
 	const onShow = () => {

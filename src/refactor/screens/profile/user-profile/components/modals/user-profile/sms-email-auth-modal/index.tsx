@@ -16,6 +16,7 @@ interface SmsEmailAuthModalProps {
 	toggleGoogleAuthModal: (v: boolean) => void
 	smsAuthModalVisible: boolean
 	emailAuthModalVisible: boolean
+	togglePhoneNumberModal: (v: boolean | string) => void
 }
 
 export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
@@ -25,6 +26,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 		smsAuthModalVisible,
 		emailAuthModalVisible,
 		toggleGoogleAuthModal,
+		togglePhoneNumberModal,
 	} = props
 
 	const type = emailAuthModalVisible ? 'Email' : 'SMS'
@@ -49,6 +51,7 @@ export default function SmsEmailAuthModal(props: SmsEmailAuthModalProps) {
 		smsAuthModalVisible,
 		emailAuthModalVisible,
 		toggleGoogleAuthModal,
+		togglePhoneNumberModal,
 	})
 	const { styles, theme } = useTheme(_styles)
 	const resendOrCountDown = () => {

@@ -18,6 +18,7 @@ import AppText from '../AppText'
 import PurpleText from '../PurpleText'
 import TwoFaInput from '../TwoFaInput'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
+import { useSmsOtpVerifier } from '@app/refactor/common/util'
 
 export default function SmsEmailAuthModal({
 	type,
@@ -43,6 +44,8 @@ export default function SmsEmailAuthModal({
 	const cellCount = type === 'SMS' ? 4 : 6
 	const email = currentSecurityAction === 'email'
 	const google = currentSecurityAction === 'google'
+
+	useSmsOtpVerifier(setValue)
 
 	// const [seconds, setSeconds] = useState(remainingSeconds ?? 30)
 	const [otpLoading, setOtpLoading] = useState(false)

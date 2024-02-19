@@ -106,6 +106,7 @@ export default function Security({ loading, bioAvailable }: Props) {
 					toggleEmailAuthModal={toggleEmailAuthModalVisible}
 					emailAuthModalVisible={emailAuthModalVisible}
 					toggleGoogleAuthModal={toggleGoogleAuthModal}
+					togglePhoneNumberModal={togglePhoneNumberModal}
 				/>
 			)}
 			{smsAuthModalVisible && (
@@ -123,6 +124,7 @@ export default function Security({ loading, bioAvailable }: Props) {
 				googleOtpModalVisible={googleOtpModalVisible}
 				toggleEmailAuthModalVisible={toggleEmailAuthModalVisible}
 				toggleSmsAuthModalVisible={toggleSmsAuthModalVisible}
+				togglePhoneNumberModal={togglePhoneNumberModal}
 			/>
 			{phoneNumberModalVisible && (
 				<PhoneNumberModal
