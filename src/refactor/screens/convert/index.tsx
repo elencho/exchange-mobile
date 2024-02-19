@@ -100,8 +100,15 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	}, [tradeType, cards])
 
 	useEffect(() => {
+		setBuyWithCardChecked(false)
 		clearErrors(false)
 	}, [tradeType])
+
+	useEffect(() => {
+		if (!buyWithCardChecked) {
+			cards.length !== 1 && setChosenCard(undefined)
+		}
+	}, [buyWithCardChecked])
 
 	const clearErrors = (clearCard: boolean) => {
 		setErrorInputs([])
