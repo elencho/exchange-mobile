@@ -35,6 +35,7 @@ export type Screens = {
 	}
 	Main?: {
 		fromResume: boolean
+		openRoute?: 'ConvertNow' | 'Wallet' | 'Transactions' | 'Exchange'
 	}
 	Resume: {
 		from: Route

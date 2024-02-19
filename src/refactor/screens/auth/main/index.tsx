@@ -39,6 +39,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		modalContent,
 	} = useModal()
 	const fromResume = route.params?.fromResume === true
+	const openRoute = route.params?.openRoute
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
 
@@ -158,7 +159,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 				freezeOnBlur: true,
 				swipeEnabled: false,
 			})}
-			initialRouteName="ConvertNow"
+			initialRouteName={openRoute || 'ConvertNow'}
 			tabBar={(props) => <BottomTabs {...props} />}>
 			<Tab.Screen name="ConvertNow" component={ConvertNow} />
 			<Tab.Screen name="Wallet" component={Wallet} />

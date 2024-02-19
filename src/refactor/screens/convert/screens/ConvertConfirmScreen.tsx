@@ -32,7 +32,13 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		webViewState,
 	} = useSubmit(props)
 
-	const goToTransactions = () => {}
+	const goToTransactions = () => {
+		props.navigation.pop()
+		props.navigation.replace('Main', {
+			fromResume: false,
+			openScreenRoute: 'Transactions',
+		})
+	}
 
 	const handleWebViewUrlChange = (event: WebViewNavigation) => {
 		const urlQueries = event.url.split('=')
