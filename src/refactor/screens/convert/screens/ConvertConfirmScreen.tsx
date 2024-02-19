@@ -59,7 +59,6 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 				{value}
 			</AppText>
 		)
-		// TODO: Logic
 		const valueText =
 			desc === 'Price' && changedPrice ? (
 				<ChangedPriceItem price={value} />

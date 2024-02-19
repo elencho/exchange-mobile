@@ -83,7 +83,7 @@ export const handlePair = ({
 	}
 
 	const handleError = (err: CoinError) => {
-		setErrorText(err.err)
+		err.err && setErrorText(err.err)
 		if (err.type.length === 2) {
 			setErrorInputs(['up', 'low'])
 		} else if (err.type.length === 0) {

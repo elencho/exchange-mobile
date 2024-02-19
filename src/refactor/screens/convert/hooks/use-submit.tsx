@@ -22,7 +22,8 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 		const params: SubmitTradeRequest = {
 			pairCode: pair.code,
 			action: tradeType === 'Buy' ? 'BID' : 'ASK',
-			amount: (Number(amount) * -2).toString(), // Todo amount
+			amount,
+			// amount: (Number(amount) * -2), // Todo amount
 			cardTransactionRequest: card && {
 				currency: 'GEL',
 				cardId: card.id,
@@ -36,6 +37,7 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 				setConfirmModalStatus('error')
 				console.log(data.errorKey)
 				// if errorKey === price changed: own logic
+				// set changed
 				setGeneralError(data)
 				return
 			} else {

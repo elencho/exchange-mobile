@@ -11,7 +11,6 @@ import CardAdd from '@assets/images/Card_Add.svg'
 import { FlatList } from 'react-native-gesture-handler'
 import AddCardModal from '@app/components/Wallet/ManageCards/AddCardModal'
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleAddCardModal } from '@app/redux/modals/actions'
 import AddCardIcon from '@assets/images/Instant_Add_Card.svg'
 import { RootState } from '@app/refactor/redux/rootReducer'
 
