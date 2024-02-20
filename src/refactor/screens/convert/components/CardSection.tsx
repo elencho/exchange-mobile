@@ -5,6 +5,7 @@ import { Image, Pressable, StyleSheet, View } from 'react-native'
 import CheckEmpty from '@assets/images/Check_Empty.svg'
 import CheckFull from '@assets/images/Check_Full.svg'
 import AppDropdown from '@components/dropdown/index'
+import Skeleton from '@components/skeleton'
 
 type Props = {
 	chosenCard?: Card
@@ -12,6 +13,7 @@ type Props = {
 	setBuyWithCardChecked: (checked: boolean) => void
 	chooseCardClicked: () => void
 	error: boolean
+	loading: boolean
 }
 
 const CardSection = ({
@@ -20,6 +22,7 @@ const CardSection = ({
 	setBuyWithCardChecked,
 	chooseCardClicked,
 	error,
+	loading,
 }: Props) => {
 	const { styles } = useTheme(_styles)
 
@@ -35,25 +38,31 @@ const CardSection = ({
 					{'Buy with card'}
 				</AppText>
 			</View>
-			{buyWithCardChecked && (
-				<AppDropdown
-					style={styles.dropdown}
-					noTranslate
-					notClearable
-					handlePress={chooseCardClicked}
-					label="Choose Card"
-					selectedText={chosenCard && chosenCard?.cardNumber}
-					icon={
-						chosenCard && (
-							<Image
-								source={{ uri: chosenCard.iconPngUrl }}
-								style={{ width: 20, height: 20, resizeMode: 'contain' }}
-							/>
-						)
-					}
-					error={error}
-				/>
-			)}
+			{buyWithCardChecked &&
+				(loading ? (
+					<Skeleton
+						height={44}
+						style={[styles.dropdown, { borderRadius: 6 }]}
+					/>
+				) : (
+					<AppDropdown
+						style={styles.dropdown}
+						noTranslate
+						notClearable
+						handlePress={chooseCardClicked}
+						label="Choose Card"
+						selectedText={chosenCard && chosenCard?.cardNumber}
+						icon={
+							chosenCard && (
+								<Image
+									source={{ uri: chosenCard.iconPngUrl }}
+									style={{ width: 20, height: 20, resizeMode: 'contain' }}
+								/>
+							)
+						}
+						error={error}
+					/>
+				))}
 		</View>
 	)
 }

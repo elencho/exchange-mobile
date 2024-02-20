@@ -22,8 +22,8 @@ import { handlePair } from '@app/refactor/screens/convert/hooks/handle-pair'
 import InfoModal from '@app/refactor/screens/convert/modals/InfoModal'
 import AppText from '@components/text'
 import Skeleton from '@app/components/Skeleton'
-import CustomRefreshControl from '@components/refreshControll'
 import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
+import CustomRefreshContol from '@components/refresh-control'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	useNotificationPermissions()
@@ -216,12 +216,12 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 				keyboardVerticalOffsetIOS={40}
 				flexGrow
 				refreshControl={
-					<CustomRefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+					<CustomRefreshContol refreshing={false} onRefresh={onRefresh} />
 				}
 				modal={undefined}
 				padding={false}
 				scrollUp={false}
-				noRefresh={true}>
+				noRefresh={false}>
 				<View style={styles.container}>
 					<TradeTypeSwitcher
 						selectedType={tradeType}
@@ -276,20 +276,21 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 								})
 							}}
 							error={cardError}
+							loading={loading}
 						/>
 					)}
-					{!loading && pair && (
-						<Timer
-							pair={pair}
-							tradeType={tradeType}
-							onTimerExpired={onTimerExpire}
-						/>
-					)}
+					<Timer
+						pair={pair}
+						loading={loading}
+						tradeType={tradeType}
+						onTimerExpired={onTimerExpire}
+					/>
 					{buyWithCardChecked && chosenCard && (
 						<CardTotalFee
 							card={chosenCard}
 							fiat={pair?.fiat}
 							amount={upAmount}
+							loading={loading}
 						/>
 					)}
 					<View style={{ height: 30 }} />

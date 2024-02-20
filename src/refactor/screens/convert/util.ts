@@ -14,10 +14,12 @@ export const hexOpacityPct = (hex: string, pct: number) => {
 }
 
 export const formatDisplayPair = (
-	pair: CoinPair,
+	pair: CoinPair | undefined,
 	type: TradeType,
 	equalDelim?: string
 ) => {
+	if (!pair) return ''
+
 	const price = type === 'Buy' ? pair.buyPrice : pair.sellPrice
 	return (
 		'1 ' +
