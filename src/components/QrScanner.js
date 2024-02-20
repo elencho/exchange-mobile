@@ -55,6 +55,7 @@ const QrScanner = ({ setAddress }) => {
 			children={children()}
 			title="QR Scanner"
 			custom
+			delayedOpen
 			modalStyle={hasPermission && isModalVisible && styles.modalStyle}
 		/>
 	)

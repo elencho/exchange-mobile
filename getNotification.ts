@@ -31,7 +31,6 @@ export const getNotification = () => {
 					}
 
 					if (data.title && data.description && !bioAvailableAsync) {
-						// showModal(data)
 						setModalContent(data)
 					} else if (data.title && data.description && bioAvailableAsync) {
 						setModalContent(data)
@@ -50,11 +49,7 @@ export const getNotification = () => {
 			}
 			if (data.title && data.description && bioAvailableAsync) {
 				setModalContent(data)
-				messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-					setModalContent(remoteMessage)
-				})
 			} else if (data.title && data.description && !bioAvailableAsync) {
-				// showModal(data)
 				setModalContent(data)
 			}
 		})
