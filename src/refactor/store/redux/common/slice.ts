@@ -81,7 +81,7 @@ const common = createSlice({
 			state.webViewVisible = action.payload
 			KV.set('webViewVisible', action.payload)
 		},
-		setBiometricSuccess(state, action: PayloadAction<boolean>) {
+		setBiometricSuccess(state, action: PayloadAction<boolean | null>) {
 			state.biometricSuccess = action.payload
 		},
 		setConvertPair(state, action: PayloadAction<string>) {

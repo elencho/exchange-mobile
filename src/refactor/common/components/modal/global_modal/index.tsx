@@ -24,6 +24,8 @@ import Constants from 'expo-constants'
 
 import { AppButton } from '@components/button'
 import { useNetInfoInstance } from '@react-native-community/netinfo'
+import { useSelector } from 'react-redux'
+import { RootState } from '@app/refactor/redux/rootReducer'
 
 type ModalContextType = {
 	showModal: (content: ContentType) => void
@@ -51,9 +53,9 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 	const [isBiometricScreenOpenedForModal, setIsBiometricScreenOpenedForModal] =
 		useState(true)
 	const [modalContent, setModalContent] = useState<ContentType | null>(null)
-	console.log(
-		'isBiometricScreenOpenedForModal',
-		isBiometricScreenOpenedForModal
+
+	const { isInternetScreenOpened, isBiometricScreenOpened } = useSelector(
+		(state: RootState) => state.common
 	)
 	const { styles } = useTheme(_styles)
 	const {
@@ -128,7 +130,11 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
 					propagateSwipe={true}
 					useNativeDriver
 					useNativeDriverForBackdrop
-					isVisible={isModalVisible}
+					isVisible={
+						isModalVisible &&
+						!isInternetScreenOpened &&
+						!isBiometricScreenOpened
+					}
 					onModalHide={onModalHide}
 					coverScreen
 					backdropTransitionOutTiming={0}

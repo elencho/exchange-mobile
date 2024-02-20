@@ -123,6 +123,9 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	const getBiometricEnabled = async (email: string) => {
 		const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')
 		const userEnabledBio = bioEnabledEmails?.includes(email)
+		if (!userEnabledBio) {
+			dispatch(setBiometricSuccess(null))
+		}
 
 		fetch().then((state) => {
 			if (state.isConnected && userEnabledBio) {
