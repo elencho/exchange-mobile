@@ -39,7 +39,8 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		props.navigation.pop()
 		props.navigation.replace('Main', {
 			fromResume: false,
-			openRoute: 'Transactions',
+			initialRoute: 'Transactions',
+			transactionsInitialTab: 'Instant trade',
 		})
 	}
 

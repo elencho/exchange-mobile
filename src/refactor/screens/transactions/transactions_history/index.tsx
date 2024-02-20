@@ -11,20 +11,23 @@ import {
 	TabSwitcher,
 	SearchAndFilter,
 } from '@app/refactor/screens/transactions/components/ListComponents'
+import { ScreenProp } from '@app/refactor/setup/nav/nav'
 
 export interface FilterState {
 	isVisible: boolean
 	shouldFilter: boolean
 }
 
-function TransactionHistory() {
+function TransactionHistory({ navigation, route }: ScreenProp<'Transactions'>) {
 	const dispatch = useDispatch()
 
 	const [isFilterVisible, setIsFilterVisible] = useState<FilterState>({
 		isVisible: false,
 		shouldFilter: true,
 	})
-	const [activeTab, setActiveTab] = useState<TabName>('Transfer')
+
+	const initialTab = route.params?.initialTab
+	const [activeTab, setActiveTab] = useState<TabName>(initialTab || 'Transfer')
 	const isInstantTrade = activeTab === 'Instant trade'
 
 	const clearAllFilters = () => {

@@ -35,7 +35,8 @@ export type Screens = {
 	}
 	Main?: {
 		fromResume: boolean
-		openRoute?: 'ConvertNow' | 'Wallet' | 'Transactions' | 'Exchange'
+		initialRoute?: 'ConvertNow' | 'Wallet' | 'Exchange' | 'Transactions'
+		transactionsInitialTab?: TabName
 	}
 	Resume: {
 		from: Route
@@ -50,6 +51,9 @@ export type Screens = {
 	CardVerificationOne?: {}
 	CardVerificationTwo?: {}
 	ConvertNow?: {}
+	Transactions?: {
+		initialTab?: TabName
+	}
 	SelectCard: {
 		fees: ProviderFees[]
 		cards: Card[]

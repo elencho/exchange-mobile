@@ -132,7 +132,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		if (buyWithCardChecked && !chosenCard) {
 			setCardError(true)
 			if (!upAmount.trim().length || !lowAmount.trim().length) {
-				return { type: ['Fiat', 'Crypto'] }
+				setErrorInputs(['low', 'up'])
 			}
 		} else if (
 			buyWithCardChecked &&
@@ -163,15 +163,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const showCardSection = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
 
-	const canShowLoading = () => {
-		const noModalsVisible = !(
-			fiatModalVisible ||
-			cryptoModalVisible ||
-			infoModalVisible
-		)
-		return noModalsVisible && pair !== undefined && loading
-	}
-
 	const InfoLogo = () => {
 		return (
 			<TouchableOpacity
@@ -184,18 +175,22 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		)
 	}
 
-	const clearData = () => {
+	const clearDataOnNavigateToProfile = () => {
 		setTimeout(() => {
 			setUpAmount('')
 			setLowAmount('')
 			setBuyWithCardChecked(false)
 			setSelectedChip(undefined)
+			clearErrors(true)
 		}, 500)
 	}
 
 	return (
 		<AppBackground>
-			<TopRow headlineLogo={<InfoLogo />} clear={clearData} />
+			<TopRow
+				headlineLogo={<InfoLogo />}
+				clear={clearDataOnNavigateToProfile}
+			/>
 			<WithKeyboard
 				style={styles.withKeyboard}
 				keyboardVerticalOffsetIOS={40}
