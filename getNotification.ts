@@ -21,6 +21,7 @@ export const getNotification = () => {
 		messaging()
 			.getInitialNotification()
 			.then(async (remoteMessage) => {
+				console.log('getInitialNotification')
 				if (remoteMessage) {
 					const data = {
 						description: remoteMessage?.notification?.body,
@@ -40,6 +41,7 @@ export const getNotification = () => {
 			})
 
 		messaging().onNotificationOpenedApp(async (remoteMessage) => {
+			console.log('onNotificationOpenedApp')
 			const bioAvailableAsync = KV.get('bioIsAvailableOnUser')
 			const data = {
 				description: remoteMessage?.notification?.body,
@@ -50,9 +52,6 @@ export const getNotification = () => {
 			}
 			if (data.title && data.description && bioAvailableAsync) {
 				setModalContent(data)
-				messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-					setModalContent(remoteMessage)
-				})
 			} else if (data.title && data.description && !bioAvailableAsync) {
 				// showModal(data)
 				setModalContent(data)

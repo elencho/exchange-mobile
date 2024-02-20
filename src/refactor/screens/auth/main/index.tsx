@@ -50,24 +50,23 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	console.log({
 		modalContent,
 		biometricSuccess,
+		isBiometricScreenOpenedForModal,
 	})
 	useEffect(() => {
 		if (
 			Object.keys(modalContent ?? {}).length > 0 &&
-			biometricSuccess &&
-			!isBiometricScreenOpenedForModal
+			(biometricSuccess == null || biometricSuccess === true)
 		) {
-			// setTimeout(() => {
-			// 	console.log('hereee', modalContent)
-			// 	showModal(modalContent)
-			// }, 1000)
-			let intervalCount = 0
-			const interval = setInterval(() => {
-				console.log('intervaaaal')
+			setTimeout(() => {
 				showModal(modalContent)
-				intervalCount++
-				if (intervalCount === 4) clearInterval(interval)
 			}, 1000)
+			// let intervalCount = 0
+			// const interval = setInterval(() => {
+			// 	console.log('intervaaaal')
+			// 	showModal(modalContent)
+			// 	intervalCount++
+			// 	if (intervalCount === 4) clearInterval(interval)
+			// }, 1000)
 		}
 	}, [modalContent, biometricSuccess])
 
@@ -111,12 +110,12 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			KV.get('webViewVisible') !== true &&
 			biometricDiffElapsed() &&
 			(await isEnrolledAsync())
-
 		if (bioVisible) {
 			const email = jwt_decode<TokenParams>(accessToken)?.email
 			getBiometricEnabled(email)
 		} else if (newState === 'active' && !bioVisible) {
 			setIsBiometricScreenOpenedForModal(false)
+			dispatch(setBiometricSuccess(null))
 			setModalVisible(true)
 		}
 
