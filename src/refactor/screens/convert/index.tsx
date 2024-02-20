@@ -23,6 +23,7 @@ import InfoModal from '@app/refactor/screens/convert/modals/InfoModal'
 import AppText from '@components/text'
 import Skeleton from '@app/components/Skeleton'
 import CustomRefreshControl from '@components/refreshControll'
+import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	useNotificationPermissions()
@@ -34,6 +35,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const [chosenCard, setChosenCard] = useState<Card>()
 	const [selectedChip, setSelectedChip] = useState<number>()
 	const [buyWithCardChecked, setBuyWithCardChecked] = useState(false)
+	const [submitStatus, setSubmitStatus] = useState<ConfirmModalStatus>()
 
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
@@ -52,6 +54,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 					pair.fiat.buyWithCard === true
 						? chosenCard
 						: undefined,
+				onSubmitStatusReceived: handleConfirmModalStatus,
 			})
 	}
 
@@ -119,6 +122,13 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		clearCard && setCardError(false)
 	}
 
+	const handleConfirmModalStatus = (status: ConfirmModalStatus) => {
+		clearData()
+		setLastChanged(null)
+		setSubmitStatus(status)
+		fetchCoins(false)
+	}
+
 	const onTimerExpire = () => {
 		setSelectedChip(undefined)
 		fetchCoins(false)
@@ -163,6 +173,14 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const showCardSection = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
 
+	const goToTransactions = () => {
+		navigation.replace('Main', {
+			fromResume: false,
+			initialRoute: 'Transactions',
+			transactionsInitialTab: 'Instant trade',
+		})
+	}
+
 	const InfoLogo = () => {
 		return (
 			<TouchableOpacity
@@ -175,21 +193,23 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		)
 	}
 
-	const clearDataOnNavigateToProfile = () => {
-		setTimeout(() => {
-			setUpAmount('')
-			setLowAmount('')
-			setBuyWithCardChecked(false)
-			setSelectedChip(undefined)
-			clearErrors(true)
-		}, 500)
+	const clearData = () => {
+		setUpAmount('')
+		setLowAmount('')
+		setBuyWithCardChecked(false)
+		setSelectedChip(undefined)
+		clearErrors(true)
 	}
 
 	return (
 		<AppBackground>
 			<TopRow
 				headlineLogo={<InfoLogo />}
-				clear={clearDataOnNavigateToProfile}
+				clear={() => {
+					setTimeout(() => {
+						clearData()
+					}, 500)
+				}}
 			/>
 			<WithKeyboard
 				style={styles.withKeyboard}
@@ -321,6 +341,11 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							setSelectedChip(undefined)
 						}}
 						dismiss={() => setCryptoModalVisible(false)}
+					/>
+					<ConfirmModal
+						status={submitStatus}
+						dismiss={() => setSubmitStatus(undefined)}
+						onTransactionsClick={goToTransactions}
 					/>
 				</View>
 			</WithKeyboard>
