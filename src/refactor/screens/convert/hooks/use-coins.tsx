@@ -60,7 +60,7 @@ export const useCoins = () => {
 	const fetchCoins = async (refresh: boolean) => {
 		setLoading(true)
 		refresh && setRefresh(true)
-		await sleep(1000)
+		await sleep(3000)
 
 		Promise.all([fetchOffersApi(), fetchBalanceApi()])
 			.then((data) => {

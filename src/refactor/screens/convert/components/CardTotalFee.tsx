@@ -4,14 +4,16 @@ import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Fee from '@assets/images/Fee.svg'
 import { formatScale, hexOpacityPct } from '@app/refactor/screens/convert/util'
+import Skeleton from '@components/skeleton'
 
 type Props = {
 	fiat: Coin | undefined
 	card: Card
 	amount: string
+	loading: boolean
 }
 
-const ConfirmTradeCard = ({ fiat, card, amount }: Props) => {
+const ConfirmTradeCard = ({ fiat, card, amount, loading }: Props) => {
 	const { styles } = useTheme(_styles)
 
 	const feeNum = Number(amount) * (card.feePct ? card.feePct / 100 : 0)
@@ -29,7 +31,27 @@ const ConfirmTradeCard = ({ fiat, card, amount }: Props) => {
 		(card.feePct || 0) +
 		'%)'
 
-	return (
+	const CardFeeSkeleton = () => {
+		return (
+			<View style={styles.container}>
+				<Skeleton
+					width={42}
+					height={42}
+					style={{
+						borderRadius: 100,
+					}}
+				/>
+				<View style={styles.textContainer}>
+					<Skeleton width={140} height={6} style={{ marginTop: 8 }} />
+					<Skeleton width={182} height={6} style={{ marginBottom: 8 }} />
+				</View>
+			</View>
+		)
+	}
+
+	return loading ? (
+		<CardFeeSkeleton />
+	) : (
 		<View style={styles.container}>
 			<View style={styles.iconContainer}>
 				<Fee />

@@ -1,4 +1,5 @@
 import { formatDisplayPair } from '@app/refactor/screens/convert/util'
+import Skeleton from '@components/skeleton'
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
 import React, { useEffect, useState } from 'react'
@@ -8,12 +9,13 @@ import ProgressBar from 'react-native-animated-progress'
 const COUNTDOWN_SECONDS = 90
 
 type Props = {
-	pair: CoinPair
+	pair?: CoinPair
+	loading: boolean
 	tradeType: TradeType
 	onTimerExpired: () => void
 }
 
-const Timer = ({ pair, tradeType, onTimerExpired }: Props) => {
+const Timer = ({ pair, loading, tradeType, onTimerExpired }: Props) => {
 	const { styles, theme } = useTheme(_styles)
 
 	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
@@ -48,7 +50,9 @@ const Timer = ({ pair, tradeType, onTimerExpired }: Props) => {
 		)
 	}
 
-	return (
+	return loading || !pair ? (
+		<Skeleton height={62} style={{ marginTop: 22, borderRadius: 6 }} />
+	) : (
 		<View style={styles.container}>
 			<ProgressBar
 				backgroundColor={theme.color.brandPrimary}

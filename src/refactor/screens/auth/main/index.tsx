@@ -41,7 +41,9 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 		isBiometricScreenOpenedForModal,
 	} = useModal()
 	const fromResume = route.params?.fromResume === true
-	const openRoute = route.params?.openRoute
+	const initialRoute = route.params?.initialRoute
+	const transactionInitialTab = route.params?.transactionsInitialTab
+
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
 	const { biometricSuccess, isBiometricScreenOpened } = useSelector(
@@ -179,11 +181,15 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 				freezeOnBlur: true,
 				swipeEnabled: false,
 			})}
-			initialRouteName={openRoute || 'ConvertNow'}
+			initialRouteName={initialRoute || 'ConvertNow'}
 			tabBar={(props) => <BottomTabs {...props} />}>
 			<Tab.Screen name="ConvertNow" component={ConvertNow} />
 			<Tab.Screen name="Wallet" component={Wallet} />
-			<Tab.Screen name="Transactions" component={TransactionHistory} />
+			<Tab.Screen
+				name="Transactions"
+				component={TransactionHistory}
+				initialParams={{ initialTab: transactionInitialTab }}
+			/>
 			<Tab.Screen name="Exchange" component={Exchange} />
 		</Tab.Navigator>
 	)

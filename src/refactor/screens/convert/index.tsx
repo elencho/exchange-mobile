@@ -22,7 +22,8 @@ import { handlePair } from '@app/refactor/screens/convert/hooks/handle-pair'
 import InfoModal from '@app/refactor/screens/convert/modals/InfoModal'
 import AppText from '@components/text'
 import Skeleton from '@app/components/Skeleton'
-import CustomRefreshControl from '@components/refreshControll'
+import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
+import CustomRefreshContol from '@components/refresh-control'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	useNotificationPermissions()
@@ -34,6 +35,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const [chosenCard, setChosenCard] = useState<Card>()
 	const [selectedChip, setSelectedChip] = useState<number>()
 	const [buyWithCardChecked, setBuyWithCardChecked] = useState(false)
+	const [submitStatus, setSubmitStatus] = useState<ConfirmModalStatus>()
 
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
@@ -52,6 +54,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 					pair.fiat.buyWithCard === true
 						? chosenCard
 						: undefined,
+				onSubmitStatusReceived: handleConfirmModalStatus,
 			})
 	}
 
@@ -119,6 +122,13 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		clearCard && setCardError(false)
 	}
 
+	const handleConfirmModalStatus = (status: ConfirmModalStatus) => {
+		clearData()
+		setLastChanged(null)
+		setSubmitStatus(status)
+		fetchCoins(false)
+	}
+
 	const onTimerExpire = () => {
 		setSelectedChip(undefined)
 		fetchCoins(false)
@@ -132,7 +142,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		if (buyWithCardChecked && !chosenCard) {
 			setCardError(true)
 			if (!upAmount.trim().length || !lowAmount.trim().length) {
-				return { type: ['Fiat', 'Crypto'] }
+				setErrorInputs(['low', 'up'])
 			}
 		} else if (
 			buyWithCardChecked &&
@@ -163,13 +173,12 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const showCardSection = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
 
-	const canShowLoading = () => {
-		const noModalsVisible = !(
-			fiatModalVisible ||
-			cryptoModalVisible ||
-			infoModalVisible
-		)
-		return noModalsVisible && pair !== undefined && loading
+	const goToTransactions = () => {
+		navigation.replace('Main', {
+			fromResume: false,
+			initialRoute: 'Transactions',
+			transactionsInitialTab: 'Instant trade',
+		})
 	}
 
 	const InfoLogo = () => {
@@ -185,28 +194,34 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	}
 
 	const clearData = () => {
-		setTimeout(() => {
-			setUpAmount('')
-			setLowAmount('')
-			setBuyWithCardChecked(false)
-			setSelectedChip(undefined)
-		}, 500)
+		setUpAmount('')
+		setLowAmount('')
+		setBuyWithCardChecked(false)
+		setSelectedChip(undefined)
+		clearErrors(true)
 	}
 
 	return (
 		<AppBackground>
-			<TopRow headlineLogo={<InfoLogo />} clear={clearData} />
+			<TopRow
+				headlineLogo={<InfoLogo />}
+				clear={() => {
+					setTimeout(() => {
+						clearData()
+					}, 500)
+				}}
+			/>
 			<WithKeyboard
 				style={styles.withKeyboard}
 				keyboardVerticalOffsetIOS={40}
 				flexGrow
 				refreshControl={
-					<CustomRefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+					<CustomRefreshContol refreshing={false} onRefresh={onRefresh} />
 				}
 				modal={undefined}
 				padding={false}
 				scrollUp={false}
-				noRefresh={true}>
+				noRefresh={false}>
 				<View style={styles.container}>
 					<TradeTypeSwitcher
 						selectedType={tradeType}
@@ -261,20 +276,21 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 								})
 							}}
 							error={cardError}
+							loading={loading}
 						/>
 					)}
-					{!loading && pair && (
-						<Timer
-							pair={pair}
-							tradeType={tradeType}
-							onTimerExpired={onTimerExpire}
-						/>
-					)}
+					<Timer
+						pair={pair}
+						loading={loading}
+						tradeType={tradeType}
+						onTimerExpired={onTimerExpire}
+					/>
 					{buyWithCardChecked && chosenCard && (
 						<CardTotalFee
 							card={chosenCard}
 							fiat={pair?.fiat}
 							amount={upAmount}
+							loading={loading}
 						/>
 					)}
 					<View style={{ height: 30 }} />
@@ -326,6 +342,11 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							setSelectedChip(undefined)
 						}}
 						dismiss={() => setCryptoModalVisible(false)}
+					/>
+					<ConfirmModal
+						status={submitStatus}
+						dismiss={() => setSubmitStatus(undefined)}
+						onTransactionsClick={goToTransactions}
 					/>
 				</View>
 			</WithKeyboard>

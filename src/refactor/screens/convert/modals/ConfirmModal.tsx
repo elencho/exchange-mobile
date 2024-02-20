@@ -9,8 +9,8 @@ import { AppButton } from '@components/button'
 
 interface Props {
 	status: ConfirmModalStatus | undefined
-	onTransactionsClick: () => void
 	dismiss: () => void
+	onTransactionsClick?: () => void
 }
 
 const ConfirmModal = ({ status, onTransactionsClick, dismiss }: Props) => {

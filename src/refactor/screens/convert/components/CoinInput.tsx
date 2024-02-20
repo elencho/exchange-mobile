@@ -101,21 +101,29 @@ const CoinInput = ({
 				},
 			]}>
 			<View style={styles.infoContainer}>
-				<TextInput
-					ref={inputRef}
-					keyboardType="numeric"
-					style={styles.input}
-					value={formattedAmount}
-					placeholder={placeholderText}
-					placeholderTextColor={hexOpacityPct(theme.color.textSecondary, 60)}
-					onFocus={onFocus}
-					onChangeText={(txt) => {
-						if (isActive) onAmountChange(txt)
-					}}
-				/>
-				<AppText style={styles.balanceText} variant="s">
-					{balanceText}
-				</AppText>
+				{loading ? (
+					<Skeleton width={36} height={10} />
+				) : (
+					<TextInput
+						ref={inputRef}
+						keyboardType="numeric"
+						style={styles.input}
+						value={formattedAmount}
+						placeholder={placeholderText}
+						placeholderTextColor={hexOpacityPct(theme.color.textSecondary, 60)}
+						onFocus={onFocus}
+						onChangeText={(txt) => {
+							if (isActive) onAmountChange(txt)
+						}}
+					/>
+				)}
+				{loading ? (
+					<Skeleton width={60} height={6} style={{ marginTop: 12 }} />
+				) : (
+					<AppText style={styles.balanceText} variant="s">
+						{balanceText}
+					</AppText>
+				)}
 			</View>
 			{loading ? <CoinButtonLoading /> : <CoinButton />}
 		</View>
