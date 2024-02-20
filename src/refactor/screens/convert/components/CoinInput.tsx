@@ -8,9 +8,11 @@ import {
 	formatScale,
 	hexOpacityPct,
 } from '@app/refactor/screens/convert/util'
+import Skeleton from '@components/skeleton'
 
 type Props = {
-	coin: Coin
+	coin?: Coin
+	loading: boolean
 	amount: string | undefined
 	isActive: boolean
 	error?: boolean | string
@@ -21,6 +23,7 @@ type Props = {
 
 const CoinInput = ({
 	coin,
+	loading,
 	amount,
 	isActive,
 	error,
@@ -49,20 +52,41 @@ const CoinInput = ({
 		return (
 			<Pressable
 				style={styles.coinButtonCointainer}
-				onPress={() => onDropdownClick(coin.type)}>
+				onPress={() => {
+					coin && onDropdownClick(coin.type)
+				}}>
 				<Image
 					style={{ width: 22, height: 22, marginHorizontal: 8 }}
 					source={{
-						uri: coin.iconPngUrl,
+						uri: coin?.iconPngUrl,
 					}}
 				/>
 				<AppText variant="l" style={styles.coinButtonText}>
-					{coin.displayCcy}
+					{coin?.displayCcy}
 				</AppText>
 				<Arrow style={{ marginLeft: 8, marginRight: 14 }} />
 			</Pressable>
 		)
 	}
+
+	const CoinButtonLoading = () => {
+		return (
+			<View style={styles.coinButtonCointainer}>
+				<Skeleton
+					width={22}
+					height={22}
+					style={{ marginHorizontal: 8, borderRadius: 100 }}
+				/>
+				<Skeleton width={36} height={6} />
+				<Arrow style={{ marginLeft: 8, marginRight: 14 }} />
+			</View>
+		)
+	}
+
+	const placeholderText = '0.' + '0'.repeat(loading || !coin ? 2 : coin.scale)
+
+	const balanceText =
+		'Balance: ' + (loading ? '' : formatScale(coin?.balance, coin?.scale))
 
 	return (
 		<View
@@ -82,7 +106,7 @@ const CoinInput = ({
 					keyboardType="numeric"
 					style={styles.input}
 					value={formattedAmount}
-					placeholder={'0.' + '0'.repeat(coin.scale)}
+					placeholder={placeholderText}
 					placeholderTextColor={hexOpacityPct(theme.color.textSecondary, 60)}
 					onFocus={onFocus}
 					onChangeText={(txt) => {
@@ -90,10 +114,10 @@ const CoinInput = ({
 					}}
 				/>
 				<AppText style={styles.balanceText} variant="s">
-					{'Balance: ' + formatScale(coin.balance, coin.scale)}
+					{balanceText}
 				</AppText>
 			</View>
-			<CoinButton />
+			{loading ? <CoinButtonLoading /> : <CoinButton />}
 		</View>
 	)
 }

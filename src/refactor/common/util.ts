@@ -43,3 +43,5 @@ export const useSmsOtpVerifier = (setValue: (val: string) => void) => {
 		}
 	}, [setValue])
 }
+
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))

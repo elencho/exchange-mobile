@@ -6,7 +6,7 @@ import Fee from '@assets/images/Fee.svg'
 import { formatScale, hexOpacityPct } from '@app/refactor/screens/convert/util'
 
 type Props = {
-	fiat: Coin
+	fiat: Coin | undefined
 	card: Card
 	amount: string
 }
@@ -17,12 +17,12 @@ const ConfirmTradeCard = ({ fiat, card, amount }: Props) => {
 	const feeNum = Number(amount) * (card.feePct ? card.feePct / 100 : 0)
 	const totalNum = Number(amount) + feeNum
 	const totalTxt =
-		'Total: ' + formatScale(totalNum, fiat.scale) + ' ' + fiat.displayCcy
+		'Total: ' + formatScale(totalNum, fiat?.scale) + ' ' + fiat?.displayCcy
 	const feeTxt =
 		'Fee: ' +
-		formatScale(feeNum, fiat.scale) +
+		formatScale(feeNum, fiat?.scale) +
 		' ' +
-		fiat.displayCcy +
+		fiat?.displayCcy +
 		' (' +
 		card.network +
 		' ' +

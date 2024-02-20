@@ -11,7 +11,7 @@ import { hexOpacityPct } from '@app/refactor/screens/convert/util'
 interface Props {
 	visible: boolean
 	cryptos: Coin[]
-	pair: CoinPair
+	pair: CoinPair | undefined
 	tradeType: TradeType
 	onCoinSelected: (crypto: Coin) => void
 	dismiss: () => void
@@ -65,7 +65,7 @@ const ChooseCryptoModal = ({
 
 	const renderCoin = (item: Coin) => {
 		const coinBackgroundColor = () => {
-			return item.displayCcy === pair.crypto.displayCcy
+			return item.displayCcy === pair?.crypto.displayCcy
 				? hexOpacityPct(theme.color.textSecondary, 18)
 				: 'transparent'
 		}
@@ -73,7 +73,7 @@ const ChooseCryptoModal = ({
 		const formatMarketPrice = () => {
 			const price =
 				tradeType === 'Buy' ? item.marketPrice?.buy : item.marketPrice?.sell
-			return price + ' ' + pair.fiat.displayCcy
+			return price + ' ' + pair?.fiat.displayCcy
 		}
 
 		return (
