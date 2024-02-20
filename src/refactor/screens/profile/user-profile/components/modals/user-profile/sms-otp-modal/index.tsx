@@ -42,6 +42,7 @@ export default function SmsOtpModal(props: SmsEmailAuthModalProps) {
 		generalErrorData,
 		timerVisible,
 		onShow,
+		otpType,
 		userInfo,
 	} = useSmsOtpModal({
 		toggleSmsAuthModal,
@@ -87,6 +88,7 @@ export default function SmsOtpModal(props: SmsEmailAuthModalProps) {
 					cellCount={4}
 					setValue={setValue}
 					generalErrorData={generalErrorData}
+					autoFocus={true}
 				/>
 			</View>
 

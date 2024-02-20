@@ -12,6 +12,7 @@ interface Props {
 	googleOtpModalVisible: boolean
 	toggleEmailAuthModalVisible: (v: boolean) => void
 	toggleSmsAuthModalVisible: (v: boolean) => void
+	togglePhoneNumberModal: (v: boolean | string) => void
 }
 
 export default function GoogleOtpModal(props: Props) {
@@ -20,6 +21,7 @@ export default function GoogleOtpModal(props: Props) {
 		googleOtpModalVisible = false,
 		toggleEmailAuthModalVisible,
 		toggleSmsAuthModalVisible,
+		togglePhoneNumberModal,
 	} = props
 	const { navigation, value, setValue, hide, onFill, generalErrorData } =
 		useGoogleOtp({
@@ -27,6 +29,7 @@ export default function GoogleOtpModal(props: Props) {
 			toggleGoogleOtpModalVisible,
 			toggleEmailAuthModalVisible,
 			toggleSmsAuthModalVisible,
+			togglePhoneNumberModal,
 		})
 	const { styles, theme } = useTheme(_styles)
 

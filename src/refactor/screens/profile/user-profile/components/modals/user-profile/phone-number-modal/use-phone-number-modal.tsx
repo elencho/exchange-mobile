@@ -2,21 +2,30 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { RootState } from '@app/refactor/redux/rootReducer'
-import { updatePhoneNumberThunk } from '@app/refactor/redux/profile/profileThunks'
+import {
+	fetchUserInfoThunk,
+	updatePhoneNumberThunk,
+} from '@app/refactor/redux/profile/profileThunks'
 import {
 	handleAxiosErrors,
 	handleGeneralError,
 } from '@app/refactor/utils/errorUtils'
 import { OTPTypes } from '@app/refactor/types/enums'
-import { verifyPhoneNumber } from '@app/refactor/redux/profile/profileApi'
+import {
+	activateSmsOtp,
+	verifyPhoneNumber,
+} from '@app/refactor/redux/profile/profileApi'
 import { useSmsOtpVerifier } from '@app/refactor/common/util'
+import { retryUnauthorizedCall } from '@store/redux/auth/api'
+import SecureKV from '@store/kv/secure'
+import { setOTPChangeParams } from '@app/refactor/redux/profile/profileSlice'
 
 export const usePhoneNumberModal = ({
 	phoneNumberModalVisible,
 	togglePhoneNumberModal,
 }: {
-	phoneNumberModalVisible: boolean
-	togglePhoneNumberModal: (v: boolean) => void
+	phoneNumberModalVisible: boolean | string
+	togglePhoneNumberModal: (v: boolean | string) => void
 }) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
@@ -27,6 +36,7 @@ export const usePhoneNumberModal = ({
 			userProfileButtonsLoading,
 			userProfileLoading,
 			tOTPChangeParams,
+			currentSecurityAction,
 		},
 		common: { countries, language },
 		auth: { otpType },
@@ -88,6 +98,9 @@ export const usePhoneNumberModal = ({
 
 	const saveHide = () => {
 		togglePhoneNumberModal(false)
+		if (phoneNumberModalVisible === 'fromChangeOtp') {
+			smsActivation()
+		}
 	}
 
 	const hide = () => {
@@ -129,6 +142,35 @@ export const usePhoneNumberModal = ({
 		})
 	}
 	useSmsOtpVerifier(handleVerificationNumber)
+
+	const smsActivation = async () => {
+		const response = await activateSmsOtp(
+			tOTPChangeParams!.changeOTPToken!,
+			verificationCode,
+			phoneNumber,
+			verificationCode,
+			chosenCountry.code!
+		)
+
+		await handleAxiosErrors(
+			response,
+			async () => {
+				const oldRefresh = await SecureKV.get('refreshToken')
+				retryUnauthorizedCall({}, oldRefresh)
+				hide()
+				dispatch(fetchUserInfoThunk())
+				dispatch(setOTPChangeParams(null))
+			},
+			(error) => {
+				resendLoading(false)
+				setGeneralErrorData(error)
+				setError({
+					phoneNumber: true,
+					verificationCode: false,
+				})
+			}
+		)
+	}
 
 	const handleSave = () => {
 		setGeneralErrorData(null)

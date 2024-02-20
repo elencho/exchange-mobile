@@ -30,6 +30,7 @@ import { COUNTDOWN_SECONDS } from '@app/refactor/common/constants'
 import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import BackButton from '@components/back_button'
 import { MaterialIndicator } from 'react-native-indicators'
+import { OTPTypes } from '@app/refactor/types/enums'
 
 export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	const dispatch = useDispatch()
@@ -158,6 +159,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 								onFill={onCodeFilled}
 								generalErrorData={generalErrorData}
 								loading={otpLoading}
+								autoFocus={otpType === OTPTypes.SMS}
 							/>
 						</View>
 					</View>

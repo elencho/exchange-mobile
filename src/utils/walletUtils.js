@@ -46,30 +46,6 @@ export const generateFile = async (
 		const linkForFile = link
 		downloadFile(linkForFile, bearer, fileName, type, reportParams)
 
-		// FileSystem.downloadAsync(
-		//   linkForFile,
-		//   FileSystem.documentDirectory + `${fileName}.${type}`,
-		//   {
-		//     headers: { Authorization: bearer },
-		//   }
-		// )
-		//   .then(async (data) => {
-		//     const { uri } = data;
-		//     if (IS_IOS) {
-		//       await Sharing.shareAsync(uri);
-		//     }
-
-		//     if (IS_ANDROID) {
-		//       await PermissionsAndroid.request(
-		//         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-		//       );
-		//       await PermissionsAndroid.request(
-		//         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE
-		//       );
-		//       downloadFile(linkForFile, bearer, fileName, type);
-		//     }
-		//   })
-		//   .catch((err) => console.log(err));
 		setTimeout(() => {
 			setLoading(false)
 		}, 500)

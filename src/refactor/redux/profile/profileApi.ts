@@ -146,6 +146,7 @@ export const sendEmailOtp = async () => {
 export const sendSmsOtp = async () => {
 	await axios({
 		method: 'POST',
+		params: { os: Platform.OS.toUpperCase() },
 		url: SMS_VERIFICATION,
 	})
 }

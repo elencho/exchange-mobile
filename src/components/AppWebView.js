@@ -1,5 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import React from 'react'
+import React, { useState } from 'react'
 import {
 	TouchableOpacity,
 	Modal,
@@ -65,11 +64,20 @@ export default function AppWebView(props) {
 		KV.del('webViewVisible')
 	}
 
+	// Necessary for Push notification banner to show in proper order
+	const [delayedOpen, setDelayedOpen] = useState(false)
+	useState(() => {
+		!!webViewObj &&
+			setTimeout(() => {
+				setDelayedOpen(true)
+			}, 100)
+	}, [!!webViewObj])
+
 	return (
 		<Modal
 			statusBarTranslucent={true}
 			// presentationStyle="fade"
-			visible={!!webViewObj}
+			visible={!!webViewObj && delayedOpen}
 			onShow={handleOnShow}
 			onRequestClose={handleOnRequestClose}
 			animationType="slide">
