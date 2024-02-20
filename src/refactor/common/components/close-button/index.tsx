@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import Close from '@assets/images/Close.svg'
+import { System } from '@app/refactor/common/util'
 
 interface CloseIconProps {
 	onPress: () => void
@@ -20,8 +21,8 @@ export default function CloseIcon(props: CloseIconProps) {
 
 const styles = StyleSheet.create({
 	close: {
-		marginEnd: 10,
-		marginTop: 10,
+		marginEnd: System.isIos ? 10 : 0,
+		marginTop: System.isIos ? 10 : 0,
 		width: 25,
 		height: 25,
 		alignItems: 'center',

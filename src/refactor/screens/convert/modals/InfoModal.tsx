@@ -13,7 +13,9 @@ const InfoModal = ({ visible, dismiss }: Props) => {
 	const { styles } = useTheme(_styles)
 
 	const children = (
-		<ScrollView style={{ marginTop: 30, paddingHorizontal: 13 }}>
+		<ScrollView
+			showsVerticalScrollIndicator={false}
+			style={{ marginTop: 30, paddingHorizontal: 0 }}>
 			<TouchableOpacity activeOpacity={0.99}>
 				<AppText variant="headline" style={styles.header}>
 					What is Instant Trade

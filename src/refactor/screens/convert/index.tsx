@@ -101,7 +101,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	useEffect(() => {
 		setBuyWithCardChecked(false)
-		clearErrors(false)
+		clearErrors(true)
 	}, [tradeType])
 
 	useEffect(() => {

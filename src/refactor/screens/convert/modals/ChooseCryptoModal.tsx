@@ -35,8 +35,10 @@ const ChooseCryptoModal = ({
 		const coins =
 			searchLower.trim().length === 0
 				? cryptos
-				: cryptos.filter((coin) =>
-						coin.name.toLowerCase().includes(searchLower)
+				: cryptos.filter(
+						(coin) =>
+							coin.name.toLowerCase().includes(searchLower) ||
+							coin.displayCcy.toLowerCase().includes(searchLower)
 				  )
 		setFilteredCoins(coins)
 	}, [search, cryptos])
