@@ -56,9 +56,10 @@ export const formatAmount = (txt: string, coin?: Coin) => {
 }
 
 export const formatScale = (
-	amount: string | number,
+	amount: string | number | undefined,
 	scale: number | undefined
 ) => {
+	if (!amount) return ''
 	if (!scale) return amount.toString()
 
 	amount = typeof amount === 'number' ? amount.toString() : amount

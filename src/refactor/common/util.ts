@@ -53,3 +53,5 @@ export const useSmsOtpVerifier = (setValue: (val: string) => void) => {
 		return () => RNOtpVerify.removeListener()
 	}, [setValue])
 }
+
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))

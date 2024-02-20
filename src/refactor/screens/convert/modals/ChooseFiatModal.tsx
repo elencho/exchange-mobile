@@ -7,7 +7,7 @@ import { Image, Pressable, StyleSheet, View } from 'react-native'
 interface Props {
 	visible: boolean
 	fiats: Coin[]
-	chosenFiat: Coin
+	chosenFiat: Coin | undefined
 	onCoinSelected: (fiat: Coin) => void
 	dismiss: () => void
 }

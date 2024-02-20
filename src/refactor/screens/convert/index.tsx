@@ -21,6 +21,8 @@ import CardTotalFee from '@app/refactor/screens/convert/components/CardTotalFee'
 import { handlePair } from '@app/refactor/screens/convert/hooks/handle-pair'
 import InfoModal from '@app/refactor/screens/convert/modals/InfoModal'
 import AppText from '@components/text'
+import Skeleton from '@app/components/Skeleton'
+import CustomRefreshControl from '@components/refreshControll'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	useNotificationPermissions()
@@ -60,6 +62,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		cards,
 		fees,
 		loading,
+		refreshing,
 		fetchCoins,
 		onCoinSelected,
 		maxLimitCard,
@@ -101,7 +104,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	useEffect(() => {
 		setBuyWithCardChecked(false)
-		clearErrors(false)
+		clearErrors(true)
 	}, [tradeType])
 
 	useEffect(() => {
@@ -118,7 +121,11 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const onTimerExpire = () => {
 		setSelectedChip(undefined)
-		fetchCoins()
+		fetchCoins(false)
+	}
+
+	const onRefresh = () => {
+		fetchCoins(true)
 	}
 
 	const onButtonClick = () => {
@@ -189,90 +196,96 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	return (
 		<AppBackground>
 			<TopRow headlineLogo={<InfoLogo />} clear={clearData} />
-			{canShowLoading() || !pair ? (
-				<MaterialIndicator
-					color="#6582FD"
-					animationDuration={3000}
-					style={{ alignSelf: 'center' }}
-				/>
-			) : (
-				<WithKeyboard
-					style={styles.withKeyboard}
-					keyboardVerticalOffsetIOS={40}
-					flexGrow
-					modal={undefined}
-					refreshControl={undefined}
-					padding={false}
-					scrollUp={false}
-					noRefresh={true}>
-					<View style={styles.container}>
-						<TradeTypeSwitcher
-							selectedType={tradeType}
-							onTypeChanged={setTradeType}
+			<WithKeyboard
+				style={styles.withKeyboard}
+				keyboardVerticalOffsetIOS={40}
+				flexGrow
+				refreshControl={
+					<CustomRefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+				}
+				modal={undefined}
+				padding={false}
+				scrollUp={false}
+				noRefresh={true}>
+				<View style={styles.container}>
+					<TradeTypeSwitcher
+						selectedType={tradeType}
+						onTypeChanged={setTradeType}
+					/>
+					<CoinPair
+						pair={pair}
+						loading={loading}
+						tradeType={tradeType}
+						balanceMultiplier={selectedChip}
+						handleDropDownClick={handleDropDownClick}
+						upCoin={upCoin}
+						upAmount={upAmount}
+						lowAmount={lowAmount}
+						lowCoin={lowCoin}
+						lastChanged={lastChanged}
+						errorInputs={errorInputs}
+						errorText={errorText}
+						setUpCoin={setUpCoin}
+						setLowCoin={setLowCoin}
+						setUpAmount={setUpAmount}
+						setLowAmount={setLowAmount}
+						setLastChanged={setLastChanged}
+						setErrorInputs={setErrorInputs}
+						setErrorText={setErrorText}
+						recalculateUp={recalculateUp}
+						recalculateLow={recalculateLow}
+					/>
+					{showPercentages && (
+						<BalanceChips
+							loading={loading}
+							selectedChip={selectedChip}
+							onChipSelect={setSelectedChip}
 						/>
-						<CoinPair
-							pair={pair}
-							tradeType={tradeType}
-							balanceMultiplier={selectedChip}
-							handleDropDownClick={handleDropDownClick}
-							upCoin={upCoin}
-							upAmount={upAmount}
-							lowAmount={lowAmount}
-							lowCoin={lowCoin}
-							lastChanged={lastChanged}
-							errorInputs={errorInputs}
-							errorText={errorText}
-							setUpCoin={setUpCoin}
-							setLowCoin={setLowCoin}
-							setUpAmount={setUpAmount}
-							setLowAmount={setLowAmount}
-							setLastChanged={setLastChanged}
-							setErrorInputs={setErrorInputs}
-							setErrorText={setErrorText}
-							recalculateUp={recalculateUp}
-							recalculateLow={recalculateLow}
+					)}
+					{showCardSection && (
+						<CardSection
+							chosenCard={chosenCard}
+							buyWithCardChecked={buyWithCardChecked}
+							setBuyWithCardChecked={(checked) => {
+								setCardError(false)
+								setBuyWithCardChecked(checked)
+							}}
+							chooseCardClicked={() => {
+								setCardError(false)
+								navigation.navigate('SelectCard', {
+									cards,
+									fees,
+									onCardChoose(card) {
+										setChosenCard(card)
+									},
+								})
+							}}
+							error={cardError}
 						/>
-						{showPercentages && (
-							<BalanceChips
-								selectedChip={selectedChip}
-								onChipSelect={setSelectedChip}
-							/>
-						)}
-						{showCardSection && (
-							<CardSection
-								chosenCard={chosenCard}
-								buyWithCardChecked={buyWithCardChecked}
-								setBuyWithCardChecked={(checked) => {
-									setCardError(false)
-									setBuyWithCardChecked(checked)
-								}}
-								chooseCardClicked={() => {
-									setCardError(false)
-									navigation.navigate('SelectCard', {
-										cards,
-										fees,
-										onCardChoose(card) {
-											setChosenCard(card)
-										},
-									})
-								}}
-								error={cardError}
-							/>
-						)}
+					)}
+					{!loading && pair && (
 						<Timer
 							pair={pair}
 							tradeType={tradeType}
 							onTimerExpired={onTimerExpire}
 						/>
-						{buyWithCardChecked && chosenCard && (
-							<CardTotalFee
-								card={chosenCard}
-								fiat={pair.fiat}
-								amount={upAmount}
-							/>
-						)}
-						<View style={{ height: 30 }} />
-						<View style={{ flex: 1 }} />
+					)}
+					{buyWithCardChecked && chosenCard && (
+						<CardTotalFee
+							card={chosenCard}
+							fiat={pair?.fiat}
+							amount={upAmount}
+						/>
+					)}
+					<View style={{ height: 30 }} />
+					<View style={{ flex: 1 }} />
+					{loading ? (
+						<Skeleton
+							width={250}
+							height={45}
+							style={[styles.button, { borderRadius: 22, width: '100%' }]}
+						/>
+					) : (
 						<AppButton
 							style={styles.button}
 							backgroundColor={
@@ -282,40 +295,40 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							text={buttonText()}
 							onPress={onButtonClick}
 						/>
-						<InfoModal
-							visible={infoModalVisible}
-							dismiss={() => setInfoModalVisible(false)}
-						/>
-						<ChooseFiatModal
-							visible={fiatModalVisible}
-							fiats={fiats}
-							chosenFiat={pair.fiat}
-							onCoinSelected={(fiat: Coin) => {
-								onCoinSelected(fiat)
-								setFiatModalVisible(false)
-								setBuyWithCardChecked(false)
-								cards.length !== 1 && setChosenCard(undefined)
-								clearErrors(false)
-								setSelectedChip(undefined)
-							}}
-							dismiss={() => setFiatModalVisible(false)}
-						/>
-						<ChooseCryptoModal
-							visible={cryptoModalVisible}
-							cryptos={cryptos}
-							pair={pair}
-							tradeType={tradeType}
-							onCoinSelected={(crypto: Coin) => {
-								onCoinSelected(crypto)
-								setCryptoModalVisible(false)
-								clearErrors(false)
-								setSelectedChip(undefined)
-							}}
-							dismiss={() => setCryptoModalVisible(false)}
-						/>
-					</View>
-				</WithKeyboard>
-			)}
+					)}
+					<InfoModal
+						visible={infoModalVisible}
+						dismiss={() => setInfoModalVisible(false)}
+					/>
+					<ChooseFiatModal
+						visible={fiatModalVisible}
+						fiats={fiats}
+						chosenFiat={pair?.fiat}
+						onCoinSelected={(fiat: Coin) => {
+							onCoinSelected(fiat)
+							setFiatModalVisible(false)
+							setBuyWithCardChecked(false)
+							cards.length !== 1 && setChosenCard(undefined)
+							clearErrors(false)
+							setSelectedChip(undefined)
+						}}
+						dismiss={() => setFiatModalVisible(false)}
+					/>
+					<ChooseCryptoModal
+						visible={cryptoModalVisible}
+						cryptos={cryptos}
+						pair={pair}
+						tradeType={tradeType}
+						onCoinSelected={(crypto: Coin) => {
+							onCoinSelected(crypto)
+							setCryptoModalVisible(false)
+							clearErrors(false)
+							setSelectedChip(undefined)
+						}}
+						dismiss={() => setCryptoModalVisible(false)}
+					/>
+				</View>
+			</WithKeyboard>
 		</AppBackground>
 	)
 }

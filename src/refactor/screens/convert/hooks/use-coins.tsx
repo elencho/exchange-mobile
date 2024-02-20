@@ -1,4 +1,5 @@
 import { COINS_URL_PNG, ICONS_URL_PNG } from '@app/constants/api'
+import { sleep } from '@app/refactor/common/util'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import {
 	fetchBalanceApi,
@@ -21,9 +22,8 @@ type BalanceEntry = {
 export const useCoins = () => {
 	const dispatch = useDispatch()
 
-	const [timesFetched, setTimesFetched] = useState(0)
-
 	const [pair, setPair] = useState<CoinPair>()
+	const [refreshing, setRefresh] = useState(false)
 	const [loading, setLoading] = useState(false)
 
 	const [fiats, setFiats] = useState<Coin[]>([])
@@ -37,7 +37,7 @@ export const useCoins = () => {
 	const feesCache = useRef<Record<Provider, Record<CardType, Pct | null>>>({})
 
 	useEffect(() => {
-		fetchCoins().then(() => {
+		fetchCoins(false).then(() => {
 			fetchCards().then((data) => {
 				setCards(data.map(mapCard))
 			})
@@ -57,8 +57,10 @@ export const useCoins = () => {
 		}
 	}
 
-	const fetchCoins = async () => {
+	const fetchCoins = async (refresh: boolean) => {
 		setLoading(true)
+		refresh && setRefresh(true)
+		await sleep(1000)
 
 		Promise.all([fetchOffersApi(), fetchBalanceApi()])
 			.then((data) => {
@@ -87,8 +89,8 @@ export const useCoins = () => {
 				setFees(extractFeesFromBalances(balances))
 			})
 			.finally(() => {
-				setTimesFetched(timesFetched + 1)
 				setLoading(false)
+				setRefresh(false)
 			})
 	}
 
@@ -262,9 +264,9 @@ export const useCoins = () => {
 		cards,
 		fees,
 		loading,
+		refreshing,
 		fetchCoins,
 		onCoinSelected,
-		onFetch: timesFetched,
 		maxLimitCard: maxLimitCard.current,
 	}
 }

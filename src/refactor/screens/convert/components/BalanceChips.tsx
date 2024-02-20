@@ -3,11 +3,12 @@ import { Theme, useTheme } from '@theme/index'
 import { Pressable, StyleSheet, View } from 'react-native'
 
 type Props = {
+	loading: boolean
 	selectedChip: number | undefined
 	onChipSelect: (balanceMultiplier: number | undefined) => void
 }
 
-const BalanceChips = ({ selectedChip, onChipSelect }: Props) => {
+const BalanceChips = ({ loading, selectedChip, onChipSelect }: Props) => {
 	const { styles } = useTheme(_styles)
 	const chips = [0.25, 0.5, 0.75, 1]
 
@@ -18,11 +19,8 @@ const BalanceChips = ({ selectedChip, onChipSelect }: Props) => {
 					style={styles.chipContainer}
 					key={mul}
 					onPress={() => {
-						if (selectedChip === mul) {
-							onChipSelect(undefined)
-						} else {
-							onChipSelect(mul)
-						}
+						if (loading) return
+						onChipSelect(mul)
 					}}>
 					<AppText variant="l" style={styles.mulText}>
 						{mul === 1 ? 'MAX' : mul * 100 + '%'}

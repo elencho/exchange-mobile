@@ -6,7 +6,8 @@ import CoinInputArrow from '@assets/images/CoinInputArrow.svg'
 import AppText from '@components/text'
 
 type Props = {
-	pair: CoinPair
+	pair: CoinPair | undefined
+	loading: boolean
 	tradeType: TradeType
 	balanceMultiplier: number | undefined
 	handleDropDownClick: (type: CoinType) => void
@@ -27,12 +28,13 @@ type Props = {
 	setErrorInputs: (pos: Position[]) => void
 	setErrorText: (txt: string | undefined) => void
 
-	recalculateUp: (txt: string, scale: number) => void
-	recalculateLow: (txt: string, scale: number) => void
+	recalculateUp: (txt: string, scale?: number) => void
+	recalculateLow: (txt: string, scale?: number) => void
 }
 
 const CoinPair = ({
 	handleDropDownClick,
+	loading,
 	upCoin,
 	upAmount,
 	lowAmount,
@@ -55,16 +57,17 @@ const CoinPair = ({
 		setErrorInputs([])
 	}
 
-	return upCoin && lowCoin ? (
+	return (
 		<View style={styles.wrapper}>
 			<View style={styles.container}>
 				<CoinInput
 					coin={upCoin}
+					loading={loading}
 					amount={upAmount}
 					isActive={lastChanged === 'up'}
 					onAmountChange={(txt) => {
 						setUpAmount(txt)
-						recalculateLow(txt, lowCoin.scale)
+						recalculateLow(txt, lowCoin?.scale)
 						clearError()
 					}}
 					onDropdownClick={(type) => {
@@ -79,11 +82,12 @@ const CoinPair = ({
 				<View style={{ height: 10 }} />
 				<CoinInput
 					coin={lowCoin}
+					loading={loading}
 					amount={lowAmount}
 					isActive={lastChanged === 'low'}
 					onAmountChange={(txt) => {
 						setLowAmount(txt)
-						recalculateUp(txt, upCoin.scale)
+						recalculateUp(txt, upCoin?.scale)
 						clearError()
 					}}
 					onDropdownClick={(type) => {
@@ -109,7 +113,7 @@ const CoinPair = ({
 				</AppText>
 			) : null}
 		</View>
-	) : null
+	)
 }
 
 const _styles = (theme: Theme) =>

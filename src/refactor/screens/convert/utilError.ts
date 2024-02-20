@@ -20,26 +20,26 @@ export const coinError = (
 	if (!fiatAmount.trim().length || !cryptoAmount.trim().length) {
 		return { type: ['Fiat', 'Crypto'] }
 	}
+	// 6
+	if (f < pair.minTradeCost) {
+		return {
+			err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
+			type: ['Fiat'],
+		}
+	}
+	// 7
+	if (f > pair.maxTradeSize) {
+		return {
+			err: 'max. deposit ' + pair.maxTradeSize + ' ' + pair.fiat.displayCcy,
+			type: ['Fiat'],
+		}
+	}
 
 	if (tradeType === 'Buy') {
 		// 1, 2
 		if (!buyWithCard && f > Number(pair.fiat.balance)) {
 			return {
 				err: 'max. available ' + pair.fiat.balance + ' ' + pair.fiat.displayCcy,
-				type: ['Fiat'],
-			}
-		}
-		// 6
-		if (f < pair.minTradeCost) {
-			return {
-				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
-				type: ['Fiat'],
-			}
-		}
-		// 7
-		if (f > pair.maxTradeSize) {
-			return {
-				err: 'max. deposit ' + pair.maxTradeSize + ' ' + pair.fiat.displayCcy,
 				type: ['Fiat'],
 			}
 		}
@@ -55,14 +55,13 @@ export const coinError = (
 				type: ['Crypto'],
 			}
 		}
-		// 8
-		// TODO: Buy?
-		if (!buyWithCard && c * sell < pair.minTradeCost) {
-			return {
-				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
-				type: ['Fiat'],
-			}
-		}
+		// // 8
+		// if (!buyWithCard && c * sell < pair.minTradeCost) {
+		// 	return {
+		// 		err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
+		// 		type: ['Fiat'],
+		// 	}
+		// }
 	}
 
 	return null
