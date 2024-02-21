@@ -58,6 +58,7 @@ const TransactionList: React.FC<Props> = ({
 			toDateTime,
 			txIdOrRecipient,
 			isFilterVisible.isVisible,
+			isFilterVisible.shouldFilter,
 		])
 	)
 
