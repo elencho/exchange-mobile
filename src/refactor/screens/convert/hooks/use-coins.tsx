@@ -38,7 +38,8 @@ export const useCoins = () => {
 
 	useEffect(() => {
 		const call = async () => {
-			await fetchCoins(false)
+			await fetchCoins(true, false)
+			sleep(1000)
 			const cardsResponse = await fetchCards()
 			setCards(cardsResponse.map(mapCard))
 		}
@@ -58,10 +59,9 @@ export const useCoins = () => {
 		}
 	}
 
-	const fetchCoins = async (refresh: boolean) => {
-		setLoading(true)
+	const fetchCoins = async (skeleton: boolean, refresh: boolean) => {
+		skeleton && setLoading(true)
 		refresh && setRefresh(true)
-		await sleep(3000)
 
 		Promise.all([fetchOffersApi(), fetchBalanceApi()])
 			.then((data) => {

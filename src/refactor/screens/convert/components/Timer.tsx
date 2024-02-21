@@ -6,19 +6,26 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import ProgressBar from 'react-native-animated-progress'
 
-const COUNTDOWN_SECONDS = 90
+export const COUNTDOWN_SECONDS = 90
 
 type Props = {
+	seconds: number
+	setSeconds: (sec: number) => void
 	pair?: CoinPair
 	loading: boolean
 	tradeType: TradeType
 	onTimerExpired: () => void
 }
 
-const Timer = ({ pair, loading, tradeType, onTimerExpired }: Props) => {
+const Timer = ({
+	seconds,
+	setSeconds,
+	pair,
+	loading,
+	tradeType,
+	onTimerExpired,
+}: Props) => {
 	const { styles, theme } = useTheme(_styles)
-
-	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
 
 	useEffect(() => {
 		if (!seconds) {
@@ -51,7 +58,7 @@ const Timer = ({ pair, loading, tradeType, onTimerExpired }: Props) => {
 	}
 
 	return loading || !pair ? (
-		<Skeleton height={62} style={{ marginTop: 22, borderRadius: 6 }} />
+		<Skeleton height={70} style={{ marginTop: 22, borderRadius: 6 }} />
 	) : (
 		<View style={styles.container}>
 			<ProgressBar
@@ -68,6 +75,7 @@ const Timer = ({ pair, loading, tradeType, onTimerExpired }: Props) => {
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
 		container: {
+			minHeight: 70,
 			paddingTop: 20,
 			paddingHorizontal: 16,
 			marginTop: 22,

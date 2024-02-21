@@ -1,7 +1,7 @@
 import AppModal from '@components/modal'
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
-import { Image, Pressable, StyleSheet, View } from 'react-native'
+import { Image, StyleSheet, View } from 'react-native'
 
 interface Props {
 	fees: ProviderFees[]
@@ -10,11 +10,15 @@ interface Props {
 }
 
 const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
-	const { styles, theme } = useTheme(_styles)
+	const { styles } = useTheme(_styles)
 
-	const renderBankFees = (fee: ProviderFees, drawUnderline: boolean) => {
+	const renderBankFees = (
+		fee: ProviderFees,
+		drawUnderline: boolean,
+		indx: number
+	) => {
 		return (
-			<View style={{ flexDirection: 'column' }}>
+			<View style={{ flexDirection: 'column' }} key={indx}>
 				<View key={fee.providerBank} style={styles.bankFeeContainer}>
 					<AppText
 						variant="title"
@@ -22,11 +26,8 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 						{fee.providerBank}
 					</AppText>
 					<View style={{ flex: 1 }}></View>
-					{fee.feeData.map((item) => (
-						<AppText
-							variant="title"
-							style={styles.bankText}
-							key={item.cardType}>
+					{fee.feeData.map((item, index) => (
+						<AppText variant="title" style={styles.bankText} key={index}>
 							{item.pct ? item.pct + '%' : '-'}
 						</AppText>
 					))}
@@ -48,9 +49,9 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 					{'PROVIDERS:'}
 				</AppText>
 				<View style={{ flex: 1 }}></View>
-				{icons.map((cardIcon) => (
+				{icons.map((cardIcon, index) => (
 					<Image
-						key={cardIcon}
+						key={index}
 						style={{ width: 38, height: 22, marginLeft: 42, borderRadius: 2 }}
 						source={{
 							uri: cardIcon,
@@ -66,7 +67,7 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 			<View style={styles.container}>
 				<ProviderRow />
 				{fees.map((fee: ProviderFees, index) =>
-					renderBankFees(fee, index !== fees.length - 1)
+					renderBankFees(fee, index !== fees.length - 1, index)
 				)}
 			</View>
 		)
