@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
 	TouchableOpacity,
 	Modal,
@@ -54,6 +54,7 @@ export default function AppWebView(props) {
 			dispatch({ type: 'BALANCE_SAGA' })
 		}
 		onClose && onClose()
+		setDelayedOpen(false)
 	}
 
 	const handleOnShow = async () => {
@@ -66,7 +67,7 @@ export default function AppWebView(props) {
 
 	// Necessary for Push notification banner to show in proper order
 	const [delayedOpen, setDelayedOpen] = useState(false)
-	useState(() => {
+	useEffect(() => {
 		!!webViewObj &&
 			setTimeout(() => {
 				setDelayedOpen(true)
