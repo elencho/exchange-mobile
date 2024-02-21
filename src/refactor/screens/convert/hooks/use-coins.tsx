@@ -37,11 +37,13 @@ export const useCoins = () => {
 	const feesCache = useRef<Record<Provider, Record<CardType, Pct | null>>>({})
 
 	useEffect(() => {
-		fetchCoins(false).then(() => {
-			fetchCards().then((data) => {
-				setCards(data.map(mapCard))
-			})
-		})
+		const call = async () => {
+			await fetchCoins(true, false)
+			sleep(1000)
+			const cardsResponse = await fetchCards()
+			setCards(cardsResponse.map(mapCard))
+		}
+		call()
 	}, [])
 
 	const convertPair = useSelector(
@@ -57,10 +59,9 @@ export const useCoins = () => {
 		}
 	}
 
-	const fetchCoins = async (refresh: boolean) => {
-		setLoading(true)
+	const fetchCoins = async (skeleton: boolean, refresh: boolean) => {
+		skeleton && setLoading(true)
 		refresh && setRefresh(true)
-		await sleep(3000)
 
 		Promise.all([fetchOffersApi(), fetchBalanceApi()])
 			.then((data) => {

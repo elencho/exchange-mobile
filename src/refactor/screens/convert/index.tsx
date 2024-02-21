@@ -5,10 +5,12 @@ import AppBackground from '@components/background'
 import TopRow from '@components/top_row'
 import { useEffect, useState } from 'react'
 import { TradeTypeSwitcher } from '@app/refactor/screens/convert/components/TradeTypeSwitcher'
-import { Timer } from '@app/refactor/screens/convert/components/Timer'
+import {
+	COUNTDOWN_SECONDS,
+	Timer,
+} from '@app/refactor/screens/convert/components/Timer'
 import { useCoins } from '@app/refactor/screens/convert/hooks/use-coins'
 import ChooseFiatModal from '@app/refactor/screens/convert/modals/ChooseFiatModal'
-import { MaterialIndicator } from 'react-native-indicators'
 import ChooseCryptoModal from '@app/refactor/screens/convert/modals/ChooseCryptoModal'
 import BalanceChips from '@app/refactor/screens/convert/components/BalanceChips'
 import CardSection from '@app/refactor/screens/convert/components/CardSection'
@@ -30,6 +32,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const { styles } = useTheme(_styles)
 
+	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
 	const [cardError, setCardError] = useState<boolean>(false)
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
 	const [chosenCard, setChosenCard] = useState<Card>()
@@ -108,6 +111,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	useEffect(() => {
 		setBuyWithCardChecked(false)
 		clearErrors(true)
+		setSelectedChip(undefined)
 	}, [tradeType])
 
 	useEffect(() => {
@@ -126,16 +130,17 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		clearData()
 		setLastChanged(null)
 		setSubmitStatus(status)
-		fetchCoins(false)
+		fetchCoins(true, false)
 	}
 
 	const onTimerExpire = () => {
 		setSelectedChip(undefined)
-		fetchCoins(false)
+		fetchCoins(false, false)
 	}
 
 	const onRefresh = () => {
-		fetchCoins(true)
+		setSeconds(COUNTDOWN_SECONDS)
+		fetchCoins(true, true)
 	}
 
 	const onButtonClick = () => {
@@ -212,11 +217,10 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 				}}
 			/>
 			<WithKeyboard
-				style={styles.withKeyboard}
 				keyboardVerticalOffsetIOS={40}
 				flexGrow
 				refreshControl={
-					<CustomRefreshContol refreshing={false} onRefresh={onRefresh} />
+					<CustomRefreshContol refreshing={refreshing} onRefresh={onRefresh} />
 				}
 				modal={undefined}
 				padding={false}
@@ -254,7 +258,10 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 						<BalanceChips
 							loading={loading}
 							selectedChip={selectedChip}
-							onChipSelect={setSelectedChip}
+							onChipSelect={(mul) => {
+								clearErrors(false)
+								setSelectedChip(mul)
+							}}
 						/>
 					)}
 					{showCardSection && (
@@ -280,6 +287,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 						/>
 					)}
 					<Timer
+						seconds={seconds}
+						setSeconds={setSeconds}
 						pair={pair}
 						loading={loading}
 						tradeType={tradeType}
@@ -359,7 +368,6 @@ const _styles = (theme: Theme) =>
 		container: {
 			flex: 1,
 		},
-		withKeyboard: {},
 		button: {
 			verticalAlign: 'bottom',
 			marginBottom: 15,

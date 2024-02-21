@@ -88,16 +88,23 @@ const CoinInput = ({
 	const balanceText =
 		'Balance: ' + (loading ? '' : formatScale(coin?.balance, coin?.scale))
 
+	const borderColor = () => {
+		const def = hexOpacityPct(theme.color.textSecondary, 50)
+		return loading
+			? def
+			: error
+			? theme.color.error
+			: isActive
+			? theme.color.brandSecondary
+			: def
+	}
+
 	return (
 		<View
 			style={[
 				styles.container,
 				{
-					borderColor: error
-						? theme.color.error
-						: isActive
-						? theme.color.brandSecondary
-						: hexOpacityPct(theme.color.textSecondary, 50),
+					borderColor: borderColor(),
 				},
 			]}>
 			<View style={styles.infoContainer}>
@@ -146,6 +153,8 @@ const _styles = (theme: Theme) =>
 			color: theme.color.textThird,
 		},
 		infoContainer: {
+			minHeight: 50,
+			justifyContent: 'center',
 			marginVertical: 18,
 			marginLeft: 20,
 			flexDirection: 'column',

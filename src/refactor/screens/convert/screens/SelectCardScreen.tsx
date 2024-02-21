@@ -24,6 +24,7 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
+		console.error(cards)
 		dispatch({ type: 'BALANCE_SAGA' })
 	}, [])
 

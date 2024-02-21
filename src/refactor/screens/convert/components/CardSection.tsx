@@ -6,6 +6,7 @@ import CheckEmpty from '@assets/images/Check_Empty.svg'
 import CheckFull from '@assets/images/Check_Full.svg'
 import AppDropdown from '@components/dropdown/index'
 import Skeleton from '@components/skeleton'
+import Arrow from '@assets/images/Arrow.svg'
 
 type Props = {
 	chosenCard?: Card
@@ -26,12 +27,33 @@ const CardSection = ({
 }: Props) => {
 	const { styles } = useTheme(_styles)
 
+	const DropdrownSkeleton = () => {
+		return (
+			<View style={styles.dropdownContainer}>
+				<Skeleton
+					width={28}
+					height={20}
+					style={{ borderRadius: 6, marginEnd: 12 }}
+				/>
+				<Skeleton width={95} height={6} style={{}} />
+				<View style={{ flex: 1 }} />
+				<View style={{ paddingEnd: 22, marginEnd: 2 }}>
+					<Arrow />
+				</View>
+			</View>
+		)
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.rowContainer}>
 				<Pressable
 					style={styles.radioContainer}
-					onPress={() => setBuyWithCardChecked(!buyWithCardChecked)}>
+					onPress={() => {
+						if (!loading) {
+							setBuyWithCardChecked(!buyWithCardChecked)
+						}
+					}}>
 					{buyWithCardChecked ? <CheckFull /> : <CheckEmpty />}
 				</Pressable>
 				<AppText variant="l" style={styles.buyText}>
@@ -40,10 +62,7 @@ const CardSection = ({
 			</View>
 			{buyWithCardChecked &&
 				(loading ? (
-					<Skeleton
-						height={44}
-						style={[styles.dropdown, { borderRadius: 6 }]}
-					/>
+					<DropdrownSkeleton />
 				) : (
 					<AppDropdown
 						style={styles.dropdown}
@@ -86,6 +105,16 @@ const _styles = (theme: Theme) =>
 		},
 		buyText: {
 			color: theme.color.textThird,
+		},
+		dropdownContainer: {
+			borderWidth: 1,
+			borderRadius: 6,
+			marginTop: 20,
+			flexDirection: 'row',
+			alignItems: 'center',
+			paddingStart: 22,
+			borderColor: theme.color.border,
+			height: 44,
 		},
 	})
 
