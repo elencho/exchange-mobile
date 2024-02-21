@@ -64,7 +64,9 @@ export const handlePair = ({
 		balanceMultiplier: number,
 		upC: Coin | undefined
 	) => {
-		return (balanceMultiplier * Number(upC?.balance)).toString()
+		return (
+			balanceMultiplier * Number(formatScale(upC?.balance, upC?.scale))
+		).toString()
 	}
 
 	const handleButtonClick = () => {

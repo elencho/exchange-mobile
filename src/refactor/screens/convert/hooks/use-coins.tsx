@@ -37,11 +37,12 @@ export const useCoins = () => {
 	const feesCache = useRef<Record<Provider, Record<CardType, Pct | null>>>({})
 
 	useEffect(() => {
-		fetchCoins(false).then(() => {
-			fetchCards().then((data) => {
-				setCards(data.map(mapCard))
-			})
-		})
+		const call = async () => {
+			await fetchCoins(false)
+			const cardsResponse = await fetchCards()
+			setCards(cardsResponse.map(mapCard))
+		}
+		call()
 	}, [])
 
 	const convertPair = useSelector(

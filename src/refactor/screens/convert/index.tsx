@@ -108,6 +108,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	useEffect(() => {
 		setBuyWithCardChecked(false)
 		clearErrors(true)
+		setSelectedChip(undefined)
 	}, [tradeType])
 
 	useEffect(() => {
@@ -216,7 +217,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 				keyboardVerticalOffsetIOS={40}
 				flexGrow
 				refreshControl={
-					<CustomRefreshContol refreshing={false} onRefresh={onRefresh} />
+					<CustomRefreshContol refreshing={refreshing} onRefresh={onRefresh} />
 				}
 				modal={undefined}
 				padding={false}
@@ -254,7 +255,10 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 						<BalanceChips
 							loading={loading}
 							selectedChip={selectedChip}
-							onChipSelect={setSelectedChip}
+							onChipSelect={(mul) => {
+								clearErrors(false)
+								setSelectedChip(mul)
+							}}
 						/>
 					)}
 					{showCardSection && (

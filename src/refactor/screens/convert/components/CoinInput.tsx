@@ -146,6 +146,8 @@ const _styles = (theme: Theme) =>
 			color: theme.color.textThird,
 		},
 		infoContainer: {
+			minHeight: 50,
+			justifyContent: 'center',
 			marginVertical: 18,
 			marginLeft: 20,
 			flexDirection: 'column',
