@@ -3,7 +3,7 @@ import { Theme, useTheme } from '@theme/index'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import AppBackground from '@components/background'
 import TopRow from '@components/top_row'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TradeTypeSwitcher } from '@app/refactor/screens/convert/components/TradeTypeSwitcher'
 import {
 	COUNTDOWN_SECONDS,
@@ -26,7 +26,6 @@ import AppText from '@components/text'
 import Skeleton from '@app/components/Skeleton'
 import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
 import CustomRefreshContol from '@components/refresh-control'
-import { useFocusEffect } from '@react-navigation/native'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	useNotificationPermissions()

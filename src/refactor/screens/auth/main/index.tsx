@@ -51,13 +51,18 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 	)
 
 	useEffect(() => {
+		let timeout: NodeJS.Timeout
 		if (
 			Object.keys(modalContent ?? {}).length > 0 &&
 			(biometricSuccess == null || biometricSuccess === true)
 		) {
-			setTimeout(() => {
+			timeout = setTimeout(() => {
 				showModal(modalContent)
 			}, 1000)
+		}
+
+		return () => {
+			clearTimeout(timeout)
 		}
 	}, [modalContent, biometricSuccess])
 
