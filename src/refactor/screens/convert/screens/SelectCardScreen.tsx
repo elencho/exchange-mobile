@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import CardFeesModal from '@app/refactor/screens/convert/modals/CardFeesModal'
 import CloseIcon from '@components/close-button'
 import CardAdd from '@assets/images/Card_Add.svg'
-import { FlatList } from 'react-native-gesture-handler'
+import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import AddCardModal from '@app/components/Wallet/ManageCards/AddCardModal'
 import { useDispatch, useSelector } from 'react-redux'
 import AddCardIcon from '@assets/images/Instant_Add_Card.svg'
@@ -116,8 +116,9 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 		}
 
 		return (
-			<View>
+			<ScrollView showsVerticalScrollIndicator={false}>
 				<FlatList
+					scrollEnabled={false}
 					style={styles.listContainer}
 					data={cards}
 					keyExtractor={(item) => item.id}
@@ -125,7 +126,7 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 					showsVerticalScrollIndicator={false}
 				/>
 				<AddCard />
-			</View>
+			</ScrollView>
 		)
 	}
 

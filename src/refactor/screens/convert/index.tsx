@@ -3,7 +3,7 @@ import { Theme, useTheme } from '@theme/index'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import AppBackground from '@components/background'
 import TopRow from '@components/top_row'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { TradeTypeSwitcher } from '@app/refactor/screens/convert/components/TradeTypeSwitcher'
 import {
 	COUNTDOWN_SECONDS,
@@ -26,13 +26,13 @@ import AppText from '@components/text'
 import Skeleton from '@app/components/Skeleton'
 import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
 import CustomRefreshContol from '@components/refresh-control'
+import { useFocusEffect } from '@react-navigation/native'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	useNotificationPermissions()
 
 	const { styles } = useTheme(_styles)
 
-	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
 	const [cardError, setCardError] = useState<boolean>(false)
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
 	const [chosenCard, setChosenCard] = useState<Card>()
@@ -72,6 +72,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		fetchCoins,
 		onCoinSelected,
 		maxLimitCard,
+		seconds,
+		setSeconds,
 	} = useCoins()
 
 	const {
