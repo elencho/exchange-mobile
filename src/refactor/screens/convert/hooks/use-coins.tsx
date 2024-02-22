@@ -6,8 +6,10 @@ import {
 	fetchCards,
 	fetchOffersApi,
 } from '@app/refactor/screens/convert/api/convertNowApi'
+import { COUNTDOWN_SECONDS } from '@app/refactor/screens/convert/components/Timer'
+import { useFocusEffect } from '@react-navigation/native'
 import { setConvertPair } from '@store/redux/common/slice'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 type DisplayCcy = string
@@ -25,6 +27,7 @@ export const useCoins = () => {
 	const [pair, setPair] = useState<CoinPair>()
 	const [refreshing, setRefresh] = useState(false)
 	const [loading, setLoading] = useState(false)
+	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
 
 	const [fiats, setFiats] = useState<Coin[]>([])
 	const [cryptos, setCryptos] = useState<Coin[]>([])
@@ -36,15 +39,18 @@ export const useCoins = () => {
 	const balancesCache = useRef<Record<DisplayCcy, BalanceEntry>>({})
 	const feesCache = useRef<Record<Provider, Record<CardType, Pct | null>>>({})
 
-	useEffect(() => {
-		const call = async () => {
-			await fetchCoins(true, false)
-			sleep(1000)
-			const cardsResponse = await fetchCards()
-			setCards(cardsResponse.map(mapCard))
-		}
-		call()
-	}, [])
+	useFocusEffect(
+		useCallback(() => {
+			const call = async () => {
+				await fetchCoins(true, false)
+				sleep(1000)
+				const cardsResponse = await fetchCards()
+				setCards(cardsResponse.map(mapCard))
+				setSeconds(COUNTDOWN_SECONDS)
+			}
+			call()
+		}, [])
+	)
 
 	const convertPair = useSelector(
 		(state: RootState) => state.common.convertPair
@@ -268,6 +274,8 @@ export const useCoins = () => {
 		refreshing,
 		fetchCoins,
 		onCoinSelected,
+		seconds,
+		setSeconds,
 		maxLimitCard: maxLimitCard.current,
 	}
 }

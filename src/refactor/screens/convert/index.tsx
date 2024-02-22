@@ -32,7 +32,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	const { styles } = useTheme(_styles)
 
-	const [seconds, setSeconds] = useState(COUNTDOWN_SECONDS)
 	const [cardError, setCardError] = useState<boolean>(false)
 	const [tradeType, setTradeType] = useState<TradeType>('Buy')
 	const [chosenCard, setChosenCard] = useState<Card>()
@@ -72,6 +71,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		fetchCoins,
 		onCoinSelected,
 		maxLimitCard,
+		seconds,
+		setSeconds,
 	} = useCoins()
 
 	const {
