@@ -39,17 +39,15 @@ export const useCoins = () => {
 	const balancesCache = useRef<Record<DisplayCcy, BalanceEntry>>({})
 	const feesCache = useRef<Record<Provider, Record<CardType, Pct | null>>>({})
 
-	useFocusEffect(
-		useCallback(() => {
-			const call = async () => {
-				await fetchCoins(true, false)
-				const cardsData = (await fetchCards()).map(mapCard)
-				setCards(cardsData)
-				setSeconds(COUNTDOWN_SECONDS)
-			}
-			call()
-		}, [])
-	)
+	useEffect(() => {
+		const call = async () => {
+			await fetchCoins(true, false)
+			const cardsData = (await fetchCards()).map(mapCard)
+			setCards(cardsData)
+			setSeconds(COUNTDOWN_SECONDS)
+		}
+		call()
+	}, [])
 
 	const convertPair = useSelector(
 		(state: RootState) => state.common.convertPair
