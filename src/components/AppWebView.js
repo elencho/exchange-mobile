@@ -18,9 +18,12 @@ import {
 	setFee,
 } from '../redux/trade/actions'
 import KV from '@store/kv/regular'
+import { useModal } from '@components/modal/global_modal'
 
 export default function AppWebView(props) {
 	const { verifyCards, trade, deposit, cardsAdd, onClose } = props
+
+	const { isModalVisible: isGlobalModalVisible } = useModal()
 
 	const dispatch = useDispatch()
 	const webViewObj = useSelector((state) => state.modals.webViewObj)
@@ -74,11 +77,15 @@ export default function AppWebView(props) {
 			}, 100)
 	}, [!!webViewObj])
 
+	const isVisible = cardsAdd
+		? !!webViewObj && delayedOpen
+		: !!webViewObj && delayedOpen && !isGlobalModalVisible
+
 	return (
 		<Modal
 			statusBarTranslucent={true}
 			// presentationStyle="fade"
-			visible={!!webViewObj && delayedOpen}
+			visible={isVisible}
 			onShow={handleOnShow}
 			onRequestClose={handleOnRequestClose}
 			animationType="slide">
