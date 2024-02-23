@@ -15,6 +15,7 @@ import { RootState } from '@app/refactor/redux/rootReducer'
 import { setWebViewVisible } from '@store/redux/common/slice'
 import { Theme, useTheme } from '@theme/index'
 import { WebViewSource } from 'react-native-webview/lib/WebViewTypes'
+import { useModal } from '@components/modal/global_modal'
 
 type Props = {
 	source: WebViewSource
@@ -28,6 +29,7 @@ export const AppWebView = ({
 	onClose,
 }: Props) => {
 	const dispatch = useDispatch()
+	const { isModalVisible: isGlobalModalVisible } = useModal()
 	const { styles } = useTheme(_styles)
 
 	const webViewVisible = useSelector(
@@ -50,7 +52,7 @@ export const AppWebView = ({
 	return (
 		<Modal
 			statusBarTranslucent={true}
-			visible={webViewVisible}
+			visible={webViewVisible && !isGlobalModalVisible}
 			onShow={handleOnShow}
 			onRequestClose={handleOnRequestClose}
 			animationType="slide">
