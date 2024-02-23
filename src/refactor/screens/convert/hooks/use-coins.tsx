@@ -43,9 +43,8 @@ export const useCoins = () => {
 		useCallback(() => {
 			const call = async () => {
 				await fetchCoins(true, false)
-				sleep(1000)
-				const cardsResponse = await fetchCards()
-				setCards(cardsResponse.map(mapCard))
+				const cardsData = (await fetchCards()).map(mapCard)
+				setCards(cardsData)
 				setSeconds(COUNTDOWN_SECONDS)
 			}
 			call()
