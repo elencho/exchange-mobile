@@ -49,8 +49,6 @@ export const AppWebView = ({
 		dispatch(setWebViewVisible(false))
 	}
 
-	console.log({ isGlobalModalVisible })
-
 	return (
 		<Modal
 			statusBarTranslucent={true}
