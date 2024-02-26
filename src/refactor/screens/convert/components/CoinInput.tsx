@@ -44,9 +44,9 @@ const CoinInput = ({
 		}
 	}, [amount, coin])
 
-	useEffect(() => {
-		isActive && inputRef?.current?.focus()
-	}, [isActive])
+	const focus = () => {
+		inputRef?.current?.focus()
+	}
 
 	const CoinButton = () => {
 		return (
@@ -106,7 +106,8 @@ const CoinInput = ({
 				{
 					borderColor: borderColor(),
 				},
-			]}>
+			]}
+			onTouchStart={focus}>
 			<View style={styles.infoContainer}>
 				{loading ? (
 					<Skeleton width={36} height={10} />
