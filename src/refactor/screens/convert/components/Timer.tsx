@@ -2,7 +2,7 @@ import { formatDisplayPair } from '@app/refactor/screens/convert/util'
 import Skeleton from '@components/skeleton'
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import ProgressBar from 'react-native-animated-progress'
 

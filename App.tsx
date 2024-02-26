@@ -20,7 +20,7 @@ import { System } from '@app/refactor/common/util'
 import { ModalProvider } from '@components/modal/global_modal'
 import RNUxcam from 'react-native-ux-cam'
 
-LogBox.ignoreAllLogs()
+LogBox.ignoreAllLogs(true)
 LogBox.ignoreLogs([
 	// TODO: Remove when fixed
 	'VirtualizedLists should never be nested',

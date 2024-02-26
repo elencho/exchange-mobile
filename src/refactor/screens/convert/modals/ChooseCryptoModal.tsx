@@ -150,6 +150,7 @@ const _styles = (theme: Theme) =>
 		},
 		listContainer: {
 			marginTop: 15,
+			margin: -10,
 		},
 		searchInput: {
 			marginTop: -20,

@@ -1,7 +1,13 @@
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
 import React, { memo, useEffect, useRef, useState } from 'react'
-import { Image, Pressable, StyleSheet, TextInput, View } from 'react-native'
+import {
+	GestureResponderEvent,
+	Image,
+	StyleSheet,
+	TextInput,
+	View,
+} from 'react-native'
 import Arrow from '@assets/images/Arrow.svg'
 import {
 	formatAmount,
@@ -44,15 +50,15 @@ const CoinInput = ({
 		}
 	}, [amount, coin])
 
-	useEffect(() => {
-		isActive && inputRef?.current?.focus()
-	}, [isActive])
+	const focus = () => {
+		inputRef.current?.focus()
+	}
 
 	const CoinButton = () => {
 		return (
-			<Pressable
+			<View
 				style={styles.coinButtonCointainer}
-				onPress={() => {
+				onTouchStart={() => {
 					coin && onDropdownClick(coin.type)
 				}}>
 				<Image
@@ -65,7 +71,7 @@ const CoinInput = ({
 					{coin?.displayCcy}
 				</AppText>
 				<Arrow style={{ marginLeft: 8, marginRight: 14 }} />
-			</Pressable>
+			</View>
 		)
 	}
 
@@ -106,7 +112,8 @@ const CoinInput = ({
 				{
 					borderColor: borderColor(),
 				},
-			]}>
+			]}
+			onTouchEnd={focus}>
 			<View style={styles.infoContainer}>
 				{loading ? (
 					<Skeleton width={36} height={10} />
