@@ -150,13 +150,14 @@ const _styles = (theme: Theme) =>
 		},
 		listContainer: {
 			marginTop: 15,
+			margin: -10,
 		},
 		searchInput: {
 			marginTop: -20,
 		},
 		rowContainer: {
 			flexDirection: 'row',
-			paddingEnd: 10,
+			paddingHorizontal: 10,
 			paddingVertical: 12,
 			borderRadius: 6,
 		},
