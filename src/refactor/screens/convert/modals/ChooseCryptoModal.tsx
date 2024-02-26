@@ -156,7 +156,7 @@ const _styles = (theme: Theme) =>
 		},
 		rowContainer: {
 			flexDirection: 'row',
-			paddingHorizontal: 10,
+			paddingEnd: 10,
 			paddingVertical: 12,
 			borderRadius: 6,
 		},
