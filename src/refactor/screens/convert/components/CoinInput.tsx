@@ -1,13 +1,7 @@
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
 import React, { memo, useEffect, useRef, useState } from 'react'
-import {
-	GestureResponderEvent,
-	Image,
-	StyleSheet,
-	TextInput,
-	View,
-} from 'react-native'
+import { Image, Pressable, StyleSheet, TextInput, View } from 'react-native'
 import Arrow from '@assets/images/Arrow.svg'
 import {
 	formatAmount,
@@ -15,6 +9,7 @@ import {
 	hexOpacityPct,
 } from '@app/refactor/screens/convert/util'
 import Skeleton from '@components/skeleton'
+import { TouchableWithoutFeedback } from 'react-native'
 
 type Props = {
 	coin?: Coin

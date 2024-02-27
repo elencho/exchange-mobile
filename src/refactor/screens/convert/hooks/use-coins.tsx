@@ -1,15 +1,13 @@
 import { COINS_URL_PNG, ICONS_URL_PNG } from '@app/constants/api'
-import { sleep } from '@app/refactor/common/util'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import {
 	fetchBalanceApi,
-	fetchCards,
+	fetchCardsApi,
 	fetchOffersApi,
 } from '@app/refactor/screens/convert/api/convertNowApi'
 import { COUNTDOWN_SECONDS } from '@app/refactor/screens/convert/components/Timer'
-import { useFocusEffect } from '@react-navigation/native'
 import { setConvertPair } from '@store/redux/common/slice'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 type DisplayCcy = string
@@ -42,9 +40,6 @@ export const useCoins = () => {
 	useEffect(() => {
 		const call = async () => {
 			await fetchCoins(true, false)
-			const cardsData = (await fetchCards()).map(mapCard)
-			setCards(cardsData)
-			setSeconds(COUNTDOWN_SECONDS)
 		}
 		call()
 	}, [])
@@ -66,10 +61,12 @@ export const useCoins = () => {
 		skeleton && setLoading(true)
 		refresh && setRefresh(true)
 
-		Promise.all([fetchOffersApi(), fetchBalanceApi()])
+		Promise.all([fetchOffersApi(), fetchBalanceApi(), fetchCardsApi()])
 			.then((data) => {
 				const offers = data[0]
 				const balances = data[1]
+				const cardsResponse = data[2]
+
 				balancesCache.current = saveBalancesCache(balances)
 				offersCache.current = saveOffersCache(offers)
 				saveMaxLimitCard(balances)
@@ -91,6 +88,10 @@ export const useCoins = () => {
 				setCryptos(cryptosForFiat)
 				setPair(coinPair)
 				setFees(extractFeesFromBalances(balances))
+
+				const cardsData = cardsResponse.map(mapCard)
+				setCards(cardsData)
+				setSeconds(COUNTDOWN_SECONDS)
 			})
 			.finally(() => {
 				setLoading(false)

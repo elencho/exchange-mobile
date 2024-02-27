@@ -21,7 +21,7 @@ export const fetchBalanceApi = async () => {
 	return data?.data
 }
 
-export const fetchCards = async () => {
+export const fetchCardsApi = async () => {
 	const data = await axios.get<CardsResponse>(CARDS_URL, {
 		headers: { toast: false, requestName: 'fetchCards' },
 		params: {

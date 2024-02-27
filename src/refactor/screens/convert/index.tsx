@@ -128,7 +128,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	}
 
 	const handleConfirmModalStatus = (status: ConfirmModalStatus) => {
-		clearData()
+		resetData()
 		setLastChanged(null)
 		setSubmitStatus(status)
 		fetchCoins(true, false)
@@ -199,7 +199,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		)
 	}
 
-	const clearData = () => {
+	const resetData = () => {
 		setUpAmount('')
 		setLowAmount('')
 		setBuyWithCardChecked(false)
@@ -213,7 +213,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 				headlineLogo={<InfoLogo />}
 				clear={() => {
 					setTimeout(() => {
-						clearData()
+						resetData()
 					}, 500)
 				}}
 			/>
