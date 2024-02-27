@@ -1,13 +1,7 @@
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
 import React, { memo, useEffect, useRef, useState } from 'react'
-import {
-	GestureResponderEvent,
-	Image,
-	StyleSheet,
-	TextInput,
-	View,
-} from 'react-native'
+import { Image, StyleSheet, TextInput, View } from 'react-native'
 import Arrow from '@assets/images/Arrow.svg'
 import {
 	formatAmount,
@@ -15,7 +9,8 @@ import {
 	hexOpacityPct,
 } from '@app/refactor/screens/convert/util'
 import Skeleton from '@components/skeleton'
-import { TouchableWithoutFeedback } from 'react-native'
+
+const MAX_LEN_WHOLE = 13
 
 type Props = {
 	coin?: Coin
@@ -23,7 +18,7 @@ type Props = {
 	amount: string | undefined
 	isActive: boolean
 	error?: boolean | string
-	onAmountChange: (txt: string) => void
+	onAmountChange: (txt: string, oldTxt: string) => void
 	onFocus: () => void
 	onDropdownClick: (type: CoinType) => void
 }
@@ -41,15 +36,26 @@ const CoinInput = ({
 	const { styles, theme } = useTheme(_styles)
 
 	const [formattedAmount, setFormattedAmount] = useState('')
+
+	const maxLength = useRef<number>()
 	const inputRef = useRef<TextInput | null>(null)
 
 	useEffect(() => {
-		if (!amount) {
-			setFormattedAmount('')
-		} else {
-			setFormattedAmount(formatAmount(amount, coin))
-		}
+		if (!amount || !coin) return setFormattedAmount('')
+
+		const newText = formatAmount(amount, formattedAmount, coin)
+		setFormattedAmount(newText)
 	}, [amount, coin])
+
+	useEffect(() => {
+		if (!amount || !coin) return
+		const split = amount.split('.')
+		if (split.length <= 1) {
+			maxLength.current = MAX_LEN_WHOLE
+		} else if (split.length === 2) {
+			maxLength.current = split[0].length + 1 + coin.scale
+		}
+	}, [amount])
 
 	const focus = () => {
 		inputRef.current?.focus()
@@ -121,6 +127,7 @@ const CoinInput = ({
 				) : (
 					<TextInput
 						ref={inputRef}
+						maxLength={maxLength.current}
 						keyboardType="numeric"
 						style={styles.input}
 						value={formattedAmount}
@@ -128,7 +135,7 @@ const CoinInput = ({
 						placeholderTextColor={hexOpacityPct(theme.color.textSecondary, 60)}
 						onFocus={onFocus}
 						onChangeText={(txt) => {
-							if (isActive) onAmountChange(txt)
+							isActive && onAmountChange(txt, formattedAmount)
 						}}
 					/>
 				)}
@@ -156,12 +163,15 @@ const _styles = (theme: Theme) =>
 			borderWidth: 1,
 		},
 		input: {
+			flex: 0.5,
 			fontSize: 20,
 			fontFamily: theme.font.medium,
 			color: theme.color.textThird,
 		},
 		infoContainer: {
+			marginEnd: 8,
 			minHeight: 50,
+			flex: 1,
 			justifyContent: 'center',
 			marginVertical: 18,
 			marginLeft: 20,

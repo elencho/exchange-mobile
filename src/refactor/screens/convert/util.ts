@@ -33,10 +33,10 @@ export const formatDisplayPair = (
 	)
 }
 
-export const formatAmount = (txt: string, coin?: Coin) => {
-	// if (txt.startsWith('0') && txt.length > 1 && isCharNumber(txt.charAt(1))) {
-	// 	return '0'
-	// }
+export const formatAmount = (txt: string, oldTxt: string, coin: Coin) => {
+	if (oldTxt === '' && (txt === '0' || txt === '.')) {
+		return '0.'
+	}
 
 	txt = txt.replace(',', '.')
 
@@ -45,15 +45,12 @@ export const formatAmount = (txt: string, coin?: Coin) => {
 		return res
 	}, [] as number[])
 
-	txt = dotIndexes.length == 2 ? txt.slice(0, txt.length - 1) : txt
-	txt = txt.startsWith('.') ? '0' + txt : txt
+	txt = dotIndexes.length === 2 ? txt.slice(0, txt.length - 1) : txt
 
 	if (dotIndexes.length) {
 		const lastDoxIndex = dotIndexes[dotIndexes.length - 1]
-		txt = txt.slice(0, lastDoxIndex + (coin?.scale || 0) + 1)
+		txt = txt.slice(0, lastDoxIndex + coin.scale + 1)
 	}
-	// This line ensures no trailing zeros
-	// return Number(txt).toLocaleString().replace(',', '.')
 	return txt
 }
 

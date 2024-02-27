@@ -65,9 +65,13 @@ const CoinPair = ({
 					loading={loading}
 					amount={upAmount}
 					isActive={lastChanged === 'up'}
-					onAmountChange={(txt) => {
-						setUpAmount(txt)
-						recalculateLow(txt, lowCoin?.scale)
+					onAmountChange={(txt, oldTxt) => {
+						if (txt === '0' && oldTxt === '0.') {
+							setUpAmount('')
+						} else {
+							setUpAmount(txt)
+							recalculateLow(txt, lowCoin?.scale)
+						}
 						clearError()
 					}}
 					onDropdownClick={(type) => {
@@ -85,9 +89,13 @@ const CoinPair = ({
 					loading={loading}
 					amount={lowAmount}
 					isActive={lastChanged === 'low'}
-					onAmountChange={(txt) => {
-						setLowAmount(txt)
-						recalculateUp(txt, upCoin?.scale)
+					onAmountChange={(txt, oldTxt) => {
+						if (txt === '0' && oldTxt === '0.') {
+							setLowAmount('')
+						} else {
+							setLowAmount(txt)
+							recalculateUp(txt, upCoin?.scale)
+						}
 						clearError()
 					}}
 					onDropdownClick={(type) => {
