@@ -174,6 +174,15 @@ export default function Deposit({ refreshControl }) {
 		}
 	}
 
+	const [manualDelay, setManualDelay] = useState(true)
+	useEffect(() => {
+		setManualDelay(true)
+
+		setTimeout(() => {
+			setManualDelay(false)
+		}, 1500)
+	}, [network])
+
 	return cardsLoading || loading ? (
 		<MaterialIndicator
 			color={colors.SECONDARY_PURPLE}
@@ -232,7 +241,8 @@ export default function Deposit({ refreshControl }) {
 				)}
 			</View>
 
-			{!cryptoAddress?.address &&
+			{!manualDelay &&
+			!cryptoAddress?.address &&
 			(!isFiat || network === 'BEP20') &&
 			!hasRestriction &&
 			hasMethod ? (
