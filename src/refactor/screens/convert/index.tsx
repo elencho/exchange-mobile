@@ -202,6 +202,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const resetData = () => {
 		setUpAmount('')
 		setLowAmount('')
+		setLastChanged(null)
+		setTradeType('Buy')
 		setBuyWithCardChecked(false)
 		setSelectedChip(undefined)
 		clearErrors(true)
