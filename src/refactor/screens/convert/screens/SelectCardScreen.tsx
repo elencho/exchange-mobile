@@ -46,8 +46,11 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 
 	const Top = () => {
 		return (
-			<View style={styles.topContainer}>
-				<CloseIcon onPress={() => props.navigation.pop()} />
+			<View>
+				<CloseIcon
+					style={styles.closeIcon}
+					onPress={() => props.navigation.pop()}
+				/>
 				<AppText variant="headline" style={styles.textHeader}>
 					Select Method
 				</AppText>
@@ -80,6 +83,7 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 						style={{
 							width: 34,
 							height: 26,
+							marginTop: 4,
 							marginRight: 14,
 							borderRadius: 2,
 						}}
@@ -156,7 +160,6 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 }
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
-		topContainer: {},
 		textHeader: {
 			marginTop: 10,
 			color: theme.color.textPrimary,
@@ -214,6 +217,9 @@ const _styles = (theme: Theme) =>
 		},
 		addCardIcon: {
 			marginEnd: 14,
+		},
+		closeIcon: {
+			marginTop: 10,
 		},
 	})
 

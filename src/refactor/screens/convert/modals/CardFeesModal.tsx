@@ -87,6 +87,8 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
 		container: {
+			marginEnd: 10,
+			marginTop: -10,
 			marginLeft: 8,
 		},
 		providersContainer: {
