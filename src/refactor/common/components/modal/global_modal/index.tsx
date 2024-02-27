@@ -230,7 +230,7 @@ const _styles = (theme: Theme) =>
 			color: '#ccd9dd',
 		},
 		scrollWrapper: {
-			backgroundColor: 'red',
+			// backgroundColor: 'red',
 			flex: 1,
 		},
 		button: {

@@ -80,8 +80,8 @@ function* methodNetworkRestrictionSaga() {
 		const r = currentBalanceObj?.restrictions
 
 		if (b) hasMultipleMethods = Object.keys(b).length > 1
-		if (b?.WALLET) hasMultipleNetworks = b.WALLET?.length > 1
 		if (b?.WIRE) hasMultipleNetworks = b.WIRE?.length > 1
+		if (b?.WALLET) hasMultipleNetworks = b.WALLET?.length > 1
 
 		if (r?.DEPOSIT) depositRestrictions = r.DEPOSIT
 		if (r?.WITHDRAWAL) withdrawalRestrictions = r.WITHDRAWAL

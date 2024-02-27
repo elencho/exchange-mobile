@@ -46,9 +46,8 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 
 	const prevAppState = useRef<AppStateStatus>()
 	const { accessToken } = useSelector((state: RootState) => state.auth)
-	const { biometricSuccess, isBiometricScreenOpened } = useSelector(
-		(state: RootState) => state.common
-	)
+	const { biometricSuccess, isBiometricScreenOpened, webViewVisible } =
+		useSelector((state: RootState) => state.common)
 
 	useEffect(() => {
 		let timeout: NodeJS.Timeout
@@ -103,7 +102,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			newState === 'active' &&
 			!fromResume &&
 			accessToken !== undefined &&
-			KV.get('webViewVisible') !== true &&
+			webViewVisible !== true &&
 			biometricDiffElapsed() &&
 			(await isEnrolledAsync())
 		if (bioVisible) {

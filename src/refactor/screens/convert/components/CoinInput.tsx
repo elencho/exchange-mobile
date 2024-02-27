@@ -9,6 +9,7 @@ import {
 	hexOpacityPct,
 } from '@app/refactor/screens/convert/util'
 import Skeleton from '@components/skeleton'
+import { TouchableWithoutFeedback } from 'react-native'
 
 const MAX_LEN_WHOLE = 13
 

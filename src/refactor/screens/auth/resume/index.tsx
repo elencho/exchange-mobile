@@ -107,6 +107,7 @@ const Resume = ({ navigation, route }: ScreenProp<'Resume'>) => {
 	}, [])
 
 	const logoutAndReturnToWelcome = () => {
+		setModalContent(null)
 		if (isConnected === false) {
 			dispatch(logoutWithoutInternet())
 		} else {
