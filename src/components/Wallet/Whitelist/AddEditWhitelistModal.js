@@ -38,12 +38,15 @@ export default function AddEditWhitelistModal({ add, edit, setManualLoading }) {
 			newWhitelist,
 			currentWhitelistObj,
 			whitelist,
-			network,
+			network: mainNetwork,
 			hasMultipleNetworks,
 		},
 		trade: { currentBalanceObj },
 		auth: { otpType },
 	} = state
+
+	const secondaryNetwork = Object.keys(currentBalanceObj?.infos)[0]
+	const network = mainNetwork ?? secondaryNetwork
 
 	useEffect(() => {
 		if (addWhitelistModalVisble && hasMultipleNetworks) {
