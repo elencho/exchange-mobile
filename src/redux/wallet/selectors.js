@@ -108,13 +108,16 @@ export const addWhitelistParams = (state) => {
 			newWhitelist: { name, address, tag },
 			network,
 		},
+		trade: { currentBalanceObj },
 	} = state
+
+	const secondaryNetwork = Object.keys(currentBalanceObj?.infos)[0]
 
 	return {
 		currency: code,
 		address,
 		name,
-		provider: network,
+		provider: network ?? secondaryNetwork,
 		tag,
 	}
 }
