@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
 	TouchableOpacity,
 	Modal,
@@ -32,8 +32,8 @@ export const AppWebView = ({
 	const { isModalVisible: isGlobalModalVisible } = useModal()
 	const { styles } = useTheme(_styles)
 
-	const webViewVisible = useSelector(
-		(state: RootState) => state.common.webViewVisible
+	const { webViewVisible, isBiometricScreenOpened } = useSelector(
+		(state: RootState) => state.common
 	)
 
 	const closeWebView = async () => {
@@ -49,10 +49,24 @@ export const AppWebView = ({
 		dispatch(setWebViewVisible(false))
 	}
 
+	// Necessary for Push notification banner to show in proper order
+	const [delayedOpen, setDelayedOpen] = useState(false)
+	useEffect(() => {
+		webViewVisible &&
+			setTimeout(() => {
+				setDelayedOpen(true)
+			}, 100)
+	}, [!!webViewVisible])
+
 	return (
 		<Modal
 			statusBarTranslucent={true}
-			visible={webViewVisible && !isGlobalModalVisible}
+			visible={
+				webViewVisible &&
+				!isGlobalModalVisible &&
+				delayedOpen &&
+				!isBiometricScreenOpened
+			}
 			onShow={handleOnShow}
 			onRequestClose={handleOnRequestClose}
 			animationType="slide">

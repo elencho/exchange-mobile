@@ -179,31 +179,33 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 	}
 
 	return (
-		<AppBackground>
-			<Top />
-			<ConfirmTradeCard pair={pair} tradeType={tradeType} />
-			{card ? <CardSection card={card} /> : null}
-			<TotalSection />
-			<General_error errorData={generalError} style={styles.generalError} />
-			<View style={{ flex: 1 }} />
-			<AppButton
-				style={styles.button}
-				variant="primary"
-				text="Confirm"
-				onPress={onConfirmPressed}
-			/>
+		<>
+			<AppBackground>
+				<Top />
+				<ConfirmTradeCard pair={pair} tradeType={tradeType} />
+				{card ? <CardSection card={card} /> : null}
+				<TotalSection />
+				<General_error errorData={generalError} style={styles.generalError} />
+				<View style={{ flex: 1 }} />
+				<AppButton
+					style={styles.button}
+					variant="primary"
+					text="Confirm"
+					onPress={onConfirmPressed}
+				/>
 
-			<ConfirmModal
-				status={confirmModalStatus}
-				dismiss={() => setConfirmModalStatus(undefined)}
-			/>
+				<ConfirmModal
+					status={confirmModalStatus}
+					dismiss={() => setConfirmModalStatus(undefined)}
+				/>
+			</AppBackground>
 			{webViewState && (
 				<AppWebView
 					source={{ uri: webViewState.actionUrl }}
 					onNavigationStateChange={handleWebViewUrlChange}
 				/>
 			)}
-		</AppBackground>
+		</>
 	)
 }
 
