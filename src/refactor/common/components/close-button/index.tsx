@@ -1,11 +1,17 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import {
+	StyleProp,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+	ViewStyle,
+} from 'react-native'
 import Close from '@assets/images/Close.svg'
 import { System } from '@app/refactor/common/util'
 
 interface CloseIconProps {
 	onPress: () => void
-	style?: StyleSheet.NamedStyles<any>
+	style?: StyleProp<ViewStyle>
 }
 
 export default function CloseIcon(props: CloseIconProps) {

@@ -55,13 +55,13 @@ export const coinError = (
 				type: ['Crypto'],
 			}
 		}
-		// // 8
-		// if (!buyWithCard && c * sell < pair.minTradeCost) {
-		// 	return {
-		// 		err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
-		// 		type: ['Fiat'],
-		// 	}
-		// }
+		// 8
+		if (c * sell < pair.minTradeCost) {
+			return {
+				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
+				type: ['Fiat'],
+			}
+		}
 	}
 
 	return null

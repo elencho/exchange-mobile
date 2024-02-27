@@ -15,6 +15,7 @@ import {
 	hexOpacityPct,
 } from '@app/refactor/screens/convert/util'
 import Skeleton from '@components/skeleton'
+import { TouchableWithoutFeedback } from 'react-native'
 
 type Props = {
 	coin?: Coin
