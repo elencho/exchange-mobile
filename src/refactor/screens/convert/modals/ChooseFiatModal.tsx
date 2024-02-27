@@ -27,6 +27,10 @@ const ChooseFiatModal = ({
 			: 'transparent'
 	}
 
+	const formatBalanceText = (balance: string) => {
+		return Number(balance).toString()
+	}
+
 	const children = () => {
 		return (
 			<View style={styles.container}>
@@ -58,7 +62,7 @@ const ChooseFiatModal = ({
 						<View style={{ flex: 1 }} />
 
 						<AppText variant="l" style={styles.balanceAmountText}>
-							{coin.balance + ' ' + coin.displayCcy}
+							{formatBalanceText(coin.balance) + ' ' + coin.displayCcy}
 						</AppText>
 					</Pressable>
 				))}
