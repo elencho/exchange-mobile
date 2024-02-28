@@ -56,7 +56,7 @@ export const coinError = (
 			}
 		}
 		// 8
-		if (c * sell < pair.minTradeCost) {
+		if (f < pair.minTradeCost) {
 			return {
 				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
 				type: ['Fiat'],
