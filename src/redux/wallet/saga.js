@@ -69,7 +69,12 @@ function* methodNetworkRestrictionSaga() {
 		(state) => state.trade.currentBalanceObj
 	)
 	const walletTab = yield select((state) => state.wallet.walletTab)
-	const m = walletTab === 'Withdrawal' ? 'withdrawalMethods' : 'depositMethods'
+	const m =
+		walletTab === 'Withdrawal'
+			? 'withdrawalMethods'
+			: walletTab === 'Deposit'
+			? 'depositMethods'
+			: 'supportedProviders'
 	let hasMultipleMethods = false
 	let hasMultipleNetworks = false
 	let depositRestrictions = {}
