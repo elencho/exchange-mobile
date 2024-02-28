@@ -55,7 +55,11 @@ export default function ChooseNetworkModal() {
 
 	useEffect(() => {
 		let networksToDisplay = []
-		const m = withdrawal || isWhitelist ? 'withdrawalMethods' : 'depositMethods'
+		const m = withdrawal
+			? 'withdrawalMethods'
+			: deposit
+			? 'depositMethods'
+			: 'supportedProviders'
 		const n =
 			Object.keys(currentBalanceObj?.[m])?.length > 0
 				? currentBalanceObj[m]
