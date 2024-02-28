@@ -21,7 +21,11 @@ export default function ChooseCardModal() {
 	useEffect(() => {
 		let cardsToDisplayInModal = []
 		cards?.forEach((c) => {
-			if (c.provider === depositProvider) {
+			if (
+				c.provider === depositProvider &&
+				c.status === 'VERIFIED' &&
+				!c.expired
+			) {
 				cardsToDisplayInModal.push(c)
 			}
 		})
