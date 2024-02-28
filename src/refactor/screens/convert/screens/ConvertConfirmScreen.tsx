@@ -74,11 +74,7 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 			</AppText>
 		)
 		const valueText =
-			desc === 'Price' && changedPrice ? (
-				<ChangedPriceItem price={value} />
-			) : (
-				regularValueText
-			)
+			desc === 'Price' && changedPrice ? <ChangedPriceItem /> : regularValueText
 
 		return (
 			<View style={styles.infoItemContainer}>
@@ -89,9 +85,9 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		)
 	}
 
-	const ChangedPriceItem = ({ price }: { price: string }) => {
+	const ChangedPriceItem = () => {
 		const oldPrice = tradeType === 'Buy' ? pair.buyPrice : pair.sellPrice
-		const leftSide = '1 ' + pair.crypto.displayCcy + '≈'
+		const leftSide = '1 ' + pair.crypto.displayCcy + ' ≈'
 
 		return (
 			<View style={{ flexDirection: 'row' }}>
