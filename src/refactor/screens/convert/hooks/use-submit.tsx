@@ -1,9 +1,14 @@
-import { submitTrade } from '@app/refactor/screens/convert/api/convertNowApi'
+import {
+	fetchOffersApi,
+	submitTrade,
+} from '@app/refactor/screens/convert/api/convertNowApi'
 import { formatScale } from '@app/refactor/screens/convert/util'
 import { ScreenProp } from '@app/refactor/setup/nav/nav'
 import { setWebViewVisible } from '@store/redux/common/slice'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+
+const ERROR_KEY_PRICE_CHANGE = 'gex.validate.instant_trade_price_change'
 
 export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 	const { spentAmount, pair, tradeType, card } = props.route?.params
@@ -17,14 +22,22 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 		useState<ConfirmModalStatus>()
 
 	const onConfirmPressed = () => {
+		const action = tradeType === 'Buy' ? 'BID' : 'ASK'
 		const scale = tradeType === 'Buy' ? pair.fiat.scale : pair.crypto.scale
+		let price = tradeType === 'Buy' ? pair.buyPrice : pair.sellPrice //TODO: const
+
+		// TODO: Remove this after testing
+		if (pair.code === 'USDT-GEL') {
+			price = (Number(price) * 0.95).toFixed(pair.fiat.scale)
+		}
+
 		const amount = formatScale(spentAmount, scale)
 
 		const params: SubmitTradeRequest = {
 			pairCode: pair.code,
-			action: tradeType === 'Buy' ? 'BID' : 'ASK',
+			action,
 			amount,
-			// amount: (Number(amount) * -2), // Todo amount
+			price,
 			cardTransactionRequest: card && {
 				currency: 'GEL',
 				cardId: card.id,
@@ -35,16 +48,30 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 			if (!data) {
 				setConfirmModalStatus('success')
 			} else if ('errorKey' in data) {
-				setConfirmModalStatus('error')
-				console.log(data.errorKey)
-				// if errorKey === price changed: own logic
-				// set changed
-				setGeneralError(data)
-				return
+				if (data.errorKey === ERROR_KEY_PRICE_CHANGE) {
+					fetchChangedPrice(data)
+				} else {
+					setGeneralError(data)
+					setConfirmModalStatus('error')
+				}
 			} else {
+				// user payed with card
 				dispatch(setWebViewVisible(true))
 				setWebViewState(data)
 			}
+		})
+	}
+
+	const fetchChangedPrice = (errorData: UiErrorData) => {
+		fetchOffersApi().then((offers) => {
+			const coinPair = offers[pair.fiat.displayCcy].find(
+				(coin) => coin.pair.baseCurrencyDisplayCode === pair.crypto.displayCcy
+			)
+			const changedPrice =
+				tradeType === 'Buy' ? coinPair?.buyPrice : coinPair?.sellPrice
+
+			setGeneralError(errorData)
+			setChangedPrice(changedPrice)
 		})
 	}
 
