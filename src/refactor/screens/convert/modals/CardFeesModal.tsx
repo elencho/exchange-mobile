@@ -2,6 +2,7 @@ import AppModal from '@components/modal'
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
 import { Image, StyleSheet, View } from 'react-native'
+import EmptyFeeX from '@assets/images/Instant_Empty_Fee.svg'
 
 interface Props {
 	fees: ProviderFees[]
@@ -17,6 +18,25 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 		drawUnderline: boolean,
 		indx: number
 	) => {
+		const renderPct = (pct: number | null, index: number) => {
+			return pct ? (
+				<AppText variant="title" style={styles.bankText} key={index}>
+					{pct + '%'}
+				</AppText>
+			) : (
+				<View
+					style={{
+						width: 38,
+						marginLeft: 42,
+						justifyContent: 'center',
+						alignItems: 'center',
+						alignSelf: 'center',
+					}}>
+					<EmptyFeeX />
+				</View>
+			)
+		}
+
 		return (
 			<View style={{ flexDirection: 'column' }} key={indx}>
 				<View key={fee.providerBank} style={styles.bankFeeContainer}>
@@ -26,11 +46,7 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 						{fee.providerBank}
 					</AppText>
 					<View style={{ flex: 1 }}></View>
-					{fee.feeData.map((item, index) => (
-						<AppText variant="title" style={styles.bankText} key={index}>
-							{item.pct ? item.pct + '%' : '-'}
-						</AppText>
-					))}
+					{fee.feeData.map((item, index) => renderPct(item.pct, index))}
 				</View>
 				{drawUnderline && <View style={styles.underline} />}
 			</View>
@@ -97,6 +113,7 @@ const _styles = (theme: Theme) =>
 			marginVertical: 25,
 		},
 		bankFeeContainer: {
+			alignSelf: 'center',
 			flexDirection: 'row',
 			marginBottom: 10,
 		},

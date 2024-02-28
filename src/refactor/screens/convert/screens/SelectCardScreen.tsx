@@ -13,6 +13,7 @@ import AddCardModal from '@app/components/Wallet/ManageCards/AddCardModal'
 import { useDispatch, useSelector } from 'react-redux'
 import AddCardIcon from '@assets/images/Instant_Add_Card.svg'
 import { RootState } from '@app/refactor/redux/rootReducer'
+import { System } from '@app/refactor/common/util'
 
 const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 	const { styles } = useTheme(_styles)
@@ -119,7 +120,11 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 		}
 
 		return (
-			<ScrollView showsVerticalScrollIndicator={false}>
+			<ScrollView
+				style={styles.scrollContainer}
+				showsVerticalScrollIndicator={false}
+				bounces={false}>
+				<AddCard />
 				<FlatList
 					scrollEnabled={false}
 					style={styles.listContainer}
@@ -128,7 +133,6 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 					renderItem={(card) => renderCard(card.item)}
 					showsVerticalScrollIndicator={false}
 				/>
-				<AddCard />
 			</ScrollView>
 		)
 	}
@@ -160,6 +164,10 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 }
 const _styles = (theme: Theme) =>
 	StyleSheet.create({
+		scrollContainer: {
+			flexGrow: 1,
+			marginTop: 16,
+		},
 		textHeader: {
 			marginTop: 10,
 			color: theme.color.textPrimary,
@@ -183,7 +191,7 @@ const _styles = (theme: Theme) =>
 			color: theme.color.textSecondary,
 		},
 		listContainer: {
-			marginTop: 12,
+			marginTop: 8,
 		},
 		cardIcon: {
 			paddingBottom: 20,
@@ -210,7 +218,7 @@ const _styles = (theme: Theme) =>
 			alignSelf: 'flex-start',
 			flexDirection: 'row',
 			alignItems: 'center',
-			marginTop: 20,
+			marginTop: 16,
 		},
 		addCardText: {
 			color: theme.color.brandSecondary,
@@ -219,7 +227,7 @@ const _styles = (theme: Theme) =>
 			marginEnd: 14,
 		},
 		closeIcon: {
-			marginTop: 10,
+			marginTop: System.isAndroid ? 10 : 0,
 		},
 	})
 
