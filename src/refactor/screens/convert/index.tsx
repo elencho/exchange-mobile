@@ -26,6 +26,7 @@ import AppText from '@components/text'
 import Skeleton from '@app/components/Skeleton'
 import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
 import CustomRefreshContol from '@components/refresh-control'
+import { useReturnedFrom } from '@app/refactor/common/hooks/use-returned-from'
 
 const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	useNotificationPermissions()
@@ -101,6 +102,14 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		onButtonSuccess: goToConfirm,
 	})
 
+	useReturnedFrom({
+		from: 'UserProfile',
+		onReturn: () => {
+			resetScreen()
+			fetchCoins(true, false)
+		},
+	})
+
 	useEffect(() => {
 		if (tradeType === 'Buy') {
 			cards.length === 1 && setChosenCard(cards[0])
@@ -128,7 +137,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	}
 
 	const handleConfirmModalStatus = (status: ConfirmModalStatus) => {
-		resetData()
+		resetScreen()
 		setLastChanged(null)
 		setSubmitStatus(status)
 		fetchCoins(true, false)
@@ -199,7 +208,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		)
 	}
 
-	const resetData = () => {
+	const resetScreen = () => {
 		setUpAmount('')
 		setLowAmount('')
 		setLastChanged(null)
@@ -211,14 +220,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 
 	return (
 		<AppBackground>
-			<TopRow
-				headlineLogo={<InfoLogo />}
-				clear={() => {
-					setTimeout(() => {
-						resetData()
-					}, 500)
-				}}
-			/>
+			<TopRow headlineLogo={<InfoLogo />} />
 			<WithKeyboard
 				keyboardVerticalOffsetIOS={40}
 				flexGrow
