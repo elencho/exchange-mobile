@@ -37,7 +37,6 @@ export const updatePhoneNumberThunk = createAsyncThunk(
 			)
 			if (response?.status >= 200 && response?.status < 300) {
 				onSuccess()
-				dispatch(fetchUserInfoThunk())
 			}
 			const userInfo = await fetchUserInfoUtil()
 			dispatch(setUserInfo(userInfo!))
