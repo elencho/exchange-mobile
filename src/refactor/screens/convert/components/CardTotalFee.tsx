@@ -5,6 +5,7 @@ import { StyleSheet, View } from 'react-native'
 import Fee from '@assets/images/Fee.svg'
 import { formatScale, hexOpacityPct } from '@app/refactor/screens/convert/util'
 import Skeleton from '@components/skeleton'
+import { t } from 'i18next'
 
 type Props = {
 	fiat: Coin | undefined
@@ -18,15 +19,29 @@ const ConfirmTradeCard = ({ fiat, card, amount, loading }: Props) => {
 
 	const feeNum = Number(amount) * (card.feePct ? card.feePct / 100 : 0)
 	const totalNum = Number(amount) + feeNum
+
+	const networkTxt = (net: string) => {
+		if (net === 'AMEX') return t('cn_card_amex')
+		if (net === 'MASTERCARD') return t('cn_card_mastercard')
+		if (net === 'VISA') return t('cn_card_visa')
+		return net
+	}
+
 	const totalTxt =
-		'Total: ' + formatScale(totalNum, fiat?.scale) + ' ' + fiat?.displayCcy
+		t('cn_total') +
+		' ' +
+		formatScale(totalNum, fiat?.scale) +
+		' ' +
+		fiat?.displayCcy
+
 	const feeTxt =
-		'Fee: ' +
+		t('cn_fee') +
+		' ' +
 		formatScale(feeNum, fiat?.scale) +
 		' ' +
 		fiat?.displayCcy +
 		' (' +
-		card.network +
+		networkTxt(card.network) +
 		' ' +
 		(card.feePct || 0) +
 		'%)'

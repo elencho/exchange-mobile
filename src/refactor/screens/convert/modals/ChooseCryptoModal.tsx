@@ -7,6 +7,7 @@ import { Theme, useTheme } from '@theme/index'
 import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native'
 import { useEffect, useRef, useState } from 'react'
 import { hexOpacityPct } from '@app/refactor/screens/convert/util'
+import { t } from 'i18next'
 
 interface Props {
 	visible: boolean
@@ -52,7 +53,7 @@ const ChooseCryptoModal = ({
 	const CoinItemInfo = ({ desc, value }: { desc: string; value: string }) => {
 		return (
 			<View style={styles.coinInfoContainer}>
-				<AppText variant="l" style={styles.coinInfoDesc} noTranslate>
+				<AppText variant="l" style={styles.coinInfoDesc}>
 					{desc}
 				</AppText>
 				<View style={{ flex: 1 }} />
@@ -98,10 +99,10 @@ const ChooseCryptoModal = ({
 						{item.name}
 					</AppText>
 					<CoinItemInfo
-						desc="Balance:"
+						desc="cn_balance"
 						value={item.balance + ' ' + item.displayCcy}
 					/>
-					<CoinItemInfo desc="Market price:" value={formatMarketPrice()} />
+					<CoinItemInfo desc="cn_market_price" value={formatMarketPrice()} />
 				</View>
 			</Pressable>
 		)
@@ -112,7 +113,7 @@ const ChooseCryptoModal = ({
 			<View style={styles.container}>
 				<AppInput
 					style={styles.searchInput}
-					placeholder="Search currency"
+					placeholder={t('cn_choose_coin_search_ph').toString()}
 					rightComponent={<Search />}
 					onFocusRightComponent={<SearchActive />}
 					value={search}
@@ -133,7 +134,7 @@ const ChooseCryptoModal = ({
 
 	return (
 		<AppModal
-			title="Choose Coin"
+			title="cn_choose_coin_title"
 			hide={dismiss}
 			visible={visible}
 			children={children()}

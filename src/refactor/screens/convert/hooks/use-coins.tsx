@@ -7,6 +7,7 @@ import {
 } from '@app/refactor/screens/convert/api/convertNowApi'
 import { COUNTDOWN_SECONDS } from '@app/refactor/screens/convert/components/Timer'
 import { setConvertPair } from '@store/redux/common/slice'
+import { t } from 'i18next'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 

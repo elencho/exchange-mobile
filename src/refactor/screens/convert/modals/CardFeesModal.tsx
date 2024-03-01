@@ -3,6 +3,8 @@ import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
 import { Image, StyleSheet, View } from 'react-native'
 import EmptyFeeX from '@assets/images/Instant_Empty_Fee.svg'
+import { t } from 'i18next'
+import { providerBankTranslate } from '@app/refactor/screens/convert/util'
 
 interface Props {
 	fees: ProviderFees[]
@@ -38,12 +40,16 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 		}
 
 		return (
-			<View style={{ flexDirection: 'column' }} key={indx}>
+			<View style={{ flexDirection: 'column' }} key={fee.providerBank + indx}>
 				<View key={fee.providerBank} style={styles.bankFeeContainer}>
 					<AppText
+						noTranslate
 						variant="title"
-						style={[styles.bankText, { marginLeft: 0, textAlign: 'left' }]}>
-						{fee.providerBank}
+						style={[
+							styles.bankText,
+							{ marginLeft: 0, textAlign: 'left', flex: 100 },
+						]}>
+						{providerBankTranslate(fee.providerBank)}
 					</AppText>
 					<View style={{ flex: 1 }}></View>
 					{fee.feeData.map((item, index) => renderPct(item.pct, index))}
@@ -61,8 +67,8 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 		]
 		return (
 			<View style={styles.providersContainer}>
-				<AppText variant="l" style={styles.providersText} noTranslate>
-					{'PROVIDERS:'}
+				<AppText variant="l" style={styles.providersText}>
+					cn_fees_providers
 				</AppText>
 				<View style={{ flex: 1 }}></View>
 				{icons.map((cardIcon, index) => (
@@ -91,7 +97,7 @@ const CardFeesModal = ({ fees, visible, dismiss }: Props) => {
 
 	return (
 		<AppModal
-			title="About Fees"
+			title="cn_fees_title"
 			hide={dismiss}
 			visible={visible}
 			children={children()}

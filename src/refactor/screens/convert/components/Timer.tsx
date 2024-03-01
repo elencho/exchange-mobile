@@ -2,6 +2,7 @@ import { formatDisplayPair } from '@app/refactor/screens/convert/util'
 import Skeleton from '@components/skeleton'
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
+import { t } from 'i18next'
 import React, { useEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import ProgressBar from 'react-native-animated-progress'
@@ -50,7 +51,7 @@ const Timer = ({
 		return (
 			<View style={styles.textContainer}>
 				<AppText style={styles.textCoins}>
-					{formatDisplayPair(pair, tradeType) + ' - Updates in:'}
+					{formatDisplayPair(pair, tradeType) + ' ' + t('cn_timer_updates_in')}
 				</AppText>
 				<AppText style={styles.textSeconds}>{` ${minStr}:${secStr}`}</AppText>
 			</View>

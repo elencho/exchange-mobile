@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import AddCardIcon from '@assets/images/Instant_Add_Card.svg'
 import { RootState } from '@app/refactor/redux/rootReducer'
 import { System } from '@app/refactor/common/util'
+import { t } from 'i18next'
+import { providerBankTranslate } from '@app/refactor/screens/convert/util'
 
 const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 	const { styles } = useTheme(_styles)
@@ -53,15 +55,15 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 					onPress={() => props.navigation.pop()}
 				/>
 				<AppText variant="headline" style={styles.textHeader}>
-					Select Method
+					cn_select_card_title
 				</AppText>
 				<View style={styles.feeContainer}>
 					<AppText variant="l" style={styles.textFees} medium>
-						See all types of{' '}
+						{t('cn_select_card_desc') + ' '}
 					</AppText>
 					<AppButton
 						variant="text"
-						text="fees here"
+						text="cn_select_card_btn_fees"
 						onPress={() => {
 							setFeesModalVisible(true)
 						}}
@@ -96,13 +98,13 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 						<AppText variant="title" style={styles.cardNumberText}>
 							{card.cardNumber}
 						</AppText>
-						<AppText variant="l" style={styles.cardProviderText}>
-							{'Provider: ' + card.provider}
+						<AppText variant="l" style={styles.cardProviderText} noTranslate>
+							{t('cn_provider') + ' ' + providerBankTranslate(card.provider)}
 						</AppText>
 					</View>
 					<View style={{ flex: 1 }} />
-					<AppText variant="l" style={styles.cardFeeText}>
-						{'Fee: ' + card.feePct + '%'}
+					<AppText variant="l" style={styles.cardFeeText} noTranslate>
+						{t('cn_fee') + ' ' + card.feePct + '%'}
 					</AppText>
 				</Pressable>
 			)
@@ -113,7 +115,7 @@ const SelectCardScreen = (props: ScreenProp<'SelectCard'>) => {
 				<Pressable style={styles.addCardContainer} onPress={goToAddCard}>
 					<AddCardIcon style={styles.addCardIcon} />
 					<AppText variant="title" style={styles.addCardText}>
-						Add New Card
+						cn_select_card_btn_add_card
 					</AppText>
 				</Pressable>
 			)

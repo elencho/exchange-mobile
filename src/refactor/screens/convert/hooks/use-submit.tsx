@@ -70,7 +70,10 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 			const changedPrice =
 				tradeType === 'Buy' ? coinPair?.buyPrice : coinPair?.sellPrice
 
-			setGeneralError(errorData)
+			setGeneralError({
+				...errorData,
+				errorMessage: 'cn_confirm_err_price_change',
+			})
 			setChangedPrice(changedPrice)
 		})
 	}

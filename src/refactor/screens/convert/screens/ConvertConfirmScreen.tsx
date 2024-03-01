@@ -18,6 +18,7 @@ import AppWebView from '@components/web_view'
 import { WebViewNavigation } from 'react-native-webview'
 import { useDispatch } from 'react-redux'
 import { setWebViewVisible } from '@store/redux/common/slice'
+import { t } from 'i18next'
 
 const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 	const { styles } = useTheme(_styles)
@@ -64,8 +65,8 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 	}
 	const InfoItem = ({ desc, value }: InfoItem) => {
 		const descText = (
-			<AppText variant="l" style={styles.infoDescText} noTranslate>
-				{desc + ':'}
+			<AppText variant="l" style={styles.infoDescText}>
+				{desc}
 			</AppText>
 		)
 		const regularValueText = (
@@ -124,10 +125,10 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 
 		return (
 			<View style={styles.cardSectionContainer}>
-				<InfoItem desc={'Service Provider'} value={card.provider} />
+				<InfoItem desc={'cn_confirm_info_service'} value={card.provider} />
 				<View style={[styles.infoItemContainer, { alignItems: 'center' }]}>
-					<AppText variant="l" style={styles.infoDescText} noTranslate>
-						Card:
+					<AppText variant="l" style={styles.infoDescText}>
+						cn_confirm_info_card
 					</AppText>
 					<View style={{ flex: 1 }} />
 					{cardImage}
@@ -135,7 +136,10 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 						{'| ' + card.cardNumber}
 					</AppText>
 				</View>
-				<InfoItem desc={'Provider fee ' + card.feePct + '%'} value={feeTxt} />
+				<InfoItem
+					desc={t('cn_confirm_info_provider_fee') + ' ' + card.feePct + '%'}
+					value={feeTxt}
+				/>
 			</View>
 		)
 	}
@@ -147,11 +151,11 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		return (
 			<View style={styles.totalSectionContainer}>
 				<InfoItem
-					desc={'Total Spent'}
+					desc={'cn_confirm_info_total_spent'}
 					value={formatScale(spentAmount, spent.scale) + ' ' + spent.displayCcy}
 				/>
 				<InfoItem
-					desc={'Total Receive'}
+					desc={'cn_confirm_info_total_receive'}
 					value={
 						formatScale(receivedAmount, received.scale) +
 						' ' +
@@ -159,7 +163,7 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 					}
 				/>
 				<InfoItem
-					desc={'Price'}
+					desc={'cn_confirm_info_price'}
 					value={formatDisplayPair(pair, tradeType, '≈')}
 				/>
 			</View>
@@ -186,7 +190,7 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 				<AppButton
 					style={styles.button}
 					variant="primary"
-					text="Confirm"
+					text="cn_confirm_btn"
 					onPress={onConfirmPressed}
 				/>
 
