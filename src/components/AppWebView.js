@@ -27,6 +27,9 @@ export default function AppWebView(props) {
 
 	const dispatch = useDispatch()
 	const webViewObj = useSelector((state) => state.modals.webViewObj)
+	const isBiometricScreenOpened = useSelector(
+		(state) => state.common.isBiometricScreenOpened
+	)
 
 	const closeWebView = async () => {
 		KV.del('webViewVisible')
@@ -78,8 +81,11 @@ export default function AppWebView(props) {
 	}, [!!webViewObj])
 
 	const isVisible = cardsAdd
-		? !!webViewObj && delayedOpen
-		: !!webViewObj && delayedOpen && !isGlobalModalVisible
+		? !!webViewObj && delayedOpen && !isBiometricScreenOpened
+		: !!webViewObj &&
+		  delayedOpen &&
+		  !isGlobalModalVisible &&
+		  !isBiometricScreenOpened
 
 	return (
 		<Modal
