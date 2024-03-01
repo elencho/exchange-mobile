@@ -97,9 +97,11 @@ export const usePhoneNumberModal = ({
 	}, [phoneNumberModalVisible])
 
 	const saveHide = () => {
-		togglePhoneNumberModal(false)
 		if (phoneNumberModalVisible === 'fromChangeOtp') {
 			smsActivation()
+		} else {
+			togglePhoneNumberModal(false)
+			dispatch(fetchUserInfoThunk())
 		}
 	}
 
@@ -178,10 +180,16 @@ export const usePhoneNumberModal = ({
 			phoneNumber: false,
 			verificationCode: false,
 		})
+		const isPhoneNumberValid = phoneNumber?.trim()?.length > 0
+		const isVerificationCodeValid = verificationCode?.trim()?.length > 0
+		const isPhoneCodeSelected = chosenCountry?.phoneCode
+		const isOtpTypeSms =
+			otpType === OTPTypes.SMS || currentSecurityAction === OTPTypes.SMS
+
 		if (
-			!chosenCountry?.phoneCode ||
-			(!(verificationCode?.trim()?.length > 0) && otpType === OTPTypes.SMS) ||
-			!(phoneNumber?.trim()?.length > 0)
+			!isPhoneCodeSelected ||
+			(!isVerificationCodeValid && isOtpTypeSms) ||
+			!isPhoneNumberValid
 		) {
 			setError({
 				phoneNumber: !(phoneNumber?.trim()?.length > 0),
