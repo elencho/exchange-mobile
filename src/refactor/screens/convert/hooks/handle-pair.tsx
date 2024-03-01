@@ -25,6 +25,11 @@ export const handlePair = ({
 	const [errorInputs, setErrorInputs] = useState<Position[]>([])
 	const [errorText, setErrorText] = useState<string>()
 
+	// TODO: Use this instead
+	const price = () => {
+		return Number(tradeType === 'Buy' ? pair?.buyPrice : pair?.sellPrice)
+	}
+
 	useEffect(() => {
 		const { upC, lowC } = sortCoins()
 
@@ -43,9 +48,9 @@ export const handlePair = ({
 		const { upC, lowC } = sortCoins()
 
 		if (lastChanged === 'up') {
-			recalculateLow(upAmount, lowC?.scale)
-		} else if (lastChanged === 'low') {
 			recalculateUp(lowAmount, upC?.scale)
+		} else if (lastChanged === 'low') {
+			recalculateLow(upAmount, lowC?.scale)
 		}
 	}, [pair])
 
@@ -102,7 +107,11 @@ export const handlePair = ({
 		}
 	}
 
-	const recalculateUp = (low: string, scale?: number) => {
+	const recalculateUp = (
+		low: string,
+		scale?: number,
+		trimZeroes: boolean = false
+	) => {
 		const num = Number(low)
 		if (num === 0 || isNaN(num)) {
 			return setUpAmount('')

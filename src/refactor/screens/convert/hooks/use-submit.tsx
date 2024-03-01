@@ -23,7 +23,6 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 
 	const onConfirmPressed = () => {
 		const action = tradeType === 'Buy' ? 'BID' : 'ASK'
-		const scale = tradeType === 'Buy' ? pair.fiat.scale : pair.crypto.scale
 		let price = tradeType === 'Buy' ? pair.buyPrice : pair.sellPrice //TODO: const
 
 		// TODO: Remove this after testing
@@ -31,19 +30,18 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 			price = (Number(price) * 0.95).toFixed(pair.fiat.scale)
 		}
 
-		const amount = formatScale(spentAmount, scale)
-
 		const params: SubmitTradeRequest = {
 			pairCode: pair.code,
+			amount: spentAmount,
 			action,
-			amount,
 			price,
 			cardTransactionRequest: card && {
 				currency: 'GEL',
 				cardId: card.id,
-				amount,
+				amount: spentAmount,
 			},
 		}
+		console.log({ params })
 		submitTrade(params).then((data) => {
 			if (!data) {
 				setConfirmModalStatus('success')
