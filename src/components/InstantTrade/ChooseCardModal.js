@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Pressable, StyleSheet, View, Image } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { ICONS_URL_PNG } from '../../constants/api'
@@ -7,16 +7,32 @@ import { toggleChooseCardModal } from '../../redux/modals/actions'
 import { setCard } from '../../redux/trade/actions'
 import AppModal from '../AppModal'
 import AppText from '../AppText'
+import { fetchCards } from '@app/utils/fetchTrades'
 
 export default function ChooseCardModal() {
 	const dispatch = useDispatch()
+	const [cards, setCards] = useState([])
+
 	const chooseCardModalVisible = useSelector(
 		(state) => state.modals.chooseCardModalVisible
 	)
 	const state = useSelector((state) => state.trade)
 
-	const { card, cards, depositProvider, cardsToDisplayInModal, Balance_Card } =
-		state
+	const { card, depositProvider, cardsToDisplayInModal, Balance_Card } = state
+
+	const getCards = async () => {
+		const cardParams = {
+			currency: 'GEL',
+			transactionType: 'DEPOSIT',
+		}
+
+		const res = await fetchCards(cardParams)
+		setCards(res)
+	}
+
+	useEffect(() => {
+		getCards()
+	}, [])
 
 	useEffect(() => {
 		let cardsToDisplayInModal = []

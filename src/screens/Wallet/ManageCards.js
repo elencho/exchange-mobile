@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ScrollView, StyleSheet, View, Pressable } from 'react-native'
 import { MaterialIndicator } from 'react-native-indicators'
 import { useDispatch, useSelector } from 'react-redux'
@@ -13,14 +13,17 @@ import DeleteModal from '../../components/Wallet/ManageCards/DeleteModal'
 import StatusModal from '../../components/Wallet/StatusModal'
 import colors from '../../constants/colors'
 import { toggleAddCardModal } from '../../redux/modals/actions'
+import { fetchCards } from '@app/utils/fetchTrades'
+import CustomRefreshContol from '@components/refresh-control'
 
-export default function ManageCards({ refreshControl }) {
+export default function ManageCards() {
+	const [cards, setCards] = useState([])
+	const [cardsLoading, setCardsLoading] = useState(false)
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
 	const {
 		modals: { webViewObj },
 		wallet: { cardBeingVerified },
-		trade: { cards, cardsLoading },
 	} = state
 
 	const scrollRef = useRef()
@@ -29,6 +32,21 @@ export default function ManageCards({ refreshControl }) {
 	const onContentSizeChange = () => {
 		scrollRef.current.scrollTo({ x: 0, y: 3, animated: true })
 	}
+
+	const getCards = async () => {
+		setCardsLoading(true)
+		const cardParams = {
+			currency: 'GEL',
+		}
+
+		const res = await fetchCards(cardParams)
+		setCards(res)
+		setCardsLoading(false)
+	}
+
+	useEffect(() => {
+		getCards()
+	}, [])
 
 	return (
 		<View style={{ flex: 1 }}>
@@ -49,7 +67,12 @@ export default function ManageCards({ refreshControl }) {
 						nestedScrollEnabled
 						onContentSizeChange={onContentSizeChange}
 						ref={scrollRef}
-						refreshControl={refreshControl}>
+						refreshControl={
+							<CustomRefreshContol
+								refreshing={cardsLoading}
+								onRefresh={getCards}
+							/>
+						}>
 						{cards?.map((c) => (
 							<Card key={c.id} card={c} />
 						))}
