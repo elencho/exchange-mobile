@@ -3,6 +3,7 @@ import { Theme, useTheme } from '@theme/index'
 import { Image, StyleSheet, View } from 'react-native'
 import ArrowRight from '@assets/images/Arrow_Right.svg'
 import { hexOpacityPct } from '@app/refactor/screens/convert/util'
+import { t } from 'i18next'
 
 type Props = {
 	pair: CoinPair
@@ -53,7 +54,7 @@ const ConfirmCard = ({ pair, tradeType }: Props) => {
 				{baseCcy + ' to ' + quoteCcy}
 			</AppText>
 			<AppText variant="title" style={styles.confirmText}>
-				Confirm Your Payment
+				cn_confirm_card_desc
 			</AppText>
 		</View>
 	)

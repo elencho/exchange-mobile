@@ -10,6 +10,7 @@ import {
 } from '@app/refactor/screens/convert/util'
 import Skeleton from '@components/skeleton'
 import { TouchableWithoutFeedback } from 'react-native'
+import { t } from 'i18next'
 
 const MAX_LEN_WHOLE = 13
 
@@ -99,9 +100,6 @@ const CoinInput = ({
 
 	const placeholderText = '0.' + '0'.repeat(loading || !coin ? 2 : coin.scale)
 
-	const balanceText =
-		'Balance: ' + (loading ? '' : formatScale(coin?.balance, coin?.scale))
-
 	const borderColor = () => {
 		const def = hexOpacityPct(theme.color.textSecondary, 50)
 		return loading
@@ -143,8 +141,8 @@ const CoinInput = ({
 				{loading ? (
 					<Skeleton width={60} height={6} style={{ marginTop: 12 }} />
 				) : (
-					<AppText style={styles.balanceText} variant="s">
-						{balanceText}
+					<AppText style={styles.balanceText} variant="s" noTranslate>
+						{t('cn_balance') + ' ' + formatScale(coin?.balance, coin?.scale)}
 					</AppText>
 				)}
 			</View>

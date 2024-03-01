@@ -46,7 +46,7 @@ function TopRow({ clear, headlineLogo }: Props) {
 			case 'Exchange':
 				return 'Exchange'
 			case 'ConvertNow':
-				return 'Convert Now'
+				return 'cn_title'
 			default:
 				return ''
 		}

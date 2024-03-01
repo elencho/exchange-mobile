@@ -26,18 +26,25 @@ const ConfirmModal = ({ status, onTransactionsClick, dismiss }: Props) => {
 				<Error />
 			)
 
+		const title =
+			status === 'success'
+				? 'cn_confirm_bottomsheet_success_title'
+				: status === 'pending'
+				? 'cn_confirm_bottomsheet_pending_title'
+				: 'cn_confirm_bottomsheet_error_title'
+
 		const desc =
 			status === 'success'
-				? null
+				? 'cn_confirm_bottomsheet_success_desc'
 				: status === 'pending'
-				? 'pending description'
-				: 'error description'
+				? 'cn_confirm_bottomsheet_pending_desc'
+				: 'cn_confirm_bottomsheet_error_desc'
 
 		return (
 			<View style={styles.container}>
 				{image}
 				<AppText variant="title" style={styles.title} medium>
-					{'Transaction ' + status}
+					{title}
 				</AppText>
 				{desc && (
 					<AppText variant="l" style={styles.desc}>
@@ -48,7 +55,7 @@ const ConfirmModal = ({ status, onTransactionsClick, dismiss }: Props) => {
 				{(status === 'success' || status === 'pending') && (
 					<AppButton
 						variant="primary"
-						text="See Transactions"
+						text="cn_btn_transactions"
 						style={styles.button}
 						onPress={onTransactionsClick}
 					/>
@@ -72,13 +79,16 @@ const _styles = (theme: Theme) =>
 		container: {
 			alignItems: 'center',
 		},
+		desc: {
+			color: theme.color.textSecondary,
+		},
 		title: {
 			marginTop: 18,
-			marginBottom: 10,
+			marginBottom: 15,
 			color: theme.color.textPrimary,
 		},
 		button: {
-			marginTop: 20,
+			marginTop: 30,
 			width: '60%',
 			marginBottom: 10,
 		},

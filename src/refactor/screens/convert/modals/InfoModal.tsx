@@ -18,24 +18,19 @@ const InfoModal = ({ visible, dismiss }: Props) => {
 			style={{ marginTop: 30, paddingHorizontal: 0 }}>
 			<TouchableOpacity activeOpacity={0.99}>
 				<AppText variant="headline" style={styles.header}>
-					What is Instant Trade
-				</AppText>
-
-				<AppText variant="l" style={styles.text}>
-					instant trade paragraph 1
-				</AppText>
-
-				<AppText variant="headline" style={[styles.header, { marginTop: 40 }]}>
-					How Does it Work?
+					cn_info_how_title
 				</AppText>
 				<AppText variant="l" style={styles.text}>
-					instant trade paragraph 2
+					cn_info_how_desc_1
 				</AppText>
 				<AppText variant="l" style={styles.text}>
-					instant trade paragraph 3
+					cn_info_how_desc_2
 				</AppText>
 				<AppText variant="l" style={styles.text}>
-					instant trade paragraph 4
+					cn_info_how_desc_3
+				</AppText>
+				<AppText variant="l" style={styles.text}>
+					cn_info_how_desc_4
 				</AppText>
 			</TouchableOpacity>
 		</ScrollView>

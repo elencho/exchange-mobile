@@ -7,6 +7,7 @@ import CheckFull from '@assets/images/Check_Full.svg'
 import AppDropdown from '@components/dropdown/index'
 import Skeleton from '@components/skeleton'
 import Arrow from '@assets/images/Arrow.svg'
+import { t } from 'i18next'
 
 type Props = {
 	chosenCard?: Card
@@ -57,7 +58,7 @@ const CardSection = ({
 					{buyWithCardChecked ? <CheckFull /> : <CheckEmpty />}
 				</Pressable>
 				<AppText variant="l" style={styles.buyText}>
-					{'Buy with card'}
+					cn_buy_with_card
 				</AppText>
 			</View>
 			{buyWithCardChecked &&
@@ -69,7 +70,7 @@ const CardSection = ({
 						noTranslate
 						notClearable
 						handlePress={chooseCardClicked}
-						label="Choose Card"
+						label={t('cn_select_card_title')}
 						selectedText={chosenCard && chosenCard?.cardNumber}
 						icon={
 							chosenCard && (

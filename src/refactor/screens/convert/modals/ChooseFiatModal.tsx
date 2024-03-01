@@ -54,8 +54,8 @@ const ChooseFiatModal = ({
 							<AppText variant="title" style={styles.ccyText}>
 								{coin.displayCcy}
 							</AppText>
-							<AppText variant="l" style={styles.balanceText} noTranslate>
-								Balance:
+							<AppText variant="l" style={styles.balanceText}>
+								cn_balance
 							</AppText>
 						</View>
 
@@ -72,7 +72,7 @@ const ChooseFiatModal = ({
 
 	return (
 		<AppModal
-			title="Choose Coin"
+			title="cn_choose_fiat_title"
 			hide={dismiss}
 			visible={visible}
 			children={children()}

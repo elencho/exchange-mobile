@@ -1,3 +1,5 @@
+import { t } from 'i18next'
+
 export type CoinError = {
 	err?: string
 	type: CoinType[]
@@ -23,14 +25,19 @@ export const coinError = (
 	// 6
 	if (f < pair.minTradeCost) {
 		return {
-			err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
+			err:
+				t('cn_err_min_amount') + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
 			type: ['Fiat'],
 		}
 	}
 	// 7
 	if (f > pair.maxTradeSize) {
 		return {
-			err: 'max. deposit ' + pair.maxTradeSize + ' ' + pair.fiat.displayCcy,
+			err:
+				t('cn_err_max_deposit') +
+				pair.maxTradeSize +
+				' ' +
+				pair.fiat.displayCcy,
 			type: ['Fiat'],
 		}
 	}
@@ -39,7 +46,11 @@ export const coinError = (
 		// 1, 2
 		if (!buyWithCard && f > Number(pair.fiat.balance)) {
 			return {
-				err: 'max. available ' + pair.fiat.balance + ' ' + pair.fiat.displayCcy,
+				err:
+					t('cn_err_max_available') +
+					pair.fiat.balance +
+					' ' +
+					pair.fiat.displayCcy,
 				type: ['Fiat'],
 			}
 		}
@@ -48,7 +59,7 @@ export const coinError = (
 		if (c > Number(pair.crypto.balance)) {
 			return {
 				err:
-					'max. available ' +
+					t('cn_err_max_available') +
 					pair.crypto.balance +
 					' ' +
 					pair.crypto.displayCcy,
@@ -58,7 +69,11 @@ export const coinError = (
 		// 8
 		if (f < pair.minTradeCost) {
 			return {
-				err: 'min. amount ' + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
+				err:
+					t('cn_err_min_amount') +
+					pair.minTradeCost +
+					' ' +
+					pair.fiat.displayCcy,
 				type: ['Fiat'],
 			}
 		}

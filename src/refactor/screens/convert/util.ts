@@ -1,3 +1,5 @@
+import { t } from 'i18next'
+
 export const convertColors = {
 	buy: '#0CCBB5',
 	sell: '#E0355D',
@@ -64,4 +66,10 @@ export const formatScale = (
 	amount = typeof amount === 'number' ? amount.toString() : amount
 	const dotIndex = amount.indexOf('.')
 	return dotIndex === -1 ? amount : amount.substring(0, dotIndex + 1 + scale)
+}
+
+export const providerBankTranslate = (bankCode: string) => {
+	if (bankCode === 'BOG') return t('cn_bank_bog')
+	if (bankCode === 'TBC') return t('cn_bank_tbc')
+	return bankCode
 }
