@@ -7,6 +7,7 @@ type Props = {
 	balanceMultiplier: number | undefined
 	tradeType: TradeType
 	buyWithCard: boolean
+	cardLimits: CardLimits | undefined
 	onButtonSuccess: (spent: string, received: string) => void
 }
 
@@ -15,6 +16,7 @@ export const handlePair = ({
 	balanceMultiplier,
 	tradeType,
 	buyWithCard,
+	cardLimits,
 	onButtonSuccess,
 }: Props) => {
 	const [upCoin, setUpCoin] = useState<Coin>()
@@ -24,6 +26,11 @@ export const handlePair = ({
 	const [lastChanged, setLastChanged] = useState<Position | null>(null)
 	const [errorInputs, setErrorInputs] = useState<Position[]>([])
 	const [errorText, setErrorText] = useState<string>()
+
+	// TODO: Use this instead
+	const price = () => {
+		return Number(tradeType === 'Buy' ? pair?.buyPrice : pair?.sellPrice)
+	}
 
 	useEffect(() => {
 		const { upC, lowC } = sortCoins()
@@ -75,7 +82,8 @@ export const handlePair = ({
 			tradeType === 'Sell' ? upAmount : lowAmount,
 			pair,
 			tradeType,
-			buyWithCard
+			buyWithCard,
+			cardLimits
 		)
 		if (coinErr === null) {
 			onButtonSuccess(upAmount, lowAmount)
@@ -102,7 +110,11 @@ export const handlePair = ({
 		}
 	}
 
-	const recalculateUp = (low: string, scale?: number) => {
+	const recalculateUp = (
+		low: string,
+		scale?: number,
+		trimZeroes: boolean = false
+	) => {
 		const num = Number(low)
 		if (num === 0 || isNaN(num)) {
 			return setUpAmount('')

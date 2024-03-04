@@ -10,74 +10,122 @@ export const coinError = (
 	cryptoAmount: string,
 	pair: CoinPair | undefined,
 	tradeType: TradeType,
-	buyWithCard: boolean
+	buyWithCard: boolean,
+	cardLimits: CardLimits | undefined
 ): CoinError | null => {
-	if (!pair) return { err: 'No pair', type: ['Fiat', 'Crypto'] }
+	if (!pair) return { err: '', type: ['Fiat', 'Crypto'] }
 
-	const f = Number(fiatAmount)
-	const c = Number(cryptoAmount)
-	const sell = Number(pair.sellPrice)
+	const fiat = Number(fiatAmount)
+	const crypto = Number(cryptoAmount)
 
-	// 5
-	if (!fiatAmount.trim().length || !cryptoAmount.trim().length) {
-		return { type: ['Fiat', 'Crypto'] }
-	}
-	// 6
-	if (f < pair.minTradeCost) {
-		return {
-			err:
-				t('cn_err_min_amount') + pair.minTradeCost + ' ' + pair.fiat.displayCcy,
-			type: ['Fiat'],
-		}
-	}
-	// 7
-	if (f > pair.maxTradeSize) {
-		return {
-			err:
-				t('cn_err_max_deposit') +
-				pair.maxTradeSize +
-				' ' +
-				pair.fiat.displayCcy,
-			type: ['Fiat'],
-		}
-	}
-
-	if (tradeType === 'Buy') {
-		// 1, 2
-		if (!buyWithCard && f > Number(pair.fiat.balance)) {
+	const maxSize = (): CoinError | null => {
+		if (crypto > pair.maxSimpleTradeSize) {
 			return {
 				err:
-					t('cn_err_max_available') +
-					pair.fiat.balance +
-					' ' +
-					pair.fiat.displayCcy,
-				type: ['Fiat'],
-			}
-		}
-	} else {
-		// 3, 4
-		if (c > Number(pair.crypto.balance)) {
-			return {
-				err:
-					t('cn_err_max_available') +
-					pair.crypto.balance +
+					'max. amount ' +
+					pair.maxSimpleTradeSize +
 					' ' +
 					pair.crypto.displayCcy,
 				type: ['Crypto'],
 			}
 		}
-		// 8
-		if (f < pair.minTradeCost) {
+		return null
+	}
+
+	const minSimpleTradeSize = (): CoinError | null => {
+		if (crypto < pair.minSimpleTradeSize) {
 			return {
 				err:
-					t('cn_err_min_amount') +
-					pair.minTradeCost +
+					'min. amount ' +
+					pair.minSimpleTradeSize +
+					' ' +
+					pair.crypto.displayCcy,
+				type: ['Crypto'],
+			}
+		}
+		return null
+	}
+
+	const minSimpleTradeCost = (): CoinError | null => {
+		if (fiat < pair.minSimpleTradeCost) {
+			return {
+				err:
+					'Order value is below the min limit: ' +
+					pair.minSimpleTradeCost +
 					' ' +
 					pair.fiat.displayCcy,
 				type: ['Fiat'],
 			}
 		}
+		return null
 	}
 
-	return null
+	const maxValueCard = (): CoinError | null => {
+		if (cardLimits && fiat > cardLimits.max) {
+			return {
+				err: 'max. top up ' + cardLimits.max + ' ' + pair.fiat.displayCcy,
+				type: ['Fiat'],
+			}
+		}
+		return null
+	}
+
+	const minValueCard = (): CoinError | null => {
+		if (cardLimits && fiat < cardLimits.min) {
+			return {
+				err: 'min. top up ' + cardLimits.min + ' ' + pair.fiat.displayCcy,
+				type: ['Fiat'],
+			}
+		}
+		return null
+	}
+
+	const maxBalance = (): CoinError | null => {
+		if (tradeType === 'Buy') {
+			if (fiat > Number(pair.fiat.balance)) {
+				return {
+					err:
+						t('max. available') +
+						pair.fiat.balance +
+						' ' +
+						pair.fiat.displayCcy,
+					type: ['Fiat'],
+				}
+			}
+		} else {
+			if (crypto > Number(pair.crypto.balance)) {
+				return {
+					err:
+						t('max. available') +
+						pair.crypto.balance +
+						' ' +
+						pair.crypto.displayCcy,
+					type: ['Crypto'],
+				}
+			}
+		}
+		return null
+	}
+
+	if (tradeType === 'Buy') {
+		if (buyWithCard) {
+			return (
+				minSimpleTradeCost() ||
+				minSimpleTradeSize() ||
+				maxValueCard() ||
+				minValueCard()
+			)
+		} else {
+			return (
+				minSimpleTradeCost() ||
+				minSimpleTradeSize() ||
+				maxSize() ||
+				maxBalance()
+			)
+		}
+	} else {
+		return (
+			minSimpleTradeSize() || minSimpleTradeCost() || maxSize() || maxBalance()
+		)
+	}
 }
