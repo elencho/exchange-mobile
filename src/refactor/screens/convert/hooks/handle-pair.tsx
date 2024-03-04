@@ -7,6 +7,7 @@ type Props = {
 	balanceMultiplier: number | undefined
 	tradeType: TradeType
 	buyWithCard: boolean
+	cardLimits: CardLimits | undefined
 	onButtonSuccess: (spent: string, received: string) => void
 }
 
@@ -15,6 +16,7 @@ export const handlePair = ({
 	balanceMultiplier,
 	tradeType,
 	buyWithCard,
+	cardLimits,
 	onButtonSuccess,
 }: Props) => {
 	const [upCoin, setUpCoin] = useState<Coin>()
@@ -48,9 +50,9 @@ export const handlePair = ({
 		const { upC, lowC } = sortCoins()
 
 		if (lastChanged === 'up') {
-			recalculateUp(lowAmount, upC?.scale)
-		} else if (lastChanged === 'low') {
 			recalculateLow(upAmount, lowC?.scale)
+		} else if (lastChanged === 'low') {
+			recalculateUp(lowAmount, upC?.scale)
 		}
 	}, [pair])
 
@@ -80,7 +82,8 @@ export const handlePair = ({
 			tradeType === 'Sell' ? upAmount : lowAmount,
 			pair,
 			tradeType,
-			buyWithCard
+			buyWithCard,
+			cardLimits
 		)
 		if (coinErr === null) {
 			onButtonSuccess(upAmount, lowAmount)

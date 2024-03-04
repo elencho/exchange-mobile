@@ -55,7 +55,8 @@ const CoinInput = ({
 		if (split.length <= 1) {
 			maxLength.current = MAX_LEN_WHOLE
 		} else if (split.length === 2) {
-			maxLength.current = split[0].length + 1 + coin.scale
+			const beforeDots = split[0].length
+			maxLength.current = beforeDots + 1 + coin.scale
 		}
 	}, [amount])
 

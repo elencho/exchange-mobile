@@ -33,7 +33,7 @@ export const useCoins = () => {
 	const [cards, setCards] = useState<Card[]>([])
 	const [fees, setFees] = useState<ProviderFees[]>([])
 
-	const maxLimitCard = useRef<number>()
+	const cardLimits = useRef<CardLimits>()
 	const offersCache = useRef<Record<DisplayCcy, CoinPair[]>>({})
 	const balancesCache = useRef<Record<DisplayCcy, BalanceEntry>>({})
 	const feesCache = useRef<Record<Provider, Record<CardType, Pct | null>>>({})
@@ -179,12 +179,16 @@ export const useCoins = () => {
 		const toGelEntry = dto.balances.find(
 			(v) => v.displayCurrencyCode === 'TOGEL'
 		)
-		const maxLimit = toGelEntry?.limits.find(
+		const limits = toGelEntry?.limits.find(
 			(l) => l.method === 'ECOMMERCE' && l.transactionType === 'DEPOSIT'
-		)?.maxValue
-		if (maxLimit) {
-			maxLimitCard.current = Number(maxLimit)
+		)
+		if (limits) {
+			cardLimits.current = {
+				min: Number(limits.minValue),
+				max: Number(limits.maxValue),
+			}
 		}
+		// TODO: MinValue for card
 	}
 
 	/***
@@ -201,9 +205,9 @@ export const useCoins = () => {
 			crypto: mapCoin(dto, 'Crypto'),
 			code: dto.pair.pair,
 			displayCode: dto.pair.pairDisplayName,
-			minTradeSize: Number(dto.pair.minSimpleTradeSize),
-			minTradeCost: Number(dto.pair.minSimpleTradeCost),
-			maxTradeSize: Number(dto.pair.maxSize),
+			minSimpleTradeSize: Number(dto.pair.minSimpleTradeSize),
+			minSimpleTradeCost: Number(dto.pair.minSimpleTradeCost),
+			maxSimpleTradeSize: Number(dto.pair.maxSize),
 		}
 	}
 
@@ -275,6 +279,6 @@ export const useCoins = () => {
 		onCoinSelected,
 		seconds,
 		setSeconds,
-		maxLimitCard: maxLimitCard.current,
+		cardLimits: cardLimits.current,
 	}
 }

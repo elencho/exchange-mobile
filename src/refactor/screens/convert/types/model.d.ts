@@ -26,9 +26,9 @@ type CoinPair = {
 	crypto: Coin
 	sellPrice: string
 	buyPrice: string
-	minTradeCost: number
-	minTradeSize: number
-	maxTradeSize: number
+	maxSimpleTradeSize: number
+	minSimpleTradeSize: number
+	minSimpleTradeCost: number
 	code: string
 	displayCode: string
 }
@@ -45,6 +45,11 @@ type Card = {
 	network: string
 	iconPngUrl: string
 	feePct: number | null
+}
+
+type CardLimits = {
+	min: number
+	max: number
 }
 
 type ProviderFees = {
