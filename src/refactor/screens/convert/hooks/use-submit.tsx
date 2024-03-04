@@ -34,14 +34,13 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 			pairCode: pair.code,
 			amount: spentAmount,
 			action,
-			price,
+			price: changedPrice || price,
 			cardTransactionRequest: card && {
 				currency: 'GEL',
 				cardId: card.id,
 				amount: spentAmount,
 			},
 		}
-		console.log({ params })
 		submitTrade(params).then((data) => {
 			if (!data) {
 				setConfirmModalStatus('success')

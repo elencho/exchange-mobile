@@ -13,7 +13,8 @@ export const coinError = (
 	buyWithCard: boolean,
 	cardLimits: CardLimits | undefined
 ): CoinError | null => {
-	if (!pair) return { err: '', type: ['Fiat', 'Crypto'] }
+	if (!pair || (!fiatAmount.length && !cryptoAmount.length))
+		return { err: '', type: ['Fiat', 'Crypto'] }
 
 	const fiat = Number(fiatAmount)
 	const crypto = Number(cryptoAmount)

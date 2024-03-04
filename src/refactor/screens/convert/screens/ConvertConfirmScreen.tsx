@@ -4,7 +4,7 @@ import { StyleSheet, View, Image } from 'react-native'
 import AppBackground from '@components/background'
 import AppText from '@components/text'
 import { AppButton } from '@components/button'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import CloseIcon from '@components/close-button'
 import ConfirmTradeCard from '@app/refactor/screens/convert/components/ConfirmTradeCard'
 import {
@@ -24,14 +24,10 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
-	const {
-		spentAmount,
-		receivedAmount,
-		pair,
-		tradeType,
-		card,
-		onSubmitStatusReceived,
-	} = props.route?.params
+	const [confirmModalVisible, setConfirmModalVisible] = useState(false)
+
+	const { spentAmount, receivedAmount, pair, tradeType, card } =
+		props.route?.params
 
 	const {
 		changedPrice,
@@ -43,10 +39,13 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 	} = useSubmit(props)
 
 	useEffect(() => {
-		if (confirmModalStatus === 'success' || confirmModalStatus === 'pending') {
-			props.navigation.pop()
-			onSubmitStatusReceived(confirmModalStatus)
+		if (confirmModalStatus !== undefined) {
+			setConfirmModalVisible(true)
 		}
+		// if (confirmModalStatus === 'success' || confirmModalStatus === 'pending') {
+		// 	props.navigation.pop()
+		// 	onSubmitStatusReceived(confirmModalStatus)
+		// }
 	}, [confirmModalStatus])
 
 	const handleWebViewUrlChange = (event: WebViewNavigation) => {
@@ -75,7 +74,11 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 			</AppText>
 		)
 		const valueText =
-			desc === 'Price' && changedPrice ? <ChangedPriceItem /> : regularValueText
+			desc === 'cn_confirm_info_price' && changedPrice ? (
+				<ChangedPriceItem />
+			) : (
+				regularValueText
+			)
 
 		return (
 			<View style={styles.infoItemContainer}>
@@ -195,8 +198,9 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 				/>
 
 				<ConfirmModal
+					visible={confirmModalVisible}
 					status={confirmModalStatus}
-					dismiss={() => setConfirmModalStatus(undefined)}
+					dismiss={() => setConfirmModalVisible(false)}
 				/>
 			</AppBackground>
 			{webViewState && (

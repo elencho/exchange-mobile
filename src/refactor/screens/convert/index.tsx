@@ -24,7 +24,6 @@ import { handlePair } from '@app/refactor/screens/convert/hooks/handle-pair'
 import InfoModal from '@app/refactor/screens/convert/modals/InfoModal'
 import AppText from '@components/text'
 import Skeleton from '@app/components/Skeleton'
-import ConfirmModal from '@app/refactor/screens/convert/modals/ConfirmModal'
 import CustomRefreshContol from '@components/refresh-control'
 import { useReturnedFrom } from '@app/refactor/common/hooks/use-returned-from'
 import { t } from 'i18next'
@@ -58,7 +57,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 					pair.fiat.buyWithCard === true
 						? chosenCard
 						: undefined,
-				onSubmitStatusReceived: handleConfirmModalStatus,
 			})
 	}
 
@@ -138,13 +136,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		clearCard && setCardError(false)
 	}
 
-	const handleConfirmModalStatus = (status: ConfirmModalStatus) => {
-		resetScreen()
-		setLastChanged(null)
-		setSubmitStatus(status)
-		fetchCoins(true, false)
-	}
-
 	const onTimerExpire = () => {
 		setSelectedChip(undefined)
 		fetchCoins(false, false)
@@ -182,14 +173,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	)
 
 	const showCardSection = tradeType === 'Buy' && pair?.fiat.buyWithCard === true
-
-	const goToTransactions = () => {
-		navigation.replace('Main', {
-			fromResume: false,
-			initialRoute: 'Transactions',
-			transactionsInitialTab: 'Instant trade',
-		})
-	}
 
 	const InfoLogo = () => {
 		return (
@@ -351,13 +334,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							setSelectedChip(undefined)
 						}}
 						dismiss={() => setCryptoModalVisible(false)}
-					/>
-					<ConfirmModal
-						status={submitStatus}
-						dismiss={() => {
-							setSubmitStatus(undefined)
-						}}
-						onTransactionsClick={goToTransactions}
 					/>
 				</View>
 			</WithKeyboard>
