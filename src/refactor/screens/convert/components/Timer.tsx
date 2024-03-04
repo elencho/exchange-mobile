@@ -52,8 +52,8 @@ const Timer = ({
 			<View style={styles.textContainer}>
 				<AppText style={styles.textCoins}>
 					{formatDisplayPair(pair, tradeType) + ' ' + t('cn_timer_updates_in')}
+					<AppText style={styles.textSeconds}>{` ${minStr}:${secStr}`}</AppText>
 				</AppText>
-				<AppText style={styles.textSeconds}>{` ${minStr}:${secStr}`}</AppText>
 			</View>
 		)
 	}

@@ -53,7 +53,7 @@ const ConfirmTradeCard = ({ pair, tradeType }: Props) => {
 				{baseCcy + ' to ' + quoteCcy}
 			</AppText>
 			<AppText variant="title" style={styles.confirmText}>
-				Confirm Your Payment
+				cn_confirm_card_desc
 			</AppText>
 		</View>
 	)

@@ -23,7 +23,8 @@ export const coinError = (
 		if (crypto > pair.maxSimpleTradeSize) {
 			return {
 				err:
-					'max. amount ' +
+					t('cn_err_max_size') +
+					' ' +
 					pair.maxSimpleTradeSize +
 					' ' +
 					pair.crypto.displayCcy,
@@ -37,7 +38,8 @@ export const coinError = (
 		if (crypto < pair.minSimpleTradeSize) {
 			return {
 				err:
-					'min. amount ' +
+					t('cn_err_min_simple_trade_size') +
+					' ' +
 					pair.minSimpleTradeSize +
 					' ' +
 					pair.crypto.displayCcy,
@@ -51,7 +53,8 @@ export const coinError = (
 		if (fiat < pair.minSimpleTradeCost) {
 			return {
 				err:
-					'Order value is below the min limit: ' +
+					t('cn_err_min_simple_trade_cost') +
+					' ' +
 					pair.minSimpleTradeCost +
 					' ' +
 					pair.fiat.displayCcy,
@@ -64,7 +67,12 @@ export const coinError = (
 	const maxValueCard = (): CoinError | null => {
 		if (cardLimits && fiat > cardLimits.max) {
 			return {
-				err: 'max. top up ' + cardLimits.max + ' ' + pair.fiat.displayCcy,
+				err:
+					t('cn_err_max_limit') +
+					' ' +
+					cardLimits.max +
+					' ' +
+					pair.fiat.displayCcy,
 				type: ['Fiat'],
 			}
 		}
@@ -74,7 +82,12 @@ export const coinError = (
 	const minValueCard = (): CoinError | null => {
 		if (cardLimits && fiat < cardLimits.min) {
 			return {
-				err: 'min. top up ' + cardLimits.min + ' ' + pair.fiat.displayCcy,
+				err:
+					t('cn_err_min_limit') +
+					' ' +
+					+cardLimits.min +
+					' ' +
+					pair.fiat.displayCcy,
 				type: ['Fiat'],
 			}
 		}
@@ -87,6 +100,7 @@ export const coinError = (
 				return {
 					err:
 						t('max. available') +
+						' ' +
 						pair.fiat.balance +
 						' ' +
 						pair.fiat.displayCcy,
@@ -98,6 +112,7 @@ export const coinError = (
 				return {
 					err:
 						t('max. available') +
+						' ' +
 						pair.crypto.balance +
 						' ' +
 						pair.crypto.displayCcy,
