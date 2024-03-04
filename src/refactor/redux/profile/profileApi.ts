@@ -47,7 +47,12 @@ export const refreshToken = async (config?: any) => {
 }
 
 export const fetchUserInfoUtil = async () => {
-	const data = await axios.get<UserInfoType>(USER_INFO_URL)
+	const data = await axios<UserInfoType>({
+		method: 'GET',
+		headers: { requestName: 'fetchUserInfo', toast: false },
+		url: USER_INFO_URL,
+	})
+
 	if (data) return data.data
 }
 
