@@ -8,12 +8,18 @@ import Error from '@assets/images/Instant_Status_Error.svg'
 import { AppButton } from '@components/button'
 
 interface Props {
+	visible: boolean
 	status: ConfirmModalStatus | undefined
 	dismiss: () => void
 	onTransactionsClick?: () => void
 }
 
-const ConfirmModal = ({ status, onTransactionsClick, dismiss }: Props) => {
+const ConfirmModal = ({
+	visible,
+	status,
+	onTransactionsClick,
+	dismiss,
+}: Props) => {
 	const { styles } = useTheme(_styles)
 
 	const children = () => {
@@ -65,12 +71,7 @@ const ConfirmModal = ({ status, onTransactionsClick, dismiss }: Props) => {
 	}
 
 	return (
-		<AppModal
-			hide={dismiss}
-			visible={status !== undefined}
-			children={children()}
-			bottom
-		/>
+		<AppModal hide={dismiss} visible={visible} children={children()} bottom />
 	)
 }
 

@@ -39,7 +39,8 @@ const CoinInput = ({
 
 	const [formattedAmount, setFormattedAmount] = useState('')
 
-	const maxLength = useRef<number>()
+	const [maxLength, setMaxLength] = useState<number>()
+	const [cursorPos, setCursorPos] = useState(0)
 	const inputRef = useRef<TextInput | null>(null)
 
 	useEffect(() => {
@@ -53,12 +54,13 @@ const CoinInput = ({
 		if (!amount || !coin) return
 		const split = amount.split('.')
 		if (split.length <= 1) {
-			maxLength.current = MAX_LEN_WHOLE
+			setMaxLength(MAX_LEN_WHOLE)
 		} else if (split.length === 2) {
 			const beforeDots = split[0].length
-			maxLength.current = beforeDots + 1 + coin.scale
+			const leftSide = cursorPos > beforeDots ? beforeDots : MAX_LEN_WHOLE
+			setMaxLength(leftSide + 1 + coin.scale)
 		}
-	}, [amount])
+	}, [amount, cursorPos])
 
 	const focus = () => {
 		inputRef.current?.focus()
@@ -99,7 +101,10 @@ const CoinInput = ({
 		)
 	}
 
-	const placeholderText = '0.' + '0'.repeat(loading || !coin ? 2 : coin.scale)
+	const placeholderText = () => {
+		if (!coin || coin.scale === 0) return '0'
+		return '0.' + '0'.repeat(coin.scale)
+	}
 
 	const borderColor = () => {
 		const def = hexOpacityPct(theme.color.textSecondary, 50)
@@ -127,15 +132,19 @@ const CoinInput = ({
 				) : (
 					<TextInput
 						ref={inputRef}
-						maxLength={maxLength.current}
-						keyboardType="numeric"
+						maxLength={maxLength}
+						keyboardType={coin?.scale === 0 ? 'number-pad' : 'numeric'}
 						style={styles.input}
 						value={formattedAmount}
-						placeholder={placeholderText}
+						placeholder={placeholderText()}
 						placeholderTextColor={hexOpacityPct(theme.color.textSecondary, 60)}
 						onFocus={onFocus}
 						onChangeText={(txt) => {
 							isActive && onAmountChange(txt, formattedAmount)
+						}}
+						onSelectionChange={(e) => {
+							setCursorPos(e.nativeEvent.selection.start)
+							// cursorRef.current = e.nativeEvent.selection.start
 						}}
 					/>
 				)}

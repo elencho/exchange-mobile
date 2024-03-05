@@ -116,7 +116,7 @@ const CoinPair = ({
 				/>
 			</View>
 			{errorText?.length && !loading ? (
-				<AppText variant="m" style={styles.errorText}>
+				<AppText variant="m" style={styles.errorText} noTranslate>
 					{errorText}
 				</AppText>
 			) : null}

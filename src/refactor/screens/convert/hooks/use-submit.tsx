@@ -23,12 +23,7 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 
 	const onConfirmPressed = () => {
 		const action = tradeType === 'Buy' ? 'BID' : 'ASK'
-		let price = tradeType === 'Buy' ? pair.buyPrice : pair.sellPrice //TODO: const
-
-		// // TODO: Remove this after testing
-		// if (pair.code === 'USDT-GEL') {
-		// 	price = (Number(price) * 0.95).toFixed(pair.fiat.scale)
-		// }
+		const price = tradeType === 'Buy' ? pair.buyPrice : pair.sellPrice
 
 		const params: SubmitTradeRequest = {
 			pairCode: pair.code,
