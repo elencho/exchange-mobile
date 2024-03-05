@@ -123,9 +123,12 @@ export const forgotPasswordStartThunk = createAsyncThunk(
 	'forgotPasswordStart',
 	async (
 		{ navigation }: { navigation: NativeStackNavigationProp<Screens, any> },
-		{}
+		{ getState }
 	) => {
-		const data = await forgotPassword()
+		const { passwordResetUrl } = (getState() as RootState).auth
+
+		const data = await forgotPassword(passwordResetUrl)
+
 		const error = data?.errors?.[0]
 
 		if (data.execution === Execution.RESET_PASSWORD_WITH_CODE) {

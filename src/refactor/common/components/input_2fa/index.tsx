@@ -62,11 +62,15 @@ const TwoFaInput = ({
 			value={value}
 			setValue={setValue}
 			generalErrorData={generalErrorData}
+			autoFocus={autoFocus}
 		/>
 	)
 }
 
-type CodeInputProps = Pick<Props, 'value' | 'setValue' | 'cellCount'> & {
+type CodeInputProps = Pick<
+	Props,
+	'value' | 'setValue' | 'cellCount' | 'autoFocus'
+> & {
 	generalErrorData?: UiErrorData | null
 }
 
@@ -75,6 +79,7 @@ const CodeInput = ({
 	setValue,
 	cellCount,
 	generalErrorData,
+	autoFocus,
 }: CodeInputProps) => {
 	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
@@ -111,7 +116,7 @@ const CodeInput = ({
 				keyboardType="number-pad"
 				textContentType="oneTimeCode"
 				autoComplete="sms-otp"
-				autoFocus={true}
+				autoFocus={autoFocus}
 				renderCell={({ index, symbol, isFocused }) => (
 					<AppText
 						key={index}
