@@ -65,6 +65,6 @@ export type Screens = {
 		pair: CoinPair
 		tradeType: TradeType
 		card: Card | undefined
-		onSubmitStatusReceived: (status: ConfirmModalStatus) => void
+		onConfirmClose: (refresh: boolean) => void
 	}
 }
