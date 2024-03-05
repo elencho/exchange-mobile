@@ -41,6 +41,7 @@ interface AuthState {
 	otpType: OTP
 	phoneCountryCode?: string
 	pkceInfo?: PkceInfo
+	passwordResetUrl: string
 }
 
 const initialState: AuthState = {
@@ -58,6 +59,7 @@ const initialState: AuthState = {
 
 	callbackUrl: '',
 	otpType: 'EMAIL',
+	passwordResetUrl: '',
 }
 
 const auth = createSlice({
@@ -114,6 +116,7 @@ const login = (builder: ActionReducerMapBuilder<AuthState>) => {
 		.addCase(startLoginThunk.fulfilled, (state, action) => {
 			state.fullScreenLoading = false
 			state.callbackUrl = action.payload.callbackUrl
+			state.passwordResetUrl = action.payload.passwordResetUrl
 		})
 		.addCase(startLoginThunk.pending, (state, action) => {
 			state.fullScreenLoading = true

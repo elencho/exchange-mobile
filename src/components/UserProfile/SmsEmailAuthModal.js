@@ -45,11 +45,11 @@ export default function SmsEmailAuthModal({
 	const email = currentSecurityAction === 'email'
 	const google = currentSecurityAction === 'google'
 
-	useSmsOtpVerifier(setValue)
-
 	// const [seconds, setSeconds] = useState(remainingSeconds ?? 30)
 	const [otpLoading, setOtpLoading] = useState(false)
 	const [value, setValue] = useState(twoFaInputValue ?? '')
+
+	useSmsOtpVerifier(setValue)
 
 	const reset = () => {
 		dispatch({ type: 'TOGGLE_TIMER', timerVisible: false })
