@@ -5,6 +5,8 @@ import { VERIFICATION_TOKEN } from '../constants/api'
 import { IS_ANDROID, IS_IOS } from '../constants/system'
 import { sumsubVerificationToken } from '../utils/userProfileUtils'
 import KV from '@store/kv/regular'
+import { setWebViewVisible } from '@store/redux/common/slice'
+import store from '@app/refactor/redux/store'
 
 export default async (email) => {
 	const token = await sumsubVerificationToken()
@@ -27,6 +29,7 @@ export default async (email) => {
 					event?.newStatus === 'Initial'
 				) {
 					KV.set('webViewVisible', true)
+					store.dispatch(setWebViewVisible(true))
 				}
 			},
 			onLog: async (event) => {
@@ -34,14 +37,17 @@ export default async (email) => {
 					const sleep = (m) => new Promise((r) => setTimeout(r, m))
 					await sleep(3000)
 					KV.del('webViewVisible', true)
+					store.dispatch(setWebViewVisible(false))
 				}
 			},
 			onEvent: async (event) => {
 				if (IS_IOS && event?.payload?.eventName === 'msdk:init') {
 					KV.set('webViewVisible', true)
+					store.dispatch(setWebViewVisible(true))
 				}
 				if (IS_IOS && event?.payload?.eventName === 'msdk:dismiss') {
 					KV.del('webViewVisible')
+					store.dispatch(setWebViewVisible(false))
 				}
 			},
 		})

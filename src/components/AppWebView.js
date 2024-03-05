@@ -19,6 +19,7 @@ import {
 } from '../redux/trade/actions'
 import KV from '@store/kv/regular'
 import { useModal } from '@components/modal/global_modal'
+import { setWebViewVisible } from '@store/redux/common/slice'
 
 export default function AppWebView(props) {
 	const { verifyCards, trade, deposit, cardsAdd, onClose } = props
@@ -32,6 +33,8 @@ export default function AppWebView(props) {
 	)
 
 	const closeWebView = async () => {
+		dispatch(setWebViewVisible(false))
+
 		KV.del('webViewVisible')
 		dispatch({ type: 'RESET_APP_WEBVIEW_OBJ' })
 		if (verifyCards) {
@@ -65,10 +68,12 @@ export default function AppWebView(props) {
 
 	const handleOnShow = async () => {
 		KV.set('webViewVisible', true)
+		dispatch(setWebViewVisible(true))
 	}
 
 	const handleOnRequestClose = async () => {
 		KV.del('webViewVisible')
+		dispatch(setWebViewVisible(false))
 	}
 
 	// Necessary for Push notification banner to show in proper order
