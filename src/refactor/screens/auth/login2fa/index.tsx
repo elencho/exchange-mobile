@@ -155,7 +155,6 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 									setGeneralErrorData(null)
 								}}
 								cellCount={cellCount}
-								navigation={navigation}
 								onFill={onCodeFilled}
 								generalErrorData={generalErrorData}
 								loading={otpLoading}

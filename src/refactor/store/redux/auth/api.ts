@@ -130,9 +130,9 @@ export const codeToToken = async (code: string, codeVerifier: string) => {
 	return data?.data
 }
 
-export const forgotPassword = async () => {
+export const forgotPassword = async (passwordResetUrl: string) => {
 	const data = await axios.get<ForgotPasswordStartResponse>(
-		FORGOT_PASSWORD_START_URL,
+		passwordResetUrl,
 		{
 			params: {
 				client_id: 'mobile-service-public',
