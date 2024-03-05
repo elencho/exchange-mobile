@@ -38,7 +38,6 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 	const [chosenCard, setChosenCard] = useState<Card>()
 	const [selectedChip, setSelectedChip] = useState<number>()
 	const [buyWithCardChecked, setBuyWithCardChecked] = useState(false)
-	const [submitStatus, setSubmitStatus] = useState<ConfirmModalStatus>()
 
 	const [fiatModalVisible, setFiatModalVisible] = useState(false)
 	const [cryptoModalVisible, setCryptoModalVisible] = useState(false)
@@ -57,6 +56,12 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 					pair.fiat.buyWithCard === true
 						? chosenCard
 						: undefined,
+				onConfirmClose(reload: boolean) {
+					if (reload) {
+						resetScreen()
+						fetchCoins(true, false)
+					}
+				},
 			})
 	}
 
@@ -239,8 +244,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 					/>
 					{showPercentages && (
 						<BalanceChips
+							animate={buyWithCardChecked}
 							loading={loading}
-							selectedChip={selectedChip}
 							onChipSelect={(mul) => {
 								clearErrors(false)
 								setSelectedChip(mul)

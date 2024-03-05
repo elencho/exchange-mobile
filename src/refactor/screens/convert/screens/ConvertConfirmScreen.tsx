@@ -26,7 +26,7 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 
 	const [confirmModalVisible, setConfirmModalVisible] = useState(false)
 
-	const { spentAmount, receivedAmount, pair, tradeType, card } =
+	const { spentAmount, receivedAmount, pair, tradeType, card, onConfirmClose } =
 		props.route?.params
 
 	const {
@@ -39,14 +39,16 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 	} = useSubmit(props)
 
 	useEffect(() => {
-		if (confirmModalStatus !== undefined) {
-			setConfirmModalVisible(true)
-		}
-		// if (confirmModalStatus === 'success' || confirmModalStatus === 'pending') {
-		// 	props.navigation.pop()
-		// 	onSubmitStatusReceived(confirmModalStatus)
-		// }
+		setConfirmModalVisible(confirmModalStatus !== undefined)
 	}, [confirmModalStatus])
+
+	const goBack = () => {
+		const shouldRefresh =
+			confirmModalStatus === 'success' || confirmModalStatus === 'pending'
+
+		onConfirmClose(shouldRefresh)
+		props.navigation.pop()
+	}
 
 	const handleWebViewUrlChange = (event: WebViewNavigation) => {
 		const urlQueries = event.url.split('=')
@@ -176,7 +178,7 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 	const Top = () => {
 		return (
 			<View style={styles.topContainer}>
-				<CloseIcon onPress={() => props.navigation.pop()} />
+				<CloseIcon onPress={() => goBack()} />
 			</View>
 		)
 	}
