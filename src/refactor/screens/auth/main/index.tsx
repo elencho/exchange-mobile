@@ -78,7 +78,7 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 			changeNavigationBarColor(theme.color.backgroundPrimary, true)
 			stateChangeListener.remove()
 		}
-	}, [])
+	}, [webViewVisible])
 
 	const resumeIsShown = () => {
 		const routes = navigation.getState().routes
@@ -95,34 +95,37 @@ const Main = ({ navigation, route }: ScreenProp<'Main'>) => {
 						prevAppState.current === undefined)
 	}
 
-	const handleAppStateChange = useCallback(async (newState: AppStateStatus) => {
-		const appClosing = isAppClosing(newState)
-		dispatch(setBiometricSuccess(false))
-		const bioVisible =
-			newState === 'active' &&
-			!fromResume &&
-			accessToken !== undefined &&
-			webViewVisible !== true &&
-			biometricDiffElapsed() &&
-			(await isEnrolledAsync())
-		if (bioVisible) {
-			const email = jwt_decode<TokenParams>(accessToken)?.email
-			getBiometricEnabled(email)
-		} else if (newState === 'active' && !bioVisible) {
-			setIsBiometricScreenOpenedForModal(false)
-			dispatch(setBiometricSuccess(null))
-			setModalVisible(true)
-		}
+	const handleAppStateChange = useCallback(
+		async (newState: AppStateStatus) => {
+			const appClosing = isAppClosing(newState)
+			dispatch(setBiometricSuccess(false))
+			const bioVisible =
+				newState === 'active' &&
+				!fromResume &&
+				accessToken !== undefined &&
+				webViewVisible !== true &&
+				biometricDiffElapsed() &&
+				(await isEnrolledAsync())
+			if (bioVisible) {
+				const email = jwt_decode<TokenParams>(accessToken)?.email
+				getBiometricEnabled(email)
+			} else if (newState === 'active' && !bioVisible) {
+				setIsBiometricScreenOpenedForModal(false)
+				dispatch(setBiometricSuccess(null))
+				setModalVisible(true)
+			}
 
-		if (appClosing && !isModalVisible) {
-			setIsBiometricScreenOpenedForModal(true)
-		}
+			if (appClosing && !isModalVisible) {
+				setIsBiometricScreenOpenedForModal(true)
+			}
 
-		if (appClosing && !resumeIsShown()) {
-			KV.set('lastCloseDateMillis', Date.now())
-		}
-		prevAppState.current = newState
-	}, [])
+			if (appClosing && !resumeIsShown()) {
+				KV.set('lastCloseDateMillis', Date.now())
+			}
+			prevAppState.current = newState
+		},
+		[webViewVisible]
+	)
 
 	const getBiometricEnabled = async (email: string) => {
 		const bioEnabledEmails = await SecureKV.get('bioEnabledEmails')

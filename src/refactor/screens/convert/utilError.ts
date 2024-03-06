@@ -57,8 +57,8 @@ export const coinError = (
 					' ' +
 					pair.minSimpleTradeCost +
 					' ' +
-					pair.fiat.displayCcy,
-				type: ['Fiat'],
+					pair.crypto.displayCcy,
+				type: ['Crypto'],
 			}
 		}
 		return null
