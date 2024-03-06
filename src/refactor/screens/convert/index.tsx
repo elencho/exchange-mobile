@@ -257,7 +257,7 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 							chosenCard={chosenCard}
 							buyWithCardChecked={buyWithCardChecked}
 							setBuyWithCardChecked={(checked) => {
-								setCardError(false)
+								clearErrors(true)
 								setBuyWithCardChecked(checked)
 							}}
 							chooseCardClicked={() => {
