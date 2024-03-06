@@ -1,12 +1,6 @@
 import { t } from 'i18next'
-import React, { useEffect, useState } from 'react'
-import {
-	StyleSheet,
-	TouchableOpacity,
-	View,
-	Pressable,
-	Keyboard,
-} from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { StyleSheet, View, Pressable, Keyboard } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import EmailLoginAuth from '@assets/images/User_profile/EmailLoginAuth.svg'
 import SmsAuth from '@assets/images/User_profile/Sms_Auth.svg'
@@ -31,10 +25,13 @@ import { handleGeneralError } from '@app/refactor/utils/errorUtils'
 import BackButton from '@components/back_button'
 import { MaterialIndicator } from 'react-native-indicators'
 import { OTPTypes } from '@app/refactor/types/enums'
+import { CodeFieldOverridableComponent } from 'react-native-confirmation-code-field/esm/CodeField'
+import { useFocusEffect } from '@react-navigation/native'
 
 export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 	const dispatch = useDispatch()
 	const { theme, styles } = useTheme(_styles)
+	const inputRef = useRef<CodeFieldOverridableComponent>(null)
 
 	const [value, setValue] = useState('')
 	const [seconds, setSeconds] = useState(0)
@@ -56,6 +53,18 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 			setSeconds(0)
 		}
 	}, [])
+
+	useFocusEffect(
+		useCallback(() => {
+			const timerId = setTimeout(() => {
+				if (inputRef.current && otpType === OTPTypes.SMS) {
+					inputRef.current.focus()
+				}
+			}, 1000)
+
+			return () => clearTimeout(timerId)
+		}, [])
+	)
 
 	useEffect(() => {
 		if (!otpTimerVisible) return
@@ -149,6 +158,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 
 						<View style={styles.twoFaInput}>
 							<TwoFaInput
+								ref={inputRef}
 								value={value}
 								setValue={(txt) => {
 									setValue(txt)
@@ -158,7 +168,6 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 								onFill={onCodeFilled}
 								generalErrorData={generalErrorData}
 								loading={otpLoading}
-								autoFocus={otpType === OTPTypes.SMS}
 							/>
 						</View>
 					</View>
