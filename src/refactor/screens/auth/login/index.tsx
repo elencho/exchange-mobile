@@ -29,7 +29,10 @@ const vaxo_realuri = {
 	password: '11111!Aa',
 }
 const vaxo_satesto = { login: 'metro21@mailinator.com', password: '11111!Aa' }
-const baneta_realuri = { login: 'ibanet@cryptx.com', password: 'Malina125$' }
+const baneta_realuri = {
+	login: 'elebotch@mailinator.com',
+	password: 'asdASD123',
+}
 const kervala = { login: 'gkerva@cryptal.com', password: 'TestGexCryptal7' }
 const sali = { login: 'bukhiashvilisalome@gmail.com', password: 'Salome1996' }
 const saliSatesto = {
@@ -43,9 +46,9 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 	const { styles } = useTheme(_styles)
 	const dispatch = useDispatch()
 
-	const [mail, setMail] = useState('ibanet@cryptx.com')
+	const [mail, setMail] = useState(baneta_realuri.login)
 	const [mailError, setMailError] = useState<boolean>(false)
-	const [pass, setPass] = useState('Malina125$')
+	const [pass, setPass] = useState(baneta_realuri.password)
 	const [passError, setPassError] = useState(false)
 	const [generalErrorData, setGeneralErrorData] = useState<UiErrorData | null>(
 		null
@@ -65,8 +68,8 @@ const Login = ({ navigation, route }: ScreenProp<'Login'>) => {
 
 	useEffect(() => {
 		return navigation.addListener('focus', () => {
-			setMail('ibanet@cryptx.com')
-			setPass('Malina125$')
+			setMail(baneta_realuri.login)
+			setPass(baneta_realuri.password)
 			setMailError(false)
 			setPassError(false)
 			setLoginLoading(false)

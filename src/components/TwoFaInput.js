@@ -27,6 +27,7 @@ export default function TwoFaInput({
 	registration,
 	indicatorStyle,
 	navigation,
+	autoFocus,
 }) {
 	const dispatch = useDispatch()
 	const state = useSelector((state) => state)
@@ -82,6 +83,11 @@ export default function TwoFaInput({
 			style={[{ position: 'absolute', alignSelf: 'center' }, indicatorStyle]}
 		/>
 	) : (
-		<CodeInput cellCount={cellCount} value={value} setValue={handleChange} />
+		<CodeInput
+			cellCount={cellCount}
+			value={value}
+			setValue={handleChange}
+			autoFocus={autoFocus}
+		/>
 	)
 }

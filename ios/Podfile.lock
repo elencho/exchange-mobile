@@ -516,8 +516,6 @@ PODS:
   - React-jsinspector (0.71.4)
   - React-logger (0.71.4):
     - glog
-  - react-native-clarity (2.1.0):
-    - React-Core
   - react-native-flipper (0.184.0):
     - React-Core
   - react-native-flipper-performance-plugin (0.4.0):
@@ -689,9 +687,6 @@ PODS:
     - React-Core
   - RNSVG (13.8.0):
     - React-Core
-  - RNUxcam (5.4.13):
-    - React-Core
-    - UXCam (~> 3.6.7)
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
   - SDWebImage/Core (5.11.1)
@@ -699,7 +694,6 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.6.1)
-  - UXCam (3.6.9)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -777,7 +771,6 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
-  - react-native-clarity (from `../node_modules/react-native-clarity`)
   - react-native-flipper (from `../node_modules/react-native-flipper`)
   - react-native-flipper-performance-plugin (from `../node_modules/react-native-flipper-performance-plugin`)
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
@@ -814,7 +807,6 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
-  - RNUxcam (from `../node_modules/react-native-ux-cam`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -852,7 +844,6 @@ SPEC REPOS:
     - SDWebImage
     - SDWebImageWebPCoder
     - SocketRocket
-    - UXCam
     - YogaKit
     - ZXingObjC
   https://github.com/SumSubstance/Specs.git:
@@ -935,8 +926,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
-  react-native-clarity:
-    :path: "../node_modules/react-native-clarity"
   react-native-flipper:
     :path: "../node_modules/react-native-flipper"
   react-native-flipper-performance-plugin:
@@ -1009,8 +998,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
-  RNUxcam:
-    :path: "../node_modules/react-native-ux-cam"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1084,7 +1071,6 @@ SPEC CHECKSUMS:
   React-jsiexecutor: d6b7fa9260aa3cb40afee0507e3bc1d17ecaa6f2
   React-jsinspector: 1f51e775819199d3fe9410e69ee8d4c4161c7b06
   React-logger: 0d58569ec51d30d1792c5e86a8e3b78d24b582c6
-  react-native-clarity: 88e51625075c87dedad3c569f433b9f6a744fa14
   react-native-flipper: f5b2b27bfbbf64ffbf8d1e7030905e43a22144c1
   react-native-flipper-performance-plugin: 42ec5017abd26e7c5a1f527f2db92c14a90cabdb
   react-native-mmkv: 9ae7ca3977e8ef48dbf7f066974eb844c20b5fd7
@@ -1121,11 +1107,9 @@ SPEC CHECKSUMS:
   RNReanimated: b1220a0e5168745283ff5d53bfc7d2144b2cee1b
   RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
   RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
-  RNUxcam: 88b57b611dade52a0acd795e1c6411941eac0d2f
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
-  UXCam: bc7af0044c888c00b4785b4198efdb0238dccf65
   Yoga: 79dd7410de6f8ad73a77c868d3d368843f0c93e0
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   ZXingObjC: 8898711ab495761b2dbbdec76d90164a6d7e14c5

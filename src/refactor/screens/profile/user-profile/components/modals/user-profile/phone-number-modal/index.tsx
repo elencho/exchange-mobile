@@ -50,6 +50,7 @@ export default function PhoneNumberModal({
 		language,
 		setGeneralErrorData,
 		setError,
+		inputRef,
 	} = usePhoneNumberModal({ phoneNumberModalVisible, togglePhoneNumberModal })
 
 	const number = userInfo?.phoneNumber
@@ -133,6 +134,7 @@ export default function PhoneNumberModal({
 						{(otpType === OTPTypes.SMS ||
 							phoneNumberModalVisible === 'fromChangeOtp') && (
 							<AppInput
+								ref={inputRef}
 								style={styles.inputContainer}
 								label="Verification Code"
 								onChangeText={(text: string) => setVerificationCode(text)}
@@ -140,7 +142,6 @@ export default function PhoneNumberModal({
 								keyboardType="number-pad"
 								textContentType="oneTimeCode"
 								autoComplete="sms-otp"
-								autoFocus={true}
 								onFocusOrChange={() => {
 									setGeneralErrorData(null)
 									setError({

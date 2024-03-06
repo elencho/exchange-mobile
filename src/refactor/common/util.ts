@@ -1,6 +1,6 @@
 import { Keyboard, Platform } from 'react-native'
 import VersionCheck from 'react-native-version-check'
-import { useEffect, useRef } from 'react'
+import { MutableRefObject, RefCallback, useEffect, useRef } from 'react'
 import RNOtpVerify from 'react-native-otp-verify'
 
 export const System = {
@@ -52,3 +52,23 @@ export const useSmsOtpVerifier = (setValue: (val: string) => void) => {
 }
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+type MutableRefList<T> = Array<
+	RefCallback<T> | MutableRefObject<T> | undefined | null
+>
+
+export function mergeRefs<T>(...refs: MutableRefList<T>): RefCallback<T> {
+	return (val: T) => {
+		setRef(val, ...refs)
+	}
+}
+
+export function setRef<T>(val: T, ...refs: MutableRefList<T>): void {
+	refs.forEach((ref) => {
+		if (typeof ref === 'function') {
+			ref(val)
+		} else if (ref != null) {
+			ref.current = val
+		}
+	})
+}

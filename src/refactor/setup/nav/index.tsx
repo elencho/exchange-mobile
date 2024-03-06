@@ -5,15 +5,6 @@ import {
 	NavigationState,
 } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import {
-	LogLevel,
-	initialize,
-	setCustomUserId,
-	setCustomSessionId,
-	setCustomTag,
-	setCurrentScreenName,
-	getCurrentSessionId,
-} from 'react-native-clarity'
 
 import React, { useEffect, useRef, useState } from 'react'
 import Main from '@app/refactor/screens/auth/main'
@@ -49,12 +40,6 @@ import ConfirmConvertScreen from '@app/refactor/screens/convert/screens/ConvertC
 enableScreens(false)
 const Stack = createNativeStackNavigator<Screens>()
 export const navigationRef = createNavigationContainerRef<Screens>()
-
-const clarityConfig = {
-	logLevel: LogLevel.Verbose,
-	allowMeteredNetworkUsage: true,
-}
-initialize('kvftkku6eb')
 
 export default function AppNavigator() {
 	const dispatch = useDispatch()

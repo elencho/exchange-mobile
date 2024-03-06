@@ -18,7 +18,6 @@ import { THEME_DARK } from './src/refactor/setup/theme/variants'
 import '@app/refactor/setup/network/interceptor'
 import { System } from '@app/refactor/common/util'
 import { ModalProvider } from '@components/modal/global_modal'
-import RNUxcam from 'react-native-ux-cam'
 
 LogBox.ignoreAllLogs(true)
 LogBox.ignoreLogs([
@@ -26,14 +25,7 @@ LogBox.ignoreLogs([
 	'VirtualizedLists should never be nested',
 	'Non-serializable values were found in the navigation state',
 ])
-RNUxcam.optIntoSchematicRecordings() // Add this line to enable iOS screen recordings
-const configuration = {
-	userAppKey: 'py19oo4besvcxtq',
-	enableAutomaticScreenNameTagging: false,
-	enableImprovedScreenCapture: true, // for improved screen capture on Android
-}
 
-RNUxcam.startWithConfiguration(configuration)
 
 const App = React.memo(() => {
 	// useNotificationHandler()

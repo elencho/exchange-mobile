@@ -148,6 +148,7 @@ export default function SmsEmailAuthModal({
 					value={value}
 					cellCount={cellCount}
 					setValue={setValue}
+					autoFocus={type === 'SMS'}
 				/>
 			</View>
 
