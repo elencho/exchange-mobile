@@ -1,4 +1,11 @@
-import React, { ReactNode, memo, useEffect, useRef, useState } from 'react'
+import React, {
+	ReactNode,
+	forwardRef,
+	memo,
+	useEffect,
+	useRef,
+	useState,
+} from 'react'
 import {
 	NativeSyntheticEvent,
 	Pressable,
@@ -16,7 +23,7 @@ import {
 import Close from '@assets/images/Close.svg'
 import { useTheme, Theme } from '@theme/index'
 import AppText from '@components/text/index'
-import { System } from '@app/refactor/common/util'
+import { System, mergeRefs } from '@app/refactor/common/util'
 
 type Props = TextInputProps & {
 	label?: string
@@ -29,7 +36,7 @@ type Props = TextInputProps & {
 	onFocusOrChange?: () => void
 }
 
-const AppInput = (props: Props) => {
+const AppInput = forwardRef<TextInput, Props>((props: Props, ref) => {
 	const {
 		value,
 		label = '',
@@ -116,7 +123,7 @@ const AppInput = (props: Props) => {
 				<TextInput
 					{...props}
 					style={[styles.input, disabled && styles.disabledInput]}
-					ref={inputRef}
+					ref={mergeRefs(inputRef, ref)}
 					onBlur={(e: NativeSyntheticEvent<TextInputFocusEventData>) => {
 						setIsFocused(false)
 						onBlur?.(e)
@@ -174,7 +181,7 @@ const AppInput = (props: Props) => {
 			)}
 		</View>
 	)
-}
+})
 
 const _style = (theme: Theme) =>
 	StyleSheet.create({

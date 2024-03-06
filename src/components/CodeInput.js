@@ -13,7 +13,12 @@ import AppText from './AppText'
 import GeneralError from './GeneralError'
 import { saveGeneralError } from '@app/refactor/redux/errors/errorsSlice'
 
-export default function CodeInput({ cellCount = 6, value, setValue }) {
+export default function CodeInput({
+	cellCount = 6,
+	value,
+	setValue,
+	autoFocus,
+}) {
 	const dispatch = useDispatch()
 	const ref = useBlurOnFulfill({ value, cellCount })
 	const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -44,6 +49,7 @@ export default function CodeInput({ cellCount = 6, value, setValue }) {
 				cellCount={cellCount}
 				keyboardType="number-pad"
 				textContentType="oneTimeCode"
+				autoFocus={autoFocus}
 				renderCell={({ index, symbol, isFocused }) => (
 					<AppText
 						key={index}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { RootState } from '@app/refactor/redux/rootReducer'
@@ -19,6 +19,7 @@ import { useSmsOtpVerifier } from '@app/refactor/common/util'
 import { retryUnauthorizedCall } from '@store/redux/auth/api'
 import SecureKV from '@store/kv/secure'
 import { setOTPChangeParams } from '@app/refactor/redux/profile/profileSlice'
+import { TextInput } from 'react-native'
 
 export const usePhoneNumberModal = ({
 	phoneNumberModalVisible,
@@ -29,7 +30,7 @@ export const usePhoneNumberModal = ({
 }) => {
 	const dispatch = useDispatch()
 	const state = useSelector((state: RootState) => state)
-
+	const inputRef = useRef<TextInput>(null)
 	const {
 		profile: {
 			userInfo,
@@ -223,7 +224,7 @@ export const usePhoneNumberModal = ({
 
 	const sendVerification = async () => {
 		setGeneralErrorData(null)
-
+		inputRef.current?.focus()
 		if (!(phoneNumber?.trim()?.length > 0)) {
 			setError({
 				phoneNumber: !(phoneNumber?.trim()?.length > 0),
@@ -281,5 +282,6 @@ export const usePhoneNumberModal = ({
 		language,
 		setGeneralErrorData,
 		setError,
+		inputRef,
 	}
 }
