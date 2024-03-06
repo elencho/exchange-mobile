@@ -29,7 +29,7 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 			pairCode: pair.code,
 			amount: spentAmount,
 			action,
-			price,
+			price: changedPrice ? changedPrice : price,
 			cardTransactionRequest: card && {
 				currency: 'GEL',
 				cardId: card.id,
@@ -44,7 +44,6 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 					fetchChangedPrice(data)
 				} else {
 					setGeneralError(data)
-					setConfirmModalStatus('error')
 				}
 			} else {
 				// user payed with card

@@ -54,11 +54,13 @@ const CoinInput = ({
 		if (!amount || !coin) return
 
 		const split = amount.split('.')
-		if (split.length <= 1) {
+		const num = split[0]
+		const noDots = split.length <= 1
+
+		if (noDots) {
 			setMaxLength(MAX_LEN_WHOLE)
 		} else if (split.length === 2) {
-			const beforeDots = split[0].length
-			const leftSide = cursorPos > beforeDots ? beforeDots : MAX_LEN_WHOLE
+			const leftSide = cursorPos > num.length ? num.length : MAX_LEN_WHOLE
 			setMaxLength(leftSide + 1 + coin.scale)
 		}
 	}, [amount, cursorPos])
