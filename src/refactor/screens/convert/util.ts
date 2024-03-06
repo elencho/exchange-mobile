@@ -37,7 +37,7 @@ export const formatDisplayPair = (
 
 export const formatAmount = (txt: string, oldTxt: string, coin: Coin) => {
 	if (oldTxt === '' && (txt === '0' || txt === '.')) {
-		return '0.'
+		return '0' + (coin.scale !== 0 ? '.' : '')
 	}
 
 	txt = txt.replace(',', '.')
@@ -53,7 +53,7 @@ export const formatAmount = (txt: string, oldTxt: string, coin: Coin) => {
 		const lastDoxIndex = dotIndexes[dotIndexes.length - 1]
 		txt = txt.slice(0, lastDoxIndex + coin.scale + 1)
 	}
-	return txt
+	return coin.scale !== 0 ? txt : txt.replace('.', '')
 }
 
 export const formatScale = (
