@@ -99,7 +99,7 @@ export const coinError = (
 			if (fiat > Number(pair.fiat.balance)) {
 				return {
 					err:
-						t('max. available') +
+						t('cn_err_max_available') +
 						' ' +
 						pair.fiat.balance +
 						' ' +
@@ -111,7 +111,7 @@ export const coinError = (
 			if (crypto > Number(pair.crypto.balance)) {
 				return {
 					err:
-						t('max. available') +
+						t('cn_err_max_available') +
 						' ' +
 						pair.crypto.balance +
 						' ' +

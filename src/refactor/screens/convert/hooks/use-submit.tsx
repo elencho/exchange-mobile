@@ -36,7 +36,6 @@ export const useSubmit = (props: ScreenProp<'ConfirmConvert'>) => {
 				amount: spentAmount,
 			},
 		}
-		console.log({ params })
 		submitTrade(params).then((data) => {
 			if (!data) {
 				setConfirmModalStatus('success')

@@ -50,6 +50,14 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 		props.navigation.pop()
 	}
 
+	const goToTransactions = () => {
+		props.navigation.replace('Main', {
+			fromResume: false,
+			initialRoute: 'Transactions',
+			transactionsInitialTab: 'Instant trade',
+		})
+	}
+
 	const handleWebViewUrlChange = (event: WebViewNavigation) => {
 		const urlQueries = event.url.split('=')
 		const lastQuery = urlQueries[urlQueries.length - 1]
@@ -203,6 +211,7 @@ const ConfirmConvertScreen = (props: ScreenProp<'ConfirmConvert'>) => {
 					visible={confirmModalVisible}
 					status={confirmModalStatus}
 					dismiss={() => setConfirmModalVisible(false)}
+					onTransactionsClick={goToTransactions}
 				/>
 			</AppBackground>
 			{webViewState && (

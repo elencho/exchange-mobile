@@ -52,6 +52,7 @@ const CoinInput = ({
 
 	useEffect(() => {
 		if (!amount || !coin) return
+
 		const split = amount.split('.')
 		if (split.length <= 1) {
 			setMaxLength(MAX_LEN_WHOLE)

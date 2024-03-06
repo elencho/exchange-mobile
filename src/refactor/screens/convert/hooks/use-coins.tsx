@@ -1,5 +1,4 @@
 import { COINS_URL_PNG, ICONS_URL_PNG } from '@app/constants/api'
-import { RootState } from '@app/refactor/redux/rootReducer'
 import {
 	fetchBalanceApi,
 	fetchCardsApi,
@@ -7,9 +6,9 @@ import {
 } from '@app/refactor/screens/convert/api/convertNowApi'
 import { COUNTDOWN_SECONDS } from '@app/refactor/screens/convert/components/Timer'
 import { setConvertPair } from '@store/redux/common/slice'
-import { t } from 'i18next'
 import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import store from '@app/refactor/redux/store'
 
 type DisplayCcy = string
 type Provider = string
@@ -45,11 +44,8 @@ export const useCoins = () => {
 		call()
 	}, [])
 
-	const convertPair = useSelector(
-		(state: RootState) => state.common.convertPair
-	)
-
 	const extractDisplayCcys = () => {
+		const convertPair = store.getState().common.convertPair
 		if (convertPair) {
 			const split = convertPair.split('-')
 			return { fiat: split[1], crypto: split[0] }
