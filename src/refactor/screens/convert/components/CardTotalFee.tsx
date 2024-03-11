@@ -1,24 +1,49 @@
 import AppText from '@components/text'
 import { Theme, useTheme } from '@theme/index'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import Fee from '@assets/images/Fee.svg'
-import { formatScale, hexOpacityPct } from '@app/refactor/screens/convert/util'
+import { hexOpacityPct } from '@app/refactor/screens/convert/util'
 import Skeleton from '@components/skeleton'
 import { t } from 'i18next'
 
 type Props = {
 	fiat: Coin | undefined
 	card: Card
-	amount: string
 	loading: boolean
+	totalFee: TotalFee | undefined
 }
 
-const ConfirmTradeCard = ({ fiat, card, amount, loading }: Props) => {
+const ConfirmTradeCard = ({ fiat, card, loading, totalFee }: Props) => {
 	const { styles } = useTheme(_styles)
 
-	const feeNum = Number(amount) * (card.feePct ? card.feePct / 100 : 0)
-	const totalNum = Number(amount) + feeNum
+	const [totalTxt, setTotalTxt] = useState('')
+	const [feeTxt, setFeeTxt] = useState('')
+
+	useEffect(() => {
+		const pct = card.feePct ? card.feePct / 100 : 0
+		formatTotal(totalFee?.total)
+		formatFee(totalFee?.fee, pct)
+	}, [totalFee])
+
+	const formatTotal = (total: string | undefined) => {
+		setTotalTxt(t('cn_total') + ' ' + (total || '0') + ' ' + fiat?.displayCcy)
+	}
+
+	const formatFee = (fee: string | undefined, pct: number) => {
+		setFeeTxt(
+			t('cn_fee') +
+				' ' +
+				(fee || '0') +
+				' ' +
+				fiat?.displayCcy +
+				' (' +
+				networkTxt(card.network) +
+				' ' +
+				pct * 100 +
+				'%)'
+		)
+	}
 
 	const networkTxt = (net: string) => {
 		if (net === 'AMEX') return t('cn_card_amex')
@@ -26,25 +51,6 @@ const ConfirmTradeCard = ({ fiat, card, amount, loading }: Props) => {
 		if (net === 'VISA') return t('cn_card_visa')
 		return net
 	}
-
-	const totalTxt =
-		t('cn_total') +
-		' ' +
-		formatScale(totalNum, fiat?.scale) +
-		' ' +
-		fiat?.displayCcy
-
-	const feeTxt =
-		t('cn_fee') +
-		' ' +
-		formatScale(feeNum, fiat?.scale) +
-		' ' +
-		fiat?.displayCcy +
-		' (' +
-		networkTxt(card.network) +
-		' ' +
-		(card.feePct || 0) +
-		'%)'
 
 	const CardFeeSkeleton = () => {
 		return (

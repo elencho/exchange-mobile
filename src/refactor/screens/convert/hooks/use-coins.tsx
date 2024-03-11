@@ -3,6 +3,7 @@ import {
 	fetchBalanceApi,
 	fetchCardsApi,
 	fetchOffersApi,
+	fetchFees,
 } from '@app/refactor/screens/convert/api/convertNowApi'
 import { COUNTDOWN_SECONDS } from '@app/refactor/screens/convert/components/Timer'
 import { setConvertPair } from '@store/redux/common/slice'
@@ -31,6 +32,7 @@ export const useCoins = () => {
 	const [cryptos, setCryptos] = useState<Coin[]>([])
 	const [cards, setCards] = useState<Card[]>([])
 	const [fees, setFees] = useState<ProviderFees[]>([])
+	const [totalFee, setTotalFee] = useState<TotalFee>()
 
 	const cardLimits = useRef<CardLimits>()
 	const offersCache = useRef<Record<DisplayCcy, CoinPair[]>>({})
@@ -94,6 +96,19 @@ export const useCoins = () => {
 				setLoading(false)
 				setRefresh(false)
 			})
+	}
+
+	const fetchTotalFee = (chosenCard: Card, amount: number) => {
+		fetchFees({
+			currency: pair?.fiat.ccy || 'GEL',
+			method: 'ECOMMERCE',
+			type: 'DEPOSIT',
+			provider: chosenCard.provider,
+			cardId: chosenCard.id,
+			amount,
+		}).then((data) => {
+			setTotalFee({ total: data.totalAmount, fee: data.totalFee })
+		})
 	}
 
 	const onCoinSelected = (coin: Coin) => {
@@ -272,9 +287,12 @@ export const useCoins = () => {
 		loading,
 		refreshing,
 		fetchCoins,
+		fetchTotalFee,
 		onCoinSelected,
 		seconds,
 		setSeconds,
 		cardLimits: cardLimits.current,
+		totalFee,
+		setTotalFee,
 	}
 }

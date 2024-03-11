@@ -74,10 +74,13 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 		loading,
 		refreshing,
 		fetchCoins,
+		fetchTotalFee,
 		onCoinSelected,
 		cardLimits,
 		seconds,
 		setSeconds,
+		totalFee,
+		setTotalFee,
 	} = useCoins()
 
 	const {
@@ -122,6 +125,15 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 			setChosenCard(undefined)
 		}
 	}, [tradeType, cards])
+
+	useEffect(() => {
+		if (!chosenCard) return
+		if (!Number(upAmount)) {
+			return setTotalFee({ fee: '0', total: '0' })
+		}
+
+		fetchTotalFee(chosenCard, Number(upAmount))
+	}, [chosenCard, upAmount])
 
 	useEffect(() => {
 		setBuyWithCardChecked(false)
@@ -286,8 +298,8 @@ const ConvertNow = ({ navigation }: ScreenProp<'ConvertNow'>) => {
 						<CardTotalFee
 							card={chosenCard}
 							fiat={pair?.fiat}
-							amount={upAmount}
 							loading={loading}
+							totalFee={totalFee}
 						/>
 					)}
 					<View style={{ height: 30 }} />
