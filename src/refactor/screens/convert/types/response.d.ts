@@ -82,6 +82,11 @@ type CardResponse = {
 	network: string
 }
 
+type CalculateFeeResponse = {
+	totalFee: string
+	totalAmount: string
+}
+
 type SubmitTradeResponse = null | CardRedirectResponse | UiErrorData
 
 type CardRedirectResponse = {

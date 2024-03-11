@@ -1,5 +1,6 @@
 import {
 	BALANCE_URL,
+	CALCULATE_FEE_URL,
 	CARDS_URL,
 	OFFERS_NEW_URL,
 	TRADES_URL,
@@ -39,4 +40,12 @@ export const submitTrade = async (params: SubmitTradeRequest) => {
 	})
 	const err = extractApiError(data)
 	return err || data?.data
+}
+
+export const fetchFees = async (params: CalculateFeeRequest) => {
+	const data = await axios.get<CalculateFeeResponse>(CALCULATE_FEE_URL, {
+		params,
+		headers: { toast: false, requestName: 'calculateFee' },
+	})
+	return data?.data
 }

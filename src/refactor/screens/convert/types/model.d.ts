@@ -52,6 +52,11 @@ type CardLimits = {
 	max: number
 }
 
+type TotalFee = {
+	total: string
+	fee: string
+}
+
 type ProviderFees = {
 	providerBank: string
 	feeData: {
