@@ -37,7 +37,12 @@ export const useSmsOtpVerifier = (setValue: (val: string) => void) => {
 			setValue(otp)
 			Keyboard.dismiss()
 		} else {
-			return RNOtpVerify.removeListener()
+			setTimeout(() => {
+				RNOtpVerify.removeListener()
+				RNOtpVerify.addListener(otpHandler) // Restart listener
+			}, 1000) // Add a small delay before restarting the listener
+
+			// return RNOtpVerify.removeListener()
 		}
 	}
 

@@ -52,6 +52,7 @@ export default function SmsEmailAuthModal({
 	useSmsOtpVerifier(setValue)
 
 	const reset = () => {
+		setValue('')
 		dispatch({ type: 'TOGGLE_TIMER', timerVisible: false })
 		setSeconds(30)
 		return
