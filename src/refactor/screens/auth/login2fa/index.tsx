@@ -63,7 +63,7 @@ export const Login2Fa = ({ navigation }: ScreenProp<'Login2Fa'>) => {
 			}, 1000)
 
 			return () => clearTimeout(timerId)
-		}, [])
+		}, [otpType])
 	)
 
 	useEffect(() => {
